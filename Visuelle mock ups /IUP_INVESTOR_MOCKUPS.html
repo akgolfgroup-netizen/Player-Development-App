@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf Academy - IUP App Mockups</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           AK GOLF ACADEMY - DESIGN SYSTEM v3.0
+           Blue Palette 01 (Production Ready)
+           ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* Brand Colors */
+            --color-primary: #10456A;
+            --color-primary-light: #2C5F7F;
+            --color-primary-dark: #0A2D45;
+            --color-ink: #02060D;
+            --color-snow: #EDF0F2;
+            --color-surface: #EBE5DA;
+            --color-gold: #C9A227;
+            --color-white: #FFFFFF;
+
+            /* Gray Scale */
+            --color-gray-50: #F9FAFB;
+            --color-gray-100: #F2F4F7;
+            --color-gray-300: #D5D7DA;
+            --color-gray-500: #8E8E93;
+            --color-gray-600: #535862;
+            --color-gray-700: #414651;
+            --color-gray-900: #1C1C1E;
+
+            /* Status Colors */
+            --color-success: #4A7C59;
+            --color-warning: #D4A84B;
+            --color-error: #C45B4E;
+
+            /* Training Type Colors */
+            --color-teknikk: #8B6E9D;
+            --color-fysisk: #D97644;
+            --color-shortgame: #4A8C7C;
+            --color-funksjonell: #5B8FA8;
+            --color-spill: #C9A227;
+            --color-mental: #7A9E7E;
+            --color-test: #10456A;
+
+            /* Typography */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-logo: 'DM Sans', sans-serif;
+
+            /* Spacing (4px base) */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 999px;
+
+            /* Shadows */
+            --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-modal: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--color-gray-100);
+            color: var(--color-ink);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--space-12) var(--space-8);
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-logo);
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+        }
+
+        .page-header p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badge-investor {
+            display: inline-block;
+            background: var(--color-gold);
+            color: var(--color-ink);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: var(--space-6);
+        }
+
+        /* Mockup Container */
+        .mockups-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-12) var(--space-6);
+        }
+
+        .mockup-section {
+            margin-bottom: var(--space-12);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .section-desc {
+            font-size: 17px;
+            color: var(--color-gray-600);
+            margin-bottom: var(--space-6);
+        }
+
+        /* Phone Frame */
+        .phone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: var(--space-8);
+        }
+
+        .phone-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .phone-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            margin-bottom: var(--space-3);
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--color-ink);
+            border-radius: 44px;
+            padding: 14px;
+            box-shadow: var(--shadow-modal), 0 0 0 1px rgba(0,0,0,0.1);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--color-snow);
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            padding: 0 var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--color-primary);
+            color: var(--color-white);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-bar-light {
+            background: var(--color-white);
+            color: var(--color-ink);
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        /* App Header */
+        .app-header {
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--space-4) var(--space-5);
+        }
+
+        .app-header-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .app-header-subtitle {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* Content Area */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-5);
+            background: var(--color-snow);
+        }
+
+        .app-content-white {
+            background: var(--color-white);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-bottom: var(--space-4);
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-surface {
+            background: var(--color-surface);
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--color-ink);
+            margin-bottom: var(--space-3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .card-icon {
+            font-size: 18px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-3);
+            margin-bottom: var(--space-5);
+        }
+
+        .stat-card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--space-3);
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--color-gray-500);
+            margin-top: 2px;
+        }
+
+        /* Week Schedule */
+        .week-day {
+            display: flex;
+            align-items: center;
+            padding: var(--space-2) 0;
+            border-bottom: 1px solid var(--color-gray-100);
+        }
+
+        .week-day:last-child {
+            border-bottom: none;
+        }
+
+        .day-name {
+            width: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-gray-600);
+        }
+
+        .day-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--color-gray-100);
+            border-radius: var(--radius-full);
+            margin: 0 var(--space-3);
+            overflow: hidden;
+        }
+
+        .day-fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+        }
+
+        .day-type {
+            font-size: 12px;
+            color: var(--color-gray-600);
+            width: 80px;
+            text-align: right;
+        }
+
+        .day-time {
+            font-size: 11px;
+            color: var(--color-gray-500);
+            width: 40px;
+            text-align: right;
+        }
+
+        /* Session Card */
+        .session-card {
+            display: flex;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--color-gray-50);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-3);
+        }
+
+        .session-date {
+            width: 48px;
+            text-align: center;
+            padding: var(--space-2);
+            background: var(--color-white);
+            border-radius: var(--radius-sm);
+        }
+
+        .session-date-label {
+            font-size: 11px;
+            color: var(--color-gray-500);
+            text-transform: uppercase;
+        }
+
+        .session-date-day {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .session-date-month {
+            font-size: 11px;
+            color: var(--color-gray-600);
+        }
+
+        .session-info {
+            flex: 1;
+        }
+
+        .session-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-ink);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .session-type-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .session-meta {
+            font-size: 13px;
+            color: var(--color-gray-500);
+            margin-top: 2px;
+        }
+
+        .session-time {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        /* Progress Bar */
+        .progress-item {
+            margin-bottom: var(--space-4);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-2);
+        }
+
+        .progress-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-ink);
+        }
+
+        .progress-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--color-gray-100);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-primary);
+            border-radius: var(--radius-full);
+        }
+
+        .progress-fill-gold {
+            background: var(--color-gold);
+        }
+
+        .progress-fill-success {
+            background: var(--color-success);
+        }
+
+        /* Tab Bar */
+        .tab-bar {
+            height: 83px;
+            background: var(--color-white);
+            border-top: 1px solid var(--color-gray-300);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: var(--space-2);
+            padding-bottom: 34px;
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .tab-icon {
+            font-size: 24px;
+            color: var(--color-gray-500);
+        }
+
+        .tab-icon.active {
+            color: var(--color-primary);
+        }
+
+        .tab-label {
+            font-size: 10px;
+            color: var(--color-gray-500);
+        }
+
+        .tab-label.active {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        /* Greeting */
+        .greeting {
+            margin-bottom: var(--space-5);
+        }
+
+        .greeting-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-white);
+        }
+
+        .greeting-sub {
+            font-size: 15px;
+            color: rgba(255,255,255,0.8);
+            margin-top: var(--space-1);
+        }
+
+        /* Period Badge */
+        .period-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: rgba(255,255,255,0.15);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Test Card */
+        .test-card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+            margin-bottom: var(--space-3);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-2);
+        }
+
+        .test-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-ink);
+        }
+
+        .test-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .test-badge-passed {
+            background: rgba(74, 124, 89, 0.1);
+            color: var(--color-success);
+        }
+
+        .test-badge-pending {
+            background: rgba(212, 168, 75, 0.1);
+            color: var(--color-warning);
+        }
+
+        .test-result {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-2);
+        }
+
+        .test-result-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .test-result-unit {
+            font-size: 14px;
+            color: var(--color-gray-500);
+        }
+
+        .test-target {
+            font-size: 12px;
+            color: var(--color-gray-500);
+            margin-top: var(--space-1);
+        }
+
+        /* Badge Grid */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-3);
+        }
+
+        .badge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .badge-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-gold), #E5C158);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: var(--space-2);
+            box-shadow: 0 2px 8px rgba(201, 162, 39, 0.3);
+        }
+
+        .badge-icon-locked {
+            background: var(--color-gray-200);
+            opacity: 0.5;
+        }
+
+        .badge-name {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--color-gray-700);
+        }
+
+        /* Calendar Grid */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+
+        .calendar-month {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--color-ink);
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .calendar-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--color-gray-100);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            margin-bottom: var(--space-2);
+        }
+
+        .calendar-weekday {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-gray-500);
+            padding: var(--space-2);
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            background: var(--color-gray-50);
+        }
+
+        .calendar-day.today {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .calendar-day-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 4px;
+        }
+
+        /* Breaking Point Card */
+        .bp-card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--space-4);
+            margin-bottom: var(--space-3);
+            border: 1px solid var(--color-gray-300);
+        }
+
+        .bp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-3);
+        }
+
+        .bp-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-ink);
+        }
+
+        .bp-severity {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .bp-severity-high {
+            background: rgba(196, 91, 78, 0.1);
+            color: var(--color-error);
+        }
+
+        .bp-severity-medium {
+            background: rgba(212, 168, 75, 0.1);
+            color: var(--color-warning);
+        }
+
+        .bp-progress {
+            margin-top: var(--space-3);
+        }
+
+        .bp-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--color-gray-600);
+            margin-bottom: var(--space-1);
+        }
+
+        /* Button */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn-gold {
+            background: var(--color-gold);
+            color: var(--color-white);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        /* Coach View Specific */
+        .athlete-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-2);
+        }
+
+        .athlete-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .athlete-info {
+            flex: 1;
+        }
+
+        .athlete-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-ink);
+        }
+
+        .athlete-meta {
+            font-size: 13px;
+            color: var(--color-gray-500);
+        }
+
+        .athlete-category {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* Desktop Frame */
+        .desktop-wrapper {
+            margin: 0 auto;
+        }
+
+        .desktop-frame {
+            background: var(--color-gray-900);
+            border-radius: 16px;
+            padding: 12px;
+            box-shadow: var(--shadow-modal);
+        }
+
+        .desktop-screen {
+            background: var(--color-snow);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            height: 700px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--color-primary);
+            padding: var(--space-5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            font-family: var(--font-logo);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-white);
+            margin-bottom: var(--space-8);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-md);
+            color: rgba(255,255,255,0.7);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: var(--space-1);
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--color-white);
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            color: var(--color-white);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: var(--space-4);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-white);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-white);
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-header {
+            height: 64px;
+            background: var(--color-white);
+            border-bottom: 1px solid var(--color-gray-300);
+            padding: 0 var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .main-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-ink);
+        }
+
+        .main-body {
+            flex: 1;
+            padding: var(--space-6);
+            overflow-y: auto;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .data-table th {
+            background: var(--color-gray-50);
+            padding: var(--space-3) var(--space-4);
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: var(--space-3) var(--space-4);
+            border-bottom: 1px solid var(--color-gray-100);
+            font-size: 14px;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Chart Placeholder */
+        .chart-placeholder {
+            background: var(--color-gray-50);
+            border-radius: var(--radius-md);
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: var(--space-4);
+            gap: var(--space-2);
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: flex-end;
+            gap: var(--space-1);
+            height: 100%;
+        }
+
+        .chart-bar-item {
+            flex: 1;
+            background: var(--color-primary);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            min-height: 20px;
+        }
+
+        .chart-bar-item:nth-child(odd) {
+            opacity: 0.7;
+        }
+
+        /* Print Styles */
+        @media print {
+            .phone-frame {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1>AK Golf Academy</h1>
+        <p>IUP Training System - Komplett digital treningsplattform for golfspillerutvikling</p>
+        <span class="badge-investor">Investor Mockups - Desember 2025</span>
+    </header>
+
+    <div class="mockups-container">
+
+        <!-- SECTION 1: Player Dashboard -->
+        <section class="mockup-section">
+            <h2 class="section-title">1. Spiller Dashboard</h2>
+            <p class="section-desc">Hovedoversikten spilleren ser ved innlogging - alt viktig samlet på ett sted</p>
+
+            <div class="phone-grid">
+                <div class="phone-wrapper">
+                    <span class="phone-label">Dashboard - Hovedvisning</span>
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <!-- Status Bar -->
+                            <div class="status-bar">
+                                <span>09:41</span>
+                                <div class="status-icons">
+                                    <span>5G</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+
+                            <!-- App Header with Greeting -->
+                            <div class="app-header" style="padding-bottom: var(--space-6);">
+                                <div class="header-row" style="margin-bottom: var(--space-4);">
+                                    <div>
+                                        <div class="greeting-text">Hei Emma!</div>
+                                        <div class="greeting-sub">La oss trene i dag</div>
+                                    </div>
+                                    <div class="header-icon">
+                                        <span>EL</span>
+                                    </div>
+                                </div>
+                                <div class="period-badge">
+                                    <span style="font-size: 18px;">G</span>
+                                    <span>Grunnperiode  ·  Uke 7</span>
+                                </div>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="app-content">
+                                <!-- Stats Grid -->
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <div class="stat-value">74.2</div>
+                                        <div class="stat-label">Scoring</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value">55%</div>
+                                        <div class="stat-label">Fairway</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value">9.5t</div>
+                                        <div class="stat-label">Denne uke</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" style="color: var(--color-gold);">D</div>
+                                        <div class="stat-label">Kategori</div>
+                                    </div>
+                                </div>
+
+                                <!-- This Week Card -->
+                                <div class="card">
+                                    <div class="card-title">
+                                        <span class="card-icon">📅</span>
+                                        Denne uken
+                                    </div>
+
+                                    <div class="week-day">
+                                        <span class="day-name">Man</span>
+                                        <div class="day-bar">
+                                            <div class="day-fill" style="width: 100%; background: var(--color-teknikk);"></div>
+                                        </div>
+                                        <span class="day-type" style="color: var(--color-teknikk);">Teknikk</span>
+                                        <span class="day-time">90m</span>
+                                    </div>
+                                    <div class="week-day">
+                                        <span class="day-name">Tir</span>
+                                        <div class="day-bar">
+                                            <div class="day-fill" style="width: 70%; background: var(--color-fysisk);"></div>
+                                        </div>
+                                        <span class="day-type" style="color: var(--color-fysisk);">Fysisk</span>
+                                        <span class="day-time">60m</span>
+                                    </div>
+                                    <div class="week-day">
+                                        <span class="day-name">Ons</span>
+                                        <div class="day-bar">
+                                            <div class="day-fill" style="width: 100%; background: var(--color-shortgame);"></div>
+                                        </div>
+                                        <span class="day-type" style="color: var(--color-shortgame);">Shortgame</span>
+                                        <span class="day-time">90m</span>
+                                    </div>
+                                    <div class="week-day">
+                                        <span class="day-name">Tor</span>
+                                        <div class="day-bar">
+                                            <div class="day-fill" style="width: 50%; background: var(--color-funksjonell);"></div>
+                                        </div>
+                                        <span class="day-type" style="color: var(--color-funksjonell);">Funksjonell</span>
+                                        <span class="day-time">45m</span>
+                                    </div>
+                                    <div class="week-day">
+                                        <span class="day-name">Fre</span>
+                                        <div class="day-bar">
+                                            <div class="day-fill" style="width: 100%; background: var(--color-teknikk);"></div>
+                                        </div>
+                                        <span class="day-type" style="color: var(--color-teknikk);">Teknikk</span>
+                                        <span class="day-time">90m</span>
+                                    </div>
+                                    <div class="week-day">
+                                        <span class="day-name">Lør</span>
+                                        <div class="day-bar">
+                                            <div class="day-fill" style="width: 100%; background: var(--color-spill);"></div>
+                                        </div>
+                                        <span class="day-type" style="color: var(--color-spill);">Spill</span>
+                                        <span class="day-time">180m</span>
+                                    </div>
+                                    <div class="week-day">
+                                        <span class="day-name">Søn</span>
+                                        <div class="day-bar">
+                                            <div class="day-fill" style="width: 0%;"></div>
+                                        </div>
+                                        <span class="day-type" style="color: var(--color-gray-400);">Hvile</span>
+                                        <span class="day-time">—</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab Bar -->
+                            <div class="tab-bar">
+                                <div class="tab-item">
+                                    <span class="tab-icon active">🏠</span>
+                                    <span class="tab-label active">Hjem</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📅</span>
+                                    <span class="tab-label">Plan</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📊</span>
+                                    <span class="tab-label">Tester</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏆</span>
+                                    <span class="tab-label">Badges</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">👤</span>
+                                    <span class="tab-label">Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phone-wrapper">
+                    <span class="phone-label">Dashboard - Kommende økter</span>
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="status-bar">
+                                <span>09:41</span>
+                                <div class="status-icons">
+                                    <span>5G</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+
+                            <div class="app-header">
+                                <div class="header-row">
+                                    <div>
+                                        <div class="app-header-title">Kommende</div>
+                                        <div class="app-header-subtitle">Dine planlagte økter</div>
+                                    </div>
+                                    <div class="header-icon">🔔</div>
+                                </div>
+                            </div>
+
+                            <div class="app-content">
+                                <div class="session-card">
+                                    <div class="session-date">
+                                        <div class="session-date-label">I dag</div>
+                                        <div class="session-date-day">09</div>
+                                        <div class="session-date-month">feb</div>
+                                    </div>
+                                    <div class="session-info">
+                                        <div class="session-title">
+                                            <span class="session-type-dot" style="background: var(--color-teknikk);"></span>
+                                            Driver Teknikk
+                                        </div>
+                                        <div class="session-meta">L2 · CS50 · Range</div>
+                                    </div>
+                                    <div class="session-time">09:00</div>
+                                </div>
+
+                                <div class="session-card">
+                                    <div class="session-date">
+                                        <div class="session-date-label">I morg</div>
+                                        <div class="session-date-day">10</div>
+                                        <div class="session-date-month">feb</div>
+                                    </div>
+                                    <div class="session-info">
+                                        <div class="session-title">
+                                            <span class="session-type-dot" style="background: var(--color-fysisk);"></span>
+                                            Styrketrening
+                                        </div>
+                                        <div class="session-meta">Overkropp + rotasjon · Studio</div>
+                                    </div>
+                                    <div class="session-time">16:00</div>
+                                </div>
+
+                                <div class="session-card">
+                                    <div class="session-date">
+                                        <div class="session-date-label">Ons</div>
+                                        <div class="session-date-day">11</div>
+                                        <div class="session-date-month">feb</div>
+                                    </div>
+                                    <div class="session-info">
+                                        <div class="session-title">
+                                            <span class="session-type-dot" style="background: var(--color-shortgame);"></span>
+                                            Wedge Breaking Point ⭐
+                                        </div>
+                                        <div class="session-meta">L3 · CS60 · Øvingsgreen</div>
+                                    </div>
+                                    <div class="session-time">09:00</div>
+                                </div>
+
+                                <div class="session-card">
+                                    <div class="session-date">
+                                        <div class="session-date-label">Tor</div>
+                                        <div class="session-date-day">12</div>
+                                        <div class="session-date-month">feb</div>
+                                    </div>
+                                    <div class="session-info">
+                                        <div class="session-title">
+                                            <span class="session-type-dot" style="background: var(--color-funksjonell);"></span>
+                                            Mobilitet & Core
+                                        </div>
+                                        <div class="session-meta">Funksjonell trening · Hjemme</div>
+                                    </div>
+                                    <div class="session-time">07:00</div>
+                                </div>
+
+                                <!-- Breaking Points Card -->
+                                <div class="card" style="margin-top: var(--space-4);">
+                                    <div class="card-title">
+                                        <span class="card-icon">🎯</span>
+                                        Breaking Points
+                                    </div>
+
+                                    <div class="bp-card">
+                                        <div class="bp-header">
+                                            <span class="bp-title">Wedge PEI</span>
+                                            <span class="bp-severity bp-severity-high">Høy</span>
+                                        </div>
+                                        <div class="bp-values">
+                                            <span>Nåværende: 0.082</span>
+                                            <span>Mål: 0.075</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 65%; background: var(--color-error);"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bp-card">
+                                        <div class="bp-header">
+                                            <span class="bp-title">Driver Konsistens</span>
+                                            <span class="bp-severity bp-severity-medium">Medium</span>
+                                        </div>
+                                        <div class="bp-values">
+                                            <span>Nåværende: 48%</span>
+                                            <span>Mål: 55%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 48%; background: var(--color-warning);"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-bar">
+                                <div class="tab-item">
+                                    <span class="tab-icon active">🏠</span>
+                                    <span class="tab-label active">Hjem</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📅</span>
+                                    <span class="tab-label">Plan</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📊</span>
+                                    <span class="tab-label">Tester</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏆</span>
+                                    <span class="tab-label">Badges</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">👤</span>
+                                    <span class="tab-label">Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Test Protocol -->
+        <section class="mockup-section">
+            <h2 class="section-title">2. Testprotokoll</h2>
+            <p class="section-desc">20 standardiserte tester måler utvikling - fra driver til putting og fysisk form</p>
+
+            <div class="phone-grid">
+                <div class="phone-wrapper">
+                    <span class="phone-label">Testresultater - Oversikt</span>
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="status-bar">
+                                <span>09:41</span>
+                                <div class="status-icons">
+                                    <span>5G</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+
+                            <div class="app-header">
+                                <div class="header-row">
+                                    <div>
+                                        <div class="app-header-title">Testprotokoll</div>
+                                        <div class="app-header-subtitle">Kategori D krav</div>
+                                    </div>
+                                    <div class="header-icon">📋</div>
+                                </div>
+                            </div>
+
+                            <div class="app-content">
+                                <!-- Progress Summary -->
+                                <div class="card card-surface" style="margin-bottom: var(--space-5);">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-size: 28px; font-weight: 700; color: var(--color-primary);">14/20</div>
+                                            <div style="font-size: 13px; color: var(--color-gray-600);">Tester bestått</div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 28px; font-weight: 700; color: var(--color-gold);">70%</div>
+                                            <div style="font-size: 13px; color: var(--color-gray-600);">Komplett</div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar" style="margin-top: var(--space-4); height: 12px;">
+                                        <div class="progress-fill progress-fill-success" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Test Cards -->
+                                <div class="test-card" style="border-left-color: var(--color-success);">
+                                    <div class="test-header">
+                                        <span class="test-name">1. Driver Avstand</span>
+                                        <span class="test-badge test-badge-passed">Bestått</span>
+                                    </div>
+                                    <div class="test-result">
+                                        <span class="test-result-value">235</span>
+                                        <span class="test-result-unit">meter (carry)</span>
+                                    </div>
+                                    <div class="test-target">Krav: 220m · +15m over</div>
+                                </div>
+
+                                <div class="test-card" style="border-left-color: var(--color-success);">
+                                    <div class="test-header">
+                                        <span class="test-name">5. Klubbhastighet</span>
+                                        <span class="test-badge test-badge-passed">Bestått</span>
+                                    </div>
+                                    <div class="test-result">
+                                        <span class="test-result-value">158</span>
+                                        <span class="test-result-unit">km/h</span>
+                                    </div>
+                                    <div class="test-target">Krav: 155 km/h · +3 over</div>
+                                </div>
+
+                                <div class="test-card" style="border-left-color: var(--color-warning);">
+                                    <div class="test-header">
+                                        <span class="test-name">9. Approach 75M</span>
+                                        <span class="test-badge test-badge-pending">Nesten</span>
+                                    </div>
+                                    <div class="test-result">
+                                        <span class="test-result-value">8.2</span>
+                                        <span class="test-result-unit">m (PEI: 0.082)</span>
+                                    </div>
+                                    <div class="test-target">Krav: PEI 0.075 · 0.007 igjen</div>
+                                </div>
+
+                                <div class="test-card" style="border-left-color: var(--color-success);">
+                                    <div class="test-header">
+                                        <span class="test-name">14. Putting 6M</span>
+                                        <span class="test-badge test-badge-passed">Bestått</span>
+                                    </div>
+                                    <div class="test-result">
+                                        <span class="test-result-value">42%</span>
+                                        <span class="test-result-unit">holing rate</span>
+                                    </div>
+                                    <div class="test-target">Krav: 40% · +2% over</div>
+                                </div>
+                            </div>
+
+                            <div class="tab-bar">
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏠</span>
+                                    <span class="tab-label">Hjem</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📅</span>
+                                    <span class="tab-label">Plan</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon active">📊</span>
+                                    <span class="tab-label active">Tester</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏆</span>
+                                    <span class="tab-label">Badges</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">👤</span>
+                                    <span class="tab-label">Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phone-wrapper">
+                    <span class="phone-label">Badges & Achievements</span>
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="status-bar">
+                                <span>09:41</span>
+                                <div class="status-icons">
+                                    <span>5G</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+
+                            <div class="app-header">
+                                <div class="header-row">
+                                    <div>
+                                        <div class="app-header-title">Badges</div>
+                                        <div class="app-header-subtitle">24 av 85 opptjent</div>
+                                    </div>
+                                    <div class="header-icon">🏆</div>
+                                </div>
+                            </div>
+
+                            <div class="app-content">
+                                <!-- XP Progress -->
+                                <div class="card card-surface" style="margin-bottom: var(--space-5);">
+                                    <div style="display: flex; align-items: center; gap: var(--space-4);">
+                                        <div style="width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--color-gold), #E5C158); display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);">⭐</div>
+                                        <div style="flex: 1;">
+                                            <div style="font-size: 24px; font-weight: 700; color: var(--color-ink);">Level 12</div>
+                                            <div style="font-size: 13px; color: var(--color-gray-600); margin-bottom: var(--space-2);">2,450 / 3,000 XP</div>
+                                            <div class="progress-bar" style="height: 8px;">
+                                                <div class="progress-fill progress-fill-gold" style="width: 82%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-title" style="margin-bottom: var(--space-4);">
+                                    <span class="card-icon">🎖️</span>
+                                    Nylig opptjent
+                                </div>
+
+                                <div class="badge-grid" style="margin-bottom: var(--space-6);">
+                                    <div class="badge-item">
+                                        <div class="badge-icon">🎯</div>
+                                        <span class="badge-name">Precision Pro</span>
+                                    </div>
+                                    <div class="badge-item">
+                                        <div class="badge-icon">💪</div>
+                                        <span class="badge-name">Gym Rat</span>
+                                    </div>
+                                    <div class="badge-item">
+                                        <div class="badge-icon">🔥</div>
+                                        <span class="badge-name">7-Day Streak</span>
+                                    </div>
+                                    <div class="badge-item">
+                                        <div class="badge-icon">🏌️</div>
+                                        <span class="badge-name">Driver Master</span>
+                                    </div>
+                                </div>
+
+                                <div class="card-title" style="margin-bottom: var(--space-4);">
+                                    <span class="card-icon">🎯</span>
+                                    Neste mål
+                                </div>
+
+                                <div class="badge-grid">
+                                    <div class="badge-item">
+                                        <div class="badge-icon" style="background: var(--color-gray-200); opacity: 0.6;">🧠</div>
+                                        <span class="badge-name">Mental Master</span>
+                                    </div>
+                                    <div class="badge-item">
+                                        <div class="badge-icon" style="background: var(--color-gray-200); opacity: 0.6;">📈</div>
+                                        <span class="badge-name">Category C</span>
+                                    </div>
+                                    <div class="badge-item">
+                                        <div class="badge-icon" style="background: var(--color-gray-200); opacity: 0.6;">🏆</div>
+                                        <span class="badge-name">Tournament Win</span>
+                                    </div>
+                                    <div class="badge-item">
+                                        <div class="badge-icon" style="background: var(--color-gray-200); opacity: 0.6;">⛳</div>
+                                        <span class="badge-name">Under Par</span>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Achievements -->
+                                <div class="card" style="margin-top: var(--space-5);">
+                                    <div class="card-title">
+                                        <span class="card-icon">📊</span>
+                                        Prestasjonsstatistikk
+                                    </div>
+
+                                    <div class="progress-item">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Treningsstreak</span>
+                                            <span class="progress-value">14 dager</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill progress-fill-success" style="width: 70%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-item">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Ukentlige mål</span>
+                                            <span class="progress-value">5/6 fullført</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 83%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-item" style="margin-bottom: 0;">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Kategori C fremgang</span>
+                                            <span class="progress-value">70%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill progress-fill-gold" style="width: 70%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-bar">
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏠</span>
+                                    <span class="tab-label">Hjem</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📅</span>
+                                    <span class="tab-label">Plan</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📊</span>
+                                    <span class="tab-label">Tester</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon active">🏆</span>
+                                    <span class="tab-label active">Badges</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">👤</span>
+                                    <span class="tab-label">Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Annual Plan & Calendar -->
+        <section class="mockup-section">
+            <h2 class="section-title">3. Årsplan & Kalender</h2>
+            <p class="section-desc">Periodisert treningsplan med E/G/S/T-faser og turneringsintegrasjon</p>
+
+            <div class="phone-grid">
+                <div class="phone-wrapper">
+                    <span class="phone-label">Årsplan - Periodeoversikt</span>
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="status-bar">
+                                <span>09:41</span>
+                                <div class="status-icons">
+                                    <span>5G</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+
+                            <div class="app-header">
+                                <div class="header-row">
+                                    <div>
+                                        <div class="app-header-title">Årsplan 2025/26</div>
+                                        <div class="app-header-subtitle">Emma Larsen · Kategori D</div>
+                                    </div>
+                                    <div class="header-icon">📅</div>
+                                </div>
+                            </div>
+
+                            <div class="app-content">
+                                <!-- Period Navigation -->
+                                <div style="display: flex; gap: var(--space-2); margin-bottom: var(--space-5); overflow-x: auto;">
+                                    <div style="flex: 1; text-align: center; padding: var(--space-3); background: var(--color-gray-100); border-radius: var(--radius-md);">
+                                        <div style="font-size: 24px; font-weight: 700; color: var(--color-gray-500);">E</div>
+                                        <div style="font-size: 11px; color: var(--color-gray-500);">Eval</div>
+                                        <div style="font-size: 10px; color: var(--color-gray-400);">4 uker</div>
+                                    </div>
+                                    <div style="flex: 1; text-align: center; padding: var(--space-3); background: var(--color-primary); border-radius: var(--radius-md); box-shadow: var(--shadow-elevated);">
+                                        <div style="font-size: 24px; font-weight: 700; color: var(--color-white);">G</div>
+                                        <div style="font-size: 11px; color: rgba(255,255,255,0.8);">Grunn</div>
+                                        <div style="font-size: 10px; color: rgba(255,255,255,0.6);">18 uker</div>
+                                    </div>
+                                    <div style="flex: 1; text-align: center; padding: var(--space-3); background: var(--color-gray-100); border-radius: var(--radius-md);">
+                                        <div style="font-size: 24px; font-weight: 700; color: var(--color-gray-500);">S</div>
+                                        <div style="font-size: 11px; color: var(--color-gray-500);">Spesial</div>
+                                        <div style="font-size: 10px; color: var(--color-gray-400);">13 uker</div>
+                                    </div>
+                                    <div style="flex: 1; text-align: center; padding: var(--space-3); background: var(--color-gray-100); border-radius: var(--radius-md);">
+                                        <div style="font-size: 24px; font-weight: 700; color: var(--color-gray-500);">T</div>
+                                        <div style="font-size: 11px; color: var(--color-gray-500);">Turn.</div>
+                                        <div style="font-size: 10px; color: var(--color-gray-400);">17 uker</div>
+                                    </div>
+                                </div>
+
+                                <!-- Season Goals -->
+                                <div class="card">
+                                    <div class="card-title">
+                                        <span class="card-icon">🎯</span>
+                                        Sesongmål
+                                    </div>
+
+                                    <div class="progress-item">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Scoring: 74.2 → 72.0</span>
+                                            <span class="progress-value">80%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 80%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-item">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Kategori: D → C</span>
+                                            <span class="progress-value">70%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill progress-fill-gold" style="width: 70%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress-item" style="margin-bottom: 0;">
+                                        <div class="progress-header">
+                                            <span class="progress-label">Treningstimer: 634t</span>
+                                            <span class="progress-value">15%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill progress-fill-success" style="width: 15%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tournaments -->
+                                <div class="card">
+                                    <div class="card-title">
+                                        <span class="card-icon">🏆</span>
+                                        Turneringer 2026
+                                    </div>
+
+                                    <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                                        <div style="padding: var(--space-2) var(--space-3); background: var(--color-gray-100); border-radius: var(--radius-full); font-size: 12px;">
+                                            <span style="font-weight: 600;">Mar:</span> TRE
+                                        </div>
+                                        <div style="padding: var(--space-2) var(--space-3); background: var(--color-gray-100); border-radius: var(--radius-full); font-size: 12px;">
+                                            <span style="font-weight: 600;">Apr:</span> UTV
+                                        </div>
+                                        <div style="padding: var(--space-2) var(--space-3); background: var(--color-gold); color: white; border-radius: var(--radius-full); font-size: 12px;">
+                                            <span style="font-weight: 600;">Jun:</span> NM ⭐
+                                        </div>
+                                        <div style="padding: var(--space-2) var(--space-3); background: var(--color-gray-100); border-radius: var(--radius-full); font-size: 12px;">
+                                            <span style="font-weight: 600;">Jul:</span> UTV
+                                        </div>
+                                        <div style="padding: var(--space-2) var(--space-3); background: var(--color-gold); color: white; border-radius: var(--radius-full); font-size: 12px;">
+                                            <span style="font-weight: 600;">Aug:</span> Finale ⭐
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-bar">
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏠</span>
+                                    <span class="tab-label">Hjem</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon active">📅</span>
+                                    <span class="tab-label active">Plan</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📊</span>
+                                    <span class="tab-label">Tester</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏆</span>
+                                    <span class="tab-label">Badges</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">👤</span>
+                                    <span class="tab-label">Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="phone-wrapper">
+                    <span class="phone-label">Kalender - Månedsoversikt</span>
+                    <div class="phone-frame">
+                        <div class="phone-screen">
+                            <div class="status-bar status-bar-light">
+                                <span>09:41</span>
+                                <div class="status-icons">
+                                    <span>5G</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+
+                            <div class="app-content app-content-white" style="padding-top: var(--space-4);">
+                                <div class="calendar-header">
+                                    <div class="calendar-nav">
+                                        <button class="calendar-nav-btn">◀</button>
+                                    </div>
+                                    <span class="calendar-month">Februar 2026</span>
+                                    <div class="calendar-nav">
+                                        <button class="calendar-nav-btn">▶</button>
+                                    </div>
+                                </div>
+
+                                <div class="calendar-weekdays">
+                                    <span class="calendar-weekday">Man</span>
+                                    <span class="calendar-weekday">Tir</span>
+                                    <span class="calendar-weekday">Ons</span>
+                                    <span class="calendar-weekday">Tor</span>
+                                    <span class="calendar-weekday">Fre</span>
+                                    <span class="calendar-weekday">Lør</span>
+                                    <span class="calendar-weekday">Søn</span>
+                                </div>
+
+                                <div class="calendar-days">
+                                    <div class="calendar-day" style="color: var(--color-gray-300);"></div>
+                                    <div class="calendar-day" style="color: var(--color-gray-300);"></div>
+                                    <div class="calendar-day" style="color: var(--color-gray-300);"></div>
+                                    <div class="calendar-day" style="color: var(--color-gray-300);"></div>
+                                    <div class="calendar-day" style="color: var(--color-gray-300);"></div>
+                                    <div class="calendar-day" style="color: var(--color-gray-300);"></div>
+                                    <div class="calendar-day">1</div>
+
+                                    <div class="calendar-day">2<div class="calendar-day-dot" style="background: var(--color-teknikk);"></div></div>
+                                    <div class="calendar-day">3<div class="calendar-day-dot" style="background: var(--color-fysisk);"></div></div>
+                                    <div class="calendar-day">4<div class="calendar-day-dot" style="background: var(--color-shortgame);"></div></div>
+                                    <div class="calendar-day">5</div>
+                                    <div class="calendar-day">6<div class="calendar-day-dot" style="background: var(--color-spill);"></div></div>
+                                    <div class="calendar-day">7<div class="calendar-day-dot" style="background: var(--color-shortgame);"></div></div>
+                                    <div class="calendar-day">8</div>
+
+                                    <div class="calendar-day today">9<div class="calendar-day-dot" style="background: white;"></div></div>
+                                    <div class="calendar-day">10<div class="calendar-day-dot" style="background: var(--color-fysisk);"></div></div>
+                                    <div class="calendar-day">11<div class="calendar-day-dot" style="background: var(--color-shortgame);"></div></div>
+                                    <div class="calendar-day">12<div class="calendar-day-dot" style="background: var(--color-funksjonell);"></div></div>
+                                    <div class="calendar-day">13<div class="calendar-day-dot" style="background: var(--color-teknikk);"></div></div>
+                                    <div class="calendar-day">14<div class="calendar-day-dot" style="background: var(--color-shortgame);"></div></div>
+                                    <div class="calendar-day">15</div>
+
+                                    <div class="calendar-day">16<div class="calendar-day-dot" style="background: var(--color-teknikk);"></div></div>
+                                    <div class="calendar-day">17<div class="calendar-day-dot" style="background: var(--color-fysisk);"></div></div>
+                                    <div class="calendar-day">18<div class="calendar-day-dot" style="background: var(--color-shortgame);"></div></div>
+                                    <div class="calendar-day">19</div>
+                                    <div class="calendar-day">20<div class="calendar-day-dot" style="background: var(--color-teknikk);"></div></div>
+                                    <div class="calendar-day">21<div class="calendar-day-dot" style="background: var(--color-shortgame);"></div></div>
+                                    <div class="calendar-day">22</div>
+
+                                    <div class="calendar-day">23<div class="calendar-day-dot" style="background: var(--color-teknikk);"></div></div>
+                                    <div class="calendar-day">24<div class="calendar-day-dot" style="background: var(--color-fysisk);"></div></div>
+                                    <div class="calendar-day">25<div class="calendar-day-dot" style="background: var(--color-shortgame);"></div></div>
+                                    <div class="calendar-day">26</div>
+                                    <div class="calendar-day">27<div class="calendar-day-dot" style="background: var(--color-teknikk);"></div></div>
+                                    <div class="calendar-day">28<div class="calendar-day-dot" style="background: var(--color-spill);"></div></div>
+                                    <div class="calendar-day" style="color: var(--color-gray-300);"></div>
+                                </div>
+
+                                <!-- Legend -->
+                                <div style="display: flex; gap: var(--space-4); margin-top: var(--space-5); flex-wrap: wrap;">
+                                    <div style="display: flex; align-items: center; gap: var(--space-1); font-size: 11px;">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-teknikk);"></div>
+                                        Teknikk
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: var(--space-1); font-size: 11px;">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-fysisk);"></div>
+                                        Fysisk
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: var(--space-1); font-size: 11px;">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-shortgame);"></div>
+                                        Shortgame
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: var(--space-1); font-size: 11px;">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-spill);"></div>
+                                        Spill
+                                    </div>
+                                </div>
+
+                                <!-- Selected Day Detail -->
+                                <div class="card" style="margin-top: var(--space-5);">
+                                    <div style="font-size: 13px; color: var(--color-gray-500); margin-bottom: var(--space-2);">I dag, 9. februar</div>
+                                    <div class="session-card" style="margin-bottom: 0;">
+                                        <div style="width: 4px; background: var(--color-teknikk); border-radius: var(--radius-full);"></div>
+                                        <div class="session-info">
+                                            <div class="session-title">Driver Teknikk</div>
+                                            <div class="session-meta">09:00 - 10:30 · Range · L2 CS50</div>
+                                        </div>
+                                        <button class="btn btn-primary" style="padding: var(--space-2) var(--space-3); font-size: 13px;">Start</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-bar">
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏠</span>
+                                    <span class="tab-label">Hjem</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon active">📅</span>
+                                    <span class="tab-label active">Plan</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">📊</span>
+                                    <span class="tab-label">Tester</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">🏆</span>
+                                    <span class="tab-label">Badges</span>
+                                </div>
+                                <div class="tab-item">
+                                    <span class="tab-icon">👤</span>
+                                    <span class="tab-label">Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: Coach Desktop View -->
+        <section class="mockup-section">
+            <h2 class="section-title">4. Trener Desktop Dashboard</h2>
+            <p class="section-desc">Komplett oversikt for trenere - administrer alle utøvere fra ett sted</p>
+
+            <div class="desktop-wrapper">
+                <div class="desktop-frame" style="max-width: 1200px;">
+                    <div class="desktop-screen">
+                        <!-- Sidebar -->
+                        <div class="sidebar">
+                            <div class="sidebar-logo">AK Golf</div>
+
+                            <nav class="sidebar-nav">
+                                <div class="nav-item active">
+                                    <span class="nav-icon">📊</span>
+                                    Dashboard
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">👥</span>
+                                    Utøvere
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">📋</span>
+                                    Tester
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">📅</span>
+                                    Treningsplan
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">🏋️</span>
+                                    Økter
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">📈</span>
+                                    Analyse
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">🏆</span>
+                                    Turneringer
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">💬</span>
+                                    Meldinger
+                                </div>
+                                <div class="nav-item">
+                                    <span class="nav-icon">⚙️</span>
+                                    Innstillinger
+                                </div>
+                            </nav>
+
+                            <div class="sidebar-user">
+                                <div class="user-avatar">AK</div>
+                                <div class="user-info">
+                                    <div class="user-name">Anders Knutsen</div>
+                                    <div class="user-role">Head Coach</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Content -->
+                        <div class="main-content">
+                            <div class="main-header">
+                                <div class="main-title">Trener Dashboard</div>
+                                <div style="display: flex; gap: var(--space-3); align-items: center;">
+                                    <span style="font-size: 14px; color: var(--color-gray-600);">Desember 2025</span>
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-gray-100); display: flex; align-items: center; justify-content: center;">🔔</div>
+                                </div>
+                            </div>
+
+                            <div class="main-body">
+                                <!-- Stats Row -->
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-bottom: var(--space-6);">
+                                    <div class="card" style="text-align: center;">
+                                        <div style="font-size: 32px; font-weight: 700; color: var(--color-primary);">24</div>
+                                        <div style="font-size: 14px; color: var(--color-gray-600);">Aktive utøvere</div>
+                                    </div>
+                                    <div class="card" style="text-align: center;">
+                                        <div style="font-size: 32px; font-weight: 700; color: var(--color-success);">18</div>
+                                        <div style="font-size: 14px; color: var(--color-gray-600);">Tester denne uke</div>
+                                    </div>
+                                    <div class="card" style="text-align: center;">
+                                        <div style="font-size: 32px; font-weight: 700; color: var(--color-gold);">6</div>
+                                        <div style="font-size: 14px; color: var(--color-gray-600);">Bookinger i dag</div>
+                                    </div>
+                                    <div class="card" style="text-align: center;">
+                                        <div style="font-size: 32px; font-weight: 700; color: var(--color-error);">3</div>
+                                        <div style="font-size: 14px; color: var(--color-gray-600);">Varsler</div>
+                                    </div>
+                                </div>
+
+                                <!-- Two Column Layout -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);">
+                                    <!-- Athletes List -->
+                                    <div class="card">
+                                        <div class="card-title">
+                                            <span class="card-icon">👥</span>
+                                            Utøvere som krever oppmerksomhet
+                                        </div>
+
+                                        <div class="athlete-row">
+                                            <div class="athlete-avatar">EL</div>
+                                            <div class="athlete-info">
+                                                <div class="athlete-name">Emma Larsen</div>
+                                                <div class="athlete-meta">Breaking point: Wedge PEI</div>
+                                            </div>
+                                            <div class="athlete-category">D</div>
+                                        </div>
+
+                                        <div class="athlete-row">
+                                            <div class="athlete-avatar" style="background: var(--color-warning);">MH</div>
+                                            <div class="athlete-info">
+                                                <div class="athlete-name">Magnus Hansen</div>
+                                                <div class="athlete-meta">Falt fra treningsplan (3 dager)</div>
+                                            </div>
+                                            <div class="athlete-category" style="background: var(--color-success);">C</div>
+                                        </div>
+
+                                        <div class="athlete-row">
+                                            <div class="athlete-avatar" style="background: var(--color-shortgame);">SA</div>
+                                            <div class="athlete-info">
+                                                <div class="athlete-name">Sofia Andersen</div>
+                                                <div class="athlete-meta">Klar for kategori-test</div>
+                                            </div>
+                                            <div class="athlete-category">E</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Team Progress -->
+                                    <div class="card">
+                                        <div class="card-title">
+                                            <span class="card-icon">📈</span>
+                                            Team fremgang
+                                        </div>
+
+                                        <div class="chart-placeholder">
+                                            <div class="chart-bar">
+                                                <div class="chart-bar-item" style="height: 60%;"></div>
+                                                <div class="chart-bar-item" style="height: 75%;"></div>
+                                                <div class="chart-bar-item" style="height: 45%;"></div>
+                                                <div class="chart-bar-item" style="height: 80%;"></div>
+                                                <div class="chart-bar-item" style="height: 65%;"></div>
+                                                <div class="chart-bar-item" style="height: 90%;"></div>
+                                                <div class="chart-bar-item" style="height: 55%;"></div>
+                                                <div class="chart-bar-item" style="height: 70%;"></div>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; margin-top: var(--space-2); font-size: 11px; color: var(--color-gray-500);">
+                                            <span>Driver</span>
+                                            <span>Approach</span>
+                                            <span>Putting</span>
+                                            <span>Fysisk</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Test Results Table -->
+                                <div class="card" style="margin-top: var(--space-6);">
+                                    <div class="card-title">
+                                        <span class="card-icon">📋</span>
+                                        Nylige testresultater
+                                    </div>
+
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Utøver</th>
+                                                <th>Test</th>
+                                                <th>Resultat</th>
+                                                <th>Krav</th>
+                                                <th>Status</th>
+                                                <th>Dato</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Emma Larsen</strong></td>
+                                                <td>Driver Avstand</td>
+                                                <td style="font-weight: 600; color: var(--color-primary);">235m</td>
+                                                <td>220m</td>
+                                                <td><span style="background: rgba(74, 124, 89, 0.1); color: var(--color-success); padding: 2px 8px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600;">Bestått</span></td>
+                                                <td>I dag</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Magnus Hansen</strong></td>
+                                                <td>Putting 6M</td>
+                                                <td style="font-weight: 600; color: var(--color-primary);">45%</td>
+                                                <td>42%</td>
+                                                <td><span style="background: rgba(74, 124, 89, 0.1); color: var(--color-success); padding: 2px 8px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600;">Bestått</span></td>
+                                                <td>I går</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Sofia Andersen</strong></td>
+                                                <td>Approach 75M</td>
+                                                <td style="font-weight: 600; color: var(--color-warning);">0.088</td>
+                                                <td>0.080</td>
+                                                <td><span style="background: rgba(212, 168, 75, 0.1); color: var(--color-warning); padding: 2px 8px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600;">Nesten</span></td>
+                                                <td>I går</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="text-align: center; padding: var(--space-12) var(--space-6); color: var(--color-gray-600);">
+            <div style="font-family: var(--font-logo); font-size: 24px; color: var(--color-primary); margin-bottom: var(--space-2);">AK Golf Academy</div>
+            <p>IUP Training System - Investor Mockups</p>
+            <p style="font-size: 13px; margin-top: var(--space-2);">Desember 2025 · Versjon 3.0</p>
+        </footer>
+    </div>
+</body>
+</html>

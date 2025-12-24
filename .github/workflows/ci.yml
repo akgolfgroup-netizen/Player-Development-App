@@ -1,0 +1,376 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20.x'
+  PNPM_VERSION: 8
+
+jobs:
+  # =============================================================================
+  # Lint and Type Check
+  # =============================================================================
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint API
+        run: pnpm --filter iup-golf-backend lint
+
+      - name: Type check API
+        run: pnpm --filter iup-golf-backend type-check
+
+      - name: Lint Web
+        run: pnpm --filter iup-golf-web lint
+        continue-on-error: true
+
+  # =============================================================================
+  # Security Audit
+  # =============================================================================
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run pnpm audit
+        run: pnpm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Run Snyk Security Scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Upload Snyk results to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        continue-on-error: true
+        with:
+          sarif_file: snyk.sarif
+
+  # =============================================================================
+  # Backend Tests
+  # =============================================================================
+  test-api:
+    name: API Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: iup_golf_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm --filter iup-golf-backend prisma:generate
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/iup_golf_test
+
+      - name: Run database migrations
+        run: pnpm --filter iup-golf-backend prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/iup_golf_test
+
+      - name: Run API tests
+        run: pnpm --filter iup-golf-backend test --coverage
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/iup_golf_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret-key-for-ci
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./apps/api/coverage/lcov.info
+          flags: api
+          fail_ci_if_error: false
+
+  # =============================================================================
+  # Frontend Tests
+  # =============================================================================
+  test-web:
+    name: Web Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm --filter iup-golf-web test --coverage --watchAll=false
+        env:
+          CI: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./apps/web/coverage/lcov.info
+          flags: web
+          fail_ci_if_error: false
+
+  # =============================================================================
+  # E2E Tests
+  # =============================================================================
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [test-api, test-web]
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: iup_golf_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm --filter iup-golf-web exec playwright install --with-deps
+
+      - name: Setup API for E2E
+        run: |
+          pnpm --filter iup-golf-backend prisma:generate
+          pnpm --filter iup-golf-backend prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/iup_golf_test
+
+      - name: Run E2E tests
+        run: pnpm --filter iup-golf-web test:e2e
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/iup_golf_test
+          CI: true
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report/
+          retention-days: 7
+
+  # =============================================================================
+  # Build
+  # =============================================================================
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [test-api, test-web]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build API
+        run: pnpm --filter iup-golf-backend build
+
+      - name: Build Web
+        run: pnpm --filter iup-golf-web build
+        env:
+          REACT_APP_API_URL: ${{ secrets.API_URL || 'https://api.example.com' }}
+
+      - name: Upload API build
+        uses: actions/upload-artifact@v3
+        with:
+          name: api-build
+          path: apps/api/dist/
+          retention-days: 7
+
+      - name: Upload Web build
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: apps/web/build/
+          retention-days: 7
+
+  # =============================================================================
+  # Deploy to Staging (on develop branch)
+  # =============================================================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment:
+      name: staging
+      url: https://staging.example.com
+    steps:
+      - name: Download API build
+        uses: actions/download-artifact@v3
+        with:
+          name: api-build
+          path: api-dist/
+
+      - name: Download Web build
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: web-dist/
+
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to staging..."
+          # Add deployment commands here (e.g., AWS, Vercel, etc.)
+
+  # =============================================================================
+  # Deploy to Production (on main branch)
+  # =============================================================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: https://app.example.com
+    steps:
+      - name: Download API build
+        uses: actions/download-artifact@v3
+        with:
+          name: api-build
+          path: api-dist/
+
+      - name: Download Web build
+        uses: actions/download-artifact@v3
+        with:
+          name: web-build
+          path: web-dist/
+
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production..."
+          # Add deployment commands here

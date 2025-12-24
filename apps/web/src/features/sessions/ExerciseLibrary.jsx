@@ -1,0 +1,1020 @@
+/**
+ * ExerciseLibrary - Øvelser og Driller
+ *
+ * Øvelsesbibliotek med strukturerte treningsprotokoller.
+ * Basert på: APP_FUNCTIONALITY.md Section 10
+ * Design: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
+ */
+import React, { useState } from 'react';
+import { Heart, Plus, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { tokens, typographyStyle } from '../../design-tokens';
+import { PageHeader } from '../../components/layout/PageHeader';
+
+// ============================================================
+// AK GOLF KATEGORI HIERARKI v2.0 - Komplett filter-system
+// ============================================================
+
+// 1. PYRAMIDEN - 5 nivåer
+const pyramideLevels = [
+  { id: 'all', label: 'Alle' },
+  { id: 'FYS', label: 'Fysisk' },
+  { id: 'TEK', label: 'Teknikk' },
+  { id: 'SLAG', label: 'Golfslag' },
+  { id: 'SPILL', label: 'Spill' },
+  { id: 'TURN', label: 'Turnering' },
+];
+
+// 2. TRENINGSOMRÅDER - 16 områder
+const golfAreas = [
+  { id: 'all', label: 'Alle' },
+  // Full Swing (5)
+  { id: 'TEE', label: 'Tee Total' },
+  { id: 'INN200', label: 'Innspill 200+ m' },
+  { id: 'INN150', label: 'Innspill 150-200 m' },
+  { id: 'INN100', label: 'Innspill 100-150 m' },
+  { id: 'INN50', label: 'Innspill 50-100 m' },
+  // Nærspill (4)
+  { id: 'PITCH', label: 'Pitch' },
+  { id: 'BUNKER', label: 'Bunker' },
+  { id: 'LOB', label: 'Lob' },
+  { id: 'CHIP', label: 'Chip' },
+  // Putting (7)
+  { id: 'PUTT0-3', label: 'Putting 0-3 ft' },
+  { id: 'PUTT3-5', label: 'Putting 3-5 ft' },
+  { id: 'PUTT5-10', label: 'Putting 5-10 ft' },
+  { id: 'PUTT10-15', label: 'Putting 10-15 ft' },
+  { id: 'PUTT15-25', label: 'Putting 15-25 ft' },
+  { id: 'PUTT25-40', label: 'Putting 25-40 ft' },
+  { id: 'PUTT40+', label: 'Putting 40+ ft' },
+];
+
+// Grouped areas for compact filter display
+const areaGroups = [
+  { id: 'all', label: 'Alle' },
+  { id: 'TEE', label: 'Tee' },
+  { id: 'INN', label: 'Innspill' },
+  { id: 'CHIP', label: 'Chip' },
+  { id: 'PITCH', label: 'Pitch' },
+  { id: 'LOB', label: 'Lob' },
+  { id: 'BUNKER', label: 'Bunker' },
+  { id: 'PUTT', label: 'Putting' },
+];
+
+// 3. L-FASER (Clubspeed) - 5 nivåer
+const lFaser = [
+  { id: 'all', label: 'Alle' },
+  { id: 'CS20', label: 'CS 20%' },
+  { id: 'CS40', label: 'CS 40%' },
+  { id: 'CS60', label: 'CS 60%' },
+  { id: 'CS80', label: 'CS 80%' },
+  { id: 'CS100', label: 'CS 100%' },
+];
+
+// 4. MILJØ - 6 nivåer
+const miljoLevels = [
+  { id: 'all', label: 'Alle' },
+  { id: 'M0', label: 'M0 Off course' },
+  { id: 'M1', label: 'M1 Innendørs' },
+  { id: 'M2', label: 'M2 Range' },
+  { id: 'M3', label: 'M3 Treningsområde' },
+  { id: 'M4', label: 'M4 Bane trening' },
+  { id: 'M5', label: 'M5 Turnering' },
+];
+
+// 5. BELASTNING/PRESS - 5 nivåer
+const pressLevels = [
+  { id: 'all', label: 'Alle' },
+  { id: 'PR1', label: 'PR1 Ingen' },
+  { id: 'PR2', label: 'PR2 Selvmonitorering' },
+  { id: 'PR3', label: 'PR3 Sosialt' },
+  { id: 'PR4', label: 'PR4 Konkurranse' },
+  { id: 'PR5', label: 'PR5 Turnering' },
+];
+
+// Demo exercises - Using full AK Golf Kategori Hierarki v2.0
+const exercises = [
+  // FYSISK (FYS)
+  {
+    id: 'hip-rotation',
+    name: 'Hofterotasjon',
+    pyramide: 'FYS',
+    golfArea: 'TEE',
+    lFase: 'CS20',
+    miljo: 'M0',
+    press: 'PR1',
+    duration: { min: 15, max: 20 },
+    difficulty: 2,
+    description: 'Mobilitet og styrke i hofterotasjon.',
+  },
+  {
+    id: 'core-stability',
+    name: 'Core Stabilitet',
+    pyramide: 'FYS',
+    golfArea: 'TEE',
+    lFase: 'CS20',
+    miljo: 'M0',
+    press: 'PR1',
+    duration: { min: 20, max: 30 },
+    difficulty: 3,
+    description: 'Styrk kjernemuskulatur for bedre rotasjon.',
+  },
+  // TEKNIKK (TEK)
+  {
+    id: 'driver-target',
+    name: 'Driver Target',
+    pyramide: 'TEK',
+    golfArea: 'TEE',
+    lFase: 'CS60',
+    miljo: 'M2',
+    press: 'PR2',
+    duration: { min: 20, max: 30 },
+    difficulty: 2,
+    description: 'Driver-slag mot definert målområde.',
+  },
+  {
+    id: 'pyramiden',
+    name: 'Pyramiden',
+    pyramide: 'TEK',
+    golfArea: 'PUTT5-10',
+    lFase: 'CS40',
+    miljo: 'M3',
+    press: 'PR1',
+    duration: { min: 20, max: 30 },
+    difficulty: 2,
+    description: 'Bygg opp og ned i antall slag til samme mål.',
+  },
+  {
+    id: 'gate-drill',
+    name: 'Gate Drill',
+    pyramide: 'TEK',
+    golfArea: 'PUTT3-5',
+    lFase: 'CS40',
+    miljo: 'M3',
+    press: 'PR1',
+    duration: { min: 10, max: 20 },
+    difficulty: 2,
+    description: 'Porter med tees som ballen må gå gjennom.',
+  },
+  {
+    id: 'bunker-basics',
+    name: 'Bunker Basics',
+    pyramide: 'TEK',
+    golfArea: 'BUNKER',
+    lFase: 'CS60',
+    miljo: 'M3',
+    press: 'PR2',
+    duration: { min: 15, max: 25 },
+    difficulty: 3,
+    description: 'Grunnleggende bunkerslag fra greenside.',
+  },
+  // GOLFSLAG (SLAG)
+  {
+    id: 'scattered',
+    name: 'Scattered',
+    pyramide: 'SLAG',
+    golfArea: 'CHIP',
+    lFase: 'CS80',
+    miljo: 'M3',
+    press: 'PR2',
+    duration: { min: 15, max: 30 },
+    difficulty: 3,
+    description: 'Bytt mål og/eller klubb for HVERT slag.',
+  },
+  {
+    id: 'clock-drill',
+    name: 'Clock Drill',
+    pyramide: 'SLAG',
+    golfArea: 'PUTT3-5',
+    lFase: 'CS60',
+    miljo: 'M3',
+    press: 'PR3',
+    duration: { min: 15, max: 30 },
+    difficulty: 4,
+    description: '12 baller rundt hullet som en klokke.',
+  },
+  {
+    id: 'wedge-ladder',
+    name: 'Wedge Ladder',
+    pyramide: 'SLAG',
+    golfArea: 'INN50',
+    lFase: 'CS80',
+    miljo: 'M2',
+    press: 'PR2',
+    duration: { min: 20, max: 30 },
+    difficulty: 3,
+    description: 'Øv avstander med wedge: 50m, 75m, 100m.',
+  },
+  {
+    id: 'pitch-distance',
+    name: 'Pitch Avstandskontroll',
+    pyramide: 'SLAG',
+    golfArea: 'PITCH',
+    lFase: 'CS60',
+    miljo: 'M3',
+    press: 'PR2',
+    duration: { min: 20, max: 30 },
+    difficulty: 3,
+    description: 'Kontroller avstander med pitch-slag.',
+  },
+  {
+    id: 'iron-precision',
+    name: 'Jern Presisjon',
+    pyramide: 'SLAG',
+    golfArea: 'INN100',
+    lFase: 'CS80',
+    miljo: 'M2',
+    press: 'PR2',
+    duration: { min: 25, max: 35 },
+    difficulty: 3,
+    description: 'Presisjonstrening med 7-9 jern.',
+  },
+  // SPILL
+  {
+    id: '9-holes-putting',
+    name: '9-holes Putting',
+    pyramide: 'SPILL',
+    golfArea: 'PUTT5-10',
+    lFase: 'CS60',
+    miljo: 'M3',
+    press: 'PR3',
+    duration: { min: 15, max: 25 },
+    difficulty: 3,
+    description: 'Simuler 9 hull på puttinggreenen.',
+  },
+  {
+    id: 'up-and-down',
+    name: 'Up & Down Challenge',
+    pyramide: 'SPILL',
+    golfArea: 'CHIP',
+    lFase: 'CS80',
+    miljo: 'M3',
+    press: 'PR4',
+    duration: { min: 20, max: 30 },
+    difficulty: 4,
+    description: 'Chip + putt fra ulike posisjoner rundt green.',
+  },
+  // TURNERING (TURN)
+  {
+    id: 'pressure-putting',
+    name: 'Pressure Putting',
+    pyramide: 'TURN',
+    golfArea: 'PUTT3-5',
+    lFase: 'CS100',
+    miljo: 'M5',
+    press: 'PR5',
+    duration: { min: 15, max: 25 },
+    difficulty: 5,
+    description: 'Putting under simulert turneringspress.',
+  },
+];
+
+// Exercise card component - Minimalist design
+function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFavorite }) {
+  const difficultyDots = Array(5).fill(0).map((_, i) => i < exercise.difficulty);
+
+  // Get labels
+  const pyramideLabel = pyramideLevels.find(p => p.id === exercise.pyramide)?.label || exercise.pyramide;
+  const areaLabel = golfAreas.find(a => a.id === exercise.golfArea)?.label || exercise.golfArea;
+
+  // Pyramide colors
+  const pyramideColors = {
+    FYS: '#e74c3c',    // Red
+    TEK: '#3498db',    // Blue
+    SLAG: '#27ae60',   // Green
+    SPILL: '#9b59b6',  // Purple
+    TURN: '#f39c12',   // Orange
+  };
+
+  return (
+    <div
+      onClick={() => onSelect(exercise)}
+      style={{
+        backgroundColor: tokens.colors.white,
+        borderRadius: '12px',
+        overflow: 'hidden',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+        cursor: 'pointer',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = 'translateY(-2px)';
+        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
+      }}
+    >
+      {/* Top color bar based on pyramide level */}
+      <div style={{
+        height: '4px',
+        backgroundColor: pyramideColors[exercise.pyramide] || tokens.colors.forest,
+      }} />
+
+      <div style={{ padding: '16px' }}>
+        {/* Header row */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+          <h3 style={{
+            margin: 0,
+            fontSize: '15px',
+            fontWeight: 600,
+            color: tokens.colors.charcoal,
+            lineHeight: 1.3,
+          }}>
+            {exercise.name}
+          </h3>
+          <button
+            onClick={(e) => { e.stopPropagation(); onToggleFavorite(exercise.id); }}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: '4px',
+              cursor: 'pointer',
+              color: isFavorite ? tokens.colors.error : tokens.colors.mist,
+              transition: 'color 0.2s',
+            }}
+          >
+            <Heart size={18} fill={isFavorite ? tokens.colors.error : 'none'} />
+          </button>
+        </div>
+
+        {/* Tags row */}
+        <div style={{ display: 'flex', gap: '6px', marginBottom: '10px', flexWrap: 'wrap' }}>
+          <span style={{
+            fontSize: '11px',
+            padding: '3px 8px',
+            backgroundColor: (pyramideColors[exercise.pyramide] || tokens.colors.forest) + '15',
+            borderRadius: '4px',
+            color: pyramideColors[exercise.pyramide] || tokens.colors.forest,
+            fontWeight: 500,
+          }}>
+            {pyramideLabel}
+          </span>
+          <span style={{
+            fontSize: '11px',
+            padding: '3px 8px',
+            backgroundColor: tokens.colors.mist,
+            borderRadius: '4px',
+            color: tokens.colors.charcoal,
+            fontWeight: 500,
+          }}>
+            {areaLabel}
+          </span>
+        </div>
+
+        {/* Description */}
+        <p style={{
+          margin: '0 0 12px 0',
+          fontSize: '13px',
+          color: tokens.colors.steel,
+          lineHeight: 1.4,
+        }}>
+          {exercise.description}
+        </p>
+
+        {/* Footer row */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingTop: '12px',
+          borderTop: `1px solid ${tokens.colors.mist}`,
+        }}>
+          {/* Duration and difficulty */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{
+              fontSize: '12px',
+              color: tokens.colors.steel,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+            }}>
+              <Clock size={14} />
+              {exercise.duration.min}-{exercise.duration.max} min
+            </span>
+            <div style={{ display: 'flex', gap: '2px' }}>
+              {difficultyDots.map((filled, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: filled ? tokens.colors.gold : tokens.colors.mist,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Add to plan button */}
+          <button
+            onClick={(e) => { e.stopPropagation(); onAddToPlan(exercise); }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '6px 12px',
+              backgroundColor: tokens.colors.forest,
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              color: tokens.colors.white,
+              fontSize: '12px',
+              fontWeight: 500,
+            }}
+          >
+            <Plus size={14} />
+            Legg til
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Exercise detail modal
+function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
+  if (!exercise) return null;
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        zIndex: 1000,
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: tokens.colors.white,
+          borderRadius: `${tokens.borderRadius.lg} ${tokens.borderRadius.lg} 0 0`,
+          padding: tokens.spacing.lg,
+          width: '100%',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+        }}
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: tokens.spacing.md }}>
+          <span style={{ ...typographyStyle('title2'), color: tokens.colors.charcoal }}>
+            📋 {exercise.name}
+          </span>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '24px',
+              color: tokens.colors.steel,
+              cursor: 'pointer',
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Meta info */}
+        <div
+          style={{
+            display: 'flex',
+            gap: tokens.spacing.md,
+            marginBottom: tokens.spacing.lg,
+            flexWrap: 'wrap',
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: tokens.colors.foam,
+              padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
+              borderRadius: tokens.borderRadius.md,
+            }}
+          >
+            <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>Kategori</span>
+            <div style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>{exercise.category}</div>
+          </div>
+          <div
+            style={{
+              backgroundColor: tokens.colors.foam,
+              padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
+              borderRadius: tokens.borderRadius.md,
+            }}
+          >
+            <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>Varighet</span>
+            <div style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>
+              {exercise.duration.min}-{exercise.duration.max} min
+            </div>
+          </div>
+          {exercise.reps && (
+            <div
+              style={{
+                backgroundColor: tokens.colors.foam,
+                padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
+                borderRadius: tokens.borderRadius.md,
+              }}
+            >
+              <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>Repetisjoner</span>
+              <div style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>{exercise.reps}</div>
+            </div>
+          )}
+        </div>
+
+        {/* Description */}
+        <div style={{ marginBottom: tokens.spacing.lg }}>
+          <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+            Beskrivelse
+          </span>
+          <p style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+            {exercise.description}
+          </p>
+        </div>
+
+        {/* Instructions */}
+        {exercise.instructions && (
+          <div style={{ marginBottom: tokens.spacing.lg }}>
+            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+              Instruksjoner
+            </span>
+            <ul style={{ paddingLeft: tokens.spacing.lg, margin: 0 }}>
+              {exercise.instructions.map((instruction, i) => (
+                <li key={i} style={{ ...typographyStyle('callout'), color: tokens.colors.charcoal, marginBottom: tokens.spacing.xs }}>
+                  {instruction}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Variants */}
+        {exercise.variants && (
+          <div style={{ marginBottom: tokens.spacing.lg }}>
+            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+              Varianter
+            </span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+              {exercise.variants.map((variant, i) => (
+                <div
+                  key={i}
+                  style={{
+                    backgroundColor: tokens.colors.foam,
+                    padding: tokens.spacing.sm,
+                    borderRadius: tokens.borderRadius.sm,
+                  }}
+                >
+                  <span style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>
+                    {variant.name}
+                  </span>
+                  {variant.description && (
+                    <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, marginLeft: tokens.spacing.sm }}>
+                      - {variant.description}
+                    </span>
+                  )}
+                  {variant.reps && (
+                    <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, marginLeft: tokens.spacing.sm }}>
+                      ({variant.reps} slag)
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Equipment */}
+        {exercise.equipment && (
+          <div style={{ marginBottom: tokens.spacing.lg }}>
+            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+              Utstyr
+            </span>
+            <div style={{ display: 'flex', gap: tokens.spacing.sm, flexWrap: 'wrap' }}>
+              {exercise.equipment.map((item, i) => (
+                <span
+                  key={i}
+                  style={{
+                    ...typographyStyle('caption'),
+                    padding: '4px 10px',
+                    backgroundColor: tokens.colors.mist,
+                    borderRadius: tokens.borderRadius.sm,
+                    color: tokens.colors.charcoal,
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Training areas */}
+        <div style={{ marginBottom: tokens.spacing.xl }}>
+          <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+            Bruksområde
+          </span>
+          <div style={{ display: 'flex', gap: tokens.spacing.sm, flexWrap: 'wrap' }}>
+            {exercise.trainingAreas.map((area, i) => (
+              <span
+                key={i}
+                style={{
+                  ...typographyStyle('caption'),
+                  padding: '4px 10px',
+                  backgroundColor: tokens.colors.primaryLight,
+                  borderRadius: tokens.borderRadius.sm,
+                  color: tokens.colors.white,
+                  textTransform: 'capitalize',
+                }}
+              >
+                {area}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Add button */}
+        <button
+          onClick={() => onAddToSession(exercise)}
+          style={{
+            width: '100%',
+            padding: tokens.spacing.md,
+            backgroundColor: tokens.colors.forest,
+            color: tokens.colors.white,
+            border: 'none',
+            borderRadius: tokens.borderRadius.md,
+            cursor: 'pointer',
+            ...typographyStyle('title3'),
+          }}
+        >
+          Legg til i økt
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Main ExerciseLibrary component
+export default function ExerciseLibrary({ onSelectExercise, onClose }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPyramide, setSelectedPyramide] = useState('all');
+  const [selectedArea, setSelectedArea] = useState('all');
+  const [selectedLFase, setSelectedLFase] = useState('all');
+  const [selectedMiljo, setSelectedMiljo] = useState('all');
+  const [selectedPress, setSelectedPress] = useState('all');
+  const [selectedExercise, setSelectedExercise] = useState(null);
+  const [favorites, setFavorites] = useState(() => {
+    const saved = localStorage.getItem('exerciseFavorites');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+
+  const handleToggleFavorite = (exerciseId) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(exerciseId)
+        ? prev.filter(id => id !== exerciseId)
+        : [...prev, exerciseId];
+      localStorage.setItem('exerciseFavorites', JSON.stringify(newFavorites));
+      return newFavorites;
+    });
+  };
+
+  const handleAddToPlan = (exercise) => {
+    alert(`"${exercise.name}" lagt til i treningsplan!`);
+    if (onSelectExercise) onSelectExercise(exercise);
+  };
+
+  const resetAllFilters = () => {
+    setSelectedPyramide('all');
+    setSelectedArea('all');
+    setSelectedLFase('all');
+    setSelectedMiljo('all');
+    setSelectedPress('all');
+    setShowOnlyFavorites(false);
+  };
+
+  const hasActiveAdvancedFilters = selectedLFase !== 'all' || selectedMiljo !== 'all' || selectedPress !== 'all';
+  const hasActiveFilters = selectedPyramide !== 'all' || selectedArea !== 'all' ||
+    hasActiveAdvancedFilters || showOnlyFavorites;
+
+  // Filter exercises using all criteria
+  const filteredExercises = exercises.filter((ex) => {
+    const matchesSearch = ex.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ex.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesPyramide = selectedPyramide === 'all' || ex.pyramide === selectedPyramide;
+    const matchesArea = selectedArea === 'all' ||
+      ex.golfArea === selectedArea ||
+      ex.golfArea.startsWith(selectedArea);
+    const matchesLFase = selectedLFase === 'all' || ex.lFase === selectedLFase;
+    const matchesMiljo = selectedMiljo === 'all' || ex.miljo === selectedMiljo;
+    const matchesPress = selectedPress === 'all' || ex.press === selectedPress;
+    const matchesFavorites = !showOnlyFavorites || favorites.includes(ex.id);
+    return matchesSearch && matchesPyramide && matchesArea && matchesLFase && matchesMiljo && matchesPress && matchesFavorites;
+  });
+
+  const handleAddToSession = (exercise) => {
+    if (onSelectExercise) onSelectExercise(exercise);
+    setSelectedExercise(null);
+    if (onClose) onClose();
+  };
+
+  return (
+    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+      {/* PageHeader */}
+      <PageHeader
+        title="Øvelsesbibliotek"
+        subtitle={`${exercises.length} øvelser`}
+        actions={
+          <button
+            onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 14px',
+              backgroundColor: showOnlyFavorites ? tokens.colors.error + '15' : 'transparent',
+              border: `1px solid ${showOnlyFavorites ? tokens.colors.error : tokens.colors.mist}`,
+              borderRadius: '8px',
+              cursor: 'pointer',
+              color: showOnlyFavorites ? tokens.colors.error : tokens.colors.charcoal,
+              fontSize: '13px',
+              fontWeight: 500,
+            }}
+          >
+            <Heart size={16} fill={showOnlyFavorites ? tokens.colors.error : 'none'} />
+            Favoritter
+            {favorites.length > 0 && (
+              <span style={{
+                backgroundColor: showOnlyFavorites ? tokens.colors.error : tokens.colors.steel,
+                color: 'white',
+                borderRadius: '10px',
+                padding: '1px 6px',
+                fontSize: '11px',
+              }}>
+                {favorites.length}
+              </span>
+            )}
+          </button>
+        }
+      />
+
+      {/* Compact filters */}
+      <div style={{
+        backgroundColor: tokens.colors.white,
+        padding: '12px 24px',
+        borderBottom: `1px solid ${tokens.colors.mist}`,
+      }}>
+        {/* Search and filters in one row */}
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
+          {/* Search */}
+          <input
+            type="text"
+            placeholder="Søk..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              width: '200px',
+              padding: '8px 12px',
+              backgroundColor: tokens.colors.foam,
+              border: 'none',
+              borderRadius: '8px',
+              fontSize: '13px',
+            }}
+          />
+
+          {/* Pyramide level chips */}
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            {pyramideLevels.map((level) => (
+              <button
+                key={level.id}
+                onClick={() => setSelectedPyramide(level.id)}
+                style={{
+                  padding: '6px 12px',
+                  backgroundColor: selectedPyramide === level.id ? tokens.colors.forest : 'transparent',
+                  color: selectedPyramide === level.id ? 'white' : tokens.colors.charcoal,
+                  border: selectedPyramide === level.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                  borderRadius: '16px',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: 500,
+                }}
+              >
+                {level.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div style={{ width: '1px', height: '24px', backgroundColor: tokens.colors.mist }} />
+
+          {/* Golf area chips (using grouped areas for compact display) */}
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            {areaGroups.map((area) => (
+              <button
+                key={area.id}
+                onClick={() => setSelectedArea(area.id)}
+                style={{
+                  padding: '6px 12px',
+                  backgroundColor: selectedArea === area.id ? tokens.colors.primary : 'transparent',
+                  color: selectedArea === area.id ? 'white' : tokens.colors.steel,
+                  border: selectedArea === area.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                  borderRadius: '16px',
+                  cursor: 'pointer',
+                  fontSize: '12px',
+                  fontWeight: 500,
+                }}
+              >
+                {area.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Advanced filters toggle */}
+          <button
+            onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '6px 12px',
+              backgroundColor: showAdvancedFilters || hasActiveAdvancedFilters ? tokens.colors.forest + '10' : 'transparent',
+              border: `1px solid ${showAdvancedFilters || hasActiveAdvancedFilters ? tokens.colors.forest : tokens.colors.mist}`,
+              borderRadius: '16px',
+              cursor: 'pointer',
+              fontSize: '12px',
+              fontWeight: 500,
+              color: showAdvancedFilters || hasActiveAdvancedFilters ? tokens.colors.forest : tokens.colors.steel,
+            }}
+          >
+            Avansert
+            {hasActiveAdvancedFilters && (
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: tokens.colors.forest,
+              }} />
+            )}
+            {showAdvancedFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </button>
+        </div>
+
+        {/* Advanced filters section */}
+        {showAdvancedFilters && (
+          <div style={{
+            marginTop: '12px',
+            paddingTop: '12px',
+            borderTop: `1px solid ${tokens.colors.mist}`,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+          }}>
+            {/* L-Faser (Clubspeed) */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '12px', color: tokens.colors.steel, minWidth: '80px', fontWeight: 500 }}>
+                L-Fase (CS)
+              </span>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {lFaser.map((fase) => (
+                  <button
+                    key={fase.id}
+                    onClick={() => setSelectedLFase(fase.id)}
+                    style={{
+                      padding: '5px 10px',
+                      backgroundColor: selectedLFase === fase.id ? '#8e44ad' : 'transparent',
+                      color: selectedLFase === fase.id ? 'white' : tokens.colors.steel,
+                      border: selectedLFase === fase.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                      borderRadius: '14px',
+                      cursor: 'pointer',
+                      fontSize: '11px',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {fase.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Miljø */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '12px', color: tokens.colors.steel, minWidth: '80px', fontWeight: 500 }}>
+                Miljø
+              </span>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {miljoLevels.map((miljo) => (
+                  <button
+                    key={miljo.id}
+                    onClick={() => setSelectedMiljo(miljo.id)}
+                    style={{
+                      padding: '5px 10px',
+                      backgroundColor: selectedMiljo === miljo.id ? '#16a085' : 'transparent',
+                      color: selectedMiljo === miljo.id ? 'white' : tokens.colors.steel,
+                      border: selectedMiljo === miljo.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                      borderRadius: '14px',
+                      cursor: 'pointer',
+                      fontSize: '11px',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {miljo.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Belastning/Press */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '12px', color: tokens.colors.steel, minWidth: '80px', fontWeight: 500 }}>
+                Belastning
+              </span>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {pressLevels.map((press) => (
+                  <button
+                    key={press.id}
+                    onClick={() => setSelectedPress(press.id)}
+                    style={{
+                      padding: '5px 10px',
+                      backgroundColor: selectedPress === press.id ? '#e67e22' : 'transparent',
+                      color: selectedPress === press.id ? 'white' : tokens.colors.steel,
+                      border: selectedPress === press.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                      borderRadius: '14px',
+                      cursor: 'pointer',
+                      fontSize: '11px',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {press.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Exercise list */}
+      <div style={{ padding: '20px 24px' }}>
+        {/* Results count */}
+        <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '13px', color: tokens.colors.steel }}>
+            {filteredExercises.length} øvelser
+          </span>
+          {hasActiveFilters && (
+            <button
+              onClick={resetAllFilters}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: tokens.colors.primary,
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+            >
+              Nullstill filter
+            </button>
+          )}
+        </div>
+
+        {/* Exercise grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '16px',
+        }}>
+          {filteredExercises.map((exercise) => (
+            <ExerciseCard
+              key={exercise.id}
+              exercise={exercise}
+              onSelect={setSelectedExercise}
+              onToggleFavorite={handleToggleFavorite}
+              onAddToPlan={handleAddToPlan}
+              isFavorite={favorites.includes(exercise.id)}
+            />
+          ))}
+        </div>
+
+        {filteredExercises.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '48px 24px', color: tokens.colors.steel }}>
+            <p style={{ fontSize: '14px' }}>
+              {showOnlyFavorites ? 'Ingen favoritter' : 'Ingen øvelser funnet'}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Detail modal */}
+      {selectedExercise && (
+        <ExerciseDetailModal
+          exercise={selectedExercise}
+          onClose={() => setSelectedExercise(null)}
+          onAddToSession={handleAddToSession}
+        />
+      )}
+    </div>
+  );
+}

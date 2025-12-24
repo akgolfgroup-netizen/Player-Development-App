@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf IUP - Dashboard v3.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =====================================================
+           AK GOLF ACADEMY - DESIGN SYSTEM v3.0
+           SOURCE: /Design/figma/ak_golf_figma_kit_blue_palette01.svg
+           PALETTE: Blue Palette 01
+           ===================================================== */
+
+        :root {
+            /* Brand Colors - Blue Palette 01 */
+            --ak-primary: #10456A;
+            --ak-primary-light: #2C5F7F;
+            --ak-snow: #EDF0F2;
+            --ak-surface: #EBE5DA;
+            --ak-ink: #02060D;
+            --ak-gold: #C9A227;
+
+            /* Legacy aliases for backwards compatibility */
+            --ak-forest: #10456A;
+            --ak-forest-light: #2C5F7F;
+            --ak-foam: #EDF0F2;
+            --ak-ivory: #EBE5DA;
+
+            /* Semantic Colors */
+            --ak-success: #4A7C59;
+            --ak-warning: #D4A84B;
+            --ak-error: #C45B4E;
+
+            /* Neutrals */
+            --ak-charcoal: #1C1C1E;
+            --ak-steel: #8E8E93;
+            --ak-mist: #E5E5EA;
+            --ak-cloud: #F2F2F7;
+
+            /* Typography */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+            /* Shadows */
+            --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--ak-cloud);
+            min-height: 100vh;
+        }
+
+        /* App Container - iPhone 14 Pro size */
+        .app-container {
+            max-width: 393px;
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--ak-ivory);
+            box-shadow: var(--shadow-elevated);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--ak-mist);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            background: var(--ak-forest);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-box svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: -0.23px;
+            color: var(--ak-charcoal);
+        }
+
+        .header-title p {
+            font-size: 11px;
+            line-height: 13px;
+            letter-spacing: 0.06px;
+            color: var(--ak-steel);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--ak-forest);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding: 16px;
+            padding-bottom: 100px;
+        }
+
+        /* ===== GREETING ===== */
+        .greeting {
+            margin-bottom: 16px;
+        }
+
+        .greeting h2 {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 25px;
+            letter-spacing: -0.45px;
+            color: var(--ak-charcoal);
+            margin-bottom: 4px;
+        }
+
+        .greeting p {
+            font-size: 13px;
+            line-height: 18px;
+            letter-spacing: -0.08px;
+            color: var(--ak-steel);
+        }
+
+        /* ===== STATUS CARDS ===== */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        .status-card .icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .status-card .value {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 22px;
+            letter-spacing: -0.43px;
+            color: var(--ak-charcoal);
+        }
+
+        .status-card .label {
+            font-size: 10px;
+            line-height: 13px;
+            color: var(--ak-steel);
+            margin-top: 2px;
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 22px;
+            letter-spacing: -0.43px;
+            color: var(--ak-charcoal);
+        }
+
+        .section-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ak-forest);
+            text-decoration: none;
+        }
+
+        /* ===== TIMELINE (Notion Calendar Style) ===== */
+        .timeline {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            position: relative;
+        }
+
+        .timeline-item:not(:last-child) {
+            padding-bottom: 16px;
+        }
+
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 32px;
+            bottom: 0;
+            width: 2px;
+            background: var(--ak-mist);
+        }
+
+        .timeline-time {
+            width: 48px;
+            flex-shrink: 0;
+            text-align: right;
+            padding-top: 4px;
+        }
+
+        .timeline-time span {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 18px;
+            color: var(--ak-steel);
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-dot.completed {
+            background: var(--ak-success);
+        }
+
+        .timeline-dot.current {
+            background: var(--ak-primary);
+            box-shadow: 0 0 0 4px rgba(16, 69, 106, 0.2);
+        }
+
+        .timeline-dot.upcoming {
+            background: white;
+            border: 2px solid var(--ak-mist);
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: var(--ak-foam);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .timeline-content.current {
+            background: linear-gradient(135deg, var(--ak-forest) 0%, var(--ak-forest-light) 100%);
+            color: white;
+        }
+
+        .session-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .session-status {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .session-status.completed {
+            background: var(--ak-success);
+            color: white;
+        }
+
+        .session-status.current {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .session-status.upcoming {
+            background: var(--ak-mist);
+            color: var(--ak-steel);
+        }
+
+        .session-title {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: -0.23px;
+            color: var(--ak-charcoal);
+        }
+
+        .timeline-content.current .session-title {
+            color: white;
+        }
+
+        .session-tags {
+            display: flex;
+            gap: 4px;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 13px;
+        }
+
+        .tag-l1 { background: #F2F2F7; color: #8E8E93; }
+        .tag-l2 { background: #E5E5EA; color: #8E8E93; }
+        .tag-l3 { background: #D4E1EB; color: #10456A; }
+        .tag-l4 { background: #2C5F7F; color: white; }
+        .tag-l5 { background: #10456A; color: white; }
+
+        .tag-cs20 { background: #F2F2F7; color: #8E8E93; }
+        .tag-cs40 { background: #E5E5EA; color: #8E8E93; }
+        .tag-cs60 { background: #D4E1EB; color: #10456A; }
+        .tag-cs80 { background: #2C5F7F; color: white; }
+        .tag-cs100 { background: #10456A; color: white; }
+
+        .tag-indoor { background: #EDF0F2; color: #8E8E93; }
+        .tag-range { background: #E5E5EA; color: #1C1C1E; }
+        .tag-bane { background: #D4E1EB; color: #10456A; }
+        .tag-turnering { background: #10456A; color: white; }
+
+        .timeline-content.current .tag {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .session-meta {
+            font-size: 12px;
+            line-height: 16px;
+            color: var(--ak-steel);
+        }
+
+        .timeline-content.current .session-meta {
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ===== BADGES SECTION ===== */
+        .badges-section {
+            margin-bottom: 20px;
+        }
+
+        .badges-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .badges-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .badge-card {
+            min-width: 100px;
+            background: white;
+            border: 2px solid var(--ak-gold);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            flex-shrink: 0;
+        }
+
+        .badge-card.new {
+            box-shadow: 0 0 16px rgba(201, 162, 39, 0.3);
+        }
+
+        .badge-card .emoji {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .badge-card .title {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 16px;
+            color: var(--ak-charcoal);
+        }
+
+        .badge-card .subtitle {
+            font-size: 10px;
+            line-height: 13px;
+            color: var(--ak-steel);
+            margin-top: 2px;
+        }
+
+        /* ===== TWO COLUMN GRID ===== */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* ===== GOALS CARD ===== */
+        .goals-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .goal-item {
+            margin-bottom: 12px;
+        }
+
+        .goal-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .goal-title {
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 18px;
+            color: var(--ak-charcoal);
+        }
+
+        .goal-percent {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ak-forest);
+        }
+
+        .goal-deadline {
+            font-size: 11px;
+            line-height: 13px;
+            color: var(--ak-steel);
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--ak-mist);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--ak-forest);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* ===== STATS CARD ===== */
+        .stats-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .stat-item {
+            margin-bottom: 12px;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            line-height: 16px;
+            color: var(--ak-steel);
+        }
+
+        .stat-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ak-forest);
+        }
+
+        .stat-comparison {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--ak-mist);
+        }
+
+        .stat-change {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .stat-change.positive {
+            color: var(--ak-success);
+        }
+
+        .stat-change.negative {
+            color: var(--ak-error);
+        }
+
+        /* ===== MESSAGES SECTION ===== */
+        .messages-section {
+            margin-bottom: 20px;
+        }
+
+        .message-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--ak-mist);
+        }
+
+        .message-item:last-child {
+            border-bottom: none;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--ak-forest);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .message-name {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 20px;
+            color: var(--ak-charcoal);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--ak-steel);
+        }
+
+        .message-preview {
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--ak-steel);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .message-badge {
+            background: var(--ak-error);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .unread-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--ak-forest);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ===== PERIOD CARD ===== */
+        .period-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .period-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .period-badge {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .period-badge.evaluering { background: var(--ak-gold); }
+        .period-badge.grunn { background: var(--ak-success); }
+        .period-badge.spesial { background: var(--ak-forest-light); }
+        .period-badge.turnering { background: var(--ak-forest); }
+
+        .period-badge .letter {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .period-badge .text {
+            font-size: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .period-info h3 {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 22px;
+            color: var(--ak-charcoal);
+        }
+
+        .period-info p {
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--ak-steel);
+        }
+
+        .period-progress {
+            margin: 12px 0;
+        }
+
+        .period-progress .label {
+            font-size: 12px;
+            color: var(--ak-steel);
+            margin-bottom: 6px;
+        }
+
+        .period-focus {
+            margin-top: 12px;
+        }
+
+        .focus-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .focus-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .focus-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .focus-dot.develop { background: var(--ak-forest); }
+        .focus-dot.maintain { background: var(--ak-steel); }
+        .focus-dot.sustain { background: var(--ak-mist); }
+
+        .focus-text {
+            font-size: 13px;
+            line-height: 18px;
+            color: var(--ak-charcoal);
+        }
+
+        .focus-text strong {
+            font-weight: 600;
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 393px;
+            background: white;
+            border-top: 1px solid var(--ak-mist);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: var(--ak-foam);
+        }
+
+        .nav-item.active {
+            color: var(--ak-forest);
+        }
+
+        .nav-item:not(.active) {
+            color: var(--ak-steel);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 13px;
+        }
+
+        .nav-indicator {
+            width: 4px;
+            height: 4px;
+            background: var(--ak-forest);
+            border-radius: 50%;
+            margin-top: 2px;
+        }
+
+        /* ===== CARD TITLE ===== */
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: -0.23px;
+            color: var(--ak-charcoal);
+            margin-bottom: 12px;
+        }
+
+        /* ===== VERSION TAG ===== */
+        .version-tag {
+            position: fixed;
+            bottom: 80px;
+            right: 16px;
+            background: var(--ak-forest);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            z-index: 200;
+            box-shadow: var(--shadow-elevated);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-box">
+                <svg viewBox="0 0 196.41 204.13" fill="white">
+                    <path d="M170.3,185.77c-6.31-6.32-12.14-13.2-17.5-20.66l-34.14-46.91,2.13-1.92-20.32,17.03,32.11,45.71,9.32,13.77.72,2.16c-.19,1.72-1.53,2.72-4.02,3.01l-7.17.43v5.74h64.98v-5.74c-10.61-1.34-19.32-5.55-26.11-12.62ZM129.42,66.56v5.74l8.03.72,3.59.71c1.91.86,2.82,2.06,2.73,3.59.09,1.72-1.96,4.59-6.17,8.61l-8.18,8.46-31.7,28.98V0l-46.19,14.2v5.74l6.31-.14c8.51.38,13.1,3.87,13.77,10.47l.29,6.17v120.84l25.82-21.66,2.75-2.31,20.32-17.03,22.4-20.31,13.06-10.9c7.93-6.41,16.4-10.33,25.39-11.77l9.18-1v-5.74h-61.4ZM97.72,129.39v6.23l2.75-2.31-2.75-3.92ZM71.25,178.91l-37.82,25.03c1.44-.07,2.9-.21,4.36-.44,6.84-1.28,20.73-6.23,34.37-25.19l-.91.6ZM33.43,203.94c.15.01,1.74.05,4.36-.44-1.46.23-2.92.37-4.36.44ZM71.9,113.67l-15.52,5.97c-16.26,6.6-28.74,13.1-37.44,19.51-5.93,4.3-10.6,9.2-13.99,14.7C1.56,159.35-.09,165.54,0,172.42c.1,9.38,2.99,16.96,8.68,22.74,5.69,5.79,13.36,8.73,23.02,8.82.58,0,1.14-.02,1.72-.04h.01l37.82-25.03c-21.68,14.17-34.35,4.73-34.35,4.73-1.73-1.06-3.32-2.44-4.77-4.19-3.34-4.11-4.97-9.08-4.87-14.91-.39-13.68,9.94-24.92,30.98-33.71l13.66-5.65.26-.11v-11.5l-.26.1ZM46.07,70c-2.91.53-13.6,2.32-16.37,3.22-7.17,2.39-13.15,5.98-17.93,10.76-5.83,5.83-8.75,11.96-8.75,18.36-.19,3.92.84,7.44,3.09,10.54,2.24,3.11,5.61,4.57,10.11,4.38,8.89,0,13.36-6.09,13.56-15.94l-.36-5.92c-.44-5.91-2.7-15.76,16.65-25.4Z"/>
+                </svg>
+            </div>
+            <div class="header-title">
+                <h1>IUP</h1>
+                <p>AK Golf Academy</p>
+            </div>
+            <div class="avatar">ON</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Greeting -->
+            <div class="greeting">
+                <h2>God morgen, Ola</h2>
+                <p>Kategori B · Snittscore 74.2 · Grunnperiode</p>
+            </div>
+
+            <!-- Status Cards -->
+            <div class="status-grid">
+                <div class="status-card">
+                    <div class="icon">🏌️</div>
+                    <div class="value">B</div>
+                    <div class="label">Kategori</div>
+                </div>
+                <div class="status-card">
+                    <div class="icon">🎯</div>
+                    <div class="value">74.2</div>
+                    <div class="label">Snitt</div>
+                </div>
+                <div class="status-card">
+                    <div class="icon">📅</div>
+                    <div class="value">G</div>
+                    <div class="label">Periode</div>
+                </div>
+                <div class="status-card">
+                    <div class="icon">📊</div>
+                    <div class="value">3/12</div>
+                    <div class="label">Uke</div>
+                </div>
+            </div>
+
+            <!-- Today's Sessions - Timeline -->
+            <section class="timeline-section">
+                <div class="section-header">
+                    <h2 class="section-title">Dagens økter</h2>
+                    <a href="#" class="section-link">Se alle →</a>
+                </div>
+
+                <div class="timeline">
+                    <!-- Completed Session -->
+                    <div class="timeline-item">
+                        <div class="timeline-time"><span>09:00</span></div>
+                        <div class="timeline-dot completed"></div>
+                        <div class="timeline-content">
+                            <div class="session-header">
+                                <div class="session-status completed">✓</div>
+                                <span class="session-title">Morgenstrekk</span>
+                            </div>
+                            <div class="session-meta">Fysisk · 30 min</div>
+                        </div>
+                    </div>
+
+                    <!-- Current Session -->
+                    <div class="timeline-item">
+                        <div class="timeline-time"><span>14:00</span></div>
+                        <div class="timeline-dot current"></div>
+                        <div class="timeline-content current">
+                            <div class="session-header">
+                                <div class="session-status current">●</div>
+                                <span class="session-title">Langspill - Driver & Jern</span>
+                            </div>
+                            <div class="session-tags">
+                                <span class="tag">L4</span>
+                                <span class="tag">CS60</span>
+                                <span class="tag">S6 · Range</span>
+                            </div>
+                            <div class="session-meta">Teknikk · 90 min</div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Session -->
+                    <div class="timeline-item">
+                        <div class="timeline-time"><span>16:30</span></div>
+                        <div class="timeline-dot upcoming"></div>
+                        <div class="timeline-content">
+                            <div class="session-header">
+                                <div class="session-status upcoming">○</div>
+                                <span class="session-title">Putting Practice</span>
+                            </div>
+                            <div class="session-tags">
+                                <span class="tag tag-l5">L5</span>
+                                <span class="tag tag-cs100">CS100</span>
+                                <span class="tag tag-bane">S8 · Bane</span>
+                            </div>
+                            <div class="session-meta">Shortgame · 45 min</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Badges Section -->
+            <section class="badges-section">
+                <div class="section-header">
+                    <h2 class="section-title">Oppnåelser denne uken</h2>
+                </div>
+
+                <div class="badges-scroll">
+                    <div class="badge-card new">
+                        <div class="emoji">🔥</div>
+                        <div class="title">5 dager</div>
+                        <div class="subtitle">streak</div>
+                    </div>
+                    <div class="badge-card new">
+                        <div class="emoji">⭐</div>
+                        <div class="title">L5 første</div>
+                        <div class="subtitle">gang</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="emoji">🎯</div>
+                        <div class="title">100 putts</div>
+                        <div class="subtitle">fullført</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="emoji">💪</div>
+                        <div class="title">10 timer</div>
+                        <div class="subtitle">denne uken</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="emoji">🏆</div>
+                        <div class="title">Mål nådd</div>
+                        <div class="subtitle">putting</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Two Column Grid: Goals + Stats -->
+            <div class="two-col-grid">
+                <!-- Goals Card -->
+                <div class="goals-card">
+                    <div class="card-title">Målsetninger</div>
+
+                    <div class="goal-item">
+                        <div class="goal-header">
+                            <span class="goal-title">Snitt &lt; 73</span>
+                            <span class="goal-percent">68%</span>
+                        </div>
+                        <div class="goal-deadline">Aug 2026</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 68%"></div>
+                        </div>
+                    </div>
+
+                    <div class="goal-item">
+                        <div class="goal-header">
+                            <span class="goal-title">L5 wedge</span>
+                            <span class="goal-percent">45%</span>
+                        </div>
+                        <div class="goal-deadline">Apr 2026</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Card -->
+                <div class="stats-card">
+                    <div class="card-title">Denne uken</div>
+
+                    <div class="stat-item">
+                        <div class="stat-header">
+                            <span class="stat-label">Økter fullført</span>
+                            <span class="stat-value">8/12</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 67%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-header">
+                            <span class="stat-label">Timer trent</span>
+                            <span class="stat-value">12.5t</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 62%"></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-comparison">
+                        <span class="stat-change positive">↑ +2 økter</span>
+                        <span class="stat-change positive">↑ +3.5t</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Section -->
+            <section class="messages-section">
+                <div class="section-header">
+                    <h2 class="section-title">Meldinger</h2>
+                    <a href="#" class="section-link">Se alle →</a>
+                </div>
+
+                <div class="message-card">
+                    <div class="message-item">
+                        <div class="message-avatar">👨‍🏫</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-name">Trener Anders</span>
+                                <span class="message-time">14:32</span>
+                            </div>
+                            <div class="message-preview">Bra jobbet i dag! La oss snakke om neste uke...</div>
+                        </div>
+                        <span class="message-badge">2</span>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="message-avatar">👥</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-name">Team Norway Junior</span>
+                                <span class="message-time">I går</span>
+                            </div>
+                            <div class="message-preview">Neste samling er 20. januar i Stavanger</div>
+                        </div>
+                        <div class="unread-dot"></div>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="message-avatar">🏌️</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-name">AK Golf Academy</span>
+                                <span class="message-time">Ons</span>
+                            </div>
+                            <div class="message-preview">Husk påmelding til vinterturneringen!</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Period Overview Card -->
+            <section class="period-section">
+                <div class="section-header">
+                    <h2 class="section-title">Periodeoversikt</h2>
+                </div>
+
+                <div class="period-card">
+                    <div class="period-header">
+                        <div class="period-badge grunn">
+                            <span class="letter">G</span>
+                            <span class="text">Grunn</span>
+                        </div>
+                        <div class="period-info">
+                            <h3>Grunnperiode</h3>
+                            <p>Uke 43-48 · Okt - Nov 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="period-progress">
+                        <div class="label">Uke 3 av 6 i perioden</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                    <div class="period-focus">
+                        <div class="focus-item">
+                            <div class="focus-dot develop"></div>
+                            <span class="focus-text"><strong>Utvikle:</strong> Teknikk, Langspill</span>
+                        </div>
+                        <div class="focus-item">
+                            <div class="focus-dot maintain"></div>
+                            <span class="focus-text"><strong>Vedlikehold:</strong> Putting</span>
+                        </div>
+                        <div class="focus-item">
+                            <div class="focus-dot sustain"></div>
+                            <span class="focus-text"><strong>Oppretthold:</strong> Shortgame</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <span class="nav-label">Hjem</span>
+                <div class="nav-indicator"></div>
+            </button>
+
+            <button class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <span class="nav-label">Økter</span>
+            </button>
+
+            <button class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"/>
+                        <circle cx="12" cy="12" r="5"/>
+                        <circle cx="12" cy="12" r="1"/>
+                    </svg>
+                </div>
+                <span class="nav-label">Mål</span>
+            </button>
+
+            <button class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                </div>
+                <span class="nav-label">Stats</span>
+            </button>
+
+            <button class="nav-item">
+                <div class="nav-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    </svg>
+                </div>
+                <span class="nav-label">Profil</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Version Tag -->
+    <div class="version-tag">Dashboard v3.0</div>
+
+    <script>
+        // Log design system info
+        console.log('🎯 AK Golf IUP - Dashboard v3.0');
+        console.log('📐 Source: /Design/figma/ak_golf_figma_kit_blue_palette01.svg');
+        console.log('🎨 Design System v3.0 - Blue Palette 01');
+        console.log('📝 Inter Font · Apple HIG Typography');
+    </script>
+</body>
+</html>

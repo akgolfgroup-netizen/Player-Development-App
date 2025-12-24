@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf Academy - Gamification Research Package</title>
+    <style>
+        :root {
+            --ak-primary: #10456A;
+            --ak-primary-light: #2C5F7F;
+            --ak-gold: #C9A227;
+            --ak-ink: #02060D;
+            --ak-snow: #EDF0F2;
+            --ak-surface: #EBE5DA;
+            --gray-500: #8E8E93;
+            --gray-700: #414651;
+            --success: #4A7C59;
+            --warning: #D4A84B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--ak-snow);
+            color: var(--ak-ink);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(16, 69, 106, 0.08);
+        }
+
+        h1 {
+            font-size: 34px;
+            line-height: 41px;
+            font-weight: 700;
+            color: var(--ak-primary);
+            margin-bottom: 12px;
+            border-bottom: 3px solid var(--ak-gold);
+            padding-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 28px;
+            line-height: 34px;
+            font-weight: 700;
+            color: var(--ak-primary);
+            margin-top: 48px;
+            margin-bottom: 24px;
+            padding-left: 16px;
+            border-left: 4px solid var(--ak-gold);
+        }
+
+        h3 {
+            font-size: 22px;
+            line-height: 28px;
+            font-weight: 700;
+            color: var(--ak-primary-light);
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+
+        h4 {
+            font-size: 17px;
+            line-height: 22px;
+            font-weight: 600;
+            color: var(--ak-primary);
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 17px;
+            line-height: 24px;
+            margin-bottom: 16px;
+            color: var(--ak-ink);
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 17px;
+            line-height: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        th {
+            background: var(--ak-primary);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #E5E5EA;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #F9FAFB;
+        }
+
+        code {
+            background: var(--ak-surface);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--ak-primary);
+        }
+
+        pre {
+            background: var(--ak-ink);
+            color: #E5E5EA;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 24px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--ak-gold);
+            padding-left: 20px;
+            margin: 24px 0;
+            font-style: italic;
+            color: var(--gray-700);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--ak-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge.gold {
+            background: var(--ak-gold);
+        }
+
+        .badge.success {
+            background: var(--success);
+        }
+
+        .info-box {
+            background: #F9FAFB;
+            border-left: 4px solid var(--ak-primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .warning-box {
+            background: #FFF9E6;
+            border-left: 4px solid var(--warning);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .success-box {
+            background: #F0F8F4;
+            border-left: 4px solid var(--success);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .toc {
+            background: var(--ak-surface);
+            padding: 24px;
+            border-radius: 12px;
+            margin: 32px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            padding: 8px 0;
+        }
+
+        .toc a {
+            color: var(--ak-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            color: var(--ak-gold);
+            text-decoration: underline;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #E5E5EA;
+            margin: 48px 0;
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--ak-primary);
+        }
+
+        .header-meta {
+            color: var(--gray-500);
+            font-size: 15px;
+            margin-bottom: 32px;
+        }
+
+        .section-number {
+            color: var(--ak-gold);
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        .emoji {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 AK Golf Academy - Gamification Research Package</h1>
+        <p class="header-meta"><strong>Dato:</strong> 24. desember 2025 | <strong>Formål:</strong> Komplett dokumentasjon for ChatGPT badge-planlegging</p>
+
+        <div class="toc">
+            <h3>📋 Innholdsfortegnelse</h3>
+            <ol>
+                <li><a href="#visjon">Prosjekt Visjon & Mål</a></li>
+                <li><a href="#kategorier">Team Norway Kategori System (A-K)</a></li>
+                <li><a href="#badges">Eksisterende Badge/Achievement System</a></li>
+                <li><a href="#brukerreiser">Brukerreiser & User Stories</a></li>
+                <li><a href="#domene">Domenelogikk - Golf Spesifikt</a></li>
+                <li><a href="#metrics">Gamification Metrics & Måling</a></li>
+                <li><a href="#tech">Teknisk Implementering</a></li>
+                <li><a href="#design">Design System for Badges</a></li>
+                <li><a href="#plan">Eksisterende Badge Plan</a></li>
+                <li><a href="#sporsmal">Nøkkelspørsmål for ChatGPT</a></li>
+                <li><a href="#competitive">Competitive Analysis</a></li>
+                <li><a href="#personas">Bruker Personas</a></li>
+                <li><a href="#konklusjon">Konklusjon & Forventninger</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <h2 id="visjon"><span class="section-number">1.</span> PROSJEKT VISJON & MÅL</h2>
+
+        <h3>Hva er AK Golf Academy?</h3>
+        <p><strong>Kort beskrivelse:</strong><br>
+        Production-ready Individual Development Plan (IUP) platform for junior golf training academies. Enterprise-grade coaching platform med fokus på:</p>
+
+        <ul>
+            <li><strong>Individual Development Plans</strong> - Track progress across 11 categories (A-K) following Team Norway methodology</li>
+            <li><strong>20+ Test Protocols</strong> - Comprehensive testing for driver, approach, short game, putting, physical fitness</li>
+            <li><strong>Advanced Analytics</strong> - Peer comparison, breaking point detection, progress tracking</li>
+            <li><strong>Training Plans</strong> - Periodization with E/G/S/T phases and automated scheduling</li>
+            <li><strong>Multi-tenant Architecture</strong> - Secure organization isolation with role-based access control</li>
+        </ul>
+
+        <h3>Kjerneverdier</h3>
+        <ol>
+            <li><strong>Data-drevet utvikling</strong> - Følg Team Norway IUP-metodikk</li>
+            <li><strong>Strukturert progresjon</strong> - 11 kategorier (A-K) med klare krav</li>
+            <li><strong>Langsiktig utvikling</strong> - Fra junior til elite</li>
+            <li><strong>Coaching excellence</strong> - Verktøy for trenere og spillere</li>
+            <li><strong>Målbar fremgang</strong> - Testing, tracking, analytics</li>
+        </ol>
+
+        <div class="info-box">
+            <h4>Target Audience</h4>
+            <p><strong>Primær:</strong></p>
+            <ul>
+                <li>Junior golfers (13-22 år)</li>
+                <li>Elite golfers in development</li>
+                <li>Golf academy coaches</li>
+                <li>Golf academy administrators</li>
+            </ul>
+            <p><strong>Sekundær:</strong></p>
+            <ul>
+                <li>Parents of junior golfers</li>
+                <li>Golf federation administrators</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2 id="kategorier"><span class="section-number">2.</span> TEAM NORWAY KATEGORI SYSTEM (A-K)</h2>
+
+        <h3>11 Kategorier for Golf Utvikling</h3>
+        <p class="warning-box"><strong>⚠️ VIKTIG:</strong> Dette er KJERNEN i hele systemet - all gamification må relatere til dette!</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Kategori</th>
+                    <th>Navn</th>
+                    <th>Fokus</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>A</strong></td><td>Driver/Distance</td><td>Lengde off tee</td></tr>
+                <tr><td><strong>B</strong></td><td>Approach</td><td>Jernspill, GIR</td></tr>
+                <tr><td><strong>C</strong></td><td>Short Game</td><td>Chipping, pitching</td></tr>
+                <tr><td><strong>D</strong></td><td>Putting</td><td>Green reading, stroke</td></tr>
+                <tr><td><strong>E</strong></td><td>Scrambling</td><td>Up & down %</td></tr>
+                <tr><td><strong>F</strong></td><td>Fysisk</td><td>Styrke, mobility, fitness</td></tr>
+                <tr><td><strong>G</strong></td><td>Mentalt</td><td>Mental toughness, focus</td></tr>
+                <tr><td><strong>H</strong></td><td>Strategi</td><td>Course management</td></tr>
+                <tr><td><strong>I</strong></td><td>Teknologi</td><td>Video analysis, data</td></tr>
+                <tr><td><strong>J</strong></td><td>Competition</td><td>Tournament performance</td></tr>
+                <tr><td><strong>K</strong></td><td>Lifestyle</td><td>Sleep, nutrition, recovery</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Progresjonsnivåer per Kategori</h3>
+        <p>Hver kategori har målbare krav på forskjellige nivåer:</p>
+
+        <div class="info-box">
+            <h4>Nivåer:</h4>
+            <ol>
+                <li><span class="badge">Beginner</span> Grunnleggende ferdigheter</li>
+                <li><span class="badge">Intermediate</span> Solide grunnlag</li>
+                <li><span class="badge gold">Advanced</span> Konkurransedyktig</li>
+                <li><span class="badge gold">Elite</span> Team Norway standard</li>
+                <li><span class="badge gold">Professional</span> Pro-nivå</li>
+            </ol>
+        </div>
+
+        <h4>Eksempel fra Kategori A (Driver):</h4>
+        <ul>
+            <li><strong>Beginner:</strong> Clubhead speed 80+ mph</li>
+            <li><strong>Intermediate:</strong> 90+ mph, fairway hit 50%+</li>
+            <li><strong>Advanced:</strong> 100+ mph, fairway 60%+</li>
+            <li><strong>Elite:</strong> 110+ mph, fairway 65%+, carry 250+ yards</li>
+            <li><strong>Professional:</strong> 115+ mph, tour-level stats</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="badges"><span class="section-number">3.</span> EKSISTERENDE BADGE/ACHIEVEMENT SYSTEM</h2>
+
+        <h3>Current Badge Categories</h3>
+
+        <h4>3.1 Kategori Mastery Badges (A-K)</h4>
+        <p><strong>Formål:</strong> Anerkjenne fremgang i hver av 11 kategoriene</p>
+
+        <div class="info-box">
+            <p><strong>Nivåer per kategori:</strong></p>
+            <ul>
+                <li>🥉 <strong>Bronze</strong> (Beginner level achieved)</li>
+                <li>🥈 <strong>Silver</strong> (Intermediate level achieved)</li>
+                <li>🥇 <strong>Gold</strong> (Advanced level achieved)</li>
+                <li>💎 <strong>Diamond</strong> (Elite level achieved)</li>
+                <li>👑 <strong>Platinum</strong> (Professional level achieved)</li>
+            </ul>
+            <p><strong>Totalt:</strong> 11 kategorier × 5 nivåer = <span class="badge gold">55 badges</span></p>
+        </div>
+
+        <h4>3.2 Milestone Badges</h4>
+        <p><strong>Formål:</strong> Feire viktige milepæler</p>
+        <ul>
+            <li><strong>First Test Completed</strong> - Gjennomført første test</li>
+            <li><strong>First Training Session</strong> - Fullført første treningsøkt</li>
+            <li><strong>Weekly Warrior</strong> - 7 dager på rad med trening</li>
+            <li><strong>Monthly Master</strong> - Alle planlagte økter fullført i en måned</li>
+            <li><strong>100 Sessions</strong> - 100 treningsøkter totalt</li>
+            <li><strong>1000 Hours</strong> - 1000 timer trening totalt</li>
+            <li><strong>Perfect Week</strong> - Alle økter + alle tester fullført</li>
+        </ul>
+
+        <h4>3.3 Performance Badges</h4>
+        <p><strong>Formål:</strong> Belønne spesifikke prestasjoner</p>
+        <ul>
+            <li><strong>Ace</strong> - Hole in one</li>
+            <li><strong>Eagle</strong> - Eagle eller bedre</li>
+            <li><strong>Breaking 80</strong> - Runde under 80 slag</li>
+            <li><strong>Breaking 75</strong> - Runde under 75 slag</li>
+            <li><strong>Breaking 70</strong> - Runde under 70 slag</li>
+            <li><strong>Personal Best</strong> - Ny personlig rekord</li>
+            <li><strong>Tournament Winner</strong> - Vunnet turnering</li>
+        </ul>
+
+        <h4>3.4 Consistency Badges</h4>
+        <ul>
+            <li><strong>7-Day Streak</strong> - 7 dager på rad</li>
+            <li><strong>30-Day Streak</strong> - 30 dager på rad</li>
+            <li><strong>100-Day Streak</strong> - 100 dager på rad</li>
+            <li><strong>Year of Excellence</strong> - 365 dager på rad</li>
+        </ul>
+
+        <h4>3.5 Social/Team Badges</h4>
+        <ul>
+            <li><strong>Team Player</strong> - Deltatt på teamøkt</li>
+            <li><strong>Mentor</strong> - Hjulpet medspiller</li>
+            <li><strong>Study Group</strong> - Deltatt i videoanalyse-gruppe</li>
+        </ul>
+
+        <div class="warning-box">
+            <h4>⚠️ Badge Inflation Risiko</h4>
+            <p><strong>Current Problem:</strong></p>
+            <ul>
+                <li>55 kategori badges + 30+ milestone badges = <strong>85+ badges totalt</strong></li>
+                <li>Risk: Too many badges = diluted value</li>
+                <li>Risk: Too easy = no achievement feeling</li>
+                <li>Risk: Too hard = demotivation</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <h2 id="metrics"><span class="section-number">6.</span> GAMIFICATION METRICS & MÅLING</h2>
+
+        <h3>6.1 Hva Systemet Optimaliserer For</h3>
+
+        <div class="success-box">
+            <h4>✅ Primære mål:</h4>
+            <ol>
+                <li><strong>Konsistent trening</strong> - 4-6 økter per uke</li>
+                <li><strong>Balansert utvikling</strong> - Fremgang i alle 11 kategorier</li>
+                <li><strong>Målbar fremgang</strong> - Testing hvert kvartal</li>
+                <li><strong>Langsiktig tenking</strong> - 4+ års utviklingsplan</li>
+                <li><strong>Coach-spiller relasjon</strong> - Tett oppfølging</li>
+            </ol>
+        </div>
+
+        <h4>Sekundære mål:</h4>
+        <ul>
+            <li>Sosial interaksjon - Lag/gruppe-følelse</li>
+            <li>Data-innsamling - Video, stats, feedback</li>
+            <li>Parent engagement - Involvering av foreldre</li>
+            <li>Competition readiness - Turnerings-forberedelse</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="sporsmal"><span class="section-number">10.</span> NØKKELSPØRSMÅL FOR CHATGPT</h2>
+
+        <h3>Strategiske Spørsmål</h3>
+        <ol>
+            <li><strong>Badge Portfolio Size</strong> - Hvor mange badges er optimalt? (nå: 85+)</li>
+            <li><strong>Progression Design</strong> - Skal alle badges ha progressive levels?</li>
+            <li><strong>Category vs Universal</strong> - Fokusere mer på kategori-badges (A-K)?</li>
+            <li><strong>Time-Based vs Achievement-Based</strong> - Balanse mellom effort og results?</li>
+            <li><strong>Social vs Individual</strong> - Hvor mye fokus på team/social badges?</li>
+        </ol>
+
+        <h3>Taktiske Spørsmål</h3>
+        <ol>
+            <li><strong>MVP vs Phase 2</strong> - Hvilke 10-15 badges skal vi lansere først?</li>
+            <li><strong>Rarity Distribution</strong> - Hvor mange common/rare/epic/legendary?</li>
+            <li><strong>Expiration Logic</strong> - Skal noen badges expire (sesong-basert)?</li>
+            <li><strong>Coach vs Auto-Award</strong> - Hvilke badges skal coach kunne tildele manuelt?</li>
+            <li><strong>Display Priority</strong> - Hvilke badges vises på profil vs arkiv?</li>
+        </ol>
+
+        <hr>
+
+        <h2 id="personas"><span class="section-number">12.</span> BRUKER PERSONAS</h2>
+
+        <div class="info-box">
+            <h3>👧 Persona 1: Emma (15 år, Junior Spiller)</h3>
+            <p><strong>Mål:</strong></p>
+            <ul>
+                <li>Komme på Team Norway (langsiktig)</li>
+                <li>Forbedre short game (kortsiktig)</li>
+                <li>Henge med venner på akademiet</li>
+            </ul>
+            <p><strong>Motivasjon:</strong></p>
+            <ul>
+                <li>Konkurranseinstinkt (vil vinne)</li>
+                <li>Sosial validering (badges å vise frem)</li>
+                <li>Fremgang (se resultater)</li>
+            </ul>
+            <p><strong>Badge Preferences:</strong> Performance badges, Social badges, Kategori badges</p>
+        </div>
+
+        <div class="info-box">
+            <h3>👨 Persona 2: Ole (17 år, Elite Spiller)</h3>
+            <p><strong>Mål:</strong></p>
+            <ul>
+                <li>Bli profesjonell (langsiktig)</li>
+                <li>Optimalisere trening (kortsiktig)</li>
+                <li>Spille college golf i USA</li>
+            </ul>
+            <p><strong>Motivasjon:</strong></p>
+            <ul>
+                <li>Prestasjon (data-driven)</li>
+                <li>Identitet (jeg er elite)</li>
+                <li>Autonomi (kontroll over plan)</li>
+            </ul>
+            <p><strong>Badge Preferences:</strong> Elite badges (diamond/platinum), All-rounder badges, Legendary badges</p>
+        </div>
+
+        <div class="info-box">
+            <h3>👨‍🏫 Persona 3: Coach Lars</h3>
+            <p><strong>Mål:</strong></p>
+            <ul>
+                <li>Utvikle spillere til Team Norway</li>
+                <li>Effektiv treningsplanlegging</li>
+                <li>Dokumentasjon av fremgang</li>
+            </ul>
+            <p><strong>Motivasjon:</strong></p>
+            <ul>
+                <li>Impact (spillere som lykkes)</li>
+                <li>Profesjonalitet (system og struktur)</li>
+                <li>Coaching excellence</li>
+            </ul>
+            <p><strong>Badge Preferences:</strong> Awards special achievement badges, Sees badge data as engagement metric, Wants simple meaningful system</p>
+        </div>
+
+        <hr>
+
+        <h2 id="konklusjon"><span class="section-number">13.</span> KONKLUSJON & FORVENTNINGER</h2>
+
+        <h3>Hva ChatGPT skal levere:</h3>
+
+        <ol>
+            <li><strong>Badge Portfolio Analysis</strong> - Current state assessment, Recommended badge count (10-15 MVP + 20-30 Phase 2), Rarity distribution</li>
+            <li><strong>Badge Kategorisering</strong> - Hvilke typer skal beholdes/fjernes/slås sammen, Hierarki og prioritering</li>
+            <li><strong>MVP Badge Set</strong> - 10-15 essential badges for launch, Rationale for each</li>
+            <li><strong>Phase 2 & 3 Roadmap</strong> - Additional badges post-launch, Seasonal/event badges</li>
+            <li><strong>Badge Framework & Regler</strong> - Criteria for new badges, Approval process, Anti-inflation guidelines</li>
+        </ol>
+
+        <div class="success-box">
+            <h3>✅ Suksesskriterier for Badge System:</h3>
+            <ul>
+                <li><strong>Meaningful</strong> - Each badge represents real achievement</li>
+                <li><strong>Progressive</strong> - Clear path from beginner to elite</li>
+                <li><strong>Balanced</strong> - Not too easy, not too hard</li>
+                <li><strong>Motivating</strong> - Drives desired behaviors</li>
+                <li><strong>Aligned</strong> - Supports Team Norway methodology</li>
+                <li><strong>Sustainable</strong> - Can evolve without dilution</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="info-box">
+            <h3>📁 Appendiks: Viktige Filer</h3>
+            <p>Følgende filer er inkludert i denne pakken:</p>
+            <ol>
+                <li><strong>README.md</strong> - Prosjektoversikt</li>
+                <li><strong>DESIGN_README.md</strong> - Design system</li>
+                <li><strong>docs/AK_ICON_BADGE_SYSTEM_SPEC.md</strong> - Badge spec</li>
+                <li><strong>docs/GAMIFICATION_METRICS_SPEC.md</strong> - Gamification metrics</li>
+                <li><strong>docs/CONFIG_KATEGORI_KRAV.md</strong> - Kategori krav</li>
+                <li><strong>docs/PLAN-Hierarkisk-Badge-System.md</strong> - Badge plan</li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <p style="text-align: center; color: var(--gray-500); margin-top: 48px;">
+            <strong>Pakke generert:</strong> 24. desember 2025<br>
+            <strong>Versjon:</strong> 1.0<br>
+            <strong>Status:</strong> <span class="badge success">Klar for ChatGPT analyse</span>
+        </p>
+
+        <div class="success-box" style="margin-top: 32px;">
+            <h3>🚀 Next Step:</h3>
+            <p><strong>Last opp følgende filer til ChatGPT:</strong></p>
+            <ol>
+                <li>Denne filen (GAMIFICATION_RESEARCH_PACKAGE.md)</li>
+                <li>AK_ICON_BADGE_SYSTEM_SPEC.md</li>
+                <li>CONFIG_KATEGORI_KRAV.md</li>
+                <li>GAMIFICATION_METRICS_SPEC.md</li>
+                <li>PLAN-Hierarkisk-Badge-System.md</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

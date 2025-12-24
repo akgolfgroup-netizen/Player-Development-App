@@ -1,0 +1,27 @@
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { Construction } from 'lucide-react';
+
+const PlaceholderPage = ({ title }) => {
+  const location = useLocation();
+  const pageName = title || location.pathname.replace(/\//g, ' ').trim() || 'Side';
+
+  return (
+    <div className="min-h-[400px] flex flex-col items-center justify-center text-center p-8">
+      <div className="w-16 h-16 rounded-full bg-ak-primary/10 flex items-center justify-center mb-4">
+        <Construction size={32} className="text-ak-primary" />
+      </div>
+      <h1 className="text-2xl font-bold text-ak-charcoal mb-2">
+        {pageName.charAt(0).toUpperCase() + pageName.slice(1)}
+      </h1>
+      <p className="text-ak-steel max-w-md">
+        Denne siden er under utvikling og vil snart være tilgjengelig.
+      </p>
+      <div className="mt-6 px-4 py-2 bg-ak-snow rounded-lg">
+        <code className="text-sm text-ak-steel">{location.pathname}</code>
+      </div>
+    </div>
+  );
+};
+
+export default PlaceholderPage;

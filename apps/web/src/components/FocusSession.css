@@ -1,0 +1,459 @@
+/**
+ * FocusSession Component Styles
+ * iOS-specific focus mode integration styling
+ * Design System v3.0 - Blue Palette 01
+ */
+
+.focus-session-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Session Controls (Idle State) */
+.focus-session-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-start-session {
+  width: 100%;
+  max-width: 320px;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #10456A 0%, #2C5F7F 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(16, 69, 106, 0.3);
+}
+
+.btn-start-session:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 69, 106, 0.4);
+}
+
+.btn-start-session:active {
+  transform: translateY(0);
+}
+
+.btn-setup-shortcut {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #10456A;
+  background: #E8F1F5;
+  border: 2px solid #10456A;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-setup-shortcut:hover {
+  background: #D1E3EB;
+}
+
+/* Active Session */
+.focus-session-active,
+.focus-session-paused {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  background: #EDF0F2;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.session-timer {
+  text-align: center;
+}
+
+.session-timer h2 {
+  font-size: 48px;
+  font-weight: 700;
+  color: #10456A;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.session-timer p {
+  font-size: 16px;
+  color: #535862;
+  margin: 8px 0 0 0;
+}
+
+.session-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.btn-pause,
+.btn-resume,
+.btn-complete {
+  flex: 1;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-pause,
+.btn-resume {
+  color: #1C1C1E;
+  background: #E5E5EA;
+}
+
+.btn-pause:hover,
+.btn-resume:hover {
+  background: #D5D7DA;
+}
+
+.btn-complete {
+  color: #ffffff;
+  background: #10456A;
+}
+
+.btn-complete:hover {
+  background: #2C5F7F;
+}
+
+/* Paused State */
+.focus-session-paused {
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+}
+
+.focus-session-paused .session-timer h2 {
+  color: #f59e0b;
+}
+
+/* Completed State */
+.focus-session-completed {
+  text-align: center;
+  padding: 32px;
+  background: #E8F1F5;
+  border-radius: 16px;
+  border: 2px solid #10456A;
+}
+
+.focus-session-completed h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #10456A;
+  margin: 0 0 8px 0;
+}
+
+.focus-session-completed p {
+  font-size: 18px;
+  color: #535862;
+  margin: 0 0 24px 0;
+}
+
+.btn-new-session {
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #10456A;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-new-session:hover {
+  background: #2C5F7F;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1C1C1E;
+  margin: 0 0 24px 0;
+}
+
+/* Setup Instructions */
+.setup-instructions {
+  color: #414651;
+}
+
+.setup-instructions p {
+  margin: 0 0 16px 0;
+  line-height: 1.6;
+}
+
+.setup-instructions ol {
+  list-style: decimal;
+  padding-left: 24px;
+  margin: 0 0 24px 0;
+}
+
+.setup-instructions ol li {
+  margin-bottom: 20px;
+}
+
+.setup-instructions ol li strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1C1C1E;
+  margin-bottom: 8px;
+}
+
+.setup-instructions ol li p {
+  margin: 8px 0;
+  color: #535862;
+}
+
+.setup-instructions ul {
+  list-style: disc;
+  padding-left: 24px;
+  margin: 8px 0;
+}
+
+.setup-instructions ul li {
+  margin: 4px 0;
+  color: #535862;
+}
+
+/* Setup Actions */
+.setup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-install-shortcut {
+  display: block;
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #10456A 0%, #2C5F7F 100%);
+  border: none;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(16, 69, 106, 0.3);
+}
+
+.btn-install-shortcut:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 69, 106, 0.4);
+}
+
+.btn-done {
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background: #10456A;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-done:hover {
+  background: #2C5F7F;
+}
+
+.btn-skip {
+  width: 100%;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #535862;
+  background: transparent;
+  border: 2px solid #E5E5EA;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-skip:hover {
+  background: #F9FAFB;
+}
+
+/* Setup Note */
+.setup-note {
+  margin-top: 24px;
+  padding: 16px;
+  background: #F2F4F7;
+  border-left: 4px solid #10456A;
+  border-radius: 8px;
+}
+
+.setup-note p {
+  margin: 0;
+  font-size: 14px;
+  color: #535862;
+  line-height: 1.6;
+}
+
+.setup-note strong {
+  color: #1C1C1E;
+}
+
+/* Debug Info */
+.debug-info {
+  margin-top: 32px;
+  padding: 16px;
+  background: #F9FAFB;
+  border: 1px solid #E5E5EA;
+  border-radius: 8px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.debug-info details {
+  cursor: pointer;
+}
+
+.debug-info summary {
+  font-weight: 600;
+  color: #535862;
+  user-select: none;
+}
+
+.debug-info pre {
+  margin: 12px 0 0 0;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #E5E5EA;
+  border-radius: 6px;
+  overflow-x: auto;
+  color: #414651;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .focus-session-container {
+    padding: 16px;
+  }
+
+  .modal-content {
+    padding: 24px;
+  }
+
+  .session-timer h2 {
+    font-size: 40px;
+  }
+
+  .focus-session-active,
+  .focus-session-paused {
+    padding: 24px;
+  }
+
+  .session-actions {
+    flex-direction: column;
+  }
+
+  .btn-pause,
+  .btn-resume,
+  .btn-complete {
+    width: 100%;
+  }
+}
+
+/* iOS-specific adjustments */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari */
+  .btn-start-session,
+  .btn-install-shortcut {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .modal-content {
+    /* iOS Safari has a bouncy scroll, account for safe areas */
+    padding-bottom: env(safe-area-inset-bottom, 32px);
+  }
+}
+
+/* Fullscreen mode adjustments */
+.focus-session-container:fullscreen {
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-session-container:-webkit-full-screen {
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-session-container:fullscreen .focus-session-active,
+.focus-session-container:-webkit-full-screen .focus-session-active {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Animation for session start */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.session-timer h2 {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.focus-session-paused .session-timer h2 {
+  animation: none;
+}

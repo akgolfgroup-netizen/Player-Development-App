@@ -1,0 +1,257 @@
+import { useEffect, useRef, useState, useCallback } from 'react';
+
+/**
+ * WebSocket event types
+ */
+export const WS_EVENTS = {
+  SESSION_CREATED: 'session:created',
+  SESSION_UPDATED: 'session:updated',
+  SESSION_STARTED: 'session:started',
+  SESSION_COMPLETED: 'session:completed',
+  SESSION_EVALUATION_ADDED: 'session:evaluation_added',
+  PLAN_UPDATED: 'plan:updated',
+  PLAN_WEEK_CHANGED: 'plan:week_changed',
+  ACHIEVEMENT_UNLOCKED: 'achievement:unlocked',
+  BADGE_EARNED: 'badge:earned',
+  COACH_NOTE_ADDED: 'coach:note_added',
+  COACH_FEEDBACK: 'coach:feedback',
+  NOTIFICATION: 'notification',
+  SYSTEM_MAINTENANCE: 'system:maintenance',
+  CONNECTION_ACK: 'connection:ack',
+  PING: 'ping',
+  PONG: 'pong',
+};
+
+/**
+ * Connection states
+ */
+export const WS_STATE = {
+  CONNECTING: 0,
+  OPEN: 1,
+  CLOSING: 2,
+  CLOSED: 3,
+};
+
+/**
+ * Hook for real-time updates via WebSocket
+ */
+export function useRealtimeUpdates(options = {}) {
+  const {
+    autoConnect = true,
+    reconnectAttempts = 5,
+    reconnectDelay = 3000,
+    pingInterval = 30000,
+    onConnect,
+    onDisconnect,
+    onError,
+  } = options;
+
+  const wsRef = useRef(null);
+  const reconnectAttemptsRef = useRef(0);
+  const pingIntervalRef = useRef(null);
+  const listenersRef = useRef(new Map());
+
+  const [isConnected, setIsConnected] = useState(false);
+  const [connectionState, setConnectionState] = useState(WS_STATE.CLOSED);
+  const [lastMessage, setLastMessage] = useState(null);
+  const [error, setError] = useState(null);
+
+  /**
+   * Get WebSocket URL with auth token
+   */
+  const getWsUrl = useCallback(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return null;
+
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = process.env.REACT_APP_API_URL?.replace(/^https?:\/\//, '') || 'localhost:4000';
+    return `${protocol}//${host}/ws?token=${token}`;
+  }, []);
+
+  /**
+   * Connect to WebSocket server
+   */
+  const connect = useCallback(() => {
+    const url = getWsUrl();
+    if (!url) {
+      console.warn('[WS] No auth token, cannot connect');
+      return;
+    }
+
+    if (wsRef.current?.readyState === WS_STATE.OPEN) {
+      console.log('[WS] Already connected');
+      return;
+    }
+
+    try {
+      setConnectionState(WS_STATE.CONNECTING);
+      wsRef.current = new WebSocket(url);
+
+      wsRef.current.onopen = () => {
+        console.log('[WS] Connected');
+        setIsConnected(true);
+        setConnectionState(WS_STATE.OPEN);
+        setError(null);
+        reconnectAttemptsRef.current = 0;
+
+        // Start ping interval
+        pingIntervalRef.current = setInterval(() => {
+          if (wsRef.current?.readyState === WS_STATE.OPEN) {
+            wsRef.current.send(JSON.stringify({ type: WS_EVENTS.PING }));
+          }
+        }, pingInterval);
+
+        onConnect?.();
+      };
+
+      wsRef.current.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          setLastMessage(data);
+
+          // Notify listeners
+          const listeners = listenersRef.current.get(data.type) || [];
+          listeners.forEach((callback) => callback(data.payload, data));
+
+          // Also notify wildcard listeners
+          const wildcardListeners = listenersRef.current.get('*') || [];
+          wildcardListeners.forEach((callback) => callback(data.payload, data));
+        } catch (err) {
+          console.error('[WS] Failed to parse message:', err);
+        }
+      };
+
+      wsRef.current.onclose = (event) => {
+        console.log('[WS] Disconnected', event.code, event.reason);
+        setIsConnected(false);
+        setConnectionState(WS_STATE.CLOSED);
+
+        // Clear ping interval
+        if (pingIntervalRef.current) {
+          clearInterval(pingIntervalRef.current);
+        }
+
+        onDisconnect?.();
+
+        // Attempt reconnection
+        if (
+          event.code !== 1000 &&
+          reconnectAttemptsRef.current < reconnectAttempts
+        ) {
+          reconnectAttemptsRef.current++;
+          console.log(
+            `[WS] Reconnecting... Attempt ${reconnectAttemptsRef.current}/${reconnectAttempts}`
+          );
+          setTimeout(connect, reconnectDelay);
+        }
+      };
+
+      wsRef.current.onerror = (event) => {
+        console.error('[WS] Error:', event);
+        setError(new Error('WebSocket error'));
+        onError?.(event);
+      };
+    } catch (err) {
+      console.error('[WS] Failed to connect:', err);
+      setError(err);
+    }
+  }, [getWsUrl, onConnect, onDisconnect, onError, pingInterval, reconnectAttempts, reconnectDelay]);
+
+  /**
+   * Disconnect from WebSocket server
+   */
+  const disconnect = useCallback(() => {
+    if (wsRef.current) {
+      setConnectionState(WS_STATE.CLOSING);
+      wsRef.current.close(1000, 'Client disconnect');
+      wsRef.current = null;
+    }
+    if (pingIntervalRef.current) {
+      clearInterval(pingIntervalRef.current);
+    }
+    reconnectAttemptsRef.current = reconnectAttempts; // Prevent auto-reconnect
+  }, [reconnectAttempts]);
+
+  /**
+   * Subscribe to a specific event type
+   */
+  const subscribe = useCallback((eventType, callback) => {
+    if (!listenersRef.current.has(eventType)) {
+      listenersRef.current.set(eventType, []);
+    }
+    listenersRef.current.get(eventType).push(callback);
+
+    // Return unsubscribe function
+    return () => {
+      const listeners = listenersRef.current.get(eventType) || [];
+      const index = listeners.indexOf(callback);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    };
+  }, []);
+
+  /**
+   * Send a message to the server
+   */
+  const send = useCallback((type, payload) => {
+    if (wsRef.current?.readyState === WS_STATE.OPEN) {
+      wsRef.current.send(JSON.stringify({ type, payload }));
+    } else {
+      console.warn('[WS] Cannot send message, not connected');
+    }
+  }, []);
+
+  // Auto-connect on mount
+  useEffect(() => {
+    if (autoConnect) {
+      connect();
+    }
+
+    return () => {
+      disconnect();
+    };
+  }, [autoConnect, connect, disconnect]);
+
+  // Reconnect when auth changes
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === 'accessToken') {
+        if (event.newValue) {
+          connect();
+        } else {
+          disconnect();
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [connect, disconnect]);
+
+  return {
+    isConnected,
+    connectionState,
+    lastMessage,
+    error,
+    connect,
+    disconnect,
+    subscribe,
+    send,
+  };
+}
+
+/**
+ * Hook for subscribing to specific event types
+ */
+export function useRealtimeEvent(eventType, callback, deps = []) {
+  const { subscribe } = useRealtimeUpdates({ autoConnect: true });
+
+  useEffect(() => {
+    const unsubscribe = subscribe(eventType, callback);
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventType, subscribe, ...deps]);
+}
+
+export default useRealtimeUpdates;

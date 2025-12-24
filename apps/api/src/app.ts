@@ -1,0 +1,206 @@
+import Fastify, { FastifyInstance } from 'fastify';
+import { config } from './config';
+import { logger } from './utils/logger';
+import { connectDatabase } from './core/db/prisma';
+import { errorHandler, notFoundHandler } from './middleware/error-handler';
+import { registerSwagger } from './plugins/swagger';
+import { registerCors } from './plugins/cors';
+import { registerHelmet } from './plugins/helmet';
+import { registerWebSocket } from './plugins/websocket';
+import { registerCache } from './plugins/cache';
+import { registerRateLimit } from './plugins/rate-limit';
+import { authenticateUser } from './middleware/auth';
+
+export interface BuildAppOptions {
+  logger?: boolean;
+}
+
+/**
+ * Build and configure Fastify application
+ */
+export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInstance> {
+  // Create Fastify instance
+  const app = Fastify({
+    logger: opts.logger !== false ? logger : false,
+    disableRequestLogging: false,
+    requestIdLogLabel: 'reqId',
+    genReqId: (req) => (req.headers['x-request-id'] as string) || `${Date.now()}-${Math.random()}`,
+    trustProxy: true,
+    ajv: {
+      customOptions: {
+        removeAdditional: 'all',
+        coerceTypes: true,
+        useDefaults: true,
+      },
+    },
+  });
+
+  // Register error handlers
+  app.setErrorHandler(errorHandler as any);
+  app.setNotFoundHandler(notFoundHandler as any);
+
+  // Register plugins
+  await registerHelmet(app as any);
+  await registerCors(app as any);
+  await registerSwagger(app as any);
+  await registerWebSocket(app as any);
+  await registerCache(app as any);
+  await registerRateLimit(app as any);
+
+  // Register authenticate decorator
+  app.decorate('authenticate', authenticateUser);
+
+  // Health check endpoint (no auth required)
+  app.get('/health', {
+    schema: {
+      description: 'Health check endpoint',
+      tags: ['health'],
+      response: {
+        200: {
+          type: 'object',
+          properties: {
+            status: { type: 'string', example: 'ok' },
+            timestamp: { type: 'string', example: '2025-01-15T10:30:00.000Z' },
+            uptime: { type: 'number', example: 12345 },
+            environment: { type: 'string', example: 'development' },
+            version: { type: 'string', example: '1.0.0' },
+          },
+        },
+      },
+    },
+  }, async () => {
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: config.server.env,
+      version: '1.0.0',
+    };
+  });
+
+  // Register API routes
+  const { authRoutes } = await import('./api/v1/auth');
+  const { playerRoutes } = await import('./api/v1/players');
+  const { coachRoutes } = await import('./api/v1/coaches');
+  const { exerciseRoutes } = await import('./api/v1/exercises');
+  const { testRoutes } = await import('./api/v1/tests');
+  const { enhancedTestRoutes } = await import('./api/v1/tests/enhanced-routes');
+  const { breakingPointRoutes } = await import('./api/v1/breaking-points');
+  const { peerComparisonRoutes } = await import('./api/v1/peer-comparison');
+  const { coachAnalyticsRoutes } = await import('./api/v1/coach-analytics');
+  const { filterRoutes } = await import('./api/v1/filters');
+  const { dataGolfRoutes } = await import('./api/v1/datagolf');
+  const { calibrationRoutes } = await import('./api/v1/calibration');
+  const { intakeRoutes } = await import('./api/v1/intake');
+  const { availabilityRoutes } = await import('./api/v1/availability');
+  const { bookingRoutes } = await import('./api/v1/bookings');
+  const calendarRoutes = (await import('./api/v1/calendar')).default;
+  const { trainingPlanRoutes } = await import('./api/v1/training-plan');
+  const dashboardRoutes = (await import('./api/v1/dashboard')).default;
+  const meRoutes = (await import('./api/v1/me')).default;
+  const planRoutes = (await import('./api/v1/plan')).default;
+  const sessionsRoutes = (await import('./api/v1/training/sessions')).default;
+  const notesRoutes = (await import('./api/v1/notes')).default;
+  const goalsRoutes = (await import('./api/v1/goals')).default;
+  const archiveRoutes = (await import('./api/v1/archive')).default;
+  const achievementsRoutes = (await import('./api/v1/achievements')).default;
+  const badgesRoutes = (await import('./api/v1/badges')).default;
+  const seasonRoutes = (await import('./api/v1/season')).default;
+  const skoleplanRoutes = (await import('./api/v1/skoleplan')).default;
+  const sessionEvaluationRoutes = (await import('./api/v1/sessions')).default;
+  const messageRoutes = (await import('./api/v1/messages')).default;
+  const exportRoutes = (await import('./api/v1/export')).default;
+  const { videoRoutes } = await import('./api/v1/videos');
+
+  await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
+  await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
+  await app.register(coachRoutes, { prefix: `/api/${config.server.apiVersion}/coaches` });
+  await app.register(exerciseRoutes, { prefix: `/api/${config.server.apiVersion}/exercises` });
+  await app.register(testRoutes, { prefix: `/api/${config.server.apiVersion}/tests` });
+  await app.register(enhancedTestRoutes, { prefix: `/api/${config.server.apiVersion}/tests` });
+  await app.register(breakingPointRoutes, { prefix: `/api/${config.server.apiVersion}/breaking-points` });
+  await app.register(peerComparisonRoutes, { prefix: `/api/${config.server.apiVersion}/peer-comparison` });
+  await app.register(coachAnalyticsRoutes, { prefix: `/api/${config.server.apiVersion}/coach-analytics` });
+  await app.register(filterRoutes, { prefix: `/api/${config.server.apiVersion}/filters` });
+  await app.register(dataGolfRoutes, { prefix: `/api/${config.server.apiVersion}/datagolf` });
+  await app.register(calibrationRoutes, { prefix: `/api/${config.server.apiVersion}/calibration` });
+  await app.register(intakeRoutes, { prefix: `/api/${config.server.apiVersion}/intake` });
+  await app.register(availabilityRoutes, { prefix: `/api/${config.server.apiVersion}/availability` });
+  await app.register(bookingRoutes, { prefix: `/api/${config.server.apiVersion}/bookings` });
+  await app.register(calendarRoutes, { prefix: `/api/${config.server.apiVersion}/calendar` });
+  await app.register(trainingPlanRoutes, { prefix: `/api/${config.server.apiVersion}/training-plan` });
+  await app.register(dashboardRoutes, { prefix: `/api/${config.server.apiVersion}/dashboard` });
+  await app.register(meRoutes, { prefix: `/api/${config.server.apiVersion}/me` });
+  await app.register(planRoutes, { prefix: `/api/${config.server.apiVersion}/plan` });
+  await app.register(sessionsRoutes, { prefix: `/api/${config.server.apiVersion}/training/sessions` });
+  await app.register(notesRoutes, { prefix: `/api/${config.server.apiVersion}/notes` });
+  await app.register(goalsRoutes, { prefix: `/api/${config.server.apiVersion}/goals` });
+  await app.register(archiveRoutes, { prefix: `/api/${config.server.apiVersion}/archive` });
+  await app.register(achievementsRoutes, { prefix: `/api/${config.server.apiVersion}/achievements` });
+  await app.register(badgesRoutes, { prefix: `/api/${config.server.apiVersion}/badges` });
+  await app.register(seasonRoutes, { prefix: `/api/${config.server.apiVersion}/season` });
+  await app.register(skoleplanRoutes, { prefix: `/api/${config.server.apiVersion}/skoleplan` });
+  await app.register(sessionEvaluationRoutes, { prefix: `/api/${config.server.apiVersion}/sessions` });
+  await app.register(messageRoutes, { prefix: `/api/${config.server.apiVersion}/messages` });
+  await app.register(exportRoutes, { prefix: `/api/${config.server.apiVersion}/export` });
+  await app.register(videoRoutes, { prefix: `/api/${config.server.apiVersion}/videos` });
+
+  // ✅ All IUP Golf Academy APIs registered!
+  // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points
+  // - Enhanced: Test Results with Auto-calculation & Peer Comparison
+  // - Analytics: Peer Comparison, Coach Analytics, Filters, DataGolf
+  // - Onboarding: Club Speed Calibration & Player Intake Forms
+  // - Training: 12-Month Training Plan Generation & Management
+  // - Booking: Availability Slots & Session Bookings with Conflict Detection
+
+  // Graceful shutdown
+  const signals = ['SIGINT', 'SIGTERM'];
+  signals.forEach((signal) => {
+    process.on(signal, async () => {
+      app.log.info(`Received ${signal}, starting graceful shutdown...`);
+      try {
+        await app.close();
+        app.log.info('Server closed successfully');
+        process.exit(0);
+      } catch (error) {
+        app.log.error({ err: error }, 'Error during shutdown');
+        process.exit(1);
+      }
+    });
+  });
+
+  return app as any;
+}
+
+/**
+ * Start the application server
+ */
+export async function startServer(): Promise<FastifyInstance> {
+  const app = await buildApp();
+
+  try {
+    // Connect to database
+    await connectDatabase();
+
+    // Start listening
+    await app.listen({
+      port: config.server.port,
+      host: config.server.host,
+    });
+
+    app.log.info(
+      {
+        port: config.server.port,
+        host: config.server.host,
+        env: config.server.env,
+        docs: `http://localhost:${config.server.port}/docs`,
+      },
+      'Server started successfully'
+    );
+
+    return app;
+  } catch (error) {
+    app.log.error({ err: error }, 'Failed to start server');
+    throw error;
+  }
+}

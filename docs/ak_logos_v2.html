@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf - Oppdaterte Logoer</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #EDF0F2;
+            color: #02060D;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        header h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            color: #10456A;
+            margin-bottom: 12px;
+        }
+        
+        header p {
+            font-size: 15px;
+            color: #8E8E93;
+        }
+        
+        .section {
+            margin-bottom: 80px;
+        }
+        
+        .section-header {
+            margin-bottom: 32px;
+        }
+        
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #8E8E93;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #10456A;
+        }
+        
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+        }
+        
+        .logo-card {
+            background: white;
+            border-radius: 16px;
+            padding: 48px 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .logo-card.dark {
+            background: #02060D;
+        }
+        
+        .logo-card.primary {
+            background: #10456A;
+        }
+        
+        .logo-card.khaki {
+            background: #EBE5DA;
+        }
+        
+        .logo-display {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 32px;
+        }
+        
+        .logo-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #8E8E93;
+            margin-bottom: 6px;
+        }
+        
+        .logo-card.dark .logo-label,
+        .logo-card.primary .logo-label {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .logo-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1C1C1E;
+        }
+        
+        .logo-card.dark .logo-name,
+        .logo-card.primary .logo-name {
+            color: white;
+        }
+
+        /* Logo Styles - DM Sans Light som i design-dokumentet */
+        .logo-horizontal {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .ak-mark {
+            width: 70px;
+            height: 70px;
+            flex-shrink: 0;
+        }
+        
+        .ak-mark svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* DM Sans Light - 300 weight som i Figma Kit */
+        .logo-text .main {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            color: #10456A;
+            text-align: center;
+        }
+        
+        .logo-text .sub {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: #8E8E93;
+            margin-top: 4px;
+            text-align: center;
+        }
+        
+        .logo-card.dark .logo-text .main {
+            color: white;
+        }
+        
+        .logo-card.dark .logo-text .sub {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .logo-card.primary .logo-text .main,
+        .logo-card.primary .logo-text .sub {
+            color: white;
+        }
+        
+        /* App Icon */
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            background: #10456A;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(16, 69, 106, 0.3);
+        }
+        
+        .app-icon svg {
+            width: 60%;
+            height: 60%;
+        }
+        
+        /* Sammenligning */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .comparison-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+        
+        .comparison-card h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8E8E93;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+        }
+        
+        .comparison-card .logo-preview {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Fargereferanse */
+        .color-ref {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+            padding: 24px;
+            background: white;
+            border-radius: 12px;
+        }
+        
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+        
+        .color-info {
+            font-size: 13px;
+        }
+        
+        .color-info .name {
+            font-weight: 600;
+            color: #1C1C1E;
+        }
+        
+        .color-info .hex {
+            color: #8E8E93;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AK Golf - Oppdaterte Logoer</h1>
+            <p>AK-monogram i blå uten firkant • DM Sans Light • Fargepalett 01</p>
+        </header>
+
+        <!-- Junior Academy -->
+        <section class="section">
+            <div class="section-header">
+                <p class="section-label">HOVEDBRANDING</p>
+                <h2 class="section-title">AK Golf Junior Academy</h2>
+            </div>
+            
+            <div class="logo-grid">
+                <!-- Hvit bakgrunn -->
+                <div class="logo-card">
+                    <div class="logo-display">
+                        <div class="logo-horizontal">
+                            <div class="ak-mark">
+                                <svg viewBox="0 0 100 100">
+                                    <g fill="#10456A">
+                                        <path d="M12.7,50.1c0-2.5,1.1-4.9,3.4-7.2c1.9-1.9,4.2-3.3,7-4.2c1.1-0.4,5.3-1.1,6.4-1.3
+                                            c-7.6,3.8-6.7,7.6-6.5,10l0.1,2.3c-0.1,3.9-1.8,6.2-5.3,6.2c-1.8,0.1-3.1-0.5-4-1.7
+                                            C13,52.9,12.6,51.6,12.7,50.1z"/>
+                                        <path d="M88.3,89.9H62.9v-2.2l2.8-0.2c1-0.1,1.5-0.5,1.6-1.2l-0.3-0.8l-3.6-5.4L51,60.2l-1.1,0.9
+                                            l-10.1,8.5V57l-5.3,2.2c-8.2,3.4-12.3,7.8-12.1,13.2c0,2.3,0.6,4.2,1.9,5.8c0.6,0.7,1.2,1.2,1.9,1.6
+                                            c0,0,5,3.7,13.4-1.8l0.4-0.2c-5.3,7.4-10.8,9.4-13.5,9.9c-1,0.2-1.7,0.2-1.7,0.2h0
+                                            c-0.2,0-0.4,0-0.7,0c-3.8,0-6.8-1.2-9-3.5c-2.2-2.3-3.4-5.2-3.4-8.9c0-2.7,0.6-5.1,1.9-7.3
+                                            c1.3-2.2,3.2-4.1,5.5-5.8c3.4-2.5,8.3-5.1,14.7-7.6l6.1-2.3V24.3l-0.1-2.4c-0.3-2.6-2.1-4-5.4-4.1
+                                            l-2.5,0.1v-2.2l18.1-5.6v48.3l12.4-11.4l3.2-3.3c1.7-1.6,2.4-2.7,2.4-3.4c0-0.6-0.3-1.1-1.1-1.4
+                                            l-1.4-0.3l-3.1-0.3v-2.2h24v2.2l-3.6,0.4c-3.5,0.6-6.8,2.1-9.9,4.6l-5.1,4.3l-8.8,8l-0.8,0.8
+                                            l13.4,18.4c2.1,2.9,4.4,5.6,6.9,8.1c2.7,2.8,6.1,4.4,10.2,4.9V89.9z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="logo-text">
+                                <span class="main">JUNIOR ACADEMY</span>
+                                <span class="sub">GOLF • FREDRIKSTAD</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="logo-label">Primær versjon</p>
+                    <p class="logo-name">Hvit bakgrunn</p>
+                </div>
+                
+                <!-- Mørk bakgrunn -->
+                <div class="logo-card dark">
+                    <div class="logo-display">
+                        <div class="logo-horizontal">
+                            <div class="ak-mark">
+                                <svg viewBox="0 0 100 100">
+                                    <g fill="white">
+                                        <path d="M12.7,50.1c0-2.5,1.1-4.9,3.4-7.2c1.9-1.9,4.2-3.3,7-4.2c1.1-0.4,5.3-1.1,6.4-1.3
+                                            c-7.6,3.8-6.7,7.6-6.5,10l0.1,2.3c-0.1,3.9-1.8,6.2-5.3,6.2c-1.8,0.1-3.1-0.5-4-1.7
+                                            C13,52.9,12.6,51.6,12.7,50.1z"/>
+                                        <path d="M88.3,89.9H62.9v-2.2l2.8-0.2c1-0.1,1.5-0.5,1.6-1.2l-0.3-0.8l-3.6-5.4L51,60.2l-1.1,0.9
+                                            l-10.1,8.5V57l-5.3,2.2c-8.2,3.4-12.3,7.8-12.1,13.2c0,2.3,0.6,4.2,1.9,5.8c0.6,0.7,1.2,1.2,1.9,1.6
+                                            c0,0,5,3.7,13.4-1.8l0.4-0.2c-5.3,7.4-10.8,9.4-13.5,9.9c-1,0.2-1.7,0.2-1.7,0.2h0
+                                            c-0.2,0-0.4,0-0.7,0c-3.8,0-6.8-1.2-9-3.5c-2.2-2.3-3.4-5.2-3.4-8.9c0-2.7,0.6-5.1,1.9-7.3
+                                            c1.3-2.2,3.2-4.1,5.5-5.8c3.4-2.5,8.3-5.1,14.7-7.6l6.1-2.3V24.3l-0.1-2.4c-0.3-2.6-2.1-4-5.4-4.1
+                                            l-2.5,0.1v-2.2l18.1-5.6v48.3l12.4-11.4l3.2-3.3c1.7-1.6,2.4-2.7,2.4-3.4c0-0.6-0.3-1.1-1.1-1.4
+                                            l-1.4-0.3l-3.1-0.3v-2.2h24v2.2l-3.6,0.4c-3.5,0.6-6.8,2.1-9.9,4.6l-5.1,4.3l-8.8,8l-0.8,0.8
+                                            l13.4,18.4c2.1,2.9,4.4,5.6,6.9,8.1c2.7,2.8,6.1,4.4,10.2,4.9V89.9z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="logo-text">
+                                <span class="main" style="color: white;">JUNIOR ACADEMY</span>
+                                <span class="sub" style="color: rgba(255,255,255,0.6);">GOLF • FREDRIKSTAD</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="logo-label">Invertert</p>
+                    <p class="logo-name">Jet Black bakgrunn</p>
+                </div>
+                
+                <!-- Khaki bakgrunn -->
+                <div class="logo-card khaki">
+                    <div class="logo-display">
+                        <div class="logo-horizontal">
+                            <div class="ak-mark">
+                                <svg viewBox="0 0 100 100">
+                                    <g fill="#10456A">
+                                        <path d="M12.7,50.1c0-2.5,1.1-4.9,3.4-7.2c1.9-1.9,4.2-3.3,7-4.2c1.1-0.4,5.3-1.1,6.4-1.3
+                                            c-7.6,3.8-6.7,7.6-6.5,10l0.1,2.3c-0.1,3.9-1.8,6.2-5.3,6.2c-1.8,0.1-3.1-0.5-4-1.7
+                                            C13,52.9,12.6,51.6,12.7,50.1z"/>
+                                        <path d="M88.3,89.9H62.9v-2.2l2.8-0.2c1-0.1,1.5-0.5,1.6-1.2l-0.3-0.8l-3.6-5.4L51,60.2l-1.1,0.9
+                                            l-10.1,8.5V57l-5.3,2.2c-8.2,3.4-12.3,7.8-12.1,13.2c0,2.3,0.6,4.2,1.9,5.8c0.6,0.7,1.2,1.2,1.9,1.6
+                                            c0,0,5,3.7,13.4-1.8l0.4-0.2c-5.3,7.4-10.8,9.4-13.5,9.9c-1,0.2-1.7,0.2-1.7,0.2h0
+                                            c-0.2,0-0.4,0-0.7,0c-3.8,0-6.8-1.2-9-3.5c-2.2-2.3-3.4-5.2-3.4-8.9c0-2.7,0.6-5.1,1.9-7.3
+                                            c1.3-2.2,3.2-4.1,5.5-5.8c3.4-2.5,8.3-5.1,14.7-7.6l6.1-2.3V24.3l-0.1-2.4c-0.3-2.6-2.1-4-5.4-4.1
+                                            l-2.5,0.1v-2.2l18.1-5.6v48.3l12.4-11.4l3.2-3.3c1.7-1.6,2.4-2.7,2.4-3.4c0-0.6-0.3-1.1-1.1-1.4
+                                            l-1.4-0.3l-3.1-0.3v-2.2h24v2.2l-3.6,0.4c-3.5,0.6-6.8,2.1-9.9,4.6l-5.1,4.3l-8.8,8l-0.8,0.8
+                                            l13.4,18.4c2.1,2.9,4.4,5.6,6.9,8.1c2.7,2.8,6.1,4.4,10.2,4.9V89.9z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="logo-text">
+                                <span class="main">JUNIOR ACADEMY</span>
+                                <span class="sub">GOLF • FREDRIKSTAD</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="logo-label">Alternativ</p>
+                    <p class="logo-name">Light Khaki bakgrunn</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Club Practice -->
+        <section class="section">
+            <div class="section-header">
+                <p class="section-label">QR-BASERT TRENING</p>
+                <h2 class="section-title">AK Golf Club Practice</h2>
+            </div>
+            
+            <div class="logo-grid">
+                <!-- Hvit bakgrunn -->
+                <div class="logo-card">
+                    <div class="logo-display">
+                        <div class="logo-horizontal">
+                            <div class="ak-mark">
+                                <svg viewBox="0 0 100 100">
+                                    <g fill="#10456A">
+                                        <path d="M12.7,50.1c0-2.5,1.1-4.9,3.4-7.2c1.9-1.9,4.2-3.3,7-4.2c1.1-0.4,5.3-1.1,6.4-1.3
+                                            c-7.6,3.8-6.7,7.6-6.5,10l0.1,2.3c-0.1,3.9-1.8,6.2-5.3,6.2c-1.8,0.1-3.1-0.5-4-1.7
+                                            C13,52.9,12.6,51.6,12.7,50.1z"/>
+                                        <path d="M88.3,89.9H62.9v-2.2l2.8-0.2c1-0.1,1.5-0.5,1.6-1.2l-0.3-0.8l-3.6-5.4L51,60.2l-1.1,0.9
+                                            l-10.1,8.5V57l-5.3,2.2c-8.2,3.4-12.3,7.8-12.1,13.2c0,2.3,0.6,4.2,1.9,5.8c0.6,0.7,1.2,1.2,1.9,1.6
+                                            c0,0,5,3.7,13.4-1.8l0.4-0.2c-5.3,7.4-10.8,9.4-13.5,9.9c-1,0.2-1.7,0.2-1.7,0.2h0
+                                            c-0.2,0-0.4,0-0.7,0c-3.8,0-6.8-1.2-9-3.5c-2.2-2.3-3.4-5.2-3.4-8.9c0-2.7,0.6-5.1,1.9-7.3
+                                            c1.3-2.2,3.2-4.1,5.5-5.8c3.4-2.5,8.3-5.1,14.7-7.6l6.1-2.3V24.3l-0.1-2.4c-0.3-2.6-2.1-4-5.4-4.1
+                                            l-2.5,0.1v-2.2l18.1-5.6v48.3l12.4-11.4l3.2-3.3c1.7-1.6,2.4-2.7,2.4-3.4c0-0.6-0.3-1.1-1.1-1.4
+                                            l-1.4-0.3l-3.1-0.3v-2.2h24v2.2l-3.6,0.4c-3.5,0.6-6.8,2.1-9.9,4.6l-5.1,4.3l-8.8,8l-0.8,0.8
+                                            l13.4,18.4c2.1,2.9,4.4,5.6,6.9,8.1c2.7,2.8,6.1,4.4,10.2,4.9V89.9z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="logo-text">
+                                <span class="main">CLUB PRACTICE</span>
+                                <span class="sub">QR-BASERT TRENING</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="logo-label">Primær versjon</p>
+                    <p class="logo-name">Hvit bakgrunn</p>
+                </div>
+                
+                <!-- Mørk bakgrunn -->
+                <div class="logo-card dark">
+                    <div class="logo-display">
+                        <div class="logo-horizontal">
+                            <div class="ak-mark">
+                                <svg viewBox="0 0 100 100">
+                                    <g fill="white">
+                                        <path d="M12.7,50.1c0-2.5,1.1-4.9,3.4-7.2c1.9-1.9,4.2-3.3,7-4.2c1.1-0.4,5.3-1.1,6.4-1.3
+                                            c-7.6,3.8-6.7,7.6-6.5,10l0.1,2.3c-0.1,3.9-1.8,6.2-5.3,6.2c-1.8,0.1-3.1-0.5-4-1.7
+                                            C13,52.9,12.6,51.6,12.7,50.1z"/>
+                                        <path d="M88.3,89.9H62.9v-2.2l2.8-0.2c1-0.1,1.5-0.5,1.6-1.2l-0.3-0.8l-3.6-5.4L51,60.2l-1.1,0.9
+                                            l-10.1,8.5V57l-5.3,2.2c-8.2,3.4-12.3,7.8-12.1,13.2c0,2.3,0.6,4.2,1.9,5.8c0.6,0.7,1.2,1.2,1.9,1.6
+                                            c0,0,5,3.7,13.4-1.8l0.4-0.2c-5.3,7.4-10.8,9.4-13.5,9.9c-1,0.2-1.7,0.2-1.7,0.2h0
+                                            c-0.2,0-0.4,0-0.7,0c-3.8,0-6.8-1.2-9-3.5c-2.2-2.3-3.4-5.2-3.4-8.9c0-2.7,0.6-5.1,1.9-7.3
+                                            c1.3-2.2,3.2-4.1,5.5-5.8c3.4-2.5,8.3-5.1,14.7-7.6l6.1-2.3V24.3l-0.1-2.4c-0.3-2.6-2.1-4-5.4-4.1
+                                            l-2.5,0.1v-2.2l18.1-5.6v48.3l12.4-11.4l3.2-3.3c1.7-1.6,2.4-2.7,2.4-3.4c0-0.6-0.3-1.1-1.1-1.4
+                                            l-1.4-0.3l-3.1-0.3v-2.2h24v2.2l-3.6,0.4c-3.5,0.6-6.8,2.1-9.9,4.6l-5.1,4.3l-8.8,8l-0.8,0.8
+                                            l13.4,18.4c2.1,2.9,4.4,5.6,6.9,8.1c2.7,2.8,6.1,4.4,10.2,4.9V89.9z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="logo-text">
+                                <span class="main" style="color: white;">CLUB PRACTICE</span>
+                                <span class="sub" style="color: rgba(255,255,255,0.6);">QR-BASERT TRENING</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="logo-label">Invertert</p>
+                    <p class="logo-name">Jet Black bakgrunn</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- App Icon -->
+        <section class="section">
+            <div class="section-header">
+                <p class="section-label">DIGITAL</p>
+                <h2 class="section-title">AK Golf Coaching App</h2>
+            </div>
+            
+            <div class="logo-grid">
+                <div class="logo-card">
+                    <div class="logo-display" style="justify-content: center;">
+                        <div class="app-icon">
+                            <svg viewBox="0 0 100 100">
+                                <g fill="white">
+                                    <path d="M12.7,50.1c0-2.5,1.1-4.9,3.4-7.2c1.9-1.9,4.2-3.3,7-4.2c1.1-0.4,5.3-1.1,6.4-1.3
+                                        c-7.6,3.8-6.7,7.6-6.5,10l0.1,2.3c-0.1,3.9-1.8,6.2-5.3,6.2c-1.8,0.1-3.1-0.5-4-1.7
+                                        C13,52.9,12.6,51.6,12.7,50.1z"/>
+                                    <path d="M88.3,89.9H62.9v-2.2l2.8-0.2c1-0.1,1.5-0.5,1.6-1.2l-0.3-0.8l-3.6-5.4L51,60.2l-1.1,0.9
+                                        l-10.1,8.5V57l-5.3,2.2c-8.2,3.4-12.3,7.8-12.1,13.2c0,2.3,0.6,4.2,1.9,5.8c0.6,0.7,1.2,1.2,1.9,1.6
+                                        c0,0,5,3.7,13.4-1.8l0.4-0.2c-5.3,7.4-10.8,9.4-13.5,9.9c-1,0.2-1.7,0.2-1.7,0.2h0
+                                        c-0.2,0-0.4,0-0.7,0c-3.8,0-6.8-1.2-9-3.5c-2.2-2.3-3.4-5.2-3.4-8.9c0-2.7,0.6-5.1,1.9-7.3
+                                        c1.3-2.2,3.2-4.1,5.5-5.8c3.4-2.5,8.3-5.1,14.7-7.6l6.1-2.3V24.3l-0.1-2.4c-0.3-2.6-2.1-4-5.4-4.1
+                                        l-2.5,0.1v-2.2l18.1-5.6v48.3l12.4-11.4l3.2-3.3c1.7-1.6,2.4-2.7,2.4-3.4c0-0.6-0.3-1.1-1.1-1.4
+                                        l-1.4-0.3l-3.1-0.3v-2.2h24v2.2l-3.6,0.4c-3.5,0.6-6.8,2.1-9.9,4.6l-5.1,4.3l-8.8,8l-0.8,0.8
+                                        l13.4,18.4c2.1,2.9,4.4,5.6,6.9,8.1c2.7,2.8,6.1,4.4,10.2,4.9V89.9z"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="logo-label">App Icon</p>
+                    <p class="logo-name">iOS/Android App Store</p>
+                </div>
+                
+                <div class="logo-card">
+                    <div class="logo-display">
+                        <div class="logo-horizontal">
+                            <div class="app-icon" style="width: 64px; height: 64px; border-radius: 14px;">
+                                <svg viewBox="0 0 100 100" style="width: 55%; height: 55%;">
+                                    <g fill="white">
+                                        <path d="M12.7,50.1c0-2.5,1.1-4.9,3.4-7.2c1.9-1.9,4.2-3.3,7-4.2c1.1-0.4,5.3-1.1,6.4-1.3
+                                            c-7.6,3.8-6.7,7.6-6.5,10l0.1,2.3c-0.1,3.9-1.8,6.2-5.3,6.2c-1.8,0.1-3.1-0.5-4-1.7
+                                            C13,52.9,12.6,51.6,12.7,50.1z"/>
+                                        <path d="M88.3,89.9H62.9v-2.2l2.8-0.2c1-0.1,1.5-0.5,1.6-1.2l-0.3-0.8l-3.6-5.4L51,60.2l-1.1,0.9
+                                            l-10.1,8.5V57l-5.3,2.2c-8.2,3.4-12.3,7.8-12.1,13.2c0,2.3,0.6,4.2,1.9,5.8c0.6,0.7,1.2,1.2,1.9,1.6
+                                            c0,0,5,3.7,13.4-1.8l0.4-0.2c-5.3,7.4-10.8,9.4-13.5,9.9c-1,0.2-1.7,0.2-1.7,0.2h0
+                                            c-0.2,0-0.4,0-0.7,0c-3.8,0-6.8-1.2-9-3.5c-2.2-2.3-3.4-5.2-3.4-8.9c0-2.7,0.6-5.1,1.9-7.3
+                                            c1.3-2.2,3.2-4.1,5.5-5.8c3.4-2.5,8.3-5.1,14.7-7.6l6.1-2.3V24.3l-0.1-2.4c-0.3-2.6-2.1-4-5.4-4.1
+                                            l-2.5,0.1v-2.2l18.1-5.6v48.3l12.4-11.4l3.2-3.3c1.7-1.6,2.4-2.7,2.4-3.4c0-0.6-0.3-1.1-1.1-1.4
+                                            l-1.4-0.3l-3.1-0.3v-2.2h24v2.2l-3.6,0.4c-3.5,0.6-6.8,2.1-9.9,4.6l-5.1,4.3l-8.8,8l-0.8,0.8
+                                            l13.4,18.4c2.1,2.9,4.4,5.6,6.9,8.1c2.7,2.8,6.1,4.4,10.2,4.9V89.9z"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="logo-text">
+                                <span class="main">AK GOLF</span>
+                                <span class="sub">COACHING APP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="logo-label">Markedsføring</p>
+                    <p class="logo-name">Med tekst</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typografi-referanse -->
+        <section class="section">
+            <div class="section-header">
+                <p class="section-label">TYPOGRAFI</p>
+                <h2 class="section-title">Font Spesifikasjoner</h2>
+            </div>
+            
+            <div class="logo-card">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                    <div>
+                        <p class="logo-label">Logo Font</p>
+                        <p style="font-family: 'DM Sans', sans-serif; font-size: 48px; font-weight: 300; color: #10456A; margin: 16px 0;">DM Sans Light</p>
+                        <p style="font-size: 13px; color: #8E8E93;">Font-weight: 300 • Letter-spacing: 0.02em</p>
+                    </div>
+                    <div>
+                        <p class="logo-label">UI Font</p>
+                        <p style="font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 600; color: #10456A; margin: 16px 0;">Inter</p>
+                        <p style="font-size: 13px; color: #8E8E93;">Weights: 400, 500, 600, 700</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fargereferanse -->
+        <div class="color-ref">
+            <div class="color-swatch">
+                <div class="color-box" style="background: #10456A;"></div>
+                <div class="color-info">
+                    <div class="name">Current (Primary)</div>
+                    <div class="hex">#10456A</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #02060D;"></div>
+                <div class="color-info">
+                    <div class="name">Jet Black</div>
+                    <div class="hex">#02060D</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #EDF0F2; border: 1px solid #E5E5EA;"></div>
+                <div class="color-info">
+                    <div class="name">Snow</div>
+                    <div class="hex">#EDF0F2</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #EBE5DA;"></div>
+                <div class="color-info">
+                    <div class="name">Light Khaki</div>
+                    <div class="hex">#EBE5DA</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

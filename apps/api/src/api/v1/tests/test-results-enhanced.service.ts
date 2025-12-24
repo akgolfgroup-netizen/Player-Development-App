@@ -1,0 +1,431 @@
+/**
+ * Enhanced Test Results Service
+ * Includes automatic calculation of test results and peer comparisons
+ */
+
+import { PrismaClient } from '@prisma/client';
+import { NotFoundError, BadRequestError } from '../../../middleware/errors';
+import { calculateTestResult, validateTestInput } from '../../../domain/tests';
+import {
+  calculatePeerComparison,
+  matchesPeerCriteria,
+  type PeerCriteria,
+} from '../../../domain/peer-comparison';
+import { BadgeEvaluatorService, BadgeUnlockEvent } from '../../../domain/gamification/badge-evaluator';
+import { logger } from '../../../utils/logger';
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+export interface RecordTestResultEnhancedInput {
+  playerId: string;
+  testNumber: number; // 1-20
+  testDate: Date;
+  testTime?: string;
+  location: string;
+  facility: string;
+  environment: 'indoor' | 'outdoor';
+  conditions?: {
+    weather?: string;
+    wind?: string;
+    temperature?: number;
+  };
+
+  // Raw test input data (varies by test)
+  testData: any;
+
+  // Optional: Override automatic peer comparison
+  skipPeerComparison?: boolean;
+  peerCriteria?: PeerCriteria;
+}
+
+export interface TestResultWithComparison {
+  testResult: any;
+  peerComparison?: any;
+  categoryRequirement: any;
+  badgeUnlocks?: BadgeUnlockEvent[];
+  xpGained?: number;
+  newLevel?: number;
+}
+
+// ============================================================================
+// TEST RESULT ENHANCED SERVICE
+// ============================================================================
+
+export class TestResultsEnhancedService {
+  private badgeEvaluator: BadgeEvaluatorService;
+  private logger = logger;
+
+  constructor(private prisma: PrismaClient) {
+    this.badgeEvaluator = new BadgeEvaluatorService(prisma);
+  }
+
+  /**
+   * Record a new test result with automatic calculations
+   *
+   * This method:
+   * 1. Validates test input
+   * 2. Fetches player and category requirements
+   * 3. Calculates test result using domain functions
+   * 4. Saves result to database
+   * 5. Optionally calculates peer comparison
+   * 6. Returns complete result with metadata
+   */
+  async recordTestResult(
+    tenantId: string,
+    input: RecordTestResultEnhancedInput
+  ): Promise<TestResultWithComparison> {
+    // 1. Validate test input
+    try {
+      validateTestInput(input.testNumber, {
+        metadata: {
+          testDate: input.testDate,
+          testTime: input.testTime,
+          location: input.location,
+          facility: input.facility,
+          environment: input.environment,
+          conditions: input.conditions,
+        },
+        ...input.testData,
+      });
+    } catch (error: any) {
+      throw new BadRequestError(`Invalid test input: ${error.message}`);
+    }
+
+    // 2. Fetch player
+    const player = await this.prisma.player.findFirst({
+      where: {
+        id: input.playerId,
+        tenantId,
+      },
+    });
+
+    if (!player) {
+      throw new NotFoundError('Player not found');
+    }
+
+    // 3. Fetch category requirement
+    const categoryRequirement = await this.prisma.categoryRequirement.findFirst({
+      where: {
+        category: player.category,
+        gender: player.gender as 'M' | 'K',
+        testNumber: input.testNumber,
+      },
+    });
+
+    if (!categoryRequirement) {
+      throw new NotFoundError(
+        `Category requirement not found for category ${player.category}, gender ${player.gender}, test ${input.testNumber}`
+      );
+    }
+
+    // 4. Calculate test result
+    const age = new Date().getFullYear() - player.dateOfBirth.getFullYear();
+
+    const playerContext = {
+      id: player.id,
+      category: player.category,
+      gender: player.gender as 'M' | 'K',
+      age,
+      handicap: player.handicap ? Number(player.handicap) : undefined,
+    };
+
+    const calculatedResult = calculateTestResult(
+      input.testNumber,
+      {
+        metadata: {
+          testDate: input.testDate,
+          testTime: input.testTime,
+          location: input.location,
+          facility: input.facility,
+          environment: input.environment,
+          conditions: input.conditions,
+        },
+        ...input.testData,
+      },
+      playerContext
+    );
+
+    // 5. Fetch test definition
+    const test = await this.prisma.test.findFirst({
+      where: {
+        tenantId,
+        testNumber: input.testNumber,
+      },
+    });
+
+    if (!test) {
+      throw new NotFoundError(`Test definition not found for test number ${input.testNumber}`);
+    }
+
+    // 6. Save test result
+    const testResult = await this.prisma.testResult.create({
+      data: {
+        testId: test.id,
+        playerId: player.id,
+        testDate: input.testDate,
+        testTime: input.testTime,
+        location: input.location,
+        facility: input.facility,
+        environment: input.environment,
+        weather: input.conditions?.weather,
+        equipment: null, // Can be extended
+
+        // Raw input data
+        results: input.testData as any,
+
+        // Calculated values
+        value: calculatedResult.value,
+        pei: calculatedResult.pei || null,
+        passed: calculatedResult.passed,
+        categoryRequirement: calculatedResult.categoryRequirement,
+        percentOfRequirement: calculatedResult.percentOfRequirement,
+      },
+    });
+
+    // 7. Calculate peer comparison (if not skipped)
+    let peerComparison = null;
+
+    if (!input.skipPeerComparison) {
+      try {
+        peerComparison = await this.calculateAndSavePeerComparison(
+          testResult.id,
+          player.id,
+          input.testNumber,
+          calculatedResult.value,
+          input.peerCriteria || {
+            category: player.category,
+            gender: player.gender,
+          },
+          tenantId
+        );
+      } catch (error: any) {
+        // Log error but don't fail the request
+        this.logger.error({ error }, 'Failed to calculate peer comparison');
+      }
+    }
+
+    // 8. Evaluate badges after test completion
+    let badgeUnlocks: BadgeUnlockEvent[] = [];
+    let xpGained = 0;
+    let newLevel: number | undefined;
+
+    try {
+      const badgeResult = await this.badgeEvaluator.evaluatePlayerBadges(player.id);
+      badgeUnlocks = badgeResult.unlockedBadges;
+      xpGained = badgeResult.xpGained;
+      newLevel = badgeResult.newLevel;
+    } catch (error: any) {
+      this.logger.error({ error }, 'Badge evaluation failed');
+    }
+
+    return {
+      testResult,
+      peerComparison,
+      categoryRequirement,
+      badgeUnlocks: badgeUnlocks.length > 0 ? badgeUnlocks : undefined,
+      xpGained: xpGained > 0 ? xpGained : undefined,
+      newLevel,
+    };
+  }
+
+  /**
+   * Calculate and save peer comparison for a test result
+   */
+  private async calculateAndSavePeerComparison(
+    testResultId: string,
+    playerId: string,
+    testNumber: number,
+    playerValue: number,
+    peerCriteria: PeerCriteria,
+    tenantId: string
+  ): Promise<any> {
+    // Fetch peer players
+    const players = await this.prisma.player.findMany({
+      where: {
+        tenantId,
+        id: { not: playerId }, // Exclude the player themselves
+      },
+    });
+
+    // Filter peers by criteria (convert Decimal handicap to number)
+    const peers = players
+      .map((p) => ({
+        ...p,
+        handicap: p.handicap ? Number(p.handicap) : null,
+      }))
+      .filter((p) => matchesPeerCriteria(p, peerCriteria, playerId));
+
+    if (peers.length === 0) {
+      return null; // Not enough peers for comparison
+    }
+
+    // Fetch peer test results
+    const peerResults = await this.prisma.testResult.findMany({
+      where: {
+        playerId: { in: peers.map((p) => p.id) },
+        test: {
+          testNumber,
+        },
+      },
+      orderBy: {
+        testDate: 'desc',
+      },
+      distinct: ['playerId'], // Get latest result for each player
+    });
+
+    const peerValues = peerResults.map((r) => Number(r.value));
+
+    if (peerValues.length === 0) {
+      return null; // No peer data
+    }
+
+    // Determine if lower is better for this test
+    // Tests 8-11 (PEI), 17-18 (short game distances), 19-20 (score to par) - lower is better
+    const lowerIsBetter = [8, 9, 10, 11, 17, 18, 19, 20].includes(testNumber);
+
+    // Calculate peer comparison
+    const comparison = calculatePeerComparison(
+      playerId,
+      testNumber,
+      testResultId,
+      playerValue,
+      peerValues,
+      peerCriteria,
+      lowerIsBetter
+    );
+
+    // Calculate percentile values for peer distribution
+    const sorted = [...peerValues].sort((a, b) => a - b);
+    const getPercentileValue = (p: number) => {
+      const index = Math.ceil(sorted.length * p) - 1;
+      return sorted[Math.max(0, Math.min(index, sorted.length - 1))];
+    };
+
+    // Save peer comparison
+    const savedComparison = await this.prisma.peerComparison.create({
+      data: {
+        testResultId,
+        playerId,
+        testNumber,
+        peerCount: comparison.peerCount,
+        peerMean: comparison.peerMean,
+        peerMedian: comparison.peerMedian,
+        peerStdDev: comparison.peerStdDev,
+        peerMin: comparison.peerMin,
+        peerMax: comparison.peerMax,
+        percentile25: getPercentileValue(0.25),
+        percentile75: getPercentileValue(0.75),
+        percentile90: getPercentileValue(0.90),
+        playerValue: comparison.playerValue,
+        playerPercentile: comparison.playerPercentile,
+        playerRank: comparison.playerRank,
+        playerZScore: comparison.playerZScore,
+        peerCriteria: comparison.peerCriteria as any,
+        comparisonText: comparison.comparisonText,
+      },
+    });
+
+    return savedComparison;
+  }
+
+  /**
+   * Get test result with peer comparison
+   */
+  async getTestResultWithComparison(
+    tenantId: string,
+    testResultId: string
+  ): Promise<TestResultWithComparison> {
+    const testResult = await this.prisma.testResult.findFirst({
+      where: {
+        id: testResultId,
+        player: {
+          tenantId,
+        },
+      },
+      include: {
+        test: true,
+        player: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            category: true,
+            gender: true,
+          },
+        },
+        peerComparisons: {
+          orderBy: {
+            calculatedAt: 'desc',
+          },
+          take: 1,
+        },
+      },
+    });
+
+    if (!testResult) {
+      throw new NotFoundError('Test result not found');
+    }
+
+    // Fetch category requirement
+    const categoryRequirement = await this.prisma.categoryRequirement.findFirst({
+      where: {
+        category: testResult.player.category,
+        gender: testResult.player.gender as 'M' | 'K',
+        testNumber: testResult.test.testNumber,
+      },
+    });
+
+    return {
+      testResult,
+      peerComparison: testResult.peerComparisons[0] || null,
+      categoryRequirement,
+    };
+  }
+
+  /**
+   * Get player test history for a specific test
+   */
+  async getPlayerTestHistory(
+    tenantId: string,
+    playerId: string,
+    testNumber: number
+  ): Promise<any[]> {
+    // Verify player exists and belongs to tenant
+    const player = await this.prisma.player.findFirst({
+      where: {
+        id: playerId,
+        tenantId,
+      },
+    });
+
+    if (!player) {
+      throw new NotFoundError('Player not found');
+    }
+
+    // Fetch test results
+    const results = await this.prisma.testResult.findMany({
+      where: {
+        playerId,
+        test: {
+          testNumber,
+        },
+      },
+      include: {
+        test: true,
+        peerComparisons: {
+          orderBy: {
+            calculatedAt: 'desc',
+          },
+          take: 1,
+        },
+      },
+      orderBy: {
+        testDate: 'asc',
+      },
+    });
+
+    return results;
+  }
+}

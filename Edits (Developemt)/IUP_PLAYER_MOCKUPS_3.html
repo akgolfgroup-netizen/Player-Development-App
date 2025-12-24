@@ -1,0 +1,2481 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IUP Golf - Spiller Mockups Del 3</title>
+    <style>
+        /* ========================================
+           BLUE PALETTE 01 - DESIGN SYSTEM v3.0
+           ======================================== */
+        :root {
+            /* Primary Colors */
+            --color-primary: #10456A;
+            --color-primary-dark: #0A2E47;
+            --color-primary-light: #1A5A8A;
+
+            /* Background Colors */
+            --color-snow: #EDF0F2;
+            --color-surface: #EBE5DA;
+            --color-white: #FFFFFF;
+
+            /* Accent Colors */
+            --color-gold: #C9A227;
+            --color-gold-light: #E8C84A;
+
+            /* Text Colors */
+            --color-text-primary: #10456A;
+            --color-text-secondary: #5A7A8A;
+            --color-text-light: #8A9AA8;
+
+            /* Status Colors */
+            --color-success: #2E7D4A;
+            --color-warning: #D4A021;
+            --color-error: #C74B4B;
+            --color-info: #3A7CA5;
+
+            /* Training Type Colors */
+            
+            --color-teknikk: #2C5F7F;
+            --color-fysisk: #4A6B7C;
+            --color-shortgame: #3D7A9E;
+            --color-putting: #5B8FA8;
+            --color-spill: #10456A;
+            --color-mental: #6B8BA8;
+            --color-shortgame: #4A8C7C;
+            --color-putting: #6B8E4A;
+            --color-spill: #8C6B4A;
+
+            /* Badge Colors */
+            --color-bronze: #CD7F32;
+            --color-silver: #C0C0C0;
+            --color-platinum: #E5E4E2;
+
+            /* Shadows */
+            /* ========================================
+           SHADOW SYSTEM - Nordic Minimalism
+           ======================================== */
+        :root {
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+            --shadow-card: 0 2px 8px rgba(16, 69, 106, 0.08);
+            --shadow-elevated: 0 8px 24px rgba(16, 69, 106, 0.12);
+        }
+
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--color-snow);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: var(--color-primary);
+            color: white;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .page-header p {
+            opacity: 0.8;
+            font-size: 16px;
+        }
+
+        /* Mockup Container */
+        .mockups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+            gap: var(--spacing-xl);
+            padding: var(--spacing-xl);
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .mockup-wrapper {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .mockup-label {
+            background: var(--color-primary);
+            color: white;
+            padding: var(--spacing-md);
+            text-align: center;
+        }
+
+        .mockup-label h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .mockup-label p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .unique-tag {
+            display: inline-block;
+            background: var(--color-error);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            margin-left: var(--spacing-sm);
+            text-transform: uppercase;
+        }
+
+        /* Phone Frame */
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--color-snow);
+            margin: 0 auto;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: var(--color-primary);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* App Header */
+        .app-header {
+            background: var(--color-primary);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Icons */
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .icon-sm {
+            width: 18px;
+            height: 18px;
+        }
+
+        .icon-lg {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Content Area */
+        .content {
+            padding: var(--spacing-lg);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+        box-shadow: var(--shadow-card);padding: 20px;}
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-white);
+            display: flex;
+            justify-content: space-around;
+            padding: var(--spacing-sm) 0;
+            border-top: 1px solid var(--color-snow);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--color-text-light);
+            font-size: 10px;
+            padding: var(--spacing-xs);
+        }
+
+        .nav-item.active {
+            color: var(--color-primary);
+        }
+
+        /* ========================================
+           MOCKUP 11: TRAINING SESSION
+           ======================================== */
+
+        .session-summary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: white;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .session-date {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .session-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .session-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .session-stat {
+            text-align: center;
+        }
+
+        .session-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .session-stat-label {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+
+        .exercise-card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border-left: 4px solid var(--color-teknikk);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .exercise-card.fysisk {
+            border-left-color: var(--color-fysisk);
+        }
+
+        .exercise-card.shortgame {
+            border-left-color: var(--color-shortgame);
+        }
+
+        .exercise-card.putting {
+            border-left-color: var(--color-putting);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .exercise-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .exercise-type {
+            font-size: 11px;
+            color: var(--color-teknikk);
+            font-weight: 500;
+        }
+
+        .exercise-type.fysisk {
+            color: var(--color-fysisk);
+        }
+
+        .exercise-type.shortgame {
+            color: var(--color-shortgame);
+        }
+
+        .exercise-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .exercise-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--color-success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .exercise-check svg {
+            width: 14px;
+            height: 14px;
+            stroke: white;
+        }
+
+        .exercise-pending {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--color-text-light);
+        }
+
+        .exercise-meta {
+            display: flex;
+            gap: var(--spacing-md);
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .exercise-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .exercise-progress {
+            margin-top: var(--spacing-sm);
+        }
+
+        .sets-row {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .set-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-snow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+
+        .set-dot.completed {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .set-dot.current {
+            background: var(--color-primary);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .ai-tip {
+            background: linear-gradient(135deg, #f8f4ff 0%, #f0e8ff 100%);
+            border: 1px solid var(--color-teknikk);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .ai-tip-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .ai-tip-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--color-teknikk);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-tip-icon svg {
+            width: 14px;
+            height: 14px;
+            stroke: white;
+        }
+
+        .ai-tip-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-teknikk);
+        }
+
+        .ai-tip-text {
+            font-size: 13px;
+            color: var(--color-text-primary);
+            line-height: 1.5;
+        }
+
+        /* ========================================
+           MOCKUP 12: PERIODIZATION VIEW
+           ======================================== */
+
+        .period-overview {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .period-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .year-selector {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .year-selector span {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .year-nav {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--color-snow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-secondary);
+            border: none;
+            cursor: pointer;
+        }
+
+        .period-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .period-month {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .month-label {
+            width: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+
+        .month-bar {
+            flex: 1;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            padding: 0 var(--spacing-sm);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .month-bar.evaluation {
+            background: var(--color-info);
+        }
+
+        .month-bar.general {
+            background: var(--color-success);
+        }
+
+        .month-bar.specialization {
+            background: var(--color-warning);
+        }
+
+        .month-bar.tournament {
+            background: var(--color-error);
+        }
+
+        .month-bar.current {
+            box-shadow: 0 0 0 3px var(--color-gold);
+        }
+
+        .period-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--color-snow);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-dot.evaluation { background: var(--color-info); }
+        .legend-dot.general { background: var(--color-success); }
+        .legend-dot.specialization { background: var(--color-warning); }
+        .legend-dot.tournament { background: var(--color-error); }
+
+        .legend-text {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .current-period-card {
+            background: linear-gradient(135deg, var(--color-success) 0%, #1E6E3A 100%);
+            color: white;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .current-period-label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .current-period-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .period-progress {
+            background: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .period-progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: var(--radius-full);
+        }
+
+        .period-progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .focus-areas {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-sm);
+        }
+
+        .focus-item {
+            background: var(--color-white);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            text-align: center;
+        }
+
+        .focus-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-snow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-sm);
+        }
+
+        .focus-icon svg {
+            color: var(--color-primary);
+        }
+
+        .focus-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .focus-hours {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        /* ========================================
+           MOCKUP 13: BADGE COLLECTION
+           ======================================== */
+
+        .badge-hero {
+            background: linear-gradient(135deg, var(--color-gold) 0%, #A88820 100%);
+            color: white;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .xp-display {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .xp-value {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .xp-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .level-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+        }
+
+        .level-badge {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .level-info {
+            text-align: left;
+        }
+
+        .level-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .level-progress-text {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .level-progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 6px;
+            border-radius: var(--radius-full);
+            width: 150px;
+            margin-top: var(--spacing-xs);
+        }
+
+        .level-progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: var(--radius-full);
+        }
+
+        .badge-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .badge-stat {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            text-align: center;
+        }
+
+        .badge-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .badge-stat-label {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+        }
+
+        .badge-category {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .badge-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .badge-category-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .badge-category-count {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-sm);
+        }
+
+        .badge-item {
+            text-align: center;
+        }
+
+        .badge-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--color-snow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-xs);
+            position: relative;
+        }
+
+        .badge-icon.earned {
+            background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+        }
+
+        .badge-icon.earned.silver {
+            background: linear-gradient(135deg, #E8E8E8 0%, var(--color-silver) 100%);
+        }
+
+        .badge-icon.earned.bronze {
+            background: linear-gradient(135deg, #E8B87A 0%, var(--color-bronze) 100%);
+        }
+
+        .badge-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--color-text-light);
+        }
+
+        .badge-icon.earned svg {
+            color: white;
+        }
+
+        .badge-icon.locked {
+            opacity: 0.4;
+        }
+
+        .badge-name {
+            font-size: 10px;
+            color: var(--color-text-secondary);
+            line-height: 1.3;
+        }
+
+        .badge-icon.earned + .badge-name {
+            color: var(--color-text-primary);
+            font-weight: 500;
+        }
+
+        .badge-new {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 16px;
+            height: 16px;
+            background: var(--color-error);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-new svg {
+            width: 10px;
+            height: 10px;
+            color: white;
+        }
+
+        /* ========================================
+           MOCKUP 14: ANNUAL PLAN
+           ======================================== */
+
+        .annual-header {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .annual-goal {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .goal-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .goal-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .goal-text h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .goal-text p {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+        }
+
+        .annual-progress {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .progress-item {
+            text-align: center;
+        }
+
+        .progress-circle {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto var(--spacing-sm);
+            position: relative;
+        }
+
+        .progress-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle-bg {
+            fill: none;
+            stroke: var(--color-snow);
+            stroke-width: 4;
+        }
+
+        .progress-circle-fill {
+            fill: none;
+            stroke: var(--color-primary);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 157;
+        }
+
+        .progress-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .progress-label {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+        }
+
+        .milestone-timeline {
+            position: relative;
+            padding-left: var(--spacing-xl);
+        }
+
+        .milestone-line {
+            position: absolute;
+            left: 11px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--color-snow);
+        }
+
+        .milestone-item {
+            position: relative;
+            padding-bottom: var(--spacing-lg);
+        }
+
+        .milestone-dot {
+            position: absolute;
+            left: -25px;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-snow);
+            border: 3px solid var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .milestone-dot.completed {
+            background: var(--color-success);
+        }
+
+        .milestone-dot.completed svg {
+            width: 12px;
+            height: 12px;
+            stroke: white;
+        }
+
+        .milestone-dot.current {
+            background: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(16, 69, 106, 0.2);
+        }
+
+        .milestone-dot.upcoming {
+            background: var(--color-snow);
+        }
+
+        .milestone-content {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .milestone-content.current {
+            border: 2px solid var(--color-primary);
+        }
+
+        .milestone-date {
+            font-size: 11px;
+            color: var(--color-text-light);
+            text-transform: uppercase;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .milestone-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .milestone-desc {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+        }
+
+        .milestone-target {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--color-snow);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-sm);
+        }
+
+        /* ========================================
+           MOCKUP 15: VIDEO SWING TRACKER
+           ======================================== */
+
+        .video-hero {
+            position: relative;
+            background: #1a1a1a;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .video-placeholder {
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        .video-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: var(--spacing-lg);
+            color: white;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .video-date {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .video-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--color-snow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            color: var(--color-text-primary);
+        }
+
+        .video-btn.primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .speed-selector {
+            display: flex;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-xs);
+            background: var(--color-snow);
+            border-radius: var(--radius-full);
+        }
+
+        .speed-btn {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+
+        .speed-btn.active {
+            background: var(--color-white);
+            color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .swing-metrics {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--color-snow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .metric-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--color-primary);
+        }
+
+        .metric-data h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .metric-data span {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+        }
+
+        .annotation-tools {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            overflow-x: auto;
+        }
+
+        .tool-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            background: var(--color-snow);
+            border: none;
+            cursor: pointer;
+            min-width: 60px;
+        }
+
+        .tool-btn svg {
+            width: 20px;
+            height: 20px;
+            color: var(--color-text-secondary);
+        }
+
+        .tool-btn span {
+            font-size: 10px;
+            color: var(--color-text-secondary);
+        }
+
+        .tool-btn.active {
+            background: var(--color-primary);
+        }
+
+        .tool-btn.active svg,
+        .tool-btn.active span {
+            color: white;
+        }
+
+        .swing-comparison {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .comparison-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-sm);
+        }
+
+        .comparison-item {
+            background: var(--color-snow);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm);
+            text-align: center;
+        }
+
+        .comparison-thumb {
+            height: 80px;
+            background: #2a2a2a;
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comparison-thumb svg {
+            width: 32px;
+            height: 32px;
+            color: #555;
+        }
+
+        .comparison-label {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Swing line overlay */
+        .swing-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .swing-lines svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .golfer-silhouette {
+            width: 120px;
+            height: 180px;
+        }
+
+        .golfer-silhouette svg {
+            width: 100%;
+            height: 100%;
+            fill: #444;
+        }
+
+        /* Angle indicator */
+        .angle-indicator {
+            position: absolute;
+            background: rgba(255, 100, 100, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Video library */
+        .video-library-mini {
+            display: flex;
+            gap: var(--spacing-sm);
+            overflow-x: auto;
+            padding: var(--spacing-sm) 0;
+        }
+
+        .video-thumb-mini {
+            flex-shrink: 0;
+            width: 80px;
+            height: 60px;
+            background: #2a2a2a;
+            border-radius: var(--radius-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumb-mini.active {
+            border: 2px solid var(--color-primary);
+        }
+
+        .video-thumb-date {
+            position: absolute;
+            bottom: 4px;
+            left: 4px;
+            font-size: 9px;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+    
+        /* ========================================
+           BUTTONS - Nordic Minimalism
+           ======================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .btn-secondary {
+            background: var(--color-snow);
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--color-primary);
+            box-shadow: none;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(16, 69, 106, 0.08);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 17px;
+        }
+
+    
+        /* ========================================
+           ICON SYSTEM - Monochrome
+           ======================================== */
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: rgba(16, 69, 106, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary);
+        }
+
+        .icon-box-sm {
+            width: 32px;
+            height: 32px;
+        }
+
+        .icon-box-lg {
+            width: 56px;
+            height: 56px;
+        }
+
+        .icon-box-gold {
+            background: rgba(201, 162, 39, 0.12);
+            color: var(--color-gold);
+        }
+
+        .icon-box-success {
+            background: rgba(74, 124, 89, 0.12);
+            color: var(--color-success);
+        }
+
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1>IUP Golf - Spiller Mockups Del 3</h1>
+        <p>Trening, Periodisering og Gamification</p>
+    </header>
+
+    <div class="mockups-grid">
+
+        <!-- ========================================
+             MOCKUP 11: TRAINING SESSION
+             ======================================== -->
+        <div class="mockup-wrapper">
+            <div class="mockup-label">
+                <h2>11. Treningsøkt Tracker <span class="unique-tag">Unik</span></h2>
+                <p>Live tracking av øvelser med AI-tips og sett-progresjon</p>
+            </div>
+            <div class="device-wrapper">
+                <div class="device-notch"></div>
+                <div class="phone-frame">
+                <div class="status-bar">
+                    <span>09:41</span>
+                    <div class="status-icons">
+                        <svg class="icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                        <svg class="icon-sm" viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M23 13v-2"/></svg>
+                    </div>
+                </div>
+
+                <div class="app-header">
+                    <div class="header-top">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </div>
+                    <div class="header-title">Dagens Økt</div>
+                    <div class="header-subtitle">Teknikk - Short Game Focus</div>
+                </div>
+
+                <div class="content">
+                    <div class="session-summary">
+                        <div class="session-date">Mandag 16. desember 2024</div>
+                        <div class="session-title">Short Game Intensiv</div>
+                        <div class="session-stats">
+                            <div class="session-stat">
+                                <div class="session-stat-value">45</div>
+                                <div class="session-stat-label">Minutter</div>
+                            </div>
+                            <div class="session-stat">
+                                <div class="session-stat-value">5/8</div>
+                                <div class="session-stat-label">Øvelser</div>
+                            </div>
+                            <div class="session-stat">
+                                <div class="session-stat-value">156</div>
+                                <div class="session-stat-label">Reps</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Øvelser</div>
+
+                    <div class="exercise-card shortgame">
+                        <div class="exercise-header">
+                            <div>
+                                <div class="exercise-name">50M Wedge Ladder</div>
+                                <div class="exercise-type shortgame">Short Game</div>
+                            </div>
+                            <div class="exercise-status">
+                                <div class="exercise-check">
+                                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-meta">
+                            <span>
+                                <svg class="icon-sm" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+                                3 sett × 10 reps
+                            </span>
+                            <span>
+                                <svg class="icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                12 min
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card shortgame">
+                        <div class="exercise-header">
+                            <div>
+                                <div class="exercise-name">Chip & Run Gate Drill</div>
+                                <div class="exercise-type shortgame">Short Game</div>
+                            </div>
+                            <div class="exercise-status">
+                                <div class="exercise-check">
+                                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exercise-meta">
+                            <span>4 sett × 8 reps</span>
+                            <span>15 min</span>
+                        </div>
+                    </div>
+
+                    <div class="exercise-card putting" style="border-left-color: var(--color-putting);">
+                        <div class="exercise-header">
+                            <div>
+                                <div class="exercise-name">3-Putt Eliminator</div>
+                                <div class="exercise-type" style="color: var(--color-putting);">Putting</div>
+                            </div>
+                            <div class="exercise-status">
+                                <div class="set-dot current">3</div>
+                            </div>
+                        </div>
+                        <div class="exercise-meta">
+                            <span>4 sett × 5 reps</span>
+                            <span>10 min</span>
+                        </div>
+                        <div class="exercise-progress">
+                            <div class="sets-row">
+                                <div class="set-dot completed">1</div>
+                                <div class="set-dot completed">2</div>
+                                <div class="set-dot current">3</div>
+                                <div class="set-dot">4</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-tip">
+                        <div class="ai-tip-header">
+                            <div class="ai-tip-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 6a1 1 0 0 0-1 1v5a1 1 0 0 0 .29.71l3 3a1 1 0 0 0 1.42-1.42L13 11.59V7a1 1 0 0 0-1-1z"/></svg>
+                            </div>
+                            <span class="ai-tip-label">AI Coaching Tip</span>
+                        </div>
+                        <div class="ai-tip-text">
+                            Basert på dine tidligere resultater, fokuser på å holde vekten på venstre fot gjennom hele chippebevegelsen. Dette vil forbedre din PEI-score.
+                        </div>
+                    </div>
+
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <div>
+                                <div class="exercise-name">Bunker Splash Shots</div>
+                                <div class="exercise-type shortgame">Short Game</div>
+                            </div>
+                            <div class="exercise-status">
+                                <div class="exercise-pending"></div>
+                            </div>
+                        </div>
+                        <div class="exercise-meta">
+                            <span>3 sett × 6 reps</span>
+                            <span>8 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Hjem</span>
+                    </div>
+                    <div class="nav-item active">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5c0 .83-.67 1.5-1.5 1.5h-5C2.67 11 2 10.33 2 9.5S2.67 8 3.5 8h5c.83 0 1.5.67 1.5 1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+                        <span>Trening</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                        <span>Stats</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                        <span>Profil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================
+             MOCKUP 12: PERIODIZATION VIEW
+             ======================================== -->
+        <div class="mockup-wrapper">
+            <div class="mockup-label">
+                <h2>12. E/G/S/T Periodisering <span class="unique-tag">Unik</span></h2>
+                <p>Visuell årsplan med fire treningsperioder</p>
+            </div>
+            <div class="device-wrapper">
+                <div class="device-notch"></div>
+                <div class="phone-frame">
+                <div class="status-bar">
+                    <span>09:41</span>
+                    <div class="status-icons">
+                        <svg class="icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                        <svg class="icon-sm" viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M23 13v-2"/></svg>
+                    </div>
+                </div>
+
+                <div class="app-header">
+                    <div class="header-top">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </div>
+                    <div class="header-title">Periodisering 2025</div>
+                    <div class="header-subtitle">Andreas Holm · Kategori C</div>
+                </div>
+
+                <div class="content">
+                    <div class="current-period-card">
+                        <div class="current-period-label">Nåværende periode</div>
+                        <div class="current-period-name">Grunnperiode (G)</div>
+                        <div class="period-progress">
+                            <div class="period-progress-fill" style="width: 39%;"></div>
+                        </div>
+                        <div class="period-progress-label">
+                            <span>Uke 7 av 18</span>
+                            <span>11 uker igjen</span>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Fokusområder denne perioden</div>
+
+                    <div class="focus-areas">
+                        <div class="focus-item">
+                            <div class="focus-icon">
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/></svg>
+                            </div>
+                            <div class="focus-name">Teknikk</div>
+                            <div class="focus-hours">8 timer/uke</div>
+                        </div>
+                        <div class="focus-item">
+                            <div class="focus-icon">
+                                <svg class="icon" viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/></svg>
+                            </div>
+                            <div class="focus-name">Fysisk</div>
+                            <div class="focus-hours">5 timer/uke</div>
+                        </div>
+                        <div class="focus-item">
+                            <div class="focus-icon">
+                                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            </div>
+                            <div class="focus-name">Mental</div>
+                            <div class="focus-hours">2 timer/uke</div>
+                        </div>
+                        <div class="focus-item">
+                            <div class="focus-icon">
+                                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                            </div>
+                            <div class="focus-name">Short Game</div>
+                            <div class="focus-hours">6 timer/uke</div>
+                        </div>
+                    </div>
+
+                    <div class="period-overview" style="margin-top: var(--spacing-lg);">
+                        <div class="period-header">
+                            <div class="year-selector">
+                                <button class="year-nav">
+                                    <svg class="icon-sm" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <span>2025</span>
+                                <button class="year-nav">
+                                    <svg class="icon-sm" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="period-timeline">
+                            <div class="period-month">
+                                <span class="month-label">Jan</span>
+                                <div class="month-bar evaluation">Evaluering</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Feb</span>
+                                <div class="month-bar general current">Grunn ●</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Mar</span>
+                                <div class="month-bar general">Grunn</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Apr</span>
+                                <div class="month-bar general">Grunn</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Mai</span>
+                                <div class="month-bar specialization">Spesialisering</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Jun</span>
+                                <div class="month-bar tournament">Turnering</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Jul</span>
+                                <div class="month-bar tournament">Turnering</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Aug</span>
+                                <div class="month-bar tournament">Turnering</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Sep</span>
+                                <div class="month-bar specialization">Spesialisering</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Okt</span>
+                                <div class="month-bar general">Grunn</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Nov</span>
+                                <div class="month-bar general">Grunn</div>
+                            </div>
+                            <div class="period-month">
+                                <span class="month-label">Des</span>
+                                <div class="month-bar evaluation">Evaluering</div>
+                            </div>
+                        </div>
+
+                        <div class="period-legend">
+                            <div class="legend-item">
+                                <div class="legend-dot evaluation"></div>
+                                <span class="legend-text">E - Evaluering</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot general"></div>
+                                <span class="legend-text">G - Grunnperiode</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot specialization"></div>
+                                <span class="legend-text">S - Spesialisering</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot tournament"></div>
+                                <span class="legend-text">T - Turnering</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Hjem</span>
+                    </div>
+                    <div class="nav-item active">
+                        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <span>Plan</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                        <span>Stats</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                        <span>Profil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================
+             MOCKUP 13: BADGE COLLECTION
+             ======================================== -->
+        <div class="mockup-wrapper">
+            <div class="mockup-label">
+                <h2>13. Badge Samling <span class="unique-tag">Unik</span></h2>
+                <p>85 badges med XP-system og nivåprogresjon</p>
+            </div>
+            <div class="device-wrapper">
+                <div class="device-notch"></div>
+                <div class="phone-frame">
+                <div class="status-bar">
+                    <span>09:41</span>
+                    <div class="status-icons">
+                        <svg class="icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                        <svg class="icon-sm" viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M23 13v-2"/></svg>
+                    </div>
+                </div>
+
+                <div class="app-header">
+                    <div class="header-top">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </div>
+                    <div class="header-title">Mine Badges</div>
+                    <div class="header-subtitle">Andreas Holm</div>
+                </div>
+
+                <div class="content">
+                    <div class="badge-hero">
+                        <div class="xp-display">
+                            <div class="xp-value">4,850</div>
+                            <div class="xp-label">Total XP</div>
+                        </div>
+                        <div class="level-display">
+                            <div class="level-badge">12</div>
+                            <div class="level-info">
+                                <div class="level-name">Golf Warrior</div>
+                                <div class="level-progress-text">1,150 XP til nivå 13</div>
+                                <div class="level-progress-bar">
+                                    <div class="level-progress-fill" style="width: 77%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="badge-stats">
+                        <div class="badge-stat">
+                            <div class="badge-stat-value">27</div>
+                            <div class="badge-stat-label">Opptjent</div>
+                        </div>
+                        <div class="badge-stat">
+                            <div class="badge-stat-value">58</div>
+                            <div class="badge-stat-label">Gjenstår</div>
+                        </div>
+                        <div class="badge-stat">
+                            <div class="badge-stat-value">32%</div>
+                            <div class="badge-stat-label">Komplett</div>
+                        </div>
+                    </div>
+
+                    <div class="badge-category">
+                        <div class="badge-category-header">
+                            <span class="badge-category-title">Driving Badges</span>
+                            <span class="badge-category-count">5/12</span>
+                        </div>
+                        <div class="badge-grid">
+                            <div class="badge-item">
+                                <div class="badge-icon earned">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                    <div class="badge-new">
+                                        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="badge-name">Speed Demon 250m+</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon earned silver">
+                                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div class="badge-name">Fairway Finder 70%</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon earned bronze">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+                                </div>
+                                <div class="badge-name">10 Drives i Rad</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon locked">
+                                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </div>
+                                <div class="badge-name">280m Club</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="badge-category">
+                        <div class="badge-category-header">
+                            <span class="badge-category-title">Short Game Badges</span>
+                            <span class="badge-category-count">8/15</span>
+                        </div>
+                        <div class="badge-grid">
+                            <div class="badge-item">
+                                <div class="badge-icon earned">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                                </div>
+                                <div class="badge-name">Chip Master</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon earned">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                </div>
+                                <div class="badge-name">Bunker Boss</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon earned silver">
+                                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                </div>
+                                <div class="badge-name">Up & Down 50%</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon locked">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                </div>
+                                <div class="badge-name">Flop Shot Artist</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="badge-category">
+                        <div class="badge-category-header">
+                            <span class="badge-category-title">Putting Badges</span>
+                            <span class="badge-category-count">6/14</span>
+                        </div>
+                        <div class="badge-grid">
+                            <div class="badge-item">
+                                <div class="badge-icon earned">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                                </div>
+                                <div class="badge-name">3-Putt Slayer</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon earned bronze">
+                                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                </div>
+                                <div class="badge-name">Lag Putt Pro</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon locked">
+                                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </div>
+                                <div class="badge-name">One-Putt King</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon locked">
+                                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </div>
+                                <div class="badge-name">10m+ Putt</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="badge-category">
+                        <div class="badge-category-header">
+                            <span class="badge-category-title">Trenings Badges</span>
+                            <span class="badge-category-count">8/20</span>
+                        </div>
+                        <div class="badge-grid">
+                            <div class="badge-item">
+                                <div class="badge-icon earned">
+                                    <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                </div>
+                                <div class="badge-name">100 Økter</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon earned">
+                                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                </div>
+                                <div class="badge-name">7 Dager Streak</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon earned silver">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
+                                <div class="badge-name">50 Timer</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon locked">
+                                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </div>
+                                <div class="badge-name">30 Dager Streak</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Hjem</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/></svg>
+                        <span>Trening</span>
+                    </div>
+                    <div class="nav-item active">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <span>Badges</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                        <span>Profil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================
+             MOCKUP 14: ANNUAL PLAN
+             ======================================== -->
+        <div class="mockup-wrapper">
+            <div class="mockup-label">
+                <h2>14. Årsplan & Milepæler <span class="unique-tag">Unik</span></h2>
+                <p>Målstyrt årsplan med konkrete delmål</p>
+            </div>
+            <div class="device-wrapper">
+                <div class="device-notch"></div>
+                <div class="phone-frame">
+                <div class="status-bar">
+                    <span>09:41</span>
+                    <div class="status-icons">
+                        <svg class="icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                        <svg class="icon-sm" viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M23 13v-2"/></svg>
+                    </div>
+                </div>
+
+                <div class="app-header">
+                    <div class="header-top">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </div>
+                    <div class="header-title">Årsplan 2025</div>
+                    <div class="header-subtitle">Andreas Holm · Kategori C</div>
+                </div>
+
+                <div class="content">
+                    <div class="annual-header">
+                        <div class="annual-goal">
+                            <div class="goal-icon">
+                                <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            </div>
+                            <div class="goal-text">
+                                <h3>Hovedmål 2025</h3>
+                                <p>Oppnå Kategori B og HCP 2.0</p>
+                            </div>
+                        </div>
+
+                        <div class="annual-progress">
+                            <div class="progress-item">
+                                <div class="progress-circle">
+                                    <svg width="60" height="60">
+                                        <circle class="progress-circle-bg" cx="30" cy="30" r="25"></circle>
+                                        <circle class="progress-circle-fill" cx="30" cy="30" r="25" style="stroke-dashoffset: 78;"></circle>
+                                    </svg>
+                                    <span class="progress-value">50%</span>
+                                </div>
+                                <div class="progress-label">Årsplan</div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-circle">
+                                    <svg width="60" height="60">
+                                        <circle class="progress-circle-bg" cx="30" cy="30" r="25"></circle>
+                                        <circle class="progress-circle-fill" cx="30" cy="30" r="25" style="stroke-dashoffset: 47; stroke: var(--color-success);"></circle>
+                                    </svg>
+                                    <span class="progress-value">70%</span>
+                                </div>
+                                <div class="progress-label">Tester</div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-circle">
+                                    <svg width="60" height="60">
+                                        <circle class="progress-circle-bg" cx="30" cy="30" r="25"></circle>
+                                        <circle class="progress-circle-fill" cx="30" cy="30" r="25" style="stroke-dashoffset: 94; stroke: var(--color-warning);"></circle>
+                                    </svg>
+                                    <span class="progress-value">40%</span>
+                                </div>
+                                <div class="progress-label">Turneringer</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">Milepæler</div>
+
+                    <div class="milestone-timeline">
+                        <div class="milestone-line"></div>
+
+                        <div class="milestone-item">
+                            <div class="milestone-dot completed">
+                                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                            </div>
+                            <div class="milestone-content">
+                                <div class="milestone-date">Januar 2025</div>
+                                <div class="milestone-title">Evaluering Fullført</div>
+                                <div class="milestone-desc">Alle 20 tester gjennomført. Baseline etablert.</div>
+                                <div class="milestone-target">
+                                    <svg class="icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Kategori C bekreftet
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="milestone-item">
+                            <div class="milestone-dot current"></div>
+                            <div class="milestone-content current">
+                                <div class="milestone-date">Februar - April 2025</div>
+                                <div class="milestone-title">Grunnperiode Mål</div>
+                                <div class="milestone-desc">Fokus på teknikk og short game forbedring.</div>
+                                <div class="milestone-target">
+                                    <svg class="icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                                    PEI 50m → 72% (nå: 65%)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="milestone-item">
+                            <div class="milestone-dot upcoming"></div>
+                            <div class="milestone-content">
+                                <div class="milestone-date">Mai 2025</div>
+                                <div class="milestone-title">Spesialisering Start</div>
+                                <div class="milestone-desc">Konkurranseforberedelse og mental trening.</div>
+                                <div class="milestone-target">
+                                    <svg class="icon-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/></svg>
+                                    HCP 3.5 → 2.8
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="milestone-item">
+                            <div class="milestone-dot upcoming"></div>
+                            <div class="milestone-content">
+                                <div class="milestone-date">Juni - August 2025</div>
+                                <div class="milestone-title">Turneringssesong</div>
+                                <div class="milestone-desc">Deltakelse i regionsmesterskap og nasjonale turneringer.</div>
+                                <div class="milestone-target">
+                                    <svg class="icon-sm" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    Top 10 i 3 turneringer
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="milestone-item">
+                            <div class="milestone-dot upcoming"></div>
+                            <div class="milestone-content">
+                                <div class="milestone-date">Desember 2025</div>
+                                <div class="milestone-title">Årsevaluering</div>
+                                <div class="milestone-desc">Oppnå hovedmål: Kategori B og HCP 2.0</div>
+                                <div class="milestone-target">
+                                    <svg class="icon-sm" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                    Kategori C → B
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Hjem</span>
+                    </div>
+                    <div class="nav-item active">
+                        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <span>Plan</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                        <span>Stats</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                        <span>Profil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================
+             MOCKUP 15: VIDEO SWING TRACKER
+             ======================================== -->
+        <div class="mockup-wrapper">
+            <div class="mockup-label">
+                <h2>15. Video Swing Analyse <span class="unique-tag">Unik</span></h2>
+                <p>Innebygd video-analyse med tegningsverktøy og slow-motion</p>
+            </div>
+            <div class="device-wrapper">
+                <div class="device-notch"></div>
+                <div class="phone-frame">
+                <div class="status-bar">
+                    <span>09:41</span>
+                    <div class="status-icons">
+                        <svg class="icon-sm" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                        <svg class="icon-sm" viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="12" rx="2"/><path d="M23 13v-2"/></svg>
+                    </div>
+                </div>
+
+                <div class="app-header">
+                    <div class="header-top">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </div>
+                    <div class="header-title">Swing Analyse</div>
+                    <div class="header-subtitle">Driver - Face On</div>
+                </div>
+
+                <div class="content" style="padding-top: 0;">
+                    <div class="video-hero">
+                        <div class="video-placeholder">
+                            <div class="golfer-silhouette">
+                                <svg viewBox="0 0 100 150">
+                                    <!-- Stylized golfer silhouette -->
+                                    <circle cx="50" cy="20" r="12" fill="#555"/>
+                                    <path d="M50 32 L50 70 M35 50 L65 50 M50 70 L35 110 M50 70 L65 110" stroke="#555" stroke-width="6" stroke-linecap="round"/>
+                                    <!-- Club -->
+                                    <path d="M65 50 L90 25" stroke="#777" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <!-- Swing plane lines -->
+                            <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                <line x1="100" y1="180" x2="280" y2="40" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="5,5"/>
+                                <line x1="100" y1="180" x2="240" y2="80" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,5"/>
+                                <!-- Angle arc -->
+                                <path d="M 140 140 A 50 50 0 0 1 180 110" stroke="#FFE66D" stroke-width="2" fill="none"/>
+                            </svg>
+                            <!-- Angle indicator -->
+                            <div class="angle-indicator" style="top: 100px; right: 80px;">
+                                47°
+                            </div>
+                        </div>
+                        <div class="video-overlay">
+                            <div class="video-title">Driver Swing - 16. des</div>
+                            <div class="video-date">Trening på range</div>
+                        </div>
+                    </div>
+
+                    <div class="video-controls">
+                        <button class="video-btn">
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+                        </button>
+                        <button class="video-btn">
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/></svg>
+                        </button>
+                        <button class="video-btn primary">
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </button>
+                        <button class="video-btn">
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>
+                        </button>
+                        <button class="video-btn">
+                            <svg class="icon" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="speed-selector" style="display: flex; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <button class="speed-btn">0.1x</button>
+                        <button class="speed-btn active">0.25x</button>
+                        <button class="speed-btn">0.5x</button>
+                        <button class="speed-btn">1x</button>
+                    </div>
+
+                    <div class="annotation-tools">
+                        <button class="tool-btn active">
+                            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span>Linje</span>
+                        </button>
+                        <button class="tool-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>Sirkel</span>
+                        </button>
+                        <button class="tool-btn">
+                            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            <span>Pil</span>
+                        </button>
+                        <button class="tool-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>
+                            <span>Vinkel</span>
+                        </button>
+                        <button class="tool-btn">
+                            <svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L9 7l3.5 3.5"/><path d="M2 21l7-7"/></svg>
+                            <span>Frihånd</span>
+                        </button>
+                    </div>
+
+                    <div class="swing-metrics">
+                        <div class="card-header">
+                            <span class="card-title">Swing Data</span>
+                            <svg class="icon-sm" style="color: var(--color-text-light);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                        </div>
+                        <div class="metrics-grid">
+                            <div class="metric-item">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                </div>
+                                <div class="metric-data">
+                                    <h4>118 mph</h4>
+                                    <span>Klubbhastighet</span>
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/></svg>
+                                </div>
+                                <div class="metric-data">
+                                    <h4>47°</h4>
+                                    <span>Swing Plane</span>
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                </div>
+                                <div class="metric-data">
+                                    <h4>1.48</h4>
+                                    <span>Smash Factor</span>
+                                </div>
+                            </div>
+                            <div class="metric-item">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                                <div class="metric-data">
+                                    <h4>1.12s</h4>
+                                    <span>Tempo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swing-comparison">
+                        <div class="comparison-header">
+                            <span class="comparison-title">Sammenlign med</span>
+                            <svg class="icon-sm" style="color: var(--color-primary);" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </div>
+                        <div class="comparison-grid">
+                            <div class="comparison-item">
+                                <div class="comparison-thumb">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                </div>
+                                <span class="comparison-label">Forrige uke</span>
+                            </div>
+                            <div class="comparison-item">
+                                <div class="comparison-thumb">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                </div>
+                                <span class="comparison-label">Pro referanse</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-title" style="margin-top: var(--spacing-lg);">Mine Videoer</div>
+                    <div class="video-library-mini">
+                        <div class="video-thumb-mini active">
+                            <span class="video-thumb-date">16. des</span>
+                        </div>
+                        <div class="video-thumb-mini">
+                            <span class="video-thumb-date">14. des</span>
+                        </div>
+                        <div class="video-thumb-mini">
+                            <span class="video-thumb-date">10. des</span>
+                        </div>
+                        <div class="video-thumb-mini">
+                            <span class="video-thumb-date">5. des</span>
+                        </div>
+                        <div class="video-thumb-mini">
+                            <span class="video-thumb-date">1. des</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Hjem</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/></svg>
+                        <span>Trening</span>
+                    </div>
+                    <div class="nav-item active">
+                        <svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                        <span>Video</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                        <span>Profil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer style="background: var(--color-primary); color: white; text-align: center; padding: var(--spacing-xl);">
+        <p style="opacity: 0.8;">IUP Golf Platform - Spiller Mockups Del 3</p>
+        <p style="font-size: 14px; opacity: 0.6; margin-top: var(--spacing-sm);">Alle 15 spiller-mockups komplett</p>
+    </footer>
+</body>
+</html>
