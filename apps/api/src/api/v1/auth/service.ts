@@ -76,7 +76,7 @@ export class AuthService {
             lastName: input.lastName,
             email: input.email,
             dateOfBirth: new Date('2000-01-01'), // Default DOB - must be updated by user
-            gender: 'M', // Default value - can be updated later
+            gender: 'male', // Default value - can be updated later
             category: 'B', // Default category - can be updated later
           },
         });

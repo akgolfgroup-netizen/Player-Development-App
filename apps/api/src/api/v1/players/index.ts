@@ -13,7 +13,7 @@ import {
   PlayerIdParam,
   WeeklySummaryQuery,
 } from './schema';
-import { authenticateUser } from '../../../middleware/auth';
+import { authenticateUser, requireAdmin } from '../../../middleware/auth';
 import { injectTenantContext } from '../../../middleware/tenant';
 import { validate } from '../../../utils/validation';
 
@@ -204,7 +204,7 @@ export async function playerRoutes(app: FastifyInstance): Promise<void> {
   app.delete<{ Params: PlayerIdParam }>(
     '/:id',
     {
-      preHandler: preHandlers,
+      preHandler: [...preHandlers, requireAdmin],
       schema: {
         description: 'Delete player',
         tags: ['players'],
@@ -217,6 +217,7 @@ export async function playerRoutes(app: FastifyInstance): Promise<void> {
               message: { type: 'string', example: 'Player deleted successfully' },
             },
           },
+          403: { $ref: 'Error#' },
           404: { $ref: 'Error#' },
         },
       },

@@ -121,6 +121,90 @@ describe('Dashboard API Integration Tests', () => {
       expect(body).toHaveProperty('badges');
       expect(body).toHaveProperty('goals');
       expect(body).toHaveProperty('weeklyStats');
+
+      // New fields from dashboard enhancement
+      expect(body).toHaveProperty('nextTournament');
+      expect(body).toHaveProperty('nextTest');
+      expect(body).toHaveProperty('breakingPoints');
+      expect(body).toHaveProperty('recentTests');
+      expect(body).toHaveProperty('messages');
+      expect(body).toHaveProperty('unreadCount');
+    });
+
+    it('should return breaking points array', async () => {
+      if (!playerToken) return;
+
+      const response = await app.inject({
+        method: 'GET',
+        url: '/api/v1/dashboard',
+        headers: { authorization: `Bearer ${playerToken}` },
+      });
+
+      expect(response.statusCode).toBe(200);
+      const body = JSON.parse(response.body);
+
+      expect(Array.isArray(body.breakingPoints)).toBe(true);
+      // Breaking points should have max 3 items
+      expect(body.breakingPoints.length).toBeLessThanOrEqual(3);
+
+      // Check structure of breaking points
+      if (body.breakingPoints.length > 0) {
+        const bp = body.breakingPoints[0];
+        expect(bp).toHaveProperty('id');
+        expect(bp).toHaveProperty('area');
+        expect(bp).toHaveProperty('title');
+        expect(bp).toHaveProperty('status');
+        expect(bp).toHaveProperty('priority');
+        expect(bp).toHaveProperty('progress');
+        expect(['high', 'medium', 'low']).toContain(bp.priority);
+      }
+    });
+
+    it('should return recent tests array', async () => {
+      if (!playerToken) return;
+
+      const response = await app.inject({
+        method: 'GET',
+        url: '/api/v1/dashboard',
+        headers: { authorization: `Bearer ${playerToken}` },
+      });
+
+      expect(response.statusCode).toBe(200);
+      const body = JSON.parse(response.body);
+
+      expect(Array.isArray(body.recentTests)).toBe(true);
+      // Recent tests should have max 3 items
+      expect(body.recentTests.length).toBeLessThanOrEqual(3);
+
+      // Check structure of recent tests
+      if (body.recentTests.length > 0) {
+        const test = body.recentTests[0];
+        expect(test).toHaveProperty('id');
+        expect(test).toHaveProperty('testId');
+        expect(test).toHaveProperty('name');
+        expect(test).toHaveProperty('date');
+        expect(test).toHaveProperty('score');
+        expect(typeof test.score).toBe('number');
+      }
+    });
+
+    it('should handle null next tournament and test', async () => {
+      if (!playerToken) return;
+
+      const response = await app.inject({
+        method: 'GET',
+        url: '/api/v1/dashboard',
+        headers: { authorization: `Bearer ${playerToken}` },
+      });
+
+      expect(response.statusCode).toBe(200);
+      const body = JSON.parse(response.body);
+
+      // Next tournament can be null or object
+      expect(body.nextTournament === null || typeof body.nextTournament === 'object').toBe(true);
+
+      // Next test can be null or object
+      expect(body.nextTest === null || typeof body.nextTest === 'object').toBe(true);
     });
 
     it('should accept date parameter', async () => {
