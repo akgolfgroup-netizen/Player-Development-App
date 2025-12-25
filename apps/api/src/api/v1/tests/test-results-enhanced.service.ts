@@ -5,7 +5,8 @@
 
 import { PrismaClient } from '@prisma/client';
 import { NotFoundError, BadRequestError } from '../../../middleware/errors';
-import { calculateTestResult, validateTestInput } from '../../../domain/tests';
+import { calculateTestResultAsync, validateTestInput } from '../../../domain/tests';
+import { RequirementsRepository } from '../../../domain/tests/requirements-repository';
 import {
   calculatePeerComparison,
   matchesPeerCriteria,
@@ -55,10 +56,12 @@ export interface TestResultWithComparison {
 
 export class TestResultsEnhancedService {
   private badgeEvaluator: BadgeEvaluatorService;
+  private requirementsRepo: RequirementsRepository;
   private logger = logger;
 
   constructor(private prisma: PrismaClient) {
     this.badgeEvaluator = new BadgeEvaluatorService(prisma);
+    this.requirementsRepo = new RequirementsRepository(prisma);
   }
 
   /**
@@ -131,7 +134,7 @@ export class TestResultsEnhancedService {
       handicap: player.handicap ? Number(player.handicap) : undefined,
     };
 
-    const calculatedResult = calculateTestResult(
+    const calculatedResult = await calculateTestResultAsync(
       input.testNumber,
       {
         metadata: {
@@ -144,7 +147,8 @@ export class TestResultsEnhancedService {
         },
         ...input.testData,
       },
-      playerContext
+      playerContext,
+      this.requirementsRepo
     );
 
     // 5. Fetch test definition

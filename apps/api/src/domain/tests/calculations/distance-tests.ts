@@ -15,6 +15,7 @@ import type {
   PlayerContext,
   CategoryRequirement,
 } from '../types';
+import type { RequirementsRepository } from '../requirements-repository';
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -37,14 +38,22 @@ function round(value: number, decimals: number): number {
 }
 
 /**
- * Get category requirement (to be implemented with database lookup)
+ * Get category requirement from database or use defaults
  */
-function getRequirement(
+async function getRequirement(
   player: PlayerContext,
-  testNumber: number
-): CategoryRequirement {
-  // TODO: Implement database lookup
-  // For now, return reasonable defaults for testing
+  testNumber: number,
+  repository?: RequirementsRepository
+): Promise<CategoryRequirement> {
+  if (repository) {
+    return await repository.getRequirement(
+      player.category,
+      player.gender,
+      testNumber
+    );
+  }
+
+  // Fallback to defaults if no repository provided (for backward compatibility)
   return {
     category: player.category,
     gender: player.gender,
@@ -96,10 +105,11 @@ function calculateTestResult(
 // Formula: AVG(TOP 3 OF 6 shots) in meters
 // ============================================================================
 
-export function calculateTest1(
+export async function calculateTest1(
   input: Test1Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   // Extract carry distances (handle both object and number formats for testing)
   const distances = input.shots.map((shot) =>
     typeof shot === 'number' ? shot : shot.carryDistanceMeters
@@ -109,7 +119,7 @@ export function calculateTest1(
   const averageCarry = calculateTopNAverage(distances, 3);
 
   // Get requirement
-  const requirement = getRequirement(player, 1);
+  const requirement = await getRequirement(player, 1, repository);
 
   // Calculate result
   return calculateTestResult(averageCarry, requirement);
@@ -120,15 +130,16 @@ export function calculateTest1(
 // Formula: AVG(TOP 3 OF 6 shots) in meters
 // ============================================================================
 
-export function calculateTest2(
+export async function calculateTest2(
   input: Test2Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   const distances = input.shots.map((shot) =>
     typeof shot === 'number' ? shot : shot.carryDistanceMeters
   );
   const averageCarry = calculateTopNAverage(distances, 3);
-  const requirement = getRequirement(player, 2);
+  const requirement = await getRequirement(player, 2, repository);
   return calculateTestResult(averageCarry, requirement);
 }
 
@@ -137,13 +148,14 @@ export function calculateTest2(
 // Formula: AVG(TOP 3 OF 6 shots) in meters
 // ============================================================================
 
-export function calculateTest3(
+export async function calculateTest3(
   input: Test3Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   const distances = input.shots.map((shot) => shot.carryDistanceMeters);
   const averageCarry = calculateTopNAverage(distances, 3);
-  const requirement = getRequirement(player, 3);
+  const requirement = await getRequirement(player, 3, repository);
   return calculateTestResult(averageCarry, requirement);
 }
 
@@ -152,13 +164,14 @@ export function calculateTest3(
 // Formula: AVG(TOP 3 OF 6 shots) in meters
 // ============================================================================
 
-export function calculateTest4(
+export async function calculateTest4(
   input: Test4Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   const distances = input.shots.map((shot) => shot.carryDistanceMeters);
   const averageCarry = calculateTopNAverage(distances, 3);
-  const requirement = getRequirement(player, 4);
+  const requirement = await getRequirement(player, 4, repository);
   return calculateTestResult(averageCarry, requirement);
 }
 
@@ -167,13 +180,14 @@ export function calculateTest4(
 // Formula: AVG(TOP 3 OF 6 shots) in km/h
 // ============================================================================
 
-export function calculateTest5(
+export async function calculateTest5(
   input: Test5Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   const speeds = input.shots.map((shot) => shot.clubSpeedKmh);
   const averageSpeed = calculateTopNAverage(speeds, 3);
-  const requirement = getRequirement(player, 5);
+  const requirement = await getRequirement(player, 5, repository);
   return calculateTestResult(averageSpeed, requirement);
 }
 
@@ -182,13 +196,14 @@ export function calculateTest5(
 // Formula: AVG(TOP 3 OF 6 shots) in km/h
 // ============================================================================
 
-export function calculateTest6(
+export async function calculateTest6(
   input: Test6Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   const speeds = input.shots.map((shot) => shot.ballSpeedKmh);
   const averageSpeed = calculateTopNAverage(speeds, 3);
-  const requirement = getRequirement(player, 6);
+  const requirement = await getRequirement(player, 6, repository);
   return calculateTestResult(averageSpeed, requirement);
 }
 
@@ -197,10 +212,11 @@ export function calculateTest6(
 // Formula: AVG(TOP 3 OF 6 shots) where smash = ball_speed / club_speed
 // ============================================================================
 
-export function calculateTest7(
+export async function calculateTest7(
   input: Test7Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   // Calculate smash factor for each shot
   const smashFactors = input.shots.map(
     (shot) => shot.ballSpeedKmh / shot.clubSpeedKmh
@@ -210,7 +226,7 @@ export function calculateTest7(
   const averageSmashFactor = calculateTopNAverage(smashFactors, 3);
 
   // Get requirement
-  const requirement = getRequirement(player, 7);
+  const requirement = await getRequirement(player, 7, repository);
 
   // Calculate result
   return calculateTestResult(averageSmashFactor, requirement);

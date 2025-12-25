@@ -4,6 +4,7 @@
  */
 
 import type { TestInput, TestResult, PlayerContext } from './types';
+import type { RequirementsRepository } from './requirements-repository';
 import {
   calculateTest1,
   calculateTest2,
@@ -33,63 +34,95 @@ import {
  * @param testNumber - Test number (1-20)
  * @param input - Test input data
  * @param player - Player context with category, gender, etc.
+ * @param repository - Optional requirements repository for database lookups (uses defaults if not provided)
  * @returns Calculated test result
+ * @deprecated Use calculateTestResultAsync for explicit async usage
  */
 export function calculateTestResult(
   testNumber: number,
   input: TestInput,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): TestResult | Promise<TestResult> {
+  // Validate test number first (synchronous validation)
+  if (testNumber < 1 || testNumber > 20) {
+    throw new Error(`Invalid test number: ${testNumber}`);
+  }
+
+  // If repository provided, use async version
+  if (repository) {
+    return calculateTestResultAsync(testNumber, input, player, repository);
+  }
+
+  // Otherwise, throw error as database is required for calculations
+  throw new Error('RequirementsRepository is required for test calculations. Use calculateTestResultAsync.');
+}
+
+/**
+ * Calculate test result based on test number with database-backed requirements
+ *
+ * @param testNumber - Test number (1-20)
+ * @param input - Test input data
+ * @param player - Player context with category, gender, etc.
+ * @param repository - Requirements repository for database lookups
+ * @returns Calculated test result
+ */
+export async function calculateTestResultAsync(
+  testNumber: number,
+  input: TestInput,
+  player: PlayerContext,
+  repository: RequirementsRepository
+): Promise<TestResult> {
   switch (testNumber) {
     // Distance Tests (1-7)
     case 1:
-      return calculateTest1(input as any, player);
+      return await calculateTest1(input as any, player, repository);
     case 2:
-      return calculateTest2(input as any, player);
+      return await calculateTest2(input as any, player, repository);
     case 3:
-      return calculateTest3(input as any, player);
+      return await calculateTest3(input as any, player, repository);
     case 4:
-      return calculateTest4(input as any, player);
+      return await calculateTest4(input as any, player, repository);
     case 5:
-      return calculateTest5(input as any, player);
+      return await calculateTest5(input as any, player, repository);
     case 6:
-      return calculateTest6(input as any, player);
+      return await calculateTest6(input as any, player, repository);
     case 7:
-      return calculateTest7(input as any, player);
+      return await calculateTest7(input as any, player, repository);
 
     // Approach Tests (8-11)
     case 8:
-      return calculateTest8(input as any, player);
+      return await calculateTest8(input as any, player, repository);
     case 9:
-      return calculateTest9(input as any, player);
+      return await calculateTest9(input as any, player, repository);
     case 10:
-      return calculateTest10(input as any, player);
+      return await calculateTest10(input as any, player, repository);
     case 11:
-      return calculateTest11(input as any, player);
+      return await calculateTest11(input as any, player, repository);
 
     // Physical Tests (12-14)
     case 12:
-      return calculateTest12(input as any, player);
+      return await calculateTest12(input as any, player, repository);
     case 13:
-      return calculateTest13(input as any, player);
+      return await calculateTest13(input as any, player, repository);
     case 14:
-      return calculateTest14(input as any, player);
+      return await calculateTest14(input as any, player, repository);
 
     // Short Game Tests (15-18)
     case 15:
-      return calculateTest15(input as any, player);
+      return await calculateTest15(input as any, player, repository);
     case 16:
-      return calculateTest16(input as any, player);
+      return await calculateTest16(input as any, player, repository);
     case 17:
-      return calculateTest17(input as any, player);
+      return await calculateTest17(input as any, player, repository);
     case 18:
-      return calculateTest18(input as any, player);
+      return await calculateTest18(input as any, player, repository);
 
     // On-Course Tests (19-20)
     case 19:
-      return calculateTest19(input as any, player);
+      return await calculateTest19(input as any, player, repository);
     case 20:
-      return calculateTest20(input as any, player);
+      return await calculateTest20(input as any, player, repository);
 
     default:
       throw new Error(`Invalid test number: ${testNumber}`);

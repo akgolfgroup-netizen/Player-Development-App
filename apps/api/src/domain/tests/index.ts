@@ -6,7 +6,10 @@
 export type * from './types';
 
 // Calculator
-export { calculateTestResult, validateTestInput } from './test-calculator';
+export { calculateTestResult, calculateTestResultAsync, validateTestInput } from './test-calculator';
+
+// Requirements Repository
+export { RequirementsRepository } from './requirements-repository';
 
 // Individual calculation functions
 export * from './calculations';

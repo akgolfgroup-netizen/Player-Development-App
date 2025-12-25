@@ -12,6 +12,7 @@ import type {
   PlayerContext,
   CategoryRequirement,
 } from '../types';
+import type { RequirementsRepository } from '../requirements-repository';
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -27,11 +28,20 @@ function round(value: number, decimals: number): number {
 /**
  * Get category requirement (to be implemented with database lookup)
  */
-function getRequirement(
+async function getRequirement(
   player: PlayerContext,
-  testNumber: number
-): CategoryRequirement {
-  // TODO: Implement database lookup
+  testNumber: number,
+  repository?: RequirementsRepository
+): Promise<CategoryRequirement> {
+  if (repository) {
+    return await repository.getRequirement(
+      player.category,
+      player.gender,
+      testNumber
+    );
+  }
+
+  // Fallback to defaults if no repository provided (for backward compatibility)
   return {
     category: player.category,
     gender: player.gender,
@@ -83,17 +93,18 @@ function calculateTestResult(
 // Formula: Success rate (%) = (holed_putts / total_putts) * 100
 // ============================================================================
 
-export function calculateTest15(
+export async function calculateTest15(
   input: Test15Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   const totalPutts = input.putts.length;
   const holedPutts = input.putts.filter((putt) => putt.holed).length;
 
   // Calculate success rate percentage
   const successRate = (holedPutts / totalPutts) * 100;
 
-  const requirement = getRequirement(player, 15);
+  const requirement = await getRequirement(player, 15, repository);
   return calculateTestResult(successRate, requirement);
 }
 
@@ -102,17 +113,18 @@ export function calculateTest15(
 // Formula: Success rate (%) = (holed_putts / total_putts) * 100
 // ============================================================================
 
-export function calculateTest16(
+export async function calculateTest16(
   input: Test16Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   const totalPutts = input.putts.length;
   const holedPutts = input.putts.filter((putt) => putt.holed).length;
 
   // Calculate success rate percentage
   const successRate = (holedPutts / totalPutts) * 100;
 
-  const requirement = getRequirement(player, 16);
+  const requirement = await getRequirement(player, 16, repository);
   return calculateTestResult(successRate, requirement);
 }
 
@@ -121,15 +133,16 @@ export function calculateTest16(
 // Formula: Average distance from hole in cm (lower is better)
 // ============================================================================
 
-export function calculateTest17(
+export async function calculateTest17(
   input: Test17Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   // Calculate average distance from hole
   const distances = input.chips.map((chip) => chip.distanceFromHoleCm);
   const avgDistance = distances.reduce((sum, d) => sum + d, 0) / distances.length;
 
-  const requirement = getRequirement(player, 17);
+  const requirement = await getRequirement(player, 17, repository);
 
   // For "lower is better" tests, invert the percentage calculation
   let passed = false;
@@ -155,15 +168,16 @@ export function calculateTest17(
 // Formula: Average distance from hole in cm (lower is better)
 // ============================================================================
 
-export function calculateTest18(
+export async function calculateTest18(
   input: Test18Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   // Calculate average distance from hole
   const distances = input.shots.map((shot) => shot.distanceFromHoleCm);
   const avgDistance = distances.reduce((sum, d) => sum + d, 0) / distances.length;
 
-  const requirement = getRequirement(player, 18);
+  const requirement = await getRequirement(player, 18, repository);
 
   // For "lower is better" tests, invert the percentage calculation
   let passed = false;

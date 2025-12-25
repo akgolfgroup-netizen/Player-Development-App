@@ -54,7 +54,6 @@ Returns complete dashboard data for the authenticated player including:
               format: 'date',
               pattern: '^\\d{4}-\\d{2}-\\d{2}$',
               description: 'Date in YYYY-MM-DD format (e.g., 2025-12-25). Defaults to current date.',
-              example: '2025-12-25',
             },
           },
         },
@@ -217,35 +216,35 @@ Returns complete dashboard data for the authenticated player including:
             description: 'Bad request - Invalid date format',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Invalid date format. Use YYYY-MM-DD' },
+              error: { type: 'string' },
             },
           },
           401: {
             description: 'Unauthorized - Missing or invalid JWT token',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Authentication required' },
+              error: { type: 'string' },
             },
           },
           403: {
             description: 'Forbidden - Insufficient permissions',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Dashboard only available for players' },
+              error: { type: 'string' },
             },
           },
           404: {
             description: 'Not found - Player not found',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Player not found' },
+              error: { type: 'string' },
             },
           },
           500: {
             description: 'Internal server error',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Failed to retrieve dashboard data' },
+              error: { type: 'string' },
             },
           },
         },
@@ -319,7 +318,6 @@ coaches and administrators to monitor their athletes' progress and training data
               type: 'string',
               format: 'uuid',
               description: 'Unique identifier of the player',
-              example: '00000000-0000-0000-0000-000000000004',
             },
           },
         },
@@ -331,7 +329,6 @@ coaches and administrators to monitor their athletes' progress and training data
               format: 'date',
               pattern: '^\\d{4}-\\d{2}-\\d{2}$',
               description: 'Date in YYYY-MM-DD format. Defaults to current date.',
-              example: '2025-12-25',
             },
           },
         },
@@ -345,21 +342,21 @@ coaches and administrators to monitor their athletes' progress and training data
             description: 'Unauthorized - Missing or invalid JWT token',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Authentication required' },
+              error: { type: 'string' },
             },
           },
           403: {
             description: 'Forbidden - Insufficient permissions (not coach or admin)',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Insufficient permissions' },
+              error: { type: 'string' },
             },
           },
           404: {
             description: 'Not found - Player not found in tenant',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Player not found' },
+              error: { type: 'string' },
             },
           },
         },
@@ -414,14 +411,12 @@ Retrieves aggregated training statistics for a specific week. Defaults to curren
               minimum: 1,
               maximum: 53,
               description: 'ISO week number (1-53). Defaults to current week.',
-              example: 52,
             },
             year: {
               type: 'number',
               minimum: 2000,
               maximum: 2100,
               description: 'Year (YYYY). Defaults to current year.',
-              example: 2025,
             },
           },
         },
@@ -453,14 +448,14 @@ Retrieves aggregated training statistics for a specific week. Defaults to curren
             description: 'Forbidden - Not a player',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Stats only available for players' },
+              error: { type: 'string' },
             },
           },
           404: {
             description: 'Not found - No stats for this week or player not found',
             type: 'object',
             properties: {
-              message: { type: 'string', example: 'No stats for this week' },
+              message: { type: 'string' },
             },
           },
         },
@@ -536,24 +531,20 @@ Returns badges sorted by earned date (most recent first).
                 code: {
                   type: 'string',
                   description: 'Badge code identifier (e.g., "putting_master_silver")',
-                  example: 'putting_master_silver',
                 },
                 name: {
                   type: 'string',
                   description: 'Display name of the badge',
-                  example: 'Putting Master - Silver',
                 },
                 description: {
                   type: 'string',
                   nullable: true,
                   description: 'Badge description and unlock criteria',
-                  example: 'Complete 50 putting sessions with 80%+ accuracy',
                 },
                 icon: {
                   type: 'string',
                   nullable: true,
                   description: 'Icon identifier or emoji',
-                  example: '🏅',
                 },
                 tier: {
                   type: 'string',
@@ -564,13 +555,11 @@ Returns badges sorted by earned date (most recent first).
                   type: 'string',
                   nullable: true,
                   description: 'Badge category (e.g., "putting", "driving", "short_game")',
-                  example: 'putting',
                 },
                 earnedAt: {
                   type: 'string',
                   format: 'date-time',
                   description: 'Timestamp when badge was earned',
-                  example: '2025-12-15T10:30:00Z',
                 },
                 context: {
                   type: 'object',
@@ -585,14 +574,14 @@ Returns badges sorted by earned date (most recent first).
             description: 'Forbidden - Not a player',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Badges only available for players' },
+              error: { type: 'string' },
             },
           },
           404: {
             description: 'Not found - Player not found',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Player not found' },
+              error: { type: 'string' },
             },
           },
         },
@@ -666,7 +655,6 @@ Returns goals sorted by target date (nearest first).
               type: 'string',
               enum: ['active', 'completed', 'paused', 'cancelled'],
               description: 'Filter goals by status. Omit to retrieve all goals.',
-              example: 'active',
             },
           },
         },
@@ -686,31 +674,26 @@ Returns goals sorted by target date (nearest first).
                 title: {
                   type: 'string',
                   description: 'Goal title/description',
-                  example: 'Reduce handicap to 10',
                 },
                 category: {
                   type: 'string',
                   nullable: true,
                   description: 'Goal category (e.g., "handicap", "putting", "driving")',
-                  example: 'handicap',
                 },
                 targetValue: {
                   type: 'number',
                   nullable: true,
                   description: 'Numeric target value (if applicable)',
-                  example: 10,
                 },
                 currentValue: {
                   type: 'number',
                   nullable: true,
                   description: 'Current value/progress',
-                  example: 12.5,
                 },
                 unit: {
                   type: 'string',
                   nullable: true,
                   description: 'Unit of measurement (e.g., "hcp", "meters", "percent")',
-                  example: 'hcp',
                 },
                 progress: {
                   type: 'number',
@@ -718,7 +701,6 @@ Returns goals sorted by target date (nearest first).
                   maximum: 100,
                   nullable: true,
                   description: 'Progress percentage (0-100)',
-                  example: 62.5,
                 },
                 status: {
                   type: 'string',
@@ -736,7 +718,6 @@ Returns goals sorted by target date (nearest first).
                   format: 'date',
                   nullable: true,
                   description: 'Target completion date',
-                  example: '2026-06-01',
                 },
                 createdAt: {
                   type: 'string',
@@ -756,14 +737,14 @@ Returns goals sorted by target date (nearest first).
             description: 'Forbidden - Not a player',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Goals only available for players' },
+              error: { type: 'string' },
             },
           },
           404: {
             description: 'Not found - Player not found',
             type: 'object',
             properties: {
-              error: { type: 'string', example: 'Player not found' },
+              error: { type: 'string' },
             },
           },
         },

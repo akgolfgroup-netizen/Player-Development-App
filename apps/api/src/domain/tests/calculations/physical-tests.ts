@@ -11,6 +11,7 @@ import type {
   PlayerContext,
   CategoryRequirement,
 } from '../types';
+import type { RequirementsRepository } from '../requirements-repository';
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -26,11 +27,20 @@ function round(value: number, decimals: number): number {
 /**
  * Get category requirement (to be implemented with database lookup)
  */
-function getRequirement(
+async function getRequirement(
   player: PlayerContext,
-  testNumber: number
-): CategoryRequirement {
-  // TODO: Implement database lookup
+  testNumber: number,
+  repository?: RequirementsRepository
+): Promise<CategoryRequirement> {
+  if (repository) {
+    return await repository.getRequirement(
+      player.category,
+      player.gender,
+      testNumber
+    );
+  }
+
+  // Fallback to defaults if no repository provided (for backward compatibility)
   return {
     category: player.category,
     gender: player.gender,
@@ -82,13 +92,14 @@ function calculateTestResult(
 // Formula: Total repetitions completed
 // ============================================================================
 
-export function calculateTest12(
+export async function calculateTest12(
   input: Test12Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   // Test 12: 1RM Deadlift - use weightKg as the result
   const weightKg = input.weightKg;
-  const requirement = getRequirement(player, 12);
+  const requirement = await getRequirement(player, 12, repository);
   return calculateTestResult(weightKg, requirement);
 }
 
@@ -97,13 +108,14 @@ export function calculateTest12(
 // Formula: Total duration in seconds
 // ============================================================================
 
-export function calculateTest13(
+export async function calculateTest13(
   input: Test13Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   // Test 13: 1RM Trap Bar Deadlift - use weightKg as the result
   const weightKg = input.weightKg;
-  const requirement = getRequirement(player, 13);
+  const requirement = await getRequirement(player, 13, repository);
   return calculateTestResult(weightKg, requirement);
 }
 
@@ -112,13 +124,14 @@ export function calculateTest13(
 // Formula: Best of 3 attempts in cm
 // ============================================================================
 
-export function calculateTest14(
+export async function calculateTest14(
   input: Test14Input,
-  player: PlayerContext
-): TestResult {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult> {
   // Test 14: 3000m Run - use timeSeconds as the result (lower is better)
   const timeSeconds = input.timeSeconds;
-  const requirement = getRequirement(player, 14);
+  const requirement = await getRequirement(player, 14, repository);
   // Note: For time-based tests, lower values are better
   return calculateTestResult(timeSeconds, requirement);
 }

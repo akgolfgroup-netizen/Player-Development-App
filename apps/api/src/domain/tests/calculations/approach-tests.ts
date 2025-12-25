@@ -21,6 +21,7 @@ import type {
   PlayerContext,
   CategoryRequirement,
 } from '../types';
+import type { RequirementsRepository } from '../requirements-repository';
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -34,13 +35,22 @@ function round(value: number, decimals: number): number {
 }
 
 /**
- * Get category requirement (to be implemented with database lookup)
+ * Get category requirement from database or use defaults
  */
-function getRequirement(
+async function getRequirement(
   player: PlayerContext,
-  testNumber: number
-): CategoryRequirement {
-  // TODO: Implement database lookup
+  testNumber: number,
+  repository?: RequirementsRepository
+): Promise<CategoryRequirement> {
+  if (repository) {
+    return await repository.getRequirement(
+      player.category,
+      player.gender,
+      testNumber
+    );
+  }
+
+  // Fallback to defaults if no repository provided (for backward compatibility)
   return {
     category: player.category,
     gender: player.gender,
@@ -100,12 +110,13 @@ function calculateApproachResult(
 // Formula: PEI = avg_distance_to_pin / 2.5m
 // ============================================================================
 
-export function calculateTest8(
+export async function calculateTest8(
   input: Test8Input,
-  player: PlayerContext
-): TestResult & { pei: number } {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult & { pei: number }> {
   const distances = input.shots.map((shot) => shot.distanceToHoleMeters);
-  const requirement = getRequirement(player, 8);
+  const requirement = await getRequirement(player, 8, repository);
   const idealDistance = 2.5; // meters
 
   return calculateApproachResult(distances, idealDistance, requirement);
@@ -116,12 +127,13 @@ export function calculateTest8(
 // Formula: PEI = avg_distance_to_pin / 5.0m
 // ============================================================================
 
-export function calculateTest9(
+export async function calculateTest9(
   input: Test9Input,
-  player: PlayerContext
-): TestResult & { pei: number } {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult & { pei: number }> {
   const distances = input.shots.map((shot) => shot.distanceToHoleMeters);
-  const requirement = getRequirement(player, 9);
+  const requirement = await getRequirement(player, 9, repository);
   const idealDistance = 5.0; // meters
 
   return calculateApproachResult(distances, idealDistance, requirement);
@@ -132,12 +144,13 @@ export function calculateTest9(
 // Formula: PEI = avg_distance_to_pin / 7.5m
 // ============================================================================
 
-export function calculateTest10(
+export async function calculateTest10(
   input: Test10Input,
-  player: PlayerContext
-): TestResult & { pei: number } {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult & { pei: number }> {
   const distances = input.shots.map((shot) => shot.distanceToHoleMeters);
-  const requirement = getRequirement(player, 10);
+  const requirement = await getRequirement(player, 10, repository);
   const idealDistance = 7.5; // meters
 
   return calculateApproachResult(distances, idealDistance, requirement);
@@ -148,12 +161,13 @@ export function calculateTest10(
 // Formula: PEI = avg_distance_to_pin / 10.0m
 // ============================================================================
 
-export function calculateTest11(
+export async function calculateTest11(
   input: Test11Input,
-  player: PlayerContext
-): TestResult & { pei: number } {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<TestResult & { pei: number }> {
   const distances = input.shots.map((shot) => shot.distanceToHoleMeters);
-  const requirement = getRequirement(player, 11);
+  const requirement = await getRequirement(player, 11, repository);
   const idealDistance = 10.0; // meters
 
   return calculateApproachResult(distances, idealDistance, requirement);

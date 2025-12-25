@@ -10,6 +10,7 @@ import type {
   PlayerContext,
   CategoryRequirement,
 } from '../types';
+import type { RequirementsRepository } from '../requirements-repository';
 
 // ============================================================================
 // HELPER FUNCTIONS
@@ -25,11 +26,20 @@ function round(value: number, decimals: number): number {
 /**
  * Get category requirement (to be implemented with database lookup)
  */
-function getRequirement(
+async function getRequirement(
   player: PlayerContext,
-  testNumber: number
-): CategoryRequirement {
-  // TODO: Implement database lookup
+  testNumber: number,
+  repository?: RequirementsRepository
+): Promise<CategoryRequirement> {
+  if (repository) {
+    return await repository.getRequirement(
+      player.category,
+      player.gender,
+      testNumber
+    );
+  }
+
+  // Fallback to defaults if no repository provided (for backward compatibility)
   return {
     category: player.category,
     gender: player.gender,
@@ -92,10 +102,11 @@ export interface Test19Result extends TestResult {
   upAndDownPercentage: number;
 }
 
-export function calculateTest19(
+export async function calculateTest19(
   input: Test19Input,
-  player: PlayerContext
-): Test19Result {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<Test19Result> {
   // Calculate total score and par
   const totalScore = input.holes.reduce((sum, hole) => sum + hole.score, 0);
   const totalPar = input.holes.reduce((sum, hole) => sum + hole.par, 0);
@@ -130,7 +141,7 @@ export function calculateTest19(
     : 0;
 
   // Get requirement (score to par)
-  const requirement = getRequirement(player, 19);
+  const requirement = await getRequirement(player, 19, repository);
 
   // Calculate base result
   const baseResult = calculateTestResult(scoreToPar, requirement);
@@ -164,10 +175,11 @@ export interface Test20Result extends TestResult {
   averagePutts: number;
 }
 
-export function calculateTest20(
+export async function calculateTest20(
   input: Test20Input,
-  player: PlayerContext
-): Test20Result {
+  player: PlayerContext,
+  repository?: RequirementsRepository
+): Promise<Test20Result> {
   // Calculate total score and par
   const totalScore = input.holes.reduce((sum, hole) => sum + hole.score, 0);
   const totalPar = input.holes.reduce((sum, hole) => sum + hole.par, 0);
@@ -208,7 +220,7 @@ export function calculateTest20(
   const averagePutts = round(totalPutts / input.holes.length, 2);
 
   // Get requirement (score to par)
-  const requirement = getRequirement(player, 20);
+  const requirement = await getRequirement(player, 20, repository);
 
   // Calculate base result
   const baseResult = calculateTestResult(scoreToPar, requirement);

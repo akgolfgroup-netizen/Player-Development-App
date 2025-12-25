@@ -3,8 +3,13 @@
  * Tests all 20 test calculations, conversions, and percentiles
  */
 
-import { calculateTestResult, validateTestInput } from '../../../src/domain/tests/test-calculator';
+import { calculateTestResult, calculateTestResultAsync, validateTestInput } from '../../../src/domain/tests/test-calculator';
+import { RequirementsRepository } from '../../../src/domain/tests/requirements-repository';
+import { PrismaClient } from '@prisma/client';
 import type { TestInput, PlayerContext, TestMetadata } from '../../../src/domain/tests/types';
+
+const prisma = new PrismaClient();
+const requirementsRepo = new RequirementsRepository(prisma);
 
 describe('Test Calculator', () => {
   const mockPlayer: PlayerContext = {
@@ -39,7 +44,7 @@ describe('Test Calculator', () => {
     });
 
     describe('Test 1: Driver Distance (6 shots)', () => {
-      it('should calculate average distance correctly', () => {
+      it('should calculate average distance correctly', async () => {
         // Implementation uses top 3 average of carryDistanceMeters
         const input = {
           metadata: createMetadata(),
@@ -53,7 +58,7 @@ describe('Test Calculator', () => {
           ],
         };
 
-        const result = calculateTestResult(1, input as any, mockPlayer);
+        const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
 
         // Top 3: 260, 255, 255 = 770/3 = 256.67
         expect(result.value).toBeCloseTo(256.7, 1);
@@ -62,7 +67,7 @@ describe('Test Calculator', () => {
         expect(result.percentOfRequirement).toBeGreaterThanOrEqual(0);
       });
 
-      it('should handle edge cases', () => {
+      it('should handle edge cases', async () => {
         const input = {
           metadata: createMetadata(),
           shots: [
@@ -75,15 +80,15 @@ describe('Test Calculator', () => {
           ],
         };
 
-        const result = calculateTestResult(1, input as any, mockPlayer);
+        const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
         expect(result.value).toBe(0);
       });
     });
 
     describe('Tests 2-20: Various test calculations', () => {
-      it('should calculate all test types correctly', () => {
+      it('should calculate all test types correctly', async () => {
         // Test 2: 3-Wood - uses top 3 average of carryDistanceMeters
-        let result = calculateTestResult(2, {
+        let result = await calculateTestResultAsync(2, {
           metadata: createMetadata(),
           shots: [
             { shotNumber: 1, carryDistanceMeters: 220 },
@@ -93,21 +98,21 @@ describe('Test Calculator', () => {
             { shotNumber: 5, carryDistanceMeters: 220 },
             { shotNumber: 6, carryDistanceMeters: 225 },
           ],
-        } as any, mockPlayer);
+        } as any, mockPlayer, requirementsRepo);
         // Top 3: 230, 225, 225 = 680/3 = 226.67
         expect(result.value).toBeCloseTo(226.7, 1);
         expect(result.passed).toBeDefined();
 
         // Test 12: Benkpress 1RM - uses weightKg
-        result = calculateTestResult(12, {
+        result = await calculateTestResultAsync(12, {
           metadata: createMetadata(),
           weightKg: 100,
-        } as any, mockPlayer);
+        } as any, mockPlayer, requirementsRepo);
         expect(result.value).toBe(100);
         expect(result.passed).toBeDefined();
 
         // Test 15: Putting 3m - uses putts array with holed boolean
-        result = calculateTestResult(15, {
+        result = await calculateTestResultAsync(15, {
           metadata: createMetadata(),
           putts: [
             { puttNumber: 1, holed: true },
@@ -121,7 +126,7 @@ describe('Test Calculator', () => {
             { puttNumber: 9, holed: false },
             { puttNumber: 10, holed: false },
           ],
-        } as any, mockPlayer);
+        } as any, mockPlayer, requirementsRepo);
         // 8 holed out of 10 = 80%
         expect(result.value).toBe(80);
         expect(result.passed).toBeDefined();
@@ -207,23 +212,83 @@ describe('Test Calculator', () => {
   });
 
   describe('result evaluation', () => {
-    it.skip('should include category requirements (requires database)', () => {
-      // Skip because getRequirement() requires database lookup
-      // This is tested in integration tests
+    it('should include category requirements (database-backed)', async () => {
+      const input = {
+        metadata: createMetadata(),
+        shots: [
+          { shotNumber: 1, carryDistanceMeters: 250 },
+          { shotNumber: 2, carryDistanceMeters: 255 },
+          { shotNumber: 3, carryDistanceMeters: 260 },
+          { shotNumber: 4, carryDistanceMeters: 245 },
+          { shotNumber: 5, carryDistanceMeters: 250 },
+          { shotNumber: 6, carryDistanceMeters: 255 },
+        ],
+      };
+
+      const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
+
+      // Top 3: 260, 255, 255 = 770/3 = 256.67
+      expect(result.value).toBeCloseTo(256.7, 1);
+      expect(result.passed).toBeDefined();
+      expect(result.categoryRequirement).toBeDefined();
+      // For category A, M, test 1, requirement should be 270 meters (from seeds)
+      expect(result.categoryRequirement).toBe(270);
+      expect(result.percentOfRequirement).toBeGreaterThanOrEqual(0);
     });
   });
 
   describe('edge cases', () => {
-    it.skip('should handle edge cases (requires database)', () => {
-      // Skip because getRequirement() requires database lookup
-      // This is tested in integration tests
+    it('should handle edge cases (database-backed)', async () => {
+      // Test with zero values
+      const input = {
+        metadata: createMetadata(),
+        shots: [
+          { shotNumber: 1, carryDistanceMeters: 0 },
+          { shotNumber: 2, carryDistanceMeters: 0 },
+          { shotNumber: 3, carryDistanceMeters: 0 },
+          { shotNumber: 4, carryDistanceMeters: 0 },
+          { shotNumber: 5, carryDistanceMeters: 0 },
+          { shotNumber: 6, carryDistanceMeters: 0 },
+        ],
+      };
+
+      const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
+      expect(result.value).toBe(0);
+      expect(result.passed).toBe(false); // Should fail with 0 distance
+      expect(result.categoryRequirement).toBe(270); // Category A, M requirement
     });
   });
 
   describe('all 20 tests', () => {
-    it.skip('should successfully calculate all 20 test types (requires database)', () => {
-      // Skip because getRequirement() requires database lookup
-      // This is tested in integration tests
+    it('should successfully calculate all 20 test types (database-backed)', async () => {
+      // Test 1: Driver
+      let result = await calculateTestResultAsync(1, {
+        metadata: createMetadata(),
+        shots: Array(6).fill({ shotNumber: 1, carryDistanceMeters: 250 }),
+      } as any, mockPlayer, requirementsRepo);
+      expect(result).toHaveProperty('value');
+      expect(result).toHaveProperty('passed');
+      expect(result).toHaveProperty('categoryRequirement');
+
+      // Test 12: Physical test (Benkpress)
+      result = await calculateTestResultAsync(12, {
+        metadata: createMetadata(),
+        weightKg: 100,
+      } as any, mockPlayer, requirementsRepo);
+      expect(result.value).toBe(100);
+      expect(result.categoryRequirement).toBe(140); // Category A, M requirement
+
+      // Test 15: Putting 3m
+      result = await calculateTestResultAsync(15, {
+        metadata: createMetadata(),
+        putts: Array(10).fill({ puttNumber: 1, holed: true }),
+      } as any, mockPlayer, requirementsRepo);
+      expect(result.value).toBe(100); // 100% success rate
+      expect(result.categoryRequirement).toBe(90); // Category A, M requirement
     });
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
   });
 });
