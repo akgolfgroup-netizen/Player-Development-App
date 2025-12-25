@@ -30,7 +30,6 @@ function calculatePercentile(values: number[], percentile: number): number {
 // Helper function to format metrics in Prometheus format
 function formatPrometheusMetrics(): string {
   const lines: string[] = [];
-  const now = Date.now();
 
   // HTTP Request Duration metrics
   lines.push('# HELP http_request_duration_seconds HTTP request duration in seconds');
@@ -117,7 +116,7 @@ const requestStartTimes = new WeakMap<FastifyRequest, number>();
 // Track HTTP request start time
 async function trackRequestStart(
   request: FastifyRequest,
-  reply: FastifyReply
+  _reply: FastifyReply
 ) {
   requestStartTimes.set(request, Date.now());
 }
@@ -187,13 +186,13 @@ export function setActiveUsers(count: number) {
 // Plugin definition
 async function metricsPlugin(fastify: FastifyInstance) {
   // Add metrics endpoint
-  fastify.get('/metrics', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/metrics', async (_request: FastifyRequest, reply: FastifyReply) => {
     reply.type('text/plain; version=0.0.4; charset=utf-8');
     return formatPrometheusMetrics();
   });
 
   // Add health check endpoint
-  fastify.get('/health', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/health', async (_request: FastifyRequest, _reply: FastifyReply) => {
     const healthCheck = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
@@ -211,7 +210,7 @@ async function metricsPlugin(fastify: FastifyInstance) {
   });
 
   // Add readiness check endpoint
-  fastify.get('/ready', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/ready', async (_request: FastifyRequest, reply: FastifyReply) => {
     // Check if application is ready to serve traffic
     // You can add database connectivity check here
     try {
@@ -224,7 +223,7 @@ async function metricsPlugin(fastify: FastifyInstance) {
   });
 
   // Add liveness check endpoint
-  fastify.get('/live', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/live', async (_request: FastifyRequest, _reply: FastifyReply) => {
     // Basic liveness check - process is alive if it can respond
     return { alive: true, timestamp: new Date().toISOString() };
   });
