@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { buildApp } from '../../src/app';
 import { getPrismaClient } from '../../src/core/db/prisma';
+import { uniqueEmail, uniqueString } from '../helpers/testUtils';
 
 describe('Tests API Integration Tests', () => {
   let app: FastifyInstance;
@@ -21,16 +22,19 @@ describe('Tests API Integration Tests', () => {
       method: 'POST',
       url: '/api/v1/auth/register',
       payload: {
-        email: 'admin@testtest.com',
+        email: uniqueEmail('tests-admin'),
         password: 'TestPassword123!',
         firstName: 'Admin',
         lastName: 'User',
-        organizationName: 'Test Test Academy',
+        organizationName: uniqueString('Tests Academy'),
         role: 'admin',
       },
     });
 
     const registerBody = JSON.parse(registerResponse.body);
+    if (!registerBody.data) {
+      throw new Error(`Registration failed: ${JSON.stringify(registerBody)}`);
+    }
     accessToken = registerBody.data.accessToken;
     userId = registerBody.data.user.id;
     tenantId = registerBody.data.user.tenantId;
@@ -43,7 +47,7 @@ describe('Tests API Integration Tests', () => {
       payload: {
         firstName: 'Test',
         lastName: 'Player',
-        email: 'testplayer@example.com',
+        email: uniqueEmail('test-player'),
         dateOfBirth: '2005-03-15',
         gender: 'male',
         category: 'C',

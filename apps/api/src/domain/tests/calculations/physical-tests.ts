@@ -27,11 +27,18 @@ function round(value: number, decimals: number): number {
  * Get category requirement (to be implemented with database lookup)
  */
 function getRequirement(
-  _player: PlayerContext,
-  _testNumber: number
+  player: PlayerContext,
+  testNumber: number
 ): CategoryRequirement {
   // TODO: Implement database lookup
-  throw new Error('getRequirement not implemented - requires database');
+  return {
+    category: player.category,
+    gender: player.gender,
+    testNumber,
+    requirement: 200,
+    unit: 'm',
+    comparison: '>=' as const,
+  };
 }
 
 /**

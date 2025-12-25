@@ -771,6 +771,7 @@ model BreakingPoint {
   @@index([status])
   @@index([sourceType])
   @@index([calibrationId])
+  @@index([status, severity, identifiedDate]) // Optimized for dashboard getBreakingPoints query
   @@map("breaking_points")
 }
 
@@ -1241,6 +1242,7 @@ model DailyTrainingAssignment {
   @@index([assignedDate])
   @@index([weekNumber])
   @@index([status])
+  @@index([playerId, sessionType, assignedDate, status]) // Optimized for dashboard getNextTest query
   @@map("daily_training_assignments")
 }
 

@@ -17,7 +17,7 @@ jest.mock('../../../src/utils/logger', () => ({
   },
 }));
 
-// Mock Prisma Client
+// Mock Prisma Client - must include all tables used by badge-evaluator
 const mockPrisma = {
   trainingSession: {
     findMany: jest.fn(),
@@ -26,6 +26,9 @@ const mockPrisma = {
   testResult: {
     findMany: jest.fn(),
     count: jest.fn(),
+  },
+  tournamentResult: {
+    findMany: jest.fn(),
   },
   playerBadge: {
     findMany: jest.fn(),
@@ -55,13 +58,15 @@ describe('BadgeEvaluatorService', () => {
     it('should evaluate player badges and return progress', async () => {
       const playerId = 'player-123';
 
-      // Mock sessions
+      // Mock sessions - must use sessionDate, not completedAt
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue([
         {
           id: 'session-1',
           playerId,
           duration: 60,
-          completedAt: new Date(),
+          sessionDate: new Date(),
+          sessionType: 'teknikk',
+          totalShots: 50,
           completionStatus: 'completed',
         },
       ]);
@@ -69,14 +74,16 @@ describe('BadgeEvaluatorService', () => {
       // Mock test results
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
 
+      // Mock tournament results
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
+
       // Mock existing badge progress
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue([]);
 
       // Mock player
       (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
         id: playerId,
-        totalXP: 0,
-        level: 1,
+        handicap: 10,
       });
 
       (mockPrisma.player.update as jest.Mock).mockResolvedValue({
@@ -86,6 +93,7 @@ describe('BadgeEvaluatorService', () => {
       });
 
       (mockPrisma.playerBadge.upsert as jest.Mock).mockResolvedValue({});
+      (mockPrisma.notification.create as jest.Mock).mockResolvedValue({});
 
       const result = await service.evaluatePlayerBadges(playerId);
 
@@ -104,17 +112,19 @@ describe('BadgeEvaluatorService', () => {
         id: `session-${i}`,
         playerId,
         duration: 60,
-        completedAt: new Date(),
+        sessionDate: new Date(),
+        sessionType: 'teknikk',
+        totalShots: 50,
         completionStatus: 'completed',
       }));
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue(sessions);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
         id: playerId,
-        totalXP: 0,
-        level: 1,
+        handicap: 10,
       });
       (mockPrisma.player.update as jest.Mock).mockResolvedValue({
         id: playerId,

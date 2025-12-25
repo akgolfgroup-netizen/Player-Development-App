@@ -27,8 +27,11 @@ export class DashboardService {
     playerId: string,
     date: Date = new Date()
   ): Promise<DashboardResponse> {
-    // Get player
-    const player = await this.prisma.player.findFirst({
+    const startTime = Date.now();
+
+    try {
+      // Get player
+      const player = await this.prisma.player.findFirst({
       where: { id: playerId, tenantId },
       select: {
         id: true,
@@ -72,7 +75,7 @@ export class DashboardService {
 
     const unreadCount = messages.filter(m => m.unread).length;
 
-    return {
+    const result = {
       player: {
         id: player.id,
         firstName: player.firstName,
@@ -93,6 +96,18 @@ export class DashboardService {
       breakingPoints,
       recentTests,
     };
+
+    const duration = Date.now() - startTime;
+    if (duration > 200) {
+      console.warn(`[Dashboard] Slow query detected: ${duration}ms for player ${playerId}`);
+    }
+
+    return result;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      console.error(`[Dashboard] Query failed after ${duration}ms`, error);
+      throw error;
+    }
   }
 
   /**
@@ -465,6 +480,14 @@ export class DashboardService {
         playerId,
         status: { in: ['identified', 'working', 'in_progress'] },
       },
+      select: {
+        id: true,
+        processCategory: true,
+        specificArea: true,
+        status: true,
+        severity: true,
+        progressPercent: true,
+      },
       orderBy: [
         { severity: 'desc' }, // high severity first
         { identifiedDate: 'desc' },
@@ -496,7 +519,11 @@ export class DashboardService {
   private async getRecentTests(playerId: string) {
     const results = await this.prisma.testResult.findMany({
       where: { playerId },
-      include: {
+      select: {
+        id: true,
+        testDate: true,
+        pei: true,
+        value: true,
         test: {
           select: {
             id: true,
