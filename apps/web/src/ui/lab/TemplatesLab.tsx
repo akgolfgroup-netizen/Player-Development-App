@@ -3,13 +3,10 @@ import { ListTemplate, ListItem, ListSection } from '../templates/ListTemplate';
 import { CardGridTemplate, CardItem } from '../templates/CardGridTemplate';
 import {
   CheckCircle,
-  AlertCircle,
   TrendingUp,
   Calendar,
   Target,
   Award,
-  Users,
-  Clock,
   FileText,
   Inbox,
   Plus,

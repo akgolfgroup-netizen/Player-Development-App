@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, MapPin, Trophy, Target, CheckCircle2,
-  MessageCircle, Award, Flame, TrendingUp, ChevronRight,
+  MessageCircle, Award, Flame, TrendingUp,
   Play, Bell, Users, Star, Calendar, Info, AlertCircle, RefreshCw
 } from 'lucide-react';
 import DagensPlan from '../../components/dashboard/DagensPlan';
@@ -12,70 +12,13 @@ import { DashboardTemplate } from '../../ui/templates';
 import { Button } from '../../ui/primitives';
 import { DashboardSkeleton } from '../../ui/skeletons';
 import { EnhancedErrorState } from '../../ui/components/EnhancedErrorState';
+import { WidgetHeader, DashboardCard, SkeletonLoader } from '../../ui/widgets';
 
-// ===== SKELETON COMPONENTS =====
+// ===== SKELETON COMPONENTS (now using shared widgets) =====
 
-const SkeletonPulse = ({ className = '' }) => (
-  <div className={`animate-pulse bg-ak-mist rounded ${className}`} />
-);
-
-const CardSkeleton = ({ children }) => (
-  <div className="bg-white rounded-xl border border-ak-mist p-5" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-    {children}
-  </div>
-);
-
-const StatsSkeleton = () => (
-  <CardSkeleton>
-    <SkeletonPulse className="h-5 w-32 mb-4" />
-    <div className="grid grid-cols-3 gap-4 mb-4">
-      {[1, 2, 3].map(i => (
-        <div key={i} className="text-center p-3 bg-ak-snow rounded-xl">
-          <SkeletonPulse className="h-8 w-12 mx-auto mb-2" />
-          <SkeletonPulse className="h-3 w-16 mx-auto" />
-        </div>
-      ))}
-    </div>
-    <div className="space-y-3">
-      <SkeletonPulse className="h-2 w-full rounded-full" />
-      <SkeletonPulse className="h-2 w-full rounded-full" />
-    </div>
-  </CardSkeleton>
-);
-
-const TasksSkeleton = () => (
-  <CardSkeleton>
-    <SkeletonPulse className="h-5 w-28 mb-4" />
-    <div className="space-y-2">
-      {[1, 2, 3, 4].map(i => (
-        <div key={i} className="flex items-center gap-3 p-3 bg-ak-snow rounded-lg">
-          <SkeletonPulse className="h-5 w-5 rounded-full" />
-          <div className="flex-1">
-            <SkeletonPulse className="h-4 w-3/4 mb-1" />
-            <SkeletonPulse className="h-3 w-16" />
-          </div>
-        </div>
-      ))}
-    </div>
-  </CardSkeleton>
-);
-
-const CountdownSkeleton = () => (
-  <CardSkeleton>
-    <div className="flex items-start gap-3">
-      <SkeletonPulse className="h-10 w-10 rounded-lg" />
-      <div className="flex-1">
-        <SkeletonPulse className="h-3 w-20 mb-2" />
-        <SkeletonPulse className="h-4 w-32 mb-1" />
-        <SkeletonPulse className="h-3 w-24" />
-      </div>
-      <div className="text-right">
-        <SkeletonPulse className="h-8 w-10 mb-1" />
-        <SkeletonPulse className="h-3 w-8" />
-      </div>
-    </div>
-  </CardSkeleton>
-);
+const StatsSkeleton = () => <SkeletonLoader variant="stats-grid" />;
+const TasksSkeleton = () => <SkeletonLoader variant="tasks" count={4} />;
+const CountdownSkeleton = () => <SkeletonLoader variant="countdown" />;
 
 // ===== ERROR COMPONENT =====
 
@@ -96,36 +39,7 @@ const ErrorState = ({ message, onRetry }) => (
   </div>
 );
 
-// ===== DASHBOARD WIDGETS =====
-
-// Card wrapper component
-const Card = ({ children, className = '', onClick }) => (
-  <div
-    className={`bg-white rounded-xl border border-ak-mist ${onClick ? 'cursor-pointer hover:border-ak-primary/30 transition-all' : ''} ${className}`}
-    style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}
-    onClick={onClick}
-  >
-    {children}
-  </div>
-);
-
-// Widget Header
-const WidgetHeader = ({ title, action, actionLabel = 'Se alle', icon: Icon }) => (
-  <div className="flex items-center justify-between mb-4">
-    <div className="flex items-center gap-2">
-      {Icon && <Icon size={18} className="text-ak-primary" />}
-      <h3 className="text-[15px] font-semibold text-ak-charcoal">{title}</h3>
-    </div>
-    {action && (
-      <button
-        onClick={action}
-        className="text-[13px] text-ak-primary font-medium hover:underline flex items-center gap-1"
-      >
-        {actionLabel} <ChevronRight size={14} />
-      </button>
-    )}
-  </div>
-);
+// ===== DASHBOARD WIDGETS (now using shared widgets) =====
 
 // ===== COUNTDOWN WIDGET =====
 const CountdownWidget = ({ title, date, type, location }) => {
@@ -181,7 +95,7 @@ const TasksWidget = ({ tasks, onToggle, onViewAll }) => {
   const completedCount = tasks.filter(t => t.completed).length;
 
   return (
-    <Card className="p-5">
+    <DashboardCard padding="lg">
       <WidgetHeader
         title="Mine oppgaver"
         icon={CheckCircle2}

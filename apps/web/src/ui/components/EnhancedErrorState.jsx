@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle, RefreshCw, Wifi, WifiOff, Server, Lock } from 'lucide-react';
+import { AlertCircle, RefreshCw, WifiOff, Server, Lock } from 'lucide-react';
 
 /**
  * Enhanced error state component with specific error messages and retry logic

@@ -92,6 +92,7 @@ export interface Badge {
   tier: BadgeTier;
   category: string | null;
   earnedAt: string;  // ISO 8601 date-time
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: Record<string, any> | null;
 }
 
@@ -238,6 +239,7 @@ export interface ApiError {
 /**
  * Type guards
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isDashboardResponse(obj: any): obj is DashboardResponse {
   return (
     obj &&
@@ -253,6 +255,7 @@ export function isDashboardResponse(obj: any): obj is DashboardResponse {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isApiError(obj: any): obj is ApiError {
   return obj && typeof obj === 'object' && 'error' in obj;
 }

@@ -253,7 +253,7 @@ Returns complete dashboard data for the authenticated player including:
       preHandler: preHandlers,
     },
     async (request, reply) => {
-      const { tenantId, userId: _userId, role } = request.user!;
+      const { tenantId, role } = request.user!;
 
       // Get player ID from user context
       // For players, userId corresponds to their player record
