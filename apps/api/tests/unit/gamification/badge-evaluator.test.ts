@@ -145,11 +145,11 @@ describe('BadgeEvaluatorService', () => {
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
         id: playerId,
-        totalXP: 0,
-        level: 1,
+        handicap: 10,
       });
       (mockPrisma.player.update as jest.Mock).mockResolvedValue({
         id: playerId,
@@ -157,6 +157,7 @@ describe('BadgeEvaluatorService', () => {
         level: 1,
       });
       (mockPrisma.playerBadge.upsert as jest.Mock).mockResolvedValue({});
+      (mockPrisma.notification.create as jest.Mock).mockResolvedValue({});
 
       const result = await service.evaluatePlayerBadges(playerId);
 
@@ -169,6 +170,7 @@ describe('BadgeEvaluatorService', () => {
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
 
       // Mock many earned badges (high XP)
       const earnedBadges = Array.from({ length: 20 }, (_, i) => ({
@@ -182,8 +184,7 @@ describe('BadgeEvaluatorService', () => {
 
       (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
         id: playerId,
-        totalXP: 900,
-        level: 4,
+        handicap: 10,
       });
 
       (mockPrisma.player.update as jest.Mock).mockResolvedValue({
@@ -193,6 +194,7 @@ describe('BadgeEvaluatorService', () => {
       });
 
       (mockPrisma.playerBadge.upsert as jest.Mock).mockResolvedValue({});
+      (mockPrisma.notification.create as jest.Mock).mockResolvedValue({});
 
       const result = await service.evaluatePlayerBadges(playerId);
 
@@ -212,21 +214,30 @@ describe('BadgeEvaluatorService', () => {
           id: 'session-1',
           playerId,
           duration: 60,
-          completedAt: new Date(),
+          sessionDate: new Date(),
+          sessionType: 'teknikk',
+          totalShots: 50,
           completionStatus: 'completed',
         },
         {
           id: 'session-2',
           playerId,
           duration: 90,
-          completedAt: new Date(),
+          sessionDate: new Date(),
+          sessionType: 'golfslag',
+          totalShots: 100,
           completionStatus: 'completed',
         },
       ];
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue(sessions);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
+        id: playerId,
+        handicap: 10,
+      });
 
       const metrics = await service.calculatePlayerMetrics(playerId);
 
@@ -253,14 +264,21 @@ describe('BadgeEvaluatorService', () => {
           id: `session-${i}`,
           playerId,
           duration: 60,
-          completedAt: date,
+          sessionDate: date,
+          sessionType: 'teknikk',
+          totalShots: 50,
           completionStatus: 'completed',
         };
       });
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue(sessions);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
+        id: playerId,
+        handicap: 10,
+      });
 
       const metrics = await service.calculatePlayerMetrics(playerId);
 
@@ -279,7 +297,12 @@ describe('BadgeEvaluatorService', () => {
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue(earnedBadges);
+      (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
+        id: playerId,
+        handicap: 10,
+      });
 
       const metrics = await service.calculatePlayerMetrics(playerId);
 
@@ -292,7 +315,12 @@ describe('BadgeEvaluatorService', () => {
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
+        id: playerId,
+        handicap: 10,
+      });
 
       const metrics = await service.calculatePlayerMetrics(playerId);
 
@@ -308,11 +336,11 @@ describe('BadgeEvaluatorService', () => {
 
       (mockPrisma.trainingSession.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+      (mockPrisma.tournamentResult.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.playerBadge.findMany as jest.Mock).mockResolvedValue([]);
       (mockPrisma.player.findUnique as jest.Mock).mockResolvedValue({
         id: playerId,
-        totalXP: 0,
-        level: 1,
+        handicap: 10,
       });
       (mockPrisma.player.update as jest.Mock).mockResolvedValue({
         id: playerId,
@@ -320,6 +348,7 @@ describe('BadgeEvaluatorService', () => {
         level: 1,
       });
       (mockPrisma.playerBadge.upsert as jest.Mock).mockResolvedValue({});
+      (mockPrisma.notification.create as jest.Mock).mockResolvedValue({});
 
       // Run multiple evaluations concurrently
       const results = await Promise.all([
