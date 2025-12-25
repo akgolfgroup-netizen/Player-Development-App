@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -57,6 +57,7 @@ const EvalueringContainer = lazy(() => import('./features/evaluering/EvalueringC
 // UI Lab
 const UILabContainer = lazy(() => import('./features/ui-lab/UILabContainer'));
 const StatsLab = lazy(() => import('./ui/lab/StatsLab'));
+const AppShellLab = lazy(() => import('./ui/lab/AppShellLab'));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -181,9 +182,39 @@ const AdminFeatureFlagsEditor = lazy(() => import('./features/admin-feature-flag
 const AdminEscalationSupport = lazy(() => import('./features/admin-escalation').then(m => ({ default: m.AdminEscalationSupport })));
 
 // Layout component for authenticated pages using AppShell (Player)
-const AuthenticatedLayout = ({ children }) => (
-  <AppShell>{children}</AppShell>
+const AuthenticatedLayout = ({ children, title, subtitle, actions }) => (
+  <AppShell title={title} subtitle={subtitle} actions={actions}>{children}</AppShell>
 );
+
+// Dashboard layout with dynamic user greeting
+const DashboardLayout = ({ children }) => {
+  const { user } = useAuth();
+  const userName = user?.firstName && user?.lastName
+    ? `${user.firstName} ${user.lastName}`
+    : user?.firstName || user?.email || 'spiller';
+
+  return (
+    <AppShell
+      title="Dashboard"
+      subtitle={`Velkommen tilbake, ${userName}`}
+      actions={
+        <button style={{
+          padding: '8px 16px',
+          backgroundColor: 'var(--ak-primary)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '8px',
+          fontWeight: 600,
+          cursor: 'pointer',
+        }}>
+          + Ny økt
+        </button>
+      }
+    >
+      {children}
+    </AppShell>
+  );
+};
 
 // Layout component for coach pages using CoachAppShell
 const CoachLayout = ({ children }) => (
@@ -244,119 +275,126 @@ function App() {
           {/* Desktop protected routes */}
           <Route path="/" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <DashboardLayout>
                 <DashboardContainer />
-              </AuthenticatedLayout>
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/dashboard" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <DashboardLayout>
                 <DashboardContainer />
-              </AuthenticatedLayout>
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/profil" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Min profil" subtitle="Administrer kontoen din">
                 <BrukerprofilContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/trenerteam" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Trenerteam" subtitle="Dine trenere og støtteapparat">
                 <TrenerteamContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/maalsetninger" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Målsetninger" subtitle="Sett og følg opp dine mål">
                 <MaalsetningerContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/aarsplan" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Årsplan" subtitle="Din treningsplan for sesongen">
                 <AarsplanContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/testprotokoll" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Testprotokoll" subtitle="Gjennomfør tester">
                 <TestprotokollContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/testresultater" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Testresultater" subtitle="Se dine resultater og fremgang">
                 <TestresultaterContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/treningsprotokoll" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Treningsprotokoll" subtitle="Logg din trening">
                 <TreningsprotokollContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/treningsstatistikk" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Treningsstatistikk" subtitle="Analyse av din trening">
                 <TreningsstatistikkContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Statistikk" subtitle="Detaljert oversikt">
                 <StatsPage />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/ui-lab" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="UI Lab" subtitle="Komponentbibliotek">
                 <UILabContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats-lab" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Stats Lab" subtitle="StatsGridTemplate demo">
                 <StatsLab />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/appshell-lab" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="AppShell Lab" subtitle="AppShellTemplate demo">
+                <AppShellLab />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/oevelser" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Øvelser" subtitle="Øvelsesbibliotek">
                 <OevelserContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/notater" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Notater" subtitle="Dine notater og refleksjoner">
                 <NotaterContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/arkiv" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Arkiv" subtitle="Historiske data">
                 <ArkivContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/kalender" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Kalender" subtitle="Planlegg og book timer">
                 <KalenderContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -368,56 +406,56 @@ function App() {
           } />
           <Route path="/coach/modification-requests" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Endringsforespørsler" subtitle="Håndter spillerforespørsler">
                 <ModificationRequestDashboardContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/progress" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Fremgang" subtitle="Se din utvikling over tid">
                 <ProgressDashboardContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/achievements" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Prestasjoner" subtitle="Dine oppnåelser">
                 <AchievementsDashboardContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/badges" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Merker" subtitle="Saml merker og vis frem">
                 <BadgesContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/turneringskalender" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Turneringskalender" subtitle="Kommende turneringer">
                 <TurneringskalenderContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/mine-turneringer" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Mine turneringer" subtitle="Dine påmeldte turneringer">
                 <MineTurneringerContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/ressurser" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Ressurser" subtitle="Læringsmateriell og videoer">
                 <RessurserContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/skoleplan" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Skoleplan" subtitle="Balanse mellom skole og golf">
                 <SkoleplanContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -431,7 +469,7 @@ function App() {
           } />
           <Route path="/session/:sessionId" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Øktdetaljer" subtitle="Se og rediger økten">
                 <SessionDetailViewContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -453,21 +491,21 @@ function App() {
           } />
           <Route path="/session/stats" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Øktstatistikk" subtitle="Analyse av dine økter">
                 <EvaluationStatsDashboardContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/sessions" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Alle økter" subtitle="Oversikt over dine treningsøkter">
                 <SessionsListContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/ovelsesbibliotek" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Øvelsesbibliotek" subtitle="Finn og velg øvelser">
                 <ExerciseLibraryContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -477,14 +515,14 @@ function App() {
           {/* Planlegger */}
           <Route path="/periodeplaner" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Periodeplaner" subtitle="Langsiktig treningsplanlegging">
                 <PeriodeplanerContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/samlinger" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Samlinger" subtitle="Deltakelse og oppmøte">
                 <SamlingerContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -493,21 +531,21 @@ function App() {
           {/* Trening */}
           <Route path="/trening/dagens" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Dagens treningsplan" subtitle="Din plan for i dag">
                 <DagensTreningsplanContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/ukens" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Ukens treningsplan" subtitle="Din plan for denne uken">
                 <UkensTreningsplanContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/teknisk" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Teknisk plan" subtitle="Fokusområder og teknikk">
                 <TekniskPlanContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -516,21 +554,21 @@ function App() {
           {/* Stats */}
           <Route path="/stats/ny" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Ny statistikk" subtitle="Registrer nye data">
                 <StatsOppdateringContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats/turnering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Turneringsstatistikk" subtitle="Resultater fra turneringer">
                 <TurneringsstatistikkContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/stats/verktoy" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Statistikkverktøy" subtitle="Analyseverktøy">
                 <StatsVerktoyContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -539,21 +577,21 @@ function App() {
           {/* Evaluering */}
           <Route path="/evaluering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Evaluering" subtitle="Vurder din innsats">
                 <EvalueringContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/evaluering/trening" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Treningsevaluering" subtitle="Evaluer dine treningsøkter">
                 <TreningsevalueringContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/evaluering/turnering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Turneringsevaluering" subtitle="Evaluer dine turneringer">
                 <TurneringsevalueringContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -562,28 +600,28 @@ function App() {
           {/* Min utvikling */}
           <Route path="/utvikling" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Min utvikling" subtitle="Følg din fremgang">
                 <UtviklingsOversiktContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/breaking-points" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Breaking Points" subtitle="Viktige milepæler">
                 <BreakingPointsContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/kategori" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Kategoriframgang" subtitle="Fremgang per kategori A-K">
                 <KategoriFremgangContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/utvikling/benchmark" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Benchmark-historikk" subtitle="Sammenlign med andre">
                 <BenchmarkHistorikkContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -592,14 +630,14 @@ function App() {
           {/* Trening */}
           <Route path="/trening/dagbok" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Treningsdagbok" subtitle="Din personlige logg">
                 <TreningsdagbokContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/trening/logg" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Logg trening" subtitle="Registrer ny økt">
                 <LoggTreningContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -608,7 +646,7 @@ function App() {
           {/* Kalender */}
           <Route path="/kalender/booking" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Book trener" subtitle="Bestill trenertimer">
                 <BookTrenerContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -617,14 +655,14 @@ function App() {
           {/* Testing */}
           <Route path="/testing/krav" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Kategorikrav" subtitle="Krav for hver kategori">
                 <KategoriKravContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/testing/registrer" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Registrer test" subtitle="Logg testresultat">
                 <RegistrerTestContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -633,14 +671,14 @@ function App() {
           {/* Turneringer */}
           <Route path="/turneringer/resultater" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Turneringsresultater" subtitle="Dine resultater">
                 <TurneringsResultaterContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/turneringer/registrer" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Registrer resultat" subtitle="Logg turneringsresultat">
                 <RegistrerTurneringsResultatContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -649,35 +687,35 @@ function App() {
           {/* Kommunikasjon (Messaging & Notifications) */}
           <Route path="/meldinger" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Meldinger" subtitle="Kommuniser med trenere">
                 <MessageCenter />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/meldinger/ny" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Ny melding" subtitle="Start en samtale">
                 <NewConversation />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/meldinger/trener" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Trenermeldinger" subtitle="Meldinger fra trenere">
                 <MessageCenter filterType="coach" />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/meldinger/:conversationId" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Samtale" subtitle="Les og svar på meldinger">
                 <ConversationView />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/varsler" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Varsler" subtitle="Dine varslinger">
                 <NotificationCenter />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -686,7 +724,7 @@ function App() {
           {/* Kunnskap */}
           <Route path="/bevis" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Bevis" subtitle="Dokumenter fremgang">
                 <BevisContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -695,7 +733,7 @@ function App() {
           {/* Skole */}
           <Route path="/skole/oppgaver" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Skoleoppgaver" subtitle="Balanse mellom skole og golf">
                 <SkoleoppgaverContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -704,14 +742,14 @@ function App() {
           {/* Innstillinger */}
           <Route path="/kalibrering" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Kalibrering" subtitle="Kalibrer dine innstillinger">
                 <KalibreringsContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/innstillinger/varsler" element={
             <ProtectedRoute>
-              <AuthenticatedLayout>
+              <AuthenticatedLayout title="Varselinnstillinger" subtitle="Administrer varsler">
                 <VarselinnstillingerContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>

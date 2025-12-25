@@ -13,6 +13,9 @@ export { default as FormTemplate } from './FormTemplate.template';
 export { default as DetailTemplate } from './DetailTemplate.template';
 
 // New reusable templates
+export { default as AppShellTemplate } from './AppShellTemplate';
+export { default as StatsGridTemplate } from './StatsGridTemplate';
+export type { StatsItem } from './StatsGridTemplate';
 export { ListTemplate as ListTemplateV2 } from './ListTemplate';
 export type { ListItem, ListSection } from './ListTemplate';
 export { CardGridTemplate } from './CardGridTemplate';

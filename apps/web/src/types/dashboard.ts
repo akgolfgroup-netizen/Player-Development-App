@@ -3,47 +3,258 @@
  * Dashboard Frontend Type Definitions
  * ================================================================
  *
- * Re-exports types from the API to ensure type safety across the monorepo.
- * Import these types in React components instead of defining them locally.
+ * Types for dashboard API requests and responses.
  */
 
-// Re-export all types from the API (monorepo relative path)
-export type {
-  // Enums
-  PlayerTier,
-  SessionType,
-  SessionStatus,
-  BadgeTier,
-  GoalStatus,
-  GoalPriority,
-  BreakingPointSeverity,
-  BreakingPointStatus,
+/**
+ * Player status tier
+ */
+export type PlayerTier = 'beginner' | 'intermediate' | 'advanced' | 'elite';
 
-  // Interfaces
-  PlayerProfile,
-  PeriodInfo,
-  TrainingSession,
-  Badge,
-  Goal,
-  WeeklyStats,
-  Message,
-  Tournament,
-  Test,
-  BreakingPoint,
-  TestResult,
-  DashboardResponse,
+/**
+ * Session type classification
+ */
+export type SessionType = 'training' | 'test' | 'tournament' | 'recovery';
 
-  // Query params
-  DashboardQueryParams,
-  WeeklyStatsQueryParams,
-  GoalsQueryParams,
+/**
+ * Session status
+ */
+export type SessionStatus = 'pending' | 'in_progress' | 'completed' | 'skipped';
 
-  // Error types
-  ApiError,
-} from '../../../api/src/api/v1/dashboard/types';
+/**
+ * Badge/achievement tier
+ */
+export type BadgeTier = 'bronze' | 'silver' | 'gold' | 'platinum';
 
-// Re-export type guards
-export { isDashboardResponse, isApiError } from '../../../api/src/api/v1/dashboard/types';
+/**
+ * Goal status
+ */
+export type GoalStatus = 'active' | 'completed' | 'paused' | 'cancelled';
+
+/**
+ * Goal priority
+ */
+export type GoalPriority = 'low' | 'medium' | 'high';
+
+/**
+ * Breaking point severity
+ */
+export type BreakingPointSeverity = 'low' | 'medium' | 'high' | 'critical';
+
+/**
+ * Breaking point status
+ */
+export type BreakingPointStatus = 'identified' | 'working' | 'in_progress' | 'resolved';
+
+/**
+ * Player profile information
+ */
+export interface PlayerProfile {
+  id: string;
+  name: string;
+  avatar: string | null;
+  tier: PlayerTier;
+  hcp: number | null;
+}
+
+/**
+ * Training period information
+ */
+export interface PeriodInfo {
+  week: number;
+  year: number;
+  month: number;
+  monthName: string;
+}
+
+/**
+ * Training session
+ */
+export interface TrainingSession {
+  id: string;
+  sessionType: SessionType;
+  title: string;
+  scheduledTime: string;
+  duration: number;
+  status: SessionStatus;
+}
+
+/**
+ * Player achievement/badge
+ */
+export interface Badge {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  icon: string | null;
+  tier: BadgeTier;
+  category: string | null;
+  earnedAt: string;
+  context: Record<string, unknown> | null;
+}
+
+/**
+ * Player goal
+ */
+export interface Goal {
+  id: string;
+  title: string;
+  category: string | null;
+  targetValue: number | null;
+  currentValue: number | null;
+  unit: string | null;
+  progress: number | null;
+  status: GoalStatus;
+  priority: GoalPriority | null;
+  targetDate: string | null;
+  createdAt: string;
+  completedAt: string | null;
+}
+
+/**
+ * Weekly training statistics
+ */
+export interface WeeklyStats {
+  week?: number;
+  year?: number;
+  sessionsCompleted: number;
+  totalMinutes: number;
+  peiGained: number;
+  streak: number;
+  byCategory?: Record<string, {
+    sessions: number;
+    minutes: number;
+  }>;
+}
+
+/**
+ * Message from coach
+ */
+export interface Message {
+  id: string;
+  from: string;
+  subject: string;
+  preview: string;
+  sentAt: string;
+  read: boolean;
+}
+
+/**
+ * Upcoming tournament
+ */
+export interface Tournament {
+  id: string;
+  name: string;
+  startDate: string;
+  location: string;
+  daysUntil: number;
+}
+
+/**
+ * Upcoming test
+ */
+export interface Test {
+  id: string;
+  testName: string;
+  scheduledDate: string;
+  category: string;
+  daysUntil: number;
+}
+
+/**
+ * Breaking point requiring attention
+ */
+export interface BreakingPoint {
+  id: string;
+  category: string;
+  area: string;
+  severity: BreakingPointSeverity;
+  status: BreakingPointStatus;
+  progress: number;
+}
+
+/**
+ * Test result
+ */
+export interface TestResult {
+  id: string;
+  testName: string;
+  testDate: string;
+  pei: number;
+  value: number;
+}
+
+/**
+ * Complete dashboard response
+ */
+export interface DashboardResponse {
+  player: PlayerProfile;
+  period: PeriodInfo;
+  todaySessions: TrainingSession[];
+  badges: Badge[];
+  goals: Goal[];
+  weeklyStats: WeeklyStats;
+  messages: Message[];
+  unreadCount: number;
+  nextTournament: Tournament | null;
+  nextTest: Test | null;
+  breakingPoints: BreakingPoint[];
+  recentTests: TestResult[];
+}
+
+/**
+ * Dashboard query parameters
+ */
+export interface DashboardQueryParams {
+  date?: string;
+}
+
+/**
+ * Weekly stats query parameters
+ */
+export interface WeeklyStatsQueryParams {
+  week?: number;
+  year?: number;
+}
+
+/**
+ * Goals query parameters
+ */
+export interface GoalsQueryParams {
+  status?: GoalStatus;
+}
+
+/**
+ * API Error response
+ */
+export interface ApiError {
+  error: string;
+  message?: string;
+  statusCode?: number;
+}
+
+/**
+ * Type guards
+ */
+export function isDashboardResponse(obj: unknown): obj is DashboardResponse {
+  return (
+    obj !== null &&
+    typeof obj === 'object' &&
+    'player' in obj &&
+    'period' in obj &&
+    'todaySessions' in obj &&
+    'badges' in obj &&
+    'goals' in obj &&
+    'weeklyStats' in obj &&
+    'messages' in obj &&
+    'unreadCount' in obj
+  );
+}
+
+export function isApiError(obj: unknown): obj is ApiError {
+  return obj !== null && typeof obj === 'object' && 'error' in obj;
+}
 
 /**
  * Frontend-specific types
