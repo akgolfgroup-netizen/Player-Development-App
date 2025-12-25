@@ -8,3 +8,4 @@ export { VideoControls } from './VideoControls';
 export { AnnotationCanvas } from './AnnotationCanvas';
 export { ToolPalette } from './ToolPalette';
 export { VideoAnalyzer } from './VideoAnalyzer';
+export { VideoComparison } from './VideoComparison';
