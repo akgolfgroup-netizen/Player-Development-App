@@ -2,10 +2,14 @@
 
 Enterprise-grade backend for Individual Development Plan (IUP) system for golf training academies. Built with Fastify, Prisma, and TypeScript.
 
-## Current Status: Ready for Testing
+## Status
 
-**Backend Implementation**: 100% Complete (10,000+ lines of code, 70+ files, 40+ API endpoints)
-**Database Setup**: Requires Docker installation (see Quick Start below)
+| Metric | Value |
+|--------|-------|
+| **Implementation** | Production Ready |
+| **API Endpoints** | 70+ endpoints |
+| **Test Coverage** | 45%+ |
+| **Security Rating** | Good (7.5/10) |
 
 ## Quick Start
 
@@ -72,16 +76,18 @@ Enterprise-grade backend for Individual Development Plan (IUP) system for golf t
 
 ## Tech Stack
 
-- **Framework**: Fastify 4.x
-- **ORM**: Prisma 5.x
-- **Database**: PostgreSQL 14+
-- **Cache**: Redis 7+
-- **Queue**: BullMQ
-- **Storage**: S3 / MinIO
-- **Auth**: JWT + Argon2
-- **Validation**: Zod
-- **Logging**: Pino
-- **Testing**: Jest
+| Layer | Technology |
+|-------|------------|
+| **Framework** | Fastify 4.x |
+| **ORM** | Prisma 5.x |
+| **Database** | PostgreSQL 15+ |
+| **Cache** | Redis 7+ |
+| **Queue** | BullMQ |
+| **Storage** | S3 / MinIO |
+| **Auth** | JWT + Argon2 + TOTP (2FA) |
+| **Validation** | Zod |
+| **Logging** | Pino |
+| **Testing** | Jest, Vitest |
 
 ## Project Structure
 
@@ -109,9 +115,9 @@ backend-fastify/
 ### Prerequisites
 
 - Node.js 20+
-- npm 10+
+- pnpm 8+ (or npm 10+)
 - Docker & Docker Compose
-- PostgreSQL 14+
+- PostgreSQL 15+
 - Redis 7+
 
 ### Installation
@@ -123,7 +129,7 @@ backend-fastify/
 
 2. **Install dependencies**:
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Copy environment file**:
@@ -139,40 +145,42 @@ backend-fastify/
 
 5. **Run migrations**:
    ```bash
-   npm run prisma:migrate
+   npx prisma migrate deploy
    ```
 
 6. **Generate Prisma client**:
    ```bash
-   npm run prisma:generate
+   npx prisma generate
    ```
 
 7. **Seed database** (optional):
    ```bash
-   npm run prisma:seed
+   pnpm run prisma:seed
    ```
 
 8. **Start development server**:
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 The API will be available at `http://localhost:3000` with OpenAPI docs at `http://localhost:3000/docs`.
 
 ## Available Scripts
 
-- `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm test` - Run tests
-- `npm run test:watch` - Run tests in watch mode
-- `npm run test:coverage` - Generate test coverage report
-- `npm run prisma:generate` - Generate Prisma client
-- `npm run prisma:migrate` - Run database migrations
-- `npm run prisma:studio` - Open Prisma Studio
-- `npm run prisma:seed` - Seed database with test data
-- `npm run lint` - Lint code
-- `npm run format` - Format code with Prettier
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server with hot reload |
+| `pnpm build` | Build for production |
+| `pnpm start` | Start production server |
+| `pnpm test` | Run tests |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm test:coverage` | Generate test coverage report |
+| `npx prisma generate` | Generate Prisma client |
+| `npx prisma migrate dev` | Run database migrations |
+| `npx prisma studio` | Open Prisma Studio |
+| `pnpm run prisma:seed` | Seed database with test data |
+| `pnpm lint` | Lint code |
+| `pnpm format` | Format code with Prettier |
 
 ## API Documentation
 
@@ -230,13 +238,13 @@ All requests are scoped to a tenant. The tenant context is automatically injecte
 
 ```bash
 # Run all tests
-npm test
+pnpm test
 
 # Watch mode
-npm run test:watch
+pnpm test:watch
 
 # Coverage report
-npm run test:coverage
+pnpm test:coverage
 ```
 
 ## Environment Variables

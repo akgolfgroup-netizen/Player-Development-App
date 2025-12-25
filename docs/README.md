@@ -3,7 +3,8 @@
 > IUP Golf Platform - Technical Documentation
 
 [![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](.)
-[![API](https://img.shields.io/badge/API-OpenAPI%203.0-blue.svg)](./api/openapi.yaml)
+[![API](https://img.shields.io/badge/API-OpenAPI%203.1-blue.svg)](./api/openapi-spec.yaml)
+[![Version](https://img.shields.io/badge/Version-1.1.0-blue)]()
 
 ---
 
@@ -15,7 +16,8 @@
 | Set up development | [Development Guide](./guides/development.md) |
 | Use the API | [API Reference](./api/README.md) |
 | Deploy the app | [Deployment Guide](./guides/deployment.md) |
-| Understand the domain | [Golf Categories](./reference/golf-categories.md) |
+| Run tests | [Testing Guide](./guides/testing.md) |
+| Understand golf categories | [Golf Categories](./reference/golf-categories.md) |
 
 ---
 
@@ -30,26 +32,51 @@ docs/
 │
 ├── api/                    # API documentation
 │   ├── README.md           # API overview
-│   ├── authentication.md   # Auth & security
-│   └── openapi.yaml        # OpenAPI spec
+│   ├── openapi-spec.yaml   # OpenAPI 3.1 specification
+│   ├── booking.md          # Booking API
+│   ├── coach.md            # Coach management API
+│   ├── groups.md           # Groups/teams API
+│   ├── messaging.md        # Messaging API
+│   └── tournaments.md      # Tournaments API
 │
 ├── guides/                 # How-to guides
 │   ├── development.md      # Local setup
 │   ├── deployment.md       # Deploy to production
 │   ├── testing.md          # Testing strategy
-│   └── contributing.md     # Contribution guide
+│   ├── contributing.md     # Contribution guide
+│   └── ui/                 # UI guides
+│       ├── HOME_SCREEN.md
+│       ├── PROOF_SCREEN.md
+│       └── SCREEN_RESPONSIBILITIES.md
 │
 ├── design/                 # UI/UX documentation
-│   ├── design-system.md    # Design tokens & components
-│   └── mockups/            # Visual prototypes
+│   └── design-system.md    # Design tokens & components
 │
 ├── reference/              # Domain reference
 │   ├── golf-categories.md  # A-K category system
-│   ├── test-protocols.md   # Test specifications
-│   └── badge-system.md     # Gamification
+│   ├── badge-system.md     # Gamification
+│   └── CONFIG_KATEGORI_KRAV.md  # Category requirements
 │
-└── internal/               # Internal docs (not for external use)
-    └── ...
+├── features/               # Feature documentation
+│   ├── datagolf/           # DataGolf integration
+│   ├── oauth/              # OAuth implementation
+│   └── subscription/       # Subscription system
+│
+├── operations/             # Operations docs
+│   ├── monitoring.md       # Metrics & dashboards
+│   ├── deployment.md       # Deployment procedures
+│   ├── incident-response.md # Incident handling
+│   └── database-migration.md # Migration procedures
+│
+├── deployment/             # Deployment guides
+│   ├── ENV_VARIABLES.md    # Environment variables
+│   └── RAILWAY.md          # Railway deployment
+│
+├── demo/                   # Demo materials
+│   ├── demo-script.md      # Demo walkthrough
+│   └── FAQ.md              # Frequently asked questions
+│
+└── archive/                # Historical documentation
 ```
 
 ---
@@ -58,7 +85,6 @@ docs/
 
 - [System Overview](./architecture/overview.md) - High-level architecture
 - [Data Model](./architecture/data-model.md) - Database design and relationships
-- [Security Model](./architecture/security.md) - Authentication, authorization, multi-tenancy
 
 ### Architecture Decision Records (ADRs)
 
@@ -74,19 +100,21 @@ docs/
 ## API Reference
 
 - [API Overview](./api/README.md) - Getting started with the API
-- [Authentication](./api/authentication.md) - Auth flows and tokens
-- [OpenAPI Spec](./api/openapi.yaml) - Full API specification
+- [OpenAPI Spec](./api/openapi-spec.yaml) - Full API specification
+- **Interactive Docs**: http://localhost:3000/docs (when server running)
 
 ### Endpoints by Domain
 
 | Domain | Base Path | Description |
 |--------|-----------|-------------|
-| Auth | `/api/v1/auth` | Login, register, tokens |
+| Auth | `/api/v1/auth` | Login, register, 2FA, password reset |
 | Players | `/api/v1/players` | Player management |
 | Tests | `/api/v1/tests` | Test results and history |
 | Training | `/api/v1/training-plan` | Training plans and sessions |
 | Dashboard | `/api/v1/dashboard` | Player/coach dashboards |
 | Badges | `/api/v1/badges` | Gamification system |
+| Videos | `/api/v1/videos` | Video upload and analysis |
+| Booking | `/api/v1/booking` | Session booking |
 
 ---
 
@@ -95,8 +123,8 @@ docs/
 | Guide | Description |
 |-------|-------------|
 | [Development](./guides/development.md) | Set up local development environment |
-| [Deployment](./guides/deployment.md) | Deploy to staging and production |
 | [Testing](./guides/testing.md) | Run tests and add coverage |
+| [Deployment](./guides/deployment.md) | Deploy to staging and production |
 | [Contributing](./guides/contributing.md) | Contribute to the project |
 
 ---
@@ -104,8 +132,7 @@ docs/
 ## Design System
 
 - [Design Tokens](./design/design-system.md) - Colors, typography, spacing
-- [Component Library](./design/components.md) - Reusable UI components
-- [Mockups](./design/mockups/) - Visual prototypes
+- [Complete Design System](./AK_GOLF_DESIGN_SYSTEM_COMPLETE.md) - Full UI/UX reference
 
 ### Brand Colors
 
@@ -120,14 +147,12 @@ docs/
 
 ## Reference
 
-Domain-specific documentation:
-
 | Document | Description |
 |----------|-------------|
 | [Golf Categories](./reference/golf-categories.md) | A-K category system (Team Norway) |
-| [Test Protocols](./reference/test-protocols.md) | 20+ test specifications |
 | [Badge System](./reference/badge-system.md) | 85 badges and gamification |
-| [Glossary](./reference/glossary.md) | Domain terminology |
+| [Category Requirements](./reference/CONFIG_KATEGORI_KRAV.md) | Category configuration |
+| [Gamification Metrics](./reference/GAMIFICATION_METRICS_SPEC.md) | Gamification specifications |
 
 ---
 
@@ -141,4 +166,4 @@ This documentation follows:
 
 ---
 
-*Last updated: December 2024*
+*Last updated: December 2025*

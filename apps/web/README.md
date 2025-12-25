@@ -2,35 +2,44 @@
 
 Golf coaching and training management application built with React.
 
+## Status
+
+| Metric | Value |
+|--------|-------|
+| **Framework** | React 18 |
+| **Styling** | Tailwind CSS |
+| **Testing** | Jest + Playwright |
+| **Build** | Vite |
+
 ## Prerequisites
 
-- Node.js 18+
-- npm 9+
+- Node.js 20+
+- pnpm 8+ (or npm 10+)
 
 ## Quick Start
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm start
+pnpm dev
 ```
 
-The app will be available at `http://localhost:3001`
+The app will be available at `http://localhost:5173`
 
 ## Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm start` | Start development server |
-| `npm run build` | Build for production |
-| `npm test` | Run unit tests |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Run ESLint with auto-fix |
-| `npm run test:e2e` | Run Playwright E2E tests |
-| `npm run test:e2e:headed` | Run E2E tests with browser UI |
-| `npm run test:e2e:ui` | Open Playwright UI mode |
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build for production |
+| `pnpm test` | Run unit tests |
+| `pnpm lint` | Run ESLint |
+| `pnpm lint:fix` | Run ESLint with auto-fix |
+| `pnpm test:e2e` | Run Playwright E2E tests |
+| `pnpm test:e2e:headed` | Run E2E tests with browser UI |
+| `pnpm test:e2e:ui` | Open Playwright UI mode |
 
 ## Project Structure
 
@@ -38,10 +47,14 @@ The app will be available at `http://localhost:3001`
 src/
 ├── components/         # Reusable UI components
 │   ├── branding/      # Logo and brand components
-│   ├── layout/        # Layout components (PageHeader, etc.)
-│   └── ui/            # UI primitives (LoadingState, ErrorState, etc.)
+│   ├── layout/        # Layout components (PageHeader, AppShell)
+│   └── ui/            # UI primitives (LoadingState, ErrorState)
+├── ui/                # Design system components
+│   ├── primitives/    # Base components (Button, Input, Card)
+│   ├── composites/    # Complex components (Modal, Tabs)
+│   └── templates/     # Page templates (AppShellTemplate, StatsGridTemplate)
 ├── contexts/          # React contexts (Auth, etc.)
-├── features/          # Feature modules
+├── features/          # Feature modules (65+ features)
 │   ├── dashboard/     # Main dashboard
 │   ├── calendar/      # Calendar and scheduling
 │   ├── annual-plan/   # Annual planning (Årsplan)
@@ -50,35 +63,51 @@ src/
 │   ├── goals/         # Goal tracking
 │   ├── profile/       # User profile
 │   └── coach/         # Coach-specific features
+├── hooks/             # Custom React hooks
 ├── services/          # API clients and services
+├── config/            # Configuration
 └── design-tokens.js   # Design system tokens
 ```
 
 ## Design System
 
-The app uses **Blue Palette 01** design system. Key files:
+The app uses **Nordic Minimalism v3.1** design system.
 
-- `src/design-tokens.js` - JavaScript design tokens
-- `src/index.css` - CSS variables and global styles
+### Key Files
+
+| File | Description |
+|------|-------------|
+| `src/design-tokens.js` | JavaScript design tokens |
+| `src/index.css` | CSS variables and global styles |
+| `src/ui/primitives/` | Base UI components |
+| `src/ui/composites/` | Complex UI components |
 
 ### Usage
 
 ```jsx
 import { tokens } from './design-tokens';
 
-// Use tokens in components
 const style = {
   color: tokens.colors.primary,
   padding: tokens.spacing[4],
 };
 ```
 
+### Brand Colors
+
+| Name | Hex | Usage |
+|------|-----|-------|
+| Primary | `#10456A` | Main brand color |
+| Ink | `#02060D` | Text |
+| Snow | `#EDF0F2` | Background |
+| Gold | `#C9A227` | Accents |
+
 ## Testing
 
 ### Unit Tests
 
 ```bash
-npm test
+pnpm test
 ```
 
 Tests are located in `__tests__` folders next to their components.
@@ -87,13 +116,13 @@ Tests are located in `__tests__` folders next to their components.
 
 ```bash
 # Run all E2E tests
-npm run test:e2e
+pnpm test:e2e
 
 # Run with browser visible
-npm run test:e2e:headed
+pnpm test:e2e:headed
 
 # Open Playwright UI
-npm run test:e2e:ui
+pnpm test:e2e:ui
 ```
 
 E2E tests are in the `tests/` folder using Playwright.
@@ -107,8 +136,6 @@ The project uses Husky + lint-staged for pre-commit checks:
 
 ## Demo Accounts
 
-For development/testing, use these demo accounts:
-
 | Role | Email | Password |
 |------|-------|----------|
 | Player | player@demo.com | player123 |
@@ -120,23 +147,27 @@ For development/testing, use these demo accounts:
 Create a `.env.local` file:
 
 ```env
-REACT_APP_API_BASE_URL=http://localhost:3000/api/v1
+VITE_API_URL=http://localhost:3000
 ```
 
 ## Contributing
 
 1. Create a feature branch
 2. Make changes
-3. Ensure tests pass: `npm test`
-4. Ensure no lint errors: `npm run lint`
+3. Ensure tests pass: `pnpm test`
+4. Ensure no lint errors: `pnpm lint`
 5. Submit a pull request
 
 ## Tech Stack
 
-- **React 18** - UI framework
-- **React Router 7** - Routing
-- **Axios** - HTTP client
-- **Lucide React** - Icons
-- **Tailwind CSS** - Styling
-- **Jest** - Unit testing
-- **Playwright** - E2E testing
+| Layer | Technology |
+|-------|------------|
+| **Framework** | React 18 |
+| **Routing** | React Router 7 |
+| **HTTP** | Axios |
+| **Icons** | Lucide React |
+| **Styling** | Tailwind CSS |
+| **Build** | Vite |
+| **Unit Tests** | Jest |
+| **E2E Tests** | Playwright |
+| **Mobile** | Capacitor |

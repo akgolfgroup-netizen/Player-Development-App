@@ -3,12 +3,24 @@
 ## Development Setup
 
 ### Prerequisites
-- Node.js 20+
-- Docker Desktop
-- pnpm (optional, can use npm)
+
+| Tool | Version | Installation |
+|------|---------|--------------|
+| Node.js | 20+ | [nodejs.org](https://nodejs.org/) |
+| pnpm | 8.12+ | `npm install -g pnpm` |
+| Docker | Latest | [docker.com](https://docker.com/) |
 
 ### Getting Started
-See the [README.md](./README.md) for quick start instructions.
+
+See the [Development Guide](./docs/guides/development.md) for detailed setup instructions.
+
+```bash
+# Quick start
+pnpm install
+cd apps/api && docker-compose up -d
+npx prisma generate && npx prisma migrate deploy
+pnpm dev
+```
 
 ---
 
@@ -80,18 +92,28 @@ console.log('Injected elements:', injected.length);
 
 ### React/JSX
 - Use functional components with hooks
-- Follow existing patterns in `src/components/`
+- Follow existing patterns in `src/components/` and `src/ui/`
 - Use the design tokens from `design-tokens.js`
 
 ### File Naming
-- Components: PascalCase (e.g., `UserProfile.jsx`)
-- Utilities: camelCase (e.g., `apiClient.js`)
-- Containers: Append "Container" (e.g., `DashboardContainer.jsx`)
 
-### Testing
-- Run tests before committing: `npm test`
-- E2E tests should run in clean browser context
-- See [Testing](#testing) section below
+| Type | Convention | Example |
+|------|------------|---------|
+| Components | PascalCase | `UserProfile.jsx` |
+| Utilities | camelCase | `apiClient.js` |
+| Types | PascalCase | `PlayerTypes.ts` |
+| Tests | `*.test.ts` | `auth.test.ts` |
+
+### Code Quality
+
+Run before committing:
+
+```bash
+pnpm lint        # ESLint check
+pnpm format      # Prettier format
+pnpm typecheck   # TypeScript check
+pnpm test        # Run tests
+```
 
 ---
 
@@ -99,30 +121,40 @@ console.log('Injected elements:', injected.length);
 
 ### Unit Tests
 ```bash
-cd apps/web
-npm test
+pnpm test
 ```
 
 ### E2E Tests (Playwright)
 ```bash
 cd apps/web
-npm run test:e2e
+pnpm test:e2e
 ```
 
-**Important**: E2E tests run in a clean browser context without extensions.
+See [Testing Guide](./docs/guides/testing.md) for details.
 
 ---
 
 ## Commit Guidelines
 
-- Use descriptive commit messages
-- Reference issue numbers when applicable
-- Keep commits focused and atomic
+Use [Conventional Commits](https://www.conventionalcommits.org/):
 
-### Example
 ```bash
-git commit -m "fix(auth): resolve token refresh race condition (#123)"
+# Format: type(scope): description
+
+git commit -m "feat(auth): add two-factor authentication"
+git commit -m "fix(dashboard): resolve loading state issue"
+git commit -m "docs(api): update endpoint documentation"
+git commit -m "test(players): add integration tests"
 ```
+
+### Types
+- `feat` - New feature
+- `fix` - Bug fix
+- `docs` - Documentation
+- `test` - Tests
+- `refactor` - Code refactoring
+- `style` - Formatting
+- `chore` - Maintenance
 
 ---
 
@@ -130,9 +162,28 @@ git commit -m "fix(auth): resolve token refresh race condition (#123)"
 
 1. Create a feature branch from `main`
 2. Make your changes
-3. Run tests and linting
-4. Submit PR with description of changes
-5. Wait for review
+3. Ensure tests pass: `pnpm test`
+4. Ensure linting passes: `pnpm lint`
+5. Submit PR with description of changes
+6. Wait for review
+
+### PR Checklist
+
+- [ ] Tests pass
+- [ ] Linting passes
+- [ ] TypeScript compiles
+- [ ] Documentation updated (if needed)
+- [ ] No console.log statements
+- [ ] No hardcoded credentials
+
+---
+
+## Resources
+
+- [Development Guide](./docs/guides/development.md)
+- [Testing Guide](./docs/guides/testing.md)
+- [Architecture Overview](./docs/architecture/overview.md)
+- [API Documentation](./docs/api/README.md)
 
 ---
 

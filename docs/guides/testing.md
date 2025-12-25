@@ -2,6 +2,15 @@
 
 > Testing strategy and practices for IUP Golf Platform
 
+## Current Coverage
+
+| Metric | Value |
+|--------|-------|
+| **Overall Coverage** | 45%+ |
+| **Test Cases** | 240+ |
+| **Security Tests** | 149 |
+| **E2E Scenarios** | 40+ |
+
 ## Test Pyramid
 
 ```
@@ -43,15 +52,24 @@ apps/api/tests/
 │   └── testFixtures.ts   # Data factories
 ├── unit/                 # Unit tests
 │   ├── gamification/
-│   └── notifications/
+│   ├── notifications/
+│   └── tests/            # Test calculator tests
 ├── integration/          # Integration tests
 │   ├── auth.test.ts
 │   ├── players.test.ts
+│   ├── dashboard.test.ts
 │   └── ...
-└── security/             # Security tests
-    ├── rbac.test.ts
-    ├── sql-injection.test.ts
-    └── xss.test.ts
+├── security/             # Security tests (149 tests)
+│   ├── rbac.test.ts
+│   ├── sql-injection.test.ts
+│   └── xss.test.ts
+└── load/                 # Performance tests
+    └── k6-load-test.js   # K6 load testing
+
+apps/web/tests/
+├── __tests__/            # Unit tests
+├── e2e/                  # Playwright E2E tests
+└── playwright.config.js
 ```
 
 ## Unit Tests
@@ -180,7 +198,7 @@ import { test, expect } from '@playwright/test';
 test('player can log in', async ({ page }) => {
   await page.goto('/login');
   await page.fill('[name="email"]', 'player@demo.com');
-  await page.fill('[name="password"]', 'demo123');
+  await page.fill('[name="password"]', 'player123');
   await page.click('button[type="submit"]');
 
   await expect(page).toHaveURL('/dashboard');

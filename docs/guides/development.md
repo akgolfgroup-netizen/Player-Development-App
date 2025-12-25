@@ -49,11 +49,33 @@ pnpm dev
 ```
 IUP_Master_V1/
 ├── apps/
-│   ├── api/           # Backend (Fastify + Prisma)
-│   └── web/           # Frontend (React + Vite)
-├── docs/              # Documentation
-├── packages/          # Shared packages
-└── package.json       # Root package
+│   ├── api/              # Backend (Fastify + Prisma)
+│   │   ├── src/
+│   │   │   ├── api/v1/   # Route handlers
+│   │   │   ├── domain/   # Business logic
+│   │   │   ├── middleware/
+│   │   │   └── plugins/
+│   │   ├── prisma/       # Database schema
+│   │   └── tests/        # Test suites
+│   │
+│   ├── web/              # Frontend (React + Vite)
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── features/  # 65+ feature modules
+│   │   │   ├── ui/        # Design system components
+│   │   │   ├── contexts/
+│   │   │   └── hooks/
+│   │   └── tests/
+│   │
+│   └── golfer/           # Mobile app (Capacitor)
+│
+├── packages/             # Shared packages
+│   ├── database/         # Shared Prisma schema
+│   └── design-system/    # UI components
+│
+├── docs/                 # Documentation
+├── scripts/              # Utility scripts
+└── package.json          # Root package (Turbo)
 ```
 
 ## Environment Variables
@@ -115,9 +137,9 @@ Demo users after seeding:
 
 | Email | Password | Role |
 |-------|----------|------|
-| admin@demo.com | demo123 | Admin |
-| coach@demo.com | demo123 | Coach |
-| player@demo.com | demo123 | Player |
+| admin@demo.com | admin123 | Admin |
+| coach@demo.com | coach123 | Coach |
+| player@demo.com | player123 | Player |
 
 ## Running Tests
 

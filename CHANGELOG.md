@@ -7,10 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- Developer review guide for external code review
+## [1.1.0] - 2025-12-25
 
-## [1.0.0] - 2024-12-24
+### Added
+- API service tests with comprehensive coverage
+- Professional Google-style documentation structure
+- Reusable dashboard widgets for player dashboard
+- Modal and Tabs composites with comprehensive tests
+- Phase 6 scripts and monitoring features
+- Complete TypeScript type definitions
+- Full OpenAPI/Swagger documentation
+- StatsGridTemplate with tests
+- Dashboard integration tests
+- Frontend component tests
+
+### Changed
+- Restructured documentation to professional standards
+- Refactored player dashboard with widget architecture
+- ESLint and Prettier cleanup across codebase
+- JSDoc code documentation improvements
+- UI/UX enhancements for loading and error handling
+
+### Fixed
+- Badge evaluator test assertions
+- Test calculator formulas for approach, distance, short game tests
+
+## [1.0.0] - 2025-12-24
 
 ### Added
 
@@ -52,7 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - XSS prevention implemented
 - CORS configuration hardened
 
-## [0.9.0] - 2024-12-20
+## [0.9.0] - 2025-12-20
 
 ### Added
 - Training plan generation system
@@ -65,7 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored player dashboard
 - Improved session scheduling
 
-## [0.8.0] - 2024-12-15
+## [0.8.0] - 2025-12-15
 
 ### Added
 - Gamification system with 85 badges
@@ -77,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated player profile structure
 - Enhanced test result display
 
-## [0.7.0] - 2024-12-10
+## [0.7.0] - 2025-12-10
 
 ### Added
 - Test result system
@@ -89,42 +111,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Authentication token refresh issues
 - Dashboard loading performance
 
-## [0.6.0] - 2024-12-05
+## [0.6.0] - 2025-12-05
 
 ### Added
 - Booking system for coaching sessions
 - Coach availability management
 - Calendar integration
 
-## [0.5.0] - 2024-11-30
+## [0.5.0] - 2025-11-30
 
 ### Added
 - Player management
 - Coach-player relationships
 - Basic dashboard
 
-## [0.4.0] - 2024-11-25
+## [0.4.0] - 2025-11-25
 
 ### Added
 - Multi-tenant architecture
 - Organization management
 - Role-based access control
 
-## [0.3.0] - 2024-11-20
+## [0.3.0] - 2025-11-20
 
 ### Added
 - JWT authentication
 - User registration
 - Login/logout flows
 
-## [0.2.0] - 2024-11-15
+## [0.2.0] - 2025-11-15
 
 ### Added
 - Prisma ORM setup
 - Database schema
 - Initial migrations
 
-## [0.1.0] - 2024-11-10
+## [0.1.0] - 2025-11-10
 
 ### Added
 - Initial project setup
@@ -134,5 +156,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/akgolfgroup-netizen/IUP-app/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/akgolfgroup-netizen/IUP-app/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/akgolfgroup-netizen/IUP-app/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/akgolfgroup-netizen/IUP-app/releases/tag/v1.0.0

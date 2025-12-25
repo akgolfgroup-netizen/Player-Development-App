@@ -2,6 +2,15 @@
 
 > System architecture for the IUP Golf Platform
 
+## Status
+
+| Metric | Value |
+|--------|-------|
+| **API Endpoints** | 70+ |
+| **Feature Modules** | 65+ |
+| **Test Coverage** | 45%+ |
+| **Security Rating** | Good (7.5/10) |
+
 ## System Context
 
 ```
@@ -41,41 +50,55 @@
 
 | Layer | Technology | Purpose |
 |-------|------------|---------|
-| **Frontend** | React 18, TypeScript | Single Page Application |
+| **Frontend** | React 18, Vite | Single Page Application |
 | **Styling** | Tailwind CSS | Utility-first CSS |
-| **Backend** | Node.js, Fastify | REST API server |
-| **ORM** | Prisma | Database access |
+| **Backend** | Node.js 20+, Fastify 4 | REST API server |
+| **ORM** | Prisma 5 | Database access |
 | **Database** | PostgreSQL 15 | Primary data store |
-| **Cache** | Redis | Session cache, rate limiting |
+| **Cache** | Redis 7 | Session cache, rate limiting |
 | **Storage** | S3-compatible | File uploads (videos, images) |
 | **Mobile** | Capacitor | iOS/Android wrapper |
+| **Auth** | JWT + TOTP (2FA) | Authentication with 2FA support |
+| **Testing** | Jest, Playwright, K6 | Unit, E2E, load testing |
+| **Build** | Turbo, pnpm | Monorepo build system |
 
 ## Project Structure
 
 ```
 IUP_Master_V1/
 ├── apps/
-│   ├── api/                 # Backend API
+│   ├── api/                 # Backend API (Fastify)
 │   │   ├── src/
-│   │   │   ├── api/v1/      # Route handlers
+│   │   │   ├── api/v1/      # Route handlers (70+ endpoints)
 │   │   │   ├── domain/      # Business logic
+│   │   │   │   ├── tests/   # Test calculations
+│   │   │   │   ├── gamification/
+│   │   │   │   └── training-plan/
 │   │   │   ├── middleware/  # Auth, error handling
 │   │   │   └── plugins/     # Fastify plugins
 │   │   ├── prisma/          # Database schema
-│   │   └── tests/           # Test suites
+│   │   └── tests/           # Test suites (240+ tests)
 │   │
 │   ├── web/                 # React frontend
 │   │   ├── src/
 │   │   │   ├── components/  # Reusable UI
-│   │   │   ├── features/    # Feature modules
+│   │   │   ├── features/    # Feature modules (65+)
+│   │   │   ├── ui/          # Design system
+│   │   │   │   ├── primitives/
+│   │   │   │   ├── composites/
+│   │   │   │   └── templates/
 │   │   │   ├── contexts/    # React contexts
 │   │   │   └── hooks/       # Custom hooks
-│   │   └── public/          # Static assets
+│   │   └── tests/           # Jest + Playwright tests
 │   │
-│   └── golfer/              # Mobile app screens
+│   └── golfer/              # Mobile app (Capacitor)
+│
+├── packages/                # Shared packages
+│   ├── database/            # Shared Prisma schema
+│   └── design-system/       # UI components
 │
 ├── docs/                    # Documentation
-└── packages/                # Shared packages
+└── scripts/                 # Utility scripts
 ```
 
 ## Key Design Decisions
@@ -181,12 +204,23 @@ domain/
 
 ## Security Layers
 
-1. **Network**: HTTPS only, CORS restrictions
-2. **Authentication**: JWT with short expiry, refresh tokens
-3. **Authorization**: Role-based access (player/coach/admin)
-4. **Data isolation**: Tenant-scoped queries
-5. **Input validation**: Zod schemas on all endpoints
-6. **Rate limiting**: Per-IP and per-user limits
+| Layer | Implementation |
+|-------|----------------|
+| **Network** | HTTPS only, CORS restrictions |
+| **Authentication** | JWT (15min access, 7d refresh), optional 2FA (TOTP) |
+| **Authorization** | Role-based access (player/coach/admin) |
+| **Data isolation** | Tenant-scoped queries |
+| **Input validation** | Zod schemas on all endpoints |
+| **Rate limiting** | Per-IP and per-user limits |
+| **SQL injection** | Prisma ORM (parameterized queries) |
+| **Audit logging** | Comprehensive activity tracking |
+
+## Security Audit Results
+
+- **Overall Rating:** Good (7.5/10)
+- **Critical Issues:** 0
+- **Security Tests:** 149 test cases
+- **Multi-tenant Isolation:** Verified (no cross-tenant leakage)
 
 ---
 

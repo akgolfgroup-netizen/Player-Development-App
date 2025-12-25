@@ -4,18 +4,19 @@
 
 ## Environments
 
-| Environment | URL | Purpose |
-|-------------|-----|---------|
-| Development | localhost:3000 | Local development |
-| Staging | staging.iupgolf.com | Pre-production testing |
-| Production | app.iupgolf.com | Live environment |
+| Environment | Branch | Auto-Deploy | URL |
+|-------------|--------|-------------|-----|
+| Development | feature/* | No | localhost:3000 |
+| Staging | develop | Yes (CI/CD) | staging.iupgolf.com |
+| Production | main | Manual | app.iupgolf.com |
 
 ## Prerequisites
 
 - Docker and Docker Compose
 - Access to container registry
-- Database credentials
+- Database credentials (PostgreSQL 15+)
 - S3 bucket for file storage
+- Redis instance for caching
 
 ## Infrastructure
 
@@ -111,7 +112,7 @@ VITE_SENTRY_DSN=https://...
 
 ```bash
 curl https://api.iupgolf.com/health
-# {"status":"ok","timestamp":"2024-12-25T12:00:00Z"}
+# {"status":"ok","timestamp":"2025-12-25T12:00:00Z"}
 ```
 
 ### Database Health
