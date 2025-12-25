@@ -11,3 +11,5 @@ export { VideoAnalyzer } from './VideoAnalyzer';
 export { VideoComparison } from './VideoComparison';
 export { VideoUploader } from './VideoUploader';
 export { VoiceRecorder } from './VoiceRecorder';
+export { AnnotationMarker, ANNOTATION_TYPE_CONFIG } from './AnnotationMarker';
+export { AnnotationTimeline } from './AnnotationTimeline';
