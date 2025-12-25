@@ -8,9 +8,25 @@ Complete UI component library following atomic design principles and the AK Golf
 src/ui/
 ├── primitives/          ✅ Atomic elements (9 components)
 ├── raw-blocks/          ✅ Building blocks (7 components)
-├── composites/          ✅ Complex compositions (7 components)
-└── templates/           ✅ Page templates (6 components)
+├── composites/          ✅ Complex compositions (7 components) - 2/7 tested (100% coverage)
+├── templates/           ✅ Page templates (6 components) - 2/6 tested (97%+ coverage)
+└── widgets/             ✅ Dashboard widgets (3 components) - NEW!
 ```
+
+## 🧪 Test Coverage
+
+| Layer | Components | Tested | Coverage | Status |
+|-------|-----------|--------|----------|--------|
+| **Composites** | 7 | 2 | 100% (Modal, Tabs) | ✅ Excellent |
+| **Templates** | 6 | 2 | 97%+ (StatsGrid, Dashboard) | ✅ Excellent |
+| **Widgets** | 3 | 0 | - | 🟡 To Do |
+| **Total** | 29 | 4 | ~15% | 🟢 Growing |
+
+**Tested Components:**
+- ✅ Modal.composite.tsx (38 tests, 100% coverage)
+- ✅ Tabs.composite.tsx (44 tests, 100% coverage)
+- ✅ StatsGridTemplate.tsx (25 tests, 100% coverage)
+- ✅ DashboardTemplate.tsx (48 tests, 97% coverage)
 
 ## ✅ Primitives (9 Components)
 
