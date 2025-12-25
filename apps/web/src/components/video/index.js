@@ -13,3 +13,4 @@ export { VideoUploader } from './VideoUploader';
 export { VoiceRecorder } from './VoiceRecorder';
 export { AnnotationMarker, ANNOTATION_TYPE_CONFIG } from './AnnotationMarker';
 export { AnnotationTimeline } from './AnnotationTimeline';
+export { ShareDialog, VISIBILITY_OPTIONS, EXPIRATION_OPTIONS } from './ShareDialog';
