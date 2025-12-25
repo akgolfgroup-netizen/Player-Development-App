@@ -16,11 +16,48 @@ import {
   Message
 } from './schema';
 
+/**
+ * Dashboard service providing aggregated data for the player dashboard
+ *
+ * @remarks
+ * This service orchestrates multiple database queries to fetch all dashboard data
+ * in an optimized manner using Promise.all for parallel execution.
+ * Performance is monitored and queries exceeding 200ms trigger warnings.
+ */
 export class DashboardService {
   constructor(private prisma: PrismaClient) {}
 
   /**
    * Get complete dashboard data for a player
+   *
+   * @param tenantId - The tenant/organization ID
+   * @param playerId - The player's unique identifier
+   * @param date - Reference date for dashboard data (defaults to current date)
+   * @returns Complete dashboard data including player profile, sessions, goals, stats, etc.
+   * @throws {NotFoundError} When player is not found in the specified tenant
+   *
+   * @remarks
+   * Fetches all dashboard components in parallel for optimal performance:
+   * - Player profile information
+   * - Current training period details
+   * - Today's scheduled sessions
+   * - Recent badges/achievements (last 7 days)
+   * - Active goals
+   * - Weekly training statistics
+   * - Recent messages from coaches
+   * - Next tournament and test
+   * - Breaking points requiring attention
+   * - Recent test results (last 3)
+   *
+   * @example
+   * ```typescript
+   * const dashboard = await dashboardService.getDashboard(
+   *   'tenant-uuid',
+   *   'player-uuid',
+   *   new Date()
+   * );
+   * console.log(dashboard.weeklyStats.stats);
+   * ```
    */
   async getDashboard(
     tenantId: string,
@@ -111,7 +148,21 @@ export class DashboardService {
   }
 
   /**
-   * Get current training period
+   * Get current training period information
+   *
+   * @param playerId - The player's unique identifier
+   * @param date - Reference date to determine the current period
+   * @returns Training period information including type, week number, and focus areas
+   *
+   * @remarks
+   * Determines the current periodization phase (E/G/S/T) based on the annual plan:
+   * - E: Evalueringsperiode (Evaluation period)
+   * - G: Grunnperiode (Base period) - DEFAULT
+   * - S: Spesialperiode (Specific period)
+   * - T: Turneringsperiode (Competition period)
+   *
+   * Focus areas are extracted from the annual plan's intensity profile,
+   * or default areas are used based on the period type.
    */
   private async getCurrentPeriod(playerId: string, date: Date): Promise<PeriodInfo> {
     const weekNumber = this.getWeekNumber(date);
@@ -169,7 +220,18 @@ export class DashboardService {
   }
 
   /**
-   * Get today's training sessions
+   * Get today's training sessions from daily assignments
+   *
+   * @param playerId - The player's unique identifier
+   * @param date - Reference date (defaults to current date)
+   * @returns Array of scheduled sessions for the day with status (completed/current/upcoming)
+   *
+   * @remarks
+   * Fetches DailyTrainingAssignments for the specified date and enriches them with:
+   * - Status determination (completed/current/upcoming)
+   * - Tags from learning phase and club speed
+   * - Estimated times (defaults to 2-hour intervals starting at 08:00)
+   * - Session template names and durations
    */
   private async getTodaySessions(playerId: string, date: Date): Promise<Session[]> {
     const startOfDay = new Date(date);
@@ -230,7 +292,15 @@ export class DashboardService {
   }
 
   /**
-   * Get recent badges/achievements
+   * Get recent badges and achievements earned in the last 7 days
+   *
+   * @param playerId - The player's unique identifier
+   * @returns Array of badges with code, name, icon, tier, and earned timestamp (max 10)
+   *
+   * @remarks
+   * Filters PlayerAchievement records to show only badges earned in the past week.
+   * Results are ordered by earnedAt descending (newest first) and limited to 10 items.
+   * Badge tier can be: bronze, silver, gold, or platinum.
    */
   private async getRecentBadges(playerId: string): Promise<Badge[]> {
     const oneWeekAgo = new Date();
@@ -259,7 +329,18 @@ export class DashboardService {
   }
 
   /**
-   * Get active player goals
+   * Get active player goals ordered by target date
+   *
+   * @param playerId - The player's unique identifier
+   * @returns Array of active goals with progress indicators (max 4)
+   *
+   * @remarks
+   * Only fetches goals with status='active' and orders them by targetDate ascending
+   * (nearest deadlines first). Each goal includes:
+   * - Progress percentage (0-100)
+   * - Formatted deadline string
+   * - Visual variant (success/warning/danger) based on progress and deadline proximity
+   * Results are limited to 4 goals to fit the dashboard widget.
    */
   private async getActiveGoals(playerId: string): Promise<Goal[]> {
     const goals = await this.prisma.playerGoal.findMany({
@@ -282,7 +363,26 @@ export class DashboardService {
   }
 
   /**
-   * Get weekly training stats
+   * Get weekly training statistics with change indicators
+   *
+   * @param playerId - The player's unique identifier
+   * @param date - Reference date to determine the week
+   * @returns Weekly stats object with sessions, hours, and completion rate
+   *
+   * @remarks
+   * First attempts to fetch from WeeklyTrainingStats table (pre-aggregated data).
+   * If no aggregated data exists, falls back to calculating from raw TrainingSession records.
+   *
+   * Returns three key metrics:
+   * - Sessions completed (with week-over-week change)
+   * - Training hours (with change in hours)
+   * - Completion rate % (with percentage point change)
+   *
+   * @example
+   * ```typescript
+   * const stats = await getWeeklyStats('player-id', new Date());
+   * // { period: 'Uke 52', stats: [{ id: 'sessions', value: 5, change: +2 }, ...] }
+   * ```
    */
   private async getWeeklyStats(playerId: string, date: Date): Promise<WeeklyStats> {
     const weekNumber = this.getWeekNumber(date);
