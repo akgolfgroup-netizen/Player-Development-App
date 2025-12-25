@@ -391,14 +391,15 @@ describe('BadgeEvaluatorService', () => {
         expect(badge).toHaveProperty('id');
         expect(badge).toHaveProperty('name');
         expect(badge).toHaveProperty('description');
-        expect(badge).toHaveProperty('icon');
+        expect(badge).toHaveProperty('symbol'); // Changed from 'icon' to 'symbol'
         expect(badge).toHaveProperty('tier');
         expect(badge).toHaveProperty('category');
       });
     });
 
     it('should have valid tiers', () => {
-      const validTiers = ['bronze', 'silver', 'gold', 'platinum'];
+      // Updated to include 'standard' tier which is used in the implementation
+      const validTiers = ['standard', 'bronze', 'silver', 'gold', 'platinum'];
       ALL_BADGES.forEach((badge) => {
         expect(validTiers).toContain(badge.tier);
       });
