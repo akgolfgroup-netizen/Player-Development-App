@@ -9,6 +9,7 @@ import { registerHelmet } from './plugins/helmet';
 import { registerWebSocket } from './plugins/websocket';
 import { registerCache } from './plugins/cache';
 import { registerRateLimit } from './plugins/rate-limit';
+import metricsPlugin from './plugins/metrics';
 import { authenticateUser } from './middleware/auth';
 
 export interface BuildAppOptions {
@@ -40,6 +41,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   app.setNotFoundHandler(notFoundHandler as any);
 
   // Register plugins
+  await app.register(metricsPlugin); // Performance monitoring and metrics
   await registerHelmet(app as any);
   await registerCors(app as any);
   await registerSwagger(app as any);
@@ -50,33 +52,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   // Register authenticate decorator
   app.decorate('authenticate', authenticateUser);
 
-  // Health check endpoint (no auth required)
-  app.get('/health', {
-    schema: {
-      description: 'Health check endpoint',
-      tags: ['health'],
-      response: {
-        200: {
-          type: 'object',
-          properties: {
-            status: { type: 'string', example: 'ok' },
-            timestamp: { type: 'string', example: '2025-01-15T10:30:00.000Z' },
-            uptime: { type: 'number', example: 12345 },
-            environment: { type: 'string', example: 'development' },
-            version: { type: 'string', example: '1.0.0' },
-          },
-        },
-      },
-    },
-  }, async () => {
-    return {
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      environment: config.server.env,
-      version: '1.0.0',
-    };
-  });
+  // Note: /health, /metrics, /ready, /live endpoints are provided by the metrics plugin
 
   // Register API routes
   const { authRoutes } = await import('./api/v1/auth');
