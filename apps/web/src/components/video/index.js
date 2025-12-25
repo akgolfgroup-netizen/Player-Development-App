@@ -9,3 +9,4 @@ export { AnnotationCanvas } from './AnnotationCanvas';
 export { ToolPalette } from './ToolPalette';
 export { VideoAnalyzer } from './VideoAnalyzer';
 export { VideoComparison } from './VideoComparison';
+export { VideoUploader } from './VideoUploader';
