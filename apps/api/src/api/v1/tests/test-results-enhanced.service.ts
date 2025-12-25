@@ -9,7 +9,6 @@ import { calculateTestResultAsync, validateTestInput } from '../../../domain/tes
 import { RequirementsRepository } from '../../../domain/tests/requirements-repository';
 import {
   calculatePeerComparison,
-  matchesPeerCriteria,
   type PeerCriteria,
 } from '../../../domain/peer-comparison';
 import { BadgeEvaluatorService, BadgeUnlockEvent } from '../../../domain/gamification/badge-evaluator';
@@ -245,21 +244,50 @@ export class TestResultsEnhancedService {
     peerCriteria: PeerCriteria,
     tenantId: string
   ): Promise<any> {
-    // Fetch peer players
-    const players = await this.prisma.player.findMany({
-      where: {
-        tenantId,
-        id: { not: playerId }, // Exclude the player themselves
+    // Build optimized database query with criteria filtering
+    const whereClause: any = {
+      tenantId,
+      id: { not: playerId }, // Exclude the player themselves
+    };
+
+    // Add category filter
+    if (peerCriteria.category) {
+      whereClause.category = peerCriteria.category;
+    }
+
+    // Add gender filter
+    if (peerCriteria.gender) {
+      whereClause.gender = peerCriteria.gender;
+    }
+
+    // Add age range filter
+    if (peerCriteria.ageRange) {
+      const currentYear = new Date().getFullYear();
+      const minBirthYear = currentYear - peerCriteria.ageRange.max;
+      const maxBirthYear = currentYear - peerCriteria.ageRange.min;
+
+      whereClause.dateOfBirth = {
+        gte: new Date(`${minBirthYear}-01-01`),
+        lte: new Date(`${maxBirthYear}-12-31`),
+      };
+    }
+
+    // Add handicap range filter
+    if (peerCriteria.handicapRange) {
+      whereClause.handicap = {
+        gte: peerCriteria.handicapRange.min,
+        lte: peerCriteria.handicapRange.max,
+        not: null,
+      };
+    }
+
+    // Fetch peer players with optimized query
+    const peers = await this.prisma.player.findMany({
+      where: whereClause,
+      select: {
+        id: true,
       },
     });
-
-    // Filter peers by criteria (convert Decimal handicap to number)
-    const peers = players
-      .map((p) => ({
-        ...p,
-        handicap: p.handicap ? Number(p.handicap) : null,
-      }))
-      .filter((p) => matchesPeerCriteria(p, peerCriteria, playerId));
 
     if (peers.length === 0) {
       return null; // Not enough peers for comparison

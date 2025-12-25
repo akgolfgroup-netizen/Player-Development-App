@@ -249,6 +249,10 @@ model Player {
   @@index([category])
   @@index([status])
   @@index([coachId])
+  @@index([gender])
+  @@index([dateOfBirth])
+  @@index([handicap])
+  @@index([tenantId, category, gender]) // Optimized for peer comparisons
   @@map("players")
 }
 
@@ -444,6 +448,7 @@ model TestResult {
   @@index([playerId])
   @@index([testDate])
   @@index([passed])
+  @@index([playerId, testDate]) // Optimized for latest result per player queries
   @@map("test_results")
 }
 
