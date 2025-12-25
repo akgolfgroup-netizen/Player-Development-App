@@ -62,6 +62,7 @@ const CalendarLab = lazy(() => import('./ui/lab/CalendarLab'));
 const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage'));
 const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
 const StatsPageV2 = lazy(() => import('./features/stats/StatsPageV2'));
+const CalendarPage = lazy(() => import('./features/calendar/CalendarPage'));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -413,9 +414,7 @@ function App() {
           } />
           <Route path="/kalender" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Kalender" subtitle="Planlegg og book timer">
-                <KalenderContainer />
-              </AuthenticatedLayout>
+              <CalendarPage />
             </ProtectedRoute>
           } />
           <Route path="/plan-preview/:planId" element={

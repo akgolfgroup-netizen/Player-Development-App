@@ -92,6 +92,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   const { annotationRoutes } = await import('./api/v1/annotations');
   const { commentRoutes } = await import('./api/v1/comments');
   const { comparisonRoutes } = await import('./api/v1/comparisons');
+  const { emailRoutes } = await import('./api/v1/emails');
 
   await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
@@ -128,6 +129,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   await app.register(annotationRoutes, { prefix: `/api/${config.server.apiVersion}/annotations` });
   await app.register(commentRoutes, { prefix: `/api/${config.server.apiVersion}/comments` });
   await app.register(comparisonRoutes, { prefix: `/api/${config.server.apiVersion}/comparisons` });
+  await app.register(emailRoutes, { prefix: `/api/${config.server.apiVersion}/emails` });
 
   // ✅ All IUP Golf Academy APIs registered!
   // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points

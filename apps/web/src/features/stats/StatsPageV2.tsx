@@ -1,104 +1,24 @@
 import React from 'react';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
-import StatsGridTemplate, { StatsItem } from '../../ui/templates/StatsGridTemplate';
+import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 import BottomNav from '../../ui/composites/BottomNav';
+import { RefreshCw } from 'lucide-react';
+import { useStats } from '../../data';
+import type { StatsOverviewItem } from '../../data';
 
 /**
  * StatsPageV2
  * Statistics page using UI templates
  * Composes AppShellTemplate + StatsGridTemplate + Card + BottomNav
+ * Data fetched via useStats hook
  */
 
-// Stats KPI data
-const statsItems: StatsItem[] = [
-  {
-    id: '1',
-    label: 'Treningsminutter',
-    value: '420',
-    sublabel: 'Denne uken',
-    change: {
-      value: '15%',
-      direction: 'up',
-    },
-  },
-  {
-    id: '2',
-    label: 'Økter fullført',
-    value: '6',
-    sublabel: 'Av 8 planlagt',
-  },
-  {
-    id: '3',
-    label: 'Putting snitt',
-    value: '29.2',
-    sublabel: 'Putts per runde',
-    change: {
-      value: '0.8',
-      direction: 'down',
-    },
-  },
-  {
-    id: '4',
-    label: 'Range snitt',
-    value: '245m',
-    sublabel: 'Driver distance',
-  },
-  {
-    id: '5',
-    label: 'Progresjon',
-    value: '78%',
-    sublabel: 'Mot sesongmål',
-    change: {
-      value: '12%',
-      direction: 'up',
-    },
-  },
-  {
-    id: '6',
-    label: 'GIR',
-    value: '62%',
-    sublabel: 'Greens in regulation',
-    change: {
-      value: '3%',
-      direction: 'up',
-    },
-  },
-];
-
-// Overview data
-interface OverviewItem {
-  id: string;
-  label: string;
-  value: string;
-  trend?: 'positive' | 'negative' | 'neutral';
-}
-
-const overviewItems: OverviewItem[] = [
-  { id: '1', label: 'Beste runde', value: '72 (+0)', trend: 'positive' },
-  { id: '2', label: 'Snitt siste 5 runder', value: '76.4', trend: 'neutral' },
-  { id: '3', label: 'Handicap', value: '8.2', trend: 'positive' },
-  { id: '4', label: 'Fairway treff', value: '58%', trend: 'neutral' },
-  { id: '5', label: 'Sand saves', value: '42%', trend: 'negative' },
-];
-
-// Recent sessions data
-interface RecentSession {
-  id: string;
-  title: string;
-  date: string;
-  duration: string;
-  type: string;
-}
-
-const recentSessions: RecentSession[] = [
-  { id: '1', title: 'Putting drill', date: 'I dag', duration: '45 min', type: 'Kort spill' },
-  { id: '2', title: 'Driving range', date: 'I går', duration: '60 min', type: 'Langt spill' },
-  { id: '3', title: 'Chipping øvelser', date: '2 dager siden', duration: '30 min', type: 'Kort spill' },
-];
-
 const StatsPageV2: React.FC = () => {
-  const getTrendColor = (trend?: OverviewItem['trend']) => {
+  const { data, isLoading, error, refetch } = useStats();
+
+  const getTrendColor = (trend?: StatsOverviewItem['trend']) => {
     switch (trend) {
       case 'positive':
         return 'var(--ak-success)';
@@ -109,15 +29,50 @@ const StatsPageV2: React.FC = () => {
     }
   };
 
+  // Loading state
+  if (isLoading && !data) {
+    return (
+      <AppShellTemplate
+        title="Statistikk"
+        subtitle="Siste 7 dager"
+        bottomNav={<BottomNav />}
+      >
+        <section style={styles.section}>
+          <Card>
+            <div style={styles.loadingText}>Laster...</div>
+          </Card>
+        </section>
+      </AppShellTemplate>
+    );
+  }
+
+  const kpis = data?.kpis ?? [];
+  const overview = data?.overview ?? [];
+  const recentSessions = data?.recentSessions ?? [];
+
   return (
     <AppShellTemplate
       title="Statistikk"
       subtitle="Siste 7 dager"
       bottomNav={<BottomNav />}
     >
+      {/* Error message */}
+      {error && (
+        <section style={styles.section}>
+          <Card>
+            <div style={styles.errorContainer}>
+              <span style={styles.errorText}>{error}</span>
+              <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
+                Prøv igjen
+              </Button>
+            </div>
+          </Card>
+        </section>
+      )}
+
       {/* Stats Grid */}
       <section style={styles.section}>
-        <StatsGridTemplate items={statsItems} columns={3} />
+        <StatsGridTemplate items={kpis} columns={3} />
       </section>
 
       {/* Overview Card */}
@@ -125,7 +80,7 @@ const StatsPageV2: React.FC = () => {
         <h2 style={styles.sectionTitle}>Oversikt</h2>
         <Card>
           <div style={styles.overviewList}>
-            {overviewItems.map((item) => (
+            {overview.map((item) => (
               <div key={item.id} style={styles.overviewItem}>
                 <span style={styles.overviewLabel}>{item.label}</span>
                 <span
@@ -261,6 +216,21 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-secondary)',
     margin: 0,
     marginTop: 'var(--spacing-1)',
+  },
+  loadingText: {
+    textAlign: 'center',
+    padding: 'var(--spacing-4)',
+    color: 'var(--text-secondary)',
+  },
+  errorContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 'var(--spacing-3)',
+  },
+  errorText: {
+    color: 'var(--color-danger)',
+    fontSize: 'var(--font-size-footnote)',
   },
 };
 
