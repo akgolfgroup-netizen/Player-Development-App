@@ -22,7 +22,10 @@
     "prisma:seed:test": "DATABASE_URL=postgresql://iup_golf:dev_password@localhost:5432/iup_golf_test tsx prisma/seed.ts",
     "prisma:push:test": "DATABASE_URL=postgresql://iup_golf:dev_password@localhost:5432/iup_golf_test prisma db push --skip-generate",
     "lint": "eslint src --ext .ts",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "docs:export-openapi": "tsx scripts/export-openapi.ts",
+    "docs:export-postman": "npm run docs:export-openapi && tsx scripts/openapi-to-postman.ts",
+    "docs:export-all": "npm run docs:export-postman"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
