@@ -137,7 +137,7 @@ const TasksWidget = ({ tasks, onToggle, onViewAll }) => {
           </div>
         ))}
       </div>
-    </Card>
+    </DashboardCard>
   );
 };
 
@@ -145,13 +145,13 @@ const TasksWidget = ({ tasks, onToggle, onViewAll }) => {
 const BreakingPointsWidget = ({ points, onViewAll }) => {
   if (!points || points.length === 0) {
     return (
-      <Card className="p-5">
+      <DashboardCard padding="lg">
         <WidgetHeader title="Breaking Points" icon={Target} />
         <div className="text-center py-6">
           <Info size={24} className="text-ak-mist mx-auto mb-2" />
           <p className="text-[13px] text-ak-steel">Ingen aktive breaking points</p>
         </div>
-      </Card>
+      </DashboardCard>
     );
   }
 
@@ -164,7 +164,7 @@ const BreakingPointsWidget = ({ points, onViewAll }) => {
   };
 
   return (
-    <Card className="p-5">
+    <DashboardCard padding="lg">
       <WidgetHeader title="Breaking Points" icon={Target} action={onViewAll} />
 
       <div className="space-y-3">
@@ -198,7 +198,7 @@ const BreakingPointsWidget = ({ points, onViewAll }) => {
           </div>
         ))}
       </div>
-    </Card>
+    </DashboardCard>
   );
 };
 
@@ -349,29 +349,29 @@ const AKGolfDashboard = () => {
         <div className="space-y-5">
           {/* Countdown Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Card className="p-4">
+            <DashboardCard padding="md">
               <CountdownWidget
                 title={nextTournament?.title || 'Ingen kommende turnering'}
                 date={nextTournament?.date || '2026-12-31'}
                 type="tournament"
                 location={nextTournament?.location || ''}
               />
-            </Card>
-            <Card className="p-4">
+            </DashboardCard>
+            <DashboardCard padding="md">
               <CountdownWidget
                 title={nextTest?.title || 'Ingen kommende test'}
                 date={nextTest?.date || '2026-12-31'}
                 type="test"
                 location={nextTest?.location || 'AK Golf Academy'}
               />
-            </Card>
+            </DashboardCard>
           </div>
 
           {/* Calendar Day View */}
           <DagensPlan events={calendarEvents} />
 
           {/* Upcoming Sessions */}
-          <Card className="p-5">
+          <DashboardCard padding="lg">
             <WidgetHeader
               title="Dagens økter"
               icon={Play}
@@ -399,7 +399,7 @@ const AKGolfDashboard = () => {
                 ))}
               </div>
             )}
-          </Card>
+          </DashboardCard>
         </div>
       ),
     },
