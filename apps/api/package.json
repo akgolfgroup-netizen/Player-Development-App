@@ -18,6 +18,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:seed": "tsx prisma/seed.ts",
+    "seed:demo": "tsx scripts/seed-demo.ts",
     "prisma:seed:test": "DATABASE_URL=postgresql://iup_golf:dev_password@localhost:5432/iup_golf_test tsx prisma/seed.ts",
     "prisma:push:test": "DATABASE_URL=postgresql://iup_golf:dev_password@localhost:5432/iup_golf_test prisma db push --skip-generate",
     "lint": "eslint src --ext .ts",
