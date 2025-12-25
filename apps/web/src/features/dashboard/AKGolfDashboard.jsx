@@ -10,6 +10,8 @@ import { useDashboard } from '../../hooks/useDashboard';
 import SessionEvaluationWidget from '../sessions/SessionEvaluationWidget';
 import { DashboardTemplate } from '../../ui/templates';
 import { Button } from '../../ui/primitives';
+import { DashboardSkeleton } from '../../ui/skeletons';
+import { EnhancedErrorState } from '../../ui/components/EnhancedErrorState';
 
 // ===== SKELETON COMPONENTS =====
 
@@ -353,42 +355,17 @@ const AKGolfDashboard = () => {
 
   // Show loading skeletons
   if (loading) {
-    return (
-      <div style={{ fontFamily: '"Inter", -apple-system, system-ui, sans-serif' }}>
-        <div className="mb-6">
-          <SkeletonPulse className="h-8 w-64 mb-2" />
-          <SkeletonPulse className="h-5 w-48" />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-          <div className="lg:col-span-8 space-y-5 order-2 lg:order-1">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <CountdownSkeleton />
-              <CountdownSkeleton />
-            </div>
-            <CardSkeleton>
-              <SkeletonPulse className="h-5 w-24 mb-4" />
-              <SkeletonPulse className="h-[400px] w-full rounded-lg" />
-            </CardSkeleton>
-          </div>
-
-          <div className="lg:col-span-4 space-y-5 order-1 lg:order-2">
-            <StatsSkeleton />
-            <TasksSkeleton />
-          </div>
-        </div>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
-  // Show error state
+  // Show error state (only if no data at all)
   if (error && !dashboardData) {
     return (
       <div style={{ fontFamily: '"Inter", -apple-system, system-ui, sans-serif' }}>
         <div className="mb-6">
           <h1 className="text-[28px] font-bold text-ak-charcoal">Dashboard</h1>
         </div>
-        <ErrorState message={error} onRetry={refetch} />
+        <EnhancedErrorState error={error} onRetry={refetch} />
       </div>
     );
   }
@@ -533,12 +510,25 @@ const AKGolfDashboard = () => {
     <div style={{ fontFamily: '"Inter", -apple-system, system-ui, sans-serif' }}>
       {/* Error banner if API failed but we have fallback data */}
       {error && (
-        <div className="mb-4 p-3 bg-ak-warning/10 border border-ak-warning/20 rounded-lg flex items-center gap-3">
-          <AlertCircle size={18} className="text-ak-warning" />
-          <span className="text-[13px] text-ak-charcoal">Bruker demo-data. {error}</span>
-          <button onClick={refetch} className="ml-auto text-[12px] text-ak-primary font-medium hover:underline">
-            Prøv igjen
-          </button>
+        <div className="mb-4 p-4 bg-ak-warning/10 border border-ak-warning/20 rounded-xl">
+          <div className="flex items-start gap-3">
+            <AlertCircle size={20} className="text-ak-warning flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-[14px] font-medium text-ak-charcoal mb-1">
+                Kunne ikke laste ny data
+              </p>
+              <p className="text-[13px] text-ak-steel">
+                Viser tidligere data. Noe informasjon kan være utdatert.
+              </p>
+            </div>
+            <button
+              onClick={refetch}
+              className="flex items-center gap-2 px-3 py-1.5 bg-ak-primary text-white rounded-lg text-[13px] font-medium hover:bg-ak-primary-dark transition-colors"
+            >
+              <RefreshCw size={14} />
+              Prøv igjen
+            </button>
+          </div>
         </div>
       )}
 

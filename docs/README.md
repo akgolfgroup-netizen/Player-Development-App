@@ -1,154 +1,144 @@
-# AK Golf Academy - Documentation
+# Documentation
 
-> Single source of truth for all project documentation
+> IUP Golf Platform - Technical Documentation
 
----
-
-## Quick Navigation
-
-| Category | Description |
-|----------|-------------|
-| [Platform Functions](./PLATFORM_FUNKSJONER.md) | Complete feature list (Norwegian) |
-| [Project Overview](#project-overview) | Master documents and status |
-| [API Reference](./api/README.md) | All API endpoints |
-| [Design System](./DESIGN_SYSTEM.md) | Colors, typography, components |
-| [User Guides](./guides/) | UI/UX documentation |
-| [Features](./features/) | Feature-specific documentation |
+[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](.)
+[![API](https://img.shields.io/badge/API-OpenAPI%203.0-blue.svg)](./api/openapi.yaml)
 
 ---
 
-## Project Overview
+## Quick Links
 
-Core project documents (source of truth):
-
-| Document | Description |
-|----------|-------------|
-| [Master Project](./00_MASTER_PROSJEKTDOKUMENT.md) | Complete project overview |
-| [Status Dashboard](./01_STATUS_DASHBOARD.md) | Current implementation status |
-| [Development Plan](./02_UTVIKLINGSPLAN_KOMPLETT.md) | Roadmap and milestones |
+| I want to... | Go to |
+|--------------|-------|
+| Understand the system | [Architecture Overview](./architecture/overview.md) |
+| Set up development | [Development Guide](./guides/development.md) |
+| Use the API | [API Reference](./api/README.md) |
+| Deploy the app | [Deployment Guide](./guides/deployment.md) |
+| Understand the domain | [Golf Categories](./reference/golf-categories.md) |
 
 ---
 
-## Documentation Structure
+## Documentation Map
 
 ```
 docs/
-├── README.md                     # This index
-├── DESIGN_SYSTEM.md              # Design system (single source)
+├── architecture/           # System design & decisions
+│   ├── overview.md         # Architecture overview
+│   ├── data-model.md       # Database schema
+│   └── decisions/          # ADRs (Architecture Decision Records)
 │
-├── api/                          # API Documentation
-│   ├── README.md                 # API overview & reference
-│   ├── booking.md                # Booking & calendar API
-│   ├── coach.md                  # Coach endpoints
-│   ├── groups.md                 # Groups/teams API
-│   ├── messaging.md              # Messaging API
-│   ├── tournaments.md            # Tournaments API
-│   └── openapi-spec.yaml         # OpenAPI specification
+├── api/                    # API documentation
+│   ├── README.md           # API overview
+│   ├── authentication.md   # Auth & security
+│   └── openapi.yaml        # OpenAPI spec
 │
-├── guides/                       # User & Developer Guides
-│   ├── PLAYER_NAVIGATION_OVERVIEW.md
-│   ├── COACH_ADMIN_JOURNEYS.md
-│   ├── user-journeys.md
-│   └── ui/                       # UI/UX Documentation
-│       ├── README.md
-│       ├── HOME_SCREEN.md
-│       ├── PROOF_SCREEN.md
-│       ├── SCREEN_RESPONSIBILITIES.md
-│       └── UI_SCREENS_DESKTOP.md
+├── guides/                 # How-to guides
+│   ├── development.md      # Local setup
+│   ├── deployment.md       # Deploy to production
+│   ├── testing.md          # Testing strategy
+│   └── contributing.md     # Contribution guide
 │
-├── features/                     # Feature Documentation
-│   ├── datagolf/                 # DataGolf integration
-│   │   ├── DATAGOLF_QUICKSTART.md
-│   │   ├── DATAGOLF_DATA_INVENTORY.md
-│   │   ├── DATAGOLF_OPPORTUNITY_ANALYSIS.md
-│   │   └── DATAGOLF_STATS_FORSLAG.md
-│   ├── oauth/                    # Authentication
-│   │   └── OAUTH_IMPLEMENTATION.md
-│   └── subscription/             # Subscription system
-│       └── SUBSCRIPTION_TIERS_IMPLEMENTATION.md
+├── design/                 # UI/UX documentation
+│   ├── design-system.md    # Design tokens & components
+│   └── mockups/            # Visual prototypes
 │
-├── mockups/                      # UI Mockups & Prototypes
-│   └── *.html
+├── reference/              # Domain reference
+│   ├── golf-categories.md  # A-K category system
+│   ├── test-protocols.md   # Test specifications
+│   └── badge-system.md     # Gamification
 │
-└── archive/                      # Historical documents (reference only)
+└── internal/               # Internal docs (not for external use)
     └── ...
 ```
 
 ---
 
-## API Documentation
+## Architecture
 
-Complete API reference at [docs/api/README.md](./api/README.md)
+- [System Overview](./architecture/overview.md) - High-level architecture
+- [Data Model](./architecture/data-model.md) - Database design and relationships
+- [Security Model](./architecture/security.md) - Authentication, authorization, multi-tenancy
 
-### Quick Links
+### Architecture Decision Records (ADRs)
 
-| API | Endpoints | Description |
-|-----|-----------|-------------|
-| [Booking](./api/booking.md) | 17 | Availability, bookings, calendar |
-| [Coach](./api/coach.md) | 12 | Dashboard, athletes, analytics |
-| [Groups](./api/groups.md) | 8 | Team management |
-| [Messaging](./api/messaging.md) | 6 | Conversations, notifications |
-| [Tournaments](./api/tournaments.md) | 5 | Tournament management |
+| ADR | Decision | Status |
+|-----|----------|--------|
+| [001](./architecture/decisions/001-fastify-framework.md) | Use Fastify as HTTP framework | Accepted |
+| [002](./architecture/decisions/002-prisma-orm.md) | Use Prisma as ORM | Accepted |
+| [003](./architecture/decisions/003-multi-tenant.md) | Multi-tenant via tenant_id column | Accepted |
+| [004](./architecture/decisions/004-jwt-auth.md) | JWT-based authentication | Accepted |
+
+---
+
+## API Reference
+
+- [API Overview](./api/README.md) - Getting started with the API
+- [Authentication](./api/authentication.md) - Auth flows and tokens
+- [OpenAPI Spec](./api/openapi.yaml) - Full API specification
+
+### Endpoints by Domain
+
+| Domain | Base Path | Description |
+|--------|-----------|-------------|
+| Auth | `/api/v1/auth` | Login, register, tokens |
+| Players | `/api/v1/players` | Player management |
+| Tests | `/api/v1/tests` | Test results and history |
+| Training | `/api/v1/training-plan` | Training plans and sessions |
+| Dashboard | `/api/v1/dashboard` | Player/coach dashboards |
+| Badges | `/api/v1/badges` | Gamification system |
+
+---
+
+## Guides
+
+| Guide | Description |
+|-------|-------------|
+| [Development](./guides/development.md) | Set up local development environment |
+| [Deployment](./guides/deployment.md) | Deploy to staging and production |
+| [Testing](./guides/testing.md) | Run tests and add coverage |
+| [Contributing](./guides/contributing.md) | Contribute to the project |
 
 ---
 
 ## Design System
 
-**Single source**: [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)
+- [Design Tokens](./design/design-system.md) - Colors, typography, spacing
+- [Component Library](./design/components.md) - Reusable UI components
+- [Mockups](./design/mockups/) - Visual prototypes
 
-### Quick Reference
+### Brand Colors
 
-| Element | Value |
-|---------|-------|
-| Primary | `#10456A` |
-| Ink | `#02060D` |
-| Snow | `#EDF0F2` |
-| Gold | `#C9A227` |
-| Font | Inter |
-
----
-
-## Feature Documentation
-
-### DataGolf Integration
-- [Quickstart Guide](./features/datagolf/DATAGOLF_QUICKSTART.md) - Get started
-- [Data Inventory](./features/datagolf/DATAGOLF_DATA_INVENTORY.md) - Available data
-- [Opportunity Analysis](./features/datagolf/DATAGOLF_OPPORTUNITY_ANALYSIS.md) - Strategy
-
-### Authentication
-- [OAuth Implementation](./features/oauth/OAUTH_IMPLEMENTATION.md)
-
-### Subscription
-- [Tier Implementation](./features/subscription/SUBSCRIPTION_TIERS_IMPLEMENTATION.md)
+| Name | Hex | Usage |
+|------|-----|-------|
+| Primary | `#10456A` | Main brand color |
+| Ink | `#02060D` | Text |
+| Snow | `#EDF0F2` | Background |
+| Gold | `#C9A227` | Accents |
 
 ---
 
-## Specifications
+## Reference
 
-| Spec | Description |
-|------|-------------|
-| [Badge System](./AK_ICON_BADGE_SYSTEM_SPEC.md) | Icon and badge specifications |
-| [Category Requirements](./CONFIG_KATEGORI_KRAV.md) | A-K category definitions |
-| [Gamification](./GAMIFICATION_METRICS_SPEC.md) | Metrics and rewards |
-| [Annual Plan](./AARSPLAN_MAL_NIVAPRINSIPPET.md) | Training plan structure |
+Domain-specific documentation:
 
----
-
-## Archive
-
-Historical documents are stored in [docs/archive/](./archive/). These are for reference only and may contain outdated information. Always refer to the main documentation above for current specifications.
+| Document | Description |
+|----------|-------------|
+| [Golf Categories](./reference/golf-categories.md) | A-K category system (Team Norway) |
+| [Test Protocols](./reference/test-protocols.md) | 20+ test specifications |
+| [Badge System](./reference/badge-system.md) | 85 badges and gamification |
+| [Glossary](./reference/glossary.md) | Domain terminology |
 
 ---
 
-## Contributing
+## Standards
 
-When adding documentation:
+This documentation follows:
 
-1. **Single source of truth** - Don't duplicate information
-2. **Clear ownership** - Each topic has one authoritative document
-3. **Link, don't copy** - Reference other docs instead of copying content
-4. **Archive old content** - Move outdated docs to archive/
+- [Google Developer Documentation Style Guide](https://developers.google.com/style)
+- [Diátaxis documentation framework](https://diataxis.fr/)
+- English for technical docs, Norwegian for user-facing content
 
 ---
 
-**Last updated**: December 2025
+*Last updated: December 2024*
