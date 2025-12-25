@@ -111,6 +111,9 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   const messageRoutes = (await import('./api/v1/messages')).default;
   const exportRoutes = (await import('./api/v1/export')).default;
   const { videoRoutes } = await import('./api/v1/videos');
+  const { annotationRoutes } = await import('./api/v1/annotations');
+  const { commentRoutes } = await import('./api/v1/comments');
+  const { comparisonRoutes } = await import('./api/v1/comparisons');
 
   await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
@@ -144,6 +147,9 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   await app.register(messageRoutes, { prefix: `/api/${config.server.apiVersion}/messages` });
   await app.register(exportRoutes, { prefix: `/api/${config.server.apiVersion}/export` });
   await app.register(videoRoutes, { prefix: `/api/${config.server.apiVersion}/videos` });
+  await app.register(annotationRoutes, { prefix: `/api/${config.server.apiVersion}/annotations` });
+  await app.register(commentRoutes, { prefix: `/api/${config.server.apiVersion}/comments` });
+  await app.register(comparisonRoutes, { prefix: `/api/${config.server.apiVersion}/comparisons` });
 
   // ✅ All IUP Golf Academy APIs registered!
   // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points
