@@ -315,7 +315,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '50%',
   },
   moreEvents: {
-    fontSize: '8px',
+    fontSize: 'var(--font-size-caption2)',
     color: 'var(--text-tertiary)',
     marginLeft: '2px',
   },

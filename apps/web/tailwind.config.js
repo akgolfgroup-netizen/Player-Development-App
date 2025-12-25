@@ -18,7 +18,29 @@ module.exports = {
       // COLORS (CSS Variable References)
       // ═══════════════════════════════════════════
       colors: {
-        // Brand Colors
+        // ═══════════════════════════════════════════
+        // STANDARDIZED TOKEN CLASSES (Primary usage)
+        // ═══════════════════════════════════════════
+        primary: {
+          DEFAULT: 'var(--color-primary)',
+          foreground: 'var(--color-primary-foreground)',
+        },
+        surface: {
+          DEFAULT: 'var(--color-surface)',
+          '2': 'var(--color-surface-2)',
+        },
+        border: 'var(--color-border)',
+        text: {
+          DEFAULT: 'var(--color-text)',
+          muted: 'var(--color-text-muted)',
+        },
+        success: 'var(--color-success)',
+        warning: 'var(--color-warning)',
+        danger: 'var(--color-danger)',
+
+        // ═══════════════════════════════════════════
+        // BRAND COLORS (Detailed palette)
+        // ═══════════════════════════════════════════
         'ak-ink': 'var(--ak-ink)',
         'ak-primary': 'var(--ak-primary)',
         'ak-primary-light': 'var(--ak-primary-light)',
@@ -48,7 +70,7 @@ module.exports = {
         'ak-mist': 'var(--ak-mist)',
         'ak-cloud': 'var(--ak-cloud)',
 
-        // Status colors
+        // Status colors (detailed)
         'ak-success': 'var(--ak-success)',
         'ak-warning': 'var(--ak-warning)',
         'ak-error': 'var(--ak-error)',
@@ -137,6 +159,15 @@ module.exports = {
       boxShadow: {
         'ak-card': 'var(--shadow-card)',
         'ak-elevated': 'var(--shadow-elevated)',
+      },
+
+      // ═══════════════════════════════════════════
+      // BORDER COLORS (Extend default)
+      // ═══════════════════════════════════════════
+      borderColor: {
+        DEFAULT: 'var(--color-border)',
+        subtle: 'var(--border-subtle)',
+        brand: 'var(--border-brand)',
       },
     },
   },

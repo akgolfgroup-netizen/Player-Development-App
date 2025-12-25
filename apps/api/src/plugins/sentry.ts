@@ -117,7 +117,7 @@ async function sentryPlugin(
       Sentry.setUser({
         id: request.user.id,
         email: request.user.email,
-        username: \`\${request.user.firstName} \${request.user.lastName}\`,
+        username: `${request.user.firstName} ${request.user.lastName}`,
       });
     }
 

@@ -89,6 +89,21 @@
   --border-accent: #C9A227;
 
   /* ─────────────────────────────────────────
+     STANDARDIZED COLOR TOKENS
+     Aliases for consistent Tailwind usage
+     ───────────────────────────────────────── */
+  --color-primary: var(--ak-primary);
+  --color-primary-foreground: var(--text-inverse);
+  --color-surface: var(--background-white);
+  --color-surface-2: var(--background-surface);
+  --color-border: var(--border-default);
+  --color-text: var(--text-primary);
+  --color-text-muted: var(--text-secondary);
+  --color-success: var(--ak-success);
+  --color-warning: var(--ak-warning);
+  --color-danger: var(--ak-error);
+
+  /* ─────────────────────────────────────────
      TYPOGRAPHY
      ───────────────────────────────────────── */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -234,6 +249,18 @@
   --border-brand: #2C5F7F;
   --border-accent: #D4A84B;
 
+  /* Standardized Color Tokens - Dark Mode */
+  --color-primary: var(--ak-primary);
+  --color-primary-foreground: var(--text-inverse);
+  --color-surface: var(--background-white);
+  --color-surface-2: var(--background-surface);
+  --color-border: var(--border-default);
+  --color-text: var(--text-primary);
+  --color-text-muted: var(--text-secondary);
+  --color-success: var(--ak-success);
+  --color-warning: var(--ak-warning);
+  --color-danger: var(--ak-error);
+
   /* Shadows - Dark Mode */
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.4);
@@ -297,6 +324,18 @@
     --border-subtle: #2C2C2E;
     --border-brand: #2C5F7F;
     --border-accent: #D4A84B;
+
+    /* Standardized Color Tokens - Dark Mode (System) */
+    --color-primary: var(--ak-primary);
+    --color-primary-foreground: var(--text-inverse);
+    --color-surface: var(--background-white);
+    --color-surface-2: var(--background-surface);
+    --color-border: var(--border-default);
+    --color-text: var(--text-primary);
+    --color-text-muted: var(--text-secondary);
+    --color-success: var(--ak-success);
+    --color-warning: var(--ak-warning);
+    --color-danger: var(--ak-error);
 
     /* Shadows - Dark Mode */
     --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -426,6 +465,48 @@ select:focus-visible {
   font-size: var(--font-size-caption2);
   line-height: var(--line-height-caption2);
   font-weight: 400;
+}
+
+/* ─────────────────────────────────────────
+   SEMANTIC TYPOGRAPHY ALIASES
+   Use these for consistent role-based styling
+   ───────────────────────────────────────── */
+
+.typo-heading {
+  font-size: var(--font-size-title1);
+  line-height: var(--line-height-title1);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.typo-subheading {
+  font-size: var(--font-size-title3);
+  line-height: var(--line-height-title3);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.typo-body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.typo-caption {
+  font-size: var(--font-size-caption1);
+  line-height: var(--line-height-caption1);
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.typo-label {
+  font-size: var(--font-size-footnote);
+  line-height: var(--line-height-footnote);
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* ═══════════════════════════════════════════

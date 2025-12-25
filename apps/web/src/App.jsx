@@ -61,6 +61,7 @@ const AppShellLab = lazy(() => import('./ui/lab/AppShellLab'));
 const CalendarLab = lazy(() => import('./ui/lab/CalendarLab'));
 const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage'));
 const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
+const StatsPageV2 = lazy(() => import('./features/stats/StatsPageV2'));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -348,9 +349,7 @@ function App() {
           } />
           <Route path="/stats" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Statistikk" subtitle="Detaljert oversikt">
-                <StatsPage />
-              </AuthenticatedLayout>
+              <StatsPageV2 />
             </ProtectedRoute>
           } />
           <Route path="/ui-lab" element={

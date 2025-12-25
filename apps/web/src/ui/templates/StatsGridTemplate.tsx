@@ -134,7 +134,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
   },
   trendIcon: {
-    fontSize: '14px',
+    fontSize: 'var(--font-size-footnote)',
   },
   trendValue: {
     // Inherits color from parent
