@@ -10,6 +10,7 @@ import { registerWebSocket } from './plugins/websocket';
 import { registerCache } from './plugins/cache';
 import { registerRateLimit } from './plugins/rate-limit';
 import metricsPlugin from './plugins/metrics';
+import sentryPlugin from './plugins/sentry';
 import { authenticateUser } from './middleware/auth';
 
 export interface BuildAppOptions {
@@ -41,6 +42,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   app.setNotFoundHandler(notFoundHandler as any);
 
   // Register plugins
+  await app.register(sentryPlugin); // Error tracking (register first to catch all errors)
   await app.register(metricsPlugin); // Performance monitoring and metrics
   await registerHelmet(app as any);
   await registerCors(app as any);

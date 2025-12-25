@@ -58,6 +58,9 @@ const EvalueringContainer = lazy(() => import('./features/evaluering/EvalueringC
 const UILabContainer = lazy(() => import('./features/ui-lab/UILabContainer'));
 const StatsLab = lazy(() => import('./ui/lab/StatsLab'));
 const AppShellLab = lazy(() => import('./ui/lab/AppShellLab'));
+const CalendarLab = lazy(() => import('./ui/lab/CalendarLab'));
+const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage'));
+const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -369,6 +372,23 @@ function App() {
               <AuthenticatedLayout title="AppShell Lab" subtitle="AppShellTemplate demo">
                 <AppShellLab />
               </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/calendar-lab" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Calendar Lab" subtitle="CalendarTemplate demo">
+                <CalendarLab />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/dashboard-v2" element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/goals" element={
+            <ProtectedRoute>
+              <GoalsPage />
             </ProtectedRoute>
           } />
           <Route path="/oevelser" element={

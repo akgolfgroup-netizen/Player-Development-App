@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from '../primitives/Card';
 
 /**
  * StatsGridTemplate
@@ -61,7 +62,7 @@ const StatsGridTemplate: React.FC<StatsGridTemplateProps> = ({
   return (
     <div style={gridStyle} className={className}>
       {items.map((item) => (
-        <div key={item.id} style={styles.statCard}>
+        <Card key={item.id} style={styles.statCardLayout}>
           {/* Value and Label */}
           <div style={styles.statContent}>
             <div style={styles.value}>{item.value}</div>
@@ -85,7 +86,7 @@ const StatsGridTemplate: React.FC<StatsGridTemplateProps> = ({
               <span style={styles.trendValue}>{item.change.value}</span>
             </div>
           )}
-        </div>
+        </Card>
       ))}
     </div>
   );
@@ -97,11 +98,7 @@ const styles: Record<string, React.CSSProperties> = {
     gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
     gap: 'var(--spacing-3)',
   },
-  statCard: {
-    backgroundColor: 'var(--background-white)',
-    borderRadius: 'var(--radius-md)',
-    padding: 'var(--spacing-4)',
-    boxShadow: 'var(--shadow-card)',
+  statCardLayout: {
     display: 'flex',
     flexDirection: 'column',
     gap: 'var(--spacing-2)',
