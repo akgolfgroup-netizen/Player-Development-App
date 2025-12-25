@@ -111,46 +111,54 @@ function formatPrometheusMetrics(): string {
   return lines.join('\n') + '\n';
 }
 
-// Track HTTP request metrics
-async function trackRequestMetrics(
+// Store request start times
+const requestStartTimes = new WeakMap<FastifyRequest, number>();
+
+// Track HTTP request start time
+async function trackRequestStart(
   request: FastifyRequest,
   reply: FastifyReply
 ) {
-  const start = Date.now();
+  requestStartTimes.set(request, Date.now());
+}
 
-  reply.addHook('onSend', async (request, reply, payload) => {
-    const duration = Date.now() - start;
-    const route = request.routeOptions?.url || request.url;
-    const method = request.method;
-    const routeKey = `${method} ${route}`;
+// Track HTTP request completion and metrics
+async function trackRequestComplete(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  const start = requestStartTimes.get(request);
+  if (!start) return;
 
-    // Track duration
-    if (!metrics.httpRequestDuration.has(routeKey)) {
-      metrics.httpRequestDuration.set(routeKey, []);
-    }
-    const durations = metrics.httpRequestDuration.get(routeKey)!;
-    durations.push(duration);
+  const duration = Date.now() - start;
+  const route = request.routeOptions?.url || request.url;
+  const method = request.method;
+  const routeKey = `${method} ${route}`;
 
-    // Keep only last 1000 measurements to prevent memory issues
-    if (durations.length > 1000) {
-      durations.shift();
-    }
+  // Track duration
+  if (!metrics.httpRequestDuration.has(routeKey)) {
+    metrics.httpRequestDuration.set(routeKey, []);
+  }
+  const durations = metrics.httpRequestDuration.get(routeKey)!;
+  durations.push(duration);
 
-    // Track count
-    const currentCount = metrics.httpRequestCount.get(routeKey) || 0;
-    metrics.httpRequestCount.set(routeKey, currentCount + 1);
+  // Keep only last 1000 measurements to prevent memory issues
+  if (durations.length > 1000) {
+    durations.shift();
+  }
 
-    // Track errors
-    if (reply.statusCode >= 400) {
-      const errorType = reply.statusCode >= 500 ? '5xx' : '4xx';
-      const currentErrorCount = metrics.errorCount.get(errorType) || 0;
-      metrics.errorCount.set(errorType, currentErrorCount + 1);
-    }
+  // Track count
+  const currentCount = metrics.httpRequestCount.get(routeKey) || 0;
+  metrics.httpRequestCount.set(routeKey, currentCount + 1);
 
-    metrics.lastUpdated = new Date();
+  // Track errors
+  if (reply.statusCode >= 400) {
+    const errorType = reply.statusCode >= 500 ? '5xx' : '4xx';
+    const currentErrorCount = metrics.errorCount.get(errorType) || 0;
+    metrics.errorCount.set(errorType, currentErrorCount + 1);
+  }
 
-    return payload;
-  });
+  metrics.lastUpdated = new Date();
 }
 
 // Database query tracking function (to be called from Prisma middleware)
@@ -221,8 +229,9 @@ async function metricsPlugin(fastify: FastifyInstance) {
     return { alive: true, timestamp: new Date().toISOString() };
   });
 
-  // Hook to track all requests
-  fastify.addHook('onRequest', trackRequestMetrics);
+  // Hooks to track all requests
+  fastify.addHook('onRequest', trackRequestStart);
+  fastify.addHook('onResponse', trackRequestComplete);
 
   fastify.log.info('Metrics plugin loaded - endpoints: /metrics, /health, /ready, /live');
 }
