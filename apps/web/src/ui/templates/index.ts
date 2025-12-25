@@ -11,3 +11,9 @@ export { default as ProfileTemplate } from './ProfileTemplate.template';
 export { default as SettingsTemplate } from './SettingsTemplate.template';
 export { default as FormTemplate } from './FormTemplate.template';
 export { default as DetailTemplate } from './DetailTemplate.template';
+
+// New reusable templates
+export { ListTemplate as ListTemplateV2 } from './ListTemplate';
+export type { ListItem, ListSection } from './ListTemplate';
+export { CardGridTemplate } from './CardGridTemplate';
+export type { CardItem } from './CardGridTemplate';
