@@ -15,7 +15,6 @@ import {
   ListVideosInput,
   GetVideoInput,
   UpdateVideoInput,
-  ShareVideoInput,
   CreateVideoRequestInput,
   ListVideoRequestsInput,
 } from './schema';
@@ -23,6 +22,7 @@ import { authenticateUser } from '../../../middleware/auth';
 import { validate } from '../../../utils/validation';
 import { wsManager, WS_EVENTS } from '../../../plugins/websocket';
 import { publishNotification } from '../../../services/notifications/notificationPublisher';
+import { setNoStore, setPrivateShort } from '../../../middleware/cacheHeaders';
 
 /**
  * Register video routes
@@ -229,6 +229,9 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
 
       const result = await videoService.listVideos(input, tenantId, includeSharedWith);
 
+      // Set cache headers: private short cache (10s)
+      setPrivateShort(reply, 10);
+
       return reply.status(200).send({
         success: true,
         data: result,
@@ -266,6 +269,9 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
       const tenantId = request.user!.tenantId;
 
       const video = await videoService.getVideo(input.id, tenantId);
+
+      // No-store: response may contain signed URLs
+      setNoStore(reply);
 
       return reply.status(200).send({
         success: true,
@@ -321,9 +327,12 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
       reply: FastifyReply
     ) => {
       const tenantId = request.user!.tenantId;
-      const expiresIn = request.query.expiresIn || 300;
+      const expiresIn = request.query.expiresIn || 600; // 10 minutes default
 
       const result = await videoService.getPlaybackUrl(request.params.id, tenantId, expiresIn);
+
+      // No-store: signed URL response
+      setNoStore(reply);
 
       return reply.status(200).send({
         success: true,
@@ -902,9 +911,12 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
       reply: FastifyReply
     ) => {
       const tenantId = request.user!.tenantId;
-      const expiresIn = request.query.expiresIn || 3600;
+      const expiresIn = request.query.expiresIn || 86400; // 24 hours default
 
       const result = await videoService.getThumbnailUrl(request.params.id, tenantId, expiresIn);
+
+      // No-store: signed URL response (thumbnail URL itself should be cached by browser)
+      setNoStore(reply);
 
       return reply.status(200).send({
         success: true,

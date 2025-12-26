@@ -189,6 +189,10 @@ export class VideoService {
     fileSize: string;
     status: string;
     visibility: string;
+    hasHls: boolean;
+    hlsManifestUrl: string | null;
+    playbackUrl: string | null;
+    thumbnailUrl: string | null;
     createdAt: Date;
     updatedAt: Date;
     player: {
@@ -202,6 +206,7 @@ export class VideoService {
         id: videoId,
         tenantId,
         deletedAt: null,
+        archivedAt: null,
       },
       include: {
         player: {
@@ -216,6 +221,50 @@ export class VideoService {
 
     if (!video) {
       throw new NotFoundError('Video not found');
+    }
+
+    // Generate signed URLs
+    let hlsManifestUrl: string | null = null;
+    let playbackUrl: string | null = null;
+    let thumbnailUrl: string | null = null;
+
+    if (video.status === 'ready') {
+      // HLS manifest URL (10 min TTL)
+      if (video.hasHls && video.hlsManifestKey) {
+        try {
+          hlsManifestUrl = await storageService.getSignedPlaybackUrl(
+            video.hlsManifestKey,
+            tenantId,
+            600 // 10 minutes
+          );
+        } catch {
+          // Ignore errors, fallback to mp4
+        }
+      }
+
+      // MP4 playback URL (10 min TTL) - always as fallback
+      try {
+        playbackUrl = await storageService.getSignedPlaybackUrl(
+          video.s3Key,
+          tenantId,
+          600 // 10 minutes
+        );
+      } catch {
+        // Ignore errors
+      }
+
+      // Thumbnail URL (24 hour TTL)
+      if (video.thumbnailKey) {
+        try {
+          thumbnailUrl = await storageService.getSignedPlaybackUrl(
+            video.thumbnailKey,
+            tenantId,
+            86400 // 24 hours
+          );
+        } catch {
+          // Ignore errors
+        }
+      }
     }
 
     return {
@@ -234,6 +283,10 @@ export class VideoService {
       fileSize: video.fileSize.toString(),
       status: video.status,
       visibility: video.visibility,
+      hasHls: video.hasHls,
+      hlsManifestUrl,
+      playbackUrl,
+      thumbnailUrl,
       createdAt: video.createdAt,
       updatedAt: video.updatedAt,
       player: video.player,
@@ -257,6 +310,7 @@ export class VideoService {
       viewAngle: string | null;
       duration: number;
       status: string;
+      hasHls: boolean;
       thumbnailUrl: string | null;
       createdAt: Date;
       isShared?: boolean;
@@ -269,10 +323,11 @@ export class VideoService {
     limit: number;
     offset: number;
   }> {
-    // Base conditions
+    // Base conditions - exclude deleted and archived videos
     const baseConditions: any = {
       tenantId,
       deletedAt: null,
+      archivedAt: null,
     };
 
     if (input.category) {
@@ -359,10 +414,11 @@ export class VideoService {
           viewAngle: v.viewAngle,
           duration: v.duration,
           status: v.status,
+          hasHls: v.hasHls,
           thumbnailUrl,
           createdAt: v.createdAt,
           // Mark as shared if video is not owned by the viewer but is shared with them
-          isShared: includeSharedWith && v.playerId !== includeSharedWith && (v as any).shares?.length > 0,
+          isShared: includeSharedWith ? (v.playerId !== includeSharedWith && (v as any).shares?.length > 0) : undefined,
           player: v.player,
         };
       })
@@ -455,13 +511,38 @@ export class VideoService {
   }
 
   /**
-   * Delete video
+   * Soft delete (archive) a video
+   * Sets archivedAt, video is hidden from lists but storage is preserved.
    */
-  async deleteVideo(
+  async archiveVideo(videoId: string, tenantId: string): Promise<void> {
+    const video = await this.prisma.video.findFirst({
+      where: {
+        id: videoId,
+        tenantId,
+        archivedAt: null,
+      },
+    });
+
+    if (!video) {
+      throw new NotFoundError('Video not found');
+    }
+
+    await this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        archivedAt: new Date(),
+      },
+    });
+  }
+
+  /**
+   * Hard delete a video and all storage assets
+   * Deletes: mp4, thumbnail, HLS segments. Idempotent.
+   */
+  async hardDeleteVideo(
     videoId: string,
-    tenantId: string,
-    hardDelete: boolean = false
-  ): Promise<void> {
+    tenantId: string
+  ): Promise<{ video: boolean; thumbnail: boolean; hlsCount: number }> {
     const video = await this.prisma.video.findFirst({
       where: {
         id: videoId,
@@ -473,28 +554,42 @@ export class VideoService {
       throw new NotFoundError('Video not found');
     }
 
+    // Generate HLS prefix from manifest key
+    const hlsPrefix = video.hlsManifestKey
+      ? video.hlsManifestKey.replace(/\/master\.m3u8$/, '/')
+      : null;
+
+    // Delete all storage assets (idempotent)
+    const storageResult = await storageService.deleteVideoAssets(
+      video.s3Key,
+      video.thumbnailKey,
+      hlsPrefix
+    );
+
+    // Mark as deleted in DB
+    await this.prisma.video.update({
+      where: { id: videoId },
+      data: {
+        deletedAt: new Date(),
+        status: 'deleted',
+      },
+    });
+
+    return storageResult;
+  }
+
+  /**
+   * Delete video (legacy - defaults to soft delete/archive)
+   */
+  async deleteVideo(
+    videoId: string,
+    tenantId: string,
+    hardDelete: boolean = false
+  ): Promise<void> {
     if (hardDelete) {
-      // Delete from S3
-      await storageService.deleteObject(video.s3Key);
-
-      // Delete thumbnail if exists
-      if (video.thumbnailKey) {
-        await storageService.deleteObject(video.thumbnailKey);
-      }
-
-      // Hard delete from database
-      await this.prisma.video.delete({
-        where: { id: videoId },
-      });
+      await this.hardDeleteVideo(videoId, tenantId);
     } else {
-      // Soft delete
-      await this.prisma.video.update({
-        where: { id: videoId },
-        data: {
-          deletedAt: new Date(),
-          status: 'deleted',
-        },
-      });
+      await this.archiveVideo(videoId, tenantId);
     }
   }
 

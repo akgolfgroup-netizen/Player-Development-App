@@ -7,6 +7,7 @@
 
 import { publish, NotificationPayload } from './notificationBus';
 import { logger } from '../../utils/logger';
+import { Prisma } from '@prisma/client';
 
 interface NotificationDbRecord {
   id: string;
@@ -14,7 +15,7 @@ interface NotificationDbRecord {
   notificationType: string;
   title: string;
   message?: string | null;
-  metadata?: Record<string, unknown> | null;
+  metadata?: Prisma.JsonValue | null;
   createdAt: Date;
 }
 
