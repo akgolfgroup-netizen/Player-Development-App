@@ -352,6 +352,26 @@ export class StorageService {
   getThumbnailKey(videoKey: string): string {
     return this.generateThumbnailKey(videoKey);
   }
+
+  /**
+   * Upload buffer to a specific key (for thumbnails, etc.)
+   */
+  async uploadToKey(
+    key: string,
+    buffer: Buffer,
+    mimeType: string,
+    metadata?: Record<string, string>
+  ): Promise<void> {
+    const command = new PutObjectCommand({
+      Bucket: this.bucket,
+      Key: key,
+      Body: buffer,
+      ContentType: mimeType,
+      Metadata: metadata,
+    });
+
+    await this.s3.send(command);
+  }
 }
 
 // Export singleton instance

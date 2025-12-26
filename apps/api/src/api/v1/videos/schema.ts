@@ -42,7 +42,7 @@ export type CompleteUploadInput = z.infer<typeof completeUploadSchema>;
 export const listVideosSchema = z.object({
   playerId: z.string().uuid().optional(),
   category: z.enum(['swing', 'putting', 'short_game', 'other']).optional(),
-  status: z.enum(['processing', 'ready', 'failed', 'deleted']).optional(),
+  status: z.enum(['processing', 'ready', 'reviewed', 'failed', 'deleted']).optional(),
   limit: z.number().int().positive().max(100).default(20),
   offset: z.number().int().min(0).default(0),
   sortBy: z.enum(['createdAt', 'title', 'duration']).default('createdAt'),
@@ -87,3 +87,33 @@ export const getPlaybackUrlSchema = z.object({
 });
 
 export type GetPlaybackUrlInput = z.infer<typeof getPlaybackUrlSchema>;
+
+// Share video with players
+export const shareVideoSchema = z.object({
+  id: z.string().uuid(),
+  playerIds: z.array(z.string().uuid()).min(1).max(50),
+});
+
+export type ShareVideoInput = z.infer<typeof shareVideoSchema>;
+
+// Create video request (coach requests player to upload video)
+export const createVideoRequestSchema = z.object({
+  playerId: z.string().uuid(),
+  drillType: z.string().max(100).optional(),
+  category: z.enum(['swing', 'putting', 'short_game', 'other']).optional(),
+  viewAngle: z.enum(['face_on', 'down_the_line', 'overhead', 'side']).optional(),
+  instructions: z.string().max(1000).optional(),
+  dueDate: z.string().datetime().optional(),
+});
+
+export type CreateVideoRequestInput = z.infer<typeof createVideoRequestSchema>;
+
+// List video requests
+export const listVideoRequestsSchema = z.object({
+  playerId: z.string().uuid().optional(),
+  status: z.enum(['pending', 'fulfilled', 'expired', 'cancelled']).optional(),
+  limit: z.number().int().positive().max(100).default(20),
+  offset: z.number().int().min(0).default(0),
+});
+
+export type ListVideoRequestsInput = z.infer<typeof listVideoRequestsSchema>;

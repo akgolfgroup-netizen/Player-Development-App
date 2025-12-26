@@ -45,6 +45,8 @@ model Tenant {
   annualTrainingPlans    AnnualTrainingPlan[]
   videos                 Video[]
   videoComparisons       VideoComparison[]
+  videoShares            VideoShare[]
+  videoRequests          VideoRequest[]
   auditEvents            AuditEvent[]
 
   @@map("tenants")
@@ -102,6 +104,8 @@ model User {
   videoAnnotations              VideoAnnotation[]
   videoComparisons              VideoComparison[]
   videoComments                 VideoComment[]
+  sharedVideos                  VideoShare[]
+  videoRequests                 VideoRequest[]
   auditEvents                   AuditEvent[]
 
   @@index([tenantId])
@@ -234,6 +238,8 @@ model Player {
   dailyAssignments     DailyTrainingAssignment[]
   bookings             Booking[]
   videos               Video[]
+  sharedVideos         VideoShare[]
+  videoRequests        VideoRequest[]
 
   // Training Statistics
   weeklyStats          WeeklyTrainingStats[]
@@ -2213,11 +2219,34 @@ model Video {
   comparisonsAsPrimary VideoComparison[] @relation("PrimaryVideo")
   comparisonsAsSecondary VideoComparison[] @relation("ComparisonVideo")
   comments            VideoComment[]
+  shares              VideoShare[]
+  fulfilledRequests   VideoRequest[]
 
   @@index([tenantId, playerId, createdAt(sort: Desc)])
   @@index([tenantId, status])
   @@index([tenantId, uploadedById])
   @@map("videos")
+}
+
+model VideoShare {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  videoId             String   @map("video_id") @db.Uuid
+  playerId            String   @map("player_id") @db.Uuid
+  sharedById          String   @map("shared_by_id") @db.Uuid
+  tenantId            String   @map("tenant_id") @db.Uuid
+
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  video               Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  player              Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  sharedBy            User     @relation(fields: [sharedById], references: [id], onDelete: Restrict)
+  tenant              Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([videoId, playerId])
+  @@index([playerId, createdAt(sort: Desc)])
+  @@index([tenantId])
+  @@map("video_shares")
 }
 
 model VideoAnnotation {
@@ -2301,6 +2330,38 @@ model VideoComment {
 
   @@index([videoId, createdAt(sort: Desc)])
   @@map("video_comments")
+}
+
+model VideoRequest {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId            String   @map("tenant_id") @db.Uuid
+  playerId            String   @map("player_id") @db.Uuid
+  requestedById       String   @map("requested_by_id") @db.Uuid
+
+  // Request details
+  drillType           String?  @map("drill_type") @db.VarChar(100)
+  category            String?  @db.VarChar(50)
+  viewAngle           String?  @map("view_angle") @db.VarChar(50)
+  instructions        String?  @db.Text
+  dueDate             DateTime? @map("due_date") @db.Timestamptz(6)
+
+  // Status tracking
+  status              String   @default("pending") @db.VarChar(20) // pending, fulfilled, expired, cancelled
+  fulfilledVideoId    String?  @map("fulfilled_video_id") @db.Uuid
+  fulfilledAt         DateTime? @map("fulfilled_at") @db.Timestamptz(6)
+
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  tenant              Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  player              Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  requestedBy         User     @relation(fields: [requestedById], references: [id], onDelete: Cascade)
+  fulfilledVideo      Video?   @relation(fields: [fulfilledVideoId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, playerId])
+  @@index([tenantId, status])
+  @@map("video_requests")
 }
 
 // ============================================================================

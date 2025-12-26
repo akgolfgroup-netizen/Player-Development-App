@@ -36,221 +36,34 @@ const TYPE_COLORS = {
   [REFERENCE_TYPES.TECHNIQUE_BREAKDOWN]: '#ec4899',
 };
 
-// Styles
-const styles = {
-  card: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
-    borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    overflow: 'hidden',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-  },
-  cardHover: {
-    transform: 'translateY(-2px)',
-    borderColor: 'var(--ak-primary, #6366f1)',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
-  },
-  thumbnailContainer: {
-    position: 'relative',
-    aspectRatio: '16 / 9',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    overflow: 'hidden',
-  },
-  thumbnail: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  thumbnailPlaceholder: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
-  },
-  playOverlay: {
-    position: 'absolute',
-    inset: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    opacity: 0,
-    transition: 'opacity 0.2s ease',
-  },
-  playOverlayVisible: {
-    opacity: 1,
-  },
-  playButton: {
-    width: '56px',
-    height: '56px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.4)',
-  },
-  playIcon: {
-    width: '24px',
-    height: '24px',
-    color: 'white',
-    marginLeft: '4px',
-  },
-  typeBadge: {
-    position: 'absolute',
-    top: '8px',
-    left: '8px',
-    padding: '4px 8px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    fontSize: '10px',
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-    color: 'white',
-  },
-  duration: {
-    position: 'absolute',
-    bottom: '8px',
-    right: '8px',
-    padding: '2px 6px',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    borderRadius: 'var(--radius-sm, 4px)',
-    fontSize: '11px',
-    fontFamily: 'var(--font-mono, monospace)',
-    color: 'white',
-  },
-  menuButton: {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    width: '28px',
-    height: '28px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    border: 'none',
-    color: 'white',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0,
-    transition: 'opacity 0.2s ease',
-  },
-  menuButtonVisible: {
-    opacity: 1,
-  },
-  content: {
-    padding: 'var(--spacing-3, 12px)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-2, 8px)',
-  },
-  title: {
-    margin: 0,
-    fontSize: '14px',
-    fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  description: {
-    margin: 0,
-    fontSize: '12px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    display: '-webkit-box',
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: 'vertical',
-    lineHeight: 1.4,
-  },
-  meta: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 'auto',
-  },
-  category: {
-    fontSize: '11px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-  },
-  stats: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-    fontSize: '11px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
-  },
-  statItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-  },
-  actions: {
-    display: 'flex',
-    gap: 'var(--spacing-2, 8px)',
-    paddingTop: 'var(--spacing-2, 8px)',
-    borderTop: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-  },
-  actionButton: {
-    flex: 1,
-    padding: '8px 12px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    fontSize: '12px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '4px',
-    transition: 'all 0.15s ease',
-  },
-  shareButton: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    borderColor: 'var(--ak-primary, #6366f1)',
-    color: 'white',
-  },
-  dropdown: {
-    position: 'absolute',
-    top: '40px',
-    right: '8px',
-    minWidth: '140px',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
-    borderRadius: 'var(--radius-md, 8px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-    zIndex: 100,
-    overflow: 'hidden',
-  },
-  dropdownItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-    width: '100%',
-    padding: '10px 12px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    fontSize: '13px',
-    cursor: 'pointer',
-    textAlign: 'left',
-    transition: 'background-color 0.15s ease',
-  },
-  dropdownItemDanger: {
-    color: 'var(--ak-error, #ef4444)',
-  },
+// Tailwind classes
+const tw = {
+  card: 'relative flex flex-col bg-surface rounded-ak-lg border border-border overflow-hidden cursor-pointer transition-all duration-200',
+  cardHover: 'hover:-translate-y-0.5 hover:border-primary hover:shadow-lg',
+  thumbnailContainer: 'relative aspect-video bg-[var(--ak-surface-dark,#0f0f1a)] overflow-hidden',
+  thumbnail: 'w-full h-full object-cover',
+  thumbnailPlaceholder: 'w-full h-full flex items-center justify-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
+  playOverlay: 'absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200',
+  playOverlayVisible: 'opacity-100',
+  playButton: 'w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg',
+  playIcon: 'w-6 h-6 text-white ml-1',
+  typeBadge: 'absolute top-2 left-2 py-1 px-2 rounded-ak-sm text-[10px] font-bold uppercase tracking-wide text-white',
+  duration: 'absolute bottom-2 right-2 py-0.5 px-1.5 bg-black/80 rounded-ak-sm text-[11px] font-mono text-white',
+  menuButton: 'absolute top-2 right-2 w-7 h-7 rounded-ak-sm bg-black/60 border-none text-white cursor-pointer flex items-center justify-center opacity-0 transition-opacity duration-200',
+  menuButtonVisible: 'opacity-100',
+  content: 'p-3 flex flex-col gap-2',
+  title: 'm-0 text-sm font-semibold text-[var(--ak-text-primary,white)] overflow-hidden text-ellipsis whitespace-nowrap',
+  description: 'm-0 text-xs text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] overflow-hidden text-ellipsis line-clamp-2 leading-snug',
+  meta: 'flex items-center justify-between mt-auto',
+  category: 'text-[11px] text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))] uppercase tracking-wide',
+  stats: 'flex items-center gap-2 text-[11px] text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))]',
+  statItem: 'flex items-center gap-1',
+  actions: 'flex gap-2 pt-2 border-t border-border',
+  actionButton: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center justify-center gap-1 transition-all duration-150',
+  shareButton: 'bg-primary border-primary text-white',
+  dropdown: 'absolute top-10 right-2 min-w-[140px] bg-surface rounded-ak-md border border-border shadow-xl z-[100] overflow-hidden',
+  dropdownItem: 'flex items-center gap-2 w-full py-2.5 px-3 bg-transparent border-none text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-[13px] cursor-pointer text-left transition-colors duration-150 hover:bg-[var(--ak-surface-dark,#0f0f1a)]',
+  dropdownItemDanger: 'text-error',
 };
 
 // Icons
@@ -261,7 +74,7 @@ const VideoIcon = ({ size = 32 }) => (
 );
 
 const PlayIcon = () => (
-  <svg style={styles.playIcon} viewBox="0 0 24 24" fill="currentColor">
+  <svg className={tw.playIcon} viewBox="0 0 24 24" fill="currentColor">
     <path d="M8 5v14l11-7z" />
   </svg>
 );
@@ -382,23 +195,17 @@ export function ReferenceVideoCard({
     onEdit?.(video);
   }, [video, onEdit]);
 
-  // Handle delete
+  // Handle delete - parent component handles confirmation
   const handleDelete = useCallback((e) => {
     e.stopPropagation();
     setShowMenu(false);
-    if (window.confirm('Er du sikker på at du vil slette denne referansevideoen?')) {
-      onDelete?.(video);
-    }
+    onDelete?.(video);
   }, [video, onDelete]);
 
   return (
     <div
-      className={className}
-      style={{
-        ...styles.card,
-        ...(isHovered ? styles.cardHover : {}),
-        ...style,
-      }}
+      className={`${tw.card} ${tw.cardHover} ${className || ''}`}
+      style={style}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -409,40 +216,35 @@ export function ReferenceVideoCard({
       tabIndex={0}
     >
       {/* Thumbnail */}
-      <div style={styles.thumbnailContainer}>
+      <div className={tw.thumbnailContainer}>
         {video.thumbnailUrl ? (
           <img
             src={video.thumbnailUrl}
             alt={video.title}
-            style={styles.thumbnail}
+            className={tw.thumbnail}
             loading="lazy"
           />
         ) : (
-          <div style={styles.thumbnailPlaceholder}>
+          <div className={tw.thumbnailPlaceholder}>
             <VideoIcon />
           </div>
         )}
 
         {/* Play overlay */}
-        <div
-          style={{
-            ...styles.playOverlay,
-            ...(isHovered ? styles.playOverlayVisible : {}),
-          }}
-        >
-          <div style={styles.playButton}>
+        <div className={`${tw.playOverlay} ${isHovered ? tw.playOverlayVisible : ''}`}>
+          <div className={tw.playButton}>
             <PlayIcon />
           </div>
         </div>
 
         {/* Type badge */}
-        <div style={{ ...styles.typeBadge, backgroundColor: typeColor }}>
+        <div className={tw.typeBadge} style={{ backgroundColor: typeColor }}>
           {typeLabel}
         </div>
 
         {/* Duration */}
         {video.duration && (
-          <span style={styles.duration}>
+          <span className={tw.duration}>
             {formatDuration(video.duration)}
           </span>
         )}
@@ -450,10 +252,7 @@ export function ReferenceVideoCard({
         {/* Menu button (owner only) */}
         {isOwner && (
           <button
-            style={{
-              ...styles.menuButton,
-              ...(isHovered ? styles.menuButtonVisible : {}),
-            }}
+            className={`${tw.menuButton} ${isHovered ? tw.menuButtonVisible : ''}`}
             onClick={handleMenuToggle}
             aria-label="Meny"
           >
@@ -463,13 +262,13 @@ export function ReferenceVideoCard({
 
         {/* Dropdown menu */}
         {showMenu && (
-          <div style={styles.dropdown}>
-            <button style={styles.dropdownItem} onClick={handleEdit}>
+          <div className={tw.dropdown}>
+            <button className={tw.dropdownItem} onClick={handleEdit}>
               <EditIcon />
               Rediger
             </button>
             <button
-              style={{ ...styles.dropdownItem, ...styles.dropdownItemDanger }}
+              className={`${tw.dropdownItem} ${tw.dropdownItemDanger}`}
               onClick={handleDelete}
             >
               <TrashIcon />
@@ -480,24 +279,24 @@ export function ReferenceVideoCard({
       </div>
 
       {/* Content */}
-      <div style={styles.content}>
-        <h3 style={styles.title}>{video.title}</h3>
+      <div className={tw.content}>
+        <h3 className={tw.title}>{video.title}</h3>
 
         {video.description && (
-          <p style={styles.description}>{video.description}</p>
+          <p className={tw.description}>{video.description}</p>
         )}
 
-        <div style={styles.meta}>
-          <span style={styles.category}>{video.category}</span>
-          <div style={styles.stats}>
+        <div className={tw.meta}>
+          <span className={tw.category}>{video.category}</span>
+          <div className={tw.stats}>
             {video.viewCount !== undefined && (
-              <span style={styles.statItem}>
+              <span className={tw.statItem}>
                 <EyeIcon />
                 {video.viewCount}
               </span>
             )}
             {video.sharedWith !== undefined && (
-              <span style={styles.statItem}>
+              <span className={tw.statItem}>
                 <UsersIcon />
                 {video.sharedWith}
               </span>
@@ -507,15 +306,15 @@ export function ReferenceVideoCard({
 
         {/* Actions */}
         {showActions && (
-          <div style={styles.actions}>
+          <div className={tw.actions}>
             <button
-              style={{ ...styles.actionButton, ...styles.shareButton }}
+              className={`${tw.actionButton} ${tw.shareButton}`}
               onClick={handleShare}
             >
               <ShareIcon />
               Del
             </button>
-            <button style={styles.actionButton} onClick={handleCompare}>
+            <button className={tw.actionButton} onClick={handleCompare}>
               <CompareIcon />
               Sammenlign
             </button>

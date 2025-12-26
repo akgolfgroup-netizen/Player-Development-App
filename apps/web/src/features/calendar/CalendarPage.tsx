@@ -1,22 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import CalendarTemplate from '../../ui/templates/CalendarTemplate';
-import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import BottomNav from '../../ui/composites/BottomNav';
+import StateCard from '../../ui/composites/StateCard';
 import { RefreshCw } from 'lucide-react';
 import { useCalendarSessions } from '../../data';
+import { getSimState } from '../../dev/simulateState';
+import { useScreenView } from '../../analytics/useScreenView';
 
 /**
  * CalendarPage
  * Calendar page using UI templates
  * Composes AppShellTemplate + CalendarTemplate
  * Data fetched via useCalendarSessions hook
+ *
+ * DEV: Test states via querystring:
+ *   /kalender?state=loading
+ *   /kalender?state=error
+ *   /kalender?state=empty
  */
 
 const CalendarPage: React.FC = () => {
+  useScreenView('Kalender');
+  const location = useLocation();
+  const simState = getSimState(location.search);
+
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const { data, isLoading, error, refetch } = useCalendarSessions(selectedDate);
+  const hookResult = useCalendarSessions(selectedDate);
+
+  // Override data based on simState (DEV only)
+  const { data, isLoading, error, refetch } = simState
+    ? {
+        data: simState === 'empty' ? { sessions: [] } : null,
+        isLoading: simState === 'loading',
+        error: simState === 'error' ? 'Simulert feil (DEV)' : null,
+        refetch: hookResult.refetch,
+      }
+    : hookResult;
 
   const handleSelectDate = (date: Date) => {
     setSelectedDate(date);
@@ -31,15 +53,21 @@ const CalendarPage: React.FC = () => {
         bottomNav={<BottomNav />}
       >
         <section style={styles.section}>
-          <Card>
-            <div style={styles.loadingText}>Laster...</div>
-          </Card>
+          <StateCard
+            variant="info"
+            title="Laster..."
+            description="Henter dine økter"
+          />
         </section>
       </AppShellTemplate>
     );
   }
 
-  const sessions = data?.sessions ?? [];
+  // Sort sessions by start time for stable ordering
+  const sortedSessions = useMemo(() => {
+    const sessions = data?.sessions ?? [];
+    return [...sessions].sort((a, b) => a.start.localeCompare(b.start));
+  }, [data?.sessions]);
 
   return (
     <AppShellTemplate
@@ -50,14 +78,16 @@ const CalendarPage: React.FC = () => {
       {/* Error message */}
       {error && (
         <section style={styles.section}>
-          <Card>
-            <div style={styles.errorContainer}>
-              <span style={styles.errorText}>{error}</span>
+          <StateCard
+            variant="error"
+            title="Noe gikk galt"
+            description={error}
+            action={
               <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
                 Prøv igjen
               </Button>
-            </div>
-          </Card>
+            }
+          />
         </section>
       )}
 
@@ -65,7 +95,7 @@ const CalendarPage: React.FC = () => {
       <section style={styles.section}>
         <CalendarTemplate
           selectedDate={selectedDate}
-          sessions={sessions}
+          sessions={sortedSessions}
           onSelectDate={handleSelectDate}
         />
       </section>
@@ -76,21 +106,6 @@ const CalendarPage: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   section: {
     marginBottom: 'var(--spacing-6)',
-  },
-  loadingText: {
-    textAlign: 'center',
-    padding: 'var(--spacing-4)',
-    color: 'var(--text-secondary)',
-  },
-  errorContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 'var(--spacing-3)',
-  },
-  errorText: {
-    color: 'var(--color-danger)',
-    fontSize: 'var(--font-size-footnote)',
   },
 };
 

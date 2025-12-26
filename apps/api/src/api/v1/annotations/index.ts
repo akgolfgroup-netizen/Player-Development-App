@@ -20,6 +20,7 @@ import {
 } from './schema';
 import { authenticateUser } from '../../../middleware/auth';
 import { validate } from '../../../utils/validation';
+import { wsManager, WS_EVENTS } from '../../../plugins/websocket';
 
 /**
  * Register video annotation routes
@@ -86,6 +87,24 @@ export async function annotationRoutes(app: FastifyInstance): Promise<void> {
       const tenantId = request.user!.tenantId;
 
       const result = await annotationService.createAnnotation(input, userId, tenantId);
+
+      // Get video to find owner and notify them
+      const video = await prisma.video.findUnique({
+        where: { id: input.videoId },
+        select: { playerId: true, title: true },
+      });
+
+      if (video && video.playerId !== userId) {
+        // Notify video owner about new annotation
+        wsManager.sendToUser(video.playerId, WS_EVENTS.ANNOTATION_ADDED, {
+          annotationId: result.id,
+          videoId: input.videoId,
+          videoTitle: video.title,
+          type: result.type,
+          timestamp: result.timestamp,
+          addedBy: userId,
+        });
+      }
 
       return reply.status(201).send({
         success: true,

@@ -1,44 +1,68 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import BottomNav from '../../ui/composites/BottomNav';
+import StateCard from '../../ui/composites/StateCard';
 import { Plus, RefreshCw } from 'lucide-react';
 import { useDashboardData } from '../../data';
 import type { DashboardSession } from '../../data';
+import { getSimState } from '../../dev/simulateState';
+import { useScreenView } from '../../analytics/useScreenView';
+
+// Pure functions - moved outside component to avoid recreation
+const getStatusText = (status: DashboardSession['status']) => {
+  switch (status) {
+    case 'completed':
+      return 'Fullført';
+    case 'in_progress':
+      return 'Pågår';
+    default:
+      return 'Planlagt';
+  }
+};
+
+const getStatusColor = (status: DashboardSession['status']) => {
+  switch (status) {
+    case 'completed':
+      return 'var(--ak-success)';
+    case 'in_progress':
+      return 'var(--ak-primary)';
+    default:
+      return 'var(--text-secondary)';
+  }
+};
 
 /**
  * DashboardPage
  * Main dashboard using the new UI templates
  * Composes AppShellTemplate + StatsGridTemplate + Card
  * Data fetched via useDashboardData hook
+ *
+ * DEV: Test states via querystring:
+ *   /dashboard-v2?state=loading
+ *   /dashboard-v2?state=error
+ *   /dashboard-v2?state=empty
  */
 
 const DashboardPage: React.FC = () => {
-  const { data, isLoading, error, refetch } = useDashboardData();
+  useScreenView('Dashboard');
+  const location = useLocation();
+  const simState = getSimState(location.search);
 
-  const getStatusText = (status: DashboardSession['status']) => {
-    switch (status) {
-      case 'completed':
-        return 'Fullført';
-      case 'in_progress':
-        return 'Pågår';
-      default:
-        return 'Planlagt';
-    }
-  };
+  const hookResult = useDashboardData();
 
-  const getStatusColor = (status: DashboardSession['status']) => {
-    switch (status) {
-      case 'completed':
-        return 'var(--ak-success)';
-      case 'in_progress':
-        return 'var(--ak-primary)';
-      default:
-        return 'var(--text-secondary)';
-    }
-  };
+  // Override data based on simState (DEV only)
+  const { data, isLoading, error, refetch } = simState
+    ? {
+        data: simState === 'empty' ? { sessions: [], stats: [] } : null,
+        isLoading: simState === 'loading',
+        error: simState === 'error' ? 'Simulert feil (DEV)' : null,
+        refetch: hookResult.refetch,
+      }
+    : hookResult;
 
   // Action button for header
   const headerActions = (
@@ -56,9 +80,11 @@ const DashboardPage: React.FC = () => {
         bottomNav={<BottomNav />}
       >
         <section style={styles.section}>
-          <Card>
-            <div style={styles.loadingText}>Laster...</div>
-          </Card>
+          <StateCard
+            variant="info"
+            title="Laster..."
+            description="Henter dine data"
+          />
         </section>
       </AppShellTemplate>
     );
@@ -77,14 +103,16 @@ const DashboardPage: React.FC = () => {
       {/* Error message */}
       {error && (
         <section style={styles.section}>
-          <Card>
-            <div style={styles.errorContainer}>
-              <span style={styles.errorText}>{error}</span>
+          <StateCard
+            variant="error"
+            title="Noe gikk galt"
+            description={error}
+            action={
               <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
                 Prøv igjen
               </Button>
-            </div>
-          </Card>
+            }
+          />
         </section>
       )}
 
@@ -98,9 +126,16 @@ const DashboardPage: React.FC = () => {
         <h2 style={styles.sectionTitle}>Dine økter i dag</h2>
         <div style={styles.sessionsList}>
           {sessions.length === 0 ? (
-            <Card>
-              <div style={styles.emptyText}>Ingen økter i dag</div>
-            </Card>
+            <StateCard
+              variant="empty"
+              title="Ingen økter i dag"
+              description="Planlegg en treningsøkt for å komme i gang"
+              action={
+                <Button size="sm" leftIcon={<Plus size={14} />}>
+                  Ny økt
+                </Button>
+              }
+            />
           ) : (
             sessions.map((session) => (
               <Card key={session.id} style={styles.sessionCard}>
@@ -164,26 +199,6 @@ const styles: Record<string, React.CSSProperties> = {
   sessionTime: {
     fontSize: 'var(--font-size-footnote)',
     color: 'var(--text-secondary)',
-  },
-  loadingText: {
-    textAlign: 'center',
-    padding: 'var(--spacing-4)',
-    color: 'var(--text-secondary)',
-  },
-  emptyText: {
-    textAlign: 'center',
-    padding: 'var(--spacing-4)',
-    color: 'var(--text-secondary)',
-  },
-  errorContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 'var(--spacing-3)',
-  },
-  errorText: {
-    color: 'var(--color-danger)',
-    fontSize: 'var(--font-size-footnote)',
   },
 };
 

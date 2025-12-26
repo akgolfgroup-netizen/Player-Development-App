@@ -7,3 +7,7 @@ export { default as useAnnotationCanvas, TOOL_TYPES, ANNOTATION_COLORS, STROKE_W
 export { default as useVideoComparison, VIEW_MODES, SYNC_MODES } from './useVideoComparison';
 export { default as useVideoUpload, UPLOAD_STATES, VIDEO_CATEGORIES, VIEW_ANGLES } from './useVideoUpload';
 export { default as useAudioRecording, RECORDING_STATES, AUDIO_SETTINGS } from './useAudioRecording';
+export { default as useVideos, useVideo, useVideoPlayback } from './useVideos';
+export { default as useVideoAnnotations, useAnnotationAudio, useVideoComments } from './useVideoAnnotations';
+export { default as useComparisonData, useComparisonVideos, useComparisonsList } from './useVideoComparisonApi';
+export { default as useVideoRequests, REQUEST_STATUS } from './useVideoRequests';

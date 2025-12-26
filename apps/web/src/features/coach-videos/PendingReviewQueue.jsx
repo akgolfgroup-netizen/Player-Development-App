@@ -11,7 +11,9 @@
  */
 
 import React, { useState, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { REVIEW_STATUS } from './PlayerVideoFeed';
+import { track } from '../../analytics/track';
 
 // Styles
 const styles = {
@@ -297,6 +299,7 @@ export function PendingReviewQueue({
   style,
   className,
 }) {
+  const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState(null);
   const scrollRef = useRef(null);
 
@@ -318,10 +321,17 @@ export function PendingReviewQueue({
     });
   }, []);
 
-  // Handle video click
+  // Handle video click - navigate to analyzer
   const handleVideoClick = useCallback((video) => {
+    track('screen_view', {
+      screen: 'VideoAnalysisPage',
+      source: 'pending_review_queue',
+      id: video.id,
+      action: 'open_analyzer',
+    });
+    navigate(`/coach/videos/${video.id}/analyze`);
     onVideoClick?.(video);
-  }, [onVideoClick]);
+  }, [navigate, onVideoClick]);
 
   // Empty state
   if (pendingVideos.length === 0) {

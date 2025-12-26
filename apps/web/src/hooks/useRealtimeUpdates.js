@@ -4,18 +4,37 @@ import { useEffect, useRef, useState, useCallback } from 'react';
  * WebSocket event types
  */
 export const WS_EVENTS = {
+  // Session events
   SESSION_CREATED: 'session:created',
   SESSION_UPDATED: 'session:updated',
   SESSION_STARTED: 'session:started',
   SESSION_COMPLETED: 'session:completed',
   SESSION_EVALUATION_ADDED: 'session:evaluation_added',
+
+  // Training plan events
   PLAN_UPDATED: 'plan:updated',
   PLAN_WEEK_CHANGED: 'plan:week_changed',
+
+  // Achievement events
   ACHIEVEMENT_UNLOCKED: 'achievement:unlocked',
   BADGE_EARNED: 'badge:earned',
+
+  // Coach events
   COACH_NOTE_ADDED: 'coach:note_added',
   COACH_FEEDBACK: 'coach:feedback',
+
+  // Video events
+  VIDEO_UPLOADED: 'video:uploaded',
+  VIDEO_REQUEST_CREATED: 'video:request_created',
+  VIDEO_SHARED: 'video:shared',
+  VIDEO_REVIEWED: 'video:reviewed',
+  ANNOTATION_ADDED: 'annotation:added',
+  VIDEO_COMMENT_ADDED: 'video:comment_added',
+
+  // Notification events
   NOTIFICATION: 'notification',
+
+  // System events
   SYSTEM_MAINTENANCE: 'system:maintenance',
   CONNECTION_ACK: 'connection:ack',
   PING: 'ping',

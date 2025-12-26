@@ -11,11 +11,15 @@
  * - Pagination/infinite scroll
  */
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNotification } from '../../contexts/NotificationContext';
 import { VideoCard } from './VideoCard';
 import { VideoFilters, VIEW_MODES, SORT_OPTIONS } from './VideoFilters';
-import apiClient from '../../services/apiClient';
+import { useVideos } from '../../hooks/useVideos';
+import * as videoApi from '../../services/videoApi';
+import StateCard from '../../ui/composites/StateCard';
+import Modal from '../../ui/composites/Modal.composite';
 
 // Styles
 const styles = {
@@ -163,10 +167,20 @@ const styles = {
   cancelButton: {
     padding: '6px 12px',
     backgroundColor: 'transparent',
-    color: 'white',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
+    color: 'var(--text-primary, white)',
+    border: '1px solid var(--border-default, rgba(255, 255, 255, 0.3))',
     borderRadius: 'var(--radius-md, 8px)',
     fontSize: '13px',
+    cursor: 'pointer',
+  },
+  deleteButton: {
+    padding: '6px 16px',
+    backgroundColor: 'var(--color-danger, #dc3545)',
+    color: 'white',
+    border: 'none',
+    borderRadius: 'var(--radius-md, 8px)',
+    fontSize: '13px',
+    fontWeight: '600',
     cursor: 'pointer',
   },
   emptyState: {
@@ -330,122 +344,39 @@ export function VideoLibrary({
   style,
   className,
 }) {
-  const { token, user } = useAuth();
+  const { user } = useAuth();
+  const { showNotification } = useNotification();
 
-  // State
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState(null);
+  // Filter state
   const [filters, setFilters] = useState({
     sortBy: 'createdAt',
     sortOrder: 'desc',
   });
   const [viewMode, setViewMode] = useState(VIEW_MODES.GRID);
   const [selectedVideos, setSelectedVideos] = useState(new Set());
-  const [pagination, setPagination] = useState({
-    offset: 0,
-    limit: 20,
-    total: 0,
-    hasMore: false,
-  });
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Check if user is coach
   const isCoach = user?.role === 'coach' || user?.role === 'admin';
 
-  // Fetch videos
-  const fetchVideos = useCallback(async (reset = false) => {
-    try {
-      if (reset) {
-        setLoading(true);
-        setError(null);
-      } else {
-        setLoadingMore(true);
-      }
-
-      const offset = reset ? 0 : pagination.offset + pagination.limit;
-
-      const params = new URLSearchParams({
-        limit: pagination.limit.toString(),
-        offset: offset.toString(),
-        sortBy: filters.sortBy || 'createdAt',
-        sortOrder: filters.sortOrder || 'desc',
-      });
-
-      if (filters.category) {
-        params.append('category', filters.category);
-      }
-
-      if (filters.playerId || playerId) {
-        params.append('playerId', filters.playerId || playerId);
-      }
-
-      if (filters.search) {
-        params.append('search', filters.search);
-      }
-
-      const response = await apiClient.get(`/videos?${params.toString()}`);
-      const data = response.data;
-
-      if (reset) {
-        setVideos(data.videos || []);
-      } else {
-        setVideos((prev) => [...prev, ...(data.videos || [])]);
-      }
-
-      setPagination({
-        offset: offset,
-        limit: pagination.limit,
-        total: data.total || 0,
-        hasMore: (data.videos || []).length === pagination.limit,
-      });
-
-    } catch (err) {
-      console.warn('Video API not available, using demo data:', err);
-      // Use demo data as fallback
-      let filteredVideos = [...DEMO_VIDEOS];
-
-      // Apply filters
-      if (filters.category) {
-        filteredVideos = filteredVideos.filter((v) => v.category === filters.category);
-      }
-
-      if (filters.search) {
-        const searchLower = filters.search.toLowerCase();
-        filteredVideos = filteredVideos.filter((v) =>
-          v.title.toLowerCase().includes(searchLower)
-        );
-      }
-
-      // Apply sort
-      filteredVideos.sort((a, b) => {
-        const aVal = a[filters.sortBy || 'createdAt'];
-        const bVal = b[filters.sortBy || 'createdAt'];
-        const order = filters.sortOrder === 'asc' ? 1 : -1;
-
-        if (typeof aVal === 'string') {
-          return aVal.localeCompare(bVal) * order;
-        }
-        return (aVal - bVal) * order;
-      });
-
-      setVideos(filteredVideos);
-      setPagination({
-        offset: 0,
-        limit: 20,
-        total: filteredVideos.length,
-        hasMore: false,
-      });
-    } finally {
-      setLoading(false);
-      setLoadingMore(false);
-    }
-  }, [token, filters, playerId, pagination.limit, pagination.offset]);
-
-  // Initial fetch
-  useEffect(() => {
-    fetchVideos(true);
-  }, [filters]);
+  // Use the videos hook
+  const {
+    videos,
+    total,
+    loading,
+    error,
+    hasMore,
+    loadMore,
+    refresh,
+    removeVideoFromList,
+  } = useVideos({
+    playerId: filters.playerId || playerId,
+    category: filters.category,
+    status: filters.status || '', // Empty string means all statuses
+    sortBy: filters.sortBy || 'createdAt',
+    sortOrder: filters.sortOrder || 'desc',
+  });
 
   // Handle filter change
   const handleFilterChange = useCallback((newFilters) => {
@@ -488,31 +419,35 @@ export function VideoLibrary({
     }
   }, [videos, selectedVideos, onCompareClick]);
 
-  // Handle delete selected
-  const handleDeleteSelected = useCallback(async () => {
-    if (!window.confirm(`Er du sikker på at du vil slette ${selectedVideos.size} videoer?`)) {
-      return;
-    }
+  // Handle delete selected - opens confirmation modal
+  const handleDeleteSelected = useCallback(() => {
+    setShowDeleteConfirm(true);
+  }, []);
 
+  // Confirm and execute deletion
+  const handleConfirmDelete = useCallback(async () => {
+    setShowDeleteConfirm(false);
     try {
-      // Delete videos (would need API implementation)
+      // Delete videos using videoApi
       for (const videoId of selectedVideos) {
-        await apiClient.delete(`/videos/${videoId}`);
+        await videoApi.deleteVideo(videoId);
+        removeVideoFromList(videoId);
       }
       setSelectedVideos(new Set());
-      fetchVideos(true);
+      showNotification('Videoer slettet', 'success');
     } catch (err) {
       console.error('Failed to delete videos:', err);
-      alert('Kunne ikke slette videoer');
+      showNotification('Kunne ikke slette videoer', 'error');
     }
-  }, [selectedVideos, fetchVideos]);
+  }, [selectedVideos, removeVideoFromList, showNotification]);
 
   // Handle load more
   const handleLoadMore = useCallback(() => {
-    if (!loadingMore && pagination.hasMore) {
-      fetchVideos(false);
+    if (!loadingMore && hasMore) {
+      setLoadingMore(true);
+      loadMore().finally(() => setLoadingMore(false));
     }
-  }, [loadingMore, pagination.hasMore, fetchVideos]);
+  }, [loadingMore, hasMore, loadMore]);
 
   // Memoize selection state
   const selectionEnabled = selectedVideos.size > 0 || viewMode === VIEW_MODES.GRID;
@@ -679,6 +614,20 @@ export function VideoLibrary({
         <div style={styles.loadingContainer}>
           <div style={styles.spinner} />
         </div>
+      ) : error ? (
+        <StateCard
+          variant="error"
+          title="Kunne ikke laste videoer"
+          description="Sjekk nettverkstilkoblingen og prøv igjen."
+          action={
+            <button
+              style={styles.uploadButton}
+              onClick={refresh}
+            >
+              Prøv igjen
+            </button>
+          }
+        />
       ) : videos.length === 0 ? (
         <div style={styles.emptyState}>
           <VideoEmptyIcon />
@@ -699,7 +648,7 @@ export function VideoLibrary({
           {viewMode === VIEW_MODES.GRID ? renderGridView() : renderListView()}
 
           {/* Load more */}
-          {pagination.hasMore && (
+          {hasMore && (
             <button
               style={styles.loadMoreButton}
               onClick={handleLoadMore}
@@ -717,6 +666,35 @@ export function VideoLibrary({
           to { transform: rotate(360deg); }
         }
       `}</style>
+
+      {/* Delete confirmation modal */}
+      <Modal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        title="Slett videoer"
+        size="sm"
+        footer={
+          <>
+            <button
+              style={styles.cancelButton}
+              onClick={() => setShowDeleteConfirm(false)}
+            >
+              Avbryt
+            </button>
+            <button
+              style={styles.deleteButton}
+              onClick={handleConfirmDelete}
+            >
+              Slett {selectedVideos.size} {selectedVideos.size === 1 ? 'video' : 'videoer'}
+            </button>
+          </>
+        }
+      >
+        <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
+          Er du sikker på at du vil slette {selectedVideos.size} {selectedVideos.size === 1 ? 'video' : 'videoer'}?
+          Denne handlingen kan ikke angres.
+        </p>
+      </Modal>
     </div>
   );
 }

@@ -11,8 +11,16 @@
  * - Compare with player videos
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ReferenceVideoCard, REFERENCE_TYPES } from './ReferenceVideoCard';
+import { useVideos } from '../../hooks/useVideos';
+import { useVideoUpload, UPLOAD_STATES } from '../../hooks/useVideoUpload';
+import * as videoApi from '../../services/videoApi';
+import { coachesAPI } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNotification } from '../../contexts/NotificationContext';
+import { track } from '../../analytics/track';
 
 // Video categories for golf
 const VIDEO_CATEGORIES = [
@@ -356,6 +364,16 @@ const styles = {
     opacity: 0.5,
     cursor: 'not-allowed',
   },
+  deleteButton: {
+    padding: '10px 20px',
+    backgroundColor: 'var(--color-danger, #dc3545)',
+    border: 'none',
+    borderRadius: 'var(--radius-md, 8px)',
+    color: 'white',
+    fontSize: '14px',
+    fontWeight: '600',
+    cursor: 'pointer',
+  },
   // Share modal styles
   shareModal: {
     maxWidth: '400px',
@@ -563,7 +581,6 @@ const DEMO_PLAYERS = [
 export function ReferenceLibrary({
   videos: propVideos,
   players: propPlayers,
-  currentUserId,
   onUpload,
   onShare,
   onCompare,
@@ -573,9 +590,98 @@ export function ReferenceLibrary({
   style,
   className,
 }) {
-  // Use demo data if not provided
-  const videos = propVideos || DEMO_VIDEOS;
-  const players = propPlayers || DEMO_PLAYERS;
+  const { user } = useAuth();
+  const { showNotification } = useNotification();
+  const navigate = useNavigate();
+  const currentUserId = user?.id;
+
+  // Fetch videos from API - filter for reference/coach videos
+  const {
+    videos: apiVideos,
+    loading,
+    error,
+    refresh: refetchVideos,
+    removeVideoFromList,
+    addVideoToList,
+  } = useVideos({
+    status: 'ready',
+    // TODO: Add visibility='reference' filter when backend supports it
+    autoFetch: true,
+  });
+
+  // Video upload hook
+  const upload = useVideoUpload({
+    onUploadComplete: (video) => {
+      // Add to list and close modal
+      addVideoToList(video);
+      setShowUploadModal(false);
+      resetUploadForm();
+    },
+    onError: (err) => {
+      console.error('Upload failed:', err);
+    },
+  });
+
+  // Players state
+  const [players, setPlayers] = useState([]);
+  const [playersLoading, setPlayersLoading] = useState(true);
+
+  // Fetch players/athletes on mount
+  useEffect(() => {
+    async function fetchPlayers() {
+      if (propPlayers) {
+        setPlayers(propPlayers);
+        setPlayersLoading(false);
+        return;
+      }
+
+      try {
+        setPlayersLoading(true);
+        const response = await coachesAPI.getAthletes();
+        const athleteData = response.data?.data || response.data || [];
+        const mappedPlayers = athleteData.map(p => ({
+          id: p.id || p.playerId,
+          name: p.name || `${p.firstName || ''} ${p.lastName || ''}`.trim() || 'Ukjent spiller',
+          level: p.level || p.tier || '',
+          initials: getInitials(p.name || `${p.firstName || ''} ${p.lastName || ''}`),
+        }));
+        setPlayers(mappedPlayers.length > 0 ? mappedPlayers : DEMO_PLAYERS);
+      } catch (err) {
+        console.error('Failed to fetch players:', err);
+        setPlayers(DEMO_PLAYERS);
+      } finally {
+        setPlayersLoading(false);
+      }
+    }
+    fetchPlayers();
+  }, [propPlayers]);
+
+  // Map API videos to expected format
+  const videos = useMemo(() => {
+    if (propVideos) return propVideos;
+    if (apiVideos.length > 0) {
+      return apiVideos.map(v => ({
+        id: v.id,
+        title: v.title,
+        description: v.description,
+        type: v.referenceType || v.type || REFERENCE_TYPES.COACH_DEMO,
+        category: v.category || 'full_swing',
+        duration: v.duration,
+        thumbnailUrl: v.thumbnailUrl,
+        viewCount: v.viewCount || 0,
+        sharedWith: v.sharedWithCount || v.sharedWith || 0,
+        createdAt: v.createdAt,
+        uploadedById: v.uploadedById || v.playerId,
+      }));
+    }
+    return DEMO_VIDEOS;
+  }, [propVideos, apiVideos]);
+
+  // Get initials helper
+  function getInitials(name) {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  }
 
   // State
   const [searchQuery, setSearchQuery] = useState('');
@@ -595,6 +701,21 @@ export function ReferenceLibrary({
     file: null,
   });
   const [isDragging, setIsDragging] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [videoToDelete, setVideoToDelete] = useState(null);
+
+  // Reset upload form
+  const resetUploadForm = useCallback(() => {
+    setUploadForm({
+      title: '',
+      description: '',
+      type: REFERENCE_TYPES.COACH_DEMO,
+      category: 'full_swing',
+      file: null,
+    });
+    upload.reset();
+  }, [upload]);
 
   // Filter videos
   const filteredVideos = useMemo(() => {
@@ -617,10 +738,14 @@ export function ReferenceLibrary({
     });
   }, [videos, searchQuery, categoryFilter, typeFilter]);
 
-  // Handle video play
+  // Handle video play - navigate to video player
   const handlePlay = useCallback((video) => {
-    onPlay?.(video);
-  }, [onPlay]);
+    if (onPlay) {
+      onPlay(video);
+    } else {
+      navigate(`/coach/videos/${video.id}/view`);
+    }
+  }, [onPlay, navigate]);
 
   // Handle share click
   const handleShareClick = useCallback((video) => {
@@ -629,15 +754,44 @@ export function ReferenceLibrary({
     setShowShareModal(true);
   }, []);
 
-  // Handle share confirm
-  const handleShareConfirm = useCallback(() => {
-    if (selectedVideo && selectedPlayers.size > 0) {
-      onShare?.(selectedVideo, Array.from(selectedPlayers));
+  // Handle share confirm - call API
+  const handleShareConfirm = useCallback(async () => {
+    if (!selectedVideo || selectedPlayers.size === 0 || isSharing) return;
+
+    setIsSharing(true);
+    try {
+      // Call share callback or API
+      if (onShare) {
+        await onShare(selectedVideo, Array.from(selectedPlayers));
+      } else {
+        // Call video share API
+        const result = await videoApi.shareVideo(selectedVideo.id, Array.from(selectedPlayers));
+        console.log('Video shared:', result);
+      }
+
+      // Track analytics
+      track('video_shared', {
+        videoId: selectedVideo.id,
+        count: selectedPlayers.size,
+        source: 'reference_library',
+      });
+
+      // Success feedback
+      showNotification(
+        `Video delt med ${selectedPlayers.size} ${selectedPlayers.size === 1 ? 'spiller' : 'spillere'}!`,
+        'success'
+      );
+
+      setShowShareModal(false);
+      setSelectedVideo(null);
+      setSelectedPlayers(new Set());
+    } catch (err) {
+      console.error('Failed to share video:', err);
+      showNotification('Kunne ikke dele video. Prøv igjen.', 'error');
+    } finally {
+      setIsSharing(false);
     }
-    setShowShareModal(false);
-    setSelectedVideo(null);
-    setSelectedPlayers(new Set());
-  }, [selectedVideo, selectedPlayers, onShare]);
+  }, [selectedVideo, selectedPlayers, isSharing, onShare, showNotification]);
 
   // Handle player toggle
   const handlePlayerToggle = useCallback((playerId) => {
@@ -652,20 +806,52 @@ export function ReferenceLibrary({
     });
   }, []);
 
-  // Handle compare
+  // Handle compare - navigate to comparison view
   const handleCompare = useCallback((video) => {
-    onCompare?.(video);
-  }, [onCompare]);
+    if (onCompare) {
+      onCompare(video);
+    } else {
+      navigate(`/coach/videos/compare?reference=${video.id}`);
+    }
+  }, [onCompare, navigate]);
 
-  // Handle edit
+  // Handle edit - navigate to edit view
   const handleEdit = useCallback((video) => {
-    onEdit?.(video);
-  }, [onEdit]);
+    if (onEdit) {
+      onEdit(video);
+    } else {
+      navigate(`/coach/videos/${video.id}/edit`);
+    }
+  }, [onEdit, navigate]);
 
-  // Handle delete
+  // Handle delete - show confirmation modal
   const handleDelete = useCallback((video) => {
-    onDelete?.(video);
-  }, [onDelete]);
+    if (isDeleting) return;
+    setVideoToDelete(video);
+  }, [isDeleting]);
+
+  // Confirm and execute deletion
+  const handleConfirmDelete = useCallback(async () => {
+    if (!videoToDelete) return;
+
+    setIsDeleting(true);
+    try {
+      if (onDelete) {
+        await onDelete(videoToDelete);
+      } else {
+        await videoApi.deleteVideo(videoToDelete.id);
+      }
+      // Remove from local list
+      removeVideoFromList(videoToDelete.id);
+      showNotification('Video slettet', 'success');
+    } catch (err) {
+      console.error('Failed to delete video:', err);
+      showNotification('Kunne ikke slette video. Prøv igjen.', 'error');
+    } finally {
+      setIsDeleting(false);
+      setVideoToDelete(null);
+    }
+  }, [videoToDelete, onDelete, removeVideoFromList, showNotification]);
 
   // Handle file drop
   const handleDrop = useCallback((e) => {
@@ -685,28 +871,90 @@ export function ReferenceLibrary({
     }
   }, []);
 
-  // Handle upload submit
-  const handleUploadSubmit = useCallback(() => {
-    if (uploadForm.title && uploadForm.file) {
-      onUpload?.(uploadForm);
+  // Handle upload submit - use upload hook or callback
+  const handleUploadSubmit = useCallback(async () => {
+    if (!uploadForm.title || !uploadForm.file) return;
+
+    if (onUpload) {
+      // Use callback if provided
+      await onUpload(uploadForm);
       setShowUploadModal(false);
-      setUploadForm({
-        title: '',
-        description: '',
-        type: REFERENCE_TYPES.COACH_DEMO,
-        category: 'full_swing',
-        file: null,
-      });
+      resetUploadForm();
+    } else {
+      // Use the upload hook - set file and metadata, then start upload
+      upload.handleFileSelect({ target: { files: [uploadForm.file] } });
+      upload.updateMetadata('title', uploadForm.title);
+      upload.updateMetadata('description', uploadForm.description);
+      upload.updateMetadata('category', uploadForm.category);
+
+      // Wait for file to be validated, then start upload
+      setTimeout(() => {
+        if (upload.uploadState === UPLOAD_STATES.READY) {
+          upload.startUpload();
+        }
+      }, 100);
     }
-  }, [uploadForm, onUpload]);
+  }, [uploadForm, onUpload, upload, resetUploadForm]);
 
   // Check if current user is owner
   const isOwner = useCallback((video) => {
     return video.uploadedById === currentUserId || !video.uploadedById;
   }, [currentUserId]);
 
+  // Loading state
+  if (loading && videos.length === 0) {
+    return (
+      <div className={className} style={{ ...styles.container, ...style }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px' }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            border: '3px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+            borderTopColor: 'var(--ak-primary, #6366f1)',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+          }} />
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
+
   return (
     <div className={className} style={{ ...styles.container, ...style }}>
+      {/* Error state */}
+      {error && (
+        <div style={{
+          padding: 'var(--spacing-4, 16px)',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          borderRadius: 'var(--radius-lg, 12px)',
+          border: '1px solid var(--ak-error, #ef4444)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 'var(--spacing-4, 16px)',
+        }}>
+          <span style={{ color: 'var(--ak-text-primary, white)', fontSize: '14px' }}>
+            {error}
+          </span>
+          <button
+            onClick={refetchVideos}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: 'var(--ak-error, #ef4444)',
+              border: 'none',
+              borderRadius: 'var(--radius-md, 8px)',
+              color: 'white',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: 'pointer',
+            }}
+          >
+            Prøv igjen
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.titleSection}>
@@ -996,6 +1244,44 @@ export function ReferenceLibrary({
                 disabled={selectedPlayers.size === 0}
               >
                 Del med {selectedPlayers.size} {selectedPlayers.size === 1 ? 'spiller' : 'spillere'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {videoToDelete && (
+        <div style={styles.modalOverlay} onClick={() => setVideoToDelete(null)}>
+          <div style={{ ...styles.modal, ...styles.shareModal }} onClick={(e) => e.stopPropagation()}>
+            <div style={styles.modalHeader}>
+              <h3 style={styles.modalTitle}>Slett video</h3>
+              <button
+                style={styles.closeButton}
+                onClick={() => setVideoToDelete(null)}
+              >
+                <XIcon />
+              </button>
+            </div>
+            <div style={styles.modalBody}>
+              <p style={{ margin: 0, color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))' }}>
+                Er du sikker på at du vil slette "{videoToDelete.title}"?
+                Denne handlingen kan ikke angres.
+              </p>
+            </div>
+            <div style={styles.modalFooter}>
+              <button
+                style={styles.cancelButton}
+                onClick={() => setVideoToDelete(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                style={styles.deleteButton}
+                onClick={handleConfirmDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Sletter...' : 'Slett video'}
               </button>
             </div>
           </div>

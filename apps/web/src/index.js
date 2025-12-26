@@ -3,6 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { initializeTheme } from './theme/theme';
+import { initErrorReporter } from './utils/errorReporter';
+import { validateEnv } from './utils/envValidation';
+
+// Initialize error reporting (global handlers)
+initErrorReporter();
+
+// Validate environment variables
+validateEnv();
+
+// Initialize theme before React renders to prevent flash
+initializeTheme();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

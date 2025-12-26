@@ -201,6 +201,14 @@ export const WS_EVENTS = {
   COACH_NOTE_ADDED: 'coach:note_added',
   COACH_FEEDBACK: 'coach:feedback',
 
+  // Video events
+  VIDEO_UPLOADED: 'video:uploaded',
+  VIDEO_REQUEST_CREATED: 'video:request_created',
+  VIDEO_SHARED: 'video:shared',
+  VIDEO_REVIEWED: 'video:reviewed',
+  ANNOTATION_ADDED: 'annotation:added',
+  VIDEO_COMMENT_ADDED: 'video:comment_added',
+
   // Notification events
   NOTIFICATION: 'notification',
 

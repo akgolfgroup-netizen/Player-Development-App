@@ -1,33 +1,57 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import BottomNav from '../../ui/composites/BottomNav';
-import { RefreshCw } from 'lucide-react';
+import StateCard from '../../ui/composites/StateCard';
+import { RefreshCw, Plus } from 'lucide-react';
 import { useStats } from '../../data';
 import type { StatsOverviewItem } from '../../data';
+import { getSimState } from '../../dev/simulateState';
+import { useScreenView } from '../../analytics/useScreenView';
+
+// Pure function - moved outside component to avoid recreation
+const getTrendColor = (trend?: 'positive' | 'negative' | 'neutral') => {
+  switch (trend) {
+    case 'positive':
+      return 'var(--ak-success)';
+    case 'negative':
+      return 'var(--ak-error)';
+    default:
+      return 'var(--text-secondary)';
+  }
+};
 
 /**
  * StatsPageV2
  * Statistics page using UI templates
  * Composes AppShellTemplate + StatsGridTemplate + Card + BottomNav
  * Data fetched via useStats hook
+ *
+ * DEV: Test states via querystring:
+ *   /stats?state=loading
+ *   /stats?state=error
+ *   /stats?state=empty
  */
 
 const StatsPageV2: React.FC = () => {
-  const { data, isLoading, error, refetch } = useStats();
+  useScreenView('Statistikk');
+  const location = useLocation();
+  const simState = getSimState(location.search);
 
-  const getTrendColor = (trend?: StatsOverviewItem['trend']) => {
-    switch (trend) {
-      case 'positive':
-        return 'var(--ak-success)';
-      case 'negative':
-        return 'var(--ak-error)';
-      default:
-        return 'var(--text-secondary)';
-    }
-  };
+  const hookResult = useStats();
+
+  // Override data based on simState (DEV only)
+  const { data, isLoading, error, refetch } = simState
+    ? {
+        data: simState === 'empty' ? { kpis: [], overview: [], recentSessions: [] } : null,
+        isLoading: simState === 'loading',
+        error: simState === 'error' ? 'Simulert feil (DEV)' : null,
+        refetch: hookResult.refetch,
+      }
+    : hookResult;
 
   // Loading state
   if (isLoading && !data) {
@@ -38,9 +62,11 @@ const StatsPageV2: React.FC = () => {
         bottomNav={<BottomNav />}
       >
         <section style={styles.section}>
-          <Card>
-            <div style={styles.loadingText}>Laster...</div>
-          </Card>
+          <StateCard
+            variant="info"
+            title="Laster..."
+            description="Henter din statistikk"
+          />
         </section>
       </AppShellTemplate>
     );
@@ -59,14 +85,16 @@ const StatsPageV2: React.FC = () => {
       {/* Error message */}
       {error && (
         <section style={styles.section}>
-          <Card>
-            <div style={styles.errorContainer}>
-              <span style={styles.errorText}>{error}</span>
+          <StateCard
+            variant="error"
+            title="Noe gikk galt"
+            description={error}
+            action={
               <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
                 Prøv igjen
               </Button>
-            </div>
-          </Card>
+            }
+          />
         </section>
       )}
 
@@ -100,21 +128,34 @@ const StatsPageV2: React.FC = () => {
       {/* Recent Sessions Card */}
       <section style={styles.section}>
         <h2 style={styles.sectionTitle}>Siste økter</h2>
-        <Card>
-          <div style={styles.sessionsList}>
-            {recentSessions.map((session) => (
-              <div key={session.id} style={styles.sessionItem}>
-                <div style={styles.sessionInfo}>
-                  <span style={styles.sessionTitle}>{session.title}</span>
-                  <span style={styles.sessionMeta}>
-                    {session.type} • {session.duration}
-                  </span>
+        {recentSessions.length === 0 ? (
+          <StateCard
+            variant="empty"
+            title="Ingen data ennå"
+            description="Fullfør treningsøkter for å se statistikk"
+            action={
+              <Button size="sm" leftIcon={<Plus size={14} />}>
+                Ny økt
+              </Button>
+            }
+          />
+        ) : (
+          <Card>
+            <div style={styles.sessionsList}>
+              {recentSessions.map((session) => (
+                <div key={session.id} style={styles.sessionItem}>
+                  <div style={styles.sessionInfo}>
+                    <span style={styles.sessionTitle}>{session.title}</span>
+                    <span style={styles.sessionMeta}>
+                      {session.type} • {session.duration}
+                    </span>
+                  </div>
+                  <span style={styles.sessionDate}>{session.date}</span>
                 </div>
-                <span style={styles.sessionDate}>{session.date}</span>
-              </div>
-            ))}
-          </div>
-        </Card>
+              ))}
+            </div>
+          </Card>
+        )}
       </section>
 
       {/* Trend Chart Placeholder */}
@@ -216,21 +257,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-secondary)',
     margin: 0,
     marginTop: 'var(--spacing-1)',
-  },
-  loadingText: {
-    textAlign: 'center',
-    padding: 'var(--spacing-4)',
-    color: 'var(--text-secondary)',
-  },
-  errorContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 'var(--spacing-3)',
-  },
-  errorText: {
-    color: 'var(--color-danger)',
-    fontSize: 'var(--font-size-footnote)',
   },
 };
 

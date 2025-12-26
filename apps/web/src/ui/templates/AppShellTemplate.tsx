@@ -1,4 +1,11 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
+import ThemeSwitcher from '../composites/ThemeSwitcher';
+
+// DEV-only analytics debug overlay
+const IS_DEV = process.env.NODE_ENV === 'development';
+const AnalyticsDebug = IS_DEV
+  ? lazy(() => import('../../analytics/AnalyticsDebug'))
+  : null;
 
 /**
  * AppShellTemplate
@@ -17,6 +24,8 @@ interface AppShellTemplateProps {
   children: React.ReactNode;
   /** Bottom navigation (fixed at bottom on mobile) */
   bottomNav?: React.ReactNode;
+  /** Show theme switcher in header (default: true) */
+  showThemeSwitcher?: boolean;
   /** Additional className for customization */
   className?: string;
 }
@@ -27,9 +36,10 @@ const AppShellTemplate: React.FC<AppShellTemplateProps> = ({
   actions,
   children,
   bottomNav,
+  showThemeSwitcher = true,
   className = '',
 }) => {
-  const hasHeader = title || subtitle || actions;
+  const hasHeader = title || subtitle || actions || showThemeSwitcher;
 
   return (
     <div style={styles.shell} className={className}>
@@ -41,7 +51,12 @@ const AppShellTemplate: React.FC<AppShellTemplateProps> = ({
               {title && <h1 style={styles.title}>{title}</h1>}
               {subtitle && <p style={styles.subtitle}>{subtitle}</p>}
             </div>
-            {actions && <div style={styles.headerActions}>{actions}</div>}
+            {(actions || showThemeSwitcher) && (
+              <div style={styles.headerActions}>
+                {actions}
+                {showThemeSwitcher && <ThemeSwitcher />}
+              </div>
+            )}
           </div>
         </header>
       )}
@@ -61,6 +76,13 @@ const AppShellTemplate: React.FC<AppShellTemplateProps> = ({
         <nav style={styles.mobileNav}>
           {bottomNav}
         </nav>
+      )}
+
+      {/* DEV-only analytics debug overlay */}
+      {IS_DEV && AnalyticsDebug && (
+        <Suspense fallback={null}>
+          <AnalyticsDebug />
+        </Suspense>
       )}
     </div>
   );

@@ -8,13 +8,17 @@
  * - Drawing tools (line, circle, arrow, angle, freehand, text)
  * - Per-frame annotation support
  * - Save/load annotations via API
+ * - Voice-over audio recording support
  */
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useVideoPlayer } from '../../hooks/useVideoPlayer';
 import { useAnnotationCanvas } from '../../hooks/useAnnotationCanvas';
+import { useVideo } from '../../hooks/useVideos';
+import { useVideoAnnotations, useAnnotationAudio } from '../../hooks/useVideoAnnotations';
 import VideoControls from './VideoControls';
 import ToolPalette from './ToolPalette';
+import { AnnotationTimeline } from './AnnotationTimeline';
 
 // Icons
 const PenIcon = () => (
@@ -240,6 +244,16 @@ const styles = {
     borderRadius: 'var(--radius-sm)',
     fontSize: 'var(--font-size-caption1)',
   },
+  timelineWrapper: {
+    marginTop: 'var(--spacing-3)',
+  },
+  outerContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 0,
+    width: '100%',
+    maxWidth: '100%',
+  },
 };
 
 // CSS keyframes
@@ -253,24 +267,25 @@ const spinnerKeyframes = `
  * VideoAnalyzer Component
  *
  * @param {Object} props
- * @param {string} props.src - Video source URL
+ * @param {string} props.videoId - Video ID (preferred - fetches video data from API)
+ * @param {string} props.src - Video source URL (fallback if videoId not provided)
  * @param {string} props.poster - Poster image URL
- * @param {string} props.videoId - Video ID for saving annotations
  * @param {boolean} props.autoPlay - Auto-play on load
  * @param {boolean} props.loop - Loop video playback
- * @param {Array} props.initialAnnotations - Initial annotations to load
- * @param {Function} props.onAnnotationSave - Callback to save annotations
+ * @param {Array} props.initialAnnotations - Initial annotations (fallback if not using API)
+ * @param {Function} props.onAnnotationSave - Custom save callback (overrides API save)
  * @param {Function} props.onTimeUpdate - Callback on time update
  * @param {Function} props.onEnded - Callback when video ends
  * @param {Function} props.onError - Callback on error
  * @param {boolean} props.readOnly - Disable annotation editing
+ * @param {boolean} props.useApi - Whether to use API for annotations (default: true if videoId provided)
  * @param {Object} props.style - Additional container styles
  * @param {string} props.className - Additional CSS class
  */
 export function VideoAnalyzer({
-  src,
-  poster,
   videoId,
+  src: propsSrc,
+  poster: propsPoster,
   autoPlay = false,
   loop = false,
   initialAnnotations = [],
@@ -279,18 +294,80 @@ export function VideoAnalyzer({
   onEnded,
   onError,
   readOnly = false,
+  useApi = true,
   style,
   className,
 }) {
   // Mode state
   const [isAnnotationMode, setIsAnnotationMode] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(autoPlay);
-  const [isSaving, setIsSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [selectedAnnotationId, setSelectedAnnotationId] = useState(null);
 
   // Canvas dimensions ref
   const canvasRef = useRef(null);
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 1920, height: 1080 });
+
+  // Fetch video data from API if videoId is provided
+  const shouldUseApi = useApi && videoId;
+  const {
+    video,
+    playbackUrl,
+    loading: videoLoading,
+    error: videoError,
+  } = useVideo(shouldUseApi ? videoId : null, { autoFetch: shouldUseApi });
+
+  // Use API URL or props URL
+  const src = playbackUrl || propsSrc;
+  const poster = video?.thumbnailUrl || propsPoster;
+
+  // Fetch annotations from API if using API mode
+  const {
+    annotations: apiAnnotations,
+    loading: annotationsLoading,
+    saving: apiSaving,
+    error: annotationsError,
+    createAnnotation,
+    bulkCreateAnnotations,
+    updateAnnotation,
+    deleteAnnotation,
+    getAnnotationsAtTime,
+    refresh: refreshAnnotations,
+  } = useVideoAnnotations(shouldUseApi ? videoId : null, {
+    autoFetch: shouldUseApi,
+  });
+
+  // Audio hook for voice-overs
+  const {
+    audioUrl,
+    uploading: audioUploading,
+    uploadProgress: audioUploadProgress,
+    uploadAudio,
+    fetchAudioUrl,
+  } = useAnnotationAudio(selectedAnnotationId);
+
+  // Determine which annotations to use
+  const effectiveAnnotations = useMemo(() => {
+    if (shouldUseApi && apiAnnotations.length > 0) {
+      // Transform API annotations to drawing format
+      return apiAnnotations.map((a) => ({
+        id: a.id,
+        timestamp: parseFloat(a.timestamp),
+        duration: a.duration ? parseFloat(a.duration) : null,
+        type: a.type,
+        ...a.drawingData,
+        color: a.color,
+        strokeWidth: a.strokeWidth,
+        note: a.note,
+        hasAudio: !!a.audioKey,
+      }));
+    }
+    return initialAnnotations;
+  }, [shouldUseApi, apiAnnotations, initialAnnotations]);
+
+  // Combined loading/saving state
+  const isSaving = apiSaving || audioUploading;
+  const isLoadingData = videoLoading || annotationsLoading;
 
   // Video player hook
   const player = useVideoPlayer({
@@ -339,7 +416,7 @@ export function VideoAnalyzer({
   const annotation = useAnnotationCanvas({
     width: canvasDimensions.width,
     height: canvasDimensions.height,
-    initialAnnotations,
+    initialAnnotations: effectiveAnnotations,
     onAnnotationChange: () => setHasUnsavedChanges(true),
   });
 
@@ -411,23 +488,81 @@ export function VideoAnalyzer({
    * Handle save annotations
    */
   const handleSave = useCallback(async () => {
-    if (!onAnnotationSave || isSaving) return;
+    if (isSaving) return;
 
-    setIsSaving(true);
     try {
-      await onAnnotationSave({
-        videoId,
-        timestamp: currentTime,
-        annotations,
-        drawingData: serializeAnnotations(),
-      });
+      const drawingData = serializeAnnotations();
+
+      // If custom callback is provided, use it
+      if (onAnnotationSave) {
+        await onAnnotationSave({
+          videoId,
+          timestamp: currentTime,
+          annotations,
+          drawingData,
+        });
+      } else if (shouldUseApi && videoId) {
+        // Use API to save annotations
+        // Build annotation data from current canvas state
+        const annotationData = {
+          timestamp: currentTime,
+          type: currentTool,
+          drawingData,
+          color: strokeColor,
+          strokeWidth,
+        };
+
+        await createAnnotation(annotationData);
+      }
+
       setHasUnsavedChanges(false);
     } catch (err) {
       console.error('Failed to save annotations:', err);
-    } finally {
-      setIsSaving(false);
     }
-  }, [onAnnotationSave, isSaving, videoId, currentTime, annotations, serializeAnnotations]);
+  }, [
+    isSaving,
+    shouldUseApi,
+    videoId,
+    currentTime,
+    annotations,
+    serializeAnnotations,
+    onAnnotationSave,
+    createAnnotation,
+    currentTool,
+    strokeColor,
+    strokeWidth,
+  ]);
+
+  /**
+   * Handle annotation click from timeline
+   */
+  const handleAnnotationClick = useCallback((annotation) => {
+    seek(annotation.timestamp);
+    setSelectedAnnotationId(annotation.id);
+  }, [seek]);
+
+  /**
+   * Handle annotation edit
+   */
+  const handleAnnotationEdit = useCallback((annotation) => {
+    seek(annotation.timestamp);
+    setSelectedAnnotationId(annotation.id);
+    setIsAnnotationMode(true);
+    pause();
+  }, [seek, pause]);
+
+  /**
+   * Handle annotation delete
+   */
+  const handleAnnotationDelete = useCallback(async (annotation) => {
+    if (!shouldUseApi || !deleteAnnotation) return;
+    try {
+      await deleteAnnotation(annotation.id);
+      setSelectedAnnotationId(null);
+    } catch (err) {
+      console.error('Failed to delete annotation:', err);
+    }
+  }, [shouldUseApi, deleteAnnotation]);
 
   /**
    * Handle initial play overlay click
@@ -457,6 +592,45 @@ export function VideoAnalyzer({
   }, [showControlsTemporarily]);
 
   /**
+   * Navigate to next annotation
+   */
+  const goToNextAnnotation = useCallback(() => {
+    if (effectiveAnnotations.length === 0) return;
+
+    const sorted = [...effectiveAnnotations].sort((a, b) => a.timestamp - b.timestamp);
+    const nextAnnotation = sorted.find((a) => a.timestamp > currentTime + 0.1);
+
+    if (nextAnnotation) {
+      seek(nextAnnotation.timestamp);
+      setSelectedAnnotationId(nextAnnotation.id);
+    } else {
+      // Wrap to first annotation
+      seek(sorted[0].timestamp);
+      setSelectedAnnotationId(sorted[0].id);
+    }
+  }, [effectiveAnnotations, currentTime, seek]);
+
+  /**
+   * Navigate to previous annotation
+   */
+  const goToPreviousAnnotation = useCallback(() => {
+    if (effectiveAnnotations.length === 0) return;
+
+    const sorted = [...effectiveAnnotations].sort((a, b) => a.timestamp - b.timestamp);
+    const prevAnnotation = sorted.reverse().find((a) => a.timestamp < currentTime - 0.1);
+
+    if (prevAnnotation) {
+      seek(prevAnnotation.timestamp);
+      setSelectedAnnotationId(prevAnnotation.id);
+    } else {
+      // Wrap to last annotation
+      const last = sorted[0]; // reversed, so first is actually last
+      seek(last.timestamp);
+      setSelectedAnnotationId(last.id);
+    }
+  }, [effectiveAnnotations, currentTime, seek]);
+
+  /**
    * Handle keyboard shortcuts
    */
   const handleKeyDown = useCallback((e) => {
@@ -474,13 +648,27 @@ export function VideoAnalyzer({
       return;
     }
 
+    // Navigate to next annotation with 'N' key
+    if ((e.key === 'n' || e.key === 'N') && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      goToNextAnnotation();
+      return;
+    }
+
+    // Navigate to previous annotation with 'P' key
+    if ((e.key === 'p' || e.key === 'P') && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      goToPreviousAnnotation();
+      return;
+    }
+
     // Route to appropriate handler
     if (isAnnotationMode) {
       handleAnnotationKeyDown(e);
     } else {
       handleVideoKeyDown(e);
     }
-  }, [isAnnotationMode, toggleAnnotationMode, handleSave, handleAnnotationKeyDown, handleVideoKeyDown]);
+  }, [isAnnotationMode, toggleAnnotationMode, handleSave, goToNextAnnotation, goToPreviousAnnotation, handleAnnotationKeyDown, handleVideoKeyDown]);
 
   // Attach keyboard handler
   useEffect(() => {
@@ -509,8 +697,11 @@ export function VideoAnalyzer({
     endDrawing(e);
   }, [isAnnotationMode, endDrawing]);
 
+  // Combine errors
+  const displayError = error || videoError || annotationsError;
+
   // Render error state
-  if (error) {
+  if (displayError) {
     return (
       <div
         ref={containerRef}
@@ -521,12 +712,18 @@ export function VideoAnalyzer({
           <div style={styles.errorIcon}>
             <ErrorIcon />
           </div>
-          <p style={styles.errorText}>{error}</p>
+          <p style={styles.errorText}>{displayError}</p>
           <button
             style={styles.retryButton}
-            onClick={() => window.location.reload()}
+            onClick={() => {
+              if (shouldUseApi) {
+                refreshAnnotations();
+              } else {
+                window.location.reload();
+              }
+            }}
           >
-            Last inn på nytt
+            Prøv igjen
           </button>
         </div>
       </div>
@@ -613,7 +810,7 @@ export function VideoAnalyzer({
         </div>
 
         {/* Save Button */}
-        {!readOnly && onAnnotationSave && (
+        {!readOnly && (onAnnotationSave || shouldUseApi) && (
           <button
             style={{
               ...styles.saveButton,
@@ -660,7 +857,7 @@ export function VideoAnalyzer({
       )}
 
       {/* Loading Spinner */}
-      {isLoading && hasInteracted && (
+      {(isLoading || isLoadingData) && hasInteracted && (
         <div style={styles.overlay}>
           <div style={styles.loadingSpinner} />
         </div>
@@ -708,6 +905,23 @@ export function VideoAnalyzer({
           showFrameControls={true}
         />
       </div>
+
+      {/* Annotation Timeline (outside video container) */}
+      {effectiveAnnotations.length > 0 && (
+        <div style={styles.timelineWrapper}>
+          <AnnotationTimeline
+            annotations={effectiveAnnotations}
+            duration={duration}
+            currentTime={currentTime}
+            selectedAnnotationId={selectedAnnotationId}
+            onAnnotationClick={handleAnnotationClick}
+            onAnnotationEdit={!readOnly ? handleAnnotationEdit : undefined}
+            onAnnotationDelete={!readOnly && shouldUseApi ? handleAnnotationDelete : undefined}
+            onSeek={seek}
+            showList={true}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -28,193 +28,48 @@ const VIEW_ANGLE_LABELS = {
   side: 'Side',
 };
 
-// Styles
-const styles = {
-  card: {
-    position: 'relative',
-    borderRadius: 'var(--radius-lg, 12px)',
-    overflow: 'hidden',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    cursor: 'pointer',
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
-  },
-  cardHover: {
-    transform: 'translateY(-2px)',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
-    borderColor: 'var(--ak-primary, #6366f1)',
-  },
-  cardSelected: {
-    borderColor: 'var(--ak-primary, #6366f1)',
-    boxShadow: '0 0 0 2px var(--ak-primary, #6366f1)',
-  },
-  thumbnailContainer: {
-    position: 'relative',
-    aspectRatio: '16 / 9',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    overflow: 'hidden',
-  },
-  thumbnail: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  thumbnailPlaceholder: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
-  },
-  playOverlay: {
-    position: 'absolute',
-    inset: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    opacity: 0,
-    transition: 'opacity 0.2s ease',
-  },
-  playOverlayVisible: {
-    opacity: 1,
-  },
-  playButton: {
-    width: '56px',
-    height: '56px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.4)',
-  },
-  playIcon: {
-    width: '24px',
-    height: '24px',
-    color: 'white',
-    marginLeft: '4px',
-  },
-  durationBadge: {
-    position: 'absolute',
-    bottom: '8px',
-    right: '8px',
-    padding: '2px 6px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    color: 'white',
-    fontSize: '12px',
-    fontWeight: '500',
-    fontFamily: 'var(--font-mono, monospace)',
-  },
-  categoryBadge: {
-    position: 'absolute',
-    top: '8px',
-    left: '8px',
-    padding: '4px 8px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    color: 'white',
-    fontSize: '11px',
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: '0.5px',
-  },
-  checkbox: {
-    position: 'absolute',
-    top: '8px',
-    right: '8px',
-    width: '24px',
-    height: '24px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    border: '2px solid rgba(255, 255, 255, 0.4)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    zIndex: 10,
-  },
-  checkboxSelected: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    borderColor: 'var(--ak-primary, #6366f1)',
-  },
-  checkIcon: {
-    width: '14px',
-    height: '14px',
-    color: 'white',
-  },
-  content: {
-    padding: 'var(--spacing-3, 12px)',
-  },
-  title: {
-    margin: 0,
-    fontSize: '14px',
-    fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  meta: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-    marginTop: 'var(--spacing-1, 4px)',
-    fontSize: '12px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-  },
-  metaDot: {
-    width: '3px',
-    height: '3px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
-  },
-  statusBadge: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    padding: '8px 16px',
-    borderRadius: 'var(--radius-md, 8px)',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    color: 'white',
-    fontSize: '12px',
-    fontWeight: '500',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-  },
-  processingSpinner: {
-    width: '16px',
-    height: '16px',
-    border: '2px solid rgba(255, 255, 255, 0.3)',
-    borderTopColor: 'white',
-    borderRadius: '50%',
-    animation: 'spin 1s linear infinite',
-  },
+// Tailwind class compositions
+const tw = {
+  card: 'relative rounded-ak-lg overflow-hidden bg-surface border border-border cursor-pointer transition-all duration-200',
+  cardHover: 'hover:-translate-y-0.5 hover:shadow-ak-elevated hover:border-primary',
+  cardSelected: 'border-primary ring-2 ring-primary',
+  thumbnailContainer: 'relative aspect-video bg-[var(--ak-surface-dark,#0f0f1a)] overflow-hidden',
+  thumbnail: 'w-full h-full object-cover',
+  thumbnailPlaceholder: 'w-full h-full flex items-center justify-center bg-[var(--ak-surface-dark,#0f0f1a)] text-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
+  playOverlay: 'absolute inset-0 flex items-center justify-center bg-black/40 transition-opacity duration-200',
+  playButton: 'w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-[0_4px_12px_rgba(99,102,241,0.4)]',
+  playIcon: 'w-6 h-6 text-white ml-1',
+  durationBadge: 'absolute bottom-2 right-2 px-1.5 py-0.5 rounded-ak-sm bg-black/80 text-white text-xs font-medium font-mono',
+  categoryBadge: 'absolute top-2 left-2 px-2 py-1 rounded-ak-sm bg-primary text-white text-[11px] font-semibold uppercase tracking-wide',
+  checkbox: 'absolute top-2 right-2 w-6 h-6 rounded-ak-sm bg-black/60 border-2 border-white/40 flex items-center justify-center cursor-pointer transition-all duration-200 z-10',
+  checkboxSelected: 'bg-primary border-primary',
+  checkIcon: 'w-3.5 h-3.5 text-white',
+  content: 'p-ak-3',
+  title: 'm-0 text-sm font-semibold text-[var(--ak-text-primary,white)] overflow-hidden text-ellipsis whitespace-nowrap',
+  meta: 'flex items-center gap-2 mt-1 text-xs text-[var(--ak-text-secondary,rgba(255,255,255,0.7))]',
+  metaDot: 'w-[3px] h-[3px] rounded-full bg-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
+  statusBadge: 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-2 rounded-ak-md bg-black/80 text-white text-xs font-medium flex items-center gap-2',
+  processingSpinner: 'w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin',
+  reviewedBadge: 'absolute top-2 right-2 px-2 py-1 rounded-ak-sm bg-success text-white text-[10px] font-semibold uppercase tracking-wide flex items-center gap-1 z-[5]',
 };
 
 // Play icon SVG
 const PlayIcon = () => (
-  <svg style={styles.playIcon} viewBox="0 0 24 24" fill="currentColor">
+  <svg className={tw.playIcon} viewBox="0 0 24 24" fill="currentColor">
     <path d="M8 5v14l11-7z" />
   </svg>
 );
 
 // Check icon SVG
 const CheckIcon = () => (
-  <svg style={styles.checkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+  <svg className={tw.checkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
 
 // Video icon SVG (placeholder)
 const VideoIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+  <svg className="w-12 h-12" viewBox="0 0 24 24" fill="currentColor">
     <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
   </svg>
 );
@@ -282,19 +137,20 @@ export function VideoCard({
 
   const isProcessing = video.status === 'processing';
   const isFailed = video.status === 'failed';
+  const isReviewed = video.status === 'reviewed';
 
-  // Combine styles
-  const cardStyle = {
-    ...styles.card,
-    ...(isHovered && !selected ? styles.cardHover : {}),
-    ...(selected ? styles.cardSelected : {}),
-    ...style,
-  };
+  // Build card classes
+  const cardClasses = [
+    tw.card,
+    tw.cardHover,
+    selected && tw.cardSelected,
+    className,
+  ].filter(Boolean).join(' ');
 
   return (
     <div
-      className={className}
-      style={cardStyle}
+      className={cardClasses}
+      style={style}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setIsHovered(true)}
@@ -304,29 +160,24 @@ export function VideoCard({
       aria-label={`Åpne video: ${video.title}`}
     >
       {/* Thumbnail */}
-      <div style={styles.thumbnailContainer}>
+      <div className={tw.thumbnailContainer}>
         {video.thumbnailUrl ? (
           <img
             src={video.thumbnailUrl}
             alt={video.title}
-            style={styles.thumbnail}
+            className={tw.thumbnail}
             loading="lazy"
           />
         ) : (
-          <div style={styles.thumbnailPlaceholder}>
+          <div className={tw.thumbnailPlaceholder}>
             <VideoIcon />
           </div>
         )}
 
         {/* Play overlay on hover */}
         {!isProcessing && !isFailed && (
-          <div
-            style={{
-              ...styles.playOverlay,
-              ...(isHovered ? styles.playOverlayVisible : {}),
-            }}
-          >
-            <div style={styles.playButton}>
+          <div className={`${tw.playOverlay} ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={tw.playButton}>
               <PlayIcon />
             </div>
           </div>
@@ -334,30 +185,40 @@ export function VideoCard({
 
         {/* Processing status */}
         {isProcessing && (
-          <div style={styles.statusBadge}>
-            <div style={styles.processingSpinner} />
+          <div className={tw.statusBadge}>
+            <div className={tw.processingSpinner} />
             <span>Behandler...</span>
           </div>
         )}
 
         {/* Failed status */}
         {isFailed && (
-          <div style={{ ...styles.statusBadge, backgroundColor: 'rgba(239, 68, 68, 0.9)' }}>
+          <div className={`${tw.statusBadge} bg-red-500/90`}>
             <span>Feilet</span>
           </div>
         )}
 
         {/* Category badge */}
         {video.category && !isProcessing && !isFailed && (
-          <div style={styles.categoryBadge}>
+          <div className={tw.categoryBadge}>
             {CATEGORY_LABELS[video.category] || video.category}
           </div>
         )}
 
         {/* Duration badge */}
         {video.duration && !isProcessing && !isFailed && (
-          <div style={styles.durationBadge}>
+          <div className={tw.durationBadge}>
             {formatDuration(video.duration)}
+          </div>
+        )}
+
+        {/* Reviewed badge */}
+        {isReviewed && !selectable && (
+          <div className={tw.reviewedBadge}>
+            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>
+            Gjennomgått
           </div>
         )}
 
@@ -365,10 +226,7 @@ export function VideoCard({
         {selectable && (
           <div
             data-checkbox
-            style={{
-              ...styles.checkbox,
-              ...(selected ? styles.checkboxSelected : {}),
-            }}
+            className={`${tw.checkbox} ${selected ? tw.checkboxSelected : ''}`}
             onClick={handleCheckboxClick}
             role="checkbox"
             aria-checked={selected}
@@ -380,27 +238,20 @@ export function VideoCard({
       </div>
 
       {/* Content */}
-      <div style={styles.content}>
-        <h3 style={styles.title} title={video.title}>
+      <div className={tw.content}>
+        <h3 className={tw.title} title={video.title}>
           {video.title}
         </h3>
-        <div style={styles.meta}>
+        <div className={tw.meta}>
           {video.viewAngle && (
             <>
               <span>{VIEW_ANGLE_LABELS[video.viewAngle] || video.viewAngle}</span>
-              <span style={styles.metaDot} />
+              <span className={tw.metaDot} />
             </>
           )}
           <span>{formatDate(video.createdAt)}</span>
         </div>
       </div>
-
-      {/* Spinner animation */}
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

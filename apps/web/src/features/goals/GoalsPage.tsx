@@ -1,22 +1,44 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import BottomNav from '../../ui/composites/BottomNav';
+import StateCard from '../../ui/composites/StateCard';
 import { Plus, RefreshCw } from 'lucide-react';
 import { useGoals } from '../../data';
-import type { Goal } from '../../data';
+import { getSimState } from '../../dev/simulateState';
+import { useScreenView } from '../../analytics/useScreenView';
 
 /**
  * GoalsPage
  * Goals/Mål page using UI templates
  * Composes AppShellTemplate + StatsGridTemplate + Card
  * Data fetched via useGoals hook
+ *
+ * DEV: Test states via querystring:
+ *   /goals?state=loading
+ *   /goals?state=error
+ *   /goals?state=empty
  */
 
 const GoalsPage: React.FC = () => {
-  const { data, isLoading, error, refetch } = useGoals();
+  useScreenView('Mål');
+  const location = useLocation();
+  const simState = getSimState(location.search);
+
+  const hookResult = useGoals();
+
+  // Override data based on simState (DEV only)
+  const { data, isLoading, error, refetch } = simState
+    ? {
+        data: simState === 'empty' ? { goals: [], stats: [] } : null,
+        isLoading: simState === 'loading',
+        error: simState === 'error' ? 'Simulert feil (DEV)' : null,
+        refetch: hookResult.refetch,
+      }
+    : hookResult;
 
   const getProgressPercent = (current: number, target: number): number => {
     const percent = (current / target) * 100;
@@ -39,9 +61,11 @@ const GoalsPage: React.FC = () => {
         bottomNav={<BottomNav />}
       >
         <section style={styles.section}>
-          <Card>
-            <div style={styles.loadingText}>Laster...</div>
-          </Card>
+          <StateCard
+            variant="info"
+            title="Laster..."
+            description="Henter dine mål"
+          />
         </section>
       </AppShellTemplate>
     );
@@ -62,14 +86,16 @@ const GoalsPage: React.FC = () => {
       {/* Error message */}
       {error && (
         <section style={styles.section}>
-          <Card>
-            <div style={styles.errorContainer}>
-              <span style={styles.errorText}>{error}</span>
+          <StateCard
+            variant="error"
+            title="Noe gikk galt"
+            description={error}
+            action={
               <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
                 Prøv igjen
               </Button>
-            </div>
-          </Card>
+            }
+          />
         </section>
       )}
 
@@ -83,9 +109,16 @@ const GoalsPage: React.FC = () => {
         <h2 style={styles.sectionTitle}>Aktive mål</h2>
         <div style={styles.goalsList}>
           {activeGoals.length === 0 ? (
-            <Card>
-              <div style={styles.emptyText}>Ingen aktive mål</div>
-            </Card>
+            <StateCard
+              variant="empty"
+              title="Ingen aktive mål"
+              description="Opprett ditt første mål for å komme i gang"
+              action={
+                <Button size="sm" leftIcon={<Plus size={14} />}>
+                  Nytt mål
+                </Button>
+              }
+            />
           ) : (
             activeGoals.map((goal) => {
               const progressPercent = getProgressPercent(goal.current, goal.target);
@@ -127,9 +160,16 @@ const GoalsPage: React.FC = () => {
         <h2 style={styles.sectionTitle}>Langsiktige mål</h2>
         <div style={styles.goalsList}>
           {longTermGoals.length === 0 ? (
-            <Card>
-              <div style={styles.emptyText}>Ingen langsiktige mål</div>
-            </Card>
+            <StateCard
+              variant="empty"
+              title="Ingen langsiktige mål"
+              description="Legg til mål for sesongen"
+              action={
+                <Button size="sm" leftIcon={<Plus size={14} />}>
+                  Nytt mål
+                </Button>
+              }
+            />
           ) : (
             longTermGoals.map((goal) => (
               <Card key={goal.id} style={styles.goalCard}>
@@ -224,26 +264,6 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: 'rgba(16, 69, 106, 0.1)',
     padding: '2px 8px',
     borderRadius: '4px',
-  },
-  loadingText: {
-    textAlign: 'center',
-    padding: 'var(--spacing-4)',
-    color: 'var(--text-secondary)',
-  },
-  emptyText: {
-    textAlign: 'center',
-    padding: 'var(--spacing-4)',
-    color: 'var(--text-secondary)',
-  },
-  errorContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 'var(--spacing-3)',
-  },
-  errorText: {
-    color: 'var(--color-danger)',
-    fontSize: 'var(--font-size-footnote)',
   },
 };
 

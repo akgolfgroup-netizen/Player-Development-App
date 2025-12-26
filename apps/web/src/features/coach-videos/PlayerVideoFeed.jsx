@@ -11,6 +11,8 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { track } from '../../analytics/track';
 
 // Review status options
 export const REVIEW_STATUS = {
@@ -36,208 +38,36 @@ const STATUS_COLORS = {
   [REVIEW_STATUS.NEEDS_FOLLOWUP]: '#ef4444',
 };
 
-// Styles
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3, 12px)',
-  },
-  feedItem: {
-    display: 'flex',
-    gap: 'var(--spacing-4, 16px)',
-    padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
-    borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-  },
-  feedItemHover: {
-    borderColor: 'var(--ak-primary, #6366f1)',
-    transform: 'translateY(-1px)',
-  },
-  feedItemSelected: {
-    borderColor: 'var(--ak-primary, #6366f1)',
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-  },
-  checkbox: {
-    width: '20px',
-    height: '20px',
-    marginTop: '4px',
-    cursor: 'pointer',
-    accentColor: 'var(--ak-primary, #6366f1)',
-  },
-  thumbnailContainer: {
-    position: 'relative',
-    width: '160px',
-    height: '90px',
-    borderRadius: 'var(--radius-md, 8px)',
-    overflow: 'hidden',
-    flexShrink: 0,
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-  },
-  thumbnail: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  thumbnailPlaceholder: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
-  },
-  duration: {
-    position: 'absolute',
-    bottom: '4px',
-    right: '4px',
-    padding: '2px 6px',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    borderRadius: 'var(--radius-sm, 4px)',
-    fontSize: '11px',
-    fontFamily: 'var(--font-mono, monospace)',
-    color: 'white',
-  },
-  statusBadge: {
-    position: 'absolute',
-    top: '4px',
-    left: '4px',
-    padding: '2px 6px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    fontSize: '10px',
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: '0.3px',
-  },
-  content: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-2, 8px)',
-    minWidth: 0,
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: 'var(--spacing-3, 12px)',
-  },
-  titleSection: {
-    flex: 1,
-    minWidth: 0,
-  },
-  title: {
-    margin: 0,
-    fontSize: '15px',
-    fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  meta: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-    marginTop: '4px',
-    fontSize: '12px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-  },
-  metaDot: {
-    width: '3px',
-    height: '3px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
-  },
-  playerInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-  },
-  avatar: {
-    width: '28px',
-    height: '28px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '11px',
-    fontWeight: '600',
-    color: 'white',
-    flexShrink: 0,
-  },
-  playerName: {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: 'var(--ak-text-primary, white)',
-  },
-  annotations: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1, 4px)',
-    fontSize: '12px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
-  },
-  actions: {
-    display: 'flex',
-    gap: 'var(--spacing-2, 8px)',
-  },
-  actionButton: {
-    padding: '6px 12px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    fontSize: '12px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    transition: 'all 0.15s ease',
-  },
-  primaryAction: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    borderColor: 'var(--ak-primary, #6366f1)',
-    color: 'white',
-  },
-  emptyState: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8, 32px)',
-    textAlign: 'center',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
-  },
-  emptyIcon: {
-    width: '48px',
-    height: '48px',
-    marginBottom: 'var(--spacing-3, 12px)',
-    opacity: 0.5,
-  },
-  emptyText: {
-    fontSize: '14px',
-    margin: 0,
-  },
-  loadingSpinner: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-6, 24px)',
-  },
-  spinner: {
-    width: '32px',
-    height: '32px',
-    border: '3px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    borderTopColor: 'var(--ak-primary, #6366f1)',
-    borderRadius: '50%',
-    animation: 'spin 1s linear infinite',
-  },
+// Tailwind classes
+const tw = {
+  container: 'flex flex-col gap-3',
+  feedItem: 'flex gap-4 p-4 bg-surface rounded-ak-lg border border-border cursor-pointer transition-all duration-150',
+  feedItemHover: 'hover:border-primary hover:-translate-y-0.5',
+  feedItemSelected: 'border-primary bg-primary/10',
+  checkbox: 'w-5 h-5 mt-1 cursor-pointer accent-primary',
+  thumbnailContainer: 'relative w-40 h-[90px] rounded-ak-md overflow-hidden shrink-0 bg-[var(--ak-surface-dark,#0f0f1a)]',
+  thumbnail: 'w-full h-full object-cover',
+  thumbnailPlaceholder: 'w-full h-full flex items-center justify-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
+  duration: 'absolute bottom-1 right-1 py-0.5 px-1.5 bg-black/80 rounded-ak-sm text-[11px] font-mono text-white',
+  statusBadge: 'absolute top-1 left-1 py-0.5 px-1.5 rounded-ak-sm text-[10px] font-semibold uppercase tracking-wide',
+  content: 'flex-1 flex flex-col gap-2 min-w-0',
+  header: 'flex items-start justify-between gap-3',
+  titleSection: 'flex-1 min-w-0',
+  title: 'm-0 text-[15px] font-semibold text-[var(--ak-text-primary,white)] overflow-hidden text-ellipsis whitespace-nowrap',
+  meta: 'flex items-center gap-2 mt-1 text-xs text-[var(--ak-text-secondary,rgba(255,255,255,0.7))]',
+  metaDot: 'w-[3px] h-[3px] rounded-full bg-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
+  playerInfo: 'flex items-center gap-2 no-underline cursor-pointer',
+  avatar: 'w-7 h-7 rounded-full bg-primary flex items-center justify-center text-[11px] font-semibold text-white shrink-0',
+  playerName: 'text-[13px] font-medium text-[var(--ak-text-primary,white)]',
+  annotations: 'flex items-center gap-1 text-xs text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))]',
+  actions: 'flex gap-2',
+  actionButton: 'py-1.5 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center gap-1 transition-all duration-150',
+  primaryAction: 'bg-primary border-primary text-white',
+  emptyState: 'flex flex-col items-center justify-center p-8 text-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.4))]',
+  emptyIcon: 'w-12 h-12 mb-3 opacity-50',
+  emptyText: 'text-sm m-0',
+  loadingSpinner: 'flex items-center justify-center p-6',
+  spinner: 'w-8 h-8 border-[3px] border-border border-t-primary rounded-full animate-spin',
 };
 
 // Icons
@@ -331,9 +161,11 @@ export function PlayerVideoFeed({
   onComment,
   onMarkReviewed,
   selectable = false,
+  isCoach = true, // Default to coach view for role-safe paths
   style,
   className,
 }) {
+  const navigate = useNavigate();
   const [hoveredId, setHoveredId] = useState(null);
 
   // Handle checkbox change
@@ -348,11 +180,20 @@ export function PlayerVideoFeed({
     onVideoClick?.(video);
   }, [onVideoClick]);
 
-  // Handle annotate
+  // Handle annotate - navigate to video analysis page
   const handleAnnotate = useCallback((e, video) => {
     e.stopPropagation();
-    onAnnotate?.(video);
-  }, [onAnnotate]);
+    const path = isCoach
+      ? `/coach/videos/${video.id}/analyze`
+      : `/videos/${video.id}/analyze`;
+    track('screen_view', {
+      screen: 'VideoAnalysisPage',
+      source: 'player_video_feed',
+      id: video.id,
+      action: 'open_analyzer',
+    });
+    navigate(path);
+  }, [isCoach, navigate]);
 
   // Handle comment
   const handleComment = useCallback((e, video) => {
@@ -369,9 +210,8 @@ export function PlayerVideoFeed({
   // Loading state
   if (loading) {
     return (
-      <div style={styles.loadingSpinner}>
-        <div style={styles.spinner} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className={tw.loadingSpinner}>
+        <div className={tw.spinner} />
       </div>
     );
   }
@@ -379,28 +219,23 @@ export function PlayerVideoFeed({
   // Empty state
   if (videos.length === 0) {
     return (
-      <div style={styles.emptyState}>
+      <div className={tw.emptyState}>
         <VideoIcon size={48} />
-        <p style={styles.emptyText}>Ingen videoer å vise</p>
+        <p className={tw.emptyText}>Ingen videoer å vise</p>
       </div>
     );
   }
 
   return (
-    <div className={className} style={{ ...styles.container, ...style }}>
+    <div className={`${tw.container} ${className || ''}`} style={style}>
       {videos.map((video) => {
-        const isHovered = hoveredId === video.id;
         const isSelected = selectedVideos.has(video.id);
         const statusColor = STATUS_COLORS[video.reviewStatus] || STATUS_COLORS[REVIEW_STATUS.PENDING];
 
         return (
           <div
             key={video.id}
-            style={{
-              ...styles.feedItem,
-              ...(isHovered ? styles.feedItemHover : {}),
-              ...(isSelected ? styles.feedItemSelected : {}),
-            }}
+            className={`${tw.feedItem} ${tw.feedItemHover} ${isSelected ? tw.feedItemSelected : ''}`}
             onClick={() => handleVideoClick(video)}
             onMouseEnter={() => setHoveredId(video.id)}
             onMouseLeave={() => setHoveredId(null)}
@@ -414,61 +249,64 @@ export function PlayerVideoFeed({
                 checked={isSelected}
                 onChange={(e) => handleCheckboxChange(e, video)}
                 onClick={(e) => e.stopPropagation()}
-                style={styles.checkbox}
+                className={tw.checkbox}
                 aria-label={`Velg ${video.title}`}
               />
             )}
 
             {/* Thumbnail */}
-            <div style={styles.thumbnailContainer}>
+            <div className={tw.thumbnailContainer}>
               {video.thumbnailUrl ? (
                 <img
                   src={video.thumbnailUrl}
                   alt={video.title}
-                  style={styles.thumbnail}
+                  className={tw.thumbnail}
                   loading="lazy"
                 />
               ) : (
-                <div style={styles.thumbnailPlaceholder}>
+                <div className={tw.thumbnailPlaceholder}>
                   <VideoIcon size={32} />
                 </div>
               )}
 
               {/* Duration */}
               {video.duration && (
-                <span style={styles.duration}>
+                <span className={tw.duration}>
                   {formatDuration(video.duration)}
                 </span>
               )}
 
               {/* Status badge */}
-              {video.reviewStatus && video.reviewStatus !== REVIEW_STATUS.REVIEWED && (
+              {video.reviewStatus && (
                 <span
+                  className={tw.statusBadge}
                   style={{
-                    ...styles.statusBadge,
-                    backgroundColor: statusColor,
+                    backgroundColor: video.reviewStatus === REVIEW_STATUS.REVIEWED
+                      ? 'rgba(34, 197, 94, 0.9)'
+                      : statusColor,
                     color: 'white',
                   }}
                 >
                   {video.reviewStatus === REVIEW_STATUS.PENDING ? 'Ny' :
-                   video.reviewStatus === REVIEW_STATUS.NEEDS_FOLLOWUP ? '!' : ''}
+                   video.reviewStatus === REVIEW_STATUS.NEEDS_FOLLOWUP ? '!' :
+                   video.reviewStatus === REVIEW_STATUS.REVIEWED ? '✓' : ''}
                 </span>
               )}
             </div>
 
             {/* Content */}
-            <div style={styles.content}>
-              <div style={styles.header}>
-                <div style={styles.titleSection}>
-                  <h3 style={styles.title}>{video.title}</h3>
-                  <div style={styles.meta}>
+            <div className={tw.content}>
+              <div className={tw.header}>
+                <div className={tw.titleSection}>
+                  <h3 className={tw.title}>{video.title}</h3>
+                  <div className={tw.meta}>
                     <span>{video.category || 'Ukategorisert'}</span>
-                    <span style={styles.metaDot} />
+                    <span className={tw.metaDot} />
                     <span>{formatRelativeDate(video.createdAt)}</span>
                     {video.annotationCount > 0 && (
                       <>
-                        <span style={styles.metaDot} />
-                        <span style={styles.annotations}>
+                        <span className={tw.metaDot} />
+                        <span className={tw.annotations}>
                           <AnnotateIcon size={12} />
                           {video.annotationCount}
                         </span>
@@ -477,26 +315,38 @@ export function PlayerVideoFeed({
                   </div>
                 </div>
 
-                {/* Player info */}
-                <div style={styles.playerInfo}>
-                  <div style={styles.avatar}>
+                {/* Player info - clickable link to player profile */}
+                <Link
+                  to={`/coach/players/${video.playerId}`}
+                  className={tw.playerInfo}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    track('screen_view', {
+                      screen: 'CoachPlayerPage',
+                      source: 'coach_videos',
+                      id: video.playerId,
+                      action: 'open',
+                    });
+                  }}
+                >
+                  <div className={tw.avatar}>
                     {getInitials(video.playerName)}
                   </div>
-                  <span style={styles.playerName}>{video.playerName}</span>
-                </div>
+                  <span className={tw.playerName}>{video.playerName}</span>
+                </Link>
               </div>
 
               {/* Actions */}
-              <div style={styles.actions}>
+              <div className={tw.actions}>
                 <button
-                  style={{ ...styles.actionButton, ...styles.primaryAction }}
+                  className={`${tw.actionButton} ${tw.primaryAction}`}
                   onClick={(e) => handleAnnotate(e, video)}
                 >
-                  <AnnotateIcon />
-                  Annotér
+                  <PlayIcon />
+                  Analyser
                 </button>
                 <button
-                  style={styles.actionButton}
+                  className={tw.actionButton}
                   onClick={(e) => handleComment(e, video)}
                 >
                   <CommentIcon />
@@ -504,7 +354,7 @@ export function PlayerVideoFeed({
                 </button>
                 {video.reviewStatus !== REVIEW_STATUS.REVIEWED && (
                   <button
-                    style={styles.actionButton}
+                    className={tw.actionButton}
                     onClick={(e) => handleMarkReviewed(e, video)}
                   >
                     <CheckIcon />
@@ -516,8 +366,6 @@ export function PlayerVideoFeed({
           </div>
         );
       })}
-
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

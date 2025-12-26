@@ -30,170 +30,46 @@ export const SORT_OPTIONS = [
   { value: 'duration:asc', label: 'Korteste først' },
 ];
 
+export const VIDEO_STATUSES = [
+  { value: '', label: 'Alle statuser' },
+  { value: 'ready', label: 'Klar' },
+  { value: 'reviewed', label: 'Gjennomgått' },
+  { value: 'processing', label: 'Behandles' },
+  { value: 'failed', label: 'Feilet' },
+];
+
 export const VIEW_MODES = {
   GRID: 'grid',
   LIST: 'list',
 };
 
-// Styles
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3, 12px)',
-    padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
-    borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-  },
-  row: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 'var(--spacing-3, 12px)',
-    alignItems: 'center',
-  },
-  searchContainer: {
-    flex: '1 1 250px',
-    position: 'relative',
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: '12px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    width: '18px',
-    height: '18px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
-    pointerEvents: 'none',
-  },
-  searchInput: {
-    width: '100%',
-    padding: '10px 12px 10px 40px',
-    fontSize: '14px',
-    color: 'var(--ak-text-primary, white)',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    outline: 'none',
-    transition: 'border-color 0.2s ease',
-  },
-  searchInputFocus: {
-    borderColor: 'var(--ak-primary, #6366f1)',
-  },
-  clearButton: {
-    position: 'absolute',
-    right: '8px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    padding: '4px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
-    borderRadius: 'var(--radius-sm, 4px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  select: {
-    padding: '10px 36px 10px 12px',
-    fontSize: '14px',
-    color: 'var(--ak-text-primary, white)',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    outline: 'none',
-    cursor: 'pointer',
-    appearance: 'none',
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 10px center',
-    minWidth: '150px',
-    transition: 'border-color 0.2s ease',
-  },
-  selectFocus: {
-    borderColor: 'var(--ak-primary, #6366f1)',
-  },
-  viewToggle: {
-    display: 'flex',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
-    borderRadius: 'var(--radius-md, 8px)',
-    padding: '4px',
-    gap: '4px',
-  },
-  viewButton: {
-    padding: '8px 12px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm, 4px)',
-    cursor: 'pointer',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.2s ease',
-  },
-  viewButtonActive: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    color: 'white',
-  },
-  viewIcon: {
-    width: '18px',
-    height: '18px',
-  },
-  playerSelect: {
-    minWidth: '180px',
-  },
-  activeFilters: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 'var(--spacing-2, 8px)',
-    alignItems: 'center',
-  },
-  filterChip: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1, 4px)',
-    padding: '4px 8px 4px 12px',
-    backgroundColor: 'var(--ak-primary-soft, rgba(99, 102, 241, 0.2))',
-    color: 'var(--ak-primary, #6366f1)',
-    borderRadius: 'var(--radius-full, 9999px)',
-    fontSize: '12px',
-    fontWeight: '500',
-  },
-  filterChipRemove: {
-    padding: '2px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    color: 'inherit',
-    borderRadius: 'var(--radius-full, 9999px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.7,
-    transition: 'opacity 0.2s ease',
-  },
-  clearAllButton: {
-    padding: '4px 12px',
-    backgroundColor: 'transparent',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
-    borderRadius: 'var(--radius-full, 9999px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    fontSize: '12px',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-  },
-  resultCount: {
-    marginLeft: 'auto',
-    fontSize: '13px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-  },
+// Tailwind classes
+const tw = {
+  container: 'flex flex-col gap-3 p-4 bg-surface rounded-ak-lg border border-border',
+  row: 'flex flex-wrap gap-3 items-center',
+  searchContainer: 'flex-[1_1_250px] relative',
+  searchIcon: 'absolute left-3 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[var(--ak-text-tertiary,rgba(255,255,255,0.4))] pointer-events-none',
+  searchInput: 'w-full py-2.5 pr-3 pl-10 text-sm text-[var(--ak-text-primary,white)] bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md outline-none transition-colors duration-200 focus:border-primary',
+  clearButton: 'absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none cursor-pointer text-[var(--ak-text-tertiary,rgba(255,255,255,0.4))] rounded-ak-sm flex items-center justify-center',
+  select: "py-2.5 pl-3 pr-9 text-sm text-[var(--ak-text-primary,white)] bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md outline-none cursor-pointer appearance-none bg-no-repeat bg-[right_10px_center] min-w-[150px] transition-colors duration-200 focus:border-primary",
+  viewToggle: 'flex bg-[var(--ak-surface-dark,#0f0f1a)] rounded-ak-md p-1 gap-1',
+  viewButton: 'py-2 px-3 bg-transparent border-none rounded-ak-sm cursor-pointer text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] flex items-center justify-center transition-all duration-200',
+  viewButtonActive: 'bg-primary text-white',
+  viewIcon: 'w-[18px] h-[18px]',
+  playerSelect: 'min-w-[180px]',
+  activeFilters: 'flex flex-wrap gap-2 items-center',
+  filterChip: 'flex items-center gap-1 py-1 pl-3 pr-2 bg-primary/20 text-primary rounded-full text-xs font-medium',
+  filterChipRemove: 'p-0.5 bg-transparent border-none cursor-pointer text-inherit rounded-full flex items-center justify-center opacity-70 transition-opacity duration-200 hover:opacity-100',
+  clearAllButton: 'py-1 px-3 bg-transparent border border-border rounded-full text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs cursor-pointer transition-all duration-200 hover:border-primary',
+  resultCount: 'ml-auto text-[13px] text-[var(--ak-text-secondary,rgba(255,255,255,0.7))]',
 };
+
+// Select dropdown arrow SVG as background
+const selectBgImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`;
 
 // Icons
 const SearchIcon = () => (
-  <svg style={styles.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg className={tw.searchIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <circle cx="11" cy="11" r="8" />
     <path d="m21 21-4.35-4.35" />
   </svg>
@@ -207,7 +83,7 @@ const ClearIcon = ({ size = 16 }) => (
 );
 
 const GridIcon = () => (
-  <svg style={styles.viewIcon} viewBox="0 0 24 24" fill="currentColor">
+  <svg className={tw.viewIcon} viewBox="0 0 24 24" fill="currentColor">
     <rect x="3" y="3" width="7" height="7" rx="1" />
     <rect x="14" y="3" width="7" height="7" rx="1" />
     <rect x="3" y="14" width="7" height="7" rx="1" />
@@ -216,7 +92,7 @@ const GridIcon = () => (
 );
 
 const ListIcon = () => (
-  <svg style={styles.viewIcon} viewBox="0 0 24 24" fill="currentColor">
+  <svg className={tw.viewIcon} viewBox="0 0 24 24" fill="currentColor">
     <rect x="3" y="4" width="18" height="4" rx="1" />
     <rect x="3" y="10" width="18" height="4" rx="1" />
     <rect x="3" y="16" width="18" height="4" rx="1" />
@@ -269,6 +145,11 @@ export function VideoFilters({
     onFilterChange?.({ ...filters, category: e.target.value });
   }, [filters, onFilterChange]);
 
+  // Handle status change
+  const handleStatusChange = useCallback((e) => {
+    onFilterChange?.({ ...filters, status: e.target.value });
+  }, [filters, onFilterChange]);
+
   // Handle sort change
   const handleSortChange = useCallback((e) => {
     const [sortBy, sortOrder] = e.target.value.split(':');
@@ -298,6 +179,7 @@ export function VideoFilters({
     onFilterChange?.({
       sortBy: 'createdAt',
       sortOrder: 'desc',
+      status: '',
     });
   }, [onFilterChange]);
 
@@ -311,7 +193,7 @@ export function VideoFilters({
   }, []);
 
   // Check if any filters are active
-  const hasActiveFilters = filters.search || filters.category || filters.playerId;
+  const hasActiveFilters = filters.search || filters.category || filters.status || filters.playerId;
 
   // Get current sort value
   const currentSort = `${filters.sortBy || 'createdAt'}:${filters.sortOrder || 'desc'}`;
@@ -328,12 +210,18 @@ export function VideoFilters({
     return player?.name || 'Ukjent spiller';
   };
 
+  // Get status label for chip
+  const getStatusLabel = (value) => {
+    const option = VIDEO_STATUSES.find((opt) => opt.value === value);
+    return option?.label || value;
+  };
+
   return (
-    <div className={className} style={{ ...styles.container, ...style }}>
+    <div className={`${tw.container} ${className || ''}`} style={style}>
       {/* Main filter row */}
-      <div style={styles.row}>
+      <div className={tw.row}>
         {/* Search */}
-        <div style={styles.searchContainer}>
+        <div className={tw.searchContainer}>
           <SearchIcon />
           <input
             ref={searchInputRef}
@@ -343,14 +231,11 @@ export function VideoFilters({
             onChange={handleSearchChange}
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setSearchFocused(false)}
-            style={{
-              ...styles.searchInput,
-              ...(searchFocused ? styles.searchInputFocus : {}),
-            }}
+            className={tw.searchInput}
           />
           {filters.search && (
             <button
-              style={styles.clearButton}
+              className={tw.clearButton}
               onClick={handleClearSearch}
               aria-label="Tøm søk"
             >
@@ -363,10 +248,26 @@ export function VideoFilters({
         <select
           value={filters.category || ''}
           onChange={handleCategoryChange}
-          style={styles.select}
+          className={tw.select}
+          style={{ backgroundImage: selectBgImage }}
           aria-label="Filtrer etter kategori"
         >
           {VIDEO_CATEGORIES.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        {/* Status filter */}
+        <select
+          value={filters.status || ''}
+          onChange={handleStatusChange}
+          className={tw.select}
+          style={{ backgroundImage: selectBgImage }}
+          aria-label="Filtrer etter status"
+        >
+          {VIDEO_STATUSES.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -378,7 +279,8 @@ export function VideoFilters({
           <select
             value={filters.playerId || ''}
             onChange={handlePlayerChange}
-            style={{ ...styles.select, ...styles.playerSelect }}
+            className={`${tw.select} ${tw.playerSelect}`}
+            style={{ backgroundImage: selectBgImage }}
             aria-label="Filtrer etter spiller"
           >
             <option value="">Alle spillere</option>
@@ -394,7 +296,8 @@ export function VideoFilters({
         <select
           value={currentSort}
           onChange={handleSortChange}
-          style={styles.select}
+          className={tw.select}
+          style={{ backgroundImage: selectBgImage }}
           aria-label="Sorter etter"
         >
           {SORT_OPTIONS.map((option) => (
@@ -405,12 +308,9 @@ export function VideoFilters({
         </select>
 
         {/* View toggle */}
-        <div style={styles.viewToggle} role="group" aria-label="Visningstype">
+        <div className={tw.viewToggle} role="group" aria-label="Visningstype">
           <button
-            style={{
-              ...styles.viewButton,
-              ...(viewMode === VIEW_MODES.GRID ? styles.viewButtonActive : {}),
-            }}
+            className={`${tw.viewButton} ${viewMode === VIEW_MODES.GRID ? tw.viewButtonActive : ''}`}
             onClick={() => onViewModeChange?.(VIEW_MODES.GRID)}
             aria-label="Rutenett-visning"
             aria-pressed={viewMode === VIEW_MODES.GRID}
@@ -418,10 +318,7 @@ export function VideoFilters({
             <GridIcon />
           </button>
           <button
-            style={{
-              ...styles.viewButton,
-              ...(viewMode === VIEW_MODES.LIST ? styles.viewButtonActive : {}),
-            }}
+            className={`${tw.viewButton} ${viewMode === VIEW_MODES.LIST ? tw.viewButtonActive : ''}`}
             onClick={() => onViewModeChange?.(VIEW_MODES.LIST)}
             aria-label="Liste-visning"
             aria-pressed={viewMode === VIEW_MODES.LIST}
@@ -433,13 +330,13 @@ export function VideoFilters({
 
       {/* Active filters row */}
       {(hasActiveFilters || resultCount !== undefined) && (
-        <div style={styles.activeFilters}>
+        <div className={tw.activeFilters}>
           {/* Search chip */}
           {filters.search && (
-            <div style={styles.filterChip}>
+            <div className={tw.filterChip}>
               <span>Søk: "{filters.search}"</span>
               <button
-                style={styles.filterChipRemove}
+                className={tw.filterChipRemove}
                 onClick={() => handleRemoveFilter('search')}
                 aria-label="Fjern søkefilter"
               >
@@ -450,10 +347,10 @@ export function VideoFilters({
 
           {/* Category chip */}
           {filters.category && (
-            <div style={styles.filterChip}>
+            <div className={tw.filterChip}>
               <span>{getCategoryLabel(filters.category)}</span>
               <button
-                style={styles.filterChipRemove}
+                className={tw.filterChipRemove}
                 onClick={() => handleRemoveFilter('category')}
                 aria-label="Fjern kategorifilter"
               >
@@ -462,12 +359,26 @@ export function VideoFilters({
             </div>
           )}
 
+          {/* Status chip */}
+          {filters.status && (
+            <div className={tw.filterChip}>
+              <span>{getStatusLabel(filters.status)}</span>
+              <button
+                className={tw.filterChipRemove}
+                onClick={() => handleRemoveFilter('status')}
+                aria-label="Fjern statusfilter"
+              >
+                <ClearIcon size={12} />
+              </button>
+            </div>
+          )}
+
           {/* Player chip */}
           {filters.playerId && (
-            <div style={styles.filterChip}>
+            <div className={tw.filterChip}>
               <span>{getPlayerLabel(filters.playerId)}</span>
               <button
-                style={styles.filterChipRemove}
+                className={tw.filterChipRemove}
                 onClick={() => handleRemoveFilter('playerId')}
                 aria-label="Fjern spillerfilter"
               >
@@ -479,7 +390,7 @@ export function VideoFilters({
           {/* Clear all button */}
           {hasActiveFilters && (
             <button
-              style={styles.clearAllButton}
+              className={tw.clearAllButton}
               onClick={handleClearAll}
             >
               Nullstill filtre
@@ -488,7 +399,7 @@ export function VideoFilters({
 
           {/* Result count */}
           {resultCount !== undefined && (
-            <span style={styles.resultCount}>
+            <span className={tw.resultCount}>
               {resultCount} {resultCount === 1 ? 'video' : 'videoer'}
             </span>
           )}

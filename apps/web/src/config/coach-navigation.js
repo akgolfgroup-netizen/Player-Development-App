@@ -37,6 +37,7 @@ export const coachNavigationConfig = [
       { href: '/coach/athletes', label: 'Alle spillere' },
       { href: '/coach/athletes/status', label: 'Status & varsler' },
       { href: '/coach/athletes/tournaments', label: 'Turneringsdeltakelse' },
+      { href: '/coach/videos', label: 'Spillervideoer' },
     ]
   },
 

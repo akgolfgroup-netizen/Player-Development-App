@@ -55,13 +55,14 @@ const BottomNav: React.FC<BottomNavProps> = ({
   };
 
   return (
-    <nav style={styles.nav} className={className}>
+    <nav style={styles.nav} className={className} aria-label="Hovednavigasjon">
       {items.map((item) => {
         const active = isActive(item.to);
         return (
           <NavLink
             key={item.to}
             to={item.to}
+            aria-current={active ? 'page' : undefined}
             style={{
               ...styles.navItem,
               ...(active ? styles.navItemActive : {}),
@@ -72,6 +73,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
                 ...styles.icon,
                 color: active ? 'var(--ak-primary)' : 'var(--text-tertiary)',
               }}
+              aria-hidden="true"
             >
               {item.icon}
             </span>
@@ -112,6 +114,8 @@ const styles: Record<string, React.CSSProperties> = {
     textDecoration: 'none',
     flex: 1,
     minWidth: 0,
+    borderRadius: 'var(--radius-sm)',
+    // Focus styles applied via CSS (outline on :focus-visible)
   },
   navItemActive: {
     // Active styling handled inline

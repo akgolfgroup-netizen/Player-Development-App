@@ -15,6 +15,7 @@ import ProtectedRoute from './components/guards/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingState from './components/ui/LoadingState';
 import Toast from './components/Toast';
+import VideoNotificationManager from './components/VideoNotificationManager';
 
 // Lazy-loaded feature components
 const Login = lazy(() => import('./features/auth/Login'));
@@ -27,11 +28,9 @@ const TestprotokollContainer = lazy(() => import('./features/tests/Testprotokoll
 const TestresultaterContainer = lazy(() => import('./features/tests/TestresultaterContainer'));
 const TreningsprotokollContainer = lazy(() => import('./features/training/TreningsprotokollContainer'));
 const TreningsstatistikkContainer = lazy(() => import('./features/training/TreningsstatistikkContainer'));
-const StatsPage = lazy(() => import('./features/stats/StatsPage'));
 const OevelserContainer = lazy(() => import('./features/exercises/OevelserContainer'));
 const NotaterContainer = lazy(() => import('./features/notes/NotaterContainer'));
 const ArkivContainer = lazy(() => import('./features/archive/ArkivContainer'));
-const KalenderContainer = lazy(() => import('./features/calendar/KalenderContainer'));
 const PlanPreviewContainer = lazy(() => import('./features/annual-plan/PlanPreviewContainer'));
 const ModificationRequestDashboardContainer = lazy(() => import('./features/coach/ModificationRequestDashboardContainer'));
 const ProgressDashboardContainer = lazy(() => import('./features/progress/ProgressDashboardContainer'));
@@ -54,7 +53,8 @@ const TurneringsstatistikkContainer = lazy(() => import('./features/stats-pages/
 const StatsVerktoyContainer = lazy(() => import('./features/stats-pages/StatsVerktoyContainer'));
 const EvalueringContainer = lazy(() => import('./features/evaluering/EvalueringContainer'));
 
-// UI Lab
+// UI Lab (DEV-only)
+const IS_DEV = process.env.NODE_ENV === 'development';
 const UILabContainer = lazy(() => import('./features/ui-lab/UILabContainer'));
 const StatsLab = lazy(() => import('./ui/lab/StatsLab'));
 const AppShellLab = lazy(() => import('./ui/lab/AppShellLab'));
@@ -131,6 +131,25 @@ const CoachNotes = lazy(() => import('./features/coach-notes').then(m => ({ defa
 const CoachAlertsPage = lazy(() => import('./features/coach-intelligence').then(m => ({ default: m.CoachAlertsPage })));
 const CoachProofViewer = lazy(() => import('./features/coach-proof-viewer').then(m => ({ default: m.CoachProofViewer })));
 const CoachTrajectoryViewer = lazy(() => import('./features/coach-trajectory-viewer').then(m => ({ default: m.CoachTrajectoryViewer })));
+
+// Coach videos (lazy-loaded)
+const CoachVideosDashboard = lazy(() => import('./features/coach-videos/CoachVideosDashboard').then(m => ({ default: m.CoachVideosDashboard })));
+const ReferenceLibrary = lazy(() => import('./features/coach-videos/ReferenceLibrary').then(m => ({ default: m.ReferenceLibrary })));
+
+// Video analysis (lazy-loaded)
+const VideoAnalysisPage = lazy(() => import('./features/video-analysis/VideoAnalysisPage').then(m => ({ default: m.VideoAnalysisPage })));
+
+// Video library for players (lazy-loaded)
+const VideoLibraryPage = lazy(() => import('./features/video-library/VideoLibraryPage').then(m => ({ default: m.VideoLibraryPage })));
+
+// Video comparison (lazy-loaded)
+const VideoComparisonPage = lazy(() => import('./features/video-comparison/VideoComparisonPage').then(m => ({ default: m.VideoComparisonPage })));
+
+// Video progress (lazy-loaded)
+const VideoProgressView = lazy(() => import('./features/video-progress').then(m => ({ default: m.VideoProgressView })));
+
+// Coach player profile (lazy-loaded)
+const CoachPlayerPage = lazy(() => import('./features/coach-player/CoachPlayerPage').then(m => ({ default: m.CoachPlayerPage })));
 
 // Coach groups (lazy-loaded)
 const CoachGroupList = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupList })));
@@ -263,6 +282,7 @@ function App() {
               <ErrorBoundary>
                 {!isOnline && <OfflineBanner />}
                 <Toast />
+                <VideoNotificationManager />
             <Suspense fallback={<LoadingState />}>
               <Routes>
           {/* Public routes */}
@@ -353,34 +373,39 @@ function App() {
               <StatsPageV2 />
             </ProtectedRoute>
           } />
-          <Route path="/ui-lab" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="UI Lab" subtitle="Komponentbibliotek">
-                <UILabContainer />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/stats-lab" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Stats Lab" subtitle="StatsGridTemplate demo">
-                <StatsLab />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/appshell-lab" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="AppShell Lab" subtitle="AppShellTemplate demo">
-                <AppShellLab />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/calendar-lab" element={
-            <ProtectedRoute>
-              <AuthenticatedLayout title="Calendar Lab" subtitle="CalendarTemplate demo">
-                <CalendarLab />
-              </AuthenticatedLayout>
-            </ProtectedRoute>
-          } />
+          {/* UI Lab Routes - DEV ONLY */}
+          {IS_DEV && (
+            <>
+              <Route path="/ui-lab" element={
+                <ProtectedRoute>
+                  <AuthenticatedLayout title="UI Lab" subtitle="Komponentbibliotek">
+                    <UILabContainer />
+                  </AuthenticatedLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/stats-lab" element={
+                <ProtectedRoute>
+                  <AuthenticatedLayout title="Stats Lab" subtitle="StatsGridTemplate demo">
+                    <StatsLab />
+                  </AuthenticatedLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/appshell-lab" element={
+                <ProtectedRoute>
+                  <AuthenticatedLayout title="AppShell Lab" subtitle="AppShellTemplate demo">
+                    <AppShellLab />
+                  </AuthenticatedLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/calendar-lab" element={
+                <ProtectedRoute>
+                  <AuthenticatedLayout title="Calendar Lab" subtitle="CalendarTemplate demo">
+                    <CalendarLab />
+                  </AuthenticatedLayout>
+                </ProtectedRoute>
+              } />
+            </>
+          )}
           <Route path="/dashboard-v2" element={
             <ProtectedRoute>
               <DashboardPage />
@@ -748,6 +773,40 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* Video Library for Players */}
+          <Route path="/videos" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Videoer" subtitle="Dine sving-videoer">
+                <VideoLibraryPage />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Video Analysis */}
+          <Route path="/videos/:videoId/analyze" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Videoanalyse" subtitle="Analyser din video">
+                <VideoAnalysisPage />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Video Comparison */}
+          <Route path="/videos/compare" element={
+            <ProtectedRoute>
+              <VideoComparisonPage />
+            </ProtectedRoute>
+          } />
+
+          {/* Video Progress */}
+          <Route path="/videos/progress" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Videofremgang" subtitle="Spor din utvikling over tid">
+                <VideoProgressView />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
           {/* Skole */}
           <Route path="/skole/oppgaver" element={
             <ProtectedRoute>
@@ -859,6 +918,41 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <CoachProofViewer />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/videos" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachVideosDashboard />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/videos/:videoId/analyze" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <VideoAnalysisPage />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/videos/compare" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <VideoComparisonPage />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/reference-videos" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <ReferenceLibrary />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/players/:playerId" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachPlayerPage />
               </CoachLayout>
             </ProtectedRoute>
           } />

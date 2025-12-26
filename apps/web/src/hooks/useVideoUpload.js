@@ -12,7 +12,7 @@
  */
 
 import { useState, useRef, useCallback } from 'react';
-import apiClient from '../services/apiClient';
+import * as videoApi from '../services/videoApi';
 
 // Supported video formats
 export const SUPPORTED_FORMATS = [
@@ -284,7 +284,7 @@ export function useVideoUpload(options = {}) {
   }, []);
 
   /**
-   * Start upload
+   * Start upload using multipart upload
    */
   const startUpload = useCallback(async () => {
     if (!selectedFile || uploadState === UPLOAD_STATES.UPLOADING) {
@@ -299,81 +299,38 @@ export function useVideoUpload(options = {}) {
     abortControllerRef.current = new AbortController();
 
     try {
-      // Step 1: Get pre-signed upload URL
-      const { data: uploadUrlData } = await apiClient.post('/videos/upload-url', {
-        fileName: selectedFile.name,
-        fileType: selectedFile.type,
-        fileSize: selectedFile.size,
+      // Use the uploadVideo helper which handles multipart upload
+      const video = await videoApi.uploadVideo({
+        file: selectedFile,
         playerId,
+        title: metadata.title,
+        metadata: {
+          description: metadata.description,
+          category: metadata.category,
+          viewAngle: metadata.viewAngle,
+          clubType: metadata.clubType,
+          duration: videoDuration,
+          width: videoResolution.width,
+          height: videoResolution.height,
+        },
+        onProgress: (progress) => {
+          setUploadProgress(progress);
+        },
+        signal: abortControllerRef.current.signal,
       });
 
-      const { uploadUrl, videoId, fields } = uploadUrlData;
-
-      // Step 2: Upload to S3 using pre-signed URL
-      const formData = new FormData();
-
-      // Add S3 fields if present (for POST uploads)
-      if (fields) {
-        Object.entries(fields).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-      }
-      formData.append('file', selectedFile);
-
-      // Use XMLHttpRequest for progress tracking
-      await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-
-        xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            const progress = Math.round((event.loaded / event.total) * 100);
-            setUploadProgress(progress);
-          }
-        };
-
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve(xhr.response);
-          } else {
-            reject(new Error('Opplasting feilet'));
-          }
-        };
-
-        xhr.onerror = () => reject(new Error('Nettverksfeil under opplasting'));
-        xhr.onabort = () => reject(new Error('Opplasting avbrutt'));
-
-        // Handle abort
-        abortControllerRef.current.signal.addEventListener('abort', () => {
-          xhr.abort();
-        });
-
-        xhr.open('PUT', uploadUrl);
-        xhr.setRequestHeader('Content-Type', selectedFile.type);
-        xhr.send(selectedFile);
-      });
-
-      // Step 3: Confirm upload and save metadata
+      // Processing complete
       setUploadState(UPLOAD_STATES.PROCESSING);
 
-      const { data: confirmData } = await apiClient.post('/videos/confirm', {
-        videoId,
-        title: metadata.title,
-        description: metadata.description,
-        category: metadata.category,
-        viewAngle: metadata.viewAngle,
-        clubType: metadata.clubType,
-        duration: videoDuration,
-        width: videoResolution.width,
-        height: videoResolution.height,
-        thumbnail: thumbnailUrl,
-      });
+      // Short delay to show processing state
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
-      setUploadedVideo(confirmData.video);
+      setUploadedVideo(video);
       setUploadState(UPLOAD_STATES.COMPLETE);
-      onUploadComplete?.(confirmData.video);
+      onUploadComplete?.(video);
 
     } catch (err) {
-      if (err.message === 'Opplasting avbrutt') {
+      if (err.message === 'Upload cancelled' || err.message === 'Opplasting avbrutt') {
         setUploadState(UPLOAD_STATES.CANCELLED);
       } else {
         setError(err.message || 'Opplasting feilet');
@@ -383,7 +340,7 @@ export function useVideoUpload(options = {}) {
     }
   }, [
     selectedFile, uploadState, playerId, metadata, videoDuration,
-    videoResolution, thumbnailUrl, onUploadComplete, onError,
+    videoResolution, onUploadComplete, onError,
   ]);
 
   /**

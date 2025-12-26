@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Home, User, Users, Target, Calendar, ClipboardList,
   TrendingUp, Activity, Dumbbell, FileText, Archive, BarChart3, LogOut, BookOpen,
-  LineChart, Award, MessageSquare
+  LineChart, Award, MessageSquare, Video
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { tokens } from '../../design-tokens';
@@ -30,6 +30,7 @@ const Navigation = () => {
     { path: '/treningsstatistikk', icon: BarChart3, label: 'Treningsstatistikk' },
     { path: '/progress', icon: LineChart, label: 'Fremdrift', badge: 'NEW' },
     { path: '/achievements', icon: Award, label: 'Prestasjoner', badge: 'NEW' },
+    { path: '/videos', icon: Video, label: 'Videoer', badge: 'NEW' },
     { path: '/oevelser', icon: Dumbbell, label: 'Øvelser' },
     { path: '/ovelsesbibliotek', icon: BookOpen, label: 'Øvelsesbibliotek' },
     { path: '/kalender', icon: Calendar, label: 'Kalender' },

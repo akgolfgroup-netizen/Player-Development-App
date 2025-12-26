@@ -8,10 +8,12 @@
  * - Overlay/ghost mode for direct comparison
  * - Frame-by-frame navigation
  * - Independent or linked controls
+ * - API integration for saved comparisons
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useVideoComparison, VIEW_MODES, SYNC_MODES } from '../../hooks/useVideoComparison';
+import { useComparisonData, useComparisonVideos } from '../../hooks/useVideoComparisonApi';
 
 // Icons
 const PlayIcon = () => (
@@ -326,8 +328,11 @@ const PLAYBACK_SPEEDS = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2];
  * VideoComparison Component
  *
  * @param {Object} props
- * @param {string} props.primarySrc - Primary video URL
- * @param {string} props.secondarySrc - Secondary/comparison video URL
+ * @param {string} props.comparisonId - Comparison ID (loads saved comparison from API)
+ * @param {string} props.primaryVideoId - Primary video ID (alternative to comparisonId)
+ * @param {string} props.secondaryVideoId - Secondary video ID (alternative to comparisonId)
+ * @param {string} props.primarySrc - Primary video URL (fallback)
+ * @param {string} props.secondarySrc - Secondary/comparison video URL (fallback)
  * @param {string} props.primaryLabel - Label for primary video
  * @param {string} props.secondaryLabel - Label for secondary video
  * @param {string} props.primaryPoster - Primary video poster
@@ -335,28 +340,151 @@ const PLAYBACK_SPEEDS = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2];
  * @param {number} props.initialSyncPoint1 - Initial sync point for primary
  * @param {number} props.initialSyncPoint2 - Initial sync point for secondary
  * @param {Function} props.onSyncPointChange - Callback when sync points change
+ * @param {Function} props.onSave - Callback when comparison is saved
+ * @param {boolean} props.useApi - Whether to use API (default: true if IDs provided)
  * @param {Object} props.style - Additional container styles
  * @param {string} props.className - Additional CSS class
  */
 export function VideoComparison({
-  primarySrc,
-  secondarySrc,
-  primaryLabel = 'Video 1',
-  secondaryLabel = 'Video 2',
-  primaryPoster,
-  secondaryPoster,
+  comparisonId,
+  primaryVideoId,
+  secondaryVideoId,
+  primarySrc: propsPrimarySrc,
+  secondarySrc: propsSecondarySrc,
+  primaryLabel: propsLabel1 = 'Video 1',
+  secondaryLabel: propsLabel2 = 'Video 2',
+  primaryPoster: propsPrimaryPoster,
+  secondaryPoster: propsSecondaryPoster,
   initialSyncPoint1 = 0,
   initialSyncPoint2 = 0,
   onSyncPointChange,
+  onSave,
+  useApi = true,
   style,
   className,
 }) {
+  // Determine if we should use API
+  const shouldUseComparisonApi = useApi && comparisonId;
+  const shouldUseVideoApi = useApi && !comparisonId && (primaryVideoId || secondaryVideoId);
+
+  // Fetch saved comparison data if comparisonId provided
+  const {
+    comparison: savedComparison,
+    primaryPlaybackUrl: comparisonPrimaryUrl,
+    secondaryPlaybackUrl: comparisonSecondaryUrl,
+    loading: comparisonLoading,
+    error: comparisonError,
+    updateSyncPoints,
+  } = useComparisonData(shouldUseComparisonApi ? comparisonId : null, {
+    autoFetch: shouldUseComparisonApi,
+  });
+
+  // Fetch individual videos if video IDs provided (without saved comparison)
+  const {
+    primaryVideo,
+    secondaryVideo,
+    primaryPlaybackUrl: videoPrimaryUrl,
+    secondaryPlaybackUrl: videoSecondaryUrl,
+    loading: videosLoading,
+    error: videosError,
+    createComparison,
+  } = useComparisonVideos(
+    shouldUseVideoApi ? primaryVideoId : null,
+    shouldUseVideoApi ? secondaryVideoId : null,
+    { autoFetch: shouldUseVideoApi }
+  );
+
+  // Determine effective URLs (API or props)
+  const primarySrc = useMemo(() => {
+    if (comparisonPrimaryUrl) return comparisonPrimaryUrl;
+    if (videoPrimaryUrl) return videoPrimaryUrl;
+    return propsPrimarySrc;
+  }, [comparisonPrimaryUrl, videoPrimaryUrl, propsPrimarySrc]);
+
+  const secondarySrc = useMemo(() => {
+    if (comparisonSecondaryUrl) return comparisonSecondaryUrl;
+    if (videoSecondaryUrl) return videoSecondaryUrl;
+    return propsSecondarySrc;
+  }, [comparisonSecondaryUrl, videoSecondaryUrl, propsSecondarySrc]);
+
+  // Determine effective labels
+  const primaryLabel = useMemo(() => {
+    if (savedComparison?.primaryVideo?.title) return savedComparison.primaryVideo.title;
+    if (primaryVideo?.title) return primaryVideo.title;
+    return propsLabel1;
+  }, [savedComparison, primaryVideo, propsLabel1]);
+
+  const secondaryLabel = useMemo(() => {
+    if (savedComparison?.comparisonVideo?.title) return savedComparison.comparisonVideo.title;
+    if (secondaryVideo?.title) return secondaryVideo.title;
+    return propsLabel2;
+  }, [savedComparison, secondaryVideo, propsLabel2]);
+
+  // Determine effective posters
+  const primaryPoster = useMemo(() => {
+    if (savedComparison?.primaryVideo?.thumbnailUrl) return savedComparison.primaryVideo.thumbnailUrl;
+    if (primaryVideo?.thumbnailUrl) return primaryVideo.thumbnailUrl;
+    return propsPrimaryPoster;
+  }, [savedComparison, primaryVideo, propsPrimaryPoster]);
+
+  const secondaryPoster = useMemo(() => {
+    if (savedComparison?.comparisonVideo?.thumbnailUrl) return savedComparison.comparisonVideo.thumbnailUrl;
+    if (secondaryVideo?.thumbnailUrl) return secondaryVideo.thumbnailUrl;
+    return propsSecondaryPoster;
+  }, [savedComparison, secondaryVideo, propsSecondaryPoster]);
+
+  // Determine effective sync points
+  const effectiveSyncPoint1 = savedComparison?.syncPoint1
+    ? parseFloat(savedComparison.syncPoint1)
+    : initialSyncPoint1;
+  const effectiveSyncPoint2 = savedComparison?.syncPoint2
+    ? parseFloat(savedComparison.syncPoint2)
+    : initialSyncPoint2;
+
+  // Combined loading state
+  const isLoadingData = comparisonLoading || videosLoading.primary || videosLoading.secondary;
+
+  // Combined error
+  const apiError = comparisonError || videosError.primary || videosError.secondary;
+
+  // Handle sync point changes with API save
+  const handleSyncPointChange = useCallback(async (syncPoints) => {
+    // Call original callback
+    onSyncPointChange?.(syncPoints);
+
+    // Save to API if using saved comparison
+    if (shouldUseComparisonApi && updateSyncPoints) {
+      try {
+        await updateSyncPoints(syncPoints.syncPoint1, syncPoints.syncPoint2);
+      } catch (err) {
+        console.error('Failed to save sync points:', err);
+      }
+    }
+  }, [onSyncPointChange, shouldUseComparisonApi, updateSyncPoints]);
+
+  // Handle save comparison
+  const handleSaveComparison = useCallback(async (syncPoint1, syncPoint2) => {
+    if (!shouldUseVideoApi || !createComparison) return null;
+
+    try {
+      const newComparison = await createComparison({
+        syncPoint1,
+        syncPoint2,
+      });
+      onSave?.(newComparison);
+      return newComparison;
+    } catch (err) {
+      console.error('Failed to save comparison:', err);
+      throw err;
+    }
+  }, [shouldUseVideoApi, createComparison, onSave]);
+
   const comparison = useVideoComparison({
     primarySrc,
     secondarySrc,
-    syncPoint1: initialSyncPoint1,
-    syncPoint2: initialSyncPoint2,
-    onSyncPointChange,
+    syncPoint1: effectiveSyncPoint1,
+    syncPoint2: effectiveSyncPoint2,
+    onSyncPointChange: handleSyncPointChange,
   });
 
   const {
@@ -458,7 +586,7 @@ export function VideoComparison({
             {formatTime(syncPoint1)}
           </div>
         )}
-        {isLoading.primary && (
+        {(isLoading.primary || isLoadingData) && (
           <div style={styles.loadingOverlay}>
             <div style={styles.spinner} />
           </div>
@@ -482,7 +610,7 @@ export function VideoComparison({
             {formatTime(syncPoint2)}
           </div>
         )}
-        {isLoading.secondary && (
+        {(isLoading.secondary || isLoadingData) && (
           <div style={styles.loadingOverlay}>
             <div style={styles.spinner} />
           </div>
@@ -516,7 +644,7 @@ export function VideoComparison({
           }}
         />
 
-        {(isLoading.primary || isLoading.secondary) && (
+        {(isLoading.primary || isLoading.secondary || isLoadingData) && (
           <div style={styles.loadingOverlay}>
             <div style={styles.spinner} />
           </div>
@@ -524,6 +652,41 @@ export function VideoComparison({
       </div>
     </div>
   );
+
+  // Render error state
+  if (apiError) {
+    return (
+      <div
+        ref={containerRef}
+        style={{
+          ...styles.container,
+          ...style,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '300px',
+        }}
+        className={className}
+      >
+        <div style={{ textAlign: 'center', color: 'var(--ak-white)' }}>
+          <p style={{ marginBottom: 'var(--spacing-3)' }}>{apiError}</p>
+          <button
+            style={{
+              padding: 'var(--spacing-2) var(--spacing-4)',
+              backgroundColor: 'var(--ak-primary)',
+              color: 'var(--ak-white)',
+              border: 'none',
+              borderRadius: 'var(--radius-sm)',
+              cursor: 'pointer',
+            }}
+            onClick={() => window.location.reload()}
+          >
+            Prøv igjen
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

@@ -11,6 +11,9 @@ import {
   CompleteUploadInput,
   ListVideosInput,
   UpdateVideoInput,
+  ShareVideoInput,
+  CreateVideoRequestInput,
+  ListVideoRequestsInput,
 } from './schema';
 
 export class VideoService {
@@ -239,19 +242,24 @@ export class VideoService {
 
   /**
    * List videos with filters and pagination
+   * When includeSharedWith is provided (player's ID), also includes videos shared with that player
    */
   async listVideos(
     input: ListVideosInput,
-    tenantId: string
+    tenantId: string,
+    includeSharedWith?: string
   ): Promise<{
     videos: Array<{
       id: string;
       title: string;
       playerId: string;
       category: string | null;
+      viewAngle: string | null;
       duration: number;
       status: string;
+      thumbnailUrl: string | null;
       createdAt: Date;
+      isShared?: boolean;
       player: {
         firstName: string;
         lastName: string;
@@ -261,21 +269,42 @@ export class VideoService {
     limit: number;
     offset: number;
   }> {
-    const where: any = {
+    // Base conditions
+    const baseConditions: any = {
       tenantId,
       deletedAt: null,
     };
 
-    if (input.playerId) {
-      where.playerId = input.playerId;
-    }
-
     if (input.category) {
-      where.category = input.category;
+      baseConditions.category = input.category;
     }
 
     if (input.status) {
-      where.status = input.status;
+      baseConditions.status = input.status;
+    }
+
+    let where: any;
+
+    // If player is viewing and we want to include shared videos
+    if (includeSharedWith && input.playerId === includeSharedWith) {
+      // Player sees: own videos OR videos shared with them
+      where = {
+        AND: [
+          baseConditions,
+          {
+            OR: [
+              { playerId: includeSharedWith },
+              { shares: { some: { playerId: includeSharedWith } } },
+            ],
+          },
+        ],
+      };
+    } else {
+      // Standard query (coach view or specific player filter)
+      where = { ...baseConditions };
+      if (input.playerId) {
+        where.playerId = input.playerId;
+      }
     }
 
     const [videos, total] = await Promise.all([
@@ -288,6 +317,12 @@ export class VideoService {
               lastName: true,
             },
           },
+          shares: includeSharedWith
+            ? {
+                where: { playerId: includeSharedWith },
+                select: { playerId: true },
+              }
+            : false,
         },
         orderBy: {
           [input.sortBy]: input.sortOrder,
@@ -298,17 +333,43 @@ export class VideoService {
       this.prisma.video.count({ where }),
     ]);
 
+    // Generate thumbnail URLs for videos that have thumbnails
+    const videosWithThumbnails = await Promise.all(
+      videos.map(async (v) => {
+        let thumbnailUrl: string | null = null;
+
+        if (v.thumbnailKey) {
+          try {
+            thumbnailUrl = await storageService.getSignedPlaybackUrl(
+              v.thumbnailKey,
+              tenantId,
+              3600 // 1 hour expiry for thumbnails
+            );
+          } catch (err) {
+            // Ignore thumbnail errors, just return null
+            console.warn(`Failed to get thumbnail URL for video ${v.id}:`, err);
+          }
+        }
+
+        return {
+          id: v.id,
+          title: v.title,
+          playerId: v.playerId,
+          category: v.category,
+          viewAngle: v.viewAngle,
+          duration: v.duration,
+          status: v.status,
+          thumbnailUrl,
+          createdAt: v.createdAt,
+          // Mark as shared if video is not owned by the viewer but is shared with them
+          isShared: includeSharedWith && v.playerId !== includeSharedWith && (v as any).shares?.length > 0,
+          player: v.player,
+        };
+      })
+    );
+
     return {
-      videos: videos.map(v => ({
-        id: v.id,
-        title: v.title,
-        playerId: v.playerId,
-        category: v.category,
-        duration: v.duration,
-        status: v.status,
-        createdAt: v.createdAt,
-        player: v.player,
-      })),
+      videos: videosWithThumbnails,
       total,
       limit: input.limit,
       offset: input.offset,
@@ -435,5 +496,404 @@ export class VideoService {
         },
       });
     }
+  }
+
+  /**
+   * Share video with players
+   */
+  async shareVideo(
+    input: ShareVideoInput,
+    userId: string,
+    tenantId: string
+  ): Promise<{
+    shared: number;
+    alreadyShared: number;
+  }> {
+    const video = await this.prisma.video.findFirst({
+      where: {
+        id: input.id,
+        tenantId,
+        deletedAt: null,
+      },
+    });
+
+    if (!video) {
+      throw new NotFoundError('Video not found');
+    }
+
+    // Verify all players belong to tenant
+    const players = await this.prisma.player.findMany({
+      where: {
+        id: { in: input.playerIds },
+        tenantId,
+      },
+      select: { id: true },
+    });
+
+    const validPlayerIds = players.map(p => p.id);
+    const invalidIds = input.playerIds.filter(id => !validPlayerIds.includes(id));
+
+    if (invalidIds.length > 0) {
+      throw new BadRequestError(`Invalid player IDs: ${invalidIds.join(', ')}`);
+    }
+
+    // Check existing shares
+    const existingShares = await this.prisma.videoShare.findMany({
+      where: {
+        videoId: input.id,
+        playerId: { in: validPlayerIds },
+      },
+      select: { playerId: true },
+    });
+
+    const alreadySharedIds = existingShares.map(s => s.playerId);
+    const newPlayerIds = validPlayerIds.filter(id => !alreadySharedIds.includes(id));
+
+    // Create new shares
+    if (newPlayerIds.length > 0) {
+      await this.prisma.videoShare.createMany({
+        data: newPlayerIds.map(playerId => ({
+          videoId: input.id,
+          playerId,
+          sharedById: userId,
+          tenantId,
+        })),
+      });
+    }
+
+    return {
+      shared: newPlayerIds.length,
+      alreadyShared: alreadySharedIds.length,
+    };
+  }
+
+  /**
+   * Get shares for a video
+   */
+  async getVideoShares(
+    videoId: string,
+    tenantId: string
+  ): Promise<{
+    shares: Array<{
+      playerId: string;
+      playerName: string;
+      sharedAt: Date;
+    }>;
+  }> {
+    const video = await this.prisma.video.findFirst({
+      where: {
+        id: videoId,
+        tenantId,
+        deletedAt: null,
+      },
+    });
+
+    if (!video) {
+      throw new NotFoundError('Video not found');
+    }
+
+    const shares = await this.prisma.videoShare.findMany({
+      where: {
+        videoId,
+        tenantId,
+      },
+      include: {
+        player: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return {
+      shares: shares.map(s => ({
+        playerId: s.playerId,
+        playerName: `${s.player.firstName} ${s.player.lastName}`.trim(),
+        sharedAt: s.createdAt,
+      })),
+    };
+  }
+
+  /**
+   * Remove share from a video
+   */
+  async removeVideoShare(
+    videoId: string,
+    playerId: string,
+    tenantId: string
+  ): Promise<void> {
+    const share = await this.prisma.videoShare.findFirst({
+      where: {
+        videoId,
+        playerId,
+        tenantId,
+      },
+    });
+
+    if (!share) {
+      throw new NotFoundError('Share not found');
+    }
+
+    await this.prisma.videoShare.delete({
+      where: { id: share.id },
+    });
+  }
+
+  /**
+   * Create video request from coach to player
+   */
+  async createVideoRequest(
+    input: CreateVideoRequestInput,
+    userId: string,
+    tenantId: string
+  ): Promise<{
+    id: string;
+    playerId: string;
+    status: string;
+    createdAt: Date;
+  }> {
+    // Verify player belongs to tenant
+    const player = await this.prisma.player.findFirst({
+      where: {
+        id: input.playerId,
+        tenantId,
+      },
+    });
+
+    if (!player) {
+      throw new NotFoundError('Player not found');
+    }
+
+    const request = await this.prisma.videoRequest.create({
+      data: {
+        tenantId,
+        playerId: input.playerId,
+        requestedById: userId,
+        drillType: input.drillType,
+        category: input.category,
+        viewAngle: input.viewAngle,
+        instructions: input.instructions,
+        dueDate: input.dueDate ? new Date(input.dueDate) : null,
+        status: 'pending',
+      },
+    });
+
+    return {
+      id: request.id,
+      playerId: request.playerId,
+      status: request.status,
+      createdAt: request.createdAt,
+    };
+  }
+
+  /**
+   * List video requests
+   */
+  async listVideoRequests(
+    input: ListVideoRequestsInput,
+    tenantId: string
+  ): Promise<{
+    requests: Array<{
+      id: string;
+      playerId: string;
+      playerName: string;
+      drillType: string | null;
+      category: string | null;
+      instructions: string | null;
+      status: string;
+      dueDate: Date | null;
+      createdAt: Date;
+    }>;
+    total: number;
+  }> {
+    const where: any = { tenantId };
+
+    if (input.playerId) {
+      where.playerId = input.playerId;
+    }
+
+    if (input.status) {
+      where.status = input.status;
+    }
+
+    const [requests, total] = await Promise.all([
+      this.prisma.videoRequest.findMany({
+        where,
+        include: {
+          player: {
+            select: {
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+        take: input.limit,
+        skip: input.offset,
+      }),
+      this.prisma.videoRequest.count({ where }),
+    ]);
+
+    return {
+      requests: requests.map(r => ({
+        id: r.id,
+        playerId: r.playerId,
+        playerName: `${r.player.firstName} ${r.player.lastName}`.trim(),
+        drillType: r.drillType,
+        category: r.category,
+        instructions: r.instructions,
+        status: r.status,
+        dueDate: r.dueDate,
+        createdAt: r.createdAt,
+      })),
+      total,
+    };
+  }
+
+  /**
+   * Update video request status
+   */
+  async updateVideoRequest(
+    requestId: string,
+    status: 'pending' | 'fulfilled' | 'expired' | 'cancelled',
+    tenantId: string,
+    fulfilledVideoId?: string
+  ): Promise<void> {
+    const request = await this.prisma.videoRequest.findFirst({
+      where: {
+        id: requestId,
+        tenantId,
+      },
+    });
+
+    if (!request) {
+      throw new NotFoundError('Video request not found');
+    }
+
+    const updateData: any = { status };
+
+    if (status === 'fulfilled' && fulfilledVideoId) {
+      updateData.fulfilledVideoId = fulfilledVideoId;
+      updateData.fulfilledAt = new Date();
+    }
+
+    await this.prisma.videoRequest.update({
+      where: { id: requestId },
+      data: updateData,
+    });
+  }
+
+  /**
+   * Get thumbnail URL for a video
+   * Returns null if thumbnail doesn't exist
+   */
+  async getThumbnailUrl(
+    videoId: string,
+    tenantId: string,
+    expiresIn: number = 3600
+  ): Promise<{
+    url: string | null;
+    expiresAt: Date | null;
+  }> {
+    const video = await this.prisma.video.findFirst({
+      where: {
+        id: videoId,
+        tenantId,
+        deletedAt: null,
+      },
+    });
+
+    if (!video) {
+      throw new NotFoundError('Video not found');
+    }
+
+    // If thumbnail key exists, return signed URL
+    if (video.thumbnailKey) {
+      const url = await storageService.getSignedPlaybackUrl(
+        video.thumbnailKey,
+        tenantId,
+        expiresIn
+      );
+
+      return {
+        url,
+        expiresAt: new Date(Date.now() + expiresIn * 1000),
+      };
+    }
+
+    // No thumbnail available
+    return {
+      url: null,
+      expiresAt: null,
+    };
+  }
+
+  /**
+   * Upload thumbnail for a video
+   * Accepts base64 image data or a buffer
+   */
+  async uploadThumbnail(
+    videoId: string,
+    tenantId: string,
+    imageData: Buffer,
+    mimeType: string = 'image/jpeg'
+  ): Promise<{
+    thumbnailKey: string;
+    thumbnailUrl: string;
+  }> {
+    const video = await this.prisma.video.findFirst({
+      where: {
+        id: videoId,
+        tenantId,
+        deletedAt: null,
+      },
+    });
+
+    if (!video) {
+      throw new NotFoundError('Video not found');
+    }
+
+    // Validate mime type
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedMimeTypes.includes(mimeType)) {
+      throw new BadRequestError(`Unsupported thumbnail format. Allowed: ${allowedMimeTypes.join(', ')}`);
+    }
+
+    // Generate thumbnail key based on video key
+    const thumbnailKey = storageService.getThumbnailKey(video.s3Key);
+
+    // Upload thumbnail to S3 using specific key
+    await storageService.uploadToKey(
+      thumbnailKey,
+      imageData,
+      mimeType,
+      {
+        tenantId,
+        playerId: video.playerId,
+        videoId,
+      }
+    );
+
+    // Update video record with thumbnail key
+    await this.prisma.video.update({
+      where: { id: videoId },
+      data: { thumbnailKey },
+    });
+
+    // Return signed URL for the uploaded thumbnail
+    const thumbnailUrl = await storageService.getSignedPlaybackUrl(
+      thumbnailKey,
+      tenantId,
+      3600
+    );
+
+    return {
+      thumbnailKey,
+      thumbnailUrl,
+    };
   }
 }

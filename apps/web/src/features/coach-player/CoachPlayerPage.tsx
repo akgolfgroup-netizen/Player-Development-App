@@ -1,0 +1,384 @@
+/**
+ * CoachPlayerPage
+ * Coach-only player profile view
+ * Shows player info, KPI stats, recent videos, sessions, and goals
+ */
+
+import React, { useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useCoachPlayer } from '../../data/hooks/useCoachPlayer';
+import { track } from '../../analytics/track';
+import Card from '../../ui/primitives/Card';
+import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
+import StateCard from '../../ui/composites/StateCard';
+
+// ═══════════════════════════════════════════
+// STYLES
+// ═══════════════════════════════════════════
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--spacing-4, 16px)',
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-3, 12px)',
+    marginBottom: 'var(--spacing-2, 8px)',
+  },
+  backButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-1, 4px)',
+    padding: '8px 12px',
+    backgroundColor: 'var(--ak-surface, #f5f5f5)',
+    border: 'none',
+    borderRadius: 'var(--radius-md, 8px)',
+    color: 'var(--text-secondary)',
+    fontSize: '13px',
+    cursor: 'pointer',
+    textDecoration: 'none',
+  },
+  playerInfo: {
+    flex: 1,
+  },
+  playerName: {
+    margin: 0,
+    fontSize: '20px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+  },
+  playerMeta: {
+    margin: 0,
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+  },
+  section: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--spacing-3, 12px)',
+  },
+  sectionTitle: {
+    margin: 0,
+    fontSize: '15px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+  },
+  listItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 'var(--spacing-3, 12px)',
+    borderBottom: '1px solid var(--border-subtle, #eee)',
+  },
+  listItemLast: {
+    borderBottom: 'none',
+  },
+  listItemLeft: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
+  },
+  listItemTitle: {
+    fontSize: '14px',
+    fontWeight: 500,
+    color: 'var(--text-primary)',
+  },
+  listItemMeta: {
+    fontSize: '12px',
+    color: 'var(--text-secondary)',
+  },
+  statusBadge: {
+    padding: '4px 8px',
+    borderRadius: 'var(--radius-sm, 4px)',
+    fontSize: '11px',
+    fontWeight: 600,
+    textTransform: 'uppercase' as const,
+  },
+  statusPending: {
+    backgroundColor: 'var(--ak-warning-bg, #fef3c7)',
+    color: 'var(--ak-warning, #d97706)',
+  },
+  statusReviewed: {
+    backgroundColor: 'var(--ak-success-bg, #d1fae5)',
+    color: 'var(--ak-success, #059669)',
+  },
+  statusFollowup: {
+    backgroundColor: 'var(--ak-error-bg, #fee2e2)',
+    color: 'var(--ak-error, #dc2626)',
+  },
+  progressBar: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-2, 8px)',
+  },
+  progressTrack: {
+    flex: 1,
+    height: '6px',
+    backgroundColor: 'var(--border-subtle, #e5e7eb)',
+    borderRadius: '3px',
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: 'var(--ak-primary, #3b82f6)',
+    borderRadius: '3px',
+    transition: 'width 0.3s ease',
+  },
+  progressValue: {
+    fontSize: '12px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+    minWidth: '40px',
+    textAlign: 'right' as const,
+  },
+  emptyState: {
+    padding: 'var(--spacing-4, 16px)',
+    textAlign: 'center' as const,
+    color: 'var(--text-secondary)',
+    fontSize: '13px',
+  },
+  loadingContainer: {
+    padding: 'var(--spacing-6, 24px)',
+  },
+};
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
+}
+
+function getStatusStyle(status: string): React.CSSProperties {
+  switch (status) {
+    case 'reviewed':
+      return { ...styles.statusBadge, ...styles.statusReviewed };
+    case 'needs_followup':
+      return { ...styles.statusBadge, ...styles.statusFollowup };
+    default:
+      return { ...styles.statusBadge, ...styles.statusPending };
+  }
+}
+
+function getStatusLabel(status: string): string {
+  switch (status) {
+    case 'reviewed':
+      return 'Gjennomgått';
+    case 'needs_followup':
+      return 'Oppfølging';
+    default:
+      return 'Venter';
+  }
+}
+
+// ═══════════════════════════════════════════
+// COMPONENT
+// ═══════════════════════════════════════════
+
+export function CoachPlayerPage() {
+  const { playerId } = useParams<{ playerId: string }>();
+  const navigate = useNavigate();
+  const { data, isLoading, error, refetch } = useCoachPlayer(playerId || '');
+
+  // Analytics: Track screen view
+  useEffect(() => {
+    if (playerId) {
+      track('screen_view', {
+        screen: 'CoachPlayerPage',
+        source: 'navigation',
+        id: playerId,
+      });
+    }
+  }, [playerId]);
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div style={styles.loadingContainer}>
+        <StateCard
+          title="Laster spillerdata..."
+          description="Vennligst vent"
+          variant="info"
+        />
+      </div>
+    );
+  }
+
+  // Error state
+  if (error && !data) {
+    return (
+      <div style={styles.loadingContainer}>
+        <StateCard
+          title="Kunne ikke laste spillerdata"
+          description={error}
+          variant="error"
+          action={
+            <button onClick={refetch} style={styles.backButton}>
+              Prøv igjen
+            </button>
+          }
+        />
+      </div>
+    );
+  }
+
+  // No data
+  if (!data) {
+    return (
+      <div style={styles.loadingContainer}>
+        <StateCard
+          title="Ingen data tilgjengelig"
+          description="Kunne ikke finne spillerdata"
+          variant="empty"
+        />
+      </div>
+    );
+  }
+
+  const { player, stats, videos, sessions, goals } = data;
+
+  return (
+    <div style={styles.container}>
+      {/* Header with back button and player info */}
+      <div style={styles.header}>
+        <button
+          onClick={() => navigate(-1)}
+          style={styles.backButton}
+        >
+          ← Tilbake
+        </button>
+        <div style={styles.playerInfo}>
+          <h1 style={styles.playerName}>{player.name}</h1>
+          {player.tier && (
+            <p style={styles.playerMeta}>{player.tier}</p>
+          )}
+        </div>
+      </div>
+
+      {/* KPI Stats */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Nøkkeltall</h2>
+        <StatsGridTemplate items={stats} columns={2} />
+      </section>
+
+      {/* Recent Videos */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Siste videoer</h2>
+        <Card>
+          {videos.length === 0 ? (
+            <div style={styles.emptyState}>Ingen videoer</div>
+          ) : (
+            videos.map((video, index) => (
+              <Link
+                key={video.id}
+                to={`/coach/videos`}
+                style={{
+                  ...styles.listItem,
+                  ...(index === videos.length - 1 ? styles.listItemLast : {}),
+                  textDecoration: 'none',
+                  color: 'inherit',
+                }}
+                onClick={() => {
+                  track('screen_view', {
+                    screen: 'CoachVideoReview',
+                    source: 'coach_player_page',
+                    id: video.id,
+                    action: 'open',
+                  });
+                }}
+              >
+                <div style={styles.listItemLeft}>
+                  <span style={styles.listItemTitle}>{video.title}</span>
+                  <span style={styles.listItemMeta}>
+                    {formatDate(video.date)} {video.category && `• ${video.category}`}
+                  </span>
+                </div>
+                <span style={getStatusStyle(video.status)}>
+                  {getStatusLabel(video.status)}
+                </span>
+              </Link>
+            ))
+          )}
+        </Card>
+      </section>
+
+      {/* Recent Sessions */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Siste økter</h2>
+        <Card>
+          {sessions.length === 0 ? (
+            <div style={styles.emptyState}>Ingen økter</div>
+          ) : (
+            sessions.map((session, index) => (
+              <div
+                key={session.id}
+                style={{
+                  ...styles.listItem,
+                  ...(index === sessions.length - 1 ? styles.listItemLast : {}),
+                }}
+              >
+                <div style={styles.listItemLeft}>
+                  <span style={styles.listItemTitle}>{session.title}</span>
+                  <span style={styles.listItemMeta}>
+                    {formatDate(session.date)} • {session.duration} min
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
+        </Card>
+      </section>
+
+      {/* Goals Summary */}
+      <section style={styles.section}>
+        <h2 style={styles.sectionTitle}>Aktive mål</h2>
+        <Card>
+          {goals.length === 0 ? (
+            <div style={styles.emptyState}>Ingen aktive mål</div>
+          ) : (
+            goals.map((goal, index) => {
+              const progress = Math.min(100, Math.round((goal.current / goal.target) * 100));
+              return (
+                <div
+                  key={goal.id}
+                  style={{
+                    ...styles.listItem,
+                    ...(index === goals.length - 1 ? styles.listItemLast : {}),
+                    flexDirection: 'column',
+                    alignItems: 'stretch',
+                    gap: 'var(--spacing-2, 8px)',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={styles.listItemTitle}>{goal.title}</span>
+                    <span style={styles.listItemMeta}>
+                      {goal.current} / {goal.target} {goal.unit}
+                    </span>
+                  </div>
+                  <div style={styles.progressBar}>
+                    <div style={styles.progressTrack}>
+                      <div
+                        style={{
+                          ...styles.progressFill,
+                          width: `${progress}%`,
+                        }}
+                      />
+                    </div>
+                    <span style={styles.progressValue}>{progress}%</span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </Card>
+      </section>
+    </div>
+  );
+}
+
+export default CoachPlayerPage;

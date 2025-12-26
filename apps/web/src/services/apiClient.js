@@ -22,11 +22,19 @@ apiClient.interceptors.response.use(
       // Server responded with error
       const errorData = error.response.data;
 
-      // Handle 401 - redirect to login
+      // Handle 401 - redirect to login (unless already on login page)
       if (error.response.status === 401) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userData');
-        window.location.href = '/login';
+        // Avoid redirect loop on login page
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login';
+        }
+      }
+
+      // Handle 403 - log forbidden access attempt
+      if (error.response.status === 403) {
+        console.warn('[Auth] Forbidden access:', error.config?.url);
       }
 
       // Return standardized error
