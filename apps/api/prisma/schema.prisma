@@ -632,8 +632,11 @@ model Notification {
   // Relations
   player         Player?   @relation(fields: [recipientId], references: [id], onDelete: Cascade)
 
+  // Performance indexes for common query patterns
   @@index([recipientId])
   @@index([status])
+  @@index([recipientId, readAt, createdAt(sort: Desc)]) // For unread notifications list
+  @@index([recipientId, createdAt(sort: Desc)]) // For all notifications list
   @@map("notifications")
 }
 
@@ -2222,9 +2225,12 @@ model Video {
   shares              VideoShare[]
   fulfilledRequests   VideoRequest[]
 
-  @@index([tenantId, playerId, createdAt(sort: Desc)])
-  @@index([tenantId, status])
-  @@index([tenantId, uploadedById])
+  // Performance indexes for common query patterns
+  @@index([tenantId, playerId, createdAt(sort: Desc)]) // Player videos list
+  @@index([tenantId, status]) // Status filtering
+  @@index([tenantId, uploadedById]) // Coach uploaded videos
+  @@index([tenantId, deletedAt, createdAt(sort: Desc)]) // Active videos list (soft delete filter)
+  @@index([status, createdAt(sort: Desc)]) // Worker processing queue
   @@map("videos")
 }
 

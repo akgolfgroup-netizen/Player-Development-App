@@ -1,13 +1,14 @@
 import { FastifyInstance, FastifyRequest, FastifyReply, FastifyError } from 'fastify';
 import fp from 'fastify-plugin';
 import * as Sentry from '@sentry/node';
-import { ProfilingIntegration } from '@sentry/profiling-node';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
 import { config } from '../config';
 
 /**
  * Sentry Error Tracking Plugin
  *
  * Captures errors, performance data, and request context for production monitoring
+ * Updated for Sentry SDK v8 API
  */
 
 interface SentryPluginOptions {
@@ -36,7 +37,7 @@ async function sentryPlugin(
     return;
   }
 
-  // Initialize Sentry
+  // Initialize Sentry with v8 API
   Sentry.init({
     dsn,
     environment,
@@ -46,13 +47,13 @@ async function sentryPlugin(
     tracesSampleRate,
     profilesSampleRate,
 
-    // Enable performance profiling
+    // Enable performance profiling with new API
     integrations: [
-      new ProfilingIntegration(),
+      nodeProfilingIntegration(),
     ],
 
     // Capture errors and transactions
-    beforeSend(event, hint) {
+    beforeSend(event, _hint) {
       // Don't send errors in development unless explicitly enabled
       if (environment === 'development' && !process.env.SENTRY_DEBUG) {
         return null;
@@ -67,7 +68,7 @@ async function sentryPlugin(
         }
 
         // Remove sensitive query params
-        if (event.request.query_string) {
+        if (event.request.query_string && typeof event.request.query_string === 'string') {
           event.request.query_string = event.request.query_string.replace(
             /([?&])(token|password|secret|key)=([^&]*)/gi,
             '$1$2=REDACTED'
@@ -79,7 +80,7 @@ async function sentryPlugin(
     },
 
     // Add context
-    beforeBreadcrumb(breadcrumb, hint) {
+    beforeBreadcrumb(breadcrumb, _hint) {
       // Scrub sensitive data from breadcrumbs
       if (breadcrumb.data) {
         delete breadcrumb.data.password;
@@ -97,27 +98,12 @@ async function sentryPlugin(
   }, 'Sentry error tracking initialized');
 
   // Add request context to Sentry
-  fastify.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
-    // Start a new transaction for this request
-    const transaction = Sentry.startTransaction({
-      op: 'http.server',
-      name: `${request.method} ${request.routeOptions?.url || request.url}`,
-      data: {
-        method: request.method,
-        url: request.url,
-        'user-agent': request.headers['user-agent'],
-      },
-    });
-
-    // Store transaction on request for later use
-    (request as any).sentryTransaction = transaction;
-
+  fastify.addHook('onRequest', async (request: FastifyRequest, _reply: FastifyReply) => {
     // Set user context if available
     if (request.user) {
       Sentry.setUser({
         id: request.user.id,
         email: request.user.email,
-        username: `${request.user.firstName} ${request.user.lastName}`,
       });
     }
 
@@ -125,15 +111,6 @@ async function sentryPlugin(
     Sentry.setTag('route', request.routeOptions?.url || request.url);
     Sentry.setTag('method', request.method);
     Sentry.setTag('tenant_id', request.user?.tenantId);
-  });
-
-  // End transaction and capture errors
-  fastify.addHook('onResponse', async (request: FastifyRequest, reply: FastifyReply) => {
-    const transaction = (request as any).sentryTransaction;
-    if (transaction) {
-      transaction.setHttpStatus(reply.statusCode);
-      transaction.finish();
-    }
   });
 
   // Capture errors
@@ -163,7 +140,7 @@ async function sentryPlugin(
       tags: {
         route: request.routeOptions?.url || request.url,
         method: request.method,
-        status_code: reply.statusCode,
+        status_code: String(reply.statusCode),
       },
       extra: {
         requestId: request.id,

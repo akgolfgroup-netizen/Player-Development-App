@@ -19,9 +19,10 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
   /**
    * GET /notifications
    * List notifications for the authenticated user
+   * Supports pagination with limit and cursor
    */
   app.get<{
-    Querystring: { unreadOnly?: string };
+    Querystring: { unreadOnly?: string; limit?: string; cursor?: string };
   }>(
     '/',
     {
@@ -37,6 +38,14 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
               type: 'string',
               enum: ['0', '1', 'true', 'false'],
               description: 'Filter to only unread notifications',
+            },
+            limit: {
+              type: 'string',
+              description: 'Max items to return (1-100, default 50)',
+            },
+            cursor: {
+              type: 'string',
+              description: 'Cursor for pagination (notification ID)',
             },
           },
         },
@@ -64,6 +73,7 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
                     },
                   },
                   unreadCount: { type: 'number' },
+                  nextCursor: { type: ['string', 'null'] },
                 },
               },
             },
@@ -72,12 +82,16 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
       },
     },
     async (
-      request: FastifyRequest<{ Querystring: { unreadOnly?: string } }>,
+      request: FastifyRequest<{ Querystring: { unreadOnly?: string; limit?: string; cursor?: string } }>,
       reply: FastifyReply
     ) => {
       const userId = request.user!.id;
       const unreadOnly =
         request.query.unreadOnly === '1' || request.query.unreadOnly === 'true';
+
+      // Parse pagination params
+      const limit = Math.min(Math.max(parseInt(request.query.limit || '50', 10), 1), 100);
+      const cursor = request.query.cursor;
 
       // Build where clause
       const whereClause: any = {
@@ -92,12 +106,16 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
         whereClause.readAt = null;
       }
 
-      // Fetch notifications (latest 50, sorted by createdAt desc)
+      // Fetch notifications with cursor-based pagination
       const [notifications, unreadCount] = await Promise.all([
         prisma.notification.findMany({
           where: whereClause,
           orderBy: { createdAt: 'desc' },
-          take: 50,
+          take: limit + 1, // Fetch one extra to determine if there's a next page
+          ...(cursor && {
+            cursor: { id: cursor },
+            skip: 1, // Skip the cursor item itself
+          }),
           select: {
             id: true,
             notificationType: true,
@@ -120,11 +138,19 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
         }),
       ]);
 
+      // Determine next cursor
+      let nextCursor: string | null = null;
+      if (notifications.length > limit) {
+        const nextItem = notifications.pop(); // Remove the extra item
+        nextCursor = nextItem!.id;
+      }
+
       return reply.status(200).send({
         success: true,
         data: {
           notifications,
           unreadCount,
+          nextCursor,
         },
       });
     }
@@ -247,24 +273,33 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
    * GET /notifications/stream
    * Server-Sent Events stream for real-time notifications
    *
+   * Auth: Accepts token via:
+   * - Authorization header (Bearer token)
+   * - Query param (?token=xxx) - for EventSource which doesn't support headers
+   *
    * Headers:
    * - Content-Type: text/event-stream
    * - Cache-Control: no-cache
    * - Connection: keep-alive
    *
    * Events:
+   * - connected: Initial connection confirmation
    * - notification: New notification payload
    * - ping: Keep-alive (every 25s)
    * - error: Connection error (non-sensitive)
    */
-  app.get(
+  app.get<{ Querystring: { token?: string } }>(
     '/stream',
     {
-      preHandler: authenticateUser,
       schema: {
         description: 'Real-time notification stream (SSE)',
         tags: ['notifications'],
-        security: [{ bearerAuth: [] }],
+        querystring: {
+          type: 'object',
+          properties: {
+            token: { type: 'string', description: 'JWT token (for EventSource)' },
+          },
+        },
         response: {
           200: {
             type: 'string',
@@ -273,8 +308,31 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
         },
       },
     },
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const userId = request.user!.id;
+    async (request: FastifyRequest<{ Querystring: { token?: string } }>, reply: FastifyReply) => {
+      // Authenticate via header or query param
+      let userId: string;
+
+      // Try Authorization header first
+      const authHeader = request.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.substring(7);
+        const payload = await verifyToken(token);
+        if (!payload) {
+          throw authenticationError('Invalid token');
+        }
+        userId = payload.id;
+        request.user = payload;
+      } else if (request.query.token) {
+        // Fallback to query param (for EventSource)
+        const payload = await verifyToken(request.query.token);
+        if (!payload) {
+          throw authenticationError('Invalid token');
+        }
+        userId = payload.id;
+        request.user = payload;
+      } else {
+        throw authenticationError('No token provided');
+      }
 
       // Set SSE headers
       reply.raw.writeHead(200, {
