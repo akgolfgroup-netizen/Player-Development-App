@@ -360,6 +360,7 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
             viewAngle: { type: 'string', enum: ['face_on', 'down_the_line', 'overhead', 'side'] },
             visibility: { type: 'string', enum: ['private', 'shared', 'public'] },
             shareExpiresAt: { type: ['string', 'null'], format: 'date-time' },
+            status: { type: 'string', enum: ['processing', 'ready', 'reviewed', 'failed', 'deleted'] },
           },
         },
         response: {
@@ -378,9 +379,51 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
       reply: FastifyReply
     ) => {
       const input = validate(updateVideoSchema, { ...request.body, id: request.params.id });
+      const userId = request.user!.id;
       const tenantId = request.user!.tenantId;
+      const userRole = request.user!.role;
+
+      // Get video before update to check if status is changing to "reviewed"
+      const videoBefore = await prisma.video.findUnique({
+        where: { id: request.params.id },
+        select: { status: true, playerId: true, title: true },
+      });
 
       await videoService.updateVideo(input, tenantId);
+
+      // Create notification when coach marks video as reviewed
+      if (
+        userRole === 'coach' &&
+        input.status === 'reviewed' &&
+        videoBefore &&
+        videoBefore.status !== 'reviewed'
+      ) {
+        // Get coach name for notification
+        const coach = await prisma.coach.findFirst({
+          where: { userId },
+          select: { firstName: true, lastName: true },
+        });
+        const coachName = coach ? `${coach.firstName} ${coach.lastName}` : 'Treneren';
+
+        // Create in-app notification for player
+        await prisma.notification.create({
+          data: {
+            recipientType: 'player',
+            recipientId: videoBefore.playerId,
+            notificationType: 'video_reviewed',
+            title: 'Video gjennomgått',
+            message: `${coachName} har gjennomgått videoen "${videoBefore.title}"`,
+            metadata: {
+              videoId: request.params.id,
+              videoTitle: videoBefore.title,
+              coachId: userId,
+            },
+            channels: ['app'],
+            status: 'sent',
+            sentAt: new Date(),
+          },
+        });
+      }
 
       return reply.status(200).send({
         success: true,
@@ -459,16 +502,44 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
 
       // Notify each player that video was shared with them
       if (result.shared > 0) {
-        // Get video details for notification
+        // Get video details and coach info for notification
         const video = await videoService.getVideo(request.params.id, tenantId);
-        playerIds.forEach((playerId) => {
+        const coach = await prisma.coach.findFirst({
+          where: { userId },
+          select: { firstName: true, lastName: true },
+        });
+        const coachName = coach ? `${coach.firstName} ${coach.lastName}` : 'Treneren';
+
+        // Create notifications and send WebSocket events
+        for (const playerId of playerIds) {
+          // Create in-app notification
+          await prisma.notification.create({
+            data: {
+              recipientType: 'player',
+              recipientId: playerId,
+              notificationType: 'video_shared',
+              title: 'Ny video delt med deg',
+              message: `${coachName} har delt en video: "${video.title}"`,
+              metadata: {
+                videoId: request.params.id,
+                videoTitle: video.title,
+                coachId: userId,
+                category: video.category,
+              },
+              channels: ['app'],
+              status: 'sent',
+              sentAt: new Date(),
+            },
+          });
+
+          // Send WebSocket event
           wsManager.sendToUser(playerId, WS_EVENTS.VIDEO_SHARED, {
             videoId: request.params.id,
             title: video.title,
             sharedBy: userId,
             category: video.category,
           });
-        });
+        }
       }
 
       return reply.status(200).send({

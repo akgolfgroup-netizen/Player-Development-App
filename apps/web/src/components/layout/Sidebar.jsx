@@ -6,6 +6,7 @@ import { tokens } from '../../design-tokens';
 import ConfirmDialog from '../ui/ConfirmDialog';
 import { AKLogo } from '../branding/AKLogo';
 import { navigationConfig } from '../../config/navigation';
+import { useNotifications } from '../../hooks/useNotifications';
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
 
@@ -18,6 +19,7 @@ export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { unreadCount } = useNotifications({ polling: true });
   const pathname = location.pathname;
   const [isMobile, setIsMobile] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -212,7 +214,26 @@ export default function Sidebar() {
               }}
             >
               <item.Icon size={20} style={{ color: hasActiveChild ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)' }} />
-              <span style={{ flex: 1 }}>{item.label}</span>
+              <span style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {item.label}
+                {item.badge === 'unreadMessages' && unreadCount > 0 && (
+                  <span style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: '18px',
+                    height: '18px',
+                    padding: '0 5px',
+                    backgroundColor: tokens.colors.error,
+                    color: tokens.colors.white,
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    borderRadius: '9px',
+                  }}>
+                    {unreadCount > 99 ? '99+' : unreadCount}
+                  </span>
+                )}
+              </span>
               {isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
             </button>
 

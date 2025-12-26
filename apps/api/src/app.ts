@@ -10,7 +10,7 @@ import { registerWebSocket } from './plugins/websocket';
 import { registerCache } from './plugins/cache';
 import { registerRateLimit } from './plugins/rate-limit';
 import metricsPlugin from './plugins/metrics';
-import sentryPlugin from './plugins/sentry';
+// import sentryPlugin from './plugins/sentry'; // Disabled: @sentry/profiling-node not installed
 import { authenticateUser } from './middleware/auth';
 
 export interface BuildAppOptions {
@@ -42,7 +42,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   app.setNotFoundHandler(notFoundHandler as any);
 
   // Register plugins
-  await app.register(sentryPlugin); // Error tracking (register first to catch all errors)
+  // await app.register(sentryPlugin); // Error tracking (disabled - @sentry/profiling-node not installed)
   await app.register(metricsPlugin); // Performance monitoring and metrics
   await registerHelmet(app as any);
   await registerCors(app as any);
@@ -93,6 +93,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   const { commentRoutes } = await import('./api/v1/comments');
   const { comparisonRoutes } = await import('./api/v1/comparisons');
   const { emailRoutes } = await import('./api/v1/emails');
+  const { notificationRoutes } = await import('./api/v1/notifications');
 
   await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
@@ -130,6 +131,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   await app.register(commentRoutes, { prefix: `/api/${config.server.apiVersion}/comments` });
   await app.register(comparisonRoutes, { prefix: `/api/${config.server.apiVersion}/comparisons` });
   await app.register(emailRoutes, { prefix: `/api/${config.server.apiVersion}/emails` });
+  await app.register(notificationRoutes, { prefix: `/api/${config.server.apiVersion}/notifications` });
 
   // ✅ All IUP Golf Academy APIs registered!
   // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points

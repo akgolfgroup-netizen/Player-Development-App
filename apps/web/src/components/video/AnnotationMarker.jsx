@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useCallback, useRef } from 'react';
+import ConfirmDialog from '../ui/ConfirmDialog';
 
 // Annotation type icons and colors
 export const ANNOTATION_TYPE_CONFIG = {
@@ -296,6 +297,7 @@ export function AnnotationMarker({
   className,
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const tooltipTimeoutRef = useRef(null);
 
   const config = ANNOTATION_TYPE_CONFIG[annotation.type] || ANNOTATION_TYPE_CONFIG.circle;
@@ -327,12 +329,16 @@ export function AnnotationMarker({
     onEdit?.(annotation);
   }, [annotation, onEdit]);
 
-  // Handle delete
+  // Handle delete - show confirmation modal
   const handleDelete = useCallback((e) => {
     e.stopPropagation();
-    if (window.confirm('Er du sikker på at du vil slette denne annotasjonen?')) {
-      onDelete?.(annotation);
-    }
+    setShowDeleteConfirm(true);
+  }, []);
+
+  // Confirm delete
+  const handleConfirmDelete = useCallback(() => {
+    onDelete?.(annotation);
+    setShowDeleteConfirm(false);
   }, [annotation, onDelete]);
 
   return (
@@ -434,6 +440,18 @@ export function AnnotationMarker({
           )}
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleConfirmDelete}
+        title="Slett annotasjon"
+        message="Er du sikker på at du vil slette denne annotasjonen?"
+        confirmLabel="Slett"
+        cancelLabel="Avbryt"
+        variant="danger"
+      />
     </div>
   );
 }

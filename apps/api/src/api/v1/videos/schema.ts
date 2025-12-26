@@ -68,6 +68,7 @@ export const updateVideoSchema = z.object({
   viewAngle: z.enum(['face_on', 'down_the_line', 'overhead', 'side']).optional(),
   visibility: z.enum(['private', 'shared', 'public']).optional(),
   shareExpiresAt: z.string().datetime().optional().nullable(),
+  status: z.enum(['processing', 'ready', 'reviewed', 'failed', 'deleted']).optional(),
 });
 
 export type UpdateVideoInput = z.infer<typeof updateVideoSchema>;

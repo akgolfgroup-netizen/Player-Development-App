@@ -77,8 +77,47 @@ export async function commentRoutes(app: FastifyInstance): Promise<void> {
       const input = validate(createCommentSchema, request.body);
       const userId = request.user!.id;
       const tenantId = request.user!.tenantId;
+      const userRole = request.user!.role;
 
       const result = await commentService.createComment(input, userId, tenantId);
+
+      // Create notification when coach comments on a player's video
+      if (userRole === 'coach') {
+        // Get video owner (player) to notify them
+        const video = await prisma.video.findUnique({
+          where: { id: input.videoId },
+          select: { playerId: true, title: true },
+        });
+
+        if (video && video.playerId !== userId) {
+          // Get coach name for notification
+          const coach = await prisma.coach.findFirst({
+            where: { userId },
+            select: { firstName: true, lastName: true },
+          });
+          const coachName = coach ? `${coach.firstName} ${coach.lastName}` : 'Treneren';
+
+          // Create in-app notification for player
+          await prisma.notification.create({
+            data: {
+              recipientType: 'player',
+              recipientId: video.playerId,
+              notificationType: 'comment_created',
+              title: 'Ny kommentar på video',
+              message: `${coachName} har kommentert på videoen "${video.title}"`,
+              metadata: {
+                videoId: input.videoId,
+                videoTitle: video.title,
+                commentId: result.id,
+                coachId: userId,
+              },
+              channels: ['app'],
+              status: 'sent',
+              sentAt: new Date(),
+            },
+          });
+        }
+      }
 
       return reply.status(201).send({
         success: true,

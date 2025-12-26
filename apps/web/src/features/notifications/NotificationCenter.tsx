@@ -6,7 +6,7 @@
  * Støtter ulike varseltyper og handlinger.
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Bell,
@@ -19,130 +19,29 @@ import {
   TrendingUp,
   Star,
   Check,
-  Trash2,
+  Video,
+  PlayCircle,
 } from 'lucide-react';
 import { tokens } from '../../design-tokens';
-
-interface Notification {
-  id: string;
-  type: 'info' | 'success' | 'warning' | 'error' | 'achievement' | 'training' | 'test' | 'tournament' | 'message';
-  title: string;
-  message: string;
-  link?: string;
-  linkLabel?: string;
-  priority: 'low' | 'normal' | 'high';
-  isRead: boolean;
-  createdAt: string;
-  metadata?: {
-    achievementCode?: string;
-    testNumber?: number;
-    tournamentName?: string;
-  };
-}
+import { useNotifications } from '../../hooks/useNotifications';
 
 interface NotificationCenterProps {
   userId?: string;
 }
 
 export default function NotificationCenter({ userId }: NotificationCenterProps) {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { notifications, unreadCount, loading, markAsRead, markAllAsRead } = useNotifications();
   const [filterType, setFilterType] = useState<'all' | 'unread'>('all');
 
-  // Fetch notifications
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const response = await fetch('/api/v1/notifications');
-        if (response.ok) {
-          const data = await response.json();
-          setNotifications(data.notifications || []);
-        }
-      } catch (error) {
-        console.error('Failed to fetch notifications:', error);
-        // Mock data for development
-        setNotifications([
-          {
-            id: '1',
-            type: 'achievement',
-            title: 'Ny prestasjon!',
-            message: 'Du har oppnådd "7-dagers treningsstreak"! Fortsett det gode arbeidet.',
-            link: '/achievements',
-            linkLabel: 'Se alle prestasjoner',
-            priority: 'normal',
-            isRead: false,
-            createdAt: '2025-12-21T08:00:00Z',
-            metadata: { achievementCode: 'streak_7' },
-          },
-          {
-            id: '2',
-            type: 'message',
-            title: 'Ny melding fra trener',
-            message: 'Anders Kristiansen har sendt deg en melding.',
-            link: '/meldinger/1',
-            linkLabel: 'Les melding',
-            priority: 'high',
-            isRead: false,
-            createdAt: '2025-12-21T09:30:00Z',
-          },
-          {
-            id: '3',
-            type: 'training',
-            title: 'Treningsplan oppdatert',
-            message: 'Treneren din har gjort endringer i ukens treningsplan.',
-            link: '/trening/ukens',
-            linkLabel: 'Se endringer',
-            priority: 'normal',
-            isRead: false,
-            createdAt: '2025-12-20T16:00:00Z',
-          },
-          {
-            id: '4',
-            type: 'test',
-            title: 'Test 5 bestått!',
-            message: 'Gratulerer! Du bestod Test 5 (Lag Putt) med 85% suksessrate.',
-            link: '/testresultater',
-            linkLabel: 'Se resultater',
-            priority: 'normal',
-            isRead: true,
-            createdAt: '2025-12-19T14:30:00Z',
-            metadata: { testNumber: 5 },
-          },
-          {
-            id: '5',
-            type: 'tournament',
-            title: 'Påminnelse: Turnering',
-            message: 'NM Junior starter om 3 dager. Husk å sjekke starttidspunkt.',
-            link: '/mine-turneringer',
-            linkLabel: 'Se turneringer',
-            priority: 'high',
-            isRead: true,
-            createdAt: '2025-12-18T10:00:00Z',
-            metadata: { tournamentName: 'NM Junior' },
-          },
-          {
-            id: '6',
-            type: 'info',
-            title: 'Ukens mål oppdatert',
-            message: 'Fokuser på putting denne uken for å nærme deg kategori B.',
-            link: '/utvikling/kategori',
-            linkLabel: 'Se fremgang',
-            priority: 'low',
-            isRead: true,
-            createdAt: '2025-12-17T09:00:00Z',
-          },
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNotifications();
-  }, []);
-
   // Get icon for notification type
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
+  const getNotificationIcon = (notificationType: string) => {
+    switch (notificationType) {
+      case 'video_shared':
+        return { icon: PlayCircle, color: tokens.colors.primary };
+      case 'video_reviewed':
+        return { icon: CheckCircle, color: tokens.colors.success };
+      case 'comment_created':
+        return { icon: MessageSquare, color: tokens.colors.primary };
       case 'achievement':
         return { icon: Star, color: tokens.colors.gold };
       case 'success':
@@ -160,7 +59,34 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
       case 'message':
         return { icon: MessageSquare, color: tokens.colors.primary };
       default:
-        return { icon: Info, color: tokens.colors.steel };
+        return { icon: Video, color: tokens.colors.steel };
+    }
+  };
+
+  // Get link for notification based on type and metadata
+  const getNotificationLink = (notification: any) => {
+    const metadata = notification.metadata || {};
+    switch (notification.notificationType) {
+      case 'video_shared':
+      case 'video_reviewed':
+      case 'comment_created':
+        return metadata.videoId ? `/videos/${metadata.videoId}` : '/videos';
+      default:
+        return null;
+    }
+  };
+
+  // Get link label for notification
+  const getNotificationLinkLabel = (notificationType: string) => {
+    switch (notificationType) {
+      case 'video_shared':
+        return 'Se video';
+      case 'video_reviewed':
+        return 'Se tilbakemelding';
+      case 'comment_created':
+        return 'Se kommentar';
+      default:
+        return 'Se mer';
     }
   };
 
@@ -183,45 +109,10 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
   // Filter notifications
   const filteredNotifications = useMemo(() => {
     if (filterType === 'unread') {
-      return notifications.filter((n) => !n.isRead);
+      return notifications.filter((n: any) => !n.readAt);
     }
     return notifications;
   }, [notifications, filterType]);
-
-  // Count unread
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
-
-  // Mark as read
-  const markAsRead = async (id: string) => {
-    try {
-      await fetch(`/api/v1/notifications/${id}/read`, { method: 'PUT' });
-      setNotifications(
-        notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-      );
-    } catch (error) {
-      console.error('Failed to mark as read:', error);
-    }
-  };
-
-  // Mark all as read
-  const markAllAsRead = async () => {
-    try {
-      await fetch('/api/v1/notifications/read-all', { method: 'PUT' });
-      setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
-    } catch (error) {
-      console.error('Failed to mark all as read:', error);
-    }
-  };
-
-  // Delete notification
-  const deleteNotification = async (id: string) => {
-    try {
-      await fetch(`/api/v1/notifications/${id}`, { method: 'DELETE' });
-      setNotifications(notifications.filter((n) => n.id !== id));
-    } catch (error) {
-      console.error('Failed to delete notification:', error);
-    }
-  };
 
   if (loading) {
     return (
@@ -382,8 +273,11 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
             </p>
           </div>
         ) : (
-          filteredNotifications.map((notification, index) => {
-            const { icon: Icon, color } = getNotificationIcon(notification.type);
+          filteredNotifications.map((notification: any, index: number) => {
+            const { icon: Icon, color } = getNotificationIcon(notification.notificationType);
+            const link = getNotificationLink(notification);
+            const linkLabel = getNotificationLinkLabel(notification.notificationType);
+            const isRead = !!notification.readAt;
             return (
               <div
                 key={notification.id}
@@ -395,7 +289,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                     index < filteredNotifications.length - 1
                       ? `1px solid ${tokens.colors.gray100}`
                       : 'none',
-                  backgroundColor: notification.isRead
+                  backgroundColor: isRead
                     ? 'transparent'
                     : `${tokens.colors.primary}06`,
                   transition: 'background-color 0.15s',
@@ -432,23 +326,11 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                       style={{
                         ...tokens.typography.headline,
                         color: tokens.colors.charcoal,
-                        fontWeight: notification.isRead ? 500 : 600,
+                        fontWeight: isRead ? 500 : 600,
                         margin: 0,
                       }}
                     >
                       {notification.title}
-                      {notification.priority === 'high' && (
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            width: 8,
-                            height: 8,
-                            borderRadius: '50%',
-                            backgroundColor: tokens.colors.error,
-                            marginLeft: '8px',
-                          }}
-                        />
-                      )}
                     </h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span
@@ -460,7 +342,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                       >
                         {formatTime(notification.createdAt)}
                       </span>
-                      {!notification.isRead && (
+                      {!isRead && (
                         <div
                           style={{
                             width: 8,
@@ -491,9 +373,9 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                       gap: '12px',
                     }}
                   >
-                    {notification.link && (
+                    {link && (
                       <Link
-                        to={notification.link}
+                        to={link}
                         onClick={() => markAsRead(notification.id)}
                         style={{
                           ...tokens.typography.caption1,
@@ -502,10 +384,10 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                           textDecoration: 'none',
                         }}
                       >
-                        {notification.linkLabel || 'Se mer'}
+                        {linkLabel}
                       </Link>
                     )}
-                    {!notification.isRead && (
+                    {!isRead && (
                       <button
                         onClick={() => markAsRead(notification.id)}
                         style={{
@@ -524,23 +406,6 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                         Merk som lest
                       </button>
                     )}
-                    <button
-                      onClick={() => deleteNotification(notification.id)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        padding: 0,
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        color: tokens.colors.steel,
-                        fontSize: '12px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Trash2 size={12} />
-                      Slett
-                    </button>
                   </div>
                 </div>
               </div>

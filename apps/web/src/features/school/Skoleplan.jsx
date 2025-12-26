@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import {
   GraduationCap,
   Plus,
@@ -145,6 +146,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
     farge: fag?.farge || DEFAULT_COLORS[0]
   });
   const [saving, setSaving] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,10 +163,12 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm('Er du sikker pa at du vil slette dette faget? Alle timer og oppgaver tilknyttet faget vil ogsa bli slettet.')) {
-      return;
-    }
+  const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setShowDeleteConfirm(false);
     try {
       await onDelete();
       onClose();
@@ -315,6 +319,17 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
           </button>
         </div>
       </form>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleConfirmDelete}
+        title="Slett fag"
+        message="Er du sikker på at du vil slette dette faget? Alle timer og oppgaver tilknyttet faget vil også bli slettet."
+        confirmLabel="Slett"
+        cancelLabel="Avbryt"
+        variant="danger"
+      />
     </Modal>
   );
 };
@@ -331,6 +346,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
     sluttTid: time?.sluttTid || '09:00'
   });
   const [saving, setSaving] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -347,10 +363,12 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm('Er du sikker pa at du vil slette denne timen?')) {
-      return;
-    }
+  const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setShowDeleteConfirm(false);
     try {
       await onDelete();
       onClose();
@@ -536,6 +554,17 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
           </button>
         </div>
       </form>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleConfirmDelete}
+        title="Slett time"
+        message="Er du sikker på at du vil slette denne timen?"
+        confirmLabel="Slett"
+        cancelLabel="Avbryt"
+        variant="danger"
+      />
     </Modal>
   );
 };
@@ -553,6 +582,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
     prioritet: oppgave?.prioritet || 'medium'
   });
   const [saving, setSaving] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -569,10 +599,12 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
     }
   };
 
-  const handleDelete = async () => {
-    if (!window.confirm('Er du sikker pa at du vil slette denne oppgaven?')) {
-      return;
-    }
+  const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setShowDeleteConfirm(false);
     try {
       await onDelete();
       onClose();
@@ -777,6 +809,17 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
           </button>
         </div>
       </form>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleConfirmDelete}
+        title="Slett oppgave"
+        message="Er du sikker på at du vil slette denne oppgaven?"
+        confirmLabel="Slett"
+        cancelLabel="Avbryt"
+        variant="danger"
+      />
     </Modal>
   );
 };

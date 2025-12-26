@@ -444,7 +444,9 @@ function App() {
           } />
           <Route path="/plan-preview/:planId" element={
             <ProtectedRoute>
-              <PlanPreviewContainer />
+              <AuthenticatedLayout title="Planforhåndsvisning" subtitle="Se din plan">
+                <PlanPreviewContainer />
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/coach/modification-requests" element={
@@ -507,7 +509,9 @@ function App() {
           {/* Session routes (APP_FUNCTIONALITY.md Section 6-12) */}
           <Route path="/session/new" element={
             <ProtectedRoute>
-              <SessionCreateFormContainer />
+              <AuthenticatedLayout title="Ny økt" subtitle="Opprett treningsøkt">
+                <SessionCreateFormContainer />
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/:sessionId" element={
@@ -519,17 +523,23 @@ function App() {
           } />
           <Route path="/session/:sessionId/active" element={
             <ProtectedRoute>
-              <ActiveSessionViewContainer />
+              <AuthenticatedLayout title="Aktiv økt" subtitle="Gjennomfør treningsøkt">
+                <ActiveSessionViewContainer />
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/:sessionId/reflection" element={
             <ProtectedRoute>
-              <SessionReflectionFormContainer />
+              <AuthenticatedLayout title="Refleksjon" subtitle="Reflekter over økten">
+                <SessionReflectionFormContainer />
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/:sessionId/evaluate" element={
             <ProtectedRoute>
-              <SessionEvaluationFormContainer />
+              <AuthenticatedLayout title="Evaluering" subtitle="Evaluer økten">
+                <SessionEvaluationFormContainer />
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/session/stats" element={
@@ -794,7 +804,9 @@ function App() {
           {/* Video Comparison */}
           <Route path="/videos/compare" element={
             <ProtectedRoute>
-              <VideoComparisonPage />
+              <AuthenticatedLayout title="Videosammenligning" subtitle="Sammenlign videoer side om side">
+                <VideoComparisonPage />
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
 
