@@ -3,7 +3,7 @@
 > Production-ready Individual Development Plan (IUP) platform for junior golf training academies
 
 [![Status](https://img.shields.io/badge/Status-Production-success)]()
-[![Version](https://img.shields.io/badge/Version-1.1.0-blue)]()
+[![Version](https://img.shields.io/badge/Version-1.2.0-blue)]()
 [![Node](https://img.shields.io/badge/Node-20+-green)]()
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)]()
 [![pnpm](https://img.shields.io/badge/pnpm-8.12+-orange)]()
@@ -12,20 +12,27 @@
 
 ---
 
-## Latest Updates (December 25, 2025)
+## Latest Updates (December 26, 2025)
 
 ### Recent Changes
+- **Video Progress Tracking** - Timeline view showing swing progress over time
+- **Video Annotations** - Coaches can annotate videos with markers and audio notes
+- **Video Comparison** - Side-by-side comparison of two videos for analysis
+- **Video Thumbnails** - Automatic thumbnail generation on upload
+- **Real-time Video Notifications** - WebSocket events for video uploads, shares, and reviews
+- **Reference Video Library** - Coach library for sharing technique reference videos
+- **Mobile Responsiveness** - Improved mobile experience across video features
+- **Sentry Profiling** - Enhanced error tracking and performance monitoring
+
+### Previous Updates (December 25, 2025)
 - **API Service Tests** - Comprehensive test coverage for API services
 - **Documentation Restructure** - Professional Google-style documentation standards
 - **Dashboard Widgets** - Reusable dashboard widgets and refactored player dashboard
 - **UI Component Tests** - Comprehensive tests for Modal and Tabs composites
 - **Scripts & Monitoring** - Phase 6 additional features complete
-- **ESLint & Prettier** - Full codebase cleanup and standardization
-- **TypeScript Types** - Complete type definitions across the codebase
-- **OpenAPI Documentation** - Full Swagger/OpenAPI specification
 
 ### Infrastructure
-- **Video Analysis System** - Complete video upload with S3 multipart support
+- **Video Analysis System** - Complete video upload with S3 multipart support, annotations, and comparisons
 - **Two-Factor Authentication** - TOTP with backup codes
 - **Test Coverage** - 45%+ with 240+ test cases
 - **Performance Optimization** - 50+ database indexes, Redis caching strategy
@@ -45,7 +52,7 @@ Enterprise-grade coaching platform for AK Golf Academy with production-ready mon
 - **Booking System** - Coach availability and session management with calendar integration
 - **Real-time Updates** - WebSocket-based live updates for coaches and players
 - **Multi-tenant Architecture** - Secure organization isolation with role-based access control
-- **Video Analysis** - Complete video upload, annotation, and comparison system for swing analysis
+- **Video Analysis** - Complete video upload with S3 multipart support, annotations, comparisons, progress tracking, and coach review workflows
 - **Two-Factor Authentication** - TOTP-based 2FA with backup codes for enhanced security
 - **Audit Logging** - Comprehensive activity tracking for compliance and security
 

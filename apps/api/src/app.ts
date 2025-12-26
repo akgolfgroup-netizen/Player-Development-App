@@ -10,8 +10,9 @@ import { registerWebSocket } from './plugins/websocket';
 import { registerCache } from './plugins/cache';
 import { registerRateLimit } from './plugins/rate-limit';
 import metricsPlugin from './plugins/metrics';
-// import sentryPlugin from './plugins/sentry'; // Disabled: @sentry/profiling-node not installed
+import sentryPlugin from './plugins/sentry';
 import { authenticateUser } from './middleware/auth';
+import { initNotificationBus, shutdown as shutdownNotificationBus } from './services/notifications/notificationBus';
 
 export interface BuildAppOptions {
   logger?: boolean;
@@ -42,7 +43,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   app.setNotFoundHandler(notFoundHandler as any);
 
   // Register plugins
-  // await app.register(sentryPlugin); // Error tracking (disabled - @sentry/profiling-node not installed)
+  await app.register(sentryPlugin); // Error tracking
   await app.register(metricsPlugin); // Performance monitoring and metrics
   await registerHelmet(app as any);
   await registerCors(app as any);
@@ -147,6 +148,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
     process.on(signal, async () => {
       app.log.info(`Received ${signal}, starting graceful shutdown...`);
       try {
+        await shutdownNotificationBus();
         await app.close();
         app.log.info('Server closed successfully');
         process.exit(0);
@@ -169,6 +171,9 @@ export async function startServer(): Promise<FastifyInstance> {
   try {
     // Connect to database
     await connectDatabase();
+
+    // Initialize notification bus (Redis or in-memory)
+    await initNotificationBus();
 
     // Start listening
     await app.listen({

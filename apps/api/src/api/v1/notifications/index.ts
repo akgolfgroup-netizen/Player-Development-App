@@ -1,6 +1,9 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getPrismaClient } from '../../../core/db/prisma';
-import { authenticateUser } from '../../../middleware/auth';
+import { authenticateUser, verifyToken } from '../../../middleware/auth';
+import { subscribe, getStatus, NotificationPayload } from '../../../services/notifications/notificationBus';
+import { logger } from '../../../utils/logger';
+import { authenticationError } from '../../../core/errors';
 
 /**
  * Register notification routes
@@ -236,6 +239,142 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
         success: true,
         message: 'All notifications marked as read',
         count: result.count,
+      });
+    }
+  );
+
+  /**
+   * GET /notifications/stream
+   * Server-Sent Events stream for real-time notifications
+   *
+   * Headers:
+   * - Content-Type: text/event-stream
+   * - Cache-Control: no-cache
+   * - Connection: keep-alive
+   *
+   * Events:
+   * - notification: New notification payload
+   * - ping: Keep-alive (every 25s)
+   * - error: Connection error (non-sensitive)
+   */
+  app.get(
+    '/stream',
+    {
+      preHandler: authenticateUser,
+      schema: {
+        description: 'Real-time notification stream (SSE)',
+        tags: ['notifications'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: {
+            type: 'string',
+            description: 'SSE event stream',
+          },
+        },
+      },
+    },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const userId = request.user!.id;
+
+      // Set SSE headers
+      reply.raw.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        Connection: 'keep-alive',
+        'X-Accel-Buffering': 'no', // Disable nginx buffering
+      });
+
+      // Helper to write SSE event
+      const writeEvent = (event: string, data: unknown) => {
+        reply.raw.write(`event: ${event}\n`);
+        reply.raw.write(`data: ${JSON.stringify(data)}\n\n`);
+      };
+
+      // Send initial connection event
+      writeEvent('connected', {
+        message: 'SSE connection established',
+        mode: getStatus().mode,
+        timestamp: new Date().toISOString(),
+      });
+
+      logger.info({ userId }, 'SSE stream connected');
+
+      // Subscribe to notifications for this user
+      let unsubscribe: (() => Promise<void>) | null = null;
+
+      try {
+        unsubscribe = await subscribe(userId, (payload: NotificationPayload) => {
+          try {
+            writeEvent('notification', payload);
+          } catch (err) {
+            logger.error({ err, userId }, 'Failed to write SSE notification');
+          }
+        });
+      } catch (err) {
+        logger.error({ err, userId }, 'Failed to subscribe to notifications');
+        writeEvent('error', { message: 'Subscription failed' });
+        reply.raw.end();
+        return;
+      }
+
+      // Keep-alive ping every 25 seconds
+      const pingInterval = setInterval(() => {
+        try {
+          writeEvent('ping', { timestamp: new Date().toISOString() });
+        } catch {
+          // Connection closed
+          clearInterval(pingInterval);
+        }
+      }, 25000);
+
+      // Cleanup on close
+      request.raw.on('close', async () => {
+        clearInterval(pingInterval);
+        if (unsubscribe) {
+          await unsubscribe();
+        }
+        logger.info({ userId }, 'SSE stream disconnected');
+      });
+
+      // Keep the connection open (Fastify will handle the response)
+      // Don't call reply.send() - we're streaming
+    }
+  );
+
+  /**
+   * GET /notifications/stream/status
+   * Get notification bus status (for diagnostics)
+   */
+  app.get(
+    '/stream/status',
+    {
+      preHandler: authenticateUser,
+      schema: {
+        description: 'Get notification stream status',
+        tags: ['notifications'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              data: {
+                type: 'object',
+                properties: {
+                  mode: { type: 'string', enum: ['redis', 'memory'] },
+                  activeSubscriptions: { type: 'number' },
+                  redisAvailable: { type: 'boolean' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    async (_request: FastifyRequest, reply: FastifyReply) => {
+      return reply.status(200).send({
+        success: true,
+        data: getStatus(),
       });
     }
   );

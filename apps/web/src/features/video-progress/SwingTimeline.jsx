@@ -8,9 +8,10 @@
  * - Click to open video
  * - Hover preview
  * - Compare button between two videos
+ * - Mobile-responsive layout
  */
 
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Styles
@@ -204,6 +205,15 @@ export function SwingTimeline({
 }) {
   const navigate = useNavigate();
   const [selectedVideos, setSelectedVideos] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Sort videos by date
   const sortedVideos = useMemo(() => {
@@ -334,45 +344,107 @@ export function SwingTimeline({
         </div>
       )}
 
-      {/* Timeline */}
-      <div style={styles.timelineWrapper}>
-        <div style={styles.timeline}>
-          <div style={styles.timelineLine} />
-
-          {videoPositions.map((video) => (
-            <div
-              key={video.id}
-              style={{
-                ...styles.videoPoint,
-                left: `${video.position}%`,
-                ...(isSelected(video.id) ? styles.videoPointSelected : {}),
-              }}
-              onClick={(e) => handleVideoClick(video, e)}
-              title={`${video.title} - ${formatDate(video.createdAt)}`}
-            >
+      {/* Timeline - horizontal scroll on mobile, positioned on desktop */}
+      <div style={{
+        ...styles.timelineWrapper,
+        ...(isMobile ? {
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          padding: '0 8px',
+        } : {}),
+      }}>
+        {isMobile ? (
+          /* Mobile: Horizontal scroll layout */
+          <div style={{
+            display: 'flex',
+            gap: '12px',
+            padding: '8px 0',
+            minWidth: 'max-content',
+          }}>
+            {sortedVideos.map((video) => (
               <div
+                key={video.id}
                 style={{
-                  ...styles.thumbnail,
-                  ...(isSelected(video.id) ? styles.thumbnailSelected : {}),
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '8px',
+                  cursor: 'pointer',
                 }}
+                onClick={(e) => handleVideoClick(video, e)}
               >
-                {video.thumbnailUrl ? (
-                  <img
-                    src={video.thumbnailUrl}
-                    alt={video.title}
-                    style={styles.thumbnailImage}
-                  />
-                ) : (
-                  <div style={styles.thumbnailPlaceholder}>
-                    <VideoIcon size={20} />
-                  </div>
-                )}
+                <div
+                  style={{
+                    width: '80px',
+                    height: '60px',
+                    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+                    borderRadius: 'var(--radius-md, 8px)',
+                    border: isSelected(video.id) ? '2px solid var(--ak-primary, #6366f1)' : '2px solid transparent',
+                    overflow: 'hidden',
+                    boxShadow: isSelected(video.id) ? '0 0 0 2px rgba(99, 102, 241, 0.3)' : 'none',
+                  }}
+                >
+                  {video.thumbnailUrl ? (
+                    <img
+                      src={video.thumbnailUrl}
+                      alt={video.title}
+                      style={styles.thumbnailImage}
+                    />
+                  ) : (
+                    <div style={styles.thumbnailPlaceholder}>
+                      <VideoIcon size={24} />
+                    </div>
+                  )}
+                </div>
+                <span style={{
+                  fontSize: '11px',
+                  color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+                  fontFamily: 'var(--font-mono, monospace)',
+                }}>
+                  {formatDate(video.createdAt)}
+                </span>
               </div>
-              <div style={styles.dot} />
-              <span style={styles.dateMarker}>{formatDate(video.createdAt)}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          /* Desktop: Positioned timeline layout */
+          <div style={styles.timeline}>
+            <div style={styles.timelineLine} />
+            {videoPositions.map((video) => (
+              <div
+                key={video.id}
+                style={{
+                  ...styles.videoPoint,
+                  left: `${video.position}%`,
+                  ...(isSelected(video.id) ? styles.videoPointSelected : {}),
+                }}
+                onClick={(e) => handleVideoClick(video, e)}
+                title={`${video.title} - ${formatDate(video.createdAt)}`}
+              >
+                <div
+                  style={{
+                    ...styles.thumbnail,
+                    ...(isSelected(video.id) ? styles.thumbnailSelected : {}),
+                  }}
+                >
+                  {video.thumbnailUrl ? (
+                    <img
+                      src={video.thumbnailUrl}
+                      alt={video.title}
+                      style={styles.thumbnailImage}
+                    />
+                  ) : (
+                    <div style={styles.thumbnailPlaceholder}>
+                      <VideoIcon size={20} />
+                    </div>
+                  )}
+                </div>
+                <div style={styles.dot} />
+                <span style={styles.dateMarker}>{formatDate(video.createdAt)}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -38,6 +38,7 @@ export const coachNavigationConfig = [
       { href: '/coach/athletes/status', label: 'Status & varsler' },
       { href: '/coach/athletes/tournaments', label: 'Turneringsdeltakelse' },
       { href: '/coach/videos', label: 'Spillervideoer' },
+      { href: '/coach/reference-videos', label: 'Referansebibliotek', badge: 'NY' },
     ]
   },
 

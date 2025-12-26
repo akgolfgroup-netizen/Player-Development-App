@@ -7,6 +7,7 @@ import { config } from '../config';
  */
 export async function registerHelmet(app: FastifyInstance): Promise<void> {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3001';
+  const s3Endpoint = process.env.S3_ENDPOINT || 'https://s3.eu-north-1.amazonaws.com';
 
   await app.register(fastifyHelmet, {
     contentSecurityPolicy: config.server.isProduction ? {
@@ -14,11 +15,11 @@ export async function registerHelmet(app: FastifyInstance): Promise<void> {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:', 'https:'],
-        connectSrc: ["'self'", frontendUrl],
+        imgSrc: ["'self'", 'data:', 'https:', s3Endpoint],
+        connectSrc: ["'self'", frontendUrl, s3Endpoint],
         fontSrc: ["'self'", 'data:'],
         objectSrc: ["'none'"],
-        mediaSrc: ["'self'"],
+        mediaSrc: ["'self'", s3Endpoint],
         frameSrc: ["'none'"],
       },
     } : {
@@ -27,11 +28,11 @@ export async function registerHelmet(app: FastifyInstance): Promise<void> {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:', 'https:'],
-        connectSrc: ["'self'", frontendUrl],
+        imgSrc: ["'self'", 'data:', 'https:', s3Endpoint],
+        connectSrc: ["'self'", frontendUrl, s3Endpoint],
         fontSrc: ["'self'", 'data:'],
         objectSrc: ["'none'"],
-        mediaSrc: ["'self'"],
+        mediaSrc: ["'self'", s3Endpoint],
         frameSrc: ["'self'"],
       },
     },

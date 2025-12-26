@@ -565,6 +565,7 @@ export async function uploadPart(signedUrl, chunk, onProgress) {
  * @param {Object} [params.metadata] - Additional metadata
  * @param {Function} [params.onProgress] - Progress callback (0-100)
  * @param {AbortSignal} [params.signal] - Abort signal for cancellation
+ * @param {boolean} [params.autoThumbnail=true] - Auto-generate and upload thumbnail
  * @returns {Promise<Object>} Uploaded video data
  */
 export async function uploadVideo({
@@ -574,6 +575,7 @@ export async function uploadVideo({
   metadata = {},
   onProgress,
   signal,
+  autoThumbnail = true,
 }) {
   // Generate client upload ID for idempotency
   const clientUploadId = crypto.randomUUID();
@@ -642,6 +644,18 @@ export async function uploadVideo({
     height: metadata.height,
     fps: metadata.fps,
   });
+
+  // Step 4: Auto-generate and upload thumbnail
+  if (autoThumbnail) {
+    try {
+      const thumbnailTime = Math.min(1, (metadata.duration || 1) * 0.1);
+      const { base64, mimeType } = await extractVideoThumbnail(file, thumbnailTime);
+      await uploadThumbnail(videoId, base64, mimeType);
+    } catch (thumbnailError) {
+      // Log but don't fail upload if thumbnail generation fails
+      console.warn('Failed to generate thumbnail:', thumbnailError);
+    }
+  }
 
   return completeResult.video;
 }

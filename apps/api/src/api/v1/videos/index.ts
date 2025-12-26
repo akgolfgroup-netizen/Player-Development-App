@@ -22,6 +22,7 @@ import {
 import { authenticateUser } from '../../../middleware/auth';
 import { validate } from '../../../utils/validation';
 import { wsManager, WS_EVENTS } from '../../../plugins/websocket';
+import { publishNotification } from '../../../services/notifications/notificationPublisher';
 
 /**
  * Register video routes
@@ -406,7 +407,7 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
         const coachName = coach ? `${coach.firstName} ${coach.lastName}` : 'Treneren';
 
         // Create in-app notification for player
-        await prisma.notification.create({
+        const notification = await prisma.notification.create({
           data: {
             recipientType: 'player',
             recipientId: videoBefore.playerId,
@@ -423,6 +424,9 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
             sentAt: new Date(),
           },
         });
+
+        // Push real-time notification
+        await publishNotification(notification);
       }
 
       return reply.status(200).send({
@@ -513,7 +517,7 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
         // Create notifications and send WebSocket events
         for (const playerId of playerIds) {
           // Create in-app notification
-          await prisma.notification.create({
+          const notification = await prisma.notification.create({
             data: {
               recipientType: 'player',
               recipientId: playerId,
@@ -532,7 +536,10 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
             },
           });
 
-          // Send WebSocket event
+          // Push real-time notification via SSE
+          await publishNotification(notification);
+
+          // Send WebSocket event (legacy)
           wsManager.sendToUser(playerId, WS_EVENTS.VIDEO_SHARED, {
             videoId: request.params.id,
             title: video.title,

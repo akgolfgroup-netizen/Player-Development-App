@@ -16,6 +16,7 @@ import {
 } from './schema';
 import { authenticateUser } from '../../../middleware/auth';
 import { validate } from '../../../utils/validation';
+import { publishNotification } from '../../../services/notifications/notificationPublisher';
 
 /**
  * Register video comment routes
@@ -98,7 +99,7 @@ export async function commentRoutes(app: FastifyInstance): Promise<void> {
           const coachName = coach ? `${coach.firstName} ${coach.lastName}` : 'Treneren';
 
           // Create in-app notification for player
-          await prisma.notification.create({
+          const notification = await prisma.notification.create({
             data: {
               recipientType: 'player',
               recipientId: video.playerId,
@@ -116,6 +117,9 @@ export async function commentRoutes(app: FastifyInstance): Promise<void> {
               sentAt: new Date(),
             },
           });
+
+          // Push real-time notification via SSE
+          await publishNotification(notification);
         }
       }
 

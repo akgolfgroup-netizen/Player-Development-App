@@ -149,8 +149,11 @@ export const NotificationProvider = ({ children }) => {
     }
 
     try {
+      // Use notifications/stream endpoint with token in query param
+      // (EventSource doesn't support custom headers)
+      const apiUrl = process.env.REACT_APP_API_URL || '/api/v1';
       const eventSource = new EventSource(
-        `/api/v1/realtime/subscribe?userId=${userId}&token=${token}`
+        `${apiUrl}/notifications/stream?token=${token}`
       );
 
       eventSource.onopen = () => {
