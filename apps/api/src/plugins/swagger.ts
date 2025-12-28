@@ -1,12 +1,20 @@
-import fastifySwagger from '@fastify/swagger';
-import fastifySwaggerUi from '@fastify/swagger-ui';
 import { config } from '../config';
 import { AnyFastifyInstance } from '../types/fastify';
 
 /**
  * Register Swagger/OpenAPI documentation
+ * Note: Skipped in test environment due to ESM compatibility issues with yaml module
  */
 export async function registerSwagger(app: AnyFastifyInstance): Promise<void> {
+  // Skip Swagger in test environment - yaml module has ESM compatibility issues with Jest
+  if (process.env.NODE_ENV === 'test') {
+    app.log.info('Swagger documentation skipped in test environment');
+    return;
+  }
+
+  // Dynamic import to avoid loading yaml module in tests
+  const fastifySwagger = (await import('@fastify/swagger')).default;
+  const fastifySwaggerUi = (await import('@fastify/swagger-ui')).default;
   // Add shared schemas that can be referenced by all routes
   app.addSchema({
     $id: 'Error',

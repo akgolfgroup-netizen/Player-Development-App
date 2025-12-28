@@ -1,9 +1,9 @@
-import { FastifyInstance } from 'fastify';
 import { buildApp } from '../../src/app';
 import { getPrismaClient } from '../../src/core/db/prisma';
+import { AnyFastifyInstance } from '../../src/types/fastify';
 
 describe('Auth API Integration Tests', () => {
-  let app: FastifyInstance;
+  let app: AnyFastifyInstance;
   let prisma: ReturnType<typeof getPrismaClient>;
 
   // Test data
@@ -32,17 +32,21 @@ describe('Auth API Integration Tests', () => {
 
   afterAll(async () => {
     // Clean up test data
-    if (userId) {
-      await prisma.refreshToken.deleteMany({ where: { userId } });
-      await prisma.user.delete({ where: { id: userId } }).catch(() => {});
-    }
-    if (tenantId) {
-      await prisma.tenant.delete({ where: { id: tenantId } }).catch(() => {});
+    if (prisma) {
+      if (userId) {
+        await prisma.refreshToken.deleteMany({ where: { userId } });
+        await prisma.user.delete({ where: { id: userId } }).catch(() => {});
+      }
+      if (tenantId) {
+        await prisma.tenant.delete({ where: { id: tenantId } }).catch(() => {});
+      }
+      await prisma.$disconnect();
     }
 
-    // Close app and database connections
-    await app.close();
-    await prisma.$disconnect();
+    // Close app connection
+    if (app) {
+      await app.close();
+    }
   });
 
   describe('POST /api/v1/auth/register', () => {
