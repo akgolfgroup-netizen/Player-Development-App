@@ -17,7 +17,7 @@
     "design-system:check": "node scripts/design-system-gate/run-gate.js",
     "design-system:contrast": "node scripts/design-system-gate/contrast-checker.js --verbose",
     "lint:css": "stylelint \"apps/**/*.css\" --config scripts/design-system-gate/stylelint.config.js",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",
