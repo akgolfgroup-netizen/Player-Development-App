@@ -103,14 +103,14 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
       orderBy: { updatedAt: 'desc' },
     });
 
-    const formattedConversations = conversations.map((conv: any) => {
+    const formattedConversations = conversations.map((conv) => {
       const lastMessage = conv.messages[0];
-      const otherParticipants = conv.participants.filter((p: any) => p.userId !== userId);
+      const otherParticipants = conv.participants.filter((p) => p.userId !== userId);
 
       return {
         id: conv.id,
         type: conv.type,
-        name: conv.name || otherParticipants.map((p: any) => {
+        name: conv.name || otherParticipants.map((p) => {
           const user = p.user;
           return user.player
             ? `${user.player.firstName} ${user.player.lastName}`
@@ -118,7 +118,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
             ? `${user.coach.firstName} ${user.coach.lastName}`
             : user.email;
         }).join(', '),
-        participants: conv.participants.map((p: any) => ({
+        participants: conv.participants.map((p) => ({
           id: p.userId,
           name: p.user.player
             ? `${p.user.player.firstName} ${p.user.player.lastName}`
@@ -134,7 +134,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
           senderName: lastMessage.sender.player?.firstName ||
                       lastMessage.sender.coach?.firstName || 'Unknown',
           sentAt: lastMessage.createdAt,
-          isRead: lastMessage.readBy?.some((r: any) => r.userId === userId) ?? false,
+          isRead: lastMessage.readBy?.some((r) => r.userId === userId) ?? false,
         } : null,
         unreadCount: conv._count.messages,
         createdAt: conv.createdAt,
@@ -297,8 +297,8 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
     // Mark messages as read
     await prisma.messageRead.createMany({
       data: conversation.messages
-        .filter((m: any) => m.senderId !== userId && !m.readBy.some((r: any) => r.userId === userId))
-        .map((m: any) => ({ messageId: m.id, userId })),
+        .filter((m) => m.senderId !== userId && !m.readBy.some((r) => r.userId === userId))
+        .map((m) => ({ messageId: m.id, userId })),
       skipDuplicates: true,
     });
 
@@ -307,7 +307,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
         id: conversation.id,
         type: conversation.type,
         name: conversation.name,
-        participants: conversation.participants.map((p: any) => ({
+        participants: conversation.participants.map((p) => ({
           id: p.userId,
           name: p.user.player
             ? `${p.user.player.firstName} ${p.user.player.lastName}`
@@ -318,7 +318,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
           role: p.user.player ? 'player' : p.user.coach ? 'coach' : 'user',
         })),
       },
-      messages: conversation.messages.reverse().map((m: any) => ({
+      messages: conversation.messages.reverse().map((m) => ({
         id: m.id,
         content: m.content,
         senderId: m.senderId,
@@ -529,7 +529,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
 
     if (unreadMessages.length > 0) {
       await prisma.messageRead.createMany({
-        data: unreadMessages.map((m: any) => ({ messageId: m.id, userId })),
+        data: unreadMessages.map((m) => ({ messageId: m.id, userId })),
         skipDuplicates: true,
       });
     }
