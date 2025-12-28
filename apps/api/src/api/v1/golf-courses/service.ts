@@ -7,6 +7,25 @@ import { PrismaClient, Prisma } from '@prisma/client';
 import { GolfCourseAPIClient, getGolfCourseAPIClient, GolfClubData } from '../../../integrations/golfcourse/client';
 import { logger } from '../../../utils/logger';
 
+/**
+ * Course with club and tees
+ */
+type CourseWithRelations = Prisma.GolfCourseGetPayload<{
+  include: { club: true; tees: true };
+}>;
+
+/**
+ * Club with courses and tees
+ */
+type ClubWithCourses = Prisma.GolfClubGetPayload<{
+  include: { courses: { include: { tees: true } } };
+}>;
+
+/**
+ * Tee data for formatting
+ */
+type TeeData = Prisma.GolfCourseTeeGetPayload<object>;
+
 export class GolfCourseService {
   private apiClient: GolfCourseAPIClient;
 
@@ -26,7 +45,7 @@ export class GolfCourseService {
   }) {
     const { query, country, city, limit = 50, offset = 0 } = params;
 
-    const where: any = {};
+    const where: Prisma.GolfCourseWhereInput = {};
 
     if (query) {
       where.OR = [
@@ -128,8 +147,9 @@ export class GolfCourseService {
         clubsCreated += result.clubCreated ? 1 : 0;
         coursesCreated += result.coursesCreated;
         teesCreated += result.teesCreated;
-      } catch (error: any) {
-        logger.error({ error: error.message, club: clubData.name }, 'Failed to upsert club');
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        logger.error({ error: errorMessage, club: clubData.name }, 'Failed to upsert club');
       }
     }
 
@@ -315,7 +335,7 @@ export class GolfCourseService {
   /**
    * Format course for API response
    */
-  private formatCourse(course: any) {
+  private formatCourse(course: CourseWithRelations & { club: CourseWithRelations['club'] | null }) {
     return {
       id: course.id,
       name: course.name,
@@ -336,7 +356,7 @@ export class GolfCourseService {
         phone: course.club.phone,
         website: course.club.website,
       } : null,
-      tees: course.tees?.map((tee: any) => ({
+      tees: course.tees?.map((tee: TeeData) => ({
         id: tee.id,
         name: tee.teeName,
         color: tee.teeColor,
@@ -354,7 +374,7 @@ export class GolfCourseService {
   /**
    * Format club for API response
    */
-  private formatClub(club: any) {
+  private formatClub(club: ClubWithCourses) {
     return {
       id: club.id,
       name: club.name,
@@ -368,7 +388,7 @@ export class GolfCourseService {
       location: club.latitude && club.longitude
         ? { lat: Number(club.latitude), lng: Number(club.longitude) }
         : null,
-      courses: club.courses?.map((c: any) => this.formatCourse({ ...c, club: null })) || [],
+      courses: club.courses?.map((c) => this.formatCourse({ ...c, club: null })) || [],
     };
   }
 }

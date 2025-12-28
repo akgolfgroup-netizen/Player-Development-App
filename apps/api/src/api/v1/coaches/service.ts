@@ -1,4 +1,4 @@
-import { PrismaClient, Coach, Prisma } from '@prisma/client';
+import { PrismaClient, Coach, Prisma, Availability } from '@prisma/client';
 import { NotFoundError, ConflictError } from '../../../middleware/errors';
 import { CreateCoachInput, UpdateCoachInput, ListCoachesQuery } from './schema';
 
@@ -8,6 +8,41 @@ import { CreateCoachInput, UpdateCoachInput, ListCoachesQuery } from './schema';
 type CoachWithRelations = Prisma.CoachGetPayload<{
   include: { _count: { select: { players: true; trainingSessions: true } } };
 }>;
+
+/**
+ * Player with plan status for coach view
+ */
+interface CoachPlayerView {
+  id: string;
+  firstName: string;
+  lastName: string;
+  name: string;
+  email: string;
+  category: string;
+  gender: string;
+  birthDate: Date | null;
+  handicap: number | null;
+  status: string;
+  profileImageUrl: string | null;
+  createdAt: Date;
+  hasActivePlan: boolean;
+  planUpdated?: string;
+  nextSession?: string;
+  weeksInPlan: number;
+}
+
+/**
+ * Alert for coach dashboard
+ */
+interface CoachAlert {
+  id: string;
+  athleteId: string;
+  athleteName: string;
+  type: 'proof_uploaded' | 'plan_pending' | 'note_request' | 'milestone';
+  message: string;
+  createdAt: string;
+  read: boolean;
+}
 
 export interface CoachListResponse {
   coaches: Coach[];
@@ -113,7 +148,7 @@ export class CoachService {
     const { page = 1, limit = 20, search, status, specialization, sortBy, sortOrder } = query;
 
     // Build where clause
-    const where: any = { tenantId };
+    const where: Prisma.CoachWhereInput = { tenantId };
 
     if (search) {
       where.OR = [
@@ -191,7 +226,7 @@ export class CoachService {
     }
 
     // Build update data
-    const updateData: any = {};
+    const updateData: Prisma.CoachUpdateInput = {};
 
     if (input.firstName !== undefined) updateData.firstName = input.firstName;
     if (input.lastName !== undefined) updateData.lastName = input.lastName;
@@ -236,7 +271,7 @@ export class CoachService {
   /**
    * Get coach availability for a date range
    */
-  async getAvailability(tenantId: string, coachId: string, startDate: string, endDate: string): Promise<any[]> {
+  async getAvailability(tenantId: string, coachId: string, startDate: string, endDate: string): Promise<Availability[]> {
     await this.getCoachById(tenantId, coachId);
 
     const availability = await this.prisma.availability.findMany({
@@ -340,7 +375,7 @@ export class CoachService {
   /**
    * Get all players assigned to a coach with plan status
    */
-  async getCoachPlayers(tenantId: string, coachId: string): Promise<any[]> {
+  async getCoachPlayers(tenantId: string, coachId: string): Promise<CoachPlayerView[]> {
     const now = new Date();
 
     const players = await this.prisma.player.findMany({
@@ -429,8 +464,8 @@ export class CoachService {
   /**
    * Get alerts for a coach (based on player activity)
    */
-  async getCoachAlerts(tenantId: string, coachId: string, _unreadOnly: boolean = false): Promise<any[]> {
-    const alerts: any[] = [];
+  async getCoachAlerts(tenantId: string, coachId: string, _unreadOnly: boolean = false): Promise<CoachAlert[]> {
+    const alerts: CoachAlert[] = [];
 
     // Get coach's players
     const players = await this.prisma.player.findMany({

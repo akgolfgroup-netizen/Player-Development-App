@@ -3,7 +3,7 @@
  * Business logic for video management
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { storageService } from '../../../services/storage.service';
 import { NotFoundError, BadRequestError, InternalServerError } from '../../../middleware/errors';
 import { logger } from '../../../utils/logger';
@@ -131,14 +131,15 @@ export class VideoService {
         uploadId: input.uploadId,
         parts: input.parts,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Mark video as failed
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       await this.prisma.video.update({
         where: { id: video.id },
         data: {
           status: 'failed',
           errorCode: 'UPLOAD_FAILED',
-          errorMessage: error.message,
+          errorMessage,
         },
       });
 
@@ -325,7 +326,7 @@ export class VideoService {
     offset: number;
   }> {
     // Base conditions - exclude deleted and archived videos
-    const baseConditions: any = {
+    const baseConditions: Prisma.VideoWhereInput = {
       tenantId,
       deletedAt: null,
       archivedAt: null,
@@ -339,7 +340,7 @@ export class VideoService {
       baseConditions.status = input.status;
     }
 
-    let where: any;
+    let where: Prisma.VideoWhereInput;
 
     // If player is viewing and we want to include shared videos
     if (includeSharedWith && input.playerId === includeSharedWith) {
@@ -419,7 +420,7 @@ export class VideoService {
           thumbnailUrl,
           createdAt: v.createdAt,
           // Mark as shared if video is not owned by the viewer but is shared with them
-          isShared: includeSharedWith ? (v.playerId !== includeSharedWith && (v as any).shares?.length > 0) : undefined,
+          isShared: includeSharedWith ? (v.playerId !== includeSharedWith && 'shares' in v && Array.isArray(v.shares) && v.shares.length > 0) : undefined,
           player: v.player,
         };
       })
@@ -493,7 +494,7 @@ export class VideoService {
       throw new NotFoundError('Video not found');
     }
 
-    const updateData: any = {};
+    const updateData: Prisma.VideoUpdateInput = {};
 
     if (input.title !== undefined) updateData.title = input.title;
     if (input.description !== undefined) updateData.description = input.description;
@@ -806,7 +807,7 @@ export class VideoService {
     }>;
     total: number;
   }> {
-    const where: any = { tenantId };
+    const where: Prisma.VideoRequestWhereInput = { tenantId };
 
     if (input.playerId) {
       where.playerId = input.playerId;
@@ -870,10 +871,10 @@ export class VideoService {
       throw new NotFoundError('Video request not found');
     }
 
-    const updateData: any = { status };
+    const updateData: Prisma.VideoRequestUpdateInput = { status };
 
     if (status === 'fulfilled' && fulfilledVideoId) {
-      updateData.fulfilledVideoId = fulfilledVideoId;
+      updateData.fulfilledVideo = { connect: { id: fulfilledVideoId } };
       updateData.fulfilledAt = new Date();
     }
 

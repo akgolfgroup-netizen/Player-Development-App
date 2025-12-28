@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import {
   NotFoundError,
   ConflictError,
@@ -10,6 +10,25 @@ import {
   ListAvailabilityQuery,
   GetAvailableSlotsQuery,
 } from './schema';
+
+/**
+ * Availability with coach relation
+ */
+type AvailabilityWithCoach = Prisma.AvailabilityGetPayload<{
+  include: {
+    coach: { select: { id: true; firstName: true; lastName: true; email: true } };
+  };
+}>;
+
+/**
+ * Availability with coach and booking count
+ */
+type AvailabilityWithCoachAndCount = Prisma.AvailabilityGetPayload<{
+  include: {
+    coach: { select: { id: true; firstName: true; lastName: true; email: true } };
+    _count: { select: { bookings: true } };
+  };
+}>;
 
 export interface AvailableSlot {
   date: string;
@@ -28,7 +47,7 @@ export class AvailabilityService {
   async createAvailability(
     tenantId: string,
     input: CreateAvailabilityInput
-  ): Promise<any> {
+  ): Promise<AvailabilityWithCoach> {
     // Verify coach exists and belongs to tenant
     const coach = await this.prisma.coach.findFirst({
       where: { id: input.coachId, tenantId },
@@ -105,8 +124,8 @@ export class AvailabilityService {
   async listAvailability(
     tenantId: string,
     query: ListAvailabilityQuery
-  ): Promise<any[]> {
-    const where: any = {
+  ): Promise<AvailabilityWithCoachAndCount[]> {
+    const where: Prisma.AvailabilityWhereInput = {
       coach: {
         tenantId,
       },
@@ -165,7 +184,7 @@ export class AvailabilityService {
   async getAvailabilityById(
     tenantId: string,
     availabilityId: string
-  ): Promise<any> {
+  ): Promise<AvailabilityWithCoachAndCount> {
     const availability = await this.prisma.availability.findFirst({
       where: {
         id: availabilityId,
@@ -204,7 +223,7 @@ export class AvailabilityService {
     tenantId: string,
     availabilityId: string,
     input: UpdateAvailabilityInput
-  ): Promise<any> {
+  ): Promise<AvailabilityWithCoach> {
     // Verify availability exists (will throw if not found)
     await this.getAvailabilityById(tenantId, availabilityId);
 
@@ -215,7 +234,7 @@ export class AvailabilityService {
       }
     }
 
-    const updateData: any = {};
+    const updateData: Prisma.AvailabilityUpdateInput = {};
 
     if (input.dayOfWeek !== undefined) updateData.dayOfWeek = input.dayOfWeek;
     if (input.startTime) updateData.startTime = input.startTime;
