@@ -3,7 +3,7 @@
  * Handles integration with DataGolf API and comparison functionality
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma, DataGolfApproachSkill } from '@prisma/client';
 import { NotFoundError } from '../../../middleware/errors';
 import { getMapping, convertIupToDataGolf } from './mappings';
 import { DataGolfClient } from '../../../integrations/datagolf/client';
@@ -45,6 +45,106 @@ interface DataGolfSkillRating {
   sg_app?: number | null;
   sg_arg?: number | null;
   sg_putt?: number | null;
+}
+
+/**
+ * Type for IUP to DataGolf metric comparison
+ */
+interface MetricComparison {
+  iupTestNumber: number;
+  iupTestName: string;
+  iupValue: number;
+  dataGolfMetric: string;
+  dataGolfValue: number;
+  tourAverage: number;
+  percentileVsTour: number;
+  gap: number;
+  gapPercentage: number;
+}
+
+/**
+ * Formatted approach skill record for API response
+ */
+interface FormattedApproachSkill {
+  dataGolfId: number;
+  playerName: string;
+  tour: string;
+  season: number;
+  approachSkill: {
+    '50-75': number | null;
+    '75-100': number | null;
+    '100-125': number | null;
+    '125-150': number | null;
+    '150-175': number | null;
+    '175-200': number | null;
+    '200+': number | null;
+    overall: number | null;
+  };
+  lastUpdated: Date;
+}
+
+/**
+ * Pro player with ranking for comparison
+ */
+interface RankedProPlayer {
+  rank: number;
+  dataGolfId: number;
+  playerName: string;
+  tour: string;
+  stats: {
+    sgTotal: number | null;
+    sgTee: number | null;
+    sgApproach: number | null;
+    sgAround: number | null;
+    sgPutting: number | null;
+  };
+}
+
+/**
+ * Test result with test info
+ */
+interface TestResultWithTest {
+  testDate: Date;
+  value: Prisma.Decimal | null;
+  test: { testNumber: number };
+}
+
+/**
+ * Approach skill averages response
+ */
+interface ApproachSkillAverages {
+  tour: string;
+  season: number;
+  playerCount: number;
+  averages: {
+    skill50to75: number | null;
+    skill75to100: number | null;
+    skill100to125: number | null;
+    skill125to150: number | null;
+    skill150to175: number | null;
+    skill175to200: number | null;
+    skill200plus: number | null;
+  };
+}
+
+/**
+ * Ranked approach skill player
+ */
+interface RankedApproachSkillPlayer extends FormattedApproachSkill {
+  rank: number;
+}
+
+/**
+ * Approach skill list response
+ */
+interface ApproachSkillListResponse {
+  data: FormattedApproachSkill[];
+  total: number;
+  pagination: {
+    limit: number;
+    offset: number;
+    hasMore: boolean;
+  };
 }
 
 export class DataGolfService {
@@ -182,7 +282,7 @@ export class DataGolfService {
     }
 
     // Build comparisons
-    const comparisons: any[] = [];
+    const comparisons: MetricComparison[] = [];
     let aboveTourAverage = 0;
     let belowTourAverage = 0;
     let nearTourAverage = 0;
@@ -319,9 +419,10 @@ export class DataGolfService {
           try {
             await this.syncPlayer(playerData);
             playersUpdated++;
-          } catch (error: any) {
-            logger.error({ error: error.message, player: playerData.player_name }, 'Failed to sync player');
-            errors.push(`Failed to sync ${playerData.player_name}: ${error.message}`);
+          } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : String(error);
+            logger.error({ error: message, player: playerData.player_name }, 'Failed to sync player');
+            errors.push(`Failed to sync ${playerData.player_name}: ${message}`);
           }
         }
       }
@@ -343,8 +444,9 @@ export class DataGolfService {
         tourAveragesUpdated,
         errors: errors.length > 0 ? errors : undefined,
       };
-    } catch (error: any) {
-      logger.error({ error: error.message, tenantId }, 'DataGolf sync failed');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      logger.error({ error: message, tenantId }, 'DataGolf sync failed');
 
       return {
         lastSyncAt: new Date(),
@@ -496,7 +598,7 @@ export class DataGolfService {
     offset?: number;
     sortBy?: string;
     sortOrder?: 'asc' | 'desc';
-  } = {}): Promise<{ data: any[]; total: number; pagination: any }> {
+  } = {}): Promise<ApproachSkillListResponse> {
     const {
       tour,
       season = new Date().getFullYear(),
@@ -506,7 +608,7 @@ export class DataGolfService {
       sortOrder = 'desc',
     } = options;
 
-    const where: any = { season };
+    const where: Prisma.DataGolfApproachSkillWhereInput = { season };
     if (tour) where.tour = tour.toLowerCase();
 
     const [data, total] = await Promise.all([
@@ -537,8 +639,8 @@ export class DataGolfService {
     playerName: string,
     tour?: string,
     season?: number
-  ): Promise<any | null> {
-    const where: any = {
+  ): Promise<FormattedApproachSkill | null> {
+    const where: Prisma.DataGolfApproachSkillWhereInput = {
       playerName: { contains: playerName, mode: 'insensitive' },
       season: season || new Date().getFullYear(),
     };
@@ -554,8 +656,8 @@ export class DataGolfService {
   async getApproachSkillAverages(
     tour?: string,
     season?: number
-  ): Promise<any> {
-    const where: any = { season: season || new Date().getFullYear() };
+  ): Promise<ApproachSkillAverages | null> {
+    const where: Prisma.DataGolfApproachSkillWhereInput = { season: season || new Date().getFullYear() };
     if (tour) where.tour = tour.toLowerCase();
 
     const data = await this.prisma.dataGolfApproachSkill.findMany({ where });
@@ -595,7 +697,7 @@ export class DataGolfService {
   async getTopApproachSkillByDistance(
     distance: string,
     options: { tour?: string; season?: number; limit?: number } = {}
-  ): Promise<any[]> {
+  ): Promise<RankedApproachSkillPlayer[]> {
     const { tour, season = new Date().getFullYear(), limit = 20 } = options;
 
     const distanceFieldMap: Record<string, string> = {
@@ -613,7 +715,7 @@ export class DataGolfService {
       throw new Error(`Invalid distance bucket: ${distance}. Valid: ${Object.keys(distanceFieldMap).join(', ')}`);
     }
 
-    const where: any = {
+    const where: Prisma.DataGolfApproachSkillWhereInput = {
       season,
       [field]: { not: null },
     };
@@ -634,7 +736,7 @@ export class DataGolfService {
   /**
    * Format approach skill record for API response
    */
-  private formatApproachSkillRecord(record: any): any {
+  private formatApproachSkillRecord(record: DataGolfApproachSkill): FormattedApproachSkill {
     return {
       dataGolfId: record.dataGolfId,
       playerName: record.playerName,
@@ -715,10 +817,10 @@ export class DataGolfService {
       firstName: string;
       lastName: string;
       category: string;
-      handicap: any;
+      handicap: Prisma.Decimal | null;
       testResults: Array<{
         testDate: Date;
-        value: any;
+        value: Prisma.Decimal | null;
         test: { testNumber: number };
       }>;
     }>;
@@ -790,7 +892,7 @@ export class DataGolfService {
    * Calculate estimated SG values from test results
    */
   private calculateSGFromTests(
-    testResults: any[],
+    testResults: TestResultWithTest[],
     tourAverages: DataGolfTourAverages | null
   ): CoachPlayerDataGolfStats['stats'] {
     const defaults: CoachPlayerDataGolfStats['stats'] = {
@@ -809,7 +911,7 @@ export class DataGolfService {
     if (testResults.length === 0) return defaults;
 
     // Group test results by test type
-    const latestByTest: Record<number, any> = {};
+    const latestByTest: Record<number, TestResultWithTest> = {};
     for (const result of testResults) {
       const testNum = result.test?.testNumber;
       if (testNum && !latestByTest[testNum]) {
@@ -868,7 +970,7 @@ export class DataGolfService {
   /**
    * Calculate trends based on comparing recent vs older results
    */
-  private calculateTrends(testResults: any[]): CoachPlayerDataGolfStats['trends'] {
+  private calculateTrends(testResults: TestResultWithTest[]): CoachPlayerDataGolfStats['trends'] {
     const defaults: CoachPlayerDataGolfStats['trends'] = {
       sgTotal: 'stable',
       sgTee: 'stable',
@@ -925,7 +1027,7 @@ export class DataGolfService {
   async getProPlayers(options: {
     tour?: string;
     limit?: number;
-  } = {}): Promise<any[]> {
+  } = {}): Promise<RankedProPlayer[]> {
     const { tour = 'pga', limit = 50 } = options;
 
     const players = await this.prisma.dataGolfPlayer.findMany({

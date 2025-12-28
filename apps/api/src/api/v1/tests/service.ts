@@ -58,7 +58,13 @@ export interface PlayerProgress {
       improvementFromLast: number | null;
       categoryBenchmark: boolean;
     }>;
-    latestResult: any;
+    latestResult: {
+      id: string;
+      testDate: Date;
+      pei: number | null;
+      improvementFromLast: number | null;
+      categoryBenchmark: boolean;
+    } | null;
     improvement: {
       absolute: number | null;
       percentage: number | null;
@@ -84,7 +90,7 @@ export class TestService {
         protocolVersion: input.protocolVersion,
         description: input.description,
         targetCategory: input.targetCategory,
-        testDetails: input.testDetails as any,
+        testDetails: input.testDetails as Prisma.InputJsonValue,
         benchmarkWeek: input.benchmarkWeek,
         isActive: input.isActive,
       },
@@ -136,7 +142,7 @@ export class TestService {
     } = query;
 
     // Build where clause
-    const where: any = { tenantId };
+    const where: Prisma.TestWhereInput = { tenantId };
 
     if (search) {
       where.OR = [
@@ -210,7 +216,7 @@ export class TestService {
     }
 
     // Build update data
-    const updateData: any = {};
+    const updateData: Prisma.TestUpdateInput = {};
 
     if (input.name !== undefined) updateData.name = input.name;
     if (input.testNumber !== undefined) updateData.testNumber = input.testNumber;
@@ -307,13 +313,13 @@ export class TestService {
         location: input.location,
         weather: input.weather,
         equipment: input.equipment,
-        results: input.results as any,
+        results: input.results as Prisma.InputJsonValue,
         value: derivedValue,
         pei: input.pei,
         categoryBenchmark: input.categoryBenchmark,
         improvementFromLast,
         videoUrl: input.videoUrl,
-        trackerData: input.trackerData as any,
+        trackerData: input.trackerData as Prisma.InputJsonValue,
         coachFeedback: input.coachFeedback,
         playerFeedback: input.playerFeedback,
       },
@@ -393,7 +399,7 @@ export class TestService {
     } = query;
 
     // Build where clause
-    const where: any = {
+    const where: Prisma.TestResultWhereInput = {
       player: { tenantId },
     };
 
@@ -472,7 +478,7 @@ export class TestService {
     }
 
     // Build update data
-    const updateData: any = {};
+    const updateData: Prisma.TestResultUpdateInput = {};
 
     if (input.testDate !== undefined) updateData.testDate = new Date(input.testDate);
     if (input.location !== undefined) updateData.location = input.location;
