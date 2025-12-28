@@ -8,6 +8,7 @@
 
 import Fastify, { FastifyInstance } from 'fastify';
 import rateLimit from '@fastify/rate-limit';
+import { RateLimitConfig } from '../../src/plugins/rate-limit';
 
 describe('Rate Limiting', () => {
   let app: FastifyInstance;
@@ -141,10 +142,7 @@ describe('Rate Limiting', () => {
 });
 
 describe('RateLimitConfig', () => {
-  it('should export rate limit configurations', async () => {
-    // Import the actual config
-    const { RateLimitConfig } = await import('../../src/plugins/rate-limit');
-
+  it('should export rate limit configurations', () => {
     expect(RateLimitConfig.default).toBeDefined();
     expect(RateLimitConfig.default.max).toBe(100);
     expect(RateLimitConfig.auth.max).toBe(5);

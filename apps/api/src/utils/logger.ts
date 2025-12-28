@@ -146,7 +146,7 @@ export function logWithContext(
   message: string,
   context?: Record<string, unknown>
 ) {
-  const sanitizedContext = context ? redactPII(context) : undefined;
+  const sanitizedContext = context ? redactPII(context) as Record<string, unknown> : {};
   logger[level]({ ...sanitizedContext }, message);
 }
 
@@ -156,23 +156,25 @@ export function createPerformanceLogger(operation: string) {
   return {
     end: (metadata?: Record<string, unknown>) => {
       const duration = Date.now() - start;
+      const redacted = redactPII(metadata || {}) as Record<string, unknown>;
       logger.info(
         {
           operation,
           duration,
-          ...redactPII(metadata || {}),
+          ...redacted,
         },
         `${operation} completed in ${duration}ms`
       );
     },
     error: (error: Error, metadata?: Record<string, unknown>) => {
       const duration = Date.now() - start;
+      const redacted = redactPII(metadata || {}) as Record<string, unknown>;
       logger.error(
         {
           operation,
           duration,
           error,
-          ...redactPII(metadata || {}),
+          ...redacted,
         },
         `${operation} failed after ${duration}ms: ${error.message}`
       );
