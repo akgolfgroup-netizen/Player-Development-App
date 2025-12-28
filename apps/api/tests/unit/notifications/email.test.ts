@@ -3,8 +3,19 @@
  * Tests email sending, graceful fallback, and template rendering
  */
 
+// Mock the logger - must be before imports
+jest.mock('../../../src/utils/logger', () => ({
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
+  },
+}));
+
 import { EmailService } from '../../../src/domain/notifications/email.service';
 import nodemailer from 'nodemailer';
+import { logger as mockLogger } from '../../../src/utils/logger';
 
 // Mock nodemailer
 jest.mock('nodemailer');
@@ -12,8 +23,6 @@ jest.mock('nodemailer');
 describe('EmailService', () => {
   let emailService: EmailService;
   let mockTransporter: any;
-  let consoleLogSpy: jest.SpyInstance;
-  let consoleWarnSpy: jest.SpyInstance;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -24,10 +33,6 @@ describe('EmailService', () => {
     };
 
     (nodemailer.createTransport as jest.Mock).mockReturnValue(mockTransporter);
-
-    // Spy on console methods
-    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
-    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     // Set up valid SMTP config
     process.env.SMTP_HOST = 'smtp.gmail.com';
@@ -41,8 +46,6 @@ describe('EmailService', () => {
   });
 
   afterEach(() => {
-    consoleLogSpy.mockRestore();
-    consoleWarnSpy.mockRestore();
     delete process.env.SMTP_HOST;
     delete process.env.SMTP_PORT;
     delete process.env.SMTP_USER;
@@ -71,8 +74,8 @@ describe('EmailService', () => {
 
       new EmailService();
 
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Email service not configured')
+      expect(mockLogger.warn).toHaveBeenCalledWith(
+        'Email service not configured - emails will be logged only'
       );
     });
   });
@@ -120,7 +123,7 @@ describe('EmailService', () => {
       );
     });
 
-    it('should fallback to console.log when transporter is not configured', async () => {
+    it('should fallback to logger when transporter is not configured', async () => {
       delete process.env.SMTP_HOST;
       delete process.env.SMTP_USER;
       delete process.env.SMTP_PASS;
@@ -132,8 +135,13 @@ describe('EmailService', () => {
         html: '<h1>Test</h1>',
       });
 
-      expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining('EMAIL (Development Mode)')
+      expect(mockLogger.info).toHaveBeenCalledWith(
+        expect.objectContaining({
+          mode: 'development',
+          to: 'user@example.com',
+          subject: 'Test Email',
+        }),
+        'Email not sent (SMTP not configured)'
       );
     });
   });
@@ -180,7 +188,7 @@ describe('EmailService', () => {
       new EmailService();
 
       // Should warn about not being configured
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect(mockLogger.warn).toHaveBeenCalledWith(
         expect.stringContaining('not configured')
       );
     });
