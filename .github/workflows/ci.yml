@@ -58,12 +58,14 @@ jobs:
         continue-on-error: true
 
   # =============================================================================
-  # Security Audit (temporarily disabled - snyk.sarif/CodeQL issues)
+  # Security Audit
   # =============================================================================
   security:
     name: Security Audit
-    if: false  # Disabled: snyk.sarif missing, CodeQL v1/v2 deprecated
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -91,11 +93,11 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high
+          args: --severity-threshold=high --sarif-file-output=snyk.sarif
 
       - name: Upload Snyk results to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        if: always() && hashFiles('snyk.sarif') != ''
         continue-on-error: true
         with:
           sarif_file: snyk.sarif
