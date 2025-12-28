@@ -121,7 +121,7 @@ const seasonRoutes: FastifyPluginAsync = async (fastify) => {
         season: number;
         baselineType: 'season_average' | 'last_8_rounds';
         baselineScore: number;
-        metadata?: any;
+        metadata?: Record<string, unknown>;
       };
 
       // Create or update season baseline
