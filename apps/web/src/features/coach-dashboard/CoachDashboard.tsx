@@ -1,6 +1,6 @@
 /**
  * AK Golf Academy - Coach Dashboard
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Semantic CSS Variables
  *
  * Overview dashboard for coaches showing:
  * - Athletes list (alphabetically sorted, neutral)
@@ -15,13 +15,15 @@ import {
   Users, Calendar, ClipboardList, MessageSquare, Bell,
   ChevronRight, Search, User, BarChart3, Trophy, AlertCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { CoachPlayerAlerts, CoachWeeklyTournaments, CoachInjuryTracker } from './widgets';
 import { coachesAPI } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
+import { TeamFocusHeatmap } from '../focus-engine';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
-
-// Typography helper from shared tokens
-const typography = tokens.typography;
+import Button from '../../ui/primitives/Button';
+import Badge from '../../ui/primitives/Badge.primitive';
+import StateCard from '../../ui/composites/StateCard';
+import Card from '../../ui/primitives/Card';
 
 // Mock data for athletes
 const mockAthletes = [
@@ -50,27 +52,6 @@ const quickActions = [
   { id: 'tournaments', label: 'Turneringer', icon: Trophy, href: '/coach/tournaments' },
 ];
 
-// Card component
-const Card: React.FC<{
-  children: React.ReactNode;
-  className?: string;
-  onClick?: () => void;
-}> = ({ children, className = '', onClick }) => (
-  <div
-    style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: tokens.borderRadius.lg,
-      boxShadow: tokens.shadows.card,
-      cursor: onClick ? 'pointer' : 'default',
-      transition: 'all 0.2s ease',
-    }}
-    className={className}
-    onClick={onClick}
-  >
-    {children}
-  </div>
-);
-
 // Widget header
 const WidgetHeader: React.FC<{
   title: string;
@@ -84,29 +65,21 @@ const WidgetHeader: React.FC<{
     marginBottom: '16px',
   }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      {Icon && <Icon size={18} color={tokens.colors.primary} />}
-      <h3 style={{ ...typography.title3, color: tokens.colors.charcoal, margin: 0 }}>
+      {Icon && <Icon size={18} style={{ color: 'var(--accent)' }} />}
+      <h3 style={{
+        fontSize: '17px',
+        fontWeight: 600,
+        color: 'var(--text-primary)',
+        margin: 0,
+      }}>
         {title}
       </h3>
     </div>
     {action && (
-      <button
-        onClick={action.onClick}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          background: 'none',
-          border: 'none',
-          color: tokens.colors.primary,
-          cursor: 'pointer',
-          ...typography.caption,
-          fontWeight: 500,
-        }}
-      >
+      <Button variant="ghost" size="sm" onClick={action.onClick}>
         {action.label}
         <ChevronRight size={14} />
-      </button>
+      </Button>
     )}
   </div>
 );
@@ -116,7 +89,7 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 40 }) 
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
 
   // Generate consistent color from name
-  const colors = [tokens.colors.primary, tokens.colors.primaryLight, tokens.colors.success, tokens.colors.gold];
+  const colors = ['var(--accent)', 'var(--success)', 'var(--warning)'];
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -130,7 +103,7 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 40 }) 
         height: size,
         borderRadius: '50%',
         backgroundColor: bgColor,
-        color: tokens.colors.white,
+        color: 'white',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -144,28 +117,19 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 40 }) 
   );
 };
 
-// Category badge
+// Category badge using primitive
 const CategoryBadge: React.FC<{ category: string }> = ({ category }) => {
-  const colors: Record<string, { bg: string; text: string }> = {
-    A: { bg: `${tokens.colors.primary}15`, text: tokens.colors.primary },
-    B: { bg: `${tokens.colors.primaryLight}15`, text: tokens.colors.primaryLight },
-    C: { bg: `${tokens.colors.gold}15`, text: '#8B6914' },
+  const variantMap: Record<string, 'accent' | 'neutral' | 'achievement'> = {
+    A: 'accent',
+    B: 'neutral',
+    C: 'achievement',
   };
-  const style = colors[category] || colors.C;
+  const variant = variantMap[category] || 'neutral';
 
   return (
-    <span
-      style={{
-        padding: '2px 8px',
-        borderRadius: tokens.borderRadius.sm,
-        backgroundColor: style.bg,
-        color: style.text,
-        ...typography.small,
-        fontWeight: 600,
-      }}
-    >
+    <Badge variant={variant} size="sm">
       Kat. {category}
-    </span>
+    </Badge>
   );
 };
 
@@ -175,77 +139,42 @@ interface CoachDashboardProps {
   pendingItems?: typeof mockPendingItems;
 }
 
-// Loading component
+// Loading component using StateCard
 const LoadingState: React.FC = () => (
   <div style={{
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tokens.colors.snow
+    backgroundColor: 'var(--bg-secondary)'
   }}>
-    <div style={{ textAlign: 'center' }}>
-      <div style={{
-        width: 48,
-        height: 48,
-        border: `4px solid ${tokens.colors.primary}20`,
-        borderTop: `4px solid ${tokens.colors.primary}`,
-        borderRadius: '50%',
-        animation: 'spin 1s linear infinite',
-        margin: '0 auto 16px'
-      }} />
-      <p style={{ ...typography.body, color: tokens.colors.steel }}>Laster dashboard...</p>
-    </div>
+    <StateCard variant="loading" title="Laster dashboard..." />
   </div>
 );
 
-// Error component
+// Error component using StateCard and Button
 const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, onRetry }) => (
   <div style={{
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tokens.colors.snow,
+    backgroundColor: 'var(--bg-secondary)',
     padding: '24px'
   }}>
-    <div style={{
-      maxWidth: 400,
-      textAlign: 'center',
-      padding: '32px',
-      backgroundColor: tokens.colors.white,
-      borderRadius: tokens.borderRadius.lg,
-      boxShadow: tokens.shadows.card
-    }}>
-      <AlertCircle size={48} color={tokens.colors.error} style={{ marginBottom: '16px' }} />
-      <h2 style={{ ...typography.title2, color: tokens.colors.charcoal, marginBottom: '8px' }}>
-        Kunne ikke laste dashboard
-      </h2>
-      <p style={{ ...typography.body, color: tokens.colors.steel, marginBottom: '24px' }}>
-        {error}
-      </p>
-      <button
-        onClick={onRetry}
-        style={{
-          padding: '12px 24px',
-          backgroundColor: tokens.colors.primary,
-          color: tokens.colors.white,
-          border: 'none',
-          borderRadius: tokens.borderRadius.md,
-          cursor: 'pointer',
-          ...typography.body,
-          fontWeight: 600
-        }}
-      >
-        Prøv igjen
-      </button>
-    </div>
+    <StateCard
+      variant="error"
+      title="Kunne ikke laste dashboard"
+      description={error}
+      action={<Button variant="primary" onClick={onRetry}>Prov igjen</Button>}
+    />
   </div>
 );
 
 // Main Coach Dashboard component
 export default function CoachDashboard({ athletes: propAthletes, pendingItems: propPendingItems }: CoachDashboardProps = {}) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
 
   // State for API data
@@ -253,6 +182,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
   const [pendingItems, setPendingItems] = useState<typeof mockPendingItems>(propPendingItems || []);
   const [todaySchedule, setTodaySchedule] = useState<any[]>([]);
   const [weeklyStats, setWeeklyStats] = useState<any>(null);
+  const [defaultTeamId, setDefaultTeamId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -262,17 +192,24 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
       setLoading(true);
       setError(null);
 
-      const [athletesRes, pendingRes, scheduleRes, statsRes] = await Promise.all([
+      const [athletesRes, pendingRes, scheduleRes, statsRes, teamsRes] = await Promise.all([
         coachesAPI.getAthletes().catch(() => ({ data: mockAthletes })),
         coachesAPI.getPendingItems().catch(() => ({ data: mockPendingItems })),
         coachesAPI.getTodaySchedule().catch(() => ({ data: [] })),
         coachesAPI.getWeeklyStats().catch(() => ({ data: null })),
+        coachesAPI.getTeams?.().catch(() => ({ data: [] })) || Promise.resolve({ data: [] }),
       ]);
 
       setAthletes(athletesRes.data?.data || athletesRes.data || mockAthletes);
       setPendingItems(pendingRes.data?.data || pendingRes.data || mockPendingItems);
       setTodaySchedule(scheduleRes.data?.data || scheduleRes.data || []);
       setWeeklyStats(statsRes.data?.data || statsRes.data);
+
+      // Set default team for focus heatmap
+      const teams = teamsRes.data?.data || teamsRes.data || [];
+      if (teams.length > 0) {
+        setDefaultTeamId(teams[0].id);
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'En ukjent feil oppstod');
       // Fallback to mock data on error
@@ -313,16 +250,25 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div style={{ padding: '24px', paddingBottom: '16px' }}>
-        <h1 style={{ ...typography.largeTitle, color: tokens.colors.charcoal, margin: 0 }}>
+        <h1 style={{
+          fontSize: '28px',
+          fontWeight: 700,
+          color: 'var(--text-primary)',
+          margin: 0,
+        }}>
           {getGreeting()}, Trener
         </h1>
-        <p style={{ ...typography.body, color: tokens.colors.steel, marginTop: '4px' }}>
+        <p style={{
+          fontSize: '15px',
+          color: 'var(--text-secondary)',
+          marginTop: '4px',
+        }}>
           Her er din oversikt for i dag
         </p>
       </div>
@@ -340,10 +286,10 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                 alignItems: 'center',
                 gap: '8px',
                 padding: '16px 12px',
-                backgroundColor: tokens.colors.white,
+                backgroundColor: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.borderRadius.md,
-                boxShadow: tokens.shadows.card,
+                borderRadius: 'var(--radius-md)',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.06)',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
               }}
@@ -352,16 +298,20 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                 style={{
                   width: 44,
                   height: 44,
-                  borderRadius: tokens.borderRadius.md,
-                  backgroundColor: `${tokens.colors.primary}10`,
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <action.icon size={22} color={tokens.colors.primary} />
+                <action.icon size={22} style={{ color: 'var(--accent)' }} />
               </div>
-              <span style={{ ...typography.caption, fontWeight: 500, color: tokens.colors.charcoal }}>
+              <span style={{
+                fontSize: '13px',
+                fontWeight: 500,
+                color: 'var(--text-primary)',
+              }}>
                 {action.label}
               </span>
             </button>
@@ -371,7 +321,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
 
       {/* Critical Alerts Section */}
       <div style={{ padding: '0 24px 20px' }}>
-        <Card>
+        <Card variant="default" padding="none">
           <div style={{ padding: '20px' }}>
             <CoachPlayerAlerts
               maxItems={4}
@@ -384,7 +334,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
       {/* Main content grid */}
       <div style={{ padding: '0 24px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         {/* Athletes List */}
-        <Card>
+        <Card variant="default" padding="none">
           <div style={{ padding: '20px' }}>
             <WidgetHeader
               title="Mine Spillere"
@@ -399,12 +349,12 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                 alignItems: 'center',
                 gap: '8px',
                 padding: '10px 14px',
-                backgroundColor: tokens.colors.snow,
-                borderRadius: tokens.borderRadius.md,
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-md)',
                 marginBottom: '16px',
               }}
             >
-              <Search size={18} color={tokens.colors.steel} />
+              <Search size={18} style={{ color: 'var(--text-secondary)' }} />
               <input
                 type="text"
                 placeholder="Sok etter spiller..."
@@ -415,8 +365,8 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                   border: 'none',
                   background: 'none',
                   outline: 'none',
-                  ...typography.body,
-                  color: tokens.colors.charcoal,
+                  fontSize: '15px',
+                  color: 'var(--text-primary)',
                 }}
               />
             </div>
@@ -432,23 +382,33 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                     alignItems: 'center',
                     gap: '12px',
                     padding: '12px',
-                    backgroundColor: tokens.colors.snow,
-                    borderRadius: tokens.borderRadius.md,
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-md)',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
                   }}
                 >
                   <Avatar name={`${athlete.firstName} ${athlete.lastName}`} size={40} />
                   <div style={{ flex: 1 }}>
-                    <p style={{ ...typography.body, fontWeight: 500, color: tokens.colors.charcoal, margin: 0 }}>
+                    <p style={{
+                      fontSize: '15px',
+                      fontWeight: 500,
+                      color: 'var(--text-primary)',
+                      margin: 0,
+                    }}>
                       {athlete.lastName}, {athlete.firstName}
                     </p>
-                    <p style={{ ...typography.small, color: tokens.colors.steel, margin: 0, marginTop: '2px' }}>
+                    <p style={{
+                      fontSize: '13px',
+                      color: 'var(--text-secondary)',
+                      margin: 0,
+                      marginTop: '2px',
+                    }}>
                       Sist aktiv: {new Date(athlete.lastSession).toLocaleDateString('nb-NO')}
                     </p>
                   </div>
                   <CategoryBadge category={athlete.category} />
-                  <ChevronRight size={18} color={tokens.colors.steel} />
+                  <ChevronRight size={18} style={{ color: 'var(--text-secondary)' }} />
                 </div>
               ))}
             </div>
@@ -456,18 +416,18 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
         </Card>
 
         {/* Pending Items */}
-        <Card>
+        <Card variant="default" padding="none">
           <div style={{ padding: '20px' }}>
             <WidgetHeader
-              title="Venter på deg"
+              title="Venter pa deg"
               icon={Bell}
               action={{ label: 'Se alle', onClick: () => navigate('/coach/pending') }}
             />
 
             {pendingItems.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '32px 16px' }}>
-                <Bell size={32} color={tokens.colors.mist} style={{ marginBottom: '8px' }} />
-                <p style={{ ...typography.body, color: tokens.colors.steel }}>
+                <Bell size={32} style={{ color: 'var(--bg-tertiary)', marginBottom: '8px' }} />
+                <p style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>
                   Ingen ventende oppgaver
                 </p>
               </div>
@@ -481,9 +441,9 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                       alignItems: 'flex-start',
                       gap: '12px',
                       padding: '14px',
-                      backgroundColor: `${tokens.colors.primary}05`,
-                      borderRadius: tokens.borderRadius.md,
-                      borderLeft: `3px solid ${tokens.colors.primary}`,
+                      backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
+                      borderRadius: 'var(--radius-md)',
+                      borderLeft: '3px solid var(--accent)',
                       cursor: 'pointer',
                     }}
                   >
@@ -491,27 +451,41 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                       style={{
                         width: 36,
                         height: 36,
-                        borderRadius: tokens.borderRadius.sm,
-                        backgroundColor: tokens.colors.white,
+                        borderRadius: 'var(--radius-sm)',
+                        backgroundColor: 'var(--bg-primary)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0,
                       }}
                     >
-                      {item.type === 'proof' && <User size={18} color={tokens.colors.primary} />}
-                      {item.type === 'note' && <MessageSquare size={18} color={tokens.colors.primary} />}
-                      {item.type === 'plan' && <ClipboardList size={18} color={tokens.colors.primary} />}
+                      {item.type === 'proof' && <User size={18} style={{ color: 'var(--accent)' }} />}
+                      {item.type === 'note' && <MessageSquare size={18} style={{ color: 'var(--accent)' }} />}
+                      {item.type === 'plan' && <ClipboardList size={18} style={{ color: 'var(--accent)' }} />}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ ...typography.body, fontWeight: 500, color: tokens.colors.charcoal, margin: 0 }}>
+                      <p style={{
+                        fontSize: '15px',
+                        fontWeight: 500,
+                        color: 'var(--text-primary)',
+                        margin: 0,
+                      }}>
                         {item.athlete}
                       </p>
-                      <p style={{ ...typography.caption, color: tokens.colors.steel, margin: 0, marginTop: '2px' }}>
+                      <p style={{
+                        fontSize: '13px',
+                        color: 'var(--text-secondary)',
+                        margin: 0,
+                        marginTop: '2px',
+                      }}>
                         {item.description}
                       </p>
                     </div>
-                    <span style={{ ...typography.small, color: tokens.colors.steel, flexShrink: 0 }}>
+                    <span style={{
+                      fontSize: '12px',
+                      color: 'var(--text-secondary)',
+                      flexShrink: 0,
+                    }}>
                       {item.time}
                     </span>
                   </div>
@@ -522,7 +496,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
         </Card>
 
         {/* Weekly Tournaments */}
-        <Card>
+        <Card variant="default" padding="none">
           <div style={{ padding: '20px' }}>
             <CoachWeeklyTournaments
               onViewAll={() => navigate('/coach/tournaments')}
@@ -531,7 +505,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
         </Card>
 
         {/* Injury Tracker */}
-        <Card>
+        <Card variant="default" padding="none">
           <div style={{ padding: '20px' }}>
             <CoachInjuryTracker
               onViewAll={() => navigate('/coach/athletes/status')}
@@ -539,8 +513,20 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
           </div>
         </Card>
 
+        {/* Team Focus Heatmap */}
+        {user?.id && defaultTeamId && (
+          <Card variant="default" padding="none">
+            <div style={{ padding: '20px' }}>
+              <TeamFocusHeatmap
+                coachId={user.id}
+                teamId={defaultTeamId}
+              />
+            </div>
+          </Card>
+        )}
+
         {/* Today's Schedule */}
-        <Card>
+        <Card variant="default" padding="none">
           <div style={{ padding: '20px' }}>
             <WidgetHeader
               title="Dagens program"
@@ -562,31 +548,41 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
                     alignItems: 'center',
                     gap: '12px',
                     padding: '12px',
-                    backgroundColor: tokens.colors.snow,
-                    borderRadius: tokens.borderRadius.md,
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-md)',
                   }}
                 >
                   <div
                     style={{
                       width: 48,
                       height: 48,
-                      borderRadius: tokens.borderRadius.md,
-                      backgroundColor: tokens.colors.primary,
-                      color: tokens.colors.white,
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--accent)',
+                      color: 'white',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      ...typography.caption,
+                      fontSize: '13px',
                       fontWeight: 600,
                     }}
                   >
                     {event.time}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <p style={{ ...typography.body, fontWeight: 500, color: tokens.colors.charcoal, margin: 0 }}>
+                    <p style={{
+                      fontSize: '15px',
+                      fontWeight: 500,
+                      color: 'var(--text-primary)',
+                      margin: 0,
+                    }}>
                       {event.title}
                     </p>
-                    <p style={{ ...typography.small, color: tokens.colors.steel, margin: 0, marginTop: '2px' }}>
+                    <p style={{
+                      fontSize: '12px',
+                      color: 'var(--text-secondary)',
+                      margin: 0,
+                      marginTop: '2px',
+                    }}>
                       {event.athletes} {event.athletes === 1 ? 'spiller' : 'spillere'}
                     </p>
                   </div>
@@ -597,19 +593,19 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
         </Card>
 
         {/* Quick Stats */}
-        <Card>
+        <Card variant="default" padding="none">
           <div style={{ padding: '20px' }}>
             <WidgetHeader title="Ukens oversikt" />
 
             <StatsGridTemplate
               items={(weeklyStats ? [
                 { id: 'active-players', label: 'Aktive spillere', value: weeklyStats.activePlayers || '0' },
-                { id: 'sessions', label: 'Økter denne uke', value: weeklyStats.sessionsThisWeek || '0' },
+                { id: 'sessions', label: 'Okter denne uke', value: weeklyStats.sessionsThisWeek || '0' },
                 { id: 'hours', label: 'Timer trent', value: weeklyStats.hoursTrained || '0' },
                 { id: 'pending', label: 'Ventende', value: weeklyStats.pendingCount || '0' },
               ] : [
                 { id: 'active-players', label: 'Aktive spillere', value: '12' },
-                { id: 'sessions', label: 'Økter denne uke', value: '24' },
+                { id: 'sessions', label: 'Okter denne uke', value: '24' },
                 { id: 'hours', label: 'Timer trent', value: '48' },
                 { id: 'pending', label: 'Ventende', value: '3' },
               ])}
