@@ -144,8 +144,8 @@ export function useStats(period: 'week' | 'month' | 'year' = 'week'): HookResult
     setError(null);
 
     try {
-      // TODO: Verify endpoint path with backend
-      const response = await apiGet<ApiStatsResponse>('/stats', { period });
+      // Use dashboard endpoint which returns weekly stats, goals, sessions etc.
+      const response = await apiGet<ApiStatsResponse>('/dashboard', { period });
       const mappedData = mapApiToStatsData(response);
       setData(mappedData);
     } catch (err) {

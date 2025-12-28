@@ -91,7 +91,7 @@ export function useGoals(): HookResult<GoalsData> {
     setError(null);
 
     try {
-      // TODO: Verify endpoint path with backend
+      // Verified: /goals endpoint exists in apps/api/src/api/v1/goals/
       const response = await apiGet<ApiGoalsResponse>('/goals');
       const mappedData = mapApiToGoalsData(response);
       setData(mappedData);

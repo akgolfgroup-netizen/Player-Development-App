@@ -212,9 +212,8 @@ export function useCoachPlayer(playerId: string): HookResult<CoachPlayerData> {
     setError(null);
 
     try {
-      // TODO: Replace with actual coach/player endpoint when available
-      // Current implementation fetches from multiple endpoints
-      const response = await apiGet<ApiPlayerResponse>(`/coach/players/${playerId}`);
+      // Use dashboard endpoint for coach view of player data
+      const response = await apiGet<ApiPlayerResponse>(`/dashboard/${playerId}`);
       const mappedData = mapApiToPlayerData(response, playerId);
       setData(mappedData);
     } catch (err) {
