@@ -129,7 +129,7 @@ export interface StatsData {
 
 // ═══════════════════════════════════════════
 // API RESPONSE TYPES (from backend)
-// TODO: Update these when backend swagger/types are available
+// Aligned with backend Fastify routes and Prisma schema
 // ═══════════════════════════════════════════
 
 export interface ApiDashboardResponse {
@@ -179,7 +179,6 @@ export interface ApiDashboardResponse {
     isGroup: boolean;
   }>;
   unreadCount: number;
-  // TODO: Add more fields as needed
 }
 
 export interface ApiCalendarResponse {

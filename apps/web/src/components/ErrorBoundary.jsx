@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import Button from '../ui/primitives/Button';
 import StateCard from '../ui/composites/StateCard';
+import { captureException } from '../utils/errorReporter';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -27,10 +28,15 @@ class ErrorBoundary extends React.Component {
       errorInfo,
     });
 
-    // TODO: Send to error tracking service (Sentry, LogRocket, etc.)
-    // if (window.Sentry) {
-    //   window.Sentry.captureException(error, { extra: errorInfo });
-    // }
+    // Send to error tracking service (Sentry)
+    captureException(error, {
+      source: 'ErrorBoundary',
+      action: 'component_error',
+      extra: {
+        componentStack: errorInfo?.componentStack,
+        boundaryName: this.props.name || 'unnamed',
+      },
+    });
   }
 
   handleReset = () => {

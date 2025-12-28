@@ -178,30 +178,33 @@ export function validateTestInput(testNumber: number, input: TestInput): boolean
   }
 
   // Test-specific validation
+  // Cast to any for property access since TestInput is a union type
+  const data = input as any;
+
   switch (testNumber) {
     case 1:
     case 2:
     case 3:
     case 4:
-      if (!input.shots || input.shots.length !== 6) {
+      if (!data.shots || data.shots.length !== 6) {
         throw new Error(`Test ${testNumber} requires exactly 6 shots`);
       }
       break;
 
     case 5:
-      if (!input.shots || input.shots.length !== 6) {
+      if (!data.shots || data.shots.length !== 6) {
         throw new Error('Test 5 requires exactly 6 shots with club speed');
       }
       break;
 
     case 6:
-      if (!input.shots || input.shots.length !== 6) {
+      if (!data.shots || data.shots.length !== 6) {
         throw new Error('Test 6 requires exactly 6 shots with ball speed');
       }
       break;
 
     case 7:
-      if (!input.shots || input.shots.length !== 6) {
+      if (!data.shots || data.shots.length !== 6) {
         throw new Error('Test 7 requires exactly 6 shots with both ball and club speed');
       }
       break;
@@ -210,59 +213,59 @@ export function validateTestInput(testNumber: number, input: TestInput): boolean
     case 9:
     case 10:
     case 11:
-      if (!input.shots || input.shots.length !== 10) {
+      if (!data.shots || data.shots.length !== 10) {
         throw new Error(`Test ${testNumber} requires exactly 10 shots`);
       }
-      if (!input.targetDistance) {
+      if (!data.targetDistance) {
         throw new Error(`Test ${testNumber} requires targetDistance`);
       }
       break;
 
     case 12:
-      if (input.repetitions === undefined || input.repetitions < 0) {
+      if (data.repetitions === undefined || data.repetitions < 0) {
         throw new Error('Test 12 requires a valid repetitions count');
       }
       break;
 
     case 13:
-      if (input.durationSeconds === undefined || input.durationSeconds < 0) {
+      if (data.durationSeconds === undefined || data.durationSeconds < 0) {
         throw new Error('Test 13 requires a valid duration in seconds');
       }
       break;
 
     case 14:
-      if (!input.jumps || input.jumps.length !== 3) {
+      if (!data.jumps || data.jumps.length !== 3) {
         throw new Error('Test 14 requires exactly 3 jump attempts');
       }
       break;
 
     case 15:
     case 16:
-      if (!input.putts || input.putts.length !== 10) {
+      if (!data.putts || data.putts.length !== 10) {
         throw new Error(`Test ${testNumber} requires exactly 10 putts`);
       }
       break;
 
     case 17:
-      if (!input.chips || input.chips.length !== 10) {
+      if (!data.chips || data.chips.length !== 10) {
         throw new Error('Test 17 requires exactly 10 chips');
       }
       break;
 
     case 18:
-      if (!input.shots || input.shots.length !== 10) {
+      if (!data.shots || data.shots.length !== 10) {
         throw new Error('Test 18 requires exactly 10 bunker shots');
       }
       break;
 
     case 19:
-      if (!input.holes || input.holes.length !== 9) {
+      if (!data.holes || data.holes.length !== 9) {
         throw new Error('Test 19 requires exactly 9 holes');
       }
       break;
 
     case 20:
-      if (!input.holes || input.holes.length < 3 || input.holes.length > 6) {
+      if (!data.holes || data.holes.length < 3 || data.holes.length > 6) {
         throw new Error('Test 20 requires 3-6 holes');
       }
       break;

@@ -5,11 +5,28 @@
 
 import { calculateTestResult, calculateTestResultAsync, validateTestInput } from '../../../src/domain/tests/test-calculator';
 import { RequirementsRepository } from '../../../src/domain/tests/requirements-repository';
-import { PrismaClient } from '@prisma/client';
-import type { TestInput, PlayerContext, TestMetadata } from '../../../src/domain/tests/types';
+import type { TestInput, PlayerContext, TestMetadata, CategoryRequirement } from '../../../src/domain/tests/types';
 
-const prisma = new PrismaClient();
-const requirementsRepo = new RequirementsRepository(prisma);
+// Mock RequirementsRepository
+const mockRequirements: Record<string, CategoryRequirement> = {
+  'A-M-1': { category: 'A', gender: 'M', testNumber: 1, requirement: 270, unit: 'm', comparison: '>=' },
+  'A-M-2': { category: 'A', gender: 'M', testNumber: 2, requirement: 250, unit: 'm', comparison: '>=' },
+  'A-M-12': { category: 'A', gender: 'M', testNumber: 12, requirement: 140, unit: 'kg', comparison: '>=' },
+  'A-M-15': { category: 'A', gender: 'M', testNumber: 15, requirement: 90, unit: '%', comparison: '>=' },
+};
+
+const mockRequirementsRepo = {
+  getRequirement: jest.fn(async (category: string, gender: string, testNumber: number) => {
+    const key = `${category}-${gender}-${testNumber}`;
+    const req = mockRequirements[key];
+    if (!req) {
+      throw new Error(`No requirement found for category ${category}, gender ${gender}, test ${testNumber}`);
+    }
+    return req;
+  }),
+  clearCache: jest.fn(),
+  preloadCache: jest.fn(),
+} as unknown as RequirementsRepository;
 
 describe('Test Calculator', () => {
   const mockPlayer: PlayerContext = {
@@ -26,6 +43,10 @@ describe('Test Calculator', () => {
     location: 'Test Location',
     facility: 'Test Facility',
     environment: 'indoor',
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('calculateTestResult', () => {
@@ -58,12 +79,12 @@ describe('Test Calculator', () => {
           ],
         };
 
-        const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
+        const result = await calculateTestResultAsync(1, input as any, mockPlayer, mockRequirementsRepo);
 
         // Top 3: 260, 255, 255 = 770/3 = 256.67
         expect(result.value).toBeCloseTo(256.7, 1);
         expect(result.passed).toBeDefined();
-        expect(result.categoryRequirement).toBeDefined();
+        expect(result.categoryRequirement).toBe(270);
         expect(result.percentOfRequirement).toBeGreaterThanOrEqual(0);
       });
 
@@ -80,7 +101,7 @@ describe('Test Calculator', () => {
           ],
         };
 
-        const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
+        const result = await calculateTestResultAsync(1, input as any, mockPlayer, mockRequirementsRepo);
         expect(result.value).toBe(0);
       });
     });
@@ -98,7 +119,7 @@ describe('Test Calculator', () => {
             { shotNumber: 5, carryDistanceMeters: 220 },
             { shotNumber: 6, carryDistanceMeters: 225 },
           ],
-        } as any, mockPlayer, requirementsRepo);
+        } as any, mockPlayer, mockRequirementsRepo);
         // Top 3: 230, 225, 225 = 680/3 = 226.67
         expect(result.value).toBeCloseTo(226.7, 1);
         expect(result.passed).toBeDefined();
@@ -107,7 +128,7 @@ describe('Test Calculator', () => {
         result = await calculateTestResultAsync(12, {
           metadata: createMetadata(),
           weightKg: 100,
-        } as any, mockPlayer, requirementsRepo);
+        } as any, mockPlayer, mockRequirementsRepo);
         expect(result.value).toBe(100);
         expect(result.passed).toBeDefined();
 
@@ -126,7 +147,7 @@ describe('Test Calculator', () => {
             { puttNumber: 9, holed: false },
             { puttNumber: 10, holed: false },
           ],
-        } as any, mockPlayer, requirementsRepo);
+        } as any, mockPlayer, mockRequirementsRepo);
         // 8 holed out of 10 = 80%
         expect(result.value).toBe(80);
         expect(result.passed).toBeDefined();
@@ -170,7 +191,7 @@ describe('Test Calculator', () => {
 
     it('should throw error for missing required fields', () => {
       expect(() => {
-        validateTestInput(1, {});
+        validateTestInput(1, {} as any);
       }).toThrow();
     });
 
@@ -212,7 +233,7 @@ describe('Test Calculator', () => {
   });
 
   describe('result evaluation', () => {
-    it('should include category requirements (database-backed)', async () => {
+    it('should include category requirements', async () => {
       const input = {
         metadata: createMetadata(),
         shots: [
@@ -225,20 +246,20 @@ describe('Test Calculator', () => {
         ],
       };
 
-      const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
+      const result = await calculateTestResultAsync(1, input as any, mockPlayer, mockRequirementsRepo);
 
       // Top 3: 260, 255, 255 = 770/3 = 256.67
       expect(result.value).toBeCloseTo(256.7, 1);
       expect(result.passed).toBeDefined();
       expect(result.categoryRequirement).toBeDefined();
-      // For category A, M, test 1, requirement should be 270 meters (from seeds)
+      // For category A, M, test 1, requirement should be 270 meters
       expect(result.categoryRequirement).toBe(270);
       expect(result.percentOfRequirement).toBeGreaterThanOrEqual(0);
     });
   });
 
   describe('edge cases', () => {
-    it('should handle edge cases (database-backed)', async () => {
+    it('should handle zero values', async () => {
       // Test with zero values
       const input = {
         metadata: createMetadata(),
@@ -252,7 +273,7 @@ describe('Test Calculator', () => {
         ],
       };
 
-      const result = await calculateTestResultAsync(1, input as any, mockPlayer, requirementsRepo);
+      const result = await calculateTestResultAsync(1, input as any, mockPlayer, mockRequirementsRepo);
       expect(result.value).toBe(0);
       expect(result.passed).toBe(false); // Should fail with 0 distance
       expect(result.categoryRequirement).toBe(270); // Category A, M requirement
@@ -260,12 +281,12 @@ describe('Test Calculator', () => {
   });
 
   describe('all 20 tests', () => {
-    it('should successfully calculate all 20 test types (database-backed)', async () => {
+    it('should successfully calculate multiple test types', async () => {
       // Test 1: Driver
       let result = await calculateTestResultAsync(1, {
         metadata: createMetadata(),
-        shots: Array(6).fill({ shotNumber: 1, carryDistanceMeters: 250 }),
-      } as any, mockPlayer, requirementsRepo);
+        shots: Array(6).fill(null).map((_, i) => ({ shotNumber: i + 1, carryDistanceMeters: 250 })),
+      } as any, mockPlayer, mockRequirementsRepo);
       expect(result).toHaveProperty('value');
       expect(result).toHaveProperty('passed');
       expect(result).toHaveProperty('categoryRequirement');
@@ -274,21 +295,17 @@ describe('Test Calculator', () => {
       result = await calculateTestResultAsync(12, {
         metadata: createMetadata(),
         weightKg: 100,
-      } as any, mockPlayer, requirementsRepo);
+      } as any, mockPlayer, mockRequirementsRepo);
       expect(result.value).toBe(100);
       expect(result.categoryRequirement).toBe(140); // Category A, M requirement
 
       // Test 15: Putting 3m
       result = await calculateTestResultAsync(15, {
         metadata: createMetadata(),
-        putts: Array(10).fill({ puttNumber: 1, holed: true }),
-      } as any, mockPlayer, requirementsRepo);
+        putts: Array(10).fill(null).map((_, i) => ({ puttNumber: i + 1, holed: true })),
+      } as any, mockPlayer, mockRequirementsRepo);
       expect(result.value).toBe(100); // 100% success rate
       expect(result.categoryRequirement).toBe(90); // Category A, M requirement
     });
-  });
-
-  afterAll(async () => {
-    await prisma.$disconnect();
   });
 });

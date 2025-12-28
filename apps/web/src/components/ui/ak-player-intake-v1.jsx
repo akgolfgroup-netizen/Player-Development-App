@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { ClipboardList, Calendar, Target, TrendingUp, Clock, CheckCircle2, AlertCircle, ChevronRight, ChevronLeft, Save, MessageSquare, BarChart3, Dumbbell, Brain, Flag } from 'lucide-react';
+import { ClipboardList, Calendar, Target, TrendingUp, Clock, CheckCircle2, AlertCircle, ChevronRight, ChevronLeft, Save, MessageSquare, BarChart3, Dumbbell, Brain, Flag, Loader2 } from 'lucide-react';
 import { tokens } from '../design-tokens';
+import { useAuth } from '../../contexts/AuthContext';
+import apiClient from '../../services/apiClient';
 
 // Week 43 Test Results (would come from benchmark system)
 const sampleTestResults = {
@@ -100,7 +102,7 @@ const ProgressBar = ({ current, target, label }) => {
 };
 
 // Week 44 Intake Form Component
-const IntakeForm = ({ onComplete }) => {
+const IntakeForm = ({ onComplete, isSubmitting = false }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [formData, setFormData] = useState({
     // Season Review
@@ -664,10 +666,24 @@ const IntakeForm = ({ onComplete }) => {
         ) : (
           <button
             onClick={() => onComplete(formData)}
-            className="flex items-center gap-2 px-6 py-2 bg-forest-600 text-white rounded-lg font-medium hover:bg-forest-700 transition-all"
+            disabled={isSubmitting}
+            className={`flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-all ${
+              isSubmitting
+                ? 'bg-forest-400 text-white cursor-not-allowed'
+                : 'bg-forest-600 text-white hover:bg-forest-700'
+            }`}
           >
-            <Save className="w-4 h-4" />
-            Fullfør og lagre
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Sender inn...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                Fullfør og lagre
+              </>
+            )}
           </button>
         )}
       </div>
@@ -919,15 +935,104 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
   );
 };
 
+/**
+ * Transform frontend form data to backend API format
+ */
+const transformFormDataToAPI = (formData, playerId) => {
+  // Map form data to backend schema
+  return {
+    playerId,
+    background: {
+      yearsPlaying: parseInt(formData.tournamentsPlayed) || 0, // Approximate from tournaments
+      currentHandicap: parseFloat(formData.handicapEnd) || 20,
+      averageScore: parseFloat(formData.avgScore) || 80,
+      roundsPerYear: parseInt(formData.tournamentsPlayed) * 4 || 20, // Estimate rounds from tournaments
+      trainingHistory: formData.totalHours > 300 ? 'systematic' : formData.totalHours > 150 ? 'regular' : 'sporadic',
+    },
+    availability: {
+      hoursPerWeek: parseFloat(formData.weeklyHoursTarget) || 10,
+      preferredDays: [1, 2, 3, 4, 5], // Default weekdays
+      canTravelToFacility: true,
+      hasHomeEquipment: formData.simulatorHours > 0,
+    },
+    goals: {
+      primaryGoal: formData.tournamentGoals ? 'compete_tournaments' : 'lower_handicap',
+      targetHandicap: parseFloat(formData.handicapGoal) || undefined,
+      targetScore: parseFloat(formData.scoringGoal) || undefined,
+      timeframe: '12_months',
+      specificFocus: [formData.priorityArea1, formData.priorityArea2, formData.priorityArea3].filter(Boolean),
+    },
+    weaknesses: {
+      biggestFrustration: formData.biggestChallenge || 'Not specified',
+      problemAreas: [formData.focusArea, formData.testWeaknesses].filter(Boolean),
+      mentalChallenges: formData.mentalGoals ? [formData.mentalGoals] : [],
+    },
+    health: {
+      currentInjuries: [],
+      injuryHistory: [],
+      ageGroup: '25-35', // Default - would need to add age field to form
+    },
+    lifestyle: {
+      workSchedule: 'flexible',
+      stressLevel: 3,
+      sleepQuality: 4,
+      nutritionFocus: false,
+      physicalActivity: formData.physicalHours > 50 ? 'active' : 'moderate',
+    },
+    equipment: {
+      hasDriverSpeedMeasurement: formData.simulatorHours > 0,
+      recentClubFitting: false,
+      accessToTrackMan: formData.simulatorHours > 0,
+      accessToGym: formData.physicalHours > 0,
+      willingToInvest: 'moderate',
+    },
+    learning: {
+      preferredStyle: 'visual',
+      wantsDetailedExplanations: true,
+      prefersStructure: true,
+      motivationType: formData.tournamentGoals ? 'competition' : 'personal_growth',
+    },
+  };
+};
+
 // Main App Component
 export default function PlayerIntakeSystem() {
+  const { user } = useAuth();
   const [activeView, setActiveView] = useState('intake');
   const [intakeComplete, setIntakeComplete] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [intakeId, setIntakeId] = useState(null);
 
-  const handleIntakeComplete = () => {
-    // TODO: Submit intake data to backend API
-    setIntakeComplete(true);
-    setActiveView('followup');
+  const handleIntakeComplete = async (formData) => {
+    if (!user?.playerId) {
+      setSubmitError('Kunne ikke finne spillerprofil. Vennligst logg inn på nytt.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // Transform and submit intake data
+      const apiData = transformFormDataToAPI(formData, user.playerId);
+      const response = await apiClient.post('/intake', apiData);
+
+      if (response.data.success) {
+        setIntakeId(response.data.data.id);
+        setIntakeComplete(true);
+        setActiveView('followup');
+      } else {
+        setSubmitError(response.data.error?.message || 'Noe gikk galt ved innsending');
+      }
+    } catch (error) {
+      setSubmitError(
+        error.response?.data?.error?.message ||
+        'Kunne ikke sende inn skjemaet. Prøv igjen senere.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -972,6 +1077,17 @@ export default function PlayerIntakeSystem() {
           </button>
         </div>
 
+        {/* Error Message */}
+        {submitError && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-medium text-red-800">Feil ved innsending</h3>
+              <p className="text-sm text-red-600">{submitError}</p>
+            </div>
+          </div>
+        )}
+
         {/* Content */}
         {activeView === 'intake' ? (
           intakeComplete ? (
@@ -984,14 +1100,14 @@ export default function PlayerIntakeSystem() {
                 Takk for at du fylte ut sesongplanleggingen. Din trener vil gjennomgå svarene og ta kontakt.
               </p>
               <button
-                onClick={() => { setIntakeComplete(false); }}
+                onClick={() => { setIntakeComplete(false); setSubmitError(null); }}
                 className="text-forest-600 hover:underline"
               >
                 Se gjennom svarene
               </button>
             </div>
           ) : (
-            <IntakeForm onComplete={handleIntakeComplete} />
+            <IntakeForm onComplete={handleIntakeComplete} isSubmitting={isSubmitting} />
           )
         ) : (
           <FollowUpCheckIn weekNumber={46} />

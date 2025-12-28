@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import apiClient from '../../services/apiClient';
 
 /**
  * Plan Preview Component
@@ -12,8 +12,6 @@ import axios from 'axios';
  *         viewing → requesting_modifications → modification_requested
  *         viewing → rejecting → rejected
  */
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api/v1';
 
 export default function PlanPreview() {
   const { planId } = useParams();
@@ -70,12 +68,8 @@ export default function PlanPreview() {
   const loadPlan = async () => {
     setState('loading');
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(
-        `${API_BASE_URL}/training-plan/${planId}/full?includeSessionDetails=true`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+      const response = await apiClient.get(
+        `/training-plan/${planId}/full?includeSessionDetails=true`
       );
 
       if (response.data.success) {
@@ -83,10 +77,10 @@ export default function PlanPreview() {
         setState('viewing');
       }
     } catch (err) {
-      if (err.response?.status === 404 || err.response?.status === 403) {
+      if (err.status === 404 || err.status === 403) {
         setError({
-          code: err.response.data.error?.code || 'PLAN_NOT_FOUND',
-          message: err.response.data.error?.message || 'Training plan not found'
+          code: err.details?.code || 'PLAN_NOT_FOUND',
+          message: err.message || 'Training plan not found'
         });
         setState('error_not_found');
       } else {
@@ -103,21 +97,17 @@ export default function PlanPreview() {
   const handleAcceptPlan = async () => {
     setState('accepting');
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(
-        `${API_BASE_URL}/training-plan/${planId}/accept`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+      const response = await apiClient.put(
+        `/training-plan/${planId}/accept`,
+        {}
       );
 
       if (response.data.success) {
         setState('accepted');
       }
     } catch (err) {
-      if (err.response?.status === 400) {
-        alert(err.response.data.error?.message || 'Cannot accept plan in current status');
+      if (err.status === 400) {
+        alert(err.message || 'Cannot accept plan in current status');
         setState('viewing');
       } else {
         alert('Failed to accept plan. Please try again.');
@@ -130,13 +120,9 @@ export default function PlanPreview() {
   const handleRequestModifications = async () => {
     setState('requesting_modifications');
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        `${API_BASE_URL}/training-plan/${planId}/modification-request`,
-        modificationForm,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+      const response = await apiClient.post(
+        `/training-plan/${planId}/modification-request`,
+        modificationForm
       );
 
       if (response.data.success) {
@@ -153,13 +139,9 @@ export default function PlanPreview() {
   const handleRejectPlan = async () => {
     setState('rejecting');
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(
-        `${API_BASE_URL}/training-plan/${planId}/reject`,
-        rejectForm,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
+      const response = await apiClient.put(
+        `/training-plan/${planId}/reject`,
+        rejectForm
       );
 
       if (response.data.success) {

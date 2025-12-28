@@ -140,7 +140,12 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
   useEffect(() => {
     if (!apiAlerts) {
       setLoading(true);
-      fetch("/api/coach/alerts")
+      const token = localStorage.getItem('token');
+      fetch("/api/v1/coaches/me/alerts", {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
         .then((r) => {
           if (r.status === 403) {
             throw new Error("UPGRADE_REQUIRED");
@@ -148,8 +153,8 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
           return r.json();
         })
         .then((data) => {
-          if (data.alerts) {
-            setAlerts(data.alerts);
+          if (data.data?.alerts) {
+            setAlerts(data.data.alerts);
           }
         })
         .catch(() => {

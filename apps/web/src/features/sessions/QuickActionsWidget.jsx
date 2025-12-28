@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api/v1';
+import apiClient from '../../services/apiClient';
 
 export default function QuickActionsWidget({ planId }) {
   const navigate = useNavigate();
@@ -24,10 +22,8 @@ export default function QuickActionsWidget({ planId }) {
 
   const loadToday = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get(
-        `${API_BASE}/training-plan/${planId}/today`,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const { data } = await apiClient.get(
+        `/training-plan/${planId}/today`
       );
       if (data.data.hasAssignment) {
         setAssignment(data.data.assignment);
@@ -40,12 +36,10 @@ export default function QuickActionsWidget({ planId }) {
   const handleQuickAction = async (action) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       const today = new Date().toISOString().split('T')[0];
-      await axios.put(
-        `${API_BASE}/training-plan/${planId}/daily/${today}/quick-action`,
-        { action },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await apiClient.put(
+        `/training-plan/${planId}/daily/${today}/quick-action`,
+        { action }
       );
       loadToday();
     } catch (err) {
@@ -58,17 +52,15 @@ export default function QuickActionsWidget({ planId }) {
   const loadSubstitutes = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       const today = new Date().toISOString().split('T')[0];
-      const { data } = await axios.post(
-        `${API_BASE}/training-plan/${planId}/daily/${today}/substitute`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
+      const { data } = await apiClient.post(
+        `/training-plan/${planId}/daily/${today}/substitute`,
+        {}
       );
       setAlternatives(data.data.alternatives);
       setShowSubstitute(true);
     } catch (err) {
-      alert('Cannot substitute: ' + (err.response?.data?.error?.message || err.message));
+      alert('Cannot substitute: ' + (err.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }

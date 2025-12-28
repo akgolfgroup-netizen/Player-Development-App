@@ -216,7 +216,7 @@ export async function emailRoutes(app: FastifyInstance): Promise<void> {
 /**
  * Get sample data for template preview
  */
-function getTemplatePreviewData(template: EmailTemplate): Record<string, any> {
+function getTemplatePreviewData(template: EmailTemplate): Record<string, unknown> {
   const baseData = {
     firstName: 'John',
     email: 'john.doe@example.com',

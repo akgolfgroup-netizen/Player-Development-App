@@ -14,8 +14,9 @@
  * - Coaches are users, not evaluable entities
  */
 
-import React, { useState } from "react";
-import { Mail, CheckCircle, XCircle, UserCog } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Mail, CheckCircle, XCircle, UserCog, Loader2 } from "lucide-react";
+import apiClient from "../../services/apiClient";
 
 
 //////////////////////////////
@@ -28,16 +29,6 @@ type CoachAccount = {
   email: string;
   active: boolean;
 };
-
-//////////////////////////////
-// 2. MOCK DATA (TEMP)
-//////////////////////////////
-
-const MOCK_COACHES: CoachAccount[] = [
-  { id: "c1", name: "Thomas Berg", email: "thomas@akgolf.no", active: true },
-  { id: "c2", name: "Maria Hansen", email: "maria@akgolf.no", active: true },
-  { id: "c3", name: "Erik Larsen", email: "erik@akgolf.no", active: false },
-];
 
 //////////////////////////////
 // 3. AVATAR COMPONENT
@@ -71,21 +62,70 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 44 }) 
 // 4. COMPONENT
 //////////////////////////////
 
-interface AdminCoachManagementProps {
-  coaches?: CoachAccount[];
-}
+export default function AdminCoachManagement() {
+  const [coaches, setCoaches] = useState<CoachAccount[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-export default function AdminCoachManagement({ coaches: apiCoaches }: AdminCoachManagementProps = {}) {
-  const initialCoaches = apiCoaches || MOCK_COACHES;
-  const [coaches, setCoaches] = useState<CoachAccount[]>(initialCoaches);
+  const loadCoaches = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await apiClient.get('/coaches');
+      const coachList = data.data.coaches || data.data || [];
+      setCoaches(coachList.map((c: { id: string; firstName: string; lastName: string; user?: { email: string; isActive: boolean } }) => ({
+        id: c.id,
+        name: `${c.firstName} ${c.lastName}`,
+        email: c.user?.email || '',
+        active: c.user?.isActive ?? true,
+      })));
+      setError(null);
+    } catch (err) {
+      console.error('Failed to load coaches:', err);
+      setError('Kunne ikke laste trenere');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const toggleActive = (id: string) => {
-    setCoaches((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, active: !c.active } : c))
-    );
+  useEffect(() => {
+    loadCoaches();
+  }, [loadCoaches]);
+
+  const toggleActive = async (id: string) => {
+    const coach = coaches.find(c => c.id === id);
+    if (!coach) return;
+
+    try {
+      await apiClient.patch(`/coaches/${id}`, { isActive: !coach.active });
+      setCoaches((prev) =>
+        prev.map((c) => (c.id === id ? { ...c, active: !c.active } : c))
+      );
+    } catch (err) {
+      console.error('Failed to toggle coach status:', err);
+      alert('Kunne ikke endre status');
+    }
   };
 
   const activeCount = coaches.filter(c => c.active).length;
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <Loader2 size={32} className="animate-spin" color="var(--accent)" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '24px', textAlign: 'center' }}>
+        <p style={{ color: 'var(--error)' }}>{error}</p>
+        <button onClick={loadCoaches} style={{ marginTop: '12px', padding: '8px 16px' }}>
+          Prøv igjen
+        </button>
+      </div>
+    );
+  }
 
   return (
     <section

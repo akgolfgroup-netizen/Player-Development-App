@@ -15,7 +15,7 @@
  * - No visibility into who is affected
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToggleLeft, ToggleRight, Settings } from "lucide-react";
 
 
@@ -30,10 +30,10 @@ type FeatureFlag = {
 };
 
 //////////////////////////////
-// 2. MOCK DATA (TEMP)
+// 2. DEFAULT FLAGS (used when no API)
 //////////////////////////////
 
-const MOCK_FLAGS: FeatureFlag[] = [
+const DEFAULT_FLAGS: FeatureFlag[] = [
   {
     key: "proof_enabled",
     description: "Aktiver PROOF-visning for spillere",
@@ -65,8 +65,34 @@ interface AdminFeatureFlagsEditorProps {
 }
 
 export default function AdminFeatureFlagsEditor({ flags: apiFlags }: AdminFeatureFlagsEditorProps = {}) {
-  const initialFlags = apiFlags || MOCK_FLAGS;
-  const [flags, setFlags] = useState<FeatureFlag[]>(initialFlags);
+  const [flags, setFlags] = useState<FeatureFlag[]>(apiFlags || DEFAULT_FLAGS);
+  const [loading, setLoading] = useState(!apiFlags);
+
+  // Fetch feature flags from API
+  useEffect(() => {
+    if (apiFlags) return;
+
+    const fetchFlags = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/v1/admin/feature-flags', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data?.flags) {
+            setFlags(data.data.flags);
+          }
+        }
+      } catch {
+        // Keep default flags on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFlags();
+  }, [apiFlags]);
 
   const toggleFlag = (key: string) => {
     setFlags((prev) =>

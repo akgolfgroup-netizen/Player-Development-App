@@ -1,4 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { Prisma, TrainingSession, PlayerGoal, PlayerBadge, DailyTrainingAssignment } from '@prisma/client';
 import prisma from '../../../core/db/prisma';
 import {
   generatePlayerReportPDF,
@@ -11,6 +12,15 @@ import {
   TrainingSessionExport,
 } from '../../../services/export';
 import { logger } from '../../../utils/logger';
+
+// Type definitions for query results with includes
+type TestResultWithIncludes = Prisma.TestResultGetPayload<{
+  include: { player: true; test: true };
+}>;
+
+type TrainingSessionWithPlayer = Prisma.TrainingSessionGetPayload<{
+  include: { player: true };
+}>;
 
 /**
  * Export API Routes
@@ -164,7 +174,7 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
     const { playerId, startDate, endDate, testId } = request.query;
 
     // Build filter
-    const where: any = {};
+    const where: Prisma.TestResultWhereInput = {};
 
     if (user.role === 'player') {
       where.playerId = user.playerId;
@@ -239,7 +249,7 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
     const user = request.user as { role: string; tenantId: string; playerId?: string };
     const { playerId, startDate, endDate } = request.query;
 
-    const where: any = {};
+    const where: Prisma.TrainingSessionWhereInput = {};
 
     if (user.role === 'player') {
       where.playerId = user.playerId;

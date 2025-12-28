@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import { tokens } from '../../design-tokens';
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api/v1';
+import apiClient from '../../services/apiClient';
 
 export default function ModificationRequestDashboard() {
   const [requests, setRequests] = useState([]);
@@ -15,10 +13,8 @@ export default function ModificationRequestDashboard() {
   const loadRequests = useCallback(async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get(
-        `${API_BASE}/training-plan/modification-requests?status=${filter}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const { data } = await apiClient.get(
+        `/training-plan/modification-requests?status=${filter}`
       );
       setRequests(data.data.requests);
     } catch (err) {
@@ -34,17 +30,15 @@ export default function ModificationRequestDashboard() {
 
   const handleRespond = async (requestId) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(
-        `${API_BASE}/training-plan/modification-requests/${requestId}/respond`,
-        { response, status: responseStatus },
-        { headers: { Authorization: `Bearer ${token}` } }
+      await apiClient.put(
+        `/training-plan/modification-requests/${requestId}/respond`,
+        { response, status: responseStatus }
       );
       setRespondingTo(null);
       setResponse('');
       loadRequests();
     } catch (err) {
-      alert('Failed to send response: ' + (err.response?.data?.error?.message || err.message));
+      alert('Failed to send response: ' + (err.message || 'Unknown error'));
     }
   };
 

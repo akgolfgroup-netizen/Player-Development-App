@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ClipboardList,
   Search,
@@ -6,11 +6,10 @@ import {
   User,
   ChevronRight,
   CheckCircle,
-  FileText
+  FileText,
+  Loader2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../ui/primitives/Card';
-import Button from '../../ui/primitives/Button';
 
 interface Player {
   id: string;
@@ -31,72 +30,95 @@ interface Group {
   planUpdated?: string;
 }
 
-const mockPlayers: Player[] = [
-  { id: '1', name: 'Emma Larsen', category: 'A', hcp: 4.2, hasActivePlan: true, planUpdated: '2025-01-15', nextSession: '2025-01-20', weeksInPlan: 8 },
-  { id: '2', name: 'Thomas Berg', category: 'B', hcp: 12.4, hasActivePlan: true, planUpdated: '2025-01-10', nextSession: '2025-01-22', weeksInPlan: 12 },
-  { id: '3', name: 'Sofie Andersen', category: 'A', hcp: 2.8, hasActivePlan: true, planUpdated: '2025-01-18', nextSession: '2025-01-21', weeksInPlan: 16 },
-  { id: '4', name: 'Jonas Pedersen', category: 'B', hcp: 16.8, hasActivePlan: false },
-  { id: '5', name: 'Kristine Olsen', category: 'A', hcp: 7.5, hasActivePlan: true, planUpdated: '2025-01-12', nextSession: '2025-01-23', weeksInPlan: 6 },
-  { id: '6', name: 'Erik Hansen', category: 'A', hcp: 5.5, hasActivePlan: true, planUpdated: '2025-01-14', nextSession: '2025-01-20', weeksInPlan: 10 },
-  { id: '7', name: 'Mia Kristiansen', category: 'C', hcp: 28.5, hasActivePlan: false },
-  { id: '8', name: 'Lars Johansen', category: 'A', hcp: 6.2, hasActivePlan: true, planUpdated: '2025-01-08', weeksInPlan: 8 },
-];
-
-const mockGroups: Group[] = [
-  { id: 'g1', name: 'WANG Toppidrett', memberCount: 12, hasGroupPlan: true, planUpdated: '2025-01-16' },
-  { id: 'g2', name: 'Team Junior', memberCount: 8, hasGroupPlan: true, planUpdated: '2025-01-14' },
-  { id: 'g3', name: 'Turneringsspillere', memberCount: 15, hasGroupPlan: false },
-  { id: 'g4', name: 'Nybegynnere 2025', memberCount: 6, hasGroupPlan: true, planUpdated: '2025-01-12' },
-];
-
 export const CoachPlanningHub: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'players' | 'groups'>('players');
   const [searchQuery, setSearchQuery] = useState('');
   const [filterPlan, setFilterPlan] = useState<'all' | 'with' | 'without'>('all');
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch players and groups from API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = { 'Authorization': `Bearer ${token}` };
+
+        // Fetch coach's players with their plan status
+        const playersRes = await fetch('/api/v1/coaches/me/players', { headers });
+        if (playersRes.ok) {
+          const playersData = await playersRes.json();
+          const mappedPlayers: Player[] = (playersData.data || []).map((p: any) => ({
+            id: p.id,
+            name: p.name || `${p.firstName} ${p.lastName}`,
+            category: p.category || 'C',
+            hcp: p.handicap ? Number(p.handicap) : 54,
+            hasActivePlan: !!p.hasActivePlan,
+            planUpdated: p.planUpdated,
+            nextSession: p.nextSession,
+            weeksInPlan: p.weeksInPlan,
+          }));
+          setPlayers(mappedPlayers);
+        }
+
+        // Fetch groups (ChatGroups with type 'team' for now)
+        // Groups feature is planned but not yet implemented
+        // Show empty state until groups API is available
+        setGroups([]);
+      } catch (error) {
+        console.error('Error fetching planning data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filteredPlayers = useMemo(() => {
-    let players = [...mockPlayers];
+    let filtered = [...players];
 
     if (searchQuery) {
-      players = players.filter(p =>
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     if (filterPlan === 'with') {
-      players = players.filter(p => p.hasActivePlan);
+      filtered = filtered.filter(p => p.hasActivePlan);
     } else if (filterPlan === 'without') {
-      players = players.filter(p => !p.hasActivePlan);
+      filtered = filtered.filter(p => !p.hasActivePlan);
     }
 
-    return players;
-  }, [searchQuery, filterPlan]);
+    return filtered;
+  }, [players, searchQuery, filterPlan]);
 
   const filteredGroups = useMemo(() => {
-    let groups = [...mockGroups];
+    let filtered = [...groups];
 
     if (searchQuery) {
-      groups = groups.filter(g =>
+      filtered = filtered.filter(g =>
         g.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     if (filterPlan === 'with') {
-      groups = groups.filter(g => g.hasGroupPlan);
+      filtered = filtered.filter(g => g.hasGroupPlan);
     } else if (filterPlan === 'without') {
-      groups = groups.filter(g => !g.hasGroupPlan);
+      filtered = filtered.filter(g => !g.hasGroupPlan);
     }
 
-    return groups;
-  }, [searchQuery, filterPlan]);
+    return filtered;
+  }, [groups, searchQuery, filterPlan]);
 
   const stats = useMemo(() => ({
-    playersWithPlan: mockPlayers.filter(p => p.hasActivePlan).length,
-    playersWithoutPlan: mockPlayers.filter(p => !p.hasActivePlan).length,
-    groupsWithPlan: mockGroups.filter(g => g.hasGroupPlan).length,
-    groupsWithoutPlan: mockGroups.filter(g => !g.hasGroupPlan).length
-  }), []);
+    playersWithPlan: players.filter(p => p.hasActivePlan).length,
+    playersWithoutPlan: players.filter(p => !p.hasActivePlan).length,
+    groupsWithPlan: groups.filter(g => g.hasGroupPlan).length,
+    groupsWithoutPlan: groups.filter(g => !g.hasGroupPlan).length
+  }), [players, groups]);
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -112,6 +134,20 @@ export const CoachPlanningHub: React.FC = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
   };
+
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: 'var(--bg-secondary)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Loader2 size={40} color={'var(--accent)'} style={{ animation: 'spin 1s linear infinite' }} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
@@ -263,7 +299,7 @@ export const CoachPlanningHub: React.FC = () => {
           }}
         >
           <User size={16} />
-          Spillere ({mockPlayers.length})
+          Spillere ({players.length})
         </button>
         <button
           onClick={() => setActiveTab('groups')}
@@ -283,7 +319,7 @@ export const CoachPlanningHub: React.FC = () => {
           }}
         >
           <Users size={16} />
-          Grupper ({mockGroups.length})
+          Grupper ({groups.length})
         </button>
       </div>
 

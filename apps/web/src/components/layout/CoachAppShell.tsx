@@ -56,10 +56,15 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
   useEffect(() => {
     const fetchAlerts = async () => {
       try {
-        const response = await fetch('/api/v1/coach/alerts?unread=true');
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/v1/coaches/me/alerts?unread=true', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
-          setUnreadAlerts(data.alerts?.length || 0);
+          setUnreadAlerts(data.data?.alerts?.length || 0);
         }
       } catch (error) {
         // Silent fail - alerts are non-critical

@@ -163,7 +163,13 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
   const dismissAlert = async (alertId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      await fetch(`/api/v1/coach/alerts/${alertId}/dismiss`, { method: 'PUT' });
+      const token = localStorage.getItem('token');
+      await fetch(`/api/v1/coaches/alerts/${alertId}/dismiss`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       setDismissedIds(new Set([...dismissedIds, alertId]));
     } catch (error) {
       console.error('Failed to dismiss alert:', error);

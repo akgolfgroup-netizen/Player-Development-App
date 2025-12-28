@@ -1,5 +1,6 @@
 import React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { captureException } from '../../utils/errorReporter';
 
 /**
  * Feature-level Error Boundary
@@ -37,15 +38,16 @@ class FeatureErrorBoundary extends React.Component {
       onError(error, errorInfo);
     }
 
-    // TODO: Send to error tracking service
-    // if (window.Sentry) {
-    //   window.Sentry.captureException(error, {
-    //     contexts: {
-    //       react: { componentStack: errorInfo.componentStack },
-    //       feature: { name: featureName }
-    //     }
-    //   });
-    // }
+    // Send to error tracking service (Sentry)
+    captureException(error, {
+      source: 'FeatureErrorBoundary',
+      action: 'feature_error',
+      extra: {
+        componentStack: errorInfo?.componentStack,
+        featureName: featureName || 'unknown',
+        errorCount: this.state.errorCount + 1,
+      },
+    });
   }
 
   handleReset = () => {

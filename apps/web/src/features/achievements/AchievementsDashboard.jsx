@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api/v1';
+import apiClient from '../../services/apiClient';
 
 export default function AchievementsDashboard({ planId }) {
   const [data, setData] = useState(null);
@@ -16,10 +14,8 @@ export default function AchievementsDashboard({ planId }) {
   const loadAchievements = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const { data: response } = await axios.get(
-        `${API_BASE}/training-plan/${planId}/achievements`,
-        { headers: { Authorization: `Bearer ${token}` } }
+      const { data: response } = await apiClient.get(
+        `/training-plan/${planId}/achievements`
       );
       setData(response.data);
     } catch (err) {

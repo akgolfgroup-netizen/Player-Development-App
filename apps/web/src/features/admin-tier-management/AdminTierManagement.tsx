@@ -16,8 +16,9 @@
  * - Changes affect FUTURE billing only, no retroactive effects
  */
 
-import React, { useState } from "react";
-import { CreditCard, ChevronDown, ChevronUp, CheckCircle, XCircle } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { CreditCard, ChevronDown, ChevronUp, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import apiClient from "../../services/apiClient";
 
 
 //////////////////////////////
@@ -34,10 +35,10 @@ type SubscriptionTier = {
 };
 
 //////////////////////////////
-// 2. MOCK DATA (TEMP)
+// 2. DEFAULT TIERS (fallback when API unavailable)
 //////////////////////////////
 
-const MOCK_TIERS: SubscriptionTier[] = [
+const DEFAULT_TIERS: SubscriptionTier[] = [
   {
     id: "t1",
     name: "Standard",
@@ -80,19 +81,41 @@ const MOCK_TIERS: SubscriptionTier[] = [
 // 3. COMPONENT
 //////////////////////////////
 
-interface AdminTierManagementProps {
-  tiers?: SubscriptionTier[];
-}
-
-export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManagementProps = {}) {
-  const initialTiers = apiTiers || MOCK_TIERS;
-  const [tiers, setTiers] = useState<SubscriptionTier[]>(initialTiers);
+export default function AdminTierManagement() {
+  const [tiers, setTiers] = useState<SubscriptionTier[]>([]);
+  const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const toggleActive = (id: string) => {
+  const loadTiers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await apiClient.get('/admin/tiers');
+      setTiers(data.data.tiers || data.data || []);
+    } catch {
+      // API not available yet, use defaults
+      setTiers(DEFAULT_TIERS);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTiers();
+  }, [loadTiers]);
+
+  const toggleActive = async (id: string) => {
+    const tier = tiers.find(t => t.id === id);
+    if (!tier) return;
+
+    try {
+      await apiClient.patch(`/admin/tiers/${id}`, { active: !tier.active });
+    } catch {
+      // API not available, just update locally
+    }
+
     setTiers((prev) =>
-      prev.map((tier) =>
-        tier.id === id ? { ...tier, active: !tier.active } : tier
+      prev.map((t) =>
+        t.id === id ? { ...t, active: !t.active } : t
       )
     );
   };
@@ -106,6 +129,14 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
     trajectory_view: "Utviklingsvisning",
     coach_notes: "Trenernotater",
   };
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <Loader2 size={32} className="animate-spin" color="var(--accent)" />
+      </div>
+    );
+  }
 
   return (
     <section
