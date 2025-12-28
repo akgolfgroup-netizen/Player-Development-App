@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Video, Play, Plus, Calendar,
   Search, Upload, CheckCircle, AlertCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 
@@ -96,7 +97,7 @@ const VideoCard = ({ video, onClick }) => (
   <div
     onClick={() => onClick(video)}
     style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
       overflow: 'hidden',
       cursor: 'pointer',
@@ -115,19 +116,19 @@ const VideoCard = ({ video, onClick }) => (
     {/* Thumbnail */}
     <div style={{
       position: 'relative',
-      backgroundColor: tokens.colors.charcoal,
+      backgroundColor: 'var(--text-primary)',
       height: '140px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      <Video size={40} color={tokens.colors.steel} />
+      <Video size={40} color={'var(--text-secondary)'} />
       <div style={{
         position: 'absolute',
         bottom: '8px',
         right: '8px',
         backgroundColor: 'rgba(0,0,0,0.7)',
-        color: tokens.colors.white,
+        color: 'var(--bg-primary)',
         padding: '2px 6px',
         borderRadius: '4px',
         fontSize: '11px',
@@ -148,7 +149,7 @@ const VideoCard = ({ video, onClick }) => (
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Play size={18} color={tokens.colors.charcoal} fill={tokens.colors.charcoal} />
+        <Play size={18} color={'var(--text-primary)'} fill={'var(--text-primary)'} />
       </div>
     </div>
 
@@ -165,20 +166,20 @@ const VideoCard = ({ video, onClick }) => (
           fontWeight: 500,
           padding: '2px 6px',
           borderRadius: '4px',
-          backgroundColor: `${tokens.colors.primary}15`,
-          color: tokens.colors.primary,
+          backgroundColor: `${'var(--accent)'}15`,
+          color: 'var(--accent)',
         }}>
           {video.category}
         </span>
         {video.verified && (
-          <CheckCircle size={14} color={tokens.colors.success} />
+          <CheckCircle size={14} color={'var(--success)'} />
         )}
       </div>
 
       <h4 style={{
         fontSize: '14px',
         fontWeight: 600,
-        color: tokens.colors.charcoal,
+        color: 'var(--text-primary)',
         margin: '0 0 4px 0',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -192,7 +193,7 @@ const VideoCard = ({ video, onClick }) => (
         alignItems: 'center',
         gap: '4px',
         fontSize: '11px',
-        color: tokens.colors.steel,
+        color: 'var(--text-secondary)',
       }}>
         <Calendar size={10} />
         {new Date(video.date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
@@ -202,10 +203,10 @@ const VideoCard = ({ video, onClick }) => (
         <div style={{
           marginTop: '8px',
           padding: '8px',
-          backgroundColor: `${tokens.colors.success}10`,
+          backgroundColor: `${'var(--success)'}10`,
           borderRadius: '6px',
           fontSize: '11px',
-          color: tokens.colors.success,
+          color: 'var(--success)',
         }}>
           💬 {video.coachNote}
         </div>
@@ -220,9 +221,9 @@ const VideoCard = ({ video, onClick }) => (
 
 const UploadCard = () => (
   <div style={{
-    backgroundColor: tokens.colors.white,
+    backgroundColor: 'var(--bg-primary)',
     borderRadius: '14px',
-    border: `2px dashed ${tokens.colors.mist}`,
+    border: `2px dashed ${'var(--border-default)'}`,
     height: '100%',
     minHeight: '200px',
     display: 'flex',
@@ -236,24 +237,24 @@ const UploadCard = () => (
       width: '48px',
       height: '48px',
       borderRadius: '50%',
-      backgroundColor: `${tokens.colors.primary}15`,
+      backgroundColor: `${'var(--accent)'}15`,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: '12px',
     }}>
-      <Upload size={24} color={tokens.colors.primary} />
+      <Upload size={24} color={'var(--accent)'} />
     </div>
     <span style={{
       fontSize: '14px',
       fontWeight: 500,
-      color: tokens.colors.charcoal,
+      color: 'var(--text-primary)',
     }}>
       Last opp video
     </span>
     <span style={{
       fontSize: '12px',
-      color: tokens.colors.steel,
+      color: 'var(--text-secondary)',
       marginTop: '4px',
     }}>
       MP4, MOV (maks 100MB)
@@ -266,11 +267,17 @@ const UploadCard = () => (
 // ============================================================================
 
 const BevisContainer = () => {
+  const navigate = useNavigate();
   const [categoryFilter, setCategoryFilter] = useState('Alle');
   const [searchQuery, setSearchQuery] = useState('');
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Handle video click - navigate to video analysis page
+  const handleVideoClick = (video) => {
+    navigate(`/videos/${video.id}/analyze`, { state: { video } });
+  };
 
   // Fetch video proofs from API
   useEffect(() => {
@@ -305,24 +312,24 @@ const BevisContainer = () => {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: tokens.colors.snow }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-secondary)' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{
             width: 48, height: 48,
-            border: `4px solid ${tokens.colors.primary}20`,
-            borderTop: `4px solid ${tokens.colors.primary}`,
+            border: `4px solid ${'var(--accent)'}20`,
+            borderTop: `4px solid ${'var(--accent)'}`,
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
             margin: '0 auto 16px'
           }} />
-          <p style={{ fontSize: '15px', color: tokens.colors.steel }}>Laster videoer...</p>
+          <p style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>Laster videoer...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Videobevis"
         subtitle="Dokumenter din fremgang"
@@ -337,41 +344,41 @@ const BevisContainer = () => {
           marginBottom: '24px',
         }}>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
               {videos.length}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Totalt</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Totalt</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
               {verifiedCount}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Verifisert</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Verifisert</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
               {videos.filter((v) => v.coachNote).length}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Med feedback</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Med feedback</div>
           </div>
           {error && (
             <div style={{
-              backgroundColor: `${tokens.colors.error}10`,
+              backgroundColor: `${'var(--error)'}10`,
               borderRadius: '12px',
               padding: '14px',
               gridColumn: '1 / -1',
@@ -379,8 +386,8 @@ const BevisContainer = () => {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <AlertCircle size={16} color={tokens.colors.error} />
-              <span style={{ fontSize: '12px', color: tokens.colors.error }}>
+              <AlertCircle size={16} color={'var(--error)'} />
+              <span style={{ fontSize: '12px', color: 'var(--error)' }}>
                 {error} (viser demo-data)
               </span>
             </div>
@@ -393,12 +400,12 @@ const BevisContainer = () => {
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '10px',
             padding: '10px 14px',
             marginBottom: '12px',
           }}>
-            <Search size={18} color={tokens.colors.steel} />
+            <Search size={18} color={'var(--text-secondary)'} />
             <input
               type="text"
               placeholder="Sok i videoer..."
@@ -409,7 +416,7 @@ const BevisContainer = () => {
                 border: 'none',
                 outline: 'none',
                 fontSize: '14px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
               }}
             />
           </div>
@@ -430,8 +437,8 @@ const BevisContainer = () => {
                     padding: '8px 14px',
                     borderRadius: '8px',
                     border: 'none',
-                    backgroundColor: categoryFilter === cat ? tokens.colors.primary : tokens.colors.white,
-                    color: categoryFilter === cat ? tokens.colors.white : tokens.colors.charcoal,
+                    backgroundColor: categoryFilter === cat ? 'var(--accent)' : 'var(--bg-primary)',
+                    color: categoryFilter === cat ? 'var(--bg-primary)' : 'var(--text-primary)',
                     fontSize: '13px',
                     fontWeight: 500,
                     cursor: 'pointer',
@@ -451,8 +458,8 @@ const BevisContainer = () => {
                 padding: '10px 16px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -475,21 +482,21 @@ const BevisContainer = () => {
             <VideoCard
               key={video.id}
               video={video}
-              onClick={() => { /* TODO: Open video detail/player */ }}
+              onClick={handleVideoClick}
             />
           ))}
         </div>
 
         {filteredVideos.length === 0 && (
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '14px',
             padding: '40px',
             textAlign: 'center',
             marginTop: '20px',
           }}>
-            <Video size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-            <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+            <Video size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
               Ingen videoer funnet
             </p>
           </div>

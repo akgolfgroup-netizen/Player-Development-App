@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Plus, Clock, Target, Dumbbell, Brain,
-  Star, Save
+  Star, Save, CheckCircle, AlertCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
+import { sessionsAPI } from '../../services/api';
 
 // ============================================================================
 // MOCK DATA
 // ============================================================================
 
 const SESSION_TYPES = [
-  { id: 'technical', label: 'Teknikk', icon: Target, color: tokens.colors.primary },
-  { id: 'short_game', label: 'Kortspill', icon: Target, color: tokens.colors.success },
-  { id: 'physical', label: 'Fysisk', icon: Dumbbell, color: tokens.colors.error },
-  { id: 'mental', label: 'Mental', icon: Brain, color: tokens.colors.gold },
-  { id: 'round', label: 'Runde', icon: Target, color: tokens.colors.charcoal },
+  { id: 'technical', label: 'Teknikk', icon: Target, color: 'var(--accent)' },
+  { id: 'short_game', label: 'Kortspill', icon: Target, color: 'var(--success)' },
+  { id: 'physical', label: 'Fysisk', icon: Dumbbell, color: 'var(--error)' },
+  { id: 'mental', label: 'Mental', icon: Brain, color: 'var(--achievement)' },
+  { id: 'round', label: 'Runde', icon: Target, color: 'var(--text-primary)' },
 ];
 
 const QUICK_EXERCISES = [
@@ -83,7 +85,7 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
             padding: '16px 12px',
             borderRadius: '12px',
             border: isSelected ? `2px solid ${type.color}` : '2px solid transparent',
-            backgroundColor: isSelected ? `${type.color}15` : tokens.colors.white,
+            backgroundColor: isSelected ? `${type.color}15` : 'var(--bg-primary)',
             cursor: 'pointer',
             transition: 'all 0.2s',
           }}
@@ -97,12 +99,12 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-            <Icon size={20} color={isSelected ? tokens.colors.white : type.color} />
+            <Icon size={20} color={isSelected ? 'var(--bg-primary)' : type.color} />
           </div>
           <span style={{
             fontSize: '12px',
             fontWeight: 500,
-            color: isSelected ? type.color : tokens.colors.charcoal,
+            color: isSelected ? type.color : 'var(--text-primary)',
           }}>
             {type.label}
           </span>
@@ -123,7 +125,7 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
       padding: '16px',
       marginBottom: '20px',
@@ -131,7 +133,7 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
       <h3 style={{
         fontSize: '14px',
         fontWeight: 600,
-        color: tokens.colors.charcoal,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
       }}>
         Hurtiglogg
@@ -144,9 +146,9 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
             style={{
               padding: '10px 14px',
               borderRadius: '8px',
-              border: `1px solid ${tokens.colors.mist}`,
-              backgroundColor: tokens.colors.snow,
-              color: tokens.colors.charcoal,
+              border: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -156,15 +158,15 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
               transition: 'all 0.2s',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = tokens.colors.mist;
+              e.currentTarget.style.backgroundColor = 'var(--border-default)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = tokens.colors.snow;
+              e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
             }}
           >
             <Plus size={14} />
             {exercise.name}
-            <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
               ({exercise.duration} min)
             </span>
           </button>
@@ -178,7 +180,7 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
 // LOG FORM
 // ============================================================================
 
-const LogForm = ({ sessionType, onSubmit }) => {
+const LogForm = ({ sessionType, onSubmit, saving = false }) => {
   const [formData, setFormData] = useState({
     name: '',
     duration: 60,
@@ -200,7 +202,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit} style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
       padding: '20px',
       marginBottom: '20px',
@@ -208,7 +210,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
       <h3 style={{
         fontSize: '15px',
         fontWeight: 600,
-        color: tokens.colors.charcoal,
+        color: 'var(--text-primary)',
         marginBottom: '16px',
       }}>
         Logg okt
@@ -220,7 +222,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           marginBottom: '6px',
         }}>
           Navn pa okten
@@ -234,7 +236,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
             width: '100%',
             padding: '12px 14px',
             borderRadius: '8px',
-            border: `1px solid ${tokens.colors.mist}`,
+            border: '1px solid var(--border-default)',
             fontSize: '14px',
             outline: 'none',
           }}
@@ -253,13 +255,13 @@ const LogForm = ({ sessionType, onSubmit }) => {
             display: 'block',
             fontSize: '13px',
             fontWeight: 500,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginBottom: '6px',
           }}>
             Varighet (minutter)
           </label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={18} color={tokens.colors.steel} />
+            <Clock size={18} color={'var(--text-secondary)'} />
             <input
               type="number"
               value={formData.duration}
@@ -270,7 +272,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
                 flex: 1,
                 padding: '12px 14px',
                 borderRadius: '8px',
-                border: `1px solid ${tokens.colors.mist}`,
+                border: '1px solid var(--border-default)',
                 fontSize: '14px',
                 outline: 'none',
               }}
@@ -283,7 +285,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
             display: 'block',
             fontSize: '13px',
             fontWeight: 500,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginBottom: '6px',
           }}>
             Rating
@@ -304,8 +306,8 @@ const LogForm = ({ sessionType, onSubmit }) => {
               >
                 <Star
                   size={24}
-                  fill={star <= formData.rating ? tokens.colors.gold : 'none'}
-                  color={star <= formData.rating ? tokens.colors.gold : tokens.colors.mist}
+                  fill={star <= formData.rating ? 'var(--achievement)' : 'none'}
+                  color={star <= formData.rating ? 'var(--achievement)' : 'var(--border-default)'}
                 />
               </button>
             ))}
@@ -319,7 +321,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           marginBottom: '6px',
         }}>
           Energiniva
@@ -335,14 +337,14 @@ const LogForm = ({ sessionType, onSubmit }) => {
                 padding: '10px',
                 borderRadius: '8px',
                 border: formData.energyLevel === level
-                  ? `2px solid ${tokens.colors.primary}`
-                  : `1px solid ${tokens.colors.mist}`,
+                  ? '2px solid var(--accent)'
+                  : '1px solid var(--border-default)',
                 backgroundColor: formData.energyLevel === level
-                  ? `${tokens.colors.primary}15`
-                  : tokens.colors.white,
+                  ? 'rgba(var(--accent-rgb), 0.15)'
+                  : 'var(--bg-primary)',
                 color: formData.energyLevel === level
-                  ? tokens.colors.primary
-                  : tokens.colors.charcoal,
+                  ? 'var(--accent)'
+                  : 'var(--text-primary)',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -356,7 +358,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
           display: 'flex',
           justifyContent: 'space-between',
           fontSize: '11px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
           marginTop: '4px',
         }}>
           <span>Lav</span>
@@ -370,7 +372,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           marginBottom: '6px',
         }}>
           Notater
@@ -384,7 +386,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
             width: '100%',
             padding: '12px 14px',
             borderRadius: '8px',
-            border: `1px solid ${tokens.colors.mist}`,
+            border: '1px solid var(--border-default)',
             fontSize: '14px',
             outline: 'none',
             resize: 'vertical',
@@ -399,7 +401,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           marginBottom: '6px',
         }}>
           Prestasjoner (valgfritt)
@@ -413,7 +415,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
             width: '100%',
             padding: '12px 14px',
             borderRadius: '8px',
-            border: `1px solid ${tokens.colors.mist}`,
+            border: '1px solid var(--border-default)',
             fontSize: '14px',
             outline: 'none',
           }}
@@ -423,6 +425,7 @@ const LogForm = ({ sessionType, onSubmit }) => {
       {/* Submit Button */}
       <button
         type="submit"
+        disabled={saving}
         style={{
           width: '100%',
           display: 'flex',
@@ -432,15 +435,16 @@ const LogForm = ({ sessionType, onSubmit }) => {
           padding: '14px',
           borderRadius: '10px',
           border: 'none',
-          backgroundColor: tokens.colors.primary,
-          color: tokens.colors.white,
+          backgroundColor: saving ? 'var(--text-secondary)' : 'var(--accent)',
+          color: 'var(--bg-primary)',
           fontSize: '15px',
           fontWeight: 600,
-          cursor: 'pointer',
+          cursor: saving ? 'not-allowed' : 'pointer',
+          opacity: saving ? 0.7 : 1,
         }}
       >
         <Save size={18} />
-        Lagre okt
+        {saving ? 'Lagrer...' : 'Lagre økt'}
       </button>
     </form>
   );
@@ -452,14 +456,14 @@ const LogForm = ({ sessionType, onSubmit }) => {
 
 const RecentLogs = ({ logs }) => (
   <div style={{
-    backgroundColor: tokens.colors.white,
+    backgroundColor: 'var(--bg-primary)',
     borderRadius: '14px',
     padding: '16px',
   }}>
     <h3 style={{
       fontSize: '14px',
       fontWeight: 600,
-      color: tokens.colors.charcoal,
+      color: 'var(--text-primary)',
       marginBottom: '12px',
     }}>
       Siste loggforinger
@@ -478,27 +482,27 @@ const RecentLogs = ({ logs }) => (
               gap: '12px',
               padding: '10px',
               borderRadius: '8px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
             }}
           >
             <div style={{
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: `${typeConfig?.color || tokens.colors.primary}15`,
+              backgroundColor: `${typeConfig?.color || 'var(--accent)'}15`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <Icon size={18} color={typeConfig?.color || tokens.colors.primary} />
+              <Icon size={18} color={typeConfig?.color || 'var(--accent)'} />
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.charcoal }}>
+              <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
                 {log.name}
               </div>
               <div style={{
                 fontSize: '11px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
@@ -513,8 +517,8 @@ const RecentLogs = ({ logs }) => (
                 <Star
                   key={star}
                   size={12}
-                  fill={star <= log.rating ? tokens.colors.gold : 'none'}
-                  color={star <= log.rating ? tokens.colors.gold : tokens.colors.mist}
+                  fill={star <= log.rating ? 'var(--achievement)' : 'none'}
+                  color={star <= log.rating ? 'var(--achievement)' : 'var(--border-default)'}
                 />
               ))}
             </div>
@@ -530,19 +534,55 @@ const RecentLogs = ({ logs }) => (
 // ============================================================================
 
 const LoggTreningContainer = () => {
+  const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(null); // 'success' | 'error' | null
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleQuickLog = (exercise) => {
     setSelectedType(exercise.type);
-    // TODO: Pre-fill the form with exercise data
   };
 
-  const handleSubmit = () => {
-    // TODO: Save to backend API
+  const handleSubmit = async (formData) => {
+    setSaving(true);
+    setSaveStatus(null);
+    setErrorMessage('');
+
+    try {
+      // Map form data to session API format
+      const sessionData = {
+        title: formData.name || `${formData.type} økt`,
+        type: formData.type,
+        plannedDuration: formData.duration,
+        date: formData.date,
+        status: 'completed',
+        notes: formData.notes,
+        evaluation: {
+          rating: formData.rating,
+          energyLevel: formData.energyLevel,
+          achievements: formData.achievements,
+          improvements: formData.improvements,
+        },
+      };
+
+      await sessionsAPI.create(sessionData);
+      setSaveStatus('success');
+
+      // Navigate to sessions list after short delay
+      setTimeout(() => {
+        navigate('/treningsokter');
+      }, 1500);
+    } catch (err) {
+      setSaveStatus('error');
+      setErrorMessage(err.response?.data?.message || err.message || 'Kunne ikke lagre økten');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Logg trening"
         subtitle="Registrer din treningsokt"
@@ -551,7 +591,7 @@ const LoggTreningContainer = () => {
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* Session Type Selector */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '14px',
           padding: '16px',
           marginBottom: '20px',
@@ -559,7 +599,7 @@ const LoggTreningContainer = () => {
           <h3 style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginBottom: '12px',
           }}>
             Velg type okt
@@ -570,8 +610,43 @@ const LoggTreningContainer = () => {
         {/* Quick Log Buttons */}
         <QuickLogButtons sessionType={selectedType} onQuickLog={handleQuickLog} />
 
+        {/* Save Status */}
+        {saveStatus === 'success' && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '14px 16px',
+            borderRadius: '10px',
+            backgroundColor: 'rgba(34, 197, 94, 0.15)',
+            marginBottom: '20px',
+          }}>
+            <CheckCircle size={20} color="var(--success)" />
+            <span style={{ fontSize: '14px', color: 'var(--success)', fontWeight: 500 }}>
+              Økten ble lagret! Videresender...
+            </span>
+          </div>
+        )}
+
+        {saveStatus === 'error' && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '14px 16px',
+            borderRadius: '10px',
+            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+            marginBottom: '20px',
+          }}>
+            <AlertCircle size={20} color="var(--error)" />
+            <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>
+              {errorMessage}
+            </span>
+          </div>
+        )}
+
         {/* Log Form */}
-        <LogForm sessionType={selectedType} onSubmit={handleSubmit} />
+        <LogForm sessionType={selectedType} onSubmit={handleSubmit} saving={saving} />
 
         {/* Recent Logs */}
         <RecentLogs logs={RECENT_LOGS} />

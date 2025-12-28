@@ -108,6 +108,9 @@ export const calendarAPI = {
   createBooking: (data) => api.post('/bookings', data),
   getBookings: (playerId) => api.get(`/bookings?playerId=${playerId}`),
   cancelBooking: (id) => api.delete(`/bookings/${id}`),
+  // Tournament results
+  createTournamentResult: (data) => api.post('/calendar/tournament-result', data),
+  getTournamentResults: (playerId) => api.get(`/calendar/tournament-results?playerId=${playerId}`),
 };
 
 // Coach Analytics API
