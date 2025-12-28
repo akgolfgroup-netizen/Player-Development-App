@@ -6,6 +6,7 @@
 import { PrismaClient } from '@prisma/client';
 import { storageService } from '../../../services/storage.service';
 import { NotFoundError, BadRequestError, InternalServerError } from '../../../middleware/errors';
+import { logger } from '../../../utils/logger';
 import {
   InitiateUploadInput,
   CompleteUploadInput,
@@ -237,8 +238,8 @@ export class VideoService {
             tenantId,
             600 // 10 minutes
           );
-        } catch {
-          // Ignore errors, fallback to mp4
+        } catch (error) {
+          logger.warn({ videoId: video.id, key: video.hlsManifestKey, error }, 'Failed to get HLS manifest URL, falling back to MP4');
         }
       }
 
@@ -249,8 +250,8 @@ export class VideoService {
           tenantId,
           600 // 10 minutes
         );
-      } catch {
-        // Ignore errors
+      } catch (error) {
+        logger.error({ videoId: video.id, key: video.s3Key, error }, 'Failed to get MP4 playback URL');
       }
 
       // Thumbnail URL (24 hour TTL)
@@ -261,8 +262,8 @@ export class VideoService {
             tenantId,
             86400 // 24 hours
           );
-        } catch {
-          // Ignore errors
+        } catch (error) {
+          logger.warn({ videoId: video.id, key: video.thumbnailKey, error }, 'Failed to get thumbnail URL');
         }
       }
     }
@@ -402,7 +403,7 @@ export class VideoService {
             );
           } catch (err) {
             // Ignore thumbnail errors, just return null
-            console.warn(`Failed to get thumbnail URL for video ${v.id}:`, err);
+            logger.warn({ videoId: v.id, error: err }, 'Failed to get thumbnail URL');
           }
         }
 

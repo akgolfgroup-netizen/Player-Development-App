@@ -3,7 +3,31 @@
  * Main entry point for calculating test results
  */
 
-import type { TestInput, TestResult, PlayerContext } from './types';
+import type {
+  TestInput,
+  TestResult,
+  PlayerContext,
+  Test1Input,
+  Test2Input,
+  Test3Input,
+  Test4Input,
+  Test5Input,
+  Test6Input,
+  Test7Input,
+  Test8Input,
+  Test9Input,
+  Test10Input,
+  Test11Input,
+  Test12Input,
+  Test13Input,
+  Test14Input,
+  Test15Input,
+  Test16Input,
+  Test17Input,
+  Test18Input,
+  Test19Input,
+  Test20Input,
+} from './types';
 import type { RequirementsRepository } from './requirements-repository';
 import {
   calculateTest1,
@@ -76,53 +100,53 @@ export async function calculateTestResultAsync(
   switch (testNumber) {
     // Distance Tests (1-7)
     case 1:
-      return await calculateTest1(input as any, player, repository);
+      return await calculateTest1(input as Test1Input, player, repository);
     case 2:
-      return await calculateTest2(input as any, player, repository);
+      return await calculateTest2(input as Test2Input, player, repository);
     case 3:
-      return await calculateTest3(input as any, player, repository);
+      return await calculateTest3(input as Test3Input, player, repository);
     case 4:
-      return await calculateTest4(input as any, player, repository);
+      return await calculateTest4(input as Test4Input, player, repository);
     case 5:
-      return await calculateTest5(input as any, player, repository);
+      return await calculateTest5(input as Test5Input, player, repository);
     case 6:
-      return await calculateTest6(input as any, player, repository);
+      return await calculateTest6(input as Test6Input, player, repository);
     case 7:
-      return await calculateTest7(input as any, player, repository);
+      return await calculateTest7(input as Test7Input, player, repository);
 
     // Approach Tests (8-11)
     case 8:
-      return await calculateTest8(input as any, player, repository);
+      return await calculateTest8(input as Test8Input, player, repository);
     case 9:
-      return await calculateTest9(input as any, player, repository);
+      return await calculateTest9(input as Test9Input, player, repository);
     case 10:
-      return await calculateTest10(input as any, player, repository);
+      return await calculateTest10(input as Test10Input, player, repository);
     case 11:
-      return await calculateTest11(input as any, player, repository);
+      return await calculateTest11(input as Test11Input, player, repository);
 
     // Physical Tests (12-14)
     case 12:
-      return await calculateTest12(input as any, player, repository);
+      return await calculateTest12(input as Test12Input, player, repository);
     case 13:
-      return await calculateTest13(input as any, player, repository);
+      return await calculateTest13(input as Test13Input, player, repository);
     case 14:
-      return await calculateTest14(input as any, player, repository);
+      return await calculateTest14(input as Test14Input, player, repository);
 
     // Short Game Tests (15-18)
     case 15:
-      return await calculateTest15(input as any, player, repository);
+      return await calculateTest15(input as Test15Input, player, repository);
     case 16:
-      return await calculateTest16(input as any, player, repository);
+      return await calculateTest16(input as Test16Input, player, repository);
     case 17:
-      return await calculateTest17(input as any, player, repository);
+      return await calculateTest17(input as Test17Input, player, repository);
     case 18:
-      return await calculateTest18(input as any, player, repository);
+      return await calculateTest18(input as Test18Input, player, repository);
 
     // On-Course Tests (19-20)
     case 19:
-      return await calculateTest19(input as any, player, repository);
+      return await calculateTest19(input as Test19Input, player, repository);
     case 20:
-      return await calculateTest20(input as any, player, repository);
+      return await calculateTest20(input as Test20Input, player, repository);
 
     default:
       throw new Error(`Invalid test number: ${testNumber}`);

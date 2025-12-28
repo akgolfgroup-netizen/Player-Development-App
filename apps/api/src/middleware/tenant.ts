@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { PrismaClient } from '@prisma/client';
 import { getPrismaClient, createTenantPrismaClient } from '../core/db/prisma';
 import { UnauthorizedError, NotFoundError } from './errors';
 
@@ -41,7 +42,8 @@ export async function injectTenantContext(
     request.tenant = tenant;
 
     // Create tenant-scoped Prisma client
-    request.db = createTenantPrismaClient(tenantId) as any;
+    // The extended client is compatible with PrismaClient interface
+    request.db = createTenantPrismaClient(tenantId) as unknown as PrismaClient;
 
     request.log.debug(
       {
@@ -86,7 +88,7 @@ export async function optionalTenantContext(
 
     if (tenant && tenant.status === 'active') {
       request.tenant = tenant;
-      request.db = createTenantPrismaClient(tenantId) as any;
+      request.db = createTenantPrismaClient(tenantId) as unknown as PrismaClient;
     }
   } catch (error) {
     // Silently fail for optional context

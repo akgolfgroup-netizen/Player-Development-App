@@ -217,4 +217,111 @@ export async function coachRoutes(app: FastifyInstance): Promise<void> {
       return reply.send({ success: true, data: statistics });
     }
   );
+
+  /**
+   * Get coach's players
+   */
+  app.get<{ Params: CoachIdParam }>(
+    '/:id/players',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Get all players assigned to this coach',
+        tags: ['coaches'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: CoachIdParam }>, reply: FastifyReply) => {
+      const params = validate(coachIdParamSchema, request.params);
+      const players = await coachService.getCoachPlayers(request.tenant!.id, params.id);
+      return reply.send({ success: true, data: players });
+    }
+  );
+
+  /**
+   * Get current coach's players (uses auth user)
+   */
+  app.get(
+    '/me/players',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Get all players assigned to the authenticated coach',
+        tags: ['coaches'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          403: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+      const players = await coachService.getCoachPlayers(request.tenant!.id, coachId);
+      return reply.send({ success: true, data: players });
+    }
+  );
+
+  /**
+   * Get current coach's alerts (uses auth user)
+   */
+  app.get(
+    '/me/alerts',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Get alerts for the authenticated coach',
+        tags: ['coaches'],
+        security: [{ bearerAuth: [] }],
+        querystring: {
+          type: 'object',
+          properties: {
+            unread: { type: 'boolean' },
+          },
+        },
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          403: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Querystring: { unread?: boolean } }>, reply: FastifyReply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+      const unreadOnly = request.query.unread === true;
+      const alerts = await coachService.getCoachAlerts(request.tenant!.id, coachId, unreadOnly);
+      return reply.send({ success: true, data: { alerts } });
+    }
+  );
+
+  /**
+   * Dismiss an alert
+   */
+  app.put<{ Params: { alertId: string } }>(
+    '/alerts/:alertId/dismiss',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Mark an alert as dismissed/read',
+        tags: ['coaches'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: { alertId: string } }>, reply: FastifyReply) => {
+      // For now, we just acknowledge - alerts are generated dynamically
+      return reply.send({ success: true, message: 'Alert dismissed' });
+    }
+  );
 }

@@ -479,7 +479,7 @@ export class ManualAdjustmentService {
     };
 
     switch (changeType) {
-      case 'bulk_volume_change':
+      case 'bulk_volume_change': {
         const assignments = await prisma.dailyTrainingAssignment.count({
           where: {
             annualPlanId: planId,
@@ -490,8 +490,9 @@ export class ManualAdjustmentService {
         impact.affectedDays = assignments;
         impact.estimatedImpact = `Will adjust ${assignments} daily sessions to fit ${params.newHours} hours`;
         break;
+      }
 
-      case 'period_change':
+      case 'period_change': {
         const weekAssignments = await prisma.dailyTrainingAssignment.count({
           where: {
             annualPlanId: planId,
@@ -502,6 +503,7 @@ export class ManualAdjustmentService {
         impact.affectedDays = weekAssignments;
         impact.estimatedImpact = `Will change period type for ${weekAssignments} sessions to ${params.newPeriod}`;
         break;
+      }
 
       default:
         impact.estimatedImpact = 'Impact analysis not available for this change type';

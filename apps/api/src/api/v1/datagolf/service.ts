@@ -17,6 +17,36 @@ import type {
   CoachDataGolfDashboard,
 } from './types';
 
+/**
+ * Type for tour average stats stored as JSON
+ */
+interface TourAverageStats {
+  avgSgTotal?: number | null;
+  avgSgOtt?: number | null;
+  avgSgApp?: number | null;
+  avgSgArg?: number | null;
+  avgSgPutt?: number | null;
+  avgDrivingDistance?: number | null;
+  avgDrivingAccuracy?: number | null;
+  avgScoringAverage?: number | null;
+  avgGreensInRegulation?: number | null;
+  avgScrambling?: number | null;
+  avgPuttsPerRound?: number | null;
+}
+
+/**
+ * Type for DataGolf skill rating data from API
+ */
+interface DataGolfSkillRating {
+  dg_id: number;
+  player_name: string;
+  sg_total?: number | null;
+  sg_ott?: number | null;
+  sg_app?: number | null;
+  sg_arg?: number | null;
+  sg_putt?: number | null;
+}
+
 export class DataGolfService {
   private dataGolfClient: DataGolfClient;
 
@@ -90,7 +120,7 @@ export class DataGolfService {
       return null;
     }
 
-    const stats = tourAverage.stats as any;
+    const stats = tourAverage.stats as TourAverageStats | null;
     return {
       tour: tourAverage.tour,
       season: tourAverage.season,
@@ -330,7 +360,7 @@ export class DataGolfService {
   /**
    * Sync tour averages to database
    */
-  private async syncTourData(tour: string, season: number, skillRatings: any[]): Promise<void> {
+  private async syncTourData(tour: string, season: number, skillRatings: DataGolfSkillRating[]): Promise<void> {
     const averages = {
       avgSgTotal: this.calculateAverage(skillRatings, 'sg_total'),
       avgSgOtt: this.calculateAverage(skillRatings, 'sg_ott'),
@@ -365,7 +395,7 @@ export class DataGolfService {
   /**
    * Sync individual player data to database
    */
-  private async syncPlayer(playerData: any): Promise<void> {
+  private async syncPlayer(playerData: DataGolfSkillRating): Promise<void> {
     await this.prisma.dataGolfPlayer.upsert({
       where: {
         dataGolfId: playerData.dg_id.toString(),
@@ -400,7 +430,7 @@ export class DataGolfService {
   /**
    * Select which players to sync (top 100 + Norwegian players)
    */
-  private getPlayersToSync(skillRatings: any[]): any[] {
+  private getPlayersToSync(skillRatings: DataGolfSkillRating[]): DataGolfSkillRating[] {
     // Top 100 players
     const top100 = skillRatings
       .sort((a, b) => (b.sg_total || 0) - (a.sg_total || 0))
@@ -439,10 +469,10 @@ export class DataGolfService {
   /**
    * Calculate average for a field
    */
-  private calculateAverage(data: any[], field: string): number {
+  private calculateAverage(data: DataGolfSkillRating[], field: keyof DataGolfSkillRating): number {
     const values = data
       .map(item => item[field])
-      .filter(val => val !== null && val !== undefined && !isNaN(val));
+      .filter((val): val is number => typeof val === 'number' && !isNaN(val));
 
     if (values.length === 0) {
       return 0;

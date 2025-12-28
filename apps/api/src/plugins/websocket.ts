@@ -1,8 +1,17 @@
 import { FastifyInstance } from 'fastify';
+import { IncomingMessage } from 'http';
 import websocket from '@fastify/websocket';
 import { WebSocket } from 'ws';
 import { verifyToken } from '../middleware/auth';
 import { logger } from '../utils/logger';
+import { AccessTokenPayload } from '../utils/jwt';
+
+/**
+ * Extended IncomingMessage with user from WebSocket auth
+ */
+interface AuthenticatedIncomingMessage extends IncomingMessage {
+  user?: AccessTokenPayload;
+}
 
 /**
  * WebSocket Connection Store
@@ -240,7 +249,7 @@ export async function registerWebSocket(app: FastifyInstance): Promise<void> {
           const decoded = await verifyToken(token);
           if (decoded) {
             // Attach user info to request
-            (info.req as any).user = decoded;
+            (info.req as AuthenticatedIncomingMessage).user = decoded;
             callback(true);
           } else {
             callback(false, 401, 'Unauthorized: Invalid token');
@@ -254,7 +263,7 @@ export async function registerWebSocket(app: FastifyInstance): Promise<void> {
 
   // WebSocket endpoint
   app.get('/ws', { websocket: true }, (connection, req) => {
-    const user = (req as any).user;
+    const user = (req as unknown as AuthenticatedIncomingMessage).user;
     const ws = connection as unknown as WebSocket;
 
     if (!user) {

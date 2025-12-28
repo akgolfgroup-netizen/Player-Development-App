@@ -13,6 +13,7 @@
 
 import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
+import { logger } from '../../utils/logger';
 
 export interface EmailOptions {
   to: string | string[];
@@ -41,9 +42,9 @@ export class EmailService {
         },
       });
 
-      console.log('📧 Email service configured and ready');
+      logger.info('Email service configured and ready');
     } else {
-      console.warn('⚠️  Email service not configured. Emails will be logged to console only.');
+      logger.warn('Email service not configured - emails will be logged only');
     }
   }
 
@@ -65,12 +66,13 @@ export class EmailService {
    */
   async send(options: EmailOptions): Promise<void> {
     if (!this.enabled || !this.transporter) {
-      // Fallback: log to console in development
-      console.log('\n========== EMAIL (Development Mode) ==========');
-      console.log(`To: ${Array.isArray(options.to) ? options.to.join(', ') : options.to}`);
-      console.log(`Subject: ${options.subject}`);
-      console.log(`HTML Content:\n${options.html}`);
-      console.log('=============================================\n');
+      // Fallback: log email details in development mode
+      logger.info({
+        mode: 'development',
+        to: Array.isArray(options.to) ? options.to.join(', ') : options.to,
+        subject: options.subject,
+      }, 'Email not sent (SMTP not configured)');
+      logger.debug({ htmlContent: options.html }, 'Email HTML content');
       return;
     }
 
@@ -85,9 +87,9 @@ export class EmailService {
         text: options.text || this.htmlToText(options.html),
       });
 
-      console.log('✅ Email sent successfully:', info.messageId);
+      logger.info({ messageId: info.messageId, to: options.to }, 'Email sent successfully');
     } catch (error) {
-      console.error('❌ Failed to send email:', error);
+      logger.error({ error, to: options.to, subject: options.subject }, 'Failed to send email');
       throw error;
     }
   }
@@ -114,10 +116,10 @@ export class EmailService {
 
     try {
       await this.transporter.verify();
-      console.log('✅ SMTP connection verified');
+      logger.info('SMTP connection verified');
       return true;
     } catch (error) {
-      console.error('❌ SMTP connection failed:', error);
+      logger.error({ error }, 'SMTP connection verification failed');
       return false;
     }
   }

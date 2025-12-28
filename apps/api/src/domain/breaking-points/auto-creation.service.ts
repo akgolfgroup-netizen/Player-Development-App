@@ -4,7 +4,12 @@
  */
 
 import { getPrismaClient } from '../../core/db/prisma';
-import type { ClubType } from '../calibration/club-speed-calibration.types';
+import type { ClubType, ClubSpeedData } from '../calibration/club-speed-calibration.types';
+
+/**
+ * Type for clubsData stored as JSON in the database
+ */
+type ClubsDataJson = ClubSpeedData[] | { clubs: ClubSpeedData[] };
 import type {
   AutoCreateBreakingPointInput,
   BreakingPointCreationResult,
@@ -185,10 +190,12 @@ export class BreakingPointAutoCreationService {
 
     if (!calibration) return null;
 
-    const clubsData = calibration.clubsData as any;
-    const clubs = Array.isArray(clubsData) ? clubsData : clubsData.clubs || [];
+    const clubsData = calibration.clubsData as ClubsDataJson | null;
+    const clubs: ClubSpeedData[] = clubsData
+      ? (Array.isArray(clubsData) ? clubsData : clubsData.clubs || [])
+      : [];
 
-    const club = clubs.find((c: any) => c.clubType === clubType);
+    const club = clubs.find((c) => c.clubType === clubType);
     if (!club) return null;
 
     // Import expected ratios (we'll need to duplicate this from calibration types)

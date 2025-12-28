@@ -1,6 +1,28 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { logger } from '../../utils/logger';
 import { config } from '../../config';
+
+// Prisma event types
+type QueryEvent = {
+  timestamp: Date;
+  query: string;
+  params: string;
+  duration: number;
+  target: string;
+};
+
+type LogEvent = {
+  timestamp: Date;
+  message: string;
+  target: string;
+};
+
+// Extension operation context type
+interface ExtensionContext {
+  args: Record<string, unknown>;
+  query: (args: Record<string, unknown>) => Promise<unknown>;
+  model: string;
+}
 
 /**
  * Create Prisma Client singleton
@@ -12,19 +34,22 @@ let prisma: PrismaClient;
  */
 export function getPrismaClient(): PrismaClient {
   if (!prisma) {
+    const devLogConfig: Prisma.LogDefinition[] = [
+      { level: 'query', emit: 'event' },
+      { level: 'error', emit: 'event' },
+      { level: 'warn', emit: 'event' },
+    ];
+    const prodLogConfig: Prisma.LogDefinition[] = [
+      { level: 'error', emit: 'event' },
+    ];
+
     prisma = new PrismaClient({
-      log: config.server.isDevelopment
-        ? ([
-            { level: 'query', emit: 'event' },
-            { level: 'error', emit: 'event' },
-            { level: 'warn', emit: 'event' },
-          ] as any)
-        : ([{ level: 'error', emit: 'event' }] as any),
+      log: config.server.isDevelopment ? devLogConfig : prodLogConfig,
     });
 
     // Log queries in development
     if (config.server.isDevelopment) {
-      (prisma as any).$on('query', (e: any) => {
+      prisma.$on('query' as never, (e: QueryEvent) => {
         logger.debug({
           query: e.query,
           params: e.params,
@@ -34,12 +59,12 @@ export function getPrismaClient(): PrismaClient {
     }
 
     // Log errors
-    (prisma as any).$on('error', (e: any) => {
+    prisma.$on('error' as never, (e: LogEvent) => {
       logger.error({ err: e }, 'Prisma error');
     });
 
     // Log warnings
-    (prisma as any).$on('warn', (e: any) => {
+    prisma.$on('warn' as never, (e: LogEvent) => {
       logger.warn({ message: e.message }, 'Prisma warning');
     });
 
@@ -70,74 +95,74 @@ export function createTenantPrismaClient(tenantId: string) {
     query: {
       // Apply tenant filter to all models that have tenantId field
       $allModels: {
-        async findMany({ args, query, model }: any) {
+        async findMany({ args, query, model }: ExtensionContext) {
           // Check if model has tenantId field
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async findFirst({ args, query, model }: any) {
+        async findFirst({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async findUnique({ args, query, model }: any) {
+        async findUnique({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async count({ args, query, model }: any) {
+        async count({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async aggregate({ args, query, model }: any) {
+        async aggregate({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async create({ args, query, model }: any) {
+        async create({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.data = { ...args.data, tenantId };
+            args.data = { ...(args.data as object), tenantId };
           }
           return query(args);
         },
-        async createMany({ args, query, model }: any) {
+        async createMany({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
             if (Array.isArray(args.data)) {
-              args.data = args.data.map((item: any) => ({ ...item, tenantId }));
+              args.data = args.data.map((item: Record<string, unknown>) => ({ ...item, tenantId }));
             } else {
-              args.data = { ...args.data, tenantId };
+              args.data = { ...(args.data as object), tenantId };
             }
           }
           return query(args);
         },
-        async update({ args, query, model }: any) {
+        async update({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async updateMany({ args, query, model }: any) {
+        async updateMany({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async delete({ args, query, model }: any) {
+        async delete({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },
-        async deleteMany({ args, query, model }: any) {
+        async deleteMany({ args, query, model }: ExtensionContext) {
           if (hasTenantIdField(model)) {
-            args.where = { ...args.where, tenantId };
+            args.where = { ...(args.where as object), tenantId };
           }
           return query(args);
         },

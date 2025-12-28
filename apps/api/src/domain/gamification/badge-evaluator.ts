@@ -11,8 +11,10 @@ import {
   StrengthMetrics,
   PerformanceMetrics,
   PhaseMetrics,
+  PhaseRecord,
   BadgeProgress,
   BadgeUnlockEvent,
+  TrainingPhase,
 } from './types';
 
 // Re-export for convenience
@@ -33,12 +35,71 @@ import { logger } from '../../utils/logger';
 
 export class BadgeEvaluatorService {
   private logger = logger;
+  private static readonly MAX_RETRIES = 3;
+  private static readonly RETRY_DELAY_MS = 1000;
 
   constructor(private prisma: PrismaClient) {}
 
   /**
+   * Retry wrapper for operations that may fail due to transient errors
+   */
+  private async withRetry<T>(
+    operation: () => Promise<T>,
+    operationName: string,
+    maxRetries: number = BadgeEvaluatorService.MAX_RETRIES
+  ): Promise<T> {
+    let lastError: Error | undefined;
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await operation();
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+
+        // Don't retry on validation errors or not found errors
+        if (this.isNonRetryableError(lastError)) {
+          throw lastError;
+        }
+
+        this.logger.warn(
+          { attempt, maxRetries, operationName, error: lastError.message },
+          `Badge evaluator operation failed, ${attempt < maxRetries ? 'retrying...' : 'giving up'}`
+        );
+
+        if (attempt < maxRetries) {
+          // Exponential backoff
+          await this.delay(BadgeEvaluatorService.RETRY_DELAY_MS * Math.pow(2, attempt - 1));
+        }
+      }
+    }
+
+    throw lastError;
+  }
+
+  /**
+   * Check if an error should not be retried
+   */
+  private isNonRetryableError(error: Error): boolean {
+    const message = error.message.toLowerCase();
+    return (
+      message.includes('not found') ||
+      message.includes('validation') ||
+      message.includes('unique constraint') ||
+      message.includes('foreign key')
+    );
+  }
+
+  /**
+   * Delay helper for retry backoff
+   */
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
    * Main entry point: Evaluate all badges for a player
    * Call this after any action that might trigger a badge
+   * Includes retry logic for transient failures
    */
   async evaluatePlayerBadges(playerId: string): Promise<{
     unlockedBadges: BadgeUnlockEvent[];
@@ -46,48 +107,81 @@ export class BadgeEvaluatorService {
     newLevel?: number;
     updatedProgress: BadgeProgress[];
   }> {
-    // 1. Calculate current player metrics
-    const metrics = await this.calculatePlayerMetrics(playerId);
+    return this.withRetry(
+      async () => {
+        // 1. Calculate current player metrics
+        const metrics = await this.calculatePlayerMetrics(playerId);
 
-    // 2. Get existing badge progress
-    const existingProgress = await this.getExistingBadgeProgress(playerId);
-    const existingProgressMap = new Map(existingProgress.map((bp) => [bp.badgeId, bp]));
+        // 2. Get existing badge progress
+        const existingProgress = await this.getExistingBadgeProgress(playerId);
+        const existingProgressMap = new Map(existingProgress.map((bp) => [bp.badgeId, bp]));
 
-    // 3. Get available badges only (skip unavailable ones)
-    const availableBadges = filterAvailableBadges(ALL_BADGES);
+        // 3. Get available badges only (skip unavailable ones)
+        const availableBadges = filterAvailableBadges(ALL_BADGES);
 
-    // 4. Calculate new progress for all badges
-    const newProgress = calculateAllBadgeProgress(metrics, availableBadges, existingProgressMap);
+        // 4. Calculate new progress for all badges
+        const newProgress = calculateAllBadgeProgress(metrics, availableBadges, existingProgressMap);
 
-    // 5. Process unlocks
-    const { events: unlockedBadges, xpGained } = processBadgeUnlocks(
-      playerId,
-      availableBadges,
-      existingProgress,
-      newProgress,
-      metrics
+        // 5. Process unlocks
+        const { events: unlockedBadges, xpGained } = processBadgeUnlocks(
+          playerId,
+          availableBadges,
+          existingProgress,
+          newProgress,
+          metrics
+        );
+
+        // 6. Persist changes with retry
+        await this.persistBadgeProgress(playerId, newProgress);
+
+        // 7. Award XP and check for level up
+        let newLevel: number | undefined;
+        if (xpGained > 0) {
+          newLevel = await this.awardXP(playerId, xpGained);
+        }
+
+        // 8. Create notification for each unlocked badge (non-critical, don't fail on error)
+        for (const event of unlockedBadges) {
+          try {
+            await this.createBadgeNotification(playerId, event);
+          } catch (notifError) {
+            this.logger.warn(
+              { playerId, badgeId: event.badgeId, error: notifError },
+              'Failed to create badge notification, continuing'
+            );
+          }
+        }
+
+        return {
+          unlockedBadges,
+          xpGained,
+          newLevel,
+          updatedProgress: newProgress,
+        };
+      },
+      'evaluatePlayerBadges'
     );
+  }
 
-    // 6. Persist changes
-    await this.persistBadgeProgress(playerId, newProgress);
-
-    // 7. Award XP and check for level up
-    let newLevel: number | undefined;
-    if (xpGained > 0) {
-      newLevel = await this.awardXP(playerId, xpGained);
+  /**
+   * Safe version of evaluatePlayerBadges that never throws
+   * Returns null on failure instead of throwing
+   */
+  async evaluatePlayerBadgesSafe(playerId: string): Promise<{
+    unlockedBadges: BadgeUnlockEvent[];
+    xpGained: number;
+    newLevel?: number;
+    updatedProgress: BadgeProgress[];
+  } | null> {
+    try {
+      return await this.evaluatePlayerBadges(playerId);
+    } catch (error) {
+      this.logger.error(
+        { playerId, error },
+        'Badge evaluation failed after all retries'
+      );
+      return null;
     }
-
-    // 8. Create notification for each unlocked badge
-    for (const event of unlockedBadges) {
-      await this.createBadgeNotification(playerId, event);
-    }
-
-    return {
-      unlockedBadges,
-      xpGained,
-      newLevel,
-      updatedProgress: newProgress,
-    };
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -601,22 +695,232 @@ export class BadgeEvaluatorService {
   }
 
   /**
-   * Calculate phase metrics
+   * Calculate phase metrics from WeeklyPeriodization and AnnualTrainingPlan
    */
-  private async calculatePhaseMetrics(_playerId: string): Promise<PhaseMetrics> {
-    // TODO: Implement phase tracking
+  private async calculatePhaseMetrics(playerId: string): Promise<PhaseMetrics> {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
+    // Get current week's periodization
+    const currentWeekStart = new Date(now);
+    currentWeekStart.setDate(now.getDate() - now.getDay() + 1);
+    const weekNumber = Math.ceil(
+      (now.getTime() - new Date(currentYear, 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000)
+    );
+
+    // Get player's annual plan
+    const annualPlan = await this.prisma.annualTrainingPlan.findFirst({
+      where: {
+        playerId,
+        status: 'active',
+        startDate: { lte: now },
+        endDate: { gte: now },
+      },
+      include: {
+        weeklyPeriodizations: {
+          orderBy: { weekNumber: 'asc' },
+        },
+        dailyAssignments: {
+          where: {
+            assignedDate: {
+              gte: new Date(currentYear, 0, 1),
+              lte: now,
+            },
+          },
+        },
+      },
+    });
+
+    // Also get periodization from the legacy table if no annual plan
+    const periodization = await this.prisma.weeklyPeriodization.findFirst({
+      where: { playerId, weekNumber },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    // Map period phase to TrainingPhase enum
+    const mapPeriodPhase = (phase: string | null): TrainingPhase => {
+      if (!phase) return TrainingPhase.GRUNNLAG;
+      const phaseMap: Record<string, TrainingPhase> = {
+        'base': TrainingPhase.GRUNNLAG,
+        'grunnlag': TrainingPhase.GRUNNLAG,
+        'off_season': TrainingPhase.GRUNNLAG,
+        'specialization': TrainingPhase.OPPBYGGING,
+        'oppbygging': TrainingPhase.OPPBYGGING,
+        'pre_season': TrainingPhase.OPPBYGGING,
+        'tournament': TrainingPhase.KONKURRANSE,
+        'konkurranse': TrainingPhase.KONKURRANSE,
+        'in_season': TrainingPhase.KONKURRANSE,
+        'recovery': TrainingPhase.OVERGANG,
+        'overgang': TrainingPhase.OVERGANG,
+        'transition': TrainingPhase.OVERGANG,
+      };
+      return phaseMap[phase.toLowerCase()] || TrainingPhase.GRUNNLAG;
+    };
+
+    // Determine current phase
+    const currentPhaseStr = periodization?.periodPhase ||
+      annualPlan?.weeklyPeriodizations?.find(w => w.weekNumber === weekNumber)?.mesocycle ||
+      'grunnlag';
+    const currentPhase = mapPeriodPhase(currentPhaseStr);
+
+    // Calculate phase start and end dates
+    let phaseStartDate = currentWeekStart;
+    let phaseEndDate = new Date(currentWeekStart);
+    phaseEndDate.setDate(phaseEndDate.getDate() + 7);
+
+    // Find consecutive weeks with same phase to determine actual phase duration
+    if (annualPlan?.weeklyPeriodizations) {
+      const weeklyPeriods = annualPlan.weeklyPeriodizations;
+      const currentWeekIdx = weeklyPeriods.findIndex(w => w.weekNumber === weekNumber);
+
+      if (currentWeekIdx >= 0) {
+        // Find phase start (first week of this phase going backwards)
+        let startIdx = currentWeekIdx;
+        while (startIdx > 0 && mapPeriodPhase(weeklyPeriods[startIdx - 1].mesocycle) === currentPhase) {
+          startIdx--;
+        }
+
+        // Find phase end (last week of this phase going forwards)
+        let endIdx = currentWeekIdx;
+        while (endIdx < weeklyPeriods.length - 1 && mapPeriodPhase(weeklyPeriods[endIdx + 1].mesocycle) === currentPhase) {
+          endIdx++;
+        }
+
+        if (startIdx < weeklyPeriods.length) {
+          phaseStartDate = new Date(weeklyPeriods[startIdx].startDate);
+        }
+        if (endIdx < weeklyPeriods.length) {
+          phaseEndDate = new Date(weeklyPeriods[endIdx].endDate);
+        }
+      }
+    }
+
+    const daysInPhase = Math.max(1, Math.ceil(
+      (now.getTime() - phaseStartDate.getTime()) / (24 * 60 * 60 * 1000)
+    ));
+
+    // Calculate compliance metrics
+    let phaseCompliance = 0;
+    let volumeVsPlan = 0;
+    let intensityVsPlan = 0;
+    let annualPlanCompliance = 0;
+
+    if (annualPlan?.dailyAssignments) {
+      const assignments = annualPlan.dailyAssignments;
+      const completedAssignments = assignments.filter(a => a.status === 'completed').length;
+      const totalAssignments = assignments.length;
+
+      annualPlanCompliance = totalAssignments > 0
+        ? Math.round((completedAssignments / totalAssignments) * 100)
+        : 0;
+
+      // Get phase-specific assignments
+      const phaseAssignments = assignments.filter(a => {
+        const assignDate = new Date(a.assignedDate);
+        return assignDate >= phaseStartDate && assignDate <= now;
+      });
+      const phaseCompleted = phaseAssignments.filter(a => a.status === 'completed').length;
+      phaseCompliance = phaseAssignments.length > 0
+        ? Math.round((phaseCompleted / phaseAssignments.length) * 100)
+        : 0;
+
+      // Calculate volume ratio from sessions
+      const sessions = await this.prisma.trainingSession.findMany({
+        where: {
+          playerId,
+          sessionDate: { gte: phaseStartDate, lte: now },
+          completionStatus: { in: ['completed', 'auto_completed'] },
+        },
+        select: { duration: true, intensity: true },
+      });
+
+      const actualMinutes = sessions.reduce((sum, s) => sum + (s.duration || 0), 0);
+      const plannedMinutes = phaseAssignments.reduce((sum, a) => sum + (a.durationMinutes || 60), 0);
+      volumeVsPlan = plannedMinutes > 0 ? Math.round((actualMinutes / plannedMinutes) * 100) : 0;
+
+      // Calculate intensity ratio
+      const actualIntensity = sessions.length > 0
+        ? sessions.reduce((sum, s) => sum + (s.intensity || 5), 0) / sessions.length
+        : 0;
+      const plannedIntensity = phaseAssignments.length > 0
+        ? phaseAssignments.reduce((sum, a) => sum + (a.intensity || 5), 0) / phaseAssignments.length
+        : 0;
+      intensityVsPlan = plannedIntensity > 0 ? Math.round((actualIntensity / plannedIntensity) * 100) : 0;
+    }
+
+    // Calculate phases completed and history
+    const phaseHistory: PhaseRecord[] = [];
+    let phasesCompleted = 0;
+
+    if (annualPlan?.weeklyPeriodizations) {
+      const weeklyPeriods = annualPlan.weeklyPeriodizations;
+      let currentPhaseBlock: { phase: TrainingPhase; startWeek: number; endWeek: number } | null = null;
+
+      for (let i = 0; i < weeklyPeriods.length; i++) {
+        const period = weeklyPeriods[i];
+        const phase = mapPeriodPhase(period.mesocycle);
+        const periodEnd = new Date(period.endDate);
+
+        if (!currentPhaseBlock || currentPhaseBlock.phase !== phase) {
+          // Save previous phase block if it's complete
+          if (currentPhaseBlock && periodEnd < now) {
+            const startPeriod = weeklyPeriods[currentPhaseBlock.startWeek];
+            const endPeriod = weeklyPeriods[currentPhaseBlock.endWeek];
+
+            phaseHistory.push({
+              phase: currentPhaseBlock.phase,
+              startDate: new Date(startPeriod.startDate),
+              endDate: new Date(endPeriod.endDate),
+              compliance: Math.round((endPeriod.compliance || 0) * 100) / 100,
+              volumeCompleted: endPeriod.actualHours || 0,
+              goalsAchieved: [],
+            });
+            phasesCompleted++;
+          }
+          currentPhaseBlock = { phase, startWeek: i, endWeek: i };
+        } else {
+          currentPhaseBlock.endWeek = i;
+        }
+      }
+    }
+
+    // Count yearly goals achieved from Goal model
+    let yearlyGoalsAchieved = 0;
+    try {
+      const player = await this.prisma.player.findUnique({
+        where: { id: playerId },
+        select: { userId: true },
+      });
+
+      if (player?.userId) {
+        const achievedGoals = await this.prisma.goal.count({
+          where: {
+            userId: player.userId,
+            status: 'achieved',
+            targetDate: {
+              gte: new Date(currentYear, 0, 1),
+              lte: new Date(currentYear, 11, 31),
+            },
+          },
+        });
+        yearlyGoalsAchieved = achievedGoals;
+      }
+    } catch {
+      // Goal model might not exist yet
+    }
+
     return {
-      currentPhase: 'grunnlag' as any,
-      phaseStartDate: new Date(),
-      phaseEndDate: new Date(),
-      daysInPhase: 0,
-      phaseCompliance: 0,
-      volumeVsPlan: 0,
-      intensityVsPlan: 0,
-      phasesCompleted: 0,
-      phaseHistory: [],
-      annualPlanCompliance: 0,
-      yearlyGoalsAchieved: 0,
+      currentPhase,
+      phaseStartDate,
+      phaseEndDate,
+      daysInPhase,
+      phaseCompliance,
+      volumeVsPlan,
+      intensityVsPlan,
+      phasesCompleted,
+      phaseHistory,
+      annualPlanCompliance,
+      yearlyGoalsAchieved,
     };
   }
 

@@ -1,13 +1,15 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import Handlebars from 'handlebars';
 import nodemailer, { Transporter } from 'nodemailer';
 import { config } from '../config';
+import { logger } from '../utils/logger';
 
 /**
  * Email Service
  *
  * Handles email template rendering and sending using Handlebars templates
+ * Includes fallback behavior for missing templates and SMTP failures
  */
 
 interface EmailOptions {
@@ -34,32 +36,83 @@ export enum EmailTemplate {
 }
 
 export class EmailService {
-  private transporter: Transporter;
+  private transporter: Transporter | null = null;
   private templatesDir: string;
-  private baseTemplate: HandlebarsTemplateDelegate;
+  private baseTemplate: HandlebarsTemplateDelegate | null = null;
+  private isEnabled: boolean = true;
 
   constructor() {
     this.templatesDir = join(__dirname, '../templates/emails');
 
-    // Load base template
-    const baseHtml = readFileSync(join(this.templatesDir, 'base.html'), 'utf-8');
-    this.baseTemplate = Handlebars.compile(baseHtml);
+    // Load base template with fallback
+    const baseTemplatePath = join(this.templatesDir, 'base.html');
+    if (existsSync(baseTemplatePath)) {
+      try {
+        const baseHtml = readFileSync(baseTemplatePath, 'utf-8');
+        this.baseTemplate = Handlebars.compile(baseHtml);
+      } catch (error) {
+        logger.warn({ error }, 'Failed to load base email template, using fallback');
+        this.baseTemplate = Handlebars.compile(this.getFallbackBaseTemplate());
+      }
+    } else {
+      logger.warn('Base email template not found, using fallback');
+      this.baseTemplate = Handlebars.compile(this.getFallbackBaseTemplate());
+    }
 
-    // Configure email transporter
-    this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'localhost',
-      port: parseInt(process.env.SMTP_PORT || '1025'),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: process.env.SMTP_USER
-        ? {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD,
-          }
-        : undefined,
-    });
+    // Configure email transporter with error handling
+    try {
+      this.transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'localhost',
+        port: parseInt(process.env.SMTP_PORT || '1025'),
+        secure: process.env.SMTP_SECURE === 'true',
+        auth: process.env.SMTP_USER
+          ? {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASSWORD,
+            }
+          : undefined,
+      });
+    } catch (error) {
+      logger.error({ error }, 'Failed to create email transporter, emails will be disabled');
+      this.isEnabled = false;
+    }
 
     // Register Handlebars helpers
     this.registerHelpers();
+  }
+
+  /**
+   * Fallback base template for when template file is missing
+   */
+  private getFallbackBaseTemplate(): string {
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{subject}}</title>
+</head>
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <h1 style="color: #2d5a27;">IUP Golf Academy</h1>
+  {{{content}}}
+  <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
+  <p style="color: #666; font-size: 12px;">
+    &copy; {{year}} IUP Golf Academy
+  </p>
+</body>
+</html>`;
+  }
+
+  /**
+   * Fallback template for missing specific templates
+   */
+  private getFallbackContentTemplate(): string {
+    return `
+<div style="padding: 20px;">
+  <p>Hello {{firstName}},</p>
+  <p>{{message}}</p>
+  <p>Best regards,<br>IUP Golf Academy Team</p>
+</div>`;
   }
 
   /**
@@ -85,25 +138,47 @@ export class EmailService {
     });
 
     // Conditional helper
-    Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
-      // @ts-ignore
+    Handlebars.registerHelper('ifEquals', function (this: unknown, arg1: unknown, arg2: unknown, options: Handlebars.HelperOptions) {
       return arg1 === arg2 ? options.fn(this) : options.inverse(this);
     });
   }
 
   /**
    * Send email using template
+   * Returns true if email was sent, false if sending was skipped or failed gracefully
    */
-  async sendEmail(options: EmailOptions): Promise<void> {
+  async sendEmail(options: EmailOptions): Promise<boolean> {
     const { to, subject, template, data, attachments } = options;
 
-    // Load template content
+    // Check if email service is enabled
+    if (!this.isEnabled || !this.transporter) {
+      logger.warn({ to, subject }, 'Email service disabled, skipping email');
+      return false;
+    }
+
+    // Load template content with fallback
+    let templateContent: string;
     const templatePath = join(this.templatesDir, `${template}.html`);
-    const templateContent = readFileSync(templatePath, 'utf-8');
+
+    if (existsSync(templatePath)) {
+      try {
+        templateContent = readFileSync(templatePath, 'utf-8');
+      } catch (error) {
+        logger.warn({ template, error }, 'Failed to read email template, using fallback');
+        templateContent = this.getFallbackContentTemplate();
+      }
+    } else {
+      logger.warn({ template }, 'Email template not found, using fallback');
+      templateContent = this.getFallbackContentTemplate();
+    }
+
     const compiledTemplate = Handlebars.compile(templateContent);
 
     // Render template with data
-    const content = compiledTemplate(data);
+    const content = compiledTemplate({
+      ...data,
+      message: data.message || `You have a new notification regarding: ${subject}`,
+    });
 
     // Prepare base template data
     const baseData = {
@@ -118,20 +193,35 @@ export class EmailService {
     };
 
     // Render final HTML with base template
-    const html = this.baseTemplate(baseData);
+    const html = this.baseTemplate!(baseData);
 
     // Generate plain text version (strip HTML)
     const text = this.htmlToText(html);
 
-    // Send email
-    await this.transporter.sendMail({
-      from: process.env.SMTP_FROM || 'IUP Golf Academy <noreply@iup-golf.com>',
-      to: Array.isArray(to) ? to.join(', ') : to,
-      subject,
-      html,
-      text,
-      attachments,
-    });
+    // Send email with error handling
+    try {
+      await this.transporter.sendMail({
+        from: process.env.SMTP_FROM || 'IUP Golf Academy <noreply@iup-golf.com>',
+        to: Array.isArray(to) ? to.join(', ') : to,
+        subject,
+        html,
+        text,
+        attachments,
+      });
+
+      logger.info({ to, subject, template }, 'Email sent successfully');
+      return true;
+    } catch (error) {
+      logger.error({ to, subject, template, error }, 'Failed to send email');
+
+      // In production, we don't want to throw - just log and return false
+      if (config.server.isProduction) {
+        return false;
+      }
+
+      // In development/test, throw to help debug issues
+      throw error;
+    }
   }
 
   /**
@@ -145,8 +235,8 @@ export class EmailService {
       role: string;
       organizationName: string;
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: 'Welcome to IUP Golf Academy! 🎉',
       template: EmailTemplate.WELCOME,
@@ -170,8 +260,8 @@ export class EmailService {
       email: string;
       resetToken: string;
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: 'Password Reset Request',
       template: EmailTemplate.PASSWORD_RESET,
@@ -192,8 +282,8 @@ export class EmailService {
       email: string;
       changedAt: string;
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: 'Password Changed Successfully',
       template: EmailTemplate.PASSWORD_CHANGED,
@@ -214,8 +304,8 @@ export class EmailService {
       firstName: string;
       backupCodes: string[];
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: 'Two-Factor Authentication Enabled',
       template: EmailTemplate.TWO_FACTOR_SETUP,
@@ -243,8 +333,8 @@ export class EmailService {
       equipment?: string[];
       sessionId: string;
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: `Training Reminder: ${data.sessionTitle}`,
       template: EmailTemplate.TRAINING_REMINDER,
@@ -278,8 +368,8 @@ export class EmailService {
       testId: string;
       nextTest?: { name: string; date: string };
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: `Test Results: ${data.testName}`,
       template: EmailTemplate.TEST_RESULTS,
@@ -316,8 +406,8 @@ export class EmailService {
       };
       relatedAchievements?: Array<{ name: string; emoji: string }>;
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: `Achievement Unlocked: ${data.achievementName}! 🏆`,
       template: EmailTemplate.ACHIEVEMENT_UNLOCKED,
@@ -360,8 +450,8 @@ export class EmailService {
       upcomingSessions: Array<{ title: string; date: string; time: string }>;
       achievements?: Array<{ name: string; emoji: string }>;
     }
-  ): Promise<void> {
-    await this.sendEmail({
+  ): Promise<boolean> {
+    return this.sendEmail({
       to,
       subject: `Your Weekly Training Summary (${data.weekStart} - ${data.weekEnd})`,
       template: EmailTemplate.WEEKLY_SUMMARY,

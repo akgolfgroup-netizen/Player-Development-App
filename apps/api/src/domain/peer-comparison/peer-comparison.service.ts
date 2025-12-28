@@ -137,7 +137,7 @@ export function calculatePercentileRank(
   const sorted = [...allValues].sort((a, b) => a - b);
 
   // Find player's rank
-  let rank = sorted.indexOf(playerValue) + 1;
+  const rank = sorted.indexOf(playerValue) + 1;
 
   // Calculate percentile
   let percentile = (rank / sorted.length) * 100;

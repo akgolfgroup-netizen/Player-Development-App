@@ -4,6 +4,7 @@
  */
 
 import { getPrismaClient } from '../../core/db/prisma';
+import { Prisma } from '@prisma/client';
 import type {
   PlayerIntakeForm,
   ProcessedIntake,
@@ -12,6 +13,30 @@ import type {
 } from './intake.types';
 import { PlanGenerationService } from '../training-plan/plan-generation.service';
 import type { GenerateAnnualPlanInput } from '../training-plan/plan-generation.types';
+
+// Helper to convert typed data to Prisma JSON input
+const toJsonValue = <T>(data: T | undefined): Prisma.InputJsonValue | undefined => {
+  return data as Prisma.InputJsonValue | undefined;
+};
+
+// Type for Prisma PlayerIntake with JSON fields
+type PlayerIntakeRecord = {
+  id: string;
+  playerId: string;
+  tenantId: string;
+  background: Prisma.JsonValue;
+  availability: Prisma.JsonValue;
+  goals: Prisma.JsonValue;
+  weaknesses: Prisma.JsonValue;
+  health: Prisma.JsonValue;
+  lifestyle: Prisma.JsonValue;
+  equipment: Prisma.JsonValue;
+  learning: Prisma.JsonValue;
+  completionPercentage: number;
+  isComplete: boolean;
+  generatedPlanId: string | null;
+  player?: { id: string };
+};
 
 const prisma = getPrismaClient();
 
@@ -44,14 +69,14 @@ export class IntakeProcessingService {
       ? await prisma.playerIntake.update({
           where: { id: existing.id },
           data: {
-            background: (intakeData.background ?? existing.background) as any,
-            availability: (intakeData.availability ?? existing.availability) as any,
-            goals: (intakeData.goals ?? existing.goals) as any,
-            weaknesses: (intakeData.weaknesses ?? existing.weaknesses) as any,
-            health: (intakeData.health ?? existing.health) as any,
-            lifestyle: (intakeData.lifestyle ?? existing.lifestyle) as any,
-            equipment: (intakeData.equipment ?? existing.equipment) as any,
-            learning: (intakeData.learning ?? existing.learning) as any,
+            background: toJsonValue(intakeData.background) ?? existing.background,
+            availability: toJsonValue(intakeData.availability) ?? existing.availability,
+            goals: toJsonValue(intakeData.goals) ?? existing.goals,
+            weaknesses: toJsonValue(intakeData.weaknesses) ?? existing.weaknesses,
+            health: toJsonValue(intakeData.health) ?? existing.health,
+            lifestyle: toJsonValue(intakeData.lifestyle) ?? existing.lifestyle,
+            equipment: toJsonValue(intakeData.equipment) ?? existing.equipment,
+            learning: toJsonValue(intakeData.learning) ?? existing.learning,
             completionPercentage: validation.completionPercentage,
             isComplete: validation.isComplete,
           },
@@ -60,14 +85,14 @@ export class IntakeProcessingService {
           data: {
             playerId,
             tenantId,
-            background: intakeData.background as any,
-            availability: intakeData.availability as any,
-            goals: intakeData.goals as any,
-            weaknesses: intakeData.weaknesses as any,
-            health: intakeData.health as any,
-            lifestyle: intakeData.lifestyle as any,
-            equipment: intakeData.equipment as any,
-            learning: intakeData.learning as any,
+            background: toJsonValue(intakeData.background) ?? Prisma.JsonNull,
+            availability: toJsonValue(intakeData.availability) ?? Prisma.JsonNull,
+            goals: toJsonValue(intakeData.goals) ?? Prisma.JsonNull,
+            weaknesses: toJsonValue(intakeData.weaknesses) ?? Prisma.JsonNull,
+            health: toJsonValue(intakeData.health) ?? Prisma.JsonNull,
+            lifestyle: toJsonValue(intakeData.lifestyle) ?? Prisma.JsonNull,
+            equipment: toJsonValue(intakeData.equipment) ?? Prisma.JsonNull,
+            learning: toJsonValue(intakeData.learning) ?? Prisma.JsonNull,
             completionPercentage: validation.completionPercentage,
             isComplete: validation.isComplete,
           },
@@ -167,13 +192,13 @@ export class IntakeProcessingService {
   /**
    * Process intake data into structured format
    */
-  private static processIntakeData(intake: any): ProcessedIntake {
-    const background = intake.background as PlayerIntakeForm['background'];
-    const availability = intake.availability as PlayerIntakeForm['availability'];
-    const goals = intake.goals as PlayerIntakeForm['goals'];
-    const weaknesses = intake.weaknesses as PlayerIntakeForm['weaknesses'];
-    const health = intake.health as PlayerIntakeForm['health'];
-    const lifestyle = intake.lifestyle as PlayerIntakeForm['lifestyle'];
+  private static processIntakeData(intake: PlayerIntakeRecord): ProcessedIntake {
+    const background = intake.background as unknown as PlayerIntakeForm['background'];
+    const availability = intake.availability as unknown as PlayerIntakeForm['availability'];
+    const goals = intake.goals as unknown as PlayerIntakeForm['goals'];
+    const weaknesses = intake.weaknesses as unknown as PlayerIntakeForm['weaknesses'];
+    const health = intake.health as unknown as PlayerIntakeForm['health'];
+    const lifestyle = intake.lifestyle as unknown as PlayerIntakeForm['lifestyle'];
     // Equipment is available as intake.equipment if needed in the future
 
     // Determine player category from average score
@@ -309,7 +334,7 @@ export class IntakeProcessingService {
   /**
    * Extract priority areas from weaknesses
    */
-  private static extractPriorityAreas(weaknesses: any): string[] {
+  private static extractPriorityAreas(weaknesses: PlayerIntakeForm['weaknesses']): string[] {
     const areas: string[] = [];
 
     if (weaknesses.problemAreas) {
@@ -326,11 +351,11 @@ export class IntakeProcessingService {
   /**
    * Extract restrictions from health data
    */
-  private static extractRestrictions(health: any): string[] {
+  private static extractRestrictions(health: PlayerIntakeForm['health']): string[] {
     const restrictions: string[] = [];
 
     if (health.currentInjuries) {
-      health.currentInjuries.forEach((injury: any) => {
+      health.currentInjuries.forEach((injury) => {
         if (injury.requiresModification) {
           restrictions.push(`Injury: ${injury.type}`);
         }
@@ -338,7 +363,7 @@ export class IntakeProcessingService {
     }
 
     if (health.physicalLimitations) {
-      health.physicalLimitations.forEach((limit: any) => {
+      health.physicalLimitations.forEach((limit) => {
         if (limit.severity !== 'mild') {
           restrictions.push(`${limit.area} limitation`);
         }

@@ -1,9 +1,16 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Coach, Prisma } from '@prisma/client';
 import { NotFoundError, ConflictError } from '../../../middleware/errors';
 import { CreateCoachInput, UpdateCoachInput, ListCoachesQuery } from './schema';
 
+/**
+ * Coach with players relation
+ */
+type CoachWithRelations = Prisma.CoachGetPayload<{
+  include: { players: { select: { id: true; firstName: true; lastName: true } } };
+}>;
+
 export interface CoachListResponse {
-  coaches: any[];
+  coaches: Coach[];
   pagination: {
     page: number;
     limit: number;
@@ -37,7 +44,7 @@ export class CoachService {
   /**
    * Create a new coach
    */
-  async createCoach(tenantId: string, input: CreateCoachInput): Promise<any> {
+  async createCoach(tenantId: string, input: CreateCoachInput): Promise<Coach> {
     // Check if email already exists for this tenant
     const existingCoach = await this.prisma.coach.findFirst({
       where: {
@@ -76,7 +83,7 @@ export class CoachService {
   /**
    * Get coach by ID
    */
-  async getCoachById(tenantId: string, coachId: string): Promise<any> {
+  async getCoachById(tenantId: string, coachId: string): Promise<CoachWithRelations> {
     const coach = await this.prisma.coach.findFirst({
       where: {
         id: coachId,
@@ -158,7 +165,7 @@ export class CoachService {
   /**
    * Update coach
    */
-  async updateCoach(tenantId: string, coachId: string, input: UpdateCoachInput): Promise<any> {
+  async updateCoach(tenantId: string, coachId: string, input: UpdateCoachInput): Promise<Coach> {
     // Check if coach exists
     const existingCoach = await this.prisma.coach.findFirst({
       where: { id: coachId, tenantId },
@@ -344,5 +351,203 @@ export class CoachService {
     const day = d.getDay();
     const diff = d.getDate() - day + (day === 0 ? -6 : 1);
     return new Date(d.setDate(diff));
+  }
+
+  /**
+   * Get all players assigned to a coach with plan status
+   */
+  async getCoachPlayers(tenantId: string, coachId: string): Promise<any[]> {
+    const now = new Date();
+
+    const players = await this.prisma.player.findMany({
+      where: {
+        tenantId,
+        coachId,
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        category: true,
+        gender: true,
+        birthDate: true,
+        handicap: true,
+        status: true,
+        profileImageUrl: true,
+        createdAt: true,
+        annualPlans: {
+          where: {
+            status: 'active',
+            startDate: { lte: now },
+            endDate: { gte: now },
+          },
+          select: {
+            id: true,
+            planName: true,
+            startDate: true,
+            endDate: true,
+            updatedAt: true,
+          },
+          take: 1,
+        },
+        dailyAssignments: {
+          where: {
+            assignedDate: { gte: now },
+            status: 'planned',
+          },
+          orderBy: { assignedDate: 'asc' },
+          take: 1,
+          select: {
+            assignedDate: true,
+          },
+        },
+      },
+      orderBy: [
+        { lastName: 'asc' },
+        { firstName: 'asc' },
+      ],
+    });
+
+    return players.map(p => {
+      const activePlan = p.annualPlans[0];
+      const nextAssignment = p.dailyAssignments[0];
+
+      // Calculate weeks in plan
+      let weeksInPlan = 0;
+      if (activePlan) {
+        const planStart = new Date(activePlan.startDate);
+        const planEnd = new Date(activePlan.endDate);
+        weeksInPlan = Math.ceil((planEnd.getTime() - planStart.getTime()) / (7 * 24 * 60 * 60 * 1000));
+      }
+
+      return {
+        id: p.id,
+        firstName: p.firstName,
+        lastName: p.lastName,
+        name: `${p.firstName} ${p.lastName}`,
+        email: p.email,
+        category: p.category,
+        gender: p.gender,
+        birthDate: p.birthDate,
+        handicap: p.handicap ? Number(p.handicap) : null,
+        status: p.status,
+        profileImageUrl: p.profileImageUrl,
+        createdAt: p.createdAt,
+        hasActivePlan: !!activePlan,
+        planUpdated: activePlan?.updatedAt?.toISOString().split('T')[0],
+        nextSession: nextAssignment?.assignedDate?.toISOString().split('T')[0],
+        weeksInPlan,
+      };
+    });
+  }
+
+  /**
+   * Get alerts for a coach (based on player activity)
+   */
+  async getCoachAlerts(tenantId: string, coachId: string, _unreadOnly: boolean = false): Promise<any[]> {
+    const alerts: any[] = [];
+
+    // Get coach's players
+    const players = await this.prisma.player.findMany({
+      where: { tenantId, coachId },
+      include: {
+        testResults: {
+          orderBy: { testDate: 'desc' },
+          take: 2,
+          include: { test: true },
+        },
+        sessions: {
+          orderBy: { sessionDate: 'desc' },
+          take: 1,
+        },
+        videos: {
+          where: { status: 'uploaded' },
+          orderBy: { uploadedAt: 'desc' },
+          take: 5,
+        },
+        annualPlans: {
+          where: { status: 'pending_approval' },
+          take: 1,
+        },
+      },
+    });
+
+    const now = new Date();
+    const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    for (const player of players) {
+      const playerName = `${player.firstName} ${player.lastName}`;
+
+      // Alert: New video uploaded (last 7 days)
+      for (const video of player.videos) {
+        if (video.uploadedAt && video.uploadedAt >= sevenDaysAgo) {
+          alerts.push({
+            id: `video_${video.id}`,
+            athleteId: player.id,
+            athleteName: playerName,
+            type: 'proof_uploaded',
+            message: `Ny video lastet opp: ${video.title || 'Uten tittel'}`,
+            createdAt: video.uploadedAt.toISOString(),
+            read: false,
+          });
+        }
+      }
+
+      // Alert: Training plan pending approval
+      if (player.annualPlans.length > 0) {
+        const plan = player.annualPlans[0];
+        alerts.push({
+          id: `plan_${plan.id}`,
+          athleteId: player.id,
+          athleteName: playerName,
+          type: 'plan_pending',
+          message: 'Treningsplan venter på godkjenning',
+          createdAt: plan.createdAt.toISOString(),
+          read: false,
+        });
+      }
+
+      // Alert: Inactive player (no sessions in 14 days)
+      const lastSession = player.sessions[0];
+      if (!lastSession || lastSession.sessionDate < fourteenDaysAgo) {
+        alerts.push({
+          id: `inactive_${player.id}`,
+          athleteId: player.id,
+          athleteName: playerName,
+          type: 'note_request',
+          message: 'Ingen treningsøkter de siste 14 dagene',
+          createdAt: now.toISOString(),
+          read: false,
+        });
+      }
+
+      // Alert: Test performance change
+      if (player.testResults.length >= 2) {
+        const [latest, previous] = player.testResults;
+        if (latest.test.testNumber === previous.test.testNumber) {
+          const latestVal = Number(latest.value);
+          const prevVal = Number(previous.value);
+          if (latestVal < prevVal * 0.9) { // More than 10% drop
+            alerts.push({
+              id: `test_drop_${latest.id}`,
+              athleteId: player.id,
+              athleteName: playerName,
+              type: 'milestone',
+              message: `Nedgang i ${latest.test.name}: ${prevVal} → ${latestVal}`,
+              createdAt: latest.testDate.toISOString(),
+              read: false,
+            });
+          }
+        }
+      }
+    }
+
+    // Sort by date (most recent first)
+    alerts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    // Limit to 50 alerts
+    return alerts.slice(0, 50);
   }
 }

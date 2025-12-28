@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Test, Prisma } from '@prisma/client';
 import { NotFoundError, BadRequestError } from '../../../middleware/errors';
 import {
   CreateTestInput,
@@ -9,8 +9,18 @@ import {
   ListTestResultsQuery,
 } from './schema';
 
+/**
+ * Test result with player and test relations
+ */
+type TestResultWithRelations = Prisma.TestResultGetPayload<{
+  include: {
+    player: { select: { id: true; firstName: true; lastName: true } };
+    test: { select: { id: true; name: true; testNumber: true } };
+  };
+}>;
+
 export interface TestListResponse {
-  tests: any[];
+  tests: Test[];
   pagination: {
     page: number;
     limit: number;
@@ -20,7 +30,7 @@ export interface TestListResponse {
 }
 
 export interface TestResultListResponse {
-  results: any[];
+  results: TestResultWithRelations[];
   pagination: {
     page: number;
     limit: number;
@@ -62,7 +72,7 @@ export class TestService {
   /**
    * Create a new test definition
    */
-  async createTest(tenantId: string, input: CreateTestInput): Promise<any> {
+  async createTest(tenantId: string, input: CreateTestInput): Promise<Test> {
     const test = await this.prisma.test.create({
       data: {
         tenantId,
@@ -86,7 +96,7 @@ export class TestService {
   /**
    * Get test by ID
    */
-  async getTestById(tenantId: string, testId: string): Promise<any> {
+  async getTestById(tenantId: string, testId: string): Promise<Test> {
     const test = await this.prisma.test.findFirst({
       where: {
         id: testId,
@@ -188,7 +198,7 @@ export class TestService {
   /**
    * Update test
    */
-  async updateTest(tenantId: string, testId: string, input: UpdateTestInput): Promise<any> {
+  async updateTest(tenantId: string, testId: string, input: UpdateTestInput): Promise<Test> {
     // Check if test exists
     const existingTest = await this.prisma.test.findFirst({
       where: { id: testId, tenantId },
@@ -242,7 +252,7 @@ export class TestService {
   /**
    * Record a test result
    */
-  async recordTestResult(tenantId: string, input: RecordTestResultInput): Promise<any> {
+  async recordTestResult(tenantId: string, input: RecordTestResultInput): Promise<TestResultWithRelations> {
     // Verify test exists
     const test = await this.prisma.test.findFirst({
       where: { id: input.testId, tenantId },
@@ -327,7 +337,7 @@ export class TestService {
   /**
    * Get test result by ID
    */
-  async getTestResultById(tenantId: string, resultId: string): Promise<any> {
+  async getTestResultById(tenantId: string, resultId: string): Promise<TestResultWithRelations> {
     const result = await this.prisma.testResult.findFirst({
       where: {
         id: resultId,
@@ -435,7 +445,7 @@ export class TestService {
   /**
    * Update test result
    */
-  async updateTestResult(tenantId: string, resultId: string, input: UpdateTestResultInput): Promise<any> {
+  async updateTestResult(tenantId: string, resultId: string, input: UpdateTestResultInput): Promise<TestResultWithRelations> {
     const existingResult = await this.prisma.testResult.findFirst({
       where: {
         id: resultId,
@@ -513,60 +523,54 @@ export class TestService {
       throw new NotFoundError('Player not found');
     }
 
-    // Get tests (filtered by testId if provided)
-    const testWhere: any = { tenantId, isActive: true };
-    if (testId) {
-      testWhere.id = testId;
-    }
-
+    // Get tests with results in a single query (avoids N+1)
     const tests = await this.prisma.test.findMany({
-      where: testWhere,
+      where: {
+        tenantId,
+        isActive: true,
+        ...(testId && { id: testId }),
+      },
+      include: {
+        testResults: {
+          where: { playerId },
+          orderBy: { testDate: 'asc' },
+        },
+      },
       orderBy: { testNumber: 'asc' },
     });
 
-    const progressData = await Promise.all(
-      tests.map(async (test) => {
-        const results = await this.prisma.testResult.findMany({
-          where: {
-            testId: test.id,
-            playerId,
-          },
-          orderBy: {
-            testDate: 'asc',
-          },
-        });
+    const progressData = tests.map((test) => {
+      const results = test.testResults;
+      const latestResult = results[results.length - 1] || null;
+      const firstResult = results[0] || null;
 
-        const latestResult = results[results.length - 1] || null;
-        const firstResult = results[0] || null;
+      const improvement = {
+        absolute: null as number | null,
+        percentage: null as number | null,
+      };
 
-        let improvement = {
-          absolute: null as number | null,
-          percentage: null as number | null,
-        };
+      if (latestResult && firstResult && firstResult.pei && latestResult.pei) {
+        improvement.absolute = Number(latestResult.pei) - Number(firstResult.pei);
+        improvement.percentage = (improvement.absolute / Number(firstResult.pei)) * 100;
+      }
 
-        if (latestResult && firstResult && firstResult.pei && latestResult.pei) {
-          improvement.absolute = Number(latestResult.pei) - Number(firstResult.pei);
-          improvement.percentage = (improvement.absolute / Number(firstResult.pei)) * 100;
-        }
-
-        return {
-          test: {
-            id: test.id,
-            name: test.name,
-            testNumber: test.testNumber,
-          },
-          results: results.map((r) => ({
-            id: r.id,
-            testDate: r.testDate.toISOString().split('T')[0],
-            pei: r.pei ? Number(r.pei) : null,
-            improvementFromLast: r.improvementFromLast ? Number(r.improvementFromLast) : null,
-            categoryBenchmark: r.categoryBenchmark,
-          })),
-          latestResult,
-          improvement,
-        };
-      })
-    );
+      return {
+        test: {
+          id: test.id,
+          name: test.name,
+          testNumber: test.testNumber,
+        },
+        results: results.map((r) => ({
+          id: r.id,
+          testDate: r.testDate.toISOString().split('T')[0],
+          pei: r.pei ? Number(r.pei) : null,
+          improvementFromLast: r.improvementFromLast ? Number(r.improvementFromLast) : null,
+          categoryBenchmark: r.categoryBenchmark,
+        })),
+        latestResult,
+        improvement,
+      };
+    });
 
     return {
       player: {

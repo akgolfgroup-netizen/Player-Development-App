@@ -523,32 +523,28 @@ export async function videoRoutes(app: FastifyInstance): Promise<void> {
         });
         const coachName = coach ? `${coach.firstName} ${coach.lastName}` : 'Treneren';
 
-        // Create notifications and send WebSocket events
+        // Create notifications in batch
+        const notificationData = playerIds.map((playerId) => ({
+          recipientType: 'player' as const,
+          recipientId: playerId,
+          notificationType: 'video_shared',
+          title: 'Ny video delt med deg',
+          message: `${coachName} har delt en video: "${video.title}"`,
+          metadata: {
+            videoId: request.params.id,
+            videoTitle: video.title,
+            coachId: userId,
+            category: video.category,
+          },
+          channels: ['app'],
+          status: 'sent',
+          sentAt: new Date(),
+        }));
+
+        await prisma.notification.createMany({ data: notificationData });
+
+        // Send WebSocket events to each player (real-time)
         for (const playerId of playerIds) {
-          // Create in-app notification
-          const notification = await prisma.notification.create({
-            data: {
-              recipientType: 'player',
-              recipientId: playerId,
-              notificationType: 'video_shared',
-              title: 'Ny video delt med deg',
-              message: `${coachName} har delt en video: "${video.title}"`,
-              metadata: {
-                videoId: request.params.id,
-                videoTitle: video.title,
-                coachId: userId,
-                category: video.category,
-              },
-              channels: ['app'],
-              status: 'sent',
-              sentAt: new Date(),
-            },
-          });
-
-          // Push real-time notification via SSE
-          await publishNotification(notification);
-
-          // Send WebSocket event (legacy)
           wsManager.sendToUser(playerId, WS_EVENTS.VIDEO_SHARED, {
             videoId: request.params.id,
             title: video.title,

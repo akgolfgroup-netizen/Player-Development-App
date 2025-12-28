@@ -4,6 +4,7 @@ import { config } from '../config';
 import { logger } from '../utils/logger';
 import prisma from '../core/db/prisma';
 import { wsManager } from '../plugins/websocket';
+import { EmailService } from '../domain/notifications/email.service';
 
 /**
  * Redis connection for BullMQ
@@ -11,6 +12,9 @@ import { wsManager } from '../plugins/websocket';
 const connection = new Redis(config.redis?.url || 'redis://localhost:6379', {
   maxRetriesPerRequest: null,
 });
+
+// Email service instance
+const emailService = new EmailService();
 
 /**
  * Job types for the reminder queue
@@ -142,8 +146,31 @@ const processors: Record<JobType, (job: Job) => Promise<void>> = {
       sessionId,
     });
 
-    // TODO: Send push notification if enabled
-    // TODO: Send email if preference is set
+    // Get player's notification preferences
+    const playerWithUser = await prisma.player.findUnique({
+      where: { id: playerId },
+      include: { user: true },
+    });
+
+    // Send email if player has email notifications enabled
+    if (playerWithUser?.user?.email) {
+      try {
+        await emailService.send({
+          to: playerWithUser.user.email,
+          subject: `Påminnelse: ${sessionTitle}`,
+          html: `
+            <h2>Treningsøkt om 30 minutter</h2>
+            <p>Hei ${playerWithUser.firstName}!</p>
+            <p>Husk at treningsøkten "${sessionTitle}" starter snart.</p>
+            <p>Lykke til med treningen!</p>
+            <p>Hilsen AK Golf Academy</p>
+          `,
+        });
+        logger.info({ playerId, sessionId }, 'Session reminder email sent');
+      } catch (emailError) {
+        logger.warn({ playerId, error: emailError }, 'Failed to send session reminder email');
+      }
+    }
   },
 
   /**

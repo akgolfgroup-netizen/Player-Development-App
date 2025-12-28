@@ -7,7 +7,7 @@ export async function idempotencyMiddleware(request: FastifyRequest, reply: Fast
   const key = request.headers['idempotency-key'] as string;
   if (!key || request.method !== 'POST') return;
 
-  const userId = (request.user as any)?.id;
+  const userId = request.user?.id;
   if (!userId) return;
 
   const cacheKey = `${userId}:${key}`;

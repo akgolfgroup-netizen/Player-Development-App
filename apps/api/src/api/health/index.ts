@@ -68,8 +68,7 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
    * GET /health/detailed
    * Detailed health check with all service checks
    */
-  fastify.get('/detailed', async (request, reply) => {
-    const startTime = Date.now();
+  fastify.get('/detailed', async (_request, reply) => {
 
     // Run all checks in parallel
     const [databaseCheck, memoryCheck] = await Promise.all([
@@ -125,7 +124,7 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
    * GET /health/live
    * Liveness probe (for Kubernetes/Docker)
    */
-  fastify.get('/live', async (request, reply) => {
+  fastify.get('/live', async (_request, _reply) => {
     // Simple liveness check - if we can respond, we're alive
     return {
       alive: true,

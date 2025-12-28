@@ -6,6 +6,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import { NotFoundError } from '../../../middleware/errors';
+import { logger } from '../../../utils/logger';
 import {
   DashboardResponse,
   PeriodInfo,
@@ -136,13 +137,13 @@ export class DashboardService {
 
     const duration = Date.now() - startTime;
     if (duration > 200) {
-      console.warn(`[Dashboard] Slow query detected: ${duration}ms for player ${playerId}`);
+      logger.warn({ playerId, duration }, 'Dashboard slow query detected');
     }
 
     return result;
     } catch (error) {
       const duration = Date.now() - startTime;
-      console.error(`[Dashboard] Query failed after ${duration}ms`, error);
+      logger.error({ playerId, duration, error }, 'Dashboard query failed');
       throw error;
     }
   }

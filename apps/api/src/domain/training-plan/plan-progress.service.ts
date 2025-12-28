@@ -330,14 +330,13 @@ export class PlanProgressService {
       },
     });
 
-    // Update progress for each breaking point
-    for (const bp of breakingPoints) {
-      // Simple progress calculation: increment by small amount for each session
+    // Update progress for each breaking point (batched transaction)
+    const updateOperations = breakingPoints.map((bp) => {
       const currentProgress = bp.progressPercent || 0;
       const increment = 2; // 2% per session
       const newProgress = Math.min(100, currentProgress + increment);
 
-      await prisma.breakingPoint.update({
+      return prisma.breakingPoint.update({
         where: { id: bp.id },
         data: {
           progressPercent: newProgress,
@@ -345,6 +344,11 @@ export class PlanProgressService {
           status: newProgress >= 100 ? 'resolved' : newProgress > 0 ? 'in_progress' : 'not_started',
         },
       });
+    });
+
+    // Execute all updates in a single transaction
+    if (updateOperations.length > 0) {
+      await prisma.$transaction(updateOperations);
     }
   }
 

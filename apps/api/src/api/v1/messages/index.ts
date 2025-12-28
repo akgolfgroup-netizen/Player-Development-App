@@ -1,7 +1,10 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 import prisma from '../../../core/db/prisma';
 import { wsManager } from '../../../plugins/websocket';
+// Note: Using FastifyRequest with non-null assertions (!) for authenticated routes
+// since Fastify's type system doesn't automatically narrow types after preHandler hooks
 
 /**
  * Message API Routes
@@ -52,7 +55,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
       },
     },
   }, async (request: FastifyRequest, _reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
 
     const conversations = await prisma.conversation.findMany({
       where: {
@@ -161,7 +164,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
       },
     },
   }, async (request: FastifyRequest, _reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
     const body = createConversationSchema.parse(request.body);
 
     // For direct messages, check if conversation already exists
@@ -238,7 +241,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
     Params: { conversationId: string };
     Querystring: { limit?: number; before?: string };
   }>, reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
     const { conversationId } = request.params;
     const { limit = 50, before } = request.query;
 
@@ -357,7 +360,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
   }, async (request: FastifyRequest<{
     Params: { conversationId: string };
   }>, reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
     const { conversationId } = request.params;
     const body = sendMessageSchema.parse(request.body);
 
@@ -376,7 +379,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
         conversationId,
         senderId: userId,
         content: body.content,
-        attachments: body.attachments as any,
+        attachments: body.attachments as Prisma.InputJsonValue | undefined,
       },
       include: {
         sender: {
@@ -439,7 +442,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
   }, async (request: FastifyRequest<{
     Params: { messageId: string };
   }>, reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
     const { messageId } = request.params;
     const body = updateMessageSchema.parse(request.body);
 
@@ -475,7 +478,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
   }, async (request: FastifyRequest<{
     Params: { messageId: string };
   }>, reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
     const { messageId } = request.params;
 
     const message = await prisma.message.findUnique({
@@ -510,7 +513,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
   }, async (request: FastifyRequest<{
     Params: { conversationId: string };
   }>, _reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
     const { conversationId } = request.params;
 
     const unreadMessages = await prisma.message.findMany({
@@ -542,7 +545,7 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
       tags: ['messages'],
     },
   }, async (request: FastifyRequest, _reply: FastifyReply) => {
-    const userId = (request as any).user.id;
+    const userId = request.user!.id;
 
     const count = await prisma.message.count({
       where: {

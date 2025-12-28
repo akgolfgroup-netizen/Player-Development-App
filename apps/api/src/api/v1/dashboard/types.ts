@@ -8,6 +8,17 @@
  */
 
 /**
+ * Generic JSON value type for arbitrary data
+ */
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
+/**
  * Player status tier
  */
 export type PlayerTier = 'beginner' | 'intermediate' | 'advanced' | 'elite';
@@ -92,8 +103,7 @@ export interface Badge {
   tier: BadgeTier;
   category: string | null;
   earnedAt: string;  // ISO 8601 date-time
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: Record<string, any> | null;
+  context: Record<string, JsonValue> | null;
 }
 
 /**
@@ -239,10 +249,9 @@ export interface ApiError {
 /**
  * Type guards
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isDashboardResponse(obj: any): obj is DashboardResponse {
+export function isDashboardResponse(obj: unknown): obj is DashboardResponse {
   return (
-    obj &&
+    obj !== null &&
     typeof obj === 'object' &&
     'player' in obj &&
     'period' in obj &&
@@ -255,7 +264,6 @@ export function isDashboardResponse(obj: any): obj is DashboardResponse {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isApiError(obj: any): obj is ApiError {
-  return obj && typeof obj === 'object' && 'error' in obj;
+export function isApiError(obj: unknown): obj is ApiError {
+  return obj !== null && typeof obj === 'object' && 'error' in obj;
 }

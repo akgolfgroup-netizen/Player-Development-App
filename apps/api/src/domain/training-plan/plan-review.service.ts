@@ -59,23 +59,24 @@ export class PlanReviewService {
       },
     });
 
-    // Create notification for coaches
+    // Create notifications for coaches (batched)
     const coaches = await prisma.coach.findMany({
       where: { tenantId: plan.tenantId },
+      select: { id: true },
     });
 
-    for (const coach of coaches) {
-      await prisma.notification.create({
-        data: {
+    if (coaches.length > 0) {
+      await prisma.notification.createMany({
+        data: coaches.map((coach) => ({
           recipientType: 'coach',
           recipientId: coach.id,
           notificationType: 'plan_review_requested',
           title: 'Training Plan Review Requested',
           message: `A new training plan for player ${plan.playerId} is ready for review`,
-          metadata: { planId, submittedBy } as any,
+          metadata: { planId, submittedBy },
           priority: 'normal',
           status: 'pending',
-        },
+        })),
       });
     }
   }

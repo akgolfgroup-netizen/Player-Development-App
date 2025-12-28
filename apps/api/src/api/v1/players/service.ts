@@ -1,9 +1,19 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { NotFoundError, ConflictError, BadRequestError } from '../../../middleware/errors';
 import { CreatePlayerInput, UpdatePlayerInput, ListPlayersQuery } from './schema';
 
+/**
+ * Player with coach and parent relations
+ */
+type PlayerWithRelations = Prisma.PlayerGetPayload<{
+  include: {
+    coach: { select: { id: true; firstName: true; lastName: true; email?: true } };
+    parent: { select: { id: true; firstName: true; lastName: true; email?: true; phone?: true } };
+  };
+}>;
+
 export interface PlayerListResponse {
-  players: any[];
+  players: PlayerWithRelations[];
   pagination: {
     page: number;
     limit: number;
@@ -46,7 +56,7 @@ export class PlayerService {
   /**
    * Create a new player
    */
-  async createPlayer(tenantId: string, input: CreatePlayerInput): Promise<any> {
+  async createPlayer(tenantId: string, input: CreatePlayerInput): Promise<PlayerWithRelations> {
     // Check if email already exists for this tenant (if provided)
     if (input.email) {
       const existingPlayer = await this.prisma.player.findFirst({
@@ -133,7 +143,7 @@ export class PlayerService {
   /**
    * Get player by ID
    */
-  async getPlayerById(tenantId: string, playerId: string): Promise<any> {
+  async getPlayerById(tenantId: string, playerId: string): Promise<PlayerWithRelations> {
     const player = await this.prisma.player.findFirst({
       where: {
         id: playerId,
@@ -234,7 +244,7 @@ export class PlayerService {
   /**
    * Update player
    */
-  async updatePlayer(tenantId: string, playerId: string, input: UpdatePlayerInput): Promise<any> {
+  async updatePlayer(tenantId: string, playerId: string, input: UpdatePlayerInput): Promise<PlayerWithRelations> {
     // Check if player exists
     const existingPlayer = await this.prisma.player.findFirst({
       where: { id: playerId, tenantId },

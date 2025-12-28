@@ -39,18 +39,18 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   });
 
   // Register error handlers
-  app.setErrorHandler(errorHandler as any);
-  app.setNotFoundHandler(notFoundHandler as any);
+  app.setErrorHandler(errorHandler);
+  app.setNotFoundHandler(notFoundHandler);
 
   // Register plugins
   await app.register(sentryPlugin); // Error tracking
   await app.register(metricsPlugin); // Performance monitoring and metrics
-  await registerHelmet(app as any);
-  await registerCors(app as any);
-  await registerSwagger(app as any);
-  await registerWebSocket(app as any);
-  await registerCache(app as any);
-  await registerRateLimit(app as any);
+  await registerHelmet(app);
+  await registerCors(app);
+  await registerSwagger(app);
+  await registerWebSocket(app);
+  await registerCache(app);
+  await registerRateLimit(app);
 
   // Register authenticate decorator
   app.decorate('authenticate', authenticateUser);
@@ -165,7 +165,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
     });
   });
 
-  return app as any;
+  return app;
 }
 
 /**

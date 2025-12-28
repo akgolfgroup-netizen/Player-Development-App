@@ -3,12 +3,25 @@
  * Manages saved filters and advanced filtering for coaches
  */
 
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, SavedFilter, Player, Coach, Test, TestResult } from '@prisma/client';
 import { NotFoundError } from '../../../middleware/errors';
 
 // ============================================================================
 // TYPES
 // ============================================================================
+
+/** SavedFilter with coach info for detailed views */
+type SavedFilterWithCoach = SavedFilter & {
+  coach: Pick<Coach, 'id' | 'firstName' | 'lastName'>;
+};
+
+/** Player with full test results and coach info */
+type PlayerWithTestResults = Player & {
+  testResults: (TestResult & {
+    test: Test;
+  })[];
+  coach: Pick<Coach, 'id' | 'firstName' | 'lastName'> | null;
+};
 
 export interface FilterCriteria {
   categories?: string[];
@@ -62,7 +75,7 @@ export class FilterService {
   async createSavedFilter(
     tenantId: string,
     input: CreateSavedFilterInput
-  ): Promise<any> {
+  ): Promise<SavedFilter> {
     // Verify coach exists
     const coach = await this.prisma.coach.findFirst({
       where: {
@@ -81,7 +94,7 @@ export class FilterService {
         coachId: input.coachId,
         name: input.name,
         description: input.description,
-        filter: input.filters as any,
+        filter: input.filters as unknown as Prisma.InputJsonValue,
       },
     });
 
@@ -91,7 +104,7 @@ export class FilterService {
   /**
    * Get saved filter by ID
    */
-  async getSavedFilter(tenantId: string, filterId: string): Promise<any> {
+  async getSavedFilter(tenantId: string, filterId: string): Promise<SavedFilterWithCoach> {
     const savedFilter = await this.prisma.savedFilter.findFirst({
       where: {
         id: filterId,
@@ -120,7 +133,7 @@ export class FilterService {
   /**
    * List saved filters for a coach
    */
-  async listSavedFilters(tenantId: string, coachId: string): Promise<any[]> {
+  async listSavedFilters(tenantId: string, coachId: string): Promise<SavedFilter[]> {
     const filters = await this.prisma.savedFilter.findMany({
       where: {
         coachId,
@@ -143,7 +156,7 @@ export class FilterService {
     tenantId: string,
     filterId: string,
     input: UpdateSavedFilterInput
-  ): Promise<any> {
+  ): Promise<SavedFilter> {
     // Verify filter exists
     await this.getSavedFilter(tenantId, filterId);
 
@@ -155,7 +168,9 @@ export class FilterService {
       data: {
         name: input.name,
         description: input.description,
-        filter: input.filters as any,
+        filter: input.filters
+          ? (input.filters as unknown as Prisma.InputJsonValue)
+          : undefined,
       },
     });
 
@@ -183,7 +198,7 @@ export class FilterService {
   async applyFilter(
     tenantId: string,
     input: ApplyFilterInput
-  ): Promise<{ players: any[]; total: number }> {
+  ): Promise<{ players: PlayerWithTestResults[]; total: number }> {
     const { filters, limit = 50, offset = 0 } = input;
 
     // Build where clause

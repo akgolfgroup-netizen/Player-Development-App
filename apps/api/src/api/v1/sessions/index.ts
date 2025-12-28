@@ -45,7 +45,7 @@ export default async function sessionRoutes(fastify: FastifyInstance) {
       const body = request.body as any;
 
       let playerId: string;
-      let coachId: string | null = null;
+      const coachId: string | null = null;
 
       if (user.role === 'player') {
         // Player creating their own session

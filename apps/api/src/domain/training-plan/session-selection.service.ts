@@ -13,6 +13,36 @@ import type {
 const prisma = getPrismaClient();
 
 export class SessionSelectionService {
+  // Number of days to look back for recently used templates
+  private static TEMPLATE_HISTORY_DAYS = 7;
+
+  /**
+   * Get recently used template IDs for a player
+   * Helps ensure variety in session selection
+   */
+  private static async getRecentlyUsedTemplates(
+    playerId: string,
+    days: number = this.TEMPLATE_HISTORY_DAYS
+  ): Promise<string[]> {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - days);
+
+    const recentAssignments = await prisma.dailyAssignment.findMany({
+      where: {
+        annualPlan: { playerId },
+        date: { gte: cutoffDate },
+        sessionTemplateId: { not: null },
+        status: { in: ['completed', 'in_progress'] },
+      },
+      select: { sessionTemplateId: true },
+      distinct: ['sessionTemplateId'],
+    });
+
+    return recentAssignments
+      .map((a) => a.sessionTemplateId)
+      .filter((id): id is string => id !== null);
+  }
+
   /**
    * Select session template for a specific day
    */
@@ -33,6 +63,9 @@ export class SessionSelectionService {
       return null;
     }
 
+    // Get recently used templates to ensure variety
+    const recentlyUsedTemplateIds = await this.getRecentlyUsedTemplates(context.playerId);
+
     // Build selection criteria
     const criteria: SessionSelectionCriteria = {
       period: context.period,
@@ -42,7 +75,7 @@ export class SessionSelectionService {
       breakingPointIds: context.breakingPointIds,
       targetDuration,
       intensity: context.intensity,
-      excludeTemplateIds: [], // TODO: Track recently used templates
+      excludeTemplateIds: recentlyUsedTemplateIds,
     };
 
     // Select session

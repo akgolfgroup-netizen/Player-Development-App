@@ -3,6 +3,7 @@
  * Generates complete 12-month training plans
  */
 
+import { Prisma } from '@prisma/client';
 import { getPrismaClient } from '../../core/db/prisma';
 import {
   getTemplateForScoringAverage,
@@ -59,7 +60,7 @@ export class PlanGenerationService {
         specializationWeeks: template.specializationWeeks,
         tournamentWeeks: template.tournamentWeeks,
         weeklyHoursTarget,
-        intensityProfile: intensityProfile as any,
+        intensityProfile: intensityProfile as Prisma.InputJsonValue,
         generatedAt: new Date(),
       },
     });
@@ -174,7 +175,7 @@ export class PlanGenerationService {
     tournaments: TournamentSchedule[]
   ): PeriodizationWeek[] {
     const weeks: PeriodizationWeek[] = [];
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate);
 
     // Base period
     for (let i = 0; i < template.basePeriodWeeks; i++) {
@@ -391,7 +392,7 @@ export class PlanGenerationService {
           toppingDurationWeeks: toppingWeeks,
           taperingStartDate,
           taperingDurationDays: taperingDays,
-          focusAreas: schedule.focusAreas as any,
+          focusAreas: schedule.focusAreas as Prisma.InputJsonValue,
         },
       });
     }
@@ -527,13 +528,35 @@ export class PlanGenerationService {
    * Get hours allocated so far in a week
    */
   private static async getHoursAllocatedInWeek(
-    _annualPlanId: string,
-    _weekStartDay: number,
-    _currentDay: number
+    annualPlanId: string,
+    weekStartDay: number,
+    currentDay: number
   ): Promise<number> {
-    // This is a placeholder - in a real implementation, we'd sum up
-    // estimated durations of assignments created so far this week
-    return 0;
+    // Calculate week number from day indices
+    const weekNumber = Math.floor(weekStartDay / 7) + 1;
+    const dayInWeek = currentDay - weekStartDay;
+
+    // Get all assignments for this week up to current day
+    const assignments = await prisma.dailyTrainingAssignment.findMany({
+      where: {
+        annualPlanId,
+        weekNumber,
+        dayOfWeek: {
+          lt: dayInWeek,
+        },
+      },
+      select: {
+        estimatedDuration: true,
+      },
+    });
+
+    // Sum up estimated durations (in minutes) and convert to hours
+    const totalMinutes = assignments.reduce(
+      (sum, a) => sum + (a.estimatedDuration || 0),
+      0
+    );
+
+    return totalMinutes / 60;
   }
 
   /**

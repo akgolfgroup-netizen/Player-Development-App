@@ -35,9 +35,10 @@ export async function initNotificationBus(): Promise<void> {
     await getPublisher();
     useRedis = true;
     logger.info('Notification bus initialized with Redis pub/sub');
-  } catch {
+  } catch (error) {
     useRedis = false;
     logger.warn(
+      { error },
       'Redis not available - using in-memory notification bus. ' +
         'WARNING: Notifications will not work across multiple API instances.'
     );

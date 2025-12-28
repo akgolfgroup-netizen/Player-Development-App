@@ -38,7 +38,7 @@ export const RateLimitConfig = {
  * Uses authenticated user ID if available, falls back to IP
  */
 function keyGenerator(request: FastifyRequest): string {
-  const userId = (request as any).user?.id;
+  const userId = request.user?.id;
   if (userId) {
     return `user:${userId}`;
   }
@@ -65,8 +65,9 @@ function errorResponseBuilder(
  * Register rate limiting plugin
  */
 export async function registerRateLimit(app: FastifyInstance): Promise<void> {
-  // Disable rate limiting in test environment
-  if (process.env.NODE_ENV === 'test') {
+  // Disable rate limiting in test environment unless explicitly enabled
+  // Set ENABLE_RATE_LIMIT_IN_TESTS=true to test rate limiting behavior
+  if (process.env.NODE_ENV === 'test' && process.env.ENABLE_RATE_LIMIT_IN_TESTS !== 'true') {
     logger.info('Rate limiting disabled for test environment');
     return;
   }

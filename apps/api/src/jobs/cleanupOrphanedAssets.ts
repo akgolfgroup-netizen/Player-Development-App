@@ -27,10 +27,14 @@
 
 import { PrismaClient } from '@prisma/client';
 import { storageService } from '../services/storage.service';
+import { logger } from '../utils/logger';
 
 // Logging prefix for monitoring/alerting
 const LOG_PREFIX = '[CLEANUP_JOB]';
 const ERROR_PREFIX = '[CLEANUP_JOB_ERROR]';
+
+// Create child logger for cleanup job
+const jobLogger = logger.child({ job: 'orphan-cleanup' });
 
 // Configuration
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -169,6 +173,7 @@ async function cleanupOrphanedHls(
       } catch (err) {
         const errorMsg = `Failed to delete prefix ${prefix}: ${err}`;
         console.error(`${ERROR_PREFIX}     ${errorMsg}`);
+        jobLogger.error({ prefix, error: err }, 'Failed to delete prefix');
         stats.errors.push(errorMsg);
       }
     }
@@ -219,6 +224,7 @@ async function cleanupExpiredVideos(
       } catch (err) {
         const errorMsg = `Failed to cleanup video ${video.id}: ${err}`;
         console.error(`${ERROR_PREFIX}     ${errorMsg}`);
+        jobLogger.error({ videoId: video.id, error: err }, 'Failed to cleanup video');
         stats.errors.push(errorMsg);
       }
     }
@@ -235,12 +241,14 @@ function checkProductionSafety(): { safe: boolean; exitCode: number } {
     console.error(`${ERROR_PREFIX} In production, CLEANUP_DRY_RUN must be explicitly set.`);
     console.error(`${ERROR_PREFIX} Set CLEANUP_DRY_RUN=false for real cleanup, or CLEANUP_DRY_RUN=true for dry-run.`);
     console.error(`${ERROR_PREFIX} Aborting to prevent accidental data loss.`);
+    jobLogger.error({ env: NODE_ENV }, 'Production safety guard triggered - CLEANUP_DRY_RUN not set');
     return { safe: false, exitCode: 2 };
   }
 
   if (NODE_ENV === 'production' && DRY_RUN && CLEANUP_DRY_RUN_ENV !== 'true') {
     console.warn(`${LOG_PREFIX} WARNING: Production mode with ambiguous CLEANUP_DRY_RUN value.`);
     console.warn(`${LOG_PREFIX} Defaulting to dry-run for safety. Set CLEANUP_DRY_RUN=false for real cleanup.`);
+    jobLogger.warn({ env: NODE_ENV, dryRunEnv: CLEANUP_DRY_RUN_ENV }, 'Production mode with ambiguous CLEANUP_DRY_RUN');
   }
 
   return { safe: true, exitCode: 0 };
@@ -292,6 +300,13 @@ function logSummary(stats: CleanupStats): void {
     success: stats.errors.length === 0,
   };
   console.log(`${LOG_PREFIX} JSON_SUMMARY: ${JSON.stringify(summaryJson)}`);
+
+  // Structured logging for monitoring systems
+  if (stats.errors.length === 0) {
+    jobLogger.info(summaryJson, 'Cleanup job completed successfully');
+  } else {
+    jobLogger.error(summaryJson, 'Cleanup job completed with errors');
+  }
 }
 
 /**
@@ -322,6 +337,14 @@ async function runCleanup(): Promise<CleanupStats> {
   console.log(`${LOG_PREFIX} Started: ${startTime.toISOString()}`);
   console.log();
 
+  jobLogger.info({
+    mode: DRY_RUN ? 'dry-run' : 'live',
+    env: NODE_ENV,
+    retentionDays: DELETED_RETENTION_DAYS,
+    batchSize: BATCH_SIZE,
+    startTime: startTime.toISOString(),
+  }, 'Cleanup job started');
+
   // Step 1: Find orphaned HLS assets
   console.log(`${LOG_PREFIX} Step 1: Finding orphaned HLS assets...`);
   try {
@@ -335,6 +358,7 @@ async function runCleanup(): Promise<CleanupStats> {
   } catch (err) {
     const errorMsg = `Failed to find orphaned HLS: ${err}`;
     console.error(`${ERROR_PREFIX} ${errorMsg}`);
+    jobLogger.error({ step: 1, error: err }, 'Failed to find orphaned HLS assets');
     stats.errors.push(errorMsg);
   }
   console.log();
@@ -352,6 +376,7 @@ async function runCleanup(): Promise<CleanupStats> {
   } catch (err) {
     const errorMsg = `Failed to find expired videos: ${err}`;
     console.error(`${ERROR_PREFIX} ${errorMsg}`);
+    jobLogger.error({ step: 2, error: err }, 'Failed to find expired deleted videos');
     stats.errors.push(errorMsg);
   }
   console.log();

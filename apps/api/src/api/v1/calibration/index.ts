@@ -5,6 +5,7 @@
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 import { getPrismaClient } from '../../../core/db/prisma';
 import { authenticateUser } from '../../../middleware/auth';
 import { injectTenantContext } from '../../../middleware/tenant';
@@ -14,6 +15,20 @@ import {
   ClubSpeedCalibrationInput,
 } from '../../../domain/calibration/club-speed-calibration.types';
 import { BreakingPointAutoCreationService } from '../../../domain/breaking-points/auto-creation.service';
+// Note: Using FastifyRequest with non-null assertions (!) for authenticated routes
+// since Fastify's type system doesn't automatically narrow types after preHandler hooks
+
+// Type for calibration session samples
+interface CalibrationSample {
+  clubType: string;
+  distance: number;
+  timestamp: string;
+}
+
+interface CalibrationSession {
+  userId: string;
+  samples: CalibrationSample[];
+}
 
 // Validation schemas
 const clubTypeEnum = z.enum([
@@ -64,7 +79,7 @@ export async function calibrationRoutes(app: FastifyInstance): Promise<void> {
   const preHandlers = [authenticateUser, injectTenantContext];
 
   // Mobile-friendly calibration session endpoints
-  const sessions = new Map<string, { userId: string; samples: any[] }>();
+  const sessions = new Map<string, CalibrationSession>();
 
   /**
    * POST /api/v1/calibration/start
@@ -89,9 +104,10 @@ export async function calibrationRoutes(app: FastifyInstance): Promise<void> {
         },
       },
     },
-    async (request: any, _reply: FastifyReply) => {
-      const sessionId = `cal_${request.user.id}_${Date.now()}`;
-      sessions.set(sessionId, { userId: request.user.id, samples: [] });
+    async (request: FastifyRequest, _reply: FastifyReply) => {
+      const userId = request.user!.id;
+      const sessionId = `cal_${userId}_${Date.now()}`;
+      sessions.set(sessionId, { userId, samples: [] });
       return { sessionId, startedAt: new Date().toISOString() };
     }
   );
@@ -138,8 +154,10 @@ export async function calibrationRoutes(app: FastifyInstance): Promise<void> {
         },
       },
     },
-    async (request: any, reply: FastifyReply) => {
-      const { sessionId, samples } = request.body;
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = request.body as { sessionId: string; samples: CalibrationSample[] };
+      const { sessionId, samples } = body;
+      const userId = request.user!.id;
 
       if (samples.length < 5) {
         return reply.code(422).send({
@@ -150,7 +168,7 @@ export async function calibrationRoutes(app: FastifyInstance): Promise<void> {
       }
 
       const session = sessions.get(sessionId);
-      if (!session || session.userId !== request.user.id) {
+      if (!session || session.userId !== userId) {
         return reply.code(422).send({
           type: 'domain_violation',
           message: 'Invalid session',
@@ -276,8 +294,8 @@ export async function calibrationRoutes(app: FastifyInstance): Promise<void> {
           tenantId: request.tenant!.id,
           calibrationDate: result.calibration.calibrationDate,
           driverSpeed: result.calibration.driverSpeed,
-          clubsData: result.calibration.clubs as any,
-          speedProfile: result.speedProfile as any,
+          clubsData: result.calibration.clubs as unknown as Prisma.InputJsonValue,
+          speedProfile: result.speedProfile as unknown as Prisma.InputJsonValue,
           notes: input.notes,
         },
       });
@@ -481,15 +499,15 @@ export async function calibrationRoutes(app: FastifyInstance): Promise<void> {
           tenantId: request.tenant!.id,
           calibrationDate: result.calibration.calibrationDate,
           driverSpeed: result.calibration.driverSpeed,
-          clubsData: result.calibration.clubs as any,
-          speedProfile: result.speedProfile as any,
+          clubsData: result.calibration.clubs as unknown as Prisma.InputJsonValue,
+          speedProfile: result.speedProfile as unknown as Prisma.InputJsonValue,
           notes: input.notes,
         },
         update: {
           calibrationDate: result.calibration.calibrationDate,
           driverSpeed: result.calibration.driverSpeed,
-          clubsData: result.calibration.clubs as any,
-          speedProfile: result.speedProfile as any,
+          clubsData: result.calibration.clubs as unknown as Prisma.InputJsonValue,
+          speedProfile: result.speedProfile as unknown as Prisma.InputJsonValue,
           notes: input.notes,
         },
       });

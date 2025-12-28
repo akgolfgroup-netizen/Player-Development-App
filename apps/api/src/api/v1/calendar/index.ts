@@ -285,9 +285,9 @@ const calendarRoutes: FastifyPluginAsync = async (fastify) => {
     handler: async (req, reply) => {
       const { token } = req.params as { token: string };
 
-      // Find user by calendar token - calendarToken not implemented yet
-      const user = await prisma.user.findFirst({
-        where: { id: token }, // Placeholder: would need calendarToken field on User
+      // Find user by calendar token
+      const user = await prisma.user.findUnique({
+        where: { calendarToken: token },
         include: {
           player: true,
           coach: true,

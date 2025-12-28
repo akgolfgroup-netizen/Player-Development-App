@@ -94,7 +94,7 @@ async function csrfPlugin(
   });
 
   // CSRF validation hook
-  fastify.addHook('preHandler', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.addHook('preHandler', async (request: FastifyRequest, _reply: FastifyReply) => {
     // Skip CSRF check for safe methods
     if (options.ignoreMethods.includes(request.method)) {
       return;
