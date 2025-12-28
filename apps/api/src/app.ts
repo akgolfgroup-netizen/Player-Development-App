@@ -1,4 +1,4 @@
-import Fastify, { FastifyInstance } from 'fastify';
+import Fastify from 'fastify';
 import { config } from './config';
 import { logger } from './utils/logger';
 import { connectDatabase } from './core/db/prisma';
@@ -13,6 +13,7 @@ import metricsPlugin from './plugins/metrics';
 import sentryPlugin from './plugins/sentry';
 import { authenticateUser } from './middleware/auth';
 import { initNotificationBus, shutdown as shutdownNotificationBus } from './services/notifications/notificationBus';
+import { AnyFastifyInstance } from './types/fastify';
 
 export interface BuildAppOptions {
   logger?: boolean;
@@ -21,7 +22,7 @@ export interface BuildAppOptions {
 /**
  * Build and configure Fastify application
  */
-export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInstance> {
+export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyInstance> {
   // Create Fastify instance
   const app = Fastify({
     logger: opts.logger !== false ? logger : false,
@@ -171,7 +172,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
 /**
  * Start the application server
  */
-export async function startServer(): Promise<FastifyInstance> {
+export async function startServer(): Promise<AnyFastifyInstance> {
   const app = await buildApp();
 
   try {

@@ -1,6 +1,7 @@
-import { FastifyInstance, FastifyRequest } from 'fastify';
+import { FastifyRequest } from 'fastify';
 import rateLimit from '@fastify/rate-limit';
 import { logger } from '../utils/logger';
+import { AnyFastifyInstance } from '../types/fastify';
 
 /**
  * Rate limit configurations for different endpoints
@@ -64,7 +65,7 @@ function errorResponseBuilder(
 /**
  * Register rate limiting plugin
  */
-export async function registerRateLimit(app: FastifyInstance): Promise<void> {
+export async function registerRateLimit(app: AnyFastifyInstance): Promise<void> {
   // Disable rate limiting in test environment unless explicitly enabled
   // Set ENABLE_RATE_LIMIT_IN_TESTS=true to test rate limiting behavior
   if (process.env.NODE_ENV === 'test' && process.env.ENABLE_RATE_LIMIT_IN_TESTS !== 'true') {

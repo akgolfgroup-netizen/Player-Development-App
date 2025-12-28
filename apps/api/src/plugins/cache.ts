@@ -1,7 +1,7 @@
-import { FastifyInstance } from 'fastify';
 import Redis from 'ioredis';
 import { config } from '../config';
 import { logger } from '../utils/logger';
+import { AnyFastifyInstance } from '../types/fastify';
 
 /**
  * Redis Cache Service
@@ -291,7 +291,7 @@ export function withCache<T>(
 /**
  * Register cache plugin with Fastify
  */
-export async function registerCache(app: FastifyInstance): Promise<void> {
+export async function registerCache(app: AnyFastifyInstance): Promise<void> {
   await cache.connect();
 
   // Decorate app with cache instance

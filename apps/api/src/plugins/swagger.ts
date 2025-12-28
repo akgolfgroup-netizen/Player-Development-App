@@ -1,12 +1,12 @@
-import { FastifyInstance } from 'fastify';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { config } from '../config';
+import { AnyFastifyInstance } from '../types/fastify';
 
 /**
  * Register Swagger/OpenAPI documentation
  */
-export async function registerSwagger(app: FastifyInstance): Promise<void> {
+export async function registerSwagger(app: AnyFastifyInstance): Promise<void> {
   // Add shared schemas that can be referenced by all routes
   app.addSchema({
     $id: 'Error',

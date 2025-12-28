@@ -1,10 +1,10 @@
-import { FastifyInstance } from 'fastify';
 import { IncomingMessage } from 'http';
 import websocket from '@fastify/websocket';
 import { WebSocket } from 'ws';
 import { verifyToken } from '../middleware/auth';
 import { logger } from '../utils/logger';
 import { AccessTokenPayload } from '../utils/jwt';
+import { AnyFastifyInstance } from '../types/fastify';
 
 /**
  * Extended IncomingMessage with user from WebSocket auth
@@ -231,7 +231,7 @@ export const WS_EVENTS = {
 /**
  * Register WebSocket plugin with Fastify
  */
-export async function registerWebSocket(app: FastifyInstance): Promise<void> {
+export async function registerWebSocket(app: AnyFastifyInstance): Promise<void> {
   await app.register(websocket, {
     options: {
       maxPayload: 1048576, // 1MB
