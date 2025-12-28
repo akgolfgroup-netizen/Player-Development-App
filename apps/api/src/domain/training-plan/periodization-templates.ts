@@ -252,7 +252,12 @@ export function getPlayerCategory(averageScore: number): string {
 /**
  * Calculate intensity profile for the entire year
  */
-export function calculateIntensityProfile(template: PeriodizationTemplate): Record<string, any> {
+export function calculateIntensityProfile(template: PeriodizationTemplate): Record<string, {
+  weeks: number;
+  intensity: IntensityLevel | 'low';
+  volumeProgression: string;
+  hoursPerWeek: number;
+}> {
   return {
     base: {
       weeks: template.basePeriodWeeks,

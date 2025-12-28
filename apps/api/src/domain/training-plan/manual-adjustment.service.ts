@@ -94,7 +94,7 @@ export class ManualAdjustmentService {
     bulk: BulkAssignmentUpdate,
     updatedBy: string
   ): Promise<number> {
-    const where: any = { annualPlanId: planId };
+    const where: { annualPlanId: string; weekNumber?: number; assignedDate?: { gte: Date; lte: Date } } = { annualPlanId: planId };
 
     if (bulk.weekNumber) {
       where.weekNumber = bulk.weekNumber;
@@ -109,7 +109,7 @@ export class ManualAdjustmentService {
 
     const result = await prisma.dailyTrainingAssignment.updateMany({
       where,
-      data: bulk.updates as any,
+      data: bulk.updates,
     });
 
     // Log the bulk change
@@ -433,7 +433,7 @@ export class ManualAdjustmentService {
     planId: string,
     userId: string,
     changeType: string,
-    details: any
+    details: Record<string, unknown>
   ): Promise<void> {
     // For now, just log to logger
     // In production, you'd want to store these in a separate audit log table
@@ -470,7 +470,7 @@ export class ManualAdjustmentService {
   /**
    * Preview impact of a change before applying
    */
-  static async previewChange(planId: string, changeType: string, params: any) {
+  static async previewChange(planId: string, changeType: string, params: Record<string, unknown>) {
     const impact = {
       changeType,
       affectedWeeks: [] as number[],

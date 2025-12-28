@@ -130,7 +130,7 @@ export class PlanReviewService {
         notificationType: 'plan_review_completed',
         title: `Training Plan ${review.status}`,
         message: `Your training plan has been ${review.status} by ${reviewerName}`,
-        metadata: { planId: review.planId, status: review.status, comments: review.comments } as any,
+        metadata: { planId: review.planId, status: review.status, comments: review.comments },
         priority: 'normal',
         status: 'pending',
       },
@@ -257,7 +257,7 @@ export class PlanReviewService {
         weekNumber,
       },
       data: {
-        period: newPeriod as any,
+        period: newPeriod,
       },
     });
 
@@ -268,7 +268,7 @@ export class PlanReviewService {
         weekNumber,
       },
       data: {
-        period: newPeriod as any,
+        period: newPeriod,
       },
     });
   }
