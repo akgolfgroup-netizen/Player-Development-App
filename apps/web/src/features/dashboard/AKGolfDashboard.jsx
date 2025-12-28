@@ -8,6 +8,7 @@ import {
 import DagensPlan from '../../components/dashboard/DagensPlan';
 import WeatherWidget from '../../components/dashboard/WeatherWidget';
 import { useDashboard } from '../../hooks/useDashboard';
+import { FocusWidget } from '../focus-engine';
 import SessionEvaluationWidget from '../sessions/SessionEvaluationWidget';
 import { DashboardTemplate } from '../../ui/templates';
 import { Button } from '../../ui/primitives';
@@ -500,6 +501,9 @@ const AKGolfDashboard = () => {
               />
             </DashboardCard>
           </div>
+
+          {/* Focus Widget */}
+          <FocusWidget />
 
           {/* Weather Widget */}
           <WeatherWidget showForecast={true} />
