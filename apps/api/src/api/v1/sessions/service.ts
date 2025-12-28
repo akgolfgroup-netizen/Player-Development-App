@@ -1,4 +1,4 @@
-import { PrismaClient, TrainingSession } from '@prisma/client';
+import { PrismaClient, TrainingSession, Prisma } from '@prisma/client';
 import { validationError } from '../../../core/errors';
 import { NotFoundError } from '../../../middleware/errors';
 import {
@@ -174,7 +174,7 @@ export class SessionService {
    * List sessions with filters
    */
   async listSessions(query: ListSessionsQuery) {
-    const where: any = {};
+    const where: Prisma.TrainingSessionWhereInput = {};
     const page = query.page || 1;
     const limit = query.limit || 20;
     const sortBy = query.sortBy || 'sessionDate';
@@ -227,7 +227,7 @@ export class SessionService {
    * Get player's own sessions
    */
   async getPlayerSessions(playerId: string, query: PlayerSessionsQuery) {
-    const where: any = { playerId };
+    const where: Prisma.TrainingSessionWhereInput = { playerId };
     const page = query.page || 1;
     const limit = query.limit || 20;
 
@@ -379,7 +379,7 @@ export class SessionService {
     });
 
     // Evaluate badges after session completion (only if playerId exists)
-    let badgeUnlocks: any[] = [];
+    let badgeUnlocks: BadgeUnlockEvent[] = [];
     let xpGained = 0;
     let newLevel: number | undefined;
 
@@ -420,7 +420,7 @@ export class SessionService {
     });
 
     // Evaluate badges after auto-completion (only if playerId exists)
-    let badgeUnlocks: any[] = [];
+    let badgeUnlocks: BadgeUnlockEvent[] = [];
     let xpGained = 0;
     let newLevel: number | undefined;
 
@@ -498,7 +498,7 @@ export class SessionService {
    * Get evaluation statistics for a player
    */
   async getPlayerEvaluationStats(playerId: string, fromDate?: Date, toDate?: Date) {
-    const where: any = {
+    const where: Prisma.TrainingSessionWhereInput = {
       playerId,
       completionStatus: { in: ['completed', 'auto_completed'] },
     };

@@ -3,7 +3,7 @@
  * Includes automatic calculation of test results and peer comparisons
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma, TestResult, PeerComparison, CategoryRequirement } from '@prisma/client';
 import { NotFoundError, BadRequestError } from '../../../middleware/errors';
 import { calculateTestResultAsync, validateTestInput } from '../../../domain/tests';
 import { RequirementsRepository } from '../../../domain/tests/requirements-repository';
@@ -13,6 +13,17 @@ import {
 } from '../../../domain/peer-comparison';
 import { BadgeEvaluatorService, BadgeUnlockEvent } from '../../../domain/gamification/badge-evaluator';
 import { logger } from '../../../utils/logger';
+
+/**
+ * Test result with relations
+ */
+type TestResultWithRelations = Prisma.TestResultGetPayload<{
+  include: {
+    test: true;
+    player: { select: { id: true; firstName: true; lastName: true; category: true; gender: true } };
+    peerComparisons: true;
+  };
+}>;
 
 // ============================================================================
 // TYPES
@@ -33,7 +44,7 @@ export interface RecordTestResultEnhancedInput {
   };
 
   // Raw test input data (varies by test)
-  testData: any;
+  testData: Record<string, unknown>;
 
   // Optional: Override automatic peer comparison
   skipPeerComparison?: boolean;
@@ -41,9 +52,9 @@ export interface RecordTestResultEnhancedInput {
 }
 
 export interface TestResultWithComparison {
-  testResult: any;
-  peerComparison?: any;
-  categoryRequirement: any;
+  testResult: TestResult | TestResultWithRelations;
+  peerComparison?: PeerComparison | null;
+  categoryRequirement: CategoryRequirement | null;
   badgeUnlocks?: BadgeUnlockEvent[];
   xpGained?: number;
   newLevel?: number;
@@ -91,8 +102,9 @@ export class TestResultsEnhancedService {
         },
         ...input.testData,
       });
-    } catch (error: any) {
-      throw new BadRequestError(`Invalid test input: ${error.message}`);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      throw new BadRequestError(`Invalid test input: ${errorMessage}`);
     }
 
     // 2. Fetch player
@@ -176,7 +188,7 @@ export class TestResultsEnhancedService {
         equipment: null, // Can be extended
 
         // Raw input data
-        results: input.testData as any,
+        results: input.testData as Prisma.InputJsonValue,
 
         // Calculated values
         value: calculatedResult.value,
@@ -203,7 +215,7 @@ export class TestResultsEnhancedService {
           },
           tenantId
         );
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Log error but don't fail the request
         this.logger.error({ error }, 'Failed to calculate peer comparison');
       }
@@ -219,7 +231,7 @@ export class TestResultsEnhancedService {
       badgeUnlocks = badgeResult.unlockedBadges;
       xpGained = badgeResult.xpGained;
       newLevel = badgeResult.newLevel;
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.logger.error({ error }, 'Badge evaluation failed');
     }
 
@@ -243,9 +255,9 @@ export class TestResultsEnhancedService {
     playerValue: number,
     peerCriteria: PeerCriteria,
     tenantId: string
-  ): Promise<any> {
+  ): Promise<PeerComparison | null> {
     // Build optimized database query with criteria filtering
-    const whereClause: any = {
+    const whereClause: Prisma.PlayerWhereInput = {
       tenantId,
       id: { not: playerId }, // Exclude the player themselves
     };
@@ -354,7 +366,7 @@ export class TestResultsEnhancedService {
         playerPercentile: comparison.playerPercentile,
         playerRank: comparison.playerRank,
         playerZScore: comparison.playerZScore,
-        peerCriteria: comparison.peerCriteria as any,
+        peerCriteria: comparison.peerCriteria as Prisma.InputJsonValue,
         comparisonText: comparison.comparisonText,
       },
     });
@@ -423,7 +435,7 @@ export class TestResultsEnhancedService {
     tenantId: string,
     playerId: string,
     testNumber: number
-  ): Promise<any[]> {
+  ): Promise<TestResultWithRelations[]> {
     // Verify player exists and belongs to tenant
     const player = await this.prisma.player.findFirst({
       where: {

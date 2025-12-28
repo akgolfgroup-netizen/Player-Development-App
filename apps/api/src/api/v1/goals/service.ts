@@ -3,6 +3,16 @@ import { AppError } from '../../../core/errors';
 
 const prisma = new PrismaClient();
 
+/**
+ * Milestone data structure
+ */
+interface GoalMilestone {
+  title: string;
+  targetValue?: number;
+  completed?: boolean;
+  completedDate?: string;
+}
+
 export interface CreateGoalInput {
   title: string;
   description?: string;
@@ -17,7 +27,7 @@ export interface CreateGoalInput {
   icon?: string;
   color?: string;
   notes?: string;
-  milestones?: any[];
+  milestones?: GoalMilestone[];
 }
 
 export interface UpdateGoalInput {
@@ -37,7 +47,7 @@ export interface UpdateGoalInput {
   icon?: string;
   color?: string;
   notes?: string;
-  milestones?: any[];
+  milestones?: GoalMilestone[];
 }
 
 export class GoalsService {
@@ -124,7 +134,7 @@ export class GoalsService {
     const existingGoal = await this.getGoalById(goalId, userId);
 
     // Prepare update data
-    const updateData: any = {};
+    const updateData: Prisma.GoalUpdateInput = {};
 
     // Basic fields
     if (input.title !== undefined) updateData.title = input.title;
@@ -197,7 +207,7 @@ export class GoalsService {
       Number(goal.targetValue || 0)
     );
 
-    const updateData: any = {
+    const updateData: Prisma.GoalUpdateInput = {
       currentValue: new Prisma.Decimal(currentValue),
       progressPercent,
       updatedAt: new Date()
