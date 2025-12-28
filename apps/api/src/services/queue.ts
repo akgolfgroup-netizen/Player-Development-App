@@ -311,10 +311,10 @@ const processors: Record<JobType, (job: Job) => Promise<void>> = {
     }
 
     // Generate summary stats
-    const athleteStats = coach.players.map((player: any) => ({
+    const athleteStats = coach.players.map((player) => ({
       playerId: player.id,
       name: `${player.firstName} ${player.lastName}`,
-      sessionsCompleted: player.trainingSessions.filter((s: any) => s.completionStatus === 'completed').length,
+      sessionsCompleted: player.trainingSessions.filter((s) => s.completionStatus === 'completed').length,
       totalSessions: player.trainingSessions.length,
     }));
 

@@ -259,8 +259,9 @@ export class StorageService {
 
       await this.s3.send(command);
       return true;
-    } catch (error: any) {
-      if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
+    } catch (error: unknown) {
+      const err = error as { name?: string; $metadata?: { httpStatusCode?: number } };
+      if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
         return false;
       }
       throw error;
@@ -325,7 +326,7 @@ export class StorageService {
     tenantId: string,
     playerId: string,
     fileName: string,
-    stream: any, // Use any for stream types to avoid type conflicts
+    stream: NodeJS.ReadableStream, // Use ReadableStream for upload
     mimeType: string
   ): Promise<string> {
     const key = this.generateKey(tenantId, playerId, fileName);
@@ -440,10 +441,11 @@ export class StorageService {
     try {
       await this.deleteObject(videoKey);
       result.video = true;
-    } catch (err: any) {
+    } catch (error: unknown) {
       // Ignore 404 errors (already deleted)
+      const err = error as { $metadata?: { httpStatusCode?: number } };
       if (err.$metadata?.httpStatusCode !== 404) {
-        throw err;
+        throw error;
       }
     }
 
@@ -452,9 +454,10 @@ export class StorageService {
       try {
         await this.deleteObject(thumbnailKey);
         result.thumbnail = true;
-      } catch (err: any) {
+      } catch (error: unknown) {
+        const err = error as { $metadata?: { httpStatusCode?: number } };
         if (err.$metadata?.httpStatusCode !== 404) {
-          throw err;
+          throw error;
         }
       }
     }
