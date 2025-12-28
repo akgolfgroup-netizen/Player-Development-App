@@ -1028,6 +1028,511 @@ model DataGolfTourAverage {
   @@map("datagolf_tour_averages")
 }
 
+// Approach skill data by distance (valuable for IUP test mapping)
+model DataGolfApproachSkill {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dataGolfId         String   @map("datagolf_id") @db.VarChar(100)
+  playerName         String   @map("player_name") @db.VarChar(255)
+
+  // Approach skill by distance buckets (SG values)
+  skill50to75        Decimal? @map("skill_50_75") @db.Decimal(6, 3)
+  skill75to100       Decimal? @map("skill_75_100") @db.Decimal(6, 3)
+  skill100to125      Decimal? @map("skill_100_125") @db.Decimal(6, 3)
+  skill125to150      Decimal? @map("skill_125_150") @db.Decimal(6, 3)
+  skill150to175      Decimal? @map("skill_150_175") @db.Decimal(6, 3)
+  skill175to200      Decimal? @map("skill_175_200") @db.Decimal(6, 3)
+  skill200plus       Decimal? @map("skill_200_plus") @db.Decimal(6, 3)
+
+  // Additional metrics
+  tour               String   @db.VarChar(50)
+  season             Int
+  lastSynced         DateTime @map("last_synced") @db.Timestamptz(6)
+
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([dataGolfId, tour, season])
+  @@index([dataGolfId])
+  @@index([tour])
+  @@map("datagolf_approach_skills")
+}
+
+// Tournament schedule
+model DataGolfSchedule {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId     String    @map("event_id") @db.VarChar(100)
+  eventName   String    @map("event_name") @db.VarChar(255)
+  course      String?   @db.VarChar(255)
+  startDate   DateTime  @map("start_date") @db.Date
+  endDate     DateTime  @map("end_date") @db.Date
+  tour        String    @db.VarChar(50)
+  season      Int
+  purse       Decimal?  @db.Decimal(12, 2)
+  winner      String?   @db.VarChar(255)
+
+  lastSynced  DateTime  @map("last_synced") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([eventId, tour, season])
+  @@index([tour])
+  @@index([startDate])
+  @@map("datagolf_schedules")
+}
+
+// Historical round data
+model DataGolfHistoricalRound {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dataGolfId    String   @map("datagolf_id") @db.VarChar(100)
+  playerName    String   @map("player_name") @db.VarChar(255)
+
+  // Event info
+  eventId       String   @map("event_id") @db.VarChar(100)
+  eventName     String   @map("event_name") @db.VarChar(255)
+  roundNum      Int      @map("round_num")
+  courseName    String?  @map("course_name") @db.VarChar(255)
+  coursePar     Int?     @map("course_par")
+  roundDate     DateTime @map("round_date") @db.Date
+
+  // Scoring
+  score         Int
+  toPar         Int?     @map("to_par")
+
+  // Strokes Gained
+  sgTotal       Decimal? @map("sg_total") @db.Decimal(6, 3)
+  sgOffTee      Decimal? @map("sg_off_tee") @db.Decimal(6, 3)
+  sgApproach    Decimal? @map("sg_approach") @db.Decimal(6, 3)
+  sgAroundGreen Decimal? @map("sg_around_green") @db.Decimal(6, 3)
+  sgPutting     Decimal? @map("sg_putting") @db.Decimal(6, 3)
+
+  // Traditional stats
+  drivingDist   Decimal? @map("driving_dist") @db.Decimal(6, 2)
+  drivingAcc    Decimal? @map("driving_acc") @db.Decimal(5, 2)
+  gir           Decimal? @db.Decimal(5, 2)
+  scrambling    Decimal? @db.Decimal(5, 2)
+  puttsPerRound Decimal? @map("putts_per_round") @db.Decimal(4, 2)
+
+  // Proximity
+  proxFairway   Decimal? @map("prox_fw") @db.Decimal(6, 2) // feet
+  proxRough     Decimal? @map("prox_rgh") @db.Decimal(6, 2) // feet
+
+  tour          String   @db.VarChar(50)
+  season        Int
+
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([dataGolfId, eventId, roundNum])
+  @@index([dataGolfId])
+  @@index([eventId])
+  @@index([tour])
+  @@index([roundDate])
+  @@map("datagolf_historical_rounds")
+}
+
+// Player decompositions (detailed skill breakdown)
+model DataGolfPlayerDecomposition {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dataGolfId         String   @map("datagolf_id") @db.VarChar(100)
+  playerName         String   @map("player_name") @db.VarChar(255)
+
+  // Overall skill
+  trueSkill          Decimal? @map("true_skill") @db.Decimal(6, 3)
+  dgRank             Int?     @map("dg_rank")
+  owgrRank           Int?     @map("owgr_rank")
+
+  // Detailed SG breakdown
+  sgTotal            Decimal? @map("sg_total") @db.Decimal(6, 3)
+  sgOffTee           Decimal? @map("sg_off_tee") @db.Decimal(6, 3)
+  sgApproach         Decimal? @map("sg_approach") @db.Decimal(6, 3)
+  sgAroundGreen      Decimal? @map("sg_around_green") @db.Decimal(6, 3)
+  sgPutting          Decimal? @map("sg_putting") @db.Decimal(6, 3)
+
+  // Traditional stats
+  drivingDistance    Decimal? @map("driving_distance") @db.Decimal(6, 2)
+  drivingAccuracy    Decimal? @map("driving_accuracy") @db.Decimal(5, 2)
+
+  // Additional data stored as JSON for flexibility
+  additionalData     Json?    @map("additional_data") @db.JsonB
+
+  tour               String   @db.VarChar(50)
+  season             Int
+  lastSynced         DateTime @map("last_synced") @db.Timestamptz(6)
+
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([dataGolfId, tour, season])
+  @@index([dataGolfId])
+  @@index([tour])
+  @@index([dgRank])
+  @@map("datagolf_player_decompositions")
+}
+
+// ============================================================================
+// DATAGOLF FOCUS ENGINE (Imported from Archive.zip)
+// ============================================================================
+
+// Season-level strokes gained data from dg_performance CSV files
+model DgPlayerSeason {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  playerId           String   @map("player_id") @db.VarChar(255) // player_name as ID
+  season             Int
+
+  // SG Components (*_true fields from CSV)
+  ottTrue            Decimal? @map("ott_true") @db.Decimal(8, 4)
+  appTrue            Decimal? @map("app_true") @db.Decimal(8, 4)
+  argTrue            Decimal? @map("arg_true") @db.Decimal(8, 4)
+  puttTrue           Decimal? @map("putt_true") @db.Decimal(8, 4)
+  t2gTrue            Decimal? @map("t2g_true") @db.Decimal(8, 4)
+  totalTrue          Decimal? @map("total_true") @db.Decimal(8, 4)
+
+  // Metadata
+  roundsPlayed       Int?     @map("rounds_played")
+  eventsPlayed       Int?     @map("events_played")
+  wins               Int?
+  xWins              Decimal? @map("x_wins") @db.Decimal(6, 3)
+
+  // Ingestion metadata
+  sourceVersion      String   @map("source_version") @db.VarChar(64) // zip hash
+  ingestedAt         DateTime @default(now()) @map("ingested_at") @db.Timestamptz(6)
+
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([playerId, season])
+  @@index([season])
+  @@index([playerId])
+  @@map("dg_player_seasons")
+}
+
+// Approach skill by distance bucket from app_skill_l24 CSV files
+model DgApproachSkillL24 {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  playerId           String   @map("player_id") @db.VarChar(255) // player_name as ID
+  bucket             String   @db.VarChar(20) // "50_100", "100_150", "150_200", "over_200", etc.
+  lie                String   @db.VarChar(20) // "fairway", "rough", "overall"
+  stat               String   @db.VarChar(50) // "sg", "prox", "gh", "great", "bad"
+
+  // Value and shot count
+  value              Decimal? @db.Decimal(10, 4)
+  shotCount          Int?     @map("shot_count")
+
+  // Ingestion metadata
+  sourceVersion      String   @map("source_version") @db.VarChar(64)
+  ingestedAt         DateTime @default(now()) @map("ingested_at") @db.Timestamptz(6)
+
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([playerId, bucket, lie, stat])
+  @@index([playerId])
+  @@index([bucket])
+  @@index([stat])
+  @@map("dg_approach_skills_l24")
+}
+
+// Component weights computed from pro data variance
+model DgComponentWeight {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  windowStartSeason  Int      @map("window_start_season")
+  windowEndSeason    Int      @map("window_end_season")
+
+  // Weights (sum to 1.0)
+  wOtt               Decimal  @map("w_ott") @db.Decimal(6, 4)
+  wApp               Decimal  @map("w_app") @db.Decimal(6, 4)
+  wArg               Decimal  @map("w_arg") @db.Decimal(6, 4)
+  wPutt              Decimal  @map("w_putt") @db.Decimal(6, 4)
+
+  // Metadata
+  computedAt         DateTime @default(now()) @map("computed_at") @db.Timestamptz(6)
+  isActive           Boolean  @default(true) @map("is_active")
+
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([windowStartSeason, windowEndSeason])
+  @@index([isActive])
+  @@map("dg_component_weights")
+}
+
+// Test to component mapping configuration
+model TestComponentMapping {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  testNumber         Int      @unique @map("test_number")
+  component          String   @db.VarChar(10) // "OTT", "APP", "ARG", "PUTT"
+  weight             Decimal  @default(1.0) @db.Decimal(4, 2) // how much this test contributes
+
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("test_component_mappings")
+}
+
+// Focus engine output cache (optional, for performance)
+model PlayerFocusCache {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  playerId           String   @unique @map("player_id") @db.Uuid
+
+  // Focus output
+  focusComponent     String   @map("focus_component") @db.VarChar(10)
+  focusScores        Json     @map("focus_scores") @db.JsonB // {OTT: 75, APP: 45, ...}
+  recommendedSplit   Json     @map("recommended_split") @db.JsonB // {OTT: 0.30, APP: 0.40, ...}
+  reasonCodes        String[] @map("reason_codes")
+  confidence         String   @db.VarChar(10) // "low", "med", "high"
+
+  // Cache metadata
+  computedAt         DateTime @default(now()) @map("computed_at") @db.Timestamptz(6)
+  expiresAt          DateTime @map("expires_at") @db.Timestamptz(6)
+
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([expiresAt])
+  @@map("player_focus_cache")
+}
+
+// ============================================================================
+// GOLF COURSES (via GolfCourseAPI)
+// ============================================================================
+
+model GolfClub {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  externalId      String   @unique @map("external_id") @db.VarChar(100) // API ID
+
+  // Basic info
+  name            String   @db.VarChar(255)
+  address         String?  @db.VarChar(500)
+  city            String?  @db.VarChar(100)
+  state           String?  @db.VarChar(100) // County/region
+  country         String   @db.VarChar(100)
+  countryCode     String?  @map("country_code") @db.VarChar(3)
+  postalCode      String?  @map("postal_code") @db.VarChar(20)
+
+  // Contact
+  phone           String?  @db.VarChar(50)
+  email           String?  @db.VarChar(255)
+  website         String?  @db.VarChar(500)
+
+  // Location
+  latitude        Decimal? @db.Decimal(10, 7)
+  longitude       Decimal? @db.Decimal(10, 7)
+
+  // Metadata
+  lastSynced      DateTime @map("last_synced") @db.Timestamptz(6)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  courses         GolfCourse[]
+
+  @@index([country])
+  @@index([countryCode])
+  @@index([city])
+  @@index([name])
+  @@map("golf_clubs")
+}
+
+model GolfCourse {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  externalId      String   @unique @map("external_id") @db.VarChar(100) // API ID
+  clubId          String   @map("club_id") @db.Uuid
+
+  // Basic info
+  name            String   @db.VarChar(255)
+  holes           Int      @default(18)
+  par             Int?
+
+  // Course details
+  designer        String?  @db.VarChar(255)
+  yearBuilt       Int?     @map("year_built")
+  courseType      String?  @map("course_type") @db.VarChar(50) // links, parkland, etc.
+
+  // Location (can differ from club)
+  latitude        Decimal? @db.Decimal(10, 7)
+  longitude       Decimal? @db.Decimal(10, 7)
+
+  // Metadata
+  lastSynced      DateTime @map("last_synced") @db.Timestamptz(6)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  club            GolfClub @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  tees            GolfCourseTee[]
+
+  @@index([clubId])
+  @@index([name])
+  @@index([holes])
+  @@map("golf_courses")
+}
+
+model GolfCourseTee {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  courseId        String   @map("course_id") @db.Uuid
+
+  // Tee info
+  teeName         String   @map("tee_name") @db.VarChar(50) // Championship, Men's, Ladies, etc.
+  teeColor        String?  @map("tee_color") @db.VarChar(30) // Black, Blue, White, Red, etc.
+  gender          String?  @db.VarChar(10) // M, F, or null for unisex
+
+  // Rating data (crucial for handicap calculation)
+  courseRating    Decimal? @map("course_rating") @db.Decimal(4, 1) // e.g., 72.5
+  slopeRating     Int?     @map("slope_rating") // e.g., 135
+
+  // Distance
+  totalYards      Int?     @map("total_yards")
+  totalMeters     Int?     @map("total_meters")
+
+  // Par (can vary by tee for some courses)
+  par             Int?
+
+  // Hole-by-hole data (JSON for flexibility)
+  holeData        Json?    @map("hole_data") @db.JsonB // Array of {hole, par, yards, meters, strokeIndex}
+
+  // Metadata
+  lastSynced      DateTime @map("last_synced") @db.Timestamptz(6)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  course          GolfCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, teeName, gender])
+  @@index([courseId])
+  @@index([slopeRating])
+  @@index([courseRating])
+  @@map("golf_course_tees")
+}
+
+// ============================================================================
+// WAGR (World Amateur Golf Ranking)
+// ============================================================================
+
+model WagrRanking {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  // Ranking data
+  rank          Int                          // World ranking position
+  previousRank  Int?     @map("previous_rank") // Previous week rank
+  rankChange    Int?     @map("rank_change")   // Movement (+/-)
+
+  // Player info
+  playerName    String   @map("player_name") @db.VarChar(255)
+  country       String   @db.VarChar(100)
+  countryCode   String?  @map("country_code") @db.VarChar(3)
+
+  // Points
+  pointsAverage Decimal  @map("points_average") @db.Decimal(10, 4)
+  divisor       Decimal  @db.Decimal(6, 4)    // Number of counting events
+
+  // Classification
+  gender        String   @db.VarChar(1)       // M or F
+  rankingYear   Int      @map("ranking_year") // 2025, etc.
+  rankingWeek   Int?     @map("ranking_week") // Week number if applicable
+
+  // Metadata
+  lastUpdated   DateTime @default(now()) @map("last_updated") @db.Timestamptz(6)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([playerName, country, gender, rankingYear])
+  @@index([rank])
+  @@index([country])
+  @@index([gender])
+  @@index([pointsAverage])
+  @@index([rankingYear])
+  @@index([gender, rankingYear])
+  @@map("wagr_rankings")
+}
+
+// ============================================================================
+// GOLFBOX COMPETITION DATA (Norwegian Tours)
+// ============================================================================
+
+model GolfboxCompetition {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  golfboxId         Int      @unique @map("golfbox_id")              // Golfbox competition ID
+
+  // Competition info
+  name              String   @db.VarChar(255)
+  tourCategory      String   @map("tour_category") @db.VarChar(50)   // "srixon_tour" or "garmin_norgescup"
+  tourCategoryId    Int      @map("tour_category_id")                // 7671 or 1276
+  competitionType   String   @map("competition_type") @db.VarChar(50) // "StrokePlay", "MatchPlay"
+
+  // Venue
+  venueName         String?  @map("venue_name") @db.VarChar(255)
+  venueLatitude     Decimal? @map("venue_latitude") @db.Decimal(10, 6)
+  venueLongitude    Decimal? @map("venue_longitude") @db.Decimal(10, 6)
+
+  // Dates
+  startDate         DateTime @map("start_date") @db.Date
+  endDate           DateTime @map("end_date") @db.Date
+  year              Int                                              // For easy filtering
+
+  // Metadata
+  totalPlayers      Int      @default(0) @map("total_players")
+  classes           String[] @default([])                            // ["G19", "J19", "G15", "J15"]
+
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  results           GolfboxResult[]
+
+  @@index([tourCategory])
+  @@index([year])
+  @@index([startDate])
+  @@index([tourCategoryId])
+  @@map("golfbox_competitions")
+}
+
+model GolfboxResult {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  competitionId     String   @map("competition_id") @db.Uuid
+  golfboxPlayerId   Int      @map("golfbox_player_id")               // Golfbox RefID
+
+  // Player info
+  firstName         String   @map("first_name") @db.VarChar(100)
+  lastName          String   @map("last_name") @db.VarChar(100)
+  clubName          String?  @map("club_name") @db.VarChar(255)
+  nationality       String?  @db.VarChar(50)
+  countryCode       String?  @map("country_code") @db.VarChar(3)
+  birthYear         Int?     @map("birth_year")
+  gender            String?  @db.VarChar(1)                          // "M" or "F"
+  memberId          String?  @map("member_id") @db.VarChar(50)       // NGF member ID
+
+  // Class
+  className         String   @map("class_name") @db.VarChar(50)      // "G19", "J19", etc.
+  classShortName    String   @map("class_short_name") @db.VarChar(20)
+
+  // Result
+  position          Int?                                              // Final position
+  totalStrokes      Int?     @map("total_strokes")                   // Total score
+  toPar             Int?     @map("to_par")                          // Score relative to par
+  toParText         String?  @map("to_par_text") @db.VarChar(10)     // "+5", "-3", "Par"
+
+  // Round scores (JSON for flexibility)
+  roundScores       Json?    @map("round_scores") @db.JsonB          // { "R1": 72, "R2": 71, "R3": 70 }
+
+  // Handicap info
+  handicap          Decimal? @db.Decimal(4, 1)
+  playingHandicap   Int?     @map("playing_handicap")
+
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  competition       GolfboxCompetition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+
+  @@unique([competitionId, golfboxPlayerId])
+  @@index([competitionId])
+  @@index([lastName, firstName])
+  @@index([clubName])
+  @@index([className])
+  @@index([position])
+  @@index([birthYear])
+  @@map("golfbox_results")
+}
+
 // ============================================================================
 // COACH TOOLS
 // ============================================================================
@@ -2203,6 +2708,11 @@ model Video {
   errorMessage        String?  @map("error_message") @db.Text
   processingVersion   Int      @default(1) @map("processing_version")
 
+  // HLS streaming
+  hasHls              Boolean  @default(false) @map("has_hls")
+  hlsManifestKey      String?  @map("hls_manifest_key") @db.VarChar(500)
+  hlsVariantKeys      Json?    @map("hls_variant_keys") @db.JsonB
+
   // Security
   checksumSha256      String?  @map("checksum_sha256") @db.VarChar(64)
   visibility          String   @default("private") @db.VarChar(20)
@@ -2212,7 +2722,11 @@ model Video {
   createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
   processedAt         DateTime? @map("processed_at") @db.Timestamptz(6)
+  archivedAt          DateTime? @map("archived_at") @db.Timestamptz(6)
   deletedAt           DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  // Retention
+  retentionDays       Int?     @map("retention_days")
 
   // Relations
   tenant              Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)

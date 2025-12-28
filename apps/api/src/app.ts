@@ -69,6 +69,8 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   const { coachAnalyticsRoutes } = await import('./api/v1/coach-analytics');
   const { filterRoutes } = await import('./api/v1/filters');
   const { dataGolfRoutes } = await import('./api/v1/datagolf');
+  const { golfCourseRoutes } = await import('./api/v1/golf-courses');
+  const { weatherRoutes } = await import('./api/v1/weather');
   const { calibrationRoutes } = await import('./api/v1/calibration');
   const { intakeRoutes } = await import('./api/v1/intake');
   const { availabilityRoutes } = await import('./api/v1/availability');
@@ -95,6 +97,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   const { comparisonRoutes } = await import('./api/v1/comparisons');
   const { emailRoutes } = await import('./api/v1/emails');
   const { notificationRoutes } = await import('./api/v1/notifications');
+  const { focusEngineRoutes } = await import('./api/v1/focus-engine');
 
   await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
@@ -107,6 +110,8 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   await app.register(coachAnalyticsRoutes, { prefix: `/api/${config.server.apiVersion}/coach-analytics` });
   await app.register(filterRoutes, { prefix: `/api/${config.server.apiVersion}/filters` });
   await app.register(dataGolfRoutes, { prefix: `/api/${config.server.apiVersion}/datagolf` });
+  await app.register(golfCourseRoutes, { prefix: `/api/${config.server.apiVersion}/golf-courses` });
+  await app.register(weatherRoutes, { prefix: `/api/${config.server.apiVersion}/weather` });
   await app.register(calibrationRoutes, { prefix: `/api/${config.server.apiVersion}/calibration` });
   await app.register(intakeRoutes, { prefix: `/api/${config.server.apiVersion}/intake` });
   await app.register(availabilityRoutes, { prefix: `/api/${config.server.apiVersion}/availability` });
@@ -133,6 +138,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
   await app.register(comparisonRoutes, { prefix: `/api/${config.server.apiVersion}/comparisons` });
   await app.register(emailRoutes, { prefix: `/api/${config.server.apiVersion}/emails` });
   await app.register(notificationRoutes, { prefix: `/api/${config.server.apiVersion}/notifications` });
+  await app.register(focusEngineRoutes, { prefix: `/api/${config.server.apiVersion}/focus-engine` });
 
   // ✅ All IUP Golf Academy APIs registered!
   // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points

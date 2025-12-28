@@ -162,6 +162,25 @@ export const dataGolfAPI = {
   }),
   syncStatus: () => api.get('/datagolf/sync-status'),
   triggerSync: () => api.post('/datagolf/sync'),
+  // Coach dashboard
+  getCoachDashboard: (tour = 'pga', season) => api.get('/datagolf/coach/dashboard', {
+    params: { tour, season }
+  }),
+  // Pro players
+  getProPlayers: (tour = 'pga', limit = 50) => api.get('/datagolf/pro-players', {
+    params: { tour, limit }
+  }),
+  // Approach skill
+  getApproachSkill: (params = {}) => api.get('/datagolf/approach-skill', { params }),
+  getApproachSkillAverages: (tour, season) => api.get('/datagolf/approach-skill/averages', {
+    params: { tour, season }
+  }),
+  getTopApproachSkill: (distance, tour, season, limit = 20) => api.get('/datagolf/approach-skill/top', {
+    params: { distance, tour, season, limit }
+  }),
+  getPlayerApproachSkill: (playerName, tour, season) => api.get(`/datagolf/approach-skill/player/${encodeURIComponent(playerName)}`, {
+    params: { tour, season }
+  }),
 };
 
 // Messages API
@@ -170,6 +189,32 @@ export const messagesAPI = {
   schedule: (data) => api.post('/messages/schedule', data),
   list: (params) => api.get('/messages', { params }),
   delete: (id) => api.delete(`/messages/${id}`),
+};
+
+// Golf Courses API
+export const golfCoursesAPI = {
+  search: (params = {}) => api.get('/golf-courses/search', { params }),
+  getById: (id) => api.get(`/golf-courses/${id}`),
+  getNorwegian: () => api.get('/golf-courses/norway'),
+  getByCountry: (country) => api.get(`/golf-courses/country/${encodeURIComponent(country)}`),
+  getSyncStatus: () => api.get('/golf-courses/sync/status'),
+  sync: (country) => api.post('/golf-courses/sync', { country }),
+};
+
+// Weather API (MET Norway)
+export const weatherAPI = {
+  // Get weather for a specific course
+  getCourseWeather: (courseId) => api.get(`/weather/course/${courseId}`),
+  // Get weather for a club
+  getClubWeather: (clubId) => api.get(`/weather/club/${clubId}`),
+  // Get weather by coordinates
+  getByLocation: (lat, lng) => api.get('/weather/location', { params: { lat, lng } }),
+  // Get best courses to play today (sorted by weather)
+  getBestCourses: (limit = 10) => api.get('/weather/best-courses', { params: { limit } }),
+  // Get weather for all courses in a city/region
+  getRegionWeather: (city) => api.get('/weather/region', { params: { city } }),
+  // Get 24-hour wind forecast for a course
+  getWindForecast: (courseId) => api.get(`/weather/wind/${courseId}`),
 };
 
 // Settings API

@@ -6,12 +6,15 @@ import {
   Play, Bell, Users, Star, Calendar, Info, AlertCircle, RefreshCw
 } from 'lucide-react';
 import DagensPlan from '../../components/dashboard/DagensPlan';
+import WeatherWidget from '../../components/dashboard/WeatherWidget';
 import { useDashboard } from '../../hooks/useDashboard';
 import SessionEvaluationWidget from '../sessions/SessionEvaluationWidget';
 import { DashboardTemplate } from '../../ui/templates';
 import { Button } from '../../ui/primitives';
+import Badge from '../../ui/primitives/Badge.primitive';
+import Card from '../../ui/primitives/Card';
+import StateCard from '../../ui/composites/StateCard';
 import { DashboardSkeleton } from '../../ui/skeletons';
-import { EnhancedErrorState } from '../../ui/components/EnhancedErrorState';
 import { WidgetHeader, DashboardCard, SkeletonLoader } from '../../ui/widgets';
 
 // ===== SKELETON COMPONENTS (now using shared widgets) =====
@@ -19,27 +22,6 @@ import { WidgetHeader, DashboardCard, SkeletonLoader } from '../../ui/widgets';
 const StatsSkeleton = () => <SkeletonLoader variant="stats-grid" />;
 const TasksSkeleton = () => <SkeletonLoader variant="tasks" count={4} />;
 const CountdownSkeleton = () => <SkeletonLoader variant="countdown" />;
-
-// ===== ERROR COMPONENT =====
-
-const ErrorState = ({ message, onRetry }) => (
-  <div className="bg-ak-error/10 border border-ak-error/20 rounded-xl p-6 text-center">
-    <AlertCircle size={32} className="text-ak-error mx-auto mb-3" />
-    <p className="text-[14px] text-ak-charcoal font-medium mb-2">Noe gikk galt</p>
-    <p className="text-[13px] text-ak-steel mb-4">{message}</p>
-    {onRetry && (
-      <button
-        onClick={onRetry}
-        className="inline-flex items-center gap-2 px-4 py-2 bg-ak-primary text-white rounded-lg text-[13px] font-medium hover:bg-ak-primary-light transition-colors"
-      >
-        <RefreshCw size={14} />
-        Prøv igjen
-      </button>
-    )}
-  </div>
-);
-
-// ===== DASHBOARD WIDGETS (now using shared widgets) =====
 
 // ===== COUNTDOWN WIDGET =====
 const CountdownWidget = ({ title, date, type, location }) => {
@@ -50,40 +32,89 @@ const CountdownWidget = ({ title, date, type, location }) => {
 
   const getIcon = () => {
     switch (type) {
-      case 'tournament': return <Trophy size={20} className="text-ak-gold" />;
-      case 'test': return <Target size={20} className="text-ak-primary" />;
-      default: return <Calendar size={20} className="text-ak-primary" />;
+      case 'tournament': return <Trophy size={20} style={{ color: 'var(--warning)' }} />;
+      case 'test': return <Target size={20} style={{ color: 'var(--accent)' }} />;
+      default: return <Calendar size={20} style={{ color: 'var(--accent)' }} />;
     }
   };
 
   const getBgColor = () => {
     switch (type) {
-      case 'tournament': return 'bg-gradient-to-br from-ak-gold/10 to-ak-gold/5';
-      case 'test': return 'bg-gradient-to-br from-ak-primary/10 to-ak-primary/5';
-      default: return 'bg-ak-snow';
+      case 'tournament': return 'linear-gradient(to bottom right, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05))';
+      case 'test': return 'linear-gradient(to bottom right, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05))';
+      default: return 'var(--bg-secondary)';
     }
   };
 
   return (
-    <div className={`p-4 rounded-xl ${getBgColor()}`}>
-      <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm">
+    <div style={{
+      padding: '16px',
+      borderRadius: 'var(--radius-lg)',
+      background: getBgColor(),
+    }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: 'var(--radius-md)',
+          backgroundColor: 'var(--bg-primary)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+        }}>
           {getIcon()}
         </div>
-        <div className="flex-1">
-          <p className="text-[11px] font-medium text-ak-steel uppercase tracking-wide">
+        <div style={{ flex: 1 }}>
+          <p style={{
+            fontSize: '11px',
+            fontWeight: 500,
+            color: 'var(--text-secondary)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            margin: 0,
+          }}>
             {type === 'tournament' ? 'Neste turnering' : 'Neste test'}
           </p>
-          <p className="text-[14px] font-semibold text-ak-charcoal mt-0.5">{title}</p>
+          <p style={{
+            fontSize: '14px',
+            fontWeight: 600,
+            color: 'var(--text-primary)',
+            marginTop: '2px',
+            margin: '2px 0 0 0',
+          }}>
+            {title}
+          </p>
           {location && (
-            <p className="text-[12px] text-ak-steel flex items-center gap-1 mt-1">
+            <p style={{
+              fontSize: '12px',
+              color: 'var(--text-secondary)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              marginTop: '4px',
+              margin: '4px 0 0 0',
+            }}>
               <MapPin size={12} /> {location}
             </p>
           )}
         </div>
-        <div className="text-right">
-          <p className="text-[28px] font-bold text-ak-primary">{diffDays}</p>
-          <p className="text-[11px] text-ak-steel">dager</p>
+        <div style={{ textAlign: 'right' }}>
+          <p style={{
+            fontSize: '28px',
+            fontWeight: 700,
+            color: 'var(--accent)',
+            margin: 0,
+          }}>
+            {diffDays}
+          </p>
+          <p style={{
+            fontSize: '11px',
+            color: 'var(--text-secondary)',
+            margin: 0,
+          }}>
+            dager
+          </p>
         </div>
       </div>
     </div>
@@ -103,36 +134,54 @@ const TasksWidget = ({ tasks, onToggle, onViewAll }) => {
         actionLabel={`${completedCount}/${tasks.length} fullført`}
       />
 
-      <div className="space-y-2">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {tasks.map(task => (
           <div
             key={task.id}
-            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${
-              task.completed ? 'bg-ak-success/10' : 'bg-ak-snow hover:bg-ak-mist'
-            }`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '12px',
+              borderRadius: 'var(--radius-md)',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              backgroundColor: task.completed ? 'rgba(34, 197, 94, 0.1)' : 'var(--bg-secondary)',
+            }}
             onClick={() => onToggle(task.id)}
           >
-            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-              task.completed
-                ? 'bg-ak-success border-ak-success'
-                : 'border-ak-mist hover:border-ak-primary'
-            }`}>
+            <div style={{
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
+              border: `2px solid ${task.completed ? 'var(--success)' : 'var(--border-default)'}`,
+              backgroundColor: task.completed ? 'var(--success)' : 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
+            }}>
               {task.completed && (
-                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg style={{ width: '12px', height: '12px', color: 'white' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               )}
             </div>
-            <div className="flex-1">
-              <p className={`text-[14px] ${task.completed ? 'text-ak-steel line-through' : 'text-ak-charcoal'}`}>
+            <div style={{ flex: 1 }}>
+              <p style={{
+                fontSize: '14px',
+                color: task.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
+                textDecoration: task.completed ? 'line-through' : 'none',
+                margin: 0,
+              }}>
                 {task.title}
               </p>
-              <p className="text-[11px] text-ak-steel">{task.area}</p>
+              <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', margin: 0 }}>
+                {task.area}
+              </p>
             </div>
             {task.priority === 'high' && !task.completed && (
-              <span className="px-2 py-0.5 bg-ak-error/10 text-ak-error text-[10px] font-medium rounded-full">
-                Viktig
-              </span>
+              <Badge variant="error" size="sm" pill>Viktig</Badge>
             )}
           </div>
         ))}
@@ -147,51 +196,75 @@ const BreakingPointsWidget = ({ points, onViewAll }) => {
     return (
       <DashboardCard padding="lg">
         <WidgetHeader title="Breaking Points" icon={Target} />
-        <div className="text-center py-6">
-          <Info size={24} className="text-ak-mist mx-auto mb-2" />
-          <p className="text-[13px] text-ak-steel">Ingen aktive breaking points</p>
+        <div style={{ textAlign: 'center', padding: '24px 0' }}>
+          <Info size={24} style={{ color: 'var(--text-tertiary)', margin: '0 auto 8px' }} />
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
+            Ingen aktive breaking points
+          </p>
         </div>
       </DashboardCard>
     );
   }
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case 'high': return 'text-ak-error';
-      case 'medium': return 'text-ak-warning';
-      default: return 'text-ak-steel';
-    }
-  };
-
   return (
     <DashboardCard padding="lg">
       <WidgetHeader title="Breaking Points" icon={Target} action={onViewAll} />
 
-      <div className="space-y-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {points.map((point) => (
-          <div key={point.id} className="p-3 bg-ak-snow rounded-lg">
-            <div className="flex items-start justify-between mb-2">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[11px] px-2 py-0.5 bg-ak-primary/10 text-ak-primary rounded">
-                    {point.area}
-                  </span>
-                  <span className={`text-[11px] font-medium ${getPriorityColor(point.priority)}`}>
+          <div key={point.id} style={{
+            padding: '12px',
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              marginBottom: '8px',
+            }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <Badge variant="accent" size="sm">{point.area}</Badge>
+                  <Badge
+                    variant={point.priority === 'high' ? 'error' : point.priority === 'medium' ? 'warning' : 'neutral'}
+                    size="sm"
+                  >
                     {point.priority}
-                  </span>
+                  </Badge>
                 </div>
-                <p className="text-[13px] font-medium text-ak-charcoal">{point.title}</p>
+                <p style={{
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: 'var(--text-primary)',
+                  margin: 0,
+                }}>
+                  {point.title}
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <div className="flex-1 h-2 bg-ak-mist rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-ak-primary rounded-full transition-all"
-                  style={{ width: `${point.progress}%` }}
-                />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                flex: 1,
+                height: '8px',
+                backgroundColor: 'var(--bg-tertiary)',
+                borderRadius: '4px',
+                overflow: 'hidden',
+              }}>
+                <div style={{
+                  height: '100%',
+                  backgroundColor: 'var(--accent)',
+                  borderRadius: '4px',
+                  transition: 'all 0.3s',
+                  width: `${point.progress}%`,
+                }} />
               </div>
-              <span className="text-[11px] text-ak-steel whitespace-nowrap">
+              <span style={{
+                fontSize: '11px',
+                color: 'var(--text-secondary)',
+                whiteSpace: 'nowrap',
+              }}>
                 {point.progress}%
               </span>
             </div>
@@ -205,32 +278,72 @@ const BreakingPointsWidget = ({ points, onViewAll }) => {
 // ===== SESSION CARD WITH LOCATION =====
 const SessionCardCompact = ({ session, onClick }) => {
   const statusColors = {
-    completed: 'bg-ak-success',
-    current: 'bg-ak-primary',
-    upcoming: 'bg-ak-steel',
+    completed: 'var(--success)',
+    current: 'var(--accent)',
+    upcoming: 'var(--text-secondary)',
   };
 
   return (
     <div
-      className="flex items-center gap-3 p-3 bg-ak-snow rounded-xl cursor-pointer hover:bg-ak-mist transition-all"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '12px',
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-lg)',
+        cursor: 'pointer',
+        transition: 'all 0.2s',
+      }}
       onClick={onClick}
     >
-      <div className={`w-12 h-12 rounded-lg ${statusColors[session.status] || 'bg-ak-primary'} flex items-center justify-center`}>
-        <Play size={20} className="text-white" />
+      <div style={{
+        width: '48px',
+        height: '48px',
+        borderRadius: 'var(--radius-md)',
+        backgroundColor: statusColors[session.status] || 'var(--accent)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Play size={20} style={{ color: 'white' }} />
       </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-[14px] font-medium text-ak-charcoal truncate">{session.title}</p>
-        <div className="flex items-center gap-3 text-[12px] text-ak-steel">
-          <span className="flex items-center gap-1">
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{
+          fontSize: '14px',
+          fontWeight: 500,
+          color: 'var(--text-primary)',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          margin: 0,
+        }}>
+          {session.title}
+        </p>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          fontSize: '12px',
+          color: 'var(--text-secondary)',
+        }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <Clock size={12} /> {session.time}
           </span>
-          <span className="flex items-center gap-1">
+          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <MapPin size={12} /> {session.location}
           </span>
         </div>
       </div>
-      <div className="text-right">
-        <span className="text-[11px] px-2 py-1 bg-white rounded-lg text-ak-primary font-medium">
+      <div style={{ textAlign: 'right' }}>
+        <span style={{
+          fontSize: '11px',
+          padding: '4px 8px',
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: 'var(--radius-md)',
+          color: 'var(--accent)',
+          fontWeight: 500,
+        }}>
           {session.duration} min
         </span>
       </div>
@@ -275,11 +388,28 @@ const AKGolfDashboard = () => {
   // Show error state (only if no data at all)
   if (error && !dashboardData) {
     return (
-      <div style={{ fontFamily: '"Inter", -apple-system, system-ui, sans-serif' }}>
-        <div className="mb-6">
-          <h1 className="text-[28px] font-bold text-ak-charcoal">Dashboard</h1>
+      <div>
+        <div style={{ marginBottom: '24px' }}>
+          <h1 style={{
+            fontSize: '28px',
+            fontWeight: 700,
+            color: 'var(--text-primary)',
+            margin: 0,
+          }}>
+            Dashboard
+          </h1>
         </div>
-        <EnhancedErrorState error={error} onRetry={refetch} />
+        <StateCard
+          variant="error"
+          icon={AlertCircle}
+          title="Kunne ikke laste dashboard"
+          description={error}
+          action={
+            <Button variant="primary" size="sm" onClick={refetch} leftIcon={<RefreshCw size={14} />}>
+              Prøv igjen
+            </Button>
+          }
+        />
       </div>
     );
   }
@@ -303,7 +433,7 @@ const AKGolfDashboard = () => {
       value: trainingStats.sessionsCompleted,
       change: 12,
       trend: 'up',
-      icon: <CheckCircle2 size={20} className="text-ak-primary" />,
+      icon: <CheckCircle2 size={20} style={{ color: 'var(--accent)' }} />,
     },
     {
       id: 'hours',
@@ -311,13 +441,13 @@ const AKGolfDashboard = () => {
       value: `${trainingStats.hoursThisWeek}t`,
       change: 5,
       trend: 'up',
-      icon: <Clock size={20} className="text-ak-primary" />,
+      icon: <Clock size={20} style={{ color: 'var(--accent)' }} />,
     },
     {
       id: 'streak',
       label: 'Dager i strekk',
       value: trainingStats.streak,
-      icon: <Flame size={20} className="text-ak-gold" />,
+      icon: <Flame size={20} style={{ color: 'var(--warning)' }} />,
     },
   ];
 
@@ -346,9 +476,13 @@ const AKGolfDashboard = () => {
       id: 'overview',
       label: 'Oversikt',
       content: (
-        <div className="space-y-5">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Countdown Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '16px',
+          }}>
             <DashboardCard padding="md">
               <CountdownWidget
                 title={nextTournament?.title || 'Ingen kommende turnering'}
@@ -367,6 +501,9 @@ const AKGolfDashboard = () => {
             </DashboardCard>
           </div>
 
+          {/* Weather Widget */}
+          <WeatherWidget showForecast={true} />
+
           {/* Calendar Day View */}
           <DagensPlan events={calendarEvents} />
 
@@ -378,18 +515,17 @@ const AKGolfDashboard = () => {
               action={() => navigate('/kalender')}
             />
             {upcomingSessions.length === 0 ? (
-              <div className="text-center py-8">
-                <Calendar size={32} className="text-ak-mist mx-auto mb-2" />
-                <p className="text-[14px] text-ak-steel">Ingen økter i dag</p>
-                <button
-                  onClick={() => navigate('/kalender')}
-                  className="mt-3 text-[13px] text-ak-primary font-medium hover:underline"
-                >
+              <div style={{ textAlign: 'center', padding: '32px 0' }}>
+                <Calendar size={32} style={{ color: 'var(--text-tertiary)', marginBottom: '8px' }} />
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '0 0 12px 0' }}>
+                  Ingen økter i dag
+                </p>
+                <Button variant="ghost" size="sm" onClick={() => navigate('/kalender')}>
                   Gå til kalender
-                </button>
+                </Button>
               </div>
             ) : (
-              <div className="space-y-2">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {upcomingSessions.map(session => (
                   <SessionCardCompact
                     key={session.id}
@@ -408,7 +544,7 @@ const AKGolfDashboard = () => {
       label: 'Oppgaver',
       badge: tasks.filter(t => !t.completed).length,
       content: (
-        <div className="space-y-5">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <TasksWidget tasks={tasks} onToggle={toggleTask} onViewAll={handleViewTasks} />
           <BreakingPointsWidget
             points={breakingPoints}
@@ -421,29 +557,35 @@ const AKGolfDashboard = () => {
   ];
 
   return (
-    <div style={{ fontFamily: '"Inter", -apple-system, system-ui, sans-serif' }}>
+    <div>
       {/* Error banner if API failed but we have fallback data */}
       {error && (
-        <div className="mb-4 p-4 bg-ak-warning/10 border border-ak-warning/20 rounded-xl">
-          <div className="flex items-start gap-3">
-            <AlertCircle size={20} className="text-ak-warning flex-shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <p className="text-[14px] font-medium text-ak-charcoal mb-1">
+        <Card variant="default" padding="md" style={{ marginBottom: '16px', borderLeft: '4px solid var(--warning)' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+            <AlertCircle size={20} style={{ color: 'var(--warning)', flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ flex: 1 }}>
+              <p style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                color: 'var(--text-primary)',
+                marginBottom: '4px',
+                margin: '0 0 4px 0',
+              }}>
                 Kunne ikke laste ny data
               </p>
-              <p className="text-[13px] text-ak-steel">
+              <p style={{
+                fontSize: '13px',
+                color: 'var(--text-secondary)',
+                margin: 0,
+              }}>
                 Viser tidligere data. Noe informasjon kan være utdatert.
               </p>
             </div>
-            <button
-              onClick={refetch}
-              className="flex items-center gap-2 px-3 py-1.5 bg-ak-primary text-white rounded-lg text-[13px] font-medium hover:bg-ak-primary-dark transition-colors"
-            >
-              <RefreshCw size={14} />
+            <Button variant="primary" size="sm" onClick={refetch} leftIcon={<RefreshCw size={14} />}>
               Prøv igjen
-            </button>
+            </Button>
           </div>
-        </div>
+        </Card>
       )}
 
       <DashboardTemplate
