@@ -56,8 +56,9 @@ export const startDataGolfSyncJob = () => {
           errors: result.errors
         }, 'DataGolf sync failed');
       }
-    } catch (error: any) {
-      logger.error({ error: error.message }, 'DataGolf sync job failed');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error({ error: errorMessage }, 'DataGolf sync job failed');
     }
   });
 

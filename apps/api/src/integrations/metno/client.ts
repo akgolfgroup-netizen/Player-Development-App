@@ -201,11 +201,13 @@ export class MetNoClient {
       });
 
       return response.data;
-    } catch (error: any) {
-      if (error.response?.status === 429) {
+    } catch (error: unknown) {
+      const err = error as { response?: { status?: number }; message?: string };
+      if (err.response?.status === 429) {
         throw new Error('Weather API rate limit exceeded. Please try again later.');
       }
-      throw new Error(`Failed to fetch weather data: ${error.message}`);
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      throw new Error(`Failed to fetch weather data: ${message}`);
     }
   }
 
