@@ -133,23 +133,23 @@ export class CoachService {
       };
     }
 
-    // Get total count
-    const total = await this.prisma.coach.count({ where });
-
-    // Get coaches
-    const coaches = await this.prisma.coach.findMany({
-      where,
-      skip: (page - 1) * limit,
-      take: limit,
-      orderBy: { [sortBy]: sortOrder },
-      include: {
-        _count: {
-          select: {
-            players: true,
+    // Get total count and coaches in parallel
+    const [total, coaches] = await Promise.all([
+      this.prisma.coach.count({ where }),
+      this.prisma.coach.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { [sortBy]: sortOrder },
+        include: {
+          _count: {
+            select: {
+              players: true,
+            },
           },
         },
-      },
-    });
+      }),
+    ]);
 
     return {
       coaches,
@@ -271,57 +271,41 @@ export class CoachService {
   async getStatistics(tenantId: string, coachId: string): Promise<CoachStatistics> {
     const coach = await this.getCoachById(tenantId, coachId);
 
-    // Get players assigned to this coach
-    const players = await this.prisma.player.findMany({
-      where: {
-        tenantId,
-        coachId,
-      },
-    });
+    // Calculate date boundaries
+    const now = new Date();
+    const weekStart = this.getWeekStart(now);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
+    // Run all queries in parallel
+    const [players, sessionsThisWeek, sessionsThisMonth, totalDurationResult] = await Promise.all([
+      // Get players assigned to this coach
+      this.prisma.player.findMany({
+        where: { tenantId, coachId },
+        select: { status: true, category: true },
+      }),
+      // Count sessions this week
+      this.prisma.trainingSession.count({
+        where: { coachId, sessionDate: { gte: weekStart } },
+      }),
+      // Count sessions this month
+      this.prisma.trainingSession.count({
+        where: { coachId, sessionDate: { gte: monthStart } },
+      }),
+      // Get total hours using aggregate (more efficient than fetching all records)
+      this.prisma.trainingSession.aggregate({
+        where: { coachId },
+        _sum: { duration: true },
+      }),
+    ]);
+
+    // Process player data
     const activePlayers = players.filter((p) => p.status === 'active').length;
-
-    // Count players by category
     const byCategory: Record<string, number> = {};
     players.forEach((player) => {
       byCategory[player.category] = (byCategory[player.category] || 0) + 1;
     });
 
-    // Get training sessions
-    const now = new Date();
-    const weekStart = this.getWeekStart(now);
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-    const sessionsThisWeek = await this.prisma.trainingSession.count({
-      where: {
-        coachId,
-        sessionDate: {
-          gte: weekStart,
-        },
-      },
-    });
-
-    const sessionsThisMonth = await this.prisma.trainingSession.count({
-      where: {
-        coachId,
-        sessionDate: {
-          gte: monthStart,
-        },
-      },
-    });
-
-    const allSessions = await this.prisma.trainingSession.findMany({
-      where: {
-        coachId,
-      },
-      select: {
-        duration: true,
-      },
-    });
-
-    const totalHours = Math.round(
-      allSessions.reduce((sum, session) => sum + (session.duration || 0), 0) / 60
-    );
+    const totalHours = Math.round((totalDurationResult._sum.duration || 0) / 60);
 
     return {
       coach: {

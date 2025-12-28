@@ -199,9 +199,10 @@ export class TestService {
    * Update test
    */
   async updateTest(tenantId: string, testId: string, input: UpdateTestInput): Promise<Test> {
-    // Check if test exists
+    // Check if test exists (only select id to minimize data transfer)
     const existingTest = await this.prisma.test.findFirst({
       where: { id: testId, tenantId },
+      select: { id: true },
     });
 
     if (!existingTest) {
@@ -238,6 +239,7 @@ export class TestService {
   async deleteTest(tenantId: string, testId: string): Promise<void> {
     const test = await this.prisma.test.findFirst({
       where: { id: testId, tenantId },
+      select: { id: true },
     });
 
     if (!test) {
@@ -253,19 +255,21 @@ export class TestService {
    * Record a test result
    */
   async recordTestResult(tenantId: string, input: RecordTestResultInput): Promise<TestResultWithRelations> {
-    // Verify test exists
-    const test = await this.prisma.test.findFirst({
-      where: { id: input.testId, tenantId },
-    });
+    // Verify test and player exist in parallel (only select id to minimize data transfer)
+    const [test, player] = await Promise.all([
+      this.prisma.test.findFirst({
+        where: { id: input.testId, tenantId },
+        select: { id: true },
+      }),
+      this.prisma.player.findFirst({
+        where: { id: input.playerId, tenantId },
+        select: { id: true },
+      }),
+    ]);
 
     if (!test) {
       throw new BadRequestError('Test not found');
     }
-
-    // Verify player exists
-    const player = await this.prisma.player.findFirst({
-      where: { id: input.playerId, tenantId },
-    });
 
     if (!player) {
       throw new BadRequestError('Player not found');
@@ -344,7 +348,16 @@ export class TestService {
         player: { tenantId },
       },
       include: {
-        test: true,
+        test: {
+          select: {
+            id: true,
+            name: true,
+            testNumber: true,
+            category: true,
+            testType: true,
+            protocolName: true,
+          },
+        },
         player: {
           select: {
             id: true,
@@ -451,6 +464,7 @@ export class TestService {
         id: resultId,
         player: { tenantId },
       },
+      select: { id: true },
     });
 
     if (!existingResult) {
@@ -477,7 +491,13 @@ export class TestService {
       where: { id: resultId },
       data: updateData,
       include: {
-        test: true,
+        test: {
+          select: {
+            id: true,
+            name: true,
+            testNumber: true,
+          },
+        },
         player: {
           select: {
             id: true,
@@ -500,6 +520,7 @@ export class TestService {
         id: resultId,
         player: { tenantId },
       },
+      select: { id: true },
     });
 
     if (!result) {
@@ -517,6 +538,7 @@ export class TestService {
   async getPlayerProgress(tenantId: string, playerId: string, testId?: string): Promise<PlayerProgress> {
     const player = await this.prisma.player.findFirst({
       where: { id: playerId, tenantId },
+      select: { id: true, firstName: true, lastName: true },
     });
 
     if (!player) {
@@ -524,23 +546,34 @@ export class TestService {
     }
 
     // Get tests with results in a single query (avoids N+1)
+    // Only select fields actually used in the response
     const tests = await this.prisma.test.findMany({
       where: {
         tenantId,
         isActive: true,
         ...(testId && { id: testId }),
       },
-      include: {
-        testResults: {
+      select: {
+        id: true,
+        name: true,
+        testNumber: true,
+        results: {
           where: { playerId },
           orderBy: { testDate: 'asc' },
+          select: {
+            id: true,
+            testDate: true,
+            pei: true,
+            improvementFromLast: true,
+            categoryBenchmark: true,
+          },
         },
       },
       orderBy: { testNumber: 'asc' },
     });
 
     const progressData = tests.map((test) => {
-      const results = test.testResults;
+      const results = test.results;
       const latestResult = results[results.length - 1] || null;
       const firstResult = results[0] || null;
 

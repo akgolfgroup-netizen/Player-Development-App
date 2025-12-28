@@ -80,21 +80,19 @@ export class PlanGenerationService {
       tournamentSchedules
     );
 
-    // Create Periodization records
-    for (const week of periodizationWeeks) {
-      await prisma.periodization.create({
-        data: {
-          playerId: input.playerId,
-          annualPlanId: annualPlan.id,
-          weekNumber: week.weekNumber,
-          period: week.period,
-          periodPhase: week.periodPhase,
-          weekInPeriod: week.weekInPeriod,
-          volumeIntensity: week.volumeIntensity,
-          plannedHours: week.targetHours,
-        },
-      });
-    }
+    // Create Periodization records in batch
+    await prisma.periodization.createMany({
+      data: periodizationWeeks.map((week) => ({
+        playerId: input.playerId,
+        annualPlanId: annualPlan.id,
+        weekNumber: week.weekNumber,
+        period: week.period,
+        periodPhase: week.periodPhase,
+        weekInPeriod: week.weekInPeriod,
+        volumeIntensity: week.volumeIntensity,
+        plannedHours: week.targetHours,
+      })),
+    });
 
     // 6. Get player's club speed level
     const clubSpeedLevel = await this.getPlayerClubSpeedLevel(
@@ -415,6 +413,7 @@ export class PlanGenerationService {
 
   /**
    * Generate daily training assignments for 365 days
+   * Optimized to use batch inserts and track hours in memory
    */
   private static async generateDailyAssignments(
     annualPlanId: string,
@@ -427,9 +426,31 @@ export class PlanGenerationService {
     preferredTrainingDays?: number[],
     excludeDates: Date[] = []
   ): Promise<{ created: number; byType: Record<string, number> }> {
-    let created = 0;
     const byType: Record<string, number> = {};
 
+    // Track hours allocated per week in memory (avoids N+1 DB queries)
+    const weeklyHoursAllocated: Record<number, number> = {};
+
+    // Build all assignments first, then batch insert
+    const assignmentsToCreate: Array<{
+      annualPlanId: string;
+      playerId: string;
+      assignedDate: Date;
+      weekNumber: number;
+      dayOfWeek: number;
+      sessionTemplateId: string | null;
+      sessionType: string;
+      estimatedDuration: number;
+      period: string;
+      learningPhase: string | null;
+      clubSpeed: string;
+      intensity: number;
+      isRestDay: boolean;
+      status: string;
+    }> = [];
+
+    // Convert excludeDates to timestamps for O(1) lookup
+    const excludeTimestamps = new Set(excludeDates.map(d => d.getTime()));
 
     for (let day = 0; day < 365; day++) {
       // Use UTC to avoid daylight saving time issues
@@ -439,8 +460,8 @@ export class PlanGenerationService {
         startDate.getUTCDate() + day
       ));
 
-      // Skip excluded dates
-      if (excludeDates.some((d) => d.getTime() === currentDate.getTime())) {
+      // Skip excluded dates (O(1) lookup with Set)
+      if (excludeTimestamps.has(currentDate.getTime())) {
         continue;
       }
 
@@ -459,13 +480,8 @@ export class PlanGenerationService {
         preferredTrainingDays
       );
 
-      // Calculate hours allocated so far this week
-      const weekStart = Math.floor(day / 7) * 7;
-      const hoursAllocatedSoFar = await this.getHoursAllocatedInWeek(
-        annualPlanId,
-        weekStart,
-        day
-      );
+      // Get hours allocated from in-memory tracking (no DB query needed)
+      const hoursAllocatedSoFar = weeklyHoursAllocated[weekNumber] || 0;
 
       // Build context for session selection
       const context: DailyAssignmentContext = {
@@ -494,69 +510,40 @@ export class PlanGenerationService {
       // Select session
       const session = await SessionSelectionService.selectSessionForDay(context);
 
-      // Create daily assignment
-      await prisma.dailyTrainingAssignment.create({
-        data: {
-          annualPlanId,
-          playerId,
-          assignedDate: currentDate,
-          weekNumber,
-          dayOfWeek,
-          sessionTemplateId: session?.sessionTemplateId,
-          sessionType: session?.sessionType || 'rest',
-          estimatedDuration: session?.estimatedDuration || 0,
-          period: periodWeek.period,
-          learningPhase: session?.learningPhase,
-          clubSpeed: clubSpeedLevel,
-          intensity: this.intensityStringToNumber(periodWeek.volumeIntensity),
-          isRestDay,
-          status: 'planned',
-        },
+      const estimatedDuration = session?.estimatedDuration || 0;
+      const sessionType = session?.sessionType || 'rest';
+
+      // Add to batch array instead of creating individually
+      assignmentsToCreate.push({
+        annualPlanId,
+        playerId,
+        assignedDate: currentDate,
+        weekNumber,
+        dayOfWeek,
+        sessionTemplateId: session?.sessionTemplateId || null,
+        sessionType,
+        estimatedDuration,
+        period: periodWeek.period,
+        learningPhase: session?.learningPhase || null,
+        clubSpeed: clubSpeedLevel,
+        intensity: this.intensityStringToNumber(periodWeek.volumeIntensity),
+        isRestDay,
+        status: 'planned',
       });
 
-      created++;
+      // Update in-memory hours tracking (convert minutes to hours)
+      weeklyHoursAllocated[weekNumber] = (weeklyHoursAllocated[weekNumber] || 0) + (estimatedDuration / 60);
 
       // Track by type
-      const type = session?.sessionType || 'rest';
-      byType[type] = (byType[type] || 0) + 1;
+      byType[sessionType] = (byType[sessionType] || 0) + 1;
     }
 
-    return { created, byType };
-  }
-
-  /**
-   * Get hours allocated so far in a week
-   */
-  private static async getHoursAllocatedInWeek(
-    annualPlanId: string,
-    weekStartDay: number,
-    currentDay: number
-  ): Promise<number> {
-    // Calculate week number from day indices
-    const weekNumber = Math.floor(weekStartDay / 7) + 1;
-    const dayInWeek = currentDay - weekStartDay;
-
-    // Get all assignments for this week up to current day
-    const assignments = await prisma.dailyTrainingAssignment.findMany({
-      where: {
-        annualPlanId,
-        weekNumber,
-        dayOfWeek: {
-          lt: dayInWeek,
-        },
-      },
-      select: {
-        estimatedDuration: true,
-      },
+    // Batch insert all assignments at once
+    await prisma.dailyTrainingAssignment.createMany({
+      data: assignmentsToCreate,
     });
 
-    // Sum up estimated durations (in minutes) and convert to hours
-    const totalMinutes = assignments.reduce(
-      (sum, a) => sum + (a.estimatedDuration || 0),
-      0
-    );
-
-    return totalMinutes / 60;
+    return { created: assignmentsToCreate.length, byType };
   }
 
   /**

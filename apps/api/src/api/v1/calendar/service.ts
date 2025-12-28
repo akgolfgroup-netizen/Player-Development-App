@@ -182,6 +182,7 @@ export class CalendarService {
 
   /**
    * Get summary statistics for a date range
+   * Uses database-level aggregation for efficiency
    */
   async getCalendarSummary(
     tenantId: string,
@@ -193,37 +194,55 @@ export class CalendarService {
     byStatus: Record<string, number>;
     totalParticipants: number;
   }> {
-    const events = await this.prisma.event.findMany({
-      where: {
-        tenantId,
-        startTime: { gte: startDate },
-        endTime: { lte: endDate },
-      },
-      include: {
-        participants: true,
-      },
+    const whereClause = {
+      tenantId,
+      startTime: { gte: startDate },
+      endTime: { lte: endDate },
+    };
+
+    // Run all aggregations in parallel
+    const [totalEvents, groupByType, groupByStatus, participantCount] = await Promise.all([
+      // Total event count
+      this.prisma.event.count({ where: whereClause }),
+
+      // Group by event type
+      this.prisma.event.groupBy({
+        by: ['eventType'],
+        where: whereClause,
+        _count: { id: true },
+      }),
+
+      // Group by status
+      this.prisma.event.groupBy({
+        by: ['status'],
+        where: whereClause,
+        _count: { id: true },
+      }),
+
+      // Count participants for events in this range
+      this.prisma.eventParticipant.count({
+        where: {
+          event: whereClause,
+        },
+      }),
+    ]);
+
+    // Transform groupBy results to Record format
+    const byType: Record<string, number> = {};
+    groupByType.forEach((g) => {
+      byType[g.eventType] = g._count.id;
     });
 
-    const byType: Record<string, number> = {};
     const byStatus: Record<string, number> = {};
-    let totalParticipants = 0;
-
-    events.forEach((event) => {
-      // Count by type
-      byType[event.eventType] = (byType[event.eventType] || 0) + 1;
-
-      // Count by status
-      byStatus[event.status] = (byStatus[event.status] || 0) + 1;
-
-      // Count participants
-      totalParticipants += event.participants.length;
+    groupByStatus.forEach((g) => {
+      byStatus[g.status] = g._count.id;
     });
 
     return {
-      totalEvents: events.length,
+      totalEvents,
       byType,
       byStatus,
-      totalParticipants,
+      totalParticipants: participantCount,
     };
   }
 

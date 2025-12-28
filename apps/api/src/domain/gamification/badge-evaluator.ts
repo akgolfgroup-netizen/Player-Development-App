@@ -15,6 +15,8 @@ import {
   BadgeProgress,
   BadgeUnlockEvent,
   TrainingPhase,
+  TrainingType,
+  GolfFitnessMetrics,
 } from './types';
 
 // Re-export for convenience
@@ -27,7 +29,10 @@ import {
 } from './badge-calculator';
 import { ALL_BADGES } from './achievement-definitions';
 import { filterAvailableBadges } from './badge-availability';
+import { DateRangeCalculator, SessionFilter } from './utils';
+import { GamificationConfig, createDefaultHoursByType } from './gamification.config';
 import { logger } from '../../utils/logger';
+import { config } from '../../config';
 
 // ═══════════════════════════════════════════════════════════════
 // BADGE EVALUATOR SERVICE
@@ -35,8 +40,8 @@ import { logger } from '../../utils/logger';
 
 export class BadgeEvaluatorService {
   private logger = logger;
-  private static readonly MAX_RETRIES = 3;
-  private static readonly RETRY_DELAY_MS = 1000;
+  private static readonly MAX_RETRIES = config.retry.maxAttempts;
+  private static readonly RETRY_DELAY_MS = config.retry.delayMs;
 
   constructor(private prisma: PrismaClient) {}
 
@@ -205,7 +210,7 @@ export class BadgeEvaluatorService {
     ]);
 
     // Calculate totalXP from earned badges (each badge gives xpValue based on tier)
-    const totalXP = playerData?.length ? playerData.length * 50 : 0; // Simplified: 50 XP per badge
+    const totalXP = playerData?.length ? playerData.length * GamificationConfig.xp.perBadge : 0;
 
     return {
       playerId,
@@ -227,16 +232,8 @@ export class BadgeEvaluatorService {
    * Calculate volume metrics (hours, sessions, swings)
    */
   private async calculateVolumeMetrics(playerId: string): Promise<VolumeMetrics> {
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay() + 1);
-    startOfWeek.setHours(0, 0, 0, 0);
-
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const startOfYear = new Date(now.getFullYear(), 0, 1);
-
     // Get all completed sessions
-    const sessions = await this.prisma.trainingSession.findMany({
+    const rawSessions = await this.prisma.trainingSession.findMany({
       where: {
         playerId,
         completionStatus: { in: ['completed', 'auto_completed'] },
@@ -249,76 +246,56 @@ export class BadgeEvaluatorService {
       },
     });
 
-    const totalMinutes = sessions.reduce((sum, s) => sum + (s.duration || 0), 0);
+    const sessions = SessionFilter.from(rawSessions);
+
+    // Total metrics
+    const totalMinutes = sessions.sumDuration();
     const totalHours = totalMinutes / 60;
+    const totalSwings = rawSessions.reduce((sum, s) => sum + (s.totalShots || 0), 0);
 
-    // Hours by type
-    const hoursByType: Record<string, number> = {
-      teknikk: 0,
-      golfslag: 0,
-      spill: 0,
-      konkurranse: 0,
-      fysisk: 0,
-      mental: 0,
-      rest: 0,
-    };
-
-    sessions.forEach((s) => {
+    // Hours by training type using utility
+    const hoursByType = createDefaultHoursByType();
+    rawSessions.forEach((s: typeof rawSessions[0]) => {
       const type = s.sessionType?.toLowerCase() || 'other';
-      if (hoursByType[type] !== undefined) {
+      if (type in hoursByType) {
         hoursByType[type] += (s.duration || 0) / 60;
       }
     });
 
-    // Sessions by time period
-    const sessionsThisWeek = sessions.filter(
-      (s) => new Date(s.sessionDate) >= startOfWeek
-    ).length;
-    const sessionsThisMonth = sessions.filter(
-      (s) => new Date(s.sessionDate) >= startOfMonth
-    ).length;
-    const sessionsThisYear = sessions.filter(
-      (s) => new Date(s.sessionDate) >= startOfYear
-    ).length;
+    // Sessions by time period using SessionFilter
+    const sessionsThisWeek = sessions.thisWeek().count();
+    const sessionsThisMonth = sessions.thisMonth().count();
+    const sessionsThisYear = sessions.thisYear().count();
 
-    // Weekly/monthly hours
-    const weeklyMinutes = sessions
-      .filter((s) => new Date(s.sessionDate) >= startOfWeek)
-      .reduce((sum, s) => sum + (s.duration || 0), 0);
-    const monthlyMinutes = sessions
-      .filter((s) => new Date(s.sessionDate) >= startOfMonth)
-      .reduce((sum, s) => sum + (s.duration || 0), 0);
-    const yearlyMinutes = sessions
-      .filter((s) => new Date(s.sessionDate) >= startOfYear)
-      .reduce((sum, s) => sum + (s.duration || 0), 0);
-
-    // Total swings
-    const totalSwings = sessions.reduce((sum, s) => sum + (s.totalShots || 0), 0);
+    // Hours by time period
+    const weeklyHours = sessions.thisWeek().sumHours();
+    const monthlyHours = sessions.thisMonth().sumHours();
+    const yearlyHours = sessions.thisYear().sumHours();
 
     // Calculate completion rate (completed sessions / planned sessions)
-    const completedSessions = sessions.length;
-    // Assume average of 5 planned sessions per week for active players
-    const weeksActive = Math.max(1, Math.ceil(
-      (Date.now() - Math.min(...sessions.map(s => new Date(s.sessionDate).getTime()))) / (7 * 24 * 60 * 60 * 1000)
-    ));
-    const estimatedPlanned = weeksActive * 5;
+    const completedSessions = sessions.count();
+    const firstSession = sessions.first();
+    const weeksActive = firstSession
+      ? Math.max(1, DateRangeCalculator.diffInWeeks(new Date(firstSession.sessionDate), new Date()))
+      : 1;
+    const estimatedPlanned = weeksActive * GamificationConfig.sessions.plannedPerWeek;
     const completionRate = Math.min(100, Math.round((completedSessions / estimatedPlanned) * 100));
 
     return {
       totalHours,
-      hoursByType: hoursByType as any,
-      totalSessions: sessions.length,
+      hoursByType: hoursByType as Record<TrainingType, number>,
+      totalSessions: sessions.count(),
       sessionsThisWeek,
       sessionsThisMonth,
       sessionsThisYear,
       completionRate,
       totalSwings,
-      swingsByClub: {} as any,
+      swingsByClub: {} as VolumeMetrics['swingsByClub'],
       totalDrillsCompleted: 0,
       drillsByCategory: {},
-      weeklyHours: weeklyMinutes / 60,
-      monthlyHours: monthlyMinutes / 60,
-      yearlyHours: yearlyMinutes / 60,
+      weeklyHours,
+      monthlyHours,
+      yearlyHours,
     };
   }
 
@@ -327,7 +304,7 @@ export class BadgeEvaluatorService {
    */
   private async calculateStreakMetrics(playerId: string): Promise<StreakMetrics> {
     // Get all session dates
-    const sessions = await this.prisma.trainingSession.findMany({
+    const rawSessions = await this.prisma.trainingSession.findMany({
       where: {
         playerId,
         completionStatus: { in: ['completed', 'auto_completed'] },
@@ -338,115 +315,29 @@ export class BadgeEvaluatorService {
       orderBy: { sessionDate: 'desc' },
     });
 
-    if (sessions.length === 0) {
-      return {
-        currentStreak: 0,
-        longestStreak: 0,
-        perfectWeeks: 0,
-        consecutivePerfectWeeks: 0,
-        earlyMorningSessions: 0,
-        eveningSessions: 0,
-        weekendSessions: 0,
-        consistencyScore: 0,
-        lastActiveDate: new Date(0),
-        daysActive: 0,
-      };
+    if (rawSessions.length === 0) {
+      return this.createEmptyStreakMetrics();
     }
 
-    // Get unique dates
-    const uniqueDates = new Set<string>();
-    sessions.forEach((s) => {
-      uniqueDates.add(new Date(s.sessionDate).toISOString().split('T')[0]);
-    });
+    const sessions = SessionFilter.from(rawSessions);
+    const uniqueDates = sessions.uniqueDates();
     const sortedDates = Array.from(uniqueDates).sort().reverse();
 
-    // Calculate current streak
-    let currentStreak = 0;
-    const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    // Calculate streak metrics
+    const currentStreak = this.calculateCurrentStreak(sortedDates);
+    const longestStreak = this.calculateLongestStreak(sortedDates, currentStreak);
 
-    // Check if trained today or yesterday
-    if (sortedDates[0] === today || sortedDates[0] === yesterday) {
-      currentStreak = 1;
-      for (let i = 1; i < sortedDates.length; i++) {
-        const prevDate = new Date(sortedDates[i - 1]);
-        const currDate = new Date(sortedDates[i]);
-        const diffDays = (prevDate.getTime() - currDate.getTime()) / 86400000;
+    // Count time-based sessions using SessionFilter
+    const earlyMorningSessions = sessions.earlyMorning().count();
+    const eveningSessions = sessions.evening().count();
+    const weekendSessions = sessions.weekends().count();
 
-        if (diffDays <= 1.5) {
-          currentStreak++;
-        } else {
-          break;
-        }
-      }
-    }
+    // Calculate perfect weeks
+    const weeklySessionCounts = sessions.groupByWeek();
+    const { perfectWeeks, consecutivePerfectWeeks } = this.calculatePerfectWeeks(weeklySessionCounts);
 
-    // Calculate longest streak
-    let longestStreak = 0;
-    let tempStreak = 1;
-    for (let i = 1; i < sortedDates.length; i++) {
-      const prevDate = new Date(sortedDates[i - 1]);
-      const currDate = new Date(sortedDates[i]);
-      const diffDays = (prevDate.getTime() - currDate.getTime()) / 86400000;
-
-      if (diffDays <= 1.5) {
-        tempStreak++;
-      } else {
-        longestStreak = Math.max(longestStreak, tempStreak);
-        tempStreak = 1;
-      }
-    }
-    longestStreak = Math.max(longestStreak, tempStreak, currentStreak);
-
-    // Count morning/evening/weekend sessions
-    let earlyMorningSessions = 0;
-    let eveningSessions = 0;
-    let weekendSessions = 0;
-
-    sessions.forEach((s) => {
-      const date = new Date(s.sessionDate);
-      const hour = date.getHours();
-      const day = date.getDay();
-
-      if (hour < 9) earlyMorningSessions++;
-      if (hour >= 19) eveningSessions++;
-      if (day === 0 || day === 6) weekendSessions++;
-    });
-
-    // Calculate perfect weeks (weeks with 5+ sessions)
-    const weekMap = new Map<string, number>();
-    sessions.forEach((s) => {
-      const date = new Date(s.sessionDate);
-      const weekStart = new Date(date);
-      weekStart.setDate(date.getDate() - date.getDay() + 1);
-      const weekKey = weekStart.toISOString().split('T')[0];
-      weekMap.set(weekKey, (weekMap.get(weekKey) || 0) + 1);
-    });
-
-    const perfectWeeks = Array.from(weekMap.values()).filter(count => count >= 5).length;
-
-    // Calculate consecutive perfect weeks
-    const sortedWeeks = Array.from(weekMap.entries())
-      .filter(([_, count]) => count >= 5)
-      .map(([week]) => week)
-      .sort()
-      .reverse();
-
-    let consecutivePerfectWeeks = 0;
-    for (let i = 0; i < sortedWeeks.length; i++) {
-      if (i === 0) {
-        consecutivePerfectWeeks = 1;
-      } else {
-        const prevWeek = new Date(sortedWeeks[i - 1]);
-        const currWeek = new Date(sortedWeeks[i]);
-        const diffWeeks = (prevWeek.getTime() - currWeek.getTime()) / (7 * 24 * 60 * 60 * 1000);
-        if (Math.abs(diffWeeks - 1) < 0.5) {
-          consecutivePerfectWeeks++;
-        } else {
-          break;
-        }
-      }
-    }
+    // Consistency score based on active days in last 30 days
+    const consistencyScore = Math.min(100, (uniqueDates.size / GamificationConfig.consistency.windowDays) * 100);
 
     return {
       currentStreak,
@@ -456,10 +347,123 @@ export class BadgeEvaluatorService {
       earlyMorningSessions,
       eveningSessions,
       weekendSessions,
-      consistencyScore: Math.min(100, (uniqueDates.size / 30) * 100),
+      consistencyScore,
       lastActiveDate: new Date(sortedDates[0]),
       daysActive: uniqueDates.size,
     };
+  }
+
+  /**
+   * Create empty streak metrics for players with no sessions
+   */
+  private createEmptyStreakMetrics(): StreakMetrics {
+    return {
+      currentStreak: 0,
+      longestStreak: 0,
+      perfectWeeks: 0,
+      consecutivePerfectWeeks: 0,
+      earlyMorningSessions: 0,
+      eveningSessions: 0,
+      weekendSessions: 0,
+      consistencyScore: 0,
+      lastActiveDate: new Date(0),
+      daysActive: 0,
+    };
+  }
+
+  /**
+   * Calculate current streak from sorted dates (most recent first)
+   */
+  private calculateCurrentStreak(sortedDates: string[]): number {
+    if (sortedDates.length === 0) return 0;
+
+    const today = DateRangeCalculator.toDateString(new Date());
+    const yesterday = DateRangeCalculator.toDateString(DateRangeCalculator.getYesterday());
+    const maxGap = GamificationConfig.streaks.maxGapDays;
+
+    // Must have trained today or yesterday to have a current streak
+    if (sortedDates[0] !== today && sortedDates[0] !== yesterday) {
+      return 0;
+    }
+
+    let currentStreak = 1;
+    for (let i = 1; i < sortedDates.length; i++) {
+      const prevDate = new Date(sortedDates[i - 1]);
+      const currDate = new Date(sortedDates[i]);
+      const diffDays = (prevDate.getTime() - currDate.getTime()) / (24 * 60 * 60 * 1000);
+
+      if (diffDays <= maxGap) {
+        currentStreak++;
+      } else {
+        break;
+      }
+    }
+
+    return currentStreak;
+  }
+
+  /**
+   * Calculate longest streak from sorted dates (most recent first)
+   */
+  private calculateLongestStreak(sortedDates: string[], currentStreak: number): number {
+    if (sortedDates.length === 0) return 0;
+
+    const maxGap = GamificationConfig.streaks.maxGapDays;
+    let longestStreak = 0;
+    let tempStreak = 1;
+
+    for (let i = 1; i < sortedDates.length; i++) {
+      const prevDate = new Date(sortedDates[i - 1]);
+      const currDate = new Date(sortedDates[i]);
+      const diffDays = (prevDate.getTime() - currDate.getTime()) / (24 * 60 * 60 * 1000);
+
+      if (diffDays <= maxGap) {
+        tempStreak++;
+      } else {
+        longestStreak = Math.max(longestStreak, tempStreak);
+        tempStreak = 1;
+      }
+    }
+
+    return Math.max(longestStreak, tempStreak, currentStreak);
+  }
+
+  /**
+   * Calculate perfect weeks and consecutive perfect weeks
+   */
+  private calculatePerfectWeeks(weeklySessionCounts: Map<string, unknown[]>): {
+    perfectWeeks: number;
+    consecutivePerfectWeeks: number;
+  } {
+    const threshold = GamificationConfig.sessions.perfectWeekThreshold;
+
+    // Count perfect weeks
+    const perfectWeekKeys = Array.from(weeklySessionCounts.entries())
+      .filter(([_, sessions]) => sessions.length >= threshold)
+      .map(([weekKey]) => weekKey)
+      .sort()
+      .reverse();
+
+    const perfectWeeks = perfectWeekKeys.length;
+
+    // Calculate consecutive perfect weeks (from most recent)
+    let consecutivePerfectWeeks = 0;
+    for (let i = 0; i < perfectWeekKeys.length; i++) {
+      if (i === 0) {
+        consecutivePerfectWeeks = 1;
+      } else {
+        const prevWeek = new Date(perfectWeekKeys[i - 1]);
+        const currWeek = new Date(perfectWeekKeys[i]);
+        const diffWeeks = DateRangeCalculator.diffInWeeks(currWeek, prevWeek);
+        if (diffWeeks === 1) {
+          consecutivePerfectWeeks++;
+        } else {
+          break;
+        }
+      }
+    }
+
+    return { perfectWeeks, consecutivePerfectWeeks };
   }
 
   /**
@@ -467,7 +471,7 @@ export class BadgeEvaluatorService {
    */
   private async calculateStrengthMetrics(playerId: string): Promise<StrengthMetrics> {
     // Get gym sessions
-    const gymSessions = await this.prisma.trainingSession.findMany({
+    const rawGymSessions = await this.prisma.trainingSession.findMany({
       where: {
         playerId,
         sessionType: 'fysisk',
@@ -480,47 +484,71 @@ export class BadgeEvaluatorService {
       orderBy: { sessionDate: 'desc' },
     });
 
-    // Calculate gym streak
-    let gymStreak = 0;
-    if (gymSessions.length > 0) {
-      const uniqueWeeks = new Set<string>();
-      gymSessions.forEach((s) => {
-        const date = new Date(s.sessionDate);
-        const weekNum = Math.floor(date.getTime() / (7 * 24 * 60 * 60 * 1000));
-        uniqueWeeks.add(weekNum.toString());
-      });
-      gymStreak = uniqueWeeks.size;
-    }
+    const gymSessions = SessionFilter.from(rawGymSessions);
 
-    const now = new Date();
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - now.getDay() + 1);
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    // Calculate gym streak (unique weeks with gym sessions)
+    const gymStreak = gymSessions.groupByWeek().size;
 
-    const gymSessionsThisWeek = gymSessions.filter(
-      (s) => new Date(s.sessionDate) >= startOfWeek
-    ).length;
-    const gymSessionsThisMonth = gymSessions.filter(
-      (s) => new Date(s.sessionDate) >= startOfMonth
-    ).length;
+    // Sessions by time period using utilities
+    const gymSessionsThisWeek = gymSessions.thisWeek().count();
+    const gymSessionsThisMonth = gymSessions.thisMonth().count();
 
-    // Try to get bodyweight from player intake form (health section)
-    let bodyweight = 70; // Default fallback
+    // Get bodyweight from player intake
+    const bodyweight = await this.getPlayerBodyweight(playerId);
+
+    // Get golf fitness metrics from test results
+    const golfFitness = await this.calculateGolfFitnessMetrics(playerId);
+
+    // Note: Tonnage and PR tracking requires ExerciseLog/PersonalRecord models
+    // which are not yet implemented in the schema. These will remain 0 until
+    // the schema is extended to support detailed exercise tracking.
+    return {
+      totalTonnage: 0,
+      weeklyTonnage: 0,
+      monthlyTonnage: 0,
+      bodyweight,
+      prs: {} as StrengthMetrics['prs'],
+      prCount: 0,
+      prCountThisMonth: 0,
+      relativeStrength: {
+        squat: 0,
+        deadlift: 0,
+        benchPress: 0,
+      },
+      golfFitness,
+      gymSessionsThisWeek,
+      gymSessionsThisMonth,
+      gymStreak,
+    };
+  }
+
+  /**
+   * Get player bodyweight from intake form
+   */
+  private async getPlayerBodyweight(playerId: string): Promise<number> {
     const intake = await this.prisma.playerIntake.findFirst({
       where: { playerId, isComplete: true },
       orderBy: { submittedAt: 'desc' },
       select: { health: true },
     });
+
     if (intake?.health && typeof intake.health === 'object') {
       const health = intake.health as Record<string, unknown>;
       if (typeof health.bodyweight === 'number') {
-        bodyweight = health.bodyweight;
-      } else if (typeof health.weight === 'number') {
-        bodyweight = health.weight;
+        return health.bodyweight;
+      }
+      if (typeof health.weight === 'number') {
+        return health.weight;
       }
     }
 
-    // Get golf fitness metrics from test results
+    return GamificationConfig.strength.defaultBodyweightKg;
+  }
+
+  /**
+   * Calculate golf fitness metrics from test results
+   */
+  private async calculateGolfFitnessMetrics(playerId: string): Promise<GolfFitnessMetrics> {
     const fitnessTests = await this.prisma.testResult.findMany({
       where: {
         playerId,
@@ -536,8 +564,7 @@ export class BadgeEvaluatorService {
       orderBy: { testDate: 'desc' },
     });
 
-    // Build golf fitness object from latest test results
-    const golfFitness: StrengthMetrics['golfFitness'] = {
+    const golfFitness: GolfFitnessMetrics = {
       medBallThrow: 0,
       verticalJump: 0,
       broadJump: 0,
@@ -553,47 +580,49 @@ export class BadgeEvaluatorService {
       lastAssessmentDate: fitnessTests[0]?.testDate || new Date(),
     };
 
-    // Map test results to golf fitness metrics
+    // Map test results to golf fitness metrics using config mapping
     for (const test of fitnessTests) {
       const value = Number(test.value) || 0;
       const testType = test.test.testType?.toLowerCase() || '';
 
-      if (testType.includes('med_ball') || testType.includes('medball')) golfFitness.medBallThrow = value;
-      else if (testType.includes('vertical')) golfFitness.verticalJump = value;
-      else if (testType.includes('broad')) golfFitness.broadJump = value;
-      else if (testType.includes('hip') && testType.includes('left')) golfFitness.hipRotationLeft = value;
-      else if (testType.includes('hip') && testType.includes('right')) golfFitness.hipRotationRight = value;
-      else if (testType.includes('hip')) golfFitness.hipRotationLeft = golfFitness.hipRotationRight = value;
-      else if (testType.includes('thoracic')) golfFitness.thoracicRotation = value;
-      else if (testType.includes('shoulder')) golfFitness.shoulderMobility = value;
-      else if (testType.includes('balance') && testType.includes('left')) golfFitness.singleLegBalanceLeft = value;
-      else if (testType.includes('balance') && testType.includes('right')) golfFitness.singleLegBalanceRight = value;
-      else if (testType.includes('balance')) golfFitness.singleLegBalanceLeft = golfFitness.singleLegBalanceRight = value;
-      else if (testType.includes('plank')) golfFitness.plankHold = value;
-      else if (testType.includes('driver') || testType.includes('clubhead')) golfFitness.clubheadSpeedDriver = value;
+      this.mapTestToGolfFitness(testType, value, golfFitness);
     }
 
-    // Note: Tonnage and PR tracking requires ExerciseLog/PersonalRecord models
-    // which are not yet implemented in the schema. These will remain 0 until
-    // the schema is extended to support detailed exercise tracking.
-    return {
-      totalTonnage: 0,
-      weeklyTonnage: 0,
-      monthlyTonnage: 0,
-      bodyweight,
-      prs: {} as Record<string, number>,
-      prCount: 0,
-      prCountThisMonth: 0,
-      relativeStrength: {
-        squat: 0,
-        deadlift: 0,
-        benchPress: 0,
-      },
-      golfFitness,
-      gymSessionsThisWeek,
-      gymSessionsThisMonth,
-      gymStreak,
-    };
+    return golfFitness;
+  }
+
+  /**
+   * Map a test type to the appropriate golf fitness metric
+   */
+  private mapTestToGolfFitness(testType: string, value: number, golfFitness: GolfFitnessMetrics): void {
+    // Use config-based mapping where possible, with fallback to pattern matching
+    if (testType.includes('med_ball') || testType.includes('medball')) {
+      golfFitness.medBallThrow = value;
+    } else if (testType.includes('vertical')) {
+      golfFitness.verticalJump = value;
+    } else if (testType.includes('broad')) {
+      golfFitness.broadJump = value;
+    } else if (testType.includes('hip') && testType.includes('left')) {
+      golfFitness.hipRotationLeft = value;
+    } else if (testType.includes('hip') && testType.includes('right')) {
+      golfFitness.hipRotationRight = value;
+    } else if (testType.includes('hip')) {
+      golfFitness.hipRotationLeft = golfFitness.hipRotationRight = value;
+    } else if (testType.includes('thoracic')) {
+      golfFitness.thoracicRotation = value;
+    } else if (testType.includes('shoulder')) {
+      golfFitness.shoulderMobility = value;
+    } else if (testType.includes('balance') && testType.includes('left')) {
+      golfFitness.singleLegBalanceLeft = value;
+    } else if (testType.includes('balance') && testType.includes('right')) {
+      golfFitness.singleLegBalanceRight = value;
+    } else if (testType.includes('balance')) {
+      golfFitness.singleLegBalanceLeft = golfFitness.singleLegBalanceRight = value;
+    } else if (testType.includes('plank')) {
+      golfFitness.plankHold = value;
+    } else if (testType.includes('driver') || testType.includes('clubhead')) {
+      golfFitness.clubheadSpeedDriver = value;
+    }
   }
 
   /**
@@ -684,9 +713,9 @@ export class BadgeEvaluatorService {
         roundsUnder80: scores.filter((s) => s < 80).length,
         roundsUnder75: scores.filter((s) => s < 75).length,
         roundsUnder70: scores.filter((s) => s < 70).length,
-        roundsUnderPar: scores.filter((s) => s < 72).length,
-        currentHandicap: player?.handicap ? Number(player.handicap) : 54,
-        lowHandicap: player?.handicap ? Number(player.handicap) : 54,
+        roundsUnderPar: scores.filter((s) => s < GamificationConfig.scoring.par18).length,
+        currentHandicap: player?.handicap ? Number(player.handicap) : GamificationConfig.scoring.defaultHandicap,
+        lowHandicap: player?.handicap ? Number(player.handicap) : GamificationConfig.scoring.defaultHandicap,
         handicapTrend: 'stable',
         totalRoundsPlayed: tournaments.length,
         competitiveRounds: tournaments.length,
@@ -700,228 +729,303 @@ export class BadgeEvaluatorService {
   private async calculatePhaseMetrics(playerId: string): Promise<PhaseMetrics> {
     const now = new Date();
     const currentYear = now.getFullYear();
+    const weekNumber = DateRangeCalculator.getWeekNumber(now);
+    const currentWeekStart = DateRangeCalculator.getStartOfWeek(now);
 
-    // Get current week's periodization
-    const currentWeekStart = new Date(now);
-    currentWeekStart.setDate(now.getDate() - now.getDay() + 1);
-    const weekNumber = Math.ceil(
-      (now.getTime() - new Date(currentYear, 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000)
-    );
-
-    // Get player's annual plan
-    const annualPlan = await this.prisma.annualTrainingPlan.findFirst({
-      where: {
-        playerId,
-        status: 'active',
-        startDate: { lte: now },
-        endDate: { gte: now },
-      },
-      include: {
-        weeklyPeriodizations: {
-          orderBy: { weekNumber: 'asc' },
-        },
-        dailyAssignments: {
-          where: {
-            assignedDate: {
-              gte: new Date(currentYear, 0, 1),
-              lte: now,
-            },
-          },
-        },
-      },
-    });
-
-    // Also get periodization from the legacy table if no annual plan
-    const periodization = await this.prisma.weeklyPeriodization.findFirst({
-      where: { playerId, weekNumber },
-      orderBy: { createdAt: 'desc' },
-    });
-
-    // Map period phase to TrainingPhase enum
-    const mapPeriodPhase = (phase: string | null): TrainingPhase => {
-      if (!phase) return TrainingPhase.GRUNNLAG;
-      const phaseMap: Record<string, TrainingPhase> = {
-        'base': TrainingPhase.GRUNNLAG,
-        'grunnlag': TrainingPhase.GRUNNLAG,
-        'off_season': TrainingPhase.GRUNNLAG,
-        'specialization': TrainingPhase.OPPBYGGING,
-        'oppbygging': TrainingPhase.OPPBYGGING,
-        'pre_season': TrainingPhase.OPPBYGGING,
-        'tournament': TrainingPhase.KONKURRANSE,
-        'konkurranse': TrainingPhase.KONKURRANSE,
-        'in_season': TrainingPhase.KONKURRANSE,
-        'recovery': TrainingPhase.OVERGANG,
-        'overgang': TrainingPhase.OVERGANG,
-        'transition': TrainingPhase.OVERGANG,
-      };
-      return phaseMap[phase.toLowerCase()] || TrainingPhase.GRUNNLAG;
-    };
+    // Fetch annual plan and periodization data
+    const { annualPlan, periodization } = await this.fetchPlanData(playerId, now, currentYear, weekNumber);
 
     // Determine current phase
     const currentPhaseStr = periodization?.periodPhase ||
       annualPlan?.weeklyPeriodizations?.find(w => w.weekNumber === weekNumber)?.mesocycle ||
       'grunnlag';
-    const currentPhase = mapPeriodPhase(currentPhaseStr);
+    const currentPhase = this.mapPeriodPhase(currentPhaseStr);
 
-    // Calculate phase start and end dates
-    let phaseStartDate = currentWeekStart;
-    let phaseEndDate = new Date(currentWeekStart);
-    phaseEndDate.setDate(phaseEndDate.getDate() + 7);
+    // Calculate phase boundaries
+    const { phaseStartDate, phaseEndDate } = this.calculatePhaseBoundaries(
+      annualPlan?.weeklyPeriodizations || [],
+      weekNumber,
+      currentPhase,
+      currentWeekStart
+    );
 
-    // Find consecutive weeks with same phase to determine actual phase duration
-    if (annualPlan?.weeklyPeriodizations) {
-      const weeklyPeriods = annualPlan.weeklyPeriodizations;
-      const currentWeekIdx = weeklyPeriods.findIndex(w => w.weekNumber === weekNumber);
+    const daysInPhase = DateRangeCalculator.diffInDays(phaseStartDate, now);
 
-      if (currentWeekIdx >= 0) {
-        // Find phase start (first week of this phase going backwards)
-        let startIdx = currentWeekIdx;
-        while (startIdx > 0 && mapPeriodPhase(weeklyPeriods[startIdx - 1].mesocycle) === currentPhase) {
-          startIdx--;
-        }
+    // Calculate compliance metrics
+    const complianceMetrics = await this.calculateComplianceMetrics(
+      playerId,
+      annualPlan?.dailyAssignments || [],
+      phaseStartDate,
+      now
+    );
 
-        // Find phase end (last week of this phase going forwards)
-        let endIdx = currentWeekIdx;
-        while (endIdx < weeklyPeriods.length - 1 && mapPeriodPhase(weeklyPeriods[endIdx + 1].mesocycle) === currentPhase) {
-          endIdx++;
-        }
+    // Build phase history
+    const { phaseHistory, phasesCompleted } = this.buildPhaseHistory(
+      annualPlan?.weeklyPeriodizations || [],
+      now
+    );
 
-        if (startIdx < weeklyPeriods.length) {
-          phaseStartDate = new Date(weeklyPeriods[startIdx].startDate);
-        }
-        if (endIdx < weeklyPeriods.length) {
-          phaseEndDate = new Date(weeklyPeriods[endIdx].endDate);
-        }
+    // Count yearly goals
+    const yearlyGoalsAchieved = await this.countYearlyGoalsAchieved(playerId, currentYear);
+
+    return {
+      currentPhase,
+      phaseStartDate,
+      phaseEndDate,
+      daysInPhase: Math.max(1, daysInPhase),
+      phaseCompliance: complianceMetrics.phaseCompliance,
+      volumeVsPlan: complianceMetrics.volumeVsPlan,
+      intensityVsPlan: complianceMetrics.intensityVsPlan,
+      phasesCompleted,
+      phaseHistory,
+      annualPlanCompliance: complianceMetrics.annualPlanCompliance,
+      yearlyGoalsAchieved,
+    };
+  }
+
+  /**
+   * Fetch annual plan and periodization data
+   */
+  private async fetchPlanData(
+    playerId: string,
+    now: Date,
+    currentYear: number,
+    weekNumber: number
+  ) {
+    const [annualPlan, periodization] = await Promise.all([
+      this.prisma.annualTrainingPlan.findFirst({
+        where: {
+          playerId,
+          status: 'active',
+          startDate: { lte: now },
+          endDate: { gte: now },
+        },
+        include: {
+          weeklyPeriodizations: {
+            orderBy: { weekNumber: 'asc' },
+          },
+          dailyAssignments: {
+            where: {
+              assignedDate: {
+                gte: new Date(currentYear, 0, 1),
+                lte: now,
+              },
+            },
+          },
+        },
+      }),
+      this.prisma.weeklyPeriodization.findFirst({
+        where: { playerId, weekNumber },
+        orderBy: { createdAt: 'desc' },
+      }),
+    ]);
+
+    return { annualPlan, periodization };
+  }
+
+  /**
+   * Map period phase string to TrainingPhase enum
+   */
+  private mapPeriodPhase(phase: string | null): TrainingPhase {
+    if (!phase) return TrainingPhase.GRUNNLAG;
+
+    const normalizedPhase = phase.toLowerCase();
+    const mapping = GamificationConfig.phaseMapping;
+
+    if (normalizedPhase in mapping) {
+      const mappedPhase = mapping[normalizedPhase];
+      switch (mappedPhase) {
+        case 'grunnlag': return TrainingPhase.GRUNNLAG;
+        case 'oppbygging': return TrainingPhase.OPPBYGGING;
+        case 'konkurranse': return TrainingPhase.KONKURRANSE;
+        case 'overgang': return TrainingPhase.OVERGANG;
       }
     }
 
-    const daysInPhase = Math.max(1, Math.ceil(
-      (now.getTime() - phaseStartDate.getTime()) / (24 * 60 * 60 * 1000)
-    ));
+    return TrainingPhase.GRUNNLAG;
+  }
 
-    // Calculate compliance metrics
-    let phaseCompliance = 0;
-    let volumeVsPlan = 0;
-    let intensityVsPlan = 0;
-    let annualPlanCompliance = 0;
+  /**
+   * Calculate phase start and end dates from weekly periodizations
+   */
+  private calculatePhaseBoundaries(
+    weeklyPeriods: Array<{ weekNumber: number; mesocycle: string | null; startDate: Date; endDate: Date }>,
+    currentWeekNumber: number,
+    currentPhase: TrainingPhase,
+    fallbackStart: Date
+  ): { phaseStartDate: Date; phaseEndDate: Date } {
+    let phaseStartDate = fallbackStart;
+    let phaseEndDate = new Date(fallbackStart);
+    phaseEndDate.setDate(phaseEndDate.getDate() + 7);
 
-    if (annualPlan?.dailyAssignments) {
-      const assignments = annualPlan.dailyAssignments;
-      const completedAssignments = assignments.filter(a => a.status === 'completed').length;
-      const totalAssignments = assignments.length;
-
-      annualPlanCompliance = totalAssignments > 0
-        ? Math.round((completedAssignments / totalAssignments) * 100)
-        : 0;
-
-      // Get phase-specific assignments
-      const phaseAssignments = assignments.filter(a => {
-        const assignDate = new Date(a.assignedDate);
-        return assignDate >= phaseStartDate && assignDate <= now;
-      });
-      const phaseCompleted = phaseAssignments.filter(a => a.status === 'completed').length;
-      phaseCompliance = phaseAssignments.length > 0
-        ? Math.round((phaseCompleted / phaseAssignments.length) * 100)
-        : 0;
-
-      // Calculate volume ratio from sessions
-      const sessions = await this.prisma.trainingSession.findMany({
-        where: {
-          playerId,
-          sessionDate: { gte: phaseStartDate, lte: now },
-          completionStatus: { in: ['completed', 'auto_completed'] },
-        },
-        select: { duration: true, intensity: true },
-      });
-
-      const actualMinutes = sessions.reduce((sum, s) => sum + (s.duration || 0), 0);
-      const plannedMinutes = phaseAssignments.reduce((sum, a) => sum + (a.durationMinutes || 60), 0);
-      volumeVsPlan = plannedMinutes > 0 ? Math.round((actualMinutes / plannedMinutes) * 100) : 0;
-
-      // Calculate intensity ratio
-      const actualIntensity = sessions.length > 0
-        ? sessions.reduce((sum, s) => sum + (s.intensity || 5), 0) / sessions.length
-        : 0;
-      const plannedIntensity = phaseAssignments.length > 0
-        ? phaseAssignments.reduce((sum, a) => sum + (a.intensity || 5), 0) / phaseAssignments.length
-        : 0;
-      intensityVsPlan = plannedIntensity > 0 ? Math.round((actualIntensity / plannedIntensity) * 100) : 0;
+    if (weeklyPeriods.length === 0) {
+      return { phaseStartDate, phaseEndDate };
     }
 
-    // Calculate phases completed and history
+    const currentWeekIdx = weeklyPeriods.findIndex(w => w.weekNumber === currentWeekNumber);
+    if (currentWeekIdx < 0) {
+      return { phaseStartDate, phaseEndDate };
+    }
+
+    // Find phase start (first week of this phase going backwards)
+    let startIdx = currentWeekIdx;
+    while (startIdx > 0 && this.mapPeriodPhase(weeklyPeriods[startIdx - 1].mesocycle) === currentPhase) {
+      startIdx--;
+    }
+
+    // Find phase end (last week of this phase going forwards)
+    let endIdx = currentWeekIdx;
+    while (endIdx < weeklyPeriods.length - 1 && this.mapPeriodPhase(weeklyPeriods[endIdx + 1].mesocycle) === currentPhase) {
+      endIdx++;
+    }
+
+    if (startIdx < weeklyPeriods.length) {
+      phaseStartDate = new Date(weeklyPeriods[startIdx].startDate);
+    }
+    if (endIdx < weeklyPeriods.length) {
+      phaseEndDate = new Date(weeklyPeriods[endIdx].endDate);
+    }
+
+    return { phaseStartDate, phaseEndDate };
+  }
+
+  /**
+   * Calculate compliance metrics for annual plan and current phase
+   */
+  private async calculateComplianceMetrics(
+    playerId: string,
+    assignments: Array<{ status: string | null; assignedDate: Date; durationMinutes: number | null; intensity: number | null }>,
+    phaseStartDate: Date,
+    now: Date
+  ): Promise<{
+    phaseCompliance: number;
+    volumeVsPlan: number;
+    intensityVsPlan: number;
+    annualPlanCompliance: number;
+  }> {
+    if (assignments.length === 0) {
+      return {
+        phaseCompliance: 0,
+        volumeVsPlan: 0,
+        intensityVsPlan: 0,
+        annualPlanCompliance: 0,
+      };
+    }
+
+    // Annual plan compliance
+    const completedAssignments = assignments.filter(a => a.status === 'completed').length;
+    const annualPlanCompliance = Math.round((completedAssignments / assignments.length) * 100);
+
+    // Phase-specific assignments
+    const phaseAssignments = assignments.filter(a => {
+      const assignDate = new Date(a.assignedDate);
+      return assignDate >= phaseStartDate && assignDate <= now;
+    });
+
+    const phaseCompleted = phaseAssignments.filter(a => a.status === 'completed').length;
+    const phaseCompliance = phaseAssignments.length > 0
+      ? Math.round((phaseCompleted / phaseAssignments.length) * 100)
+      : 0;
+
+    // Get sessions for volume/intensity calculations
+    const rawSessions = await this.prisma.trainingSession.findMany({
+      where: {
+        playerId,
+        sessionDate: { gte: phaseStartDate, lte: now },
+        completionStatus: { in: ['completed', 'auto_completed'] },
+      },
+      select: { duration: true, intensity: true },
+    });
+
+    const sessions = SessionFilter.from(rawSessions);
+    const actualMinutes = sessions.sumDuration();
+    const defaultDuration = GamificationConfig.sessions.defaultDurationMinutes;
+    const plannedMinutes = phaseAssignments.reduce((sum, a) => sum + (a.durationMinutes || defaultDuration), 0);
+    const volumeVsPlan = plannedMinutes > 0 ? Math.round((actualMinutes / plannedMinutes) * 100) : 0;
+
+    // Calculate intensity ratio
+    const defaultIntensity = GamificationConfig.sessions.defaultIntensity;
+    const actualIntensity = sessions.averageIntensity() || 0;
+    const plannedIntensity = phaseAssignments.length > 0
+      ? phaseAssignments.reduce((sum, a) => sum + (a.intensity || defaultIntensity), 0) / phaseAssignments.length
+      : 0;
+    const intensityVsPlan = plannedIntensity > 0 ? Math.round((actualIntensity / plannedIntensity) * 100) : 0;
+
+    return { phaseCompliance, volumeVsPlan, intensityVsPlan, annualPlanCompliance };
+  }
+
+  /**
+   * Build phase history from weekly periodizations
+   */
+  private buildPhaseHistory(
+    weeklyPeriods: Array<{ weekNumber: number; mesocycle: string | null; startDate: Date; endDate: Date; compliance: number | null; actualHours: number | null }>,
+    now: Date
+  ): { phaseHistory: PhaseRecord[]; phasesCompleted: number } {
     const phaseHistory: PhaseRecord[] = [];
     let phasesCompleted = 0;
 
-    if (annualPlan?.weeklyPeriodizations) {
-      const weeklyPeriods = annualPlan.weeklyPeriodizations;
-      let currentPhaseBlock: { phase: TrainingPhase; startWeek: number; endWeek: number } | null = null;
+    if (weeklyPeriods.length === 0) {
+      return { phaseHistory, phasesCompleted };
+    }
 
-      for (let i = 0; i < weeklyPeriods.length; i++) {
-        const period = weeklyPeriods[i];
-        const phase = mapPeriodPhase(period.mesocycle);
-        const periodEnd = new Date(period.endDate);
+    let currentPhaseBlock: { phase: TrainingPhase; startWeek: number; endWeek: number } | null = null;
 
-        if (!currentPhaseBlock || currentPhaseBlock.phase !== phase) {
-          // Save previous phase block if it's complete
-          if (currentPhaseBlock && periodEnd < now) {
-            const startPeriod = weeklyPeriods[currentPhaseBlock.startWeek];
-            const endPeriod = weeklyPeriods[currentPhaseBlock.endWeek];
+    for (let i = 0; i < weeklyPeriods.length; i++) {
+      const period = weeklyPeriods[i];
+      const phase = this.mapPeriodPhase(period.mesocycle);
+      const periodEnd = new Date(period.endDate);
 
-            phaseHistory.push({
-              phase: currentPhaseBlock.phase,
-              startDate: new Date(startPeriod.startDate),
-              endDate: new Date(endPeriod.endDate),
-              compliance: Math.round((endPeriod.compliance || 0) * 100) / 100,
-              volumeCompleted: endPeriod.actualHours || 0,
-              goalsAchieved: [],
-            });
-            phasesCompleted++;
-          }
-          currentPhaseBlock = { phase, startWeek: i, endWeek: i };
-        } else {
-          currentPhaseBlock.endWeek = i;
+      if (!currentPhaseBlock || currentPhaseBlock.phase !== phase) {
+        // Save previous phase block if it's complete
+        if (currentPhaseBlock && periodEnd < now) {
+          const startPeriod = weeklyPeriods[currentPhaseBlock.startWeek];
+          const endPeriod = weeklyPeriods[currentPhaseBlock.endWeek];
+
+          phaseHistory.push({
+            phase: currentPhaseBlock.phase,
+            startDate: new Date(startPeriod.startDate),
+            endDate: new Date(endPeriod.endDate),
+            compliance: Math.round((endPeriod.compliance || 0) * 100) / 100,
+            volumeCompleted: endPeriod.actualHours || 0,
+            goalsAchieved: [],
+          });
+          phasesCompleted++;
         }
+        currentPhaseBlock = { phase, startWeek: i, endWeek: i };
+      } else {
+        currentPhaseBlock.endWeek = i;
       }
     }
 
-    // Count yearly goals achieved from Goal model
-    let yearlyGoalsAchieved = 0;
+    return { phaseHistory, phasesCompleted };
+  }
+
+  /**
+   * Count yearly goals achieved for a player
+   */
+  private async countYearlyGoalsAchieved(playerId: string, year: number): Promise<number> {
     try {
       const player = await this.prisma.player.findUnique({
         where: { id: playerId },
         select: { userId: true },
       });
 
-      if (player?.userId) {
-        const achievedGoals = await this.prisma.goal.count({
-          where: {
-            userId: player.userId,
-            status: 'achieved',
-            targetDate: {
-              gte: new Date(currentYear, 0, 1),
-              lte: new Date(currentYear, 11, 31),
-            },
+      if (!player?.userId) return 0;
+
+      return await this.prisma.goal.count({
+        where: {
+          userId: player.userId,
+          status: 'achieved',
+          targetDate: {
+            gte: new Date(year, 0, 1),
+            lte: new Date(year, 11, 31),
           },
-        });
-        yearlyGoalsAchieved = achievedGoals;
-      }
+        },
+      });
     } catch {
       // Goal model might not exist yet
+      return 0;
     }
-
-    return {
-      currentPhase,
-      phaseStartDate,
-      phaseEndDate,
-      daysInPhase,
-      phaseCompliance,
-      volumeVsPlan,
-      intensityVsPlan,
-      phasesCompleted,
-      phaseHistory,
-      annualPlanCompliance,
-      yearlyGoalsAchieved,
-    };
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -950,30 +1054,41 @@ export class BadgeEvaluatorService {
 
   /**
    * Persist badge progress to database
+   * Uses parallel upserts with configurable batch size for better performance
    */
   private async persistBadgeProgress(
     playerId: string,
     progress: BadgeProgress[]
   ): Promise<void> {
-    for (const bp of progress) {
-      await this.prisma.playerBadge.upsert({
-        where: {
-          playerId_badgeId: {
-            playerId,
-            badgeId: bp.badgeId,
-          },
-        },
-        update: {
-          progress: bp.progress,
-          earnedAt: bp.earned && bp.earnedAt ? bp.earnedAt : undefined,
-        },
-        create: {
-          playerId,
-          badgeId: bp.badgeId,
-          progress: bp.progress,
-          earnedAt: bp.earned ? bp.earnedAt ?? new Date() : null,
-        },
-      });
+    const batchSize = GamificationConfig.batching.badgeUpsertBatch;
+
+    // Process in batches to avoid overwhelming the database
+    for (let i = 0; i < progress.length; i += batchSize) {
+      const batch = progress.slice(i, i + batchSize);
+
+      // Execute batch in parallel
+      await Promise.all(
+        batch.map((bp) =>
+          this.prisma.playerBadge.upsert({
+            where: {
+              playerId_badgeId: {
+                playerId,
+                badgeId: bp.badgeId,
+              },
+            },
+            update: {
+              progress: bp.progress,
+              earnedAt: bp.earned && bp.earnedAt ? bp.earnedAt : undefined,
+            },
+            create: {
+              playerId,
+              badgeId: bp.badgeId,
+              progress: bp.progress,
+              earnedAt: bp.earned ? bp.earnedAt ?? new Date() : null,
+            },
+          })
+        )
+      );
     }
   }
 
@@ -987,7 +1102,7 @@ export class BadgeEvaluatorService {
       where: { playerId, earnedAt: { not: null } },
     });
 
-    const oldXP = earnedBadges.length * 50; // Simplified: 50 XP per badge
+    const oldXP = earnedBadges.length * GamificationConfig.xp.perBadge;
     const newXP = oldXP + xpAmount;
     const oldLevel = getLevelFromXP(oldXP);
     const newLevel = getLevelFromXP(newXP);

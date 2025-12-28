@@ -100,3 +100,18 @@ export {
   getRankSuffix,
   formatRank,
 } from './badge-calculator';
+
+// Utilities
+export {
+  DateRangeCalculator,
+  SessionFilter,
+  type DateBoundaries,
+  type FilterableSession,
+} from './utils';
+
+// Configuration
+export {
+  GamificationConfig,
+  createDefaultHoursByType,
+  type TrainingTypeName,
+} from './gamification.config';
