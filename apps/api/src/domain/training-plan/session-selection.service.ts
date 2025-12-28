@@ -3,6 +3,7 @@
  * Selects appropriate session templates for daily training assignments
  */
 
+import { Prisma } from '@prisma/client';
 import { getPrismaClient } from '../../core/db/prisma';
 import type {
   DailyAssignmentContext,
@@ -11,6 +12,21 @@ import type {
 } from './plan-generation.types';
 
 const prisma = getPrismaClient();
+
+/**
+ * Session template with count relations
+ */
+type SessionTemplateWithCount = Prisma.SessionTemplateGetPayload<{
+  include: { _count: { select: { dailyAssignments: true } } };
+}>;
+
+/**
+ * Scored template for ranking
+ */
+interface ScoredTemplate {
+  template: SessionTemplateWithCount;
+  score: number;
+}
 
 export class SessionSelectionService {
   // Number of days to look back for recently used templates
@@ -127,13 +143,13 @@ export class SessionSelectionService {
     }
 
     // Score and rank templates
-    const scored = templates.map((template: any) => {
+    const scored: ScoredTemplate[] = templates.map((template) => {
       const score = this.scoreTemplate(template, criteria);
       return { template, score };
     });
 
     // Sort by score (descending)
-    scored.sort((a: any, b: any) => b.score - a.score);
+    scored.sort((a, b) => b.score - a.score);
 
     // Select top template
     const best = scored[0];
@@ -153,7 +169,7 @@ export class SessionSelectionService {
   /**
    * Score a template based on how well it matches criteria
    */
-  private static scoreTemplate(template: any, criteria: SessionSelectionCriteria): number {
+  private static scoreTemplate(template: SessionTemplateWithCount, criteria: SessionSelectionCriteria): number {
     let score = 0;
 
     // Exact period match
@@ -206,7 +222,7 @@ export class SessionSelectionService {
    * Calculate how relevant a template is to player's breaking points
    */
   private static calculateBreakingPointRelevance(
-    _template: any,
+    _template: SessionTemplateWithCount,
     breakingPointIds: string[]
   ): number {
     // This is a simplified version - in reality, we'd need to:

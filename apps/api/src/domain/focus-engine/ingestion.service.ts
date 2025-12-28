@@ -60,9 +60,10 @@ export class IngestionService {
           playerSeasonsUpserted += result.upserted;
           playerSeasonsErrors += result.errors;
           filesProcessed.push(entry.entryName);
-        } catch (error: any) {
-          errors.push(`Failed to process ${entry.entryName}: ${error.message}`);
-          logger.error({ file: entry.entryName, error: error.message }, 'Performance file failed');
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          errors.push(`Failed to process ${entry.entryName}: ${errorMessage}`);
+          logger.error({ file: entry.entryName, error: errorMessage }, 'Performance file failed');
         }
       }
 
@@ -80,9 +81,10 @@ export class IngestionService {
           approachSkillsUpserted += result.upserted;
           approachSkillsErrors += result.errors;
           filesProcessed.push(entry.entryName);
-        } catch (error: any) {
-          errors.push(`Failed to process ${entry.entryName}: ${error.message}`);
-          logger.error({ file: entry.entryName, error: error.message }, 'Approach file failed');
+        } catch (error: unknown) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          errors.push(`Failed to process ${entry.entryName}: ${errorMessage}`);
+          logger.error({ file: entry.entryName, error: errorMessage }, 'Approach file failed');
         }
       }
 
@@ -109,8 +111,9 @@ export class IngestionService {
         errors,
         duration,
       };
-    } catch (error: any) {
-      logger.error({ error: error.message }, 'Ingestion failed');
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error({ error: errorMessage }, 'Ingestion failed');
       throw error;
     }
   }
@@ -196,9 +199,10 @@ export class IngestionService {
           },
         });
         upserted++;
-      } catch (error: any) {
+      } catch (error: unknown) {
         errors++;
-        logger.warn({ player: row.player_name, error: error.message }, 'Failed to upsert player season');
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        logger.warn({ player: row.player_name, error: errorMessage }, 'Failed to upsert player season');
       }
     }
 
@@ -262,8 +266,8 @@ export class IngestionService {
           const shotCountKey = `${key}_shot_count` as keyof ApproachSkillRow;
           const valueKey = `${key}_value` as keyof ApproachSkillRow;
 
-          const shotCount = this.parseInt(row[shotCountKey] as any);
-          const value = this.parseDecimal(row[valueKey] as any);
+          const shotCount = this.parseInt(row[shotCountKey] as string | undefined);
+          const value = this.parseDecimal(row[valueKey] as string | undefined);
 
           // Skip if no data
           if (shotCount === null && value === null) continue;
@@ -294,13 +298,14 @@ export class IngestionService {
             },
           });
           upserted++;
-        } catch (error: any) {
+        } catch (error: unknown) {
           errors++;
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
           logger.warn({
             player: row.player_name,
             bucket,
             lie,
-            error: error.message,
+            error: errorMessage,
           }, 'Failed to upsert approach skill');
         }
       }
@@ -321,7 +326,7 @@ export class IngestionService {
   /**
    * Parse decimal value safely
    */
-  private parseDecimal(value: any): number | null {
+  private parseDecimal(value: string | number | null | undefined): number | null {
     if (value === null || value === undefined || value === '') return null;
     const parsed = parseFloat(String(value));
     return isNaN(parsed) ? null : parsed;
@@ -330,7 +335,7 @@ export class IngestionService {
   /**
    * Parse integer value safely
    */
-  private parseInt(value: any): number | null {
+  private parseInt(value: string | number | null | undefined): number | null {
     if (value === null || value === undefined || value === '') return null;
     const parsed = parseInt(String(value), 10);
     return isNaN(parsed) ? null : parsed;
