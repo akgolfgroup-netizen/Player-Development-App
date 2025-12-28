@@ -291,7 +291,7 @@ export function withCache<T>(
 /**
  * Register cache plugin with Fastify
  */
-export async function registerCache(app: FastifyInstance): Promise<void> {
+export async function registerCache(app: FastifyInstance<any, any, any, any>): Promise<void> {
   await cache.connect();
 
   // Decorate app with cache instance

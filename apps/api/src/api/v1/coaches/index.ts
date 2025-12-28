@@ -314,12 +314,19 @@ export async function coachRoutes(app: FastifyInstance): Promise<void> {
         description: 'Mark an alert as dismissed/read',
         tags: ['coaches'],
         security: [{ bearerAuth: [] }],
+        params: {
+          type: 'object',
+          required: ['alertId'],
+          properties: {
+            alertId: { type: 'string', format: 'uuid' },
+          },
+        },
         response: {
           200: { type: 'object', additionalProperties: true },
         },
       },
     },
-    async (request: FastifyRequest<{ Params: { alertId: string } }>, reply: FastifyReply) => {
+    async (_request: FastifyRequest<{ Params: { alertId: string } }>, reply: FastifyReply) => {
       // For now, we just acknowledge - alerts are generated dynamically
       return reply.send({ success: true, message: 'Alert dismissed' });
     }

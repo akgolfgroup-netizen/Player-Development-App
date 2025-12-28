@@ -402,8 +402,8 @@ export async function scheduleSessionReminder(
   sessionTitle: string,
   scheduledAt: Date
 ): Promise<void> {
-  // Schedule reminder 30 minutes before session
-  const reminderTime = new Date(scheduledAt.getTime() - 30 * 60 * 1000);
+  // Schedule reminder before session (configurable minutes)
+  const reminderTime = new Date(scheduledAt.getTime() - config.session.reminderMinutes * 60 * 1000);
   const delay = reminderTime.getTime() - Date.now();
 
   if (delay > 0) {

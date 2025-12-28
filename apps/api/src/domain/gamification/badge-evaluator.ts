@@ -737,13 +737,13 @@ export class BadgeEvaluatorService {
 
     // Determine current phase
     const currentPhaseStr = periodization?.periodPhase ||
-      annualPlan?.weeklyPeriodizations?.find(w => w.weekNumber === weekNumber)?.mesocycle ||
+      annualPlan?.periodizations?.find((w) => w.weekNumber === weekNumber)?.periodPhase ||
       'grunnlag';
     const currentPhase = this.mapPeriodPhase(currentPhaseStr);
 
     // Calculate phase boundaries
     const { phaseStartDate, phaseEndDate } = this.calculatePhaseBoundaries(
-      annualPlan?.weeklyPeriodizations || [],
+      annualPlan?.periodizations || [],
       weekNumber,
       currentPhase,
       currentWeekStart
@@ -761,7 +761,7 @@ export class BadgeEvaluatorService {
 
     // Build phase history
     const { phaseHistory, phasesCompleted } = this.buildPhaseHistory(
-      annualPlan?.weeklyPeriodizations || [],
+      annualPlan?.periodizations || [],
       now
     );
 
@@ -801,7 +801,7 @@ export class BadgeEvaluatorService {
           endDate: { gte: now },
         },
         include: {
-          weeklyPeriodizations: {
+          periodizations: {
             orderBy: { weekNumber: 'asc' },
           },
           dailyAssignments: {
@@ -814,7 +814,7 @@ export class BadgeEvaluatorService {
           },
         },
       }),
-      this.prisma.weeklyPeriodization.findFirst({
+      this.prisma.periodization.findFirst({
         where: { playerId, weekNumber },
         orderBy: { createdAt: 'desc' },
       }),
@@ -849,7 +849,7 @@ export class BadgeEvaluatorService {
    * Calculate phase start and end dates from weekly periodizations
    */
   private calculatePhaseBoundaries(
-    weeklyPeriods: Array<{ weekNumber: number; mesocycle: string | null; startDate: Date; endDate: Date }>,
+    weeklyPeriods: Array<{ weekNumber: number; periodPhase: string | null }>,
     currentWeekNumber: number,
     currentPhase: TrainingPhase,
     fallbackStart: Date
@@ -869,21 +869,23 @@ export class BadgeEvaluatorService {
 
     // Find phase start (first week of this phase going backwards)
     let startIdx = currentWeekIdx;
-    while (startIdx > 0 && this.mapPeriodPhase(weeklyPeriods[startIdx - 1].mesocycle) === currentPhase) {
+    while (startIdx > 0 && this.mapPeriodPhase(weeklyPeriods[startIdx - 1].periodPhase) === currentPhase) {
       startIdx--;
     }
 
     // Find phase end (last week of this phase going forwards)
     let endIdx = currentWeekIdx;
-    while (endIdx < weeklyPeriods.length - 1 && this.mapPeriodPhase(weeklyPeriods[endIdx + 1].mesocycle) === currentPhase) {
+    while (endIdx < weeklyPeriods.length - 1 && this.mapPeriodPhase(weeklyPeriods[endIdx + 1].periodPhase) === currentPhase) {
       endIdx++;
     }
 
+    // Calculate dates from week numbers
+    const year = fallbackStart.getFullYear();
     if (startIdx < weeklyPeriods.length) {
-      phaseStartDate = new Date(weeklyPeriods[startIdx].startDate);
+      phaseStartDate = DateRangeCalculator.getWeekStartDate(year, weeklyPeriods[startIdx].weekNumber);
     }
     if (endIdx < weeklyPeriods.length) {
-      phaseEndDate = new Date(weeklyPeriods[endIdx].endDate);
+      phaseEndDate = DateRangeCalculator.getWeekEndDate(year, weeklyPeriods[endIdx].weekNumber);
     }
 
     return { phaseStartDate, phaseEndDate };
@@ -934,7 +936,7 @@ export class BadgeEvaluatorService {
         sessionDate: { gte: phaseStartDate, lte: now },
         completionStatus: { in: ['completed', 'auto_completed'] },
       },
-      select: { duration: true, intensity: true },
+      select: { sessionDate: true, duration: true, intensity: true },
     });
 
     const sessions = SessionFilter.from(rawSessions);
@@ -958,7 +960,7 @@ export class BadgeEvaluatorService {
    * Build phase history from weekly periodizations
    */
   private buildPhaseHistory(
-    weeklyPeriods: Array<{ weekNumber: number; mesocycle: string | null; startDate: Date; endDate: Date; compliance: number | null; actualHours: number | null }>,
+    weeklyPeriods: Array<{ weekNumber: number; periodPhase: string | null; actualHours: number | null }>,
     now: Date
   ): { phaseHistory: PhaseRecord[]; phasesCompleted: number } {
     const phaseHistory: PhaseRecord[] = [];
@@ -968,12 +970,13 @@ export class BadgeEvaluatorService {
       return { phaseHistory, phasesCompleted };
     }
 
-    let currentPhaseBlock: { phase: TrainingPhase; startWeek: number; endWeek: number } | null = null;
+    const year = now.getFullYear();
+    let currentPhaseBlock: { phase: TrainingPhase; startWeek: number; endWeek: number; totalHours: number } | null = null;
 
     for (let i = 0; i < weeklyPeriods.length; i++) {
       const period = weeklyPeriods[i];
-      const phase = this.mapPeriodPhase(period.mesocycle);
-      const periodEnd = new Date(period.endDate);
+      const phase = this.mapPeriodPhase(period.periodPhase);
+      const periodEnd = DateRangeCalculator.getWeekEndDate(year, period.weekNumber);
 
       if (!currentPhaseBlock || currentPhaseBlock.phase !== phase) {
         // Save previous phase block if it's complete
@@ -983,17 +986,18 @@ export class BadgeEvaluatorService {
 
           phaseHistory.push({
             phase: currentPhaseBlock.phase,
-            startDate: new Date(startPeriod.startDate),
-            endDate: new Date(endPeriod.endDate),
-            compliance: Math.round((endPeriod.compliance || 0) * 100) / 100,
-            volumeCompleted: endPeriod.actualHours || 0,
+            startDate: DateRangeCalculator.getWeekStartDate(year, startPeriod.weekNumber),
+            endDate: DateRangeCalculator.getWeekEndDate(year, endPeriod.weekNumber),
+            compliance: 0, // Would need to calculate from session completion
+            volumeCompleted: currentPhaseBlock.totalHours,
             goalsAchieved: [],
           });
           phasesCompleted++;
         }
-        currentPhaseBlock = { phase, startWeek: i, endWeek: i };
+        currentPhaseBlock = { phase, startWeek: i, endWeek: i, totalHours: period.actualHours || 0 };
       } else {
         currentPhaseBlock.endWeek = i;
+        currentPhaseBlock.totalHours += period.actualHours || 0;
       }
     }
 

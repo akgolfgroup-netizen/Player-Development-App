@@ -72,11 +72,11 @@ async function csrfPlugin(
   }
 
   // Add CSRF token generation endpoint
-  fastify.get('/csrf-token', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/csrf-token', async (_request: FastifyRequest, reply: FastifyReply) => {
     const token = generateToken(options.secret);
-    
+
     // Set CSRF token in cookie (for double-submit pattern)
-    reply.setCookie(options.cookieName, token, {
+    (reply as any).setCookie(options.cookieName, token, {
       httpOnly: false, // Allow JavaScript access for SPA
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -119,7 +119,7 @@ async function csrfPlugin(
     const headerToken = request.headers[options.headerName] as string;
     
     // Get token from cookie
-    const cookieToken = request.cookies[options.cookieName];
+    const cookieToken = (request as any).cookies?.[options.cookieName];
 
     // Validate tokens exist
     if (!headerToken || !cookieToken) {

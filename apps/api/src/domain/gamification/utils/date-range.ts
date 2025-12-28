@@ -62,6 +62,35 @@ export class DateRangeCalculator {
   }
 
   /**
+   * Get start date of a specific week number in a year (Monday 00:00:00)
+   */
+  static getWeekStartDate(year: number, weekNumber: number): Date {
+    // Get first day of the year
+    const jan1 = new Date(year, 0, 1);
+    // Get day of week (0=Sun, 1=Mon, ...)
+    const jan1Day = jan1.getDay();
+    // Calculate first Monday of the year
+    const daysToFirstMonday = jan1Day === 0 ? 1 : (jan1Day === 1 ? 0 : 8 - jan1Day);
+    const firstMonday = new Date(year, 0, 1 + daysToFirstMonday);
+    // Calculate the Monday of the requested week
+    const result = new Date(firstMonday);
+    result.setDate(firstMonday.getDate() + (weekNumber - 1) * 7);
+    result.setHours(0, 0, 0, 0);
+    return result;
+  }
+
+  /**
+   * Get end date of a specific week number in a year (Sunday 23:59:59)
+   */
+  static getWeekEndDate(year: number, weekNumber: number): Date {
+    const weekStart = this.getWeekStartDate(year, weekNumber);
+    const result = new Date(weekStart);
+    result.setDate(result.getDate() + 6);
+    result.setHours(23, 59, 59, 999);
+    return result;
+  }
+
+  /**
    * Get start of a specific day (00:00:00)
    */
   static getStartOfDay(date: Date = new Date()): Date {

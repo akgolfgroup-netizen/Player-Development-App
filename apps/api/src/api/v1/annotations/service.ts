@@ -6,6 +6,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import { storageService } from '../../../services/storage.service';
 import { NotFoundError, ForbiddenError, BadRequestError } from '../../../middleware/errors';
+import { logger } from '../../../utils/logger';
 import {
   CreateAnnotationInput,
   UpdateAnnotationInput,
@@ -356,8 +357,8 @@ export class AnnotationService {
     if (annotation.audioKey) {
       try {
         await storageService.deleteObject(annotation.audioKey);
-      } catch {
-        // Log but don't fail if S3 delete fails
+      } catch (error) {
+        logger.warn({ annotationId, audioKey: annotation.audioKey, error }, 'Failed to delete annotation audio from S3');
       }
     }
 

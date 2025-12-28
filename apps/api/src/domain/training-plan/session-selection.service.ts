@@ -27,10 +27,10 @@ export class SessionSelectionService {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - days);
 
-    const recentAssignments = await prisma.dailyAssignment.findMany({
+    const recentAssignments = await prisma.dailyTrainingAssignment.findMany({
       where: {
-        annualPlan: { playerId },
-        date: { gte: cutoffDate },
+        playerId,
+        assignedDate: { gte: cutoffDate },
         sessionTemplateId: { not: null },
         status: { in: ['completed', 'in_progress'] },
       },
@@ -39,8 +39,8 @@ export class SessionSelectionService {
     });
 
     return recentAssignments
-      .map((a) => a.sessionTemplateId)
-      .filter((id): id is string => id !== null);
+      .map((a: { sessionTemplateId: string | null }) => a.sessionTemplateId)
+      .filter((id: string | null): id is string => id !== null);
   }
 
   /**

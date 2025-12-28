@@ -5,7 +5,7 @@ import { config } from '../config';
 /**
  * Register CORS plugin
  */
-export async function registerCors(app: FastifyInstance): Promise<void> {
+export async function registerCors(app: FastifyInstance<any, any, any, any>): Promise<void> {
   await app.register(fastifyCors, {
     origin: config.cors.origin,
     credentials: config.cors.credentials,

@@ -8,6 +8,7 @@ export interface AccessTokenPayload {
   role: 'admin' | 'coach' | 'player' | 'parent';
   email: string;
   playerId?: string; // Optional: Used when user is a player
+  coachId?: string;  // Optional: Used when user is a coach
 }
 
 export interface RefreshTokenPayload {

@@ -66,6 +66,22 @@ const envSchema = z.object({
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
   GOOGLE_REDIRECT_URI: z.string().optional(),
+
+  // API URL (for webhooks and external callbacks)
+  API_URL: z.string().url().optional(),
+
+  // Storage settings
+  STORAGE_UPLOAD_EXPIRY: z.string().transform(Number).default('3600'), // 1 hour
+  STORAGE_PLAYBACK_EXPIRY: z.string().transform(Number).default('3600'), // 1 hour
+  STORAGE_THUMBNAIL_EXPIRY: z.string().transform(Number).default('86400'), // 24 hours
+  STORAGE_BATCH_SIZE: z.string().transform(Number).default('1000'),
+
+  // Retry settings
+  RETRY_DELAY_MS: z.string().transform(Number).default('1000'),
+  RETRY_MAX_ATTEMPTS: z.string().transform(Number).default('3'),
+
+  // Session reminder settings
+  SESSION_REMINDER_MINUTES: z.string().transform(Number).default('30'),
 });
 
 // Parse and validate environment variables
@@ -147,6 +163,26 @@ export const config = {
     clientSecret: env.GOOGLE_CLIENT_SECRET,
     redirectUri: env.GOOGLE_REDIRECT_URI,
   } : undefined,
+
+  api: {
+    url: env.API_URL || `http://localhost:${env.PORT}`,
+  },
+
+  storage: {
+    uploadExpiry: env.STORAGE_UPLOAD_EXPIRY,
+    playbackExpiry: env.STORAGE_PLAYBACK_EXPIRY,
+    thumbnailExpiry: env.STORAGE_THUMBNAIL_EXPIRY,
+    batchSize: env.STORAGE_BATCH_SIZE,
+  },
+
+  retry: {
+    delayMs: env.RETRY_DELAY_MS,
+    maxAttempts: env.RETRY_MAX_ATTEMPTS,
+  },
+
+  session: {
+    reminderMinutes: env.SESSION_REMINDER_MINUTES,
+  },
 } as const;
 
 export default config;

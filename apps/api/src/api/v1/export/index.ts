@@ -31,8 +31,9 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
       tags: ['export'],
       params: {
         type: 'object',
+        required: ['playerId'],
         properties: {
-          playerId: { type: 'string' },
+          playerId: { type: 'string', format: 'uuid' },
         },
       },
     },
@@ -370,8 +371,9 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
       tags: ['export'],
       params: {
         type: 'object',
+        required: ['playerId'],
         properties: {
-          playerId: { type: 'string' },
+          playerId: { type: 'string', format: 'uuid' },
         },
       },
     },

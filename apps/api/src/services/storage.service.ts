@@ -150,7 +150,7 @@ export class StorageService {
       });
 
       const signedUrl = await getSignedUrl(this.s3, uploadPartCommand, {
-        expiresIn: 3600, // 1 hour
+        expiresIn: config.storage.uploadExpiry,
       });
 
       signedUrls.push(signedUrl);
@@ -201,7 +201,7 @@ export class StorageService {
   async getSignedPlaybackUrl(
     key: string,
     tenantId: string,
-    expiresIn: number = 300 // 5 minutes default
+    expiresIn: number = config.storage.playbackExpiry
   ): Promise<string> {
     // Validate tenant access
     this.validateTenantAccess(key, tenantId);
@@ -221,7 +221,7 @@ export class StorageService {
     key: string,
     tenantId: string,
     mimeType: string,
-    expiresIn: number = 3600 // 1 hour default
+    expiresIn: number = config.storage.uploadExpiry
   ): Promise<string> {
     // Validate tenant access
     this.validateTenantAccess(key, tenantId);

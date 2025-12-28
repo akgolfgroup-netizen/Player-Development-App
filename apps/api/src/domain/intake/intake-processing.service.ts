@@ -69,14 +69,14 @@ export class IntakeProcessingService {
       ? await prisma.playerIntake.update({
           where: { id: existing.id },
           data: {
-            background: toJsonValue(intakeData.background) ?? existing.background,
-            availability: toJsonValue(intakeData.availability) ?? existing.availability,
-            goals: toJsonValue(intakeData.goals) ?? existing.goals,
-            weaknesses: toJsonValue(intakeData.weaknesses) ?? existing.weaknesses,
-            health: toJsonValue(intakeData.health) ?? existing.health,
-            lifestyle: toJsonValue(intakeData.lifestyle) ?? existing.lifestyle,
-            equipment: toJsonValue(intakeData.equipment) ?? existing.equipment,
-            learning: toJsonValue(intakeData.learning) ?? existing.learning,
+            background: (toJsonValue(intakeData.background) ?? existing.background) as Prisma.InputJsonValue,
+            availability: (toJsonValue(intakeData.availability) ?? existing.availability) as Prisma.InputJsonValue,
+            goals: (toJsonValue(intakeData.goals) ?? existing.goals) as Prisma.InputJsonValue,
+            weaknesses: (toJsonValue(intakeData.weaknesses) ?? existing.weaknesses) as Prisma.InputJsonValue,
+            health: (toJsonValue(intakeData.health) ?? existing.health) as Prisma.InputJsonValue,
+            lifestyle: (toJsonValue(intakeData.lifestyle) ?? existing.lifestyle) as Prisma.InputJsonValue,
+            equipment: (toJsonValue(intakeData.equipment) ?? existing.equipment) as Prisma.InputJsonValue,
+            learning: (toJsonValue(intakeData.learning) ?? existing.learning) as Prisma.InputJsonValue,
             completionPercentage: validation.completionPercentage,
             isComplete: validation.isComplete,
           },
@@ -362,11 +362,9 @@ export class IntakeProcessingService {
       });
     }
 
-    if (health.physicalLimitations) {
-      health.physicalLimitations.forEach((limit) => {
-        if (limit.severity !== 'mild') {
-          restrictions.push(`${limit.area} limitation`);
-        }
+    if (health.mobilityIssues) {
+      health.mobilityIssues.forEach((issue: string) => {
+        restrictions.push(`Mobility: ${issue}`);
       });
     }
 

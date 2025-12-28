@@ -21,7 +21,7 @@ export interface BuildAppOptions {
 /**
  * Build and configure Fastify application
  */
-export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInstance> {
+export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInstance<any, any, any, any>> {
   // Create Fastify instance
   const app = Fastify({
     logger: opts.logger !== false ? logger : false,
@@ -171,7 +171,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<FastifyInsta
 /**
  * Start the application server
  */
-export async function startServer(): Promise<FastifyInstance> {
+export async function startServer(): Promise<FastifyInstance<any, any, any, any>> {
   const app = await buildApp();
 
   try {

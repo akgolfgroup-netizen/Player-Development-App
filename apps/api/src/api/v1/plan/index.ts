@@ -26,7 +26,7 @@ const planRoutes: FastifyPluginAsync = async (fastify) => {
           status: 'active',
         },
         include: {
-          weeklyPeriodizations: {
+          periodizations: {
             orderBy: { weekNumber: 'asc' },
           },
           dailyAssignments: {
@@ -53,7 +53,7 @@ const planRoutes: FastifyPluginAsync = async (fastify) => {
       const startDate = new Date(plan.startDate);
       const diffTime = now.getTime() - startDate.getTime();
       const diffWeeks = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7));
-      const currentWeek = Math.max(1, Math.min(diffWeeks + 1, plan.weeklyPeriodizations.length));
+      const currentWeek = Math.max(1, Math.min(diffWeeks + 1, plan.periodizations.length));
 
       // Get completed sessions count for current week
       const weekStart = new Date(startDate);
@@ -80,7 +80,7 @@ const planRoutes: FastifyPluginAsync = async (fastify) => {
       });
 
       // Current period info
-      const currentPeriod = plan.weeklyPeriodizations.find(p => p.weekNumber === currentWeek);
+      const currentPeriod = plan.periodizations.find((p) => p.weekNumber === currentWeek);
 
       return {
         success: true,
@@ -91,10 +91,10 @@ const planRoutes: FastifyPluginAsync = async (fastify) => {
           startDate: plan.startDate,
           endDate: plan.endDate,
           currentWeek,
-          totalWeeks: plan.weeklyPeriodizations.length,
-          focus: currentPeriod?.focusArea || 'General',
+          totalWeeks: plan.periodizations.length,
+          focus: currentPeriod?.periodPhase || 'General',
           period: currentPeriod?.period || 'E',
-          learningPhase: currentPeriod?.learningPhase,
+          learningPhase: currentPeriod?.learningPhaseMin,
           weekOverview: {
             completed: completedThisWeek,
             planned: plannedThisWeek,
@@ -157,7 +157,7 @@ const planRoutes: FastifyPluginAsync = async (fastify) => {
       const firstWeekOfMonth = Math.ceil((monthStart.getTime() - planStart.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1;
       const lastWeekOfMonth = Math.ceil((monthEnd.getTime() - planStart.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1;
 
-      const periodizations = await prisma.weeklyPeriodization.findMany({
+      const periodizations = await prisma.periodization.findMany({
         where: {
           annualPlanId: plan.id,
           weekNumber: {
@@ -196,9 +196,9 @@ const planRoutes: FastifyPluginAsync = async (fastify) => {
 
         return {
           weekNumber: period.weekNumber,
-          focus: period.focusArea || period.period,
+          focus: period.periodPhase || period.period,
           period: period.period,
-          learningPhase: period.learningPhase,
+          learningPhase: period.learningPhaseMin,
           sessions: plannedCount,
           completed: completedCount,
         };

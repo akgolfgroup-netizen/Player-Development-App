@@ -325,7 +325,7 @@ export class CoachAnalyticsService {
         tenantId,
         coachId: coachId,
         OR: [
-          { sessions: { some: { sessionDate: { gte: thirtyDaysAgo } } } },
+          { trainingSessions: { some: { sessionDate: { gte: thirtyDaysAgo } } } },
           { testResults: { some: { testDate: { gte: thirtyDaysAgo } } } },
         ],
       },
@@ -351,7 +351,7 @@ export class CoachAnalyticsService {
           take: 5,
           include: { test: true },
         },
-        sessions: {
+        trainingSessions: {
           orderBy: { sessionDate: 'desc' },
           take: 1,
         },
@@ -376,7 +376,7 @@ export class CoachAnalyticsService {
       }
 
       // Check for inactive players (no activity in 14 days)
-      const lastSession = player.sessions[0];
+      const lastSession = player.trainingSessions[0];
       const fourteenDaysAgo = new Date();
       fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
 

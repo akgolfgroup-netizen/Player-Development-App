@@ -4,6 +4,7 @@ import { domainViolation } from '../../../core/errors';
 import { BadgeEvaluatorService } from '../../../domain/gamification/badge-evaluator';
 import { generateICalFeed, createGoogleCalendarService, CalendarEvent } from '../../../services/calendar-integration';
 import { logger } from '../../../utils/logger';
+import { config } from '../../../config';
 
 const calendarRoutes: FastifyPluginAsync = async (fastify) => {
   // Get all events (training, tournaments, samlinger)
@@ -355,8 +356,7 @@ const calendarRoutes: FastifyPluginAsync = async (fastify) => {
         data: { calendarToken: token },
       });
 
-      const baseUrl = process.env.API_URL || 'http://localhost:3000';
-      const subscriptionUrl = `${baseUrl}/api/v1/calendar/ical/${token}`;
+      const subscriptionUrl = `${config.api.url}/api/v1/calendar/ical/${token}`;
 
       return {
         token,
@@ -431,12 +431,10 @@ const calendarRoutes: FastifyPluginAsync = async (fastify) => {
         });
 
         // Redirect to frontend success page
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-        return reply.redirect(`${frontendUrl}/settings/calendar?connected=true`);
+        return reply.redirect(`${config.frontend.url}/settings/calendar?connected=true`);
       } catch (error) {
         logger.error({ error }, 'Google Calendar OAuth failed');
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-        return reply.redirect(`${frontendUrl}/settings/calendar?error=auth_failed`);
+        return reply.redirect(`${config.frontend.url}/settings/calendar?error=auth_failed`);
       }
     },
   });

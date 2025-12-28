@@ -3,10 +3,10 @@ import { NotFoundError, ConflictError } from '../../../middleware/errors';
 import { CreateCoachInput, UpdateCoachInput, ListCoachesQuery } from './schema';
 
 /**
- * Coach with players relation
+ * Coach with count relations
  */
 type CoachWithRelations = Prisma.CoachGetPayload<{
-  include: { players: { select: { id: true; firstName: true; lastName: true } } };
+  include: { _count: { select: { players: true; trainingSessions: true } } };
 }>;
 
 export interface CoachListResponse {
@@ -355,7 +355,7 @@ export class CoachService {
         email: true,
         category: true,
         gender: true,
-        birthDate: true,
+        dateOfBirth: true,
         handicap: true,
         status: true,
         profileImageUrl: true,
@@ -413,7 +413,7 @@ export class CoachService {
         email: p.email,
         category: p.category,
         gender: p.gender,
-        birthDate: p.birthDate,
+        birthDate: p.dateOfBirth,
         handicap: p.handicap ? Number(p.handicap) : null,
         status: p.status,
         profileImageUrl: p.profileImageUrl,
@@ -441,13 +441,13 @@ export class CoachService {
           take: 2,
           include: { test: true },
         },
-        sessions: {
+        trainingSessions: {
           orderBy: { sessionDate: 'desc' },
           take: 1,
         },
         videos: {
           where: { status: 'uploaded' },
-          orderBy: { uploadedAt: 'desc' },
+          orderBy: { createdAt: 'desc' },
           take: 5,
         },
         annualPlans: {
@@ -466,14 +466,14 @@ export class CoachService {
 
       // Alert: New video uploaded (last 7 days)
       for (const video of player.videos) {
-        if (video.uploadedAt && video.uploadedAt >= sevenDaysAgo) {
+        if (video.createdAt && video.createdAt >= sevenDaysAgo) {
           alerts.push({
             id: `video_${video.id}`,
             athleteId: player.id,
             athleteName: playerName,
             type: 'proof_uploaded',
             message: `Ny video lastet opp: ${video.title || 'Uten tittel'}`,
-            createdAt: video.uploadedAt.toISOString(),
+            createdAt: video.createdAt.toISOString(),
             read: false,
           });
         }
@@ -494,7 +494,7 @@ export class CoachService {
       }
 
       // Alert: Inactive player (no sessions in 14 days)
-      const lastSession = player.sessions[0];
+      const lastSession = player.trainingSessions[0];
       if (!lastSession || lastSession.sessionDate < fourteenDaysAgo) {
         alerts.push({
           id: `inactive_${player.id}`,

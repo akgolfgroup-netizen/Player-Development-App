@@ -46,7 +46,7 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
     requestCount++;
   });
 
-  fastify.addHook('onResponse', async (request, reply) => {
+  fastify.addHook('onResponse', async (_request, reply) => {
     const responseTime = reply.getResponseTime();
     totalResponseTime += responseTime;
   });
@@ -55,7 +55,7 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
    * GET /health
    * Basic health check (fast, lightweight)
    */
-  fastify.get('/', async (request, reply) => {
+  fastify.get('/', async (_request, reply) => {
     // Public short cache for health checks
     setPublicShort(reply, 30);
     return {
@@ -100,7 +100,7 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
    * GET /health/ready
    * Readiness probe (for Kubernetes/Docker)
    */
-  fastify.get('/ready', async (request, reply) => {
+  fastify.get('/ready', async (_request, reply) => {
     // No-store: readiness must be real-time
     setNoStore(reply);
 
@@ -144,16 +144,12 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
 
       const responseTime = Date.now() - start;
 
-      // Get connection pool stats (if available)
-      const metrics = await prisma.$metrics.json();
-
       return {
         status: responseTime < 100 ? 'ok' : responseTime < 500 ? 'warning' : 'error',
         message: responseTime < 100 ? 'Database connected' : 'Database slow',
         responseTime,
         details: {
           responseTime: `${responseTime}ms`,
-          metrics: metrics || 'Not available',
         },
       };
     } catch (error) {

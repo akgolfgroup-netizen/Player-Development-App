@@ -231,7 +231,7 @@ export const WS_EVENTS = {
 /**
  * Register WebSocket plugin with Fastify
  */
-export async function registerWebSocket(app: FastifyInstance): Promise<void> {
+export async function registerWebSocket(app: FastifyInstance<any, any, any, any>): Promise<void> {
   await app.register(websocket, {
     options: {
       maxPayload: 1048576, // 1MB

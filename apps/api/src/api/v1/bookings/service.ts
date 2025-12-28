@@ -318,7 +318,11 @@ export class BookingService {
       });
     });
 
-    return result;
+    if (!result) {
+      throw new Error('Failed to create booking');
+    }
+
+    return result as BookingWithEvent;
   }
 
   /**
@@ -328,49 +332,38 @@ export class BookingService {
     tenantId: string,
     query: ListBookingsQuery
   ): Promise<BookingListResponse> {
+    // Build event filter separately to avoid type inference issues
+    const eventWhere: Prisma.EventWhereInput = { tenantId };
+
+    if (query.coachId) {
+      eventWhere.coachId = query.coachId;
+    }
+
+    if (query.startDate) {
+      eventWhere.startTime = { gte: new Date(query.startDate) };
+    }
+
+    if (query.endDate) {
+      eventWhere.endTime = { lte: new Date(query.endDate) };
+    }
+
+    if (query.sessionType) {
+      eventWhere.metadata = {
+        path: ['sessionType'],
+        equals: query.sessionType,
+      };
+    }
+
     const where: Prisma.BookingWhereInput = {
-      event: {
-        tenantId,
-      },
+      event: eventWhere,
     };
 
     if (query.playerId) {
       where.playerId = query.playerId;
     }
 
-    if (query.coachId) {
-      where.event = {
-        ...where.event,
-        coachId: query.coachId,
-      };
-    }
-
     if (query.status) {
       where.status = query.status;
-    }
-
-    if (query.startDate) {
-      where.event = {
-        ...where.event,
-        startTime: { gte: new Date(query.startDate) },
-      };
-    }
-
-    if (query.endDate) {
-      where.event = {
-        ...where.event,
-        endTime: { lte: new Date(query.endDate) },
-      };
-    }
-
-    if (query.sessionType) {
-      where.event = {
-        ...where.event,
-        metadata: {
-          path: ['sessionType'],
-          equals: query.sessionType,
-        },
-      };
     }
 
     const [total, bookings] = await Promise.all([

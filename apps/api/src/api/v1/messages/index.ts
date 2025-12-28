@@ -225,15 +225,16 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
       tags: ['messages'],
       params: {
         type: 'object',
+        required: ['conversationId'],
         properties: {
-          conversationId: { type: 'string' },
+          conversationId: { type: 'string', format: 'uuid' },
         },
       },
       querystring: {
         type: 'object',
         properties: {
-          limit: { type: 'number', default: 50 },
-          before: { type: 'string' },
+          limit: { type: 'number', minimum: 1, maximum: 100, default: 50 },
+          before: { type: 'string', format: 'date-time' },
         },
       },
     },
@@ -344,8 +345,9 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
       tags: ['messages'],
       params: {
         type: 'object',
+        required: ['conversationId'],
         properties: {
-          conversationId: { type: 'string' },
+          conversationId: { type: 'string', format: 'uuid' },
         },
       },
       body: {
