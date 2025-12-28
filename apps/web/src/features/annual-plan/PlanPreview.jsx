@@ -536,25 +536,218 @@ function OverviewView({ data }) {
 }
 
 function CalendarView({ data }) {
+  if (!data?.dailyAssignments) return null;
+
+  // Group assignments by month
+  const monthlyAssignments = {};
+  data.dailyAssignments.forEach(assignment => {
+    const date = new Date(assignment.date);
+    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    if (!monthlyAssignments[monthKey]) {
+      monthlyAssignments[monthKey] = [];
+    }
+    monthlyAssignments[monthKey].push(assignment);
+  });
+
+  const months = Object.keys(monthlyAssignments).sort();
+
+  const getSessionTypeColor = (type) => {
+    switch (type?.toLowerCase()) {
+      case 'range': return 'bg-green-200';
+      case 'course': return 'bg-blue-200';
+      case 'physical': return 'bg-purple-200';
+      case 'mental': return 'bg-yellow-200';
+      case 'rest': return 'bg-gray-100';
+      default: return 'bg-gray-200';
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-xl font-bold mb-4">365-Day Calendar</h2>
-      <p className="text-gray-600">Calendar visualization coming soon...</p>
-      <p className="text-sm text-gray-500 mt-2">
-        Total assignments: {data?.dailyAssignments.length}
+      <p className="text-sm text-gray-500 mb-4">
+        Total assignments: {data.dailyAssignments.length}
       </p>
+
+      <div className="space-y-6">
+        {months.map(monthKey => {
+          const [year, month] = monthKey.split('-');
+          const monthName = new Date(year, parseInt(month) - 1).toLocaleDateString('nb-NO', { month: 'long', year: 'numeric' });
+          const assignments = monthlyAssignments[monthKey];
+
+          return (
+            <div key={monthKey} className="border border-gray-200 rounded-lg p-4">
+              <h3 className="font-semibold text-lg mb-3 capitalize">{monthName}</h3>
+              <div className="grid grid-cols-7 gap-1">
+                {['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'].map(day => (
+                  <div key={day} className="text-center text-xs font-medium text-gray-500 py-1">
+                    {day}
+                  </div>
+                ))}
+                {assignments.map(assignment => {
+                  const date = new Date(assignment.date);
+                  const dayOfMonth = date.getDate();
+                  const isRest = assignment.isRest;
+
+                  return (
+                    <div
+                      key={assignment.id}
+                      className={`text-center py-2 rounded text-xs ${
+                        isRest ? 'bg-gray-100 text-gray-400' : getSessionTypeColor(assignment.sessionType)
+                      }`}
+                      title={isRest ? 'Hviledag' : `${assignment.sessionType || 'Trening'}`}
+                    >
+                      {dayOfMonth}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Legend */}
+      <div className="mt-6 flex flex-wrap gap-3 text-sm">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-green-200 rounded"></div>
+          <span>Range</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-blue-200 rounded"></div>
+          <span>Bane</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-purple-200 rounded"></div>
+          <span>Fysisk</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-yellow-200 rounded"></div>
+          <span>Mental</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-gray-100 rounded"></div>
+          <span>Hvile</span>
+        </div>
+      </div>
     </div>
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function WeeklyView({ data: _data }) {
+function WeeklyView({ data }) {
+  if (!data?.periodizations || !data?.dailyAssignments) return null;
+
+  // Group daily assignments by week number
+  const weeklyData = {};
+  data.dailyAssignments.forEach(assignment => {
+    const weekNum = assignment.weekNumber || getWeekNumber(new Date(assignment.date));
+    if (!weeklyData[weekNum]) {
+      weeklyData[weekNum] = {
+        assignments: [],
+        restDays: 0,
+        trainingDays: 0
+      };
+    }
+    weeklyData[weekNum].assignments.push(assignment);
+    if (assignment.isRest) {
+      weeklyData[weekNum].restDays++;
+    } else {
+      weeklyData[weekNum].trainingDays++;
+    }
+  });
+
+  // Merge with periodization data
+  const weeks = data.periodizations.map(period => ({
+    ...period,
+    ...(weeklyData[period.weekNumber] || { assignments: [], restDays: 0, trainingDays: 0 })
+  }));
+
+  const getPeriodLabel = (period) => {
+    switch (period) {
+      case 'E': return 'Base';
+      case 'G': return 'General';
+      case 'S': return 'Spesifikk';
+      case 'T': return 'Turnering';
+      default: return period;
+    }
+  };
+
+  const getPeriodColor = (period) => {
+    switch (period) {
+      case 'E': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'G': return 'bg-green-100 text-green-800 border-green-200';
+      case 'S': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'T': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h2 className="text-xl font-bold mb-4">Week-by-Week View</h2>
-      <p className="text-gray-600">Weekly breakdown coming soon...</p>
+      <p className="text-sm text-gray-500 mb-4">
+        {weeks.length} uker planlagt
+      </p>
+
+      <div className="space-y-3">
+        {weeks.map(week => (
+          <div
+            key={week.weekNumber}
+            className={`border rounded-lg p-4 ${getPeriodColor(week.period)}`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <span className="font-bold text-lg">Uke {week.weekNumber}</span>
+                <span className="px-2 py-1 rounded text-sm font-medium bg-white/50">
+                  {getPeriodLabel(week.period)}
+                </span>
+                {week.learningPhase && (
+                  <span className="text-sm opacity-75">{week.learningPhase}</span>
+                )}
+              </div>
+              <div className="flex items-center gap-4 text-sm">
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  {week.trainingDays} treningsdager
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                  {week.restDays} hviledager
+                </span>
+              </div>
+            </div>
+
+            {/* Show session breakdown if there are assignments */}
+            {week.assignments.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-1">
+                {week.assignments.map(assignment => (
+                  <div
+                    key={assignment.id}
+                    className={`px-2 py-1 rounded text-xs ${
+                      assignment.isRest
+                        ? 'bg-gray-200 text-gray-500'
+                        : 'bg-white/70 text-gray-700'
+                    }`}
+                  >
+                    {assignment.isRest ? 'R' : (assignment.sessionType?.charAt(0) || 'T')}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
+}
+
+// Helper function to get week number from date
+function getWeekNumber(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
 
 function PeriodizationView({ data }) {

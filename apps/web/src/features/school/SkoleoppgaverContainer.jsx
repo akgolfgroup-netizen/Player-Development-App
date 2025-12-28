@@ -284,6 +284,11 @@ const AssignmentCard = ({ assignment, onClick }) => {
 const SkoleoppgaverContainer = () => {
   const [subjectFilter, setSubjectFilter] = useState('Alle');
   const [statusFilter, setStatusFilter] = useState('active');
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
+
+  const handleAssignmentClick = (assignment) => {
+    setSelectedAssignment(selectedAssignment?.id === assignment.id ? null : assignment);
+  };
 
   const statusFilters = [
     { key: 'active', label: 'Aktive' },
@@ -424,11 +429,57 @@ const SkoleoppgaverContainer = () => {
         {/* Assignments List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {filteredAssignments.map((assignment) => (
-            <AssignmentCard
-              key={assignment.id}
-              assignment={assignment}
-              onClick={() => { /* TODO: Navigate to assignment detail */ }}
-            />
+            <React.Fragment key={assignment.id}>
+              <AssignmentCard
+                assignment={assignment}
+                onClick={() => handleAssignmentClick(assignment)}
+                isSelected={selectedAssignment?.id === assignment.id}
+              />
+              {selectedAssignment?.id === assignment.id && (
+                <div style={{
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: '14px',
+                  padding: '20px',
+                  marginTop: '-5px',
+                  borderTop: `3px solid ${getSubjectColor(assignment.subject)}`,
+                }}>
+                  <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '12px' }}>
+                    {assignment.title}
+                  </h4>
+                  <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                    {assignment.description}
+                  </p>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button style={{
+                      padding: '10px 20px',
+                      backgroundColor: 'var(--accent)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                    }}>
+                      {assignment.status === 'completed' ? 'Se detaljer' : 'Start oppgave'}
+                    </button>
+                    <button
+                      onClick={() => setSelectedAssignment(null)}
+                      style={{
+                        padding: '10px 20px',
+                        backgroundColor: 'var(--bg-secondary)',
+                        color: 'var(--text-primary)',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                      }}
+                    >
+                      Lukk
+                    </button>
+                  </div>
+                </div>
+              )}
+            </React.Fragment>
           ))}
 
           {filteredAssignments.length === 0 && (

@@ -410,34 +410,92 @@ export class BadgeEvaluatorService {
       (s) => new Date(s.sessionDate) >= startOfMonth
     ).length;
 
+    // Try to get bodyweight from player intake form (health section)
+    let bodyweight = 70; // Default fallback
+    const intake = await this.prisma.playerIntake.findFirst({
+      where: { playerId, isComplete: true },
+      orderBy: { submittedAt: 'desc' },
+      select: { health: true },
+    });
+    if (intake?.health && typeof intake.health === 'object') {
+      const health = intake.health as Record<string, unknown>;
+      if (typeof health.bodyweight === 'number') {
+        bodyweight = health.bodyweight;
+      } else if (typeof health.weight === 'number') {
+        bodyweight = health.weight;
+      }
+    }
+
+    // Get golf fitness metrics from test results
+    const fitnessTests = await this.prisma.testResult.findMany({
+      where: {
+        playerId,
+        test: {
+          testType: {
+            in: ['med_ball_throw', 'vertical_jump', 'broad_jump', 'hip_rotation',
+                 'thoracic_rotation', 'shoulder_mobility', 'balance', 'plank',
+                 'clubhead_speed', 'driver_speed'],
+          },
+        },
+      },
+      include: { test: true },
+      orderBy: { testDate: 'desc' },
+    });
+
+    // Build golf fitness object from latest test results
+    const golfFitness: StrengthMetrics['golfFitness'] = {
+      medBallThrow: 0,
+      verticalJump: 0,
+      broadJump: 0,
+      hipRotationLeft: 0,
+      hipRotationRight: 0,
+      thoracicRotation: 0,
+      shoulderMobility: 0,
+      singleLegBalanceLeft: 0,
+      singleLegBalanceRight: 0,
+      plankHold: 0,
+      clubheadSpeedDriver: 0,
+      clubheadSpeed7Iron: 0,
+      lastAssessmentDate: fitnessTests[0]?.testDate || new Date(),
+    };
+
+    // Map test results to golf fitness metrics
+    for (const test of fitnessTests) {
+      const value = Number(test.value) || 0;
+      const testType = test.test.testType?.toLowerCase() || '';
+
+      if (testType.includes('med_ball') || testType.includes('medball')) golfFitness.medBallThrow = value;
+      else if (testType.includes('vertical')) golfFitness.verticalJump = value;
+      else if (testType.includes('broad')) golfFitness.broadJump = value;
+      else if (testType.includes('hip') && testType.includes('left')) golfFitness.hipRotationLeft = value;
+      else if (testType.includes('hip') && testType.includes('right')) golfFitness.hipRotationRight = value;
+      else if (testType.includes('hip')) golfFitness.hipRotationLeft = golfFitness.hipRotationRight = value;
+      else if (testType.includes('thoracic')) golfFitness.thoracicRotation = value;
+      else if (testType.includes('shoulder')) golfFitness.shoulderMobility = value;
+      else if (testType.includes('balance') && testType.includes('left')) golfFitness.singleLegBalanceLeft = value;
+      else if (testType.includes('balance') && testType.includes('right')) golfFitness.singleLegBalanceRight = value;
+      else if (testType.includes('balance')) golfFitness.singleLegBalanceLeft = golfFitness.singleLegBalanceRight = value;
+      else if (testType.includes('plank')) golfFitness.plankHold = value;
+      else if (testType.includes('driver') || testType.includes('clubhead')) golfFitness.clubheadSpeedDriver = value;
+    }
+
+    // Note: Tonnage and PR tracking requires ExerciseLog/PersonalRecord models
+    // which are not yet implemented in the schema. These will remain 0 until
+    // the schema is extended to support detailed exercise tracking.
     return {
-      totalTonnage: 0, // TODO: calculate from exercise records
+      totalTonnage: 0,
       weeklyTonnage: 0,
       monthlyTonnage: 0,
-      bodyweight: 70, // TODO: get from player profile
-      prs: {} as any,
-      prCount: 0, // TODO: calculate from PR records
+      bodyweight,
+      prs: {} as Record<string, number>,
+      prCount: 0,
       prCountThisMonth: 0,
       relativeStrength: {
         squat: 0,
         deadlift: 0,
         benchPress: 0,
       },
-      golfFitness: {
-        medBallThrow: 0,
-        verticalJump: 0,
-        broadJump: 0,
-        hipRotationLeft: 0,
-        hipRotationRight: 0,
-        thoracicRotation: 0,
-        shoulderMobility: 0,
-        singleLegBalanceLeft: 0,
-        singleLegBalanceRight: 0,
-        plankHold: 0,
-        clubheadSpeedDriver: 0,
-        clubheadSpeed7Iron: 0,
-        lastAssessmentDate: new Date(),
-      },
+      golfFitness,
       gymSessionsThisWeek,
       gymSessionsThisMonth,
       gymStreak,

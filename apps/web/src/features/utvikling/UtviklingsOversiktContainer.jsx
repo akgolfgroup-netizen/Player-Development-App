@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   TrendingUp, Target, Award, ChevronRight, Star,
   Zap, ArrowUp, ArrowDown, Minus
@@ -302,6 +303,13 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => (
 // ============================================================================
 
 const UtviklingsOversiktContainer = () => {
+  const navigate = useNavigate();
+
+  const handleAreaClick = (areaId) => {
+    // Navigate to benchmark page with area filter
+    navigate(`/utvikling/benchmark?area=${areaId}`);
+  };
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <PageHeader
@@ -362,7 +370,7 @@ const UtviklingsOversiktContainer = () => {
               <DevelopmentAreaCard
                 key={area.id}
                 area={area}
-                onClick={() => { /* TODO: Navigate to area detail */ }}
+                onClick={() => handleAreaClick(area.id)}
               />
             ))}
           </div>
