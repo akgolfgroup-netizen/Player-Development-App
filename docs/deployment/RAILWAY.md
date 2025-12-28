@@ -395,32 +395,127 @@ Sett opp Sentry for error tracking:
 
 ---
 
-## Steg 8: Continuous Deployment (5 min)
+## Steg 8: GitHub Actions CI/CD Integration
 
-Railway deployer automatisk ved git push!
+Vi bruker GitHub Actions for å deploye til Railway via Railway CLI.
 
-### Auto-deploy setup
+### 8.1 Generer Railway Token
 
-1. Gå til API service → Settings → "Deployments"
-2. Under "Automatic Deployments", sjekk at det står:
-   - ✅ **Enabled**
-   - **Branch:** `main`
-   - **Auto Deploy:** ON
+1. Gå til [railway.app/account/tokens](https://railway.app/account/tokens)
+2. Klikk "Create Token"
+3. Gi token et navn: `github-actions-deploy`
+4. Kopier token (vises kun én gang!)
 
-3. Gjør det samme for Web service
+### 8.2 Legg til GitHub Secret
 
-**Nå kan du:**
+1. Gå til GitHub repo → Settings → Secrets and variables → Actions
+2. Klikk "New repository secret"
+3. Name: `RAILWAY_TOKEN`
+4. Value: Lim inn token fra steg 8.1
+5. Klikk "Add secret"
+
+### 8.3 Link Repository til Railway Project
+
+Lokalt på maskinen din:
+
 ```bash
-git add .
-git commit -m "Fix bug"
-git push origin main
+# Installer Railway CLI
+npm install -g @railway/cli
 
-# Railway deployer automatisk innen 2-5 minutter
+# Login
+railway login
+
+# Naviger til prosjektmappen
+cd /path/to/IUP_Master_V1
+
+# Link til Railway prosjekt
+railway link
+# Velg prosjektet fra listen
 ```
+
+Dette oppretter `.railway/` folder med project config.
+
+### 8.4 Opprett Environments i Railway
+
+Railway bruker "environments" for staging/production:
+
+1. I Railway dashboard, gå til prosjektet
+2. Klikk på Settings → Environments
+3. Opprett to environments:
+   - `staging` (for develop branch)
+   - `production` (for main branch)
+
+### 8.5 Deploy Flow
+
+CI/CD workflow deployer automatisk:
+
+| Branch | Environment | URL |
+|--------|-------------|-----|
+| `develop` | staging | https://iupgolf-staging-api.up.railway.app |
+| `main` | production | https://iupgolf-api.up.railway.app |
+
+**Workflow:**
+```
+git push origin develop  →  CI tests  →  Deploy to staging
+git push origin main     →  CI tests  →  Deploy to production
+```
+
+### 8.6 Verifiser Deploy
+
+Etter push, sjekk:
+1. GitHub Actions → Se at deploy-staging/deploy-production jobben kjører
+2. Railway dashboard → Se at deployment starter
+3. Kjør smoke test:
+   ```bash
+   # Staging
+   curl https://iupgolf-staging-api.up.railway.app/health
+
+   # Production
+   curl https://iupgolf-api.up.railway.app/health
+
+   # Eller bruk smoke test script
+   pnpm demo:smoke --url https://iupgolf-staging-api.up.railway.app
+   ```
 
 ---
 
 ## Troubleshooting
+
+### Problem: GitHub Actions deploy feiler med "RAILWAY_TOKEN not configured"
+
+**Årsak:** GitHub secret mangler eller er feil konfigurert.
+
+**Løsning:**
+1. Gå til GitHub repo → Settings → Secrets and variables → Actions
+2. Verifiser at `RAILWAY_TOKEN` finnes
+3. Hvis den finnes, slett og opprett på nytt med fresh token fra Railway
+4. Husk: Token må ha riktige permissions i Railway
+
+### Problem: Deploy feiler med "Project not found"
+
+**Årsak:** Railway CLI er ikke linket til prosjektet, eller token mangler tilgang.
+
+**Løsning:**
+1. Lokalt: `railway link` og velg riktig prosjekt
+2. Commit `.railway/` folder til repo (eller legg til project ID i workflow)
+3. Alternativt: Bruk `RAILWAY_PROJECT_ID` secret i tillegg til token
+
+### Problem: 404 på staging/production URL
+
+**Årsaker:**
+1. **Ingen service/domain opprettet** - Opprett service i Railway dashboard først
+2. **Domain ikke generert** - I service → Settings → Domains → Generate Domain
+3. **Service ikke deployet** - Sjekk Deployments tab i Railway
+4. **Feil environment** - Sjekk at du deployer til riktig environment
+
+**Verifiser:**
+```bash
+# Sjekk om URL svarer i det hele tatt
+curl -I https://iupgolf-staging-api.up.railway.app
+
+# Hvis 404: Sjekk Railway dashboard
+# Hvis connection refused: Service kjører ikke
+```
 
 ### Problem: API deployment feiler
 
