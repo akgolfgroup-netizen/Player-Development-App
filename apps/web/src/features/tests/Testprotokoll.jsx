@@ -6,28 +6,6 @@ import {
   HomeIcon, CalendarIcon, GolfScorecard, ChartIcon, ProfileIcon
 } from '../../components/icons';
 
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-  }
-};
-
 // ===== ICONS =====
 const Icons = {
   Check: () => (
@@ -82,13 +60,13 @@ const Card = ({ children, className = '', padding = true }) => (
   </div>
 );
 
-const Badge = ({ children, variant = 'default', size = 'sm' }) => {
+const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variants = {
-    default: 'bg-ak-cloud text-ak-charcoal',
-    primary: 'bg-ak-primary text-white',
-    success: 'bg-ak-success/10 text-ak-success',
-    warning: 'bg-ak-warning/10 text-ak-warning',
-    error: 'bg-ak-error/10 text-ak-error',
+    neutral: 'bg-gray-100 text-gray-600',
+    accent: 'bg-blue-50 text-blue-700',
+    success: 'bg-green-50 text-green-700',
+    warning: 'bg-amber-50 text-amber-700',
+    error: 'bg-red-50 text-red-700',
   };
 
   const sizes = {
@@ -111,7 +89,7 @@ const Avatar = ({ name, size = 40 }) => {
       style={{
         width: size,
         height: size,
-        backgroundColor: tokens.colors.primary,
+        backgroundColor: 'var(--accent)',
         fontSize: size * 0.4
       }}
     >
@@ -644,7 +622,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Testprotokoll"
         subtitle="IUP Tester og benchmarks"
@@ -656,8 +634,8 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               borderRadius: '10px',
               fontSize: '13px',
               fontWeight: 500,
@@ -693,7 +671,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
           <Card className="text-center">
             <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Bestått</p>
             <p className="text-[32px] font-bold text-ak-success">{stats.passed}/{stats.total}</p>
-            <ProgressBar value={stats.passed} max={stats.total} color={tokens.colors.success} />
+            <ProgressBar value={stats.passed} max={stats.total} color={'var(--success)'} />
           </Card>
 
           <Card className="text-center">
@@ -752,7 +730,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
 
                   <div className="flex items-center gap-2">
                     {status.noData ? (
-                      <Badge variant="default">Ikke testet</Badge>
+                      <Badge variant="neutral">Ikke testet</Badge>
                     ) : status.meetsReq ? (
                       <Badge variant="success">Bestått</Badge>
                     ) : (
@@ -833,7 +811,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                         <ProgressBar
                           value={test.currentResult}
                           max={test.requirement[player.category] || test.requirement.B}
-                          color={status.meetsReq ? tokens.colors.success : tokens.colors.warning}
+                          color={status.meetsReq ? 'var(--success)' : 'var(--warning)'}
                         />
                       </div>
                     )}

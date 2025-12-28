@@ -19,36 +19,6 @@
 import React, { useState } from "react";
 import { CreditCard, ChevronDown, ChevronUp, CheckCircle, XCircle } from "lucide-react";
 
-// Design tokens - Blue Palette 01
-const tokens = {
-  colors: {
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    white: '#FFFFFF',
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    success: '#4A7C59',
-    error: '#C45B4E',
-  },
-  borderRadius: {
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
-  },
-  shadows: {
-    card: '0 2px 4px rgba(0, 0, 0, 0.06)',
-  },
-};
-
-const typography = {
-  title1: { fontSize: '28px', lineHeight: '34px', fontWeight: 700 },
-  title3: { fontSize: '17px', lineHeight: '22px', fontWeight: 600 },
-  body: { fontSize: '15px', lineHeight: '20px', fontWeight: 400 },
-  caption: { fontSize: '13px', lineHeight: '18px', fontWeight: 400 },
-};
 
 //////////////////////////////
 // 1. TYPES
@@ -142,19 +112,19 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
       aria-label="Tier management"
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div style={{ padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <CreditCard size={28} color={tokens.colors.primary} />
-          <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+          <CreditCard size={28} color={'var(--accent)'} />
+          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Abonnementsnivåer
           </h1>
         </div>
-        <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel, margin: 0 }}>
+        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: 0 }}>
           Konfigurasjon av faktureringsnivåer
         </p>
       </div>
@@ -163,9 +133,9 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
       <div style={{ padding: '0 24px 24px' }}>
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             overflow: 'hidden',
           }}
         >
@@ -173,7 +143,7 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
             <div
               key={tier.id}
               style={{
-                borderBottom: index < tiers.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
+                borderBottom: index < tiers.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
               }}
             >
               {/* Tier Row */}
@@ -187,10 +157,10 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
               >
                 {/* Tier Info */}
                 <div style={{ flex: 1 }}>
-                  <div style={{ ...typography.body as React.CSSProperties, fontWeight: 500, color: tokens.colors.charcoal }}>
+                  <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)' }}>
                     {tier.name}
                   </div>
-                  <div style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, marginTop: '4px' }}>
+                  <div style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                     {tier.price} kr{formatInterval(tier.interval)}
                   </div>
                 </div>
@@ -202,20 +172,20 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
                     alignItems: 'center',
                     gap: '6px',
                     padding: '6px 12px',
-                    borderRadius: tokens.borderRadius.sm,
-                    backgroundColor: tier.active ? `${tokens.colors.success}15` : `${tokens.colors.steel}15`,
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: tier.active ? 'rgba(var(--success-rgb), 0.15)' : 'rgba(var(--text-secondary-rgb), 0.15)',
                   }}
                 >
                   {tier.active ? (
-                    <CheckCircle size={14} color={tokens.colors.success} />
+                    <CheckCircle size={14} color={'var(--success)'} />
                   ) : (
-                    <XCircle size={14} color={tokens.colors.steel} />
+                    <XCircle size={14} color={'var(--text-secondary)'} />
                   )}
                   <span
                     style={{
-                      ...typography.caption as React.CSSProperties,
+                      fontSize: '13px', lineHeight: '18px',
                       fontWeight: 500,
-                      color: tier.active ? tokens.colors.success : tokens.colors.steel,
+                      color: tier.active ? 'var(--success)' : 'var(--text-secondary)',
                     }}
                   >
                     {tier.active ? 'Aktiv' : 'Inaktiv'}
@@ -232,16 +202,16 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
                     justifyContent: 'center',
                     width: 36,
                     height: 36,
-                    borderRadius: tokens.borderRadius.sm,
-                    border: `1px solid ${tokens.colors.mist}`,
+                    borderRadius: 'var(--radius-sm)',
+                    border: `1px solid ${'var(--border-default)'}`,
                     backgroundColor: 'transparent',
                     cursor: 'pointer',
                   }}
                 >
                   {expandedId === tier.id ? (
-                    <ChevronUp size={18} color={tokens.colors.steel} />
+                    <ChevronUp size={18} color={'var(--text-secondary)'} />
                   ) : (
-                    <ChevronDown size={18} color={tokens.colors.steel} />
+                    <ChevronDown size={18} color={'var(--text-secondary)'} />
                   )}
                 </button>
 
@@ -251,11 +221,11 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
                   onClick={() => toggleActive(tier.id)}
                   style={{
                     padding: '8px 16px',
-                    borderRadius: tokens.borderRadius.sm,
-                    border: `1px solid ${tier.active ? tokens.colors.error : tokens.colors.success}`,
+                    borderRadius: 'var(--radius-sm)',
+                    border: `1px solid ${tier.active ? 'var(--error)' : 'var(--success)'}`,
                     backgroundColor: 'transparent',
-                    color: tier.active ? tokens.colors.error : tokens.colors.success,
-                    ...typography.caption as React.CSSProperties,
+                    color: tier.active ? 'var(--error)' : 'var(--success)',
+                    fontSize: '13px', lineHeight: '18px',
                     fontWeight: 500,
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
@@ -270,18 +240,18 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
                 <div
                   style={{
                     padding: '0 20px 16px',
-                    backgroundColor: tokens.colors.snow,
+                    backgroundColor: 'var(--bg-secondary)',
                   }}
                 >
                   <div
                     style={{
                       padding: '16px',
-                      backgroundColor: tokens.colors.white,
-                      borderRadius: tokens.borderRadius.md,
-                      border: `1px solid ${tokens.colors.mist}`,
+                      backgroundColor: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-md)',
+                      border: `1px solid ${'var(--border-default)'}`,
                     }}
                   >
-                    <div style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, marginBottom: '12px' }}>
+                    <div style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
                       Inkluderte funksjoner
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -295,14 +265,14 @@ export default function AdminTierManagement({ tiers: apiTiers }: AdminTierManage
                           }}
                         >
                           {enabled ? (
-                            <CheckCircle size={16} color={tokens.colors.success} />
+                            <CheckCircle size={16} color={'var(--success)'} />
                           ) : (
-                            <XCircle size={16} color={tokens.colors.steel} />
+                            <XCircle size={16} color={'var(--text-secondary)'} />
                           )}
                           <span
                             style={{
-                              ...typography.body as React.CSSProperties,
-                              color: enabled ? tokens.colors.charcoal : tokens.colors.steel,
+                              fontSize: '15px', lineHeight: '20px',
+                              color: enabled ? 'var(--text-primary)' : 'var(--text-secondary)',
                             }}
                           >
                             {featureLabels[key] || key}

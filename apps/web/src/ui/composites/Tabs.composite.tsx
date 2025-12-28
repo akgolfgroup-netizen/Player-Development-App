@@ -3,6 +3,11 @@ import React from 'react';
 /**
  * Tabs Composite
  * Tabbed interface with keyboard navigation
+ *
+ * UI Canon:
+ * - Consistent use of semantic tokens
+ * - Three variants: default (underline), pills, underline
+ * - Active state uses --color-primary
  */
 
 interface Tab {
@@ -97,7 +102,7 @@ const Tabs: React.FC<TabsProps> = ({
 
   const tabListStyle: React.CSSProperties = {
     ...styles.tabList,
-    ...styles.variants[variant],
+    ...variantListStyles[variant],
     ...(orientation === 'vertical' && styles.tabListVertical),
     ...(fullWidth && styles.tabListFullWidth),
   };
@@ -125,16 +130,16 @@ const Tabs: React.FC<TabsProps> = ({
               onKeyDown={(e) => handleKeyDown(e, index)}
               style={{
                 ...styles.tab,
-                ...styles.tabVariants[variant],
+                ...variantTabStyles[variant],
                 ...(isActive && styles.tabActive),
-                ...(isActive && styles.tabActiveVariants[variant]),
+                ...(isActive && variantTabActiveStyles[variant]),
                 ...(tab.disabled && styles.tabDisabled),
                 ...(fullWidth && styles.tabFullWidth),
               }}
             >
               {tab.icon && <span style={styles.tabIcon}>{tab.icon}</span>}
               <span>{tab.label}</span>
-              {tab.badge && (
+              {tab.badge !== undefined && (
                 <span style={styles.tabBadge}>{tab.badge}</span>
               )}
             </button>
@@ -159,40 +164,28 @@ const Tabs: React.FC<TabsProps> = ({
   );
 };
 
-const styles: Record<string, React.CSSProperties | Record<string, React.CSSProperties>> = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-  } as React.CSSProperties,
+  },
   containerVertical: {
     flexDirection: 'row',
-  } as React.CSSProperties,
+  },
   tabList: {
     display: 'flex',
     gap: 'var(--spacing-1)',
-    borderBottom: '1px solid var(--border-subtle)',
-  } as React.CSSProperties,
+    borderBottom: '1px solid var(--color-border)',
+  },
   tabListVertical: {
     flexDirection: 'column',
     borderBottom: 'none',
-    borderRight: '1px solid var(--border-subtle)',
+    borderRight: '1px solid var(--color-border)',
     minWidth: '200px',
-  } as React.CSSProperties,
+  },
   tabListFullWidth: {
     width: '100%',
-  } as React.CSSProperties,
-  variants: {
-    default: {},
-    pills: {
-      backgroundColor: 'var(--gray-100)',
-      borderRadius: 'var(--radius-md)',
-      padding: 'var(--spacing-1)',
-      border: 'none',
-    },
-    underline: {
-      gap: 'var(--spacing-4)',
-    },
   },
   tab: {
     display: 'flex',
@@ -201,55 +194,32 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     padding: 'var(--spacing-3) var(--spacing-4)',
     fontSize: 'var(--font-size-body)',
     fontWeight: 500,
-    color: 'var(--text-secondary)',
+    color: 'var(--color-text-muted)',
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
     transition: 'all 0.15s ease',
     whiteSpace: 'nowrap',
     position: 'relative',
-  } as React.CSSProperties,
-  tabVariants: {
-    default: {
-      borderBottom: '2px solid transparent',
-    },
-    pills: {
-      borderRadius: 'var(--radius-sm)',
-    },
-    underline: {
-      borderBottom: '2px solid transparent',
-    },
   },
   tabActive: {
-    color: 'var(--ak-primary)',
+    color: 'var(--color-primary)',
     fontWeight: 600,
-  } as React.CSSProperties,
-  tabActiveVariants: {
-    default: {
-      borderBottomColor: 'var(--ak-primary)',
-    },
-    pills: {
-      backgroundColor: 'var(--background-white)',
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-    },
-    underline: {
-      borderBottomColor: 'var(--ak-primary)',
-    },
   },
   tabDisabled: {
     opacity: 0.5,
     cursor: 'not-allowed',
     pointerEvents: 'none',
-  } as React.CSSProperties,
+  },
   tabFullWidth: {
     flex: 1,
     justifyContent: 'center',
-  } as React.CSSProperties,
+  },
   tabIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  } as React.CSSProperties,
+  },
   tabBadge: {
     display: 'inline-flex',
     alignItems: 'center',
@@ -259,13 +229,51 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     padding: '0 var(--spacing-1)',
     fontSize: 'var(--font-size-caption2)',
     fontWeight: 600,
-    backgroundColor: 'var(--ak-primary)',
-    color: 'var(--text-inverse)',
+    backgroundColor: 'var(--color-primary)',
+    color: 'var(--color-primary-foreground)',
     borderRadius: 'var(--radius-full)',
-  } as React.CSSProperties,
+  },
   tabPanel: {
     padding: 'var(--spacing-4) 0',
-  } as React.CSSProperties,
+  },
+};
+
+const variantListStyles: Record<string, React.CSSProperties> = {
+  default: {},
+  pills: {
+    backgroundColor: 'var(--color-surface-2)',
+    borderRadius: 'var(--radius-md)',
+    padding: 'var(--spacing-1)',
+    border: 'none',
+  },
+  underline: {
+    gap: 'var(--spacing-4)',
+  },
+};
+
+const variantTabStyles: Record<string, React.CSSProperties> = {
+  default: {
+    borderBottom: '2px solid transparent',
+  },
+  pills: {
+    borderRadius: 'var(--radius-sm)',
+  },
+  underline: {
+    borderBottom: '2px solid transparent',
+  },
+};
+
+const variantTabActiveStyles: Record<string, React.CSSProperties> = {
+  default: {
+    borderBottomColor: 'var(--color-primary)',
+  },
+  pills: {
+    backgroundColor: 'var(--color-surface)',
+    boxShadow: 'var(--shadow-card)',
+  },
+  underline: {
+    borderBottomColor: 'var(--color-primary)',
+  },
 };
 
 export default Tabs;

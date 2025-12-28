@@ -13,6 +13,8 @@ import type {
   DataGolfTourAverages,
   IupToDataGolfComparison,
   DataGolfSyncStatus,
+  CoachPlayerDataGolfStats,
+  CoachDataGolfDashboard,
 } from './types';
 
 export class DataGolfService {
@@ -450,6 +452,177 @@ export class DataGolfService {
     return Number((sum / values.length).toFixed(3));
   }
 
+  // ============================================================================
+  // APPROACH SKILL METHODS
+  // ============================================================================
+
+  /**
+   * Get approach skill data with optional filters
+   */
+  async getApproachSkillData(options: {
+    tour?: string;
+    season?: number;
+    limit?: number;
+    offset?: number;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+  } = {}): Promise<{ data: any[]; total: number; pagination: any }> {
+    const {
+      tour,
+      season = new Date().getFullYear(),
+      limit = 50,
+      offset = 0,
+      sortBy = 'skill100to125',
+      sortOrder = 'desc',
+    } = options;
+
+    const where: any = { season };
+    if (tour) where.tour = tour.toLowerCase();
+
+    const [data, total] = await Promise.all([
+      this.prisma.dataGolfApproachSkill.findMany({
+        where,
+        take: limit,
+        skip: offset,
+        orderBy: { [sortBy]: sortOrder },
+      }),
+      this.prisma.dataGolfApproachSkill.count({ where }),
+    ]);
+
+    return {
+      data: data.map(this.formatApproachSkillRecord),
+      total,
+      pagination: {
+        limit,
+        offset,
+        hasMore: offset + data.length < total,
+      },
+    };
+  }
+
+  /**
+   * Get approach skill for a specific player by name
+   */
+  async getApproachSkillByPlayer(
+    playerName: string,
+    tour?: string,
+    season?: number
+  ): Promise<any | null> {
+    const where: any = {
+      playerName: { contains: playerName, mode: 'insensitive' },
+      season: season || new Date().getFullYear(),
+    };
+    if (tour) where.tour = tour.toLowerCase();
+
+    const player = await this.prisma.dataGolfApproachSkill.findFirst({ where });
+    return player ? this.formatApproachSkillRecord(player) : null;
+  }
+
+  /**
+   * Get approach skill tour averages
+   */
+  async getApproachSkillAverages(
+    tour?: string,
+    season?: number
+  ): Promise<any> {
+    const where: any = { season: season || new Date().getFullYear() };
+    if (tour) where.tour = tour.toLowerCase();
+
+    const data = await this.prisma.dataGolfApproachSkill.findMany({ where });
+
+    if (data.length === 0) {
+      return null;
+    }
+
+    const calcAvg = (field: keyof typeof data[0]) => {
+      const values = data
+        .map(d => d[field])
+        .filter((v): v is NonNullable<typeof v> => v !== null && v !== undefined)
+        .map(v => Number(v));
+      if (values.length === 0) return null;
+      return Number((values.reduce((a, b) => a + b, 0) / values.length).toFixed(3));
+    };
+
+    return {
+      tour: tour || 'all',
+      season: season || new Date().getFullYear(),
+      playerCount: data.length,
+      averages: {
+        skill50to75: calcAvg('skill50to75'),
+        skill75to100: calcAvg('skill75to100'),
+        skill100to125: calcAvg('skill100to125'),
+        skill125to150: calcAvg('skill125to150'),
+        skill150to175: calcAvg('skill150to175'),
+        skill175to200: calcAvg('skill175to200'),
+        skill200plus: calcAvg('skill200plus'),
+      },
+    };
+  }
+
+  /**
+   * Get top players for a specific distance bucket
+   */
+  async getTopApproachSkillByDistance(
+    distance: string,
+    options: { tour?: string; season?: number; limit?: number } = {}
+  ): Promise<any[]> {
+    const { tour, season = new Date().getFullYear(), limit = 20 } = options;
+
+    const distanceFieldMap: Record<string, string> = {
+      '50-75': 'skill50to75',
+      '75-100': 'skill75to100',
+      '100-125': 'skill100to125',
+      '125-150': 'skill125to150',
+      '150-175': 'skill150to175',
+      '175-200': 'skill175to200',
+      '200+': 'skill200plus',
+    };
+
+    const field = distanceFieldMap[distance];
+    if (!field) {
+      throw new Error(`Invalid distance bucket: ${distance}. Valid: ${Object.keys(distanceFieldMap).join(', ')}`);
+    }
+
+    const where: any = {
+      season,
+      [field]: { not: null },
+    };
+    if (tour) where.tour = tour.toLowerCase();
+
+    const data = await this.prisma.dataGolfApproachSkill.findMany({
+      where,
+      orderBy: { [field]: 'desc' },
+      take: limit,
+    });
+
+    return data.map((d, index) => ({
+      rank: index + 1,
+      ...this.formatApproachSkillRecord(d),
+    }));
+  }
+
+  /**
+   * Format approach skill record for API response
+   */
+  private formatApproachSkillRecord(record: any): any {
+    return {
+      dataGolfId: record.dataGolfId,
+      playerName: record.playerName,
+      tour: record.tour,
+      season: record.season,
+      approachSkill: {
+        '50-75': record.skill50to75 ? Number(record.skill50to75) : null,
+        '75-100': record.skill75to100 ? Number(record.skill75to100) : null,
+        '100-125': record.skill100to125 ? Number(record.skill100to125) : null,
+        '125-150': record.skill125to150 ? Number(record.skill125to150) : null,
+        '150-175': record.skill150to175 ? Number(record.skill150to175) : null,
+        '175-200': record.skill175to200 ? Number(record.skill175to200) : null,
+        '200+': record.skill200plus ? Number(record.skill200plus) : null,
+      },
+      lastSynced: record.lastSynced,
+    };
+  }
+
   /**
    * Get sync status
    */
@@ -477,5 +650,280 @@ export class DataGolfService {
       playersUpdated: playerCount,
       tourAveragesUpdated: tourAverageCount,
     };
+  }
+
+  // ============================================================================
+  // COACH DASHBOARD METHODS
+  // ============================================================================
+
+  /**
+   * Get all coach players with their DataGolf stats for the dashboard
+   */
+  async getCoachPlayersDashboard(
+    tenantId: string,
+    coachId: string,
+    tour: string = 'pga',
+    season: number = new Date().getFullYear()
+  ): Promise<CoachDataGolfDashboard> {
+    // Get all players for this coach
+    const players = await this.prisma.player.findMany({
+      where: {
+        tenantId,
+        coachId,
+      },
+      include: {
+        testResults: {
+          orderBy: { testDate: 'desc' },
+          take: 20, // Last 20 test results per player
+          include: {
+            test: true,
+          },
+        },
+      },
+    }) as Array<{
+      id: string;
+      firstName: string;
+      lastName: string;
+      category: string;
+      handicap: any;
+      testResults: Array<{
+        testDate: Date;
+        value: any;
+        test: { testNumber: number };
+      }>;
+    }>;
+
+    // Get tour averages for comparison
+    const tourAverages = await this.getTourAverages(tour, season);
+
+    // Get last sync time
+    const lastSync = await this.prisma.dataGolfPlayer.findFirst({
+      orderBy: { lastSynced: 'desc' },
+      select: { lastSynced: true },
+    });
+
+    // Process each player
+    const playerStats: CoachPlayerDataGolfStats[] = await Promise.all(
+      players.map(async (player) => {
+        // Calculate SG estimates from test results
+        const sgEstimates = this.calculateSGFromTests(player.testResults, tourAverages);
+
+        // Calculate trends by comparing recent vs older results
+        const trends = this.calculateTrends(player.testResults);
+
+        // Calculate tour comparison
+        let tourComparison = null;
+        if (tourAverages && sgEstimates.sgTotal !== null) {
+          const tourAvgTotal = tourAverages.avgStrokesGainedTotal || 0;
+          const gap = sgEstimates.sgTotal - tourAvgTotal;
+          // Simplified percentile calculation
+          const percentile = Math.min(100, Math.max(0, 50 + gap * 10));
+          tourComparison = {
+            tour: tour.toUpperCase(),
+            gapToTour: Math.round(gap * 100) / 100,
+            percentile: Math.round(percentile),
+          };
+        }
+
+        return {
+          playerId: player.id,
+          playerName: `${player.firstName} ${player.lastName}`,
+          category: player.category || 'C',
+          handicap: player.handicap ? Number(player.handicap) : null,
+          dataGolfConnected: player.testResults.length > 0,
+          lastSync: player.testResults[0]?.testDate || null,
+          roundsTracked: player.testResults.length,
+          stats: sgEstimates,
+          trends,
+          tourComparison,
+        };
+      })
+    );
+
+    // Calculate summary stats
+    const connectedPlayers = playerStats.filter(p => p.dataGolfConnected).length;
+    const totalRoundsTracked = playerStats.reduce((sum, p) => sum + p.roundsTracked, 0);
+
+    return {
+      players: playerStats,
+      summary: {
+        totalPlayers: playerStats.length,
+        connectedPlayers,
+        totalRoundsTracked,
+        lastSyncAt: lastSync?.lastSynced || null,
+      },
+      tourAverages,
+    };
+  }
+
+  /**
+   * Calculate estimated SG values from test results
+   */
+  private calculateSGFromTests(
+    testResults: any[],
+    tourAverages: DataGolfTourAverages | null
+  ): CoachPlayerDataGolfStats['stats'] {
+    const defaults: CoachPlayerDataGolfStats['stats'] = {
+      sgTotal: null,
+      sgTee: null,
+      sgApproach: null,
+      sgAround: null,
+      sgPutting: null,
+      drivingDistance: null,
+      drivingAccuracy: null,
+      girPercent: null,
+      scrambling: null,
+      puttsPerRound: null,
+    };
+
+    if (testResults.length === 0) return defaults;
+
+    // Group test results by test type
+    const latestByTest: Record<number, any> = {};
+    for (const result of testResults) {
+      const testNum = result.test?.testNumber;
+      if (testNum && !latestByTest[testNum]) {
+        latestByTest[testNum] = result;
+      }
+    }
+
+    // Map test results to SG estimates
+    // Test #1: Driving - maps to sgTee
+    if (latestByTest[1]) {
+      const drivingDist = Number(latestByTest[1].value);
+      defaults.drivingDistance = drivingDist;
+      // Estimate SG based on distance (rough approximation)
+      // Tour avg ~295y, each 10y = ~0.1 SG
+      const tourAvgDist = tourAverages?.avgDrivingDistance || 295;
+      defaults.sgTee = Math.round((drivingDist - tourAvgDist) / 10 * 10) / 100;
+    }
+
+    // Test #3: Approach 100m - maps to sgApproach (partial)
+    // Test #6: Approach 150m - maps to sgApproach
+    if (latestByTest[6] || latestByTest[3]) {
+      const approachScore = Number(latestByTest[6]?.value || latestByTest[3]?.value || 0);
+      // Higher score = better approach, convert to SG
+      // Simplified: assume max 36 points = +1.5 SG, 0 = -1.5 SG
+      defaults.sgApproach = Math.round((approachScore / 36 * 3 - 1.5) * 100) / 100;
+    }
+
+    // Test #4: Chipping - maps to sgAround
+    if (latestByTest[4]) {
+      const chipScore = Number(latestByTest[4].value);
+      defaults.sgAround = Math.round((chipScore / 36 * 2 - 1) * 100) / 100;
+    }
+
+    // Test #5: Putting - maps to sgPutting
+    if (latestByTest[5]) {
+      const puttScore = Number(latestByTest[5].value);
+      defaults.sgPutting = Math.round((puttScore / 36 * 2 - 1) * 100) / 100;
+    }
+
+    // Calculate total SG from components
+    const components = [defaults.sgTee, defaults.sgApproach, defaults.sgAround, defaults.sgPutting]
+      .filter((v): v is number => v !== null);
+    if (components.length > 0) {
+      defaults.sgTotal = Math.round(components.reduce((a, b) => a + b, 0) * 100) / 100;
+    }
+
+    // Additional stats from tests
+    // Test #7: Putting distance
+    if (latestByTest[7]) {
+      defaults.puttsPerRound = 36 - Number(latestByTest[7].value) * 0.5; // Rough estimate
+    }
+
+    return defaults;
+  }
+
+  /**
+   * Calculate trends based on comparing recent vs older results
+   */
+  private calculateTrends(testResults: any[]): CoachPlayerDataGolfStats['trends'] {
+    const defaults: CoachPlayerDataGolfStats['trends'] = {
+      sgTotal: 'stable',
+      sgTee: 'stable',
+      sgApproach: 'stable',
+      sgAround: 'stable',
+      sgPutting: 'stable',
+    };
+
+    if (testResults.length < 4) return defaults;
+
+    // Group by test and compare first half vs second half
+    const byTest: Record<number, number[]> = {};
+    for (const result of testResults) {
+      const testNum = result.test?.testNumber;
+      if (testNum) {
+        if (!byTest[testNum]) byTest[testNum] = [];
+        byTest[testNum].push(Number(result.value));
+      }
+    }
+
+    const calculateTrend = (values: number[]): 'up' | 'down' | 'stable' => {
+      if (values.length < 2) return 'stable';
+      const mid = Math.floor(values.length / 2);
+      const recent = values.slice(0, mid);
+      const older = values.slice(mid);
+      const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
+      const olderAvg = older.reduce((a, b) => a + b, 0) / older.length;
+      const diff = recentAvg - olderAvg;
+      if (diff > 1) return 'up';
+      if (diff < -1) return 'down';
+      return 'stable';
+    };
+
+    // Map tests to trends
+    if (byTest[1]) defaults.sgTee = calculateTrend(byTest[1]);
+    if (byTest[6] || byTest[3]) defaults.sgApproach = calculateTrend(byTest[6] || byTest[3]);
+    if (byTest[4]) defaults.sgAround = calculateTrend(byTest[4]);
+    if (byTest[5]) defaults.sgPutting = calculateTrend(byTest[5]);
+
+    // Calculate overall trend
+    const trends = [defaults.sgTee, defaults.sgApproach, defaults.sgAround, defaults.sgPutting];
+    const upCount = trends.filter(t => t === 'up').length;
+    const downCount = trends.filter(t => t === 'down').length;
+    if (upCount > downCount + 1) defaults.sgTotal = 'up';
+    else if (downCount > upCount + 1) defaults.sgTotal = 'down';
+    else defaults.sgTotal = 'stable';
+
+    return defaults;
+  }
+
+  /**
+   * Get pro players for comparison (top performers)
+   */
+  async getProPlayers(options: {
+    tour?: string;
+    limit?: number;
+  } = {}): Promise<any[]> {
+    const { tour = 'pga', limit = 50 } = options;
+
+    const players = await this.prisma.dataGolfPlayer.findMany({
+      where: {
+        tour: tour.toLowerCase(),
+        sgTotal: { not: null },
+      },
+      orderBy: {
+        sgTotal: 'desc',
+      },
+      take: limit,
+    });
+
+    return players.map((p, index) => ({
+      rank: index + 1,
+      dataGolfId: p.dataGolfId,
+      playerName: p.playerName,
+      tour: p.tour,
+      stats: {
+        sgTotal: p.sgTotal ? Number(p.sgTotal) : null,
+        sgTee: p.sgOffTee ? Number(p.sgOffTee) : null,
+        sgApproach: p.sgApproach ? Number(p.sgApproach) : null,
+        sgAround: p.sgAroundGreen ? Number(p.sgAroundGreen) : null,
+        sgPutting: p.sgPutting ? Number(p.sgPutting) : null,
+        drivingDistance: p.drivingDistance ? Number(p.drivingDistance) : null,
+        drivingAccuracy: p.drivingAccuracy ? Number(p.drivingAccuracy) : null,
+      },
+      lastSynced: p.lastSynced,
+    }));
   }
 }

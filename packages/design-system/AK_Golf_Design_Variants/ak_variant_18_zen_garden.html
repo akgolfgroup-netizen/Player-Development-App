@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Golf – Variant 18: Zen Garden</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg-washi: #FAF8F5;
+      --bg-stone: #F0EDE8;
+      --bg-shadow: #E8E4DD;
+      --ink: #2C2C2C;
+      --ink-light: #5A5A5A;
+      --ink-muted: #9A9A9A;
+      --bamboo: #6B8E4E;
+      --bamboo-light: #8FB06A;
+      --moss: #4A6741;
+      --sakura: #E8B4B8;
+      --sand: #D4C4A8;
+      --font: 'Noto Sans JP', sans-serif;
+    }
+
+    html { font-family: var(--font); background: var(--bg-washi); color: var(--ink); }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; gap: 40px; }
+
+    .page-header { text-align: center; max-width: 600px; }
+    .page-header h1 { font-size: 36px; font-weight: 300; letter-spacing: 0.2em; margin-bottom: 16px; }
+    .page-header p { font-size: 14px; color: var(--ink-light); line-height: 1.8; font-weight: 300; }
+    .tags { display: flex; gap: 16px; justify-content: center; margin-top: 24px; }
+    .tag { color: var(--ink-muted); font-size: 11px; letter-spacing: 0.15em; }
+
+    .mockup-grid { display: flex; flex-wrap: wrap; gap: 48px; justify-content: center; }
+    .mockup-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .mockup-label { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.2em; }
+
+    .device { width: 340px; height: 720px; background: linear-gradient(180deg, #E8E4DD, #D8D4CC); border-radius: 54px; padding: 10px; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+    .screen { width: 100%; height: 100%; background: var(--bg-washi); border-radius: 46px; overflow: hidden; position: relative; }
+    .dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: var(--ink); border-radius: 20px; z-index: 100; }
+    .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; background: var(--ink); opacity: 0.15; border-radius: 3px; z-index: 100; }
+
+    .app { height: 100%; display: flex; flex-direction: column; padding-top: 60px; padding-bottom: 90px; overflow-y: auto; scrollbar-width: none; }
+
+    .header { padding: 24px 28px; display: flex; justify-content: space-between; align-items: flex-start; }
+    .header-greeting { font-size: 12px; font-weight: 300; color: var(--ink-muted); letter-spacing: 0.1em; margin-bottom: 4px; }
+    .header-name { font-size: 24px; font-weight: 300; letter-spacing: 0.05em; }
+    .header-date { font-size: 11px; color: var(--ink-muted); text-align: right; }
+
+    .score-section { padding: 20px 28px 40px; display: flex; flex-direction: column; align-items: center; }
+    .enso-container { position: relative; width: 180px; height: 180px; margin-bottom: 24px; }
+    .enso-ring { position: absolute; inset: 0; border: 2px solid var(--bg-shadow); border-radius: 50%; }
+    .enso-progress { position: absolute; inset: 0; border: 2px solid transparent; border-top-color: var(--bamboo); border-right-color: var(--bamboo); border-bottom-color: var(--bamboo); border-radius: 50%; transform: rotate(-45deg); }
+    .enso-inner { position: absolute; inset: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .enso-value { font-size: 48px; font-weight: 300; letter-spacing: -0.02em; }
+    .enso-label { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.15em; margin-top: 4px; }
+
+    .score-metrics { display: flex; gap: 32px; }
+    .score-metric { text-align: center; }
+    .score-metric-value { font-size: 24px; font-weight: 300; margin-bottom: 4px; }
+    .score-metric-label { font-size: 10px; color: var(--ink-muted); letter-spacing: 0.1em; }
+    .score-metric-bar { width: 40px; height: 2px; background: var(--bg-shadow); margin: 8px auto 0; }
+    .score-metric-bar-fill { height: 100%; background: var(--bamboo); }
+
+    .divider { height: 1px; background: var(--bg-shadow); margin: 0 28px; }
+
+    .section { padding: 28px; }
+    .section-title { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.2em; margin-bottom: 20px; }
+
+    .zen-card { background: var(--bg-stone); padding: 20px; margin-bottom: 12px; border-radius: 4px; }
+    .zen-card.active { border-left: 2px solid var(--bamboo); }
+    .session-row { display: flex; align-items: center; gap: 16px; }
+    .session-dot { width: 8px; height: 8px; background: var(--bg-shadow); border-radius: 50%; }
+    .session-dot.active { background: var(--bamboo); }
+    .session-content { flex: 1; }
+    .session-title { font-size: 15px; font-weight: 400; margin-bottom: 2px; }
+    .session-meta { font-size: 12px; color: var(--ink-muted); font-weight: 300; }
+    .session-time { font-size: 14px; color: var(--ink-light); font-weight: 300; }
+
+    .tab-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: var(--bg-washi); border-top: 1px solid var(--bg-shadow); display: flex; align-items: center; justify-content: space-around; padding: 0 28px; z-index: 10; }
+    .tab { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--ink-muted); }
+    .tab.active { color: var(--bamboo); }
+    .tab-icon { width: 22px; height: 22px; }
+    .tab-label { font-size: 10px; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>禅 ZEN GARDEN</h1>
+  <p>Japansk-inspirert minimalisme med naturlige farger, ro og balanse. Fokus på det essensielle.</p>
+  <div class="tags">
+    <span class="tag">MINIMALISM</span>
+    <span class="tag">NATURAL</span>
+    <span class="tag">CALM</span>
+  </div>
+</header>
+
+<div class="mockup-grid">
+  <div class="mockup-container">
+    <span class="mockup-label">ホーム HOME</span>
+    <div class="device">
+      <div class="screen">
+        <div class="dynamic-island"></div>
+        <div class="home-indicator"></div>
+        <div class="app">
+          
+          <div class="header">
+            <div>
+              <div class="header-greeting">おはようございます</div>
+              <div class="header-name">Anders</div>
+            </div>
+            <div class="header-date">12月24日<br/>水曜日</div>
+          </div>
+
+          <div class="score-section">
+            <div class="enso-container">
+              <div class="enso-ring"></div>
+              <div class="enso-progress"></div>
+              <div class="enso-inner">
+                <div class="enso-value">87</div>
+                <div class="enso-label">READINESS</div>
+              </div>
+            </div>
+            <div class="score-metrics">
+              <div class="score-metric">
+                <div class="score-metric-value">92</div>
+                <div class="score-metric-label">SWING</div>
+                <div class="score-metric-bar"><div class="score-metric-bar-fill" style="width:92%"></div></div>
+              </div>
+              <div class="score-metric">
+                <div class="score-metric-value">78</div>
+                <div class="score-metric-label">SHORT</div>
+                <div class="score-metric-bar"><div class="score-metric-bar-fill" style="width:78%"></div></div>
+              </div>
+              <div class="score-metric">
+                <div class="score-metric-value">85</div>
+                <div class="score-metric-label">MENTAL</div>
+                <div class="score-metric-bar"><div class="score-metric-bar-fill" style="width:85%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="section">
+            <div class="section-title">今日の練習 TODAY</div>
+            <div class="zen-card active">
+              <div class="session-row">
+                <div class="session-dot active"></div>
+                <div class="session-content">
+                  <div class="session-title">Short Game</div>
+                  <div class="session-meta">Chipping & Pitching</div>
+                </div>
+                <div class="session-time">20分</div>
+              </div>
+            </div>
+            <div class="zen-card">
+              <div class="session-row">
+                <div class="session-dot"></div>
+                <div class="session-content">
+                  <div class="session-title">Driver Teknikk</div>
+                  <div class="session-meta">Swing fundamentals</div>
+                </div>
+                <div class="session-time">45分</div>
+              </div>
+            </div>
+            <div class="zen-card">
+              <div class="session-row">
+                <div class="session-dot"></div>
+                <div class="session-content">
+                  <div class="session-title">Meditasjon</div>
+                  <div class="session-meta">Fokus & pust</div>
+                </div>
+                <div class="session-time">10分</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <span class="tab-label">Hjem</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg></div>
+            <span class="tab-label">Tren</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+            <span class="tab-label">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <span class="mockup-label">練習 TRAINING</span>
+    <div class="device">
+      <div class="screen">
+        <div class="dynamic-island"></div>
+        <div class="home-indicator"></div>
+        <div class="app">
+          
+          <div class="header">
+            <div style="display:flex;align-items:center;gap:8px;color:var(--ink-muted)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+              <span style="font-size:12px;letter-spacing:0.1em">Tilbake</span>
+            </div>
+            <div style="font-size:12px;color:var(--ink-muted)">3 / 8</div>
+          </div>
+
+          <div style="padding:0 28px;margin-bottom:24px">
+            <div style="aspect-ratio:16/9;background:var(--bg-stone);display:flex;align-items:center;justify-content:center;border-radius:4px">
+              <div style="width:56px;height:56px;background:var(--bamboo);border-radius:50%;display:flex;align-items:center;justify-content:center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:0 28px;margin-bottom:24px">
+            <h2 style="font-size:22px;font-weight:400;margin-bottom:12px">Chip fra rough</h2>
+            <div class="zen-card" style="border-left:2px solid var(--bamboo)">
+              <p style="font-size:13px;color:var(--ink-light);line-height:1.7;font-weight:300">"Ball bak, vekt fremover, hender foran ved impact"</p>
+            </div>
+          </div>
+
+          <div class="section" style="padding-top:0">
+            <div class="section-title">REPETISJONER 5/8</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <div style="width:32px;height:32px;background:var(--bamboo);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--bamboo);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--bamboo);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--bamboo);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--bamboo);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--bg-shadow);border-radius:50%"></div>
+              <div style="width:32px;height:32px;background:var(--bg-shadow);border-radius:50%"></div>
+              <div style="width:32px;height:32px;background:var(--bg-shadow);border-radius:50%"></div>
+            </div>
+          </div>
+
+          <div style="padding:0 28px;margin-top:auto">
+            <button style="width:100%;padding:16px;background:var(--bamboo);border:none;border-radius:4px;color:white;font-family:var(--font);font-size:14px;font-weight:400;letter-spacing:0.1em;cursor:pointer">
+              Logg repetisjon
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

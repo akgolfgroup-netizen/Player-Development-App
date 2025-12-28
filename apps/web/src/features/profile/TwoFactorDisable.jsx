@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldOff, Lock, AlertTriangle, CheckCircle } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import { authAPI } from '../../services/api';
 
 const TwoFactorDisable = ({ onConfirm, onCancel }) => {
   const [step, setStep] = useState(1); // 1: Warning, 2: Confirm with password, 3: Success
@@ -18,18 +18,7 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
     setError(null);
 
     try {
-      // TODO: Replace with actual API call
-      // await authService.disable2FA(password);
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Simulate password validation
-      const isValid = Math.random() > 0.2; // 80% success rate for demo
-
-      if (!isValid) {
-        throw new Error('Feil passord');
-      }
+      await authAPI.disable2FA(password);
 
       setStep(3); // Show success
 
@@ -40,7 +29,12 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         }
       }, 2000);
     } catch (err) {
-      setError(err.message || 'Kunne ikke deaktivere 2FA. Prøv igjen.');
+      const errorMessage = err.response?.data?.message || err.message;
+      if (errorMessage?.includes('password') || errorMessage?.includes('passord')) {
+        setError('Feil passord');
+      } else {
+        setError(errorMessage || 'Kunne ikke deaktivere 2FA. Prøv igjen.');
+      }
     } finally {
       setLoading(false);
     }
@@ -53,17 +47,17 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         height: '80px',
         margin: '0 auto 24px',
         borderRadius: '50%',
-        backgroundColor: `${tokens.colors.warning}15`,
+        backgroundColor: 'rgba(var(--warning-rgb), 0.15)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <AlertTriangle size={40} color={tokens.colors.warning} />
+        <AlertTriangle size={40} color={'var(--warning)'} />
       </div>
 
       <h2 style={{
-        ...tokens.typography.title2,
-        color: tokens.colors.charcoal,
+        fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
@@ -71,8 +65,8 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
       </h2>
 
       <p style={{
-        ...tokens.typography.subheadline,
-        color: tokens.colors.steel,
+        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+        color: 'var(--text-secondary)',
         marginBottom: '24px',
         textAlign: 'center',
         lineHeight: '24px',
@@ -82,27 +76,27 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
 
       <div style={{
         padding: '20px',
-        backgroundColor: `${tokens.colors.error}10`,
-        border: `1px solid ${tokens.colors.error}30`,
-        borderRadius: tokens.radius.md,
+        backgroundColor: 'rgba(var(--error-rgb), 0.1)',
+        border: '1px solid rgba(var(--error-rgb), 0.3)',
+        borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
         <h3 style={{
-          ...tokens.typography.headline,
-          color: tokens.colors.charcoal,
+          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+          color: 'var(--text-primary)',
           marginBottom: '12px',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
         }}>
-          <ShieldOff size={20} color={tokens.colors.error} />
+          <ShieldOff size={20} color={'var(--error)'} />
           Sikkerhetsrisiko
         </h3>
         <ul style={{
           margin: 0,
           paddingLeft: '20px',
-          ...tokens.typography.subheadline,
-          color: tokens.colors.steel,
+          fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+          color: 'var(--text-secondary)',
         }}>
           <li style={{ marginBottom: '8px' }}>Kontoen din vil være mer sårbar for uautorisert tilgang</li>
           <li style={{ marginBottom: '8px' }}>Kun passord vil være nødvendig for å logge inn</li>
@@ -112,13 +106,13 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
 
       <div style={{
         padding: '16px',
-        backgroundColor: tokens.colors.snow,
-        borderRadius: tokens.radius.md,
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
         <p style={{
-          ...tokens.typography.footnote,
-          color: tokens.colors.steel,
+          fontSize: '13px', lineHeight: '18px',
+          color: 'var(--text-secondary)',
           margin: 0,
         }}>
           <strong>Anbefaling:</strong> Vi anbefaler sterkt å holde 2FA aktivert for maksimal kontosikkerhet. Hvis du har problemer med 2FA, vurder å oppdatere autentiseringsappen din i stedet for å deaktivere funksjonen.
@@ -132,16 +126,16 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             style={{
               flex: 1,
               padding: '14px',
-              ...tokens.typography.headline,
-              color: tokens.colors.charcoal,
-              backgroundColor: tokens.colors.snow,
-              border: `1px solid ${tokens.colors.mist}`,
-              borderRadius: tokens.radius.md,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-primary)',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-default)',
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
               transition: 'background-color 0.2s',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.cloud}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.snow}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
           >
             Avbryt
           </button>
@@ -151,16 +145,16 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
           style={{
             flex: 1,
             padding: '14px',
-            ...tokens.typography.headline,
-            color: tokens.colors.white,
-            backgroundColor: tokens.colors.error,
+            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+            color: 'var(--bg-primary)',
+            backgroundColor: 'var(--error)',
             border: 'none',
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
             transition: 'background-color 0.2s',
           }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#B04E42'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.error}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--error)'}
         >
           Fortsett allikevel
         </button>
@@ -175,17 +169,17 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         height: '80px',
         margin: '0 auto 24px',
         borderRadius: '50%',
-        backgroundColor: `${tokens.colors.primary}15`,
+        backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Lock size={40} color={tokens.colors.primary} />
+        <Lock size={40} color={'var(--accent)'} />
       </div>
 
       <h2 style={{
-        ...tokens.typography.title2,
-        color: tokens.colors.charcoal,
+        fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
@@ -193,8 +187,8 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
       </h2>
 
       <p style={{
-        ...tokens.typography.subheadline,
-        color: tokens.colors.steel,
+        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+        color: 'var(--text-secondary)',
         marginBottom: '24px',
         textAlign: 'center',
       }}>
@@ -209,12 +203,12 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             alignItems: 'center',
             gap: '12px',
             padding: '16px',
-            backgroundColor: `${tokens.colors.error}10`,
-            border: `1px solid ${tokens.colors.error}30`,
-            borderRadius: tokens.radius.md,
-            color: tokens.colors.error,
+            backgroundColor: 'rgba(var(--error-rgb), 0.1)',
+            border: '1px solid rgba(var(--error-rgb), 0.3)',
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--error)',
             marginBottom: '24px',
-            ...tokens.typography.subheadline,
+            fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           }}
         >
           <AlertTriangle size={20} />
@@ -228,8 +222,8 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             htmlFor="password"
             style={{
               display: 'block',
-              ...tokens.typography.headline,
-              color: tokens.colors.charcoal,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-primary)',
               marginBottom: '8px',
             }}
           >
@@ -243,7 +237,7 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
                 left: '16px',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
                 pointerEvents: 'none',
               }}
             />
@@ -263,18 +257,18 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
               style={{
                 width: '100%',
                 padding: '14px 16px 14px 48px',
-                ...tokens.typography.body,
-                border: `1px solid ${error ? tokens.colors.error : tokens.colors.mist}`,
-                borderRadius: tokens.radius.md,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 400,
+                border: `1px solid ${error ? 'var(--error)' : 'var(--border-default)'}`,
+                borderRadius: 'var(--radius-md)',
                 outline: 'none',
                 transition: 'border-color 0.2s',
-                backgroundColor: loading ? tokens.colors.cloud : tokens.colors.white,
+                backgroundColor: loading ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
               }}
               onFocus={(e) => {
-                if (!error) e.target.style.borderColor = tokens.colors.primary;
+                if (!error) e.target.style.borderColor = 'var(--accent)';
               }}
               onBlur={(e) => {
-                if (!error) e.target.style.borderColor = tokens.colors.mist;
+                if (!error) e.target.style.borderColor = 'var(--border-default)';
               }}
             />
           </div>
@@ -288,11 +282,11 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             style={{
               flex: 1,
               padding: '14px',
-              ...tokens.typography.headline,
-              color: tokens.colors.steel,
-              backgroundColor: tokens.colors.snow,
-              border: `1px solid ${tokens.colors.mist}`,
-              borderRadius: tokens.radius.md,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-secondary)',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-default)',
+              borderRadius: 'var(--radius-md)',
               cursor: loading ? 'not-allowed' : 'pointer',
             }}
           >
@@ -304,11 +298,11 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             style={{
               flex: 1,
               padding: '14px',
-              ...tokens.typography.headline,
-              color: tokens.colors.white,
-              backgroundColor: loading || !password ? tokens.colors.steel : tokens.colors.error,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--bg-primary)',
+              backgroundColor: loading || !password ? 'var(--text-secondary)' : 'var(--error)',
               border: 'none',
-              borderRadius: tokens.radius.md,
+              borderRadius: 'var(--radius-md)',
               cursor: loading || !password ? 'not-allowed' : 'pointer',
               transition: 'background-color 0.2s',
             }}
@@ -319,7 +313,7 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             }}
             onMouseLeave={(e) => {
               if (!loading && password) {
-                e.currentTarget.style.backgroundColor = tokens.colors.error;
+                e.currentTarget.style.backgroundColor = 'var(--error)';
               }
             }}
           >
@@ -337,25 +331,25 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         height: '80px',
         margin: '0 auto 24px',
         borderRadius: '50%',
-        backgroundColor: `${tokens.colors.success}15`,
+        backgroundColor: 'rgba(var(--success-rgb), 0.15)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <CheckCircle size={40} color={tokens.colors.success} />
+        <CheckCircle size={40} color={'var(--success)'} />
       </div>
 
       <h2 style={{
-        ...tokens.typography.title2,
-        color: tokens.colors.charcoal,
+        fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
       }}>
         2FA deaktivert
       </h2>
 
       <p style={{
-        ...tokens.typography.subheadline,
-        color: tokens.colors.steel,
+        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+        color: 'var(--text-secondary)',
         marginBottom: '24px',
       }}>
         Tofaktorautentisering er nå deaktivert for kontoen din.
@@ -363,13 +357,13 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
 
       <div style={{
         padding: '16px',
-        backgroundColor: tokens.colors.snow,
-        borderRadius: tokens.radius.md,
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
         <p style={{
-          ...tokens.typography.footnote,
-          color: tokens.colors.steel,
+          fontSize: '13px', lineHeight: '18px',
+          color: 'var(--text-secondary)',
           margin: 0,
         }}>
           Du kan aktivere 2FA igjen når som helst fra sikkerhetsinnstillingene.
@@ -380,19 +374,19 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         display: 'inline-flex',
         alignItems: 'center',
         gap: '8px',
-        color: tokens.colors.steel,
+        color: 'var(--text-secondary)',
       }}>
         <div
           style={{
             width: '16px',
             height: '16px',
-            border: `2px solid ${tokens.colors.success}`,
+            border: '2px solid var(--success)',
             borderTopColor: 'transparent',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
         />
-        <span style={{ ...tokens.typography.subheadline }}>Lukker...</span>
+        <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 600 }}>Lukker...</span>
       </div>
 
       <style>
@@ -419,15 +413,15 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
       justifyContent: 'center',
       zIndex: 1000,
       padding: '24px',
-      fontFamily: tokens.typography.fontFamily,
+      fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
     }}>
       <div style={{
         maxWidth: '500px',
         width: '100%',
         padding: '32px',
-        backgroundColor: tokens.colors.white,
-        borderRadius: tokens.radius.lg,
-        boxShadow: tokens.shadows.elevated,
+        backgroundColor: 'var(--bg-primary)',
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
         position: 'relative',
       }}>
         {step === 1 && renderStep1()}

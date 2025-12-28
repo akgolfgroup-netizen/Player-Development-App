@@ -162,7 +162,7 @@ function ListTemplate<T extends Record<string, any>>({
           {/* Bulk Actions */}
           {hasSelection && bulkActions && bulkActions.length > 0 && (
             <div style={styles.bulkActions}>
-              <Badge variant="primary" pill>
+              <Badge variant="accent" pill>
                 {selectedRows.length} selected
               </Badge>
               <Dropdown

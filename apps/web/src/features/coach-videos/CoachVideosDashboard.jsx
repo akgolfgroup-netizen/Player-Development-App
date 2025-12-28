@@ -26,6 +26,7 @@ import { useVideos } from '../../hooks/useVideos';
 import * as videoApi from '../../services/videoApi';
 import { coachesAPI } from '../../services/api';
 import { track } from '../../analytics/track';
+import Button from '../../ui/primitives/Button';
 
 // Tailwind classes
 const tw = {
@@ -381,13 +382,13 @@ export function CoachVideosDashboard({
           </p>
         </div>
         <div className={tw.headerActions}>
-          <button
-            className={tw.requestButton}
+          <Button
+            variant="primary"
             onClick={() => setShowRequestModal(true)}
+            leftIcon={<VideoRequestIcon />}
           >
-            <VideoRequestIcon />
             Be om video
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -421,9 +422,9 @@ export function CoachVideosDashboard({
       {error && (
         <div className={tw.errorBar}>
           <span className={tw.errorText}>{error}</span>
-          <button className={tw.retryButton} onClick={refetchVideos}>
+          <Button variant="primary" size="sm" onClick={refetchVideos}>
             Prøv igjen
-          </button>
+          </Button>
         </div>
       )}
 
@@ -605,20 +606,20 @@ export function CoachVideosDashboard({
             </div>
 
             <div className={tw.modalFooter}>
-              <button
-                className={tw.modalCancelButton}
+              <Button
+                variant="ghost"
                 onClick={() => setShowRequestModal(false)}
               >
                 Avbryt
-              </button>
-              <button
-                className={tw.modalSubmitButton}
-                style={{ opacity: requestSubmitting ? 0.7 : 1 }}
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleSubmitRequest}
                 disabled={!requestForm.playerId || requestSubmitting}
+                loading={requestSubmitting}
               >
                 {requestSubmitting ? 'Sender...' : 'Send forespørsel'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

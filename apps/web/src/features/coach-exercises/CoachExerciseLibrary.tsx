@@ -11,7 +11,8 @@ import {
   FileText
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface Exercise {
   id: string;
@@ -225,7 +226,7 @@ export const CoachExerciseLibrary: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
         <div>
@@ -234,7 +235,7 @@ export const CoachExerciseLibrary: React.FC = () => {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              background: `linear-gradient(135deg, ${designTokens.colors.primary[500]}, ${designTokens.colors.primary[600]})`,
+              background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent)'})`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -245,14 +246,14 @@ export const CoachExerciseLibrary: React.FC = () => {
               <h1 style={{
                 fontSize: '28px',
                 fontWeight: '700',
-                color: designTokens.colors.text.primary,
+                color: 'var(--text-primary)',
                 margin: 0
               }}>
                 Øvelsesbank
               </h1>
               <p style={{
                 fontSize: '14px',
-                color: designTokens.colors.text.secondary,
+                color: 'var(--text-secondary)',
                 margin: 0
               }}>
                 {mockExercises.length} øvelser tilgjengelig
@@ -269,7 +270,7 @@ export const CoachExerciseLibrary: React.FC = () => {
             padding: '12px 20px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: designTokens.colors.primary[500],
+            backgroundColor: 'var(--accent)',
             color: 'white',
             fontSize: '14px',
             fontWeight: '600',
@@ -295,9 +296,9 @@ export const CoachExerciseLibrary: React.FC = () => {
             gap: '8px',
             padding: '10px 16px',
             borderRadius: '10px',
-            border: `1px solid ${designTokens.colors.border.light}`,
-            backgroundColor: designTokens.colors.background.card,
-            color: designTokens.colors.text.secondary,
+            border: `1px solid ${'var(--border-default)'}`,
+            backgroundColor: 'var(--bg-primary)',
+            color: 'var(--text-secondary)',
             fontSize: '13px',
             fontWeight: '500',
             cursor: 'pointer'
@@ -314,9 +315,9 @@ export const CoachExerciseLibrary: React.FC = () => {
             gap: '8px',
             padding: '10px 16px',
             borderRadius: '10px',
-            border: `1px solid ${designTokens.colors.border.light}`,
-            backgroundColor: designTokens.colors.background.card,
-            color: designTokens.colors.text.secondary,
+            border: `1px solid ${'var(--border-default)'}`,
+            backgroundColor: 'var(--bg-primary)',
+            color: 'var(--text-secondary)',
             fontSize: '13px',
             fontWeight: '500',
             cursor: 'pointer'
@@ -342,7 +343,7 @@ export const CoachExerciseLibrary: React.FC = () => {
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
+              color: 'var(--text-tertiary)'
             }}
           />
           <input
@@ -354,10 +355,10 @@ export const CoachExerciseLibrary: React.FC = () => {
               width: '100%',
               padding: '12px 12px 12px 40px',
               borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
               fontSize: '14px',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none'
             }}
           />
@@ -368,10 +369,10 @@ export const CoachExerciseLibrary: React.FC = () => {
           style={{
             padding: '12px 16px',
             borderRadius: '10px',
-            border: `1px solid ${designTokens.colors.border.light}`,
-            backgroundColor: designTokens.colors.background.card,
+            border: `1px solid ${'var(--border-default)'}`,
+            backgroundColor: 'var(--bg-primary)',
             fontSize: '14px',
-            color: designTokens.colors.text.primary,
+            color: 'var(--text-primary)',
             cursor: 'pointer'
           }}
         >
@@ -390,10 +391,10 @@ export const CoachExerciseLibrary: React.FC = () => {
           style={{
             padding: '12px 16px',
             borderRadius: '10px',
-            border: `1px solid ${designTokens.colors.border.light}`,
-            backgroundColor: designTokens.colors.background.card,
+            border: `1px solid ${'var(--border-default)'}`,
+            backgroundColor: 'var(--bg-primary)',
             fontSize: '14px',
-            color: designTokens.colors.text.primary,
+            color: 'var(--text-primary)',
             cursor: 'pointer'
           }}
         >
@@ -416,10 +417,10 @@ export const CoachExerciseLibrary: React.FC = () => {
             <div
               key={exercise.id}
               style={{
-                backgroundColor: designTokens.colors.background.card,
+                backgroundColor: 'var(--bg-primary)',
                 borderRadius: '16px',
                 padding: '20px',
-                border: `1px solid ${designTokens.colors.border.light}`,
+                border: `1px solid ${'var(--border-default)'}`,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease'
               }}
@@ -442,7 +443,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                     fontWeight: '500',
                     padding: '4px 10px',
                     borderRadius: '6px',
-                    backgroundColor: designTokens.colors.background.secondary,
+                    backgroundColor: 'var(--bg-tertiary)',
                     color: getDifficultyColor(exercise.difficulty)
                   }}>
                     {getDifficultyLabel(exercise.difficulty)}
@@ -457,7 +458,7 @@ export const CoachExerciseLibrary: React.FC = () => {
               <h3 style={{
                 fontSize: '16px',
                 fontWeight: '600',
-                color: designTokens.colors.text.primary,
+                color: 'var(--text-primary)',
                 margin: '0 0 8px 0'
               }}>
                 {exercise.name}
@@ -466,7 +467,7 @@ export const CoachExerciseLibrary: React.FC = () => {
               {/* Description */}
               <p style={{
                 fontSize: '13px',
-                color: designTokens.colors.text.secondary,
+                color: 'var(--text-secondary)',
                 margin: '0 0 16px 0',
                 lineHeight: '1.5',
                 display: '-webkit-box',
@@ -485,20 +486,20 @@ export const CoachExerciseLibrary: React.FC = () => {
                 marginBottom: '16px'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Clock size={14} color={designTokens.colors.text.tertiary} />
-                  <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                  <Clock size={14} color={'var(--text-tertiary)'} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {exercise.duration} min
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Target size={14} color={designTokens.colors.text.tertiary} />
-                  <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                  <Target size={14} color={'var(--text-tertiary)'} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {exercise.usageCount}x brukt
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Star size={14} color="#f59e0b" fill="#f59e0b" />
-                  <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {exercise.rating}
                   </span>
                 </div>
@@ -509,7 +510,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                 display: 'flex',
                 gap: '8px',
                 paddingTop: '12px',
-                borderTop: `1px solid ${designTokens.colors.border.light}`
+                borderTop: `1px solid ${'var(--border-default)'}`
               }}>
                 {exercise.hasVideo && (
                   <button style={{
@@ -555,7 +556,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                   padding: '8px 12px',
                   borderRadius: '8px',
                   border: 'none',
-                  backgroundColor: designTokens.colors.primary[500],
+                  backgroundColor: 'var(--accent)',
                   color: 'white',
                   fontSize: '12px',
                   fontWeight: '500',
@@ -574,14 +575,14 @@ export const CoachExerciseLibrary: React.FC = () => {
         <div style={{
           textAlign: 'center',
           padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <Dumbbell size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
+          <Dumbbell size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
           <p style={{
             fontSize: '16px',
-            color: designTokens.colors.text.secondary,
+            color: 'var(--text-secondary)',
             margin: 0
           }}>
             Ingen øvelser funnet med valgte filtre

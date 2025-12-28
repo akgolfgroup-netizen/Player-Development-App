@@ -17,10 +17,6 @@
 
 import React, { useState } from "react";
 import { AlertCircle, Clock, CheckCircle, Headphones } from "lucide-react";
-import { tokens } from "../../design-tokens";
-
-// Typography styles from design tokens
-const typography = tokens.typography;
 
 //////////////////////////////
 // 1. TYPES
@@ -66,22 +62,22 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
       case 'open':
         return {
           icon: AlertCircle,
-          color: tokens.colors.error,
-          bg: `${tokens.colors.error}15`,
+          color: 'var(--error)',
+          bg: 'rgba(var(--error-rgb), 0.15)',
           label: 'Åpen',
         };
       case 'in_progress':
         return {
           icon: Clock,
-          color: tokens.colors.warning,
-          bg: `${tokens.colors.warning}15`,
+          color: 'var(--warning)',
+          bg: 'rgba(var(--warning-rgb), 0.15)',
           label: 'Under arbeid',
         };
       case 'closed':
         return {
           icon: CheckCircle,
-          color: tokens.colors.success,
-          bg: `${tokens.colors.success}15`,
+          color: 'var(--success)',
+          bg: 'rgba(var(--success-rgb), 0.15)',
           label: 'Løst',
         };
     }
@@ -94,19 +90,19 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
       aria-label="Support cases"
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div style={{ padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Headphones size={28} color={tokens.colors.primary} />
-          <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+          <Headphones size={28} color={'var(--accent)'} />
+          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Support & Eskalering
           </h1>
         </div>
-        <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel, margin: 0 }}>
+        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: 0 }}>
           {openCount} aktive saker
         </p>
       </div>
@@ -115,9 +111,9 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
       <div style={{ padding: '0 24px 24px' }}>
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             overflow: 'hidden',
           }}
         >
@@ -133,16 +129,16 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
                   alignItems: 'center',
                   gap: '16px',
                   padding: '16px 20px',
-                  borderBottom: index < cases.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
+                  borderBottom: index < cases.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
                 }}
               >
                 {/* Case Info */}
                 <div style={{ flex: 1 }}>
-                  <div style={{ ...typography.body as React.CSSProperties, fontWeight: 500, color: tokens.colors.charcoal }}>
+                  <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)' }}>
                     {caseItem.title}
                   </div>
                   {caseItem.createdAt && (
-                    <div style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, marginTop: '4px' }}>
+                    <div style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                       Opprettet: {caseItem.createdAt}
                     </div>
                   )}
@@ -155,14 +151,14 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
                     alignItems: 'center',
                     gap: '6px',
                     padding: '6px 12px',
-                    borderRadius: tokens.borderRadius.sm,
+                    borderRadius: 'var(--radius-sm)',
                     backgroundColor: statusConfig.bg,
                   }}
                 >
                   <StatusIcon size={14} color={statusConfig.color} />
                   <span
                     style={{
-                      ...typography.caption as React.CSSProperties,
+                      fontSize: '13px', lineHeight: '18px',
                       fontWeight: 500,
                       color: statusConfig.color,
                     }}
@@ -180,11 +176,11 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
                         onClick={() => updateStatus(caseItem.id, "in_progress")}
                         style={{
                           padding: '8px 16px',
-                          borderRadius: tokens.borderRadius.sm,
-                          border: `1px solid ${tokens.colors.warning}`,
+                          borderRadius: 'var(--radius-sm)',
+                          border: `1px solid ${'var(--warning)'}`,
                           backgroundColor: 'transparent',
-                          color: tokens.colors.warning,
-                          ...typography.caption as React.CSSProperties,
+                          color: 'var(--warning)',
+                          fontSize: '13px', lineHeight: '18px',
                           fontWeight: 500,
                           cursor: 'pointer',
                           transition: 'all 0.2s ease',
@@ -198,11 +194,11 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
                       onClick={() => updateStatus(caseItem.id, "closed")}
                       style={{
                         padding: '8px 16px',
-                        borderRadius: tokens.borderRadius.sm,
-                        border: `1px solid ${tokens.colors.success}`,
+                        borderRadius: 'var(--radius-sm)',
+                        border: `1px solid ${'var(--success)'}`,
                         backgroundColor: 'transparent',
-                        color: tokens.colors.success,
-                        ...typography.caption as React.CSSProperties,
+                        color: 'var(--success)',
+                        fontSize: '13px', lineHeight: '18px',
                         fontWeight: 500,
                         cursor: 'pointer',
                         transition: 'all 0.2s ease',

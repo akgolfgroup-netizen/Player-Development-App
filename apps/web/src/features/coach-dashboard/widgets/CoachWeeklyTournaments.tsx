@@ -1,6 +1,6 @@
 /**
  * AK Golf Academy - Coach Weekly Tournaments Widget
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Semantic CSS Variables
  *
  * Viser ukens turneringer med spillerdeltakelse.
  * Gir oversikt over hvem som spiller hvor.
@@ -15,7 +15,7 @@ import {
   Users,
   ChevronRight,
 } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
+import Button from '../../../ui/primitives/Button';
 
 interface TournamentPlayer {
   id: string;
@@ -72,7 +72,7 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
           },
           {
             id: '2',
-            name: 'Sør-Cup Runde 4',
+            name: 'Sor-Cup Runde 4',
             location: 'Kristiansand GK',
             startDate: '2025-12-23',
             endDate: '2025-12-23',
@@ -105,10 +105,10 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
   // Get tournament type badge
   const getTypeBadge = (type: string) => {
     const styles: Record<string, { bg: string; text: string; label: string }> = {
-      national: { bg: `${tokens.colors.gold}20`, text: '#8B6914', label: 'Nasjonal' },
-      international: { bg: `${tokens.colors.primary}15`, text: tokens.colors.primary, label: 'Internasjonal' },
-      regional: { bg: `${tokens.colors.primaryLight}15`, text: tokens.colors.primaryLight, label: 'Regional' },
-      club: { bg: `${tokens.colors.steel}15`, text: tokens.colors.steel, label: 'Klubb' },
+      national: { bg: 'rgba(var(--warning-rgb), 0.2)', text: 'var(--warning)', label: 'Nasjonal' },
+      international: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Internasjonal' },
+      regional: { bg: 'rgba(var(--accent-rgb), 0.1)', text: 'var(--accent)', label: 'Regional' },
+      club: { bg: 'var(--bg-tertiary)', text: 'var(--text-secondary)', label: 'Klubb' },
     };
     return styles[type] || styles.club;
   };
@@ -135,7 +135,7 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
 
     if (diff === 0) return 'I dag';
     if (diff === 1) return 'I morgen';
-    if (diff < 0) return 'Pågår';
+    if (diff < 0) return 'Pagar';
     return `Om ${diff} dager`;
   };
 
@@ -151,8 +151,8 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
           style={{
             width: 32,
             height: 32,
-            border: `3px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.gold,
+            border: '3px solid var(--bg-tertiary)',
+            borderTopColor: 'var(--warning)',
             borderRadius: '50%',
             margin: '0 auto',
             animation: 'spin 1s linear infinite',
@@ -178,20 +178,21 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
             style={{
               width: 36,
               height: 36,
-              borderRadius: tokens.radius.md,
-              backgroundColor: `${tokens.colors.gold}20`,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'rgba(var(--warning-rgb), 0.2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Trophy size={20} color={tokens.colors.gold} />
+            <Trophy size={20} style={{ color: 'var(--warning)' }} />
           </div>
           <div>
             <h3
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -199,8 +200,8 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
             </h3>
             <span
               style={{
-                ...tokens.typography.caption1,
-                color: tokens.colors.steel,
+                fontSize: '13px',
+                color: 'var(--text-secondary)',
               }}
             >
               {totalPlayers} spillere deltar
@@ -208,24 +209,10 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
           </div>
         </div>
         {onViewAll && (
-          <button
-            onClick={onViewAll}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              backgroundColor: 'transparent',
-              border: 'none',
-              color: tokens.colors.primary,
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
-          >
+          <Button variant="ghost" size="sm" onClick={onViewAll}>
             Se alle
             <ChevronRight size={16} />
-          </button>
+          </Button>
         )}
       </div>
 
@@ -235,15 +222,16 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
           style={{
             padding: '32px 16px',
             textAlign: 'center',
-            backgroundColor: tokens.colors.gray100,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: 'var(--radius-md)',
           }}
         >
-          <Trophy size={32} color={tokens.colors.gray300} style={{ marginBottom: '8px' }} />
+          <Trophy size={32} style={{ color: 'var(--text-secondary)', marginBottom: '8px' }} />
           <p
             style={{
-              ...tokens.typography.subheadline,
-              color: tokens.colors.steel,
+              fontSize: '15px',
+              fontWeight: 500,
+              color: 'var(--text-secondary)',
               margin: 0,
             }}
           >
@@ -262,9 +250,9 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                 onClick={() => navigate(`/coach/tournaments/${tournament.id}`)}
                 style={{
                   padding: '16px',
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.md,
-                  border: `1px solid ${tokens.colors.gray200}`,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-default)',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
                 }}
@@ -282,8 +270,9 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                       <h4
                         style={{
-                          ...tokens.typography.headline,
-                          color: tokens.colors.charcoal,
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          color: 'var(--text-primary)',
                           margin: 0,
                         }}
                       >
@@ -294,7 +283,7 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                           padding: '2px 8px',
                           backgroundColor: typeBadge.bg,
                           color: typeBadge.text,
-                          borderRadius: tokens.radius.sm,
+                          borderRadius: 'var(--radius-sm)',
                           fontSize: '11px',
                           fontWeight: 600,
                         }}
@@ -308,8 +297,8 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px',
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.steel,
+                          fontSize: '13px',
+                          color: 'var(--text-secondary)',
                         }}
                       >
                         <MapPin size={12} />
@@ -320,8 +309,8 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px',
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.steel,
+                          fontSize: '13px',
+                          color: 'var(--text-secondary)',
                         }}
                       >
                         <Calendar size={12} />
@@ -333,14 +322,14 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                     style={{
                       padding: '4px 10px',
                       backgroundColor:
-                        daysUntil === 'I dag' || daysUntil === 'Pågår'
-                          ? `${tokens.colors.success}15`
-                          : tokens.colors.gray100,
+                        daysUntil === 'I dag' || daysUntil === 'Pagar'
+                          ? 'rgba(var(--success-rgb), 0.15)'
+                          : 'var(--bg-tertiary)',
                       color:
-                        daysUntil === 'I dag' || daysUntil === 'Pågår'
-                          ? tokens.colors.success
-                          : tokens.colors.steel,
-                      borderRadius: tokens.radius.sm,
+                        daysUntil === 'I dag' || daysUntil === 'Pagar'
+                          ? 'var(--success)'
+                          : 'var(--text-secondary)',
+                      borderRadius: 'var(--radius-sm)',
                       fontSize: '12px',
                       fontWeight: 500,
                     }}
@@ -356,10 +345,10 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                     alignItems: 'center',
                     gap: '8px',
                     paddingTop: '12px',
-                    borderTop: `1px solid ${tokens.colors.gray100}`,
+                    borderTop: '1px solid var(--border-default)',
                   }}
                 >
-                  <Users size={14} color={tokens.colors.steel} />
+                  <Users size={14} style={{ color: 'var(--text-secondary)' }} />
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flex: 1 }}>
                     {tournament.players.slice(0, 4).map((player, index) => (
                       <div
@@ -369,15 +358,15 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                           width: 28,
                           height: 28,
                           borderRadius: '50%',
-                          backgroundColor: tokens.colors.primary,
-                          color: tokens.colors.white,
+                          backgroundColor: 'var(--accent)',
+                          color: 'white',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontSize: '10px',
                           fontWeight: 600,
                           marginLeft: index > 0 ? '-8px' : 0,
-                          border: `2px solid ${tokens.colors.white}`,
+                          border: '2px solid var(--bg-primary)',
                         }}
                       >
                         {player.avatarInitials}
@@ -386,8 +375,8 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                     {tournament.players.length > 4 && (
                       <span
                         style={{
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.steel,
+                          fontSize: '13px',
+                          color: 'var(--text-secondary)',
                           marginLeft: '4px',
                         }}
                       >
@@ -397,14 +386,14 @@ export default function CoachWeeklyTournaments({ onViewAll }: CoachWeeklyTournam
                   </div>
                   <span
                     style={{
-                      ...tokens.typography.caption1,
-                      color: tokens.colors.primary,
+                      fontSize: '13px',
+                      color: 'var(--accent)',
                       fontWeight: 500,
                     }}
                   >
                     {tournament.players.length} spillere
                   </span>
-                  <ChevronRight size={16} color={tokens.colors.steel} />
+                  <ChevronRight size={16} style={{ color: 'var(--text-secondary)' }} />
                 </div>
               </div>
             );

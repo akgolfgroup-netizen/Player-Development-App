@@ -605,7 +605,7 @@ export function ReferenceLibrary({
     addVideoToList,
   } = useVideos({
     status: 'ready',
-    // TODO: Add visibility='reference' filter when backend supports it
+    visibility: 'reference',
     autoFetch: true,
   });
 
@@ -765,8 +765,7 @@ export function ReferenceLibrary({
         await onShare(selectedVideo, Array.from(selectedPlayers));
       } else {
         // Call video share API
-        const result = await videoApi.shareVideo(selectedVideo.id, Array.from(selectedPlayers));
-        console.log('Video shared:', result);
+        await videoApi.shareVideo(selectedVideo.id, Array.from(selectedPlayers));
       }
 
       // Track analytics

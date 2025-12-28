@@ -10,8 +10,10 @@ import {
   Award, Calendar, Download, Filter, RefreshCw, ChevronDown,
   Activity, CheckCircle, XCircle, AlertTriangle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { useAuth } from '../../contexts/AuthContext';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
 
 // Types
 interface TeamAnalytics {
@@ -45,34 +47,38 @@ interface PlayerSummary {
   trend: 'improving' | 'stable' | 'declining';
 }
 
-// Helpers
-const typography = tokens.typography;
-
-const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => (
-  <div
-    style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: tokens.borderRadius.lg,
-      boxShadow: tokens.shadows.card,
-    }}
-    className={className}
-  >
-    {children}
-  </div>
-);
-
+// Stat Card Component
 const StatCard: React.FC<{
   label: string;
   value: string | number;
   icon: React.ElementType;
   trend?: { value: number; direction: 'up' | 'down' };
-  color?: string;
-}> = ({ label, value, icon: Icon, trend, color = tokens.colors.primary }) => (
-  <Card>
-    <div style={{ padding: '20px' }}>
+  variant?: 'primary' | 'success' | 'warning' | 'gold';
+}> = ({ label, value, icon: Icon, trend, variant = 'primary' }) => {
+  const colorMap = {
+    primary: 'var(--accent)',
+    success: 'var(--success)',
+    warning: 'var(--warning)',
+    gold: 'var(--achievement)',
+  };
+  const color = colorMap[variant];
+  const rgbMap = {
+    primary: 'var(--accent-rgb)',
+    success: 'var(--success-rgb)',
+    warning: 'var(--warning-rgb)',
+    gold: 'var(--achievement-rgb)',
+  };
+
+  return (
+    <Card variant="default" padding="lg">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <p style={{ ...typography.caption, color: tokens.colors.steel, marginBottom: '8px' }}>
+          <p style={{
+            fontSize: '13px',
+            lineHeight: '18px',
+            color: 'var(--text-secondary)',
+            marginBottom: '8px',
+          }}>
             {label}
           </p>
           <p style={{ fontSize: '32px', fontWeight: 700, color, margin: 0 }}>
@@ -84,10 +90,10 @@ const StatCard: React.FC<{
               alignItems: 'center',
               gap: '4px',
               marginTop: '8px',
-              color: trend.direction === 'up' ? tokens.colors.success : tokens.colors.error,
+              color: trend.direction === 'up' ? 'var(--success)' : 'var(--error)',
             }}>
               {trend.direction === 'up' ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
-              <span style={{ ...typography.small, fontWeight: 500 }}>
+              <span style={{ fontSize: '12px', fontWeight: 500 }}>
                 {trend.value}% fra forrige maned
               </span>
             </div>
@@ -97,31 +103,31 @@ const StatCard: React.FC<{
           style={{
             width: 48,
             height: 48,
-            borderRadius: tokens.borderRadius.md,
-            backgroundColor: `${color}15`,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: `rgba(${rgbMap[variant]}, 0.1)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <Icon size={24} color={color} />
+          <Icon size={24} style={{ color }} />
         </div>
       </div>
-    </div>
-  </Card>
-);
+    </Card>
+  );
+};
 
 // Progress bar component
 const ProgressBar: React.FC<{ value: number; max?: number; color?: string }> = ({
   value,
   max = 100,
-  color = tokens.colors.primary,
+  color = 'var(--accent)',
 }) => (
   <div
     style={{
       width: '100%',
       height: '8px',
-      backgroundColor: tokens.colors.mist,
+      backgroundColor: 'var(--bg-tertiary)',
       borderRadius: '4px',
       overflow: 'hidden',
     }}
@@ -145,14 +151,14 @@ const CategoryChart: React.FC<{ data: Record<string, number> }> = ({ data }) => 
 
   const getCategoryColor = (cat: string) => {
     const colors: Record<string, string> = {
-      A: tokens.colors.primary,
-      B: tokens.colors.primaryLight,
-      C: tokens.colors.success,
-      D: tokens.colors.gold,
+      A: 'var(--accent)',
+      B: 'rgba(var(--accent-rgb), 0.7)',
+      C: 'var(--success)',
+      D: 'var(--achievement)',
       E: '#FF9800',
       F: '#FF5722',
     };
-    return colors[cat] || tokens.colors.steel;
+    return colors[cat] || 'var(--text-secondary)';
   };
 
   return (
@@ -162,15 +168,15 @@ const CategoryChart: React.FC<{ data: Record<string, number> }> = ({ data }) => 
         return (
         <div key={category}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-            <span style={{ ...typography.body, fontWeight: 500 }}>Kategori {category}</span>
-            <span style={{ ...typography.body, color: tokens.colors.steel }}>{countNum} spillere</span>
+            <span style={{ fontSize: '15px', lineHeight: '22px', fontWeight: 500 }}>Kategori {category}</span>
+            <span style={{ fontSize: '15px', lineHeight: '22px', color: 'var(--text-secondary)' }}>{countNum} spillere</span>
           </div>
           <div
             style={{
               width: '100%',
               height: '24px',
-              backgroundColor: tokens.colors.snow,
-              borderRadius: tokens.borderRadius.sm,
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: 'var(--radius-sm)',
               overflow: 'hidden',
             }}
           >
@@ -179,7 +185,7 @@ const CategoryChart: React.FC<{ data: Record<string, number> }> = ({ data }) => 
                 width: `${(countNum / maxValue) * 100}%`,
                 height: '100%',
                 backgroundColor: getCategoryColor(category),
-                borderRadius: tokens.borderRadius.sm,
+                borderRadius: 'var(--radius-sm)',
                 transition: 'width 0.5s ease',
               }}
             />
@@ -196,38 +202,38 @@ const TestPerformanceTable: React.FC<{ data: TestStatistic[] }> = ({ data }) => 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'up':
-        return <TrendingUp size={16} color={tokens.colors.success} />;
+        return <TrendingUp size={16} style={{ color: 'var(--success)' }} />;
       case 'down':
-        return <TrendingDown size={16} color={tokens.colors.error} />;
+        return <TrendingDown size={16} style={{ color: 'var(--error)' }} />;
       default:
-        return <Activity size={16} color={tokens.colors.steel} />;
+        return <Activity size={16} style={{ color: 'var(--text-secondary)' }} />;
     }
   };
 
   const getPassRateColor = (rate: number) => {
-    if (rate >= 80) return tokens.colors.success;
-    if (rate >= 60) return tokens.colors.warning;
-    return tokens.colors.error;
+    if (rate >= 80) return 'var(--success)';
+    if (rate >= 60) return 'var(--warning)';
+    return 'var(--error)';
   };
 
   return (
     <div style={{ overflowX: 'auto' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
-          <tr style={{ borderBottom: `1px solid ${tokens.colors.mist}` }}>
-            <th style={{ padding: '12px', textAlign: 'left', ...typography.caption, color: tokens.colors.steel }}>
+          <tr style={{ borderBottom: '1px solid var(--border-default)' }}>
+            <th style={{ padding: '12px', textAlign: 'left', fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
               Test
             </th>
-            <th style={{ padding: '12px', textAlign: 'center', ...typography.caption, color: tokens.colors.steel }}>
+            <th style={{ padding: '12px', textAlign: 'center', fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
               Gjennomsnitt
             </th>
-            <th style={{ padding: '12px', textAlign: 'center', ...typography.caption, color: tokens.colors.steel }}>
+            <th style={{ padding: '12px', textAlign: 'center', fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
               Bestattprosent
             </th>
-            <th style={{ padding: '12px', textAlign: 'center', ...typography.caption, color: tokens.colors.steel }}>
+            <th style={{ padding: '12px', textAlign: 'center', fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
               Antall forsok
             </th>
-            <th style={{ padding: '12px', textAlign: 'center', ...typography.caption, color: tokens.colors.steel }}>
+            <th style={{ padding: '12px', textAlign: 'center', fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
               Trend
             </th>
           </tr>
@@ -236,27 +242,28 @@ const TestPerformanceTable: React.FC<{ data: TestStatistic[] }> = ({ data }) => 
           {data.map((test) => (
             <tr
               key={test.testNumber}
-              style={{ borderBottom: `1px solid ${tokens.colors.snow}` }}
+              style={{ borderBottom: '1px solid var(--bg-secondary)' }}
             >
               <td style={{ padding: '14px 12px' }}>
                 <div>
-                  <p style={{ ...typography.body, fontWeight: 500, margin: 0 }}>
+                  <p style={{ fontSize: '15px', lineHeight: '22px', fontWeight: 500, margin: 0 }}>
                     Test {test.testNumber}
                   </p>
-                  <p style={{ ...typography.small, color: tokens.colors.steel, margin: 0 }}>
+                  <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
                     {test.testName}
                   </p>
                 </div>
               </td>
               <td style={{ padding: '14px 12px', textAlign: 'center' }}>
-                <span style={{ ...typography.body, fontWeight: 600 }}>
+                <span style={{ fontSize: '15px', lineHeight: '22px', fontWeight: 600 }}>
                   {test.averageScore.toFixed(1)}
                 </span>
               </td>
               <td style={{ padding: '14px 12px', textAlign: 'center' }}>
                 <span
                   style={{
-                    ...typography.body,
+                    fontSize: '15px',
+                    lineHeight: '22px',
                     fontWeight: 600,
                     color: getPassRateColor(test.passRate),
                   }}
@@ -265,7 +272,7 @@ const TestPerformanceTable: React.FC<{ data: TestStatistic[] }> = ({ data }) => 
                 </span>
               </td>
               <td style={{ padding: '14px 12px', textAlign: 'center' }}>
-                <span style={{ ...typography.body }}>{test.totalAttempts}</span>
+                <span style={{ fontSize: '15px', lineHeight: '22px' }}>{test.totalAttempts}</span>
               </td>
               <td style={{ padding: '14px 12px', textAlign: 'center' }}>
                 {getTrendIcon(test.trend)}
@@ -286,11 +293,11 @@ const PlayerSummaryList: React.FC<{
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'improving':
-        return <TrendingUp size={16} color={tokens.colors.success} />;
+        return <TrendingUp size={16} style={{ color: 'var(--success)' }} />;
       case 'declining':
-        return <TrendingDown size={16} color={tokens.colors.error} />;
+        return <TrendingDown size={16} style={{ color: 'var(--error)' }} />;
       default:
-        return <Activity size={16} color={tokens.colors.steel} />;
+        return <Activity size={16} style={{ color: 'var(--text-secondary)' }} />;
     }
   };
 
@@ -304,24 +311,24 @@ const PlayerSummaryList: React.FC<{
             display: 'flex',
             alignItems: 'center',
             padding: '14px 0',
-            borderBottom: `1px solid ${tokens.colors.snow}`,
+            borderBottom: '1px solid var(--bg-secondary)',
             cursor: 'pointer',
           }}
         >
           <div style={{ flex: 1 }}>
-            <p style={{ ...typography.body, fontWeight: 500, margin: 0 }}>
+            <p style={{ fontSize: '15px', lineHeight: '22px', fontWeight: 500, margin: 0 }}>
               {player.playerName}
             </p>
-            <p style={{ ...typography.small, color: tokens.colors.steel, margin: 0 }}>
+            <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
               Kategori {player.category}
             </p>
           </div>
           <div style={{ width: '120px', marginRight: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-              <span style={{ ...typography.small, color: tokens.colors.steel }}>
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 {player.testsCompleted}/{player.totalTests}
               </span>
-              <span style={{ ...typography.small, fontWeight: 500 }}>
+              <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500 }}>
                 {player.completionRate.toFixed(0)}%
               </span>
             </div>
@@ -401,12 +408,12 @@ export default function CoachStatistics() {
     return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <RefreshCw size={32} color={tokens.colors.primary} style={{ animation: 'spin 1s linear infinite' }} />
+        <StateCard variant="loading" title="Laster statistikk..." />
       </div>
     );
   }
@@ -417,18 +424,30 @@ export default function CoachStatistics() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
-      <div style={{ padding: '24px', backgroundColor: tokens.colors.white, borderBottom: `1px solid ${tokens.colors.mist}` }}>
+      <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', borderBottom: '1px solid var(--border-default)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 style={{ ...typography.largeTitle, color: tokens.colors.charcoal, margin: 0 }}>
+            <h1 style={{
+              fontSize: '34px',
+              lineHeight: '41px',
+              fontWeight: 700,
+              letterSpacing: '-0.4px',
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
               Statistikk
             </h1>
-            <p style={{ ...typography.body, color: tokens.colors.steel, marginTop: '4px' }}>
+            <p style={{
+              fontSize: '15px',
+              lineHeight: '22px',
+              color: 'var(--text-secondary)',
+              marginTop: '4px',
+            }}>
               Oversikt over dine spilleres prestasjoner
             </p>
           </div>
@@ -439,10 +458,11 @@ export default function CoachStatistics() {
               onChange={(e) => setTimeRange(e.target.value as any)}
               style={{
                 padding: '10px 16px',
-                borderRadius: tokens.borderRadius.md,
-                border: `1px solid ${tokens.colors.mist}`,
-                backgroundColor: tokens.colors.white,
-                ...typography.body,
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-default)',
+                backgroundColor: 'var(--bg-primary)',
+                fontSize: '15px',
+                lineHeight: '22px',
                 cursor: 'pointer',
               }}
             >
@@ -452,25 +472,9 @@ export default function CoachStatistics() {
               <option value="year">Siste ar</option>
             </select>
             {/* Export button */}
-            <button
-              onClick={handleExport}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
-                border: 'none',
-                borderRadius: tokens.borderRadius.md,
-                cursor: 'pointer',
-                ...typography.body,
-                fontWeight: 500,
-              }}
-            >
-              <Download size={18} />
+            <Button variant="primary" size="md" onClick={handleExport} leftIcon={<Download size={18} />}>
               Eksporter
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -483,27 +487,27 @@ export default function CoachStatistics() {
             label="Totalt spillere"
             value={data.totalPlayers}
             icon={Users}
-            color={tokens.colors.primary}
+            variant="primary"
           />
           <StatCard
             label="Gjennomforingsgrad"
             value={`${data.overallCompletionRate}%`}
             icon={Target}
             trend={{ value: 5, direction: 'up' }}
-            color={tokens.colors.success}
+            variant="success"
           />
           <StatCard
             label="Tester fullfort"
             value={data.testsCompletedTotal}
             icon={CheckCircle}
-            color={tokens.colors.primaryLight}
+            variant="primary"
           />
           <StatCard
             label="Aktivitet siste 7 dager"
             value={data.recentActivityCount}
             icon={Activity}
             trend={{ value: 12, direction: 'up' }}
-            color={tokens.colors.gold}
+            variant="gold"
           />
         </div>
 
@@ -512,186 +516,199 @@ export default function CoachStatistics() {
           {/* Left column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* Test Performance */}
-            <Card>
-              <div style={{ padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                  <h2 style={{ ...typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
-                    Testprestasjoner
-                  </h2>
-                  <BarChart3 size={20} color={tokens.colors.steel} />
-                </div>
-                <TestPerformanceTable data={data.testStatistics} />
+            <Card variant="default" padding="lg">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{
+                  fontSize: '22px',
+                  lineHeight: '28px',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  margin: 0,
+                }}>
+                  Testprestasjoner
+                </h2>
+                <BarChart3 size={20} style={{ color: 'var(--text-secondary)' }} />
               </div>
+              <TestPerformanceTable data={data.testStatistics} />
             </Card>
 
             {/* Player Progress */}
-            <Card>
-              <div style={{ padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                  <h2 style={{ ...typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
-                    Spillerfremdrift
-                  </h2>
-                  <button
-                    onClick={() => navigate('/coach/athletes')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: tokens.colors.primary,
-                      cursor: 'pointer',
-                      ...typography.caption,
-                      fontWeight: 500,
-                    }}
-                  >
-                    Se alle
-                  </button>
-                </div>
-                <PlayerSummaryList
-                  players={players}
-                  onPlayerClick={(id) => navigate(`/coach/athlete/${id}`)}
-                />
+            <Card variant="default" padding="lg">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{
+                  fontSize: '22px',
+                  lineHeight: '28px',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  margin: 0,
+                }}>
+                  Spillerfremdrift
+                </h2>
+                <Button variant="ghost" size="sm" onClick={() => navigate('/coach/athletes')}>
+                  Se alle
+                </Button>
               </div>
+              <PlayerSummaryList
+                players={players}
+                onPlayerClick={(id) => navigate(`/coach/athlete/${id}`)}
+              />
             </Card>
           </div>
 
           {/* Right column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* Category Distribution */}
-            <Card>
-              <div style={{ padding: '20px' }}>
-                <h2 style={{ ...typography.title2, color: tokens.colors.charcoal, margin: 0, marginBottom: '20px' }}>
-                  Kategorifordeling
-                </h2>
-                <CategoryChart data={data.playersByCategory} />
-              </div>
+            <Card variant="default" padding="lg">
+              <h2 style={{
+                fontSize: '22px',
+                lineHeight: '28px',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+                margin: 0,
+                marginBottom: '20px',
+              }}>
+                Kategorifordeling
+              </h2>
+              <CategoryChart data={data.playersByCategory} />
             </Card>
 
             {/* Quick Insights */}
-            <Card>
-              <div style={{ padding: '20px' }}>
-                <h2 style={{ ...typography.title2, color: tokens.colors.charcoal, margin: 0, marginBottom: '20px' }}>
-                  Innsikt
-                </h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '12px',
-                    padding: '14px',
-                    backgroundColor: `${tokens.colors.success}10`,
-                    borderRadius: tokens.borderRadius.md,
-                  }}>
-                    <TrendingUp size={20} color={tokens.colors.success} />
-                    <div>
-                      <p style={{ ...typography.body, fontWeight: 500, margin: 0 }}>
-                        Positiv trend
-                      </p>
-                      <p style={{ ...typography.small, color: tokens.colors.steel, margin: 0 }}>
-                        3 spillere har forbedret seg betydelig denne maneden
-                      </p>
-                    </div>
+            <Card variant="default" padding="lg">
+              <h2 style={{
+                fontSize: '22px',
+                lineHeight: '28px',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+                margin: 0,
+                marginBottom: '20px',
+              }}>
+                Innsikt
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  padding: '14px',
+                  backgroundColor: 'rgba(var(--success-rgb), 0.1)',
+                  borderRadius: 'var(--radius-md)',
+                }}>
+                  <TrendingUp size={20} style={{ color: 'var(--success)' }} />
+                  <div>
+                    <p style={{ fontSize: '15px', lineHeight: '22px', fontWeight: 500, margin: 0 }}>
+                      Positiv trend
+                    </p>
+                    <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
+                      3 spillere har forbedret seg betydelig denne maneden
+                    </p>
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '12px',
-                    padding: '14px',
-                    backgroundColor: `${tokens.colors.warning}10`,
-                    borderRadius: tokens.borderRadius.md,
-                  }}>
-                    <AlertTriangle size={20} color={tokens.colors.warning} />
-                    <div>
-                      <p style={{ ...typography.body, fontWeight: 500, margin: 0 }}>
-                        Oppmerksomhet nodvendig
-                      </p>
-                      <p style={{ ...typography.small, color: tokens.colors.steel, margin: 0 }}>
-                        2 spillere har ikke vart aktive pa over 2 uker
-                      </p>
-                    </div>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  padding: '14px',
+                  backgroundColor: 'rgba(var(--warning-rgb), 0.1)',
+                  borderRadius: 'var(--radius-md)',
+                }}>
+                  <AlertTriangle size={20} style={{ color: 'var(--warning)' }} />
+                  <div>
+                    <p style={{ fontSize: '15px', lineHeight: '22px', fontWeight: 500, margin: 0 }}>
+                      Oppmerksomhet nodvendig
+                    </p>
+                    <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
+                      2 spillere har ikke vart aktive pa over 2 uker
+                    </p>
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '12px',
-                    padding: '14px',
-                    backgroundColor: `${tokens.colors.primary}10`,
-                    borderRadius: tokens.borderRadius.md,
-                  }}>
-                    <Award size={20} color={tokens.colors.primary} />
-                    <div>
-                      <p style={{ ...typography.body, fontWeight: 500, margin: 0 }}>
-                        Kategoriopprykksklar
-                      </p>
-                      <p style={{ ...typography.small, color: tokens.colors.steel, margin: 0 }}>
-                        Lars Olsen er klar for opprykk til kategori A
-                      </p>
-                    </div>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  padding: '14px',
+                  backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+                  borderRadius: 'var(--radius-md)',
+                }}>
+                  <Award size={20} style={{ color: 'var(--accent)' }} />
+                  <div>
+                    <p style={{ fontSize: '15px', lineHeight: '22px', fontWeight: 500, margin: 0 }}>
+                      Kategoriopprykksklar
+                    </p>
+                    <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
+                      Lars Olsen er klar for opprykk til kategori A
+                    </p>
                   </div>
                 </div>
               </div>
             </Card>
 
             {/* Export Options */}
-            <Card>
-              <div style={{ padding: '20px' }}>
-                <h2 style={{ ...typography.title2, color: tokens.colors.charcoal, margin: 0, marginBottom: '16px' }}>
-                  Eksporter data
-                </h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <button
-                    onClick={() => window.open('/api/v1/export/test-results', '_blank')}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      padding: '12px',
-                      backgroundColor: tokens.colors.snow,
-                      border: 'none',
-                      borderRadius: tokens.borderRadius.md,
-                      cursor: 'pointer',
-                      width: '100%',
-                      textAlign: 'left',
-                    }}
-                  >
-                    <Download size={18} color={tokens.colors.primary} />
-                    <span style={{ ...typography.body }}>Testresultater (Excel)</span>
-                  </button>
-                  <button
-                    onClick={() => window.open('/api/v1/export/training-sessions', '_blank')}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      padding: '12px',
-                      backgroundColor: tokens.colors.snow,
-                      border: 'none',
-                      borderRadius: tokens.borderRadius.md,
-                      cursor: 'pointer',
-                      width: '100%',
-                      textAlign: 'left',
-                    }}
-                  >
-                    <Download size={18} color={tokens.colors.primary} />
-                    <span style={{ ...typography.body }}>Treningsokter (Excel)</span>
-                  </button>
-                  <button
-                    onClick={() => window.open('/api/v1/export/statistics', '_blank')}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      padding: '12px',
-                      backgroundColor: tokens.colors.snow,
-                      border: 'none',
-                      borderRadius: tokens.borderRadius.md,
-                      cursor: 'pointer',
-                      width: '100%',
-                      textAlign: 'left',
-                    }}
-                  >
-                    <Download size={18} color={tokens.colors.primary} />
-                    <span style={{ ...typography.body }}>Full statistikk (Excel)</span>
-                  </button>
-                </div>
+            <Card variant="default" padding="lg">
+              <h2 style={{
+                fontSize: '22px',
+                lineHeight: '28px',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+                margin: 0,
+                marginBottom: '16px',
+              }}>
+                Eksporter data
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <button
+                  onClick={() => window.open('/api/v1/export/test-results', '_blank')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '12px',
+                    backgroundColor: 'var(--bg-secondary)',
+                    border: 'none',
+                    borderRadius: 'var(--radius-md)',
+                    cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Download size={18} style={{ color: 'var(--accent)' }} />
+                  <span style={{ fontSize: '15px', lineHeight: '22px' }}>Testresultater (Excel)</span>
+                </button>
+                <button
+                  onClick={() => window.open('/api/v1/export/training-sessions', '_blank')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '12px',
+                    backgroundColor: 'var(--bg-secondary)',
+                    border: 'none',
+                    borderRadius: 'var(--radius-md)',
+                    cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Download size={18} style={{ color: 'var(--accent)' }} />
+                  <span style={{ fontSize: '15px', lineHeight: '22px' }}>Treningsokter (Excel)</span>
+                </button>
+                <button
+                  onClick={() => window.open('/api/v1/export/statistics', '_blank')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '12px',
+                    backgroundColor: 'var(--bg-secondary)',
+                    border: 'none',
+                    borderRadius: 'var(--radius-md)',
+                    cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Download size={18} style={{ color: 'var(--accent)' }} />
+                  <span style={{ fontSize: '15px', lineHeight: '22px' }}>Full statistikk (Excel)</span>
+                </button>
               </div>
             </Card>
           </div>

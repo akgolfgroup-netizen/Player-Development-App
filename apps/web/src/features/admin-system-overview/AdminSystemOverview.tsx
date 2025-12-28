@@ -16,10 +16,6 @@
 
 import React from "react";
 import { Server, Shield, Activity, CheckCircle, XCircle, Clock } from "lucide-react";
-import { tokens } from "../../design-tokens";
-
-// Typography styles from design tokens
-const typography = tokens.typography;
 
 //////////////////////////////
 // 1. TYPES
@@ -77,11 +73,11 @@ export default function AdminSystemOverview({
   const getEnvBadgeStyle = (env: string) => {
     switch (env) {
       case 'production':
-        return { bg: `${tokens.colors.success}15`, text: tokens.colors.success };
+        return { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)' };
       case 'staging':
-        return { bg: `${tokens.colors.primaryLight}15`, text: tokens.colors.primaryLight };
+        return { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)' };
       default:
-        return { bg: `${tokens.colors.steel}15`, text: tokens.colors.steel };
+        return { bg: 'rgba(var(--text-secondary-rgb), 0.15)', text: 'var(--text-secondary)' };
     }
   };
 
@@ -92,19 +88,19 @@ export default function AdminSystemOverview({
       aria-label="System overview"
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div style={{ padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Server size={28} color={tokens.colors.primary} />
-          <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+          <Server size={28} color={'var(--accent)'} />
+          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Systemoversikt
           </h1>
         </div>
-        <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel, margin: 0 }}>
+        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: 0 }}>
           Systemhelse og konfigurasjon
         </p>
       </div>
@@ -115,15 +111,15 @@ export default function AdminSystemOverview({
           {/* Environment */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Shield size={18} color={tokens.colors.steel} />
-              <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}>
+              <Shield size={18} color={'var(--text-secondary)'} />
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 Miljo
               </span>
             </div>
@@ -131,10 +127,10 @@ export default function AdminSystemOverview({
               style={{
                 display: 'inline-block',
                 padding: '6px 12px',
-                borderRadius: tokens.borderRadius.sm,
+                borderRadius: 'var(--radius-sm)',
                 backgroundColor: envStyle.bg,
                 color: envStyle.text,
-                ...typography.body as React.CSSProperties,
+                fontSize: '15px', lineHeight: '20px',
                 fontWeight: 600,
                 textTransform: 'capitalize',
               }}
@@ -146,19 +142,19 @@ export default function AdminSystemOverview({
           {/* Version */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Activity size={18} color={tokens.colors.steel} />
-              <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}>
+              <Activity size={18} color={'var(--text-secondary)'} />
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 Versjon
               </span>
             </div>
-            <span style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)' }}>
               v{systemStatus.version}
             </span>
           </div>
@@ -166,19 +162,19 @@ export default function AdminSystemOverview({
           {/* Uptime */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Clock size={18} color={tokens.colors.steel} />
-              <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}>
+              <Clock size={18} color={'var(--text-secondary)'} />
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 Oppetid
               </span>
             </div>
-            <span style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)' }}>
               {formatUptime(systemStatus.uptimeHours)}
             </span>
           </div>
@@ -187,17 +183,17 @@ export default function AdminSystemOverview({
         {/* Feature Flags */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             overflow: 'hidden',
           }}
         >
-          <div style={{ padding: '20px', borderBottom: `1px solid ${tokens.colors.mist}` }}>
-            <h2 style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+          <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}` }}>
+            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
               Feature Flags
             </h2>
-            <p style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, margin: 0, marginTop: '4px' }}>
+            <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
               Aktive systemfunksjoner
             </p>
           </div>
@@ -211,10 +207,10 @@ export default function AdminSystemOverview({
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '16px 20px',
-                  borderBottom: index < featureFlags.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
+                  borderBottom: index < featureFlags.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
                 }}
               >
-                <span style={{ ...typography.body as React.CSSProperties, color: tokens.colors.charcoal }}>
+                <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
                   {flag.key}
                 </span>
                 <div
@@ -223,20 +219,20 @@ export default function AdminSystemOverview({
                     alignItems: 'center',
                     gap: '8px',
                     padding: '4px 10px',
-                    borderRadius: tokens.borderRadius.sm,
-                    backgroundColor: flag.enabled ? `${tokens.colors.success}15` : `${tokens.colors.error}15`,
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: flag.enabled ? 'rgba(var(--success-rgb), 0.15)' : 'rgba(var(--error-rgb), 0.15)',
                   }}
                 >
                   {flag.enabled ? (
-                    <CheckCircle size={16} color={tokens.colors.success} />
+                    <CheckCircle size={16} color={'var(--success)'} />
                   ) : (
-                    <XCircle size={16} color={tokens.colors.error} />
+                    <XCircle size={16} color={'var(--error)'} />
                   )}
                   <span
                     style={{
-                      ...typography.caption as React.CSSProperties,
+                      fontSize: '12px', lineHeight: '16px',
                       fontWeight: 500,
-                      color: flag.enabled ? tokens.colors.success : tokens.colors.error,
+                      color: flag.enabled ? 'var(--success)' : 'var(--error)',
                     }}
                   >
                     {flag.enabled ? 'Aktivert' : 'Deaktivert'}

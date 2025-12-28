@@ -62,7 +62,7 @@ const GoalsPage: React.FC = () => {
       >
         <section style={styles.section}>
           <StateCard
-            variant="info"
+            variant="loading"
             title="Laster..."
             description="Henter dine mål"
           />

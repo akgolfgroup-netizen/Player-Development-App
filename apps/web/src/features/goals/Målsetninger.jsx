@@ -1,37 +1,37 @@
 import React, { useState } from 'react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import StateCard from '../../ui/composites/StateCard';
 
 // =====================================================
 // AK GOLF - MÅLSETNINGER SKJERM
 // IUP App - Individuell Utviklingsplan
 // Versjon: 3.0
-// Design System: Blue Palette 01 v3.0
+// Design System: Blue Palette 01 v3.0 - UiCanon CSS Variables
 // =====================================================
 
-// Design tokens from the app's design system
+// UiCanon: Semantic CSS variables
 const colors = {
   // Primary colors
-  primary: tokens.colors.primary,
-  primaryLight: tokens.colors.primaryLight,
-  forest: tokens.colors.forest,
-  forestLight: tokens.colors.forestLight,
-  foam: tokens.colors.foam,
-  ivory: tokens.colors.ivory,
-  snow: tokens.colors.snow,
-  gold: tokens.colors.gold,
-  white: tokens.colors.white,
+  primary: 'var(--accent)',
+  primaryLight: 'rgba(var(--accent-rgb), 0.1)',
+  forest: 'var(--accent)',
+  forestLight: 'rgba(var(--accent-rgb), 0.1)',
+  foam: 'var(--bg-tertiary)',
+  ivory: 'var(--bg-secondary)',
+  snow: 'var(--bg-secondary)',
+  gold: 'var(--achievement)',
+  white: 'var(--bg-primary)',
 
   // Status colors
-  success: tokens.colors.success,
-  warning: tokens.colors.warning,
-  error: tokens.colors.error,
+  success: 'var(--success)',
+  warning: 'var(--warning)',
+  error: 'var(--error)',
 
   // Neutrals
-  charcoal: tokens.colors.charcoal,
-  steel: tokens.colors.steel,
-  mist: tokens.colors.mist,
-  cloud: tokens.colors.cloud,
+  charcoal: 'var(--text-primary)',
+  steel: 'var(--text-secondary)',
+  mist: 'var(--border-default)',
+  cloud: 'var(--bg-secondary)',
 };
 
 // =====================================================
@@ -44,19 +44,19 @@ const Card = ({ children, className = '', onClick, style: customStyle = {} }) =>
     onClick={onClick}
     style={{
       backgroundColor: colors.white,
-      borderRadius: tokens.radius.lg,
-      boxShadow: tokens.shadows.card,
+      borderRadius: 'var(--radius-lg)',
+      boxShadow: 'var(--shadow-card)',
       border: `1px solid ${colors.mist}`,
       cursor: onClick ? 'pointer' : 'default',
       transition: 'all 0.2s ease',
       ...customStyle
     }}
     onMouseEnter={onClick ? (e) => {
-      e.currentTarget.style.boxShadow = tokens.shadows.elevated;
+      e.currentTarget.style.boxShadow = 'var(--shadow-card)';
       e.currentTarget.style.transform = 'translateY(-1px)';
     } : undefined}
     onMouseLeave={onClick ? (e) => {
-      e.currentTarget.style.boxShadow = tokens.shadows.card;
+      e.currentTarget.style.boxShadow = 'var(--shadow-card)';
       e.currentTarget.style.transform = 'translateY(0)';
     } : undefined}
   >
@@ -64,23 +64,23 @@ const Card = ({ children, className = '', onClick, style: customStyle = {} }) =>
   </div>
 );
 
-const Badge = ({ children, variant = 'default' }) => {
+const Badge = ({ children, variant = 'neutral' }) => {
   const variants = {
-    default: { bg: colors.mist, color: colors.charcoal },
-    primary: { bg: `${colors.primary}15`, color: colors.forest },
-    success: { bg: `${colors.success}15`, color: colors.success },
-    warning: { bg: `${colors.warning}15`, color: colors.warning },
-    error: { bg: `${colors.error}15`, color: colors.error },
-    gold: { bg: `${colors.gold}15`, color: colors.gold }
+    neutral: { bg: colors.mist, color: colors.charcoal },
+    accent: { bg: 'rgba(var(--accent-rgb), 0.15)', color: colors.forest },
+    success: { bg: 'rgba(var(--success-rgb), 0.15)', color: colors.success },
+    warning: { bg: 'rgba(var(--warning-rgb), 0.15)', color: colors.warning },
+    error: { bg: 'rgba(var(--error-rgb), 0.15)', color: colors.error },
+    achievement: { bg: 'rgba(var(--achievement-rgb), 0.15)', color: colors.gold }
   };
 
-  const style = variants[variant] || variants.default;
+  const style = variants[variant] || variants.neutral;
 
   return (
     <span
       style={{
-        padding: `${tokens.spacing[1]} ${tokens.spacing[2]}`,
-        borderRadius: tokens.radius.full,
+        padding: `${'4px'} ${'8px'}`,
+        borderRadius: '9999px',
         fontSize: '12px',
         fontWeight: 500,
         backgroundColor: style.bg,
@@ -102,9 +102,9 @@ const Button = ({ children, variant = 'primary', size = 'md', onClick, icon, dis
   };
 
   const sizes = {
-    sm: { padding: `${tokens.spacing[2]} ${tokens.spacing[3]}`, fontSize: '12px' },
-    md: { padding: `${tokens.spacing[3]} ${tokens.spacing[4]}`, fontSize: '14px' },
-    lg: { padding: `${tokens.spacing[4]} ${tokens.spacing[6]}`, fontSize: '16px' }
+    sm: { padding: `${'8px'} ${'12px'}`, fontSize: '12px' },
+    md: { padding: `${'12px'} ${'16px'}`, fontSize: '14px' },
+    lg: { padding: `${'16px'} ${'24px'}`, fontSize: '16px' }
   };
 
   const variantStyle = variants[variant];
@@ -119,11 +119,11 @@ const Button = ({ children, variant = 'primary', size = 'md', onClick, icon, dis
         backgroundColor: variantStyle.bg,
         color: variantStyle.color,
         border: variantStyle.border,
-        borderRadius: tokens.radius.lg,
+        borderRadius: 'var(--radius-lg)',
         fontWeight: 500,
         display: 'flex',
         alignItems: 'center',
-        gap: tokens.spacing[2],
+        gap: '8px',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.5 : 1,
         transition: 'all 0.15s ease'
@@ -150,7 +150,7 @@ const ProgressBar = ({ value, max = 100, showLabel = false, height = 8, color })
       <div
         style={{
           width: '100%',
-          borderRadius: tokens.radius.full,
+          borderRadius: '9999px',
           overflow: 'hidden',
           backgroundColor: colors.mist,
           height: `${height}px`
@@ -159,7 +159,7 @@ const ProgressBar = ({ value, max = 100, showLabel = false, height = 8, color })
         <div
           style={{
             height: '100%',
-            borderRadius: tokens.radius.full,
+            borderRadius: '9999px',
             transition: 'width 0.3s ease',
             width: `${percentage}%`,
             backgroundColor: barColor
@@ -167,7 +167,7 @@ const ProgressBar = ({ value, max = 100, showLabel = false, height = 8, color })
         />
       </div>
       {showLabel && (
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: tokens.spacing[1] }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
           <span style={{ fontSize: '12px', color: colors.steel }}>{value}</span>
           <span style={{ fontSize: '12px', color: colors.steel }}>{max}</span>
         </div>
@@ -199,6 +199,15 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
     prosess: colors.steel
   };
 
+  const categoryBgColors = {
+    score: 'rgba(var(--accent-rgb), 0.2)',
+    teknikk: 'rgba(var(--accent-rgb), 0.1)',
+    fysisk: 'rgba(var(--success-rgb), 0.2)',
+    mental: 'rgba(var(--achievement-rgb), 0.2)',
+    turnering: 'rgba(var(--warning-rgb), 0.2)',
+    prosess: 'rgba(var(--text-secondary-rgb), 0.2)'
+  };
+
   const timeframeLabels = {
     short: 'Kortsiktig',
     medium: 'Mellomlang',
@@ -209,19 +218,19 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
   const isCompleted = goal.status === 'completed';
 
   return (
-    <Card style={{ padding: tokens.spacing[4], opacity: isCompleted ? 0.75 : 1 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: tokens.spacing[3] }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing[3] }}>
+    <Card style={{ padding: '16px', opacity: isCompleted ? 0.75 : 1 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div
             style={{
               width: '40px',
               height: '40px',
-              borderRadius: tokens.radius.lg,
+              borderRadius: 'var(--radius-lg)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '18px',
-              backgroundColor: `${categoryColors[goal.category]}20`
+              backgroundColor: categoryBgColors[goal.category]
             }}
           >
             {categoryIcons[goal.category]}
@@ -237,12 +246,12 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
             >
               {goal.title}
             </h3>
-            <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing[2], marginTop: tokens.spacing[1], flexWrap: 'wrap' }}>
-              <Badge variant={goal.timeframe === 'short' ? 'warning' : goal.timeframe === 'long' ? 'primary' : 'default'}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px', flexWrap: 'wrap' }}>
+              <Badge variant={goal.timeframe === 'short' ? 'warning' : goal.timeframe === 'long' ? 'accent' : 'neutral'}>
                 {timeframeLabels[goal.timeframe]}
               </Badge>
               {goal.sharedWithCoach && (
-                <Badge variant="primary">
+                <Badge variant="accent">
                   👥 Delt med trener
                 </Badge>
               )}
@@ -255,11 +264,11 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing[2] }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={() => onShareWithCoach && onShareWithCoach(goal.id)}
             style={{
-              padding: tokens.spacing[1],
+              padding: '4px',
               color: goal.sharedWithCoach ? colors.primary : colors.steel,
               cursor: 'pointer',
               background: 'none',
@@ -276,7 +285,7 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
             style={{
               width: '24px',
               height: '24px',
-              borderRadius: tokens.radius.full,
+              borderRadius: '9999px',
               border: `2px solid ${isCompleted ? colors.success : colors.mist}`,
               backgroundColor: isCompleted ? colors.success : 'transparent',
               display: 'flex',
@@ -290,7 +299,7 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
           </button>
           <button
             onClick={() => onEdit(goal)}
-            style={{ padding: tokens.spacing[1], color: colors.steel, cursor: 'pointer', background: 'none', border: 'none' }}
+            style={{ padding: '4px', color: colors.steel, cursor: 'pointer', background: 'none', border: 'none' }}
           >
             ✏️
           </button>
@@ -298,15 +307,15 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
       </div>
 
       {goal.description && (
-        <p style={{ fontSize: '14px', color: colors.steel, margin: 0, marginBottom: tokens.spacing[3] }}>
+        <p style={{ fontSize: '14px', color: colors.steel, margin: 0, marginBottom: '12px' }}>
           {goal.description}
         </p>
       )}
 
       {/* Progress */}
       {goal.measurable && (
-        <div style={{ marginBottom: tokens.spacing[3] }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: tokens.spacing[2] }}>
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
             <span style={{ fontSize: '14px', fontWeight: 500, color: colors.charcoal }}>
               {goal.current} / {goal.target} {goal.unit}
             </span>
@@ -325,11 +334,11 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
             <button
               onClick={() => onUpdateProgress(goal)}
               style={{
-                marginTop: tokens.spacing[2],
-                padding: `${tokens.spacing[2]} ${tokens.spacing[3]}`,
+                marginTop: '8px',
+                padding: `${'8px'} ${'12px'}`,
                 backgroundColor: colors.primary,
                 color: 'white',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '13px',
                 fontWeight: 500,
                 border: 'none',
@@ -337,7 +346,7 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: tokens.spacing[2]
+                gap: '8px'
               }}
               onMouseEnter={(e) => e.target.style.backgroundColor = colors.primaryLight}
               onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary}
@@ -392,7 +401,7 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
               <div
                 key={comment.id}
                 className="p-2 rounded-lg"
-                style={{ backgroundColor: `${colors.primary}05`, borderLeft: `2px solid ${colors.primary}` }}
+                style={{ backgroundColor: 'rgba(var(--accent-rgb), 0.05)', borderLeft: `2px solid ${colors.primary}` }}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium" style={{ color: colors.charcoal }}>
@@ -505,7 +514,7 @@ const GoalModal = ({ goal, onSave, onClose, onDelete }) => {
                   className="p-3 rounded-xl border text-center transition-all"
                   style={{
                     borderColor: formData.category === cat.id ? colors.forest : colors.mist,
-                    backgroundColor: formData.category === cat.id ? `${colors.forest}10` : 'white'
+                    backgroundColor: formData.category === cat.id ? 'rgba(var(--accent-rgb), 0.1)' : 'white'
                   }}
                 >
                   <div className="text-xl mb-1">{cat.icon}</div>
@@ -528,7 +537,7 @@ const GoalModal = ({ goal, onSave, onClose, onDelete }) => {
                   className="w-full p-3 rounded-xl border text-left text-sm transition-all"
                   style={{
                     borderColor: formData.timeframe === tf.id ? colors.forest : colors.mist,
-                    backgroundColor: formData.timeframe === tf.id ? `${colors.forest}10` : 'white'
+                    backgroundColor: formData.timeframe === tf.id ? 'rgba(var(--accent-rgb), 0.1)' : 'white'
                   }}
                 >
                   {tf.label}
@@ -631,16 +640,16 @@ const GoalModal = ({ goal, onSave, onClose, onDelete }) => {
 const CategoryFilter = ({ categories, selected, onSelect }) => (
   <div style={{
     display: 'flex',
-    gap: tokens.spacing[2],
+    gap: '8px',
     overflowX: 'auto',
-    paddingBottom: tokens.spacing[2],
-    marginBottom: tokens.spacing[3]
+    paddingBottom: '8px',
+    marginBottom: '12px'
   }}>
     <button
       onClick={() => onSelect(null)}
       style={{
-        padding: `${tokens.spacing[2]} ${tokens.spacing[4]}`,
-        borderRadius: tokens.radius.full,
+        padding: `${'8px'} ${'16px'}`,
+        borderRadius: '9999px',
         fontSize: '14px',
         fontWeight: 500,
         whiteSpace: 'nowrap',
@@ -658,15 +667,15 @@ const CategoryFilter = ({ categories, selected, onSelect }) => (
         key={cat.id}
         onClick={() => onSelect(cat.id)}
         style={{
-          padding: `${tokens.spacing[2]} ${tokens.spacing[4]}`,
-          borderRadius: tokens.radius.full,
+          padding: `${'8px'} ${'16px'}`,
+          borderRadius: '9999px',
           fontSize: '14px',
           fontWeight: 500,
           whiteSpace: 'nowrap',
           transition: 'all 0.15s ease',
           display: 'flex',
           alignItems: 'center',
-          gap: tokens.spacing[1],
+          gap: '4px',
           border: 'none',
           cursor: 'pointer',
           backgroundColor: selected === cat.id ? colors.primary : colors.snow,
@@ -938,30 +947,30 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
         margin: '0 auto',
       }}>
         <div style={{
-          padding: tokens.spacing[3],
-          borderRadius: tokens.radius.lg,
+          padding: '12px',
+          borderRadius: 'var(--radius-lg)',
           backgroundColor: colors.white,
-          boxShadow: tokens.shadows.card,
+          boxShadow: 'var(--shadow-card)',
           textAlign: 'center'
         }}>
           <div style={{ fontSize: '24px', fontWeight: 700, color: colors.primary }}>{activeGoals.length}</div>
           <div style={{ fontSize: '12px', color: colors.steel }}>Aktive</div>
         </div>
         <div style={{
-          padding: tokens.spacing[3],
-          borderRadius: tokens.radius.lg,
+          padding: '12px',
+          borderRadius: 'var(--radius-lg)',
           backgroundColor: colors.white,
-          boxShadow: tokens.shadows.card,
+          boxShadow: 'var(--shadow-card)',
           textAlign: 'center'
         }}>
           <div style={{ fontSize: '24px', fontWeight: 700, color: colors.success }}>{completedGoals.length}</div>
           <div style={{ fontSize: '12px', color: colors.steel }}>Fullført</div>
         </div>
         <div style={{
-          padding: tokens.spacing[3],
-          borderRadius: tokens.radius.lg,
+          padding: '12px',
+          borderRadius: 'var(--radius-lg)',
           backgroundColor: colors.white,
-          boxShadow: tokens.shadows.card,
+          boxShadow: 'var(--shadow-card)',
           textAlign: 'center'
         }}>
           <div style={{ fontSize: '24px', fontWeight: 700, color: colors.primary }}>{Math.round(totalProgress)}%</div>
@@ -972,7 +981,7 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
       {/* Content */}
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* View mode tabs */}
-        <div style={{ display: 'flex', gap: tokens.spacing[2], marginBottom: tokens.spacing[4] }}>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
           {[
             { id: 'active', label: 'Aktive', count: activeGoals.length },
             { id: 'completed', label: 'Fullførte', count: completedGoals.length },
@@ -982,14 +991,14 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
               key={tab.id}
               onClick={() => setViewMode(tab.id)}
               style={{
-                padding: `${tokens.spacing[2]} ${tokens.spacing[4]}`,
-                borderRadius: tokens.radius.lg,
+                padding: `${'8px'} ${'16px'}`,
+                borderRadius: 'var(--radius-lg)',
                 fontSize: '14px',
                 fontWeight: 500,
                 transition: 'all 0.15s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: tokens.spacing[2],
+                gap: '8px',
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: viewMode === tab.id ? colors.primary : colors.white,
@@ -999,8 +1008,8 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
               {tab.label}
               <span
                 style={{
-                  padding: `2px ${tokens.spacing[2]}`,
-                  borderRadius: tokens.radius.full,
+                  padding: `2px ${'8px'}`,
+                  borderRadius: '9999px',
                   fontSize: '12px',
                   backgroundColor: viewMode === tab.id ? 'rgba(255,255,255,0.2)' : colors.snow,
                   color: viewMode === tab.id ? colors.white : colors.steel
@@ -1020,7 +1029,7 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
         />
 
         {/* Goals list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing[3] }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {filteredGoals.length > 0 ? (
             filteredGoals.map(goal => (
               <GoalCard
@@ -1033,14 +1042,11 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
               />
             ))
           ) : (
-            <div style={{ textAlign: 'center', padding: `${tokens.spacing[12]} 0` }}>
-              <span style={{ fontSize: '48px' }}>🎯</span>
-              <p style={{ marginTop: tokens.spacing[4], fontSize: '14px', color: colors.steel }}>
-                {viewMode === 'completed'
-                  ? 'Ingen fullførte mål ennå'
-                  : 'Ingen mål i denne kategorien'}
-              </p>
-              <div style={{ marginTop: tokens.spacing[4], display: 'flex', justifyContent: 'center' }}>
+            <StateCard
+              variant="empty"
+              title={viewMode === 'completed' ? 'Ingen fullførte mål ennå' : 'Ingen mål i denne kategorien'}
+              description={viewMode === 'completed' ? 'Fullfør noen mål for å se dem her.' : 'Prøv å justere filteret eller opprett et nytt mål.'}
+              action={
                 <Button
                   variant="primary"
                   onClick={() => {
@@ -1050,21 +1056,21 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
                 >
                   Opprett ditt første mål
                 </Button>
-              </div>
-            </div>
+              }
+            />
           )}
         </div>
 
         {/* Inspirasjon */}
         {viewMode === 'active' && (
-          <Card style={{ padding: tokens.spacing[4], marginTop: tokens.spacing[6], backgroundColor: `${colors.gold}10` }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: tokens.spacing[3] }}>
+          <Card style={{ padding: '16px', marginTop: '24px', backgroundColor: 'rgba(var(--achievement-rgb), 0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
               <span style={{ fontSize: '24px' }}>💡</span>
               <div>
                 <h4 style={{ fontWeight: 600, fontSize: '14px', color: colors.charcoal, margin: 0 }}>
                   Tips for gode mål
                 </h4>
-                <p style={{ fontSize: '12px', color: colors.steel, margin: 0, marginTop: tokens.spacing[1] }}>
+                <p style={{ fontSize: '12px', color: colors.steel, margin: 0, marginTop: '4px' }}>
                   Bruk SMART-metoden: Spesifikke, Målbare, Oppnåelige, Relevante og Tidsbestemte mål
                   gir best resultater.
                 </p>

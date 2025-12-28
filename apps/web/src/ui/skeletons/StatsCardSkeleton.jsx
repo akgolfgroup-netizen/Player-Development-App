@@ -2,38 +2,47 @@ import React from 'react';
 import { SkeletonPulse, SkeletonCard } from './SkeletonBase';
 
 /**
- * Skeleton for training stats widget
+ * Stats card skeleton - UI Canon compliant
+ * Uses semantic CSS variables
  */
 export const StatsCardSkeleton = () => (
   <SkeletonCard>
     {/* Title */}
-    <SkeletonPulse className="h-5 w-32 mb-4" />
+    <SkeletonPulse height="20px" width="128px" style={{ marginBottom: '16px' }} />
 
     {/* Stats grid */}
-    <div className="grid grid-cols-3 gap-4 mb-4">
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' }}>
       {[1, 2, 3].map(i => (
-        <div key={i} className="text-center p-3 bg-ak-snow rounded-xl">
-          <SkeletonPulse className="h-8 w-12 mx-auto mb-2" />
-          <SkeletonPulse className="h-3 w-16 mx-auto" />
+        <div
+          key={i}
+          style={{
+            textAlign: 'center',
+            padding: '12px',
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-lg)',
+          }}
+        >
+          <SkeletonPulse height="32px" width="48px" style={{ margin: '0 auto 8px auto' }} />
+          <SkeletonPulse height="12px" width="64px" style={{ margin: '0 auto' }} />
         </div>
       ))}
     </div>
 
     {/* Progress bars */}
-    <div className="space-y-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <div>
-        <div className="flex justify-between mb-1">
-          <SkeletonPulse className="h-3 w-20" />
-          <SkeletonPulse className="h-3 w-12" />
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <SkeletonPulse height="12px" width="80px" />
+          <SkeletonPulse height="12px" width="48px" />
         </div>
-        <SkeletonPulse className="h-2 w-full rounded-full" />
+        <SkeletonPulse height="8px" width="100%" rounded />
       </div>
       <div>
-        <div className="flex justify-between mb-1">
-          <SkeletonPulse className="h-3 w-24" />
-          <SkeletonPulse className="h-3 w-12" />
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <SkeletonPulse height="12px" width="96px" />
+          <SkeletonPulse height="12px" width="48px" />
         </div>
-        <SkeletonPulse className="h-2 w-full rounded-full" />
+        <SkeletonPulse height="8px" width="100%" rounded />
       </div>
     </div>
   </SkeletonCard>

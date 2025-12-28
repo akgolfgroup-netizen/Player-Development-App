@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Loader, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
+import { authAPI } from '../../services/api';
 
 const VerifyResetToken = () => {
   const [searchParams] = useSearchParams();
@@ -22,17 +23,10 @@ const VerifyResetToken = () => {
       }
 
       try {
-        // TODO: Replace with actual API call
-        // const response = await authService.verifyResetToken(token, email);
+        const response = await authAPI.verifyResetToken(token);
+        const { valid } = response.data;
 
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        // Simulate token validation
-        // In a real app, this would check token expiry, validity, etc.
-        const isValid = Math.random() > 0.3; // 70% success rate for demo
-
-        if (isValid) {
+        if (valid) {
           setStatus('valid');
           // Redirect to reset password page after brief delay
           setTimeout(() => {
@@ -43,8 +37,14 @@ const VerifyResetToken = () => {
           setError('Denne lenken har utløpt eller er allerede brukt');
         }
       } catch (err) {
-        setStatus('invalid');
-        setError(err.message || 'Kunne ikke verifisere token');
+        const errorMessage = err.response?.data?.message || err.message;
+        if (errorMessage?.includes('expired') || errorMessage?.includes('utløpt')) {
+          setStatus('expired');
+          setError('Denne lenken har utløpt eller er allerede brukt');
+        } else {
+          setStatus('invalid');
+          setError(errorMessage || 'Kunne ikke verifisere token');
+        }
       }
     };
 
@@ -62,7 +62,7 @@ const VerifyResetToken = () => {
                 height: '80px',
                 margin: '0 auto 24px',
                 borderRadius: '50%',
-                backgroundColor: `${tokens.colors.primary}15`,
+                backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -70,7 +70,7 @@ const VerifyResetToken = () => {
             >
               <Loader
                 size={40}
-                color={tokens.colors.primary}
+                color={'var(--accent)'}
                 style={{
                   animation: 'spin 1s linear infinite',
                 }}
@@ -78,16 +78,16 @@ const VerifyResetToken = () => {
             </div>
 
             <h2 style={{
-              ...tokens.typography.title2,
-              color: tokens.colors.charcoal,
+              fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Verifiserer lenke...
             </h2>
 
             <p style={{
-              ...tokens.typography.subheadline,
-              color: tokens.colors.steel,
+              fontSize: '15px', lineHeight: '20px',
+              color: 'var(--text-secondary)',
             }}>
               Vennligst vent mens vi sjekker din tilbakestillingslenke
             </p>
@@ -112,26 +112,26 @@ const VerifyResetToken = () => {
                 height: '80px',
                 margin: '0 auto 24px',
                 borderRadius: '50%',
-                backgroundColor: `${tokens.colors.success}15`,
+                backgroundColor: `${'var(--success)'}15`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <CheckCircle size={40} color={tokens.colors.success} />
+              <CheckCircle size={40} color={'var(--success)'} />
             </div>
 
             <h2 style={{
-              ...tokens.typography.title2,
-              color: tokens.colors.charcoal,
+              fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Lenke bekreftet!
             </h2>
 
             <p style={{
-              ...tokens.typography.subheadline,
-              color: tokens.colors.steel,
+              fontSize: '15px', lineHeight: '20px',
+              color: 'var(--text-secondary)',
             }}>
               Videresender deg til tilbakestilling av passord...
             </p>
@@ -147,26 +147,26 @@ const VerifyResetToken = () => {
                 height: '80px',
                 margin: '0 auto 24px',
                 borderRadius: '50%',
-                backgroundColor: `${tokens.colors.warning}15`,
+                backgroundColor: `${'var(--warning)'}15`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <AlertCircle size={40} color={tokens.colors.warning} />
+              <AlertCircle size={40} color={'var(--warning)'} />
             </div>
 
             <h2 style={{
-              ...tokens.typography.title2,
-              color: tokens.colors.charcoal,
+              fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Lenken har utløpt
             </h2>
 
             <p style={{
-              ...tokens.typography.subheadline,
-              color: tokens.colors.steel,
+              fontSize: '15px', lineHeight: '20px',
+              color: 'var(--text-secondary)',
               marginBottom: '24px',
             }}>
               {error || 'Denne tilbakestillingslenken er ikke lenger gyldig. Tilbakestillingslenker utløper etter 1 time av sikkerhetsgrunner.'}
@@ -175,14 +175,14 @@ const VerifyResetToken = () => {
             <div
               style={{
                 padding: '16px',
-                backgroundColor: tokens.colors.snow,
-                borderRadius: tokens.radius.md,
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-md)',
                 marginBottom: '24px',
               }}
             >
               <p style={{
-                ...tokens.typography.footnote,
-                color: tokens.colors.steel,
+                fontSize: '13px', lineHeight: '18px',
+                color: 'var(--text-secondary)',
                 margin: 0,
               }}>
                 Du kan be om en ny lenke fra innloggingssiden
@@ -194,15 +194,15 @@ const VerifyResetToken = () => {
               style={{
                 display: 'inline-block',
                 padding: '12px 24px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 textDecoration: 'none',
-                borderRadius: tokens.radius.md,
-                ...tokens.typography.headline,
+                borderRadius: 'var(--radius-md)',
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                 transition: 'background-color 0.2s',
               }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primaryLight}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primary}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
             >
               Be om ny lenke
             </Link>
@@ -218,26 +218,26 @@ const VerifyResetToken = () => {
                 height: '80px',
                 margin: '0 auto 24px',
                 borderRadius: '50%',
-                backgroundColor: `${tokens.colors.error}15`,
+                backgroundColor: `${'var(--error)'}15`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <XCircle size={40} color={tokens.colors.error} />
+              <XCircle size={40} color={'var(--error)'} />
             </div>
 
             <h2 style={{
-              ...tokens.typography.title2,
-              color: tokens.colors.charcoal,
+              fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Ugyldig lenke
             </h2>
 
             <p style={{
-              ...tokens.typography.subheadline,
-              color: tokens.colors.steel,
+              fontSize: '15px', lineHeight: '20px',
+              color: 'var(--text-secondary)',
               marginBottom: '24px',
             }}>
               {error || 'Denne lenken er ugyldig eller har blitt brukt. Vennligst be om en ny lenke.'}
@@ -249,15 +249,15 @@ const VerifyResetToken = () => {
                 style={{
                   display: 'inline-block',
                   padding: '12px 24px',
-                  backgroundColor: tokens.colors.primary,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--accent)',
+                  color: 'var(--bg-primary)',
                   textDecoration: 'none',
-                  borderRadius: tokens.radius.md,
-                  ...tokens.typography.headline,
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                   transition: 'background-color 0.2s',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primaryLight}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primary}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
               >
                 Be om ny lenke
               </Link>
@@ -267,16 +267,16 @@ const VerifyResetToken = () => {
                 style={{
                   display: 'inline-block',
                   padding: '12px 24px',
-                  backgroundColor: tokens.colors.snow,
-                  color: tokens.colors.primary,
+                  backgroundColor: 'var(--bg-secondary)',
+                  color: 'var(--accent)',
                   textDecoration: 'none',
-                  borderRadius: tokens.radius.md,
-                  ...tokens.typography.headline,
-                  border: `1px solid ${tokens.colors.mist}`,
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  border: '1px solid var(--border-default)',
                   transition: 'background-color 0.2s',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.cloud}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.snow}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
               >
                 Tilbake til innlogging
               </Link>
@@ -296,24 +296,24 @@ const VerifyResetToken = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: tokens.colors.snow,
-        fontFamily: tokens.typography.fontFamily,
+        backgroundColor: 'var(--bg-secondary)',
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
         padding: '24px',
       }}
     >
       <div style={{ width: '100%', maxWidth: '500px' }}>
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <AKLogo size={60} color={tokens.colors.primary} />
+          <AKLogo size={60} color={'var(--accent)'} />
         </div>
 
         {/* Main Card */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
             padding: '48px 32px',
-            boxShadow: tokens.shadows.elevated,
+            boxShadow: 'var(--shadow-card)',
           }}
         >
           {renderContent()}
@@ -324,21 +324,21 @@ const VerifyResetToken = () => {
           style={{
             marginTop: '24px',
             padding: '16px',
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
             textAlign: 'center',
           }}
         >
           <p style={{
-            ...tokens.typography.footnote,
-            color: tokens.colors.steel,
+            fontSize: '13px', lineHeight: '18px',
+            color: 'var(--text-secondary)',
             margin: 0,
           }}>
             Trenger du hjelp? Kontakt{' '}
             <a
               href="mailto:support@akgolf.no"
               style={{
-                color: tokens.colors.primary,
+                color: 'var(--accent)',
                 textDecoration: 'none',
               }}
             >

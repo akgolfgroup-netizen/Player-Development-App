@@ -4,7 +4,6 @@ import {
   CheckCircle, AlertCircle, Tent, Target, Dumbbell,
   BookOpen, Utensils, Car
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -144,8 +143,8 @@ const getStatusConfig = (status, isRegistered) => {
   if (isRegistered) {
     return {
       label: 'Pameldt',
-      color: tokens.colors.success,
-      bg: `${tokens.colors.success}15`,
+      color: 'var(--success)',
+      bg: 'rgba(var(--success-rgb), 0.15)',
       icon: CheckCircle,
     };
   }
@@ -154,29 +153,29 @@ const getStatusConfig = (status, isRegistered) => {
     case 'registration_open':
       return {
         label: 'Apen for pamelding',
-        color: tokens.colors.primary,
-        bg: `${tokens.colors.primary}15`,
+        color: 'var(--accent)',
+        bg: 'rgba(var(--accent-rgb), 0.15)',
         icon: Calendar,
       };
     case 'registration_closed':
       return {
         label: 'Fullt',
-        color: tokens.colors.error,
-        bg: `${tokens.colors.error}15`,
+        color: 'var(--error)',
+        bg: 'rgba(var(--error-rgb), 0.15)',
         icon: AlertCircle,
       };
     case 'upcoming':
       return {
         label: 'Kommer snart',
-        color: tokens.colors.steel,
-        bg: `${tokens.colors.steel}15`,
+        color: 'var(--text-secondary)',
+        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
         icon: Clock,
       };
     default:
       return {
         label: status,
-        color: tokens.colors.steel,
-        bg: `${tokens.colors.steel}15`,
+        color: 'var(--text-secondary)',
+        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
         icon: Tent,
       };
   }
@@ -185,12 +184,12 @@ const getStatusConfig = (status, isRegistered) => {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'elite':
-      return { label: 'Elite', color: tokens.colors.gold, icon: Target };
+      return { label: 'Elite', color: 'var(--achievement)', icon: Target };
     case 'intensive':
-      return { label: 'Intensiv', color: tokens.colors.primary, icon: Dumbbell };
+      return { label: 'Intensiv', color: 'var(--accent)', icon: Dumbbell };
     case 'training':
     default:
-      return { label: 'Trening', color: tokens.colors.success, icon: Tent };
+      return { label: 'Trening', color: 'var(--success)', icon: Tent };
   }
 };
 
@@ -209,13 +208,13 @@ const CampCard = ({ camp, onSelect }) => {
     <div
       onClick={() => onSelect(camp)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '16px',
         padding: '20px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         cursor: 'pointer',
         transition: 'all 0.2s ease',
-        border: camp.isRegistered ? `2px solid ${tokens.colors.success}` : '2px solid transparent',
+        border: camp.isRegistered ? '2px solid var(--success)' : '2px solid transparent',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
@@ -244,7 +243,7 @@ const CampCard = ({ camp, onSelect }) => {
             <h3 style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               {camp.name}
@@ -283,14 +282,14 @@ const CampCard = ({ camp, onSelect }) => {
       {/* Details */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Calendar size={14} color={tokens.colors.steel} />
-          <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+          <Calendar size={14} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
             {formatDateRange(camp.startDate, camp.endDate)}
           </span>
           <span style={{
             fontSize: '11px',
-            color: tokens.colors.steel,
-            backgroundColor: tokens.colors.snow,
+            color: 'var(--text-secondary)',
+            backgroundColor: 'var(--bg-secondary)',
             padding: '2px 6px',
             borderRadius: '4px',
           }}>
@@ -299,8 +298,8 @@ const CampCard = ({ camp, onSelect }) => {
           {daysUntil > 0 && daysUntil <= 60 && (
             <span style={{
               fontSize: '11px',
-              color: tokens.colors.primary,
-              backgroundColor: `${tokens.colors.primary}10`,
+              color: 'var(--accent)',
+              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
               padding: '2px 6px',
               borderRadius: '4px',
             }}>
@@ -309,18 +308,18 @@ const CampCard = ({ camp, onSelect }) => {
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <MapPin size={14} color={tokens.colors.steel} />
-          <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+          <MapPin size={14} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
             {camp.location}, {camp.country}
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Users size={14} color={tokens.colors.steel} />
-          <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+          <Users size={14} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
             {camp.currentParticipants}/{camp.maxParticipants} pameldte
           </span>
           {camp.currentParticipants >= camp.maxParticipants && (
-            <span style={{ fontSize: '11px', color: tokens.colors.error, fontWeight: 500 }}>
+            <span style={{ fontSize: '11px', color: 'var(--error)', fontWeight: 500 }}>
               (Fullt)
             </span>
           )}
@@ -329,15 +328,15 @@ const CampCard = ({ camp, onSelect }) => {
 
       {/* Program preview */}
       <div style={{ marginBottom: '16px' }}>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel, marginBottom: '6px' }}>Program:</div>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '6px' }}>Program:</div>
         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
           {camp.program.slice(0, 3).map((item, idx) => (
             <span
               key={idx}
               style={{
                 fontSize: '11px',
-                color: tokens.colors.charcoal,
-                backgroundColor: tokens.colors.snow,
+                color: 'var(--text-primary)',
+                backgroundColor: 'var(--bg-secondary)',
                 padding: '4px 8px',
                 borderRadius: '6px',
               }}
@@ -348,7 +347,7 @@ const CampCard = ({ camp, onSelect }) => {
           {camp.program.length > 3 && (
             <span style={{
               fontSize: '11px',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               padding: '4px 8px',
             }}>
               +{camp.program.length - 3} mer
@@ -363,11 +362,11 @@ const CampCard = ({ camp, onSelect }) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingTop: '12px',
-        borderTop: `1px solid ${tokens.colors.mist}`,
+        borderTop: '1px solid var(--border-default)',
       }}>
         <div>
-          <span style={{ fontSize: '12px', color: tokens.colors.steel }}>Pris</span>
-          <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Pris</span>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
             {camp.price.toLocaleString('nb-NO')} kr
           </div>
         </div>
@@ -375,7 +374,7 @@ const CampCard = ({ camp, onSelect }) => {
           display: 'flex',
           alignItems: 'center',
           gap: '4px',
-          color: tokens.colors.primary,
+          color: 'var(--accent)',
           fontSize: '14px',
           fontWeight: 500,
         }}>
@@ -394,7 +393,7 @@ const CampCard = ({ camp, onSelect }) => {
 const PastCampCard = ({ camp }) => {
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '16px',
       display: 'flex',
@@ -405,35 +404,35 @@ const PastCampCard = ({ camp }) => {
         width: '40px',
         height: '40px',
         borderRadius: '10px',
-        backgroundColor: camp.participated ? `${tokens.colors.success}15` : tokens.colors.snow,
+        backgroundColor: camp.participated ? 'rgba(var(--success-rgb), 0.15)' : 'var(--bg-secondary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
         {camp.participated ? (
-          <CheckCircle size={20} color={tokens.colors.success} />
+          <CheckCircle size={20} color={'var(--success)'} />
         ) : (
-          <Tent size={20} color={tokens.colors.steel} />
+          <Tent size={20} color={'var(--text-secondary)'} />
         )}
       </div>
 
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+        <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
           {camp.name}
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel, marginTop: '2px' }}>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
           {formatDate(camp.date)} - {camp.location}
         </div>
       </div>
 
       {camp.highlights && (
         <div style={{
-          backgroundColor: `${tokens.colors.gold}15`,
+          backgroundColor: 'rgba(var(--achievement-rgb), 0.15)',
           padding: '6px 10px',
           borderRadius: '8px',
           maxWidth: '200px',
         }}>
-          <div style={{ fontSize: '11px', color: tokens.colors.gold, fontWeight: 500 }}>
+          <div style={{ fontSize: '11px', color: 'var(--achievement)', fontWeight: 500 }}>
             {camp.highlights}
           </div>
         </div>
@@ -470,8 +469,8 @@ const FilterBar = ({ activeFilter, onFilterChange }) => {
             padding: '8px 16px',
             borderRadius: '20px',
             border: 'none',
-            backgroundColor: activeFilter === filter.key ? tokens.colors.primary : tokens.colors.white,
-            color: activeFilter === filter.key ? tokens.colors.white : tokens.colors.charcoal,
+            backgroundColor: activeFilter === filter.key ? 'var(--accent)' : 'var(--bg-primary)',
+            color: activeFilter === filter.key ? 'var(--bg-primary)' : 'var(--text-primary)',
             fontSize: '13px',
             fontWeight: 500,
             cursor: 'pointer',
@@ -508,7 +507,7 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
       padding: '20px',
     }} onClick={onClose}>
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '20px',
         maxWidth: '500px',
         width: '100%',
@@ -518,14 +517,14 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
         {/* Header */}
         <div style={{
           padding: '24px',
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          borderBottom: '1px solid var(--border-default)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: 700,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: '0 0 8px 0',
               }}>
                 {camp.name}
@@ -548,10 +547,10 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
                 height: '32px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: tokens.colors.snow,
+                backgroundColor: 'var(--bg-secondary)',
                 cursor: 'pointer',
                 fontSize: '18px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}
             >
               x
@@ -563,7 +562,7 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
         <div style={{ padding: '24px' }}>
           <p style={{
             fontSize: '14px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             lineHeight: 1.6,
             margin: '0 0 20px 0',
           }}>
@@ -573,30 +572,30 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
           {/* Info grid */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Calendar size={18} color={tokens.colors.primary} />
+              <Calendar size={18} color={'var(--accent)'} />
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {formatDateRange(camp.startDate, camp.endDate)} ({getDuration(camp.startDate, camp.endDate)})
                 </div>
-                <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   Pameldingsfrist: {formatDate(camp.registrationDeadline)}
                 </div>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <MapPin size={18} color={tokens.colors.primary} />
+              <MapPin size={18} color={'var(--accent)'} />
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {camp.location}
                 </div>
-                <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   {camp.country}
                 </div>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Users size={18} color={tokens.colors.primary} />
-              <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+              <Users size={18} color={'var(--accent)'} />
+              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                 {camp.currentParticipants}/{camp.maxParticipants} pameldte - Trener: {camp.coach}
               </div>
             </div>
@@ -605,8 +604,8 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
           {/* Program */}
           <div style={{ marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <BookOpen size={16} color={tokens.colors.primary} />
-              <span style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.charcoal }}>Program</span>
+              <BookOpen size={16} color={'var(--accent)'} />
+              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Program</span>
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {camp.program.map((item, idx) => (
@@ -614,8 +613,8 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
                   key={idx}
                   style={{
                     fontSize: '12px',
-                    color: tokens.colors.charcoal,
-                    backgroundColor: tokens.colors.snow,
+                    color: 'var(--text-primary)',
+                    backgroundColor: 'var(--bg-secondary)',
                     padding: '6px 10px',
                     borderRadius: '8px',
                   }}
@@ -629,8 +628,8 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
           {/* Includes */}
           <div style={{ marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <CheckCircle size={16} color={tokens.colors.success} />
-              <span style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.charcoal }}>Inkludert</span>
+              <CheckCircle size={16} color={'var(--success)'} />
+              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Inkludert</span>
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {camp.includes.map((item, idx) => (
@@ -638,8 +637,8 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
                   key={idx}
                   style={{
                     fontSize: '12px',
-                    color: tokens.colors.success,
-                    backgroundColor: `${tokens.colors.success}10`,
+                    color: 'var(--success)',
+                    backgroundColor: 'rgba(var(--success-rgb), 0.10)',
                     padding: '6px 10px',
                     borderRadius: '8px',
                     display: 'flex',
@@ -658,15 +657,15 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
 
           {/* Price */}
           <div style={{
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             borderRadius: '12px',
             padding: '16px',
             marginBottom: '20px',
           }}>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel, marginBottom: '4px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
               Pris
             </div>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.charcoal }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {camp.price.toLocaleString('nb-NO')} kr
             </div>
           </div>
@@ -680,8 +679,8 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
                 padding: '14px',
                 borderRadius: '12px',
                 border: 'none',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 fontSize: '15px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -699,8 +698,8 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
               gap: '8px',
               padding: '14px',
               borderRadius: '12px',
-              backgroundColor: `${tokens.colors.success}15`,
-              color: tokens.colors.success,
+              backgroundColor: 'rgba(var(--success-rgb), 0.15)',
+              color: 'var(--success)',
               fontSize: '15px',
               fontWeight: 600,
             }}>
@@ -716,8 +715,8 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
               gap: '8px',
               padding: '14px',
               borderRadius: '12px',
-              backgroundColor: tokens.colors.snow,
-              color: tokens.colors.steel,
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-secondary)',
               fontSize: '15px',
               fontWeight: 500,
             }}>
@@ -756,7 +755,7 @@ const SamlingerContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Samlinger"
         subtitle="Treningssamlinger og leirer"
@@ -771,48 +770,48 @@ const SamlingerContainer = () => {
           marginBottom: '16px',
         }}>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
               {camps.length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Kommende</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Kommende</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
               {camps.filter(c => c.isRegistered).length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Pameldt</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Pameldt</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
               {PAST_CAMPS.length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Deltatt i ar</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Deltatt i ar</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.charcoal }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {camps.filter(c => c.status === 'registration_open' && !c.isRegistered).length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Apen pamelding</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Apen pamelding</div>
           </div>
         </div>
 
@@ -826,7 +825,7 @@ const SamlingerContainer = () => {
           <h2 style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Kommende samlinger
@@ -848,13 +847,13 @@ const SamlingerContainer = () => {
             </div>
           ) : (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '16px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <Tent size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <Tent size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen samlinger funnet med valgt filter
               </p>
             </div>
@@ -866,7 +865,7 @@ const SamlingerContainer = () => {
           <h2 style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Tidligere samlinger

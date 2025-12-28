@@ -16,7 +16,8 @@ import {
   X,
   Settings,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface BookingSlot {
   id: string;
@@ -161,13 +162,13 @@ export default function CoachBookingCalendar() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'booked':
-        return { bg: `${tokens.colors.primary}15`, border: tokens.colors.primary };
+        return { bg: 'rgba(var(--accent-rgb), 0.15)', border: 'var(--accent)' };
       case 'pending':
-        return { bg: `${tokens.colors.warning}15`, border: tokens.colors.warning };
+        return { bg: 'rgba(var(--warning-rgb), 0.15)', border: 'var(--warning)' };
       case 'blocked':
-        return { bg: tokens.colors.gray100, border: tokens.colors.gray300 };
+        return { bg: 'var(--bg-tertiary)', border: 'var(--border-default)' };
       default:
-        return { bg: tokens.colors.white, border: tokens.colors.gray200 };
+        return { bg: 'var(--bg-primary)', border: 'var(--border-default)' };
     }
   };
 
@@ -231,7 +232,7 @@ export default function CoachBookingCalendar() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -241,8 +242,8 @@ export default function CoachBookingCalendar() {
           style={{
             width: 48,
             height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `4px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
@@ -255,15 +256,15 @@ export default function CoachBookingCalendar() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           padding: '20px 24px',
         }}
       >
@@ -278,8 +279,8 @@ export default function CoachBookingCalendar() {
           <div>
             <h1
               style={{
-                ...tokens.typography.title1,
-                color: tokens.colors.charcoal,
+                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -287,8 +288,8 @@ export default function CoachBookingCalendar() {
             </h1>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: '4px 0 0',
               }}
             >
@@ -304,10 +305,10 @@ export default function CoachBookingCalendar() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '10px 16px',
-                backgroundColor: stats.pending > 0 ? `${tokens.colors.warning}15` : tokens.colors.white,
-                color: stats.pending > 0 ? '#8B6914' : tokens.colors.charcoal,
-                border: `1px solid ${stats.pending > 0 ? tokens.colors.warning : tokens.colors.gray300}`,
-                borderRadius: tokens.radius.md,
+                backgroundColor: stats.pending > 0 ? 'rgba(var(--warning-rgb), 0.15)' : 'var(--bg-primary)',
+                color: stats.pending > 0 ? '#8B6914' : 'var(--text-primary)',
+                border: `1px solid ${stats.pending > 0 ? 'var(--warning)' : 'var(--border-default)'}`,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -319,8 +320,8 @@ export default function CoachBookingCalendar() {
                 <span
                   style={{
                     padding: '2px 8px',
-                    backgroundColor: tokens.colors.warning,
-                    color: tokens.colors.white,
+                    backgroundColor: 'var(--warning)',
+                    color: 'var(--bg-primary)',
                     borderRadius: '10px',
                     fontSize: '12px',
                     fontWeight: 600,
@@ -337,10 +338,10 @@ export default function CoachBookingCalendar() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '10px 16px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -360,8 +361,8 @@ export default function CoachBookingCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.primary}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
             <div
@@ -369,10 +370,10 @@ export default function CoachBookingCalendar() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                backgroundColor: tokens.colors.primary,
+                backgroundColor: 'var(--accent)',
               }}
             />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.booked}</strong> bookede
             </span>
           </div>
@@ -382,8 +383,8 @@ export default function CoachBookingCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.warning}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--warning-rgb), 0.10)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
             <div
@@ -391,10 +392,10 @@ export default function CoachBookingCalendar() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                backgroundColor: tokens.colors.warning,
+                backgroundColor: 'var(--warning)',
               }}
             />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.pending}</strong> ventende
             </span>
           </div>
@@ -404,8 +405,8 @@ export default function CoachBookingCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.success}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--success-rgb), 0.10)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
             <div
@@ -413,10 +414,10 @@ export default function CoachBookingCalendar() {
                 width: 8,
                 height: 8,
                 borderRadius: '50%',
-                backgroundColor: tokens.colors.success,
+                backgroundColor: 'var(--success)',
               }}
             />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.available}</strong> ledige
             </span>
           </div>
@@ -426,12 +427,12 @@ export default function CoachBookingCalendar() {
       {/* Calendar navigation */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           padding: '16px 24px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          borderBottom: `1px solid ${'var(--border-default)'}`,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -440,8 +441,8 @@ export default function CoachBookingCalendar() {
             style={{
               width: 36,
               height: 36,
-              borderRadius: tokens.radius.md,
-              backgroundColor: tokens.colors.gray100,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -449,15 +450,15 @@ export default function CoachBookingCalendar() {
               cursor: 'pointer',
             }}
           >
-            <ChevronLeft size={20} color={tokens.colors.charcoal} />
+            <ChevronLeft size={20} color={'var(--text-primary)'} />
           </button>
           <button
             onClick={goToNextWeek}
             style={{
               width: 36,
               height: 36,
-              borderRadius: tokens.radius.md,
-              backgroundColor: tokens.colors.gray100,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -465,12 +466,12 @@ export default function CoachBookingCalendar() {
               cursor: 'pointer',
             }}
           >
-            <ChevronRight size={20} color={tokens.colors.charcoal} />
+            <ChevronRight size={20} color={'var(--text-primary)'} />
           </button>
           <h2
             style={{
-              ...tokens.typography.headline,
-              color: tokens.colors.charcoal,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-primary)',
               margin: 0,
             }}
           >
@@ -483,12 +484,12 @@ export default function CoachBookingCalendar() {
           onClick={goToToday}
           style={{
             padding: '8px 16px',
-            backgroundColor: tokens.colors.white,
-            border: `1px solid ${tokens.colors.gray300}`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-primary)',
+            border: `1px solid ${'var(--border-default)'}`,
+            borderRadius: 'var(--radius-md)',
             fontSize: '13px',
             fontWeight: 500,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             cursor: 'pointer',
           }}
         >
@@ -503,8 +504,8 @@ export default function CoachBookingCalendar() {
             display: 'grid',
             gridTemplateColumns: '60px repeat(7, 1fr)',
             gap: '1px',
-            backgroundColor: tokens.colors.gray200,
-            borderRadius: tokens.radius.lg,
+            backgroundColor: 'var(--border-default)',
+            borderRadius: 'var(--radius-lg)',
             overflow: 'hidden',
             minWidth: '900px',
           }}
@@ -512,7 +513,7 @@ export default function CoachBookingCalendar() {
           {/* Header row */}
           <div
             style={{
-              backgroundColor: tokens.colors.gray100,
+              backgroundColor: 'var(--bg-tertiary)',
               padding: '12px',
             }}
           />
@@ -527,7 +528,7 @@ export default function CoachBookingCalendar() {
               <div
                 key={date.toISOString()}
                 style={{
-                  backgroundColor: isToday ? `${tokens.colors.primary}08` : tokens.colors.gray100,
+                  backgroundColor: isToday ? `${'var(--accent)'}08` : 'var(--bg-tertiary)',
                   padding: '12px',
                   textAlign: 'center',
                 }}
@@ -535,7 +536,7 @@ export default function CoachBookingCalendar() {
                 <p
                   style={{
                     fontSize: '11px',
-                    color: tokens.colors.steel,
+                    color: 'var(--text-secondary)',
                     margin: 0,
                     textTransform: 'uppercase',
                   }}
@@ -546,7 +547,7 @@ export default function CoachBookingCalendar() {
                   style={{
                     fontSize: '18px',
                     fontWeight: 600,
-                    color: isToday ? tokens.colors.primary : tokens.colors.charcoal,
+                    color: isToday ? 'var(--accent)' : 'var(--text-primary)',
                     margin: '4px 0 0',
                   }}
                 >
@@ -556,7 +557,7 @@ export default function CoachBookingCalendar() {
                   <p
                     style={{
                       fontSize: '10px',
-                      color: tokens.colors.primary,
+                      color: 'var(--accent)',
                       margin: '4px 0 0',
                     }}
                   >
@@ -573,12 +574,12 @@ export default function CoachBookingCalendar() {
               <React.Fragment key={time}>
                 <div
                   style={{
-                    backgroundColor: tokens.colors.white,
+                    backgroundColor: 'var(--bg-primary)',
                     padding: '8px',
                     fontSize: '12px',
-                    color: tokens.colors.steel,
+                    color: 'var(--text-secondary)',
                     textAlign: 'right',
-                    borderTop: time === '12:00' ? `2px solid ${tokens.colors.gray300}` : undefined,
+                    borderTop: time === '12:00' ? `2px solid ${'var(--border-default)'}` : undefined,
                   }}
                 >
                   {time}
@@ -599,7 +600,7 @@ export default function CoachBookingCalendar() {
                         padding: '8px',
                         minHeight: '60px',
                         cursor: slot?.booking ? 'pointer' : 'default',
-                        borderTop: time === '12:00' ? `2px solid ${tokens.colors.gray300}` : undefined,
+                        borderTop: time === '12:00' ? `2px solid ${'var(--border-default)'}` : undefined,
                       }}
                     >
                       {slot?.booking && (
@@ -617,8 +618,8 @@ export default function CoachBookingCalendar() {
                                 width: 24,
                                 height: 24,
                                 borderRadius: '50%',
-                                backgroundColor: tokens.colors.primary,
-                                color: tokens.colors.white,
+                                backgroundColor: 'var(--accent)',
+                                color: 'var(--bg-primary)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -632,7 +633,7 @@ export default function CoachBookingCalendar() {
                               style={{
                                 fontSize: '12px',
                                 fontWeight: 500,
-                                color: tokens.colors.charcoal,
+                                color: 'var(--text-primary)',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
@@ -644,7 +645,7 @@ export default function CoachBookingCalendar() {
                           <p
                             style={{
                               fontSize: '11px',
-                              color: tokens.colors.steel,
+                              color: 'var(--text-secondary)',
                               margin: 0,
                             }}
                           >
@@ -656,8 +657,8 @@ export default function CoachBookingCalendar() {
                                 display: 'inline-block',
                                 marginTop: '4px',
                                 padding: '2px 6px',
-                                backgroundColor: tokens.colors.warning,
-                                color: tokens.colors.white,
+                                backgroundColor: 'var(--warning)',
+                                color: 'var(--bg-primary)',
                                 borderRadius: '4px',
                                 fontSize: '9px',
                                 fontWeight: 600,
@@ -672,7 +673,7 @@ export default function CoachBookingCalendar() {
                         <p
                           style={{
                             fontSize: '11px',
-                            color: tokens.colors.steel,
+                            color: 'var(--text-secondary)',
                             margin: 0,
                             fontStyle: 'italic',
                           }}
@@ -710,13 +711,13 @@ export default function CoachBookingCalendar() {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '24px',
               width: '400px',
               maxWidth: '90vw',
               zIndex: 101,
-              boxShadow: tokens.shadows.dropdown,
+              boxShadow: 'var(--shadow-dropdown)',
             }}
           >
             <div
@@ -729,8 +730,8 @@ export default function CoachBookingCalendar() {
             >
               <h3
                 style={{
-                  ...tokens.typography.title3,
-                  color: tokens.colors.charcoal,
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  color: 'var(--text-primary)',
                   margin: 0,
                 }}
               >
@@ -741,8 +742,8 @@ export default function CoachBookingCalendar() {
                 style={{
                   width: 32,
                   height: 32,
-                  borderRadius: tokens.radius.sm,
-                  backgroundColor: tokens.colors.gray100,
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: 'var(--bg-tertiary)',
                   border: 'none',
                   display: 'flex',
                   alignItems: 'center',
@@ -750,7 +751,7 @@ export default function CoachBookingCalendar() {
                   cursor: 'pointer',
                 }}
               >
-                <X size={18} color={tokens.colors.steel} />
+                <X size={18} color={'var(--text-secondary)'} />
               </button>
             </div>
 
@@ -768,8 +769,8 @@ export default function CoachBookingCalendar() {
                     width: 48,
                     height: 48,
                     borderRadius: '50%',
-                    backgroundColor: tokens.colors.primary,
-                    color: tokens.colors.white,
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--bg-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -782,8 +783,8 @@ export default function CoachBookingCalendar() {
                 <div>
                   <p
                     style={{
-                      ...tokens.typography.headline,
-                      color: tokens.colors.charcoal,
+                      fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                      color: 'var(--text-primary)',
                       margin: 0,
                     }}
                   >
@@ -791,8 +792,8 @@ export default function CoachBookingCalendar() {
                   </p>
                   <p
                     style={{
-                      ...tokens.typography.caption1,
-                      color: tokens.colors.steel,
+                      fontSize: '12px', lineHeight: '16px',
+                      color: 'var(--text-secondary)',
                       margin: '2px 0 0',
                     }}
                   >
@@ -812,14 +813,14 @@ export default function CoachBookingCalendar() {
                   style={{
                     flex: 1,
                     padding: '12px',
-                    backgroundColor: tokens.colors.gray100,
-                    borderRadius: tokens.radius.md,
+                    backgroundColor: 'var(--bg-tertiary)',
+                    borderRadius: 'var(--radius-md)',
                   }}
                 >
-                  <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: 0 }}>
+                  <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
                     Dato
                   </p>
-                  <p style={{ ...tokens.typography.subheadline, color: tokens.colors.charcoal, margin: '4px 0 0' }}>
+                  <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
                     {new Date(selectedSlot.date).toLocaleDateString('nb-NO', {
                       weekday: 'long',
                       day: 'numeric',
@@ -831,14 +832,14 @@ export default function CoachBookingCalendar() {
                   style={{
                     flex: 1,
                     padding: '12px',
-                    backgroundColor: tokens.colors.gray100,
-                    borderRadius: tokens.radius.md,
+                    backgroundColor: 'var(--bg-tertiary)',
+                    borderRadius: 'var(--radius-md)',
                   }}
                 >
-                  <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: 0 }}>
+                  <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
                     Tid
                   </p>
-                  <p style={{ ...tokens.typography.subheadline, color: tokens.colors.charcoal, margin: '4px 0 0' }}>
+                  <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
                     {selectedSlot.startTime} - {selectedSlot.endTime}
                   </p>
                 </div>
@@ -848,15 +849,15 @@ export default function CoachBookingCalendar() {
                 <div
                   style={{
                     padding: '12px',
-                    backgroundColor: `${tokens.colors.primary}08`,
-                    borderRadius: tokens.radius.md,
-                    borderLeft: `3px solid ${tokens.colors.primary}`,
+                    backgroundColor: `${'var(--accent)'}08`,
+                    borderRadius: 'var(--radius-md)',
+                    borderLeft: `3px solid ${'var(--accent)'}`,
                   }}
                 >
-                  <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: 0 }}>
+                  <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
                     Notat fra spiller
                   </p>
-                  <p style={{ ...tokens.typography.subheadline, color: tokens.colors.charcoal, margin: '4px 0 0' }}>
+                  <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
                     {selectedSlot.booking.notes}
                   </p>
                 </div>
@@ -874,10 +875,10 @@ export default function CoachBookingCalendar() {
                     justifyContent: 'center',
                     gap: '8px',
                     padding: '12px',
-                    backgroundColor: tokens.colors.white,
-                    color: tokens.colors.error,
-                    border: `1px solid ${tokens.colors.error}`,
-                    borderRadius: tokens.radius.md,
+                    backgroundColor: 'var(--bg-primary)',
+                    color: 'var(--error)',
+                    border: `1px solid ${'var(--error)'}`,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -895,10 +896,10 @@ export default function CoachBookingCalendar() {
                     justifyContent: 'center',
                     gap: '8px',
                     padding: '12px',
-                    backgroundColor: tokens.colors.success,
-                    color: tokens.colors.white,
+                    backgroundColor: 'var(--success)',
+                    color: 'var(--bg-primary)',
                     border: 'none',
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -914,10 +915,10 @@ export default function CoachBookingCalendar() {
                 style={{
                   width: '100%',
                   padding: '12px',
-                  backgroundColor: tokens.colors.primary,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--accent)',
+                  color: 'var(--bg-primary)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '14px',
                   fontWeight: 600,
                   cursor: 'pointer',

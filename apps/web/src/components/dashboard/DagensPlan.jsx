@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 export default function DagensPlan({ events: propEvents }) {
   const navigate = useNavigate();
@@ -37,74 +38,37 @@ export default function DagensPlan({ events: propEvents }) {
   };
 
   return (
-    <section style={{
-      borderRadius: '16px',
-      border: '1px solid rgba(0, 0, 0, 0.1)',
-      backgroundColor: 'white',
-      overflow: 'hidden'
-    }}>
+    <Card variant="default" padding="none">
       <header style={{
         padding: '20px',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+        borderBottom: '1px solid var(--border-default)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
       }}>
         <div>
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.charcoal
+            color: 'var(--text-primary)',
           }}>
             Dagens plan
           </div>
           <div style={{
             fontSize: '12px',
-            color: 'rgba(0, 0, 0, 0.5)',
-            marginTop: '4px'
+            color: 'var(--text-secondary)',
+            marginTop: '4px',
           }}>
             {formatDate(selectedDate)}
           </div>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            onClick={goToPrevDay}
-            style={{
-              height: '36px',
-              width: '36px',
-              borderRadius: '12px',
-              border: '1px solid rgba(0, 0, 0, 0.1)',
-              backgroundColor: 'transparent',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-          >
-            <ChevronLeft size={16} style={{ color: tokens.colors.steel }} />
-          </button>
-          <button
-            onClick={goToNextDay}
-            style={{
-              height: '36px',
-              width: '36px',
-              borderRadius: '12px',
-              border: '1px solid rgba(0, 0, 0, 0.1)',
-              backgroundColor: 'transparent',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-          >
-            <ChevronRight size={16} style={{ color: tokens.colors.steel }} />
-          </button>
+          <Button variant="ghost" size="sm" onClick={goToPrevDay}>
+            <ChevronLeft size={16} />
+          </Button>
+          <Button variant="ghost" size="sm" onClick={goToNextDay}>
+            <ChevronRight size={16} />
+          </Button>
         </div>
       </header>
 
@@ -112,7 +76,7 @@ export default function DagensPlan({ events: propEvents }) {
       <div style={{
         position: 'relative',
         height: '520px',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}>
         <div style={{
           position: 'absolute',
@@ -120,27 +84,27 @@ export default function DagensPlan({ events: propEvents }) {
           left: 0,
           right: 0,
           bottom: 0,
-          overflowY: 'auto'
+          overflowY: 'auto',
         }}>
           <div style={{
             padding: '20px',
             display: 'grid',
             gridTemplateColumns: '64px 1fr',
-            gap: '16px'
+            gap: '16px',
           }}>
             {/* Hour labels column */}
             <div style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '24px'
+              gap: '24px',
             }}>
               {hours.map((h) => (
                 <div
                   key={h}
                   style={{
                     fontSize: '12px',
-                    color: 'rgba(0, 0, 0, 0.5)',
-                    lineHeight: '1'
+                    color: 'var(--text-tertiary)',
+                    lineHeight: '1',
                   }}
                 >
                   {String(h).padStart(2, '0')}:00
@@ -152,39 +116,39 @@ export default function DagensPlan({ events: propEvents }) {
             <div style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px'
+              gap: '12px',
             }}>
               {events.map((e) => (
                 <div
                   key={e.id}
                   style={{
-                    borderRadius: '16px',
-                    backgroundColor: 'var(--ak-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    backgroundColor: 'var(--accent)',
                     color: 'white',
                     padding: '12px 16px',
                     cursor: e.sessionId ? 'pointer' : 'default',
-                    transition: 'background-color 0.2s'
+                    transition: 'opacity 0.2s',
                   }}
                   onClick={() => e.sessionId && navigate(`/session/${e.sessionId}`)}
-                  onMouseEnter={(e) => {
-                    if (e.currentTarget.style.cursor === 'pointer') {
-                      e.currentTarget.style.backgroundColor = tokens.colors.forestDark;
+                  onMouseEnter={(evt) => {
+                    if (e.sessionId) {
+                      evt.currentTarget.style.opacity = '0.9';
                     }
                   }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--ak-primary)';
+                  onMouseLeave={(evt) => {
+                    evt.currentTarget.style.opacity = '1';
                   }}
                 >
                   <div style={{
                     fontWeight: 600,
-                    fontSize: '14px'
+                    fontSize: '14px',
                   }}>
                     {e.title}
                   </div>
                   <div style={{
                     fontSize: '14px',
                     color: 'rgba(255, 255, 255, 0.8)',
-                    marginTop: '4px'
+                    marginTop: '4px',
                   }}>
                     {e.startTime} - {e.endTime} • {e.location}
                   </div>
@@ -194,6 +158,6 @@ export default function DagensPlan({ events: propEvents }) {
           </div>
         </div>
       </div>
-    </section>
+    </Card>
   );
 }

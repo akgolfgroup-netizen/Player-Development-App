@@ -3,7 +3,7 @@ import {
   Search, Folder, FolderOpen, FileText, Calendar, BarChart3,
   Target, ChevronRight, ChevronDown, Download, Eye, Clock, Trophy
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
 import {
   GolfScorecard, ChartIcon, TrophyIcon, GolfTarget, DocumentIcon, FolderIcon
@@ -34,13 +34,13 @@ const Card = ({ children, className = '', padding = true }) => (
   </div>
 );
 
-const Badge = ({ children, variant = 'default', size = 'sm' }) => {
+const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variants = {
-    default: 'bg-ak-cloud text-ak-charcoal',
-    primary: 'bg-ak-primary text-white',
-    success: 'bg-ak-success/10 text-ak-success',
-    warning: 'bg-ak-warning/10 text-ak-warning',
-    gold: 'bg-ak-gold/10 text-ak-gold',
+    neutral: 'bg-gray-100 text-gray-600',
+    accent: 'bg-blue-50 text-blue-700',
+    success: 'bg-green-50 text-green-700',
+    warning: 'bg-amber-50 text-amber-700',
+    achievement: 'bg-yellow-50 text-yellow-700',
   };
 
   const sizes = {
@@ -93,7 +93,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       tester: {
         label: 'Testresultater',
         icon: <Icons.BarChart />,
-        color: tokens.colors.success,
+        color: 'var(--success)',
         documents: [
           { id: 4, name: 'Benchmark Q1', type: 'test', date: '2025-03-15', size: '1.2 MB', score: '14/20' },
           { id: 5, name: 'Benchmark Q2', type: 'test', date: '2025-06-15', size: '1.4 MB', score: '16/20' },
@@ -104,7 +104,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       turneringer: {
         label: 'Turneringsresultater',
         icon: <Icons.Trophy />,
-        color: tokens.colors.gold,
+        color: 'var(--achievement)',
         documents: [
           { id: 8, name: 'NM Kvalik', type: 'tournament', date: '2025-07-20', result: '74 (+2)', position: '12.' },
           { id: 9, name: 'Østlandsmesterskapet', type: 'tournament', date: '2025-08-10', result: '71 (-1)', position: '5.' },
@@ -114,7 +114,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       mål: {
         label: 'Målsetninger',
         icon: <Icons.Target />,
-        color: tokens.colors.warning,
+        color: 'var(--warning)',
         documents: [
           { id: 11, name: 'Mål 2025', type: 'goals', date: '2025-01-01', achieved: '7/10' },
           { id: 12, name: 'Q1 Delmål', type: 'goals', date: '2025-04-01', achieved: '3/3' },
@@ -134,7 +134,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       tester: {
         label: 'Testresultater',
         icon: <Icons.BarChart />,
-        color: tokens.colors.success,
+        color: 'var(--success)',
         documents: [
           { id: 15, name: 'Benchmark Q4 2024', type: 'test', date: '2024-12-01', size: '1.3 MB', score: '12/20' },
           { id: 16, name: 'Benchmark Q3 2024', type: 'test', date: '2024-09-15', size: '1.2 MB', score: '11/20' },
@@ -143,7 +143,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       turneringer: {
         label: 'Turneringsresultater',
         icon: <Icons.Trophy />,
-        color: tokens.colors.gold,
+        color: 'var(--achievement)',
         documents: [
           { id: 17, name: 'Klubbmesterskap 2024', type: 'tournament', date: '2024-09-10', result: '73 (+1)', position: '4.' },
         ],
@@ -151,7 +151,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       mål: {
         label: 'Målsetninger',
         icon: <Icons.Target />,
-        color: tokens.colors.warning,
+        color: 'var(--warning)',
         documents: [
           { id: 18, name: 'Mål 2024', type: 'goals', date: '2024-01-01', achieved: '6/8' },
         ],
@@ -169,7 +169,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       tester: {
         label: 'Testresultater',
         icon: <Icons.BarChart />,
-        color: tokens.colors.success,
+        color: 'var(--success)',
         documents: [
           { id: 20, name: 'Benchmark Q4 2023', type: 'test', date: '2023-12-01', size: '1.1 MB', score: '9/20' },
         ],
@@ -177,13 +177,13 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       turneringer: {
         label: 'Turneringsresultater',
         icon: <Icons.Trophy />,
-        color: tokens.colors.gold,
+        color: 'var(--achievement)',
         documents: [],
       },
       mål: {
         label: 'Målsetninger',
         icon: <Icons.Target />,
-        color: tokens.colors.warning,
+        color: 'var(--warning)',
         documents: [
           { id: 21, name: 'Mål 2023', type: 'goals', date: '2023-01-01', achieved: '5/6' },
         ],
@@ -257,7 +257,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
   const stats = getStats();
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow, fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
       {/* Header */}
       <PageHeader
         title="Arkiv"
@@ -316,7 +316,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                   >
                     <span className="text-[14px] font-medium">{year}</span>
                     {year === '2025' && (
-                      <Badge variant="primary" size="sm">Aktiv</Badge>
+                      <Badge variant="accent" size="sm">Aktiv</Badge>
                     )}
                   </button>
                 ))}
@@ -368,7 +368,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
             {/* Year Title */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-[20px] font-bold text-ak-charcoal">Arkiv {selectedYear}</h2>
-              <Badge variant={selectedYear === '2025' ? 'success' : 'default'} size="md">
+              <Badge variant={selectedYear === '2025' ? 'success' : 'neutral'} size="md">
                 {selectedYear === '2025' ? 'Aktivt år' : 'Historisk'}
               </Badge>
             </div>
@@ -437,7 +437,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                                 <Badge variant="success" size="sm">{doc.score}</Badge>
                               )}
                               {doc.result && (
-                                <Badge variant="gold" size="sm">{doc.result}</Badge>
+                                <Badge variant="achievement" size="sm">{doc.result}</Badge>
                               )}
                               {doc.position && (
                                 <Badge variant="warning" size="sm">{doc.position} plass</Badge>
@@ -446,7 +446,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                                 <Badge variant="success" size="sm">{doc.achieved}</Badge>
                               )}
                               {doc.status === 'active' && (
-                                <Badge variant="primary" size="sm">Aktiv</Badge>
+                                <Badge variant="accent" size="sm">Aktiv</Badge>
                               )}
 
                               {/* Actions */}
@@ -503,7 +503,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                           <p className="text-[13px] font-medium text-ak-charcoal">{doc.name}</p>
                           <div className="flex gap-2 mt-1">
                             {doc.score && <Badge variant="success" size="sm">{doc.score}</Badge>}
-                            {doc.result && <Badge variant="gold" size="sm">{doc.result}</Badge>}
+                            {doc.result && <Badge variant="achievement" size="sm">{doc.result}</Badge>}
                           </div>
                         </div>
                       </div>

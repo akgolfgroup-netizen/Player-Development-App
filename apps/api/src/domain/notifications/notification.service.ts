@@ -5,6 +5,7 @@
 
 import { getPrismaClient } from '../../core/db/prisma';
 import { EmailService } from './email.service';
+import { logger } from '../../utils/logger';
 
 export interface NotificationContext {
   userId: string;
@@ -51,7 +52,7 @@ export class NotificationService {
       });
 
       if (!coach || !coach.email) {
-        console.warn(`Coach ${coachUserId} not found or has no email`);
+        logger.warn({ coachId: coachUserId }, 'Coach not found or has no email');
         return;
       }
 
@@ -116,13 +117,20 @@ export class NotificationService {
         html,
       });
 
-      console.log(`Modification request notification sent to coach ${coach.email}`);
+      logger.info({ email: coach.email }, 'Modification request notification sent to coach');
 
-      // TODO: Also send push notification if coach has enabled it
-      // TODO: Create in-app notification
+      // Create in-app notification
+      await this.createInAppNotification({
+        recipientId: coachUserId,
+        recipientType: 'coach',
+        type: 'modification_request',
+        title: `Plan Modification Request from ${data.playerName}`,
+        message: `${data.playerName} has requested changes to ${data.planName}`,
+        metadata: { planId: data.planId, requestId: data.requestId, urgency: data.urgency },
+      });
 
     } catch (error) {
-      console.error('Failed to send modification request notification:', error);
+      logger.error({ error }, 'Failed to send modification request notification');
       // Don't throw - notification failures shouldn't break the request
     }
   }
@@ -141,7 +149,7 @@ export class NotificationService {
       });
 
       if (!coach || !coach.email) {
-        console.warn(`Coach ${coachUserId} not found or has no email`);
+        logger.warn({ coachId: coachUserId }, 'Coach not found or has no email');
         return;
       }
 
@@ -199,13 +207,20 @@ export class NotificationService {
         html,
       });
 
-      console.log(`Plan rejection notification sent to coach ${coach.email}`);
+      logger.info({ email: coach.email }, 'Plan rejection notification sent to coach');
 
-      // TODO: Also send push notification if coach has enabled it
-      // TODO: Create in-app notification
+      // Create in-app notification
+      await this.createInAppNotification({
+        recipientId: coachUserId,
+        recipientType: 'coach',
+        type: 'plan_rejected',
+        title: `${data.playerName} rejected their training plan`,
+        message: data.reason,
+        metadata: { planId: data.planId },
+      });
 
     } catch (error) {
-      console.error('Failed to send plan rejection notification:', error);
+      logger.error({ error }, 'Failed to send plan rejection notification');
       // Don't throw - notification failures shouldn't break the request
     }
   }
@@ -225,7 +240,7 @@ export class NotificationService {
       });
 
       if (!user || !user.email) {
-        console.warn(`Player ${playerId} not found or has no email`);
+        logger.warn({ playerId }, 'Player not found or has no email');
         return;
       }
 
@@ -268,10 +283,49 @@ export class NotificationService {
         html,
       });
 
-      console.log(`Modification response notification sent to player ${user.email}`);
+      logger.info({ email: user.email }, 'Modification response notification sent to player');
+
+      // Create in-app notification
+      await this.createInAppNotification({
+        recipientId: playerId,
+        recipientType: 'player',
+        type: 'modification_response',
+        title: `Coach responded to your modification request`,
+        message: coachResponse,
+        metadata: { status },
+      });
 
     } catch (error) {
-      console.error('Failed to send modification response notification:', error);
+      logger.error({ error }, 'Failed to send modification response notification');
+    }
+  }
+
+  /**
+   * Create in-app notification
+   */
+  private static async createInAppNotification(data: {
+    recipientId: string;
+    recipientType: 'player' | 'coach';
+    type: string;
+    title: string;
+    message: string;
+    metadata?: Record<string, unknown>;
+  }): Promise<void> {
+    try {
+      await this.prisma.notification.create({
+        data: {
+          recipientType: data.recipientType,
+          recipientId: data.recipientId,
+          notificationType: data.type,
+          title: data.title,
+          message: data.message,
+          metadata: data.metadata || {},
+          priority: 'normal',
+          status: 'pending',
+        },
+      });
+    } catch (error) {
+      logger.warn({ error }, 'Could not create in-app notification');
     }
   }
 }

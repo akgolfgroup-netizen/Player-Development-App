@@ -9,7 +9,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { coachNavigationConfig, coachQuickActions } from '../../config/coach-navigation';
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
@@ -107,8 +106,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
                 gap: '12px',
                 borderRadius: '12px',
                 padding: '12px 16px',
-                color: activeChild ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)',
-                backgroundColor: activeChild ? tokens.colors.primaryLight : 'transparent',
+                color: activeChild ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.75)',
+                backgroundColor: activeChild ? 'rgba(var(--accent-rgb), 0.8)' : 'transparent',
                 transition: 'all 0.2s',
                 fontSize: '15px',
                 fontWeight: 500,
@@ -137,8 +136,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
                         borderRadius: '8px',
                         padding: '10px 12px',
                         textDecoration: 'none',
-                        color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.65)',
-                        backgroundColor: active ? `${tokens.colors.primaryLight}80` : 'transparent',
+                        color: active ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.65)',
+                        backgroundColor: active ? `${'rgba(var(--accent-rgb), 0.8)'}80` : 'transparent',
                         transition: 'all 0.2s',
                         fontSize: '14px',
                         fontWeight: 400,
@@ -150,7 +149,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
                           width: 6,
                           height: 6,
                           borderRadius: '50%',
-                          backgroundColor: active ? tokens.colors.gold : 'rgba(255, 255, 255, 0.3)',
+                          backgroundColor: active ? 'var(--achievement)' : 'rgba(255, 255, 255, 0.3)',
                         }}
                       />
                       {subItem.label}
@@ -174,8 +173,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
               borderRadius: '12px',
               padding: '12px 16px',
               textDecoration: 'none',
-              color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)',
-              backgroundColor: active ? tokens.colors.primaryLight : 'transparent',
+              color: active ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.75)',
+              backgroundColor: active ? 'rgba(var(--accent-rgb), 0.8)' : 'transparent',
               transition: 'all 0.2s',
               fontSize: '15px',
               fontWeight: 500,
@@ -190,8 +189,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
                   minWidth: 20,
                   height: 20,
                   borderRadius: '10px',
-                  backgroundColor: tokens.colors.error,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--error)',
+                  color: 'var(--bg-primary)',
                   fontSize: '11px',
                   fontWeight: 700,
                   display: 'flex',
@@ -225,8 +224,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
             padding: '10px 12px',
             borderRadius: '10px',
             textDecoration: 'none',
-            backgroundColor: action.variant === 'primary' ? tokens.colors.gold : 'rgba(255, 255, 255, 0.1)',
-            color: action.variant === 'primary' ? tokens.colors.charcoal : 'rgba(255, 255, 255, 0.9)',
+            backgroundColor: action.variant === 'primary' ? 'var(--achievement)' : 'rgba(255, 255, 255, 0.1)',
+            color: action.variant === 'primary' ? 'var(--text-primary)' : 'rgba(255, 255, 255, 0.9)',
             fontSize: '13px',
             fontWeight: 600,
             transition: 'all 0.2s',
@@ -256,11 +255,11 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
               width: 40,
               height: 40,
               borderRadius: '10px',
-              backgroundColor: tokens.colors.gold,
+              backgroundColor: 'var(--achievement)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               fontWeight: 700,
               fontSize: '16px',
             }}
@@ -268,7 +267,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
             {(user?.firstName?.[0] || 'T').toUpperCase()}
           </div>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.white }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--bg-primary)' }}>
               {user?.firstName || 'Trener'} {user?.lastName || ''}
             </div>
             <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)' }}>
@@ -314,7 +313,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
             left: 0,
             right: 0,
             height: '60px',
-            backgroundColor: tokens.colors.primary,
+            backgroundColor: 'var(--accent)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -328,18 +327,18 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
                 width: 32,
                 height: 32,
                 borderRadius: '8px',
-                backgroundColor: tokens.colors.gold,
+                backgroundColor: 'var(--achievement)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontWeight: 700,
                 fontSize: '14px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
               }}
             >
               AK
             </div>
-            <span style={{ color: tokens.colors.white, fontWeight: 600 }}>Coach Portal</span>
+            <span style={{ color: 'var(--bg-primary)', fontWeight: 600 }}>Coach Portal</span>
           </div>
 
           <button
@@ -347,7 +346,7 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
             style={{
               background: 'none',
               border: 'none',
-              color: tokens.colors.white,
+              color: 'var(--bg-primary)',
               cursor: 'pointer',
               padding: '8px',
             }}
@@ -377,8 +376,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
             left: 0,
             bottom: 0,
             width: '300px',
-            backgroundColor: tokens.colors.primary,
-            color: tokens.colors.white,
+            backgroundColor: 'var(--accent)',
+            color: 'var(--bg-primary)',
             display: 'flex',
             flexDirection: 'column',
             transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
@@ -405,8 +404,8 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
       style={{
         width: '280px',
         height: '100vh',
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
+        backgroundColor: 'var(--accent)',
+        color: 'var(--bg-primary)',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -435,19 +434,19 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
               width: 40,
               height: 40,
               borderRadius: '10px',
-              backgroundColor: tokens.colors.gold,
+              backgroundColor: 'var(--achievement)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 700,
               fontSize: '16px',
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
             }}
           >
             AK
           </div>
           <div>
-            <div style={{ color: tokens.colors.white, fontWeight: 600, fontSize: '16px' }}>
+            <div style={{ color: 'var(--bg-primary)', fontWeight: 600, fontSize: '16px' }}>
               Coach Portal
             </div>
             <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>

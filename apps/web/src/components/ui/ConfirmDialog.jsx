@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { AlertTriangle, X } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import { AlertTriangle, X, AlertCircle, Info } from 'lucide-react';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
 
+/**
+ * Confirm dialog component - UI Canon compliant
+ * Uses Button and Card primitives with semantic tokens
+ */
 export default function ConfirmDialog({
   isOpen,
   onClose,
@@ -17,20 +22,16 @@ export default function ConfirmDialog({
 
   useEffect(() => {
     if (isOpen) {
-      // Focus the confirm button when dialog opens
       confirmButtonRef.current?.focus();
-      // Prevent body scroll
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-
     return () => {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -43,33 +44,34 @@ export default function ConfirmDialog({
 
   if (!isOpen) return null;
 
-  const getVariantStyles = () => {
+  const getVariantConfig = () => {
     switch (variant) {
       case 'danger':
         return {
-          iconColor: tokens.colors.error,
-          iconBg: `${tokens.colors.error}15`,
-          confirmBg: tokens.colors.error,
-          confirmHoverBg: `${tokens.colors.error}DD`,
+          icon: AlertCircle,
+          iconColor: 'var(--error)',
+          iconBg: 'rgba(220, 38, 38, 0.1)',
+          buttonVariant: 'primary',
         };
       case 'info':
         return {
-          iconColor: tokens.colors.primary,
-          iconBg: `${tokens.colors.primary}15`,
-          confirmBg: tokens.colors.primary,
-          confirmHoverBg: tokens.colors.primaryLight,
+          icon: Info,
+          iconColor: 'var(--accent)',
+          iconBg: 'rgba(59, 130, 246, 0.1)',
+          buttonVariant: 'primary',
         };
       default: // warning
         return {
-          iconColor: tokens.colors.warning,
-          iconBg: `${tokens.colors.warning}15`,
-          confirmBg: tokens.colors.primary,
-          confirmHoverBg: tokens.colors.primaryLight,
+          icon: AlertTriangle,
+          iconColor: 'var(--warning)',
+          iconBg: 'rgba(245, 158, 11, 0.1)',
+          buttonVariant: 'primary',
         };
     }
   };
 
-  const styles = getVariantStyles();
+  const config = getVariantConfig();
+  const IconComponent = config.icon;
 
   return (
     <div
@@ -89,15 +91,13 @@ export default function ConfirmDialog({
       aria-labelledby="dialog-title"
       aria-describedby="dialog-description"
     >
-      <div
+      <Card
         ref={dialogRef}
+        variant="default"
+        padding="lg"
         style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: '16px',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2)',
           maxWidth: '400px',
           width: '90%',
-          padding: '24px',
           animation: 'dialogFadeIn 0.2s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
@@ -107,23 +107,23 @@ export default function ConfirmDialog({
             style={{
               width: '48px',
               height: '48px',
-              borderRadius: '12px',
-              backgroundColor: styles.iconBg,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: config.iconBg,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0,
             }}
           >
-            <AlertTriangle size={24} color={styles.iconColor} />
+            <IconComponent size={24} style={{ color: config.iconColor }} />
           </div>
           <div style={{ flex: 1 }}>
             <h2
               id="dialog-title"
               style={{
                 fontSize: '18px',
-                fontWeight: '600',
-                color: tokens.colors.charcoal,
+                fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
                 marginBottom: '8px',
               }}
@@ -134,9 +134,9 @@ export default function ConfirmDialog({
               id="dialog-description"
               style={{
                 fontSize: '14px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
                 margin: 0,
-                lineHeight: '1.5',
+                lineHeight: 1.5,
               }}
             >
               {message}
@@ -149,8 +149,11 @@ export default function ConfirmDialog({
               border: 'none',
               cursor: 'pointer',
               padding: '4px',
-              color: tokens.colors.steel,
-              borderRadius: '8px',
+              color: 'var(--text-tertiary)',
+              borderRadius: 'var(--radius-sm)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
             aria-label="Lukk dialog"
           >
@@ -166,48 +169,22 @@ export default function ConfirmDialog({
             justifyContent: 'flex-end',
           }}
         >
-          <button
-            onClick={onClose}
-            style={{
-              padding: '10px 20px',
-              fontSize: '14px',
-              fontWeight: '500',
-              color: tokens.colors.charcoal,
-              backgroundColor: tokens.colors.snow,
-              border: `1px solid ${tokens.colors.mist}`,
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = tokens.colors.mist)}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = tokens.colors.snow)}
-          >
+          <Button variant="ghost" size="sm" onClick={onClose}>
             {cancelLabel}
-          </button>
-          <button
+          </Button>
+          <Button
             ref={confirmButtonRef}
+            variant={config.buttonVariant}
+            size="sm"
             onClick={() => {
               onConfirm();
               onClose();
             }}
-            style={{
-              padding: '10px 20px',
-              fontSize: '14px',
-              fontWeight: '600',
-              color: tokens.colors.white,
-              backgroundColor: styles.confirmBg,
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = styles.confirmHoverBg)}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = styles.confirmBg)}
           >
             {confirmLabel}
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
 
       <style>{`
         @keyframes dialogFadeIn {

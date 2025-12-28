@@ -326,9 +326,7 @@ export function VoiceRecorder({
     formatDuration,
   } = useAudioRecording({
     maxDuration,
-    onRecordingComplete: (blob) => {
-      console.log('Recording complete:', blob);
-    },
+    onRecordingComplete: onComplete,
   });
 
   // Handle record button click

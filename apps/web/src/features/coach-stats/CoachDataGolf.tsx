@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   BarChart3,
   Search,
@@ -11,202 +11,138 @@ import {
   Activity,
   ChevronRight,
   RefreshCw,
-  ExternalLink,
   Info
 } from 'lucide-react';
-import { tokens as designTokens } from '../../design-tokens';
+import { dataGolfAPI } from '../../services/api';
+import StateCard from '../../ui/composites/StateCard';
 
-interface PlayerDataGolf {
-  id: string;
-  name: string;
-  category: 'A' | 'B' | 'C';
-  hcp: number;
-  dataGolfConnected: boolean;
-  lastSync?: string;
-  stats: {
-    sgTotal: number;
-    sgTee: number;
-    sgApproach: number;
-    sgAround: number;
-    sgPutting: number;
-    drivingDistance: number;
-    drivingAccuracy: number;
-    girPercent: number;
-    scrambling: number;
-    puttsPerRound: number;
-    roundsTracked: number;
-  };
-  trends: {
-    sgTotal: 'up' | 'down' | 'stable';
-    sgTee: 'up' | 'down' | 'stable';
-    sgApproach: 'up' | 'down' | 'stable';
-    sgAround: 'up' | 'down' | 'stable';
-    sgPutting: 'up' | 'down' | 'stable';
-  };
+interface PlayerStats {
+  sgTotal: number | null;
+  sgTee: number | null;
+  sgApproach: number | null;
+  sgAround: number | null;
+  sgPutting: number | null;
+  drivingDistance: number | null;
+  drivingAccuracy: number | null;
+  girPercent: number | null;
+  scrambling: number | null;
+  puttsPerRound: number | null;
 }
 
-const mockDataGolfPlayers: PlayerDataGolf[] = [
-  {
-    id: '1',
-    name: 'Emma Larsen',
-    category: 'A',
-    hcp: 4.2,
-    dataGolfConnected: true,
-    lastSync: '2025-01-19T10:30:00',
-    stats: {
-      sgTotal: 2.8,
-      sgTee: 0.6,
-      sgApproach: 1.2,
-      sgAround: 0.4,
-      sgPutting: 0.6,
-      drivingDistance: 235,
-      drivingAccuracy: 68,
-      girPercent: 58,
-      scrambling: 52,
-      puttsPerRound: 31.2,
-      roundsTracked: 42
-    },
-    trends: { sgTotal: 'up', sgTee: 'stable', sgApproach: 'up', sgAround: 'up', sgPutting: 'stable' }
-  },
-  {
-    id: '2',
-    name: 'Thomas Berg',
-    category: 'B',
-    hcp: 12.4,
-    dataGolfConnected: true,
-    lastSync: '2025-01-18T14:15:00',
-    stats: {
-      sgTotal: -1.5,
-      sgTee: -0.3,
-      sgApproach: -0.5,
-      sgAround: -0.4,
-      sgPutting: -0.3,
-      drivingDistance: 218,
-      drivingAccuracy: 52,
-      girPercent: 38,
-      scrambling: 35,
-      puttsPerRound: 34.8,
-      roundsTracked: 28
-    },
-    trends: { sgTotal: 'up', sgTee: 'up', sgApproach: 'stable', sgAround: 'up', sgPutting: 'down' }
-  },
-  {
-    id: '3',
-    name: 'Sofie Andersen',
-    category: 'A',
-    hcp: 2.8,
-    dataGolfConnected: true,
-    lastSync: '2025-01-19T08:00:00',
-    stats: {
-      sgTotal: 4.2,
-      sgTee: 0.8,
-      sgApproach: 1.8,
-      sgAround: 0.8,
-      sgPutting: 0.8,
-      drivingDistance: 228,
-      drivingAccuracy: 72,
-      girPercent: 65,
-      scrambling: 58,
-      puttsPerRound: 29.8,
-      roundsTracked: 56
-    },
-    trends: { sgTotal: 'up', sgTee: 'up', sgApproach: 'up', sgAround: 'stable', sgPutting: 'up' }
-  },
-  {
-    id: '4',
-    name: 'Jonas Pedersen',
-    category: 'B',
-    hcp: 16.8,
-    dataGolfConnected: false,
-    stats: {
-      sgTotal: 0,
-      sgTee: 0,
-      sgApproach: 0,
-      sgAround: 0,
-      sgPutting: 0,
-      drivingDistance: 0,
-      drivingAccuracy: 0,
-      girPercent: 0,
-      scrambling: 0,
-      puttsPerRound: 0,
-      roundsTracked: 0
-    },
-    trends: { sgTotal: 'stable', sgTee: 'stable', sgApproach: 'stable', sgAround: 'stable', sgPutting: 'stable' }
-  },
-  {
-    id: '5',
-    name: 'Erik Hansen',
-    category: 'A',
-    hcp: 5.5,
-    dataGolfConnected: true,
-    lastSync: '2025-01-17T16:45:00',
-    stats: {
-      sgTotal: 1.9,
-      sgTee: 0.8,
-      sgApproach: 0.5,
-      sgAround: 0.2,
-      sgPutting: 0.4,
-      drivingDistance: 255,
-      drivingAccuracy: 58,
-      girPercent: 52,
-      scrambling: 45,
-      puttsPerRound: 32.1,
-      roundsTracked: 38
-    },
-    trends: { sgTotal: 'stable', sgTee: 'up', sgApproach: 'down', sgAround: 'stable', sgPutting: 'up' }
-  },
-  {
-    id: '6',
-    name: 'Mia Kristiansen',
-    category: 'C',
-    hcp: 28.5,
-    dataGolfConnected: true,
-    lastSync: '2025-01-15T11:20:00',
-    stats: {
-      sgTotal: -5.2,
-      sgTee: -1.2,
-      sgApproach: -1.8,
-      sgAround: -1.2,
-      sgPutting: -1.0,
-      drivingDistance: 165,
-      drivingAccuracy: 45,
-      girPercent: 18,
-      scrambling: 22,
-      puttsPerRound: 38.5,
-      roundsTracked: 15
-    },
-    trends: { sgTotal: 'up', sgTee: 'up', sgApproach: 'up', sgAround: 'stable', sgPutting: 'up' }
-  }
-];
+interface PlayerTrends {
+  sgTotal: 'up' | 'down' | 'stable';
+  sgTee: 'up' | 'down' | 'stable';
+  sgApproach: 'up' | 'down' | 'stable';
+  sgAround: 'up' | 'down' | 'stable';
+  sgPutting: 'up' | 'down' | 'stable';
+}
+
+interface PlayerDataGolf {
+  playerId: string;
+  playerName: string;
+  category: string;
+  handicap: number | null;
+  dataGolfConnected: boolean;
+  lastSync: string | null;
+  roundsTracked: number;
+  stats: PlayerStats;
+  trends: PlayerTrends;
+  tourComparison: {
+    tour: string;
+    gapToTour: number | null;
+    percentile: number | null;
+  } | null;
+}
+
+interface DashboardSummary {
+  totalPlayers: number;
+  connectedPlayers: number;
+  totalRoundsTracked: number;
+  lastSyncAt: string | null;
+}
+
+interface DashboardData {
+  players: PlayerDataGolf[];
+  summary: DashboardSummary;
+  tourAverages: any;
+}
 
 export const CoachDataGolf: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterConnected, setFilterConnected] = useState<'all' | 'connected' | 'disconnected'>('all');
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
+  const [selectedTour, setSelectedTour] = useState<'pga' | 'euro' | 'kft'>('pga');
+
+  // API state
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+
+  // Fetch dashboard data
+  const fetchDashboard = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await dataGolfAPI.getCoachDashboard(selectedTour);
+      if (response.data?.success) {
+        setDashboardData(response.data.data);
+      } else {
+        setError('Kunne ikke hente data');
+      }
+    } catch (err: any) {
+      console.error('Failed to fetch DataGolf dashboard:', err);
+      setError(err.response?.data?.error || 'Kunne ikke hente data fra server');
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedTour]);
+
+  // Initial fetch
+  useEffect(() => {
+    fetchDashboard();
+  }, [fetchDashboard]);
+
+  // Trigger sync
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      await dataGolfAPI.triggerSync();
+      // Refetch after sync
+      await fetchDashboard();
+    } catch (err) {
+      console.error('Sync failed:', err);
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  const players = dashboardData?.players || [];
 
   const filteredPlayers = useMemo(() => {
-    let players = [...mockDataGolfPlayers];
+    let result = [...players];
 
     if (searchQuery) {
-      players = players.filter(p =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      result = result.filter(p =>
+        p.playerName.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     if (filterConnected === 'connected') {
-      players = players.filter(p => p.dataGolfConnected);
+      result = result.filter(p => p.dataGolfConnected);
     } else if (filterConnected === 'disconnected') {
-      players = players.filter(p => !p.dataGolfConnected);
+      result = result.filter(p => !p.dataGolfConnected);
     }
 
-    return players;
-  }, [searchQuery, filterConnected]);
+    return result;
+  }, [players, searchQuery, filterConnected]);
 
-  const stats = useMemo(() => ({
-    total: mockDataGolfPlayers.length,
-    connected: mockDataGolfPlayers.filter(p => p.dataGolfConnected).length,
-    totalRounds: mockDataGolfPlayers.reduce((acc, p) => acc + p.stats.roundsTracked, 0)
-  }), []);
+  const stats = dashboardData?.summary || {
+    totalPlayers: 0,
+    connectedPlayers: 0,
+    totalRoundsTracked: 0,
+    lastSyncAt: null
+  };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -221,23 +157,25 @@ export const CoachDataGolf: React.FC = () => {
     switch (trend) {
       case 'up': return <TrendingUp size={12} color="#16a34a" />;
       case 'down': return <TrendingDown size={12} color="#dc2626" />;
-      default: return <Activity size={12} color={designTokens.colors.text.tertiary} />;
+      default: return <Activity size={12} color={'var(--text-tertiary)'} />;
     }
   }, []);
 
-  const formatSG = (value: number) => {
+  const formatSG = (value: number | null) => {
+    if (value === null) return '-';
     if (value > 0) return `+${value.toFixed(1)}`;
     return value.toFixed(1);
   };
 
-  const getSGColor = (value: number) => {
+  const getSGColor = (value: number | null) => {
+    if (value === null) return 'var(--text-tertiary)';
     if (value > 0) return '#16a34a';
     if (value < 0) return '#dc2626';
-    return designTokens.colors.text.secondary;
+    return 'var(--text-secondary)';
   };
 
-  const formatLastSync = (dateString?: string) => {
-    if (!dateString) return 'Aldri synkronisert';
+  const formatLastSync = (dateString?: string | null) => {
+    if (!dateString) return 'Ingen testdata';
     const date = new Date(dateString);
     const now = new Date();
     const diffHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
@@ -248,8 +186,62 @@ export const CoachDataGolf: React.FC = () => {
     return `${diffDays} dager siden`;
   };
 
+  if (loading) {
+    return (
+      <div style={{
+        padding: '24px',
+        backgroundColor: 'var(--bg-secondary)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <StateCard
+          variant="loading"
+          title="Laster Data Golf statistikk..."
+        />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{
+        padding: '24px',
+        backgroundColor: 'var(--bg-secondary)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <StateCard
+          variant="error"
+          title="Kunne ikke laste data"
+          description={error}
+          action={
+            <button
+              onClick={fetchDashboard}
+              style={{
+                padding: '10px 20px',
+                borderRadius: '8px',
+                border: 'none',
+                backgroundColor: 'var(--accent)',
+                color: 'white',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer'
+              }}
+            >
+              Prøv igjen
+            </button>
+          }
+        />
+      </div>
+    );
+  }
+
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
@@ -264,23 +256,44 @@ export const CoachDataGolf: React.FC = () => {
           }}>
             <BarChart3 size={24} color="white" />
           </div>
-          <div>
+          <div style={{ flex: 1 }}>
             <h1 style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               margin: 0
             }}>
               Data Golf Statistikk
             </h1>
             <p style={{
               fontSize: '14px',
-              color: designTokens.colors.text.secondary,
+              color: 'var(--text-secondary)',
               margin: 0
             }}>
               Strokes Gained analyse og avansert spillerstatistikk
             </p>
           </div>
+          <button
+            onClick={handleSync}
+            disabled={syncing}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '10px 16px',
+              borderRadius: '8px',
+              border: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-secondary)',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: syncing ? 'not-allowed' : 'pointer',
+              opacity: syncing ? 0.7 : 1
+            }}
+          >
+            <RefreshCw size={14} style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} />
+            {syncing ? 'Synkroniserer...' : 'Oppdater'}
+          </button>
         </div>
       </div>
 
@@ -297,26 +310,30 @@ export const CoachDataGolf: React.FC = () => {
       }}>
         <Info size={20} color="#6366f1" />
         <div style={{ flex: 1 }}>
-          <p style={{ fontSize: '14px', color: designTokens.colors.text.primary, margin: 0 }}>
-            <strong>Strokes Gained</strong> viser hvor mange slag en spiller vinner eller taper sammenlignet med scratch-spillere.
+          <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>
+            <strong>Strokes Gained</strong> estimeres basert på testresultater og sammenlignes med {selectedTour.toUpperCase()} Tour gjennomsnitt.
           </p>
         </div>
-        <button style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '8px 14px',
-          borderRadius: '8px',
-          border: 'none',
-          backgroundColor: '#6366f1',
-          color: 'white',
-          fontSize: '12px',
-          fontWeight: '500',
-          cursor: 'pointer'
-        }}>
-          <ExternalLink size={14} />
-          Data Golf Guide
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {(['pga', 'euro', 'kft'] as const).map(tour => (
+            <button
+              key={tour}
+              onClick={() => setSelectedTour(tour)}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: selectedTour === tour ? '#6366f1' : 'rgba(99, 102, 241, 0.2)',
+                color: selectedTour === tour ? 'white' : '#6366f1',
+                fontSize: '12px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+            >
+              {tour.toUpperCase()}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Stats Summary */}
@@ -327,23 +344,23 @@ export const CoachDataGolf: React.FC = () => {
         marginBottom: '24px'
       }}>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: '0 0 4px 0' }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
             Totalt spillere
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: designTokens.colors.text.primary, margin: 0 }}>
-            {stats.total}
+          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+            {stats.totalPlayers}
           </p>
         </div>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
             <div style={{
@@ -352,25 +369,25 @@ export const CoachDataGolf: React.FC = () => {
               borderRadius: '50%',
               backgroundColor: '#16a34a'
             }} />
-            <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: 0 }}>
-              Tilkoblet
+            <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
+              Med testdata
             </p>
           </div>
           <p style={{ fontSize: '28px', fontWeight: '700', color: '#16a34a', margin: 0 }}>
-            {stats.connected}
+            {stats.connectedPlayers}
           </p>
         </div>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: '0 0 4px 0' }}>
-            Runder registrert
+          <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
+            Tester registrert
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: designTokens.colors.text.primary, margin: 0 }}>
-            {stats.totalRounds}
+          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+            {stats.totalRoundsTracked}
           </p>
         </div>
       </div>
@@ -390,7 +407,7 @@ export const CoachDataGolf: React.FC = () => {
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
+              color: 'var(--text-tertiary)'
             }}
           />
           <input
@@ -402,10 +419,10 @@ export const CoachDataGolf: React.FC = () => {
               width: '100%',
               padding: '12px 12px 12px 40px',
               borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
               fontSize: '14px',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none'
             }}
           />
@@ -420,18 +437,18 @@ export const CoachDataGolf: React.FC = () => {
                 borderRadius: '10px',
                 border: 'none',
                 backgroundColor: filterConnected === filter
-                  ? designTokens.colors.primary[500]
-                  : designTokens.colors.background.card,
+                  ? 'var(--accent)'
+                  : 'var(--bg-primary)',
                 color: filterConnected === filter
                   ? 'white'
-                  : designTokens.colors.text.secondary,
+                  : 'var(--text-secondary)',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease'
               }}
             >
-              {filter === 'all' ? 'Alle' : filter === 'connected' ? 'Tilkoblet' : 'Ikke tilkoblet'}
+              {filter === 'all' ? 'Alle' : filter === 'connected' ? 'Med data' : 'Uten data'}
             </button>
           ))}
         </div>
@@ -441,12 +458,12 @@ export const CoachDataGolf: React.FC = () => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {filteredPlayers.map((player) => (
           <div
-            key={player.id}
+            key={player.playerId}
             style={{
-              backgroundColor: designTokens.colors.background.card,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '16px',
               padding: '20px',
-              border: `1px solid ${designTokens.colors.border.light}`,
+              border: `1px solid ${'var(--border-default)'}`,
               opacity: player.dataGolfConnected ? 1 : 0.7
             }}
           >
@@ -462,25 +479,25 @@ export const CoachDataGolf: React.FC = () => {
                   width: '48px',
                   height: '48px',
                   borderRadius: '50%',
-                  backgroundColor: designTokens.colors.primary[100],
+                  backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '18px',
                   fontWeight: '600',
-                  color: designTokens.colors.primary[700]
+                  color: 'var(--accent)'
                 }}>
-                  {player.name.split(' ').map(n => n[0]).join('')}
+                  {player.playerName.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                     <h3 style={{
                       fontSize: '16px',
                       fontWeight: '600',
-                      color: designTokens.colors.text.primary,
+                      color: 'var(--text-primary)',
                       margin: 0
                     }}>
-                      {player.name}
+                      {player.playerName}
                     </h3>
                     <span style={{
                       fontSize: '11px',
@@ -502,20 +519,22 @@ export const CoachDataGolf: React.FC = () => {
                       color: player.dataGolfConnected ? '#16a34a' : '#dc2626',
                       fontWeight: '500'
                     }}>
-                      {player.dataGolfConnected ? 'Tilkoblet' : 'Ikke tilkoblet'}
+                      {player.dataGolfConnected ? 'Har testdata' : 'Mangler testdata'}
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '13px', color: designTokens.colors.text.secondary }}>
-                      HCP: {player.hcp}
-                    </span>
+                    {player.handicap !== null && (
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                        HCP: {player.handicap.toFixed(1)}
+                      </span>
+                    )}
                     {player.dataGolfConnected && (
                       <>
-                        <span style={{ fontSize: '13px', color: designTokens.colors.text.tertiary }}>
-                          {player.stats.roundsTracked} runder
+                        <span style={{ fontSize: '13px', color: 'var(--text-tertiary)' }}>
+                          {player.roundsTracked} tester
                         </span>
-                        <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
-                          Synk: {formatLastSync(player.lastSync)}
+                        <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                          Siste: {formatLastSync(player.lastSync)}
                         </span>
                       </>
                     )}
@@ -533,13 +552,13 @@ export const CoachDataGolf: React.FC = () => {
                   <div style={{
                     textAlign: 'right',
                     padding: '8px 16px',
-                    backgroundColor: player.stats.sgTotal >= 0
+                    backgroundColor: (player.stats.sgTotal ?? 0) >= 0
                       ? 'rgba(34, 197, 94, 0.1)'
                       : 'rgba(239, 68, 68, 0.1)',
                     borderRadius: '10px'
                   }}>
-                    <p style={{ fontSize: '11px', color: designTokens.colors.text.tertiary, margin: '0 0 2px 0' }}>
-                      SG Total
+                    <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', margin: '0 0 2px 0' }}>
+                      SG Total (est.)
                     </p>
                     <p style={{
                       fontSize: '20px',
@@ -551,13 +570,13 @@ export const CoachDataGolf: React.FC = () => {
                     </p>
                   </div>
                   <button
-                    onClick={() => setSelectedPlayer(selectedPlayer === player.id ? null : player.id)}
+                    onClick={() => setSelectedPlayer(selectedPlayer === player.playerId ? null : player.playerId)}
                     style={{
                       padding: '10px 14px',
                       borderRadius: '8px',
-                      border: `1px solid ${designTokens.colors.border.light}`,
+                      border: `1px solid ${'var(--border-default)'}`,
                       backgroundColor: 'transparent',
-                      color: designTokens.colors.text.secondary,
+                      color: 'var(--text-secondary)',
                       fontSize: '12px',
                       cursor: 'pointer',
                       display: 'flex',
@@ -565,53 +584,46 @@ export const CoachDataGolf: React.FC = () => {
                       gap: '4px'
                     }}
                   >
-                    {selectedPlayer === player.id ? 'Skjul' : 'Detaljer'}
+                    {selectedPlayer === player.playerId ? 'Skjul' : 'Detaljer'}
                     <ChevronRight
                       size={14}
                       style={{
-                        transform: selectedPlayer === player.id ? 'rotate(90deg)' : 'none',
+                        transform: selectedPlayer === player.playerId ? 'rotate(90deg)' : 'none',
                         transition: 'transform 0.2s ease'
                       }}
                     />
                   </button>
                 </div>
               ) : (
-                <button style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '10px 16px',
+                <div style={{
+                  padding: '8px 16px',
+                  backgroundColor: 'rgba(239, 68, 68, 0.1)',
                   borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: '#6366f1',
-                  color: 'white',
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  cursor: 'pointer'
+                  fontSize: '12px',
+                  color: '#dc2626'
                 }}>
-                  <RefreshCw size={14} />
-                  Koble til Data Golf
-                </button>
+                  Ingen testresultater enda
+                </div>
               )}
             </div>
 
             {/* Expanded Stats */}
-            {player.dataGolfConnected && selectedPlayer === player.id && (
+            {player.dataGolfConnected && selectedPlayer === player.playerId && (
               <div style={{
                 paddingTop: '16px',
-                borderTop: `1px solid ${designTokens.colors.border.light}`
+                borderTop: `1px solid ${'var(--border-default)'}`
               }}>
                 {/* SG Breakdown */}
                 <div style={{ marginBottom: '20px' }}>
                   <h4 style={{
                     fontSize: '13px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     margin: '0 0 12px 0',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
-                    Strokes Gained Breakdown
+                    Strokes Gained Breakdown (estimert)
                   </h4>
                   <div style={{
                     display: 'grid',
@@ -625,7 +637,7 @@ export const CoachDataGolf: React.FC = () => {
                       { label: 'SG Putting', value: player.stats.sgPutting, trend: player.trends.sgPutting, icon: CircleDot }
                     ].map((stat) => (
                       <div key={stat.label} style={{
-                        backgroundColor: designTokens.colors.background.secondary,
+                        backgroundColor: 'var(--bg-tertiary)',
                         borderRadius: '10px',
                         padding: '14px'
                       }}>
@@ -636,8 +648,8 @@ export const CoachDataGolf: React.FC = () => {
                           marginBottom: '8px'
                         }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <stat.icon size={14} color={designTokens.colors.text.tertiary} />
-                            <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                            <stat.icon size={14} color={'var(--text-tertiary)'} />
+                            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                               {stat.label}
                             </span>
                           </div>
@@ -656,17 +668,68 @@ export const CoachDataGolf: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Tour Comparison */}
+                {player.tourComparison && (
+                  <div style={{ marginBottom: '20px' }}>
+                    <h4 style={{
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      color: 'var(--text-secondary)',
+                      margin: '0 0 12px 0',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      Sammenligning med {player.tourComparison.tour} Tour
+                    </h4>
+                    <div style={{
+                      backgroundColor: 'var(--bg-tertiary)',
+                      borderRadius: '10px',
+                      padding: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '24px'
+                    }}>
+                      <div>
+                        <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
+                          Gap til Tour Avg
+                        </p>
+                        <p style={{
+                          fontSize: '24px',
+                          fontWeight: '700',
+                          color: getSGColor(player.tourComparison.gapToTour),
+                          margin: 0
+                        }}>
+                          {formatSG(player.tourComparison.gapToTour)} slag
+                        </p>
+                      </div>
+                      <div>
+                        <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
+                          Percentil
+                        </p>
+                        <p style={{
+                          fontSize: '24px',
+                          fontWeight: '700',
+                          color: 'var(--text-primary)',
+                          margin: 0
+                        }}>
+                          {player.tourComparison.percentile ?? '-'}%
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Traditional Stats */}
                 <div>
                   <h4 style={{
                     fontSize: '13px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     margin: '0 0 12px 0',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
-                    Tradisjonell Statistikk
+                    Testbasert Statistikk
                   </h4>
                   <div style={{
                     display: 'grid',
@@ -674,30 +737,30 @@ export const CoachDataGolf: React.FC = () => {
                     gap: '12px'
                   }}>
                     {[
-                      { label: 'Driving', value: `${player.stats.drivingDistance}m`, subtext: `${player.stats.drivingAccuracy}% acc` },
-                      { label: 'GIR', value: `${player.stats.girPercent}%`, subtext: 'Greens in Reg' },
-                      { label: 'Scrambling', value: `${player.stats.scrambling}%`, subtext: 'Save rate' },
-                      { label: 'Putts/Runde', value: player.stats.puttsPerRound.toFixed(1), subtext: 'gjennomsnitt' },
-                      { label: 'Runder', value: player.stats.roundsTracked, subtext: 'analysert' }
+                      { label: 'Driving', value: player.stats.drivingDistance ? `${player.stats.drivingDistance}m` : '-', subtext: player.stats.drivingAccuracy ? `${player.stats.drivingAccuracy}% acc` : '' },
+                      { label: 'GIR', value: player.stats.girPercent ? `${player.stats.girPercent}%` : '-', subtext: 'Greens in Reg' },
+                      { label: 'Scrambling', value: player.stats.scrambling ? `${player.stats.scrambling}%` : '-', subtext: 'Save rate' },
+                      { label: 'Putts/Runde', value: player.stats.puttsPerRound?.toFixed(1) ?? '-', subtext: 'gjennomsnitt' },
+                      { label: 'Tester', value: player.roundsTracked, subtext: 'analysert' }
                     ].map((stat) => (
                       <div key={stat.label} style={{
-                        backgroundColor: designTokens.colors.background.secondary,
+                        backgroundColor: 'var(--bg-tertiary)',
                         borderRadius: '10px',
                         padding: '12px',
                         textAlign: 'center'
                       }}>
-                        <p style={{ fontSize: '11px', color: designTokens.colors.text.tertiary, margin: '0 0 4px 0' }}>
+                        <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
                           {stat.label}
                         </p>
                         <p style={{
                           fontSize: '18px',
                           fontWeight: '700',
-                          color: designTokens.colors.text.primary,
+                          color: 'var(--text-primary)',
                           margin: '0 0 2px 0'
                         }}>
                           {stat.value}
                         </p>
-                        <p style={{ fontSize: '10px', color: designTokens.colors.text.tertiary, margin: 0 }}>
+                        <p style={{ fontSize: '10px', color: 'var(--text-tertiary)', margin: 0 }}>
                           {stat.subtext}
                         </p>
                       </div>
@@ -711,22 +774,11 @@ export const CoachDataGolf: React.FC = () => {
       </div>
 
       {filteredPlayers.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
-        }}>
-          <BarChart3 size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: designTokens.colors.text.secondary,
-            margin: 0
-          }}>
-            Ingen spillere funnet med valgt filter
-          </p>
-        </div>
+        <StateCard
+          variant="empty"
+          title="Ingen spillere funnet"
+          description={players.length === 0 ? 'Last inn spillerdata for å komme i gang.' : 'Prøv å justere filteret for å se flere spillere.'}
+        />
       )}
     </div>
   );

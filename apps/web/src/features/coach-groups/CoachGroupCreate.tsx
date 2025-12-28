@@ -15,7 +15,8 @@ import {
   Check,
   AlertCircle,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface AvailablePlayer {
   id: string;
@@ -34,11 +35,11 @@ interface GroupFormData {
 }
 
 const GROUP_COLORS = [
-  { value: tokens.colors.primary, label: 'Blå' },
-  { value: tokens.colors.success, label: 'Grønn' },
-  { value: tokens.colors.gold, label: 'Gull' },
-  { value: tokens.colors.error, label: 'Rød' },
-  { value: tokens.colors.primaryLight, label: 'Lys blå' },
+  { value: 'var(--accent)', label: 'Blå' },
+  { value: 'var(--success)', label: 'Grønn' },
+  { value: 'var(--achievement)', label: 'Gull' },
+  { value: 'var(--error)', label: 'Rød' },
+  { value: '#60A5FA', label: 'Lys blå' },
   { value: '#8B5CF6', label: 'Lilla' },
   { value: '#EC4899', label: 'Rosa' },
   { value: '#14B8A6', label: 'Turkis' },
@@ -50,7 +51,7 @@ export default function CoachGroupCreate() {
     name: '',
     description: '',
     type: 'custom',
-    color: tokens.colors.primary,
+    color: 'var(--accent)',
     memberIds: [],
   });
   const [availablePlayers, setAvailablePlayers] = useState<AvailablePlayer[]>([]);
@@ -170,15 +171,15 @@ export default function CoachGroupCreate() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           padding: '20px 24px',
         }}
       >
@@ -188,8 +189,8 @@ export default function CoachGroupCreate() {
             style={{
               width: 40,
               height: 40,
-              borderRadius: tokens.radius.md,
-              backgroundColor: tokens.colors.gray100,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -197,14 +198,14 @@ export default function CoachGroupCreate() {
               cursor: 'pointer',
             }}
           >
-            <ArrowLeft size={20} color={tokens.colors.charcoal} />
+            <ArrowLeft size={20} color={'var(--text-primary)'} />
           </button>
 
           <div>
             <h1
               style={{
-                ...tokens.typography.title2,
-                color: tokens.colors.charcoal,
+                fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -212,8 +213,8 @@ export default function CoachGroupCreate() {
             </h1>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: '4px 0 0',
               }}
             >
@@ -233,30 +234,30 @@ export default function CoachGroupCreate() {
                 alignItems: 'center',
                 gap: '10px',
                 padding: '12px 16px',
-                backgroundColor: `${tokens.colors.error}10`,
-                borderRadius: tokens.radius.md,
+                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
+                borderRadius: 'var(--radius-md)',
                 marginBottom: '20px',
               }}
             >
-              <AlertCircle size={18} color={tokens.colors.error} />
-              <span style={{ color: tokens.colors.error, fontSize: '14px' }}>{error}</span>
+              <AlertCircle size={18} color={'var(--error)'} />
+              <span style={{ color: 'var(--error)', fontSize: '14px' }}>{error}</span>
             </div>
           )}
 
           {/* Basic info */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
               marginBottom: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <h2
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 16px',
               }}
             >
@@ -268,8 +269,8 @@ export default function CoachGroupCreate() {
               <label
                 style={{
                   display: 'block',
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.charcoal,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-primary)',
                   marginBottom: '6px',
                   fontWeight: 500,
                 }}
@@ -284,9 +285,9 @@ export default function CoachGroupCreate() {
                 style={{
                   width: '100%',
                   padding: '12px 14px',
-                  backgroundColor: tokens.colors.snow,
-                  border: `1px solid ${tokens.colors.gray300}`,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: `1px solid ${'var(--border-default)'}`,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '14px',
                   outline: 'none',
                 }}
@@ -298,8 +299,8 @@ export default function CoachGroupCreate() {
               <label
                 style={{
                   display: 'block',
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.charcoal,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-primary)',
                   marginBottom: '6px',
                   fontWeight: 500,
                 }}
@@ -314,9 +315,9 @@ export default function CoachGroupCreate() {
                 style={{
                   width: '100%',
                   padding: '12px 14px',
-                  backgroundColor: tokens.colors.snow,
-                  border: `1px solid ${tokens.colors.gray300}`,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: `1px solid ${'var(--border-default)'}`,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '14px',
                   outline: 'none',
                   resize: 'vertical',
@@ -330,8 +331,8 @@ export default function CoachGroupCreate() {
               <label
                 style={{
                   display: 'block',
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.charcoal,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-primary)',
                   marginBottom: '6px',
                   fontWeight: 500,
                 }}
@@ -352,18 +353,18 @@ export default function CoachGroupCreate() {
                       padding: '10px 18px',
                       backgroundColor:
                         formData.type === type.key
-                          ? tokens.colors.primary
-                          : tokens.colors.snow,
+                          ? 'var(--accent)'
+                          : 'var(--bg-secondary)',
                       color:
                         formData.type === type.key
-                          ? tokens.colors.white
-                          : tokens.colors.charcoal,
+                          ? 'var(--bg-primary)'
+                          : 'var(--text-primary)',
                       border: `1px solid ${
                         formData.type === type.key
-                          ? tokens.colors.primary
-                          : tokens.colors.gray300
+                          ? 'var(--accent)'
+                          : 'var(--border-default)'
                       }`,
-                      borderRadius: tokens.radius.md,
+                      borderRadius: 'var(--radius-md)',
                       fontSize: '14px',
                       fontWeight: 500,
                       cursor: 'pointer',
@@ -380,8 +381,8 @@ export default function CoachGroupCreate() {
               <label
                 style={{
                   display: 'block',
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.charcoal,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-primary)',
                   marginBottom: '6px',
                   fontWeight: 500,
                 }}
@@ -398,7 +399,7 @@ export default function CoachGroupCreate() {
                     style={{
                       width: 40,
                       height: 40,
-                      borderRadius: tokens.radius.md,
+                      borderRadius: 'var(--radius-md)',
                       backgroundColor: color.value,
                       border:
                         formData.color === color.value
@@ -426,17 +427,17 @@ export default function CoachGroupCreate() {
           {/* Preview */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
               marginBottom: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <h2
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 16px',
               }}
             >
@@ -448,12 +449,12 @@ export default function CoachGroupCreate() {
                 style={{
                   width: 56,
                   height: 56,
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   backgroundColor: formData.color,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: tokens.colors.white,
+                  color: 'var(--bg-primary)',
                   fontWeight: 700,
                   fontSize: '18px',
                 }}
@@ -463,8 +464,8 @@ export default function CoachGroupCreate() {
               <div>
                 <p
                   style={{
-                    ...tokens.typography.headline,
-                    color: tokens.colors.charcoal,
+                    fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                    color: 'var(--text-primary)',
                     margin: 0,
                   }}
                 >
@@ -472,8 +473,8 @@ export default function CoachGroupCreate() {
                 </p>
                 <p
                   style={{
-                    ...tokens.typography.caption1,
-                    color: tokens.colors.steel,
+                    fontSize: '12px', lineHeight: '16px',
+                    color: 'var(--text-secondary)',
                     margin: '2px 0 0',
                   }}
                 >
@@ -486,11 +487,11 @@ export default function CoachGroupCreate() {
           {/* Members selection */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
               marginBottom: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <div
@@ -503,8 +504,8 @@ export default function CoachGroupCreate() {
             >
               <h2
                 style={{
-                  ...tokens.typography.headline,
-                  color: tokens.colors.charcoal,
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  color: 'var(--text-primary)',
                   margin: 0,
                 }}
               >
@@ -512,8 +513,8 @@ export default function CoachGroupCreate() {
               </h2>
               <span
                 style={{
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.primary,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--accent)',
                 }}
               >
                 {formData.memberIds.length} valgt
@@ -529,8 +530,8 @@ export default function CoachGroupCreate() {
                   gap: '8px',
                   marginBottom: '16px',
                   padding: '12px',
-                  backgroundColor: `${tokens.colors.primary}08`,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: `${'var(--accent)'}08`,
+                  borderRadius: 'var(--radius-md)',
                 }}
               >
                 {selectedPlayers.map((player) => (
@@ -541,8 +542,8 @@ export default function CoachGroupCreate() {
                       alignItems: 'center',
                       gap: '6px',
                       padding: '6px 10px',
-                      backgroundColor: tokens.colors.white,
-                      borderRadius: tokens.radius.sm,
+                      backgroundColor: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-sm)',
                       fontSize: '13px',
                     }}
                   >
@@ -554,7 +555,7 @@ export default function CoachGroupCreate() {
                         width: 18,
                         height: 18,
                         borderRadius: '50%',
-                        backgroundColor: tokens.colors.gray200,
+                        backgroundColor: 'var(--border-default)',
                         border: 'none',
                         display: 'flex',
                         alignItems: 'center',
@@ -562,7 +563,7 @@ export default function CoachGroupCreate() {
                         cursor: 'pointer',
                       }}
                     >
-                      <X size={12} color={tokens.colors.steel} />
+                      <X size={12} color={'var(--text-secondary)'} />
                     </button>
                   </div>
                 ))}
@@ -578,7 +579,7 @@ export default function CoachGroupCreate() {
                   left: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: tokens.colors.steel,
+                  color: 'var(--text-secondary)',
                 }}
               />
               <input
@@ -589,9 +590,9 @@ export default function CoachGroupCreate() {
                 style={{
                   width: '100%',
                   padding: '10px 12px 10px 40px',
-                  backgroundColor: tokens.colors.snow,
-                  border: `1px solid ${tokens.colors.gray300}`,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: `1px solid ${'var(--border-default)'}`,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '14px',
                   outline: 'none',
                 }}
@@ -605,8 +606,8 @@ export default function CoachGroupCreate() {
                   style={{
                     width: 32,
                     height: 32,
-                    border: `3px solid ${tokens.colors.gray300}`,
-                    borderTopColor: tokens.colors.primary,
+                    border: `3px solid ${'var(--border-default)'}`,
+                    borderTopColor: 'var(--accent)',
                     borderRadius: '50%',
                     margin: '0 auto',
                     animation: 'spin 1s linear infinite',
@@ -636,12 +637,12 @@ export default function CoachGroupCreate() {
                         gap: '12px',
                         padding: '10px 14px',
                         backgroundColor: isSelected
-                          ? `${tokens.colors.primary}10`
-                          : tokens.colors.snow,
+                          ? 'rgba(var(--accent-rgb), 0.10)'
+                          : 'var(--bg-secondary)',
                         border: `1px solid ${
-                          isSelected ? tokens.colors.primary : tokens.colors.gray200
+                          isSelected ? 'var(--accent)' : 'var(--border-default)'
                         }`,
-                        borderRadius: tokens.radius.md,
+                        borderRadius: 'var(--radius-md)',
                         cursor: 'pointer',
                         textAlign: 'left',
                         width: '100%',
@@ -652,11 +653,11 @@ export default function CoachGroupCreate() {
                           width: 36,
                           height: 36,
                           borderRadius: '50%',
-                          backgroundColor: tokens.colors.primary,
+                          backgroundColor: 'var(--accent)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: tokens.colors.white,
+                          color: 'var(--bg-primary)',
                           fontSize: '12px',
                           fontWeight: 600,
                         }}
@@ -667,8 +668,8 @@ export default function CoachGroupCreate() {
                       <div style={{ flex: 1 }}>
                         <p
                           style={{
-                            ...tokens.typography.subheadline,
-                            color: tokens.colors.charcoal,
+                            fontSize: '15px', lineHeight: '20px',
+                            color: 'var(--text-primary)',
                             margin: 0,
                             fontWeight: 500,
                           }}
@@ -677,8 +678,8 @@ export default function CoachGroupCreate() {
                         </p>
                         <p
                           style={{
-                            ...tokens.typography.caption1,
-                            color: tokens.colors.steel,
+                            fontSize: '12px', lineHeight: '16px',
+                            color: 'var(--text-secondary)',
                             margin: '2px 0 0',
                           }}
                         >
@@ -694,8 +695,8 @@ export default function CoachGroupCreate() {
                           height: 24,
                           borderRadius: '50%',
                           backgroundColor: isSelected
-                            ? tokens.colors.primary
-                            : tokens.colors.gray200,
+                            ? 'var(--accent)'
+                            : 'var(--border-default)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -718,9 +719,9 @@ export default function CoachGroupCreate() {
               style={{
                 padding: '12px 24px',
                 backgroundColor: 'transparent',
-                color: tokens.colors.charcoal,
-                border: `1px solid ${tokens.colors.gray300}`,
-                borderRadius: tokens.radius.md,
+                color: 'var(--text-primary)',
+                border: `1px solid ${'var(--border-default)'}`,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -736,10 +737,10 @@ export default function CoachGroupCreate() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '12px 24px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: loading ? 'not-allowed' : 'pointer',

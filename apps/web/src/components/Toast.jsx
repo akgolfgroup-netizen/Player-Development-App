@@ -1,5 +1,4 @@
 import React from 'react';
-import { tokens as designTokens } from '../design-tokens';
 import { useNotification } from '../contexts/NotificationContext';
 
 const Toast = () => {
@@ -9,22 +8,22 @@ const Toast = () => {
     switch (type) {
       case 'success':
         return {
-          backgroundColor: designTokens.colors.success,
+          backgroundColor: 'var(--success)',
           icon: '✓'
         };
       case 'error':
         return {
-          backgroundColor: designTokens.colors.error,
+          backgroundColor: 'var(--error)',
           icon: '✕'
         };
       case 'warning':
         return {
-          backgroundColor: designTokens.colors.warning,
+          backgroundColor: 'var(--warning)',
           icon: '⚠'
         };
       default:
         return {
-          backgroundColor: designTokens.colors.primary,
+          backgroundColor: 'var(--accent)',
           icon: 'ℹ'
         };
     }
@@ -52,8 +51,8 @@ const Toast = () => {
               backgroundColor: styles.backgroundColor,
               color: 'white',
               padding: '12px 16px',
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-card)',
               display: 'flex',
               alignItems: 'center',
               gap: '12px',

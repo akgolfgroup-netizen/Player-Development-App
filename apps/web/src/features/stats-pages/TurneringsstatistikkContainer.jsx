@@ -3,7 +3,6 @@ import {
   Trophy, TrendingUp, TrendingDown, Target, ChevronRight,
   Calendar, MapPin, Award, BarChart2
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -112,7 +111,7 @@ const TOURNAMENT_STATS = {
 
 const StatCard = ({ label, value, subValue, icon: Icon, color }) => (
   <div style={{
-    backgroundColor: tokens.colors.white,
+    backgroundColor: 'var(--bg-primary)',
     borderRadius: '12px',
     padding: '16px',
     textAlign: 'center',
@@ -129,12 +128,12 @@ const StatCard = ({ label, value, subValue, icon: Icon, color }) => (
     }}>
       <Icon size={18} color={color} />
     </div>
-    <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.charcoal }}>
+    <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
       {value}
     </div>
-    <div style={{ fontSize: '12px', color: tokens.colors.steel }}>{label}</div>
+    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{label}</div>
     {subValue && (
-      <div style={{ fontSize: '11px', color: tokens.colors.primary, marginTop: '4px' }}>
+      <div style={{ fontSize: '11px', color: 'var(--accent)', marginTop: '4px' }}>
         {subValue}
       </div>
     )}
@@ -151,7 +150,7 @@ const TrendIndicator = ({ trend, current, previous, label, unit = '' }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px 16px',
       display: 'flex',
@@ -159,8 +158,8 @@ const TrendIndicator = ({ trend, current, previous, label, unit = '' }) => {
       justifyContent: 'space-between',
     }}>
       <div>
-        <div style={{ fontSize: '13px', color: tokens.colors.steel }}>{label}</div>
-        <div style={{ fontSize: '18px', fontWeight: 600, color: tokens.colors.charcoal }}>
+        <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{label}</div>
+        <div style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
           {current}{unit}
         </div>
       </div>
@@ -170,17 +169,17 @@ const TrendIndicator = ({ trend, current, previous, label, unit = '' }) => {
         gap: '4px',
         padding: '4px 8px',
         borderRadius: '6px',
-        backgroundColor: isImproving ? `${tokens.colors.success}15` : `${tokens.colors.error}15`,
+        backgroundColor: isImproving ? `${'var(--success)'}15` : `${'var(--error)'}15`,
       }}>
         {isImproving ? (
-          <TrendingUp size={14} color={tokens.colors.success} />
+          <TrendingUp size={14} color={'var(--success)'} />
         ) : (
-          <TrendingDown size={14} color={tokens.colors.error} />
+          <TrendingDown size={14} color={'var(--error)'} />
         )}
         <span style={{
           fontSize: '12px',
           fontWeight: 500,
-          color: isImproving ? tokens.colors.success : tokens.colors.error,
+          color: isImproving ? 'var(--success)' : 'var(--error)',
         }}>
           {diff}{unit}
         </span>
@@ -198,7 +197,7 @@ const TournamentRow = ({ tournament }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '16px',
       display: 'flex',
@@ -210,15 +209,15 @@ const TournamentRow = ({ tournament }) => {
         width: '44px',
         height: '44px',
         borderRadius: '10px',
-        backgroundColor: isTopThree ? `${tokens.colors.gold}15` : tokens.colors.snow,
+        backgroundColor: isTopThree ? `${'var(--achievement)'}15` : 'var(--bg-secondary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
         {isTopThree ? (
-          <Award size={20} color={tokens.colors.gold} />
+          <Award size={20} color={'var(--achievement)'} />
         ) : (
-          <span style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
             {tournament.position}
           </span>
         )}
@@ -226,7 +225,7 @@ const TournamentRow = ({ tournament }) => {
 
       {/* Info */}
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+        <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
           {tournament.name}
         </div>
         <div style={{
@@ -235,7 +234,7 @@ const TournamentRow = ({ tournament }) => {
           gap: '12px',
           marginTop: '4px',
           fontSize: '12px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
         }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <Calendar size={12} />
@@ -256,8 +255,8 @@ const TournamentRow = ({ tournament }) => {
             style={{
               fontSize: '12px',
               fontWeight: 500,
-              color: round <= 72 ? tokens.colors.success : tokens.colors.charcoal,
-              backgroundColor: tokens.colors.snow,
+              color: round <= 72 ? 'var(--success)' : 'var(--text-primary)',
+              backgroundColor: 'var(--bg-secondary)',
               padding: '4px 8px',
               borderRadius: '6px',
             }}
@@ -269,12 +268,12 @@ const TournamentRow = ({ tournament }) => {
 
       {/* Score */}
       <div style={{ textAlign: 'right', minWidth: '80px' }}>
-        <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+        <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
           {tournament.total}
         </div>
         <div style={{
           fontSize: '12px',
-          color: tournament.toPar.startsWith('-') ? tokens.colors.success : tokens.colors.error,
+          color: tournament.toPar.startsWith('-') ? 'var(--success)' : 'var(--error)',
         }}>
           {tournament.toPar}
         </div>
@@ -285,7 +284,7 @@ const TournamentRow = ({ tournament }) => {
         <div style={{
           fontSize: '13px',
           fontWeight: 500,
-          color: tokens.colors.gold,
+          color: 'var(--achievement)',
           minWidth: '70px',
           textAlign: 'right',
         }}>
@@ -293,7 +292,7 @@ const TournamentRow = ({ tournament }) => {
         </div>
       )}
 
-      <ChevronRight size={16} color={tokens.colors.steel} />
+      <ChevronRight size={16} color={'var(--text-secondary)'} />
     </div>
   );
 };
@@ -304,14 +303,14 @@ const TournamentRow = ({ tournament }) => {
 
 const CategoryStatsCard = ({ title, stats, fields }) => (
   <div style={{
-    backgroundColor: tokens.colors.white,
+    backgroundColor: 'var(--bg-primary)',
     borderRadius: '12px',
     padding: '16px',
   }}>
     <h3 style={{
       fontSize: '14px',
       fontWeight: 600,
-      color: tokens.colors.charcoal,
+      color: 'var(--text-primary)',
       margin: '0 0 12px 0',
     }}>
       {title}
@@ -326,8 +325,8 @@ const CategoryStatsCard = ({ title, stats, fields }) => (
             justifyContent: 'space-between',
           }}
         >
-          <span style={{ fontSize: '13px', color: tokens.colors.steel }}>{field.label}</span>
-          <span style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{field.label}</span>
+          <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
             {field.value}{field.unit || ''}
           </span>
         </div>
@@ -337,13 +336,13 @@ const CategoryStatsCard = ({ title, stats, fields }) => (
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingTop: '8px',
-        borderTop: `1px solid ${tokens.colors.mist}`,
+        borderTop: '1px solid var(--border-default)',
       }}>
-        <span style={{ fontSize: '12px', color: tokens.colors.steel }}>Tour-ranking</span>
+        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Tour-ranking</span>
         <span style={{
           fontSize: '13px',
           fontWeight: 600,
-          color: tokens.colors.primary,
+          color: 'var(--accent)',
         }}>
           #{stats.ranking}
         </span>
@@ -361,7 +360,7 @@ const TurneringsstatistikkContainer = () => {
   const stats = TOURNAMENT_STATS;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Turneringsstatistikk"
         subtitle={`Sesong ${selectedSeason}`}
@@ -382,8 +381,8 @@ const TurneringsstatistikkContainer = () => {
                 padding: '8px 16px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: selectedSeason === year ? tokens.colors.primary : tokens.colors.white,
-                color: selectedSeason === year ? tokens.colors.white : tokens.colors.charcoal,
+                backgroundColor: selectedSeason === year ? 'var(--accent)' : 'var(--bg-primary)',
+                color: selectedSeason === year ? 'var(--bg-primary)' : 'var(--text-primary)',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -405,38 +404,38 @@ const TurneringsstatistikkContainer = () => {
             label="Turneringer"
             value={stats.overview.tournamentsPlayed}
             icon={Trophy}
-            color={tokens.colors.primary}
+            color={'var(--accent)'}
           />
           <StatCard
             label="Seiere"
             value={stats.overview.wins}
             icon={Award}
-            color={tokens.colors.gold}
+            color={'var(--achievement)'}
           />
           <StatCard
             label="Topp 10"
             value={stats.overview.topTens}
             icon={TrendingUp}
-            color={tokens.colors.success}
+            color={'var(--success)'}
           />
           <StatCard
             label="Gj.sn. score"
             value={stats.overview.avgScore.toFixed(1)}
             icon={Target}
-            color={tokens.colors.primary}
+            color={'var(--accent)'}
           />
           <StatCard
             label="Gj.sn. plassering"
             value={stats.overview.avgPosition}
             icon={BarChart2}
-            color={tokens.colors.steel}
+            color={'var(--text-secondary)'}
           />
           <StatCard
             label="Premiepenger"
             value={`${(stats.overview.totalEarnings / 1000).toFixed(1)}k`}
             subValue="kr"
             icon={Award}
-            color={tokens.colors.gold}
+            color={'var(--achievement)'}
           />
         </div>
 
@@ -451,7 +450,7 @@ const TurneringsstatistikkContainer = () => {
             <h2 style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Turneringshistorikk
@@ -470,7 +469,7 @@ const TurneringsstatistikkContainer = () => {
               <h3 style={{
                 fontSize: '14px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: '0 0 12px 0',
               }}>
                 Utvikling fra forrige sesong

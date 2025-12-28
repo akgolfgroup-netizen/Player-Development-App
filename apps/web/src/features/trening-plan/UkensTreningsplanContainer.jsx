@@ -3,7 +3,7 @@ import {
   Calendar, Clock, Target, CheckCircle, ChevronRight, ChevronLeft,
   Dumbbell, Brain, Flag, RotateCcw, Flame
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -121,19 +121,19 @@ const WEEK_DATA = {
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'technical':
-      return { color: tokens.colors.primary, icon: Target, label: 'Teknikk' };
+      return { color: 'var(--accent)', icon: Target, label: 'Teknikk' };
     case 'physical':
-      return { color: tokens.colors.error, icon: Dumbbell, label: 'Fysisk' };
+      return { color: 'var(--error)', icon: Dumbbell, label: 'Fysisk' };
     case 'mental':
-      return { color: tokens.colors.gold, icon: Brain, label: 'Mental' };
+      return { color: 'var(--achievement)', icon: Brain, label: 'Mental' };
     case 'short_game':
-      return { color: tokens.colors.success, icon: Flag, label: 'Kortspill' };
+      return { color: 'var(--success)', icon: Flag, label: 'Kortspill' };
     case 'warmup':
-      return { color: tokens.colors.warning, icon: Flame, label: 'Oppvarming' };
+      return { color: 'var(--warning)', icon: Flame, label: 'Oppvarming' };
     case 'rest':
-      return { color: tokens.colors.steel, icon: RotateCcw, label: 'Hvile' };
+      return { color: 'var(--text-secondary)', icon: RotateCcw, label: 'Hvile' };
     default:
-      return { color: tokens.colors.steel, icon: Calendar, label: type };
+      return { color: 'var(--text-secondary)', icon: Calendar, label: type };
   }
 };
 
@@ -154,12 +154,12 @@ const DayCard = ({ day, onClick }) => {
     <div
       onClick={onClick}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '16px',
         cursor: 'pointer',
         transition: 'all 0.2s',
-        border: day.isToday ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
+        border: day.isToday ? '2px solid var(--accent)' : '2px solid transparent',
         opacity: day.isCompleted ? 0.7 : 1,
       }}
       onMouseEnter={(e) => {
@@ -182,11 +182,11 @@ const DayCard = ({ day, onClick }) => {
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: day.isToday ? tokens.colors.primary : tokens.colors.charcoal,
+            color: day.isToday ? 'var(--accent)' : 'var(--text-primary)',
           }}>
             {day.dayName}
           </div>
-          <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
             {formatDate(day.date)}
           </div>
         </div>
@@ -194,8 +194,8 @@ const DayCard = ({ day, onClick }) => {
           <span style={{
             fontSize: '10px',
             fontWeight: 600,
-            color: tokens.colors.white,
-            backgroundColor: tokens.colors.primary,
+            color: 'var(--bg-primary)',
+            backgroundColor: 'var(--accent)',
             padding: '2px 8px',
             borderRadius: '4px',
           }}>
@@ -203,7 +203,7 @@ const DayCard = ({ day, onClick }) => {
           </span>
         )}
         {day.isCompleted && (
-          <CheckCircle size={20} color={tokens.colors.success} />
+          <CheckCircle size={20} color={'var(--success)'} />
         )}
       </div>
 
@@ -214,7 +214,7 @@ const DayCard = ({ day, onClick }) => {
           alignItems: 'center',
           justifyContent: 'center',
           padding: '20px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
           fontSize: '13px',
         }}>
           <RotateCcw size={16} style={{ marginRight: '8px' }} />
@@ -235,10 +235,10 @@ const DayCard = ({ day, onClick }) => {
                   gap: '10px',
                   padding: '8px 10px',
                   backgroundColor: session.status === 'completed'
-                    ? `${tokens.colors.success}08`
+                    ? 'rgba(var(--success-rgb), 0.08)'
                     : session.status === 'in_progress'
-                      ? `${tokens.colors.primary}08`
-                      : tokens.colors.snow,
+                      ? 'rgba(var(--accent-rgb), 0.08)'
+                      : 'var(--bg-secondary)',
                   borderRadius: '8px',
                 }}
               >
@@ -252,7 +252,7 @@ const DayCard = ({ day, onClick }) => {
                   justifyContent: 'center',
                 }}>
                   {session.status === 'completed' ? (
-                    <CheckCircle size={14} color={tokens.colors.success} />
+                    <CheckCircle size={14} color={'var(--success)'} />
                   ) : (
                     <Icon size={14} color={config.color} />
                   )}
@@ -261,7 +261,7 @@ const DayCard = ({ day, onClick }) => {
                   <div style={{
                     fontSize: '12px',
                     fontWeight: 500,
-                    color: session.status === 'completed' ? tokens.colors.steel : tokens.colors.charcoal,
+                    color: session.status === 'completed' ? 'var(--text-secondary)' : 'var(--text-primary)',
                     textDecoration: session.status === 'completed' ? 'line-through' : 'none',
                   }}>
                     {session.name}
@@ -269,7 +269,7 @@ const DayCard = ({ day, onClick }) => {
                 </div>
                 <span style={{
                   fontSize: '11px',
-                  color: tokens.colors.steel,
+                  color: 'var(--text-secondary)',
                 }}>
                   {session.duration} min
                 </span>
@@ -284,18 +284,18 @@ const DayCard = ({ day, onClick }) => {
         <div style={{
           marginTop: '12px',
           paddingTop: '12px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Clock size={12} color={tokens.colors.steel} />
-            <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+            <Clock size={12} color={'var(--text-secondary)'} />
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
               {Math.floor(totalDuration / 60)}t {totalDuration % 60}min
             </span>
           </div>
-          <ChevronRight size={16} color={tokens.colors.steel} />
+          <ChevronRight size={16} color={'var(--text-secondary)'} />
         </div>
       )}
     </div>
@@ -311,7 +311,7 @@ const StatsOverview = ({ stats, totalPlanned, completed }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -319,7 +319,7 @@ const StatsOverview = ({ stats, totalPlanned, completed }) => {
       <h3 style={{
         fontSize: '14px',
         fontWeight: 600,
-        color: tokens.colors.charcoal,
+        color: 'var(--text-primary)',
         margin: '0 0 16px 0',
       }}>
         Ukeoversikt
@@ -333,21 +333,21 @@ const StatsOverview = ({ stats, totalPlanned, completed }) => {
           justifyContent: 'space-between',
           marginBottom: '8px',
         }}>
-          <span style={{ fontSize: '13px', color: tokens.colors.steel }}>Fremgang</span>
-          <span style={{ fontSize: '16px', fontWeight: 700, color: tokens.colors.primary }}>
+          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Fremgang</span>
+          <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--accent)' }}>
             {progressPercent}%
           </span>
         </div>
         <div style={{
           height: '8px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           borderRadius: '4px',
           overflow: 'hidden',
         }}>
           <div style={{
             height: '100%',
             width: `${progressPercent}%`,
-            backgroundColor: tokens.colors.primary,
+            backgroundColor: 'var(--accent)',
             borderRadius: '4px',
           }} />
         </div>
@@ -356,7 +356,7 @@ const StatsOverview = ({ stats, totalPlanned, completed }) => {
           justifyContent: 'space-between',
           marginTop: '6px',
           fontSize: '11px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
         }}>
           <span>{completed}t fullfort</span>
           <span>{totalPlanned}t planlagt</span>
@@ -367,47 +367,47 @@ const StatsOverview = ({ stats, totalPlanned, completed }) => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
         <div style={{
           padding: '12px',
-          backgroundColor: `${tokens.colors.primary}08`,
+          backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
           borderRadius: '10px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.primary }}>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--accent)' }}>
             {stats.technicalHours}t
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Teknikk</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Teknikk</div>
         </div>
         <div style={{
           padding: '12px',
-          backgroundColor: `${tokens.colors.error}08`,
+          backgroundColor: 'rgba(var(--error-rgb), 0.08)',
           borderRadius: '10px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.error }}>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--error)' }}>
             {stats.physicalHours}t
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Fysisk</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Fysisk</div>
         </div>
         <div style={{
           padding: '12px',
-          backgroundColor: `${tokens.colors.gold}08`,
+          backgroundColor: 'rgba(var(--achievement-rgb), 0.08)',
           borderRadius: '10px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.gold }}>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--achievement)' }}>
             {stats.mentalHours}t
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Mental</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Mental</div>
         </div>
         <div style={{
           padding: '12px',
-          backgroundColor: `${tokens.colors.success}08`,
+          backgroundColor: 'rgba(var(--success-rgb), 0.08)',
           borderRadius: '10px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.success }}>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--success)' }}>
             {stats.shortGameHours}t
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Kortspill</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Kortspill</div>
         </div>
       </div>
     </div>
@@ -421,7 +421,7 @@ const StatsOverview = ({ stats, totalPlanned, completed }) => {
 const WeeklyGoals = ({ goals }) => {
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -432,11 +432,11 @@ const WeeklyGoals = ({ goals }) => {
         gap: '8px',
         marginBottom: '16px',
       }}>
-        <Target size={16} color={tokens.colors.gold} />
+        <Target size={16} color={'var(--achievement)'} />
         <h3 style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: 0,
         }}>
           Ukens mal
@@ -452,27 +452,27 @@ const WeeklyGoals = ({ goals }) => {
               justifyContent: 'space-between',
               marginBottom: '6px',
             }}>
-              <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
                 {goal.text}
               </span>
               <span style={{
                 fontSize: '12px',
                 fontWeight: 600,
-                color: goal.progress >= 100 ? tokens.colors.success : tokens.colors.primary,
+                color: goal.progress >= 100 ? 'var(--success)' : 'var(--accent)',
               }}>
                 {goal.progress}%
               </span>
             </div>
             <div style={{
               height: '6px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '3px',
               overflow: 'hidden',
             }}>
               <div style={{
                 height: '100%',
                 width: `${Math.min(goal.progress, 100)}%`,
-                backgroundColor: goal.progress >= 100 ? tokens.colors.success : tokens.colors.primary,
+                backgroundColor: goal.progress >= 100 ? 'var(--success)' : 'var(--accent)',
                 borderRadius: '3px',
               }} />
             </div>
@@ -495,7 +495,7 @@ const UkensTreningsplanContainer = () => {
   const endDate = weekDates[6].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Ukens treningsplan"
         subtitle={`Uke ${WEEK_DATA.weekNumber} - ${WEEK_DATA.theme}`}
@@ -518,8 +518,8 @@ const UkensTreningsplanContainer = () => {
               padding: '8px 16px',
               borderRadius: '8px',
               border: 'none',
-              backgroundColor: tokens.colors.white,
-              color: tokens.colors.charcoal,
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -534,11 +534,11 @@ const UkensTreningsplanContainer = () => {
             <div style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
             }}>
               Uke {WEEK_DATA.weekNumber}
             </div>
-            <div style={{ fontSize: '13px', color: tokens.colors.steel }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
               {startDate} - {endDate}
             </div>
           </div>
@@ -552,8 +552,8 @@ const UkensTreningsplanContainer = () => {
               padding: '8px 16px',
               borderRadius: '8px',
               border: 'none',
-              backgroundColor: tokens.colors.white,
-              color: tokens.colors.charcoal,
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -571,12 +571,12 @@ const UkensTreningsplanContainer = () => {
           alignItems: 'center',
           gap: '6px',
           padding: '6px 12px',
-          backgroundColor: `${tokens.colors.primary}10`,
+          backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
           borderRadius: '8px',
           marginBottom: '20px',
         }}>
-          <Calendar size={14} color={tokens.colors.primary} />
-          <span style={{ fontSize: '12px', fontWeight: 500, color: tokens.colors.primary }}>
+          <Calendar size={14} color={'var(--accent)'} />
+          <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--accent)' }}>
             {WEEK_DATA.period}
           </span>
         </div>

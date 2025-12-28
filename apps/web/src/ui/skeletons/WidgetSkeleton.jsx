@@ -2,24 +2,39 @@ import React from 'react';
 import { SkeletonPulse, SkeletonCard, SkeletonCircle } from './SkeletonBase';
 
 /**
+ * Widget skeleton components - UI Canon compliant
+ * Uses semantic CSS variables
+ */
+
+/**
  * Generic widget skeleton with title and content
  */
 export const WidgetSkeleton = ({ items = 3, withIcon = false }) => (
   <SkeletonCard>
     {/* Header */}
-    <div className="flex items-center justify-between mb-4">
-      <SkeletonPulse className="h-5 w-28" />
-      <SkeletonPulse className="h-4 w-16" />
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+      <SkeletonPulse height="20px" width="112px" />
+      <SkeletonPulse height="16px" width="64px" />
     </div>
 
     {/* Content list */}
-    <div className="space-y-2">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {Array.from({ length: items }).map((_, i) => (
-        <div key={i} className="flex items-center gap-3 p-3 bg-ak-snow rounded-lg">
+        <div
+          key={i}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
+          }}
+        >
           {withIcon && <SkeletonCircle size={20} />}
-          <div className="flex-1">
-            <SkeletonPulse className="h-4 w-3/4 mb-1" />
-            <SkeletonPulse className="h-3 w-16" />
+          <div style={{ flex: 1 }}>
+            <SkeletonPulse height="16px" width="75%" style={{ marginBottom: '4px' }} />
+            <SkeletonPulse height="12px" width="64px" />
           </div>
         </div>
       ))}
@@ -32,21 +47,21 @@ export const WidgetSkeleton = ({ items = 3, withIcon = false }) => (
  */
 export const CountdownSkeleton = () => (
   <SkeletonCard>
-    <div className="flex items-start gap-3">
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
       {/* Icon */}
-      <SkeletonPulse className="h-10 w-10 rounded-lg flex-shrink-0" />
+      <SkeletonPulse height="40px" width="40px" style={{ borderRadius: 'var(--radius-md)', flexShrink: 0 }} />
 
       {/* Content */}
-      <div className="flex-1">
-        <SkeletonPulse className="h-3 w-20 mb-2" />
-        <SkeletonPulse className="h-4 w-32 mb-1" />
-        <SkeletonPulse className="h-3 w-24" />
+      <div style={{ flex: 1 }}>
+        <SkeletonPulse height="12px" width="80px" style={{ marginBottom: '8px' }} />
+        <SkeletonPulse height="16px" width="128px" style={{ marginBottom: '4px' }} />
+        <SkeletonPulse height="12px" width="96px" />
       </div>
 
       {/* Countdown */}
-      <div className="text-right">
-        <SkeletonPulse className="h-8 w-10 mb-1" />
-        <SkeletonPulse className="h-3 w-8" />
+      <div style={{ textAlign: 'right' }}>
+        <SkeletonPulse height="32px" width="40px" style={{ marginBottom: '4px' }} />
+        <SkeletonPulse height="12px" width="32px" />
       </div>
     </div>
   </SkeletonCard>
@@ -57,15 +72,25 @@ export const CountdownSkeleton = () => (
  */
 export const TaskListSkeleton = () => (
   <SkeletonCard>
-    <SkeletonPulse className="h-5 w-28 mb-4" />
+    <SkeletonPulse height="20px" width="112px" style={{ marginBottom: '16px' }} />
 
-    <div className="space-y-2">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {[1, 2, 3, 4].map(i => (
-        <div key={i} className="flex items-center gap-3 p-3 bg-ak-snow rounded-lg">
+        <div
+          key={i}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            padding: '12px',
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
+          }}
+        >
           <SkeletonCircle size={20} />
-          <div className="flex-1">
-            <SkeletonPulse className="h-4 w-3/4 mb-1" />
-            <SkeletonPulse className="h-3 w-16" />
+          <div style={{ flex: 1 }}>
+            <SkeletonPulse height="16px" width="75%" style={{ marginBottom: '4px' }} />
+            <SkeletonPulse height="12px" width="64px" />
           </div>
         </div>
       ))}
@@ -78,22 +103,29 @@ export const TaskListSkeleton = () => (
  */
 export const SessionsSkeleton = () => (
   <SkeletonCard>
-    <SkeletonPulse className="h-5 w-32 mb-4" />
+    <SkeletonPulse height="20px" width="128px" style={{ marginBottom: '16px' }} />
 
-    <div className="space-y-3">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       {[1, 2].map(i => (
-        <div key={i} className="p-4 bg-ak-snow rounded-xl">
-          <div className="flex items-start gap-3 mb-2">
-            <SkeletonPulse className="h-10 w-10 rounded-lg flex-shrink-0" />
-            <div className="flex-1">
-              <SkeletonPulse className="h-4 w-32 mb-1" />
-              <SkeletonPulse className="h-3 w-20" />
+        <div
+          key={i}
+          style={{
+            padding: '16px',
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-lg)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '8px' }}>
+            <SkeletonPulse height="40px" width="40px" style={{ borderRadius: 'var(--radius-md)', flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <SkeletonPulse height="16px" width="128px" style={{ marginBottom: '4px' }} />
+              <SkeletonPulse height="12px" width="80px" />
             </div>
-            <SkeletonPulse className="h-6 w-16 rounded" />
+            <SkeletonPulse height="24px" width="64px" style={{ borderRadius: 'var(--radius-sm)' }} />
           </div>
-          <div className="flex gap-2 mt-2">
-            <SkeletonPulse className="h-5 w-16 rounded" />
-            <SkeletonPulse className="h-5 w-12 rounded" />
+          <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+            <SkeletonPulse height="20px" width="64px" style={{ borderRadius: 'var(--radius-sm)' }} />
+            <SkeletonPulse height="20px" width="48px" style={{ borderRadius: 'var(--radius-sm)' }} />
           </div>
         </div>
       ))}

@@ -21,8 +21,6 @@ import {
   Check,
   Dumbbell,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
-
 // Types
 interface Exercise {
   id: string;
@@ -64,13 +62,13 @@ const exerciseLibrary: Omit<Exercise, 'order'>[] = [
 
 // Category config
 const categoryConfig: Record<string, { bg: string; text: string; label: string }> = {
-  teknikk: { bg: `${tokens.colors.primary}15`, text: tokens.colors.primary, label: 'Teknikk' },
-  putting: { bg: `${tokens.colors.success}15`, text: tokens.colors.success, label: 'Putting' },
-  kort_spill: { bg: `${tokens.colors.gold}15`, text: tokens.colors.gold, label: 'Kort spill' },
-  langt_spill: { bg: `${tokens.colors.primaryLight}15`, text: tokens.colors.primaryLight, label: 'Langt spill' },
-  bane: { bg: `${tokens.colors.warning}15`, text: tokens.colors.warning, label: 'Bane' },
-  mental: { bg: '#8B5CF615', text: '#8B5CF6', label: 'Mental' },
-  fysisk: { bg: `${tokens.colors.error}15`, text: tokens.colors.error, label: 'Fysisk' },
+  teknikk: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Teknikk' },
+  putting: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)', label: 'Putting' },
+  kort_spill: { bg: 'rgba(var(--achievement-rgb), 0.15)', text: 'var(--achievement)', label: 'Kort spill' },
+  langt_spill: { bg: 'rgba(var(--accent-light-rgb), 0.15)', text: 'var(--accent-light)', label: 'Langt spill' },
+  bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)', label: 'Bane' },
+  mental: { bg: 'rgba(139, 92, 246, 0.15)', text: 'rgb(139, 92, 246)', label: 'Mental' },
+  fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Fysisk' },
 };
 
 export default function CoachSessionTemplateEditor() {
@@ -227,15 +225,15 @@ export default function CoachSessionTemplateEditor() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
-        fontFamily: tokens.typography.fontFamily,
+        backgroundColor: 'var(--bg-secondary)',
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray300}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
           padding: '16px 24px',
           position: 'sticky',
           top: 0,
@@ -249,8 +247,8 @@ export default function CoachSessionTemplateEditor() {
               style={{
                 width: 40,
                 height: 40,
-                borderRadius: tokens.radius.md,
-                backgroundColor: tokens.colors.gray100,
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--bg-tertiary)',
                 border: 'none',
                 display: 'flex',
                 alignItems: 'center',
@@ -258,13 +256,13 @@ export default function CoachSessionTemplateEditor() {
                 cursor: 'pointer',
               }}
             >
-              <ArrowLeft size={20} color={tokens.colors.charcoal} />
+              <ArrowLeft size={20} color={'var(--text-primary)'} />
             </button>
             <div>
-              <h1 style={{ ...tokens.typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
+              <h1 style={{ fontSize: '24px', lineHeight: '32px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                 {isEditing ? 'Rediger mal' : 'Ny treningsmal'}
               </h1>
-              <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '2px 0 0' }}>
+              <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
                 Dra og slipp for a omorganisere ovelser
               </p>
             </div>
@@ -275,10 +273,10 @@ export default function CoachSessionTemplateEditor() {
               onClick={() => navigate('/coach/exercises/templates')}
               style={{
                 padding: '10px 18px',
-                backgroundColor: tokens.colors.gray100,
-                color: tokens.colors.charcoal,
+                backgroundColor: 'var(--bg-tertiary)',
+                color: 'var(--text-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -294,10 +292,10 @@ export default function CoachSessionTemplateEditor() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '10px 18px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -317,11 +315,11 @@ export default function CoachSessionTemplateEditor() {
           {/* Template info card */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
               marginBottom: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -331,7 +329,7 @@ export default function CoachSessionTemplateEditor() {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                     marginBottom: '6px',
                   }}
                 >
@@ -345,10 +343,10 @@ export default function CoachSessionTemplateEditor() {
                   style={{
                     width: '100%',
                     padding: '10px 14px',
-                    borderRadius: tokens.radius.md,
-                    border: `1px solid ${tokens.colors.gray300}`,
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-default)',
                     fontSize: '14px',
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                     outline: 'none',
                   }}
                 />
@@ -359,7 +357,7 @@ export default function CoachSessionTemplateEditor() {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                     marginBottom: '6px',
                   }}
                 >
@@ -373,10 +371,10 @@ export default function CoachSessionTemplateEditor() {
                   style={{
                     width: '100%',
                     padding: '10px 14px',
-                    borderRadius: tokens.radius.md,
-                    border: `1px solid ${tokens.colors.gray300}`,
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-default)',
                     fontSize: '14px',
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                     outline: 'none',
                   }}
                 />
@@ -388,7 +386,7 @@ export default function CoachSessionTemplateEditor() {
                   display: 'block',
                   fontSize: '13px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   marginBottom: '6px',
                 }}
               >
@@ -402,10 +400,10 @@ export default function CoachSessionTemplateEditor() {
                 style={{
                   width: '100%',
                   padding: '10px 14px',
-                  borderRadius: tokens.radius.md,
-                  border: `1px solid ${tokens.colors.gray300}`,
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-default)',
                   fontSize: '14px',
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   outline: 'none',
                   resize: 'vertical',
                 }}
@@ -418,7 +416,7 @@ export default function CoachSessionTemplateEditor() {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                     marginBottom: '6px',
                   }}
                 >
@@ -431,11 +429,11 @@ export default function CoachSessionTemplateEditor() {
                   }
                   style={{
                     padding: '10px 14px',
-                    borderRadius: tokens.radius.md,
-                    border: `1px solid ${tokens.colors.gray300}`,
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-default)',
                     fontSize: '14px',
-                    color: tokens.colors.charcoal,
-                    backgroundColor: tokens.colors.white,
+                    color: 'var(--text-primary)',
+                    backgroundColor: 'var(--bg-primary)',
                   }}
                 >
                   <option value="beginner">Nybegynner</option>
@@ -456,7 +454,7 @@ export default function CoachSessionTemplateEditor() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <h2 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 Ovelser ({template.exercises.length})
               </h2>
               <div
@@ -465,12 +463,12 @@ export default function CoachSessionTemplateEditor() {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '4px 10px',
-                  backgroundColor: `${tokens.colors.primary}10`,
-                  borderRadius: tokens.radius.full,
+                  backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
+                  borderRadius: '9999px',
                 }}
               >
-                <Clock size={14} color={tokens.colors.primary} />
-                <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.primary }}>
+                <Clock size={14} color={'var(--accent)'} />
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)' }}>
                   {totalDuration} min
                 </span>
               </div>
@@ -482,10 +480,10 @@ export default function CoachSessionTemplateEditor() {
                 alignItems: 'center',
                 gap: '6px',
                 padding: '8px 14px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -501,21 +499,21 @@ export default function CoachSessionTemplateEditor() {
             {template.exercises.length === 0 ? (
               <div
                 style={{
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.lg,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-lg)',
                   padding: '48px 24px',
                   textAlign: 'center',
-                  border: `2px dashed ${tokens.colors.gray300}`,
+                  border: '2px dashed var(--border-default)',
                 }}
               >
-                <Dumbbell size={48} color={tokens.colors.gray300} style={{ marginBottom: '16px' }} />
-                <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                <Dumbbell size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
+                <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   Ingen ovelser lagt til
                 </h3>
                 <p
                   style={{
-                    ...tokens.typography.subheadline,
-                    color: tokens.colors.steel,
+                    fontSize: '15px', lineHeight: '20px',
+                    color: 'var(--text-secondary)',
                     margin: '8px 0 20px',
                   }}
                 >
@@ -528,10 +526,10 @@ export default function CoachSessionTemplateEditor() {
                     alignItems: 'center',
                     gap: '8px',
                     padding: '12px 20px',
-                    backgroundColor: tokens.colors.primary,
-                    color: tokens.colors.white,
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--bg-primary)',
                     border: 'none',
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -544,8 +542,8 @@ export default function CoachSessionTemplateEditor() {
             ) : (
               template.exercises.map((exercise, index) => {
                 const catConfig = categoryConfig[exercise.category] || {
-                  bg: tokens.colors.gray100,
-                  text: tokens.colors.steel,
+                  bg: 'var(--bg-tertiary)',
+                  text: 'var(--text-secondary)',
                   label: exercise.category,
                 };
                 const isEditing = editingExercise === exercise.id;
@@ -562,14 +560,14 @@ export default function CoachSessionTemplateEditor() {
                     onDragLeave={handleDragLeave}
                     onDrop={(e) => handleDrop(e, index)}
                     style={{
-                      backgroundColor: tokens.colors.white,
-                      borderRadius: tokens.radius.md,
-                      boxShadow: isDragging ? tokens.shadows.elevated : tokens.shadows.card,
+                      backgroundColor: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-md)',
+                      boxShadow: isDragging ? 'var(--shadow-elevated)' : 'var(--shadow-card)',
                       overflow: 'hidden',
                       opacity: isDragging ? 0.5 : 1,
                       transform: isDragOver ? 'scale(1.02)' : 'none',
                       transition: 'transform 0.15s ease, box-shadow 0.15s ease',
-                      borderTop: isDragOver ? `3px solid ${tokens.colors.primary}` : 'none',
+                      borderTop: isDragOver ? '3px solid var(--accent)' : 'none',
                     }}
                   >
                     <div
@@ -590,7 +588,7 @@ export default function CoachSessionTemplateEditor() {
                           alignItems: 'center',
                         }}
                       >
-                        <GripVertical size={20} color={tokens.colors.gray300} />
+                        <GripVertical size={20} color={'var(--border-default)'} />
                       </div>
 
                       {/* Order number */}
@@ -599,8 +597,8 @@ export default function CoachSessionTemplateEditor() {
                           width: 28,
                           height: 28,
                           borderRadius: '50%',
-                          backgroundColor: tokens.colors.primary,
-                          color: tokens.colors.white,
+                          backgroundColor: 'var(--accent)',
+                          color: 'var(--bg-primary)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -625,8 +623,8 @@ export default function CoachSessionTemplateEditor() {
                               style={{
                                 flex: 1,
                                 padding: '6px 10px',
-                                borderRadius: tokens.radius.sm,
-                                border: `1px solid ${tokens.colors.gray300}`,
+                                borderRadius: 'var(--radius-sm)',
+                                border: '1px solid var(--border-default)',
                                 fontSize: '14px',
                               }}
                             />
@@ -641,20 +639,20 @@ export default function CoachSessionTemplateEditor() {
                               style={{
                                 width: 60,
                                 padding: '6px 10px',
-                                borderRadius: tokens.radius.sm,
-                                border: `1px solid ${tokens.colors.gray300}`,
+                                borderRadius: 'var(--radius-sm)',
+                                border: '1px solid var(--border-default)',
                                 fontSize: '14px',
                               }}
                             />
-                            <span style={{ fontSize: '12px', color: tokens.colors.steel }}>min</span>
+                            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>min</span>
                             <button
                               onClick={() => setEditingExercise(null)}
                               style={{
                                 padding: '6px',
-                                backgroundColor: tokens.colors.success,
-                                color: tokens.colors.white,
+                                backgroundColor: 'var(--success)',
+                                color: 'var(--bg-primary)',
                                 border: 'none',
-                                borderRadius: tokens.radius.sm,
+                                borderRadius: 'var(--radius-sm)',
                                 cursor: 'pointer',
                               }}
                             >
@@ -666,9 +664,9 @@ export default function CoachSessionTemplateEditor() {
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                               <span
                                 style={{
-                                  ...tokens.typography.subheadline,
+                                  fontSize: '15px', lineHeight: '20px',
                                   fontWeight: 500,
-                                  color: tokens.colors.charcoal,
+                                  color: 'var(--text-primary)',
                                 }}
                               >
                                 {exercise.name}
@@ -689,8 +687,8 @@ export default function CoachSessionTemplateEditor() {
                             {exercise.description && (
                               <p
                                 style={{
-                                  ...tokens.typography.caption1,
-                                  color: tokens.colors.steel,
+                                  fontSize: '12px', lineHeight: '16px',
+                                  color: 'var(--text-secondary)',
                                   margin: '2px 0 0',
                                 }}
                               >
@@ -709,12 +707,12 @@ export default function CoachSessionTemplateEditor() {
                             alignItems: 'center',
                             gap: '4px',
                             padding: '4px 8px',
-                            backgroundColor: tokens.colors.gray50,
-                            borderRadius: tokens.radius.sm,
+                            backgroundColor: 'var(--bg-secondary)',
+                            borderRadius: 'var(--radius-sm)',
                           }}
                         >
-                          <Clock size={14} color={tokens.colors.steel} />
-                          <span style={{ fontSize: '12px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                          <Clock size={14} color={'var(--text-secondary)'} />
+                          <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>
                             {exercise.duration} min
                           </span>
                         </div>
@@ -729,8 +727,8 @@ export default function CoachSessionTemplateEditor() {
                             style={{
                               width: 32,
                               height: 32,
-                              borderRadius: tokens.radius.sm,
-                              backgroundColor: tokens.colors.gray100,
+                              borderRadius: 'var(--radius-sm)',
+                              backgroundColor: 'var(--bg-tertiary)',
                               border: 'none',
                               display: 'flex',
                               alignItems: 'center',
@@ -738,7 +736,7 @@ export default function CoachSessionTemplateEditor() {
                               cursor: 'pointer',
                             }}
                           >
-                            <Edit3 size={14} color={tokens.colors.charcoal} />
+                            <Edit3 size={14} color={'var(--text-primary)'} />
                           </button>
                           <button
                             onClick={() => duplicateExercise(exercise)}
@@ -746,8 +744,8 @@ export default function CoachSessionTemplateEditor() {
                             style={{
                               width: 32,
                               height: 32,
-                              borderRadius: tokens.radius.sm,
-                              backgroundColor: tokens.colors.gray100,
+                              borderRadius: 'var(--radius-sm)',
+                              backgroundColor: 'var(--bg-tertiary)',
                               border: 'none',
                               display: 'flex',
                               alignItems: 'center',
@@ -755,7 +753,7 @@ export default function CoachSessionTemplateEditor() {
                               cursor: 'pointer',
                             }}
                           >
-                            <Copy size={14} color={tokens.colors.charcoal} />
+                            <Copy size={14} color={'var(--text-primary)'} />
                           </button>
                           <button
                             onClick={() => removeExercise(exercise.id)}
@@ -763,8 +761,8 @@ export default function CoachSessionTemplateEditor() {
                             style={{
                               width: 32,
                               height: 32,
-                              borderRadius: tokens.radius.sm,
-                              backgroundColor: `${tokens.colors.error}10`,
+                              borderRadius: 'var(--radius-sm)',
+                              backgroundColor: 'rgba(var(--error-rgb), 0.10)',
                               border: 'none',
                               display: 'flex',
                               alignItems: 'center',
@@ -772,7 +770,7 @@ export default function CoachSessionTemplateEditor() {
                               cursor: 'pointer',
                             }}
                           >
-                            <Trash2 size={14} color={tokens.colors.error} />
+                            <Trash2 size={14} color={'var(--error)'} />
                           </button>
                         </div>
                       )}
@@ -788,18 +786,18 @@ export default function CoachSessionTemplateEditor() {
         <div style={{ width: 300, flexShrink: 0 }}>
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '20px',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
               position: 'sticky',
               top: 100,
             }}
           >
             <h3
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 16px',
               }}
             >
@@ -809,15 +807,15 @@ export default function CoachSessionTemplateEditor() {
             <div
               style={{
                 padding: '16px',
-                backgroundColor: tokens.colors.gray50,
-                borderRadius: tokens.radius.md,
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-md)',
               }}
             >
               <h4
                 style={{
-                  ...tokens.typography.subheadline,
+                  fontSize: '15px', lineHeight: '20px',
                   fontWeight: 600,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   margin: 0,
                 }}
               >
@@ -826,8 +824,8 @@ export default function CoachSessionTemplateEditor() {
               {template.description && (
                 <p
                   style={{
-                    ...tokens.typography.caption1,
-                    color: tokens.colors.steel,
+                    fontSize: '12px', lineHeight: '16px',
+                    color: 'var(--text-secondary)',
                     margin: '4px 0 0',
                   }}
                 >
@@ -841,18 +839,18 @@ export default function CoachSessionTemplateEditor() {
                   gap: '12px',
                   marginTop: '12px',
                   paddingTop: '12px',
-                  borderTop: `1px solid ${tokens.colors.gray200}`,
+                  borderTop: '1px solid var(--border-default)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Clock size={14} color={tokens.colors.steel} />
-                  <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                  <Clock size={14} color={'var(--text-secondary)'} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {totalDuration} min
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Dumbbell size={14} color={tokens.colors.steel} />
-                  <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                  <Dumbbell size={14} color={'var(--text-secondary)'} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {template.exercises.length} ovelser
                   </span>
                 </div>
@@ -863,8 +861,8 @@ export default function CoachSessionTemplateEditor() {
               <div style={{ marginTop: '16px' }}>
                 <h4
                   style={{
-                    ...tokens.typography.footnote,
-                    color: tokens.colors.steel,
+                    fontSize: '13px', lineHeight: '18px',
+                    color: 'var(--text-secondary)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                     margin: '0 0 8px',
@@ -881,8 +879,8 @@ export default function CoachSessionTemplateEditor() {
                         alignItems: 'center',
                         gap: '8px',
                         padding: '6px 8px',
-                        backgroundColor: tokens.colors.gray50,
-                        borderRadius: tokens.radius.sm,
+                        backgroundColor: 'var(--bg-secondary)',
+                        borderRadius: 'var(--radius-sm)',
                       }}
                     >
                       <span
@@ -890,8 +888,8 @@ export default function CoachSessionTemplateEditor() {
                           width: 18,
                           height: 18,
                           borderRadius: '50%',
-                          backgroundColor: tokens.colors.primary,
-                          color: tokens.colors.white,
+                          backgroundColor: 'var(--accent)',
+                          color: 'var(--bg-primary)',
                           fontSize: '10px',
                           fontWeight: 600,
                           display: 'flex',
@@ -904,7 +902,7 @@ export default function CoachSessionTemplateEditor() {
                       <span
                         style={{
                           fontSize: '12px',
-                          color: tokens.colors.charcoal,
+                          color: 'var(--text-primary)',
                           flex: 1,
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
@@ -913,7 +911,7 @@ export default function CoachSessionTemplateEditor() {
                       >
                         {ex.name}
                       </span>
-                      <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+                      <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                         {ex.duration}m
                       </span>
                     </div>
@@ -946,8 +944,8 @@ export default function CoachSessionTemplateEditor() {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               width: 600,
               maxWidth: '90vw',
               maxHeight: '80vh',
@@ -961,13 +959,13 @@ export default function CoachSessionTemplateEditor() {
             <div
               style={{
                 padding: '20px',
-                borderBottom: `1px solid ${tokens.colors.gray200}`,
+                borderBottom: '1px solid var(--border-default)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}
             >
-              <h2 style={{ ...tokens.typography.title3, color: tokens.colors.charcoal, margin: 0 }}>
+              <h2 style={{ fontSize: '20px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                 Velg ovelse
               </h2>
               <button
@@ -976,7 +974,7 @@ export default function CoachSessionTemplateEditor() {
                   width: 32,
                   height: 32,
                   borderRadius: '50%',
-                  backgroundColor: tokens.colors.gray100,
+                  backgroundColor: 'var(--bg-tertiary)',
                   border: 'none',
                   display: 'flex',
                   alignItems: 'center',
@@ -984,23 +982,23 @@ export default function CoachSessionTemplateEditor() {
                   cursor: 'pointer',
                 }}
               >
-                <X size={18} color={tokens.colors.charcoal} />
+                <X size={18} color={'var(--text-primary)'} />
               </button>
             </div>
 
             {/* Search */}
-            <div style={{ padding: '16px 20px', borderBottom: `1px solid ${tokens.colors.gray200}` }}>
+            <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-default)' }}>
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
                   padding: '10px 14px',
-                  backgroundColor: tokens.colors.gray100,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-tertiary)',
+                  borderRadius: 'var(--radius-md)',
                 }}
               >
-                <Search size={18} color={tokens.colors.steel} />
+                <Search size={18} color={'var(--text-secondary)'} />
                 <input
                   type="text"
                   placeholder="Sok etter ovelse..."
@@ -1011,7 +1009,7 @@ export default function CoachSessionTemplateEditor() {
                     border: 'none',
                     backgroundColor: 'transparent',
                     fontSize: '14px',
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                     outline: 'none',
                   }}
                 />
@@ -1023,8 +1021,8 @@ export default function CoachSessionTemplateEditor() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {filteredLibrary.map((exercise) => {
                   const catConfig = categoryConfig[exercise.category] || {
-                    bg: tokens.colors.gray100,
-                    text: tokens.colors.steel,
+                    bg: 'var(--bg-tertiary)',
+                    text: 'var(--text-secondary)',
                     label: exercise.category,
                   };
 
@@ -1036,28 +1034,23 @@ export default function CoachSessionTemplateEditor() {
                         setShowExerciseLibrary(false);
                         setExerciseSearch('');
                       }}
+                      className="hover:bg-[var(--bg-tertiary)]"
                       style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '12px',
                         padding: '12px 14px',
-                        backgroundColor: tokens.colors.gray50,
-                        borderRadius: tokens.radius.md,
+                        backgroundColor: 'var(--bg-secondary)',
+                        borderRadius: 'var(--radius-md)',
                         cursor: 'pointer',
                         transition: 'background-color 0.15s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = tokens.colors.gray100;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = tokens.colors.gray50;
                       }}
                     >
                       <div
                         style={{
                           width: 40,
                           height: 40,
-                          borderRadius: tokens.radius.sm,
+                          borderRadius: 'var(--radius-sm)',
                           backgroundColor: catConfig.bg,
                           display: 'flex',
                           alignItems: 'center',
@@ -1070,9 +1063,9 @@ export default function CoachSessionTemplateEditor() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <span
                             style={{
-                              ...tokens.typography.subheadline,
+                              fontSize: '15px', lineHeight: '20px',
                               fontWeight: 500,
-                              color: tokens.colors.charcoal,
+                              color: 'var(--text-primary)',
                             }}
                           >
                             {exercise.name}
@@ -1093,8 +1086,8 @@ export default function CoachSessionTemplateEditor() {
                         {exercise.description && (
                           <p
                             style={{
-                              ...tokens.typography.caption1,
-                              color: tokens.colors.steel,
+                              fontSize: '12px', lineHeight: '16px',
+                              color: 'var(--text-secondary)',
                               margin: '2px 0 0',
                             }}
                           >
@@ -1108,16 +1101,16 @@ export default function CoachSessionTemplateEditor() {
                           alignItems: 'center',
                           gap: '4px',
                           padding: '4px 8px',
-                          backgroundColor: tokens.colors.white,
-                          borderRadius: tokens.radius.sm,
+                          backgroundColor: 'var(--bg-primary)',
+                          borderRadius: 'var(--radius-sm)',
                         }}
                       >
-                        <Clock size={12} color={tokens.colors.steel} />
-                        <span style={{ fontSize: '11px', color: tokens.colors.charcoal }}>
+                        <Clock size={12} color={'var(--text-secondary)'} />
+                        <span style={{ fontSize: '11px', color: 'var(--text-primary)' }}>
                           {exercise.duration} min
                         </span>
                       </div>
-                      <Plus size={18} color={tokens.colors.primary} />
+                      <Plus size={18} color={'var(--accent)'} />
                     </div>
                   );
                 })}

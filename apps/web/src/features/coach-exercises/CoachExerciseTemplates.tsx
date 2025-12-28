@@ -15,7 +15,8 @@ import {
   Play
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface TrainingTemplate {
   id: string;
@@ -208,7 +209,7 @@ export const CoachExerciseTemplates: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
         <div>
@@ -228,14 +229,14 @@ export const CoachExerciseTemplates: React.FC = () => {
               <h1 style={{
                 fontSize: '28px',
                 fontWeight: '700',
-                color: designTokens.colors.text.primary,
+                color: 'var(--text-primary)',
                 margin: 0
               }}>
                 Treningsplaner
               </h1>
               <p style={{
                 fontSize: '14px',
-                color: designTokens.colors.text.secondary,
+                color: 'var(--text-secondary)',
                 margin: 0
               }}>
                 {mockTemplates.length} maler tilgjengelig
@@ -252,7 +253,7 @@ export const CoachExerciseTemplates: React.FC = () => {
             padding: '12px 20px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: designTokens.colors.primary[500],
+            backgroundColor: 'var(--accent)',
             color: 'white',
             fontSize: '14px',
             fontWeight: '600',
@@ -279,7 +280,7 @@ export const CoachExerciseTemplates: React.FC = () => {
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
+              color: 'var(--text-tertiary)'
             }}
           />
           <input
@@ -291,10 +292,10 @@ export const CoachExerciseTemplates: React.FC = () => {
               width: '100%',
               padding: '12px 12px 12px 40px',
               borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
               fontSize: '14px',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none'
             }}
           />
@@ -315,11 +316,11 @@ export const CoachExerciseTemplates: React.FC = () => {
                 borderRadius: '10px',
                 border: 'none',
                 backgroundColor: categoryFilter === cat.key
-                  ? designTokens.colors.primary[500]
-                  : designTokens.colors.background.card,
+                  ? 'var(--accent)'
+                  : 'var(--bg-primary)',
                 color: categoryFilter === cat.key
                   ? 'white'
-                  : designTokens.colors.text.secondary,
+                  : 'var(--text-secondary)',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer'
@@ -341,9 +342,9 @@ export const CoachExerciseTemplates: React.FC = () => {
             <div
               key={template.id}
               style={{
-                backgroundColor: designTokens.colors.background.card,
+                backgroundColor: 'var(--bg-primary)',
                 borderRadius: '16px',
-                border: `1px solid ${designTokens.colors.border.light}`,
+                border: `1px solid ${'var(--border-default)'}`,
                 overflow: 'hidden'
               }}
             >
@@ -374,7 +375,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                     <h3 style={{
                       fontSize: '17px',
                       fontWeight: '600',
-                      color: designTokens.colors.text.primary,
+                      color: 'var(--text-primary)',
                       margin: 0
                     }}>
                       {template.name}
@@ -394,8 +395,8 @@ export const CoachExerciseTemplates: React.FC = () => {
                       fontWeight: '500',
                       padding: '3px 8px',
                       borderRadius: '4px',
-                      backgroundColor: designTokens.colors.background.secondary,
-                      color: designTokens.colors.text.secondary
+                      backgroundColor: 'var(--bg-tertiary)',
+                      color: 'var(--text-secondary)'
                     }}>
                       {getDifficultyLabel(template.difficulty)}
                     </span>
@@ -415,7 +416,7 @@ export const CoachExerciseTemplates: React.FC = () => {
 
                   <p style={{
                     fontSize: '13px',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     margin: '0 0 12px 0',
                     lineHeight: '1.5'
                   }}>
@@ -424,32 +425,32 @@ export const CoachExerciseTemplates: React.FC = () => {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Clock size={14} color={designTokens.colors.text.tertiary} />
-                      <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                      <Clock size={14} color={'var(--text-tertiary)'} />
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                         {template.duration} min
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Dumbbell size={14} color={designTokens.colors.text.tertiary} />
-                      <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                      <Dumbbell size={14} color={'var(--text-tertiary)'} />
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                         {template.exerciseCount} øvelser
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Target size={14} color={designTokens.colors.text.tertiary} />
-                      <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                      <Target size={14} color={'var(--text-tertiary)'} />
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                         {template.usageCount}x brukt
                       </span>
                     </div>
                     {template.targetGroup && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Users size={14} color={designTokens.colors.text.tertiary} />
-                        <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                        <Users size={14} color={'var(--text-tertiary)'} />
+                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                           {template.targetGroup}
                         </span>
                       </div>
                     )}
-                    <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                       Sist brukt: {formatDate(template.lastUsed)}
                     </span>
                   </div>
@@ -462,9 +463,9 @@ export const CoachExerciseTemplates: React.FC = () => {
                     style={{
                       padding: '10px 16px',
                       borderRadius: '8px',
-                      border: `1px solid ${designTokens.colors.border.light}`,
+                      border: `1px solid ${'var(--border-default)'}`,
                       backgroundColor: 'transparent',
-                      color: designTokens.colors.text.secondary,
+                      color: 'var(--text-secondary)',
                       fontSize: '13px',
                       fontWeight: '500',
                       cursor: 'pointer',
@@ -487,7 +488,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                       padding: '10px 16px',
                       borderRadius: '8px',
                       border: 'none',
-                      backgroundColor: designTokens.colors.primary[500],
+                      backgroundColor: 'var(--accent)',
                       color: 'white',
                       fontSize: '13px',
                       fontWeight: '500',
@@ -507,7 +508,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         backgroundColor: 'transparent',
                         display: 'flex',
                         alignItems: 'center',
@@ -515,7 +516,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                         cursor: 'pointer'
                       }}
                     >
-                      <MoreVertical size={16} color={designTokens.colors.text.secondary} />
+                      <MoreVertical size={16} color={'var(--text-secondary)'} />
                     </button>
                     {activeMenu === template.id && (
                       <div style={{
@@ -523,9 +524,9 @@ export const CoachExerciseTemplates: React.FC = () => {
                         top: '100%',
                         right: 0,
                         marginTop: '4px',
-                        backgroundColor: designTokens.colors.background.card,
+                        backgroundColor: 'var(--bg-primary)',
                         borderRadius: '10px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
                         zIndex: 100,
                         minWidth: '160px',
@@ -543,7 +544,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                             gap: '10px',
                             cursor: 'pointer',
                             fontSize: '13px',
-                            color: designTokens.colors.text.primary
+                            color: 'var(--text-primary)'
                           }}
                         >
                           <Edit2 size={14} />
@@ -561,7 +562,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                             gap: '10px',
                             cursor: 'pointer',
                             fontSize: '13px',
-                            color: designTokens.colors.text.primary
+                            color: 'var(--text-primary)'
                           }}
                         >
                           <Copy size={14} />
@@ -595,14 +596,14 @@ export const CoachExerciseTemplates: React.FC = () => {
               {isExpanded && (
                 <div style={{
                   padding: '0 20px 20px',
-                  borderTop: `1px solid ${designTokens.colors.border.light}`,
+                  borderTop: `1px solid ${'var(--border-default)'}`,
                   marginTop: '-4px',
                   paddingTop: '16px'
                 }}>
                   <h4 style={{
                     fontSize: '13px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     margin: '0 0 12px 0',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
@@ -618,7 +619,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                           alignItems: 'center',
                           gap: '12px',
                           padding: '10px 14px',
-                          backgroundColor: designTokens.colors.background.secondary,
+                          backgroundColor: 'var(--bg-tertiary)',
                           borderRadius: '8px'
                         }}
                       >
@@ -626,8 +627,8 @@ export const CoachExerciseTemplates: React.FC = () => {
                           width: '24px',
                           height: '24px',
                           borderRadius: '50%',
-                          backgroundColor: designTokens.colors.primary[100],
-                          color: designTokens.colors.primary[600],
+                          backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
+                          color: 'var(--accent)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -639,13 +640,13 @@ export const CoachExerciseTemplates: React.FC = () => {
                         <span style={{
                           flex: 1,
                           fontSize: '14px',
-                          color: designTokens.colors.text.primary
+                          color: 'var(--text-primary)'
                         }}>
                           {exercise.name}
                         </span>
                         <span style={{
                           fontSize: '12px',
-                          color: designTokens.colors.text.tertiary
+                          color: 'var(--text-tertiary)'
                         }}>
                           {exercise.duration} min
                         </span>
@@ -663,14 +664,14 @@ export const CoachExerciseTemplates: React.FC = () => {
         <div style={{
           textAlign: 'center',
           padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <BookOpen size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
+          <BookOpen size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
           <p style={{
             fontSize: '16px',
-            color: designTokens.colors.text.secondary,
+            color: 'var(--text-secondary)',
             margin: '0 0 16px 0'
           }}>
             {searchQuery ? 'Ingen treningsplaner funnet' : 'Ingen treningsplaner opprettet ennå'}
@@ -685,7 +686,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                 padding: '10px 20px',
                 borderRadius: '10px',
                 border: 'none',
-                backgroundColor: designTokens.colors.primary[500],
+                backgroundColor: 'var(--accent)',
                 color: 'white',
                 fontSize: '14px',
                 fontWeight: '500',

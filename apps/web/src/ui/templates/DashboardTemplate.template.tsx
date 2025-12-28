@@ -153,7 +153,7 @@ const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
                     Welcome back, {user.name}!
                   </Text>
                   {user.role && (
-                    <Badge variant="primary" size="sm">
+                    <Badge variant="accent" size="sm">
                       {user.role}
                     </Badge>
                   )}

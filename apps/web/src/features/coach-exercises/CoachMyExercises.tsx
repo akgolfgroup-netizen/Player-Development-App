@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Star,
   Search,
@@ -9,10 +9,13 @@ import {
   Target,
   Users,
   Copy,
-  MoreVertical
+  MoreVertical,
+  AlertCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
+import { exercisesAPI } from '../../services/api';
 
 interface MyExercise {
   id: string;
@@ -107,32 +110,54 @@ export const CoachMyExercises: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'custom' | 'saved'>('all');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [exercises, setExercises] = useState<MyExercise[]>(mockMyExercises);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  // Fetch exercises from API
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        setLoading(true);
+        const response = await exercisesAPI.getAll();
+        const data = response.data?.data || response.data || mockMyExercises;
+        setExercises(data);
+      } catch (err: any) {
+        setError(err.response?.data?.message || 'Kunne ikke laste øvelser');
+        setExercises(mockMyExercises);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchExercises();
+  }, []);
 
   const filteredExercises = useMemo(() => {
-    let exercises = [...mockMyExercises];
+    let exerciseList = [...exercises];
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      exercises = exercises.filter(e =>
+      exerciseList = exerciseList.filter(e =>
         e.name.toLowerCase().includes(query) ||
         e.description.toLowerCase().includes(query)
       );
     }
 
     if (filterType === 'custom') {
-      exercises = exercises.filter(e => e.isCustom);
+      exerciseList = exerciseList.filter(e => e.isCustom);
     } else if (filterType === 'saved') {
-      exercises = exercises.filter(e => !e.isCustom);
+      exerciseList = exerciseList.filter(e => !e.isCustom);
     }
 
-    return exercises;
-  }, [searchQuery, filterType]);
+    return exerciseList;
+  }, [searchQuery, filterType, exercises]);
 
   const stats = useMemo(() => ({
-    total: mockMyExercises.length,
-    custom: mockMyExercises.filter(e => e.isCustom).length,
-    saved: mockMyExercises.filter(e => !e.isCustom).length
-  }), []);
+    total: exercises.length,
+    custom: exercises.filter(e => e.isCustom).length,
+    saved: exercises.filter(e => !e.isCustom).length
+  }), [exercises]);
 
   const getCategoryLabel = (cat: string) => {
     const labels: Record<string, string> = {
@@ -169,16 +194,37 @@ export const CoachMyExercises: React.FC = () => {
     navigate(`/coach/exercises/edit/${exerciseId}`);
   };
 
-  const handleDuplicate = (_exerciseId: string) => {
-    // TODO: Duplicate exercise via API
+  const handleDuplicate = async (exerciseId: string) => {
+    try {
+      setActionLoading(exerciseId);
+      const response = await exercisesAPI.duplicate(exerciseId);
+      const newExercise = response.data?.data || response.data;
+      if (newExercise) {
+        setExercises(prev => [newExercise, ...prev]);
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Kunne ikke duplisere øvelsen');
+    } finally {
+      setActionLoading(null);
+    }
   };
 
-  const handleDelete = (_exerciseId: string) => {
-    // TODO: Delete exercise via API
+  const handleDelete = async (exerciseId: string) => {
+    if (!confirm('Er du sikker på at du vil slette denne øvelsen?')) return;
+
+    try {
+      setActionLoading(exerciseId);
+      await exercisesAPI.delete(exerciseId);
+      setExercises(prev => prev.filter(e => e.id !== exerciseId));
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Kunne ikke slette øvelsen');
+    } finally {
+      setActionLoading(null);
+    }
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
         <div>
@@ -198,14 +244,14 @@ export const CoachMyExercises: React.FC = () => {
               <h1 style={{
                 fontSize: '28px',
                 fontWeight: '700',
-                color: designTokens.colors.text.primary,
+                color: 'var(--text-primary)',
                 margin: 0
               }}>
                 Mine øvelser
               </h1>
               <p style={{
                 fontSize: '14px',
-                color: designTokens.colors.text.secondary,
+                color: 'var(--text-secondary)',
                 margin: 0
               }}>
                 {stats.custom} egne øvelser • {stats.saved} lagret fra biblioteket
@@ -222,7 +268,7 @@ export const CoachMyExercises: React.FC = () => {
             padding: '12px 20px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: designTokens.colors.primary[500],
+            backgroundColor: 'var(--accent)',
             color: 'white',
             fontSize: '14px',
             fontWeight: '600',
@@ -240,7 +286,7 @@ export const CoachMyExercises: React.FC = () => {
         gap: '8px',
         marginBottom: '20px',
         padding: '4px',
-        backgroundColor: designTokens.colors.background.secondary,
+        backgroundColor: 'var(--bg-tertiary)',
         borderRadius: '12px',
         width: 'fit-content'
       }}>
@@ -257,11 +303,11 @@ export const CoachMyExercises: React.FC = () => {
               borderRadius: '8px',
               border: 'none',
               backgroundColor: filterType === tab.key
-                ? designTokens.colors.background.card
+                ? 'var(--bg-primary)'
                 : 'transparent',
               color: filterType === tab.key
-                ? designTokens.colors.text.primary
-                : designTokens.colors.text.secondary,
+                ? 'var(--text-primary)'
+                : 'var(--text-secondary)',
               fontSize: '13px',
               fontWeight: '500',
               cursor: 'pointer',
@@ -284,7 +330,7 @@ export const CoachMyExercises: React.FC = () => {
             left: '12px',
             top: '50%',
             transform: 'translateY(-50%)',
-            color: designTokens.colors.text.tertiary
+            color: 'var(--text-tertiary)'
           }}
         />
         <input
@@ -296,10 +342,10 @@ export const CoachMyExercises: React.FC = () => {
             width: '100%',
             padding: '12px 12px 12px 40px',
             borderRadius: '10px',
-            border: `1px solid ${designTokens.colors.border.light}`,
-            backgroundColor: designTokens.colors.background.card,
+            border: `1px solid ${'var(--border-default)'}`,
+            backgroundColor: 'var(--bg-primary)',
             fontSize: '14px',
-            color: designTokens.colors.text.primary,
+            color: 'var(--text-primary)',
             outline: 'none'
           }}
         />
@@ -313,10 +359,10 @@ export const CoachMyExercises: React.FC = () => {
             <div
               key={exercise.id}
               style={{
-                backgroundColor: designTokens.colors.background.card,
+                backgroundColor: 'var(--bg-primary)',
                 borderRadius: '12px',
                 padding: '16px 20px',
-                border: `1px solid ${designTokens.colors.border.light}`,
+                border: `1px solid ${'var(--border-default)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 gap: '16px'
@@ -346,7 +392,7 @@ export const CoachMyExercises: React.FC = () => {
                   <h3 style={{
                     fontSize: '15px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.primary,
+                    color: 'var(--text-primary)',
                     margin: 0
                   }}>
                     {exercise.name}
@@ -376,7 +422,7 @@ export const CoachMyExercises: React.FC = () => {
                 </div>
                 <p style={{
                   fontSize: '13px',
-                  color: designTokens.colors.text.secondary,
+                  color: 'var(--text-secondary)',
                   margin: '0 0 8px 0',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -386,24 +432,24 @@ export const CoachMyExercises: React.FC = () => {
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Clock size={14} color={designTokens.colors.text.tertiary} />
-                    <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                    <Clock size={14} color={'var(--text-tertiary)'} />
+                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                       {exercise.duration} min
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Target size={14} color={designTokens.colors.text.tertiary} />
-                    <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                    <Target size={14} color={'var(--text-tertiary)'} />
+                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                       {exercise.usageCount}x brukt
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Users size={14} color={designTokens.colors.text.tertiary} />
-                    <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                    <Users size={14} color={'var(--text-tertiary)'} />
+                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                       {exercise.assignedTo} spillere
                     </span>
                   </div>
-                  <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                  <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                     Sist brukt: {formatDate(exercise.lastUsed)}
                   </span>
                 </div>
@@ -417,7 +463,7 @@ export const CoachMyExercises: React.FC = () => {
                     width: '36px',
                     height: '36px',
                     borderRadius: '8px',
-                    border: `1px solid ${designTokens.colors.border.light}`,
+                    border: `1px solid ${'var(--border-default)'}`,
                     backgroundColor: 'transparent',
                     display: 'flex',
                     alignItems: 'center',
@@ -426,7 +472,7 @@ export const CoachMyExercises: React.FC = () => {
                   }}
                   title="Rediger"
                 >
-                  <Edit2 size={16} color={designTokens.colors.text.secondary} />
+                  <Edit2 size={16} color={'var(--text-secondary)'} />
                 </button>
                 <div style={{ position: 'relative' }}>
                   <button
@@ -435,7 +481,7 @@ export const CoachMyExercises: React.FC = () => {
                       width: '36px',
                       height: '36px',
                       borderRadius: '8px',
-                      border: `1px solid ${designTokens.colors.border.light}`,
+                      border: `1px solid ${'var(--border-default)'}`,
                       backgroundColor: 'transparent',
                       display: 'flex',
                       alignItems: 'center',
@@ -443,7 +489,7 @@ export const CoachMyExercises: React.FC = () => {
                       cursor: 'pointer'
                     }}
                   >
-                    <MoreVertical size={16} color={designTokens.colors.text.secondary} />
+                    <MoreVertical size={16} color={'var(--text-secondary)'} />
                   </button>
                   {activeMenu === exercise.id && (
                     <div style={{
@@ -451,9 +497,9 @@ export const CoachMyExercises: React.FC = () => {
                       top: '100%',
                       right: 0,
                       marginTop: '4px',
-                      backgroundColor: designTokens.colors.background.card,
+                      backgroundColor: 'var(--bg-primary)',
                       borderRadius: '10px',
-                      border: `1px solid ${designTokens.colors.border.light}`,
+                      border: `1px solid ${'var(--border-default)'}`,
                       boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
                       zIndex: 100,
                       minWidth: '160px',
@@ -474,7 +520,7 @@ export const CoachMyExercises: React.FC = () => {
                           gap: '10px',
                           cursor: 'pointer',
                           fontSize: '13px',
-                          color: designTokens.colors.text.primary
+                          color: 'var(--text-primary)'
                         }}
                       >
                         <Copy size={14} />
@@ -514,14 +560,14 @@ export const CoachMyExercises: React.FC = () => {
         <div style={{
           textAlign: 'center',
           padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <Star size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
+          <Star size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
           <p style={{
             fontSize: '16px',
-            color: designTokens.colors.text.secondary,
+            color: 'var(--text-secondary)',
             margin: '0 0 16px 0'
           }}>
             {searchQuery ? 'Ingen øvelser funnet' : 'Du har ingen egne øvelser ennå'}
@@ -536,7 +582,7 @@ export const CoachMyExercises: React.FC = () => {
                 padding: '10px 20px',
                 borderRadius: '10px',
                 border: 'none',
-                backgroundColor: designTokens.colors.primary[500],
+                backgroundColor: 'var(--accent)',
                 color: 'white',
                 fontSize: '14px',
                 fontWeight: '500',

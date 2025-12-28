@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, RefreshCw, WifiOff, Server, Lock } from 'lucide-react';
+import Button from '../primitives/Button';
 
 /**
  * Enhanced error state component with specific error messages and retry logic
+ * UI Canon compliant - uses semantic CSS variables
  */
 export const EnhancedErrorState = ({ error, onRetry, showPartialData = false }) => {
   const [retryCount, setRetryCount] = useState(0);
@@ -47,31 +49,36 @@ export const EnhancedErrorState = ({ error, onRetry, showPartialData = false }) 
   // Error-specific messages and icons
   const errorConfig = {
     network: {
-      icon: <WifiOff size={32} className="text-ak-error" />,
+      icon: WifiOff,
+      iconColor: 'var(--error)',
       title: 'Ingen nettverkstilkobling',
       message: 'Sjekk internettforbindelsen din og prøv igjen.',
       showRetry: true,
     },
     auth: {
-      icon: <Lock size={32} className="text-ak-warning" />,
+      icon: Lock,
+      iconColor: 'var(--warning)',
       title: 'Autentiseringsfeil',
       message: 'Økten din kan ha utløpt. Vennligst logg inn på nytt.',
       showRetry: false,
     },
     server: {
-      icon: <Server size={32} className="text-ak-error" />,
+      icon: Server,
+      iconColor: 'var(--error)',
       title: 'Serverfeil',
       message: 'Det oppstod en feil på serveren. Vi jobber med å løse problemet.',
       showRetry: true,
     },
     timeout: {
-      icon: <AlertCircle size={32} className="text-ak-warning" />,
+      icon: AlertCircle,
+      iconColor: 'var(--warning)',
       title: 'Tidsavbrudd',
       message: 'Forespørselen tok for lang tid. Prøv igjen.',
       showRetry: true,
     },
     unknown: {
-      icon: <AlertCircle size={32} className="text-ak-error" />,
+      icon: AlertCircle,
+      iconColor: 'var(--error)',
       title: 'Noe gikk galt',
       message: error || 'En ukjent feil oppstod. Prøv igjen senere.',
       showRetry: true,
@@ -79,6 +86,7 @@ export const EnhancedErrorState = ({ error, onRetry, showPartialData = false }) 
   };
 
   const config = errorConfig[errorType];
+  const IconComponent = config.icon;
 
   // Exponential backoff retry
   const handleRetry = async () => {
@@ -102,25 +110,56 @@ export const EnhancedErrorState = ({ error, onRetry, showPartialData = false }) 
   };
 
   return (
-    <div className="bg-ak-error/10 border border-ak-error/20 rounded-xl p-8 text-center max-w-md mx-auto">
+    <div style={{
+      backgroundColor: 'rgba(var(--error-rgb, 220, 38, 38), 0.1)',
+      border: '1px solid rgba(var(--error-rgb, 220, 38, 38), 0.2)',
+      borderRadius: 'var(--radius-lg)',
+      padding: '32px',
+      textAlign: 'center',
+      maxWidth: '400px',
+      margin: '0 auto',
+    }}>
       {/* Icon */}
-      <div className="flex justify-center mb-4">
-        {config.icon}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: '16px',
+      }}>
+        <IconComponent size={32} style={{ color: config.iconColor }} />
       </div>
 
       {/* Title */}
-      <h3 className="text-[16px] font-semibold text-ak-charcoal mb-2">
+      <h3 style={{
+        fontSize: '16px',
+        fontWeight: 600,
+        color: 'var(--text-primary)',
+        marginBottom: '8px',
+        margin: '0 0 8px 0',
+      }}>
         {config.title}
       </h3>
 
       {/* Message */}
-      <p className="text-[14px] text-ak-steel mb-4">
+      <p style={{
+        fontSize: '14px',
+        color: 'var(--text-secondary)',
+        marginBottom: '16px',
+        margin: '0 0 16px 0',
+      }}>
         {config.message}
       </p>
 
       {/* Network status indicator */}
       {!isOnline && (
-        <div className="flex items-center justify-center gap-2 mb-4 text-[13px] text-ak-error">
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          marginBottom: '16px',
+          fontSize: '13px',
+          color: 'var(--error)',
+        }}>
           <WifiOff size={16} />
           <span>Offline</span>
         </div>
@@ -128,27 +167,43 @@ export const EnhancedErrorState = ({ error, onRetry, showPartialData = false }) 
 
       {/* Retry button */}
       {config.showRetry && onRetry && (
-        <button
+        <Button
+          variant="primary"
+          size="sm"
           onClick={handleRetry}
           disabled={isRetrying || !isOnline}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-ak-primary text-white rounded-lg text-[14px] font-medium hover:bg-ak-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          leftIcon={<RefreshCw size={16} style={isRetrying ? { animation: 'spin 1s linear infinite' } : undefined} />}
         >
-          <RefreshCw size={16} className={isRetrying ? 'animate-spin' : ''} />
           {isRetrying ? 'Prøver igjen...' : 'Prøv igjen'}
-        </button>
+        </Button>
       )}
 
       {/* Retry count indicator */}
       {retryCount > 0 && (
-        <p className="text-[12px] text-ak-steel mt-3">
+        <p style={{
+          fontSize: '12px',
+          color: 'var(--text-tertiary)',
+          marginTop: '12px',
+          margin: '12px 0 0 0',
+        }}>
           Forsøk {retryCount + 1}
         </p>
       )}
 
       {/* Partial data notice */}
       {showPartialData && (
-        <div className="mt-4 p-3 bg-ak-warning/10 border border-ak-warning/20 rounded-lg">
-          <p className="text-[13px] text-ak-warning">
+        <div style={{
+          marginTop: '16px',
+          padding: '12px',
+          backgroundColor: 'rgba(var(--warning-rgb, 245, 158, 11), 0.1)',
+          border: '1px solid rgba(var(--warning-rgb, 245, 158, 11), 0.2)',
+          borderRadius: 'var(--radius-md)',
+        }}>
+          <p style={{
+            fontSize: '13px',
+            color: 'var(--warning)',
+            margin: 0,
+          }}>
             Viser tidligere data. Noe informasjon kan være utdatert.
           </p>
         </div>

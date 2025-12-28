@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf Icon Gallery — Complete System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            min-height: 100vh;
+            padding: 48px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            margin-bottom: 64px;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        
+        .header .accent {
+            color: #00FF66;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #666;
+            max-width: 600px;
+        }
+        
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            gap: 48px;
+            margin-top: 32px;
+            padding: 24px 0;
+            border-top: 1px solid #1A1A1A;
+            border-bottom: 1px solid #1A1A1A;
+        }
+        
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 600;
+            color: #00FF66;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        /* Section */
+        .section {
+            margin-bottom: 64px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .section-number {
+            font-size: 14px;
+            color: #00FF66;
+            font-weight: 500;
+            padding: 6px 12px;
+            background: rgba(0, 255, 102, 0.1);
+            border-radius: 4px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        .section-count {
+            font-size: 14px;
+            color: #444;
+            margin-left: auto;
+        }
+        
+        /* Icon Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .icon-card {
+            background: #111111;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .icon-card:hover {
+            background: #1A1A1A;
+            transform: translateY(-2px);
+        }
+        
+        .icon-display {
+            width: 64px;
+            height: 64px;
+            background: #0A0A0A;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .icon-display svg {
+            width: 32px;
+            height: 32px;
+            color: #FFFFFF;
+        }
+        
+        .icon-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        
+        .icon-meaning {
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .icon-sizes {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #1A1A1A;
+        }
+        
+        .icon-sizes svg {
+            color: #00FF66;
+        }
+        
+        /* Design Specs */
+        .specs {
+            background: #111111;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 64px;
+        }
+        
+        .specs h2 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+        
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .spec-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .spec-value {
+            font-size: 14px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: #00FF66;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 48px 0;
+            border-top: 1px solid #1A1A1A;
+            color: #444;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>AK Golf <span class="accent">Icons</span></h1>
+            <p>Complete icon system for the AK Golf Academy app. Stroke-based, minimal, designed for clarity at all sizes.</p>
+            
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-value">15</span>
+                    <span class="stat-label">Icons</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">5</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">1.5px</span>
+                    <span class="stat-label">Stroke</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">24×24</span>
+                    <span class="stat-label">ViewBox</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Design Specs -->
+        <section class="specs">
+            <h2>Design Specifications</h2>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <span class="spec-label">ViewBox</span>
+                    <span class="spec-value">0 0 24 24</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Stroke Width</span>
+                    <span class="spec-value">1.5</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Stroke Linecap</span>
+                    <span class="spec-value">round</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Stroke Linejoin</span>
+                    <span class="spec-value">round</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Fill</span>
+                    <span class="spec-value">none (except dots)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Color</span>
+                    <span class="spec-value">currentColor</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Batch 1: Pyramiden Core -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2 class="section-title">Pyramiden Core</h2>
+                <span class="section-count">3 icons</span>
+            </div>
+            
+            <div class="icon-grid">
+                <!-- Pyramiden -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 22h20L12 2z"/>
+                            <path d="M5 18h14"/>
+                            <path d="M6.5 14.5h11"/>
+                            <path d="M8 11h8"/>
+                            <path d="M9.5 7.5h5"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Pyramiden</div>
+                    <div class="icon-meaning">5-level development model</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M12 2L2 22h20L12 2z"/><path d="M5 18h14"/><path d="M6.5 14.5h11"/><path d="M8 11h8"/><path d="M9.5 7.5h5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M12 2L2 22h20L12 2z"/><path d="M5 18h14"/><path d="M6.5 14.5h11"/><path d="M8 11h8"/><path d="M9.5 7.5h5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M12 2L2 22h20L12 2z"/><path d="M5 18h14"/><path d="M6.5 14.5h11"/><path d="M8 11h8"/><path d="M9.5 7.5h5"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Fysisk -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6.5 8v8"/>
+                            <path d="M17.5 8v8"/>
+                            <path d="M3 10v4"/>
+                            <path d="M21 10v4"/>
+                            <path d="M3 12h18"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Fysisk</div>
+                    <div class="icon-meaning">Strength foundation</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M6.5 8v8"/><path d="M17.5 8v8"/><path d="M3 10v4"/><path d="M21 10v4"/><path d="M3 12h18"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M6.5 8v8"/><path d="M17.5 8v8"/><path d="M3 10v4"/><path d="M21 10v4"/><path d="M3 12h18"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M6.5 8v8"/><path d="M17.5 8v8"/><path d="M3 10v4"/><path d="M21 10v4"/><path d="M3 12h18"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Teknikk -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="14" cy="4" r="2"/>
+                            <path d="M14 6v4"/>
+                            <path d="M17 17l-3-7-2.5 5"/>
+                            <path d="M17 17l1 4"/>
+                            <path d="M11.5 15l-2 6"/>
+                            <path d="M14 10l-6-5"/>
+                            <path d="M8 5v-3"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Teknikk</div>
+                    <div class="icon-meaning">Golf swing technique</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <circle cx="14" cy="4" r="2"/><path d="M14 6v4"/><path d="M17 17l-3-7-2.5 5"/><path d="M17 17l1 4"/><path d="M11.5 15l-2 6"/><path d="M14 10l-6-5"/><path d="M8 5v-3"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <circle cx="14" cy="4" r="2"/><path d="M14 6v4"/><path d="M17 17l-3-7-2.5 5"/><path d="M17 17l1 4"/><path d="M11.5 15l-2 6"/><path d="M14 10l-6-5"/><path d="M8 5v-3"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <circle cx="14" cy="4" r="2"/><path d="M14 6v4"/><path d="M17 17l-3-7-2.5 5"/><path d="M17 17l1 4"/><path d="M11.5 15l-2 6"/><path d="M14 10l-6-5"/><path d="M8 5v-3"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Batch 2: Pyramiden Levels -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2 class="section-title">Pyramiden Levels</h2>
+                <span class="section-count">3 icons</span>
+            </div>
+            
+            <div class="icon-grid">
+                <!-- Golfslag -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="14" rx="9" ry="5"/>
+                            <path d="M12 14v-11"/>
+                            <path d="M12 3l5 3-5 3"/>
+                            <circle cx="8" cy="13" r="1" fill="currentColor" stroke="none"/>
+                            <circle cx="15" cy="15" r="1" fill="currentColor" stroke="none"/>
+                            <circle cx="10" cy="16" r="1" fill="currentColor" stroke="none"/>
+                            <circle cx="14" cy="12" r="1" fill="currentColor" stroke="none"/>
+                            <circle cx="6" cy="15" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Golfslag</div>
+                    <div class="icon-meaning">Shot dispersion pattern</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <ellipse cx="12" cy="14" rx="9" ry="5"/><path d="M12 14v-11"/><path d="M12 3l5 3-5 3"/><circle cx="8" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="15" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <ellipse cx="12" cy="14" rx="9" ry="5"/><path d="M12 14v-11"/><path d="M12 3l5 3-5 3"/><circle cx="8" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="15" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <ellipse cx="12" cy="14" rx="9" ry="5"/><path d="M12 14v-11"/><path d="M12 3l5 3-5 3"/><circle cx="8" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="15" r="1" fill="currentColor" stroke="none"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Spill -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="18" rx="9" ry="4"/>
+                            <path d="M12 18v-14"/>
+                            <path d="M12 4l6 3-6 3"/>
+                            <circle cx="12" cy="18" r="1"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Spill</div>
+                    <div class="icon-meaning">On-course play</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <ellipse cx="12" cy="18" rx="9" ry="4"/><path d="M12 18v-14"/><path d="M12 4l6 3-6 3"/><circle cx="12" cy="18" r="1"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <ellipse cx="12" cy="18" rx="9" ry="4"/><path d="M12 18v-14"/><path d="M12 4l6 3-6 3"/><circle cx="12" cy="18" r="1"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <ellipse cx="12" cy="18" rx="9" ry="4"/><path d="M12 18v-14"/><path d="M12 4l6 3-6 3"/><circle cx="12" cy="18" r="1"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Turnering -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 4h12v4a6 6 0 1 1-12 0V4z"/>
+                            <path d="M6 6H3v2a3 3 0 0 0 3 3"/>
+                            <path d="M18 6h3v2a3 3 0 0 1-3 3"/>
+                            <path d="M12 14v3"/>
+                            <path d="M8 21h8"/>
+                            <path d="M8 21v-4h8v4"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Turnering</div>
+                    <div class="icon-meaning">Tournament / competition</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M6 4h12v4a6 6 0 1 1-12 0V4z"/><path d="M6 6H3v2a3 3 0 0 0 3 3"/><path d="M18 6h3v2a3 3 0 0 1-3 3"/><path d="M12 14v3"/><path d="M8 21h8"/><path d="M8 21v-4h8v4"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M6 4h12v4a6 6 0 1 1-12 0V4z"/><path d="M6 6H3v2a3 3 0 0 0 3 3"/><path d="M18 6h3v2a3 3 0 0 1-3 3"/><path d="M12 14v3"/><path d="M8 21h8"/><path d="M8 21v-4h8v4"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M6 4h12v4a6 6 0 1 1-12 0V4z"/><path d="M6 6H3v2a3 3 0 0 0 3 3"/><path d="M18 6h3v2a3 3 0 0 1-3 3"/><path d="M12 14v3"/><path d="M8 21h8"/><path d="M8 21v-4h8v4"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Batch 3: Treningsområder -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2 class="section-title">Treningsområder</h2>
+                <span class="section-count">4 icons</span>
+            </div>
+            
+            <div class="icon-grid">
+                <!-- Tee Total -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="6" r="3"/>
+                            <path d="M12 9v9"/>
+                            <path d="M9 21h6"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Tee Total</div>
+                    <div class="icon-meaning">Tee shots & driving</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <circle cx="12" cy="6" r="3"/><path d="M12 9v9"/><path d="M9 21h6"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <circle cx="12" cy="6" r="3"/><path d="M12 9v9"/><path d="M9 21h6"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <circle cx="12" cy="6" r="3"/><path d="M12 9v9"/><path d="M9 21h6"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Innspill -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="3" cy="19" r="1.5" fill="currentColor" stroke="none"/>
+                            <path d="M4 18Q12 2 19 14"/>
+                            <path d="M19 6v12"/>
+                            <path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Innspill</div>
+                    <div class="icon-meaning">Approach shots (long arc)</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <circle cx="3" cy="19" r="1.5" fill="currentColor" stroke="none"/><path d="M4 18Q12 2 19 14"/><path d="M19 6v12"/><path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <circle cx="3" cy="19" r="1.5" fill="currentColor" stroke="none"/><path d="M4 18Q12 2 19 14"/><path d="M19 6v12"/><path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <circle cx="3" cy="19" r="1.5" fill="currentColor" stroke="none"/><path d="M4 18Q12 2 19 14"/><path d="M19 6v12"/><path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Nærspill -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="6" cy="18" r="1.5" fill="currentColor" stroke="none"/>
+                            <path d="M7.5 17q4-3 7.5 0"/>
+                            <path d="M19 6v12"/>
+                            <path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Nærspill</div>
+                    <div class="icon-meaning">Short game (low arc)</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <circle cx="6" cy="18" r="1.5" fill="currentColor" stroke="none"/><path d="M7.5 17q4-3 7.5 0"/><path d="M19 6v12"/><path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <circle cx="6" cy="18" r="1.5" fill="currentColor" stroke="none"/><path d="M7.5 17q4-3 7.5 0"/><path d="M19 6v12"/><path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <circle cx="6" cy="18" r="1.5" fill="currentColor" stroke="none"/><path d="M7.5 17q4-3 7.5 0"/><path d="M19 6v12"/><path d="M19 6l4 2.5-4 2.5"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Putting -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="4" cy="15" r="2"/>
+                            <path d="M6 15h10" stroke-dasharray="2 2"/>
+                            <circle cx="18" cy="15" r="2"/>
+                            <path d="M18 13v-8"/>
+                            <path d="M18 5l3 2-3 2"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Putting</div>
+                    <div class="icon-meaning">Ball roll to hole</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <circle cx="4" cy="15" r="2"/><path d="M6 15h10" stroke-dasharray="2 2"/><circle cx="18" cy="15" r="2"/><path d="M18 13v-8"/><path d="M18 5l3 2-3 2"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <circle cx="4" cy="15" r="2"/><path d="M6 15h10" stroke-dasharray="2 2"/><circle cx="18" cy="15" r="2"/><path d="M18 13v-8"/><path d="M18 5l3 2-3 2"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <circle cx="4" cy="15" r="2"/><path d="M6 15h10" stroke-dasharray="2 2"/><circle cx="18" cy="15" r="2"/><path d="M18 13v-8"/><path d="M18 5l3 2-3 2"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Batch 4: Training Metrics -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2 class="section-title">Training Metrics</h2>
+                <span class="section-count">2 icons</span>
+            </div>
+            
+            <div class="icon-grid">
+                <!-- Fase -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 18h4v4H4z"/>
+                            <path d="M10 12h4v10h-4z"/>
+                            <path d="M16 6h4v16h-4z"/>
+                            <path d="M12 2v6"/>
+                            <path d="M9 5l3-3 3 3"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Fase</div>
+                    <div class="icon-meaning">Training phase / level</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M4 18h4v4H4z"/><path d="M10 12h4v10h-4z"/><path d="M16 6h4v16h-4z"/><path d="M12 2v6"/><path d="M9 5l3-3 3 3"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M4 18h4v4H4z"/><path d="M10 12h4v10h-4z"/><path d="M16 6h4v16h-4z"/><path d="M12 2v6"/><path d="M9 5l3-3 3 3"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M4 18h4v4H4z"/><path d="M10 12h4v10h-4z"/><path d="M16 6h4v16h-4z"/><path d="M12 2v6"/><path d="M9 5l3-3 3 3"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Club Speed -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 2L4 14h7l-2 8 11-12h-7l2-8z"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Club Speed</div>
+                    <div class="icon-meaning">Swing speed / power</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M13 2L4 14h7l-2 8 11-12h-7l2-8z"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M13 2L4 14h7l-2 8 11-12h-7l2-8z"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M13 2L4 14h7l-2 8 11-12h-7l2-8z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Batch 5: Status & Planning -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2 class="section-title">Status & Planning</h2>
+                <span class="section-count">3 icons</span>
+            </div>
+            
+            <div class="icon-grid">
+                <!-- Belastning Mental -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 8c-2 0-3 2-3 4s1 4 3 4"/>
+                            <path d="M17 8c2 0 3 2 3 4s-1 4-3 4"/>
+                            <path d="M7 8c0-2 2-4 5-4s5 2 5 4"/>
+                            <path d="M7 16c0 2 2 4 5 4s5-2 5-4"/>
+                            <path d="M12 8v8"/>
+                            <path d="M9 20v2"/>
+                            <path d="M15 20v2"/>
+                            <path d="M3 4h5v2H4v1H3z"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Belastning (Mental)</div>
+                    <div class="icon-meaning">Mental load / low battery</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M7 8c-2 0-3 2-3 4s1 4 3 4"/><path d="M17 8c2 0 3 2 3 4s-1 4-3 4"/><path d="M7 8c0-2 2-4 5-4s5 2 5 4"/><path d="M7 16c0 2 2 4 5 4s5-2 5-4"/><path d="M12 8v8"/><path d="M9 20v2"/><path d="M15 20v2"/><path d="M3 4h5v2H4v1H3z"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M7 8c-2 0-3 2-3 4s1 4 3 4"/><path d="M17 8c2 0 3 2 3 4s-1 4-3 4"/><path d="M7 8c0-2 2-4 5-4s5 2 5 4"/><path d="M7 16c0 2 2 4 5 4s5-2 5-4"/><path d="M12 8v8"/><path d="M9 20v2"/><path d="M15 20v2"/><path d="M3 4h5v2H4v1H3z"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M7 8c-2 0-3 2-3 4s1 4 3 4"/><path d="M17 8c2 0 3 2 3 4s-1 4-3 4"/><path d="M7 8c0-2 2-4 5-4s5 2 5 4"/><path d="M7 16c0 2 2 4 5 4s5-2 5-4"/><path d="M12 8v8"/><path d="M9 20v2"/><path d="M15 20v2"/><path d="M3 4h5v2H4v1H3z"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Belastning Fysisk -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12h4l2-6 4 12 2-6h6"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Belastning (Fysisk)</div>
+                    <div class="icon-meaning">Physical load / heart rate</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M3 12h4l2-6 4 12 2-6h6"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M3 12h4l2-6 4 12 2-6h6"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M3 12h4l2-6 4 12 2-6h6"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Strategi/Taktikk -->
+                <div class="icon-card">
+                    <div class="icon-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/>
+                            <path d="M9 3v15"/>
+                            <path d="M15 6v15"/>
+                        </svg>
+                    </div>
+                    <div class="icon-name">Strategi/Taktikk</div>
+                    <div class="icon-meaning">Course strategy / map</div>
+                    <div class="icon-sizes">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/><path d="M9 3v15"/><path d="M15 6v15"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                            <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/><path d="M9 3v15"/><path d="M15 6v15"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
+                            <path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3V6z"/><path d="M9 3v15"/><path d="M15 6v15"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <p>AK Golf Academy Icon System — Version 1.0 — December 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

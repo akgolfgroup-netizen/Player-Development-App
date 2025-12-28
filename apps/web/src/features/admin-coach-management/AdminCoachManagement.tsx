@@ -17,36 +17,6 @@
 import React, { useState } from "react";
 import { Mail, CheckCircle, XCircle, UserCog } from "lucide-react";
 
-// Design tokens - Blue Palette 01
-const tokens = {
-  colors: {
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    white: '#FFFFFF',
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    success: '#4A7C59',
-    error: '#C45B4E',
-  },
-  borderRadius: {
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
-  },
-  shadows: {
-    card: '0 2px 4px rgba(0, 0, 0, 0.06)',
-  },
-};
-
-const typography = {
-  title1: { fontSize: '28px', lineHeight: '34px', fontWeight: 700 },
-  title3: { fontSize: '17px', lineHeight: '22px', fontWeight: 600 },
-  body: { fontSize: '15px', lineHeight: '20px', fontWeight: 400 },
-  caption: { fontSize: '13px', lineHeight: '18px', fontWeight: 400 },
-};
 
 //////////////////////////////
 // 1. TYPES
@@ -82,8 +52,8 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 44 }) 
         width: size,
         height: size,
         borderRadius: '50%',
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
+        backgroundColor: 'var(--accent)',
+        color: 'var(--bg-primary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -122,19 +92,19 @@ export default function AdminCoachManagement({ coaches: apiCoaches }: AdminCoach
       aria-label="Coach management"
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div style={{ padding: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <UserCog size={28} color={tokens.colors.primary} />
-          <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+          <UserCog size={28} color={'var(--accent)'} />
+          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Trenerkontoer
           </h1>
         </div>
-        <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel, margin: 0 }}>
+        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: 0 }}>
           {activeCount} aktive av {coaches.length} kontoer
         </p>
       </div>
@@ -143,9 +113,9 @@ export default function AdminCoachManagement({ coaches: apiCoaches }: AdminCoach
       <div style={{ padding: '0 24px 24px' }}>
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             overflow: 'hidden',
           }}
         >
@@ -157,18 +127,18 @@ export default function AdminCoachManagement({ coaches: apiCoaches }: AdminCoach
                 alignItems: 'center',
                 gap: '16px',
                 padding: '16px 20px',
-                borderBottom: index < coaches.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
+                borderBottom: index < coaches.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
               }}
             >
               <Avatar name={coach.name} />
 
               <div style={{ flex: 1 }}>
-                <div style={{ ...typography.body as React.CSSProperties, fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {coach.name}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
-                  <Mail size={14} color={tokens.colors.steel} />
-                  <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}>
+                  <Mail size={14} color={'var(--text-secondary)'} />
+                  <span style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
                     {coach.email}
                   </span>
                 </div>
@@ -181,20 +151,20 @@ export default function AdminCoachManagement({ coaches: apiCoaches }: AdminCoach
                   alignItems: 'center',
                   gap: '6px',
                   padding: '6px 12px',
-                  borderRadius: tokens.borderRadius.sm,
-                  backgroundColor: coach.active ? `${tokens.colors.success}15` : `${tokens.colors.steel}15`,
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: coach.active ? 'rgba(var(--success-rgb), 0.15)' : 'rgba(var(--text-secondary-rgb), 0.15)',
                 }}
               >
                 {coach.active ? (
-                  <CheckCircle size={14} color={tokens.colors.success} />
+                  <CheckCircle size={14} color={'var(--success)'} />
                 ) : (
-                  <XCircle size={14} color={tokens.colors.steel} />
+                  <XCircle size={14} color={'var(--text-secondary)'} />
                 )}
                 <span
                   style={{
-                    ...typography.caption as React.CSSProperties,
+                    fontSize: '13px', lineHeight: '18px',
                     fontWeight: 500,
-                    color: coach.active ? tokens.colors.success : tokens.colors.steel,
+                    color: coach.active ? 'var(--success)' : 'var(--text-secondary)',
                   }}
                 >
                   {coach.active ? 'Aktiv' : 'Inaktiv'}
@@ -207,11 +177,11 @@ export default function AdminCoachManagement({ coaches: apiCoaches }: AdminCoach
                 onClick={() => toggleActive(coach.id)}
                 style={{
                   padding: '8px 16px',
-                  borderRadius: tokens.borderRadius.sm,
-                  border: `1px solid ${coach.active ? tokens.colors.error : tokens.colors.success}`,
+                  borderRadius: 'var(--radius-sm)',
+                  border: `1px solid ${coach.active ? 'var(--error)' : 'var(--success)'}`,
                   backgroundColor: 'transparent',
-                  color: coach.active ? tokens.colors.error : tokens.colors.success,
-                  ...typography.caption as React.CSSProperties,
+                  color: coach.active ? 'var(--error)' : 'var(--success)',
+                  fontSize: '13px', lineHeight: '18px',
                   fontWeight: 500,
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',

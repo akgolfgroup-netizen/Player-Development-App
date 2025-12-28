@@ -3,7 +3,6 @@ import {
   User, ChevronRight, Calendar, Target, Video, FileText,
   MessageSquare, Star, Clock, CheckCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -90,17 +89,17 @@ const COACH_MESSAGES = [
 const getTypeConfig = (type) => {
   switch (type) {
     case 'feedback':
-      return { label: 'Feedback', color: tokens.colors.primary, icon: MessageSquare };
+      return { label: 'Feedback', color: 'var(--accent)', icon: MessageSquare };
     case 'plan_update':
-      return { label: 'Planoppdatering', color: tokens.colors.success, icon: Calendar };
+      return { label: 'Planoppdatering', color: 'var(--success)', icon: Calendar };
     case 'goal_review':
-      return { label: 'Malevaluering', color: tokens.colors.gold, icon: Target };
+      return { label: 'Malevaluering', color: 'var(--achievement)', icon: Target };
     case 'achievement':
-      return { label: 'Prestasjon', color: tokens.colors.success, icon: Star };
+      return { label: 'Prestasjon', color: 'var(--success)', icon: Star };
     case 'breaking_point':
-      return { label: 'Breaking Point', color: tokens.colors.error, icon: Target };
+      return { label: 'Breaking Point', color: 'var(--error)', icon: Target };
     default:
-      return { label: type, color: tokens.colors.steel, icon: FileText };
+      return { label: type, color: 'var(--text-secondary)', icon: FileText };
   }
 };
 
@@ -127,13 +126,13 @@ const CoachMessageCard = ({ message, onClick }) => {
     <div
       onClick={() => onClick(message)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '14px',
         padding: '16px',
         cursor: 'pointer',
         transition: 'all 0.2s',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        borderLeft: message.read ? 'none' : `3px solid ${tokens.colors.primary}`,
+        borderLeft: message.read ? 'none' : `3px solid ${'var(--accent)'}`,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
@@ -150,11 +149,11 @@ const CoachMessageCard = ({ message, onClick }) => {
           width: '44px',
           height: '44px',
           borderRadius: '50%',
-          backgroundColor: tokens.colors.primary,
+          backgroundColor: 'var(--accent)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: tokens.colors.white,
+          color: 'var(--bg-primary)',
           fontSize: '14px',
           fontWeight: 600,
           flexShrink: 0,
@@ -178,18 +177,18 @@ const CoachMessageCard = ({ message, onClick }) => {
               <span style={{
                 fontSize: '13px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
               }}>
                 {message.coach.name}
               </span>
               <span style={{
                 fontSize: '11px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}>
                 {message.coach.role}
               </span>
             </div>
-            <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
               {formatDate(message.date)}
             </span>
           </div>
@@ -218,7 +217,7 @@ const CoachMessageCard = ({ message, onClick }) => {
             <h3 style={{
               fontSize: '15px',
               fontWeight: message.read ? 500 : 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               {message.title}
@@ -228,7 +227,7 @@ const CoachMessageCard = ({ message, onClick }) => {
           {/* Content Preview */}
           <p style={{
             fontSize: '13px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             margin: '0 0 10px 0',
             lineHeight: 1.4,
             display: '-webkit-box',
@@ -252,7 +251,7 @@ const CoachMessageCard = ({ message, onClick }) => {
                   alignItems: 'center',
                   gap: '4px',
                   fontSize: '11px',
-                  color: tokens.colors.primary,
+                  color: 'var(--accent)',
                 }}>
                   <Video size={12} />
                   {message.attachments.length} vedlegg
@@ -261,7 +260,7 @@ const CoachMessageCard = ({ message, onClick }) => {
               {message.relatedTo && (
                 <div style={{
                   fontSize: '11px',
-                  color: tokens.colors.steel,
+                  color: 'var(--text-secondary)',
                 }}>
                   Relatert til: {message.relatedTo}
                 </div>
@@ -272,13 +271,13 @@ const CoachMessageCard = ({ message, onClick }) => {
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                backgroundColor: tokens.colors.primary,
+                backgroundColor: 'var(--accent)',
               }} />
             )}
           </div>
         </div>
 
-        <ChevronRight size={18} color={tokens.colors.steel} style={{ flexShrink: 0 }} />
+        <ChevronRight size={18} color={'var(--text-secondary)'} style={{ flexShrink: 0 }} />
       </div>
     </div>
   );
@@ -306,7 +305,7 @@ const FraTrenerContainer = () => {
   const unreadCount = COACH_MESSAGES.filter((m) => !m.read).length;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Fra trener"
         subtitle={`${unreadCount} uleste meldinger`}
@@ -321,37 +320,37 @@ const FraTrenerContainer = () => {
           marginBottom: '24px',
         }}>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.primary }}>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
               {COACH_MESSAGES.length}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Totalt</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Totalt</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.error }}>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--error)' }}>
               {unreadCount}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Uleste</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Uleste</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.success }}>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
               {COACH_MESSAGES.filter((m) => m.type === 'feedback').length}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Feedbacks</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Feedbacks</div>
           </div>
         </div>
 
@@ -370,8 +369,8 @@ const FraTrenerContainer = () => {
                 padding: '8px 14px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: filter === f.key ? tokens.colors.primary : tokens.colors.white,
-                color: filter === f.key ? tokens.colors.white : tokens.colors.charcoal,
+                backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
+                color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -395,13 +394,13 @@ const FraTrenerContainer = () => {
 
           {filteredMessages.length === 0 && (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '14px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <User size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <User size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen meldinger funnet
               </p>
             </div>

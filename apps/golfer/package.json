@@ -1,0 +1,24 @@
+{
+  "name": "ak-golf-golfer-app",
+  "version": "0.1.0",
+  "description": "AK Golf - Mobile Golfer App",
+  "private": true,
+  "dependencies": {
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.10.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "dev": "echo 'Golfer app not yet configured'",
+    "build": "echo 'Golfer app not yet configured'",
+    "typecheck": "tsc --noEmit"
+  }
+}

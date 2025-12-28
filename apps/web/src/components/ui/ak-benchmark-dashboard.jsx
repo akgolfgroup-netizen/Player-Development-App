@@ -3,6 +3,13 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Target, TrendingUp, Calendar, Award, ChevronRight, Users, Zap, Clock } from 'lucide-react';
 import { tokens } from '../design-tokens';
 
+// Session type colors (Blue Palette 01)
+const sessionTypeColors = {
+  teknikk: '#2C5F7F',
+  golfslag: '#4A7C59',
+  spill: '#10456A',
+};
+
 // Sample benchmark data following Team Norway protocols
 const players = [
   { id: 1, name: 'Magnus Eriksen', age: 17, handicap: 2.4 },
@@ -198,7 +205,7 @@ const ComparisonBar = ({ data, players }) => {
            playerBenchmarks[p.id].radar[2].mental
   }));
 
-  const colors = [tokens.colors.forest, tokens.colors.sessionTypes.golfslag, tokens.colors.sessionTypes.teknikk];
+  const colors = [tokens.colors.forest, sessionTypeColors.golfslag, sessionTypeColors.teknikk];
 
   return (
     <ResponsiveContainer width="100%" height={200}>
@@ -361,7 +368,7 @@ export default function BenchmarkDashboard() {
               data={playerData.driver} 
               dataKey="carry" 
               name="Carry Distance" 
-              color="{tokens.colors.sessionTypes.golfslag}"
+              color="{sessionTypeColors.golfslag}"
             />
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gray-50 rounded-xl p-4">

@@ -3,7 +3,6 @@ import {
   ClipboardCheck, Star, ChevronRight,
   Trophy, Dumbbell, Search, Plus
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -86,11 +85,11 @@ const STATS = {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'training':
-      return { label: 'Trening', color: tokens.colors.primary, icon: Dumbbell };
+      return { label: 'Trening', color: 'var(--accent)', icon: Dumbbell };
     case 'tournament':
-      return { label: 'Turnering', color: tokens.colors.gold, icon: Trophy };
+      return { label: 'Turnering', color: 'var(--achievement)', icon: Trophy };
     default:
-      return { label: type, color: tokens.colors.steel, icon: ClipboardCheck };
+      return { label: type, color: 'var(--text-secondary)', icon: ClipboardCheck };
   }
 };
 
@@ -110,8 +109,8 @@ const RatingStars = ({ rating, size = 14 }) => {
         <Star
           key={star}
           size={size}
-          fill={star <= rating ? tokens.colors.gold : 'none'}
-          color={star <= rating ? tokens.colors.gold : tokens.colors.mist}
+          fill={star <= rating ? 'var(--achievement)' : 'none'}
+          color={star <= rating ? 'var(--achievement)' : 'var(--border-default)'}
         />
       ))}
     </div>
@@ -130,7 +129,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
     <div
       onClick={() => onClick(evaluation)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '14px',
         padding: '16px',
         cursor: 'pointer',
@@ -174,7 +173,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
             <h3 style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               {evaluation.title}
@@ -184,7 +183,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
 
           <div style={{
             fontSize: '12px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             marginBottom: '8px',
             display: 'flex',
             alignItems: 'center',
@@ -204,7 +203,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
 
           <p style={{
             fontSize: '13px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 8px 0',
             lineHeight: 1.4,
             overflow: 'hidden',
@@ -222,15 +221,15 @@ const EvaluationCard = ({ evaluation, onClick }) => {
               alignItems: 'center',
               gap: '8px',
               padding: '6px 10px',
-              backgroundColor: evaluation.result.position <= 3 ? `${tokens.colors.gold}15` : tokens.colors.snow,
+              backgroundColor: evaluation.result.position <= 3 ? 'rgba(var(--achievement-rgb), 0.15)' : 'var(--bg-secondary)',
               borderRadius: '6px',
               marginBottom: '8px',
             }}>
-              <Trophy size={14} color={evaluation.result.position <= 3 ? tokens.colors.gold : tokens.colors.steel} />
+              <Trophy size={14} color={evaluation.result.position <= 3 ? 'var(--achievement)' : 'var(--text-secondary)'} />
               <span style={{
                 fontSize: '12px',
                 fontWeight: 500,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
               }}>
                 {evaluation.result.position}. plass - Score: {evaluation.result.score}
               </span>
@@ -243,8 +242,8 @@ const EvaluationCard = ({ evaluation, onClick }) => {
                 key={idx}
                 style={{
                   fontSize: '11px',
-                  color: tokens.colors.steel,
-                  backgroundColor: tokens.colors.snow,
+                  color: 'var(--text-secondary)',
+                  backgroundColor: 'var(--bg-secondary)',
                   padding: '3px 8px',
                   borderRadius: '4px',
                 }}
@@ -255,7 +254,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
           </div>
         </div>
 
-        <ChevronRight size={18} color={tokens.colors.steel} style={{ flexShrink: 0 }} />
+        <ChevronRight size={18} color={'var(--text-secondary)'} style={{ flexShrink: 0 }} />
       </div>
     </div>
   );
@@ -274,51 +273,51 @@ const StatsOverview = ({ stats }) => {
       marginBottom: '24px',
     }}>
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '16px',
         textAlign: 'center',
       }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
           {stats.totalEvaluations}
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Totalt</div>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Totalt</div>
       </div>
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '16px',
         textAlign: 'center',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-          <span style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+          <span style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
             {stats.avgRating.toFixed(1)}
           </span>
-          <Star size={18} fill={tokens.colors.gold} color={tokens.colors.gold} />
+          <Star size={18} fill={'var(--achievement)'} color={'var(--achievement)'} />
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Gj.sn. rating</div>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Gj.sn. rating</div>
       </div>
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '16px',
         textAlign: 'center',
       }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
           {stats.trainingCount}
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Treninger</div>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Treninger</div>
       </div>
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '16px',
         textAlign: 'center',
       }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
           {stats.tournamentCount}
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Turneringer</div>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Turneringer</div>
       </div>
     </div>
   );
@@ -345,7 +344,7 @@ const EvalueringContainer = () => {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Evalueringer"
         subtitle="Oversikt over alle dine evalueringer"
@@ -372,8 +371,8 @@ const EvalueringContainer = () => {
                   padding: '8px 16px',
                   borderRadius: '8px',
                   border: 'none',
-                  backgroundColor: filter === f.key ? tokens.colors.primary : tokens.colors.white,
-                  color: filter === f.key ? tokens.colors.white : tokens.colors.charcoal,
+                  backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
+                  color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
                   fontSize: '13px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -391,7 +390,7 @@ const EvalueringContainer = () => {
           }}>
             <Search
               size={16}
-              color={tokens.colors.steel}
+              color={'var(--text-secondary)'}
               style={{
                 position: 'absolute',
                 left: '12px',
@@ -408,7 +407,7 @@ const EvalueringContainer = () => {
                 width: '100%',
                 padding: '10px 12px 10px 36px',
                 borderRadius: '8px',
-                border: `1px solid ${tokens.colors.mist}`,
+                border: '1px solid var(--border-default)',
                 fontSize: '13px',
               }}
             />
@@ -422,8 +421,8 @@ const EvalueringContainer = () => {
               padding: '10px 16px',
               borderRadius: '8px',
               border: 'none',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -446,13 +445,13 @@ const EvalueringContainer = () => {
             ))
           ) : (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '14px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <ClipboardCheck size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <ClipboardCheck size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen evalueringer funnet
               </p>
             </div>

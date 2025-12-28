@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LogIn, AlertCircle } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
 
 const Login = () => {
@@ -69,7 +69,7 @@ const Login = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: tokens.colors.snow,
+      backgroundColor: 'var(--bg-secondary)',
       fontFamily: 'Inter, sans-serif',
     }}>
       <div style={{
@@ -79,11 +79,11 @@ const Login = () => {
       }}>
         {/* Logo and Title */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <AKLogo size={60} color={tokens.colors.primary} />
+          <AKLogo size={60} color={'var(--accent)'} />
           <h1 style={{
             fontSize: '20px',
             fontWeight: '700',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginTop: '16px',
             marginBottom: '4px',
           }}>
@@ -91,7 +91,7 @@ const Login = () => {
           </h1>
           <div style={{
             fontSize: '14px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
           }}>
             Individual Development Plan
           </div>
@@ -107,7 +107,7 @@ const Login = () => {
           <h2 style={{
             fontSize: '22px',
             fontWeight: '700',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginBottom: '24px',
             textAlign: 'center',
           }}>
@@ -123,10 +123,10 @@ const Login = () => {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '12px 16px',
-                backgroundColor: `${tokens.colors.error}10`,
-                border: `1px solid ${tokens.colors.error}30`,
+                backgroundColor: 'rgba(var(--error-rgb), 0.1)',
+                border: `1px solid ${'var(--error)'}30`,
                 borderRadius: '8px',
-                color: tokens.colors.error,
+                color: 'var(--error)',
                 marginBottom: '24px',
                 fontSize: '14px',
               }}
@@ -142,7 +142,7 @@ const Login = () => {
                 display: 'block',
                 fontSize: '15px',
                 fontWeight: '500',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 marginBottom: '8px',
               }}>
                 E-post
@@ -157,13 +157,13 @@ const Login = () => {
                   width: '100%',
                   padding: '12px 16px',
                   fontSize: '15px',
-                  border: `1px solid ${tokens.colors.mist}`,
+                  border: '1px solid var(--border-default)',
                   borderRadius: '8px',
                   outline: 'none',
                   transition: 'border-color 0.2s',
                 }}
                 onFocus={(e) => e.target.style.borderColor = 'var(--ak-primary)'}
-                onBlur={(e) => e.target.style.borderColor = tokens.colors.mist}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border-default)'}
               />
             </div>
 
@@ -172,7 +172,7 @@ const Login = () => {
                 display: 'block',
                 fontSize: '15px',
                 fontWeight: '500',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 marginBottom: '8px',
               }}>
                 Passord
@@ -187,13 +187,13 @@ const Login = () => {
                   width: '100%',
                   padding: '12px 16px',
                   fontSize: '15px',
-                  border: `1px solid ${tokens.colors.mist}`,
+                  border: '1px solid var(--border-default)',
                   borderRadius: '8px',
                   outline: 'none',
                   transition: 'border-color 0.2s',
                 }}
                 onFocus={(e) => e.target.style.borderColor = 'var(--ak-primary)'}
-                onBlur={(e) => e.target.style.borderColor = tokens.colors.mist}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border-default)'}
               />
             </div>
 
@@ -204,7 +204,7 @@ const Login = () => {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: tokens.colors.primary,
+                  color: 'var(--accent)',
                   fontSize: '14px',
                   cursor: 'pointer',
                   textDecoration: 'underline'
@@ -222,8 +222,8 @@ const Login = () => {
                 padding: '14px',
                 fontSize: '17px',
                 fontWeight: '600',
-                color: tokens.colors.white,
-                backgroundColor: loading ? tokens.colors.steel : tokens.colors.primary,
+                color: 'var(--bg-primary)',
+                backgroundColor: loading ? 'var(--text-secondary)' : 'var(--accent)',
                 border: 'none',
                 borderRadius: '8px',
                 cursor: loading ? 'not-allowed' : 'pointer',
@@ -234,10 +234,10 @@ const Login = () => {
                 transition: 'background-color 0.2s',
               }}
               onMouseEnter={(e) => {
-                if (!loading) e.currentTarget.style.backgroundColor = tokens.colors.primaryLight;
+                if (!loading) e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
               }}
               onMouseLeave={(e) => {
-                if (!loading) e.currentTarget.style.backgroundColor = tokens.colors.primary;
+                if (!loading) e.currentTarget.style.backgroundColor = 'var(--accent)';
               }}
             >
               <LogIn size={20} />
@@ -249,11 +249,11 @@ const Login = () => {
           <div style={{
             marginTop: '24px',
             paddingTop: '24px',
-            borderTop: `1px solid ${tokens.colors.mist}`,
+            borderTop: '1px solid var(--border-default)',
           }}>
             <div style={{
               fontSize: '13px',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               textAlign: 'center',
               marginBottom: '12px',
             }}>
@@ -267,8 +267,8 @@ const Login = () => {
                   padding: '8px 16px',
                   fontSize: '14px',
                   color: 'var(--ak-primary)',
-                  backgroundColor: tokens.colors.snow,
-                  border: `1px solid ${tokens.colors.mist}`,
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: '1px solid var(--border-default)',
                   borderRadius: '6px',
                   cursor: loading ? 'not-allowed' : 'pointer',
                 }}
@@ -282,8 +282,8 @@ const Login = () => {
                   padding: '8px 16px',
                   fontSize: '14px',
                   color: 'var(--ak-primary)',
-                  backgroundColor: tokens.colors.snow,
-                  border: `1px solid ${tokens.colors.mist}`,
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: '1px solid var(--border-default)',
                   borderRadius: '6px',
                   cursor: loading ? 'not-allowed' : 'pointer',
                 }}
@@ -297,8 +297,8 @@ const Login = () => {
                   padding: '8px 16px',
                   fontSize: '14px',
                   color: 'var(--ak-primary)',
-                  backgroundColor: tokens.colors.snow,
-                  border: `1px solid ${tokens.colors.mist}`,
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: '1px solid var(--border-default)',
                   borderRadius: '6px',
                   cursor: loading ? 'not-allowed' : 'pointer',
                 }}
@@ -341,7 +341,7 @@ const Login = () => {
                   border: 'none',
                   fontSize: '24px',
                   cursor: 'pointer',
-                  color: tokens.colors.steel
+                  color: 'var(--text-secondary)'
                 }}
               >
                 ×
@@ -350,7 +350,7 @@ const Login = () => {
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: '700',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 marginBottom: '16px'
               }}>
                 Tilbakestill passord
@@ -359,12 +359,12 @@ const Login = () => {
               {resetSuccess ? (
                 <div style={{
                   padding: '20px',
-                  backgroundColor: `${tokens.colors.success}15`,
+                  backgroundColor: `${'var(--success)'}15`,
                   borderRadius: '8px',
                   textAlign: 'center'
                 }}>
                   <div style={{ fontSize: '48px', marginBottom: '12px' }}>✓</div>
-                  <p style={{ color: tokens.colors.success, fontSize: '15px' }}>
+                  <p style={{ color: 'var(--success)', fontSize: '15px' }}>
                     En e-post med instruksjoner for å tilbakestille passord er sendt til {resetEmail}
                   </p>
                 </div>
@@ -372,7 +372,7 @@ const Login = () => {
                 <form onSubmit={handlePasswordReset}>
                   <p style={{
                     fontSize: '14px',
-                    color: tokens.colors.steel,
+                    color: 'var(--text-secondary)',
                     marginBottom: '20px'
                   }}>
                     Skriv inn e-postadressen din, så sender vi deg en lenke for å tilbakestille passordet.
@@ -383,7 +383,7 @@ const Login = () => {
                       display: 'block',
                       fontSize: '14px',
                       fontWeight: '500',
-                      color: tokens.colors.charcoal,
+                      color: 'var(--text-primary)',
                       marginBottom: '8px'
                     }}>
                       E-post
@@ -398,12 +398,12 @@ const Login = () => {
                         width: '100%',
                         padding: '12px 16px',
                         fontSize: '15px',
-                        border: `1px solid ${tokens.colors.mist}`,
+                        border: '1px solid var(--border-default)',
                         borderRadius: '8px',
                         outline: 'none'
                       }}
-                      onFocus={(e) => e.target.style.borderColor = tokens.colors.primary}
-                      onBlur={(e) => e.target.style.borderColor = tokens.colors.mist}
+                      onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
+                      onBlur={(e) => e.target.style.borderColor = 'var(--border-default)'}
                     />
                   </div>
 
@@ -415,7 +415,7 @@ const Login = () => {
                       fontSize: '15px',
                       fontWeight: '600',
                       color: 'white',
-                      backgroundColor: tokens.colors.primary,
+                      backgroundColor: 'var(--accent)',
                       border: 'none',
                       borderRadius: '8px',
                       cursor: 'pointer'

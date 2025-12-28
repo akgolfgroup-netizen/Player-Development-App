@@ -1,13 +1,21 @@
 import React from 'react';
 
 /**
- * Button
- * Primary button primitive with variants and sizes
- * Uses design system tokens for colors and typography
+ * Button Primitive
+ * Primary button with variants and sizes
+ *
+ * UI Canon v1.2 (Apple/Stripe):
+ * - Primary: solid color background for main actions
+ * - Secondary: subtle background with border for secondary actions
+ * - Ghost: transparent for tertiary actions
+ * - Destructive: red background for dangerous actions
+ * - Sizes: sm (36px), md (44px)
+ * - Consistent radius: --radius-md
+ * - Micro-interactions: hover brightness, active press, smooth transitions
  */
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
-type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
+type ButtonSize = 'sm' | 'md';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual variant */
@@ -20,6 +28,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   leftIcon?: React.ReactNode;
   /** Icon on the right side */
   rightIcon?: React.ReactNode;
+  /** Full width button */
+  fullWidth?: boolean;
   /** Button content */
   children: React.ReactNode;
 }
@@ -30,6 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   isLoading = false,
   leftIcon,
   rightIcon,
+  fullWidth = false,
   children,
   disabled,
   className = '',
@@ -42,16 +53,26 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     ...styles.base,
     ...variantStyles[variant],
     ...sizeStyles[size],
-    ...(isDisabled && styles.disabled),
+    ...(fullWidth && styles.fullWidth),
     ...style,
   };
+
+  // Build class list for micro-interactions
+  const variantClass = variant === 'secondary' ? 'btn-secondary' :
+                       variant === 'ghost' ? 'btn-ghost' :
+                       variant === 'destructive' ? 'btn-destructive' : '';
+  const buttonClasses = [
+    'btn-interactive',
+    variantClass,
+    className,
+  ].filter(Boolean).join(' ');
 
   return (
     <button
       ref={ref}
       style={buttonStyle}
       disabled={isDisabled}
-      className={className}
+      className={buttonClasses}
       {...props}
     >
       {isLoading ? (
@@ -98,14 +119,12 @@ const styles: Record<string, React.CSSProperties> = {
     border: 'none',
     borderRadius: 'var(--radius-md)',
     cursor: 'pointer',
-    transition: 'all 0.15s ease',
     textDecoration: 'none',
     whiteSpace: 'nowrap',
+    // Transitions handled by .btn-interactive class
   },
-  disabled: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-    pointerEvents: 'none',
+  fullWidth: {
+    width: '100%',
   },
   icon: {
     display: 'flex',
@@ -130,13 +149,18 @@ const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
     boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
   },
   secondary: {
-    backgroundColor: 'var(--color-surface-2)',
+    backgroundColor: 'var(--color-surface)',
     color: 'var(--color-text)',
     border: '1px solid var(--color-border)',
   },
   ghost: {
     backgroundColor: 'transparent',
     color: 'var(--color-text)',
+  },
+  destructive: {
+    backgroundColor: 'var(--color-danger)',
+    color: 'var(--color-primary-foreground)',
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
   },
 };
 
@@ -150,11 +174,6 @@ const sizeStyles: Record<ButtonSize, React.CSSProperties> = {
     padding: 'var(--spacing-2) var(--spacing-4)',
     fontSize: 'var(--font-size-body)',
     minHeight: '44px',
-  },
-  lg: {
-    padding: 'var(--spacing-3) var(--spacing-6)',
-    fontSize: 'var(--font-size-headline)',
-    minHeight: '52px',
   },
 };
 

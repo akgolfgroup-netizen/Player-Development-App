@@ -106,6 +106,55 @@ export interface IupToDataGolfComparison {
 }
 
 // ============================================================================
+// COACH PLAYER STATS
+// ============================================================================
+
+export interface CoachPlayerDataGolfStats {
+  playerId: string;
+  playerName: string;
+  category: string;
+  handicap: number | null;
+  dataGolfConnected: boolean;
+  lastSync: Date | null;
+  roundsTracked: number;
+  stats: {
+    sgTotal: number | null;
+    sgTee: number | null;
+    sgApproach: number | null;
+    sgAround: number | null;
+    sgPutting: number | null;
+    drivingDistance: number | null;
+    drivingAccuracy: number | null;
+    girPercent: number | null;
+    scrambling: number | null;
+    puttsPerRound: number | null;
+  };
+  trends: {
+    sgTotal: 'up' | 'down' | 'stable';
+    sgTee: 'up' | 'down' | 'stable';
+    sgApproach: 'up' | 'down' | 'stable';
+    sgAround: 'up' | 'down' | 'stable';
+    sgPutting: 'up' | 'down' | 'stable';
+  };
+  tourComparison: {
+    tour: string;
+    gapToTour: number | null;
+    percentile: number | null;
+  } | null;
+}
+
+export interface CoachDataGolfDashboard {
+  players: CoachPlayerDataGolfStats[];
+  summary: {
+    totalPlayers: number;
+    connectedPlayers: number;
+    totalRoundsTracked: number;
+    lastSyncAt: Date | null;
+  };
+  tourAverages: DataGolfTourAverages | null;
+}
+
+// ============================================================================
 // SYNC STATUS
 // ============================================================================
 

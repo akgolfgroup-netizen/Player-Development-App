@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Target, Flag, ChevronRight, Save, X, BarChart2
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 
@@ -15,7 +14,7 @@ const STAT_CATEGORIES = [
     id: 'driving',
     name: 'Driving',
     icon: Target,
-    color: tokens.colors.primary,
+    color: 'var(--accent)',
     fields: [
       { id: 'fairways_hit', label: 'Fairways truffet', type: 'fraction', max: 14 },
       { id: 'avg_drive_distance', label: 'Gj.sn. drivelengde', type: 'number', unit: 'm' },
@@ -25,7 +24,7 @@ const STAT_CATEGORIES = [
     id: 'approach',
     name: 'Approach',
     icon: Flag,
-    color: tokens.colors.success,
+    color: 'var(--success)',
     fields: [
       { id: 'gir', label: 'GIR (Green in Regulation)', type: 'fraction', max: 18 },
       { id: 'proximity', label: 'Gj.sn. avstand til hull', type: 'number', unit: 'm' },
@@ -35,7 +34,7 @@ const STAT_CATEGORIES = [
     id: 'short_game',
     name: 'Kortspill',
     icon: Flag,
-    color: tokens.colors.gold,
+    color: 'var(--achievement)',
     fields: [
       { id: 'sand_saves', label: 'Sand saves', type: 'fraction', max: null },
       { id: 'up_and_downs', label: 'Up & Downs', type: 'fraction', max: null },
@@ -46,7 +45,7 @@ const STAT_CATEGORIES = [
     id: 'putting',
     name: 'Putting',
     icon: Target,
-    color: tokens.colors.error,
+    color: 'var(--error)',
     fields: [
       { id: 'total_putts', label: 'Totalt antall putter', type: 'number' },
       { id: 'putts_per_gir', label: 'Putter per GIR', type: 'decimal' },
@@ -71,7 +70,7 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       overflow: 'hidden',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -101,12 +100,12 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
           <h3 style={{
             fontSize: '15px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             {category.name}
           </h3>
-          <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
             {category.fields.length} felt
           </div>
         </div>
@@ -114,21 +113,21 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
           width: '28px',
           height: '28px',
           borderRadius: '8px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
           transition: 'transform 0.2s',
         }}>
-          <ChevronRight size={16} color={tokens.colors.steel} />
+          <ChevronRight size={16} color={'var(--text-secondary)'} />
         </div>
       </div>
 
       {isExpanded && (
         <div style={{
           padding: '0 20px 20px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
         }}>
           <div style={{
             display: 'flex',
@@ -140,7 +139,7 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
               <div key={field.id}>
                 <label style={{
                   fontSize: '13px',
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   marginBottom: '6px',
                   display: 'block',
                 }}>
@@ -162,12 +161,12 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                         width: '60px',
                         padding: '10px 12px',
                         borderRadius: '8px',
-                        border: `1px solid ${tokens.colors.mist}`,
+                        border: '1px solid var(--border-default)',
                         fontSize: '14px',
                         textAlign: 'center',
                       }}
                     />
-                    <span style={{ color: tokens.colors.steel }}>/</span>
+                    <span style={{ color: 'var(--text-secondary)' }}>/</span>
                     <input
                       type="number"
                       min="1"
@@ -182,7 +181,7 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                         width: '60px',
                         padding: '10px 12px',
                         borderRadius: '8px',
-                        border: `1px solid ${tokens.colors.mist}`,
+                        border: '1px solid var(--border-default)',
                         fontSize: '14px',
                         textAlign: 'center',
                       }}
@@ -190,7 +189,7 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                     {values[field.id]?.numerator && values[field.id]?.denominator && (
                       <span style={{
                         fontSize: '13px',
-                        color: tokens.colors.primary,
+                        color: 'var(--accent)',
                         marginLeft: '8px',
                       }}>
                         = {Math.round((values[field.id].numerator / values[field.id].denominator) * 100)}%
@@ -209,17 +208,17 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                         width: '100px',
                         padding: '10px 12px',
                         borderRadius: '8px',
-                        border: `1px solid ${tokens.colors.mist}`,
+                        border: '1px solid var(--border-default)',
                         fontSize: '14px',
                       }}
                     />
                     {field.unit && (
-                      <span style={{ fontSize: '13px', color: tokens.colors.steel }}>
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                         {field.unit}
                       </span>
                     )}
                     {field.type === 'percentage' && (
-                      <span style={{ fontSize: '13px', color: tokens.colors.steel }}>%</span>
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>%</span>
                     )}
                   </div>
                 )}
@@ -291,7 +290,7 @@ const StatsOppdateringContainer = () => {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Ny statistikk"
         subtitle="Registrer nye prestasjonsdata"
@@ -300,7 +299,7 @@ const StatsOppdateringContainer = () => {
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* Session Info */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
           padding: '20px',
           marginBottom: '20px',
@@ -309,7 +308,7 @@ const StatsOppdateringContainer = () => {
           <h2 style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Okt-informasjon
@@ -323,7 +322,7 @@ const StatsOppdateringContainer = () => {
             <div>
               <label style={{
                 fontSize: '13px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 marginBottom: '6px',
                 display: 'block',
               }}>
@@ -336,9 +335,9 @@ const StatsOppdateringContainer = () => {
                   width: '100%',
                   padding: '10px 12px',
                   borderRadius: '8px',
-                  border: `1px solid ${tokens.colors.mist}`,
+                  border: '1px solid var(--border-default)',
                   fontSize: '14px',
-                  backgroundColor: tokens.colors.white,
+                  backgroundColor: 'var(--bg-primary)',
                 }}
               >
                 <option value="">Velg type...</option>
@@ -351,7 +350,7 @@ const StatsOppdateringContainer = () => {
             <div>
               <label style={{
                 fontSize: '13px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 marginBottom: '6px',
                 display: 'block',
               }}>
@@ -366,7 +365,7 @@ const StatsOppdateringContainer = () => {
                   width: '100%',
                   padding: '10px 12px',
                   borderRadius: '8px',
-                  border: `1px solid ${tokens.colors.mist}`,
+                  border: '1px solid var(--border-default)',
                   fontSize: '14px',
                 }}
               />
@@ -375,7 +374,7 @@ const StatsOppdateringContainer = () => {
             <div>
               <label style={{
                 fontSize: '13px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 marginBottom: '6px',
                 display: 'block',
               }}>
@@ -389,7 +388,7 @@ const StatsOppdateringContainer = () => {
                   width: '100%',
                   padding: '10px 12px',
                   borderRadius: '8px',
-                  border: `1px solid ${tokens.colors.mist}`,
+                  border: '1px solid var(--border-default)',
                   fontSize: '14px',
                 }}
               />
@@ -398,7 +397,7 @@ const StatsOppdateringContainer = () => {
             <div>
               <label style={{
                 fontSize: '13px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 marginBottom: '6px',
                 display: 'block',
               }}>
@@ -413,7 +412,7 @@ const StatsOppdateringContainer = () => {
                   width: '100%',
                   padding: '10px 12px',
                   borderRadius: '8px',
-                  border: `1px solid ${tokens.colors.mist}`,
+                  border: '1px solid var(--border-default)',
                   fontSize: '14px',
                 }}
               />
@@ -425,7 +424,7 @@ const StatsOppdateringContainer = () => {
         <h2 style={{
           fontSize: '16px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: '0 0 16px 0',
         }}>
           Statistikk
@@ -456,9 +455,9 @@ const StatsOppdateringContainer = () => {
             style={{
               padding: '12px 24px',
               borderRadius: '10px',
-              border: `1px solid ${tokens.colors.mist}`,
-              backgroundColor: tokens.colors.white,
-              color: tokens.colors.charcoal,
+              border: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
               fontSize: '14px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -476,8 +475,8 @@ const StatsOppdateringContainer = () => {
               padding: '12px 24px',
               borderRadius: '10px',
               border: 'none',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               fontSize: '14px',
               fontWeight: 600,
               cursor: 'pointer',
@@ -496,7 +495,7 @@ const StatsOppdateringContainer = () => {
           <h2 style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Siste registreringer
@@ -507,7 +506,7 @@ const StatsOppdateringContainer = () => {
               <div
                 key={entry.id}
                 style={{
-                  backgroundColor: tokens.colors.white,
+                  backgroundColor: 'var(--bg-primary)',
                   borderRadius: '12px',
                   padding: '14px 16px',
                   display: 'flex',
@@ -519,18 +518,18 @@ const StatsOppdateringContainer = () => {
                   width: '36px',
                   height: '36px',
                   borderRadius: '8px',
-                  backgroundColor: tokens.colors.snow,
+                  backgroundColor: 'var(--bg-secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                  <BarChart2 size={18} color={tokens.colors.primary} />
+                  <BarChart2 size={18} color={'var(--accent)'} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                  <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                     {entry.type} - {entry.course}
                   </div>
-                  <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {entry.date}
                   </div>
                 </div>
@@ -538,12 +537,12 @@ const StatsOppdateringContainer = () => {
                   <div style={{
                     fontSize: '16px',
                     fontWeight: 600,
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                   }}>
                     {entry.score}
                   </div>
                 )}
-                <ChevronRight size={16} color={tokens.colors.steel} />
+                <ChevronRight size={16} color={'var(--text-secondary)'} />
               </div>
             ))}
           </div>

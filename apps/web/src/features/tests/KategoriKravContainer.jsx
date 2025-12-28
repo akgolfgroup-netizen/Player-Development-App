@@ -3,8 +3,11 @@ import {
   Award, CheckCircle, Circle,
   Info
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Card from '../../ui/primitives/Card';
+import Badge from '../../ui/primitives/Badge.primitive';
+import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
 
 // ============================================================================
 // MOCK DATA
@@ -156,12 +159,7 @@ const RequirementCard = ({ test }) => {
     : test.current - test.requirement;
 
   return (
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '14px',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-    }}>
+    <Card variant="default" padding="md">
       <div style={{
         display: 'flex',
         alignItems: 'flex-start',
@@ -175,33 +173,24 @@ const RequirementCard = ({ test }) => {
             gap: '8px',
             marginBottom: '4px',
           }}>
-            <span style={{
-              fontSize: '10px',
-              fontWeight: 500,
-              padding: '2px 6px',
-              borderRadius: '4px',
-              backgroundColor: `${tokens.colors.primary}15`,
-              color: tokens.colors.primary,
-            }}>
-              {test.category}
-            </span>
+            <Badge variant="accent" size="sm">{test.category}</Badge>
             {test.met ? (
-              <CheckCircle size={14} color={tokens.colors.success} />
+              <CheckCircle size={14} color="var(--success)" />
             ) : (
-              <Circle size={14} color={tokens.colors.steel} />
+              <Circle size={14} color="var(--text-tertiary)" />
             )}
           </div>
           <h4 style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             {test.name}
           </h4>
           <p style={{
             fontSize: '11px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             margin: '4px 0 0 0',
           }}>
             {test.description}
@@ -213,15 +202,15 @@ const RequirementCard = ({ test }) => {
       <div style={{ marginBottom: '8px' }}>
         <div style={{
           height: '6px',
-          backgroundColor: tokens.colors.mist,
+          backgroundColor: 'var(--bg-neutral-subtle)',
           borderRadius: '3px',
           overflow: 'hidden',
         }}>
           <div style={{
             height: '100%',
             width: `${progressPercent}%`,
-            backgroundColor: test.met ? tokens.colors.success :
-                           progressPercent >= 80 ? tokens.colors.warning : tokens.colors.error,
+            backgroundColor: test.met ? 'var(--success)' :
+                           progressPercent >= 80 ? 'var(--warning)' : 'var(--error)',
             borderRadius: '3px',
           }} />
         </div>
@@ -234,33 +223,33 @@ const RequirementCard = ({ test }) => {
         alignItems: 'center',
       }}>
         <div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Krav</div>
-          <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.charcoal }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Krav</div>
+          <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
             {test.lowerIsBetter ? '≤' : '≥'} {test.requirement}{test.unit}
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Din</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Din</div>
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: test.met ? tokens.colors.success : tokens.colors.error,
+            color: test.met ? 'var(--success)' : 'var(--error)',
           }}>
             {test.current}{test.unit}
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Differanse</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Differanse</div>
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: difference >= 0 ? tokens.colors.success : tokens.colors.error,
+            color: difference >= 0 ? 'var(--success)' : 'var(--error)',
           }}>
             {difference >= 0 ? '+' : ''}{difference.toFixed(1)}{test.unit}
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
@@ -269,16 +258,11 @@ const RequirementCard = ({ test }) => {
 // ============================================================================
 
 const CategorySelector = ({ selected, onChange }) => (
-  <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: '14px',
-    padding: '16px',
-    marginBottom: '20px',
-  }}>
+  <Card variant="default" padding="md" style={{ marginBottom: '20px' }}>
     <h3 style={{
       fontSize: '14px',
       fontWeight: 600,
-      color: tokens.colors.charcoal,
+      color: 'var(--text-primary)',
       marginBottom: '12px',
     }}>
       Velg kategori
@@ -292,35 +276,26 @@ const CategorySelector = ({ selected, onChange }) => (
       {CATEGORIES.slice().reverse().map((cat) => {
         const isCurrent = cat.level === CURRENT_CATEGORY;
         const isSelected = cat.level === selected;
-        const isPast = CATEGORIES.findIndex((c) => c.level === cat.level) <
-                      CATEGORIES.findIndex((c) => c.level === CURRENT_CATEGORY);
 
         return (
-          <button
+          <Button
             key={cat.level}
             onClick={() => onChange(cat.level)}
+            variant={isSelected ? 'primary' : isCurrent ? 'ghost' : 'ghost'}
+            size="sm"
             style={{
-              padding: '10px 16px',
-              borderRadius: '8px',
-              border: isSelected ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
-              backgroundColor: isCurrent ? `${tokens.colors.success}15` :
-                             isSelected ? `${tokens.colors.primary}10` :
-                             isPast ? tokens.colors.snow : tokens.colors.white,
-              color: isCurrent ? tokens.colors.success :
-                    isSelected ? tokens.colors.primary : tokens.colors.charcoal,
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
+              border: isSelected ? '2px solid var(--accent)' : '2px solid transparent',
+              backgroundColor: isCurrent && !isSelected ? 'var(--bg-success-subtle)' : undefined,
+              color: isCurrent && !isSelected ? 'var(--success)' : undefined,
             }}
           >
             {cat.level}
             {isCurrent && ' ✓'}
-          </button>
+          </Button>
         );
       })}
     </div>
-  </div>
+  </Card>
 );
 
 // ============================================================================
@@ -334,12 +309,7 @@ const SummaryCard = ({ requirements, targetCategory }) => {
   const rounds = requirements?.rounds;
 
   return (
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '14px',
-      padding: '16px',
-      marginBottom: '20px',
-    }}>
+    <Card variant="default" padding="md" style={{ marginBottom: '20px' }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -350,25 +320,25 @@ const SummaryCard = ({ requirements, targetCategory }) => {
           width: '48px',
           height: '48px',
           borderRadius: '50%',
-          backgroundColor: `${tokens.colors.gold}20`,
+          backgroundColor: 'var(--bg-warning-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Award size={24} color={tokens.colors.gold} />
+          <Award size={24} color="var(--warning)" />
         </div>
         <div>
           <h2 style={{
             fontSize: '18px',
             fontWeight: 700,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             Krav for Kategori {targetCategory}
           </h2>
           <p style={{
             fontSize: '13px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             margin: '2px 0 0 0',
           }}>
             {metCount} av {totalCount} testkrav oppfylt
@@ -384,18 +354,18 @@ const SummaryCard = ({ requirements, targetCategory }) => {
       }}>
         <div style={{
           padding: '12px',
-          backgroundColor: tokens.colors.snow,
-          borderRadius: '10px',
+          backgroundColor: 'var(--bg-secondary)',
+          borderRadius: 'var(--radius-sm)',
           textAlign: 'center',
         }}>
           <div style={{
             fontSize: '24px',
             fontWeight: 700,
-            color: metCount === totalCount ? tokens.colors.success : tokens.colors.primary,
+            color: metCount === totalCount ? 'var(--success)' : 'var(--accent)',
           }}>
             {metCount}/{totalCount}
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
             Tester oppfylt
           </div>
         </div>
@@ -404,43 +374,43 @@ const SummaryCard = ({ requirements, targetCategory }) => {
           <>
             <div style={{
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
-              borderRadius: '10px',
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: 'var(--radius-sm)',
               textAlign: 'center',
             }}>
               <div style={{
                 fontSize: '24px',
                 fontWeight: 700,
-                color: rounds.completed >= rounds.required ? tokens.colors.success : tokens.colors.warning,
+                color: rounds.completed >= rounds.required ? 'var(--success)' : 'var(--warning)',
               }}>
                 {rounds.completed}/{rounds.required}
               </div>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                 Runder spilt
               </div>
             </div>
 
             <div style={{
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
-              borderRadius: '10px',
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: 'var(--radius-sm)',
               textAlign: 'center',
             }}>
               <div style={{
                 fontSize: '24px',
                 fontWeight: 700,
-                color: rounds.currentHandicap <= rounds.handicapRequired ? tokens.colors.success : tokens.colors.error,
+                color: rounds.currentHandicap <= rounds.handicapRequired ? 'var(--success)' : 'var(--error)',
               }}>
                 {rounds.currentHandicap}
               </div>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                 Hcp (krav: ≤{rounds.handicapRequired})
               </div>
             </div>
           </>
         )}
       </div>
-    </div>
+    </Card>
   );
 };
 
@@ -459,7 +429,7 @@ const KategoriKravContainer = () => {
   }, {}) || {};
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <PageHeader
         title="Kategori-krav"
         subtitle="Se kravene for hver kategori"
@@ -486,7 +456,7 @@ const KategoriKravContainer = () => {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               marginBottom: '12px',
               display: 'flex',
               alignItems: 'center',
@@ -496,7 +466,7 @@ const KategoriKravContainer = () => {
               <span style={{
                 fontSize: '12px',
                 fontWeight: 500,
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}>
                 ({tests.filter((t) => t.met).length}/{tests.length} oppfylt)
               </span>
@@ -510,17 +480,11 @@ const KategoriKravContainer = () => {
         ))}
 
         {!requirements && (
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '14px',
-            padding: '40px',
-            textAlign: 'center',
-          }}>
-            <Info size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-            <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
-              Ingen krav definert for denne kategorien
-            </p>
-          </div>
+          <StateCard
+            variant="empty"
+            icon={Info}
+            title="Ingen krav definert for denne kategorien"
+          />
         )}
       </div>
     </div>

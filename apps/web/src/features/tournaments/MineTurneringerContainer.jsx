@@ -4,7 +4,6 @@ import {
   Trophy, Calendar, MapPin, Clock, ChevronRight,
   Medal, CheckCircle, XCircle, AlertCircle, FileText, Loader2
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -25,43 +24,43 @@ const getStatusBadge = (status, waitlistPosition) => {
       return {
         label: 'Bekreftet',
         icon: CheckCircle,
-        color: tokens.colors.success,
-        bg: `${tokens.colors.success}15`,
+        color: 'var(--success)',
+        bg: 'rgba(var(--success-rgb), 0.15)',
       };
     case 'registered':
       return {
         label: 'Registrert',
         icon: CheckCircle,
-        color: tokens.colors.success,
-        bg: `${tokens.colors.success}15`,
+        color: 'var(--success)',
+        bg: 'rgba(var(--success-rgb), 0.15)',
       };
     case 'pending':
       return {
         label: 'Venter på starttid',
         icon: Clock,
-        color: tokens.colors.warning,
-        bg: `${tokens.colors.warning}15`,
+        color: 'var(--warning)',
+        bg: 'rgba(var(--warning-rgb), 0.15)',
       };
     case 'waitlist':
       return {
         label: `Venteliste (#${waitlistPosition})`,
         icon: AlertCircle,
-        color: tokens.colors.steel,
-        bg: `${tokens.colors.steel}15`,
+        color: 'var(--text-secondary)',
+        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
       };
     case 'cancelled':
       return {
         label: 'Avmeldt',
         icon: XCircle,
-        color: tokens.colors.error,
-        bg: `${tokens.colors.error}15`,
+        color: 'var(--error)',
+        bg: 'rgba(var(--error-rgb), 0.15)',
       };
     default:
       return {
         label: status || 'Ukjent',
         icon: Clock,
-        color: tokens.colors.steel,
-        bg: `${tokens.colors.steel}15`,
+        color: 'var(--text-secondary)',
+        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
       };
   }
 };
@@ -157,7 +156,7 @@ const PastResultCard = ({ result }) => {
       <div
         className="w-12 h-12 rounded-xl flex items-center justify-center"
         style={{
-          backgroundColor: isTopThree ? `${getMedalColor(result.position)}20` : tokens.colors.snow
+          backgroundColor: isTopThree ? `${getMedalColor(result.position)}20` : 'var(--bg-secondary)'
         }}
       >
         {isTopThree ? (
@@ -243,7 +242,7 @@ const MineTurneringerContainer = () => {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Mine turneringer"
         subtitle="Dine påmeldinger og resultater"
@@ -252,8 +251,8 @@ const MineTurneringerContainer = () => {
             onClick={() => navigate('/turneringskalender')}
             style={{
               padding: '8px 16px',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               borderRadius: '10px',
               fontSize: '13px',
               fontWeight: 500,

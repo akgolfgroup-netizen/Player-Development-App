@@ -525,8 +525,28 @@ export function calculateTeamAnalytics(
     (r) => r.date >= thirtyDaysAgo
   ).length;
 
-  // TODO: Calculate monthly trend (requires historical data)
-  const monthlyTrend: 'increasing' | 'decreasing' | 'stable' = 'stable';
+  // Calculate monthly trend by comparing last 30 days to previous 30 days
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+
+  const last30DaysTests = allTestResults.filter(
+    (r) => r.date >= thirtyDaysAgo
+  ).length;
+  const previous30DaysTests = allTestResults.filter(
+    (r) => r.date >= sixtyDaysAgo && r.date < thirtyDaysAgo
+  ).length;
+
+  let monthlyTrend: 'increasing' | 'decreasing' | 'stable' = 'stable';
+  if (previous30DaysTests > 0) {
+    const changePercent = ((last30DaysTests - previous30DaysTests) / previous30DaysTests) * 100;
+    if (changePercent > 10) {
+      monthlyTrend = 'increasing';
+    } else if (changePercent < -10) {
+      monthlyTrend = 'decreasing';
+    }
+  } else if (last30DaysTests > 0) {
+    monthlyTrend = 'increasing'; // New activity where there was none
+  }
 
   return {
     coachId,

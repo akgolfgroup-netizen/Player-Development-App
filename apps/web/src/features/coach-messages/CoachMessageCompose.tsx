@@ -7,12 +7,13 @@ import {
   X,
   Paperclip,
   FileText,
-  Clock
+  Clock,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
 import { messagesAPI } from '../../services/api';
 import { sanitizeText, sanitizeSearchQuery } from '../../utils/sanitize';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
 
 interface Recipient {
   id: string;
@@ -110,67 +111,45 @@ export const CoachMessageCompose: React.FC = () => {
 
   const canSend = subject.trim() && message.trim() && (sendToAll || selectedRecipients.length > 0);
 
-  const getCategoryColor = (cat: string) => {
-    switch (cat) {
-      case 'training': return { bg: 'rgba(59, 130, 246, 0.1)', text: '#2563eb', border: '#2563eb' };
-      case 'tournament': return { bg: 'rgba(168, 85, 247, 0.1)', text: '#7c3aed', border: '#7c3aed' };
-      case 'urgent': return { bg: 'rgba(239, 68, 68, 0.1)', text: '#dc2626', border: '#dc2626' };
-      default: return { bg: 'rgba(107, 114, 128, 0.1)', text: '#6b7280', border: '#6b7280' };
-    }
-  };
-
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => navigate('/coach/messages')}
-          style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '10px',
-            border: `1px solid ${designTokens.colors.border.light}`,
-            backgroundColor: designTokens.colors.background.card,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
+          leftIcon={<ArrowLeft size={20} />}
         >
-          <ArrowLeft size={20} color={designTokens.colors.text.secondary} />
-        </button>
+          Tilbake
+        </Button>
         <div>
           <h1 style={{
             fontSize: '24px',
-            fontWeight: '700',
-            color: designTokens.colors.text.primary,
-            margin: 0
+            fontWeight: 700,
+            color: 'var(--text-primary)',
+            margin: 0,
           }}>
             Ny beskjed
           </h1>
           <p style={{
             fontSize: '14px',
-            color: designTokens.colors.text.secondary,
-            margin: 0
+            color: 'var(--text-secondary)',
+            margin: 0,
           }}>
             Send til spillere eller grupper
           </p>
         </div>
       </div>
 
-      <div style={{
-        backgroundColor: designTokens.colors.background.card,
-        borderRadius: '16px',
-        border: `1px solid ${designTokens.colors.border.light}`,
-        overflow: 'hidden'
-      }}>
+      <Card variant="default" padding="none" style={{ overflow: 'hidden' }}>
         {/* Recipients Section */}
         <div style={{
           padding: '16px 20px',
-          borderBottom: `1px solid ${designTokens.colors.border.light}`
+          borderBottom: '1px solid var(--border-default)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-            <span style={{ fontSize: '14px', fontWeight: '500', color: designTokens.colors.text.secondary, width: '60px' }}>
+            <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-secondary)', width: '60px' }}>
               Til:
             </span>
             <div style={{ flex: 1 }}>
@@ -180,11 +159,11 @@ export const CoachMessageCompose: React.FC = () => {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '6px 12px',
-                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                  borderRadius: '20px',
-                  color: '#059669',
+                  backgroundColor: 'var(--bg-success-subtle)',
+                  borderRadius: 'var(--radius-full)',
+                  color: 'var(--success)',
                   fontSize: '13px',
-                  fontWeight: '500'
+                  fontWeight: 500,
                 }}>
                   <Users size={14} />
                   Alle spillere
@@ -195,10 +174,10 @@ export const CoachMessageCompose: React.FC = () => {
                       border: 'none',
                       cursor: 'pointer',
                       padding: '2px',
-                      display: 'flex'
+                      display: 'flex',
                     }}
                   >
-                    <X size={14} color="#059669" />
+                    <X size={14} color="var(--success)" />
                   </button>
                 </div>
               ) : (
@@ -210,14 +189,14 @@ export const CoachMessageCompose: React.FC = () => {
                       gap: '6px',
                       padding: '6px 12px',
                       backgroundColor: recipient.type === 'group'
-                        ? 'rgba(168, 85, 247, 0.1)'
-                        : designTokens.colors.primary[100],
-                      borderRadius: '20px',
+                        ? 'var(--bg-warning-subtle)'
+                        : 'var(--bg-accent-subtle)',
+                      borderRadius: 'var(--radius-full)',
                       color: recipient.type === 'group'
-                        ? '#7c3aed'
-                        : designTokens.colors.primary[700],
+                        ? 'var(--warning)'
+                        : 'var(--accent)',
                       fontSize: '13px',
-                      fontWeight: '500'
+                      fontWeight: 500,
                     }}>
                       {recipient.type === 'group' ? <Users size={14} /> : <User size={14} />}
                       {recipient.name}
@@ -229,7 +208,7 @@ export const CoachMessageCompose: React.FC = () => {
                           border: 'none',
                           cursor: 'pointer',
                           padding: '2px',
-                          display: 'flex'
+                          display: 'flex',
                         }}
                       >
                         <X size={14} />
@@ -250,9 +229,9 @@ export const CoachMessageCompose: React.FC = () => {
                         border: 'none',
                         background: 'none',
                         fontSize: '14px',
-                        color: designTokens.colors.text.primary,
+                        color: 'var(--text-primary)',
                         outline: 'none',
-                        width: '180px'
+                        width: '180px',
                       }}
                     />
                     {showRecipientPicker && (
@@ -263,12 +242,12 @@ export const CoachMessageCompose: React.FC = () => {
                         width: '280px',
                         maxHeight: '300px',
                         overflowY: 'auto',
-                        backgroundColor: designTokens.colors.background.card,
-                        borderRadius: '12px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        backgroundColor: 'var(--bg-surface)',
+                        borderRadius: 'var(--radius-md)',
+                        border: '1px solid var(--border-default)',
                         boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
                         zIndex: 100,
-                        marginTop: '4px'
+                        marginTop: '4px',
                       }}>
                         <div
                           onClick={() => {
@@ -282,16 +261,16 @@ export const CoachMessageCompose: React.FC = () => {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '10px',
-                            borderBottom: `1px solid ${designTokens.colors.border.light}`,
-                            backgroundColor: 'rgba(16, 185, 129, 0.05)'
+                            borderBottom: '1px solid var(--border-default)',
+                            backgroundColor: 'var(--bg-success-subtle)',
                           }}
                         >
-                          <Users size={16} color="#059669" />
+                          <Users size={16} color="var(--success)" />
                           <div>
-                            <p style={{ fontSize: '14px', fontWeight: '500', color: '#059669', margin: 0 }}>
+                            <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--success)', margin: 0 }}>
                               Alle spillere
                             </p>
-                            <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: 0 }}>
+                            <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
                               Send til alle dine spillere
                             </p>
                           </div>
@@ -305,30 +284,30 @@ export const CoachMessageCompose: React.FC = () => {
                               cursor: 'pointer',
                               display: 'flex',
                               alignItems: 'center',
-                              gap: '10px'
+                              gap: '10px',
                             }}
                           >
                             <div style={{
-                              width: '32px',
-                              height: '32px',
+                              width: 32,
+                              height: 32,
                               borderRadius: '50%',
                               backgroundColor: recipient.type === 'group'
-                                ? 'rgba(168, 85, 247, 0.1)'
-                                : designTokens.colors.primary[100],
+                                ? 'var(--bg-warning-subtle)'
+                                : 'var(--bg-accent-subtle)',
                               display: 'flex',
                               alignItems: 'center',
-                              justifyContent: 'center'
+                              justifyContent: 'center',
                             }}>
                               {recipient.type === 'group'
-                                ? <Users size={14} color="#7c3aed" />
-                                : <User size={14} color={designTokens.colors.primary[600]} />
+                                ? <Users size={14} color="var(--warning)" />
+                                : <User size={14} color="var(--accent)" />
                               }
                             </div>
                             <div>
-                              <p style={{ fontSize: '14px', fontWeight: '500', color: designTokens.colors.text.primary, margin: 0 }}>
+                              <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
                                 {recipient.name}
                               </p>
-                              <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: 0 }}>
+                              <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
                                 {recipient.type === 'group'
                                   ? `${recipient.memberCount} medlemmer`
                                   : `Kategori ${recipient.category}`
@@ -347,7 +326,7 @@ export const CoachMessageCompose: React.FC = () => {
 
           {/* Category Selector */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '14px', fontWeight: '500', color: designTokens.colors.text.secondary, width: '60px' }}>
+            <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-secondary)', width: '60px' }}>
               Type:
             </span>
             <div style={{ display: 'flex', gap: '8px' }}>
@@ -355,27 +334,18 @@ export const CoachMessageCompose: React.FC = () => {
                 { key: 'general', label: 'Generelt' },
                 { key: 'training', label: 'Trening' },
                 { key: 'tournament', label: 'Turnering' },
-                { key: 'urgent', label: 'Viktig' }
+                { key: 'urgent', label: 'Viktig' },
               ].map(cat => {
-                const colors = getCategoryColor(cat.key);
                 const isSelected = category === cat.key;
                 return (
-                  <button
+                  <Button
                     key={cat.key}
+                    variant={isSelected ? 'primary' : 'ghost'}
+                    size="sm"
                     onClick={() => setCategory(cat.key as typeof category)}
-                    style={{
-                      padding: '6px 14px',
-                      borderRadius: '20px',
-                      border: isSelected ? `2px solid ${colors.border}` : `1px solid ${designTokens.colors.border.light}`,
-                      backgroundColor: isSelected ? colors.bg : 'transparent',
-                      color: isSelected ? colors.text : designTokens.colors.text.secondary,
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      cursor: 'pointer'
-                    }}
                   >
                     {cat.label}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -385,7 +355,7 @@ export const CoachMessageCompose: React.FC = () => {
         {/* Subject */}
         <div style={{
           padding: '16px 20px',
-          borderBottom: `1px solid ${designTokens.colors.border.light}`
+          borderBottom: '1px solid var(--border-default)',
         }}>
           <input
             type="text"
@@ -397,9 +367,9 @@ export const CoachMessageCompose: React.FC = () => {
               border: 'none',
               background: 'none',
               fontSize: '16px',
-              fontWeight: '600',
-              color: designTokens.colors.text.primary,
-              outline: 'none'
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              outline: 'none',
             }}
           />
         </div>
@@ -417,9 +387,9 @@ export const CoachMessageCompose: React.FC = () => {
               background: 'none',
               fontSize: '14px',
               lineHeight: '1.6',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none',
-              resize: 'vertical'
+              resize: 'vertical',
             }}
           />
         </div>
@@ -428,10 +398,10 @@ export const CoachMessageCompose: React.FC = () => {
         {attachments.length > 0 && (
           <div style={{
             padding: '12px 20px',
-            borderTop: `1px solid ${designTokens.colors.border.light}`,
+            borderTop: '1px solid var(--border-default)',
             display: 'flex',
             gap: '8px',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
           }}>
             {attachments.map((att, idx) => (
               <div key={idx} style={{
@@ -439,10 +409,10 @@ export const CoachMessageCompose: React.FC = () => {
                 alignItems: 'center',
                 gap: '6px',
                 padding: '6px 12px',
-                backgroundColor: designTokens.colors.background.secondary,
-                borderRadius: '8px',
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-sm)',
                 fontSize: '13px',
-                color: designTokens.colors.text.secondary
+                color: 'var(--text-secondary)',
               }}>
                 <FileText size={14} />
                 {att.name}
@@ -453,7 +423,7 @@ export const CoachMessageCompose: React.FC = () => {
                     border: 'none',
                     cursor: 'pointer',
                     padding: '2px',
-                    display: 'flex'
+                    display: 'flex',
                   }}
                 >
                   <X size={12} />
@@ -466,50 +436,28 @@ export const CoachMessageCompose: React.FC = () => {
         {/* Footer Actions */}
         <div style={{
           padding: '16px 20px',
-          borderTop: `1px solid ${designTokens.colors.border.light}`,
+          borderTop: '1px solid var(--border-default)',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
         }}>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
+              leftIcon={<Paperclip size={16} />}
               onClick={() => setAttachments([...attachments, { name: 'Dokument.pdf', type: 'pdf' }])}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                border: `1px solid ${designTokens.colors.border.light}`,
-                backgroundColor: 'transparent',
-                color: designTokens.colors.text.secondary,
-                fontSize: '13px',
-                cursor: 'pointer'
-              }}
             >
-              <Paperclip size={16} />
               Vedlegg
-            </button>
-            <button
+            </Button>
+            <Button
+              variant={isScheduled ? 'primary' : 'ghost'}
+              size="sm"
+              leftIcon={<Clock size={16} />}
               onClick={() => setIsScheduled(!isScheduled)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                border: isScheduled
-                  ? `2px solid ${designTokens.colors.primary[500]}`
-                  : `1px solid ${designTokens.colors.border.light}`,
-                backgroundColor: isScheduled ? designTokens.colors.primary[50] : 'transparent',
-                color: isScheduled ? designTokens.colors.primary[600] : designTokens.colors.text.secondary,
-                fontSize: '13px',
-                cursor: 'pointer'
-              }}
             >
-              <Clock size={16} />
               Planlegg
-            </button>
+            </Button>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -521,10 +469,10 @@ export const CoachMessageCompose: React.FC = () => {
                   onChange={(e) => setScheduleDate(e.target.value)}
                   style={{
                     padding: '8px 12px',
-                    borderRadius: '8px',
-                    border: `1px solid ${designTokens.colors.border.light}`,
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--border-default)',
                     fontSize: '13px',
-                    color: designTokens.colors.text.primary
+                    color: 'var(--text-primary)',
                   }}
                 />
                 <input
@@ -533,48 +481,25 @@ export const CoachMessageCompose: React.FC = () => {
                   onChange={(e) => setScheduleTime(e.target.value)}
                   style={{
                     padding: '8px 12px',
-                    borderRadius: '8px',
-                    border: `1px solid ${designTokens.colors.border.light}`,
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--border-default)',
                     fontSize: '13px',
-                    color: designTokens.colors.text.primary
+                    color: 'var(--text-primary)',
                   }}
                 />
               </div>
             )}
-            <button
-              onClick={handleSend}
+            <Button
+              variant="primary"
               disabled={!canSend}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 20px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: canSend
-                  ? designTokens.colors.primary[500]
-                  : designTokens.colors.border.light,
-                color: canSend ? 'white' : designTokens.colors.text.tertiary,
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: canSend ? 'pointer' : 'not-allowed'
-              }}
+              leftIcon={isScheduled ? <Clock size={16} /> : <Send size={16} />}
+              onClick={handleSend}
             >
-              {isScheduled ? (
-                <>
-                  <Clock size={16} />
-                  Planlegg
-                </>
-              ) : (
-                <>
-                  <Send size={16} />
-                  Send
-                </>
-              )}
-            </button>
+              {isScheduled ? 'Planlegg' : 'Send'}
+            </Button>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Click outside to close picker */}
       {showRecipientPicker && (

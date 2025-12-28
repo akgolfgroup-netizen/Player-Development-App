@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Lock, Eye, EyeOff, CheckCircle, AlertCircle } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
 import { authAPI } from '../../services/api';
 
@@ -64,27 +64,27 @@ const ResetPassword = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: tokens.colors.snow,
-          fontFamily: tokens.typography.fontFamily,
+          backgroundColor: 'var(--bg-secondary)',
+          fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
           padding: '24px',
         }}
       >
         <div style={{ width: '100%', maxWidth: '440px', textAlign: 'center' }}>
-          <AKLogo size={60} color={tokens.colors.primary} />
+          <AKLogo size={60} color={'var(--accent)'} />
           <div
             style={{
               marginTop: '32px',
               padding: '32px',
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
-              boxShadow: tokens.shadows.elevated,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: 'var(--shadow-card)',
             }}
           >
-            <AlertCircle size={48} color={tokens.colors.error} style={{ margin: '0 auto 16px' }} />
-            <h2 style={{ ...tokens.typography.title2, color: tokens.colors.charcoal, marginBottom: '12px' }}>
+            <AlertCircle size={48} color={'var(--error)'} style={{ margin: '0 auto 16px' }} />
+            <h2 style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '12px' }}>
               Ugyldig forespørsel
             </h2>
-            <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, marginBottom: '24px' }}>
+            <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
               Tilbakestillingslenken er ugyldig eller mangler informasjon.
             </p>
             <Link
@@ -92,11 +92,11 @@ const ResetPassword = () => {
               style={{
                 display: 'inline-block',
                 padding: '12px 24px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 textDecoration: 'none',
-                borderRadius: tokens.radius.md,
-                ...tokens.typography.headline,
+                borderRadius: 'var(--radius-md)',
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
               }}
             >
               Be om ny lenke
@@ -114,26 +114,26 @@ const ResetPassword = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: tokens.colors.snow,
-        fontFamily: tokens.typography.fontFamily,
+        backgroundColor: 'var(--bg-secondary)',
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
         padding: '24px',
       }}
     >
       <div style={{ width: '100%', maxWidth: '480px' }}>
         {/* Logo and Title */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <AKLogo size={60} color={tokens.colors.primary} />
+          <AKLogo size={60} color={'var(--accent)'} />
           <h1 style={{
-            ...tokens.typography.title2,
-            color: tokens.colors.charcoal,
+            fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+            color: 'var(--text-primary)',
             marginTop: '16px',
             marginBottom: '4px',
           }}>
             Opprett nytt passord
           </h1>
           <p style={{
-            ...tokens.typography.subheadline,
-            color: tokens.colors.steel,
+            fontSize: '15px', lineHeight: '20px',
+            color: 'var(--text-secondary)',
           }}>
             Velg et sterkt passord for {email}
           </p>
@@ -142,10 +142,10 @@ const ResetPassword = () => {
         {/* Main Card */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
             padding: '32px',
-            boxShadow: tokens.shadows.elevated,
+            boxShadow: 'var(--shadow-card)',
           }}
         >
           {success ? (
@@ -157,26 +157,26 @@ const ResetPassword = () => {
                   height: '80px',
                   margin: '0 auto 24px',
                   borderRadius: '50%',
-                  backgroundColor: `${tokens.colors.success}15`,
+                  backgroundColor: `${'var(--success)'}15`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <CheckCircle size={40} color={tokens.colors.success} />
+                <CheckCircle size={40} color={'var(--success)'} />
               </div>
 
               <h2 style={{
-                ...tokens.typography.title2,
-                color: tokens.colors.charcoal,
+                fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+                color: 'var(--text-primary)',
                 marginBottom: '12px',
               }}>
                 Passord oppdatert!
               </h2>
 
               <p style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 marginBottom: '24px',
               }}>
                 Ditt passord har blitt tilbakestilt. Du blir nå sendt til innloggingssiden...
@@ -186,19 +186,19 @@ const ResetPassword = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}>
                 <div
                   style={{
                     width: '16px',
                     height: '16px',
-                    border: `2px solid ${tokens.colors.primary}`,
+                    border: `2px solid ${'var(--accent)'}`,
                     borderTopColor: 'transparent',
                     borderRadius: '50%',
                     animation: 'spin 1s linear infinite',
                   }}
                 />
-                <span style={{ ...tokens.typography.subheadline }}>Videresender...</span>
+                <span style={{ fontSize: '15px', lineHeight: '20px' }}>Videresender...</span>
               </div>
 
               <style>
@@ -221,12 +221,12 @@ const ResetPassword = () => {
                     alignItems: 'flex-start',
                     gap: '12px',
                     padding: '16px',
-                    backgroundColor: `${tokens.colors.error}10`,
-                    border: `1px solid ${tokens.colors.error}30`,
-                    borderRadius: tokens.radius.md,
-                    color: tokens.colors.error,
+                    backgroundColor: 'rgba(var(--error-rgb), 0.1)',
+                    border: `1px solid ${'var(--error)'}30`,
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--error)',
                     marginBottom: '24px',
-                    ...tokens.typography.subheadline,
+                    fontSize: '15px', lineHeight: '20px',
                   }}
                 >
                   <AlertCircle size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
@@ -240,8 +240,8 @@ const ResetPassword = () => {
                   htmlFor="password"
                   style={{
                     display: 'block',
-                    ...tokens.typography.headline,
-                    color: tokens.colors.charcoal,
+                    fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                    color: 'var(--text-primary)',
                     marginBottom: '8px',
                   }}
                 >
@@ -255,7 +255,7 @@ const ResetPassword = () => {
                       left: '16px',
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                       pointerEvents: 'none',
                     }}
                   />
@@ -271,15 +271,15 @@ const ResetPassword = () => {
                     style={{
                       width: '100%',
                       padding: '14px 48px 14px 48px',
-                      ...tokens.typography.body,
-                      border: `1px solid ${tokens.colors.mist}`,
-                      borderRadius: tokens.radius.md,
+                      fontSize: '15px', lineHeight: '20px',
+                      border: '1px solid var(--border-default)',
+                      borderRadius: 'var(--radius-md)',
                       outline: 'none',
                       transition: 'border-color 0.2s',
-                      backgroundColor: loading ? tokens.colors.cloud : tokens.colors.white,
+                      backgroundColor: loading ? 'var(--bg-secondary)' : 'var(--bg-primary)',
                     }}
-                    onFocus={(e) => e.target.style.borderColor = tokens.colors.primary}
-                    onBlur={(e) => e.target.style.borderColor = tokens.colors.mist}
+                    onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
+                    onBlur={(e) => e.target.style.borderColor = 'var(--border-default)'}
                   />
                   <button
                     type="button"
@@ -294,7 +294,7 @@ const ResetPassword = () => {
                       border: 'none',
                       cursor: 'pointer',
                       padding: '4px',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                     }}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -307,15 +307,15 @@ const ResetPassword = () => {
                 <div
                   style={{
                     padding: '16px',
-                    backgroundColor: tokens.colors.snow,
-                    borderRadius: tokens.radius.md,
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-md)',
                     marginBottom: '20px',
                   }}
                 >
                   <p style={{
-                    ...tokens.typography.footnote,
+                    fontSize: '13px', lineHeight: '18px',
                     fontWeight: 600,
-                    color: tokens.colors.charcoal,
+                    color: 'var(--text-primary)',
                     marginBottom: '12px',
                   }}>
                     Passordkrav:
@@ -334,8 +334,8 @@ const ResetPassword = () => {
                           display: 'flex',
                           alignItems: 'center',
                           gap: '8px',
-                          ...tokens.typography.footnote,
-                          color: passwordValidation[key] ? tokens.colors.success : tokens.colors.steel,
+                          fontSize: '13px', lineHeight: '18px',
+                          color: passwordValidation[key] ? 'var(--success)' : 'var(--text-secondary)',
                         }}
                       >
                         <div
@@ -343,7 +343,7 @@ const ResetPassword = () => {
                             width: '16px',
                             height: '16px',
                             borderRadius: '50%',
-                            backgroundColor: passwordValidation[key] ? tokens.colors.success : tokens.colors.mist,
+                            backgroundColor: passwordValidation[key] ? 'var(--success)' : 'var(--border-default)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -351,7 +351,7 @@ const ResetPassword = () => {
                           }}
                         >
                           {passwordValidation[key] && (
-                            <CheckCircle size={12} color={tokens.colors.white} />
+                            <CheckCircle size={12} color={'var(--bg-primary)'} />
                           )}
                         </div>
                         {label}
@@ -367,8 +367,8 @@ const ResetPassword = () => {
                   htmlFor="confirmPassword"
                   style={{
                     display: 'block',
-                    ...tokens.typography.headline,
-                    color: tokens.colors.charcoal,
+                    fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                    color: 'var(--text-primary)',
                     marginBottom: '8px',
                   }}
                 >
@@ -382,7 +382,7 @@ const ResetPassword = () => {
                       left: '16px',
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                       pointerEvents: 'none',
                     }}
                   />
@@ -398,16 +398,16 @@ const ResetPassword = () => {
                     style={{
                       width: '100%',
                       padding: '14px 48px 14px 48px',
-                      ...tokens.typography.body,
-                      border: `1px solid ${confirmPassword && !passwordsMatch ? tokens.colors.error : tokens.colors.mist}`,
-                      borderRadius: tokens.radius.md,
+                      fontSize: '15px', lineHeight: '20px',
+                      border: `1px solid ${confirmPassword && !passwordsMatch ? 'var(--error)' : 'var(--border-default)'}`,
+                      borderRadius: 'var(--radius-md)',
                       outline: 'none',
                       transition: 'border-color 0.2s',
-                      backgroundColor: loading ? tokens.colors.cloud : tokens.colors.white,
+                      backgroundColor: loading ? 'var(--bg-secondary)' : 'var(--bg-primary)',
                     }}
-                    onFocus={(e) => e.target.style.borderColor = tokens.colors.primary}
+                    onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
                     onBlur={(e) => {
-                      e.target.style.borderColor = confirmPassword && !passwordsMatch ? tokens.colors.error : tokens.colors.mist;
+                      e.target.style.borderColor = confirmPassword && !passwordsMatch ? 'var(--error)' : 'var(--border-default)';
                     }}
                   />
                   <button
@@ -423,7 +423,7 @@ const ResetPassword = () => {
                       border: 'none',
                       cursor: 'pointer',
                       padding: '4px',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                     }}
                   >
                     {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -431,8 +431,8 @@ const ResetPassword = () => {
                 </div>
                 {confirmPassword && !passwordsMatch && (
                   <p style={{
-                    ...tokens.typography.footnote,
-                    color: tokens.colors.error,
+                    fontSize: '13px', lineHeight: '18px',
+                    color: 'var(--error)',
                     marginTop: '8px',
                   }}>
                     Passordene matcher ikke
@@ -446,22 +446,22 @@ const ResetPassword = () => {
                 style={{
                   width: '100%',
                   padding: '14px',
-                  ...tokens.typography.headline,
-                  color: tokens.colors.white,
-                  backgroundColor: loading || !canSubmit ? tokens.colors.steel : tokens.colors.primary,
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  color: 'var(--bg-primary)',
+                  backgroundColor: loading || !canSubmit ? 'var(--text-secondary)' : 'var(--accent)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   cursor: loading || !canSubmit ? 'not-allowed' : 'pointer',
                   transition: 'background-color 0.2s',
                 }}
                 onMouseEnter={(e) => {
                   if (!loading && canSubmit) {
-                    e.currentTarget.style.backgroundColor = tokens.colors.primaryLight;
+                    e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!loading && canSubmit) {
-                    e.currentTarget.style.backgroundColor = tokens.colors.primary;
+                    e.currentTarget.style.backgroundColor = 'var(--accent)';
                   }
                 }}
               >
@@ -477,21 +477,21 @@ const ResetPassword = () => {
             style={{
               marginTop: '24px',
               padding: '16px',
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-md)',
               textAlign: 'center',
             }}
           >
             <p style={{
-              ...tokens.typography.footnote,
-              color: tokens.colors.steel,
+              fontSize: '13px', lineHeight: '18px',
+              color: 'var(--text-secondary)',
               margin: 0,
             }}>
               Trenger du hjelp? Kontakt{' '}
               <a
                 href="mailto:support@akgolf.no"
                 style={{
-                  color: tokens.colors.primary,
+                  color: 'var(--accent)',
                   textDecoration: 'none',
                 }}
               >

@@ -13,7 +13,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { adminNavigationConfig, adminSystemStatus } from '../../config/admin-navigation';
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X, Shield } = LucideIcons;
@@ -92,11 +91,11 @@ export default function AdminSidebar({
   const getEnvColor = (env: string) => {
     switch (env) {
       case 'production':
-        return tokens.colors.success;
+        return 'var(--success)';
       case 'staging':
-        return tokens.colors.warning;
+        return 'var(--warning)';
       default:
-        return tokens.colors.steel;
+        return 'var(--text-secondary)';
     }
   };
 
@@ -117,7 +116,7 @@ export default function AdminSidebar({
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-        <Shield size={14} color={tokens.colors.gold} />
+        <Shield size={14} color={'var(--achievement)'} />
         <span style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255, 255, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
           System Status
         </span>
@@ -177,8 +176,8 @@ export default function AdminSidebar({
                 gap: '12px',
                 borderRadius: '10px',
                 padding: '11px 14px',
-                color: activeChild ? tokens.colors.white : 'rgba(255, 255, 255, 0.7)',
-                backgroundColor: activeChild ? tokens.colors.primaryLight : 'transparent',
+                color: activeChild ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.7)',
+                backgroundColor: activeChild ? 'rgba(var(--accent-rgb), 0.8)' : 'transparent',
                 transition: 'all 0.2s',
                 fontSize: '14px',
                 fontWeight: 500,
@@ -207,8 +206,8 @@ export default function AdminSidebar({
                         borderRadius: '8px',
                         padding: '9px 12px',
                         textDecoration: 'none',
-                        color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.6)',
-                        backgroundColor: active ? `${tokens.colors.primaryLight}80` : 'transparent',
+                        color: active ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.6)',
+                        backgroundColor: active ? `${'rgba(var(--accent-rgb), 0.8)'}80` : 'transparent',
                         transition: 'all 0.2s',
                         fontSize: '13px',
                         fontWeight: 400,
@@ -220,7 +219,7 @@ export default function AdminSidebar({
                           width: 5,
                           height: 5,
                           borderRadius: '50%',
-                          backgroundColor: active ? tokens.colors.gold : 'rgba(255, 255, 255, 0.25)',
+                          backgroundColor: active ? 'var(--achievement)' : 'rgba(255, 255, 255, 0.25)',
                         }}
                       />
                       {subItem.label}
@@ -244,8 +243,8 @@ export default function AdminSidebar({
               borderRadius: '10px',
               padding: '11px 14px',
               textDecoration: 'none',
-              color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.7)',
-              backgroundColor: active ? tokens.colors.primaryLight : 'transparent',
+              color: active ? 'var(--bg-primary)' : 'rgba(255, 255, 255, 0.7)',
+              backgroundColor: active ? 'rgba(var(--accent-rgb), 0.8)' : 'transparent',
               transition: 'all 0.2s',
               fontSize: '14px',
               fontWeight: 500,
@@ -260,8 +259,8 @@ export default function AdminSidebar({
                   minWidth: 18,
                   height: 18,
                   borderRadius: '9px',
-                  backgroundColor: tokens.colors.error,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--error)',
+                  color: 'var(--bg-primary)',
                   fontSize: '10px',
                   fontWeight: 700,
                   display: 'flex',
@@ -296,11 +295,11 @@ export default function AdminSidebar({
               width: 36,
               height: 36,
               borderRadius: '8px',
-              backgroundColor: tokens.colors.error,
+              backgroundColor: 'var(--error)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: tokens.colors.white,
+              color: 'var(--bg-primary)',
               fontWeight: 700,
               fontSize: '14px',
             }}
@@ -308,7 +307,7 @@ export default function AdminSidebar({
             {(user?.firstName?.[0] || 'A').toUpperCase()}
           </div>
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.white }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--bg-primary)' }}>
               {user?.firstName || 'Admin'} {user?.lastName || ''}
             </div>
             <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>
@@ -354,7 +353,7 @@ export default function AdminSidebar({
             left: 0,
             right: 0,
             height: '56px',
-            backgroundColor: tokens.colors.primary,
+            backgroundColor: 'var(--accent)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -364,8 +363,8 @@ export default function AdminSidebar({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Shield size={20} color={tokens.colors.gold} />
-            <span style={{ color: tokens.colors.white, fontWeight: 600, fontSize: '15px' }}>Admin</span>
+            <Shield size={20} color={'var(--achievement)'} />
+            <span style={{ color: 'var(--bg-primary)', fontWeight: 600, fontSize: '15px' }}>Admin</span>
           </div>
 
           <button
@@ -373,7 +372,7 @@ export default function AdminSidebar({
             style={{
               background: 'none',
               border: 'none',
-              color: tokens.colors.white,
+              color: 'var(--bg-primary)',
               cursor: 'pointer',
               padding: '8px',
             }}
@@ -403,8 +402,8 @@ export default function AdminSidebar({
             left: 0,
             bottom: 0,
             width: '280px',
-            backgroundColor: tokens.colors.primary,
-            color: tokens.colors.white,
+            backgroundColor: 'var(--accent)',
+            color: 'var(--bg-primary)',
             display: 'flex',
             flexDirection: 'column',
             transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
@@ -431,8 +430,8 @@ export default function AdminSidebar({
       style={{
         width: '260px',
         height: '100vh',
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
+        backgroundColor: 'var(--accent)',
+        color: 'var(--bg-primary)',
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,
@@ -461,16 +460,16 @@ export default function AdminSidebar({
               width: 36,
               height: 36,
               borderRadius: '8px',
-              backgroundColor: `${tokens.colors.gold}20`,
+              backgroundColor: `${'var(--achievement)'}20`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Shield size={20} color={tokens.colors.gold} />
+            <Shield size={20} color={'var(--achievement)'} />
           </div>
           <div>
-            <div style={{ color: tokens.colors.white, fontWeight: 600, fontSize: '15px' }}>
+            <div style={{ color: 'var(--bg-primary)', fontWeight: 600, fontSize: '15px' }}>
               Admin Portal
             </div>
             <div style={{ color: 'rgba(255, 255, 255, 0.45)', fontSize: '11px' }}>

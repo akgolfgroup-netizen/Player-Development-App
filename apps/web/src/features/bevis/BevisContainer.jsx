@@ -166,7 +166,7 @@ const VideoCard = ({ video, onClick }) => (
           fontWeight: 500,
           padding: '2px 6px',
           borderRadius: '4px',
-          backgroundColor: `${'var(--accent)'}15`,
+          backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
           color: 'var(--accent)',
         }}>
           {video.category}
@@ -203,7 +203,7 @@ const VideoCard = ({ video, onClick }) => (
         <div style={{
           marginTop: '8px',
           padding: '8px',
-          backgroundColor: `${'var(--success)'}10`,
+          backgroundColor: 'rgba(var(--success-rgb), 0.1)',
           borderRadius: '6px',
           fontSize: '11px',
           color: 'var(--success)',
@@ -223,7 +223,7 @@ const UploadCard = () => (
   <div style={{
     backgroundColor: 'var(--bg-primary)',
     borderRadius: '14px',
-    border: `2px dashed ${'var(--border-default)'}`,
+    border: '2px dashed var(--border-default)',
     height: '100%',
     minHeight: '200px',
     display: 'flex',
@@ -237,7 +237,7 @@ const UploadCard = () => (
       width: '48px',
       height: '48px',
       borderRadius: '50%',
-      backgroundColor: `${'var(--accent)'}15`,
+      backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -316,8 +316,8 @@ const BevisContainer = () => {
         <div style={{ textAlign: 'center' }}>
           <div style={{
             width: 48, height: 48,
-            border: `4px solid ${'var(--accent)'}20`,
-            borderTop: `4px solid ${'var(--accent)'}`,
+            border: '4px solid rgba(var(--accent-rgb), 0.2)',
+            borderTop: '4px solid var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
             margin: '0 auto 16px'
@@ -378,7 +378,7 @@ const BevisContainer = () => {
           </div>
           {error && (
             <div style={{
-              backgroundColor: `${'var(--error)'}10`,
+              backgroundColor: 'rgba(var(--error-rgb), 0.1)',
               borderRadius: '12px',
               padding: '14px',
               gridColumn: '1 / -1',

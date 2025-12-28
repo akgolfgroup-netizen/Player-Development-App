@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
-import LoadingState from '../../components/ui/LoadingState';
+import StateCard from '../../ui/composites/StateCard';
 import Maalsetninger from './Målsetninger';
 
 const MaalsetningerContainer = () => {
@@ -36,7 +36,11 @@ const MaalsetningerContainer = () => {
   }, [user, fetchGoals]);
 
   if (state === 'loading') {
-    return <LoadingState message="Laster målsetninger..." />;
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-primary)' }}>
+        <StateCard variant="loading" title="Laster målsetninger..." />
+      </div>
+    );
   }
 
   // Pass goals to component - it has built-in fallback data when goals is null

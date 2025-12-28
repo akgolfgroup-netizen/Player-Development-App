@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="no" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Golf Academy – Direction A: Peak Performance (Complete)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg-base: #0A0A0F; --bg-elevated: #141419; --bg-surface: #1C1C24; --bg-overlay: #24242E;
+      --accent: #00D4AA; --accent-hover: #00E8BC; --accent-muted: rgba(0,212,170,0.15); --accent-subtle: rgba(0,212,170,0.08);
+      --brand: #10456A; --brand-light: #2C5F7F; --gold: #C9A227; --gold-muted: rgba(201,162,39,0.15);
+      --success: #00D4AA; --warning: #FFB800; --error: #FF4757; --info: #3B82F6;
+      --text-1: #FFFFFF; --text-2: #A1A1AA; --text-3: #71717A; --text-4: #52525B; --text-inv: #0A0A0F;
+      --border-1: rgba(255,255,255,0.06); --border-2: rgba(255,255,255,0.1); --border-3: rgba(255,255,255,0.15);
+      --glow: 0 0 20px rgba(0,212,170,0.3); --shadow: 0 4px 8px rgba(0,0,0,0.3);
+      --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-full: 9999px;
+      --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px; --s-8: 32px;
+      --font: 'Inter', -apple-system, sans-serif;
+    }
+
+    html { font-family: var(--font); background: #000; color: var(--text-1); -webkit-font-smoothing: antialiased; }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 32px; }
+
+    .page-header { text-align: center; max-width: 800px; }
+    .page-header h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; background: linear-gradient(135deg, var(--accent), #00A388); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-header p { font-size: 15px; color: var(--text-2); line-height: 1.6; margin-bottom: 8px; }
+    .page-header .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+    .tag { background: var(--accent-muted); color: var(--accent); padding: 6px 12px; border-radius: var(--r-full); font-size: 12px; font-weight: 600; }
+
+    .mockup-grid { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; max-width: 1600px; }
+    .mockup-container { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .mockup-label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.12em; }
+
+    .iphone { width: 320px; height: 693px; background: linear-gradient(145deg, #2C2C2E, #1C1C1E); border-radius: 46px; padding: 12px; box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 24px 48px rgba(0,0,0,0.5); }
+    .screen { width: 100%; height: 100%; background: var(--bg-base); border-radius: 36px; overflow: hidden; position: relative; }
+    .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 30px; background: #000; border-radius: 0 0 20px 20px; z-index: 100; }
+    .home-ind { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; background: rgba(255,255,255,0.25); border-radius: 2px; z-index: 100; }
+
+    .app { height: 100%; display: flex; flex-direction: column; padding-top: 38px; padding-bottom: 72px; overflow-y: auto; scrollbar-width: none; }
+    .app::-webkit-scrollbar { display: none; }
+
+    /* COMMON */
+    .header { padding: var(--s-3) var(--s-4); display: flex; align-items: center; justify-content: space-between; }
+    .header-left { display: flex; align-items: center; gap: var(--s-2); }
+    .logo { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; color: var(--text-inv); }
+    .greeting-name { font-size: 14px; font-weight: 600; }
+    .greeting-date { font-size: 11px; color: var(--text-3); }
+    .avatar { width: 32px; height: 32px; border-radius: var(--r-full); background: var(--bg-surface); border: 2px solid var(--border-2); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+
+    .section { padding: 0 var(--s-4); margin-bottom: var(--s-4); }
+    .section-title { font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--s-2); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); font-family: var(--font); font-weight: 600; border: none; border-radius: var(--r-sm); cursor: pointer; transition: all 0.15s ease; }
+    .btn-primary { background: var(--accent); color: var(--text-inv); padding: var(--s-2) var(--s-4); font-size: 13px; }
+    .btn-primary:hover { box-shadow: var(--glow); }
+    .btn-secondary { background: var(--bg-surface); color: var(--text-1); border: 1px solid var(--border-2); padding: var(--s-2) var(--s-4); font-size: 13px; }
+    .btn-ghost { background: transparent; color: var(--accent); padding: var(--s-2) var(--s-3); font-size: 13px; }
+    .btn-full { width: 100%; }
+    .btn-lg { padding: var(--s-3) var(--s-5); font-size: 14px; }
+
+    .card { background: var(--bg-elevated); border: 1px solid var(--border-1); border-radius: var(--r-md); padding: var(--s-4); margin-bottom: var(--s-3); }
+    .card-highlight { border-color: var(--accent); box-shadow: var(--glow); position: relative; overflow: hidden; }
+    .card-highlight::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); }
+
+    .tab-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 72px; background: var(--bg-base); border-top: 1px solid var(--border-1); display: flex; justify-content: space-around; align-items: flex-start; padding-top: var(--s-2); padding-bottom: 28px; }
+    .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: var(--s-1); color: var(--text-3); font-size: 18px; }
+    .tab.active { color: var(--accent); }
+    .tab-label { font-size: 9px; font-weight: 500; }
+
+    /* HOME SPECIFIC */
+    .readiness { padding: var(--s-4); display: flex; flex-direction: column; align-items: center; gap: var(--s-4); }
+    .ring-wrap { position: relative; width: 140px; height: 140px; }
+    .ring-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: var(--border-1); stroke-width: 8; }
+    .ring-progress { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; stroke-dasharray: 377; stroke-dashoffset: 49; filter: drop-shadow(0 0 6px rgba(0,212,170,0.5)); animation: ring-fill 1.2s ease-out forwards; }
+    @keyframes ring-fill { from { stroke-dashoffset: 377; } }
+    .ring-value { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+    .ring-num { font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+    .ring-label { font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; }
+
+    .sub-metrics { display: flex; gap: var(--s-2); width: 100%; }
+    .sub-metric { flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-1); border-radius: var(--r-md); padding: var(--s-3); text-align: center; }
+    .sub-label { font-size: 9px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-1); }
+    .sub-value { font-size: 22px; font-weight: 700; line-height: 1; }
+    .sub-trend { font-size: 10px; font-weight: 500; margin-top: 2px; }
+    .sub-trend.up { color: var(--success); }
+    .sub-trend.down { color: var(--error); }
+    .sub-trend.flat { color: var(--text-3); }
+
+    .focus-icon { width: 32px; height: 32px; background: var(--accent-muted); border-radius: 6px; display: flex; align-items: center; justify-content: center; margin-bottom: var(--s-2); font-size: 16px; }
+    .focus-title { font-size: 14px; font-weight: 600; margin-bottom: var(--s-1); }
+    .focus-desc { font-size: 12px; color: var(--text-2); line-height: 1.4; margin-bottom: var(--s-3); }
+
+    .sparkline { height: 32px; display: flex; align-items: flex-end; gap: 2px; }
+    .spark-bar { flex: 1; background: var(--accent-muted); border-radius: 2px; }
+    .spark-bar.active { background: var(--accent); }
+
+    .session-card { display: flex; align-items: center; gap: var(--s-2); cursor: pointer; transition: all 0.15s ease; }
+    .session-card:hover { border-color: var(--accent); }
+    .session-icon { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .session-icon.tek { background: var(--accent-muted); }
+    .session-icon.fys { background: rgba(59,130,246,0.15); }
+    .session-icon.men { background: var(--gold-muted); }
+    .session-content { flex: 1; min-width: 0; }
+    .session-title { font-size: 13px; font-weight: 600; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .session-meta { font-size: 11px; color: var(--text-3); }
+    .session-dur { font-size: 11px; font-weight: 500; color: var(--accent); background: var(--accent-subtle); padding: 3px 6px; border-radius: 4px; flex-shrink: 0; }
+
+    /* TRAINING SPECIFIC */
+    .train-header { padding: var(--s-3) var(--s-4); display: flex; justify-content: space-between; align-items: center; }
+    .train-back { font-size: 13px; color: var(--text-2); cursor: pointer; }
+    .train-progress { font-size: 11px; font-weight: 600; color: var(--text-3); }
+    
+    .video-box { margin: 0 var(--s-4); aspect-ratio: 16/9; background: var(--bg-surface); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: var(--s-4); }
+    .video-play { width: 48px; height: 48px; background: var(--accent); border-radius: var(--r-full); display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: var(--glow); }
+    .video-coach { position: absolute; bottom: var(--s-2); left: var(--s-2); background: rgba(0,0,0,0.7); padding: 4px 8px; border-radius: 4px; font-size: 10px; }
+
+    .drill-title { font-size: 18px; font-weight: 700; margin-bottom: var(--s-2); padding: 0 var(--s-4); }
+    .drill-tip { margin: 0 var(--s-4) var(--s-4); padding: var(--s-3); background: var(--bg-elevated); border-radius: var(--r-sm); border-left: 3px solid var(--accent); font-size: 12px; color: var(--text-2); line-height: 1.4; }
+
+    .rep-tracker { padding: 0 var(--s-4); margin-bottom: var(--s-4); }
+    .rep-dots { display: flex; gap: 6px; margin-bottom: var(--s-1); }
+    .rep-dot { width: 24px; height: 24px; border-radius: var(--r-full); background: var(--bg-surface); border: 2px solid var(--border-2); }
+    .rep-dot.done { background: var(--accent); border-color: var(--accent); }
+    .rep-count { font-size: 11px; color: var(--text-3); }
+
+    .feedback-row { display: flex; gap: var(--s-2); padding: 0 var(--s-4); margin-bottom: var(--s-4); }
+    .feedback-btn { flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-1); border-radius: var(--r-sm); padding: var(--s-2); text-align: center; cursor: pointer; transition: all 0.15s ease; }
+    .feedback-btn:hover { border-color: var(--accent); }
+    .feedback-btn.selected { border-color: var(--accent); background: var(--accent-subtle); }
+    .feedback-emoji { font-size: 20px; margin-bottom: 2px; }
+    .feedback-label { font-size: 9px; color: var(--text-3); }
+
+    .train-actions { padding: 0 var(--s-4); }
+    .btn-log { background: var(--accent); color: var(--text-inv); padding: var(--s-3); font-size: 14px; font-weight: 600; border-radius: var(--r-md); width: 100%; margin-bottom: var(--s-2); }
+
+    /* STATS SPECIFIC */
+    .stats-title { font-size: 22px; font-weight: 700; margin-bottom: var(--s-3); padding: 0 var(--s-4); }
+    .time-filter { display: flex; background: var(--bg-elevated); border-radius: 6px; padding: 3px; margin: 0 var(--s-4) var(--s-4); }
+    .time-opt { flex: 1; padding: 6px; font-size: 11px; font-weight: 500; color: var(--text-3); text-align: center; border-radius: 4px; cursor: pointer; }
+    .time-opt.active { background: var(--accent); color: var(--text-inv); }
+
+    .total-score { text-align: center; padding: var(--s-4); }
+    .total-num { font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+    .total-trend { font-size: 14px; font-weight: 600; color: var(--success); margin-top: var(--s-1); }
+
+    .category-bar { margin-bottom: var(--s-2); }
+    .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s-1); }
+    .cat-name { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+    .cat-dot { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--accent); }
+    .cat-score { display: flex; align-items: center; gap: var(--s-1); }
+    .cat-value { font-size: 14px; font-weight: 700; }
+    .cat-trend { font-size: 11px; font-weight: 500; }
+    .cat-trend.up { color: var(--success); }
+    .cat-trend.down { color: var(--error); }
+    .cat-progress { height: 6px; background: var(--border-1); border-radius: 3px; overflow: hidden; }
+    .cat-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+
+    /* PLAN SPECIFIC */
+    .plan-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 var(--s-4); margin-bottom: var(--s-3); }
+    .plan-month { font-size: 15px; font-weight: 600; }
+    .plan-arrows { display: flex; gap: var(--s-2); color: var(--text-3); }
+
+    .week-row { display: flex; gap: 4px; padding: 0 var(--s-4); margin-bottom: var(--s-4); }
+    .week-day { flex: 1; text-align: center; }
+    .week-label { font-size: 9px; color: var(--text-3); margin-bottom: 4px; }
+    .week-num { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    .week-dot { width: 8px; height: 8px; border-radius: var(--r-full); margin: 0 auto; }
+    .week-dot.active { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+    .week-dot.has { background: var(--text-3); }
+    .week-dot.empty { background: var(--border-1); }
+
+    .plan-card { position: relative; }
+    .plan-card .plan-status { position: absolute; top: var(--s-3); right: var(--s-3); font-size: 9px; font-weight: 600; color: var(--accent); background: var(--accent-muted); padding: 2px 6px; border-radius: 4px; }
+    .plan-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .plan-meta { font-size: 11px; color: var(--text-3); margin-bottom: var(--s-2); }
+    .plan-progress-bar { height: 4px; background: var(--border-1); border-radius: 2px; overflow: hidden; margin-bottom: var(--s-2); }
+    .plan-progress-fill { height: 100%; background: var(--accent); }
+
+    .week-summary { display: flex; gap: var(--s-2); }
+    .week-stat { flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-1); border-radius: var(--r-sm); padding: var(--s-2); text-align: center; }
+    .week-stat-value { font-size: 16px; font-weight: 700; }
+    .week-stat-label { font-size: 9px; color: var(--text-3); text-transform: uppercase; }
+
+    /* PROFILE SPECIFIC */
+    .profile-header { text-align: center; padding: var(--s-5) var(--s-4); }
+    .profile-avatar { width: 72px; height: 72px; border-radius: var(--r-full); background: var(--bg-surface); border: 3px solid var(--accent); margin: 0 auto var(--s-3); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+    .profile-name { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+    .profile-handle { font-size: 12px; color: var(--text-3); }
+
+    .profile-stats { display: flex; gap: var(--s-2); padding: 0 var(--s-4); margin-bottom: var(--s-5); }
+    .profile-stat { flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-1); border-radius: var(--r-md); padding: var(--s-3); text-align: center; }
+    .profile-stat-value { font-size: 20px; font-weight: 700; }
+    .profile-stat-label { font-size: 9px; color: var(--text-3); text-transform: uppercase; }
+
+    .achievements { display: flex; gap: var(--s-2); padding: 0 var(--s-4); margin-bottom: var(--s-4); flex-wrap: wrap; }
+    .achievement { width: 36px; height: 36px; background: var(--gold-muted); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .achievement-more { background: var(--bg-surface); color: var(--text-3); font-size: 10px; font-weight: 600; }
+
+    .settings-list { padding: 0 var(--s-4); }
+    .settings-item { display: flex; align-items: center; gap: var(--s-3); padding: var(--s-3) 0; border-bottom: 1px solid var(--border-1); }
+    .settings-icon { font-size: 18px; }
+    .settings-label { flex: 1; font-size: 13px; }
+    .settings-arrow { color: var(--text-3); font-size: 12px; }
+    .settings-badge { font-size: 10px; font-weight: 600; color: var(--gold); background: var(--gold-muted); padding: 2px 6px; border-radius: 4px; }
+
+    .logout-btn { margin: var(--s-4); padding: var(--s-3); background: transparent; border: 1px solid var(--error); color: var(--error); border-radius: var(--r-sm); font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; }
+
+    @media (max-width: 1400px) { .iphone { width: 280px; height: 607px; border-radius: 40px; padding: 10px; } .screen { border-radius: 32px; } .notch { width: 120px; height: 26px; border-radius: 0 0 16px 16px; } }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Direction A: Peak Performance</h1>
+  <p>Komplett Figma-ready mockup-sett for AK Golf Academy. Whoop-inspirert dark mode design med fokus på data, prestasjon og Nordic Minimalism.</p>
+  <div class="tags">
+    <span class="tag">Dark Mode</span>
+    <span class="tag">Performance Teal</span>
+    <span class="tag">Data-Driven</span>
+    <span class="tag">Nordic Minimalism</span>
+    <span class="tag">Premium</span>
+  </div>
+</header>
+
+<div class="mockup-grid">
+
+  <!-- 1. HOME DASHBOARD -->
+  <div class="mockup-container">
+    <span class="mockup-label">1. Home Dashboard</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          <div class="header">
+            <div class="header-left">
+              <div class="logo">AK</div>
+              <div>
+                <div class="greeting-name">God morgen, Anders</div>
+                <div class="greeting-date">Ons 24. desember</div>
+              </div>
+            </div>
+            <div class="avatar">👤</div>
+          </div>
+          <div class="readiness">
+            <div class="ring-wrap">
+              <svg viewBox="0 0 140 140"><circle class="ring-bg" cx="70" cy="70" r="60"/><circle class="ring-progress" cx="70" cy="70" r="60"/></svg>
+              <div class="ring-value"><div class="ring-num">87</div><div class="ring-label">Ready</div></div>
+            </div>
+            <div class="sub-metrics">
+              <div class="sub-metric"><div class="sub-label">Swing</div><div class="sub-value">92</div><div class="sub-trend up">▲3%</div></div>
+              <div class="sub-metric"><div class="sub-label">Short</div><div class="sub-value">78</div><div class="sub-trend down">▼2%</div></div>
+              <div class="sub-metric"><div class="sub-label">Mental</div><div class="sub-value">85</div><div class="sub-trend flat">═0%</div></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">Dagens fokus</div>
+            <div class="card card-highlight">
+              <div class="focus-icon">🎯</div>
+              <div class="focus-title">Short Game Focus</div>
+              <div class="focus-desc">Din chipping har falt 12% denne uken. 20 min økt klar.</div>
+              <button class="btn btn-primary btn-full">START →</button>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">Kommende</div>
+            <div class="card session-card"><div class="session-icon tek">🏌️</div><div class="session-content"><div class="session-title">Teknikk: Driver</div><div class="session-meta">I morgen 10:00</div></div><div class="session-dur">45m</div></div>
+            <div class="card session-card"><div class="session-icon fys">💪</div><div class="session-content"><div class="session-title">Fysisk: Core</div><div class="session-meta">Fredag 16:00</div></div><div class="session-dur">30m</div></div>
+          </div>
+        </div>
+        <div class="tab-bar">
+          <div class="tab active"><span>🏠</span><span class="tab-label">Hjem</span></div>
+          <div class="tab"><span>🎯</span><span class="tab-label">Tren</span></div>
+          <div class="tab"><span>📊</span><span class="tab-label">Stats</span></div>
+          <div class="tab"><span>📅</span><span class="tab-label">Plan</span></div>
+          <div class="tab"><span>👤</span><span class="tab-label">Profil</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. TRAINING SESSION -->
+  <div class="mockup-container">
+    <span class="mockup-label">2. Training Session</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          <div class="train-header">
+            <span class="train-back">← Tilbake</span>
+            <span class="train-progress">ØVELSE 3/8</span>
+          </div>
+          <div class="video-box">
+            <div class="video-play">▶</div>
+            <div class="video-coach">Coach: Anders K.</div>
+          </div>
+          <div class="drill-title">Chip fra rough</div>
+          <div class="drill-tip">"Ball bak, vekt fremover, hender foran ved impact"</div>
+          <div class="rep-tracker">
+            <div class="section-title">Repetisjoner</div>
+            <div class="rep-dots">
+              <div class="rep-dot done"></div>
+              <div class="rep-dot done"></div>
+              <div class="rep-dot done"></div>
+              <div class="rep-dot done"></div>
+              <div class="rep-dot done"></div>
+              <div class="rep-dot"></div>
+              <div class="rep-dot"></div>
+              <div class="rep-dot"></div>
+            </div>
+            <div class="rep-count">5/8 fullført</div>
+          </div>
+          <div class="section"><div class="section-title">Hvordan føltes det?</div></div>
+          <div class="feedback-row">
+            <div class="feedback-btn"><div class="feedback-emoji">😤</div><div class="feedback-label">Tungt</div></div>
+            <div class="feedback-btn"><div class="feedback-emoji">😐</div><div class="feedback-label">OK</div></div>
+            <div class="feedback-btn selected"><div class="feedback-emoji">🙂</div><div class="feedback-label">Bra</div></div>
+            <div class="feedback-btn"><div class="feedback-emoji">😊</div><div class="feedback-label">Topp!</div></div>
+          </div>
+          <div class="train-actions">
+            <button class="btn btn-log">LOGG REPETISJON</button>
+            <button class="btn btn-ghost btn-full">Neste øvelse →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. STATS DASHBOARD -->
+  <div class="mockup-container">
+    <span class="mockup-label">3. Stats Dashboard</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          <div class="header"><div class="stats-title">Statistikk</div></div>
+          <div class="time-filter">
+            <div class="time-opt">7D</div>
+            <div class="time-opt active">30D</div>
+            <div class="time-opt">90D</div>
+            <div class="time-opt">1Y</div>
+            <div class="time-opt">ALL</div>
+          </div>
+          <div class="total-score">
+            <div class="total-num">78</div>
+            <div class="total-trend">▲ 12%</div>
+          </div>
+          <div class="section">
+            <div class="section-title">Kategorier</div>
+            <div class="card category-bar">
+              <div class="cat-header"><div class="cat-name"><span class="cat-dot"></span>Driving</div><div class="cat-score"><span class="cat-value">92</span><span class="cat-trend up">▲5%</span></div></div>
+              <div class="cat-progress"><div class="cat-fill" style="width:92%"></div></div>
+            </div>
+            <div class="card category-bar">
+              <div class="cat-header"><div class="cat-name"><span class="cat-dot" style="background:var(--info)"></span>Approach</div><div class="cat-score"><span class="cat-value">81</span><span class="cat-trend up">▲2%</span></div></div>
+              <div class="cat-progress"><div class="cat-fill" style="width:81%;background:var(--info)"></div></div>
+            </div>
+            <div class="card category-bar">
+              <div class="cat-header"><div class="cat-name"><span class="cat-dot" style="background:#8B5CF6"></span>Short Game</div><div class="cat-score"><span class="cat-value">74</span><span class="cat-trend down">▼3%</span></div></div>
+              <div class="cat-progress"><div class="cat-fill" style="width:74%;background:#8B5CF6"></div></div>
+            </div>
+            <div class="card category-bar">
+              <div class="cat-header"><div class="cat-name"><span class="cat-dot" style="background:#06B6D4"></span>Putting</div><div class="cat-score"><span class="cat-value">68</span><span class="cat-trend" style="color:var(--text-3)">═0%</span></div></div>
+              <div class="cat-progress"><div class="cat-fill" style="width:68%;background:#06B6D4"></div></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">Treningstimer</div>
+            <div class="card">
+              <div class="sparkline" style="height:48px">
+                <div class="spark-bar" style="height:40%"></div>
+                <div class="spark-bar" style="height:60%"></div>
+                <div class="spark-bar" style="height:55%"></div>
+                <div class="spark-bar" style="height:80%"></div>
+                <div class="spark-bar" style="height:45%"></div>
+                <div class="spark-bar" style="height:30%"></div>
+                <div class="spark-bar active" style="height:70%"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:9px;color:var(--text-3)">
+                <span>M</span><span>T</span><span>O</span><span>T</span><span>F</span><span>L</span><span>S</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-bar">
+          <div class="tab"><span>🏠</span><span class="tab-label">Hjem</span></div>
+          <div class="tab"><span>🎯</span><span class="tab-label">Tren</span></div>
+          <div class="tab active"><span>📊</span><span class="tab-label">Stats</span></div>
+          <div class="tab"><span>📅</span><span class="tab-label">Plan</span></div>
+          <div class="tab"><span>👤</span><span class="tab-label">Profil</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. TRAINING PLAN -->
+  <div class="mockup-container">
+    <span class="mockup-label">4. Training Plan</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          <div class="header"><div class="stats-title">Treningsplan</div></div>
+          <div class="plan-nav">
+            <span class="plan-arrows">←</span>
+            <span class="plan-month">Desember 2025</span>
+            <span class="plan-arrows">→</span>
+          </div>
+          <div class="week-row">
+            <div class="week-day"><div class="week-label">M</div><div class="week-num">23</div><div class="week-dot has"></div></div>
+            <div class="week-day"><div class="week-label">T</div><div class="week-num" style="color:var(--accent)">24</div><div class="week-dot active"></div></div>
+            <div class="week-day"><div class="week-label">O</div><div class="week-num">25</div><div class="week-dot empty"></div></div>
+            <div class="week-day"><div class="week-label">T</div><div class="week-num">26</div><div class="week-dot has"></div></div>
+            <div class="week-day"><div class="week-label">F</div><div class="week-num">27</div><div class="week-dot has"></div></div>
+            <div class="week-day"><div class="week-label">L</div><div class="week-num">28</div><div class="week-dot empty"></div></div>
+            <div class="week-day"><div class="week-label">S</div><div class="week-num">29</div><div class="week-dot empty"></div></div>
+          </div>
+          <div class="section">
+            <div class="section-title">I dag</div>
+            <div class="card card-highlight plan-card">
+              <span class="plan-status">● PÅGÅR</span>
+              <div class="plan-title">Short Game Fokus</div>
+              <div class="plan-meta">20 min • Chipping & Pitching</div>
+              <div class="plan-progress-bar"><div class="plan-progress-fill" style="width:40%"></div></div>
+              <button class="btn btn-primary btn-full">FORTSETT →</button>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">Kommende</div>
+            <div class="card session-card"><div class="session-icon tek">🏌️</div><div class="session-content"><div class="session-title">Teknikk: Driver</div><div class="session-meta">Tor 26. des • 10:00</div></div><div class="session-dur">45m</div></div>
+            <div class="card session-card"><div class="session-icon fys">💪</div><div class="session-content"><div class="session-title">Fysisk: Rotasjon</div><div class="session-meta">Fre 27. des • 16:00</div></div><div class="session-dur">30m</div></div>
+          </div>
+          <div class="section">
+            <div class="section-title">Ukesammendrag</div>
+            <div class="week-summary">
+              <div class="week-stat"><div class="week-stat-value">4/6</div><div class="week-stat-label">Økter</div></div>
+              <div class="week-stat"><div class="week-stat-value">3.5h</div><div class="week-stat-label">Total</div></div>
+              <div class="week-stat"><div class="week-stat-value" style="color:var(--success)">▲8%</div><div class="week-stat-label">Score</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-bar">
+          <div class="tab"><span>🏠</span><span class="tab-label">Hjem</span></div>
+          <div class="tab"><span>🎯</span><span class="tab-label">Tren</span></div>
+          <div class="tab"><span>📊</span><span class="tab-label">Stats</span></div>
+          <div class="tab active"><span>📅</span><span class="tab-label">Plan</span></div>
+          <div class="tab"><span>👤</span><span class="tab-label">Profil</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. PROFILE -->
+  <div class="mockup-container">
+    <span class="mockup-label">5. Profile</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          <div class="profile-header">
+            <div class="profile-avatar">👤</div>
+            <div class="profile-name">Anders Krohn</div>
+            <div class="profile-handle">@anderskrohn</div>
+          </div>
+          <div class="profile-stats">
+            <div class="profile-stat"><div class="profile-stat-value">4.2</div><div class="profile-stat-label">HCP</div></div>
+            <div class="profile-stat"><div class="profile-stat-value">156</div><div class="profile-stat-label">Økter</div></div>
+            <div class="profile-stat"><div class="profile-stat-value">89%</div><div class="profile-stat-label">Streak</div></div>
+          </div>
+          <div class="section">
+            <div class="section-title">Achievements</div>
+            <div class="achievements">
+              <div class="achievement">🏆</div>
+              <div class="achievement">🥇</div>
+              <div class="achievement">🎯</div>
+              <div class="achievement">⭐</div>
+              <div class="achievement">🔥</div>
+              <div class="achievement">💪</div>
+              <div class="achievement achievement-more">+12</div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-title">Innstillinger</div>
+            <div class="settings-list">
+              <div class="settings-item"><span class="settings-icon">👤</span><span class="settings-label">Kontoinformasjon</span><span class="settings-arrow">→</span></div>
+              <div class="settings-item"><span class="settings-icon">🔔</span><span class="settings-label">Varsler</span><span class="settings-arrow">→</span></div>
+              <div class="settings-item"><span class="settings-icon">🎯</span><span class="settings-label">Treningsmål</span><span class="settings-arrow">→</span></div>
+              <div class="settings-item"><span class="settings-icon">📊</span><span class="settings-label">Data & Personvern</span><span class="settings-arrow">→</span></div>
+              <div class="settings-item"><span class="settings-icon">💳</span><span class="settings-label">Abonnement</span><span class="settings-badge">PRO</span><span class="settings-arrow">→</span></div>
+              <div class="settings-item"><span class="settings-icon">❓</span><span class="settings-label">Hjelp & Support</span><span class="settings-arrow">→</span></div>
+            </div>
+          </div>
+          <div class="logout-btn">Logg ut</div>
+        </div>
+        <div class="tab-bar">
+          <div class="tab"><span>🏠</span><span class="tab-label">Hjem</span></div>
+          <div class="tab"><span>🎯</span><span class="tab-label">Tren</span></div>
+          <div class="tab"><span>📊</span><span class="tab-label">Stats</span></div>
+          <div class="tab"><span>📅</span><span class="tab-label">Plan</span></div>
+          <div class="tab active"><span>👤</span><span class="tab-label">Profil</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

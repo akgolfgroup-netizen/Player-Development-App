@@ -45,6 +45,7 @@ export const listVideosSchema = z.object({
   status: z.enum(['processing', 'ready', 'reviewed', 'failed', 'deleted']).optional(),
   limit: z.number().int().positive().max(100).default(20),
   offset: z.number().int().min(0).default(0),
+  cursor: z.string().uuid().optional(), // Cursor for stable pagination (video ID)
   sortBy: z.enum(['createdAt', 'title', 'duration']).default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
 });

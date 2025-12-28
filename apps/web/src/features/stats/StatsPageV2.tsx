@@ -63,7 +63,7 @@ const StatsPageV2: React.FC = () => {
       >
         <section style={styles.section}>
           <StateCard
-            variant="info"
+            variant="loading"
             title="Laster..."
             description="Henter din statistikk"
           />

@@ -216,3 +216,75 @@
 /* Shadow */
 .shadow-ak-card { box-shadow: var(--shadow-card); }
 .shadow-ak-elevated { box-shadow: var(--shadow-elevated); }
+
+/* ==================== SEMANTIC TOKEN LAYER ==================== */
+/* These are the ONLY tokens allowed in component code */
+
+:root {
+  /* Core surfaces */
+  --bg: #FAFAFA;
+  --card: #FFFFFF;
+  --border: var(--gray-300);
+
+  /* Accent = Action (CTA, links, focus) */
+  --accent: var(--ak-primary);
+  --accent-hover: var(--ak-primary-light);
+
+  /* Achievement = Gold (badges/tiers ONLY) */
+  --achievement: var(--ak-gold);
+
+  /* Text hierarchy */
+  --text-primary: var(--ak-ink);
+  --text-secondary: var(--gray-600);
+  --text-tertiary: var(--gray-500);
+  --text-inverse: #FFFFFF;
+  --text-on-accent: #FFFFFF;
+  --text-brand: var(--ak-primary);
+  --text-accent: var(--accent);
+  --text-achievement: var(--achievement);
+
+  /* Status tokens */
+  --success: var(--ak-success);
+  --warning: var(--ak-warning);
+  --error: var(--ak-error);
+  --info: #2B6CB0;
+
+  /* Background semantic */
+  --background-default: var(--bg);
+  --background-surface: var(--ak-surface);
+  --background-white: #FFFFFF;
+  --background-accent: var(--accent);
+  --background-inverse: var(--ak-ink);
+
+  /* Border semantic */
+  --border-default: var(--gray-300);
+  --border-subtle: #E5E5EA;
+  --border-brand: var(--ak-primary);
+  --border-accent: var(--accent);
+  --border-achievement: var(--achievement);
+
+  /* Badge-only background tokens (subtle/10% opacity) */
+  --bg-neutral-subtle: var(--gray-100);
+  --bg-accent-subtle: color-mix(in srgb, var(--accent) 10%, transparent);
+  --bg-success-subtle: color-mix(in srgb, var(--success) 10%, transparent);
+  --bg-warning-subtle: color-mix(in srgb, var(--warning) 10%, transparent);
+  --bg-error-subtle: color-mix(in srgb, var(--error) 10%, transparent);
+  --bg-achievement-subtle: color-mix(in srgb, var(--achievement) 10%, transparent);
+}
+
+/* ==================== ICON TONE CLASSES ==================== */
+/* Apply these to icon wrappers or directly to SVGs using currentColor */
+
+.tone-accent { color: var(--accent); }
+.tone-achievement { color: var(--achievement); }
+.tone-success { color: var(--success); }
+.tone-warning { color: var(--warning); }
+.tone-error { color: var(--error); }
+.tone-info { color: var(--info); }
+.tone-muted { color: var(--text-tertiary); }
+.tone-brand { color: var(--text-brand); }
+
+/* Icon default behavior - inherits color from parent */
+.icon, [class*="lucide-"], svg {
+  /* Icons should use currentColor - never hardcoded values */
+}

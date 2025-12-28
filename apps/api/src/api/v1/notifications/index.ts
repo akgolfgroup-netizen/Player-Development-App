@@ -4,6 +4,7 @@ import { authenticateUser, verifyToken } from '../../../middleware/auth';
 import { subscribe, getStatus, NotificationPayload } from '../../../services/notifications/notificationBus';
 import { logger } from '../../../utils/logger';
 import { authenticationError } from '../../../core/errors';
+import { setNoStore } from '../../../middleware/cacheHeaders';
 
 /**
  * Register notification routes
@@ -144,6 +145,9 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
         const nextItem = notifications.pop(); // Remove the extra item
         nextCursor = nextItem!.id;
       }
+
+      // No-store: real-time data must be fresh
+      setNoStore(reply);
 
       return reply.status(200).send({
         success: true,

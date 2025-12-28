@@ -13,31 +13,26 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { tokens } from '../../design-tokens';
 
-// ============================================================================
-// Design Tokens from AK Golf Design System v2.1
-// Source: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
-// ============================================================================
 const colors = {
   // Brand Colors
-  forest: 'var(--ak-primary)',
-  forestLight: tokens.colors.forestLight,
-  foam: tokens.colors.foam,
-  ivory: tokens.colors.ivory,
-  gold: tokens.colors.gold,
+  forest: 'var(--accent)',
+  forestLight: 'var(--accent-light)',
+  foam: 'var(--bg-secondary)',
+  ivory: 'var(--bg-tertiary)',
+  gold: 'var(--achievement)',
 
   // Semantic Colors
-  success: tokens.colors.success,
-  warning: tokens.colors.warning,
-  error: tokens.colors.error,
+  success: 'var(--success)',
+  warning: 'var(--warning)',
+  error: 'var(--error)',
 
   // Neutrals
-  charcoal: tokens.colors.charcoal,
-  steel: tokens.colors.steel,
-  mist: tokens.colors.mist,
-  cloud: tokens.colors.cloud,
-  white: tokens.colors.white,
+  charcoal: 'var(--text-primary)',
+  steel: 'var(--text-secondary)',
+  mist: 'var(--border-default)',
+  cloud: 'var(--bg-tertiary)',
+  white: 'var(--bg-primary)',
 };
 
 // ============================================================================

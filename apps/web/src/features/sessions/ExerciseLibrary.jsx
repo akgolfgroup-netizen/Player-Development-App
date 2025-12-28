@@ -7,8 +7,9 @@
  */
 import React, { useState } from 'react';
 import { Heart, Plus, Clock, ChevronDown, ChevronUp } from 'lucide-react';
-import { tokens, typographyStyle } from '../../design-tokens';
+// UiCanon: Using CSS variables instead of tokens
 import { PageHeader } from '../../components/layout/PageHeader';
+import StateCard from '../../ui/composites/StateCard';
 
 // ============================================================
 // AK GOLF KATEGORI HIERARKI v2.0 - Komplett filter-system
@@ -285,11 +286,20 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
     TURN: '#f39c12',   // Orange
   };
 
+  // Background colors with opacity (for tags)
+  const pyramideBgColors = {
+    FYS: '#e74c3c15',
+    TEK: '#3498db15',
+    SLAG: '#27ae6015',
+    SPILL: '#9b59b615',
+    TURN: '#f39c1215',
+  };
+
   return (
     <div
       onClick={() => onSelect(exercise)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         overflow: 'hidden',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -308,7 +318,7 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
       {/* Top color bar based on pyramide level */}
       <div style={{
         height: '4px',
-        backgroundColor: pyramideColors[exercise.pyramide] || tokens.colors.forest,
+        backgroundColor: pyramideColors[exercise.pyramide] || 'var(--accent)',
       }} />
 
       <div style={{ padding: '16px' }}>
@@ -318,7 +328,7 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
             margin: 0,
             fontSize: '15px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             lineHeight: 1.3,
           }}>
             {exercise.name}
@@ -330,11 +340,11 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
               border: 'none',
               padding: '4px',
               cursor: 'pointer',
-              color: isFavorite ? tokens.colors.error : tokens.colors.mist,
+              color: isFavorite ? 'var(--error)' : 'var(--border-default)',
               transition: 'color 0.2s',
             }}
           >
-            <Heart size={18} fill={isFavorite ? tokens.colors.error : 'none'} />
+            <Heart size={18} fill={isFavorite ? 'var(--error)' : 'none'} />
           </button>
         </div>
 
@@ -343,9 +353,9 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
           <span style={{
             fontSize: '11px',
             padding: '3px 8px',
-            backgroundColor: (pyramideColors[exercise.pyramide] || tokens.colors.forest) + '15',
+            backgroundColor: pyramideBgColors[exercise.pyramide] || 'rgba(var(--accent-rgb), 0.15)',
             borderRadius: '4px',
-            color: pyramideColors[exercise.pyramide] || tokens.colors.forest,
+            color: pyramideColors[exercise.pyramide] || 'var(--accent)',
             fontWeight: 500,
           }}>
             {pyramideLabel}
@@ -353,9 +363,9 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
           <span style={{
             fontSize: '11px',
             padding: '3px 8px',
-            backgroundColor: tokens.colors.mist,
+            backgroundColor: 'var(--border-default)',
             borderRadius: '4px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             fontWeight: 500,
           }}>
             {areaLabel}
@@ -366,7 +376,7 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
         <p style={{
           margin: '0 0 12px 0',
           fontSize: '13px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
           lineHeight: 1.4,
         }}>
           {exercise.description}
@@ -378,13 +388,13 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingTop: '12px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
         }}>
           {/* Duration and difficulty */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{
               fontSize: '12px',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
@@ -400,7 +410,7 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    backgroundColor: filled ? tokens.colors.gold : tokens.colors.mist,
+                    backgroundColor: filled ? 'var(--achievement)' : 'var(--border-default)',
                   }}
                 />
               ))}
@@ -415,11 +425,11 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
               alignItems: 'center',
               gap: '4px',
               padding: '6px 12px',
-              backgroundColor: tokens.colors.forest,
+              backgroundColor: 'var(--accent)',
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
-              color: tokens.colors.white,
+              color: 'var(--bg-primary)',
               fontSize: '12px',
               fontWeight: 500,
             }}
@@ -454,17 +464,17 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
     >
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: `${tokens.borderRadius.lg} ${tokens.borderRadius.lg} 0 0`,
-          padding: tokens.spacing.lg,
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0',
+          padding: '24px',
           width: '100%',
           maxHeight: '90vh',
           overflowY: 'auto',
         }}
       >
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: tokens.spacing.md }}>
-          <span style={{ ...typographyStyle('title2'), color: tokens.colors.charcoal }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <span style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>
             📋 {exercise.name}
           </span>
           <button
@@ -473,7 +483,7 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
               background: 'none',
               border: 'none',
               fontSize: '24px',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               cursor: 'pointer',
             }}
           >
@@ -485,66 +495,66 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         <div
           style={{
             display: 'flex',
-            gap: tokens.spacing.md,
-            marginBottom: tokens.spacing.lg,
+            gap: '16px',
+            marginBottom: '24px',
             flexWrap: 'wrap',
           }}
         >
           <div
             style={{
-              backgroundColor: tokens.colors.foam,
-              padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-              borderRadius: tokens.borderRadius.md,
+              backgroundColor: 'var(--bg-tertiary)',
+              padding: `${'8px'} ${'16px'}`,
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>Kategori</span>
-            <div style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>{exercise.category}</div>
+            <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>Kategori</span>
+            <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>{exercise.category}</div>
           </div>
           <div
             style={{
-              backgroundColor: tokens.colors.foam,
-              padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-              borderRadius: tokens.borderRadius.md,
+              backgroundColor: 'var(--bg-tertiary)',
+              padding: `${'8px'} ${'16px'}`,
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>Varighet</span>
-            <div style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>Varighet</span>
+            <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>
               {exercise.duration.min}-{exercise.duration.max} min
             </div>
           </div>
           {exercise.reps && (
             <div
               style={{
-                backgroundColor: tokens.colors.foam,
-                padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-                borderRadius: tokens.borderRadius.md,
+                backgroundColor: 'var(--bg-tertiary)',
+                padding: `${'8px'} ${'16px'}`,
+                borderRadius: 'var(--radius-md)',
               }}
             >
-              <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>Repetisjoner</span>
-              <div style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>{exercise.reps}</div>
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>Repetisjoner</span>
+              <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>{exercise.reps}</div>
             </div>
           )}
         </div>
 
         {/* Description */}
-        <div style={{ marginBottom: tokens.spacing.lg }}>
-          <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+        <div style={{ marginBottom: '24px' }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
             Beskrivelse
           </span>
-          <p style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+          <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
             {exercise.description}
           </p>
         </div>
 
         {/* Instructions */}
         {exercise.instructions && (
-          <div style={{ marginBottom: tokens.spacing.lg }}>
-            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+          <div style={{ marginBottom: '24px' }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
               Instruksjoner
             </span>
-            <ul style={{ paddingLeft: tokens.spacing.lg, margin: 0 }}>
+            <ul style={{ paddingLeft: '24px', margin: 0 }}>
               {exercise.instructions.map((instruction, i) => (
-                <li key={i} style={{ ...typographyStyle('callout'), color: tokens.colors.charcoal, marginBottom: tokens.spacing.xs }}>
+                <li key={i} style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-primary)', marginBottom: '4px' }}>
                   {instruction}
                 </li>
               ))}
@@ -554,30 +564,30 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
 
         {/* Variants */}
         {exercise.variants && (
-          <div style={{ marginBottom: tokens.spacing.lg }}>
-            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+          <div style={{ marginBottom: '24px' }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
               Varianter
             </span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {exercise.variants.map((variant, i) => (
                 <div
                   key={i}
                   style={{
-                    backgroundColor: tokens.colors.foam,
-                    padding: tokens.spacing.sm,
-                    borderRadius: tokens.borderRadius.sm,
+                    backgroundColor: 'var(--bg-tertiary)',
+                    padding: '8px',
+                    borderRadius: 'var(--radius-sm)',
                   }}
                 >
-                  <span style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>
+                  <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>
                     {variant.name}
                   </span>
                   {variant.description && (
-                    <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, marginLeft: tokens.spacing.sm }}>
+                    <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginLeft: '8px' }}>
                       - {variant.description}
                     </span>
                   )}
                   {variant.reps && (
-                    <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, marginLeft: tokens.spacing.sm }}>
+                    <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginLeft: '8px' }}>
                       ({variant.reps} slag)
                     </span>
                   )}
@@ -589,20 +599,20 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
 
         {/* Equipment */}
         {exercise.equipment && (
-          <div style={{ marginBottom: tokens.spacing.lg }}>
-            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+          <div style={{ marginBottom: '24px' }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
               Utstyr
             </span>
-            <div style={{ display: 'flex', gap: tokens.spacing.sm, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               {exercise.equipment.map((item, i) => (
                 <span
                   key={i}
                   style={{
-                    ...typographyStyle('caption'),
+                    fontSize: '12px', lineHeight: '16px',
                     padding: '4px 10px',
-                    backgroundColor: tokens.colors.mist,
-                    borderRadius: tokens.borderRadius.sm,
-                    color: tokens.colors.charcoal,
+                    backgroundColor: 'var(--border-default)',
+                    borderRadius: 'var(--radius-sm)',
+                    color: 'var(--text-primary)',
                   }}
                 >
                   {item}
@@ -613,20 +623,20 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         )}
 
         {/* Training areas */}
-        <div style={{ marginBottom: tokens.spacing.xl }}>
-          <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+        <div style={{ marginBottom: '32px' }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
             Bruksområde
           </span>
-          <div style={{ display: 'flex', gap: tokens.spacing.sm, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {exercise.trainingAreas.map((area, i) => (
               <span
                 key={i}
                 style={{
-                  ...typographyStyle('caption'),
+                  fontSize: '12px', lineHeight: '16px',
                   padding: '4px 10px',
-                  backgroundColor: tokens.colors.primaryLight,
-                  borderRadius: tokens.borderRadius.sm,
-                  color: tokens.colors.white,
+                  backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+                  borderRadius: 'var(--radius-sm)',
+                  color: 'var(--bg-primary)',
                   textTransform: 'capitalize',
                 }}
               >
@@ -641,13 +651,13 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
           onClick={() => onAddToSession(exercise)}
           style={{
             width: '100%',
-            padding: tokens.spacing.md,
-            backgroundColor: tokens.colors.forest,
-            color: tokens.colors.white,
+            padding: '16px',
+            backgroundColor: 'var(--accent)',
+            color: 'var(--bg-primary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
-            ...typographyStyle('title3'),
+            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
           }}
         >
           Legg til i økt
@@ -736,20 +746,20 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
               alignItems: 'center',
               gap: '6px',
               padding: '8px 14px',
-              backgroundColor: showOnlyFavorites ? tokens.colors.error + '15' : 'transparent',
-              border: `1px solid ${showOnlyFavorites ? tokens.colors.error : tokens.colors.mist}`,
+              backgroundColor: showOnlyFavorites ? 'rgba(var(--error-rgb), 0.15)' : 'transparent',
+              border: `1px solid ${showOnlyFavorites ? 'var(--error)' : 'var(--border-default)'}`,
               borderRadius: '8px',
               cursor: 'pointer',
-              color: showOnlyFavorites ? tokens.colors.error : tokens.colors.charcoal,
+              color: showOnlyFavorites ? 'var(--error)' : 'var(--text-primary)',
               fontSize: '13px',
               fontWeight: 500,
             }}
           >
-            <Heart size={16} fill={showOnlyFavorites ? tokens.colors.error : 'none'} />
+            <Heart size={16} fill={showOnlyFavorites ? 'var(--error)' : 'none'} />
             Favoritter
             {favorites.length > 0 && (
               <span style={{
-                backgroundColor: showOnlyFavorites ? tokens.colors.error : tokens.colors.steel,
+                backgroundColor: showOnlyFavorites ? 'var(--error)' : 'var(--text-secondary)',
                 color: 'white',
                 borderRadius: '10px',
                 padding: '1px 6px',
@@ -764,9 +774,9 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
       {/* Compact filters */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         padding: '12px 24px',
-        borderBottom: `1px solid ${tokens.colors.mist}`,
+        borderBottom: '1px solid var(--border-default)',
       }}>
         {/* Search and filters in one row */}
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -779,7 +789,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
             style={{
               width: '200px',
               padding: '8px 12px',
-              backgroundColor: tokens.colors.foam,
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '13px',
@@ -794,9 +804,9 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                 onClick={() => setSelectedPyramide(level.id)}
                 style={{
                   padding: '6px 12px',
-                  backgroundColor: selectedPyramide === level.id ? tokens.colors.forest : 'transparent',
-                  color: selectedPyramide === level.id ? 'white' : tokens.colors.charcoal,
-                  border: selectedPyramide === level.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                  backgroundColor: selectedPyramide === level.id ? 'var(--accent)' : 'transparent',
+                  color: selectedPyramide === level.id ? 'white' : 'var(--text-primary)',
+                  border: selectedPyramide === level.id ? 'none' : '1px solid var(--border-default)',
                   borderRadius: '16px',
                   cursor: 'pointer',
                   fontSize: '12px',
@@ -809,7 +819,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
           </div>
 
           {/* Divider */}
-          <div style={{ width: '1px', height: '24px', backgroundColor: tokens.colors.mist }} />
+          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--border-default)' }} />
 
           {/* Golf area chips (using grouped areas for compact display) */}
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -819,9 +829,9 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                 onClick={() => setSelectedArea(area.id)}
                 style={{
                   padding: '6px 12px',
-                  backgroundColor: selectedArea === area.id ? tokens.colors.primary : 'transparent',
-                  color: selectedArea === area.id ? 'white' : tokens.colors.steel,
-                  border: selectedArea === area.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                  backgroundColor: selectedArea === area.id ? 'var(--accent)' : 'transparent',
+                  color: selectedArea === area.id ? 'white' : 'var(--text-secondary)',
+                  border: selectedArea === area.id ? 'none' : '1px solid var(--border-default)',
                   borderRadius: '16px',
                   cursor: 'pointer',
                   fontSize: '12px',
@@ -841,13 +851,13 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
               alignItems: 'center',
               gap: '4px',
               padding: '6px 12px',
-              backgroundColor: showAdvancedFilters || hasActiveAdvancedFilters ? tokens.colors.forest + '10' : 'transparent',
-              border: `1px solid ${showAdvancedFilters || hasActiveAdvancedFilters ? tokens.colors.forest : tokens.colors.mist}`,
+              backgroundColor: showAdvancedFilters || hasActiveAdvancedFilters ? 'rgba(var(--accent-rgb), 0.1)' : 'transparent',
+              border: `1px solid ${showAdvancedFilters || hasActiveAdvancedFilters ? 'var(--accent)' : 'var(--border-default)'}`,
               borderRadius: '16px',
               cursor: 'pointer',
               fontSize: '12px',
               fontWeight: 500,
-              color: showAdvancedFilters || hasActiveAdvancedFilters ? tokens.colors.forest : tokens.colors.steel,
+              color: showAdvancedFilters || hasActiveAdvancedFilters ? 'var(--accent)' : 'var(--text-secondary)',
             }}
           >
             Avansert
@@ -856,7 +866,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                backgroundColor: tokens.colors.forest,
+                backgroundColor: 'var(--accent)',
               }} />
             )}
             {showAdvancedFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
@@ -868,14 +878,14 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
           <div style={{
             marginTop: '12px',
             paddingTop: '12px',
-            borderTop: `1px solid ${tokens.colors.mist}`,
+            borderTop: '1px solid var(--border-default)',
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',
           }}>
             {/* L-Faser (Clubspeed) */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '12px', color: tokens.colors.steel, minWidth: '80px', fontWeight: 500 }}>
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)', minWidth: '80px', fontWeight: 500 }}>
                 L-Fase (CS)
               </span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -886,8 +896,8 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                     style={{
                       padding: '5px 10px',
                       backgroundColor: selectedLFase === fase.id ? '#8e44ad' : 'transparent',
-                      color: selectedLFase === fase.id ? 'white' : tokens.colors.steel,
-                      border: selectedLFase === fase.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                      color: selectedLFase === fase.id ? 'white' : 'var(--text-secondary)',
+                      border: selectedLFase === fase.id ? 'none' : '1px solid var(--border-default)',
                       borderRadius: '14px',
                       cursor: 'pointer',
                       fontSize: '11px',
@@ -902,7 +912,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
             {/* Miljø */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '12px', color: tokens.colors.steel, minWidth: '80px', fontWeight: 500 }}>
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)', minWidth: '80px', fontWeight: 500 }}>
                 Miljø
               </span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -913,8 +923,8 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                     style={{
                       padding: '5px 10px',
                       backgroundColor: selectedMiljo === miljo.id ? '#16a085' : 'transparent',
-                      color: selectedMiljo === miljo.id ? 'white' : tokens.colors.steel,
-                      border: selectedMiljo === miljo.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                      color: selectedMiljo === miljo.id ? 'white' : 'var(--text-secondary)',
+                      border: selectedMiljo === miljo.id ? 'none' : '1px solid var(--border-default)',
                       borderRadius: '14px',
                       cursor: 'pointer',
                       fontSize: '11px',
@@ -929,7 +939,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
             {/* Belastning/Press */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '12px', color: tokens.colors.steel, minWidth: '80px', fontWeight: 500 }}>
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)', minWidth: '80px', fontWeight: 500 }}>
                 Belastning
               </span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -940,8 +950,8 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                     style={{
                       padding: '5px 10px',
                       backgroundColor: selectedPress === press.id ? '#e67e22' : 'transparent',
-                      color: selectedPress === press.id ? 'white' : tokens.colors.steel,
-                      border: selectedPress === press.id ? 'none' : `1px solid ${tokens.colors.mist}`,
+                      color: selectedPress === press.id ? 'white' : 'var(--text-secondary)',
+                      border: selectedPress === press.id ? 'none' : '1px solid var(--border-default)',
                       borderRadius: '14px',
                       cursor: 'pointer',
                       fontSize: '11px',
@@ -961,7 +971,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
       <div style={{ padding: '20px 24px' }}>
         {/* Results count */}
         <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '13px', color: tokens.colors.steel }}>
+          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
             {filteredExercises.length} øvelser
           </span>
           {hasActiveFilters && (
@@ -970,7 +980,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
               style={{
                 background: 'none',
                 border: 'none',
-                color: tokens.colors.primary,
+                color: 'var(--accent)',
                 cursor: 'pointer',
                 fontSize: '12px',
               }}
@@ -999,11 +1009,11 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
         </div>
 
         {filteredExercises.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 24px', color: tokens.colors.steel }}>
-            <p style={{ fontSize: '14px' }}>
-              {showOnlyFavorites ? 'Ingen favoritter' : 'Ingen øvelser funnet'}
-            </p>
-          </div>
+          <StateCard
+            variant="empty"
+            title={showOnlyFavorites ? 'Ingen favoritter' : 'Ingen øvelser funnet'}
+            description={showOnlyFavorites ? 'Marker øvelser som favoritter for å se dem her.' : 'Prøv å justere filtrene for å se flere øvelser.'}
+          />
         )}
       </div>
 

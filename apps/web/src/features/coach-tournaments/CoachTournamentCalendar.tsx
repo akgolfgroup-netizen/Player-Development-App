@@ -22,7 +22,10 @@ import {
   Eye,
   UserPlus,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
+import Badge from '../../ui/primitives/Badge.primitive';
+import StateCard from '../../ui/composites/StateCard';
 
 interface PlayerParticipant {
   id: string;
@@ -303,35 +306,35 @@ export default function CoachTournamentCalendar() {
     }
   };
 
-  const getStatusConfig = (status: string) => {
+  const getStatusConfig = (status: string): { label: string; variant: 'success' | 'error' | 'neutral' | 'accent' } => {
     switch (status) {
       case 'registration_open':
-        return { label: 'Åpen', color: tokens.colors.success, bg: `${tokens.colors.success}15` };
+        return { label: 'Åpen', variant: 'success' };
       case 'registration_closed':
-        return { label: 'Fullt', color: tokens.colors.error, bg: `${tokens.colors.error}15` };
+        return { label: 'Fullt', variant: 'error' };
       case 'upcoming':
-        return { label: 'Kommer', color: tokens.colors.steel, bg: tokens.colors.gray100 };
+        return { label: 'Kommer', variant: 'neutral' };
       case 'in_progress':
-        return { label: 'Pågår', color: tokens.colors.primary, bg: `${tokens.colors.primary}15` };
+        return { label: 'Pågår', variant: 'accent' };
       case 'completed':
-        return { label: 'Ferdig', color: tokens.colors.steel, bg: tokens.colors.gray100 };
+        return { label: 'Ferdig', variant: 'neutral' };
       default:
-        return { label: status, color: tokens.colors.steel, bg: tokens.colors.gray100 };
+        return { label: status, variant: 'neutral' };
     }
   };
 
-  const getCategoryConfig = (category: string) => {
+  const getCategoryConfig = (category: string): { label: string; variant: 'accent' | 'warning' | 'success' | 'neutral' } => {
     switch (category) {
       case 'junior':
-        return { label: 'Junior', color: tokens.colors.primary };
+        return { label: 'Junior', variant: 'accent' };
       case 'elite':
-        return { label: 'Elite', color: tokens.colors.gold };
+        return { label: 'Elite', variant: 'warning' };
       case 'open':
-        return { label: 'Åpen', color: tokens.colors.success };
+        return { label: 'Åpen', variant: 'success' };
       case 'senior':
-        return { label: 'Senior', color: tokens.colors.steel };
+        return { label: 'Senior', variant: 'neutral' };
       default:
-        return { label: category, color: tokens.colors.steel };
+        return { label: category, variant: 'neutral' };
     }
   };
 
@@ -340,22 +343,13 @@ export default function CoachTournamentCalendar() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-primary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
+        <StateCard variant="loading" title="Laster turneringer..." />
       </div>
     );
   }
@@ -364,67 +358,44 @@ export default function CoachTournamentCalendar() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+        backgroundColor: 'var(--bg-primary)',
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-surface)',
+          borderBottom: '1px solid var(--border-default)',
           padding: '20px 24px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div>
-            <h1 style={{ ...tokens.typography.title1, color: tokens.colors.charcoal, margin: 0 }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
               Turneringskalender
             </h1>
-            <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, margin: '4px 0 0' }}>
+            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Oversikt over turneringer og spillerdeltakelse
             </p>
           </div>
 
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => navigate('/coach/tournaments/players')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                backgroundColor: tokens.colors.white,
-                color: tokens.colors.charcoal,
-                border: `1px solid ${tokens.colors.gray300}`,
-                borderRadius: tokens.radius.md,
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              leftIcon={<Users size={18} />}
             >
-              <Users size={18} />
               Mine spillere
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => navigate('/coach/tournaments/results')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
-                border: 'none',
-                borderRadius: tokens.radius.md,
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              leftIcon={<Medal size={18} />}
             >
-              <Medal size={18} />
               Resultater
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -436,12 +407,12 @@ export default function CoachTournamentCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.primary}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-accent-subtle)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <Trophy size={16} color={tokens.colors.primary} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <Trophy size={16} color="var(--accent)" />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.upcoming}</strong> kommende
             </span>
           </div>
@@ -451,12 +422,12 @@ export default function CoachTournamentCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.success}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-success-subtle)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <Users size={16} color={tokens.colors.success} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <Users size={16} color="var(--success)" />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.withPlayers}</strong> med mine spillere
             </span>
           </div>
@@ -466,12 +437,12 @@ export default function CoachTournamentCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.gold}15`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-warning-subtle)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <CheckCircle size={16} color={tokens.colors.gold} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <CheckCircle size={16} color="var(--warning)" />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.totalParticipations}</strong> påmeldinger
             </span>
           </div>
@@ -482,12 +453,12 @@ export default function CoachTournamentCalendar() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '8px 14px',
-                backgroundColor: `${tokens.colors.warning}15`,
-                borderRadius: tokens.radius.md,
+                backgroundColor: 'var(--bg-warning-subtle)',
+                borderRadius: 'var(--radius-md)',
               }}
             >
-              <Clock size={16} color={tokens.colors.warning} />
-              <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+              <Clock size={16} color="var(--warning)" />
+              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
                 <strong>{stats.pendingRegistrations}</strong> venter
               </span>
             </div>
@@ -498,64 +469,47 @@ export default function CoachTournamentCalendar() {
       {/* Filters */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-surface)',
           padding: '16px 24px',
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          borderBottom: '1px solid var(--border-default)',
           display: 'flex',
           gap: '12px',
           flexWrap: 'wrap',
           alignItems: 'center',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 12px',
-            backgroundColor: tokens.colors.gray100,
-            borderRadius: tokens.radius.md,
-            flex: 1,
-            maxWidth: '300px',
-          }}
-        >
-          <Search size={18} color={tokens.colors.steel} />
-          <input
-            type="text"
-            placeholder="Søk turnering..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              flex: 1,
-              border: 'none',
-              backgroundColor: 'transparent',
-              fontSize: '14px',
-              color: tokens.colors.charcoal,
-              outline: 'none',
-            }}
-          />
-        </div>
+        <Card variant="default" padding="sm" style={{ flex: 1, maxWidth: '300px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Search size={18} color="var(--text-tertiary)" />
+            <input
+              type="text"
+              placeholder="Søk turnering..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                flex: 1,
+                border: 'none',
+                backgroundColor: 'transparent',
+                fontSize: '14px',
+                color: 'var(--text-primary)',
+                outline: 'none',
+              }}
+            />
+          </div>
+        </Card>
 
         <div style={{ display: 'flex', gap: '8px' }}>
           {(['all', 'my_players', 'upcoming'] as const).map((f) => (
-            <button
+            <Button
               key={f}
+              variant={filter === f ? 'primary' : 'ghost'}
+              size="sm"
               onClick={() => setFilter(f)}
-              style={{
-                padding: '8px 14px',
-                backgroundColor: filter === f ? tokens.colors.primary : tokens.colors.white,
-                color: filter === f ? tokens.colors.white : tokens.colors.charcoal,
-                border: `1px solid ${filter === f ? tokens.colors.primary : tokens.colors.gray300}`,
-                borderRadius: tokens.radius.md,
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
             >
               {f === 'all' && 'Alle'}
               {f === 'my_players' && 'Med spillere'}
               {f === 'upcoming' && 'Neste 30 dager'}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -564,11 +518,11 @@ export default function CoachTournamentCalendar() {
           onChange={(e) => setCategoryFilter(e.target.value)}
           style={{
             padding: '8px 12px',
-            backgroundColor: tokens.colors.white,
-            border: `1px solid ${tokens.colors.gray300}`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-surface)',
+            border: '1px solid var(--border-default)',
+            borderRadius: 'var(--radius-md)',
             fontSize: '13px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             cursor: 'pointer',
           }}
         >
@@ -583,23 +537,12 @@ export default function CoachTournamentCalendar() {
       {/* Tournament list */}
       <div style={{ padding: '24px' }}>
         {filteredTournaments.length === 0 ? (
-          <div
-            style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
-              padding: '48px',
-              textAlign: 'center',
-              boxShadow: tokens.shadows.card,
-            }}
-          >
-            <Trophy size={48} color={tokens.colors.steel} style={{ marginBottom: '16px' }} />
-            <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: '0 0 8px' }}>
-              Ingen turneringer funnet
-            </h3>
-            <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, margin: 0 }}>
-              Prøv å endre filter eller søkekriterier
-            </p>
-          </div>
+          <StateCard
+            variant="empty"
+            icon={Trophy}
+            title="Ingen turneringer funnet"
+            description="Prøv å endre filter eller søkekriterier"
+          />
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {filteredTournaments.map((tournament) => {
@@ -610,17 +553,15 @@ export default function CoachTournamentCalendar() {
               const pendingPlayers = tournament.myPlayers.filter((p) => p.status === 'pending');
 
               return (
-                <div
+                <Card
                   key={tournament.id}
+                  variant="default"
+                  padding="none"
                   onClick={() => setSelectedTournament(tournament)}
                   style={{
-                    backgroundColor: tokens.colors.white,
-                    borderRadius: tokens.radius.lg,
-                    boxShadow: tokens.shadows.card,
-                    overflow: 'hidden',
                     cursor: 'pointer',
-                    border: tournament.myPlayers.length > 0 ? `2px solid ${tokens.colors.primary}` : `1px solid ${tokens.colors.gray200}`,
-                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    border: tournament.myPlayers.length > 0 ? '2px solid var(--accent)' : '1px solid var(--border-default)',
+                    overflow: 'hidden',
                   }}
                 >
                   <div style={{ padding: '20px' }}>
@@ -631,87 +572,56 @@ export default function CoachTournamentCalendar() {
                           style={{
                             width: 48,
                             height: 48,
-                            borderRadius: tokens.radius.md,
-                            backgroundColor: `${tokens.colors.gold}15`,
+                            borderRadius: 'var(--radius-md)',
+                            backgroundColor: 'var(--bg-warning-subtle)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}
                         >
-                          <TypeIcon size={24} color={tokens.colors.gold} />
+                          <TypeIcon size={24} color="var(--warning)" />
                         </div>
                         <div>
-                          <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                          <h3 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                             {tournament.name}
                           </h3>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                            <span
-                              style={{
-                                fontSize: '11px',
-                                fontWeight: 600,
-                                color: categoryConfig.color,
-                                backgroundColor: `${categoryConfig.color}15`,
-                                padding: '2px 8px',
-                                borderRadius: '4px',
-                              }}
-                            >
-                              {categoryConfig.label}
-                            </span>
-                            <span
-                              style={{
-                                fontSize: '11px',
-                                fontWeight: 500,
-                                color: statusConfig.color,
-                                backgroundColor: statusConfig.bg,
-                                padding: '2px 8px',
-                                borderRadius: '4px',
-                              }}
-                            >
-                              {statusConfig.label}
-                            </span>
+                            <Badge variant={categoryConfig.variant} size="sm">{categoryConfig.label}</Badge>
+                            <Badge variant={statusConfig.variant} size="sm">{statusConfig.label}</Badge>
                           </div>
                         </div>
                       </div>
 
                       {daysUntil >= 0 && daysUntil <= 14 && (
-                        <div
-                          style={{
-                            padding: '6px 12px',
-                            backgroundColor: tokens.colors.primary,
-                            color: tokens.colors.white,
-                            borderRadius: tokens.radius.full,
-                            fontSize: '12px',
-                            fontWeight: 600,
-                          }}
-                        >
+                        <Badge variant="accent" size="sm">
                           {daysUntil === 0 ? 'I dag!' : `Om ${daysUntil} dager`}
-                        </div>
+                        </Badge>
                       )}
                     </div>
 
                     {/* Details */}
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px', marginBottom: '16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Calendar size={16} color={tokens.colors.steel} />
-                        <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+                        <Calendar size={16} color="var(--text-tertiary)" />
+                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                           {formatDateRange(tournament.startDate, tournament.endDate)}
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <MapPin size={16} color={tokens.colors.steel} />
-                        <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+                        <MapPin size={16} color="var(--text-tertiary)" />
+                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                           {tournament.location}
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Users size={16} color={tokens.colors.steel} />
-                        <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+                        <Users size={16} color="var(--text-tertiary)" />
+                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                           {tournament.currentParticipants}/{tournament.maxParticipants}
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Flag size={16} color={tokens.colors.steel} />
-                        <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+                        <Flag size={16} color="var(--text-tertiary)" />
+                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                           {tournament.format}
                         </span>
                       </div>
@@ -722,28 +632,17 @@ export default function CoachTournamentCalendar() {
                       <div
                         style={{
                           padding: '12px 16px',
-                          backgroundColor: `${tokens.colors.primary}08`,
-                          borderRadius: tokens.radius.md,
-                          borderLeft: `3px solid ${tokens.colors.primary}`,
+                          backgroundColor: 'var(--bg-accent-subtle)',
+                          borderRadius: 'var(--radius-md)',
+                          borderLeft: '3px solid var(--accent)',
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.primary }}>
+                          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
                             Mine spillere ({tournament.myPlayers.length})
                           </span>
                           {pendingPlayers.length > 0 && (
-                            <span
-                              style={{
-                                fontSize: '11px',
-                                fontWeight: 600,
-                                color: tokens.colors.warning,
-                                backgroundColor: `${tokens.colors.warning}15`,
-                                padding: '2px 8px',
-                                borderRadius: '4px',
-                              }}
-                            >
-                              {pendingPlayers.length} venter
-                            </span>
+                            <Badge variant="warning" size="sm">{pendingPlayers.length} venter</Badge>
                           )}
                         </div>
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -755,9 +654,9 @@ export default function CoachTournamentCalendar() {
                                 alignItems: 'center',
                                 gap: '6px',
                                 padding: '4px 10px',
-                                backgroundColor: tokens.colors.white,
-                                borderRadius: tokens.radius.full,
-                                border: `1px solid ${player.status === 'pending' ? tokens.colors.warning : tokens.colors.gray200}`,
+                                backgroundColor: 'var(--bg-surface)',
+                                borderRadius: 'var(--radius-full)',
+                                border: player.status === 'pending' ? '1px solid var(--warning)' : '1px solid var(--border-default)',
                               }}
                             >
                               <div
@@ -765,8 +664,8 @@ export default function CoachTournamentCalendar() {
                                   width: 20,
                                   height: 20,
                                   borderRadius: '50%',
-                                  backgroundColor: tokens.colors.primary,
-                                  color: tokens.colors.white,
+                                  backgroundColor: 'var(--accent)',
+                                  color: 'var(--bg-surface)',
                                   fontSize: '9px',
                                   fontWeight: 600,
                                   display: 'flex',
@@ -776,14 +675,14 @@ export default function CoachTournamentCalendar() {
                               >
                                 {player.initials}
                               </div>
-                              <span style={{ fontSize: '12px', color: tokens.colors.charcoal }}>
+                              <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
                                 {player.name}
                               </span>
                               {player.status === 'pending' && (
-                                <Clock size={12} color={tokens.colors.warning} />
+                                <Clock size={12} color="var(--warning)" />
                               )}
                               {player.status === 'interested' && (
-                                <Star size={12} color={tokens.colors.gold} />
+                                <Star size={12} color="var(--warning)" />
                               )}
                             </div>
                           ))}
@@ -799,64 +698,42 @@ export default function CoachTournamentCalendar() {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '12px 20px',
-                      backgroundColor: tokens.colors.gray50,
-                      borderTop: `1px solid ${tokens.colors.gray200}`,
+                      backgroundColor: 'var(--bg-secondary)',
+                      borderTop: '1px solid var(--border-default)',
                     }}
                   >
                     <div>
-                      <span style={{ fontSize: '12px', color: tokens.colors.steel }}>Startavgift</span>
-                      <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+                      <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>Startavgift</span>
+                      <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
                         {tournament.fee === 0 ? 'Gratis' : `${tournament.fee} kr`}
                       </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <button
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        leftIcon={<UserPlus size={16} />}
                         onClick={(e) => {
                           e.stopPropagation();
                           navigate(`/coach/tournaments/players?tournament=${tournament.id}`);
                         }}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          padding: '8px 12px',
-                          backgroundColor: tokens.colors.white,
-                          color: tokens.colors.charcoal,
-                          border: `1px solid ${tokens.colors.gray300}`,
-                          borderRadius: tokens.radius.md,
-                          fontSize: '13px',
-                          fontWeight: 500,
-                          cursor: 'pointer',
-                        }}
                       >
-                        <UserPlus size={16} />
                         Meld på spiller
-                      </button>
-                      <button
+                      </Button>
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        leftIcon={<Eye size={16} />}
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedTournament(tournament);
                         }}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          padding: '8px 12px',
-                          backgroundColor: tokens.colors.primary,
-                          color: tokens.colors.white,
-                          border: 'none',
-                          borderRadius: tokens.radius.md,
-                          fontSize: '13px',
-                          fontWeight: 500,
-                          cursor: 'pointer',
-                        }}
                       >
-                        <Eye size={16} />
                         Detaljer
-                      </button>
+                      </Button>
                     </div>
                   </div>
-                </div>
+                </Card>
               );
             })}
           </div>
@@ -884,8 +761,8 @@ export default function CoachTournamentCalendar() {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-surface)',
+              borderRadius: 'var(--radius-lg)',
               padding: '24px',
               width: '500px',
               maxWidth: '90vw',
@@ -896,7 +773,7 @@ export default function CoachTournamentCalendar() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <h2 style={{ ...tokens.typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 {selectedTournament.name}
               </h2>
               <button
@@ -904,43 +781,44 @@ export default function CoachTournamentCalendar() {
                 style={{
                   width: 32,
                   height: 32,
-                  borderRadius: tokens.radius.sm,
-                  backgroundColor: tokens.colors.gray100,
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: 'var(--bg-secondary)',
                   border: 'none',
                   fontSize: '18px',
                   cursor: 'pointer',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 ×
               </button>
             </div>
 
-            <p style={{ ...tokens.typography.body, color: tokens.colors.charcoal, margin: '0 0 20px' }}>
+            <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: '0 0 20px' }}>
               {selectedTournament.description}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Calendar size={18} color={tokens.colors.primary} />
-                <span>{formatDateRange(selectedTournament.startDate, selectedTournament.endDate)}</span>
+                <Calendar size={18} color="var(--accent)" />
+                <span style={{ color: 'var(--text-primary)' }}>{formatDateRange(selectedTournament.startDate, selectedTournament.endDate)}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <MapPin size={18} color={tokens.colors.primary} />
-                <span>{selectedTournament.location}, {selectedTournament.city}</span>
+                <MapPin size={18} color="var(--accent)" />
+                <span style={{ color: 'var(--text-primary)' }}>{selectedTournament.location}, {selectedTournament.city}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Flag size={18} color={tokens.colors.primary} />
-                <span>{selectedTournament.format}</span>
+                <Flag size={18} color="var(--accent)" />
+                <span style={{ color: 'var(--text-primary)' }}>{selectedTournament.format}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Clock size={18} color={tokens.colors.primary} />
-                <span>Påmeldingsfrist: {formatDate(selectedTournament.registrationDeadline)}</span>
+                <Clock size={18} color="var(--accent)" />
+                <span style={{ color: 'var(--text-primary)' }}>Påmeldingsfrist: {formatDate(selectedTournament.registrationDeadline)}</span>
               </div>
             </div>
 
             {selectedTournament.myPlayers.length > 0 && (
               <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: '0 0 12px' }}>
+                <h4 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
                   Påmeldte spillere
                 </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -952,8 +830,8 @@ export default function CoachTournamentCalendar() {
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         padding: '10px 12px',
-                        backgroundColor: tokens.colors.gray50,
-                        borderRadius: tokens.radius.md,
+                        backgroundColor: 'var(--bg-secondary)',
+                        borderRadius: 'var(--radius-md)',
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -962,8 +840,8 @@ export default function CoachTournamentCalendar() {
                             width: 32,
                             height: 32,
                             borderRadius: '50%',
-                            backgroundColor: tokens.colors.primary,
-                            color: tokens.colors.white,
+                            backgroundColor: 'var(--accent)',
+                            color: 'var(--bg-surface)',
                             fontSize: '12px',
                             fontWeight: 600,
                             display: 'flex',
@@ -974,38 +852,25 @@ export default function CoachTournamentCalendar() {
                           {player.initials}
                         </div>
                         <div>
-                          <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                          <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                             {player.name}
                           </div>
-                          <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                             Kategori {player.category}
                           </div>
                         </div>
                       </div>
-                      <span
-                        style={{
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          padding: '4px 10px',
-                          borderRadius: tokens.radius.full,
-                          backgroundColor:
-                            player.status === 'registered'
-                              ? `${tokens.colors.success}15`
-                              : player.status === 'pending'
-                              ? `${tokens.colors.warning}15`
-                              : `${tokens.colors.gold}15`,
-                          color:
-                            player.status === 'registered'
-                              ? tokens.colors.success
-                              : player.status === 'pending'
-                              ? tokens.colors.warning
-                              : tokens.colors.gold,
-                        }}
+                      <Badge
+                        variant={
+                          player.status === 'registered' ? 'success' :
+                          player.status === 'pending' ? 'warning' : 'neutral'
+                        }
+                        size="sm"
                       >
                         {player.status === 'registered' && 'Påmeldt'}
                         {player.status === 'pending' && 'Venter'}
                         {player.status === 'interested' && 'Interessert'}
-                      </span>
+                      </Badge>
                     </div>
                   ))}
                 </div>
@@ -1013,51 +878,25 @@ export default function CoachTournamentCalendar() {
             )}
 
             <div style={{ display: 'flex', gap: '12px' }}>
-              <button
+              <Button
+                variant="ghost"
+                leftIcon={<UserPlus size={18} />}
                 onClick={() => {
                   setSelectedTournament(null);
                   navigate(`/coach/tournaments/players?tournament=${selectedTournament.id}`);
                 }}
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  padding: '12px',
-                  backgroundColor: tokens.colors.white,
-                  color: tokens.colors.primary,
-                  border: `1px solid ${tokens.colors.primary}`,
-                  borderRadius: tokens.radius.md,
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                style={{ flex: 1 }}
               >
-                <UserPlus size={18} />
                 Meld på spiller
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
+                leftIcon={<ExternalLink size={18} />}
                 onClick={() => window.open(`https://mingolf.no/turnering/${selectedTournament.id}`, '_blank')}
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  padding: '12px',
-                  backgroundColor: tokens.colors.primary,
-                  color: tokens.colors.white,
-                  border: 'none',
-                  borderRadius: tokens.radius.md,
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                style={{ flex: 1 }}
               >
-                <ExternalLink size={18} />
                 Åpne i MinGolf
-              </button>
+              </Button>
             </div>
           </div>
         </>

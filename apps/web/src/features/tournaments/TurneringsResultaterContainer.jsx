@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Trophy, ChevronRight,
-  Target, MapPin
+  Target, MapPin, AlertCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { calendarAPI } from '../../services/api';
 
 // ============================================================================
 // MOCK DATA
@@ -107,22 +108,22 @@ const STATS = {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'ranking':
-      return { label: 'Ranking', color: tokens.colors.gold };
+      return { label: 'Ranking', color: 'var(--achievement)' };
     case 'tour':
-      return { label: 'Tour', color: tokens.colors.primary };
+      return { label: 'Tour', color: 'var(--accent)' };
     case 'club':
-      return { label: 'Klubb', color: tokens.colors.success };
+      return { label: 'Klubb', color: 'var(--success)' };
     default:
-      return { label: type, color: tokens.colors.steel };
+      return { label: type, color: 'var(--text-secondary)' };
   }
 };
 
 const getPositionColor = (position) => {
-  if (position === 1) return tokens.colors.gold;
+  if (position === 1) return 'var(--achievement)';
   if (position === 2) return '#C0C0C0';
   if (position === 3) return '#CD7F32';
-  if (position <= 10) return tokens.colors.primary;
-  return tokens.colors.steel;
+  if (position <= 10) return 'var(--accent)';
+  return 'var(--text-secondary)';
 };
 
 // ============================================================================
@@ -137,7 +138,7 @@ const ResultCard = ({ result, onClick }) => {
     <div
       onClick={() => onClick(result)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '14px',
         padding: '16px',
         cursor: 'pointer',
@@ -176,14 +177,14 @@ const ResultCard = ({ result, onClick }) => {
             }}>
               {typeConfig.label}
             </span>
-            <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
               {new Date(result.date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' })}
             </span>
           </div>
           <h3 style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             {result.name}
@@ -194,7 +195,7 @@ const ResultCard = ({ result, onClick }) => {
             gap: '4px',
             marginTop: '4px',
             fontSize: '12px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
           }}>
             <MapPin size={12} />
             {result.course}
@@ -222,7 +223,7 @@ const ResultCard = ({ result, onClick }) => {
           }}>
             {result.position}
           </div>
-          <span style={{ fontSize: '10px', color: tokens.colors.steel }}>
+          <span style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>
             av {result.participants}
           </span>
         </div>
@@ -234,30 +235,30 @@ const ResultCard = ({ result, onClick }) => {
         alignItems: 'center',
         gap: '16px',
         padding: '12px',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         borderRadius: '10px',
         marginBottom: '12px',
       }}>
         <div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Runder</div>
-          <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Runder</div>
+          <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
             {result.scores.join(' + ')}
           </div>
         </div>
-        <div style={{ borderLeft: `1px solid ${tokens.colors.mist}`, height: '30px' }} />
+        <div style={{ borderLeft: '1px solid var(--border-default)', height: '30px' }} />
         <div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Total</div>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Total</div>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
             {result.total}
           </div>
         </div>
         <div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Til par</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Til par</div>
           <div style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: scoreToPar < 0 ? tokens.colors.success :
-                   scoreToPar > 0 ? tokens.colors.error : tokens.colors.charcoal,
+            color: scoreToPar < 0 ? 'var(--success)' :
+                   scoreToPar > 0 ? 'var(--error)' : 'var(--text-primary)',
           }}>
             {scoreToPar === 0 ? 'E' : scoreToPar > 0 ? `+${scoreToPar}` : scoreToPar}
           </div>
@@ -276,22 +277,22 @@ const ResultCard = ({ result, onClick }) => {
         }}>
           {result.rankingPoints > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Target size={14} color={tokens.colors.primary} />
-              <span style={{ fontSize: '12px', fontWeight: 500, color: tokens.colors.primary }}>
+              <Target size={14} color={'var(--accent)'} />
+              <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--accent)' }}>
                 +{result.rankingPoints} poeng
               </span>
             </div>
           )}
           {result.earnings > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Trophy size={14} color={tokens.colors.gold} />
-              <span style={{ fontSize: '12px', fontWeight: 500, color: tokens.colors.gold }}>
+              <Trophy size={14} color={'var(--achievement)'} />
+              <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--achievement)' }}>
                 {result.earnings.toLocaleString()} kr
               </span>
             </div>
           )}
         </div>
-        <ChevronRight size={18} color={tokens.colors.steel} />
+        <ChevronRight size={18} color={'var(--text-secondary)'} />
       </div>
     </div>
   );
@@ -309,59 +310,59 @@ const StatsOverview = ({ stats }) => (
     marginBottom: '24px',
   }}>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.primary }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
         {stats.totalTournaments}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Turneringer</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Turneringer</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.gold }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
         {stats.wins}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Seire</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Seire</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.success }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
         {stats.top3}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Topp 3</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Topp 3</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.charcoal }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
         {stats.avgScore}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Snitt score</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Snitt score</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.error }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--error)' }}>
         {stats.bestRound}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Beste runde</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Beste runde</div>
     </div>
   </div>
 );
@@ -371,7 +372,12 @@ const StatsOverview = ({ stats }) => (
 // ============================================================================
 
 const TurneringsResultaterContainer = () => {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState('all');
+  const [results, setResults] = useState([]);
+  const [stats, setStats] = useState(STATS);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const filters = [
     { key: 'all', label: 'Alle' },
@@ -380,12 +386,53 @@ const TurneringsResultaterContainer = () => {
     { key: 'club', label: 'Klubb' },
   ];
 
-  const filteredResults = TOURNAMENT_RESULTS.filter(
+  // Fetch tournament results from API
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const playerId = localStorage.getItem('playerId');
+        const response = await calendarAPI.getTournamentResults(playerId);
+        const data = response.data?.data || response.data || TOURNAMENT_RESULTS;
+        setResults(data);
+
+        // Calculate stats from results
+        if (data.length > 0) {
+          const calculatedStats = {
+            totalTournaments: data.length,
+            wins: data.filter(r => r.position === 1).length,
+            top3: data.filter(r => r.position <= 3).length,
+            top10: data.filter(r => r.position <= 10).length,
+            avgPosition: data.reduce((sum, r) => sum + r.position, 0) / data.length,
+            avgScore: data.reduce((sum, r) => sum + (r.total / r.rounds), 0) / data.length,
+            bestRound: Math.min(...data.flatMap(r => r.scores)),
+            totalEarnings: data.reduce((sum, r) => sum + (r.earnings || 0), 0),
+            totalPoints: data.reduce((sum, r) => sum + (r.rankingPoints || 0), 0),
+          };
+          setStats(calculatedStats);
+        }
+      } catch (err) {
+        setError(err.response?.data?.message || err.message || 'Kunne ikke laste resultater');
+        setResults(TOURNAMENT_RESULTS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, []);
+
+  const handleResultClick = (result) => {
+    navigate(`/turneringer/${result.id}`, { state: { result } });
+  };
+
+  const filteredResults = results.filter(
     (r) => filter === 'all' || r.type === filter
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Turneringsresultater"
         subtitle="Dine resultater og statistikk"
@@ -410,8 +457,8 @@ const TurneringsResultaterContainer = () => {
                 padding: '8px 14px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: filter === f.key ? tokens.colors.primary : tokens.colors.white,
-                color: filter === f.key ? tokens.colors.white : tokens.colors.charcoal,
+                backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
+                color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -423,25 +470,43 @@ const TurneringsResultaterContainer = () => {
           ))}
         </div>
 
+        {/* Error message */}
+        {error && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '14px 16px',
+            borderRadius: '10px',
+            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+            marginBottom: '20px',
+          }}>
+            <AlertCircle size={20} color="var(--error)" />
+            <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>
+              {error} (viser demo-data)
+            </span>
+          </div>
+        )}
+
         {/* Results List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {filteredResults.map((result) => (
             <ResultCard
               key={result.id}
               result={result}
-              onClick={() => { /* TODO: Navigate to result detail */ }}
+              onClick={handleResultClick}
             />
           ))}
 
           {filteredResults.length === 0 && (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '14px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <Trophy size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <Trophy size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen resultater funnet
               </p>
             </div>

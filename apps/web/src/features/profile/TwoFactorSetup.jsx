@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Smartphone, Copy, CheckCircle, AlertCircle } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { authAPI } from '../../services/api';
 
 const TwoFactorSetup = ({ onComplete, onCancel }) => {
@@ -75,17 +74,17 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         height: '80px',
         margin: '0 auto 24px',
         borderRadius: '50%',
-        backgroundColor: `${tokens.colors.primary}15`,
+        backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Shield size={40} color={tokens.colors.primary} />
+        <Shield size={40} color={'var(--accent)'} />
       </div>
 
       <h2 style={{
-        ...tokens.typography.title2,
-        color: tokens.colors.charcoal,
+        fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
@@ -93,8 +92,8 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
       </h2>
 
       <p style={{
-        ...tokens.typography.subheadline,
-        color: tokens.colors.steel,
+        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+        color: 'var(--text-secondary)',
         marginBottom: '24px',
         textAlign: 'center',
         lineHeight: '24px',
@@ -104,13 +103,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
 
       <div style={{
         padding: '20px',
-        backgroundColor: tokens.colors.snow,
-        borderRadius: tokens.radius.md,
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
         <h3 style={{
-          ...tokens.typography.headline,
-          color: tokens.colors.charcoal,
+          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+          color: 'var(--text-primary)',
           marginBottom: '16px',
         }}>
           Slik fungerer det:
@@ -118,8 +117,8 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         <ol style={{
           margin: 0,
           paddingLeft: '20px',
-          ...tokens.typography.subheadline,
-          color: tokens.colors.steel,
+          fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+          color: 'var(--text-secondary)',
         }}>
           <li style={{ marginBottom: '12px' }}>Skann QR-koden med autentiseringsappen din</li>
           <li style={{ marginBottom: '12px' }}>Skriv inn 6-sifret kode fra appen</li>
@@ -134,16 +133,16 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
           style={{
             flex: 1,
             padding: '14px',
-            ...tokens.typography.headline,
-            color: tokens.colors.white,
-            backgroundColor: tokens.colors.primary,
+            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+            color: 'var(--bg-primary)',
+            backgroundColor: 'var(--accent)',
             border: 'none',
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
             transition: 'background-color 0.2s',
           }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primaryLight}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primary}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
         >
           Kom i gang
         </button>
@@ -153,11 +152,11 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
             style={{
               flex: 1,
               padding: '14px',
-              ...tokens.typography.headline,
-              color: tokens.colors.steel,
-              backgroundColor: tokens.colors.snow,
-              border: `1px solid ${tokens.colors.mist}`,
-              borderRadius: tokens.radius.md,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-secondary)',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-default)',
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
             }}
           >
@@ -171,8 +170,8 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
   const renderStep2 = () => (
     <div>
       <h2 style={{
-        ...tokens.typography.title2,
-        color: tokens.colors.charcoal,
+        fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
@@ -180,8 +179,8 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
       </h2>
 
       <p style={{
-        ...tokens.typography.subheadline,
-        color: tokens.colors.steel,
+        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+        color: 'var(--text-secondary)',
         marginBottom: '24px',
         textAlign: 'center',
       }}>
@@ -192,22 +191,22 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         <div style={{
           padding: '60px',
           textAlign: 'center',
-          backgroundColor: tokens.colors.snow,
-          borderRadius: tokens.radius.md,
+          backgroundColor: 'var(--bg-secondary)',
+          borderRadius: 'var(--radius-md)',
           marginBottom: '24px',
         }}>
           <div style={{
             width: '40px',
             height: '40px',
             margin: '0 auto',
-            border: `3px solid ${tokens.colors.primary}`,
+            border: '3px solid var(--accent)',
             borderTopColor: 'transparent',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }} />
           <p style={{
-            ...tokens.typography.subheadline,
-            color: tokens.colors.steel,
+            fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+            color: 'var(--text-secondary)',
             marginTop: '16px',
           }}>
             Genererer QR-kode...
@@ -220,9 +219,9 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         <>
           <div style={{
             padding: '24px',
-            backgroundColor: tokens.colors.white,
-            border: `2px solid ${tokens.colors.mist}`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-primary)',
+            border: '2px solid var(--border-default)',
+            borderRadius: 'var(--radius-md)',
             textAlign: 'center',
             marginBottom: '20px',
           }}>
@@ -240,13 +239,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
 
           <div style={{
             padding: '16px',
-            backgroundColor: tokens.colors.snow,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
             marginBottom: '24px',
           }}>
             <p style={{
-              ...tokens.typography.footnote,
-              color: tokens.colors.steel,
+              fontSize: '13px', lineHeight: '18px',
+              color: 'var(--text-secondary)',
               marginBottom: '8px',
             }}>
               Kan ikke skanne? Skriv inn denne koden manuelt:
@@ -255,12 +254,12 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
               <code style={{
                 flex: 1,
                 padding: '12px',
-                backgroundColor: tokens.colors.white,
-                border: `1px solid ${tokens.colors.mist}`,
-                borderRadius: tokens.radius.sm,
-                ...tokens.typography.subheadline,
+                backgroundColor: 'var(--bg-primary)',
+                border: '1px solid var(--border-default)',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '15px', lineHeight: '20px', fontWeight: 600,
                 fontFamily: 'monospace',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
               }}>
                 {secretKey}
               </code>
@@ -269,14 +268,14 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
                 aria-label="Kopier nøkkel"
                 style={{
                   padding: '12px',
-                  backgroundColor: copied ? tokens.colors.success : tokens.colors.white,
-                  border: `1px solid ${copied ? tokens.colors.success : tokens.colors.mist}`,
-                  borderRadius: tokens.radius.sm,
+                  backgroundColor: copied ? 'var(--success)' : 'var(--bg-primary)',
+                  border: `1px solid ${copied ? 'var(--success)' : 'var(--border-default)'}`,
+                  borderRadius: 'var(--radius-sm)',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                 }}
               >
-                {copied ? <CheckCircle size={20} color={tokens.colors.white} /> : <Copy size={20} color={tokens.colors.steel} />}
+                {copied ? <CheckCircle size={20} color={'var(--bg-primary)'} /> : <Copy size={20} color={'var(--text-secondary)'} />}
               </button>
             </div>
           </div>
@@ -289,19 +288,19 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         style={{
           width: '100%',
           padding: '14px',
-          ...tokens.typography.headline,
-          color: tokens.colors.white,
-          backgroundColor: loading ? tokens.colors.steel : tokens.colors.primary,
+          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+          color: 'var(--bg-primary)',
+          backgroundColor: loading ? 'var(--text-secondary)' : 'var(--accent)',
           border: 'none',
-          borderRadius: tokens.radius.md,
+          borderRadius: 'var(--radius-md)',
           cursor: loading ? 'not-allowed' : 'pointer',
           transition: 'background-color 0.2s',
         }}
         onMouseEnter={(e) => {
-          if (!loading) e.currentTarget.style.backgroundColor = tokens.colors.primaryLight;
+          if (!loading) e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
         }}
         onMouseLeave={(e) => {
-          if (!loading) e.currentTarget.style.backgroundColor = tokens.colors.primary;
+          if (!loading) e.currentTarget.style.backgroundColor = 'var(--accent)';
         }}
       >
         Neste: Verifiser
@@ -316,17 +315,17 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         height: '80px',
         margin: '0 auto 24px',
         borderRadius: '50%',
-        backgroundColor: `${tokens.colors.primary}15`,
+        backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Smartphone size={40} color={tokens.colors.primary} />
+        <Smartphone size={40} color={'var(--accent)'} />
       </div>
 
       <h2 style={{
-        ...tokens.typography.title2,
-        color: tokens.colors.charcoal,
+        fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
@@ -334,8 +333,8 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
       </h2>
 
       <p style={{
-        ...tokens.typography.subheadline,
-        color: tokens.colors.steel,
+        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+        color: 'var(--text-secondary)',
         marginBottom: '24px',
         textAlign: 'center',
       }}>
@@ -350,12 +349,12 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
             alignItems: 'center',
             gap: '12px',
             padding: '16px',
-            backgroundColor: `${tokens.colors.error}10`,
-            border: `1px solid ${tokens.colors.error}30`,
-            borderRadius: tokens.radius.md,
-            color: tokens.colors.error,
+            backgroundColor: 'rgba(var(--error-rgb), 0.1)',
+            border: '1px solid rgba(var(--error-rgb), 0.3)',
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--error)',
             marginBottom: '24px',
-            ...tokens.typography.subheadline,
+            fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           }}
         >
           <AlertCircle size={20} />
@@ -383,16 +382,16 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
             fontFamily: 'monospace',
             textAlign: 'center',
             letterSpacing: '8px',
-            border: `2px solid ${error ? tokens.colors.error : tokens.colors.mist}`,
-            borderRadius: tokens.radius.md,
+            border: `2px solid ${error ? 'var(--error)' : 'var(--border-default)'}`,
+            borderRadius: 'var(--radius-md)',
             outline: 'none',
-            backgroundColor: loading ? tokens.colors.cloud : tokens.colors.white,
+            backgroundColor: loading ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
           }}
           onFocus={(e) => {
-            if (!error) e.target.style.borderColor = tokens.colors.primary;
+            if (!error) e.target.style.borderColor = 'var(--accent)';
           }}
           onBlur={(e) => {
-            if (!error) e.target.style.borderColor = tokens.colors.mist;
+            if (!error) e.target.style.borderColor = 'var(--border-default)';
           }}
         />
       </div>
@@ -404,11 +403,11 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
           style={{
             flex: 1,
             padding: '14px',
-            ...tokens.typography.headline,
-            color: tokens.colors.steel,
-            backgroundColor: tokens.colors.snow,
-            border: `1px solid ${tokens.colors.mist}`,
-            borderRadius: tokens.radius.md,
+            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+            color: 'var(--text-secondary)',
+            backgroundColor: 'var(--bg-secondary)',
+            border: '1px solid var(--border-default)',
+            borderRadius: 'var(--radius-md)',
             cursor: loading ? 'not-allowed' : 'pointer',
           }}
         >
@@ -420,22 +419,22 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
           style={{
             flex: 1,
             padding: '14px',
-            ...tokens.typography.headline,
-            color: tokens.colors.white,
-            backgroundColor: loading || verificationCode.length !== 6 ? tokens.colors.steel : tokens.colors.primary,
+            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+            color: 'var(--bg-primary)',
+            backgroundColor: loading || verificationCode.length !== 6 ? 'var(--text-secondary)' : 'var(--accent)',
             border: 'none',
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: loading || verificationCode.length !== 6 ? 'not-allowed' : 'pointer',
             transition: 'background-color 0.2s',
           }}
           onMouseEnter={(e) => {
             if (!loading && verificationCode.length === 6) {
-              e.currentTarget.style.backgroundColor = tokens.colors.primaryLight;
+              e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
             }
           }}
           onMouseLeave={(e) => {
             if (!loading && verificationCode.length === 6) {
-              e.currentTarget.style.backgroundColor = tokens.colors.primary;
+              e.currentTarget.style.backgroundColor = 'var(--accent)';
             }
           }}
         >
@@ -452,17 +451,17 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         height: '80px',
         margin: '0 auto 24px',
         borderRadius: '50%',
-        backgroundColor: `${tokens.colors.success}15`,
+        backgroundColor: 'rgba(var(--success-rgb), 0.15)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <CheckCircle size={40} color={tokens.colors.success} />
+        <CheckCircle size={40} color={'var(--success)'} />
       </div>
 
       <h2 style={{
-        ...tokens.typography.title2,
-        color: tokens.colors.charcoal,
+        fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
@@ -470,8 +469,8 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
       </h2>
 
       <p style={{
-        ...tokens.typography.subheadline,
-        color: tokens.colors.steel,
+        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+        color: 'var(--text-secondary)',
         marginBottom: '24px',
         textAlign: 'center',
       }}>
@@ -480,8 +479,8 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
 
       <div style={{
         padding: '20px',
-        backgroundColor: tokens.colors.snow,
-        borderRadius: tokens.radius.md,
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
         <div style={{
@@ -494,13 +493,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
               key={index}
               style={{
                 padding: '12px',
-                backgroundColor: tokens.colors.white,
-                border: `1px solid ${tokens.colors.mist}`,
-                borderRadius: tokens.radius.sm,
+                backgroundColor: 'var(--bg-primary)',
+                border: '1px solid var(--border-default)',
+                borderRadius: 'var(--radius-sm)',
                 textAlign: 'center',
                 fontFamily: 'monospace',
-                ...tokens.typography.subheadline,
-                color: tokens.colors.charcoal,
+                fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+                color: 'var(--text-primary)',
               }}
             >
               {code}
@@ -511,14 +510,14 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
 
       <div style={{
         padding: '16px',
-        backgroundColor: `${tokens.colors.warning}15`,
-        border: `1px solid ${tokens.colors.warning}30`,
-        borderRadius: tokens.radius.md,
+        backgroundColor: 'rgba(var(--warning-rgb), 0.15)',
+        border: '1px solid rgba(var(--warning-rgb), 0.3)',
+        borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
         <p style={{
-          ...tokens.typography.footnote,
-          color: tokens.colors.charcoal,
+          fontSize: '13px', lineHeight: '18px',
+          color: 'var(--text-primary)',
           margin: 0,
         }}>
           <strong>Viktig:</strong> Hver backup-kode kan kun brukes én gang. Last ned eller skriv ut kodene og lagre dem sikkert.
@@ -530,16 +529,16 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         style={{
           width: '100%',
           padding: '14px',
-          ...tokens.typography.headline,
-          color: tokens.colors.white,
-          backgroundColor: tokens.colors.primary,
+          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+          color: 'var(--bg-primary)',
+          backgroundColor: 'var(--accent)',
           border: 'none',
-          borderRadius: tokens.radius.md,
+          borderRadius: 'var(--radius-md)',
           cursor: 'pointer',
           transition: 'background-color 0.2s',
         }}
-        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primaryLight}
-        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primary}
+        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)'}
+        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
       >
         Fullfør
       </button>
@@ -551,10 +550,10 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
       maxWidth: '500px',
       margin: '0 auto',
       padding: '32px',
-      backgroundColor: tokens.colors.white,
-      borderRadius: tokens.radius.lg,
-      boxShadow: tokens.shadows.elevated,
-      fontFamily: tokens.typography.fontFamily,
+      backgroundColor: 'var(--bg-primary)',
+      borderRadius: 'var(--radius-lg)',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+      fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
     }}>
       {step === 1 && renderStep1()}
       {step === 2 && renderStep2()}

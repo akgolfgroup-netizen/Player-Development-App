@@ -18,10 +18,15 @@
 
 import React, { useState, useEffect } from "react";
 import { Bell, CheckCircle, Clock, AlertCircle, ChevronRight, Filter } from "lucide-react";
-import { tokens } from "../../design-tokens";
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
-// Typography from design tokens
-const typography = tokens.typography;
+// Typography
+const typography = {
+  title1: { fontSize: '28px', lineHeight: '34px', fontWeight: 700 },
+  body: { fontSize: '15px', lineHeight: '20px', fontWeight: 400 },
+  caption: { fontSize: '12px', lineHeight: '16px', fontWeight: 400 },
+};
 
 //////////////////////////////
 // 1. TYPES
@@ -105,15 +110,15 @@ const formatTimeAgo = (isoString: string): string => {
 const getAlertConfig = (type: Alert["type"]) => {
   switch (type) {
     case "proof_uploaded":
-      return { icon: CheckCircle, color: tokens.colors.success, label: "Dokumentasjon" };
+      return { icon: CheckCircle, color: 'var(--success)', label: "Dokumentasjon" };
     case "plan_pending":
-      return { icon: Clock, color: tokens.colors.warning, label: "Treningsplan" };
+      return { icon: Clock, color: 'var(--warning)', label: "Treningsplan" };
     case "note_request":
-      return { icon: AlertCircle, color: tokens.colors.primary, label: "Tilbakemelding" };
+      return { icon: AlertCircle, color: 'var(--accent)', label: "Tilbakemelding" };
     case "milestone":
-      return { icon: Bell, color: tokens.colors.gold, label: "Milepæl" };
+      return { icon: Bell, color: 'var(--achievement)', label: "Milepæl" };
     default:
-      return { icon: Bell, color: tokens.colors.steel, label: "Varsel" };
+      return { icon: Bell, color: 'var(--text-secondary)', label: "Varsel" };
   }
 };
 
@@ -176,7 +181,7 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
       aria-label="Coach alerts"
       style={{
         minHeight: "100vh",
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
@@ -188,14 +193,14 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
               position: "relative",
               width: 48,
               height: 48,
-              borderRadius: tokens.borderRadius.md,
-              backgroundColor: `${tokens.colors.primary}10`,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Bell size={24} color={tokens.colors.primary} />
+            <Bell size={24} color={'var(--accent)'} />
             {unreadCount > 0 && (
               <div
                 style={{
@@ -205,8 +210,8 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                   width: 20,
                   height: 20,
                   borderRadius: "50%",
-                  backgroundColor: tokens.colors.error,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--error)',
+                  color: 'var(--bg-primary)',
                   fontSize: "11px",
                   fontWeight: 700,
                   display: "flex",
@@ -219,10 +224,10 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
             )}
           </div>
           <div>
-            <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+            <h1 style={{ ...typography.title1 as React.CSSProperties, color: 'var(--text-primary)', margin: 0 }}>
               Varsler
             </h1>
-            <p style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, margin: 0, marginTop: "4px" }}>
+            <p style={{ ...typography.caption as React.CSSProperties, color: 'var(--text-secondary)', margin: 0, marginTop: "4px" }}>
               {unreadCount} uleste av {alerts.length} totalt
             </p>
           </div>
@@ -239,12 +244,12 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
               alignItems: "center",
               gap: "6px",
               padding: "10px 16px",
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               border: "none",
-              backgroundColor: filter === "all" ? tokens.colors.primary : tokens.colors.white,
-              color: filter === "all" ? tokens.colors.white : tokens.colors.charcoal,
+              backgroundColor: filter === "all" ? 'var(--accent)' : 'var(--bg-primary)',
+              color: filter === "all" ? 'var(--bg-primary)' : 'var(--text-primary)',
               cursor: "pointer",
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
               ...typography.body as React.CSSProperties,
               fontWeight: 500,
             }}
@@ -259,12 +264,12 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
               alignItems: "center",
               gap: "6px",
               padding: "10px 16px",
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               border: "none",
-              backgroundColor: filter === "unread" ? tokens.colors.primary : tokens.colors.white,
-              color: filter === "unread" ? tokens.colors.white : tokens.colors.charcoal,
+              backgroundColor: filter === "unread" ? 'var(--accent)' : 'var(--bg-primary)',
+              color: filter === "unread" ? 'var(--bg-primary)' : 'var(--text-primary)',
               cursor: "pointer",
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
               ...typography.body as React.CSSProperties,
               fontWeight: 500,
             }}
@@ -274,9 +279,9 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
               <span
                 style={{
                   padding: "2px 8px",
-                  borderRadius: tokens.borderRadius.sm,
-                  backgroundColor: filter === "unread" ? "rgba(255,255,255,0.2)" : `${tokens.colors.error}15`,
-                  color: filter === "unread" ? tokens.colors.white : tokens.colors.error,
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: filter === "unread" ? "rgba(255,255,255,0.2)" : 'rgba(var(--error-rgb), 0.15)',
+                  color: filter === "unread" ? 'var(--bg-primary)' : 'var(--error)',
                   fontSize: "12px",
                   fontWeight: 600,
                 }}
@@ -292,31 +297,31 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
       <div style={{ padding: "0 24px 24px" }}>
         {loading ? (
           <div style={{ padding: "48px 24px", textAlign: "center" }}>
-            <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel }}>
+            <p style={{ ...typography.body as React.CSSProperties, color: 'var(--text-secondary)' }}>
               Laster varsler...
             </p>
           </div>
         ) : filteredAlerts.length === 0 ? (
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
-              boxShadow: tokens.shadows.card,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: 'var(--shadow-card)',
               padding: "48px 24px",
               textAlign: "center",
             }}
           >
-            <Bell size={40} color={tokens.colors.mist} style={{ marginBottom: "12px" }} />
-            <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel }}>
+            <Bell size={40} color={'var(--border-default)'} style={{ marginBottom: "12px" }} />
+            <p style={{ ...typography.body as React.CSSProperties, color: 'var(--text-secondary)' }}>
               {filter === "unread" ? "Ingen uleste varsler" : "Ingen varsler"}
             </p>
           </div>
         ) : (
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
-              boxShadow: tokens.shadows.card,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: 'var(--shadow-card)',
               overflow: "hidden",
             }}
           >
@@ -335,9 +340,9 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                     alignItems: "center",
                     gap: "16px",
                     padding: "16px 20px",
-                    backgroundColor: alert.read ? "transparent" : `${tokens.colors.primary}05`,
+                    backgroundColor: alert.read ? "transparent" : `${'var(--accent)'}05`,
                     border: "none",
-                    borderBottom: index < filteredAlerts.length - 1 ? `1px solid ${tokens.colors.mist}` : "none",
+                    borderBottom: index < filteredAlerts.length - 1 ? `1px solid ${'var(--border-default)'}` : "none",
                     cursor: "pointer",
                     textAlign: "left",
                     transition: "background-color 0.2s ease",
@@ -348,7 +353,7 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                     style={{
                       width: 44,
                       height: 44,
-                      borderRadius: tokens.borderRadius.md,
+                      borderRadius: 'var(--radius-md)',
                       backgroundColor: `${config.color}15`,
                       display: "flex",
                       alignItems: "center",
@@ -366,7 +371,7 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                         style={{
                           ...typography.body as React.CSSProperties,
                           fontWeight: alert.read ? 400 : 600,
-                          color: tokens.colors.charcoal,
+                          color: 'var(--text-primary)',
                         }}
                       >
                         {alert.athleteName}
@@ -374,7 +379,7 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                       <span
                         style={{
                           padding: "2px 8px",
-                          borderRadius: tokens.borderRadius.sm,
+                          borderRadius: 'var(--radius-sm)',
                           backgroundColor: `${config.color}15`,
                           color: config.color,
                           ...typography.caption as React.CSSProperties,
@@ -387,7 +392,7 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                     <p
                       style={{
                         ...typography.caption as React.CSSProperties,
-                        color: tokens.colors.steel,
+                        color: 'var(--text-secondary)',
                         margin: 0,
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -400,7 +405,7 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
 
                   {/* Time & Arrow */}
                   <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
-                    <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}>
+                    <span style={{ ...typography.caption as React.CSSProperties, color: 'var(--text-secondary)' }}>
                       {formatTimeAgo(alert.createdAt)}
                     </span>
                     {!alert.read && (
@@ -409,11 +414,11 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                           width: 8,
                           height: 8,
                           borderRadius: "50%",
-                          backgroundColor: tokens.colors.primary,
+                          backgroundColor: 'var(--accent)',
                         }}
                       />
                     )}
-                    <ChevronRight size={18} color={tokens.colors.steel} />
+                    <ChevronRight size={18} color={'var(--text-secondary)'} />
                   </div>
                 </button>
               );

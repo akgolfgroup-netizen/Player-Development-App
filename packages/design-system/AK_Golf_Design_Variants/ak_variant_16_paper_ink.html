@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Golf – Variant 16: Paper & Ink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      /* PAPER & INK - Editorial, typographic, timeless */
+      --paper: #FDFBF7;
+      --paper-warm: #F7F3EC;
+      --ink: #1A1A1A;
+      --ink-light: #4A4A4A;
+      --ink-muted: #8A8A8A;
+      --ink-faint: #CACACA;
+      
+      --accent: #C41E3A;
+      --accent-light: #E8C4C4;
+      
+      --font-serif: 'Libre Baskerville', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    html { font-family: var(--font-sans); background: var(--paper-warm); color: var(--ink); -webkit-font-smoothing: antialiased; }
+    
+    body { 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      padding: 60px 20px; 
+      gap: 40px;
+    }
+
+    .page-header { text-align: center; max-width: 600px; }
+    .page-header h1 { 
+      font-family: var(--font-serif);
+      font-size: 48px; 
+      font-weight: 700;
+      font-style: italic;
+      margin-bottom: 16px; 
+      letter-spacing: -0.02em;
+    }
+    .page-header p { font-size: 15px; color: var(--ink-light); line-height: 1.7; }
+    .tags { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+    .tag { 
+      background: transparent;
+      border-bottom: 1px solid var(--ink);
+      color: var(--ink); 
+      padding: 4px 0;
+      font-size: 11px; 
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .mockup-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
+    .mockup-container { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .mockup-label { 
+      font-family: var(--font-serif);
+      font-size: 12px; 
+      font-style: italic;
+      color: var(--ink-muted);
+    }
+
+    .device { 
+      width: 340px; 
+      height: 720px; 
+      background: var(--ink);
+      border-radius: 54px; 
+      padding: 10px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
+    }
+    
+    .screen { 
+      width: 100%; 
+      height: 100%; 
+      background: var(--paper); 
+      border-radius: 46px; 
+      overflow: hidden; 
+      position: relative;
+    }
+    
+    .dynamic-island {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 36px;
+      background: var(--ink);
+      border-radius: 20px;
+      z-index: 100;
+    }
+    
+    .home-indicator { 
+      position: absolute; 
+      bottom: 8px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      width: 134px; 
+      height: 5px; 
+      background: var(--ink);
+      border-radius: 3px; 
+      z-index: 100;
+    }
+
+    .app { 
+      height: 100%; 
+      display: flex; 
+      flex-direction: column; 
+      padding-top: 60px; 
+      padding-bottom: 90px; 
+      overflow-y: auto; 
+      scrollbar-width: none;
+    }
+    .app::-webkit-scrollbar { display: none; }
+
+    /* HEADER - Masthead style */
+    .header { 
+      padding: 20px 24px;
+      text-align: center;
+      border-bottom: 2px solid var(--ink);
+    }
+    .header-date {
+      font-size: 10px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .header-subtitle {
+      font-family: var(--font-serif);
+      font-size: 12px;
+      font-style: italic;
+      color: var(--ink-light);
+      margin-top: 4px;
+    }
+
+    /* SCORE - Editorial headline */
+    .score-section { 
+      padding: 32px 24px;
+      border-bottom: 1px solid var(--ink-faint);
+    }
+    .score-eyebrow {
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 8px;
+    }
+    .score-headline {
+      font-family: var(--font-serif);
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .score-deck {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-style: italic;
+      color: var(--ink-light);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .score-byline {
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+    .score-byline strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* Stats row - like pull quotes */
+    .stats-row {
+      display: flex;
+      border-top: 1px solid var(--ink-faint);
+      border-bottom: 1px solid var(--ink-faint);
+    }
+    .stat-item {
+      flex: 1;
+      padding: 20px 16px;
+      text-align: center;
+      border-right: 1px solid var(--ink-faint);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 10px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* SECTION */
+    .section { padding: 24px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--ink-faint);
+    }
+    .section-title {
+      font-size: 10px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      white-space: nowrap;
+    }
+
+    /* ARTICLE CARDS */
+    .article-card {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--ink-faint);
+    }
+    .article-card:last-child { border-bottom: none; }
+    .article-number {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ink-faint);
+      width: 40px;
+      flex-shrink: 0;
+    }
+    .article-content { flex: 1; }
+    .article-headline {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .article-summary {
+      font-size: 13px;
+      color: var(--ink-light);
+      line-height: 1.5;
+    }
+    .article-meta {
+      font-size: 11px;
+      color: var(--ink-muted);
+      margin-top: 8px;
+    }
+    .article-tag {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* PROGRESS - Typographic */
+    .progress-section {
+      padding: 24px;
+      background: var(--paper-warm);
+    }
+    .progress-item {
+      margin-bottom: 16px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .progress-label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .progress-value {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .progress-bar {
+      height: 3px;
+      background: var(--ink-faint);
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--ink);
+    }
+
+    /* TAB BAR - Editorial footer */
+    .tab-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: var(--paper);
+      border-top: 2px solid var(--ink);
+      display: flex;
+      z-index: 10;
+    }
+    .tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: var(--ink-muted);
+      border-right: 1px solid var(--ink-faint);
+    }
+    .tab:last-child { border-right: none; }
+    .tab.active { 
+      color: var(--ink);
+      background: var(--paper-warm);
+    }
+    .tab-icon { width: 22px; height: 22px; }
+    .tab-label { 
+      font-size: 9px; 
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Paper & Ink</h1>
+  <p>Redaksjonelt design inspirert av klassiske aviser og magasiner. Tidløs typografi, tydelig hierarki og sofistikert enkelhet.</p>
+  <div class="tags">
+    <span class="tag">Editorial</span>
+    <span class="tag">Typography</span>
+    <span class="tag">Classic</span>
+  </div>
+</header>
+
+<div class="mockup-grid">
+
+  <!-- HOME -->
+  <div class="mockup-container">
+    <span class="mockup-label">Forsiden</span>
+    <div class="device">
+      <div class="screen">
+        <div class="dynamic-island"></div>
+        <div class="home-indicator"></div>
+        <div class="app">
+          
+          <div class="header">
+            <div class="header-date">Onsdag 24. desember 2025</div>
+            <div class="header-title">AK Golf</div>
+            <div class="header-subtitle">Din daglige treningsjournal</div>
+          </div>
+
+          <div class="score-section">
+            <div class="score-eyebrow">Dagens status</div>
+            <div class="score-headline">87</div>
+            <div class="score-deck">Du er klar for en ny treningsøkt. Swing-scoren har økt 3% denne uken.</div>
+            <div class="score-byline">Oppdatert <strong>kl. 08:45</strong></div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-value">92</div>
+              <div class="stat-label">Swing</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">78</div>
+              <div class="stat-label">Short</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">85</div>
+              <div class="stat-label">Mental</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-rule"></span>
+              <span class="section-title">Dagens program</span>
+              <span class="section-rule"></span>
+            </div>
+            
+            <div class="article-card">
+              <div class="article-number">01</div>
+              <div class="article-content">
+                <div class="article-headline">Short Game Focus</div>
+                <div class="article-summary">Chipping og pitching med fokus på kontroll og presisjon.</div>
+                <div class="article-meta"><span class="article-tag">Nå</span> · 20 min</div>
+              </div>
+            </div>
+            
+            <div class="article-card">
+              <div class="article-number">02</div>
+              <div class="article-content">
+                <div class="article-headline">Driver Teknikk</div>
+                <div class="article-summary">Grunnleggende swing-mekanikk for maksimal lengde.</div>
+                <div class="article-meta">I morgen · 45 min</div>
+              </div>
+            </div>
+            
+            <div class="article-card">
+              <div class="article-number">03</div>
+              <div class="article-content">
+                <div class="article-headline">Mental Trening</div>
+                <div class="article-summary">Visualisering og fokusøvelser for bedre konsentrasjon.</div>
+                <div class="article-meta">Fredag · 15 min</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <span class="tab-label">Hjem</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg></div>
+            <span class="tab-label">Tren</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+            <span class="tab-label">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="mockup-container">
+    <span class="mockup-label">Statistikk</span>
+    <div class="device">
+      <div class="screen">
+        <div class="dynamic-island"></div>
+        <div class="home-indicator"></div>
+        <div class="app">
+          
+          <div class="header">
+            <div class="header-date">Siste 30 dager</div>
+            <div class="header-title">Statistikk</div>
+            <div class="header-subtitle">Din fremgang i tall</div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stat-item">
+              <div class="stat-value">24</div>
+              <div class="stat-label">Økter</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">12.5h</div>
+              <div class="stat-label">Tid</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">89%</div>
+              <div class="stat-label">Fullført</div>
+            </div>
+          </div>
+
+          <div class="progress-section">
+            <div class="section-header" style="padding:0;margin-bottom:20px">
+              <span class="section-rule"></span>
+              <span class="section-title">Kategorier</span>
+              <span class="section-rule"></span>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-header">
+                <span class="progress-label">Driving</span>
+                <span class="progress-value">92%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:92%"></div></div>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-header">
+                <span class="progress-label">Approach</span>
+                <span class="progress-value">81%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:81%"></div></div>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-header">
+                <span class="progress-label">Short Game</span>
+                <span class="progress-value">74%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:74%"></div></div>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-header">
+                <span class="progress-label">Putting</span>
+                <span class="progress-value">68%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:68%"></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-rule"></span>
+              <span class="section-title">Høydepunkter</span>
+              <span class="section-rule"></span>
+            </div>
+            
+            <div class="article-card">
+              <div class="article-number" style="color:var(--accent)">7</div>
+              <div class="article-content">
+                <div class="article-headline">Dager på rad</div>
+                <div class="article-summary">Din lengste streak denne måneden.</div>
+              </div>
+            </div>
+            
+            <div class="article-card">
+              <div class="article-number" style="color:var(--accent)">+4.2%</div>
+              <div class="article-content">
+                <div class="article-headline">Ukentlig vekst</div>
+                <div class="article-summary">Bedre enn 85% av brukerne.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <span class="tab-label">Hjem</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg></div>
+            <span class="tab-label">Tren</span>
+          </div>
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+            <span class="tab-label">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

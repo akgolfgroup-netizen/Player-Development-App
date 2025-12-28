@@ -1,3 +1,13 @@
+/**
+ * AK Golf Academy - Coach Athlete Status
+ * Design System v3.0 - Semantic CSS Variables
+ *
+ * Real-time overview of player status including:
+ * - Training activity, sleep, energy, stress, injuries
+ * - Weekly training progress
+ * - Alert notifications
+ */
+
 import React, { useState, useMemo } from 'react';
 import {
   Activity,
@@ -15,7 +25,9 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
+import StateCard from '../../ui/composites/StateCard';
 
 interface PlayerStatus {
   id: string;
@@ -51,7 +63,7 @@ const mockPlayerStatuses: PlayerStatus[] = [
     metrics: {
       training: { value: 85, status: 'good', label: '8.5t denne uka' },
       sleep: { value: 90, status: 'good', label: '7.5t snitt' },
-      energy: { value: 80, status: 'good', label: 'Høy' },
+      energy: { value: 80, status: 'good', label: 'Hoy' },
       stress: { value: 25, status: 'good', label: 'Lav' },
       injury: { value: false, status: 'good', label: 'Ingen skader' }
     },
@@ -71,12 +83,12 @@ const mockPlayerStatuses: PlayerStatus[] = [
       training: { value: 20, status: 'critical', label: '1t denne uka' },
       sleep: { value: 50, status: 'warning', label: '5.5t snitt' },
       energy: { value: 40, status: 'warning', label: 'Lav' },
-      stress: { value: 70, status: 'warning', label: 'Høy' },
+      stress: { value: 70, status: 'warning', label: 'Hoy' },
       injury: { value: false, status: 'good', label: 'Ingen skader' }
     },
     alerts: [
       { type: 'critical', message: '28 dager siden sist aktivitet' },
-      { type: 'warning', message: 'Rapportert høyt stressnivå' }
+      { type: 'warning', message: 'Rapportert hoyt stressniva' }
     ],
     weeklyTrainingMinutes: 60,
     weeklyGoal: 300
@@ -91,7 +103,7 @@ const mockPlayerStatuses: PlayerStatus[] = [
     metrics: {
       training: { value: 95, status: 'good', label: '10t denne uka' },
       sleep: { value: 85, status: 'good', label: '7t snitt' },
-      energy: { value: 90, status: 'good', label: 'Veldig høy' },
+      energy: { value: 90, status: 'good', label: 'Veldig hoy' },
       stress: { value: 20, status: 'good', label: 'Lav' },
       injury: { value: false, status: 'good', label: 'Ingen skader' }
     },
@@ -132,12 +144,12 @@ const mockPlayerStatuses: PlayerStatus[] = [
       training: { value: 50, status: 'warning', label: '3t denne uka' },
       sleep: { value: 45, status: 'warning', label: '5t snitt' },
       energy: { value: 40, status: 'warning', label: 'Lav' },
-      stress: { value: 65, status: 'warning', label: 'Forhøyet' },
-      injury: { value: true, status: 'critical', label: 'Håndledd' }
+      stress: { value: 65, status: 'warning', label: 'Forhoyet' },
+      injury: { value: true, status: 'critical', label: 'Handledd' }
     },
     alerts: [
-      { type: 'critical', message: 'Rapportert skade: Håndledd' },
-      { type: 'warning', message: 'Lite søvn siste uke' }
+      { type: 'critical', message: 'Rapportert skade: Handledd' },
+      { type: 'warning', message: 'Lite sovn siste uke' }
     ],
     weeklyTrainingMinutes: 180,
     weeklyGoal: 480
@@ -152,7 +164,7 @@ const mockPlayerStatuses: PlayerStatus[] = [
     metrics: {
       training: { value: 75, status: 'good', label: '6t denne uka' },
       sleep: { value: 80, status: 'good', label: '7t snitt' },
-      energy: { value: 75, status: 'good', label: 'Høy' },
+      energy: { value: 75, status: 'good', label: 'Hoy' },
       stress: { value: 30, status: 'good', label: 'Lav' },
       injury: { value: false, status: 'good', label: 'Ingen skader' }
     },
@@ -200,19 +212,19 @@ export const CoachAthleteStatus: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'green': case 'good': return { bg: 'rgba(34, 197, 94, 0.1)', text: '#16a34a', border: '#16a34a' };
-      case 'yellow': case 'warning': return { bg: 'rgba(245, 158, 11, 0.1)', text: '#d97706', border: '#f59e0b' };
-      case 'red': case 'critical': return { bg: 'rgba(239, 68, 68, 0.1)', text: '#dc2626', border: '#ef4444' };
-      default: return { bg: '#f3f4f6', text: '#6b7280', border: '#e5e7eb' };
+      case 'green': case 'good': return { bg: 'rgba(var(--success-rgb), 0.1)', text: 'var(--success)', border: 'var(--success)' };
+      case 'yellow': case 'warning': return { bg: 'rgba(var(--warning-rgb), 0.1)', text: 'var(--warning)', border: 'var(--warning)' };
+      case 'red': case 'critical': return { bg: 'rgba(var(--error-rgb), 0.1)', text: 'var(--error)', border: 'var(--error)' };
+      default: return { bg: 'var(--bg-tertiary)', text: 'var(--text-secondary)', border: 'var(--border-default)' };
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'A': return { bg: '#dcfce7', text: '#166534' };
-      case 'B': return { bg: '#dbeafe', text: '#1e40af' };
-      case 'C': return { bg: '#fef3c7', text: '#92400e' };
-      default: return { bg: '#f3f4f6', text: '#374151' };
+      case 'A': return { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)' };
+      case 'B': return { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)' };
+      case 'C': return { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)' };
+      default: return { bg: 'var(--bg-tertiary)', text: 'var(--text-primary)' };
     }
   };
 
@@ -221,10 +233,10 @@ export const CoachAthleteStatus: React.FC = () => {
     const now = new Date();
     const diffHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
 
-    if (diffHours < 1) return 'Akkurat nå';
+    if (diffHours < 1) return 'Akkurat na';
     if (diffHours < 24) return `${diffHours}t siden`;
     const diffDays = Math.floor(diffHours / 24);
-    if (diffDays === 1) return 'I går';
+    if (diffDays === 1) return 'I gar';
     return `${diffDays} dager siden`;
   };
 
@@ -240,15 +252,15 @@ export const CoachAthleteStatus: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <div style={{
             width: '48px',
             height: '48px',
-            borderRadius: '12px',
-            background: `linear-gradient(135deg, ${designTokens.colors.primary[500]}, ${designTokens.colors.primary[600]})`,
+            borderRadius: 'var(--radius-md)',
+            background: 'var(--accent)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -259,14 +271,14 @@ export const CoachAthleteStatus: React.FC = () => {
             <h1 style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               margin: 0
             }}>
               Spillerstatus
             </h1>
             <p style={{
               fontSize: '14px',
-              color: designTokens.colors.text.secondary,
+              color: 'var(--text-secondary)',
               margin: 0
             }}>
               Sanntidsoversikt over spillernes tilstand og varsler
@@ -282,75 +294,75 @@ export const CoachAthleteStatus: React.FC = () => {
         gap: '12px',
         marginBottom: '24px'
       }}>
-        <div style={{
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '12px',
-          padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
-        }}>
-          <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: '0 0 4px 0' }}>
-            Totalt
-          </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: designTokens.colors.text.primary, margin: 0 }}>
-            {stats.total}
-          </p>
-        </div>
-        <div style={{
-          backgroundColor: 'rgba(34, 197, 94, 0.05)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: '1px solid rgba(34, 197, 94, 0.2)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-            <CheckCircle size={14} color="#16a34a" />
-            <p style={{ fontSize: '12px', color: '#16a34a', margin: 0 }}>Alt OK</p>
+        <Card variant="default" padding="none">
+          <div style={{ padding: '16px' }}>
+            <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
+              Totalt
+            </p>
+            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+              {stats.total}
+            </p>
           </div>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: '#16a34a', margin: 0 }}>
-            {stats.green}
-          </p>
-        </div>
-        <div style={{
-          backgroundColor: 'rgba(245, 158, 11, 0.05)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: '1px solid rgba(245, 158, 11, 0.2)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-            <Clock size={14} color="#d97706" />
-            <p style={{ fontSize: '12px', color: '#d97706', margin: 0 }}>Følg opp</p>
+        </Card>
+        <Card variant="default" padding="none">
+          <div style={{
+            padding: '16px',
+            backgroundColor: 'rgba(var(--success-rgb), 0.05)',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid rgba(var(--success-rgb), 0.2)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+              <CheckCircle size={14} style={{ color: 'var(--success)' }} />
+              <p style={{ fontSize: '12px', color: 'var(--success)', margin: 0 }}>Alt OK</p>
+            </div>
+            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--success)', margin: 0 }}>
+              {stats.green}
+            </p>
           </div>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: '#d97706', margin: 0 }}>
-            {stats.yellow}
-          </p>
-        </div>
-        <div style={{
-          backgroundColor: 'rgba(239, 68, 68, 0.05)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: '1px solid rgba(239, 68, 68, 0.2)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-            <AlertTriangle size={14} color="#dc2626" />
-            <p style={{ fontSize: '12px', color: '#dc2626', margin: 0 }}>Kritisk</p>
+        </Card>
+        <Card variant="default" padding="none">
+          <div style={{
+            padding: '16px',
+            backgroundColor: 'rgba(var(--warning-rgb), 0.05)',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid rgba(var(--warning-rgb), 0.2)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+              <Clock size={14} style={{ color: 'var(--warning)' }} />
+              <p style={{ fontSize: '12px', color: 'var(--warning)', margin: 0 }}>Folg opp</p>
+            </div>
+            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--warning)', margin: 0 }}>
+              {stats.yellow}
+            </p>
           </div>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: '#dc2626', margin: 0 }}>
-            {stats.red}
-          </p>
-        </div>
-        <div style={{
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '12px',
-          padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-            <Bell size={14} color={designTokens.colors.text.tertiary} />
-            <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: 0 }}>Varsler</p>
+        </Card>
+        <Card variant="default" padding="none">
+          <div style={{
+            padding: '16px',
+            backgroundColor: 'rgba(var(--error-rgb), 0.05)',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid rgba(var(--error-rgb), 0.2)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+              <AlertTriangle size={14} style={{ color: 'var(--error)' }} />
+              <p style={{ fontSize: '12px', color: 'var(--error)', margin: 0 }}>Kritisk</p>
+            </div>
+            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--error)', margin: 0 }}>
+              {stats.red}
+            </p>
           </div>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: designTokens.colors.text.primary, margin: 0 }}>
-            {stats.totalAlerts}
-          </p>
-        </div>
+        </Card>
+        <Card variant="default" padding="none">
+          <div style={{ padding: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+              <Bell size={14} style={{ color: 'var(--text-tertiary)' }} />
+              <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>Varsler</p>
+            </div>
+            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+              {stats.totalAlerts}
+            </p>
+          </div>
+        </Card>
       </div>
 
       {/* Search and Filter */}
@@ -368,53 +380,41 @@ export const CoachAthleteStatus: React.FC = () => {
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
+              color: 'var(--text-tertiary)'
             }}
           />
           <input
             type="text"
-            placeholder="Søk etter spiller..."
+            placeholder="Sok etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
               width: '100%',
               padding: '12px 12px 12px 40px',
-              borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-primary)',
               fontSize: '14px',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none'
             }}
           />
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           {[
-            { key: 'all', label: 'Alle', color: designTokens.colors.text.secondary },
-            { key: 'red', label: 'Kritisk', color: '#dc2626' },
-            { key: 'yellow', label: 'Følg opp', color: '#d97706' },
-            { key: 'green', label: 'OK', color: '#16a34a' }
+            { key: 'all', label: 'Alle' },
+            { key: 'red', label: 'Kritisk' },
+            { key: 'yellow', label: 'Folg opp' },
+            { key: 'green', label: 'OK' }
           ].map(filter => (
-            <button
+            <Button
               key={filter.key}
+              variant={statusFilter === filter.key ? 'primary' : 'ghost'}
+              size="sm"
               onClick={() => setStatusFilter(filter.key as typeof statusFilter)}
-              style={{
-                padding: '10px 16px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: statusFilter === filter.key
-                  ? filter.key === 'all' ? designTokens.colors.primary[500] : filter.color
-                  : designTokens.colors.background.card,
-                color: statusFilter === filter.key
-                  ? 'white'
-                  : designTokens.colors.text.secondary,
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
             >
               {filter.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -426,245 +426,211 @@ export const CoachAthleteStatus: React.FC = () => {
           const catColors = getCategoryColor(player.category);
 
           return (
-            <div
-              key={player.id}
-              style={{
-                backgroundColor: designTokens.colors.background.card,
-                borderRadius: '16px',
+            <Card key={player.id} variant="default" padding="none">
+              <div style={{
                 padding: '20px',
-                border: `1px solid ${statusColors.border}`,
-                borderLeft: `4px solid ${statusColors.border}`
-              }}
-            >
-              {/* Header Row */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    backgroundColor: statusColors.bg,
-                    border: `2px solid ${statusColors.border}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    color: statusColors.text
-                  }}>
-                    {player.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <h3 style={{
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        color: designTokens.colors.text.primary,
-                        margin: 0
-                      }}>
-                        {player.name}
-                      </h3>
-                      <span style={{
-                        fontSize: '10px',
-                        fontWeight: '600',
-                        padding: '2px 8px',
-                        borderRadius: '4px',
-                        backgroundColor: catColors.bg,
-                        color: catColors.text
-                      }}>
-                        Kat. {player.category}
-                      </span>
-                      <span style={{
-                        fontSize: '11px',
-                        color: designTokens.colors.text.tertiary
-                      }}>
-                        HCP {player.hcp}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
-                        Sist aktiv: {formatLastActive(player.lastActive)}
-                      </span>
-                      {player.upcomingSession && (
-                        <span style={{
-                          fontSize: '12px',
-                          color: designTokens.colors.primary[600],
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}>
-                          <Calendar size={12} />
-                          Neste økt: {new Date(player.upcomingSession).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button
-                    onClick={() => navigate(`/coach/messages/compose?to=${player.id}`)}
-                    style={{
-                      padding: '8px 14px',
-                      borderRadius: '8px',
-                      border: `1px solid ${designTokens.colors.border.light}`,
-                      backgroundColor: 'transparent',
-                      color: designTokens.colors.text.secondary,
-                      fontSize: '12px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}
-                  >
-                    <MessageCircle size={14} />
-                    Melding
-                  </button>
-                  <button
-                    onClick={() => navigate(`/coach/athletes/${player.id}`)}
-                    style={{
-                      padding: '8px 14px',
-                      borderRadius: '8px',
-                      border: 'none',
-                      backgroundColor: designTokens.colors.primary[500],
-                      color: 'white',
-                      fontSize: '12px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}
-                  >
-                    Se profil
-                    <ChevronRight size={14} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Metrics Row */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(5, 1fr)',
-                gap: '12px',
-                marginBottom: player.alerts.length > 0 ? '16px' : '0'
+                borderLeft: `4px solid ${statusColors.border}`,
+                borderRadius: 'var(--radius-lg)'
               }}>
-                {Object.entries(player.metrics).map(([key, metric]) => {
-                  const Icon = getMetricIcon(key);
-                  const typedMetric = metric as { value: number | boolean; status: 'good' | 'warning' | 'critical'; label: string };
-                  const metricColors = getStatusColor(typedMetric.status);
-                  return (
-                    <div key={key} style={{
-                      padding: '12px',
-                      backgroundColor: metricColors.bg,
-                      borderRadius: '10px',
-                      textAlign: 'center'
+                {/* Header Row */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    <div style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '50%',
+                      backgroundColor: statusColors.bg,
+                      border: `2px solid ${statusColors.border}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '18px',
+                      fontWeight: '600',
+                      color: statusColors.text
                     }}>
-                      <Icon size={18} color={metricColors.text} style={{ marginBottom: '6px' }} />
-                      <p style={{
-                        fontSize: '11px',
-                        color: metricColors.text,
-                        fontWeight: '500',
-                        margin: 0
-                      }}>
-                        {typedMetric.label}
-                      </p>
+                      {player.name.split(' ').map(n => n[0]).join('')}
                     </div>
-                  );
-                })}
-              </div>
-
-              {/* Weekly Training Progress */}
-              <div style={{
-                marginTop: '12px',
-                padding: '12px',
-                backgroundColor: designTokens.colors.background.secondary,
-                borderRadius: '10px'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '8px'
-                }}>
-                  <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
-                    Ukentlig trening
-                  </span>
-                  <span style={{ fontSize: '12px', fontWeight: '600', color: designTokens.colors.text.primary }}>
-                    {Math.round(player.weeklyTrainingMinutes / 60)}t / {Math.round(player.weeklyGoal / 60)}t
-                  </span>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                        <h3 style={{
+                          fontSize: '16px',
+                          fontWeight: '600',
+                          color: 'var(--text-primary)',
+                          margin: 0
+                        }}>
+                          {player.name}
+                        </h3>
+                        <span style={{
+                          fontSize: '10px',
+                          fontWeight: '600',
+                          padding: '2px 8px',
+                          borderRadius: 'var(--radius-sm)',
+                          backgroundColor: catColors.bg,
+                          color: catColors.text
+                        }}>
+                          Kat. {player.category}
+                        </span>
+                        <span style={{
+                          fontSize: '11px',
+                          color: 'var(--text-tertiary)'
+                        }}>
+                          HCP {player.hcp}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                          Sist aktiv: {formatLastActive(player.lastActive)}
+                        </span>
+                        {player.upcomingSession && (
+                          <span style={{
+                            fontSize: '12px',
+                            color: 'var(--accent)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}>
+                            <Calendar size={12} />
+                            Neste okt: {new Date(player.upcomingSession).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate(`/coach/messages/compose?to=${player.id}`)}
+                      leftIcon={<MessageCircle size={14} />}
+                    >
+                      Melding
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => navigate(`/coach/athletes/${player.id}`)}
+                    >
+                      Se profil
+                      <ChevronRight size={14} />
+                    </Button>
+                  </div>
                 </div>
-                <div style={{
-                  height: '8px',
-                  backgroundColor: designTokens.colors.border.light,
-                  borderRadius: '4px',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    width: `${Math.min((player.weeklyTrainingMinutes / player.weeklyGoal) * 100, 100)}%`,
-                    backgroundColor: (player.weeklyTrainingMinutes / player.weeklyGoal) >= 0.8
-                      ? '#16a34a'
-                      : (player.weeklyTrainingMinutes / player.weeklyGoal) >= 0.5
-                        ? '#f59e0b'
-                        : '#dc2626',
-                    borderRadius: '4px',
-                    transition: 'width 0.3s ease'
-                  }} />
-                </div>
-              </div>
 
-              {/* Alerts */}
-              {player.alerts.length > 0 && (
+                {/* Metrics Row */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(5, 1fr)',
+                  gap: '12px',
+                  marginBottom: player.alerts.length > 0 ? '16px' : '0'
+                }}>
+                  {Object.entries(player.metrics).map(([key, metric]) => {
+                    const Icon = getMetricIcon(key);
+                    const typedMetric = metric as { value: number | boolean; status: 'good' | 'warning' | 'critical'; label: string };
+                    const metricColors = getStatusColor(typedMetric.status);
+                    return (
+                      <div key={key} style={{
+                        padding: '12px',
+                        backgroundColor: metricColors.bg,
+                        borderRadius: 'var(--radius-md)',
+                        textAlign: 'center'
+                      }}>
+                        <Icon size={18} style={{ color: metricColors.text, marginBottom: '6px' }} />
+                        <p style={{
+                          fontSize: '11px',
+                          color: metricColors.text,
+                          fontWeight: '500',
+                          margin: 0
+                        }}>
+                          {typedMetric.label}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Weekly Training Progress */}
                 <div style={{
                   marginTop: '12px',
                   padding: '12px',
-                  backgroundColor: 'rgba(239, 68, 68, 0.05)',
-                  borderRadius: '10px',
-                  border: '1px solid rgba(239, 68, 68, 0.2)'
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderRadius: 'var(--radius-md)'
                 }}>
-                  {player.alerts.map((alert, idx) => (
-                    <div key={idx} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      marginBottom: idx < player.alerts.length - 1 ? '8px' : '0'
-                    }}>
-                      <AlertTriangle
-                        size={14}
-                        color={alert.type === 'critical' ? '#dc2626' : '#d97706'}
-                      />
-                      <span style={{
-                        fontSize: '13px',
-                        color: alert.type === 'critical' ? '#dc2626' : '#d97706',
-                        fontWeight: '500'
-                      }}>
-                        {alert.message}
-                      </span>
-                    </div>
-                  ))}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '8px'
+                  }}>
+                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      Ukentlig trening
+                    </span>
+                    <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)' }}>
+                      {Math.round(player.weeklyTrainingMinutes / 60)}t / {Math.round(player.weeklyGoal / 60)}t
+                    </span>
+                  </div>
+                  <div style={{
+                    height: '8px',
+                    backgroundColor: 'var(--border-default)',
+                    borderRadius: 'var(--radius-sm)',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: `${Math.min((player.weeklyTrainingMinutes / player.weeklyGoal) * 100, 100)}%`,
+                      backgroundColor: (player.weeklyTrainingMinutes / player.weeklyGoal) >= 0.8
+                        ? 'var(--success)'
+                        : (player.weeklyTrainingMinutes / player.weeklyGoal) >= 0.5
+                          ? 'var(--warning)'
+                          : 'var(--error)',
+                      borderRadius: 'var(--radius-sm)',
+                      transition: 'width 0.3s ease'
+                    }} />
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {/* Alerts */}
+                {player.alerts.length > 0 && (
+                  <div style={{
+                    marginTop: '12px',
+                    padding: '12px',
+                    backgroundColor: 'rgba(var(--error-rgb), 0.05)',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid rgba(var(--error-rgb), 0.2)'
+                  }}>
+                    {player.alerts.map((alert, idx) => (
+                      <div key={idx} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        marginBottom: idx < player.alerts.length - 1 ? '8px' : '0'
+                      }}>
+                        <AlertTriangle
+                          size={14}
+                          style={{ color: alert.type === 'critical' ? 'var(--error)' : 'var(--warning)' }}
+                        />
+                        <span style={{
+                          fontSize: '13px',
+                          color: alert.type === 'critical' ? 'var(--error)' : 'var(--warning)',
+                          fontWeight: '500'
+                        }}>
+                          {alert.message}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Card>
           );
         })}
       </div>
 
       {filteredPlayers.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
-        }}>
-          <Activity size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: designTokens.colors.text.secondary,
-            margin: 0
-          }}>
-            Ingen spillere funnet med valgt filter
-          </p>
-        </div>
+        <StateCard
+          variant="empty"
+          title="Ingen spillere funnet"
+          description="Prøv å justere filteret for å se flere spillere."
+        />
       )}
     </div>
   );

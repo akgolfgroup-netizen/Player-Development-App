@@ -3,7 +3,6 @@ import {
   Bell, Check, ChevronRight, Calendar, Trophy, Target,
   MessageSquare, Award, AlertCircle, Clock, Filter, Trash2
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -83,21 +82,21 @@ const NOTIFICATIONS = [
 const getNotificationConfig = (type) => {
   switch (type) {
     case 'training':
-      return { icon: Calendar, color: tokens.colors.primary };
+      return { icon: Calendar, color: 'var(--accent)' };
     case 'tournament':
-      return { icon: Trophy, color: tokens.colors.gold };
+      return { icon: Trophy, color: 'var(--achievement)' };
     case 'achievement':
-      return { icon: Award, color: tokens.colors.success };
+      return { icon: Award, color: 'var(--success)' };
     case 'message':
-      return { icon: MessageSquare, color: tokens.colors.primary };
+      return { icon: MessageSquare, color: 'var(--accent)' };
     case 'reminder':
-      return { icon: Clock, color: tokens.colors.warning };
+      return { icon: Clock, color: 'var(--warning)' };
     case 'test':
-      return { icon: Target, color: tokens.colors.success };
+      return { icon: Target, color: 'var(--success)' };
     case 'alert':
-      return { icon: AlertCircle, color: tokens.colors.error };
+      return { icon: AlertCircle, color: 'var(--error)' };
     default:
-      return { icon: Bell, color: tokens.colors.steel };
+      return { icon: Bell, color: 'var(--text-secondary)' };
   }
 };
 
@@ -132,9 +131,9 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
         alignItems: 'flex-start',
         gap: '14px',
         padding: '14px 16px',
-        backgroundColor: notification.read ? tokens.colors.white : `${tokens.colors.primary}05`,
+        backgroundColor: notification.read ? 'var(--bg-primary)' : `${'var(--accent)'}05`,
         borderRadius: '12px',
-        borderLeft: notification.read ? 'none' : `3px solid ${tokens.colors.primary}`,
+        borderLeft: notification.read ? 'none' : `3px solid ${'var(--accent)'}`,
         boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
         cursor: 'pointer',
         transition: 'all 0.2s',
@@ -144,10 +143,10 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
         // Navigate to actionUrl in a real app
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = tokens.colors.snow;
+        e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = notification.read ? tokens.colors.white : `${tokens.colors.primary}05`;
+        e.currentTarget.style.backgroundColor = notification.read ? 'var(--bg-primary)' : `${'var(--accent)'}05`;
       }}
     >
       <div style={{
@@ -173,18 +172,18 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
           <h4 style={{
             fontSize: '14px',
             fontWeight: notification.read ? 500 : 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             {notification.title}
           </h4>
-          <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+          <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
             {formatTimestamp(notification.timestamp)}
           </span>
         </div>
         <p style={{
           fontSize: '13px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
           margin: 0,
           lineHeight: 1.4,
         }}>
@@ -208,7 +207,7 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
             }}
             title="Merk som lest"
           >
-            <Check size={16} color={tokens.colors.steel} />
+            <Check size={16} color={'var(--text-secondary)'} />
           </button>
         )}
         <button
@@ -225,7 +224,7 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
           }}
           title="Slett"
         >
-          <Trash2 size={16} color={tokens.colors.steel} />
+          <Trash2 size={16} color={'var(--text-secondary)'} />
         </button>
       </div>
     </div>
@@ -271,7 +270,7 @@ const VarslerContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Varsler"
         subtitle={`${unreadCount} uleste varsler`}
@@ -294,8 +293,8 @@ const VarslerContainer = () => {
                   padding: '8px 14px',
                   borderRadius: '8px',
                   border: 'none',
-                  backgroundColor: filter === f.key ? tokens.colors.primary : tokens.colors.white,
-                  color: filter === f.key ? tokens.colors.white : tokens.colors.charcoal,
+                  backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
+                  color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
                   fontSize: '13px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -308,8 +307,8 @@ const VarslerContainer = () => {
                     marginLeft: '6px',
                     padding: '2px 6px',
                     borderRadius: '10px',
-                    backgroundColor: filter === f.key ? 'rgba(255,255,255,0.3)' : tokens.colors.error,
-                    color: tokens.colors.white,
+                    backgroundColor: filter === f.key ? 'rgba(255,255,255,0.3)' : 'var(--error)',
+                    color: 'var(--bg-primary)',
                     fontSize: '11px',
                   }}>
                     {unreadCount}
@@ -326,8 +325,8 @@ const VarslerContainer = () => {
                 padding: '8px 14px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: tokens.colors.white,
-                color: tokens.colors.primary,
+                backgroundColor: 'var(--bg-primary)',
+                color: 'var(--accent)',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -355,13 +354,13 @@ const VarslerContainer = () => {
 
           {filteredNotifications.length === 0 && (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '14px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <Bell size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <Bell size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 {filter === 'unread' ? 'Ingen uleste varsler' : 'Ingen varsler funnet'}
               </p>
             </div>

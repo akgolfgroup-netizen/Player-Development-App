@@ -44,6 +44,12 @@ const CalendarPage: React.FC = () => {
     setSelectedDate(date);
   };
 
+  // Sort sessions by start time for stable ordering (must be before early returns)
+  const sortedSessions = useMemo(() => {
+    const sessions = data?.sessions ?? [];
+    return [...sessions].sort((a, b) => a.start.localeCompare(b.start));
+  }, [data?.sessions]);
+
   // Loading state
   if (isLoading && !data) {
     return (
@@ -54,7 +60,7 @@ const CalendarPage: React.FC = () => {
       >
         <section style={styles.section}>
           <StateCard
-            variant="info"
+            variant="loading"
             title="Laster..."
             description="Henter dine økter"
           />
@@ -62,12 +68,6 @@ const CalendarPage: React.FC = () => {
       </AppShellTemplate>
     );
   }
-
-  // Sort sessions by start time for stable ordering
-  const sortedSessions = useMemo(() => {
-    const sessions = data?.sessions ?? [];
-    return [...sessions].sort((a, b) => a.start.localeCompare(b.start));
-  }, [data?.sessions]);
 
   return (
     <AppShellTemplate

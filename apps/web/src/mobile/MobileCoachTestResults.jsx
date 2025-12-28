@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Minus, BarChart3, Users } from 'lucide-react';
-import { tokens, typographyStyle } from '../design-tokens';
 import { SkeletonCard } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
 
@@ -125,26 +124,26 @@ const MobileCoachTestResults = () => {
 
   return (
     <div style={{
-      fontFamily: tokens.typography.fontFamily,
-      backgroundColor: tokens.colors.snow,
+      fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
+      backgroundColor: 'var(--bg-secondary)',
       minHeight: '100vh',
-      paddingBottom: tokens.spacing.xl,
+      paddingBottom: '32px',
     }}>
       {/* Header */}
       <div style={{
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
-        padding: tokens.spacing.lg,
+        backgroundColor: 'var(--accent)',
+        color: 'var(--bg-primary)',
+        padding: '24px',
       }}>
         <h1 style={{
-          ...typographyStyle('title2'),
+          fontSize: '22px', lineHeight: '28px', fontWeight: 700,
           margin: 0,
-          marginBottom: tokens.spacing.sm,
+          marginBottom: '8px',
         }}>
           Testresultater
         </h1>
         <p style={{
-          ...typographyStyle('subheadline'),
+          fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           margin: 0,
           opacity: 0.9,
         }}>
@@ -152,14 +151,14 @@ const MobileCoachTestResults = () => {
         </p>
       </div>
 
-      <div style={{ padding: tokens.spacing.md }}>
+      <div style={{ padding: '16px' }}>
         {/* Category Filters */}
         <div style={{
           display: 'flex',
-          gap: tokens.spacing.sm,
-          marginBottom: tokens.spacing.lg,
+          gap: '8px',
+          marginBottom: '24px',
           overflowX: 'auto',
-          paddingBottom: tokens.spacing.sm,
+          paddingBottom: '8px',
         }}>
           <CategoryChip
             label="Alle"
@@ -190,34 +189,34 @@ const MobileCoachTestResults = () => {
         {/* Summary Stats */}
         {!loading && (
           <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.md,
-            padding: tokens.spacing.lg,
-            marginBottom: tokens.spacing.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
+            padding: '24px',
+            marginBottom: '24px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: tokens.spacing.md,
+              gap: '16px',
             }}>
               <SummaryStat
                 icon={<TrendingUp size={20} />}
                 label="Forbedret"
                 value={testResults.filter(r => r.trend === 'up').length}
-                color={tokens.colors.success}
+                color={'var(--success)'}
               />
               <SummaryStat
                 icon={<TrendingDown size={20} />}
                 label="Svakere"
                 value={testResults.filter(r => r.trend === 'down').length}
-                color={tokens.colors.error}
+                color={'var(--error)'}
               />
               <SummaryStat
                 icon={<Minus size={20} />}
                 label="Stabil"
                 value={testResults.filter(r => r.trend === 'stable').length}
-                color={tokens.colors.steel}
+                color={'var(--text-secondary)'}
               />
             </div>
           </div>
@@ -225,36 +224,36 @@ const MobileCoachTestResults = () => {
 
         {/* Test Results List */}
         {loading ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <SkeletonCard />
             <SkeletonCard />
             <SkeletonCard />
           </div>
         ) : filteredResults.length === 0 ? (
           <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.md,
-            padding: `${tokens.spacing.xl} ${tokens.spacing.lg}`,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
+            padding: `${'32px'} ${'24px'}`,
             textAlign: 'center',
-            boxShadow: tokens.shadows.card,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}>
-            <BarChart3 size={48} color={tokens.colors.steel} style={{ margin: '0 auto 16px' }} />
+            <BarChart3 size={48} color={'var(--text-secondary)'} style={{ margin: '0 auto 16px' }} />
             <div style={{
-              ...typographyStyle('headline'),
-              color: tokens.colors.charcoal,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-primary)',
               marginBottom: '8px',
             }}>
               Ingen testresultater
             </div>
             <div style={{
-              ...typographyStyle('subheadline'),
-              color: tokens.colors.steel,
+              fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+              color: 'var(--text-secondary)',
             }}>
               Ingen tester funnet i denne kategorien
             </div>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {filteredResults.map((result) => (
               <TestResultCard key={result.id} result={result} />
             ))}
@@ -271,14 +270,14 @@ const CategoryChip = ({ label, count, active, onClick }) => (
     style={{
       display: 'flex',
       alignItems: 'center',
-      gap: tokens.spacing.sm,
-      padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-      backgroundColor: active ? tokens.colors.primary : tokens.colors.white,
-      color: active ? tokens.colors.white : tokens.colors.charcoal,
-      border: active ? 'none' : `1px solid ${tokens.colors.mist}`,
-      borderRadius: tokens.radius.md,
+      gap: '8px',
+      padding: `${'8px'} ${'16px'}`,
+      backgroundColor: active ? 'var(--accent)' : 'var(--bg-primary)',
+      color: active ? 'var(--bg-primary)' : 'var(--text-primary)',
+      border: active ? 'none' : '1px solid var(--border-default)',
+      borderRadius: 'var(--radius-md)',
       cursor: 'pointer',
-      ...typographyStyle('subheadline'),
+      fontSize: '15px', lineHeight: '20px', fontWeight: 600,
       fontWeight: active ? 600 : 400,
       whiteSpace: 'nowrap',
       transition: 'all 0.2s',
@@ -288,9 +287,9 @@ const CategoryChip = ({ label, count, active, onClick }) => (
     {count > 0 && (
       <span style={{
         padding: '2px 8px',
-        backgroundColor: active ? 'rgba(255,255,255,0.2)' : tokens.colors.snow,
-        borderRadius: tokens.radius.sm,
-        ...typographyStyle('caption1'),
+        backgroundColor: active ? 'rgba(255,255,255,0.2)' : 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-sm)',
+        fontSize: '11px', lineHeight: '13px',
         fontWeight: 600,
       }}>
         {count}
@@ -304,7 +303,7 @@ const SummaryStat = ({ icon, label, value, color }) => (
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: tokens.spacing.sm,
+    gap: '8px',
   }}>
     <div style={{
       width: '40px',
@@ -319,14 +318,14 @@ const SummaryStat = ({ icon, label, value, color }) => (
       {icon}
     </div>
     <div style={{
-      ...typographyStyle('title3'),
-      color: tokens.colors.charcoal,
+      fontSize: '20px', lineHeight: '25px', fontWeight: 600,
+      color: 'var(--text-primary)',
     }}>
       {value}
     </div>
     <div style={{
-      ...typographyStyle('caption1'),
-      color: tokens.colors.steel,
+      fontSize: '11px', lineHeight: '13px',
+      color: 'var(--text-secondary)',
     }}>
       {label}
     </div>
@@ -337,22 +336,22 @@ const TestResultCard = ({ result }) => {
   const getTrendIcon = () => {
     switch (result.trend) {
       case 'up':
-        return <TrendingUp size={24} color={tokens.colors.success} />;
+        return <TrendingUp size={24} color={'var(--success)'} />;
       case 'down':
-        return <TrendingDown size={24} color={tokens.colors.error} />;
+        return <TrendingDown size={24} color={'var(--error)'} />;
       default:
-        return <Minus size={24} color={tokens.colors.steel} />;
+        return <Minus size={24} color={'var(--text-secondary)'} />;
     }
   };
 
   const getTrendColor = () => {
     switch (result.trend) {
       case 'up':
-        return tokens.colors.success;
+        return 'var(--success)';
       case 'down':
-        return tokens.colors.error;
+        return 'var(--error)';
       default:
-        return tokens.colors.steel;
+        return 'var(--text-secondary)';
     }
   };
 
@@ -363,45 +362,45 @@ const TestResultCard = ({ result }) => {
   };
 
   const categoryColors = {
-    technique: tokens.colors.primary,
-    physical: tokens.colors.gold,
-    mental: tokens.colors.success,
+    technique: 'var(--accent)',
+    physical: 'var(--achievement)',
+    mental: 'var(--success)',
   };
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: tokens.radius.md,
-      padding: tokens.spacing.lg,
-      boxShadow: tokens.shadows.card,
+      backgroundColor: 'var(--bg-primary)',
+      borderRadius: 'var(--radius-md)',
+      padding: '24px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
     }}>
       {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginBottom: tokens.spacing.md,
+        marginBottom: '16px',
       }}>
         <div style={{ flex: 1 }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: tokens.spacing.sm,
+            gap: '8px',
             marginBottom: '4px',
           }}>
-            <Users size={16} color={tokens.colors.steel} />
+            <Users size={16} color={'var(--text-secondary)'} />
             <span style={{
-              ...typographyStyle('subheadline'),
-              color: tokens.colors.steel,
+              fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+              color: 'var(--text-secondary)',
             }}>
               {result.athlete}
             </span>
           </div>
           <h3 style={{
-            ...typographyStyle('headline'),
-            color: tokens.colors.charcoal,
+            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+            color: 'var(--text-primary)',
             margin: 0,
-            marginBottom: tokens.spacing.sm,
+            marginBottom: '8px',
           }}>
             {result.testName}
           </h3>
@@ -409,8 +408,8 @@ const TestResultCard = ({ result }) => {
             display: 'inline-block',
             padding: '4px 12px',
             backgroundColor: `${categoryColors[result.category]}15`,
-            borderRadius: tokens.radius.sm,
-            ...typographyStyle('caption1'),
+            borderRadius: 'var(--radius-sm)',
+            fontSize: '11px', lineHeight: '13px',
             fontWeight: 600,
             color: categoryColors[result.category],
           }}>
@@ -424,22 +423,22 @@ const TestResultCard = ({ result }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: tokens.spacing.md,
-        backgroundColor: tokens.colors.snow,
-        borderRadius: tokens.radius.sm,
-        marginBottom: tokens.spacing.md,
+        padding: '16px',
+        backgroundColor: 'var(--bg-secondary)',
+        borderRadius: 'var(--radius-sm)',
+        marginBottom: '16px',
       }}>
         <div>
           <div style={{
-            ...typographyStyle('caption1'),
-            color: tokens.colors.steel,
+            fontSize: '11px', lineHeight: '13px',
+            color: 'var(--text-secondary)',
             marginBottom: '4px',
           }}>
             Resultat
           </div>
           <div style={{
-            ...typographyStyle('largeTitle'),
-            color: tokens.colors.charcoal,
+            fontSize: '34px', lineHeight: '41px', fontWeight: 700,
+            color: 'var(--text-primary)',
           }}>
             {result.score}
           </div>
@@ -448,19 +447,19 @@ const TestResultCard = ({ result }) => {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: tokens.spacing.sm,
+          gap: '8px',
         }}>
           {getTrendIcon()}
           <div style={{ textAlign: 'right' }}>
             <div style={{
-              ...typographyStyle('caption1'),
-              color: tokens.colors.steel,
+              fontSize: '11px', lineHeight: '13px',
+              color: 'var(--text-secondary)',
               marginBottom: '4px',
             }}>
               Endring
             </div>
             <div style={{
-              ...typographyStyle('headline'),
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
               color: getTrendColor(),
               fontWeight: 600,
             }}>
@@ -474,10 +473,10 @@ const TestResultCard = ({ result }) => {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: tokens.spacing.sm,
-        marginBottom: tokens.spacing.md,
-        ...typographyStyle('footnote'),
-        color: tokens.colors.steel,
+        gap: '8px',
+        marginBottom: '16px',
+        fontSize: '13px', lineHeight: '18px',
+        color: 'var(--text-secondary)',
       }}>
         <span>Forrige: {result.previousScore}</span>
         <span>•</span>
@@ -491,12 +490,12 @@ const TestResultCard = ({ result }) => {
       {/* Notes */}
       {result.notes && (
         <div style={{
-          padding: tokens.spacing.md,
+          padding: '16px',
           backgroundColor: `${getTrendColor()}10`,
           borderLeft: `3px solid ${getTrendColor()}`,
-          borderRadius: tokens.radius.sm,
-          ...typographyStyle('footnote'),
-          color: tokens.colors.charcoal,
+          borderRadius: 'var(--radius-sm)',
+          fontSize: '13px', lineHeight: '18px',
+          color: 'var(--text-primary)',
         }}>
           {result.notes}
         </div>

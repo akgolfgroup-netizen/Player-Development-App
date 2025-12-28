@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf – Bold Redesign (Whoop × Uber × Spotify)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-pure: #000000;
+            --bg-elevated: #0A0A0A;
+            --bg-card: #141414;
+            --bg-surface: #1A1A1A;
+            --bg-hover: #242424;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-tertiary: #666666;
+            --accent-green: #00D47E;
+            --accent-green-glow: rgba(0, 212, 126, 0.3);
+            --accent-gold: #FFD700;
+            --accent-gold-glow: rgba(255, 215, 0, 0.3);
+            --accent-fire: #FF6B35;
+            --accent-fire-glow: rgba(255, 107, 53, 0.3);
+            --accent-ice: #00B4D8;
+            --accent-ice-glow: rgba(0, 180, 216, 0.3);
+            --accent-purple: #A855F7;
+            --positive: #00D47E;
+            --negative: #FF4757;
+            --gradient-green: linear-gradient(135deg, #00D47E 0%, #00A86B 100%);
+            --gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            --gradient-fire: linear-gradient(135deg, #FF6B35 0%, #FF4757 100%);
+            --gradient-ice: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 100px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', -apple-system, sans-serif;
+            background: #0A0A0A;
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
+            gap: 48px;
+            padding: 48px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        .screen-container { display: flex; flex-direction: column; align-items: center; }
+        .screen-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background: var(--bg-pure);
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 0 12px #1A1A1A, 0 50px 100px -20px rgba(0,0,0,0.8);
+        }
+        .dynamic-island {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 126px;
+            height: 37px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 100;
+        }
+        .screen-content {
+            height: 100%;
+            overflow-y: auto;
+            padding: 70px 0 100px;
+            background: var(--bg-pure);
+        }
+        .screen-content::-webkit-scrollbar { display: none; }
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-tertiary);
+            font-size: 10px;
+            font-weight: 500;
+        }
+        .nav-item.active { color: var(--accent-green); }
+        .nav-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+        .home-indicator {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 134px;
+            height: 5px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+        .display-xl { font-size: 56px; font-weight: 800; line-height: 1; letter-spacing: -2px; }
+        .display-lg { font-size: 42px; font-weight: 700; line-height: 1.1; letter-spacing: -1.5px; }
+        .display-md { font-size: 32px; font-weight: 700; line-height: 1.2; letter-spacing: -1px; }
+        .heading-lg { font-size: 24px; font-weight: 600; }
+        .heading-md { font-size: 18px; font-weight: 600; }
+        .heading-sm { font-size: 15px; font-weight: 600; }
+        .body-sm { font-size: 13px; }
+        .caption { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mono { font-family: 'Space Mono', monospace; }
+        .card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .pill-green { background: rgba(0,212,126,0.15); color: var(--accent-green); }
+        .pill-gold { background: rgba(255,215,0,0.15); color: var(--accent-gold); }
+        .pill-fire { background: rgba(255,107,53,0.15); color: var(--accent-fire); }
+        .metric-ring-container { position: relative; width: 200px; height: 200px; margin: 0 auto; }
+        .metric-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .metric-ring-bg { fill: none; stroke: var(--bg-surface); stroke-width: 12; }
+        .metric-ring-progress { fill: none; stroke: url(#greenGradient); stroke-width: 12; stroke-linecap: round; }
+        .metric-ring-value { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .metric-ring-number { font-family: 'Space Mono', monospace; font-size: 48px; font-weight: 700; }
+        .metric-ring-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .stat-card { background: var(--bg-card); border-radius: var(--radius-md); padding: 16px; }
+        .stat-value { font-family: 'Space Mono', monospace; font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+        .stat-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+        .stat-trend { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; margin-top: 8px; }
+        .stat-trend.up { color: var(--accent-green); }
+        .sg-chart { display: flex; flex-direction: column; gap: 12px; }
+        .sg-row { display: flex; align-items: center; gap: 12px; }
+        .sg-label { width: 80px; font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+        .sg-bar-container { flex: 1; height: 32px; background: var(--bg-surface); border-radius: var(--radius-sm); position: relative; }
+        .sg-bar-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--text-tertiary); }
+        .sg-bar-fill { height: 20px; border-radius: var(--radius-sm); position: absolute; top: 50%; transform: translateY(-50%); }
+        .sg-bar-fill.positive { left: 50%; background: var(--gradient-green); box-shadow: 0 0 12px var(--accent-green-glow); }
+        .sg-bar-fill.negative { right: 50%; background: var(--gradient-fire); box-shadow: 0 0 12px var(--accent-fire-glow); }
+        .sg-value { width: 60px; text-align: right; font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; }
+        .sg-value.positive { color: var(--accent-green); }
+        .sg-value.negative { color: var(--accent-fire); }
+        .schedule-item { display: flex; align-items: stretch; gap: 16px; padding: 16px; background: var(--bg-card); border-radius: var(--radius-md); }
+        .schedule-time { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 48px; }
+        .schedule-hour { font-family: 'Space Mono', monospace; font-size: 18px; font-weight: 700; }
+        .schedule-period { font-size: 10px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; }
+        .schedule-divider { width: 3px; border-radius: 2px; background: var(--gradient-green); }
+        .schedule-content { flex: 1; }
+        .schedule-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .schedule-meta { font-size: 13px; color: var(--text-secondary); }
+        .schedule-status { display: inline-flex; padding: 4px 8px; border-radius: var(--radius-full); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 8px; }
+        .schedule-status.upcoming { background: rgba(0,212,126,0.15); color: var(--accent-green); }
+        .schedule-status.completed { background: rgba(255,255,255,0.1); color: var(--text-secondary); }
+        .breaking-point-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; position: relative; overflow: hidden; }
+        .breaking-point-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+        .breaking-point-card.fire::before { background: var(--gradient-fire); }
+        .breaking-point-card.gold::before { background: var(--gradient-gold); }
+        .breaking-point-card.ice::before { background: var(--gradient-ice); }
+        .bp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .bp-title { font-size: 16px; font-weight: 600; }
+        .bp-priority { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 8px; border-radius: var(--radius-full); }
+        .bp-priority.high { background: rgba(255,107,53,0.2); color: var(--accent-fire); }
+        .bp-priority.medium { background: rgba(255,215,0,0.2); color: var(--accent-gold); }
+        .bp-metric { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+        .bp-current { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; }
+        .bp-target { font-size: 14px; color: var(--text-secondary); }
+        .bp-progress { height: 6px; background: var(--bg-surface); border-radius: var(--radius-full); overflow: hidden; margin-bottom: 12px; }
+        .bp-progress-fill { height: 100%; border-radius: var(--radius-full); }
+        .bp-progress-fill.fire { background: var(--gradient-fire); box-shadow: 0 0 10px var(--accent-fire-glow); }
+        .bp-progress-fill.gold { background: var(--gradient-gold); box-shadow: 0 0 10px var(--accent-gold-glow); }
+        .bp-progress-fill.ice { background: var(--gradient-ice); box-shadow: 0 0 10px var(--accent-ice-glow); }
+        .bp-exercises { display: flex; flex-wrap: wrap; gap: 8px; }
+        .bp-exercise { padding: 6px 10px; background: var(--bg-surface); border-radius: var(--radius-sm); font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+        .category-display { text-align: center; padding: 32px 0; }
+        .category-letter { font-size: 120px; font-weight: 800; line-height: 1; background: var(--gradient-ice); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 40px rgba(0,180,216,0.5)); }
+        .category-name { font-size: 18px; font-weight: 600; color: var(--text-secondary); margin-top: 8px; }
+        .category-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+        .category-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--bg-surface); }
+        .category-dot.active { background: var(--gradient-ice); box-shadow: 0 0 12px var(--accent-ice-glow); }
+        .category-dot.completed { background: var(--accent-green); }
+        .peer-item { display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--bg-card); border-radius: var(--radius-md); }
+        .peer-rank { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; border-radius: var(--radius-sm); }
+        .peer-rank.gold { background: var(--gradient-gold); color: #000; }
+        .peer-rank.silver { background: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%); color: #000; }
+        .peer-rank.bronze { background: linear-gradient(135deg, #CD7F32 0%, #A0522D 100%); color: #000; }
+        .peer-rank.default { background: var(--bg-surface); color: var(--text-secondary); }
+        .peer-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--bg-surface); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; color: var(--text-secondary); }
+        .peer-info { flex: 1; }
+        .peer-name { font-size: 15px; font-weight: 600; }
+        .peer-meta { font-size: 13px; color: var(--text-secondary); }
+        .peer-value { font-family: 'Space Mono', monospace; font-size: 16px; font-weight: 700; color: var(--accent-green); }
+        .video-card { background: var(--bg-card); border-radius: var(--radius-lg); overflow: hidden; }
+        .video-thumbnail { width: 100%; height: 140px; background: var(--bg-surface); position: relative; display: flex; align-items: center; justify-content: center; }
+        .video-play { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        .video-duration { position: absolute; bottom: 8px; right: 8px; padding: 4px 8px; background: rgba(0,0,0,0.7); border-radius: var(--radius-sm); font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 500; }
+        .video-info { padding: 16px; }
+        .video-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        .video-date { font-size: 12px; color: var(--text-secondary); }
+        .xp-bar-container { padding: 16px 20px; background: var(--bg-card); border-radius: var(--radius-md); }
+        .xp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .xp-level { display: flex; align-items: center; gap: 8px; }
+        .xp-level-badge { width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--gradient-gold); display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: #000; }
+        .xp-level-text { font-size: 14px; font-weight: 600; }
+        .xp-points { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+        .xp-bar { height: 8px; background: var(--bg-surface); border-radius: var(--radius-full); overflow: hidden; }
+        .xp-bar-fill { height: 100%; background: var(--gradient-gold); border-radius: var(--radius-full); box-shadow: 0 0 12px var(--accent-gold-glow); }
+        .badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .badge-card { background: var(--bg-card); border-radius: var(--radius-md); padding: 16px; text-align: center; }
+        .badge-card.locked { opacity: 0.4; }
+        .badge-icon { width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 50%; background: var(--bg-surface); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+        .badge-card.earned .badge-icon { background: var(--gradient-gold); }
+        .badge-name { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .badge-date { font-size: 10px; color: var(--text-secondary); }
+        .period-tabs { display: flex; gap: 8px; padding: 4px; background: var(--bg-card); border-radius: var(--radius-full); }
+        .period-tab { flex: 1; padding: 10px 16px; border-radius: var(--radius-full); font-size: 13px; font-weight: 600; text-align: center; color: var(--text-secondary); }
+        .period-tab.active { background: var(--gradient-green); color: #000; }
+        .pro-comparison-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; }
+        .pro-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+        .pro-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--bg-surface); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .pro-info { flex: 1; }
+        .pro-name { font-size: 18px; font-weight: 600; }
+        .pro-rank { font-size: 13px; color: var(--text-secondary); }
+        .pro-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .pro-stat { text-align: center; padding: 12px; background: var(--bg-surface); border-radius: var(--radius-sm); }
+        .pro-stat-value { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; }
+        .pro-stat-label { font-size: 10px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .trend-chart { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; }
+        .trend-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+        .trend-title { font-size: 14px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+        .trend-value { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; color: var(--accent-green); }
+        .trend-visual { height: 100px; display: flex; align-items: flex-end; gap: 8px; }
+        .trend-bar { flex: 1; background: var(--bg-surface); border-radius: var(--radius-sm) var(--radius-sm) 0 0; position: relative; }
+        .trend-bar-fill { position: absolute; bottom: 0; left: 0; right: 0; background: var(--gradient-green); border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+        .trend-labels { display: flex; justify-content: space-between; margin-top: 8px; }
+        .trend-label { font-size: 10px; font-weight: 500; color: var(--text-tertiary); }
+        .test-card { background: var(--bg-card); border-radius: var(--radius-lg); padding: 20px; border-left: 4px solid; }
+        .test-card.completed { border-left-color: var(--accent-green); }
+        .test-card.pending { border-left-color: var(--accent-gold); }
+        .test-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .test-name { font-size: 16px; font-weight: 600; }
+        .test-date { font-size: 12px; color: var(--text-secondary); }
+        .test-results { display: flex; gap: 16px; }
+        .test-metric { flex: 1; }
+        .test-metric-value { font-family: 'Space Mono', monospace; font-size: 24px; font-weight: 700; }
+        .test-metric-label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+        .list-item { display: flex; align-items: center; gap: 16px; padding: 16px; background: var(--bg-card); border-radius: var(--radius-md); }
+        .list-item-icon { width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .list-item-content { flex: 1; min-width: 0; }
+        .list-item-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+        .list-item-subtitle { font-size: 13px; color: var(--text-secondary); }
+        .progress-bar { height: 8px; background: var(--bg-surface); border-radius: var(--radius-full); overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: var(--radius-full); }
+        .progress-bar-green .progress-bar-fill { background: var(--gradient-green); box-shadow: 0 0 12px var(--accent-green-glow); }
+        .header-hero { padding: 0 20px 24px; text-align: center; }
+        .header-hero .greeting { font-size: 14px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+        .header-hero .title { font-size: 28px; font-weight: 700; }
+        .header-section { padding: 0 20px; margin-bottom: 16px; }
+        .header-section .section-title { font-size: 20px; font-weight: 700; }
+        .header-section .section-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; margin-bottom: 12px; }
+        .section-title-sm { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        .section-action { font-size: 13px; font-weight: 600; color: var(--accent-green); }
+        .px-20 { padding-left: 20px; padding-right: 20px; }
+        .mb-8 { margin-bottom: 8px; }
+        .mb-12 { margin-bottom: 12px; }
+        .mb-16 { margin-bottom: 16px; }
+        .mb-24 { margin-bottom: 24px; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .gap-8 { gap: 8px; }
+        .gap-12 { gap: 12px; }
+        .gap-16 { gap: 16px; }
+        .svg-defs { position: absolute; width: 0; height: 0; }
+    </style>
+</head>
+<body>
+    <svg class="svg-defs">
+        <defs>
+            <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#00D47E"/>
+                <stop offset="100%" style="stop-color:#00A86B"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="screens-grid">
+
+        <!-- SCREEN 1: DASHBOARD -->
+        <div class="screen-container">
+            <div class="screen-label">1. Dashboard</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-hero mb-24">
+                        <div class="greeting">Good morning</div>
+                        <div class="title">Mathias</div>
+                        <div style="margin-top: 8px;">
+                            <span class="pill pill-green"><span>●</span> Week 47 • Technique</span>
+                        </div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="metric-ring-container">
+                            <svg class="metric-ring" viewBox="0 0 200 200">
+                                <circle class="metric-ring-bg" cx="100" cy="100" r="85"/>
+                                <circle class="metric-ring-progress" cx="100" cy="100" r="85" stroke-dasharray="534" stroke-dashoffset="149"/>
+                            </svg>
+                            <div class="metric-ring-value">
+                                <div class="metric-ring-number">72%</div>
+                                <div class="metric-ring-label">Weekly Goal</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="stat-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">+0.82</div>
+                                <div class="stat-label">Strokes Gained</div>
+                                <div class="stat-trend up">↑ +0.14 this week</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">C</div>
+                                <div class="stat-label">Category</div>
+                                <div class="stat-trend up">↑ from D</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Sessions</div>
+                                <div class="stat-trend">This month</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value mono">107.2</div>
+                                <div class="stat-label">Club Speed</div>
+                                <div class="stat-trend up">↑ CS40 Level</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="xp-bar-container">
+                            <div class="xp-header">
+                                <div class="xp-level">
+                                    <div class="xp-level-badge">14</div>
+                                    <div class="xp-level-text">Iron Warrior</div>
+                                </div>
+                                <div class="xp-points">2,450 / 3,000 XP</div>
+                            </div>
+                            <div class="xp-bar">
+                                <div class="xp-bar-fill" style="width: 82%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-title-sm">Today's Schedule</div>
+                        <div class="section-action">View All →</div>
+                    </div>
+                    <div class="px-20 flex flex-col gap-12 mb-24">
+                        <div class="schedule-item">
+                            <div class="schedule-time">
+                                <div class="schedule-hour">09:00</div>
+                                <div class="schedule-period">AM</div>
+                            </div>
+                            <div class="schedule-divider"></div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">Wedge PEI Training</div>
+                                <div class="schedule-meta">45 min • Range Session</div>
+                                <div class="schedule-status completed">✓ Completed</div>
+                            </div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-time">
+                                <div class="schedule-hour">14:00</div>
+                                <div class="schedule-period">PM</div>
+                            </div>
+                            <div class="schedule-divider" style="background: var(--gradient-gold)"></div>
+                            <div class="schedule-content">
+                                <div class="schedule-title">Putting Block</div>
+                                <div class="schedule-meta">60 min • Green Work</div>
+                                <div class="schedule-status upcoming">● Upcoming</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item active"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: STROKES GAINED -->
+        <div class="screen-container">
+            <div class="screen-label">2. Strokes Gained</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-hero mb-16">
+                        <div class="greeting">Total Strokes Gained</div>
+                        <div class="display-xl" style="color: var(--accent-green);">+0.82</div>
+                        <div style="margin-top: 8px;">
+                            <span class="pill pill-green">↑ 0.14 vs last month</span>
+                        </div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="period-tabs">
+                            <div class="period-tab">Week</div>
+                            <div class="period-tab active">Month</div>
+                            <div class="period-tab">Season</div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">Breakdown</div></div>
+                    <div class="px-20 mb-24">
+                        <div class="card">
+                            <div class="sg-chart">
+                                <div class="sg-row">
+                                    <div class="sg-label">OTT</div>
+                                    <div class="sg-bar-container">
+                                        <div class="sg-bar-center"></div>
+                                        <div class="sg-bar-fill positive" style="width: 28%"></div>
+                                    </div>
+                                    <div class="sg-value positive">+0.45</div>
+                                </div>
+                                <div class="sg-row">
+                                    <div class="sg-label">APP</div>
+                                    <div class="sg-bar-container">
+                                        <div class="sg-bar-center"></div>
+                                        <div class="sg-bar-fill positive" style="width: 20%"></div>
+                                    </div>
+                                    <div class="sg-value positive">+0.32</div>
+                                </div>
+                                <div class="sg-row">
+                                    <div class="sg-label">ARG</div>
+                                    <div class="sg-bar-container">
+                                        <div class="sg-bar-center"></div>
+                                        <div class="sg-bar-fill positive" style="width: 12%"></div>
+                                    </div>
+                                    <div class="sg-value positive">+0.18</div>
+                                </div>
+                                <div class="sg-row">
+                                    <div class="sg-label">PUTT</div>
+                                    <div class="sg-bar-container">
+                                        <div class="sg-bar-center"></div>
+                                        <div class="sg-bar-fill negative" style="width: 8%"></div>
+                                    </div>
+                                    <div class="sg-value negative">-0.13</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="trend-chart">
+                            <div class="trend-header">
+                                <div>
+                                    <div class="trend-title">6-Month Trend</div>
+                                    <div class="trend-value">+0.82</div>
+                                </div>
+                                <span class="pill pill-green">↑ 34%</span>
+                            </div>
+                            <div class="trend-visual">
+                                <div class="trend-bar" style="height: 100%"><div class="trend-bar-fill" style="height: 45%"></div></div>
+                                <div class="trend-bar" style="height: 100%"><div class="trend-bar-fill" style="height: 52%"></div></div>
+                                <div class="trend-bar" style="height: 100%"><div class="trend-bar-fill" style="height: 58%"></div></div>
+                                <div class="trend-bar" style="height: 100%"><div class="trend-bar-fill" style="height: 65%"></div></div>
+                                <div class="trend-bar" style="height: 100%"><div class="trend-bar-fill" style="height: 72%"></div></div>
+                                <div class="trend-bar" style="height: 100%"><div class="trend-bar-fill" style="height: 82%"></div></div>
+                            </div>
+                            <div class="trend-labels">
+                                <span class="trend-label">Jul</span>
+                                <span class="trend-label">Aug</span>
+                                <span class="trend-label">Sep</span>
+                                <span class="trend-label">Oct</span>
+                                <span class="trend-label">Nov</span>
+                                <span class="trend-label">Dec</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="card" style="border-left: 3px solid var(--accent-purple);">
+                            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                <div style="font-size: 24px;">🤖</div>
+                                <div>
+                                    <div class="heading-sm mb-8">AI Insight</div>
+                                    <div class="body-sm" style="color: var(--text-secondary);">Your putting is holding back your overall SG. Focus on lag putting drills to reduce 3-putt frequency.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item active"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: PRO COMPARISON -->
+        <div class="screen-container">
+            <div class="screen-label">3. Pro Comparison</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-section mb-24">
+                        <div class="section-title">Pro Comparison</div>
+                        <div class="section-subtitle">See how you stack up against the pros</div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="card" style="text-align: center; padding: 32px;">
+                            <div class="caption" style="color: var(--text-secondary); margin-bottom: 8px;">DataGolf World Ranking</div>
+                            <div class="display-lg" style="background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">#451</div>
+                            <div class="body-sm" style="color: var(--text-secondary); margin-top: 8px;">Top 15% Amateur</div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">Compare With</div></div>
+                    <div class="px-20 flex flex-col gap-12 mb-24">
+                        <div class="pro-comparison-card">
+                            <div class="pro-header">
+                                <div class="pro-avatar">🇺🇸</div>
+                                <div class="pro-info">
+                                    <div class="pro-name">Scottie Scheffler</div>
+                                    <div class="pro-rank">#1 World • Masters Champion</div>
+                                </div>
+                            </div>
+                            <div class="pro-stats">
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value" style="color: var(--accent-fire);">-2.8</div>
+                                    <div class="pro-stat-label">SG Gap</div>
+                                </div>
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value">68%</div>
+                                    <div class="pro-stat-label">FIR Match</div>
+                                </div>
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value">74%</div>
+                                    <div class="pro-stat-label">GIR Match</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pro-comparison-card">
+                            <div class="pro-header">
+                                <div class="pro-avatar">🇸🇪</div>
+                                <div class="pro-info">
+                                    <div class="pro-name">Ludvig Åberg</div>
+                                    <div class="pro-rank">#6 World • Ryder Cup Hero</div>
+                                </div>
+                            </div>
+                            <div class="pro-stats">
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value" style="color: var(--accent-fire);">-2.1</div>
+                                    <div class="pro-stat-label">SG Gap</div>
+                                </div>
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value">72%</div>
+                                    <div class="pro-stat-label">FIR Match</div>
+                                </div>
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value">78%</div>
+                                    <div class="pro-stat-label">GIR Match</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pro-comparison-card">
+                            <div class="pro-header">
+                                <div class="pro-avatar">🇳🇴</div>
+                                <div class="pro-info">
+                                    <div class="pro-name">Viktor Hovland</div>
+                                    <div class="pro-rank">#14 World • Norwegian Pride</div>
+                                </div>
+                            </div>
+                            <div class="pro-stats">
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value" style="color: var(--accent-gold);">-1.6</div>
+                                    <div class="pro-stat-label">SG Gap</div>
+                                </div>
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value">76%</div>
+                                    <div class="pro-stat-label">FIR Match</div>
+                                </div>
+                                <div class="pro-stat">
+                                    <div class="pro-stat-value">82%</div>
+                                    <div class="pro-stat-label">GIR Match</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item active"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: BREAKING POINTS -->
+        <div class="screen-container">
+            <div class="screen-label">4. Breaking Points</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-section mb-24">
+                        <div class="section-title">Breaking Points</div>
+                        <div class="section-subtitle">Focus areas for maximum improvement</div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div style="display: flex; gap: 12px;">
+                            <div class="card" style="flex: 1; text-align: center;">
+                                <div class="display-md" style="color: var(--accent-fire);">3</div>
+                                <div class="caption" style="color: var(--text-secondary);">Active</div>
+                            </div>
+                            <div class="card" style="flex: 1; text-align: center;">
+                                <div class="display-md" style="color: var(--accent-green);">8</div>
+                                <div class="caption" style="color: var(--text-secondary);">Resolved</div>
+                            </div>
+                            <div class="card" style="flex: 1; text-align: center;">
+                                <div class="display-md" style="color: var(--text-secondary);">2</div>
+                                <div class="caption" style="color: var(--text-secondary);">Queued</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">Active Issues</div></div>
+                    <div class="px-20 flex flex-col gap-16 mb-24">
+                        <div class="breaking-point-card fire">
+                            <div class="bp-header">
+                                <div class="bp-title">Wedge PEI</div>
+                                <div class="bp-priority high">High Priority</div>
+                            </div>
+                            <div class="bp-metric">
+                                <div class="bp-current">6.2</div>
+                                <div class="bp-target">→ Target: 4.0</div>
+                            </div>
+                            <div class="bp-progress">
+                                <div class="bp-progress-fill fire" style="width: 45%"></div>
+                            </div>
+                            <div class="bp-exercises">
+                                <div class="bp-exercise">Clock Drill</div>
+                                <div class="bp-exercise">Distance Ladder</div>
+                                <div class="bp-exercise">Stock Shot</div>
+                            </div>
+                        </div>
+                        <div class="breaking-point-card gold">
+                            <div class="bp-header">
+                                <div class="bp-title">Smash Factor</div>
+                                <div class="bp-priority medium">Medium</div>
+                            </div>
+                            <div class="bp-metric">
+                                <div class="bp-current">1.42</div>
+                                <div class="bp-target">→ Target: 1.48</div>
+                            </div>
+                            <div class="bp-progress">
+                                <div class="bp-progress-fill gold" style="width: 68%"></div>
+                            </div>
+                            <div class="bp-exercises">
+                                <div class="bp-exercise">Impact Bag</div>
+                                <div class="bp-exercise">Center Strike</div>
+                            </div>
+                        </div>
+                        <div class="breaking-point-card ice">
+                            <div class="bp-header">
+                                <div class="bp-title">3-Putt Rate</div>
+                                <div class="bp-priority medium">Medium</div>
+                            </div>
+                            <div class="bp-metric">
+                                <div class="bp-current">8.2%</div>
+                                <div class="bp-target">→ Target: 5.0%</div>
+                            </div>
+                            <div class="bp-progress">
+                                <div class="bp-progress-fill ice" style="width: 55%"></div>
+                            </div>
+                            <div class="bp-exercises">
+                                <div class="bp-exercise">Lag Putting</div>
+                                <div class="bp-exercise">Gate Drill</div>
+                                <div class="bp-exercise">Speed Control</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item active"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: CATEGORY PROGRESSION -->
+        <div class="screen-container">
+            <div class="screen-label">5. Category Progression</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="category-display">
+                        <div class="category-letter">C</div>
+                        <div class="category-name">National Level</div>
+                        <div class="category-dots">
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot completed"></div>
+                            <div class="category-dot active"></div>
+                            <div class="category-dot"></div>
+                            <div class="category-dot"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0 40px; margin-top: 8px;">
+                            <span style="font-size: 10px; color: var(--text-tertiary);">K</span>
+                            <span style="font-size: 10px; color: var(--text-tertiary);">A</span>
+                        </div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <span class="heading-sm">Progress to B</span>
+                                <span class="mono" style="color: var(--accent-green);">78%</span>
+                            </div>
+                            <div class="progress-bar progress-bar-green">
+                                <div class="progress-bar-fill" style="width: 78%"></div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                                <span class="caption" style="color: var(--text-tertiary);">C Level</span>
+                                <span class="caption" style="color: var(--text-tertiary);">B Level</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">B Level Requirements</div></div>
+                    <div class="px-20 flex flex-col gap-12 mb-24">
+                        <div class="list-item">
+                            <div class="list-item-icon" style="background: var(--accent-green);">✓</div>
+                            <div class="list-item-content">
+                                <div class="list-item-title">Strokes Gained > +0.5</div>
+                                <div class="list-item-subtitle">Current: +0.82</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-icon" style="background: var(--accent-green);">✓</div>
+                            <div class="list-item-content">
+                                <div class="list-item-title">Club Speed > 105 mph</div>
+                                <div class="list-item-subtitle">Current: 107.2 mph</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-icon" style="background: var(--accent-gold);">○</div>
+                            <div class="list-item-content">
+                                <div class="list-item-title">Complete 20 Training Sessions</div>
+                                <div class="list-item-subtitle">Progress: 16 / 20</div>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="list-item-icon" style="background: var(--bg-surface);">○</div>
+                            <div class="list-item-content">
+                                <div class="list-item-title">Pass Physical Assessment</div>
+                                <div class="list-item-subtitle">Scheduled: Dec 28</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item active"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6: TEST PROTOCOLS -->
+        <div class="screen-container">
+            <div class="screen-label">6. Test Protocols</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-section mb-24">
+                        <div class="section-title">Team Norway Tests</div>
+                        <div class="section-subtitle">Official benchmark protocols</div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="card" style="background: linear-gradient(135deg, rgba(0,212,126,0.1) 0%, rgba(0,168,107,0.05) 100%); border: 1px solid rgba(0,212,126,0.2);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div class="caption" style="color: var(--accent-green);">Next Test</div>
+                                    <div class="heading-md">Physical Assessment</div>
+                                    <div class="body-sm" style="color: var(--text-secondary);">December 28, 2024</div>
+                                </div>
+                                <div style="font-size: 40px;">📋</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">Test History</div></div>
+                    <div class="px-20 flex flex-col gap-12 mb-24">
+                        <div class="test-card completed">
+                            <div class="test-header">
+                                <div>
+                                    <div class="test-name">Trackman Assessment</div>
+                                    <div class="test-date">December 15, 2024</div>
+                                </div>
+                                <span class="pill pill-green">Passed</span>
+                            </div>
+                            <div class="test-results">
+                                <div class="test-metric">
+                                    <div class="test-metric-value">107.2</div>
+                                    <div class="test-metric-label">Club Speed</div>
+                                </div>
+                                <div class="test-metric">
+                                    <div class="test-metric-value">1.48</div>
+                                    <div class="test-metric-label">Smash</div>
+                                </div>
+                                <div class="test-metric">
+                                    <div class="test-metric-value">+2.1°</div>
+                                    <div class="test-metric-label">Attack</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="test-card completed">
+                            <div class="test-header">
+                                <div>
+                                    <div class="test-name">Short Game Test</div>
+                                    <div class="test-date">December 8, 2024</div>
+                                </div>
+                                <span class="pill pill-green">Passed</span>
+                            </div>
+                            <div class="test-results">
+                                <div class="test-metric">
+                                    <div class="test-metric-value">6.2</div>
+                                    <div class="test-metric-label">Wedge PEI</div>
+                                </div>
+                                <div class="test-metric">
+                                    <div class="test-metric-value">72%</div>
+                                    <div class="test-metric-label">Up & Down</div>
+                                </div>
+                                <div class="test-metric">
+                                    <div class="test-metric-value">1.82</div>
+                                    <div class="test-metric-label">Putts/GIR</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="test-card pending">
+                            <div class="test-header">
+                                <div>
+                                    <div class="test-name">Mental Performance</div>
+                                    <div class="test-date">November 20, 2024</div>
+                                </div>
+                                <span class="pill pill-gold">Review</span>
+                            </div>
+                            <div class="test-results">
+                                <div class="test-metric">
+                                    <div class="test-metric-value">78</div>
+                                    <div class="test-metric-label">Focus Score</div>
+                                </div>
+                                <div class="test-metric">
+                                    <div class="test-metric-value">82</div>
+                                    <div class="test-metric-label">Pressure</div>
+                                </div>
+                                <div class="test-metric">
+                                    <div class="test-metric-value">71</div>
+                                    <div class="test-metric-label">Recovery</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item active"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 7: PEER RANKING -->
+        <div class="screen-container">
+            <div class="screen-label">7. Peer Ranking</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-section mb-16">
+                        <div class="section-title">Peer Ranking</div>
+                        <div class="section-subtitle">Category C Players</div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="card" style="background: linear-gradient(135deg, rgba(0,212,126,0.15) 0%, rgba(0,168,107,0.05) 100%); border: 1px solid rgba(0,212,126,0.3);">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div class="peer-rank gold">3</div>
+                                <div class="peer-avatar" style="background: var(--gradient-green); color: #000;">M</div>
+                                <div class="peer-info">
+                                    <div class="peer-name">You (Mathias)</div>
+                                    <div class="peer-meta">C Level • Norway</div>
+                                </div>
+                                <div class="peer-value">+0.82</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-title-sm">Leaderboard</div>
+                        <div class="section-action">This Month</div>
+                    </div>
+                    <div class="px-20 flex flex-col gap-8 mb-24">
+                        <div class="peer-item">
+                            <div class="peer-rank gold">1</div>
+                            <div class="peer-avatar">E</div>
+                            <div class="peer-info">
+                                <div class="peer-name">Erik Nilsen</div>
+                                <div class="peer-meta">C Level • Sweden</div>
+                            </div>
+                            <div class="peer-value">+1.12</div>
+                        </div>
+                        <div class="peer-item">
+                            <div class="peer-rank silver">2</div>
+                            <div class="peer-avatar">S</div>
+                            <div class="peer-info">
+                                <div class="peer-name">Sofia Berg</div>
+                                <div class="peer-meta">C Level • Denmark</div>
+                            </div>
+                            <div class="peer-value">+0.95</div>
+                        </div>
+                        <div class="peer-item" style="background: linear-gradient(135deg, rgba(0,212,126,0.1) 0%, transparent 100%); border: 1px solid rgba(0,212,126,0.2);">
+                            <div class="peer-rank bronze">3</div>
+                            <div class="peer-avatar" style="background: var(--gradient-green); color: #000;">M</div>
+                            <div class="peer-info">
+                                <div class="peer-name">Mathias (You)</div>
+                                <div class="peer-meta">C Level • Norway</div>
+                            </div>
+                            <div class="peer-value">+0.82</div>
+                        </div>
+                        <div class="peer-item">
+                            <div class="peer-rank default">4</div>
+                            <div class="peer-avatar">O</div>
+                            <div class="peer-info">
+                                <div class="peer-name">Oscar Lindqvist</div>
+                                <div class="peer-meta">C Level • Sweden</div>
+                            </div>
+                            <div class="peer-value" style="color: var(--text-secondary);">+0.71</div>
+                        </div>
+                        <div class="peer-item">
+                            <div class="peer-rank default">5</div>
+                            <div class="peer-avatar">A</div>
+                            <div class="peer-info">
+                                <div class="peer-name">Anna Johansen</div>
+                                <div class="peer-meta">C Level • Norway</div>
+                            </div>
+                            <div class="peer-value" style="color: var(--text-secondary);">+0.68</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item active"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 8: VIDEO LIBRARY -->
+        <div class="screen-container">
+            <div class="screen-label">8. Video Library</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-section mb-24">
+                        <div class="section-title">Video Library</div>
+                        <div class="section-subtitle">Swing analysis & drill videos</div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="period-tabs">
+                            <div class="period-tab active">My Swings</div>
+                            <div class="period-tab">Drills</div>
+                            <div class="period-tab">Pro Models</div>
+                        </div>
+                    </div>
+                    <div class="section-header">
+                        <div class="section-title-sm">Recent Uploads</div>
+                        <div class="section-action">See All →</div>
+                    </div>
+                    <div class="px-20" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <div class="video-play">▶</div>
+                                <div class="video-duration">0:32</div>
+                            </div>
+                            <div class="video-info">
+                                <div class="video-title">Driver DTL</div>
+                                <div class="video-date">Dec 22, 2024</div>
+                            </div>
+                        </div>
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <div class="video-play">▶</div>
+                                <div class="video-duration">0:28</div>
+                            </div>
+                            <div class="video-info">
+                                <div class="video-title">7-Iron FO</div>
+                                <div class="video-date">Dec 21, 2024</div>
+                            </div>
+                        </div>
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <div class="video-play">▶</div>
+                                <div class="video-duration">0:45</div>
+                            </div>
+                            <div class="video-info">
+                                <div class="video-title">Wedge Stock</div>
+                                <div class="video-date">Dec 20, 2024</div>
+                            </div>
+                        </div>
+                        <div class="video-card">
+                            <div class="video-thumbnail">
+                                <div class="video-play">▶</div>
+                                <div class="video-duration">1:12</div>
+                            </div>
+                            <div class="video-info">
+                                <div class="video-title">Putting Stroke</div>
+                                <div class="video-date">Dec 18, 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">Coach Feedback</div></div>
+                    <div class="px-20 mb-24">
+                        <div class="card" style="border-left: 3px solid var(--accent-green);">
+                            <div style="display: flex; gap: 12px;">
+                                <div style="font-size: 32px;">👨‍🏫</div>
+                                <div>
+                                    <div class="heading-sm mb-8">New Analysis Ready</div>
+                                    <div class="body-sm" style="color: var(--text-secondary);">Anders has reviewed your Driver DTL video with annotations.</div>
+                                    <div style="margin-top: 12px;">
+                                        <span class="pill pill-green">View Analysis →</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item active"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+        <!-- SCREEN 9: BADGE COLLECTION -->
+        <div class="screen-container">
+            <div class="screen-label">9. Badge Collection</div>
+            <div class="phone-frame">
+                <div class="dynamic-island"></div>
+                <div class="screen-content">
+                    <div class="header-section mb-24">
+                        <div class="section-title">Badges</div>
+                        <div class="section-subtitle">12 of 24 earned</div>
+                    </div>
+                    <div class="px-20 mb-24">
+                        <div class="xp-bar-container">
+                            <div class="xp-header">
+                                <div class="xp-level">
+                                    <div class="xp-level-badge">14</div>
+                                    <div class="xp-level-text">Iron Warrior</div>
+                                </div>
+                                <div class="xp-points">2,450 / 3,000 XP</div>
+                            </div>
+                            <div class="xp-bar">
+                                <div class="xp-bar-fill" style="width: 82%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">Recent Achievements</div></div>
+                    <div class="px-20 mb-24">
+                        <div class="badges-grid">
+                            <div class="badge-card earned">
+                                <div class="badge-icon">🎯</div>
+                                <div class="badge-name">Precision</div>
+                                <div class="badge-date">Dec 20</div>
+                            </div>
+                            <div class="badge-card earned">
+                                <div class="badge-icon">🔥</div>
+                                <div class="badge-name">7-Day Streak</div>
+                                <div class="badge-date">Dec 18</div>
+                            </div>
+                            <div class="badge-card earned">
+                                <div class="badge-icon">💪</div>
+                                <div class="badge-name">Power Up</div>
+                                <div class="badge-date">Dec 15</div>
+                            </div>
+                            <div class="badge-card earned">
+                                <div class="badge-icon">📈</div>
+                                <div class="badge-name">Rising Star</div>
+                                <div class="badge-date">Dec 10</div>
+                            </div>
+                            <div class="badge-card earned">
+                                <div class="badge-icon">🏆</div>
+                                <div class="badge-name">First Test</div>
+                                <div class="badge-date">Dec 5</div>
+                            </div>
+                            <div class="badge-card locked">
+                                <div class="badge-icon">🔒</div>
+                                <div class="badge-name">Elite</div>
+                                <div class="badge-date">Locked</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-header"><div class="section-title-sm">Next Up</div></div>
+                    <div class="px-20 mb-24">
+                        <div class="list-item">
+                            <div class="list-item-icon" style="background: var(--bg-surface); font-size: 24px;">🎖️</div>
+                            <div class="list-item-content">
+                                <div class="list-item-title">Marathon</div>
+                                <div class="list-item-subtitle">Complete 30 sessions • 16/30</div>
+                            </div>
+                            <div style="font-family: 'Space Mono'; font-size: 14px; color: var(--accent-gold);">53%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item"><div class="nav-icon">🏠</div><span>Home</span></div>
+                    <div class="nav-item"><div class="nav-icon">📊</div><span>Stats</span></div>
+                    <div class="nav-item"><div class="nav-icon">📅</div><span>Plan</span></div>
+                    <div class="nav-item"><div class="nav-icon">🎬</div><span>Videos</span></div>
+                    <div class="nav-item active"><div class="nav-icon">👤</div><span>Profile</span></div>
+                </div>
+                <div class="home-indicator"></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

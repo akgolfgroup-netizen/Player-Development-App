@@ -31,7 +31,7 @@ import {
   GripVertical,
   Play,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Modal from '../../ui/composites/Modal.composite';
 
 interface GroupMember {
   id: string;
@@ -116,13 +116,13 @@ interface GroupDetail {
 
 // Exercise category colors
 const categoryColors: Record<string, { bg: string; text: string; label: string }> = {
-  teknikk: { bg: `${tokens.colors.primary}15`, text: tokens.colors.primary, label: 'Teknikk' },
-  putting: { bg: `${tokens.colors.success}15`, text: tokens.colors.success, label: 'Putting' },
-  kort_spill: { bg: `${tokens.colors.gold}15`, text: tokens.colors.gold, label: 'Kort spill' },
-  langt_spill: { bg: `${tokens.colors.primaryLight}15`, text: tokens.colors.primaryLight, label: 'Langt spill' },
-  bane: { bg: `${tokens.colors.warning}15`, text: tokens.colors.warning, label: 'Bane' },
-  mental: { bg: '#8B5CF615', text: '#8B5CF6', label: 'Mental' },
-  fysisk: { bg: `${tokens.colors.error}15`, text: tokens.colors.error, label: 'Fysisk' },
+  teknikk: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Teknikk' },
+  putting: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)', label: 'Putting' },
+  kort_spill: { bg: 'rgba(var(--achievement-rgb), 0.15)', text: 'var(--achievement)', label: 'Kort spill' },
+  langt_spill: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Langt spill' },
+  bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)', label: 'Bane' },
+  mental: { bg: 'rgba(139, 92, 246, 0.15)', text: '#8B5CF6', label: 'Mental' },
+  fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Fysisk' },
 };
 
 const dayNames = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'];
@@ -139,6 +139,7 @@ export default function CoachGroupDetail() {
   const [showAddSessionModal, setShowAddSessionModal] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedDay, setSelectedDay] = useState<number>(0);
+  const [memberToRemove, setMemberToRemove] = useState<GroupMember | null>(null);
 
   // Fetch group details
   useEffect(() => {
@@ -157,14 +158,14 @@ export default function CoachGroupDetail() {
           name: 'WANG Toppidrett 2025',
           description: 'Hovedgruppe for WANG Toppidrett elever. Fokus på helhetlig utvikling.',
           type: 'wang',
-          avatarColor: tokens.colors.primary,
+          avatarColor: 'var(--accent)',
           avatarInitials: 'WT',
           members: [
             {
               id: 'p1',
               name: 'Anders Hansen',
               avatarInitials: 'AH',
-              avatarColor: tokens.colors.primary,
+              avatarColor: 'var(--accent)',
               category: 'A',
               lastActive: '2025-12-21',
               sessionsThisWeek: 4,
@@ -174,7 +175,7 @@ export default function CoachGroupDetail() {
               id: 'p2',
               name: 'Sofie Andersen',
               avatarInitials: 'SA',
-              avatarColor: tokens.colors.gold,
+              avatarColor: 'var(--achievement)',
               category: 'A',
               lastActive: '2025-12-20',
               sessionsThisWeek: 3,
@@ -184,7 +185,7 @@ export default function CoachGroupDetail() {
               id: 'p3',
               name: 'Erik Johansen',
               avatarInitials: 'EJ',
-              avatarColor: tokens.colors.success,
+              avatarColor: 'var(--success)',
               category: 'B',
               lastActive: '2025-12-19',
               sessionsThisWeek: 2,
@@ -194,7 +195,7 @@ export default function CoachGroupDetail() {
               id: 'p4',
               name: 'Emma Berg',
               avatarInitials: 'EB',
-              avatarColor: tokens.colors.primaryLight,
+              avatarColor: 'var(--accent)',
               category: 'B',
               lastActive: '2025-12-21',
               sessionsThisWeek: 5,
@@ -204,7 +205,7 @@ export default function CoachGroupDetail() {
               id: 'p5',
               name: 'Lars Olsen',
               avatarInitials: 'LO',
-              avatarColor: tokens.colors.error,
+              avatarColor: 'var(--error)',
               category: 'A',
               lastActive: '2025-12-18',
               sessionsThisWeek: 3,
@@ -356,11 +357,11 @@ export default function CoachGroupDetail() {
   const getTrendStyle = (trend: string) => {
     switch (trend) {
       case 'up':
-        return { color: tokens.colors.success, rotation: '-45deg' };
+        return { color: 'var(--success)', rotation: '-45deg' };
       case 'down':
-        return { color: tokens.colors.error, rotation: '45deg' };
+        return { color: 'var(--error)', rotation: '45deg' };
       default:
-        return { color: tokens.colors.steel, rotation: '0deg' };
+        return { color: 'var(--text-secondary)', rotation: '0deg' };
     }
   };
 
@@ -370,23 +371,29 @@ export default function CoachGroupDetail() {
     return date.toLocaleDateString('nb-NO', { weekday: 'short', day: 'numeric', month: 'short' });
   };
 
-  // Remove member
-  const handleRemoveMember = async (memberId: string) => {
-    if (!window.confirm('Er du sikker på at du vil fjerne dette medlemmet fra gruppen?')) return;
+  // Remove member - show confirmation modal
+  const handleRemoveMember = (member: GroupMember) => {
+    setMemberToRemove(member);
+  };
+
+  // Confirm and execute member removal
+  const handleConfirmRemoveMember = async () => {
+    if (!memberToRemove) return;
 
     try {
-      await fetch(`/api/v1/coach/groups/${groupId}/members/${memberId}`, {
+      await fetch(`/api/v1/coach/groups/${groupId}/members/${memberToRemove.id}`, {
         method: 'DELETE',
       });
       if (group) {
         setGroup({
           ...group,
-          members: group.members.filter((m) => m.id !== memberId),
+          members: group.members.filter((m) => m.id !== memberToRemove.id),
         });
       }
     } catch (error) {
       console.error('Failed to remove member:', error);
     }
+    setMemberToRemove(null);
   };
 
   if (loading) {
@@ -394,7 +401,7 @@ export default function CoachGroupDetail() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -404,8 +411,8 @@ export default function CoachGroupDetail() {
           style={{
             width: 48,
             height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `4px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
@@ -427,15 +434,15 @@ export default function CoachGroupDetail() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           padding: '20px 24px',
         }}
       >
@@ -445,8 +452,8 @@ export default function CoachGroupDetail() {
             style={{
               width: 40,
               height: 40,
-              borderRadius: tokens.radius.md,
-              backgroundColor: tokens.colors.gray100,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -454,19 +461,19 @@ export default function CoachGroupDetail() {
               cursor: 'pointer',
             }}
           >
-            <ArrowLeft size={20} color={tokens.colors.charcoal} />
+            <ArrowLeft size={20} color={'var(--text-primary)'} />
           </button>
 
           <div
             style={{
               width: 56,
               height: 56,
-              borderRadius: tokens.radius.md,
+              borderRadius: 'var(--radius-md)',
               backgroundColor: group.avatarColor,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: tokens.colors.white,
+              color: 'var(--bg-primary)',
               fontWeight: 700,
               fontSize: '20px',
             }}
@@ -477,8 +484,8 @@ export default function CoachGroupDetail() {
           <div style={{ flex: 1 }}>
             <h1
               style={{
-                ...tokens.typography.title2,
-                color: tokens.colors.charcoal,
+                fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -487,8 +494,8 @@ export default function CoachGroupDetail() {
             {group.description && (
               <p
                 style={{
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.steel,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-secondary)',
                   margin: '4px 0 0',
                 }}
               >
@@ -505,11 +512,11 @@ export default function CoachGroupDetail() {
               gap: '6px',
               padding: '8px 14px',
               backgroundColor: 'transparent',
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: tokens.radius.md,
+              border: `1px solid ${'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               fontSize: '13px',
               fontWeight: 500,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               cursor: 'pointer',
             }}
           >
@@ -527,10 +534,10 @@ export default function CoachGroupDetail() {
               alignItems: 'center',
               gap: '8px',
               padding: '10px 16px',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               border: 'none',
-              borderRadius: tokens.radius.md,
+              borderRadius: 'var(--radius-md)',
               fontSize: '14px',
               fontWeight: 600,
               cursor: 'pointer',
@@ -546,10 +553,10 @@ export default function CoachGroupDetail() {
               alignItems: 'center',
               gap: '8px',
               padding: '10px 16px',
-              backgroundColor: tokens.colors.white,
-              color: tokens.colors.charcoal,
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
+              border: `1px solid ${'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               fontSize: '14px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -565,10 +572,10 @@ export default function CoachGroupDetail() {
               alignItems: 'center',
               gap: '8px',
               padding: '10px 16px',
-              backgroundColor: tokens.colors.white,
-              color: tokens.colors.charcoal,
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
+              border: `1px solid ${'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               fontSize: '14px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -581,37 +588,37 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Stats bar */}
-      <div style={{ padding: '16px 24px', backgroundColor: tokens.colors.white }}>
+      <div style={{ padding: '16px 24px', backgroundColor: 'var(--bg-primary)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
           <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary, margin: 0 }}>
+            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)', margin: 0 }}>
               {group.members.length}
             </p>
-            <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '4px 0 0' }}>
+            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Medlemmer
             </p>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success, margin: 0 }}>
+            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)', margin: 0 }}>
               {group.stats.avgAttendance}%
             </p>
-            <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '4px 0 0' }}>
+            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Snitt oppmøte
             </p>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold, margin: 0 }}>
+            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)', margin: 0 }}>
               {group.stats.totalSessions}
             </p>
-            <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '4px 0 0' }}>
+            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Økter totalt
             </p>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primaryLight, margin: 0 }}>
+            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)', margin: 0 }}>
               {group.stats.avgSessionsPerWeek}
             </p>
-            <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '4px 0 0' }}>
+            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Økter/uke
             </p>
           </div>
@@ -624,8 +631,8 @@ export default function CoachGroupDetail() {
           display: 'flex',
           gap: '4px',
           padding: '16px 24px',
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
         }}
       >
         {[
@@ -642,10 +649,10 @@ export default function CoachGroupDetail() {
               alignItems: 'center',
               gap: '8px',
               padding: '10px 18px',
-              backgroundColor: activeTab === tab.key ? tokens.colors.primary : 'transparent',
-              color: activeTab === tab.key ? tokens.colors.white : tokens.colors.charcoal,
+              backgroundColor: activeTab === tab.key ? 'var(--accent)' : 'transparent',
+              color: activeTab === tab.key ? 'var(--bg-primary)' : 'var(--text-primary)',
               border: 'none',
-              borderRadius: tokens.radius.md,
+              borderRadius: 'var(--radius-md)',
               fontSize: '14px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -670,7 +677,7 @@ export default function CoachGroupDetail() {
                 marginBottom: '16px',
               }}
             >
-              <h2 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 Gruppemedlemmer ({group.members.length})
               </h2>
               <button
@@ -680,10 +687,10 @@ export default function CoachGroupDetail() {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '8px 14px',
-                  backgroundColor: tokens.colors.primary,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--accent)',
+                  color: 'var(--bg-primary)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '13px',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -705,9 +712,9 @@ export default function CoachGroupDetail() {
                       alignItems: 'center',
                       gap: '14px',
                       padding: '14px 16px',
-                      backgroundColor: tokens.colors.white,
-                      borderRadius: tokens.radius.md,
-                      boxShadow: tokens.shadows.card,
+                      backgroundColor: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-md)',
+                      boxShadow: 'var(--shadow-card)',
                     }}
                   >
                     <div
@@ -719,7 +726,7 @@ export default function CoachGroupDetail() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: tokens.colors.white,
+                        color: 'var(--bg-primary)',
                         fontWeight: 600,
                         fontSize: '14px',
                       }}
@@ -731,8 +738,8 @@ export default function CoachGroupDetail() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span
                           style={{
-                            ...tokens.typography.headline,
-                            color: tokens.colors.charcoal,
+                            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                            color: 'var(--text-primary)',
                           }}
                         >
                           {member.name}
@@ -740,9 +747,9 @@ export default function CoachGroupDetail() {
                         <span
                           style={{
                             padding: '2px 8px',
-                            backgroundColor: `${tokens.colors.primary}15`,
-                            color: tokens.colors.primary,
-                            borderRadius: tokens.radius.sm,
+                            backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
+                            color: 'var(--accent)',
+                            borderRadius: 'var(--radius-sm)',
                             fontSize: '11px',
                             fontWeight: 600,
                           }}
@@ -752,8 +759,8 @@ export default function CoachGroupDetail() {
                       </div>
                       <p
                         style={{
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.steel,
+                          fontSize: '13px', lineHeight: '18px',
+                          color: 'var(--text-secondary)',
                           margin: '2px 0 0',
                         }}
                       >
@@ -763,7 +770,7 @@ export default function CoachGroupDetail() {
 
                     <div style={{ textAlign: 'center', marginRight: '16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <span style={{ fontSize: '18px', fontWeight: 600, color: tokens.colors.charcoal }}>
+                        <span style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
                           {member.sessionsThisWeek}
                         </span>
                         <TrendingUp
@@ -772,7 +779,7 @@ export default function CoachGroupDetail() {
                           style={{ transform: `rotate(${trendStyle.rotation})` }}
                         />
                       </div>
-                      <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: 0 }}>
+                      <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
                         økter/uke
                       </p>
                     </div>
@@ -781,12 +788,12 @@ export default function CoachGroupDetail() {
                       onClick={() => navigate(`/coach/athletes/${member.id}`)}
                       style={{
                         padding: '8px 12px',
-                        backgroundColor: tokens.colors.gray100,
+                        backgroundColor: 'var(--bg-tertiary)',
                         border: 'none',
-                        borderRadius: tokens.radius.sm,
+                        borderRadius: 'var(--radius-sm)',
                         fontSize: '12px',
                         fontWeight: 500,
-                        color: tokens.colors.charcoal,
+                        color: 'var(--text-primary)',
                         cursor: 'pointer',
                       }}
                     >
@@ -794,11 +801,11 @@ export default function CoachGroupDetail() {
                     </button>
 
                     <button
-                      onClick={() => handleRemoveMember(member.id)}
+                      onClick={() => handleRemoveMember(member)}
                       style={{
                         width: 32,
                         height: 32,
-                        borderRadius: tokens.radius.sm,
+                        borderRadius: 'var(--radius-sm)',
                         backgroundColor: 'transparent',
                         border: 'none',
                         display: 'flex',
@@ -809,7 +816,7 @@ export default function CoachGroupDetail() {
                       }}
                       title="Fjern fra gruppe"
                     >
-                      <UserMinus size={16} color={tokens.colors.error} />
+                      <UserMinus size={16} color={'var(--error)'} />
                     </button>
                   </div>
                 );
@@ -823,11 +830,11 @@ export default function CoachGroupDetail() {
           <div>
             {/* Upcoming sessions */}
             <div style={{ marginBottom: '32px' }}>
-              <h2 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: '0 0 16px' }}>
+              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
                 Kommende økter
               </h2>
               {group.upcomingSessions.length === 0 ? (
-                <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel }}>
+                <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
                   Ingen planlagte økter
                 </p>
               ) : (
@@ -840,44 +847,44 @@ export default function CoachGroupDetail() {
                         alignItems: 'center',
                         gap: '14px',
                         padding: '14px 16px',
-                        backgroundColor: tokens.colors.white,
-                        borderRadius: tokens.radius.md,
-                        boxShadow: tokens.shadows.card,
-                        borderLeft: `3px solid ${tokens.colors.primary}`,
+                        backgroundColor: 'var(--bg-primary)',
+                        borderRadius: 'var(--radius-md)',
+                        boxShadow: 'var(--shadow-card)',
+                        borderLeft: `3px solid ${'var(--accent)'}`,
                       }}
                     >
                       <div
                         style={{
                           width: 48,
                           height: 48,
-                          borderRadius: tokens.radius.md,
-                          backgroundColor: tokens.colors.primary,
+                          borderRadius: 'var(--radius-md)',
+                          backgroundColor: 'var(--accent)',
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          color: tokens.colors.white,
+                          color: 'var(--bg-primary)',
                         }}
                       >
                         <span style={{ fontSize: '14px', fontWeight: 700 }}>{session.time}</span>
                       </div>
                       <div style={{ flex: 1 }}>
-                        <p style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                        <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                           {session.title}
                         </p>
-                        <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '2px 0 0' }}>
+                        <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
                           {formatDate(session.date)} · {session.duration} min
                         </p>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <p style={{ ...tokens.typography.headline, color: tokens.colors.success, margin: 0 }}>
+                        <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--success)', margin: 0 }}>
                           {session.attendees}/{session.totalMembers}
                         </p>
-                        <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: 0 }}>
+                        <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
                           bekreftet
                         </p>
                       </div>
-                      <ChevronRight size={18} color={tokens.colors.steel} />
+                      <ChevronRight size={18} color={'var(--text-secondary)'} />
                     </div>
                   ))}
                 </div>
@@ -886,7 +893,7 @@ export default function CoachGroupDetail() {
 
             {/* Recent sessions */}
             <div>
-              <h2 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: '0 0 16px' }}>
+              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
                 Tidligere økter
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -898,9 +905,9 @@ export default function CoachGroupDetail() {
                       alignItems: 'center',
                       gap: '14px',
                       padding: '14px 16px',
-                      backgroundColor: tokens.colors.white,
-                      borderRadius: tokens.radius.md,
-                      boxShadow: tokens.shadows.card,
+                      backgroundColor: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-md)',
+                      boxShadow: 'var(--shadow-card)',
                       opacity: 0.8,
                     }}
                   >
@@ -908,30 +915,30 @@ export default function CoachGroupDetail() {
                       style={{
                         width: 48,
                         height: 48,
-                        borderRadius: tokens.radius.md,
-                        backgroundColor: tokens.colors.gray200,
+                        borderRadius: 'var(--radius-md)',
+                        backgroundColor: 'var(--border-default)',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: tokens.colors.steel,
+                        color: 'var(--text-secondary)',
                       }}
                     >
                       <span style={{ fontSize: '14px', fontWeight: 700 }}>{session.time}</span>
                     </div>
                     <div style={{ flex: 1 }}>
-                      <p style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                      <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                         {session.title}
                       </p>
-                      <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '2px 0 0' }}>
+                      <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
                         {formatDate(session.date)} · {session.duration} min
                       </p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <p style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                      <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                         {session.attendees}/{session.totalMembers}
                       </p>
-                      <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: 0 }}>
+                      <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
                         deltok
                       </p>
                     </div>
@@ -955,11 +962,11 @@ export default function CoachGroupDetail() {
               }}
             >
               <div>
-                <h2 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   {group.trainingPlan?.name || 'Treningsplan'}
                 </h2>
                 {group.trainingPlan && (
-                  <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '4px 0 0' }}>
+                  <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
                     Aktiv plan: {new Date(group.trainingPlan.startDate).toLocaleDateString('nb-NO')} - {new Date(group.trainingPlan.endDate).toLocaleDateString('nb-NO')}
                   </p>
                 )}
@@ -972,10 +979,10 @@ export default function CoachGroupDetail() {
                     alignItems: 'center',
                     gap: '6px',
                     padding: '8px 14px',
-                    backgroundColor: tokens.colors.gray100,
-                    color: tokens.colors.charcoal,
+                    backgroundColor: 'var(--bg-tertiary)',
+                    color: 'var(--text-primary)',
                     border: 'none',
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '13px',
                     fontWeight: 500,
                     cursor: 'pointer',
@@ -991,10 +998,10 @@ export default function CoachGroupDetail() {
                     alignItems: 'center',
                     gap: '6px',
                     padding: '8px 14px',
-                    backgroundColor: tokens.colors.primary,
-                    color: tokens.colors.white,
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--bg-primary)',
                     border: 'none',
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '13px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1013,10 +1020,10 @@ export default function CoachGroupDetail() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '16px 20px',
-                backgroundColor: tokens.colors.white,
-                borderRadius: tokens.radius.lg,
+                backgroundColor: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-lg)',
                 marginBottom: '16px',
-                boxShadow: tokens.shadows.card,
+                boxShadow: 'var(--shadow-card)',
               }}
             >
               <button
@@ -1026,12 +1033,12 @@ export default function CoachGroupDetail() {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '8px 12px',
-                  backgroundColor: tokens.colors.gray100,
+                  backgroundColor: 'var(--bg-tertiary)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '13px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   cursor: 'pointer',
                 }}
               >
@@ -1040,7 +1047,7 @@ export default function CoachGroupDetail() {
               </button>
 
               <div style={{ textAlign: 'center' }}>
-                <p style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   Uke {(() => {
                     const now = new Date();
                     now.setDate(now.getDate() + currentWeekOffset * 7);
@@ -1049,7 +1056,7 @@ export default function CoachGroupDetail() {
                     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
                   })()}
                 </p>
-                <p style={{ ...tokens.typography.caption1, color: tokens.colors.steel, margin: '2px 0 0' }}>
+                <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
                   {(() => {
                     const now = new Date();
                     now.setDate(now.getDate() + currentWeekOffset * 7);
@@ -1069,12 +1076,12 @@ export default function CoachGroupDetail() {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '8px 12px',
-                  backgroundColor: tokens.colors.gray100,
+                  backgroundColor: 'var(--bg-tertiary)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '13px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   cursor: 'pointer',
                 }}
               >
@@ -1095,19 +1102,19 @@ export default function CoachGroupDetail() {
                     <div
                       style={{
                         padding: '16px 20px',
-                        backgroundColor: `${tokens.colors.primary}10`,
-                        borderRadius: tokens.radius.lg,
+                        backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
+                        borderRadius: 'var(--radius-lg)',
                         marginBottom: '16px',
-                        borderLeft: `4px solid ${tokens.colors.primary}`,
+                        borderLeft: `4px solid ${'var(--accent)'}`,
                       }}
                     >
                       {currentWeek.theme && (
-                        <p style={{ ...tokens.typography.headline, color: tokens.colors.primary, margin: 0 }}>
+                        <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--accent)', margin: 0 }}>
                           {currentWeek.theme}
                         </p>
                       )}
                       {currentWeek.focus && (
-                        <p style={{ ...tokens.typography.subheadline, color: tokens.colors.charcoal, margin: '4px 0 0' }}>
+                        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
                           Fokus: {currentWeek.focus}
                         </p>
                       )}
@@ -1128,26 +1135,26 @@ export default function CoachGroupDetail() {
                         <div
                           key={day}
                           style={{
-                            backgroundColor: tokens.colors.white,
-                            borderRadius: tokens.radius.md,
+                            backgroundColor: 'var(--bg-primary)',
+                            borderRadius: 'var(--radius-md)',
                             overflow: 'hidden',
-                            boxShadow: tokens.shadows.card,
-                            border: isToday ? `2px solid ${tokens.colors.primary}` : 'none',
+                            boxShadow: 'var(--shadow-card)',
+                            border: isToday ? `2px solid ${'var(--accent)'}` : 'none',
                           }}
                         >
                           {/* Day header */}
                           <div
                             style={{
                               padding: '10px 12px',
-                              backgroundColor: isToday ? tokens.colors.primary : tokens.colors.gray50,
-                              borderBottom: `1px solid ${tokens.colors.gray200}`,
+                              backgroundColor: isToday ? 'var(--accent)' : 'var(--bg-tertiary)',
+                              borderBottom: `1px solid ${'var(--border-default)'}`,
                             }}
                           >
                             <p
                               style={{
-                                ...tokens.typography.footnote,
+                                fontSize: '13px', lineHeight: '18px',
                                 fontWeight: 600,
-                                color: isToday ? tokens.colors.white : tokens.colors.charcoal,
+                                color: isToday ? 'var(--bg-primary)' : 'var(--text-primary)',
                                 margin: 0,
                                 textAlign: 'center',
                               }}
@@ -1167,10 +1174,10 @@ export default function CoachGroupDetail() {
                                 style={{
                                   width: '100%',
                                   padding: '12px',
-                                  backgroundColor: tokens.colors.gray50,
-                                  border: `1px dashed ${tokens.colors.gray300}`,
-                                  borderRadius: tokens.radius.sm,
-                                  color: tokens.colors.steel,
+                                  backgroundColor: 'var(--bg-tertiary)',
+                                  border: `1px dashed ${'var(--border-default)'}`,
+                                  borderRadius: 'var(--radius-sm)',
+                                  color: 'var(--text-secondary)',
                                   fontSize: '11px',
                                   cursor: 'pointer',
                                   display: 'flex',
@@ -1188,19 +1195,19 @@ export default function CoachGroupDetail() {
                                   key={session.id}
                                   style={{
                                     padding: '8px',
-                                    backgroundColor: `${tokens.colors.primary}08`,
-                                    borderRadius: tokens.radius.sm,
+                                    backgroundColor: `${'var(--accent)'}08`,
+                                    borderRadius: 'var(--radius-sm)',
                                     marginBottom: '6px',
                                     cursor: 'pointer',
-                                    borderLeft: `3px solid ${tokens.colors.primary}`,
+                                    borderLeft: `3px solid ${'var(--accent)'}`,
                                   }}
                                   onClick={() => setEditingSession(session.id)}
                                 >
                                   <p
                                     style={{
-                                      ...tokens.typography.caption1,
+                                      fontSize: '13px', lineHeight: '18px',
                                       fontWeight: 600,
-                                      color: tokens.colors.charcoal,
+                                      color: 'var(--text-primary)',
                                       margin: 0,
                                     }}
                                   >
@@ -1209,7 +1216,7 @@ export default function CoachGroupDetail() {
                                   <p
                                     style={{
                                       fontSize: '11px',
-                                      color: tokens.colors.charcoal,
+                                      color: 'var(--text-primary)',
                                       margin: '2px 0 0',
                                       whiteSpace: 'nowrap',
                                       overflow: 'hidden',
@@ -1227,7 +1234,7 @@ export default function CoachGroupDetail() {
                                     }}
                                   >
                                     {session.exercises.slice(0, 2).map((ex) => {
-                                      const catStyle = categoryColors[ex.category] || { bg: tokens.colors.gray100, text: tokens.colors.steel, label: ex.category };
+                                      const catStyle = categoryColors[ex.category] || { bg: 'var(--bg-tertiary)', text: 'var(--text-secondary)', label: ex.category };
                                       return (
                                         <span
                                           key={ex.id}
@@ -1248,8 +1255,8 @@ export default function CoachGroupDetail() {
                                         style={{
                                           fontSize: '9px',
                                           padding: '1px 4px',
-                                          backgroundColor: tokens.colors.gray100,
-                                          color: tokens.colors.steel,
+                                          backgroundColor: 'var(--bg-tertiary)',
+                                          color: 'var(--text-secondary)',
                                           borderRadius: '3px',
                                         }}
                                       >
@@ -1275,26 +1282,26 @@ export default function CoachGroupDetail() {
                       <div
                         style={{
                           marginTop: '24px',
-                          backgroundColor: tokens.colors.white,
-                          borderRadius: tokens.radius.lg,
-                          boxShadow: tokens.shadows.elevated,
+                          backgroundColor: 'var(--bg-primary)',
+                          borderRadius: 'var(--radius-lg)',
+                          boxShadow: 'var(--shadow-card)',
                           overflow: 'hidden',
                         }}
                       >
                         <div
                           style={{
                             padding: '16px 20px',
-                            backgroundColor: tokens.colors.primary,
+                            backgroundColor: 'var(--accent)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
                           }}
                         >
                           <div>
-                            <h3 style={{ ...tokens.typography.headline, color: tokens.colors.white, margin: 0 }}>
+                            <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--bg-primary)', margin: 0 }}>
                               {session.title}
                             </h3>
-                            <p style={{ ...tokens.typography.caption1, color: 'rgba(255,255,255,0.8)', margin: '2px 0 0' }}>
+                            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'rgba(255,255,255,0.8)', margin: '2px 0 0' }}>
                               {dayNames[session.dayOfWeek]} kl. {session.time}
                             </p>
                           </div>
@@ -1312,15 +1319,15 @@ export default function CoachGroupDetail() {
                               cursor: 'pointer',
                             }}
                           >
-                            <X size={18} color={tokens.colors.white} />
+                            <X size={18} color={'var(--bg-primary)'} />
                           </button>
                         </div>
 
                         <div style={{ padding: '20px' }}>
                           <h4
                             style={{
-                              ...tokens.typography.footnote,
-                              color: tokens.colors.steel,
+                              fontSize: '13px', lineHeight: '18px',
+                              color: 'var(--text-secondary)',
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
                               margin: '0 0 12px',
@@ -1333,7 +1340,7 @@ export default function CoachGroupDetail() {
                             {session.exercises
                               .sort((a, b) => a.order - b.order)
                               .map((exercise, index) => {
-                                const catStyle = categoryColors[exercise.category] || { bg: tokens.colors.gray100, text: tokens.colors.steel, label: exercise.category };
+                                const catStyle = categoryColors[exercise.category] || { bg: 'var(--bg-tertiary)', text: 'var(--text-secondary)', label: exercise.category };
                                 return (
                                   <div
                                     key={exercise.id}
@@ -1342,8 +1349,8 @@ export default function CoachGroupDetail() {
                                       alignItems: 'center',
                                       gap: '12px',
                                       padding: '12px 14px',
-                                      backgroundColor: tokens.colors.gray50,
-                                      borderRadius: tokens.radius.md,
+                                      backgroundColor: 'var(--bg-tertiary)',
+                                      borderRadius: 'var(--radius-md)',
                                     }}
                                   >
                                     <div
@@ -1351,8 +1358,8 @@ export default function CoachGroupDetail() {
                                         width: 28,
                                         height: 28,
                                         borderRadius: '50%',
-                                        backgroundColor: tokens.colors.primary,
-                                        color: tokens.colors.white,
+                                        backgroundColor: 'var(--accent)',
+                                        color: 'var(--bg-primary)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
@@ -1364,7 +1371,7 @@ export default function CoachGroupDetail() {
                                       {index + 1}
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                      <p style={{ ...tokens.typography.subheadline, fontWeight: 500, color: tokens.colors.charcoal, margin: 0 }}>
+                                      <p style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
                                         {exercise.name}
                                       </p>
                                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
@@ -1380,12 +1387,12 @@ export default function CoachGroupDetail() {
                                         >
                                           {catStyle.label}
                                         </span>
-                                        <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                                           {exercise.duration} min
                                         </span>
                                       </div>
                                     </div>
-                                    <GripVertical size={16} color={tokens.colors.gray300} style={{ cursor: 'grab' }} />
+                                    <GripVertical size={16} color={'var(--border-default)'} style={{ cursor: 'grab' }} />
                                   </div>
                                 );
                               })}
@@ -1397,7 +1404,7 @@ export default function CoachGroupDetail() {
                               gap: '10px',
                               marginTop: '16px',
                               paddingTop: '16px',
-                              borderTop: `1px solid ${tokens.colors.gray200}`,
+                              borderTop: `1px solid ${'var(--border-default)'}`,
                             }}
                           >
                             <button
@@ -1406,10 +1413,10 @@ export default function CoachGroupDetail() {
                                 alignItems: 'center',
                                 gap: '6px',
                                 padding: '8px 14px',
-                                backgroundColor: tokens.colors.primary,
-                                color: tokens.colors.white,
+                                backgroundColor: 'var(--accent)',
+                                color: 'var(--bg-primary)',
                                 border: 'none',
-                                borderRadius: tokens.radius.md,
+                                borderRadius: 'var(--radius-md)',
                                 fontSize: '13px',
                                 fontWeight: 500,
                                 cursor: 'pointer',
@@ -1424,10 +1431,10 @@ export default function CoachGroupDetail() {
                                 alignItems: 'center',
                                 gap: '6px',
                                 padding: '8px 14px',
-                                backgroundColor: tokens.colors.gray100,
-                                color: tokens.colors.charcoal,
+                                backgroundColor: 'var(--bg-tertiary)',
+                                color: 'var(--text-primary)',
                                 border: 'none',
-                                borderRadius: tokens.radius.md,
+                                borderRadius: 'var(--radius-md)',
                                 fontSize: '13px',
                                 fontWeight: 500,
                                 cursor: 'pointer',
@@ -1442,10 +1449,10 @@ export default function CoachGroupDetail() {
                                 alignItems: 'center',
                                 gap: '6px',
                                 padding: '8px 14px',
-                                backgroundColor: tokens.colors.gray100,
-                                color: tokens.colors.charcoal,
+                                backgroundColor: 'var(--bg-tertiary)',
+                                color: 'var(--text-primary)',
                                 border: 'none',
-                                borderRadius: tokens.radius.md,
+                                borderRadius: 'var(--radius-md)',
                                 fontSize: '13px',
                                 fontWeight: 500,
                                 cursor: 'pointer',
@@ -1460,10 +1467,10 @@ export default function CoachGroupDetail() {
                                 alignItems: 'center',
                                 gap: '6px',
                                 padding: '8px 14px',
-                                backgroundColor: `${tokens.colors.error}10`,
-                                color: tokens.colors.error,
+                                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
+                                color: 'var(--error)',
                                 border: 'none',
-                                borderRadius: tokens.radius.md,
+                                borderRadius: 'var(--radius-md)',
                                 fontSize: '13px',
                                 fontWeight: 500,
                                 cursor: 'pointer',
@@ -1486,18 +1493,18 @@ export default function CoachGroupDetail() {
             {!group.trainingPlan && (
               <div
                 style={{
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.lg,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-lg)',
                   padding: '48px 24px',
                   textAlign: 'center',
-                  boxShadow: tokens.shadows.card,
+                  boxShadow: 'var(--shadow-card)',
                 }}
               >
-                <ClipboardList size={48} color={tokens.colors.gray300} style={{ marginBottom: '16px' }} />
-                <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                <ClipboardList size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
+                <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   Ingen treningsplan
                 </h3>
-                <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, margin: '8px 0 20px' }}>
+                <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: '8px 0 20px' }}>
                   Opprett en treningsplan for å strukturere gruppens økter
                 </p>
                 <button
@@ -1507,10 +1514,10 @@ export default function CoachGroupDetail() {
                     alignItems: 'center',
                     gap: '8px',
                     padding: '12px 20px',
-                    backgroundColor: tokens.colors.primary,
-                    color: tokens.colors.white,
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--bg-primary)',
                     border: 'none',
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1527,7 +1534,7 @@ export default function CoachGroupDetail() {
         {/* Stats tab */}
         {activeTab === 'stats' && (
           <div>
-            <h2 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: '0 0 16px' }}>
+            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
               Gruppestatistikk
             </h2>
 
@@ -1535,18 +1542,18 @@ export default function CoachGroupDetail() {
               <div
                 style={{
                   padding: '20px',
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.lg,
-                  boxShadow: tokens.shadows.card,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-lg)',
+                  boxShadow: 'var(--shadow-card)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Trophy size={20} color={tokens.colors.gold} />
-                  <span style={{ ...tokens.typography.subheadline, color: tokens.colors.steel }}>
+                  <Trophy size={20} color={'var(--achievement)'} />
+                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
                     Topp utøver denne måneden
                   </span>
                 </div>
-                <p style={{ ...tokens.typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
+                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                   {group.stats.topPerformer}
                 </p>
               </div>
@@ -1554,18 +1561,18 @@ export default function CoachGroupDetail() {
               <div
                 style={{
                   padding: '20px',
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.lg,
-                  boxShadow: tokens.shadows.card,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-lg)',
+                  boxShadow: 'var(--shadow-card)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Target size={20} color={tokens.colors.success} />
-                  <span style={{ ...tokens.typography.subheadline, color: tokens.colors.steel }}>
+                  <Target size={20} color={'var(--success)'} />
+                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
                     Gjennomsnittlig oppmøte
                   </span>
                 </div>
-                <p style={{ ...tokens.typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
+                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                   {group.stats.avgAttendance}%
                 </p>
               </div>
@@ -1573,18 +1580,18 @@ export default function CoachGroupDetail() {
               <div
                 style={{
                   padding: '20px',
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.lg,
-                  boxShadow: tokens.shadows.card,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-lg)',
+                  boxShadow: 'var(--shadow-card)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Clock size={20} color={tokens.colors.primary} />
-                  <span style={{ ...tokens.typography.subheadline, color: tokens.colors.steel }}>
+                  <Clock size={20} color={'var(--accent)'} />
+                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
                     Økter per uke (snitt)
                   </span>
                 </div>
-                <p style={{ ...tokens.typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
+                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                   {group.stats.avgSessionsPerWeek}
                 </p>
               </div>
@@ -1592,18 +1599,18 @@ export default function CoachGroupDetail() {
               <div
                 style={{
                   padding: '20px',
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.lg,
-                  boxShadow: tokens.shadows.card,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-lg)',
+                  boxShadow: 'var(--shadow-card)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Calendar size={20} color={tokens.colors.primaryLight} />
-                  <span style={{ ...tokens.typography.subheadline, color: tokens.colors.steel }}>
+                  <Calendar size={20} color={'var(--accent)'} />
+                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
                     Totalt antall økter
                   </span>
                 </div>
-                <p style={{ ...tokens.typography.title2, color: tokens.colors.charcoal, margin: 0 }}>
+                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                   {group.stats.totalSessions}
                 </p>
               </div>
@@ -1611,6 +1618,52 @@ export default function CoachGroupDetail() {
           </div>
         )}
       </div>
+
+      {/* Remove Member Confirmation Modal */}
+      <Modal
+        isOpen={!!memberToRemove}
+        onClose={() => setMemberToRemove(null)}
+        title="Fjern medlem"
+        size="sm"
+        footer={
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+            <button
+              onClick={() => setMemberToRemove(null)}
+              style={{
+                padding: '10px 18px',
+                backgroundColor: 'transparent',
+                border: `1px solid ${'var(--border-default)'}`,
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--text-primary)',
+                fontSize: '14px',
+                fontWeight: 500,
+                cursor: 'pointer',
+              }}
+            >
+              Avbryt
+            </button>
+            <button
+              onClick={handleConfirmRemoveMember}
+              style={{
+                padding: '10px 18px',
+                backgroundColor: 'var(--error)',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--bg-primary)',
+                fontSize: '14px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              Fjern medlem
+            </button>
+          </div>
+        }
+      >
+        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          Er du sikker på at du vil fjerne <strong style={{ color: 'var(--text-primary)' }}>{memberToRemove?.name}</strong> fra gruppen?
+        </p>
+      </Modal>
     </div>
   );
 }

@@ -3,8 +3,9 @@ import {
   TrendingUp, Target, Award, ChevronRight, Star,
   Zap, ArrowUp, ArrowDown, Minus
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Card from '../../ui/primitives/Card';
+import Badge from '../../ui/primitives/Badge.primitive';
 
 // ============================================================================
 // MOCK DATA
@@ -91,17 +92,26 @@ const BREAKING_POINTS = [
 // ============================================================================
 
 const TrendIcon = ({ trend }) => {
-  if (trend === 'up') return <ArrowUp size={14} color={tokens.colors.success} />;
-  if (trend === 'down') return <ArrowDown size={14} color={tokens.colors.error} />;
-  return <Minus size={14} color={tokens.colors.steel} />;
+  if (trend === 'up') return <ArrowUp size={14} style={{ color: 'var(--success)' }} />;
+  if (trend === 'down') return <ArrowDown size={14} style={{ color: 'var(--error)' }} />;
+  return <Minus size={14} style={{ color: 'var(--text-tertiary)' }} />;
 };
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'improving': return tokens.colors.success;
-    case 'stable': return tokens.colors.primary;
-    case 'needs_attention': return tokens.colors.error;
-    default: return tokens.colors.steel;
+    case 'improving': return 'var(--success)';
+    case 'stable': return 'var(--accent)';
+    case 'needs_attention': return 'var(--error)';
+    default: return 'var(--text-secondary)';
+  }
+};
+
+const getStatusBadgeVariant = (status) => {
+  switch (status) {
+    case 'improving': return 'success';
+    case 'stable': return 'accent';
+    case 'needs_attention': return 'error';
+    default: return 'neutral';
   }
 };
 
@@ -110,12 +120,7 @@ const getStatusColor = (status) => {
 // ============================================================================
 
 const CategoryProgressCard = ({ category }) => (
-  <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: '16px',
-    padding: '20px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-  }}>
+  <Card variant="default" padding="lg">
     <div style={{
       display: 'flex',
       alignItems: 'center',
@@ -126,26 +131,26 @@ const CategoryProgressCard = ({ category }) => (
         <div style={{
           width: '48px',
           height: '48px',
-          borderRadius: '12px',
-          backgroundColor: `${tokens.colors.primary}15`,
+          borderRadius: 'var(--radius-md)',
+          backgroundColor: 'var(--bg-accent-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Award size={24} color={tokens.colors.primary} />
+          <Award size={24} style={{ color: 'var(--accent)' }} />
         </div>
         <div>
-          <div style={{ fontSize: '13px', color: tokens.colors.steel }}>Navaerende kategori</div>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: tokens.colors.charcoal }}>
+          <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Nåværende kategori</div>
+          <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>
             Kategori {category.level}
           </div>
         </div>
       </div>
       <div style={{ textAlign: 'right' }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
           {category.points}
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel }}>poeng</div>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>poeng</div>
       </div>
     </div>
 
@@ -154,7 +159,7 @@ const CategoryProgressCard = ({ category }) => (
         display: 'flex',
         justifyContent: 'space-between',
         fontSize: '12px',
-        color: tokens.colors.steel,
+        color: 'var(--text-secondary)',
         marginBottom: '6px',
       }}>
         <span>Fremgang mot Kategori {category.nextLevel}</span>
@@ -162,20 +167,20 @@ const CategoryProgressCard = ({ category }) => (
       </div>
       <div style={{
         height: '8px',
-        backgroundColor: tokens.colors.mist,
+        backgroundColor: 'var(--bg-neutral-subtle)',
         borderRadius: '4px',
         overflow: 'hidden',
       }}>
         <div style={{
           height: '100%',
           width: `${category.percentToNext}%`,
-          backgroundColor: tokens.colors.primary,
+          backgroundColor: 'var(--accent)',
           borderRadius: '4px',
           transition: 'width 0.5s ease',
         }} />
       </div>
     </div>
-  </div>
+  </Card>
 );
 
 // ============================================================================
@@ -183,24 +188,11 @@ const CategoryProgressCard = ({ category }) => (
 // ============================================================================
 
 const DevelopmentAreaCard = ({ area, onClick }) => (
-  <div
+  <Card
+    variant="default"
+    padding="md"
     onClick={onClick}
-    style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '14px',
-      cursor: 'pointer',
-      transition: 'all 0.2s',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'translateY(-2px)';
-      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
-    }}
+    style={{ cursor: 'pointer' }}
   >
     <div style={{
       display: 'flex',
@@ -211,7 +203,7 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
         <div style={{
           width: '40px',
           height: '40px',
-          borderRadius: '10px',
+          borderRadius: 'var(--radius-sm)',
           backgroundColor: `${getStatusColor(area.status)}15`,
           display: 'flex',
           alignItems: 'center',
@@ -223,7 +215,7 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
           }}>
             {area.name}
           </div>
@@ -236,8 +228,8 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
             <TrendIcon trend={area.trend} />
             <span style={{
               fontSize: '12px',
-              color: area.trend === 'up' ? tokens.colors.success :
-                     area.trend === 'down' ? tokens.colors.error : tokens.colors.steel,
+              color: area.trend === 'up' ? 'var(--success)' :
+                     area.trend === 'down' ? 'var(--error)' : 'var(--text-tertiary)',
             }}>
               {area.change}
             </span>
@@ -253,10 +245,10 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
         }}>
           {area.score}
         </div>
-        <ChevronRight size={18} color={tokens.colors.steel} />
+        <ChevronRight size={18} color="var(--text-tertiary)" />
       </div>
     </div>
-  </div>
+  </Card>
 );
 
 // ============================================================================
@@ -264,57 +256,44 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
 // ============================================================================
 
 const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => (
-  <a
-    href={href}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '14px',
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '16px',
-      textDecoration: 'none',
-      transition: 'all 0.2s',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'translateY(-2px)';
-      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.04)';
-    }}
-  >
-    <div style={{
-      width: '44px',
-      height: '44px',
-      borderRadius: '10px',
-      backgroundColor: `${color}15`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexShrink: 0,
-    }}>
-      <Icon size={22} color={color} />
-    </div>
-    <div style={{ flex: 1 }}>
+  <a href={href} style={{ textDecoration: 'none' }}>
+    <Card variant="default" padding="md" style={{ cursor: 'pointer' }}>
       <div style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        color: tokens.colors.charcoal,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '14px',
       }}>
-        {title}
+        <div style={{
+          width: '44px',
+          height: '44px',
+          borderRadius: 'var(--radius-sm)',
+          backgroundColor: `${color}15`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <Icon size={22} color={color} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: 600,
+            color: 'var(--text-primary)',
+          }}>
+            {title}
+          </div>
+          <div style={{
+            fontSize: '12px',
+            color: 'var(--text-secondary)',
+            marginTop: '2px',
+          }}>
+            {description}
+          </div>
+        </div>
+        <ChevronRight size={18} color="var(--text-tertiary)" />
       </div>
-      <div style={{
-        fontSize: '12px',
-        color: tokens.colors.steel,
-        marginTop: '2px',
-      }}>
-        {description}
-      </div>
-    </div>
-    <ChevronRight size={18} color={tokens.colors.steel} />
+    </Card>
   </a>
 );
 
@@ -324,7 +303,7 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => (
 
 const UtviklingsOversiktContainer = () => {
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <PageHeader
         title="Min utvikling"
         subtitle="Oversikt over din spillerutvikling"
@@ -344,23 +323,23 @@ const UtviklingsOversiktContainer = () => {
           <QuickLinkCard
             icon={Zap}
             title="Breaking Points"
-            description={`${BREAKING_POINTS.length} aktive fokusomrader`}
+            description={`${BREAKING_POINTS.length} aktive fokusområder`}
             href="/utvikling/breaking-points"
-            color={tokens.colors.error}
+            color="var(--error)"
           />
           <QuickLinkCard
             icon={TrendingUp}
             title="Kategori-fremgang"
             description="Se detaljert fremgang per kategori"
             href="/utvikling/kategori"
-            color={tokens.colors.success}
+            color="var(--success)"
           />
           <QuickLinkCard
             icon={Target}
             title="Benchmark-historie"
             description="Sammenlign med tidligere resultater"
             href="/utvikling/benchmark"
-            color={tokens.colors.primary}
+            color="var(--accent)"
           />
         </div>
 
@@ -369,10 +348,10 @@ const UtviklingsOversiktContainer = () => {
           <h2 style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginBottom: '12px',
           }}>
-            Utviklingsomrader
+            Utviklingsområder
           </h2>
           <div style={{
             display: 'grid',
@@ -390,12 +369,7 @@ const UtviklingsOversiktContainer = () => {
         </div>
 
         {/* Recent Achievements */}
-        <div style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: '14px',
-          padding: '16px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        }}>
+        <Card variant="default" padding="md">
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -405,14 +379,14 @@ const UtviklingsOversiktContainer = () => {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               Siste prestasjoner
             </h3>
             <a href="/achievements" style={{
               fontSize: '13px',
-              color: tokens.colors.primary,
+              color: 'var(--accent)',
               textDecoration: 'none',
             }}>
               Se alle
@@ -427,33 +401,33 @@ const UtviklingsOversiktContainer = () => {
                   alignItems: 'center',
                   gap: '12px',
                   padding: '10px',
-                  backgroundColor: tokens.colors.snow,
-                  borderRadius: '8px',
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderRadius: 'var(--radius-sm)',
                 }}
               >
                 <div style={{
                   width: '32px',
                   height: '32px',
-                  borderRadius: '8px',
-                  backgroundColor: `${tokens.colors.gold}20`,
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: 'var(--bg-warning-subtle)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                  <Star size={16} color={tokens.colors.gold} />
+                  <Star size={16} color="var(--warning)" />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
                     {achievement.title}
                   </div>
-                  <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                     {new Date(achievement.date).toLocaleDateString('nb-NO')}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

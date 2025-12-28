@@ -1,20 +1,6 @@
 import React, { useState } from 'react';
 import { X, Play, Check, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const tokens = {
-  colors: {
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    white: '#FFFFFF',
-  }
-};
+import { tokens } from '../../design-tokens';
 
 const StartTestModal = ({ test, player, onClose, onSubmit }) => {
   const [step, setStep] = useState('instructions'); // instructions, recording, review

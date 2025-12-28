@@ -18,6 +18,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
 import * as videoApi from '../../services/videoApi';
 import { track } from '../../analytics/track';
+import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
 
 // Tailwind classes
 const tw = {
@@ -243,10 +245,7 @@ export function VideoComparisonPage() {
         </div>
         <div className={tw.modalBody}>
           {videosLoading ? (
-            <div className={tw.loadingContainer}>
-              <div className={tw.spinner} />
-              <p>Laster videoer...</p>
-            </div>
+            <StateCard variant="loading" title="Laster videoer..." />
           ) : (
             <div className={tw.videoGrid}>
               {videos.map((v) => (
@@ -280,19 +279,20 @@ export function VideoComparisonPage() {
     <div className={tw.container}>
       {/* Header */}
       <div className={tw.header}>
-        <button className={tw.backButton} onClick={handleBack}>
+        <Button variant="ghost" size="sm" onClick={handleBack}>
           ← Tilbake
-        </button>
+        </Button>
         <h1 className={tw.title}>Sammenlign videoer</h1>
         {comparingMode && (
-          <button
-            className={tw.saveButton}
-            style={{ opacity: saving ? 0.6 : 1 }}
+          <Button
+            variant="primary"
+            size="sm"
             onClick={handleSaveComparison}
             disabled={saving}
+            loading={saving}
           >
             {saving ? 'Lagrer...' : 'Lagre sammenligning'}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -315,9 +315,9 @@ export function VideoComparisonPage() {
 
         {!comparingMode && video1 && video2 && (
           <div className="text-center pb-6">
-            <button className={tw.startButton} onClick={handleStartComparison}>
+            <Button variant="primary" onClick={handleStartComparison}>
               Start sammenligning
-            </button>
+            </Button>
           </div>
         )}
       </div>

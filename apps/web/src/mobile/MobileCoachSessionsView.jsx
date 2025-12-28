@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, Filter, Search } from 'lucide-react';
-import { tokens, typographyStyle } from '../design-tokens';
 import { SkeletonCard } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
 
@@ -113,26 +112,26 @@ const MobileCoachSessionsView = () => {
 
   return (
     <div style={{
-      fontFamily: tokens.typography.fontFamily,
-      backgroundColor: tokens.colors.snow,
+      fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
+      backgroundColor: 'var(--bg-secondary)',
       minHeight: '100vh',
-      paddingBottom: tokens.spacing.xl,
+      paddingBottom: '32px',
     }}>
       {/* Header */}
       <div style={{
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
-        padding: tokens.spacing.lg,
+        backgroundColor: 'var(--accent)',
+        color: 'var(--bg-primary)',
+        padding: '24px',
       }}>
         <h1 style={{
-          ...typographyStyle('title2'),
+          fontSize: '22px', lineHeight: '28px', fontWeight: 700,
           margin: 0,
-          marginBottom: tokens.spacing.sm,
+          marginBottom: '8px',
         }}>
           Treningsøkter
         </h1>
         <p style={{
-          ...typographyStyle('subheadline'),
+          fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           margin: 0,
           opacity: 0.9,
         }}>
@@ -140,20 +139,20 @@ const MobileCoachSessionsView = () => {
         </p>
       </div>
 
-      <div style={{ padding: tokens.spacing.md }}>
+      <div style={{ padding: '16px' }}>
         {/* Search Bar */}
         <div style={{
           position: 'relative',
-          marginBottom: tokens.spacing.md,
+          marginBottom: '16px',
         }}>
           <Search
             size={20}
             style={{
               position: 'absolute',
-              left: tokens.spacing.md,
+              left: '16px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
             }}
           />
           <input
@@ -163,11 +162,11 @@ const MobileCoachSessionsView = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
               width: '100%',
-              padding: `${tokens.spacing.md} ${tokens.spacing.md} ${tokens.spacing.md} 48px`,
-              backgroundColor: tokens.colors.white,
-              border: `1px solid ${tokens.colors.mist}`,
-              borderRadius: tokens.radius.md,
-              ...typographyStyle('subheadline'),
+              padding: `${'16px'} ${'16px'} ${'16px'} 48px`,
+              backgroundColor: 'var(--bg-primary)',
+              border: '1px solid var(--border-default)',
+              borderRadius: 'var(--radius-md)',
+              fontSize: '15px', lineHeight: '20px', fontWeight: 600,
               outline: 'none',
             }}
           />
@@ -176,10 +175,10 @@ const MobileCoachSessionsView = () => {
         {/* Filter Tabs */}
         <div style={{
           display: 'flex',
-          gap: tokens.spacing.sm,
-          marginBottom: tokens.spacing.lg,
+          gap: '8px',
+          marginBottom: '24px',
           overflowX: 'auto',
-          paddingBottom: tokens.spacing.sm,
+          paddingBottom: '8px',
         }}>
           <FilterTab label="Alle" active={filter === 'all'} onClick={() => setFilter('all')} />
           <FilterTab label="I dag" active={filter === 'today'} onClick={() => setFilter('today')} />
@@ -189,7 +188,7 @@ const MobileCoachSessionsView = () => {
 
         {/* Sessions List */}
         {loading ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <SkeletonCard />
             <SkeletonCard />
             <SkeletonCard />
@@ -197,29 +196,29 @@ const MobileCoachSessionsView = () => {
           </div>
         ) : filteredSessions.length === 0 ? (
           <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.md,
-            padding: `${tokens.spacing.xl} ${tokens.spacing.lg}`,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
+            padding: `${'32px'} ${'24px'}`,
             textAlign: 'center',
-            boxShadow: tokens.shadows.card,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}>
-            <Calendar size={48} color={tokens.colors.steel} style={{ margin: '0 auto 16px' }} />
+            <Calendar size={48} color={'var(--text-secondary)'} style={{ margin: '0 auto 16px' }} />
             <div style={{
-              ...typographyStyle('headline'),
-              color: tokens.colors.charcoal,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-primary)',
               marginBottom: '8px',
             }}>
               Ingen økter funnet
             </div>
             <div style={{
-              ...typographyStyle('subheadline'),
-              color: tokens.colors.steel,
+              fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+              color: 'var(--text-secondary)',
             }}>
               {searchQuery ? 'Prøv et annet søk' : 'Ingen økter matcher dette filteret'}
             </div>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {filteredSessions.map((session) => (
               <SessionCard key={session.id} session={session} />
             ))}
@@ -234,13 +233,13 @@ const FilterTab = ({ label, active, onClick }) => (
   <button
     onClick={onClick}
     style={{
-      padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-      backgroundColor: active ? tokens.colors.primary : tokens.colors.white,
-      color: active ? tokens.colors.white : tokens.colors.charcoal,
-      border: active ? 'none' : `1px solid ${tokens.colors.mist}`,
-      borderRadius: tokens.radius.md,
+      padding: `${'8px'} ${'16px'}`,
+      backgroundColor: active ? 'var(--accent)' : 'var(--bg-primary)',
+      color: active ? 'var(--bg-primary)' : 'var(--text-primary)',
+      border: active ? 'none' : '1px solid var(--border-default)',
+      borderRadius: 'var(--radius-md)',
       cursor: 'pointer',
-      ...typographyStyle('subheadline'),
+      fontSize: '15px', lineHeight: '20px', fontWeight: 600,
       fontWeight: active ? 600 : 400,
       whiteSpace: 'nowrap',
       transition: 'all 0.2s',
@@ -254,34 +253,34 @@ const SessionCard = ({ session }) => {
   const isUpcoming = session.status === 'upcoming';
 
   const sessionTypeColors = {
-    'Technique': tokens.colors.primary,
-    'Strategy': tokens.colors.gold,
-    'Mental': tokens.colors.success,
-    'Short Game': tokens.colors.warning,
-    'Full Swing': tokens.colors.primary,
+    'Technique': 'var(--accent)',
+    'Strategy': 'var(--achievement)',
+    'Mental': 'var(--success)',
+    'Short Game': 'var(--warning)',
+    'Full Swing': 'var(--accent)',
   };
 
-  const typeColor = sessionTypeColors[session.type] || tokens.colors.steel;
+  const typeColor = sessionTypeColors[session.type] || 'var(--text-secondary)';
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: tokens.radius.md,
-      padding: tokens.spacing.lg,
-      boxShadow: tokens.shadows.card,
-      border: isUpcoming ? `2px solid ${tokens.colors.primary}15` : 'none',
+      backgroundColor: 'var(--bg-primary)',
+      borderRadius: 'var(--radius-md)',
+      padding: '24px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+      border: isUpcoming ? '2px solid rgba(var(--accent-rgb), 0.15)' : 'none',
     }}>
       {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        marginBottom: tokens.spacing.md,
+        marginBottom: '16px',
       }}>
         <div style={{ flex: 1 }}>
           <h3 style={{
-            ...typographyStyle('headline'),
-            color: tokens.colors.charcoal,
+            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+            color: 'var(--text-primary)',
             margin: 0,
             marginBottom: '4px',
           }}>
@@ -291,8 +290,8 @@ const SessionCard = ({ session }) => {
             display: 'inline-block',
             padding: '4px 12px',
             backgroundColor: `${typeColor}15`,
-            borderRadius: tokens.radius.sm,
-            ...typographyStyle('caption1'),
+            borderRadius: 'var(--radius-sm)',
+            fontSize: '11px', lineHeight: '13px',
             fontWeight: 600,
             color: typeColor,
           }}>
@@ -301,11 +300,11 @@ const SessionCard = ({ session }) => {
         </div>
         <div style={{
           padding: '6px 12px',
-          backgroundColor: isUpcoming ? `${tokens.colors.success}15` : tokens.colors.snow,
-          borderRadius: tokens.radius.sm,
-          ...typographyStyle('caption1'),
+          backgroundColor: isUpcoming ? 'rgba(var(--success-rgb), 0.15)' : 'var(--bg-secondary)',
+          borderRadius: 'var(--radius-sm)',
+          fontSize: '11px', lineHeight: '13px',
           fontWeight: 600,
-          color: isUpcoming ? tokens.colors.success : tokens.colors.steel,
+          color: isUpcoming ? 'var(--success)' : 'var(--text-secondary)',
         }}>
           {isUpcoming ? 'Kommende' : 'Fullført'}
         </div>
@@ -314,15 +313,15 @@ const SessionCard = ({ session }) => {
       {/* Date & Time */}
       <div style={{
         display: 'flex',
-        gap: tokens.spacing.lg,
-        marginBottom: tokens.spacing.md,
+        gap: '24px',
+        marginBottom: '16px',
       }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: tokens.spacing.sm,
-          ...typographyStyle('subheadline'),
-          color: tokens.colors.steel,
+          gap: '8px',
+          fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+          color: 'var(--text-secondary)',
         }}>
           <Calendar size={16} />
           {new Date(session.date).toLocaleDateString('nb-NO', {
@@ -334,9 +333,9 @@ const SessionCard = ({ session }) => {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: tokens.spacing.sm,
-          ...typographyStyle('subheadline'),
-          color: tokens.colors.steel,
+          gap: '8px',
+          fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+          color: 'var(--text-secondary)',
         }}>
           <Clock size={16} />
           {session.time} ({session.duration} min)
@@ -346,11 +345,11 @@ const SessionCard = ({ session }) => {
       {/* Notes */}
       {session.notes && (
         <div style={{
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.snow,
-          borderRadius: tokens.radius.sm,
-          ...typographyStyle('footnote'),
-          color: tokens.colors.charcoal,
+          padding: '16px',
+          backgroundColor: 'var(--bg-secondary)',
+          borderRadius: 'var(--radius-sm)',
+          fontSize: '13px', lineHeight: '18px',
+          color: 'var(--text-primary)',
         }}>
           {session.notes}
         </div>
@@ -360,31 +359,31 @@ const SessionCard = ({ session }) => {
       {isUpcoming && (
         <div style={{
           display: 'flex',
-          gap: tokens.spacing.sm,
-          marginTop: tokens.spacing.md,
+          gap: '8px',
+          marginTop: '16px',
         }}>
           <button style={{
             flex: 1,
-            padding: tokens.spacing.sm,
-            backgroundColor: tokens.colors.primary,
-            color: tokens.colors.white,
+            padding: '8px',
+            backgroundColor: 'var(--accent)',
+            color: 'var(--bg-primary)',
             border: 'none',
-            borderRadius: tokens.radius.sm,
+            borderRadius: 'var(--radius-sm)',
             cursor: 'pointer',
-            ...typographyStyle('subheadline'),
+            fontSize: '15px', lineHeight: '20px', fontWeight: 600,
             fontWeight: 600,
           }}>
             Start økt
           </button>
           <button style={{
             flex: 1,
-            padding: tokens.spacing.sm,
-            backgroundColor: tokens.colors.snow,
-            color: tokens.colors.charcoal,
-            border: `1px solid ${tokens.colors.mist}`,
-            borderRadius: tokens.radius.sm,
+            padding: '8px',
+            backgroundColor: 'var(--bg-secondary)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-default)',
+            borderRadius: 'var(--radius-sm)',
             cursor: 'pointer',
-            ...typographyStyle('subheadline'),
+            fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           }}>
             Rediger
           </button>

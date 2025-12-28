@@ -20,7 +20,8 @@ import {
   CheckCircle2,
   XCircle,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface BookingRequest {
   id: string;
@@ -216,21 +217,21 @@ export default function CoachBookingRequests() {
     switch (status) {
       case 'approved':
         return {
-          bg: `${tokens.colors.success}15`,
-          color: tokens.colors.success,
+          bg: 'rgba(var(--success-rgb), 0.15)',
+          color: 'var(--success)',
           text: 'Godkjent',
           icon: CheckCircle2,
         };
       case 'declined':
         return {
-          bg: `${tokens.colors.error}15`,
-          color: tokens.colors.error,
+          bg: 'rgba(var(--error-rgb), 0.15)',
+          color: 'var(--error)',
           text: 'Avslått',
           icon: XCircle,
         };
       default:
         return {
-          bg: `${tokens.colors.warning}15`,
+          bg: 'rgba(var(--warning-rgb), 0.15)',
           color: '#8B6914',
           text: 'Venter',
           icon: Clock,
@@ -243,7 +244,7 @@ export default function CoachBookingRequests() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -253,8 +254,8 @@ export default function CoachBookingRequests() {
           style={{
             width: 48,
             height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `4px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
@@ -267,15 +268,15 @@ export default function CoachBookingRequests() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           padding: '20px 24px',
         }}
       >
@@ -285,8 +286,8 @@ export default function CoachBookingRequests() {
             style={{
               width: 40,
               height: 40,
-              borderRadius: tokens.radius.md,
-              backgroundColor: tokens.colors.gray100,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -294,13 +295,13 @@ export default function CoachBookingRequests() {
               cursor: 'pointer',
             }}
           >
-            <ArrowLeft size={20} color={tokens.colors.charcoal} />
+            <ArrowLeft size={20} color={'var(--text-primary)'} />
           </button>
           <div>
             <h1
               style={{
-                ...tokens.typography.title1,
-                color: tokens.colors.charcoal,
+                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -308,8 +309,8 @@ export default function CoachBookingRequests() {
             </h1>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: '4px 0 0',
               }}
             >
@@ -328,13 +329,13 @@ export default function CoachBookingRequests() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 12px',
-              backgroundColor: tokens.colors.gray100,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-tertiary)',
+              borderRadius: 'var(--radius-md)',
               flex: 1,
               maxWidth: '300px',
             }}
           >
-            <Search size={18} color={tokens.colors.steel} />
+            <Search size={18} color={'var(--text-secondary)'} />
             <input
               type="text"
               placeholder="Søk etter spiller eller økttype..."
@@ -345,7 +346,7 @@ export default function CoachBookingRequests() {
                 border: 'none',
                 backgroundColor: 'transparent',
                 fontSize: '14px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 outline: 'none',
               }}
             />
@@ -358,10 +359,10 @@ export default function CoachBookingRequests() {
                 onClick={() => setFilter(statusFilter)}
                 style={{
                   padding: '8px 14px',
-                  backgroundColor: filter === statusFilter ? tokens.colors.primary : tokens.colors.white,
-                  color: filter === statusFilter ? tokens.colors.white : tokens.colors.charcoal,
-                  border: `1px solid ${filter === statusFilter ? tokens.colors.primary : tokens.colors.gray300}`,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: filter === statusFilter ? 'var(--accent)' : 'var(--bg-primary)',
+                  color: filter === statusFilter ? 'var(--bg-primary)' : 'var(--text-primary)',
+                  border: `1px solid ${filter === statusFilter ? 'var(--accent)' : 'var(--border-default)'}`,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '13px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -380,11 +381,11 @@ export default function CoachBookingRequests() {
             onChange={(e) => setSortBy(e.target.value as 'date' | 'created')}
             style={{
               padding: '8px 12px',
-              backgroundColor: tokens.colors.white,
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-primary)',
+              border: `1px solid ${'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               fontSize: '13px',
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               cursor: 'pointer',
             }}
           >
@@ -399,11 +400,11 @@ export default function CoachBookingRequests() {
         {filteredRequests.length === 0 ? (
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               padding: '48px',
               textAlign: 'center',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <div
@@ -411,19 +412,19 @@ export default function CoachBookingRequests() {
                 width: 64,
                 height: 64,
                 borderRadius: '50%',
-                backgroundColor: tokens.colors.gray100,
+                backgroundColor: 'var(--bg-tertiary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 16px',
               }}
             >
-              <Calendar size={28} color={tokens.colors.steel} />
+              <Calendar size={28} color={'var(--text-secondary)'} />
             </div>
             <h3
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 8px',
               }}
             >
@@ -431,8 +432,8 @@ export default function CoachBookingRequests() {
             </h3>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: 0,
               }}
             >
@@ -452,14 +453,14 @@ export default function CoachBookingRequests() {
                 <div
                   key={request.id}
                   style={{
-                    backgroundColor: tokens.colors.white,
-                    borderRadius: tokens.radius.lg,
-                    boxShadow: tokens.shadows.card,
+                    backgroundColor: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    boxShadow: 'var(--shadow-card)',
                     overflow: 'hidden',
                     border:
                       request.status === 'pending'
-                        ? `2px solid ${tokens.colors.warning}`
-                        : `1px solid ${tokens.colors.gray200}`,
+                        ? `2px solid ${'var(--warning)'}`
+                        : `1px solid ${'var(--border-default)'}`,
                   }}
                 >
                   <div style={{ padding: '16px 20px' }}>
@@ -478,8 +479,8 @@ export default function CoachBookingRequests() {
                             width: 48,
                             height: 48,
                             borderRadius: '50%',
-                            backgroundColor: tokens.colors.primary,
-                            color: tokens.colors.white,
+                            backgroundColor: 'var(--accent)',
+                            color: 'var(--bg-primary)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -492,8 +493,8 @@ export default function CoachBookingRequests() {
                         <div>
                           <p
                             style={{
-                              ...tokens.typography.headline,
-                              color: tokens.colors.charcoal,
+                              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                              color: 'var(--text-primary)',
                               margin: 0,
                             }}
                           >
@@ -503,11 +504,11 @@ export default function CoachBookingRequests() {
                             <span
                               style={{
                                 padding: '2px 8px',
-                                backgroundColor: tokens.colors.gray100,
+                                backgroundColor: 'var(--bg-tertiary)',
                                 borderRadius: '4px',
                                 fontSize: '11px',
                                 fontWeight: 600,
-                                color: tokens.colors.charcoal,
+                                color: 'var(--text-primary)',
                               }}
                             >
                               Kategori {request.playerCategory}
@@ -515,7 +516,7 @@ export default function CoachBookingRequests() {
                             <span
                               style={{
                                 fontSize: '12px',
-                                color: tokens.colors.steel,
+                                color: 'var(--text-secondary)',
                               }}
                             >
                               {getTimeSince(request.createdAt)}
@@ -531,7 +532,7 @@ export default function CoachBookingRequests() {
                           gap: '6px',
                           padding: '6px 12px',
                           backgroundColor: statusBadge.bg,
-                          borderRadius: tokens.radius.full,
+                          borderRadius: 'var(--radius-full)',
                         }}
                       >
                         <StatusIcon size={14} color={statusBadge.color} />
@@ -554,24 +555,24 @@ export default function CoachBookingRequests() {
                         gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
                         gap: '12px',
                         padding: '12px',
-                        backgroundColor: tokens.colors.gray50,
-                        borderRadius: tokens.radius.md,
+                        backgroundColor: 'var(--bg-tertiary)',
+                        borderRadius: 'var(--radius-md)',
                         marginBottom: '12px',
                       }}
                     >
                       <div>
-                        <p style={{ fontSize: '11px', color: tokens.colors.steel, margin: '0 0 4px' }}>
+                        <p style={{ fontSize: '11px', color: 'var(--text-secondary)', margin: '0 0 4px' }}>
                           ØKTTYPE
                         </p>
-                        <p style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, margin: 0 }}>
+                        <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
                           {request.sessionType}
                         </p>
                       </div>
                       <div>
-                        <p style={{ fontSize: '11px', color: tokens.colors.steel, margin: '0 0 4px' }}>
+                        <p style={{ fontSize: '11px', color: 'var(--text-secondary)', margin: '0 0 4px' }}>
                           DATO
                         </p>
-                        <p style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, margin: 0 }}>
+                        <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
                           {new Date(request.date).toLocaleDateString('nb-NO', {
                             weekday: 'short',
                             day: 'numeric',
@@ -580,10 +581,10 @@ export default function CoachBookingRequests() {
                         </p>
                       </div>
                       <div>
-                        <p style={{ fontSize: '11px', color: tokens.colors.steel, margin: '0 0 4px' }}>
+                        <p style={{ fontSize: '11px', color: 'var(--text-secondary)', margin: '0 0 4px' }}>
                           TID
                         </p>
-                        <p style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, margin: 0 }}>
+                        <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
                           {request.time} ({request.duration} min)
                         </p>
                       </div>
@@ -597,17 +598,17 @@ export default function CoachBookingRequests() {
                           alignItems: 'flex-start',
                           gap: '8px',
                           padding: '10px 12px',
-                          backgroundColor: `${tokens.colors.primary}08`,
-                          borderRadius: tokens.radius.md,
-                          borderLeft: `3px solid ${tokens.colors.primary}`,
+                          backgroundColor: `${'var(--accent)'}08`,
+                          borderRadius: 'var(--radius-md)',
+                          borderLeft: `3px solid ${'var(--accent)'}`,
                           marginBottom: '12px',
                         }}
                       >
-                        <MessageSquare size={16} color={tokens.colors.primary} style={{ marginTop: '2px' }} />
+                        <MessageSquare size={16} color={'var(--accent)'} style={{ marginTop: '2px' }} />
                         <p
                           style={{
                             fontSize: '13px',
-                            color: tokens.colors.charcoal,
+                            color: 'var(--text-primary)',
                             margin: 0,
                             lineHeight: '1.4',
                           }}
@@ -630,10 +631,10 @@ export default function CoachBookingRequests() {
                             justifyContent: 'center',
                             gap: '8px',
                             padding: '10px',
-                            backgroundColor: tokens.colors.white,
-                            color: tokens.colors.error,
-                            border: `1px solid ${tokens.colors.error}`,
-                            borderRadius: tokens.radius.md,
+                            backgroundColor: 'var(--bg-primary)',
+                            color: 'var(--error)',
+                            border: `1px solid ${'var(--error)'}`,
+                            borderRadius: 'var(--radius-md)',
                             fontSize: '14px',
                             fontWeight: 600,
                             cursor: isProcessing ? 'not-allowed' : 'pointer',
@@ -653,10 +654,10 @@ export default function CoachBookingRequests() {
                             justifyContent: 'center',
                             gap: '8px',
                             padding: '10px',
-                            backgroundColor: tokens.colors.success,
-                            color: tokens.colors.white,
+                            backgroundColor: 'var(--success)',
+                            color: 'var(--bg-primary)',
                             border: 'none',
-                            borderRadius: tokens.radius.md,
+                            borderRadius: 'var(--radius-md)',
                             fontSize: '14px',
                             fontWeight: 600,
                             cursor: isProcessing ? 'not-allowed' : 'pointer',
@@ -671,8 +672,8 @@ export default function CoachBookingRequests() {
                           style={{
                             width: 44,
                             height: 44,
-                            borderRadius: tokens.radius.md,
-                            backgroundColor: tokens.colors.gray100,
+                            borderRadius: 'var(--radius-md)',
+                            backgroundColor: 'var(--bg-tertiary)',
                             border: 'none',
                             display: 'flex',
                             alignItems: 'center',
@@ -680,7 +681,7 @@ export default function CoachBookingRequests() {
                             cursor: 'pointer',
                           }}
                         >
-                          <User size={18} color={tokens.colors.charcoal} />
+                          <User size={18} color={'var(--text-primary)'} />
                         </button>
                       </div>
                     )}
@@ -694,10 +695,10 @@ export default function CoachBookingRequests() {
                             alignItems: 'center',
                             gap: '8px',
                             padding: '8px 14px',
-                            backgroundColor: tokens.colors.gray100,
-                            color: tokens.colors.charcoal,
+                            backgroundColor: 'var(--bg-tertiary)',
+                            color: 'var(--text-primary)',
                             border: 'none',
-                            borderRadius: tokens.radius.md,
+                            borderRadius: 'var(--radius-md)',
                             fontSize: '13px',
                             fontWeight: 500,
                             cursor: 'pointer',

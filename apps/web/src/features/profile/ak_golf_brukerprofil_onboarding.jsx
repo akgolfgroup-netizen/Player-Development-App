@@ -6,6 +6,7 @@ import {
   Trophy, Flag, Home, FileText, Lock
 } from 'lucide-react';
 import { tokens } from '../../design-tokens';
+import { playersAPI } from '../../services/api';
 
 // ============================================================
 // AK GOLF ACADEMY - SPILLERPROFIL ONBOARDING
@@ -280,20 +281,26 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
 
   const handleSubmit = async () => {
     if (!validateStep(9)) return;
-    
+
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    const outputData = generateOutputJSON();
-    // TODO: Submit player profile data to backend API
 
-    // Clear auto-saved data after successful submission
-    localStorage.removeItem('ak_golf_profile_draft');
-    localStorage.removeItem('ak_golf_profile_step');
+    try {
+      const outputData = generateOutputJSON();
 
-    setIsSubmitting(false);
-    setIsComplete(true);
+      // Submit player profile data to backend API
+      await playersAPI.updateProfile(outputData);
+
+      // Clear auto-saved data after successful submission
+      localStorage.removeItem('ak_golf_profile_draft');
+      localStorage.removeItem('ak_golf_profile_step');
+
+      setIsComplete(true);
+    } catch (error) {
+      console.error('Failed to submit profile:', error);
+      setErrors({ submit: error.response?.data?.message || 'Kunne ikke lagre profilen. Prøv igjen.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const toggleActivity = (activity) => {

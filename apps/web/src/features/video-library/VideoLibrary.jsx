@@ -20,6 +20,8 @@ import { useVideos } from '../../hooks/useVideos';
 import * as videoApi from '../../services/videoApi';
 import StateCard from '../../ui/composites/StateCard';
 import Modal from '../../ui/composites/Modal.composite';
+import Button from '../../ui/primitives/Button';
+import { Upload, RefreshCw } from 'lucide-react';
 
 // Styles
 const styles = {
@@ -555,13 +557,12 @@ export function VideoLibrary({
           </p>
         </div>
         <div style={styles.headerActions}>
-          <button
-            style={styles.uploadButton}
+          <Button
             onClick={onUploadClick}
+            leftIcon={<Upload size={18} />}
           >
-            <UploadIcon />
             Last opp video
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -620,42 +621,44 @@ export function VideoLibrary({
           title="Kunne ikke laste videoer"
           description="Sjekk nettverkstilkoblingen og prøv igjen."
           action={
-            <button
-              style={styles.uploadButton}
+            <Button
+              variant="ghost"
+              size="sm"
+              leftIcon={<RefreshCw size={14} />}
               onClick={refresh}
             >
               Prøv igjen
-            </button>
+            </Button>
           }
         />
       ) : videos.length === 0 ? (
-        <div style={styles.emptyState}>
-          <VideoEmptyIcon />
-          <h2 style={styles.emptyTitle}>Ingen videoer ennå</h2>
-          <p style={styles.emptyDescription}>
-            Last opp din første video for å begynne å analysere svingen din.
-          </p>
-          <button
-            style={{ ...styles.uploadButton, marginTop: 'var(--spacing-4, 16px)' }}
-            onClick={onUploadClick}
-          >
-            <UploadIcon />
-            Last opp video
-          </button>
-        </div>
+        <StateCard
+          variant="empty"
+          title="Ingen videoer ennå"
+          description="Last opp din første video for å begynne å analysere svingen din."
+          action={
+            <Button
+              leftIcon={<Upload size={16} />}
+              onClick={onUploadClick}
+            >
+              Last opp video
+            </Button>
+          }
+        />
       ) : (
         <>
           {viewMode === VIEW_MODES.GRID ? renderGridView() : renderListView()}
 
           {/* Load more */}
           {hasMore && (
-            <button
-              style={styles.loadMoreButton}
+            <Button
+              variant="secondary"
+              fullWidth
               onClick={handleLoadMore}
               disabled={loadingMore}
             >
               {loadingMore ? 'Laster...' : 'Last flere videoer'}
-            </button>
+            </Button>
           )}
         </>
       )}
@@ -675,22 +678,22 @@ export function VideoLibrary({
         size="sm"
         footer={
           <>
-            <button
-              style={styles.cancelButton}
+            <Button
+              variant="ghost"
               onClick={() => setShowDeleteConfirm(false)}
             >
               Avbryt
-            </button>
-            <button
-              style={styles.deleteButton}
+            </Button>
+            <Button
+              variant="destructive"
               onClick={handleConfirmDelete}
             >
               Slett {selectedVideos.size} {selectedVideos.size === 1 ? 'video' : 'videoer'}
-            </button>
+            </Button>
           </>
         }
       >
-        <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
+        <p style={{ margin: 0, color: 'var(--color-text-secondary)' }}>
           Er du sikker på at du vil slette {selectedVideos.size} {selectedVideos.size === 1 ? 'video' : 'videoer'}?
           Denne handlingen kan ikke angres.
         </p>

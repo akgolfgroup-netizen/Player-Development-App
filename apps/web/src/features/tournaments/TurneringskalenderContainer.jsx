@@ -4,7 +4,6 @@ import {
   Star, Medal, Flag, CheckCircle, AlertCircle, ExternalLink,
   Hotel, FileText, Plus
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -153,8 +152,8 @@ const getStatusConfig = (status, isRegistered) => {
   if (isRegistered) {
     return {
       label: 'Påmeldt',
-      color: tokens.colors.success,
-      bg: `${tokens.colors.success}15`,
+      color: 'var(--success)',
+      bg: 'rgba(var(--success-rgb), 0.15)',
       icon: CheckCircle,
     };
   }
@@ -163,29 +162,29 @@ const getStatusConfig = (status, isRegistered) => {
     case 'registration_open':
       return {
         label: 'Åpen for påmelding',
-        color: tokens.colors.primary,
-        bg: `${tokens.colors.primary}15`,
+        color: 'var(--accent)',
+        bg: 'rgba(var(--accent-rgb), 0.15)',
         icon: Calendar,
       };
     case 'registration_closed':
       return {
         label: 'Fullt',
-        color: tokens.colors.error,
-        bg: `${tokens.colors.error}15`,
+        color: 'var(--error)',
+        bg: 'rgba(var(--error-rgb), 0.15)',
         icon: AlertCircle,
       };
     case 'upcoming':
       return {
         label: 'Kommer snart',
-        color: tokens.colors.steel,
-        bg: `${tokens.colors.steel}15`,
+        color: 'var(--text-secondary)',
+        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
         icon: Clock,
       };
     default:
       return {
         label: status,
-        color: tokens.colors.steel,
-        bg: `${tokens.colors.steel}15`,
+        color: 'var(--text-secondary)',
+        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
         icon: Flag,
       };
   }
@@ -194,13 +193,13 @@ const getStatusConfig = (status, isRegistered) => {
 const getCategoryConfig = (category) => {
   switch (category) {
     case 'junior':
-      return { label: 'Junior', color: tokens.colors.primary };
+      return { label: 'Junior', color: 'var(--accent)' };
     case 'elite':
-      return { label: 'Elite', color: tokens.colors.gold };
+      return { label: 'Elite', color: 'var(--achievement)' };
     case 'open':
-      return { label: 'Åpen', color: tokens.colors.success };
+      return { label: 'Åpen', color: 'var(--success)' };
     default:
-      return { label: category, color: tokens.colors.steel };
+      return { label: category, color: 'var(--text-secondary)' };
   }
 };
 
@@ -230,13 +229,13 @@ const TournamentCard = ({ tournament, onSelect }) => {
     <div
       onClick={() => onSelect(tournament)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '16px',
         padding: '20px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         cursor: 'pointer',
         transition: 'all 0.2s ease',
-        border: tournament.isRegistered ? `2px solid ${tokens.colors.success}` : '2px solid transparent',
+        border: tournament.isRegistered ? '2px solid var(--success)' : '2px solid transparent',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
@@ -254,18 +253,18 @@ const TournamentCard = ({ tournament, onSelect }) => {
             width: '44px',
             height: '44px',
             borderRadius: '12px',
-            backgroundColor: `${tokens.colors.gold}15`,
+            backgroundColor: 'rgba(var(--achievement-rgb), 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-            <TypeIcon size={22} color={tokens.colors.gold} />
+            <TypeIcon size={22} color={'var(--achievement)'} />
           </div>
           <div>
             <h3 style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               {tournament.name}
@@ -304,15 +303,15 @@ const TournamentCard = ({ tournament, onSelect }) => {
       {/* Details */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Calendar size={14} color={tokens.colors.steel} />
-          <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+          <Calendar size={14} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
             {formatDateRange(tournament.startDate, tournament.endDate)}
           </span>
           {daysUntil > 0 && daysUntil <= 30 && (
             <span style={{
               fontSize: '11px',
-              color: tokens.colors.primary,
-              backgroundColor: `${tokens.colors.primary}10`,
+              color: 'var(--accent)',
+              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
               padding: '2px 6px',
               borderRadius: '4px',
             }}>
@@ -321,20 +320,20 @@ const TournamentCard = ({ tournament, onSelect }) => {
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <MapPin size={14} color={tokens.colors.steel} />
-          <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+          <MapPin size={14} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
             {tournament.location}, {tournament.city}
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Users size={14} color={tokens.colors.steel} />
-          <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+          <Users size={14} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
             {tournament.currentParticipants}/{tournament.maxParticipants} påmeldte
           </span>
           {tournament.currentParticipants >= tournament.maxParticipants && (
             <span style={{
               fontSize: '11px',
-              color: tokens.colors.error,
+              color: 'var(--error)',
               fontWeight: 500,
             }}>
               (Fullt)
@@ -363,11 +362,11 @@ const TournamentCard = ({ tournament, onSelect }) => {
               gap: '6px',
               padding: '6px 10px',
               borderRadius: '8px',
-              border: `1px solid ${tokens.colors.mist}`,
-              backgroundColor: tokens.colors.snow,
+              border: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-secondary)',
               fontSize: '11px',
               fontWeight: 500,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               cursor: 'pointer',
               transition: 'all 0.2s',
             }}
@@ -387,11 +386,11 @@ const TournamentCard = ({ tournament, onSelect }) => {
               gap: '6px',
               padding: '6px 10px',
               borderRadius: '8px',
-              border: `1px solid ${tokens.colors.mist}`,
-              backgroundColor: tokens.colors.snow,
+              border: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-secondary)',
               fontSize: '11px',
               fontWeight: 500,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               cursor: 'pointer',
               transition: 'all 0.2s',
             }}
@@ -410,11 +409,11 @@ const TournamentCard = ({ tournament, onSelect }) => {
               gap: '4px',
               padding: '6px 10px',
               borderRadius: '8px',
-              border: `1px dashed ${tokens.colors.mist}`,
+              border: '1px dashed var(--border-default)',
               backgroundColor: 'transparent',
               fontSize: '11px',
               fontWeight: 500,
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               cursor: 'pointer',
               transition: 'all 0.2s',
             }}
@@ -431,11 +430,11 @@ const TournamentCard = ({ tournament, onSelect }) => {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingTop: '12px',
-        borderTop: `1px solid ${tokens.colors.mist}`,
+        borderTop: '1px solid var(--border-default)',
       }}>
         <div>
-          <span style={{ fontSize: '12px', color: tokens.colors.steel }}>Startavgift</span>
-          <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Startavgift</span>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
             {tournament.fee} kr
           </div>
         </div>
@@ -455,8 +454,8 @@ const TournamentCard = ({ tournament, onSelect }) => {
                 padding: '6px 12px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 fontSize: '12px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -471,7 +470,7 @@ const TournamentCard = ({ tournament, onSelect }) => {
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             fontSize: '14px',
             fontWeight: 500,
           }}>
@@ -493,7 +492,7 @@ const PastTournamentCard = ({ tournament }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '16px',
       display: 'flex',
@@ -505,15 +504,15 @@ const PastTournamentCard = ({ tournament }) => {
         width: '40px',
         height: '40px',
         borderRadius: '10px',
-        backgroundColor: isTopThree ? `${tokens.colors.gold}15` : tokens.colors.snow,
+        backgroundColor: isTopThree ? 'rgba(var(--achievement-rgb), 0.15)' : 'var(--bg-secondary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
         {isTopThree ? (
-          <Medal size={20} color={tokens.colors.gold} />
+          <Medal size={20} color={'var(--achievement)'} />
         ) : (
-          <span style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
             {tournament.result.position}
           </span>
         )}
@@ -521,20 +520,20 @@ const PastTournamentCard = ({ tournament }) => {
 
       {/* Info */}
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+        <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
           {tournament.name}
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel, marginTop: '2px' }}>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
           {formatDate(tournament.date)} • {tournament.location}
         </div>
       </div>
 
       {/* Result */}
       <div style={{ textAlign: 'right' }}>
-        <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+        <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
           {tournament.result.position}. plass
         </div>
-        <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
           Score: {tournament.result.score} • {tournament.result.field} deltakere
         </div>
       </div>
@@ -570,8 +569,8 @@ const FilterBar = ({ activeFilter, onFilterChange }) => {
             padding: '8px 16px',
             borderRadius: '20px',
             border: 'none',
-            backgroundColor: activeFilter === filter.key ? tokens.colors.primary : tokens.colors.white,
-            color: activeFilter === filter.key ? tokens.colors.white : tokens.colors.charcoal,
+            backgroundColor: activeFilter === filter.key ? 'var(--accent)' : 'var(--bg-primary)',
+            color: activeFilter === filter.key ? 'var(--bg-primary)' : 'var(--text-primary)',
             fontSize: '13px',
             fontWeight: 500,
             cursor: 'pointer',
@@ -608,7 +607,7 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
       padding: '20px',
     }} onClick={onClose}>
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '20px',
         maxWidth: '500px',
         width: '100%',
@@ -618,14 +617,14 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
         {/* Header */}
         <div style={{
           padding: '24px',
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          borderBottom: '1px solid var(--border-default)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: 700,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: '0 0 8px 0',
               }}>
                 {tournament.name}
@@ -648,10 +647,10 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
                 height: '32px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: tokens.colors.snow,
+                backgroundColor: 'var(--bg-secondary)',
                 cursor: 'pointer',
                 fontSize: '18px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}
             >
               ×
@@ -663,7 +662,7 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
         <div style={{ padding: '24px' }}>
           <p style={{
             fontSize: '14px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             lineHeight: 1.6,
             margin: '0 0 20px 0',
           }}>
@@ -672,36 +671,36 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Calendar size={18} color={tokens.colors.primary} />
+              <Calendar size={18} color={'var(--accent)'} />
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {formatDateRange(tournament.startDate, tournament.endDate)}
                 </div>
-                <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   Påmeldingsfrist: {formatDate(tournament.registrationDeadline)}
                 </div>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <MapPin size={18} color={tokens.colors.primary} />
+              <MapPin size={18} color={'var(--accent)'} />
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {tournament.location}
                 </div>
-                <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   {tournament.city}
                 </div>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Flag size={18} color={tokens.colors.primary} />
-              <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+              <Flag size={18} color={'var(--accent)'} />
+              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                 {tournament.format}
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Users size={18} color={tokens.colors.primary} />
-              <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+              <Users size={18} color={'var(--accent)'} />
+              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                 {tournament.currentParticipants}/{tournament.maxParticipants} påmeldte
               </div>
             </div>
@@ -709,15 +708,15 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
 
           {/* Fee info */}
           <div style={{
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             borderRadius: '12px',
             padding: '16px',
             marginBottom: '20px',
           }}>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel, marginBottom: '4px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
               Startavgift
             </div>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.charcoal }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {tournament.fee} kr
             </div>
           </div>
@@ -731,8 +730,8 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
                 padding: '14px',
                 borderRadius: '12px',
                 border: 'none',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 fontSize: '15px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -750,8 +749,8 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
               gap: '8px',
               padding: '14px',
               borderRadius: '12px',
-              backgroundColor: `${tokens.colors.success}15`,
-              color: tokens.colors.success,
+              backgroundColor: 'rgba(var(--success-rgb), 0.15)',
+              color: 'var(--success)',
               fontSize: '15px',
               fontWeight: 600,
             }}>
@@ -790,7 +789,7 @@ const TurneringskalenderContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Turneringskalender"
         subtitle="Kommende turneringer og resultater"
@@ -806,48 +805,48 @@ const TurneringskalenderContainer = () => {
           marginBottom: '16px',
         }}>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
               {tournaments.length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Kommende</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Kommende</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
               {tournaments.filter(t => t.isRegistered).length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Påmeldt</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Påmeldt</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
               {PAST_TOURNAMENTS.filter(t => t.result.position <= 3).length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Pallplasser</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Pallplasser</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.charcoal }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {PAST_TOURNAMENTS.length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Spilt i år</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Spilt i år</div>
           </div>
         </div>
 
@@ -861,7 +860,7 @@ const TurneringskalenderContainer = () => {
           <h2 style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Kommende turneringer
@@ -883,13 +882,13 @@ const TurneringskalenderContainer = () => {
             </div>
           ) : (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '16px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <Trophy size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <Trophy size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen turneringer funnet med valgt filter
               </p>
             </div>
@@ -901,7 +900,7 @@ const TurneringskalenderContainer = () => {
           <h2 style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Tidligere resultater

@@ -192,13 +192,13 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-red-500 text-5xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Plan Not Found</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Plan ikke funnet</h1>
           <p className="text-gray-600 mb-6">{error?.message}</p>
           <button
             onClick={() => navigate('/dashboard')}
             className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
-            Return to Dashboard
+            Tilbake til dashboard
           </button>
         </div>
       </div>
@@ -210,7 +210,7 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-orange-500 text-5xl mb-4">🔧</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">System Error</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Systemfeil</h1>
           <p className="text-gray-600 mb-6">{error?.message}</p>
           <div className="flex gap-3 justify-center">
             <button

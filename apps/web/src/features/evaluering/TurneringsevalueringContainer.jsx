@@ -4,7 +4,6 @@ import {
   Award, MapPin, CheckCircle,
   AlertCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -158,8 +157,8 @@ const RatingStars = ({ rating, size = 14 }) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? tokens.colors.gold : 'none'}
-        color={star <= rating ? tokens.colors.gold : tokens.colors.mist}
+        fill={star <= rating ? 'var(--achievement)' : 'none'}
+        color={star <= rating ? 'var(--achievement)' : 'var(--border-default)'}
       />
     ))}
   </div>
@@ -177,13 +176,13 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
     <div
       onClick={() => onClick(evaluation)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '16px',
         padding: '18px',
         cursor: 'pointer',
         transition: 'all 0.2s',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        border: isWin ? `2px solid ${tokens.colors.gold}` : '2px solid transparent',
+        border: isWin ? '2px solid var(--achievement)' : '2px solid transparent',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
@@ -200,16 +199,16 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           width: '50px',
           height: '50px',
           borderRadius: '12px',
-          backgroundColor: isTopThree ? `${tokens.colors.gold}15` : tokens.colors.snow,
+          backgroundColor: isTopThree ? 'rgba(var(--achievement-rgb), 0.15)' : 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
         }}>
           {isTopThree ? (
-            <Award size={24} color={tokens.colors.gold} />
+            <Award size={24} color={'var(--achievement)'} />
           ) : (
-            <span style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {evaluation.position}
             </span>
           )}
@@ -227,7 +226,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
               <h3 style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 {evaluation.tournamentName}
@@ -238,7 +237,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
                 gap: '12px',
                 marginTop: '4px',
                 fontSize: '12px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Calendar size={12} />
@@ -262,31 +261,31 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           }}>
             <div style={{
               padding: '8px 12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '8px',
             }}>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Plassering</div>
-              <div style={{ fontSize: '16px', fontWeight: 700, color: tokens.colors.charcoal }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Plassering</div>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
                 {evaluation.position}/{evaluation.field}
               </div>
             </div>
             <div style={{
               padding: '8px 12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '8px',
             }}>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Score</div>
-              <div style={{ fontSize: '16px', fontWeight: 700, color: tokens.colors.charcoal }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Score</div>
+              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
                 {evaluation.total} ({evaluation.toPar})
               </div>
             </div>
             <div style={{
               padding: '8px 12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '8px',
             }}>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Runder</div>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.charcoal }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Runder</div>
+              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
                 {evaluation.rounds.join(' - ')}
               </div>
             </div>
@@ -299,16 +298,16 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
             marginBottom: '12px',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Target size={14} color={tokens.colors.primary} />
-              <span style={{ fontSize: '12px', color: tokens.colors.steel }}>Teknikk:</span>
-              <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.charcoal }}>
+              <Target size={14} color={'var(--accent)'} />
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Teknikk:</span>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
                 {evaluation.technicalRating}/5
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Star size={14} color={tokens.colors.gold} />
-              <span style={{ fontSize: '12px', color: tokens.colors.steel }}>Mental:</span>
-              <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.charcoal }}>
+              <Star size={14} color={'var(--achievement)'} />
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Mental:</span>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
                 {evaluation.mentalRating}/5
               </span>
             </div>
@@ -321,8 +320,8 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
                 key={idx}
                 style={{
                   fontSize: '11px',
-                  color: tokens.colors.success,
-                  backgroundColor: `${tokens.colors.success}10`,
+                  color: 'var(--success)',
+                  backgroundColor: 'rgba(var(--success-rgb), 0.1)',
                   padding: '4px 8px',
                   borderRadius: '6px',
                   display: 'flex',
@@ -339,8 +338,8 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
                 key={idx}
                 style={{
                   fontSize: '11px',
-                  color: tokens.colors.error,
-                  backgroundColor: `${tokens.colors.error}10`,
+                  color: 'var(--error)',
+                  backgroundColor: 'rgba(var(--error-rgb), 0.1)',
                   padding: '4px 8px',
                   borderRadius: '6px',
                   display: 'flex',
@@ -355,7 +354,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           </div>
         </div>
 
-        <ChevronRight size={20} color={tokens.colors.steel} style={{ flexShrink: 0 }} />
+        <ChevronRight size={20} color={'var(--text-secondary)'} style={{ flexShrink: 0 }} />
       </div>
     </div>
   );
@@ -373,73 +372,73 @@ const StatsOverview = ({ stats }) => (
     marginBottom: '24px',
   }}>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.primary }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
         {stats.tournaments}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Turneringer</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Turneringer</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.gold }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
         {stats.wins}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Seiere</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Seiere</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.gold }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
         {stats.topThrees}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Topp 3</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Topp 3</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.success }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
         {stats.topTens}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Topp 10</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Topp 10</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.charcoal }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
         {stats.avgPosition}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Gj.sn. plass</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gj.sn. plass</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
-        <span style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.gold }}>
+        <span style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
           {stats.avgRating}
         </span>
-        <Star size={14} fill={tokens.colors.gold} color={tokens.colors.gold} />
+        <Star size={14} fill={'var(--achievement)'} color={'var(--achievement)'} />
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Gj.sn. rating</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gj.sn. rating</div>
     </div>
   </div>
 );
@@ -459,7 +458,7 @@ const TurneringsevalueringContainer = () => {
   });
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Turneringsevalueringer"
         subtitle="Evaluering av turneringsprestasjoner"
@@ -479,7 +478,7 @@ const TurneringsevalueringContainer = () => {
           gap: '12px',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '13px', color: tokens.colors.steel }}>Sorter:</span>
+            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Sorter:</span>
             {[
               { key: 'date', label: 'Dato' },
               { key: 'rating', label: 'Rating' },
@@ -492,8 +491,8 @@ const TurneringsevalueringContainer = () => {
                   padding: '6px 12px',
                   borderRadius: '6px',
                   border: 'none',
-                  backgroundColor: sortBy === option.key ? tokens.colors.primary : tokens.colors.white,
-                  color: sortBy === option.key ? tokens.colors.white : tokens.colors.charcoal,
+                  backgroundColor: sortBy === option.key ? 'var(--accent)' : 'var(--bg-primary)',
+                  color: sortBy === option.key ? 'var(--bg-primary)' : 'var(--text-primary)',
                   fontSize: '12px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -512,8 +511,8 @@ const TurneringsevalueringContainer = () => {
               padding: '10px 16px',
               borderRadius: '8px',
               border: 'none',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',

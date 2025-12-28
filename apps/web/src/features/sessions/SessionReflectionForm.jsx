@@ -6,7 +6,6 @@
  * Design: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
  */
 import React, { useState } from 'react';
-import { tokens, typographyStyle } from '../../design-tokens';
 
 // Format time as HH:MM:SS
 function formatTime(seconds) {
@@ -19,12 +18,12 @@ function formatTime(seconds) {
 // Rating scale component with custom icons and labels
 function RatingScale({ label, description, value, onChange, icons, labels }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.xs }}>
+    <div style={{ marginBottom: '24px' }}>
+      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
         {label}
       </span>
       {description && (
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.sm }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
           {description}
         </span>
       )}
@@ -32,9 +31,9 @@ function RatingScale({ label, description, value, onChange, icons, labels }) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          backgroundColor: tokens.colors.foam,
-          borderRadius: tokens.borderRadius.md,
-          padding: tokens.spacing.md,
+          backgroundColor: 'var(--bg-secondary)',
+          borderRadius: 'var(--radius-md)',
+          padding: '16px',
         }}
       >
         {[1, 2, 3, 4, 5].map((rating) => (
@@ -45,10 +44,10 @@ function RatingScale({ label, description, value, onChange, icons, labels }) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              padding: tokens.spacing.sm,
-              backgroundColor: value === rating ? tokens.colors.forest : 'transparent',
+              padding: '8px',
+              backgroundColor: value === rating ? 'var(--accent)' : 'transparent',
               border: 'none',
-              borderRadius: tokens.borderRadius.sm,
+              borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
               minWidth: '48px',
             }}
@@ -56,9 +55,9 @@ function RatingScale({ label, description, value, onChange, icons, labels }) {
             <span style={{ fontSize: '24px' }}>{icons[rating - 1]}</span>
             <span
               style={{
-                ...typographyStyle('caption'),
-                color: value === rating ? tokens.colors.white : tokens.colors.steel,
-                marginTop: tokens.spacing.xs,
+                fontSize: '12px', lineHeight: '16px',
+                color: value === rating ? 'var(--bg-primary)' : 'var(--text-secondary)',
+                marginTop: '4px',
               }}
             >
               {rating}
@@ -70,13 +69,13 @@ function RatingScale({ label, description, value, onChange, icons, labels }) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginTop: tokens.spacing.xs,
+          marginTop: '4px',
         }}
       >
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {labels[0]}
         </span>
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {labels[1]}
         </span>
       </div>
@@ -89,14 +88,14 @@ function SleepDurationSelector({ value, onChange }) {
   const options = ['< 5t', '5-6t', '6-7t', '7-8t', '> 8t'];
 
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+    <div style={{ marginBottom: '24px' }}>
+      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
         Søvn siste natt
       </span>
       <div
         style={{
           display: 'flex',
-          gap: tokens.spacing.sm,
+          gap: '8px',
           flexWrap: 'wrap',
         }}
       >
@@ -105,13 +104,13 @@ function SleepDurationSelector({ value, onChange }) {
             key={option}
             onClick={() => onChange(option)}
             style={{
-              padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-              backgroundColor: value === option ? tokens.colors.forest : tokens.colors.foam,
-              color: value === option ? tokens.colors.white : tokens.colors.charcoal,
+              padding: `${'8px'} ${'16px'}`,
+              backgroundColor: value === option ? 'var(--accent)' : 'var(--bg-secondary)',
+              color: value === option ? 'var(--bg-primary)' : 'var(--text-primary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
-              ...typographyStyle('label'),
+              fontSize: '15px', lineHeight: '20px', fontWeight: 500,
             }}
           >
             {option}
@@ -125,8 +124,8 @@ function SleepDurationSelector({ value, onChange }) {
 // Text area field
 function TextAreaField({ label, value, onChange, placeholder }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+    <div style={{ marginBottom: '24px' }}>
+      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
         {label}
       </span>
       <textarea
@@ -136,12 +135,12 @@ function TextAreaField({ label, value, onChange, placeholder }) {
         style={{
           width: '100%',
           minHeight: '80px',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.foam,
+          padding: '16px',
+          backgroundColor: 'var(--bg-secondary)',
           border: 'none',
-          borderRadius: tokens.borderRadius.md,
+          borderRadius: 'var(--radius-md)',
           resize: 'vertical',
-          ...typographyStyle('callout'),
+          fontSize: '16px', lineHeight: '21px', fontWeight: 400,
         }}
       />
     </div>
@@ -154,9 +153,9 @@ function SectionDivider() {
     <div
       style={{
         height: '1px',
-        backgroundColor: tokens.colors.mist,
-        marginTop: tokens.spacing.lg,
-        marginBottom: tokens.spacing.lg,
+        backgroundColor: 'var(--border-default)',
+        marginTop: '24px',
+        marginBottom: '24px',
       }}
     />
   );
@@ -212,43 +211,43 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
   return (
     <div
       style={{
-        backgroundColor: tokens.colors.ivory,
+        backgroundColor: 'var(--bg-secondary)',
         minHeight: '100vh',
-        fontFamily: tokens.typography.fontFamily,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          padding: tokens.spacing.lg,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          backgroundColor: 'var(--bg-primary)',
+          padding: '24px',
+          borderBottom: '1px solid var(--border-default)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm, marginBottom: tokens.spacing.sm }}>
-          <span style={{ color: tokens.colors.success, fontSize: '28px' }}>✓</span>
-          <span style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          <span style={{ color: 'var(--success)', fontSize: '28px' }}>✓</span>
+          <span style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)' }}>
             Økt fullført!
           </span>
         </div>
         <div
           style={{
             height: '2px',
-            backgroundColor: tokens.colors.forest,
-            marginBottom: tokens.spacing.md,
+            backgroundColor: 'var(--accent)',
+            marginBottom: '16px',
           }}
         />
-        <div style={{ ...typographyStyle('callout'), color: tokens.colors.steel }}>
+        <div style={{ fontSize: '16px', lineHeight: '21px', fontWeight: 400, color: 'var(--text-secondary)' }}>
           {session?.date} • {formatTime(totalDuration)}
         </div>
-        <div style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+        <div style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {blocksCompleted} av {session?.blocks?.length || 0} blokker fullført
         </div>
       </div>
 
       {/* Form content */}
-      <div style={{ padding: tokens.spacing.lg }}>
-        <div style={{ ...typographyStyle('title2'), color: tokens.colors.charcoal, marginBottom: tokens.spacing.lg }}>
+      <div style={{ padding: '24px' }}>
+        <div style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '24px' }}>
           REFLEKSJON
         </div>
 
@@ -357,14 +356,14 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
           disabled={!isComplete}
           style={{
             width: '100%',
-            padding: tokens.spacing.md,
-            backgroundColor: isComplete ? tokens.colors.forest : tokens.colors.mist,
-            color: isComplete ? tokens.colors.white : tokens.colors.steel,
+            padding: '16px',
+            backgroundColor: isComplete ? 'var(--accent)' : 'var(--border-default)',
+            color: isComplete ? 'var(--bg-primary)' : 'var(--text-secondary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: isComplete ? 'pointer' : 'not-allowed',
-            marginBottom: tokens.spacing.md,
-            ...typographyStyle('title3'),
+            marginBottom: '16px',
+            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
           }}
         >
           Lagre refleksjon
@@ -374,12 +373,12 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
           onClick={onSkip}
           style={{
             width: '100%',
-            padding: tokens.spacing.sm,
+            padding: '8px',
             backgroundColor: 'transparent',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             border: 'none',
             cursor: 'pointer',
-            ...typographyStyle('callout'),
+            fontSize: '16px', lineHeight: '21px', fontWeight: 400,
           }}
         >
           Hopp over
@@ -388,13 +387,13 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
         {/* Sports science info */}
         <div
           style={{
-            backgroundColor: tokens.colors.foam,
-            borderRadius: tokens.borderRadius.md,
-            padding: tokens.spacing.md,
-            marginTop: tokens.spacing.xl,
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
+            padding: '16px',
+            marginTop: '32px',
           }}
         >
-          <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
             💡 Refleksjonene hjelper deg og treneren din med å forstå hvordan kropp og sinn responderer på trening,
             og justere treningsbelastningen for optimal utvikling.
           </span>

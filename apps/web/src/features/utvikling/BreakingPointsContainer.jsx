@@ -3,8 +3,9 @@ import {
   Target, ChevronRight, Plus, CheckCircle, Clock,
   AlertTriangle, Calendar, Video
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
 
 // ============================================================================
 // MOCK DATA
@@ -97,26 +98,26 @@ const RESOLVED_POINTS = [
 const getStatusConfig = (status) => {
   switch (status) {
     case 'working':
-      return { label: 'Jobber med', color: tokens.colors.primary, icon: Clock };
+      return { label: 'Jobber med', color: 'var(--accent)', icon: Clock };
     case 'identified':
-      return { label: 'Identifisert', color: tokens.colors.warning, icon: AlertTriangle };
+      return { label: 'Identifisert', color: 'var(--warning)', icon: AlertTriangle };
     case 'resolved':
-      return { label: 'Lost', color: tokens.colors.success, icon: CheckCircle };
+      return { label: 'Lost', color: 'var(--success)', icon: CheckCircle };
     default:
-      return { label: status, color: tokens.colors.steel, icon: Target };
+      return { label: status, color: 'var(--text-secondary)', icon: Target };
   }
 };
 
 const getPriorityConfig = (priority) => {
   switch (priority) {
     case 'high':
-      return { label: 'Hoy', color: tokens.colors.error };
+      return { label: 'Hoy', color: 'var(--error)' };
     case 'medium':
-      return { label: 'Medium', color: tokens.colors.warning };
+      return { label: 'Medium', color: 'var(--warning)' };
     case 'low':
-      return { label: 'Lav', color: tokens.colors.steel };
+      return { label: 'Lav', color: 'var(--text-secondary)' };
     default:
-      return { label: priority, color: tokens.colors.steel };
+      return { label: priority, color: 'var(--text-secondary)' };
   }
 };
 
@@ -130,152 +131,153 @@ const BreakingPointCard = ({ point, onClick }) => {
   const StatusIcon = statusConfig.icon;
 
   return (
-    <div
-      onClick={() => onClick(point)}
-      style={{
-        backgroundColor: tokens.colors.white,
-        borderRadius: '14px',
-        padding: '16px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        borderLeft: `4px solid ${priorityConfig.color}`,
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
-    >
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        marginBottom: '12px',
-      }}>
-        <div>
+    <Card variant="default" padding="none">
+      <div
+        onClick={() => onClick(point)}
+        style={{
+          padding: '16px',
+          cursor: 'pointer',
+          transition: 'all 0.2s',
+          borderLeft: `4px solid ${priorityConfig.color}`,
+          borderRadius: 'var(--radius-lg)',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+        }}
+      >
+        <div style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          marginBottom: '12px',
+        }}>
+          <div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '4px',
+            }}>
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-sm)',
+                backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+                color: 'var(--accent)',
+              }}>
+                {point.area}
+              </span>
+              <span style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-sm)',
+                backgroundColor: statusConfig.color === 'var(--accent)' ? 'rgba(var(--accent-rgb), 0.1)' :
+                               statusConfig.color === 'var(--warning)' ? 'rgba(var(--warning-rgb), 0.1)' :
+                               statusConfig.color === 'var(--success)' ? 'rgba(var(--success-rgb), 0.1)' :
+                               'var(--bg-tertiary)',
+                color: statusConfig.color,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+              }}>
+                <StatusIcon size={10} />
+                {statusConfig.label}
+              </span>
+            </div>
+            <h3 style={{
+              fontSize: '16px',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
+              {point.title}
+            </h3>
+          </div>
+          <ChevronRight size={18} style={{ color: 'var(--text-secondary)' }} />
+        </div>
+
+        <p style={{
+          fontSize: '13px',
+          color: 'var(--text-secondary)',
+          margin: '0 0 12px 0',
+          lineHeight: 1.4,
+        }}>
+          {point.description}
+        </p>
+
+        {/* Progress Bar */}
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: '11px',
+            color: 'var(--text-secondary)',
+            marginBottom: '4px',
+          }}>
+            <span>Fremgang</span>
+            <span>{point.progress}%</span>
+          </div>
+          <div style={{
+            height: '6px',
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: '3px',
+            overflow: 'hidden',
+          }}>
+            <div style={{
+              height: '100%',
+              width: `${point.progress}%`,
+              backgroundColor: point.progress >= 80 ? 'var(--success)' :
+                             point.progress >= 50 ? 'var(--accent)' : 'var(--warning)',
+              borderRadius: '3px',
+            }} />
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div style={{
+          display: 'flex',
+          gap: '16px',
+          paddingTop: '12px',
+          borderTop: '1px solid var(--border-default)',
+        }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            marginBottom: '4px',
+            gap: '4px',
+            fontSize: '12px',
+            color: 'var(--text-secondary)',
           }}>
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 500,
-              padding: '2px 8px',
-              borderRadius: '4px',
-              backgroundColor: `${tokens.colors.primary}15`,
-              color: tokens.colors.primary,
-            }}>
-              {point.area}
-            </span>
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 500,
-              padding: '2px 8px',
-              borderRadius: '4px',
-              backgroundColor: `${statusConfig.color}15`,
-              color: statusConfig.color,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}>
-              <StatusIcon size={10} />
-              {statusConfig.label}
-            </span>
+            <Calendar size={12} />
+            {point.sessions} okter
           </div>
-          <h3 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: tokens.colors.charcoal,
-            margin: 0,
-          }}>
-            {point.title}
-          </h3>
-        </div>
-        <ChevronRight size={18} color={tokens.colors.steel} />
-      </div>
-
-      <p style={{
-        fontSize: '13px',
-        color: tokens.colors.steel,
-        margin: '0 0 12px 0',
-        lineHeight: 1.4,
-      }}>
-        {point.description}
-      </p>
-
-      {/* Progress Bar */}
-      <div style={{ marginBottom: '12px' }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          fontSize: '11px',
-          color: tokens.colors.steel,
-          marginBottom: '4px',
-        }}>
-          <span>Fremgang</span>
-          <span>{point.progress}%</span>
-        </div>
-        <div style={{
-          height: '6px',
-          backgroundColor: tokens.colors.mist,
-          borderRadius: '3px',
-          overflow: 'hidden',
-        }}>
           <div style={{
-            height: '100%',
-            width: `${point.progress}%`,
-            backgroundColor: point.progress >= 80 ? tokens.colors.success :
-                           point.progress >= 50 ? tokens.colors.primary : tokens.colors.warning,
-            borderRadius: '3px',
-          }} />
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            fontSize: '12px',
+            color: 'var(--text-secondary)',
+          }}>
+            <Video size={12} />
+            {point.videos} videoer
+          </div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            fontSize: '12px',
+            color: 'var(--text-secondary)',
+          }}>
+            <Target size={12} />
+            {point.drills.length} ovelser
+          </div>
         </div>
       </div>
-
-      {/* Stats */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        paddingTop: '12px',
-        borderTop: `1px solid ${tokens.colors.mist}`,
-      }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          fontSize: '12px',
-          color: tokens.colors.steel,
-        }}>
-          <Calendar size={12} />
-          {point.sessions} okter
-        </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          fontSize: '12px',
-          color: tokens.colors.steel,
-        }}>
-          <Video size={12} />
-          {point.videos} videoer
-        </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          fontSize: '12px',
-          color: tokens.colors.steel,
-        }}>
-          <Target size={12} />
-          {point.drills.length} ovelser
-        </div>
-      </div>
-    </div>
+    </Card>
   );
 };
 
@@ -284,37 +286,37 @@ const BreakingPointCard = ({ point, onClick }) => {
 // ============================================================================
 
 const ResolvedCard = ({ point }) => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    backgroundColor: tokens.colors.white,
-    borderRadius: '10px',
-    padding: '12px 14px',
-  }}>
+  <Card variant="default" padding="none">
     <div style={{
-      width: '32px',
-      height: '32px',
-      borderRadius: '8px',
-      backgroundColor: `${tokens.colors.success}15`,
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
+      gap: '12px',
+      padding: '12px 14px',
     }}>
-      <CheckCircle size={16} color={tokens.colors.success} />
-    </div>
-    <div style={{ flex: 1 }}>
-      <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.charcoal }}>
-        {point.title}
+      <div style={{
+        width: '32px',
+        height: '32px',
+        borderRadius: 'var(--radius-md)',
+        backgroundColor: 'rgba(var(--success-rgb), 0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <CheckCircle size={16} style={{ color: 'var(--success)' }} />
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
-        {point.area} - Lost pa {point.duration}
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+          {point.title}
+        </div>
+        <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+          {point.area} - Lost pa {point.duration}
+        </div>
+      </div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+        {new Date(point.resolvedDate).toLocaleDateString('nb-NO')}
       </div>
     </div>
-    <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
-      {new Date(point.resolvedDate).toLocaleDateString('nb-NO')}
-    </div>
-  </div>
+  </Card>
 );
 
 // ============================================================================
@@ -335,7 +337,7 @@ const BreakingPointsContainer = () => {
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Breaking Points"
         subtitle="Fokusomrader for forbedring"
@@ -349,39 +351,30 @@ const BreakingPointsContainer = () => {
           gap: '10px',
           marginBottom: '24px',
         }}>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
-              {BREAKING_POINTS.length}
+          <Card variant="default" padding="none">
+            <div style={{ padding: '14px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+                {BREAKING_POINTS.length}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Aktive</div>
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Aktive</div>
-          </div>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.error }}>
-              {BREAKING_POINTS.filter((p) => p.priority === 'high').length}
+          </Card>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '14px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--error)' }}>
+                {BREAKING_POINTS.filter((p) => p.priority === 'high').length}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Hoy prioritet</div>
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Hoy prioritet</div>
-          </div>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
-              {RESOLVED_POINTS.length}
+          </Card>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '14px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
+                {RESOLVED_POINTS.length}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Lost</div>
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Lost</div>
-          </div>
+          </Card>
         </div>
 
         {/* Filters and Add Button */}
@@ -393,43 +386,24 @@ const BreakingPointsContainer = () => {
         }}>
           <div style={{ display: 'flex', gap: '6px' }}>
             {filters.map((f) => (
-              <button
+              <Button
                 key={f.key}
+                variant={filter === f.key ? 'primary' : 'ghost'}
+                size="sm"
                 onClick={() => setFilter(f.key)}
-                style={{
-                  padding: '8px 14px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: filter === f.key ? tokens.colors.primary : tokens.colors.white,
-                  color: filter === f.key ? tokens.colors.white : tokens.colors.charcoal,
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                }}
               >
                 {f.label}
-              </button>
+              </Button>
             ))}
           </div>
 
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '10px 16px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
+          <Button
+            variant="primary"
+            size="sm"
+            leftIcon={<Plus size={16} />}
           >
-            <Plus size={16} />
             Legg til
-          </button>
+          </Button>
         </div>
 
         {/* Breaking Points List */}
@@ -448,7 +422,7 @@ const BreakingPointsContainer = () => {
           <h3 style={{
             fontSize: '15px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginBottom: '12px',
           }}>
             Loste Breaking Points

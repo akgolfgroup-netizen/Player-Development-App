@@ -10,11 +10,13 @@ import {
   Check,
   ChevronRight,
   Plus,
-  AlertCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
 import { messagesAPI } from '../../services/api';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
+import Badge from '../../ui/primitives/Badge.primitive';
+import StateCard from '../../ui/composites/StateCard';
 
 interface Message {
   id: string;
@@ -173,20 +175,19 @@ export const CoachMessageList: React.FC = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'read': return <CheckCheck size={14} color="#16a34a" />;
-      case 'delivered': return <Check size={14} color={designTokens.colors.text.tertiary} />;
-      default: return <Clock size={14} color={designTokens.colors.text.tertiary} />;
+      case 'read': return <CheckCheck size={14} color="var(--success)" />;
+      case 'delivered': return <Check size={14} color="var(--text-tertiary)" />;
+      default: return <Clock size={14} color="var(--text-tertiary)" />;
     }
   };
 
-  const getCategoryBadge = (category: string) => {
-    const styles: Record<string, { bg: string; text: string; label: string }> = {
-      training: { bg: 'rgba(59, 130, 246, 0.1)', text: '#2563eb', label: 'Trening' },
-      tournament: { bg: 'rgba(168, 85, 247, 0.1)', text: '#7c3aed', label: 'Turnering' },
-      general: { bg: 'rgba(107, 114, 128, 0.1)', text: '#6b7280', label: 'Generelt' },
-      urgent: { bg: 'rgba(239, 68, 68, 0.1)', text: '#dc2626', label: 'Viktig' }
-    };
-    return styles[category] || styles.general;
+  const getCategoryConfig = (category: string): { label: string; variant: 'accent' | 'warning' | 'neutral' | 'error' } => {
+    switch (category) {
+      case 'training': return { label: 'Trening', variant: 'accent' };
+      case 'tournament': return { label: 'Turnering', variant: 'warning' };
+      case 'urgent': return { label: 'Viktig', variant: 'error' };
+      default: return { label: 'Generelt', variant: 'neutral' };
+    }
   };
 
   // Loading state
@@ -197,22 +198,9 @@ export const CoachMessageList: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: designTokens.colors.background.primary
+        backgroundColor: 'var(--bg-primary)',
       }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: 48,
-            height: 48,
-            border: `4px solid ${designTokens.colors.primary[200]}`,
-            borderTop: `4px solid ${designTokens.colors.primary[500]}`,
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 16px'
-          }} />
-          <p style={{ fontSize: '15px', color: designTokens.colors.text.secondary }}>
-            Laster meldinger...
-          </p>
-        </div>
+        <StateCard variant="loading" title="Laster meldinger..." />
       </div>
     );
   }
@@ -225,99 +213,60 @@ export const CoachMessageList: React.FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: designTokens.colors.background.primary,
-        padding: '24px'
+        backgroundColor: 'var(--bg-primary)',
+        padding: '24px',
       }}>
-        <div style={{
-          maxWidth: 400,
-          textAlign: 'center',
-          padding: '32px',
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '16px',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-        }}>
-          <AlertCircle size={48} color={designTokens.colors.error[500]} style={{ marginBottom: '16px' }} />
-          <h2 style={{ fontSize: '20px', fontWeight: 600, color: designTokens.colors.text.primary, marginBottom: '8px' }}>
-            Kunne ikke laste meldinger
-          </h2>
-          <p style={{ fontSize: '15px', color: designTokens.colors.text.secondary, marginBottom: '24px' }}>
-            {error}
-          </p>
-          <button
-            onClick={fetchMessages}
-            style={{
-              padding: '12px 24px',
-              backgroundColor: designTokens.colors.primary[500],
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '15px',
-              fontWeight: 600
-            }}
-          >
-            Prøv igjen
-          </button>
-        </div>
+        <StateCard
+          variant="error"
+          title="Kunne ikke laste meldinger"
+          description={error}
+          action={<Button variant="primary" onClick={fetchMessages}>Prøv igjen</Button>}
+        />
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: `linear-gradient(135deg, ${designTokens.colors.primary[500]}, ${designTokens.colors.primary[600]})`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <MessageCircle size={24} color="white" />
-            </div>
-            <div>
-              <h1 style={{
-                fontSize: '28px',
-                fontWeight: '700',
-                color: designTokens.colors.text.primary,
-                margin: 0
-              }}>
-                Sendte beskjeder
-              </h1>
-              <p style={{
-                fontSize: '14px',
-                color: designTokens.colors.text.secondary,
-                margin: 0
-              }}>
-                {stats.total} beskjeder sendt • {stats.read} lest
-              </p>
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/coach/messages/compose')}
-          style={{
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: 48,
+            height: 48,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--bg-accent-subtle)',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            borderRadius: '10px',
-            border: 'none',
-            backgroundColor: designTokens.colors.primary[500],
-            color: 'white',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer'
-          }}
+            justifyContent: 'center',
+          }}>
+            <MessageCircle size={24} color="var(--accent)" />
+          </div>
+          <div>
+            <h1 style={{
+              fontSize: '28px',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
+              Sendte beskjeder
+            </h1>
+            <p style={{
+              fontSize: '14px',
+              color: 'var(--text-secondary)',
+              margin: 0,
+            }}>
+              {stats.total} beskjeder sendt • {stats.read} lest
+            </p>
+          </div>
+        </div>
+        <Button
+          variant="primary"
+          leftIcon={<Plus size={18} />}
+          onClick={() => navigate('/coach/messages/compose')}
         >
-          <Plus size={18} />
           Ny beskjed
-        </button>
+        </Button>
       </div>
 
       {/* Search and Filter */}
@@ -325,63 +274,42 @@ export const CoachMessageList: React.FC = () => {
         display: 'flex',
         gap: '16px',
         marginBottom: '20px',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
       }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
-          <Search
-            size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
-            }}
-          />
-          <input
-            type="text"
-            placeholder="Søk i beskjeder..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '12px 12px 12px 40px',
-              borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
-              fontSize: '14px',
-              color: designTokens.colors.text.primary,
-              outline: 'none'
-            }}
-          />
-        </div>
+        <Card variant="default" padding="sm" style={{ flex: 1, minWidth: '200px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Search size={18} color="var(--text-tertiary)" />
+            <input
+              type="text"
+              placeholder="Søk i beskjeder..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                flex: 1,
+                border: 'none',
+                backgroundColor: 'transparent',
+                fontSize: '14px',
+                color: 'var(--text-primary)',
+                outline: 'none',
+              }}
+            />
+          </div>
+        </Card>
         <div style={{ display: 'flex', gap: '8px' }}>
           {[
             { key: 'all', label: 'Alle' },
             { key: 'training', label: 'Trening' },
             { key: 'tournament', label: 'Turnering' },
-            { key: 'urgent', label: 'Viktig' }
+            { key: 'urgent', label: 'Viktig' },
           ].map(cat => (
-            <button
+            <Button
               key={cat.key}
+              variant={categoryFilter === cat.key ? 'primary' : 'ghost'}
+              size="sm"
               onClick={() => setCategoryFilter(cat.key)}
-              style={{
-                padding: '10px 16px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: categoryFilter === cat.key
-                  ? designTokens.colors.primary[500]
-                  : designTokens.colors.background.card,
-                color: categoryFilter === cat.key
-                  ? 'white'
-                  : designTokens.colors.text.secondary,
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
             >
               {cat.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -389,146 +317,116 @@ export const CoachMessageList: React.FC = () => {
       {/* Message List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {filteredMessages.map((message) => {
-          const categoryStyle = getCategoryBadge(message.category);
+          const categoryConfig = getCategoryConfig(message.category);
           return (
-            <div
+            <Card
               key={message.id}
+              variant="default"
+              padding="md"
               onClick={() => navigate(`/coach/messages/${message.id}`)}
-              style={{
-                backgroundColor: designTokens.colors.background.card,
-                borderRadius: '12px',
-                padding: '16px 20px',
-                border: `1px solid ${designTokens.colors.border.light}`,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px'
-              }}
+              style={{ cursor: 'pointer' }}
             >
-              {/* Left - Icon */}
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '10px',
-                backgroundColor: message.recipients.type === 'player'
-                  ? designTokens.colors.primary[100]
-                  : message.recipients.type === 'group'
-                    ? 'rgba(168, 85, 247, 0.1)'
-                    : 'rgba(16, 185, 129, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: message.recipients.type === 'player'
-                  ? designTokens.colors.primary[600]
-                  : message.recipients.type === 'group'
-                    ? '#7c3aed'
-                    : '#059669',
-                flexShrink: 0
-              }}>
-                {getRecipientIcon(message.recipients.type)}
-              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                {/* Left - Icon */}
+                <div style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: message.recipients.type === 'player'
+                    ? 'var(--bg-accent-subtle)'
+                    : message.recipients.type === 'group'
+                      ? 'var(--bg-warning-subtle)'
+                      : 'var(--bg-success-subtle)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: message.recipients.type === 'player'
+                    ? 'var(--accent)'
+                    : message.recipients.type === 'group'
+                      ? 'var(--warning)'
+                      : 'var(--success)',
+                  flexShrink: 0,
+                }}>
+                  {getRecipientIcon(message.recipients.type)}
+                </div>
 
-              {/* Center - Content */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                  <h3 style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: designTokens.colors.text.primary,
-                    margin: 0,
+                {/* Center - Content */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <h3 style={{
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      color: 'var(--text-primary)',
+                      margin: 0,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}>
+                      {message.subject}
+                    </h3>
+                    <Badge variant={categoryConfig.variant} size="sm">{categoryConfig.label}</Badge>
+                  </div>
+                  <p style={{
+                    fontSize: '13px',
+                    color: 'var(--text-secondary)',
+                    margin: '0 0 6px 0',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
                   }}>
-                    {message.subject}
-                  </h3>
-                  <span style={{
-                    fontSize: '10px',
-                    fontWeight: '500',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    backgroundColor: categoryStyle.bg,
-                    color: categoryStyle.text,
-                    flexShrink: 0
-                  }}>
-                    {categoryStyle.label}
-                  </span>
+                    {message.preview}
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-tertiary)' }}>
+                      {getRecipientIcon(message.recipients.type)}
+                      <span style={{ fontSize: '12px' }}>
+                        {message.recipients.name}
+                        {message.recipients.count && ` (${message.recipients.count})`}
+                      </span>
+                    </div>
+                    {message.hasAttachment && (
+                      <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                        📎 Vedlegg
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <p style={{
-                  fontSize: '13px',
-                  color: designTokens.colors.text.secondary,
-                  margin: '0 0 6px 0',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
+
+                {/* Right - Status and time */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  gap: '8px',
+                  flexShrink: 0,
                 }}>
-                  {message.preview}
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                    {formatDate(message.sentAt)}
+                  </span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    {getRecipientIcon(message.recipients.type)}
-                    <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
-                      {message.recipients.name}
-                      {message.recipients.count && ` (${message.recipients.count})`}
+                    {getStatusIcon(message.status)}
+                    <span style={{
+                      fontSize: '11px',
+                      color: message.status === 'read' ? 'var(--success)' : 'var(--text-tertiary)',
+                    }}>
+                      {message.status === 'read' ? 'Lest' : message.status === 'delivered' ? 'Levert' : 'Sender...'}
                     </span>
                   </div>
-                  {message.hasAttachment && (
-                    <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
-                      📎 Vedlegg
-                    </span>
-                  )}
                 </div>
-              </div>
 
-              {/* Right - Status and time */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                gap: '8px',
-                flexShrink: 0
-              }}>
-                <span style={{
-                  fontSize: '12px',
-                  color: designTokens.colors.text.tertiary
-                }}>
-                  {formatDate(message.sentAt)}
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  {getStatusIcon(message.status)}
-                  <span style={{
-                    fontSize: '11px',
-                    color: message.status === 'read' ? '#16a34a' : designTokens.colors.text.tertiary
-                  }}>
-                    {message.status === 'read' ? 'Lest' : message.status === 'delivered' ? 'Levert' : 'Sender...'}
-                  </span>
-                </div>
+                <ChevronRight size={18} color="var(--text-tertiary)" />
               </div>
-
-              <ChevronRight size={18} color={designTokens.colors.text.tertiary} />
-            </div>
+            </Card>
           );
         })}
       </div>
 
       {filteredMessages.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
-        }}>
-          <Send size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: designTokens.colors.text.secondary,
-            margin: 0
-          }}>
-            Ingen beskjeder funnet
-          </p>
-        </div>
+        <StateCard
+          variant="empty"
+          icon={Send}
+          title="Ingen beskjeder funnet"
+        />
       )}
     </div>
   );

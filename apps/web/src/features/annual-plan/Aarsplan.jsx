@@ -1,33 +1,13 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { tokens } from '../../design-tokens';
 
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-    // Periods (harmonized with Blue Palette 01)
-    periods: {
-      evaluering: '#8E8E93',
-      grunnlag: '#2C5F7F',
-      spesialisering: '#4A7C59',
-      turnering: '#C9A227',
-    }
-  }
+// Period colors (Blue Palette 01)
+const periodColors = {
+  evaluering: '#8E8E93',
+  grunnlag: '#2C5F7F',
+  spesialisering: '#4A7C59',
+  turnering: '#C9A227',
 };
 
 // ===== ICONS =====
@@ -85,7 +65,7 @@ const Avatar = ({ name, size = 40 }) => {
       style={{
         width: size,
         height: size,
-        backgroundColor: tokens.colors.primary,
+        backgroundColor: 'var(--accent)',
         fontSize: size * 0.4
       }}
     >
@@ -102,7 +82,7 @@ const PriorityBar = ({ value, maxValue = 3, color }) => (
         key={i}
         className="h-2.5 w-2.5 rounded-sm transition-all duration-300"
         style={{
-          backgroundColor: i < value ? color : tokens.colors.mist
+          backgroundColor: i < value ? color : 'var(--border-default)'
         }}
       />
     ))}
@@ -128,18 +108,18 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
   // Period definitions (Blue Palette 01)
   const periodConfig = {
-    E: { name: 'Evaluering', color: tokens.colors.steel, bg: tokens.colors.cloud, icon: '📋' },
-    G: { name: 'Grunnperiode', color: tokens.colors.primaryLight, bg: `${tokens.colors.success}20`, icon: '🏗️' },
-    S: { name: 'Spesialperiode', color: tokens.colors.success, bg: `${tokens.colors.success}15`, icon: '🎯' },
-    T: { name: 'Turnering', color: tokens.colors.gold, bg: `${tokens.colors.gold}15`, icon: '🏆' },
+    E: { name: 'Evaluering', color: 'var(--text-secondary)', bg: 'var(--bg-tertiary)', icon: '📋' },
+    G: { name: 'Grunnperiode', color: 'rgba(var(--accent-rgb), 0.8)', bg: `${'var(--success)'}20`, icon: '🏗️' },
+    S: { name: 'Spesialperiode', color: 'var(--success)', bg: `${'var(--success)'}15`, icon: '🎯' },
+    T: { name: 'Turnering', color: 'var(--achievement)', bg: `${'var(--achievement)'}15`, icon: '🏆' },
   };
 
   // Priority labels (Blue Palette 01)
   const priorityLabels = {
-    3: { label: 'Utvikle', color: tokens.colors.success },
-    2: { label: 'Beholde', color: tokens.colors.warning },
-    1: { label: 'Vedlikehold', color: tokens.colors.steel },
-    0: { label: 'Pause', color: tokens.colors.mist },
+    3: { label: 'Utvikle', color: 'var(--success)' },
+    2: { label: 'Beholde', color: 'var(--warning)' },
+    1: { label: 'Vedlikehold', color: 'var(--text-secondary)' },
+    0: { label: 'Pause', color: 'var(--border-default)' },
   };
 
   // Default annual plan data (Week 43 - Week 42) - fallback if no API data
@@ -306,13 +286,13 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
   const currentMonthIndex = 2; // December
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow, fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
       {/* Header */}
       <PageHeader
         title="Årsplan 2026"
         subtitle="Team Norway"
         actions={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: tokens.colors.white, borderRadius: '8px', padding: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px', padding: '4px' }}>
             <button
               style={{
                 padding: '6px 12px',
@@ -321,8 +301,8 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                 fontWeight: 500,
                 border: 'none',
                 cursor: 'pointer',
-                backgroundColor: selectedView === 'timeline' ? tokens.colors.white : 'transparent',
-                color: selectedView === 'timeline' ? tokens.colors.charcoal : tokens.colors.steel,
+                backgroundColor: selectedView === 'timeline' ? 'var(--bg-primary)' : 'transparent',
+                color: selectedView === 'timeline' ? 'var(--text-primary)' : 'var(--text-secondary)',
                 boxShadow: selectedView === 'timeline' ? '0 1px 2px rgba(0,0,0,0.1)' : 'none',
               }}
               onClick={() => setSelectedView('timeline')}
@@ -337,8 +317,8 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                 fontWeight: 500,
                 border: 'none',
                 cursor: 'pointer',
-                backgroundColor: selectedView === 'grid' ? tokens.colors.white : 'transparent',
-                color: selectedView === 'grid' ? tokens.colors.charcoal : tokens.colors.steel,
+                backgroundColor: selectedView === 'grid' ? 'var(--bg-primary)' : 'transparent',
+                color: selectedView === 'grid' ? 'var(--text-primary)' : 'var(--text-secondary)',
                 boxShadow: selectedView === 'grid' ? '0 1px 2px rgba(0,0,0,0.1)' : 'none',
               }}
               onClick={() => setSelectedView('grid')}
@@ -442,7 +422,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                               {period.icon} {period.name}
                             </Badge>
                             {month.benchmark.length > 0 && (
-                              <Badge color={tokens.colors.gold} bg={`${tokens.colors.gold}15`}>
+                              <Badge color={'var(--achievement)'} bg={`${'var(--achievement)'}15`}>
                                 📊 Benchmark: Uke {month.benchmark.join(', ')}
                               </Badge>
                             )}
@@ -458,7 +438,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                                 <span className="text-[12px]">{area.icon}</span>
                                 <span className="text-[12px] text-ak-charcoal">{area.label}</span>
                               </div>
-                              <PriorityBar value={month.focus[area.key]} color={priorityLabels[month.focus[area.key]]?.color || tokens.colors.mist} />
+                              <PriorityBar value={month.focus[area.key]} color={priorityLabels[month.focus[area.key]]?.color || 'var(--border-default)'} />
                             </div>
                           ))}
                         </div>
@@ -549,7 +529,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                           <span className="text-[11px]">{area.icon}</span>
                           <span className="text-[12px] text-ak-charcoal">{area.label}</span>
                         </div>
-                        <PriorityBar value={month.focus[area.key]} color={priorityLabels[month.focus[area.key]]?.color || tokens.colors.mist} />
+                        <PriorityBar value={month.focus[area.key]} color={priorityLabels[month.focus[area.key]]?.color || 'var(--border-default)'} />
                       </div>
                     ))}
                   </div>
@@ -592,10 +572,10 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
               { name: 'Teknisk', icon: '⚙️', color: 'var(--ak-primary)', desc: 'Sving, slag, teknikk' },
-              { name: 'Fysisk', icon: '💪', color: tokens.colors.success, desc: 'Styrke, utholdenhet, mobilitet' },
-              { name: 'Mental', icon: '🧠', color: tokens.colors.primaryLight, desc: 'Fokus, visualisering, rutiner' },
-              { name: 'Strategisk', icon: '🎯', color: tokens.colors.gold, desc: 'Banestrategi, beslutninger' },
-              { name: 'Sosial', icon: '👥', color: tokens.colors.warning, desc: 'Team, kommunikasjon, nettverk' },
+              { name: 'Fysisk', icon: '💪', color: 'var(--success)', desc: 'Styrke, utholdenhet, mobilitet' },
+              { name: 'Mental', icon: '🧠', color: 'rgba(var(--accent-rgb), 0.8)', desc: 'Fokus, visualisering, rutiner' },
+              { name: 'Strategisk', icon: '🎯', color: 'var(--achievement)', desc: 'Banestrategi, beslutninger' },
+              { name: 'Sosial', icon: '👥', color: 'var(--warning)', desc: 'Team, kommunikasjon, nettverk' },
             ].map(process => (
               <div
                 key={process.name}

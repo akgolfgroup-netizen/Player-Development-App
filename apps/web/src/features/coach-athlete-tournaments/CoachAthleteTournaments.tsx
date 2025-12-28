@@ -23,8 +23,6 @@ import {
   ChevronDown,
   Award,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
-
 // Types
 interface TournamentEntry {
   id: string;
@@ -72,7 +70,7 @@ const Avatar: React.FC<{ name: string; color: string; size?: number }> = ({
         height: size,
         borderRadius: '50%',
         backgroundColor: color,
-        color: tokens.colors.white,
+        color: 'var(--bg-primary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -92,36 +90,36 @@ const getStatusConfig = (status: string) => {
     case 'registered':
       return {
         label: 'Påmeldt',
-        color: tokens.colors.success,
-        bg: `${tokens.colors.success}15`,
+        color: 'var(--success)',
+        bg: 'rgba(var(--success-rgb), 0.15)',
         icon: CheckCircle,
       };
     case 'pending':
       return {
         label: 'Venter',
-        color: tokens.colors.warning,
-        bg: `${tokens.colors.warning}15`,
+        color: 'var(--warning)',
+        bg: 'rgba(var(--warning-rgb), 0.15)',
         icon: Clock,
       };
     case 'interested':
       return {
         label: 'Interessert',
-        color: tokens.colors.gold,
-        bg: `${tokens.colors.gold}15`,
+        color: 'var(--achievement)',
+        bg: 'rgba(var(--achievement-rgb), 0.15)',
         icon: Star,
       };
     case 'declined':
       return {
         label: 'Avslått',
-        color: tokens.colors.error,
-        bg: `${tokens.colors.error}15`,
+        color: 'var(--error)',
+        bg: 'rgba(var(--error-rgb), 0.15)',
         icon: AlertCircle,
       };
     default:
       return {
         label: status,
-        color: tokens.colors.steel,
-        bg: tokens.colors.gray100,
+        color: 'var(--text-secondary)',
+        bg: 'var(--bg-tertiary)',
         icon: Clock,
       };
   }
@@ -129,13 +127,14 @@ const getStatusConfig = (status: string) => {
 
 // Generate mock data
 const generateMockAthletes = (): Athlete[] => {
+  // Avatar colors - using CSS variable values as fallback hex for mock data
   const avatarColors = [
-    tokens.colors.primary,
-    tokens.colors.primaryLight,
-    tokens.colors.success,
-    tokens.colors.gold,
-    '#8E6E53',
-    '#6B7280',
+    '#10456A', // accent
+    '#2C5F7F', // accent-light
+    '#4A7C59', // success
+    '#C9A227', // achievement
+    '#8E6E53', // warm neutral
+    '#6B7280', // cool neutral
   ];
 
   return [
@@ -459,7 +458,7 @@ export default function CoachAthleteTournaments() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -469,8 +468,8 @@ export default function CoachAthleteTournaments() {
           style={{
             width: 48,
             height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: '4px solid var(--border-default)',
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
@@ -483,25 +482,25 @@ export default function CoachAthleteTournaments() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
-        fontFamily: tokens.typography.fontFamily,
+        backgroundColor: 'var(--bg-secondary)',
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray300}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
           padding: '20px 24px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Trophy size={28} color={tokens.colors.primary} />
+          <Trophy size={28} color={'var(--accent)'} />
           <div>
             <h1
               style={{
-                ...tokens.typography.title1,
-                color: tokens.colors.charcoal,
+                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -509,8 +508,8 @@ export default function CoachAthleteTournaments() {
             </h1>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: '4px 0 0',
               }}
             >
@@ -527,12 +526,12 @@ export default function CoachAthleteTournaments() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.success}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--success-rgb), 0.1)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <CheckCircle size={16} color={tokens.colors.success} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <CheckCircle size={16} color={'var(--success)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.totalRegistrations}</strong> påmeldinger
             </span>
           </div>
@@ -543,12 +542,12 @@ export default function CoachAthleteTournaments() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '8px 14px',
-                backgroundColor: `${tokens.colors.warning}15`,
-                borderRadius: tokens.radius.md,
+                backgroundColor: 'rgba(var(--warning-rgb), 0.15)',
+                borderRadius: 'var(--radius-md)',
               }}
             >
-              <Clock size={16} color={tokens.colors.warning} />
-              <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+              <Clock size={16} color={'var(--warning)'} />
+              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
                 <strong>{stats.pendingRegistrations}</strong> venter
               </span>
             </div>
@@ -559,12 +558,12 @@ export default function CoachAthleteTournaments() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.primary}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <Users size={16} color={tokens.colors.primary} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <Users size={16} color={'var(--accent)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{stats.athletesWithTournaments}</strong> med turneringer
             </span>
           </div>
@@ -575,12 +574,12 @@ export default function CoachAthleteTournaments() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '8px 14px',
-                backgroundColor: tokens.colors.gray100,
-                borderRadius: tokens.radius.md,
+                backgroundColor: 'var(--bg-tertiary)',
+                borderRadius: 'var(--radius-md)',
               }}
             >
-              <AlertCircle size={16} color={tokens.colors.steel} />
-              <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+              <AlertCircle size={16} color={'var(--text-secondary)'} />
+              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
                 <strong>{stats.athletesWithoutTournaments}</strong> uten påmeldinger
               </span>
             </div>
@@ -591,9 +590,9 @@ export default function CoachAthleteTournaments() {
       {/* Search and filters */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           padding: '16px 24px',
-          borderBottom: `1px solid ${tokens.colors.gray300}`,
+          borderBottom: '1px solid var(--border-default)',
           display: 'flex',
           gap: '12px',
           alignItems: 'center',
@@ -607,13 +606,13 @@ export default function CoachAthleteTournaments() {
             alignItems: 'center',
             gap: '8px',
             padding: '10px 14px',
-            backgroundColor: tokens.colors.gray100,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: 'var(--radius-md)',
             flex: 1,
             maxWidth: '300px',
           }}
         >
-          <Search size={18} color={tokens.colors.steel} />
+          <Search size={18} color={'var(--text-secondary)'} />
           <input
             type="text"
             placeholder="Søk spiller..."
@@ -624,7 +623,7 @@ export default function CoachAthleteTournaments() {
               border: 'none',
               backgroundColor: 'transparent',
               fontSize: '14px',
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               outline: 'none',
             }}
           />
@@ -638,10 +637,10 @@ export default function CoachAthleteTournaments() {
             alignItems: 'center',
             gap: '6px',
             padding: '10px 14px',
-            backgroundColor: showFilters ? tokens.colors.primary : tokens.colors.gray100,
-            color: showFilters ? tokens.colors.white : tokens.colors.charcoal,
+            backgroundColor: showFilters ? 'var(--accent)' : 'var(--bg-tertiary)',
+            color: showFilters ? 'var(--bg-primary)' : 'var(--text-primary)',
             border: 'none',
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             fontSize: '14px',
             fontWeight: 500,
             cursor: 'pointer',
@@ -658,11 +657,11 @@ export default function CoachAthleteTournaments() {
           onChange={(e) => setSortBy(e.target.value as SortOption)}
           style={{
             padding: '10px 14px',
-            backgroundColor: tokens.colors.gray100,
+            backgroundColor: 'var(--bg-tertiary)',
             border: 'none',
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             fontSize: '14px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             cursor: 'pointer',
           }}
         >
@@ -676,9 +675,9 @@ export default function CoachAthleteTournaments() {
       {showFilters && (
         <div
           style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             padding: '16px 24px',
-            borderBottom: `1px solid ${tokens.colors.gray300}`,
+            borderBottom: '1px solid var(--border-default)',
             display: 'flex',
             gap: '8px',
             flexWrap: 'wrap',
@@ -698,10 +697,10 @@ export default function CoachAthleteTournaments() {
               style={{
                 padding: '8px 16px',
                 backgroundColor:
-                  filterBy === option.value ? tokens.colors.primary : tokens.colors.gray100,
-                color: filterBy === option.value ? tokens.colors.white : tokens.colors.charcoal,
+                  filterBy === option.value ? 'var(--accent)' : 'var(--bg-tertiary)',
+                color: filterBy === option.value ? 'var(--bg-primary)' : 'var(--text-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.full,
+                borderRadius: '9999px',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -719,17 +718,17 @@ export default function CoachAthleteTournaments() {
           {sortedAndFilteredAthletes.length === 0 ? (
             <div
               style={{
-                backgroundColor: tokens.colors.white,
-                borderRadius: tokens.radius.lg,
+                backgroundColor: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-lg)',
                 padding: '48px 24px',
                 textAlign: 'center',
               }}
             >
-              <Users size={48} color={tokens.colors.gray300} style={{ marginBottom: '16px' }} />
-              <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+              <Users size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 Ingen spillere funnet
               </h3>
-              <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, marginTop: '8px' }}>
+              <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginTop: '8px' }}>
                 Prøv å endre søk eller filter
               </p>
             </div>
@@ -742,9 +741,9 @@ export default function CoachAthleteTournaments() {
                 <div
                   key={athlete.id}
                   style={{
-                    backgroundColor: tokens.colors.white,
-                    borderRadius: tokens.radius.lg,
-                    boxShadow: tokens.shadows.card,
+                    backgroundColor: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    boxShadow: 'var(--shadow-card)',
                     overflow: 'hidden',
                   }}
                 >
@@ -757,7 +756,7 @@ export default function CoachAthleteTournaments() {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       cursor: 'pointer',
-                      borderBottom: isExpanded ? `1px solid ${tokens.colors.gray100}` : 'none',
+                      borderBottom: isExpanded ? '1px solid var(--bg-tertiary)' : 'none',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -765,8 +764,8 @@ export default function CoachAthleteTournaments() {
                       <div>
                         <h3
                           style={{
-                            ...tokens.typography.headline,
-                            color: tokens.colors.charcoal,
+                            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                            color: 'var(--text-primary)',
                             margin: 0,
                           }}
                         >
@@ -784,15 +783,15 @@ export default function CoachAthleteTournaments() {
                             style={{
                               fontSize: '11px',
                               fontWeight: 600,
-                              color: tokens.colors.primary,
-                              backgroundColor: `${tokens.colors.primary}15`,
+                              color: 'var(--accent)',
+                              backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
                               padding: '2px 8px',
                               borderRadius: '4px',
                             }}
                           >
                             Kategori {athlete.category}
                           </span>
-                          <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                             {athlete.totalThisYear} turneringer i år
                           </span>
                         </div>
@@ -809,16 +808,16 @@ export default function CoachAthleteTournaments() {
                               alignItems: 'center',
                               gap: '4px',
                               padding: '4px 10px',
-                              backgroundColor: `${tokens.colors.success}10`,
-                              borderRadius: tokens.radius.full,
+                              backgroundColor: 'rgba(var(--success-rgb), 0.1)',
+                              borderRadius: '9999px',
                             }}
                           >
-                            <Trophy size={14} color={tokens.colors.success} />
+                            <Trophy size={14} color={'var(--success)'} />
                             <span
                               style={{
                                 fontSize: '12px',
                                 fontWeight: 600,
-                                color: tokens.colors.success,
+                                color: 'var(--success)',
                               }}
                             >
                               {athlete.upcomingTournaments.length}
@@ -829,7 +828,7 @@ export default function CoachAthleteTournaments() {
                           <span
                             style={{
                               fontSize: '12px',
-                              color: tokens.colors.steel,
+                              color: 'var(--text-secondary)',
                               fontStyle: 'italic',
                             }}
                           >
@@ -840,7 +839,7 @@ export default function CoachAthleteTournaments() {
 
                       <ChevronDown
                         size={20}
-                        color={tokens.colors.steel}
+                        color={'var(--text-secondary)'}
                         style={{
                           transform: isExpanded ? 'rotate(180deg)' : 'none',
                           transition: 'transform 0.2s ease',
@@ -857,8 +856,8 @@ export default function CoachAthleteTournaments() {
                         <div style={{ marginBottom: '20px' }}>
                           <h4
                             style={{
-                              ...tokens.typography.footnote,
-                              color: tokens.colors.steel,
+                              fontSize: '13px', lineHeight: '18px',
+                              color: 'var(--text-secondary)',
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
                               margin: '0 0 12px',
@@ -879,18 +878,18 @@ export default function CoachAthleteTournaments() {
                                     alignItems: 'center',
                                     justifyContent: 'space-between',
                                     padding: '12px 14px',
-                                    backgroundColor: tokens.colors.gray50,
-                                    borderRadius: tokens.radius.md,
+                                    backgroundColor: 'var(--bg-secondary)',
+                                    borderRadius: 'var(--radius-md)',
                                   }}
                                 >
                                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <Trophy size={16} color={tokens.colors.gold} />
+                                    <Trophy size={16} color={'var(--achievement)'} />
                                     <div>
                                       <div
                                         style={{
                                           fontSize: '14px',
                                           fontWeight: 500,
-                                          color: tokens.colors.charcoal,
+                                          color: 'var(--text-primary)',
                                         }}
                                       >
                                         {entry.tournamentName}
@@ -903,12 +902,12 @@ export default function CoachAthleteTournaments() {
                                           marginTop: '4px',
                                         }}
                                       >
-                                        <Calendar size={12} color={tokens.colors.steel} />
-                                        <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                                        <Calendar size={12} color={'var(--text-secondary)'} />
+                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                                           {formatShortDate(entry.date)}
                                         </span>
-                                        <MapPin size={12} color={tokens.colors.steel} />
-                                        <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                                        <MapPin size={12} color={'var(--text-secondary)'} />
+                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                                           {entry.location}
                                         </span>
                                       </div>
@@ -922,7 +921,7 @@ export default function CoachAthleteTournaments() {
                                       gap: '6px',
                                       padding: '4px 10px',
                                       backgroundColor: statusConfig.bg,
-                                      borderRadius: tokens.radius.full,
+                                      borderRadius: '9999px',
                                     }}
                                   >
                                     <StatusIcon size={14} color={statusConfig.color} />
@@ -948,8 +947,8 @@ export default function CoachAthleteTournaments() {
                         <div style={{ marginBottom: '16px' }}>
                           <h4
                             style={{
-                              ...tokens.typography.footnote,
-                              color: tokens.colors.steel,
+                              fontSize: '13px', lineHeight: '18px',
+                              color: 'var(--text-secondary)',
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px',
                               margin: '0 0 12px',
@@ -966,24 +965,24 @@ export default function CoachAthleteTournaments() {
                                   alignItems: 'center',
                                   justifyContent: 'space-between',
                                   padding: '12px 14px',
-                                  backgroundColor: `${tokens.colors.primary}05`,
-                                  borderRadius: tokens.radius.md,
-                                  borderLeft: `3px solid ${tokens.colors.primary}`,
+                                  backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
+                                  borderRadius: 'var(--radius-md)',
+                                  borderLeft: '3px solid var(--accent)',
                                 }}
                               >
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                  <Award size={16} color={tokens.colors.primary} />
+                                  <Award size={16} color={'var(--accent)'} />
                                   <div>
                                     <div
                                       style={{
                                         fontSize: '14px',
                                         fontWeight: 500,
-                                        color: tokens.colors.charcoal,
+                                        color: 'var(--text-primary)',
                                       }}
                                     >
                                       {entry.tournamentName}
                                     </div>
-                                    <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                                       {formatDate(entry.date)} • {entry.location}
                                     </div>
                                   </div>
@@ -996,12 +995,12 @@ export default function CoachAthleteTournaments() {
                                         style={{
                                           fontSize: '16px',
                                           fontWeight: 700,
-                                          color: tokens.colors.primary,
+                                          color: 'var(--accent)',
                                         }}
                                       >
                                         #{entry.result.position}
                                       </div>
-                                      <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                                         {entry.result.score > 0 ? '+' : ''}
                                         {entry.result.score}
                                       </div>
@@ -1023,7 +1022,7 @@ export default function CoachAthleteTournaments() {
                               alignItems: 'center',
                               justifyContent: 'center',
                               padding: '24px',
-                              color: tokens.colors.steel,
+                              color: 'var(--text-secondary)',
                               fontSize: '14px',
                             }}
                           >
@@ -1039,7 +1038,7 @@ export default function CoachAthleteTournaments() {
                           gap: '12px',
                           marginTop: '16px',
                           paddingTop: '16px',
-                          borderTop: `1px solid ${tokens.colors.gray100}`,
+                          borderTop: '1px solid var(--bg-tertiary)',
                         }}
                       >
                         <button
@@ -1052,10 +1051,10 @@ export default function CoachAthleteTournaments() {
                             alignItems: 'center',
                             gap: '6px',
                             padding: '10px 16px',
-                            backgroundColor: tokens.colors.primary,
-                            color: tokens.colors.white,
+                            backgroundColor: 'var(--accent)',
+                            color: 'var(--bg-primary)',
                             border: 'none',
-                            borderRadius: tokens.radius.md,
+                            borderRadius: 'var(--radius-md)',
                             fontSize: '13px',
                             fontWeight: 500,
                             cursor: 'pointer',
@@ -1074,10 +1073,10 @@ export default function CoachAthleteTournaments() {
                             alignItems: 'center',
                             gap: '6px',
                             padding: '10px 16px',
-                            backgroundColor: tokens.colors.gray100,
-                            color: tokens.colors.charcoal,
+                            backgroundColor: 'var(--bg-tertiary)',
+                            color: 'var(--text-primary)',
                             border: 'none',
-                            borderRadius: tokens.radius.md,
+                            borderRadius: 'var(--radius-md)',
                             fontSize: '13px',
                             fontWeight: 500,
                             cursor: 'pointer',

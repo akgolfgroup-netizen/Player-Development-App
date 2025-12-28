@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { tokens } from '../../design-tokens';
 
 // =====================================================
 // AK GOLF - TRENERTEAM SKJERM
@@ -9,30 +8,6 @@ import { tokens } from '../../design-tokens';
 // Design System: Blue Palette 01 v3.0
 // =====================================================
 
-// Design Tokens (Blue Palette 01 v3.0)
-const colors = {
-  // Brand Colors - Blue Palette 01
-  primary: '#10456A',
-  primaryLight: '#2C5F7F',
-  snow: '#EDF0F2',
-  surface: '#EBE5DA',
-  gold: '#C9A227',
-  // Semantic Colors
-  success: '#4A7C59',
-  warning: '#D4A84B',
-  error: '#C45B4E',
-  // Neutrals
-  charcoal: '#1C1C1E',
-  steel: '#8E8E93',
-  mist: '#E5E5EA',
-  cloud: '#F2F2F7',
-  white: '#FFFFFF',
-  // Aliases for backwards compatibility
-  forest: '#10456A',
-  forestLight: '#2C5F7F',
-  foam: '#EDF0F2',
-  ivory: '#EBE5DA',
-};
 
 // =====================================================
 // UI KOMPONENTER
@@ -57,15 +32,15 @@ const Avatar = ({ name, size = 'md', image, role }) => {
   };
 
   const roleColors = {
-    hovedtrener: colors.forest,
-    teknisk: colors.forestLight,
-    fysisk: colors.success,
-    mental: colors.gold,
-    strategi: colors.warning
+    hovedtrener: 'var(--accent)',
+    teknisk: 'var(--accent-light)',
+    fysisk: 'var(--success)',
+    mental: 'var(--achievement)',
+    strategi: 'var(--warning)'
   };
 
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2);
-  const bgColor = roleColors[role] || colors.forest;
+  const bgColor = roleColors[role] || 'var(--accent)';
 
   return (
     <div
@@ -81,16 +56,16 @@ const Avatar = ({ name, size = 'md', image, role }) => {
   );
 };
 
-const Badge = ({ children, variant = 'default' }) => {
+const Badge = ({ children, variant = 'neutral' }) => {
   const variants = {
-    default: { bg: colors.mist, color: colors.charcoal },
-    primary: { bg: `${colors.forest}15`, color: colors.forest },
-    success: { bg: `${colors.success}15`, color: colors.success },
-    warning: { bg: `${colors.warning}15`, color: colors.warning },
-    gold: { bg: `${colors.gold}15`, color: colors.gold }
+    neutral: { bg: 'var(--border-default)', color: 'var(--text-primary)' },
+    accent: { bg: 'rgba(var(--accent-rgb), 0.08)', color: 'var(--accent)' },
+    success: { bg: 'rgba(var(--success-rgb), 0.08)', color: 'var(--success)' },
+    warning: { bg: 'rgba(var(--warning-rgb), 0.08)', color: 'var(--warning)' },
+    achievement: { bg: 'rgba(var(--achievement-rgb), 0.08)', color: 'var(--achievement)' }
   };
 
-  const style = variants[variant] || variants.default;
+  const style = variants[variant] || variants.neutral;
 
   return (
     <span
@@ -104,10 +79,10 @@ const Badge = ({ children, variant = 'default' }) => {
 
 const Button = ({ children, variant = 'primary', size = 'md', onClick, icon }) => {
   const variants = {
-    primary: { bg: colors.forest, color: 'white' },
-    secondary: { bg: colors.foam, color: colors.forest },
-    outline: { bg: 'transparent', color: colors.forest, border: `1px solid ${colors.forest}` },
-    ghost: { bg: 'transparent', color: colors.steel }
+    primary: { bg: 'var(--accent)', color: 'white' },
+    secondary: { bg: 'var(--bg-secondary)', color: 'var(--accent)' },
+    outline: { bg: 'transparent', color: 'var(--accent)', border: `1px solid ${'var(--accent)'}` },
+    ghost: { bg: 'transparent', color: 'var(--text-secondary)' }
   };
 
   const sizes = {
@@ -148,8 +123,8 @@ const TrainerCard = ({ trainer, isSelected, onSelect }) => {
       className={`p-4 transition-all ${isSelected ? 'ring-2' : 'hover:shadow-md'}`}
       onClick={() => onSelect(trainer.id)}
       style={{
-        ringColor: isSelected ? colors.forest : 'transparent',
-        borderColor: isSelected ? colors.forest : undefined
+        ringColor: isSelected ? 'var(--accent)' : 'transparent',
+        borderColor: isSelected ? 'var(--accent)' : undefined
       }}
     >
       <div className="flex items-start gap-4">
@@ -158,26 +133,26 @@ const TrainerCard = ({ trainer, isSelected, onSelect }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div>
-              <h3 className="font-semibold text-base" style={{ color: colors.charcoal }}>
+              <h3 className="font-semibold text-base" style={{ color: 'var(--text-primary)' }}>
                 {trainer.name}
               </h3>
-              <p className="text-sm" style={{ color: colors.steel }}>
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                 {roleLabels[trainer.role]}
               </p>
             </div>
 
             {trainer.isPrimary && (
-              <Badge variant="gold">Primær</Badge>
+              <Badge variant="achievement">Primær</Badge>
             )}
           </div>
 
           <div className="flex flex-wrap gap-1.5 mt-3">
             {trainer.specializations.map((spec, idx) => (
-              <Badge key={idx} variant="primary">{spec}</Badge>
+              <Badge key={idx} variant="accent">{spec}</Badge>
             ))}
           </div>
 
-          <div className="flex items-center gap-4 mt-3 text-xs" style={{ color: colors.steel }}>
+          <div className="flex items-center gap-4 mt-3 text-xs" style={{ color: 'var(--text-secondary)' }}>
             <span className="flex items-center gap-1">
               <span>📅</span>
               <span>Siden {trainer.startYear}</span>
@@ -206,24 +181,24 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="p-6 text-center border-b" style={{ borderColor: colors.mist }}>
+        <div className="p-6 text-center border-b" style={{ borderColor: 'var(--border-default)' }}>
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-2xl"
-            style={{ color: colors.steel }}
+            style={{ color: 'var(--text-secondary)' }}
           >
             ×
           </button>
 
           <Avatar name={trainer.name} size="xl" role={trainer.role} />
 
-          <h2 className="font-bold text-xl mt-4" style={{ color: colors.charcoal }}>
+          <h2 className="font-bold text-xl mt-4" style={{ color: 'var(--text-primary)' }}>
             {trainer.name}
           </h2>
-          <p style={{ color: colors.steel }}>{roleLabels[trainer.role]}</p>
+          <p style={{ color: 'var(--text-secondary)' }}>{roleLabels[trainer.role]}</p>
 
           {trainer.isPrimary && (
-            <Badge variant="gold" className="mt-2">Primær kontakt</Badge>
+            <Badge variant="achievement" className="mt-2">Primær kontakt</Badge>
           )}
         </div>
 
@@ -231,19 +206,19 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
         <div className="p-6 space-y-6">
           {/* Kontakt */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: colors.charcoal }}>
+            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Kontaktinfo
             </h4>
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-sm">
                 <span>📧</span>
-                <a href={`mailto:${trainer.email}`} style={{ color: colors.forest }}>
+                <a href={`mailto:${trainer.email}`} style={{ color: 'var(--accent)' }}>
                   {trainer.email}
                 </a>
               </div>
               <div className="flex items-center gap-3 text-sm">
                 <span>📱</span>
-                <a href={`tel:${trainer.phone}`} style={{ color: colors.forest }}>
+                <a href={`tel:${trainer.phone}`} style={{ color: 'var(--accent)' }}>
                   {trainer.phone}
                 </a>
               </div>
@@ -252,25 +227,25 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Spesialiseringer */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: colors.charcoal }}>
+            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Spesialiseringer
             </h4>
             <div className="flex flex-wrap gap-2">
               {trainer.specializations.map((spec, idx) => (
-                <Badge key={idx} variant="primary">{spec}</Badge>
+                <Badge key={idx} variant="accent">{spec}</Badge>
               ))}
             </div>
           </div>
 
           {/* Sertifiseringer */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: colors.charcoal }}>
+            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Sertifiseringer
             </h4>
             <div className="space-y-2">
               {trainer.certifications.map((cert, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-sm" style={{ color: colors.steel }}>
-                  <span style={{ color: colors.success }}>✓</span>
+                <div key={idx} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+                  <span style={{ color: 'var(--success)' }}>✓</span>
                   <span>{cert}</span>
                 </div>
               ))}
@@ -279,33 +254,33 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Bio */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: colors.charcoal }}>
+            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Om treneren
             </h4>
-            <p className="text-sm leading-relaxed" style={{ color: colors.steel }}>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               {trainer.bio}
             </p>
           </div>
 
           {/* Statistikk */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.foam }}>
-              <div className="font-bold text-lg" style={{ color: colors.forest }}>
+            <div className="text-center p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+              <div className="font-bold text-lg" style={{ color: 'var(--accent)' }}>
                 {trainer.sessionsTotal}
               </div>
-              <div className="text-xs" style={{ color: colors.steel }}>Økter totalt</div>
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Økter totalt</div>
             </div>
-            <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.foam }}>
-              <div className="font-bold text-lg" style={{ color: colors.forest }}>
+            <div className="text-center p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+              <div className="font-bold text-lg" style={{ color: 'var(--accent)' }}>
                 {trainer.sessionsMonth}
               </div>
-              <div className="text-xs" style={{ color: colors.steel }}>Denne måned</div>
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Denne måned</div>
             </div>
-            <div className="text-center p-3 rounded-xl" style={{ backgroundColor: colors.foam }}>
-              <div className="font-bold text-lg" style={{ color: colors.forest }}>
+            <div className="text-center p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+              <div className="font-bold text-lg" style={{ color: 'var(--accent)' }}>
                 {trainer.startYear}
               </div>
-              <div className="text-xs" style={{ color: colors.steel }}>Siden år</div>
+              <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Siden år</div>
             </div>
           </div>
 
@@ -326,37 +301,37 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
 const UpcomingSession = ({ session }) => {
   const typeColors = {
-    teknisk: colors.forestLight,
-    fysisk: colors.success,
-    mental: colors.gold,
-    strategi: colors.warning,
-    evaluering: colors.forest
+    teknisk: 'var(--accent-light)',
+    fysisk: 'var(--success)',
+    mental: 'var(--achievement)',
+    strategi: 'var(--warning)',
+    evaluering: 'var(--accent)'
   };
 
   return (
     <div
       className="flex items-center gap-4 p-4 rounded-xl"
-      style={{ backgroundColor: colors.foam }}
+      style={{ backgroundColor: 'var(--bg-secondary)' }}
     >
       <div
         className="w-1 h-12 rounded-full"
-        style={{ backgroundColor: typeColors[session.type] || colors.forest }}
+        style={{ backgroundColor: typeColors[session.type] || 'var(--accent)' }}
       />
 
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <h4 className="font-medium text-sm" style={{ color: colors.charcoal }}>
+          <h4 className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>
             {session.title}
           </h4>
-          <span className="text-xs" style={{ color: colors.steel }}>
+          <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>
             {session.duration} min
           </span>
         </div>
-        <p className="text-xs mt-1" style={{ color: colors.steel }}>
+        <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
           med {session.trainer}
         </p>
         <div className="flex items-center gap-2 mt-2">
-          <span className="text-xs" style={{ color: colors.forest }}>
+          <span className="text-xs" style={{ color: 'var(--accent)' }}>
             {session.date} • {session.time}
           </span>
         </div>
@@ -376,16 +351,16 @@ const MessagePreview = ({ message, onView }) => (
 
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between">
-        <h4 className="font-medium text-sm truncate" style={{ color: colors.charcoal }}>
+        <h4 className="font-medium text-sm truncate" style={{ color: 'var(--text-primary)' }}>
           {message.from}
         </h4>
-        <span className="text-xs" style={{ color: colors.steel }}>
+        <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>
           {message.time}
         </span>
       </div>
       <p
         className="text-xs truncate mt-0.5"
-        style={{ color: message.unread ? colors.charcoal : colors.steel }}
+        style={{ color: message.unread ? 'var(--text-primary)' : 'var(--text-secondary)' }}
       >
         {message.preview}
       </p>
@@ -394,7 +369,7 @@ const MessagePreview = ({ message, onView }) => (
     {message.unread && (
       <div
         className="w-2 h-2 rounded-full mt-2"
-        style={{ backgroundColor: colors.forest }}
+        style={{ backgroundColor: 'var(--accent)' }}
       />
     )}
   </div>
@@ -554,7 +529,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       {/* Header */}
       <PageHeader
         title="Mitt Trenerteam"
@@ -584,8 +559,8 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
                 gap: '8px',
                 border: 'none',
                 cursor: 'pointer',
-                backgroundColor: activeTab === tab.id ? tokens.colors.primary : tokens.colors.white,
-                color: activeTab === tab.id ? tokens.colors.white : tokens.colors.charcoal,
+                backgroundColor: activeTab === tab.id ? 'var(--accent)' : 'var(--bg-primary)',
+                color: activeTab === tab.id ? 'var(--bg-primary)' : 'var(--text-primary)',
               }}
             >
               <span>{tab.icon}</span>
@@ -601,7 +576,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: 'white',
-                    backgroundColor: tokens.colors.error,
+                    backgroundColor: 'var(--error)',
                   }}
                 >
                   {messages.filter(m => m.unread).length}
@@ -619,10 +594,10 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
         {activeTab === 'team' && (
           <>
             {/* Primær trener highlight */}
-            <Card className="p-4" style={{ backgroundColor: `${colors.gold}10`, borderColor: colors.gold }}>
+            <Card className="p-4" style={{ backgroundColor: 'rgba(var(--achievement-rgb), 0.06)', borderColor: 'var(--achievement)' }}>
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-lg">⭐</span>
-                <span className="font-medium text-sm" style={{ color: colors.charcoal }}>
+                <span className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>
                   Din primære kontakt
                 </span>
               </div>
@@ -633,10 +608,10 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
                   role={trainers[0].role}
                 />
                 <div className="flex-1">
-                  <h3 className="font-semibold" style={{ color: colors.charcoal }}>
+                  <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>
                     {trainers[0].name}
                   </h3>
-                  <p className="text-sm" style={{ color: colors.steel }}>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                     Hovedtrener • {trainers[0].sessionsTotal} økter sammen
                   </p>
                 </div>
@@ -652,7 +627,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
             {/* Alle trenere */}
             <div>
-              <h3 className="font-semibold text-sm mb-3 px-1" style={{ color: colors.charcoal }}>
+              <h3 className="font-semibold text-sm mb-3 px-1" style={{ color: 'var(--text-primary)' }}>
                 Hele teamet
               </h3>
               <div className="space-y-3">
@@ -669,31 +644,31 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
             {/* Team statistikk */}
             <Card className="p-4">
-              <h3 className="font-semibold text-sm mb-4" style={{ color: colors.charcoal }}>
+              <h3 className="font-semibold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>
                 Team-statistikk
               </h3>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold" style={{ color: colors.forest }}>
+                  <div className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>
                     {trainers.reduce((sum, t) => sum + t.sessionsTotal, 0)}
                   </div>
-                  <div className="text-xs mt-1" style={{ color: colors.steel }}>
+                  <div className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
                     Økter totalt
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold" style={{ color: colors.forest }}>
+                  <div className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>
                     {trainers.reduce((sum, t) => sum + t.sessionsMonth, 0)}
                   </div>
-                  <div className="text-xs mt-1" style={{ color: colors.steel }}>
+                  <div className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
                     Denne måned
                   </div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold" style={{ color: colors.forest }}>
+                  <div className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>
                     {trainers.length}
                   </div>
-                  <div className="text-xs mt-1" style={{ color: colors.steel }}>
+                  <div className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
                     Spesialister
                   </div>
                 </div>
@@ -706,7 +681,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
         {activeTab === 'schedule' && (
           <>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-sm" style={{ color: colors.charcoal }}>
+              <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
                 Kommende økter med trenere
               </h3>
               <Button variant="ghost" size="sm">Se alle</Button>
@@ -720,7 +695,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
             {/* Book ny økt */}
             <Card className="p-4 mt-4">
-              <h3 className="font-semibold text-sm mb-3" style={{ color: colors.charcoal }}>
+              <h3 className="font-semibold text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
                 Book ny økt
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -728,14 +703,14 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
                   <button
                     key={trainer.id}
                     className="flex items-center gap-3 p-3 rounded-xl text-left transition-all hover:shadow-md"
-                    style={{ backgroundColor: colors.foam }}
+                    style={{ backgroundColor: 'var(--bg-secondary)' }}
                   >
                     <Avatar name={trainer.name} size="sm" role={trainer.role} />
                     <div className="min-w-0">
-                      <div className="text-sm font-medium truncate" style={{ color: colors.charcoal }}>
+                      <div className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>
                         {trainer.name.split(' ')[0]}
                       </div>
-                      <div className="text-xs capitalize" style={{ color: colors.steel }}>
+                      <div className="text-xs capitalize" style={{ color: 'var(--text-secondary)' }}>
                         {trainer.role}
                       </div>
                     </div>
@@ -750,7 +725,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
         {activeTab === 'messages' && (
           <>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-sm" style={{ color: colors.charcoal }}>
+              <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
                 Meldinger
               </h3>
               <Button variant="primary" size="sm" icon="✏️">
@@ -758,7 +733,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
               </Button>
             </div>
 
-            <Card className="divide-y" style={{ borderColor: colors.mist }}>
+            <Card className="divide-y" style={{ borderColor: 'var(--border-default)' }}>
               {messages.map(message => (
                 <MessagePreview
                   key={message.id}
@@ -771,7 +746,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
             {messages.length === 0 && (
               <div className="text-center py-12">
                 <span className="text-4xl">💬</span>
-                <p className="mt-4 text-sm" style={{ color: colors.steel }}>
+                <p className="mt-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
                   Ingen meldinger ennå
                 </p>
               </div>

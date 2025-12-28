@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Golf – Variant 9: Sunset Vibrant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      /* SUNSET VIBRANT - Warm, energetic, optimistic */
+      --bg-base: #1A1625;
+      --bg-card: #241F2E;
+      --bg-elevated: #2E2838;
+      
+      /* Sunset gradient */
+      --orange: #FF7A45;
+      --coral: #FF5F6D;
+      --pink: #FF6B9D;
+      --purple: #C471ED;
+      --blue: #12C2E9;
+      
+      --gradient-sunset: linear-gradient(135deg, #FF7A45 0%, #FF5F6D 50%, #C471ED 100%);
+      --gradient-warm: linear-gradient(135deg, #FF7A45 0%, #FF5F6D 100%);
+      --gradient-cool: linear-gradient(135deg, #C471ED 0%, #12C2E9 100%);
+      
+      --text-1: #FFFFFF;
+      --text-2: #B8B0C8;
+      --text-3: #7A7388;
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --glow-orange: 0 4px 20px rgba(255, 122, 69, 0.4);
+      
+      --r-sm: 12px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px; --r-full: 9999px;
+      --font: 'Poppins', -apple-system, sans-serif;
+    }
+
+    html { font-family: var(--font); background: linear-gradient(180deg, #2D1F3D 0%, #1A1625 100%); color: var(--text-1); -webkit-font-smoothing: antialiased; }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 32px; }
+
+    .page-header { text-align: center; max-width: 700px; }
+    .page-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; background: var(--gradient-sunset); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-header p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+    .tags { display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+    .tag { background: var(--gradient-warm); color: white; padding: 6px 14px; border-radius: var(--r-full); font-size: 11px; font-weight: 600; }
+
+    .mockup-grid { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
+    .mockup-container { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .mockup-label { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .iphone { width: 320px; height: 693px; background: linear-gradient(145deg, #3D2D50, #1A1625); border-radius: 46px; padding: 12px; box-shadow: var(--shadow); }
+    .screen { width: 100%; height: 100%; background: var(--bg-base); border-radius: 36px; overflow: hidden; position: relative; }
+    .screen::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 200px; background: linear-gradient(180deg, rgba(255, 122, 69, 0.15) 0%, transparent 100%); pointer-events: none; z-index: 1; }
+    .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 30px; background: #0D0A12; border-radius: 0 0 20px 20px; z-index: 100; }
+    .home-ind { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; z-index: 100; }
+
+    .app { height: 100%; display: flex; flex-direction: column; padding-top: 38px; padding-bottom: 90px; overflow-y: auto; scrollbar-width: none; position: relative; z-index: 2; }
+    .app::-webkit-scrollbar { display: none; }
+
+    /* HEADER */
+    .header { padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .header-left { }
+    .header-greeting { font-size: 13px; color: var(--text-3); }
+    .header-name { font-size: 22px; font-weight: 700; }
+    .header-avatar { width: 44px; height: 44px; background: var(--gradient-sunset); border-radius: var(--r-full); display: flex; align-items: center; justify-content: center; box-shadow: var(--glow-orange); }
+
+    /* SCORE - Gradient card */
+    .score-section { padding: 0 20px 20px; }
+    .score-card { background: var(--gradient-sunset); border-radius: var(--r-xl); padding: 28px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--glow-orange); }
+    .score-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%); }
+    .score-content { position: relative; z-index: 1; }
+    .score-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9; }
+    .score-value { font-size: 80px; font-weight: 800; line-height: 1; margin: 8px 0; }
+    .score-subtitle { font-size: 14px; opacity: 0.9; }
+    .score-stats { display: flex; justify-content: center; gap: 24px; margin-top: 20px; }
+    .score-stat { background: rgba(255,255,255,0.2); padding: 10px 16px; border-radius: var(--r-md); }
+    .score-stat-value { font-size: 18px; font-weight: 700; }
+    .score-stat-label { font-size: 10px; opacity: 0.8; text-transform: uppercase; }
+
+    /* SECTION */
+    .section { padding: 0 20px; margin-bottom: 20px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .section-title { font-size: 16px; font-weight: 600; }
+    .section-link { font-size: 13px; color: var(--orange); font-weight: 500; }
+
+    /* CARDS */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 16px; margin-bottom: 10px; }
+
+    /* QUICK ACTIONS - Gradient pills */
+    .actions-row { display: flex; gap: 10px; }
+    .action-pill { flex: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 16px; text-align: center; }
+    .action-pill.primary { background: var(--gradient-warm); border: none; box-shadow: var(--glow-orange); }
+    .action-icon { width: 40px; height: 40px; background: var(--bg-elevated); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; }
+    .action-pill.primary .action-icon { background: rgba(255,255,255,0.2); }
+    .action-label { font-size: 12px; font-weight: 600; color: var(--text-2); }
+    .action-pill.primary .action-label { color: white; }
+
+    /* SESSION CARDS */
+    .session-card { display: flex; align-items: center; gap: 14px; }
+    .session-icon { width: 48px; height: 48px; background: var(--gradient-cool); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; }
+    .session-content { flex: 1; }
+    .session-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+    .session-meta { font-size: 12px; color: var(--text-3); }
+    .session-time { text-align: right; }
+    .session-dur { font-size: 15px; font-weight: 600; background: var(--gradient-warm); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .session-when { font-size: 11px; color: var(--text-3); }
+
+    /* PROGRESS */
+    .progress-list { display: flex; flex-direction: column; gap: 14px; }
+    .progress-item { }
+    .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .progress-label { font-size: 13px; color: var(--text-2); }
+    .progress-value { font-size: 13px; font-weight: 600; }
+    .progress-bar { height: 8px; background: var(--bg-elevated); border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 4px; }
+    .progress-fill.warm { background: var(--gradient-warm); }
+    .progress-fill.cool { background: var(--gradient-cool); }
+
+    /* TAB BAR */
+    .tab-bar { position: absolute; bottom: 20px; left: 16px; right: 16px; height: 64px; background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 32px; display: flex; justify-content: space-around; align-items: center; z-index: 10; }
+    .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-3); padding: 8px 16px; border-radius: var(--r-lg); }
+    .tab.active { background: var(--gradient-warm); color: white; box-shadow: var(--glow-orange); }
+    .tab-icon { width: 22px; height: 22px; }
+    .tab-label { font-size: 10px; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Variant 9: Sunset Vibrant</h1>
+  <p>Varm, energisk design med solnedgangsgradienter. Optimistisk og motiverende for treningsøkter.</p>
+  <div class="tags">
+    <span class="tag">Dark Mode</span>
+    <span class="tag">Gradients</span>
+    <span class="tag">Warm</span>
+    <span class="tag">Energetic</span>
+  </div>
+</header>
+
+<div class="mockup-grid">
+
+  <!-- HOME -->
+  <div class="mockup-container">
+    <span class="mockup-label">Home</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          
+          <div class="header">
+            <div class="header-left">
+              <div class="header-greeting">God morgen</div>
+              <div class="header-name">Anders 👋</div>
+            </div>
+            <div class="header-avatar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+          </div>
+
+          <div class="score-section">
+            <div class="score-card">
+              <div class="score-content">
+                <div class="score-label">Din Score</div>
+                <div class="score-value">87</div>
+                <div class="score-subtitle">Du er på 🔥 i dag!</div>
+                <div class="score-stats">
+                  <div class="score-stat">
+                    <div class="score-stat-value">92</div>
+                    <div class="score-stat-label">Swing</div>
+                  </div>
+                  <div class="score-stat">
+                    <div class="score-stat-value">78</div>
+                    <div class="score-stat-label">Short</div>
+                  </div>
+                  <div class="score-stat">
+                    <div class="score-stat-value">85</div>
+                    <div class="score-stat-label">Mental</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="actions-row">
+              <div class="action-pill primary">
+                <div class="action-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+                <div class="action-label">Start økt</div>
+              </div>
+              <div class="action-pill">
+                <div class="action-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
+                </div>
+                <div class="action-label">Plan</div>
+              </div>
+              <div class="action-pill">
+                <div class="action-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div class="action-label">Stats</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title">Kommende</span>
+              <span class="section-link">Se alle</span>
+            </div>
+            <div class="card">
+              <div class="session-card">
+                <div class="session-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                </div>
+                <div class="session-content">
+                  <div class="session-title">Short Game Focus</div>
+                  <div class="session-meta">Chipping & Pitching</div>
+                </div>
+                <div class="session-time">
+                  <div class="session-dur">20m</div>
+                  <div class="session-when">Nå</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="session-card">
+                <div class="session-icon" style="background:var(--gradient-warm)">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="4" r="2.5"/><path d="M12 6.5 Q 10 10 8 14"/><line x1="8" y1="14" x2="6" y2="21"/></svg>
+                </div>
+                <div class="session-content">
+                  <div class="session-title">Driver Teknikk</div>
+                  <div class="session-meta">Swing fundamentals</div>
+                </div>
+                <div class="session-time">
+                  <div class="session-dur">45m</div>
+                  <div class="session-when">I morgen</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title">Fremgang</span>
+            </div>
+            <div class="card">
+              <div class="progress-list">
+                <div class="progress-item">
+                  <div class="progress-header"><span class="progress-label">Driving</span><span class="progress-value">92%</span></div>
+                  <div class="progress-bar"><div class="progress-fill warm" style="width:92%"></div></div>
+                </div>
+                <div class="progress-item">
+                  <div class="progress-header"><span class="progress-label">Short Game</span><span class="progress-value">74%</span></div>
+                  <div class="progress-bar"><div class="progress-fill cool" style="width:74%"></div></div>
+                </div>
+                <div class="progress-item">
+                  <div class="progress-header"><span class="progress-label">Putting</span><span class="progress-value">68%</span></div>
+                  <div class="progress-bar"><div class="progress-fill warm" style="width:68%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <span class="tab-label">Hjem</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/></svg></div>
+            <span class="tab-label">Tren</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+            <span class="tab-label">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="mockup-container">
+    <span class="mockup-label">Profile</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          
+          <div style="padding:24px;text-align:center;background:linear-gradient(180deg,rgba(255,122,69,0.2) 0%,transparent 100%)">
+            <div style="width:80px;height:80px;background:var(--gradient-sunset);border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;box-shadow:var(--glow-orange)">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div style="font-size:22px;font-weight:700;margin-bottom:4px">Anders Krohn</div>
+            <div style="font-size:13px;color:var(--text-3)">Medlem siden 2023</div>
+          </div>
+
+          <div style="display:flex;gap:10px;padding:0 20px;margin:20px 0">
+            <div class="card" style="flex:1;text-align:center;padding:20px">
+              <div style="font-size:28px;font-weight:700;background:var(--gradient-warm);-webkit-background-clip:text;-webkit-text-fill-color:transparent">4.2</div>
+              <div style="font-size:11px;color:var(--text-3)">HCP</div>
+            </div>
+            <div class="card" style="flex:1;text-align:center;padding:20px">
+              <div style="font-size:28px;font-weight:700">156</div>
+              <div style="font-size:11px;color:var(--text-3)">Økter</div>
+            </div>
+            <div class="card" style="flex:1;text-align:center;padding:20px">
+              <div style="font-size:28px;font-weight:700;background:var(--gradient-cool);-webkit-background-clip:text;-webkit-text-fill-color:transparent">7</div>
+              <div style="font-size:11px;color:var(--text-3)">Streak 🔥</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title" style="margin-bottom:12px">Achievements</div>
+            <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px">
+              <div style="width:56px;height:56px;background:var(--gradient-warm);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div style="width:56px;height:56px;background:var(--gradient-cool);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/></svg>
+              </div>
+              <div style="width:56px;height:56px;background:var(--gradient-sunset);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              </div>
+              <div style="width:56px;height:56px;background:var(--bg-elevated);border:2px dashed var(--border);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-3)">
+                <span style="font-size:12px;font-weight:600">+5</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <span class="tab-label">Hjem</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/></svg></div>
+            <span class="tab-label">Tren</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+            <span class="tab-label">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

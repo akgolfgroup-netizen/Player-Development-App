@@ -8,9 +8,11 @@
  * - Playback speed control
  * - Keyboard shortcut handling
  * - Touch gesture support
+ * - HLS streaming support (Safari native, hls.js for others)
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { initHls, destroyHls, loadHlsJs, supportsNativeHls, canPlayHls } from '../utils/hlsPlayer';
 
 // Frame rate constant for frame-by-frame navigation (assuming 30fps)
 const FRAME_RATE = 30;

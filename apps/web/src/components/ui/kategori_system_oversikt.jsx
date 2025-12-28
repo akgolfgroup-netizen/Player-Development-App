@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { tokens } from '../design-tokens';
 
+// Session type colors (Blue Palette 01)
+const sessionTypeColors = {
+  teknikk: '#2C5F7F',
+  golfslag: '#4A7C59',
+  spill: '#10456A',
+  fysisk: '#D4A84B',
+  funksjonell: '#8E8E93',
+};
+
 const KategoriSystemOversikt = () => {
   const [activeSection, setActiveSection] = useState('overview');
   const [hoveredArea, setHoveredArea] = useState(null);
@@ -18,7 +27,7 @@ const KategoriSystemOversikt = () => {
       name: 'Clubspeed', 
       ak: 'CS20-CS100: Tempo kontroll', 
       tn: 'Intensitetsstyring',
-      color: tokens.colors.sessionTypes.golfslag
+      color: sessionTypeColors.golfslag
     },
     { 
       id: 'setting', 
@@ -32,7 +41,7 @@ const KategoriSystemOversikt = () => {
       name: 'Golf omrÃ¥der', 
       ak: '17 spesifikke omrÃ¥der', 
       tn: 'Golfslag kategorier',
-      color: tokens.colors.sessionTypes.teknikk
+      color: sessionTypeColors.teknikk
     },
     { 
       id: 'training', 
@@ -59,15 +68,15 @@ const KategoriSystemOversikt = () => {
   ];
 
   const golfAreas = [
-    { name: 'Tee Total', distance: 'Driver/3W', tn: 'Utslag', type: 'T, TG', color: tokens.colors.sessionTypes.fysisk },
+    { name: 'Tee Total', distance: 'Driver/3W', tn: 'Utslag', type: 'T, TG', color: sessionTypeColors.fysisk },
     { name: 'Innspill 200+m', distance: 'Lange jern', tn: 'Inspill lang', type: 'T, TG', color: tokens.colors.warning },
     { name: 'Innspill 150-200m', distance: 'Mellom jern', tn: 'Inspill medium', type: 'T, TG', color: tokens.colors.gold },
-    { name: 'Innspill 100-150m', distance: 'Korte jern', tn: 'Inspill kort', type: 'T, TG', color: tokens.colors.sessionTypes.funksjonell },
-    { name: 'Innspill 50-100m', distance: 'Wedges', tn: 'Wedge', type: 'TG, TGS', color: tokens.colors.sessionTypes.golfslag },
+    { name: 'Innspill 100-150m', distance: 'Korte jern', tn: 'Inspill kort', type: 'T, TG', color: sessionTypeColors.funksjonell },
+    { name: 'Innspill 50-100m', distance: 'Wedges', tn: 'Wedge', type: 'TG, TGS', color: sessionTypeColors.golfslag },
     { name: 'Kort Spill', distance: 'Chip/Pitch/Lob', tn: 'Naerspill', type: 'TGS, S', color: tokens.colors.forest },
     { name: 'Bunker', distance: 'Sand shots', tn: 'Bunker', type: 'TGS, S', color: tokens.colors.primaryLight },
     { name: 'Putting kort', distance: '0-10 ft', tn: 'Putting kort', type: 'G, K', color: tokens.colors.success },
-    { name: 'Putting lang', distance: '10+ ft', tn: 'Putting lang', type: 'Fs, Fu', color: tokens.colors.sessionTypes.spill }
+    { name: 'Putting lang', distance: '10+ ft', tn: 'Putting lang', type: 'Fs, Fu', color: sessionTypeColors.spill }
   ];
 
   const settingLevels = [

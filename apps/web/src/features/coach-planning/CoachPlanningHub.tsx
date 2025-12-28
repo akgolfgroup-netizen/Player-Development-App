@@ -9,7 +9,8 @@ import {
   FileText
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface Player {
   id: string;
@@ -113,7 +114,7 @@ export const CoachPlanningHub: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -122,7 +123,7 @@ export const CoachPlanningHub: React.FC = () => {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              background: `linear-gradient(135deg, ${designTokens.colors.primary[500]}, ${designTokens.colors.primary[600]})`,
+              background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent)'})`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -133,14 +134,14 @@ export const CoachPlanningHub: React.FC = () => {
               <h1 style={{
                 fontSize: '28px',
                 fontWeight: '700',
-                color: designTokens.colors.text.primary,
+                color: 'var(--text-primary)',
                 margin: 0
               }}>
                 Treningsplanlegger
               </h1>
               <p style={{
                 fontSize: '14px',
-                color: designTokens.colors.text.secondary,
+                color: 'var(--text-secondary)',
                 margin: 0
               }}>
                 Velg spiller eller gruppe for å opprette/redigere treningsplan
@@ -155,9 +156,9 @@ export const CoachPlanningHub: React.FC = () => {
               gap: '8px',
               padding: '12px 20px',
               borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
-              color: designTokens.colors.text.secondary,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-secondary)',
               fontSize: '14px',
               fontWeight: '500',
               cursor: 'pointer'
@@ -177,56 +178,56 @@ export const CoachPlanningHub: React.FC = () => {
         marginBottom: '24px'
       }}>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <User size={16} color={designTokens.colors.primary[500]} />
-            <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>Spillere med plan</span>
+            <User size={16} color={'var(--accent)'} />
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Spillere med plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: designTokens.colors.primary[600], margin: 0 }}>
+          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--accent)', margin: 0 }}>
             {stats.playersWithPlan}
           </p>
         </div>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <User size={16} color="#f59e0b" />
-            <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>Mangler plan</span>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Mangler plan</span>
           </div>
           <p style={{ fontSize: '24px', fontWeight: '700', color: '#f59e0b', margin: 0 }}>
             {stats.playersWithoutPlan}
           </p>
         </div>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <Users size={16} color="#16a34a" />
-            <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>Grupper med plan</span>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Grupper med plan</span>
           </div>
           <p style={{ fontSize: '24px', fontWeight: '700', color: '#16a34a', margin: 0 }}>
             {stats.groupsWithPlan}
           </p>
         </div>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <Users size={16} color="#dc2626" />
-            <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>Grupper uten plan</span>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Grupper uten plan</span>
           </div>
           <p style={{ fontSize: '24px', fontWeight: '700', color: '#dc2626', margin: 0 }}>
             {stats.groupsWithoutPlan}
@@ -240,7 +241,7 @@ export const CoachPlanningHub: React.FC = () => {
         gap: '4px',
         marginBottom: '20px',
         padding: '4px',
-        backgroundColor: designTokens.colors.background.secondary,
+        backgroundColor: 'var(--bg-tertiary)',
         borderRadius: '12px',
         width: 'fit-content'
       }}>
@@ -250,8 +251,8 @@ export const CoachPlanningHub: React.FC = () => {
             padding: '10px 20px',
             borderRadius: '8px',
             border: 'none',
-            backgroundColor: activeTab === 'players' ? designTokens.colors.background.card : 'transparent',
-            color: activeTab === 'players' ? designTokens.colors.text.primary : designTokens.colors.text.secondary,
+            backgroundColor: activeTab === 'players' ? 'var(--bg-primary)' : 'transparent',
+            color: activeTab === 'players' ? 'var(--text-primary)' : 'var(--text-secondary)',
             fontSize: '14px',
             fontWeight: '500',
             cursor: 'pointer',
@@ -270,8 +271,8 @@ export const CoachPlanningHub: React.FC = () => {
             padding: '10px 20px',
             borderRadius: '8px',
             border: 'none',
-            backgroundColor: activeTab === 'groups' ? designTokens.colors.background.card : 'transparent',
-            color: activeTab === 'groups' ? designTokens.colors.text.primary : designTokens.colors.text.secondary,
+            backgroundColor: activeTab === 'groups' ? 'var(--bg-primary)' : 'transparent',
+            color: activeTab === 'groups' ? 'var(--text-primary)' : 'var(--text-secondary)',
             fontSize: '14px',
             fontWeight: '500',
             cursor: 'pointer',
@@ -301,7 +302,7 @@ export const CoachPlanningHub: React.FC = () => {
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
+              color: 'var(--text-tertiary)'
             }}
           />
           <input
@@ -313,10 +314,10 @@ export const CoachPlanningHub: React.FC = () => {
               width: '100%',
               padding: '12px 12px 12px 40px',
               borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
               fontSize: '14px',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none'
             }}
           />
@@ -335,11 +336,11 @@ export const CoachPlanningHub: React.FC = () => {
                 borderRadius: '10px',
                 border: 'none',
                 backgroundColor: filterPlan === filter.key
-                  ? designTokens.colors.primary[500]
-                  : designTokens.colors.background.card,
+                  ? 'var(--accent)'
+                  : 'var(--bg-primary)',
                 color: filterPlan === filter.key
                   ? 'white'
-                  : designTokens.colors.text.secondary,
+                  : 'var(--text-secondary)',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer'
@@ -361,10 +362,10 @@ export const CoachPlanningHub: React.FC = () => {
                 key={player.id}
                 onClick={() => navigate(`/coach/athletes/${player.id}/plan`)}
                 style={{
-                  backgroundColor: designTokens.colors.background.card,
+                  backgroundColor: 'var(--bg-primary)',
                   borderRadius: '12px',
                   padding: '16px',
-                  border: `1px solid ${designTokens.colors.border.light}`,
+                  border: `1px solid ${'var(--border-default)'}`,
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
                   display: 'flex',
@@ -394,7 +395,7 @@ export const CoachPlanningHub: React.FC = () => {
                     <h3 style={{
                       fontSize: '15px',
                       fontWeight: '600',
-                      color: designTokens.colors.text.primary,
+                      color: 'var(--text-primary)',
                       margin: 0
                     }}>
                       {player.name}
@@ -411,7 +412,7 @@ export const CoachPlanningHub: React.FC = () => {
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                       HCP {player.hcp}
                     </span>
                     {player.hasActivePlan ? (
@@ -427,7 +428,7 @@ export const CoachPlanningHub: React.FC = () => {
                           {player.weeksInPlan}u plan
                         </span>
                         {player.planUpdated && (
-                          <span style={{ fontSize: '11px', color: designTokens.colors.text.tertiary }}>
+                          <span style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>
                             Oppdatert {formatDate(player.planUpdated)}
                           </span>
                         )}
@@ -443,7 +444,7 @@ export const CoachPlanningHub: React.FC = () => {
                     )}
                   </div>
                 </div>
-                <ChevronRight size={18} color={designTokens.colors.text.tertiary} />
+                <ChevronRight size={18} color={'var(--text-tertiary)'} />
               </div>
             );
           })}
@@ -455,10 +456,10 @@ export const CoachPlanningHub: React.FC = () => {
               key={group.id}
               onClick={() => navigate(`/coach/groups/${group.id}/plan`)}
               style={{
-                backgroundColor: designTokens.colors.background.card,
+                backgroundColor: 'var(--bg-primary)',
                 borderRadius: '12px',
                 padding: '16px',
-                border: `1px solid ${designTokens.colors.border.light}`,
+                border: `1px solid ${'var(--border-default)'}`,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
                 display: 'flex',
@@ -484,13 +485,13 @@ export const CoachPlanningHub: React.FC = () => {
                 <h3 style={{
                   fontSize: '15px',
                   fontWeight: '600',
-                  color: designTokens.colors.text.primary,
+                  color: 'var(--text-primary)',
                   margin: '0 0 4px 0'
                 }}>
                   {group.name}
                 </h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                  <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                     {group.memberCount} medlemmer
                   </span>
                   {group.hasGroupPlan ? (
@@ -506,7 +507,7 @@ export const CoachPlanningHub: React.FC = () => {
                         Aktiv plan
                       </span>
                       {group.planUpdated && (
-                        <span style={{ fontSize: '11px', color: designTokens.colors.text.tertiary }}>
+                        <span style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>
                           Oppdatert {formatDate(group.planUpdated)}
                         </span>
                       )}
@@ -522,7 +523,7 @@ export const CoachPlanningHub: React.FC = () => {
                   )}
                 </div>
               </div>
-              <ChevronRight size={18} color={designTokens.colors.text.tertiary} />
+              <ChevronRight size={18} color={'var(--text-tertiary)'} />
             </div>
           ))}
         </div>
@@ -533,14 +534,14 @@ export const CoachPlanningHub: React.FC = () => {
         <div style={{
           textAlign: 'center',
           padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <ClipboardList size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
+          <ClipboardList size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
           <p style={{
             fontSize: '16px',
-            color: designTokens.colors.text.secondary,
+            color: 'var(--text-secondary)',
             margin: 0
           }}>
             Ingen {activeTab === 'players' ? 'spillere' : 'grupper'} funnet

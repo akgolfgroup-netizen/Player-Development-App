@@ -1,5 +1,4 @@
 import React from 'react';
-import { tokens as designTokens } from '../design-tokens';
 
 const LoadingSpinner = ({ size = 'md', message = '' }) => {
   const sizes = {
@@ -23,8 +22,8 @@ const LoadingSpinner = ({ size = 'md', message = '' }) => {
         style={{
           width: `${spinnerSize}px`,
           height: `${spinnerSize}px`,
-          border: `3px solid ${designTokens.colors.mist}`,
-          borderTop: `3px solid ${designTokens.colors.primary}`,
+          border: `3px solid ${'var(--border-default)'}`,
+          borderTop: `3px solid ${'var(--accent)'}`,
           borderRadius: '50%',
           animation: 'spin 0.8s linear infinite'
         }}
@@ -33,7 +32,7 @@ const LoadingSpinner = ({ size = 'md', message = '' }) => {
         <p style={{
           margin: 0,
           fontSize: '14px',
-          color: designTokens.colors.steel
+          color: 'var(--text-secondary)'
         }}>
           {message}
         </p>

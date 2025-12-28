@@ -21,10 +21,8 @@
 
 import React, { useState } from "react";
 import { ArrowLeft, ClipboardList, Plus, Trash2, Calendar, Clock, CheckCircle, Lock } from "lucide-react";
-import { tokens } from "../../design-tokens";
-
-// Typography from design tokens
-const typography = tokens.typography;
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 //////////////////////////////
 // 1. TYPES
@@ -141,15 +139,15 @@ export default function CoachTrainingPlanEditor({
       aria-label="Training plan editor"
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           padding: '16px 24px',
         }}
       >
@@ -161,11 +159,11 @@ export default function CoachTrainingPlanEditor({
             gap: '8px',
             background: 'none',
             border: 'none',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             cursor: 'pointer',
             padding: 0,
             marginBottom: '16px',
-            ...typography.body as React.CSSProperties,
+            fontSize: '15px', lineHeight: '20px',
           }}
         >
           <ArrowLeft size={20} />
@@ -178,20 +176,20 @@ export default function CoachTrainingPlanEditor({
               style={{
                 width: 48,
                 height: 48,
-                borderRadius: tokens.borderRadius.md,
-                backgroundColor: `${tokens.colors.primary}10`,
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <ClipboardList size={24} color={tokens.colors.primary} />
+              <ClipboardList size={24} color={'var(--accent)'} />
             </div>
             <div>
-              <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+              <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                 Treningsplan
               </h1>
-              <p style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, margin: 0, marginTop: '4px' }}>
+              <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
                 {athleteName} • {futureBlocks.length} kommende økter
               </p>
             </div>
@@ -205,12 +203,12 @@ export default function CoachTrainingPlanEditor({
               alignItems: 'center',
               gap: '8px',
               padding: '12px 20px',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               border: 'none',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               cursor: 'pointer',
-              ...typography.body as React.CSSProperties,
+              fontSize: '15px', lineHeight: '20px',
               fontWeight: 600,
             }}
           >
@@ -225,21 +223,21 @@ export default function CoachTrainingPlanEditor({
         {showAddForm && (
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
-              boxShadow: tokens.shadows.card,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: 'var(--shadow-card)',
               padding: '20px',
               marginBottom: '24px',
-              border: `2px solid ${tokens.colors.primary}`,
+              border: `2px solid ${'var(--accent)'}`,
             }}
           >
-            <h2 style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0, marginBottom: '20px' }}>
+            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0, marginBottom: '20px' }}>
               Legg til ny økt
             </h2>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
-                <label style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, display: 'block', marginBottom: '8px' }}>
+                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
                   Navn på økt *
                 </label>
                 <input
@@ -250,10 +248,10 @@ export default function CoachTrainingPlanEditor({
                   style={{
                     width: '100%',
                     padding: '12px 14px',
-                    borderRadius: tokens.borderRadius.md,
-                    border: `1px solid ${tokens.colors.mist}`,
-                    ...typography.body as React.CSSProperties,
-                    color: tokens.colors.charcoal,
+                    borderRadius: 'var(--radius-md)',
+                    border: `1px solid ${'var(--border-default)'}`,
+                    fontSize: '15px', lineHeight: '20px',
+                    color: 'var(--text-primary)',
                     outline: 'none',
                     boxSizing: 'border-box',
                   }}
@@ -261,7 +259,7 @@ export default function CoachTrainingPlanEditor({
               </div>
 
               <div>
-                <label style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, display: 'block', marginBottom: '8px' }}>
+                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
                   Dato *
                 </label>
                 <input
@@ -272,10 +270,10 @@ export default function CoachTrainingPlanEditor({
                   style={{
                     width: '100%',
                     padding: '12px 14px',
-                    borderRadius: tokens.borderRadius.md,
-                    border: `1px solid ${tokens.colors.mist}`,
-                    ...typography.body as React.CSSProperties,
-                    color: tokens.colors.charcoal,
+                    borderRadius: 'var(--radius-md)',
+                    border: `1px solid ${'var(--border-default)'}`,
+                    fontSize: '15px', lineHeight: '20px',
+                    color: 'var(--text-primary)',
                     outline: 'none',
                     boxSizing: 'border-box',
                   }}
@@ -283,7 +281,7 @@ export default function CoachTrainingPlanEditor({
               </div>
 
               <div style={{ gridColumn: '1 / -1' }}>
-                <label style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, display: 'block', marginBottom: '8px' }}>
+                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
                   Beskrivelse
                 </label>
                 <textarea
@@ -294,10 +292,10 @@ export default function CoachTrainingPlanEditor({
                   style={{
                     width: '100%',
                     padding: '12px 14px',
-                    borderRadius: tokens.borderRadius.md,
-                    border: `1px solid ${tokens.colors.mist}`,
-                    ...typography.body as React.CSSProperties,
-                    color: tokens.colors.charcoal,
+                    borderRadius: 'var(--radius-md)',
+                    border: `1px solid ${'var(--border-default)'}`,
+                    fontSize: '15px', lineHeight: '20px',
+                    color: 'var(--text-primary)',
                     outline: 'none',
                     resize: 'vertical',
                     boxSizing: 'border-box',
@@ -306,7 +304,7 @@ export default function CoachTrainingPlanEditor({
               </div>
 
               <div>
-                <label style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, display: 'block', marginBottom: '8px' }}>
+                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
                   Varighet (minutter)
                 </label>
                 <input
@@ -318,10 +316,10 @@ export default function CoachTrainingPlanEditor({
                   style={{
                     width: '100%',
                     padding: '12px 14px',
-                    borderRadius: tokens.borderRadius.md,
-                    border: `1px solid ${tokens.colors.mist}`,
-                    ...typography.body as React.CSSProperties,
-                    color: tokens.colors.charcoal,
+                    borderRadius: 'var(--radius-md)',
+                    border: `1px solid ${'var(--border-default)'}`,
+                    fontSize: '15px', lineHeight: '20px',
+                    color: 'var(--text-primary)',
                     outline: 'none',
                     boxSizing: 'border-box',
                   }}
@@ -335,12 +333,12 @@ export default function CoachTrainingPlanEditor({
                 onClick={() => setShowAddForm(false)}
                 style={{
                   padding: '12px 20px',
-                  borderRadius: tokens.borderRadius.md,
-                  border: `1px solid ${tokens.colors.mist}`,
+                  borderRadius: 'var(--radius-md)',
+                  border: `1px solid ${'var(--border-default)'}`,
                   backgroundColor: 'transparent',
-                  color: tokens.colors.steel,
+                  color: 'var(--text-secondary)',
                   cursor: 'pointer',
-                  ...typography.body as React.CSSProperties,
+                  fontSize: '15px', lineHeight: '20px',
                   fontWeight: 500,
                 }}
               >
@@ -352,12 +350,12 @@ export default function CoachTrainingPlanEditor({
                 disabled={!newName.trim() || !newDate}
                 style={{
                   padding: '12px 20px',
-                  borderRadius: tokens.borderRadius.md,
+                  borderRadius: 'var(--radius-md)',
                   border: 'none',
-                  backgroundColor: (newName.trim() && newDate) ? tokens.colors.primary : tokens.colors.mist,
-                  color: (newName.trim() && newDate) ? tokens.colors.white : tokens.colors.steel,
+                  backgroundColor: (newName.trim() && newDate) ? 'var(--accent)' : 'var(--border-default)',
+                  color: (newName.trim() && newDate) ? 'var(--bg-primary)' : 'var(--text-secondary)',
                   cursor: (newName.trim() && newDate) ? 'pointer' : 'not-allowed',
-                  ...typography.body as React.CSSProperties,
+                  fontSize: '15px', lineHeight: '20px',
                   fontWeight: 600,
                 }}
               >
@@ -370,23 +368,23 @@ export default function CoachTrainingPlanEditor({
         {/* Future Blocks */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             overflow: 'hidden',
             marginBottom: '24px',
           }}
         >
-          <div style={{ padding: '20px', borderBottom: `1px solid ${tokens.colors.mist}` }}>
-            <h2 style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+          <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}` }}>
+            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
               Kommende økter
             </h2>
           </div>
 
           {futureBlocks.length === 0 ? (
             <div style={{ padding: '48px 24px', textAlign: 'center' }}>
-              <Calendar size={40} color={tokens.colors.mist} style={{ marginBottom: '12px' }} />
-              <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel }}>
+              <Calendar size={40} color={'var(--border-default)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
                 Ingen planlagte økter
               </p>
             </div>
@@ -400,20 +398,20 @@ export default function CoachTrainingPlanEditor({
                     alignItems: 'center',
                     gap: '16px',
                     padding: '16px 20px',
-                    borderBottom: index < futureBlocks.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
+                    borderBottom: index < futureBlocks.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
                   }}
                 >
                   <div
                     style={{
                       width: 56,
                       padding: '8px',
-                      borderRadius: tokens.borderRadius.md,
-                      backgroundColor: tokens.colors.primary,
-                      color: tokens.colors.white,
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--accent)',
+                      color: 'var(--bg-primary)',
                       textAlign: 'center',
                     }}
                   >
-                    <div style={{ ...typography.caption as React.CSSProperties, fontWeight: 600, textTransform: 'uppercase' }}>
+                    <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600, textTransform: 'uppercase' }}>
                       {formatDate(block.date).split(' ')[0]}
                     </div>
                     <div style={{ fontSize: '20px', fontWeight: 700 }}>
@@ -422,18 +420,18 @@ export default function CoachTrainingPlanEditor({
                   </div>
 
                   <div style={{ flex: 1 }}>
-                    <div style={{ ...typography.body as React.CSSProperties, fontWeight: 600, color: tokens.colors.charcoal }}>
+                    <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 600, color: 'var(--text-primary)' }}>
                       {block.name}
                     </div>
                     {block.description && (
-                      <p style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, margin: 0, marginTop: '4px' }}>
+                      <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
                         {block.description}
                       </p>
                     )}
                     {block.durationMinutes && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                        <Clock size={12} color={tokens.colors.steel} />
-                        <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}>
+                        <Clock size={12} color={'var(--text-secondary)'} />
+                        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                           {block.durationMinutes} min
                         </span>
                       </div>
@@ -449,10 +447,10 @@ export default function CoachTrainingPlanEditor({
                       justifyContent: 'center',
                       width: 40,
                       height: 40,
-                      borderRadius: tokens.borderRadius.md,
-                      border: `1px solid ${tokens.colors.error}`,
+                      borderRadius: 'var(--radius-md)',
+                      border: `1px solid ${'var(--error)'}`,
                       backgroundColor: 'transparent',
-                      color: tokens.colors.error,
+                      color: 'var(--error)',
                       cursor: 'pointer',
                     }}
                   >
@@ -468,16 +466,16 @@ export default function CoachTrainingPlanEditor({
         {pastBlocks.length > 0 && (
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
-              boxShadow: tokens.shadows.card,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              boxShadow: 'var(--shadow-card)',
               overflow: 'hidden',
               opacity: 0.8,
             }}
           >
-            <div style={{ padding: '20px', borderBottom: `1px solid ${tokens.colors.mist}`, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Lock size={16} color={tokens.colors.steel} />
-              <h2 style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.steel, margin: 0 }}>
+            <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}`, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Lock size={16} color={'var(--text-secondary)'} />
+              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-secondary)', margin: 0 }}>
                 Fullførte økter
               </h2>
             </div>
@@ -491,21 +489,21 @@ export default function CoachTrainingPlanEditor({
                     alignItems: 'center',
                     gap: '16px',
                     padding: '16px 20px',
-                    borderBottom: index < pastBlocks.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
-                    backgroundColor: tokens.colors.snow,
+                    borderBottom: index < pastBlocks.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
+                    backgroundColor: 'var(--bg-secondary)',
                   }}
                 >
                   <div
                     style={{
                       width: 56,
                       padding: '8px',
-                      borderRadius: tokens.borderRadius.md,
-                      backgroundColor: tokens.colors.mist,
-                      color: tokens.colors.steel,
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'var(--border-default)',
+                      color: 'var(--text-secondary)',
                       textAlign: 'center',
                     }}
                   >
-                    <div style={{ ...typography.caption as React.CSSProperties, fontWeight: 600, textTransform: 'uppercase' }}>
+                    <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600, textTransform: 'uppercase' }}>
                       {formatDate(block.date).split(' ')[0]}
                     </div>
                     <div style={{ fontSize: '20px', fontWeight: 700 }}>
@@ -514,13 +512,13 @@ export default function CoachTrainingPlanEditor({
                   </div>
 
                   <div style={{ flex: 1 }}>
-                    <div style={{ ...typography.body as React.CSSProperties, fontWeight: 500, color: tokens.colors.steel }}>
+                    <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-secondary)' }}>
                       {block.name}
                     </div>
                     {block.durationMinutes && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                        <Clock size={12} color={tokens.colors.steel} />
-                        <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}>
+                        <Clock size={12} color={'var(--text-secondary)'} />
+                        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                           {block.durationMinutes} min
                         </span>
                       </div>
@@ -529,8 +527,8 @@ export default function CoachTrainingPlanEditor({
 
                   {block.completed && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <CheckCircle size={16} color={tokens.colors.success} />
-                      <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.success }}>
+                      <CheckCircle size={16} color={'var(--success)'} />
+                      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--success)' }}>
                         Fullført
                       </span>
                     </div>

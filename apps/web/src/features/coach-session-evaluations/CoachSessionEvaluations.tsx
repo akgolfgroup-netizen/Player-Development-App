@@ -15,30 +15,33 @@ import {
   ChevronRight, Filter, User
 } from 'lucide-react';
 
-// Design tokens - Blue Palette 01
-const tokens = {
-  colors: {
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    white: '#FFFFFF',
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    gold: '#C9A227',
-  },
-  borderRadius: {
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
-  },
-  shadows: {
-    card: '0 2px 4px rgba(0, 0, 0, 0.06)',
-  },
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
+
+// Semantic color mappings
+const colors = {
+  primary: 'var(--accent)',
+  snow: 'var(--bg-secondary)',
+  surface: 'var(--bg-tertiary)',
+  white: 'var(--bg-primary)',
+  charcoal: 'var(--text-primary)',
+  steel: 'var(--text-secondary)',
+  mist: 'var(--border-default)',
+  success: 'var(--success)',
+  warning: 'var(--warning)',
+  error: 'var(--error)',
+  gold: 'var(--achievement)',
+};
+
+const borderRadius = {
+  sm: 'var(--radius-sm)',
+  md: 'var(--radius-md)',
+  lg: 'var(--radius-lg)',
+};
+
+const shadows = {
+  card: 'var(--shadow-card)',
 };
 
 const typography = {
@@ -147,13 +150,13 @@ function RatingBar({ label, value, icon: Icon, color }: { label: string; value: 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <Icon size={14} color={color} />
-          <span style={{ ...typography.caption, color: tokens.colors.steel }}>{label}</span>
+          <span style={{ ...typography.caption, color: colors.steel }}>{label}</span>
         </div>
-        <span style={{ ...typography.label, color: tokens.colors.charcoal }}>{value}/10</span>
+        <span style={{ ...typography.label, color: colors.charcoal }}>{value}/10</span>
       </div>
       <div style={{
         height: '6px',
-        backgroundColor: tokens.colors.mist,
+        backgroundColor: colors.mist,
         borderRadius: '3px',
         overflow: 'hidden',
       }}>
@@ -186,11 +189,11 @@ const SessionCard: React.FC<SessionCardProps> = ({ evaluation, onClick }) => {
     <div
       onClick={onClick}
       style={{
-        backgroundColor: tokens.colors.white,
-        borderRadius: tokens.borderRadius.md,
+        backgroundColor: colors.white,
+        borderRadius: borderRadius.md,
         padding: '16px',
         marginBottom: '12px',
-        boxShadow: tokens.shadows.card,
+        boxShadow: shadows.card,
         cursor: 'pointer',
       }}
     >
@@ -198,21 +201,21 @@ const SessionCard: React.FC<SessionCardProps> = ({ evaluation, onClick }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <User size={16} color={tokens.colors.primary} />
-            <span style={{ ...typography.title3, color: tokens.colors.charcoal }}>
+            <User size={16} color={colors.primary} />
+            <span style={{ ...typography.title3, color: colors.charcoal }}>
               {evaluation.player.firstName} {evaluation.player.lastName}
             </span>
             <span style={{
               padding: '2px 8px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: colors.snow,
               borderRadius: '4px',
               ...typography.label,
-              color: tokens.colors.steel,
+              color: colors.steel,
             }}>
               {evaluation.player.category}
             </span>
           </div>
-          <span style={{ ...typography.body, color: tokens.colors.charcoal }}>
+          <span style={{ ...typography.body, color: colors.charcoal }}>
             {SESSION_TYPE_LABELS[evaluation.sessionType] || evaluation.sessionType}
           </span>
         </div>
@@ -220,25 +223,25 @@ const SessionCard: React.FC<SessionCardProps> = ({ evaluation, onClick }) => {
           <div style={{
             fontSize: '24px',
             fontWeight: 700,
-            color: avgRating >= 7 ? tokens.colors.success : avgRating >= 5 ? tokens.colors.warning : tokens.colors.error,
+            color: avgRating >= 7 ? colors.success : avgRating >= 5 ? colors.warning : colors.error,
           }}>
             {avgRating.toFixed(1)}
           </div>
-          <span style={{ ...typography.label, color: tokens.colors.steel }}>snitt</span>
+          <span style={{ ...typography.label, color: colors.steel }}>snitt</span>
         </div>
       </div>
 
       {/* Date and duration */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Calendar size={14} color={tokens.colors.steel} />
-          <span style={{ ...typography.caption, color: tokens.colors.steel }}>
+          <Calendar size={14} color={colors.steel} />
+          <span style={{ ...typography.caption, color: colors.steel }}>
             {date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' })}
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Clock size={14} color={tokens.colors.steel} />
-          <span style={{ ...typography.caption, color: tokens.colors.steel }}>
+          <Clock size={14} color={colors.steel} />
+          <span style={{ ...typography.caption, color: colors.steel }}>
             {evaluation.duration} min
           </span>
         </div>
@@ -246,27 +249,27 @@ const SessionCard: React.FC<SessionCardProps> = ({ evaluation, onClick }) => {
 
       {/* Ratings */}
       <div style={{ marginBottom: '12px' }}>
-        <RatingBar label="Fokus" value={evaluation.evaluationFocus} icon={Target} color={tokens.colors.success} />
-        <RatingBar label="Teknikk" value={evaluation.evaluationTechnical} icon={Zap} color={tokens.colors.primary} />
-        <RatingBar label="Energi" value={evaluation.evaluationEnergy} icon={Battery} color={tokens.colors.warning} />
-        <RatingBar label="Mental" value={evaluation.evaluationMental} icon={Brain} color={tokens.colors.gold} />
+        <RatingBar label="Fokus" value={evaluation.evaluationFocus} icon={Target} color={colors.success} />
+        <RatingBar label="Teknikk" value={evaluation.evaluationTechnical} icon={Zap} color={colors.primary} />
+        <RatingBar label="Energi" value={evaluation.evaluationEnergy} icon={Battery} color={colors.warning} />
+        <RatingBar label="Mental" value={evaluation.evaluationMental} icon={Brain} color={colors.gold} />
       </div>
 
       {/* Focus area */}
       {evaluation.focusArea && (
         <div style={{
           padding: '8px 12px',
-          backgroundColor: tokens.colors.snow,
-          borderRadius: tokens.borderRadius.sm,
+          backgroundColor: colors.snow,
+          borderRadius: borderRadius.sm,
         }}>
-          <span style={{ ...typography.caption, color: tokens.colors.steel }}>Fokusomrade: </span>
-          <span style={{ ...typography.body, color: tokens.colors.charcoal }}>{evaluation.focusArea}</span>
+          <span style={{ ...typography.caption, color: colors.steel }}>Fokusomrade: </span>
+          <span style={{ ...typography.body, color: colors.charcoal }}>{evaluation.focusArea}</span>
         </div>
       )}
 
       {/* View arrow */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-        <ChevronRight size={20} color={tokens.colors.steel} />
+        <ChevronRight size={20} color={colors.steel} />
       </div>
     </div>
   );
@@ -302,15 +305,15 @@ export function CoachSessionEvaluations() {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.surface,
+      backgroundColor: colors.surface,
       minHeight: '100vh',
       fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
     }}>
       {/* Header */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: colors.white,
         padding: '16px',
-        borderBottom: `1px solid ${tokens.colors.mist}`,
+        borderBottom: `1px solid ${colors.mist}`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
           <button
@@ -321,19 +324,19 @@ export function CoachSessionEvaluations() {
               justifyContent: 'center',
               width: '36px',
               height: '36px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: colors.snow,
               border: 'none',
-              borderRadius: tokens.borderRadius.sm,
+              borderRadius: borderRadius.sm,
               cursor: 'pointer',
             }}
           >
-            <ArrowLeft size={20} color={tokens.colors.charcoal} />
+            <ArrowLeft size={20} color={colors.charcoal} />
           </button>
           <div>
-            <h1 style={{ ...typography.title1, color: tokens.colors.charcoal, margin: 0 }}>
+            <h1 style={{ ...typography.title1, color: colors.charcoal, margin: 0 }}>
               Oktevalueringer
             </h1>
-            <p style={{ ...typography.caption, color: tokens.colors.steel, marginTop: '4px' }}>
+            <p style={{ ...typography.caption, color: colors.steel, marginTop: '4px' }}>
               Se dine spilleres evalueringer
             </p>
           </div>
@@ -347,9 +350,9 @@ export function CoachSessionEvaluations() {
             style={{
               flex: 1,
               padding: '10px 12px',
-              backgroundColor: tokens.colors.snow,
-              border: `1px solid ${tokens.colors.mist}`,
-              borderRadius: tokens.borderRadius.sm,
+              backgroundColor: colors.snow,
+              border: `1px solid ${colors.mist}`,
+              borderRadius: borderRadius.sm,
               ...typography.body,
             }}
           >
@@ -367,10 +370,10 @@ export function CoachSessionEvaluations() {
               alignItems: 'center',
               justifyContent: 'center',
               padding: '10px 16px',
-              backgroundColor: showFilters ? tokens.colors.primary : tokens.colors.snow,
-              color: showFilters ? tokens.colors.white : tokens.colors.charcoal,
-              border: `1px solid ${showFilters ? tokens.colors.primary : tokens.colors.mist}`,
-              borderRadius: tokens.borderRadius.sm,
+              backgroundColor: showFilters ? colors.primary : colors.snow,
+              color: showFilters ? colors.white : colors.charcoal,
+              border: `1px solid ${showFilters ? colors.primary : colors.mist}`,
+              borderRadius: borderRadius.sm,
               cursor: 'pointer',
               gap: '6px',
               ...typography.label,
@@ -390,62 +393,54 @@ export function CoachSessionEvaluations() {
         padding: '16px',
       }}>
         <div style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: tokens.borderRadius.md,
+          backgroundColor: colors.white,
+          borderRadius: borderRadius.md,
           padding: '16px',
           textAlign: 'center',
         }}>
-          <p style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary, margin: 0 }}>
+          <p style={{ fontSize: '24px', fontWeight: 700, color: colors.primary, margin: 0 }}>
             {stats.totalSessions}
           </p>
-          <p style={{ ...typography.caption, color: tokens.colors.steel }}>Okter</p>
+          <p style={{ ...typography.caption, color: colors.steel }}>Okter</p>
         </div>
         <div style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: tokens.borderRadius.md,
+          backgroundColor: colors.white,
+          borderRadius: borderRadius.md,
           padding: '16px',
           textAlign: 'center',
         }}>
-          <p style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success, margin: 0 }}>
+          <p style={{ fontSize: '24px', fontWeight: 700, color: colors.success, margin: 0 }}>
             {stats.avgFocus.toFixed(1)}
           </p>
-          <p style={{ ...typography.caption, color: tokens.colors.steel }}>Snitt fokus</p>
+          <p style={{ ...typography.caption, color: colors.steel }}>Snitt fokus</p>
         </div>
         <div style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: tokens.borderRadius.md,
+          backgroundColor: colors.white,
+          borderRadius: borderRadius.md,
           padding: '16px',
           textAlign: 'center',
         }}>
-          <p style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary, margin: 0 }}>
+          <p style={{ fontSize: '24px', fontWeight: 700, color: colors.primary, margin: 0 }}>
             {stats.avgTechnical.toFixed(1)}
           </p>
-          <p style={{ ...typography.caption, color: tokens.colors.steel }}>Snitt teknikk</p>
+          <p style={{ ...typography.caption, color: colors.steel }}>Snitt teknikk</p>
         </div>
       </div>
 
       {/* Sessions list */}
       <div style={{ padding: '0 16px 16px' }}>
-        <h2 style={{ ...typography.title3, color: tokens.colors.charcoal, marginBottom: '12px' }}>
+        <h2 style={{ ...typography.title3, color: colors.charcoal, marginBottom: '12px' }}>
           Siste evalueringer
         </h2>
 
         {isLoading ? (
-          <div style={{ textAlign: 'center', padding: '32px' }}>
-            <p style={{ ...typography.body, color: tokens.colors.steel }}>Laster...</p>
-          </div>
+          <StateCard variant="loading" title="Laster evalueringer..." />
         ) : filteredEvaluations.length === 0 ? (
-          <div style={{
-            textAlign: 'center',
-            padding: '32px',
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.md,
-          }}>
-            <Target size={48} color={tokens.colors.mist} style={{ marginBottom: '12px' }} />
-            <p style={{ ...typography.body, color: tokens.colors.steel }}>
-              Ingen evalueringer funnet
-            </p>
-          </div>
+          <StateCard
+            variant="empty"
+            title="Ingen evalueringer funnet"
+            description="Prøv å justere filteret for å se flere evalueringer."
+          />
         ) : (
           filteredEvaluations.map(evaluation => (
             <SessionCard

@@ -26,6 +26,9 @@ import { useVideoAnnotations, useVideoComments } from '../../hooks/useVideoAnnot
 import { useAuth } from '../../contexts/AuthContext';
 import * as videoApi from '../../services/videoApi';
 import { track } from '../../analytics/track';
+import Button from '../../ui/primitives/Button';
+import Badge from '../../ui/primitives/Badge.primitive';
+import StateCard from '../../ui/composites/StateCard';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -263,8 +266,7 @@ export function VideoAnalysisPage({ showComments = true }) {
     return (
       <div className={tw.container}>
         <div className={tw.loadingContainer}>
-          <div className={tw.spinner} />
-          <p>Laster video...</p>
+          <StateCard variant="loading" title="Laster video..." />
         </div>
       </div>
     );
@@ -275,11 +277,12 @@ export function VideoAnalysisPage({ showComments = true }) {
     return (
       <div className={tw.container}>
         <div className={tw.errorContainer}>
-          <p className={tw.errorText}>Kunne ikke laste video</p>
-          <p className={tw.errorSubtext}>{videoError || 'Video ikke funnet'}</p>
-          <button className={tw.retryButton} onClick={refreshVideo}>
-            Prøv igjen
-          </button>
+          <StateCard
+            variant="error"
+            title="Kunne ikke laste video"
+            description={videoError || 'Video ikke funnet'}
+            action={<Button variant="primary" onClick={refreshVideo}>Prøv igjen</Button>}
+          />
         </div>
       </div>
     );
@@ -292,30 +295,26 @@ export function VideoAnalysisPage({ showComments = true }) {
         <div className={tw.videoSection}>
           {/* Header */}
           <div className={tw.header}>
-            <button className={tw.backButton} onClick={handleBack}>
+            <Button variant="ghost" size="sm" onClick={handleBack}>
               ← Tilbake
-            </button>
+            </Button>
             <h1 className={tw.title}>{video.title || 'Video'}</h1>
 
             {/* Coach actions */}
             {isCoach && (
               <div className={tw.headerActions}>
                 {isReviewed ? (
-                  <span className={tw.reviewedBadge}>
-                    ✓ Gjennomgått
-                  </span>
+                  <Badge variant="success">✓ Gjennomgått</Badge>
                 ) : (
-                  <button
-                    className={tw.markReviewedButton}
-                    style={{
-                      opacity: markingReviewed ? 0.6 : 1,
-                      cursor: markingReviewed ? 'not-allowed' : 'pointer',
-                    }}
+                  <Button
+                    variant="primary"
+                    size="sm"
                     onClick={handleMarkReviewed}
                     disabled={markingReviewed}
+                    loading={markingReviewed}
                   >
                     {markingReviewed ? 'Lagrer...' : '✓ Marker gjennomgått'}
-                  </button>
+                  </Button>
                 )}
               </div>
             )}
@@ -373,14 +372,15 @@ export function VideoAnalysisPage({ showComments = true }) {
                 onChange={(e) => setNewComment(e.target.value)}
                 disabled={commentsSaving}
               />
-              <button
-                className={tw.sendButton}
-                style={{ opacity: !newComment.trim() || commentsSaving ? 0.5 : 1 }}
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={handleSubmitComment}
                 disabled={!newComment.trim() || commentsSaving}
+                loading={commentsSaving}
               >
                 {commentsSaving ? 'Sender...' : 'Send'}
-              </button>
+              </Button>
             </div>
           </div>
         )}

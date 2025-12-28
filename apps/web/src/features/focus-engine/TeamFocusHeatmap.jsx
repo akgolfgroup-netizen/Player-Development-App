@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { api } from '../../services/api';
+import api from '../../services/api';
 
 const COMPONENT_LABELS = {
   OTT: 'Off the Tee',

@@ -10,7 +10,7 @@ import {
   Star,
   Zap
 } from 'lucide-react';
-import { tokens as designTokens } from '../../design-tokens';
+import StateCard from '../../ui/composites/StateCard';
 
 interface PlayerProgress {
   id: string;
@@ -184,7 +184,7 @@ export const CoachStatsProgress: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
@@ -192,7 +192,7 @@ export const CoachStatsProgress: React.FC = () => {
             width: '48px',
             height: '48px',
             borderRadius: '12px',
-            background: `linear-gradient(135deg, ${designTokens.colors.primary[500]}, ${designTokens.colors.primary[600]})`,
+            background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent-dark)'})`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -203,14 +203,14 @@ export const CoachStatsProgress: React.FC = () => {
             <h1 style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               margin: 0
             }}>
               Spillere i fremgang
             </h1>
             <p style={{
               fontSize: '14px',
-              color: designTokens.colors.text.secondary,
+              color: 'var(--text-secondary)',
               margin: 0
             }}>
               {filteredAndSortedPlayers.length} spillere viser positiv utvikling
@@ -221,18 +221,18 @@ export const CoachStatsProgress: React.FC = () => {
 
       {/* Top Performers */}
       <div style={{
-        backgroundColor: designTokens.colors.background.card,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '16px',
         padding: '20px',
         marginBottom: '24px',
-        border: `1px solid ${designTokens.colors.border.light}`
+        border: `1px solid ${'var(--border-default)'}`
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-          <Award size={20} color={designTokens.colors.primary[500]} />
+          <Award size={20} color={'var(--accent)'} />
           <h2 style={{
             fontSize: '16px',
             fontWeight: '600',
-            color: designTokens.colors.text.primary,
+            color: 'var(--text-primary)',
             margin: 0
           }}>
             Månedens stjerner
@@ -241,10 +241,10 @@ export const CoachStatsProgress: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
           {topPerformers.map((player, index) => (
             <div key={player.id} style={{
-              backgroundColor: index === 0 ? 'rgba(234, 179, 8, 0.1)' : designTokens.colors.background.secondary,
+              backgroundColor: index === 0 ? 'rgba(234, 179, 8, 0.1)' : 'var(--bg-secondary)',
               borderRadius: '12px',
               padding: '16px',
-              border: index === 0 ? '2px solid rgba(234, 179, 8, 0.3)' : `1px solid ${designTokens.colors.border.light}`,
+              border: index === 0 ? '2px solid rgba(234, 179, 8, 0.3)' : `1px solid ${'var(--border-default)'}`,
               position: 'relative'
             }}>
               {index === 0 && (
@@ -268,13 +268,13 @@ export const CoachStatsProgress: React.FC = () => {
                   width: '40px',
                   height: '40px',
                   borderRadius: '50%',
-                  backgroundColor: designTokens.colors.primary[100],
+                  backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: designTokens.colors.primary[700]
+                  color: 'var(--accent)'
                 }}>
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
@@ -282,7 +282,7 @@ export const CoachStatsProgress: React.FC = () => {
                   <p style={{
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.primary,
+                    color: 'var(--text-primary)',
                     margin: 0
                   }}>
                     {player.name}
@@ -307,7 +307,7 @@ export const CoachStatsProgress: React.FC = () => {
                 backgroundColor: 'rgba(34, 197, 94, 0.1)',
                 borderRadius: '8px'
               }}>
-                <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   HCP endring
                 </span>
                 <span style={{
@@ -338,7 +338,7 @@ export const CoachStatsProgress: React.FC = () => {
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
+              color: 'var(--text-tertiary)'
             }}
           />
           <input
@@ -350,10 +350,10 @@ export const CoachStatsProgress: React.FC = () => {
               width: '100%',
               padding: '12px 12px 12px 40px',
               borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
               fontSize: '14px',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none'
             }}
           />
@@ -372,11 +372,11 @@ export const CoachStatsProgress: React.FC = () => {
                 borderRadius: '10px',
                 border: 'none',
                 backgroundColor: sortBy === option.key
-                  ? designTokens.colors.primary[500]
-                  : designTokens.colors.background.card,
+                  ? 'var(--accent)'
+                  : 'var(--bg-primary)',
                 color: sortBy === option.key
                   ? 'white'
-                  : designTokens.colors.text.secondary,
+                  : 'var(--text-secondary)',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer',
@@ -395,10 +395,10 @@ export const CoachStatsProgress: React.FC = () => {
           <div
             key={player.id}
             style={{
-              backgroundColor: designTokens.colors.background.card,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '16px',
               padding: '20px',
-              border: `1px solid ${designTokens.colors.border.light}`,
+              border: `1px solid ${'var(--border-default)'}`,
               cursor: 'pointer',
               transition: 'all 0.2s ease'
             }}
@@ -410,13 +410,13 @@ export const CoachStatsProgress: React.FC = () => {
                   width: '56px',
                   height: '56px',
                   borderRadius: '50%',
-                  backgroundColor: designTokens.colors.primary[100],
+                  backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '20px',
                   fontWeight: '600',
-                  color: designTokens.colors.primary[700]
+                  color: 'var(--accent)'
                 }}>
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
@@ -425,7 +425,7 @@ export const CoachStatsProgress: React.FC = () => {
                     <h3 style={{
                       fontSize: '16px',
                       fontWeight: '600',
-                      color: designTokens.colors.text.primary,
+                      color: 'var(--text-primary)',
                       margin: 0
                     }}>
                       {player.name}
@@ -466,19 +466,19 @@ export const CoachStatsProgress: React.FC = () => {
                     flexWrap: 'wrap'
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Target size={14} color={designTokens.colors.text.tertiary} />
-                      <span style={{ fontSize: '13px', color: designTokens.colors.text.secondary }}>
+                      <Target size={14} color={'var(--text-tertiary)'} />
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                         HCP: {player.currentHcp} (fra {player.startHcp})
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Calendar size={14} color={designTokens.colors.text.tertiary} />
-                      <span style={{ fontSize: '13px', color: designTokens.colors.text.secondary }}>
+                      <Calendar size={14} color={'var(--text-tertiary)'} />
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                         {player.sessionsThisMonth} økter denne mnd
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '13px', color: designTokens.colors.text.tertiary }}>
+                      <span style={{ fontSize: '13px', color: 'var(--text-tertiary)' }}>
                         Sist: {formatDate(player.lastSession)}
                       </span>
                     </div>
@@ -513,23 +513,23 @@ export const CoachStatsProgress: React.FC = () => {
                           justifyContent: 'space-between',
                           marginBottom: '4px'
                         }}>
-                          <span style={{ fontSize: '12px', color: designTokens.colors.text.secondary }}>
+                          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                             {goal.current}
                           </span>
-                          <span style={{ fontSize: '12px', fontWeight: '500', color: designTokens.colors.primary[600] }}>
+                          <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--accent-dark)' }}>
                             {goal.progress}%
                           </span>
                         </div>
                         <div style={{
                           height: '6px',
-                          backgroundColor: designTokens.colors.border.light,
+                          backgroundColor: 'var(--border-default)',
                           borderRadius: '3px',
                           overflow: 'hidden'
                         }}>
                           <div style={{
                             height: '100%',
                             width: `${goal.progress}%`,
-                            backgroundColor: designTokens.colors.primary[500],
+                            backgroundColor: 'var(--accent)',
                             borderRadius: '3px',
                             transition: 'width 0.3s ease'
                           }} />
@@ -570,9 +570,9 @@ export const CoachStatsProgress: React.FC = () => {
                   gap: '4px',
                   padding: '8px 12px',
                   borderRadius: '8px',
-                  border: `1px solid ${designTokens.colors.border.light}`,
+                  border: `1px solid ${'var(--border-default)'}`,
                   backgroundColor: 'transparent',
-                  color: designTokens.colors.text.secondary,
+                  color: 'var(--text-secondary)',
                   fontSize: '12px',
                   cursor: 'pointer'
                 }}>
@@ -586,22 +586,11 @@ export const CoachStatsProgress: React.FC = () => {
       </div>
 
       {filteredAndSortedPlayers.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
-        }}>
-          <TrendingUp size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: designTokens.colors.text.secondary,
-            margin: 0
-          }}>
-            Ingen spillere funnet med søket ditt
-          </p>
-        </div>
+        <StateCard
+          variant="empty"
+          title="Ingen spillere funnet"
+          description="Prøv å justere søket for å se flere spillere."
+        />
       )}
     </div>
   );

@@ -8,34 +8,34 @@
 import React from 'react';
 
 const variants = {
-  default: {
-    backgroundColor: 'var(--gray-100)',
-    color: 'var(--text-primary)',
+  neutral: {
+    backgroundColor: 'var(--bg-neutral-subtle)',
+    color: 'var(--text-secondary)',
   },
-  primary: {
-    backgroundColor: 'var(--ak-primary)',
-    color: 'var(--ak-white)',
+  accent: {
+    backgroundColor: 'var(--bg-accent-subtle)',
+    color: 'var(--accent)',
   },
   success: {
-    backgroundColor: 'var(--ak-success)',
-    color: 'var(--ak-white)',
+    backgroundColor: 'var(--bg-success-subtle)',
+    color: 'var(--success)',
   },
   warning: {
-    backgroundColor: 'var(--ak-warning)',
-    color: 'var(--ak-ink)',
+    backgroundColor: 'var(--bg-warning-subtle)',
+    color: 'var(--warning)',
   },
   error: {
-    backgroundColor: 'var(--ak-error)',
-    color: 'var(--ak-white)',
+    backgroundColor: 'var(--bg-error-subtle)',
+    color: 'var(--error)',
   },
-  gold: {
-    backgroundColor: 'var(--ak-gold)',
-    color: 'var(--ak-ink)',
+  achievement: {
+    backgroundColor: 'var(--bg-achievement-subtle)',
+    color: 'var(--achievement)',
   },
   outline: {
     backgroundColor: 'transparent',
-    color: 'var(--ak-primary)',
-    border: '1px solid var(--ak-primary)',
+    color: 'var(--accent)',
+    border: '1px solid var(--border-accent)',
   },
 };
 
@@ -56,12 +56,12 @@ const sizes = {
  * Badge component with design system tokens
  *
  * @param {Object} props
- * @param {'default'|'primary'|'success'|'warning'|'error'|'gold'|'outline'} props.variant - Badge style variant
+ * @param {'neutral'|'accent'|'success'|'warning'|'error'|'achievement'|'outline'} props.variant - Badge style variant
  * @param {'sm'|'md'} props.size - Badge size
  * @param {React.ReactNode} props.children - Badge content
  */
 export function Badge({
-  variant = 'default',
+  variant = 'neutral',
   size = 'md',
   children,
   style,

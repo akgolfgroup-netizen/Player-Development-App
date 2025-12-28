@@ -6,7 +6,12 @@ import {
   TaskListSkeleton,
   SessionsSkeleton,
 } from './WidgetSkeleton';
-import { SkeletonPulse } from './SkeletonBase';
+import { SkeletonPulse, SkeletonCircle } from './SkeletonBase';
+
+/**
+ * Dashboard skeleton components - UI Canon compliant
+ * Uses semantic CSS variables
+ */
 
 /**
  * Complete dashboard loading skeleton
@@ -14,23 +19,31 @@ import { SkeletonPulse } from './SkeletonBase';
  */
 export const DashboardSkeleton = () => {
   return (
-    <div className="min-h-screen bg-ak-snow p-4 md:p-6">
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: 'var(--bg-secondary)',
+      padding: '16px',
+    }}>
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-4 mb-2">
-          <SkeletonPulse className="h-16 w-16 rounded-full" />
-          <div className="flex-1">
-            <SkeletonPulse className="h-8 w-48 mb-2" />
-            <SkeletonPulse className="h-4 w-32" />
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '8px' }}>
+          <SkeletonCircle size={64} />
+          <div style={{ flex: 1 }}>
+            <SkeletonPulse height="32px" width="192px" style={{ marginBottom: '8px' }} />
+            <SkeletonPulse height="16px" width="128px" />
           </div>
         </div>
-        <SkeletonPulse className="h-6 w-64 mt-4" />
+        <SkeletonPulse height="24px" width="256px" style={{ marginTop: '16px' }} />
       </div>
 
       {/* Dashboard Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - 2 spans */}
-        <div className="lg:col-span-2 space-y-6">
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        gap: '24px',
+      }}>
+        {/* Main Content */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Training Stats */}
           <StatsCardSkeleton />
 
@@ -38,14 +51,14 @@ export const DashboardSkeleton = () => {
           <SessionsSkeleton />
 
           {/* Countdown Widgets Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
             <CountdownSkeleton />
             <CountdownSkeleton />
           </div>
         </div>
 
-        {/* Right Column - 1 span */}
-        <div className="space-y-6">
+        {/* Sidebar Content */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Tasks/Goals */}
           <TaskListSkeleton />
 
@@ -65,8 +78,14 @@ export const DashboardSkeleton = () => {
  */
 export const DashboardSkeletonCompact = () => {
   return (
-    <div className="space-y-4 p-4">
-      <SkeletonPulse className="h-6 w-48 mb-4" />
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '16px',
+      padding: '16px',
+      backgroundColor: 'var(--bg-secondary)',
+    }}>
+      <SkeletonPulse height="24px" width="192px" style={{ marginBottom: '16px' }} />
       <StatsCardSkeleton />
       <SessionsSkeleton />
       <WidgetSkeleton items={2} />

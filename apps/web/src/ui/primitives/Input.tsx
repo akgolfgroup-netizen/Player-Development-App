@@ -3,8 +3,15 @@ import React from 'react';
 /**
  * Input
  * Text input primitive with label, hint, and error states
- * Uses design system tokens for colors and typography
+ *
+ * UI Canon v1.2 (Apple/Stripe):
+ * - Heights: sm (36px), md (44px) - matches Button
+ * - Focus ring: token-based, subtle
+ * - Hover: border highlight
+ * - Placeholder: muted text
  */
+
+type InputSize = 'sm' | 'md';
 
 interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Input label */
@@ -17,6 +24,8 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, '
   leadingIcon?: React.ReactNode;
   /** Icon on the right side */
   trailingIcon?: React.ReactNode;
+  /** Size variant */
+  size?: InputSize;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({
@@ -25,23 +34,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   error,
   leadingIcon,
   trailingIcon,
+  size = 'md',
   className = '',
   style = {},
   disabled,
   id,
   ...props
 }, ref) => {
-  const inputId = id || `input-${React.useId()}`;
+  const generatedId = React.useId();
+  const inputId = id || `input-${generatedId}`;
   const hasError = Boolean(error);
 
   const inputStyle: React.CSSProperties = {
     ...styles.input,
+    ...sizeStyles[size],
     ...(hasError && styles.inputError),
     ...(disabled && styles.inputDisabled),
     ...(leadingIcon && styles.inputWithLeadingIcon),
     ...(trailingIcon && styles.inputWithTrailingIcon),
     ...style,
   };
+
+  // Add interactive class for hover effects
+  const inputClasses = 'input-interactive';
 
   return (
     <div style={styles.wrapper} className={className}>
@@ -60,6 +75,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
           ref={ref}
           id={inputId}
           style={inputStyle}
+          className={inputClasses}
           disabled={disabled}
           aria-invalid={hasError}
           aria-describedby={
@@ -110,17 +126,31 @@ const styles: Record<string, React.CSSProperties> = {
   },
   input: {
     width: '100%',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    fontSize: 'var(--font-size-body)',
     fontFamily: 'inherit',
     color: 'var(--color-text)',
     backgroundColor: 'var(--color-surface)',
     border: '1px solid var(--color-border)',
     borderRadius: 'var(--radius-md)',
     outline: 'none',
-    transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+    // Transitions handled by .input-interactive class
+  },
+};
+
+const sizeStyles: Record<InputSize, React.CSSProperties> = {
+  sm: {
+    padding: 'var(--spacing-2) var(--spacing-3)',
+    fontSize: 'var(--font-size-footnote)',
+    minHeight: '36px',
+  },
+  md: {
+    padding: 'var(--spacing-3) var(--spacing-4)',
+    fontSize: 'var(--font-size-body)',
     minHeight: '44px',
   },
+};
+
+// Additional styles merged with main styles
+Object.assign(styles, {
   inputError: {
     borderColor: 'var(--color-danger)',
   },
@@ -158,6 +188,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'var(--font-size-caption1)',
     color: 'var(--color-danger)',
   },
-};
+});
 
 export default Input;

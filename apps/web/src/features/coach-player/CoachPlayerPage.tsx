@@ -271,7 +271,7 @@ export function CoachPlayerPage() {
         <h2 style={styles.sectionTitle}>Siste videoer</h2>
         <Card>
           {videos.length === 0 ? (
-            <div style={styles.emptyState}>Ingen videoer</div>
+            <StateCard variant="empty" title="Ingen videoer" compact />
           ) : (
             videos.map((video, index) => (
               <Link
@@ -312,7 +312,7 @@ export function CoachPlayerPage() {
         <h2 style={styles.sectionTitle}>Siste økter</h2>
         <Card>
           {sessions.length === 0 ? (
-            <div style={styles.emptyState}>Ingen økter</div>
+            <StateCard variant="empty" title="Ingen økter" compact />
           ) : (
             sessions.map((session, index) => (
               <div
@@ -339,7 +339,7 @@ export function CoachPlayerPage() {
         <h2 style={styles.sectionTitle}>Aktive mål</h2>
         <Card>
           {goals.length === 0 ? (
-            <div style={styles.emptyState}>Ingen aktive mål</div>
+            <StateCard variant="empty" title="Ingen aktive mål" compact />
           ) : (
             goals.map((goal, index) => {
               const progress = Math.min(100, Math.round((goal.current / goal.target) * 100));

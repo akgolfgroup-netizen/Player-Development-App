@@ -102,28 +102,26 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
   } as React.CSSProperties,
   variants: {
     primary: {
-      backgroundColor: 'var(--ak-primary)',
-      color: 'var(--text-inverse)',
-      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+      backgroundColor: 'var(--accent)',
+      color: 'var(--text-on-accent)',
     },
     secondary: {
-      backgroundColor: 'var(--ak-gold)',
-      color: 'var(--ak-ink)',
-      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+      backgroundColor: 'transparent',
+      color: 'var(--accent)',
+      border: '1px solid var(--border-accent)',
     },
     outline: {
       backgroundColor: 'transparent',
-      color: 'var(--ak-primary)',
-      border: '2px solid var(--ak-primary)',
+      color: 'var(--accent)',
+      border: '1px solid var(--border-accent)',
     },
     ghost: {
       backgroundColor: 'transparent',
       color: 'var(--text-primary)',
     },
     danger: {
-      backgroundColor: 'var(--ak-error)',
+      backgroundColor: 'var(--error)',
       color: 'var(--text-inverse)',
-      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
     },
   },
   sizes: {

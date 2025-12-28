@@ -120,7 +120,7 @@ const ProfileTemplate: React.FC<ProfileTemplateProps> = ({
                   {profile.name}
                 </Text>
                 {profile.role && (
-                  <Badge variant="primary" pill>
+                  <Badge variant="accent" pill>
                     {profile.role}
                   </Badge>
                 )}

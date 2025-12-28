@@ -12,7 +12,7 @@ import {
   Mail,
   XCircle
 } from 'lucide-react';
-import { tokens as designTokens } from '../../design-tokens';
+import StateCard from '../../ui/composites/StateCard';
 
 interface PlayerRegression {
   id: string;
@@ -200,7 +200,7 @@ export const CoachStatsRegression: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
@@ -219,14 +219,14 @@ export const CoachStatsRegression: React.FC = () => {
             <h1 style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               margin: 0
             }}>
               Oppfølging påkrevd
             </h1>
             <p style={{
               fontSize: '14px',
-              color: designTokens.colors.text.secondary,
+              color: 'var(--text-secondary)',
               margin: 0
             }}>
               Spillere med negativ utvikling som trenger oppmerksomhet
@@ -243,15 +243,15 @@ export const CoachStatsRegression: React.FC = () => {
         marginBottom: '24px'
       }}>
         <div style={{
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: '0 0 4px 0' }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
             Totalt
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: designTokens.colors.text.primary, margin: 0 }}>
+          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
             {stats.total}
           </p>
         </div>
@@ -312,7 +312,7 @@ export const CoachStatsRegression: React.FC = () => {
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: designTokens.colors.text.tertiary
+              color: 'var(--text-tertiary)'
             }}
           />
           <input
@@ -324,10 +324,10 @@ export const CoachStatsRegression: React.FC = () => {
               width: '100%',
               padding: '12px 12px 12px 40px',
               borderRadius: '10px',
-              border: `1px solid ${designTokens.colors.border.light}`,
-              backgroundColor: designTokens.colors.background.card,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
               fontSize: '14px',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               outline: 'none'
             }}
           />
@@ -342,12 +342,12 @@ export const CoachStatsRegression: React.FC = () => {
                 borderRadius: '10px',
                 border: 'none',
                 backgroundColor: riskFilter === risk
-                  ? risk === 'all' ? designTokens.colors.primary[500]
+                  ? risk === 'all' ? 'var(--accent)'
                     : getRiskColor(risk).text
-                  : designTokens.colors.background.card,
+                  : 'var(--bg-primary)',
                 color: riskFilter === risk
                   ? 'white'
-                  : designTokens.colors.text.secondary,
+                  : 'var(--text-secondary)',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer',
@@ -368,7 +368,7 @@ export const CoachStatsRegression: React.FC = () => {
             <div
               key={player.id}
               style={{
-                backgroundColor: designTokens.colors.background.card,
+                backgroundColor: 'var(--bg-primary)',
                 borderRadius: '16px',
                 padding: '20px',
                 border: `1px solid ${riskColors.border}`,
@@ -397,7 +397,7 @@ export const CoachStatsRegression: React.FC = () => {
                       <h3 style={{
                         fontSize: '16px',
                         fontWeight: '600',
-                        color: designTokens.colors.text.primary,
+                        color: 'var(--text-primary)',
                         margin: 0
                       }}>
                         {player.name}
@@ -442,14 +442,14 @@ export const CoachStatsRegression: React.FC = () => {
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <XCircle size={14} color={designTokens.colors.text.tertiary} />
-                        <span style={{ fontSize: '13px', color: designTokens.colors.text.secondary }}>
+                        <XCircle size={14} color={'var(--text-tertiary)'} />
+                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                           {player.missedSessions} økter avlyst/uteblitt
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Calendar size={14} color={designTokens.colors.text.tertiary} />
-                        <span style={{ fontSize: '13px', color: designTokens.colors.text.secondary }}>
+                        <Calendar size={14} color={'var(--text-tertiary)'} />
+                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                           Sist: {formatDate(player.lastSession)}
                         </span>
                       </div>
@@ -500,7 +500,7 @@ export const CoachStatsRegression: React.FC = () => {
                         padding: '8px 14px',
                         borderRadius: '8px',
                         border: 'none',
-                        backgroundColor: designTokens.colors.primary[500],
+                        backgroundColor: 'var(--accent)',
                         color: 'white',
                         fontSize: '12px',
                         fontWeight: '500',
@@ -515,9 +515,9 @@ export const CoachStatsRegression: React.FC = () => {
                         gap: '6px',
                         padding: '8px 14px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         backgroundColor: 'transparent',
-                        color: designTokens.colors.text.secondary,
+                        color: 'var(--text-secondary)',
                         fontSize: '12px',
                         cursor: 'pointer'
                       }}>
@@ -530,9 +530,9 @@ export const CoachStatsRegression: React.FC = () => {
                         gap: '6px',
                         padding: '8px 14px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         backgroundColor: 'transparent',
-                        color: designTokens.colors.text.secondary,
+                        color: 'var(--text-secondary)',
                         fontSize: '12px',
                         cursor: 'pointer'
                       }}>
@@ -568,7 +568,7 @@ export const CoachStatsRegression: React.FC = () => {
                     </span>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: 0 }}>
+                    <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
                       HCP: {player.previousHcp} → {player.currentHcp}
                     </p>
                   </div>
@@ -578,9 +578,9 @@ export const CoachStatsRegression: React.FC = () => {
                     gap: '4px',
                     padding: '8px 12px',
                     borderRadius: '8px',
-                    border: `1px solid ${designTokens.colors.border.light}`,
+                    border: `1px solid ${'var(--border-default)'}`,
                     backgroundColor: 'transparent',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     fontSize: '12px',
                     cursor: 'pointer'
                   }}>
@@ -595,22 +595,11 @@ export const CoachStatsRegression: React.FC = () => {
       </div>
 
       {filteredPlayers.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
-          borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
-        }}>
-          <TrendingDown size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: designTokens.colors.text.secondary,
-            margin: 0
-          }}>
-            Ingen spillere funnet med valgt filter
-          </p>
-        </div>
+        <StateCard
+          variant="empty"
+          title="Ingen spillere funnet"
+          description="Prøv å justere filteret for å se flere spillere."
+        />
       )}
     </div>
   );

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { tokens } from '../../design-tokens';
+import { ShieldX, ArrowLeft, Home } from 'lucide-react';
+import StateCard from '../../ui/composites/StateCard';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -13,23 +17,9 @@ const ProtectedRoute = ({ children, requiredRole }) => {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        backgroundColor: 'var(--ak-snow)',
+        backgroundColor: 'var(--bg-primary)',
       }}>
-        <div style={{
-          textAlign: 'center',
-          color: 'var(--ak-steel)',
-        }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            border: '3px solid var(--ak-mist)',
-            borderTopColor: 'var(--ak-primary)',
-            borderRadius: '50%',
-            margin: '0 auto 16px',
-            animation: 'spin 1s linear infinite',
-          }} />
-          <div>Laster...</div>
-        </div>
+        <StateCard variant="loading" title="Laster..." />
       </div>
     );
   }
@@ -41,12 +31,51 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   if (requiredRole && user.role !== requiredRole) {
     return (
       <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        backgroundColor: 'var(--bg-primary)',
         padding: '24px',
-        textAlign: 'center',
-        color: tokens.colors.error,
       }}>
-        <h2 style={{ fontSize: '22px', marginBottom: '8px' }}>Ingen tilgang</h2>
-        <p>Du har ikke tilgang til denne siden.</p>
+        <Card variant="default" padding="lg" style={{ maxWidth: '480px', width: '100%' }}>
+          <StateCard
+            variant="error"
+            icon={ShieldX}
+            title="Ingen tilgang"
+            description="Du har ikke tilgang til denne siden. Kontakt administrator hvis du mener dette er feil."
+            action={
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  leftIcon={<ArrowLeft size={18} />}
+                  onClick={() => navigate(-1)}
+                >
+                  Tilbake
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  leftIcon={<Home size={18} />}
+                  onClick={() => navigate('/dashboard')}
+                >
+                  Til Dashboard
+                </Button>
+              </div>
+            }
+          />
+          <div style={{
+            marginTop: '24px',
+            paddingTop: '16px',
+            borderTop: '1px solid var(--border-default)',
+            textAlign: 'center',
+          }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', margin: 0 }}>
+              Feilkode: 403 Forbidden
+            </p>
+          </div>
+        </Card>
       </div>
     );
   }

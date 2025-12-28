@@ -3,7 +3,6 @@ import {
   Dumbbell, Star, ChevronRight, Plus, Target,
   Clock, TrendingUp, Brain, Flag, Flame, CheckCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -93,17 +92,17 @@ const STATS = {
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'technical':
-      return { label: 'Teknikk', color: tokens.colors.primary, icon: Target };
+      return { label: 'Teknikk', color: 'var(--accent)', icon: Target };
     case 'short_game':
-      return { label: 'Kortspill', color: tokens.colors.success, icon: Flag };
+      return { label: 'Kortspill', color: 'var(--success)', icon: Flag };
     case 'physical':
-      return { label: 'Fysisk', color: tokens.colors.error, icon: Dumbbell };
+      return { label: 'Fysisk', color: 'var(--error)', icon: Dumbbell };
     case 'mental':
-      return { label: 'Mental', color: tokens.colors.gold, icon: Brain };
+      return { label: 'Mental', color: 'var(--achievement)', icon: Brain };
     case 'warmup':
-      return { label: 'Oppvarming', color: tokens.colors.warning, icon: Flame };
+      return { label: 'Oppvarming', color: 'var(--warning)', icon: Flame };
     default:
-      return { label: type, color: tokens.colors.steel, icon: Dumbbell };
+      return { label: type, color: 'var(--text-secondary)', icon: Dumbbell };
   }
 };
 
@@ -122,8 +121,8 @@ const RatingStars = ({ rating, size = 14 }) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? tokens.colors.gold : 'none'}
-        color={star <= rating ? tokens.colors.gold : tokens.colors.mist}
+        fill={star <= rating ? 'var(--achievement)' : 'none'}
+        color={star <= rating ? 'var(--achievement)' : 'var(--border-default)'}
       />
     ))}
   </div>
@@ -141,7 +140,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
     <div
       onClick={() => onClick(evaluation)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '14px',
         padding: '16px',
         cursor: 'pointer',
@@ -182,7 +181,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
               <h3 style={{
                 fontSize: '15px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 {evaluation.sessionName}
@@ -203,12 +202,12 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
                 }}>
                   {typeConfig.label}
                 </span>
-                <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   {formatDate(evaluation.date)}
                 </span>
                 <span style={{
                   fontSize: '12px',
-                  color: tokens.colors.steel,
+                  color: 'var(--text-secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
@@ -223,7 +222,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
 
           <p style={{
             fontSize: '13px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '8px 0',
             lineHeight: 1.4,
           }}>
@@ -238,8 +237,8 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
                   key={idx}
                   style={{
                     fontSize: '11px',
-                    color: tokens.colors.success,
-                    backgroundColor: `${tokens.colors.success}10`,
+                    color: 'var(--success)',
+                    backgroundColor: 'rgba(var(--success-rgb), 0.1)',
                     padding: '4px 8px',
                     borderRadius: '6px',
                     display: 'flex',
@@ -259,7 +258,7 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
             <div style={{
               marginTop: '10px',
               fontSize: '12px',
-              color: tokens.colors.primary,
+              color: 'var(--accent)',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
@@ -268,14 +267,14 @@ const TrainingEvaluationCard = ({ evaluation, onClick }) => {
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                backgroundColor: tokens.colors.primary,
+                backgroundColor: 'var(--accent)',
               }} />
               Trener-feedback tilgjengelig
             </div>
           )}
         </div>
 
-        <ChevronRight size={18} color={tokens.colors.steel} style={{ flexShrink: 0 }} />
+        <ChevronRight size={18} color={'var(--text-secondary)'} style={{ flexShrink: 0 }} />
       </div>
     </div>
   );
@@ -293,54 +292,54 @@ const StatsOverview = ({ stats }) => (
     marginBottom: '24px',
   }}>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.primary }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
         {stats.totalSessions}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Totalt</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Totalt</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.success }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
         {stats.thisMonth}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Denne mnd</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Denne mnd</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
-        <span style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.gold }}>
+        <span style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
           {stats.avgRating}
         </span>
-        <Star size={14} fill={tokens.colors.gold} color={tokens.colors.gold} />
+        <Star size={14} fill={'var(--achievement)'} color={'var(--achievement)'} />
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Gj.sn.</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gj.sn.</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
     }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.charcoal }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
         {stats.avgDuration}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Min/okt</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Min/okt</div>
     </div>
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       textAlign: 'center',
@@ -348,7 +347,7 @@ const StatsOverview = ({ stats }) => (
       <div style={{
         fontSize: '16px',
         fontWeight: 700,
-        color: tokens.colors.success,
+        color: 'var(--success)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -357,7 +356,7 @@ const StatsOverview = ({ stats }) => (
         <TrendingUp size={16} />
         {stats.improvement}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Trend</div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Trend</div>
     </div>
   </div>
 );
@@ -382,7 +381,7 @@ const TreningsevalueringContainer = () => {
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Treningsevalueringer"
         subtitle="Evaluering av dine treningsokter"
@@ -410,8 +409,8 @@ const TreningsevalueringContainer = () => {
                   padding: '8px 14px',
                   borderRadius: '8px',
                   border: 'none',
-                  backgroundColor: filter === f.key ? tokens.colors.primary : tokens.colors.white,
-                  color: filter === f.key ? tokens.colors.white : tokens.colors.charcoal,
+                  backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
+                  color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
                   fontSize: '13px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -431,8 +430,8 @@ const TreningsevalueringContainer = () => {
               padding: '10px 16px',
               borderRadius: '8px',
               border: 'none',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -455,13 +454,13 @@ const TreningsevalueringContainer = () => {
             ))
           ) : (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '14px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <Dumbbell size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <Dumbbell size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen treningsevalueringer funnet med valgt filter
               </p>
             </div>

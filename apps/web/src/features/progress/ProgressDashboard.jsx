@@ -1,24 +1,24 @@
 import React from 'react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // Design tokens
 const colors = {
-  primary: tokens.colors.primary,
-  primaryLight: tokens.colors.primaryLight,
-  success: tokens.colors.success,
-  warning: tokens.colors.warning,
-  error: tokens.colors.error,
-  white: tokens.colors.white,
-  snow: tokens.colors.snow,
-  charcoal: tokens.colors.charcoal,
-  steel: tokens.colors.steel,
-  mist: tokens.colors.mist,
-  gold: tokens.colors.gold,
+  primary: 'var(--accent)',
+  primaryLight: 'rgba(var(--accent-rgb), 0.1)',
+  success: 'var(--success)',
+  warning: 'var(--warning)',
+  error: 'var(--error)',
+  white: 'var(--bg-primary)',
+  snow: 'var(--bg-secondary)',
+  charcoal: 'var(--text-primary)',
+  steel: 'var(--text-secondary)',
+  mist: 'var(--border-default)',
+  gold: 'var(--achievement)',
 };
 
 export default function ProgressDashboard({ data }) {
-  if (!data) return <div style={{ padding: tokens.spacing[8], color: colors.steel }}>Laster data...</div>;
+  if (!data) return <div style={{ padding: '32px', color: colors.steel }}>Laster data...</div>;
 
   const { overview, weeklyTrend, periodBreakdown, upcomingSessions } = data;
 
@@ -29,12 +29,12 @@ export default function ProgressDashboard({ data }) {
         subtitle="Oversikt over treningsfremgang"
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: tokens.spacing[6] }}>
+      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {/* Overview Cards */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-          gap: tokens.spacing[4]
+          gap: '16px'
         }}>
           <StatCard
             title="Gjennomføringsgrad"
@@ -65,25 +65,25 @@ export default function ProgressDashboard({ data }) {
         {/* Weekly Trend Chart */}
         <div style={{
           backgroundColor: colors.white,
-          borderRadius: tokens.radius.lg,
-          boxShadow: tokens.shadows.card,
-          padding: tokens.spacing[6]
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-card)',
+          padding: '24px'
         }}>
           <h3 style={{
             fontSize: '18px',
             fontWeight: 700,
             color: colors.charcoal,
             margin: 0,
-            marginBottom: tokens.spacing[4]
+            marginBottom: '16px'
           }}>
             12-ukers trend
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing[2] }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {weeklyTrend.map((week, i) => (
               <div key={i} style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: tokens.spacing[3]
+                gap: '12px'
               }}>
                 <span style={{
                   fontSize: '13px',
@@ -96,7 +96,7 @@ export default function ProgressDashboard({ data }) {
                 <div style={{
                   flex: 1,
                   backgroundColor: colors.mist,
-                  borderRadius: tokens.radius.full,
+                  borderRadius: '9999px',
                   height: '28px',
                   position: 'relative',
                   overflow: 'hidden'
@@ -105,13 +105,13 @@ export default function ProgressDashboard({ data }) {
                     style={{
                       backgroundColor: colors.success,
                       height: '100%',
-                      borderRadius: tokens.radius.full,
+                      borderRadius: '9999px',
                       transition: 'width 0.3s ease',
                       width: `${week.completionRate}%`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'flex-end',
-                      paddingRight: tokens.spacing[2]
+                      paddingRight: '8px'
                     }}
                   >
                     {week.completionRate > 15 && (
@@ -142,30 +142,30 @@ export default function ProgressDashboard({ data }) {
         {/* Period Breakdown */}
         <div style={{
           backgroundColor: colors.white,
-          borderRadius: tokens.radius.lg,
-          boxShadow: tokens.shadows.card,
-          padding: tokens.spacing[6]
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-card)',
+          padding: '24px'
         }}>
           <h3 style={{
             fontSize: '18px',
             fontWeight: 700,
             color: colors.charcoal,
             margin: 0,
-            marginBottom: tokens.spacing[4]
+            marginBottom: '16px'
           }}>
             Periodeoversikt
           </h3>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-            gap: tokens.spacing[4]
+            gap: '16px'
           }}>
             {Object.entries(periodBreakdown).map(([period, stats]) => (
               <div key={period} style={{
                 textAlign: 'center',
-                padding: tokens.spacing[4],
+                padding: '16px',
                 backgroundColor: colors.snow,
-                borderRadius: tokens.radius.lg
+                borderRadius: 'var(--radius-lg)'
               }}>
                 <div style={{
                   fontSize: '20px',
@@ -178,14 +178,14 @@ export default function ProgressDashboard({ data }) {
                   fontSize: '24px',
                   fontWeight: 700,
                   color: colors.success,
-                  marginTop: tokens.spacing[2]
+                  marginTop: '8px'
                 }}>
                   {Math.round(stats.completionRate)}%
                 </div>
                 <div style={{
                   fontSize: '13px',
                   color: colors.steel,
-                  marginTop: tokens.spacing[1]
+                  marginTop: '4px'
                 }}>
                   {stats.completed}/{stats.planned} økter
                 </div>
@@ -203,20 +203,20 @@ export default function ProgressDashboard({ data }) {
         {/* Upcoming Sessions */}
         <div style={{
           backgroundColor: colors.white,
-          borderRadius: tokens.radius.lg,
-          boxShadow: tokens.shadows.card,
-          padding: tokens.spacing[6]
+          borderRadius: 'var(--radius-lg)',
+          boxShadow: 'var(--shadow-card)',
+          padding: '24px'
         }}>
           <h3 style={{
             fontSize: '18px',
             fontWeight: 700,
             color: colors.charcoal,
             margin: 0,
-            marginBottom: tokens.spacing[4]
+            marginBottom: '16px'
           }}>
             Neste 7 dager
           </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing[2] }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {upcomingSessions.map((session, i) => (
               <div
                 key={i}
@@ -224,9 +224,9 @@ export default function ProgressDashboard({ data }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: tokens.spacing[3],
+                  padding: '12px',
                   backgroundColor: `${colors.primary}08`,
-                  borderRadius: tokens.radius.lg
+                  borderRadius: 'var(--radius-lg)'
                 }}
               >
                 <div>
@@ -271,15 +271,15 @@ function StatCard({ title, value, icon, color }) {
   return (
     <div style={{
       backgroundColor: colors.white,
-      borderRadius: tokens.radius.lg,
-      padding: tokens.spacing[4],
-      boxShadow: tokens.shadows.card
+      borderRadius: 'var(--radius-lg)',
+      padding: '16px',
+      boxShadow: 'var(--shadow-card)'
     }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: tokens.spacing[2]
+        marginBottom: '8px'
       }}>
         <span style={{ fontSize: '28px' }}>{icon}</span>
         <span style={{

@@ -24,7 +24,6 @@ import {
   Unlock,
   Copy,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 
 interface TimeSlot {
   start: string;
@@ -293,7 +292,7 @@ export default function CoachBookingSettings() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -303,8 +302,8 @@ export default function CoachBookingSettings() {
           style={{
             width: 48,
             height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `4px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
@@ -317,15 +316,15 @@ export default function CoachBookingSettings() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           padding: '20px 24px',
           position: 'sticky',
           top: 0,
@@ -339,8 +338,8 @@ export default function CoachBookingSettings() {
               style={{
                 width: 40,
                 height: 40,
-                borderRadius: tokens.radius.md,
-                backgroundColor: tokens.colors.gray100,
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--bg-tertiary)',
                 border: 'none',
                 display: 'flex',
                 alignItems: 'center',
@@ -348,13 +347,13 @@ export default function CoachBookingSettings() {
                 cursor: 'pointer',
               }}
             >
-              <ArrowLeft size={20} color={tokens.colors.charcoal} />
+              <ArrowLeft size={20} color={'var(--text-primary)'} />
             </button>
             <div>
               <h1
                 style={{
-                  ...tokens.typography.title1,
-                  color: tokens.colors.charcoal,
+                  fontSize: '28px', lineHeight: '34px', fontWeight: 700,
+                  color: 'var(--text-primary)',
                   margin: 0,
                 }}
               >
@@ -362,8 +361,8 @@ export default function CoachBookingSettings() {
               </h1>
               <p
                 style={{
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.steel,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-secondary)',
                   margin: '4px 0 0',
                 }}
               >
@@ -380,10 +379,10 @@ export default function CoachBookingSettings() {
               alignItems: 'center',
               gap: '8px',
               padding: '10px 20px',
-              backgroundColor: saved ? tokens.colors.success : tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: saved ? 'var(--success)' : 'var(--accent)',
+              color: 'var(--bg-primary)',
               border: 'none',
-              borderRadius: tokens.radius.md,
+              borderRadius: 'var(--radius-md)',
               fontSize: '14px',
               fontWeight: 600,
               cursor: saving ? 'not-allowed' : 'pointer',
@@ -409,9 +408,9 @@ export default function CoachBookingSettings() {
         {/* Weekly Schedule */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             marginBottom: '24px',
             overflow: 'hidden',
           }}
@@ -419,17 +418,17 @@ export default function CoachBookingSettings() {
           <div
             style={{
               padding: '16px 20px',
-              borderBottom: `1px solid ${tokens.colors.gray200}`,
+              borderBottom: `1px solid ${'var(--border-default)'}`,
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
             }}
           >
-            <Clock size={20} color={tokens.colors.primary} />
+            <Clock size={20} color={'var(--accent)'} />
             <h2
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -446,7 +445,7 @@ export default function CoachBookingSettings() {
                 <div
                   key={key}
                   style={{
-                    borderBottom: `1px solid ${tokens.colors.gray100}`,
+                    borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
                   }}
                 >
                   <div
@@ -455,7 +454,7 @@ export default function CoachBookingSettings() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      backgroundColor: isExpanded ? tokens.colors.gray50 : 'transparent',
+                      backgroundColor: isExpanded ? 'var(--bg-tertiary)' : 'transparent',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -466,8 +465,8 @@ export default function CoachBookingSettings() {
                           height: 24,
                           borderRadius: '12px',
                           backgroundColor: daySchedule.enabled
-                            ? tokens.colors.primary
-                            : tokens.colors.gray300,
+                            ? 'var(--accent)'
+                            : 'var(--border-default)',
                           border: 'none',
                           position: 'relative',
                           cursor: 'pointer',
@@ -479,7 +478,7 @@ export default function CoachBookingSettings() {
                             width: 20,
                             height: 20,
                             borderRadius: '50%',
-                            backgroundColor: tokens.colors.white,
+                            backgroundColor: 'var(--bg-primary)',
                             position: 'absolute',
                             top: 2,
                             left: daySchedule.enabled ? 22 : 2,
@@ -492,7 +491,7 @@ export default function CoachBookingSettings() {
                         style={{
                           fontSize: '15px',
                           fontWeight: 500,
-                          color: daySchedule.enabled ? tokens.colors.charcoal : tokens.colors.steel,
+                          color: daySchedule.enabled ? 'var(--text-primary)' : 'var(--text-secondary)',
                         }}
                       >
                         {label}
@@ -504,7 +503,7 @@ export default function CoachBookingSettings() {
                         <span
                           style={{
                             fontSize: '13px',
-                            color: tokens.colors.steel,
+                            color: 'var(--text-secondary)',
                           }}
                         >
                           {daySchedule.slots.map((s) => `${s.start}-${s.end}`).join(', ')}
@@ -514,7 +513,7 @@ export default function CoachBookingSettings() {
                         <span
                           style={{
                             fontSize: '13px',
-                            color: tokens.colors.steel,
+                            color: 'var(--text-secondary)',
                             fontStyle: 'italic',
                           }}
                         >
@@ -526,7 +525,7 @@ export default function CoachBookingSettings() {
                         style={{
                           width: 32,
                           height: 32,
-                          borderRadius: tokens.radius.sm,
+                          borderRadius: 'var(--radius-sm)',
                           backgroundColor: 'transparent',
                           border: 'none',
                           display: 'flex',
@@ -536,9 +535,9 @@ export default function CoachBookingSettings() {
                         }}
                       >
                         {isExpanded ? (
-                          <ChevronUp size={18} color={tokens.colors.steel} />
+                          <ChevronUp size={18} color={'var(--text-secondary)'} />
                         ) : (
-                          <ChevronDown size={18} color={tokens.colors.steel} />
+                          <ChevronDown size={18} color={'var(--text-secondary)'} />
                         )}
                       </button>
                     </div>
@@ -548,7 +547,7 @@ export default function CoachBookingSettings() {
                     <div
                       style={{
                         padding: '16px 20px',
-                        backgroundColor: tokens.colors.gray50,
+                        backgroundColor: 'var(--bg-tertiary)',
                       }}
                     >
                       {daySchedule.slots.map((slot, idx) => (
@@ -561,30 +560,30 @@ export default function CoachBookingSettings() {
                             marginBottom: '12px',
                           }}
                         >
-                          <span style={{ fontSize: '13px', color: tokens.colors.steel }}>Fra</span>
+                          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Fra</span>
                           <input
                             type="time"
                             value={slot.start}
                             onChange={(e) => updateTimeSlot(key, idx, 'start', e.target.value)}
                             style={{
                               padding: '8px 12px',
-                              border: `1px solid ${tokens.colors.gray300}`,
-                              borderRadius: tokens.radius.md,
+                              border: `1px solid ${'var(--border-default)'}`,
+                              borderRadius: 'var(--radius-md)',
                               fontSize: '14px',
-                              color: tokens.colors.charcoal,
+                              color: 'var(--text-primary)',
                             }}
                           />
-                          <span style={{ fontSize: '13px', color: tokens.colors.steel }}>til</span>
+                          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>til</span>
                           <input
                             type="time"
                             value={slot.end}
                             onChange={(e) => updateTimeSlot(key, idx, 'end', e.target.value)}
                             style={{
                               padding: '8px 12px',
-                              border: `1px solid ${tokens.colors.gray300}`,
-                              borderRadius: tokens.radius.md,
+                              border: `1px solid ${'var(--border-default)'}`,
+                              borderRadius: 'var(--radius-md)',
                               fontSize: '14px',
-                              color: tokens.colors.charcoal,
+                              color: 'var(--text-primary)',
                             }}
                           />
                           {daySchedule.slots.length > 1 && (
@@ -593,8 +592,8 @@ export default function CoachBookingSettings() {
                               style={{
                                 width: 32,
                                 height: 32,
-                                borderRadius: tokens.radius.sm,
-                                backgroundColor: `${tokens.colors.error}10`,
+                                borderRadius: 'var(--radius-sm)',
+                                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
                                 border: 'none',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -602,7 +601,7 @@ export default function CoachBookingSettings() {
                                 cursor: 'pointer',
                               }}
                             >
-                              <Trash2 size={16} color={tokens.colors.error} />
+                              <Trash2 size={16} color={'var(--error)'} />
                             </button>
                           )}
                         </div>
@@ -617,9 +616,9 @@ export default function CoachBookingSettings() {
                             gap: '6px',
                             padding: '8px 12px',
                             backgroundColor: 'transparent',
-                            color: tokens.colors.primary,
-                            border: `1px dashed ${tokens.colors.primary}`,
-                            borderRadius: tokens.radius.md,
+                            color: 'var(--accent)',
+                            border: `1px dashed ${'var(--accent)'}`,
+                            borderRadius: 'var(--radius-md)',
                             fontSize: '13px',
                             fontWeight: 500,
                             cursor: 'pointer',
@@ -637,9 +636,9 @@ export default function CoachBookingSettings() {
                               gap: '6px',
                               padding: '8px 12px',
                               backgroundColor: 'transparent',
-                              color: tokens.colors.steel,
-                              border: `1px solid ${tokens.colors.gray300}`,
-                              borderRadius: tokens.radius.md,
+                              color: 'var(--text-secondary)',
+                              border: `1px solid ${'var(--border-default)'}`,
+                              borderRadius: 'var(--radius-md)',
                               fontSize: '13px',
                               fontWeight: 500,
                               cursor: 'pointer',
@@ -661,9 +660,9 @@ export default function CoachBookingSettings() {
         {/* Session Types */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             marginBottom: '24px',
             overflow: 'hidden',
           }}
@@ -671,17 +670,17 @@ export default function CoachBookingSettings() {
           <div
             style={{
               padding: '16px 20px',
-              borderBottom: `1px solid ${tokens.colors.gray200}`,
+              borderBottom: `1px solid ${'var(--border-default)'}`,
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
             }}
           >
-            <Calendar size={20} color={tokens.colors.primary} />
+            <Calendar size={20} color={'var(--accent)'} />
             <h2
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -692,8 +691,8 @@ export default function CoachBookingSettings() {
           <div style={{ padding: '16px 20px' }}>
             <p
               style={{
-                ...tokens.typography.caption1,
-                color: tokens.colors.steel,
+                fontSize: '13px', lineHeight: '18px',
+                color: 'var(--text-secondary)',
                 margin: '0 0 16px',
               }}
             >
@@ -709,9 +708,9 @@ export default function CoachBookingSettings() {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     padding: '12px 16px',
-                    backgroundColor: session.enabled ? `${tokens.colors.primary}08` : tokens.colors.gray50,
-                    borderRadius: tokens.radius.md,
-                    border: `1px solid ${session.enabled ? tokens.colors.primary : tokens.colors.gray200}`,
+                    backgroundColor: session.enabled ? `${'var(--accent)'}08` : 'var(--bg-tertiary)',
+                    borderRadius: 'var(--radius-md)',
+                    border: `1px solid ${session.enabled ? 'var(--accent)' : 'var(--border-default)'}`,
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -721,8 +720,8 @@ export default function CoachBookingSettings() {
                         width: 24,
                         height: 24,
                         borderRadius: '6px',
-                        backgroundColor: session.enabled ? tokens.colors.primary : tokens.colors.white,
-                        border: `2px solid ${session.enabled ? tokens.colors.primary : tokens.colors.gray300}`,
+                        backgroundColor: session.enabled ? 'var(--accent)' : 'var(--bg-primary)',
+                        border: `2px solid ${session.enabled ? 'var(--accent)' : 'var(--border-default)'}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -746,7 +745,7 @@ export default function CoachBookingSettings() {
                         style={{
                           fontSize: '14px',
                           fontWeight: 500,
-                          color: session.enabled ? tokens.colors.charcoal : tokens.colors.steel,
+                          color: session.enabled ? 'var(--text-primary)' : 'var(--text-secondary)',
                           margin: 0,
                         }}
                       >
@@ -756,7 +755,7 @@ export default function CoachBookingSettings() {
                         <p
                           style={{
                             fontSize: '12px',
-                            color: tokens.colors.steel,
+                            color: 'var(--text-secondary)',
                             margin: '2px 0 0',
                           }}
                         >
@@ -768,10 +767,10 @@ export default function CoachBookingSettings() {
                   <span
                     style={{
                       fontSize: '13px',
-                      color: tokens.colors.steel,
-                      backgroundColor: tokens.colors.gray100,
+                      color: 'var(--text-secondary)',
+                      backgroundColor: 'var(--bg-tertiary)',
                       padding: '4px 10px',
-                      borderRadius: tokens.radius.full,
+                      borderRadius: '9999px',
                     }}
                   >
                     {session.duration} min
@@ -785,9 +784,9 @@ export default function CoachBookingSettings() {
         {/* Blocked Dates */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             marginBottom: '24px',
             overflow: 'hidden',
           }}
@@ -795,18 +794,18 @@ export default function CoachBookingSettings() {
           <div
             style={{
               padding: '16px 20px',
-              borderBottom: `1px solid ${tokens.colors.gray200}`,
+              borderBottom: `1px solid ${'var(--border-default)'}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Lock size={20} color={tokens.colors.primary} />
+              <Lock size={20} color={'var(--accent)'} />
               <h2
                 style={{
-                  ...tokens.typography.headline,
-                  color: tokens.colors.charcoal,
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  color: 'var(--text-primary)',
                   margin: 0,
                 }}
               >
@@ -820,10 +819,10 @@ export default function CoachBookingSettings() {
                 alignItems: 'center',
                 gap: '6px',
                 padding: '8px 12px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -842,8 +841,8 @@ export default function CoachBookingSettings() {
                   gap: '12px',
                   marginBottom: '16px',
                   padding: '12px',
-                  backgroundColor: tokens.colors.gray50,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-tertiary)',
+                  borderRadius: 'var(--radius-md)',
                 }}
               >
                 <input
@@ -852,8 +851,8 @@ export default function CoachBookingSettings() {
                   onChange={(e) => setNewBlockedDate({ ...newBlockedDate, date: e.target.value })}
                   style={{
                     padding: '8px 12px',
-                    border: `1px solid ${tokens.colors.gray300}`,
-                    borderRadius: tokens.radius.md,
+                    border: `1px solid ${'var(--border-default)'}`,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                   }}
                 />
@@ -865,8 +864,8 @@ export default function CoachBookingSettings() {
                   style={{
                     flex: 1,
                     padding: '8px 12px',
-                    border: `1px solid ${tokens.colors.gray300}`,
-                    borderRadius: tokens.radius.md,
+                    border: `1px solid ${'var(--border-default)'}`,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                   }}
                 />
@@ -875,10 +874,10 @@ export default function CoachBookingSettings() {
                   disabled={!newBlockedDate.date}
                   style={{
                     padding: '8px 16px',
-                    backgroundColor: tokens.colors.primary,
-                    color: tokens.colors.white,
+                    backgroundColor: 'var(--accent)',
+                    color: 'var(--bg-primary)',
                     border: 'none',
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '13px',
                     fontWeight: 500,
                     cursor: newBlockedDate.date ? 'pointer' : 'not-allowed',
@@ -892,7 +891,7 @@ export default function CoachBookingSettings() {
                   style={{
                     width: 36,
                     height: 36,
-                    borderRadius: tokens.radius.sm,
+                    borderRadius: 'var(--radius-sm)',
                     backgroundColor: 'transparent',
                     border: 'none',
                     display: 'flex',
@@ -901,7 +900,7 @@ export default function CoachBookingSettings() {
                     cursor: 'pointer',
                   }}
                 >
-                  <X size={18} color={tokens.colors.steel} />
+                  <X size={18} color={'var(--text-secondary)'} />
                 </button>
               </div>
             )}
@@ -909,8 +908,8 @@ export default function CoachBookingSettings() {
             {settings.blockedDates.length === 0 ? (
               <p
                 style={{
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.steel,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-secondary)',
                   textAlign: 'center',
                   padding: '24px',
                 }}
@@ -927,13 +926,13 @@ export default function CoachBookingSettings() {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '10px 14px',
-                      backgroundColor: tokens.colors.gray50,
-                      borderRadius: tokens.radius.md,
+                      backgroundColor: 'var(--bg-tertiary)',
+                      borderRadius: 'var(--radius-md)',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Calendar size={16} color={tokens.colors.steel} />
-                      <span style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                      <Calendar size={16} color={'var(--text-secondary)'} />
+                      <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                         {new Date(blocked.date).toLocaleDateString('nb-NO', {
                           weekday: 'long',
                           day: 'numeric',
@@ -945,7 +944,7 @@ export default function CoachBookingSettings() {
                         <span
                           style={{
                             fontSize: '13px',
-                            color: tokens.colors.steel,
+                            color: 'var(--text-secondary)',
                             fontStyle: 'italic',
                           }}
                         >
@@ -958,7 +957,7 @@ export default function CoachBookingSettings() {
                       style={{
                         width: 28,
                         height: 28,
-                        borderRadius: tokens.radius.sm,
+                        borderRadius: 'var(--radius-sm)',
                         backgroundColor: 'transparent',
                         border: 'none',
                         display: 'flex',
@@ -967,7 +966,7 @@ export default function CoachBookingSettings() {
                         cursor: 'pointer',
                       }}
                     >
-                      <X size={16} color={tokens.colors.steel} />
+                      <X size={16} color={'var(--text-secondary)'} />
                     </button>
                   </div>
                 ))}
@@ -979,26 +978,26 @@ export default function CoachBookingSettings() {
         {/* Booking Preferences */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-card)',
             overflow: 'hidden',
           }}
         >
           <div
             style={{
               padding: '16px 20px',
-              borderBottom: `1px solid ${tokens.colors.gray200}`,
+              borderBottom: `1px solid ${'var(--border-default)'}`,
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
             }}
           >
-            <Settings size={20} color={tokens.colors.primary} />
+            <Settings size={20} color={'var(--accent)'} />
             <h2
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -1014,7 +1013,7 @@ export default function CoachBookingSettings() {
                   display: 'block',
                   fontSize: '14px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   marginBottom: '8px',
                 }}
               >
@@ -1032,13 +1031,13 @@ export default function CoachBookingSettings() {
                   style={{
                     width: '80px',
                     padding: '8px 12px',
-                    border: `1px solid ${tokens.colors.gray300}`,
-                    borderRadius: tokens.radius.md,
+                    border: `1px solid ${'var(--border-default)'}`,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                     textAlign: 'center',
                   }}
                 />
-                <span style={{ fontSize: '14px', color: tokens.colors.steel }}>dager</span>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>dager</span>
               </div>
             </div>
 
@@ -1049,7 +1048,7 @@ export default function CoachBookingSettings() {
                   display: 'block',
                   fontSize: '14px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   marginBottom: '8px',
                 }}
               >
@@ -1067,13 +1066,13 @@ export default function CoachBookingSettings() {
                   style={{
                     width: '80px',
                     padding: '8px 12px',
-                    border: `1px solid ${tokens.colors.gray300}`,
-                    borderRadius: tokens.radius.md,
+                    border: `1px solid ${'var(--border-default)'}`,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                     textAlign: 'center',
                   }}
                 />
-                <span style={{ fontSize: '14px', color: tokens.colors.steel }}>timer før økt</span>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>timer før økt</span>
               </div>
             </div>
 
@@ -1084,7 +1083,7 @@ export default function CoachBookingSettings() {
                   display: 'block',
                   fontSize: '14px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   marginBottom: '8px',
                 }}
               >
@@ -1103,13 +1102,13 @@ export default function CoachBookingSettings() {
                   style={{
                     width: '80px',
                     padding: '8px 12px',
-                    border: `1px solid ${tokens.colors.gray300}`,
-                    borderRadius: tokens.radius.md,
+                    border: `1px solid ${'var(--border-default)'}`,
+                    borderRadius: 'var(--radius-md)',
                     fontSize: '14px',
                     textAlign: 'center',
                   }}
                 />
-                <span style={{ fontSize: '14px', color: tokens.colors.steel }}>minutter</span>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>minutter</span>
               </div>
             </div>
 
@@ -1121,22 +1120,22 @@ export default function CoachBookingSettings() {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '12px 16px',
-                  backgroundColor: tokens.colors.gray50,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-tertiary)',
+                  borderRadius: 'var(--radius-md)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   {settings.autoApprove ? (
-                    <Unlock size={18} color={tokens.colors.primary} />
+                    <Unlock size={18} color={'var(--accent)'} />
                   ) : (
-                    <Lock size={18} color={tokens.colors.steel} />
+                    <Lock size={18} color={'var(--text-secondary)'} />
                   )}
                   <div>
                     <p
                       style={{
                         fontSize: '14px',
                         fontWeight: 500,
-                        color: tokens.colors.charcoal,
+                        color: 'var(--text-primary)',
                         margin: 0,
                       }}
                     >
@@ -1145,7 +1144,7 @@ export default function CoachBookingSettings() {
                     <p
                       style={{
                         fontSize: '12px',
-                        color: tokens.colors.steel,
+                        color: 'var(--text-secondary)',
                         margin: '2px 0 0',
                       }}
                     >
@@ -1160,8 +1159,8 @@ export default function CoachBookingSettings() {
                     height: 24,
                     borderRadius: '12px',
                     backgroundColor: settings.autoApprove
-                      ? tokens.colors.primary
-                      : tokens.colors.gray300,
+                      ? 'var(--accent)'
+                      : 'var(--border-default)',
                     border: 'none',
                     position: 'relative',
                     cursor: 'pointer',
@@ -1172,7 +1171,7 @@ export default function CoachBookingSettings() {
                       width: 20,
                       height: 20,
                       borderRadius: '50%',
-                      backgroundColor: tokens.colors.white,
+                      backgroundColor: 'var(--bg-primary)',
                       position: 'absolute',
                       top: 2,
                       left: settings.autoApprove ? 22 : 2,
@@ -1189,18 +1188,18 @@ export default function CoachBookingSettings() {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '12px 16px',
-                  backgroundColor: tokens.colors.gray50,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-tertiary)',
+                  borderRadius: 'var(--radius-md)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Bell size={18} color={settings.notifyOnRequest ? tokens.colors.primary : tokens.colors.steel} />
+                  <Bell size={18} color={settings.notifyOnRequest ? 'var(--accent)' : 'var(--text-secondary)'} />
                   <div>
                     <p
                       style={{
                         fontSize: '14px',
                         fontWeight: 500,
-                        color: tokens.colors.charcoal,
+                        color: 'var(--text-primary)',
                         margin: 0,
                       }}
                     >
@@ -1209,7 +1208,7 @@ export default function CoachBookingSettings() {
                     <p
                       style={{
                         fontSize: '12px',
-                        color: tokens.colors.steel,
+                        color: 'var(--text-secondary)',
                         margin: '2px 0 0',
                       }}
                     >
@@ -1226,8 +1225,8 @@ export default function CoachBookingSettings() {
                     height: 24,
                     borderRadius: '12px',
                     backgroundColor: settings.notifyOnRequest
-                      ? tokens.colors.primary
-                      : tokens.colors.gray300,
+                      ? 'var(--accent)'
+                      : 'var(--border-default)',
                     border: 'none',
                     position: 'relative',
                     cursor: 'pointer',
@@ -1238,7 +1237,7 @@ export default function CoachBookingSettings() {
                       width: 20,
                       height: 20,
                       borderRadius: '50%',
-                      backgroundColor: tokens.colors.white,
+                      backgroundColor: 'var(--bg-primary)',
                       position: 'absolute',
                       top: 2,
                       left: settings.notifyOnRequest ? 22 : 2,

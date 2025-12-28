@@ -1,6 +1,5 @@
 import React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { tokens, typographyStyle } from '../../design-tokens';
 
 /**
  * Feature-level Error Boundary
@@ -88,20 +87,20 @@ class FeatureErrorBoundary extends React.Component {
         return (
           <div
             style={{
-              padding: tokens.spacing.lg,
+              padding: '24px',
               textAlign: 'center',
-              backgroundColor: `${tokens.colors.error}10`,
-              borderRadius: tokens.radius.md,
-              border: `1px solid ${tokens.colors.error}30`,
+              backgroundColor: 'rgba(var(--error-rgb), 0.1)',
+              borderRadius: 'var(--radius-md)',
+              border: `1px solid ${'var(--error)'}30`,
             }}
             role="alert"
             aria-live="assertive"
           >
-            <AlertTriangle size={24} color={tokens.colors.error} style={{ margin: '0 auto 12px' }} />
+            <AlertTriangle size={24} color={'var(--error)'} style={{ margin: '0 auto 12px' }} />
             <p
               style={{
-                ...typographyStyle('subheadline'),
-                color: tokens.colors.charcoal,
+                fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 12px',
               }}
             >
@@ -110,13 +109,13 @@ class FeatureErrorBoundary extends React.Component {
             <button
               onClick={this.handleReset}
               style={{
-                padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                padding: `${'8px'} ${'16px'}`,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.sm,
+                borderRadius: 'var(--radius-sm)',
                 cursor: 'pointer',
-                ...typographyStyle('subheadline'),
+                fontSize: '15px', lineHeight: '20px', fontWeight: 600,
                 fontWeight: 600,
               }}
             >
@@ -134,8 +133,8 @@ class FeatureErrorBoundary extends React.Component {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: tokens.spacing.xl,
-            fontFamily: tokens.typography.fontFamily,
+            padding: '32px',
+            fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
           }}
           role="alert"
           aria-live="assertive"
@@ -153,20 +152,20 @@ class FeatureErrorBoundary extends React.Component {
                 height: '80px',
                 margin: '0 auto 24px',
                 borderRadius: '50%',
-                backgroundColor: `${tokens.colors.error}15`,
+                backgroundColor: `${'var(--error)'}15`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <AlertTriangle size={40} color={tokens.colors.error} />
+              <AlertTriangle size={40} color={'var(--error)'} />
             </div>
 
             <h2
               style={{
-                ...typographyStyle('title2'),
-                color: tokens.colors.charcoal,
-                marginBottom: tokens.spacing.sm,
+                fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+                color: 'var(--text-primary)',
+                marginBottom: '8px',
               }}
             >
               Noe gikk galt
@@ -174,9 +173,9 @@ class FeatureErrorBoundary extends React.Component {
 
             <p
               style={{
-                ...typographyStyle('subheadline'),
-                color: tokens.colors.steel,
-                marginBottom: tokens.spacing.lg,
+                fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+                color: 'var(--text-secondary)',
+                marginBottom: '24px',
                 lineHeight: '24px',
               }}
             >
@@ -188,17 +187,17 @@ class FeatureErrorBoundary extends React.Component {
             {errorCount > 2 && (
               <div
                 style={{
-                  padding: tokens.spacing.md,
-                  backgroundColor: `${tokens.colors.warning}15`,
-                  border: `1px solid ${tokens.colors.warning}30`,
-                  borderRadius: tokens.radius.md,
-                  marginBottom: tokens.spacing.lg,
+                  padding: '16px',
+                  backgroundColor: `${'var(--warning)'}15`,
+                  border: `1px solid ${'var(--warning)'}30`,
+                  borderRadius: 'var(--radius-md)',
+                  marginBottom: '24px',
                 }}
               >
                 <p
                   style={{
-                    ...typographyStyle('footnote'),
-                    color: tokens.colors.charcoal,
+                    fontSize: '13px', lineHeight: '18px',
+                    color: 'var(--text-primary)',
                     margin: 0,
                   }}
                 >
@@ -212,11 +211,11 @@ class FeatureErrorBoundary extends React.Component {
             {process.env.NODE_ENV === 'development' && error && (
               <details
                 style={{
-                  marginBottom: tokens.spacing.lg,
+                  marginBottom: '24px',
                   textAlign: 'left',
-                  padding: tokens.spacing.md,
-                  backgroundColor: tokens.colors.snow,
-                  borderRadius: tokens.radius.md,
+                  padding: '16px',
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '13px',
                   fontFamily: 'monospace',
                   maxHeight: '200px',
@@ -228,20 +227,20 @@ class FeatureErrorBoundary extends React.Component {
                     cursor: 'pointer',
                     marginBottom: '12px',
                     fontWeight: 600,
-                    ...typographyStyle('subheadline'),
-                    fontFamily: tokens.typography.fontFamily,
+                    fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+                    fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
                   }}
                 >
                   Feildetaljer (kun i utvikling)
                 </summary>
-                <p style={{ color: tokens.colors.error, marginBottom: '8px' }}>
+                <p style={{ color: 'var(--error)', marginBottom: '8px' }}>
                   {error.toString()}
                 </p>
                 {errorInfo && (
                   <pre
                     style={{
                       whiteSpace: 'pre-wrap',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                       fontSize: '12px',
                       margin: 0,
                     }}
@@ -256,7 +255,7 @@ class FeatureErrorBoundary extends React.Component {
             <div
               style={{
                 display: 'flex',
-                gap: tokens.spacing.md,
+                gap: '16px',
                 justifyContent: 'center',
                 flexWrap: 'wrap',
               }}
@@ -266,21 +265,21 @@ class FeatureErrorBoundary extends React.Component {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: tokens.spacing.sm,
-                  padding: `${tokens.spacing.md} ${tokens.spacing.lg}`,
-                  backgroundColor: tokens.colors.primary,
-                  color: tokens.colors.white,
+                  gap: '8px',
+                  padding: `${'16px'} ${'24px'}`,
+                  backgroundColor: 'var(--accent)',
+                  color: 'var(--bg-primary)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
-                  ...typographyStyle('headline'),
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = tokens.colors.primaryLight;
+                  e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = tokens.colors.primary;
+                  e.currentTarget.style.backgroundColor = 'var(--accent)';
                 }}
               >
                 <RefreshCw size={18} />
@@ -293,21 +292,21 @@ class FeatureErrorBoundary extends React.Component {
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: tokens.spacing.sm,
-                    padding: `${tokens.spacing.md} ${tokens.spacing.lg}`,
-                    backgroundColor: tokens.colors.snow,
-                    color: tokens.colors.charcoal,
-                    border: `1px solid ${tokens.colors.mist}`,
-                    borderRadius: tokens.radius.md,
+                    gap: '8px',
+                    padding: `${'16px'} ${'24px'}`,
+                    backgroundColor: 'var(--bg-secondary)',
+                    color: 'var(--text-primary)',
+                    border: '1px solid var(--border-default)',
+                    borderRadius: 'var(--radius-md)',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
-                    ...typographyStyle('headline'),
+                    fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = tokens.colors.cloud;
+                    e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = tokens.colors.snow;
+                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                   }}
                 >
                   <Home size={18} />
@@ -319,15 +318,15 @@ class FeatureErrorBoundary extends React.Component {
             {/* Support link */}
             <div
               style={{
-                marginTop: tokens.spacing.xl,
-                paddingTop: tokens.spacing.lg,
-                borderTop: `1px solid ${tokens.colors.mist}`,
+                marginTop: '32px',
+                paddingTop: '24px',
+                borderTop: '1px solid var(--border-default)',
               }}
             >
               <p
                 style={{
-                  ...typographyStyle('footnote'),
-                  color: tokens.colors.steel,
+                  fontSize: '13px', lineHeight: '18px',
+                  color: 'var(--text-secondary)',
                   margin: 0,
                 }}
               >
@@ -335,7 +334,7 @@ class FeatureErrorBoundary extends React.Component {
                 <a
                   href="mailto:support@akgolf.no"
                   style={{
-                    color: tokens.colors.primary,
+                    color: 'var(--accent)',
                     textDecoration: 'none',
                   }}
                 >

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
 import { authAPI } from '../../services/api';
 
@@ -33,26 +33,26 @@ const ForgotPassword = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: tokens.colors.snow,
-        fontFamily: tokens.typography.fontFamily,
+        backgroundColor: 'var(--bg-secondary)',
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
         padding: '24px',
       }}
     >
       <div style={{ width: '100%', maxWidth: '440px' }}>
         {/* Logo and Title */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <AKLogo size={60} color={tokens.colors.primary} />
+          <AKLogo size={60} color={'var(--accent)'} />
           <h1 style={{
-            ...tokens.typography.title2,
-            color: tokens.colors.charcoal,
+            fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+            color: 'var(--text-primary)',
             marginTop: '16px',
             marginBottom: '4px',
           }}>
             Tilbakestill passord
           </h1>
           <p style={{
-            ...tokens.typography.subheadline,
-            color: tokens.colors.steel,
+            fontSize: '15px', lineHeight: '20px',
+            color: 'var(--text-secondary)',
           }}>
             Vi sender deg en sikker lenke for å tilbakestille passordet ditt
           </p>
@@ -61,10 +61,10 @@ const ForgotPassword = () => {
         {/* Main Card */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
             padding: '32px',
-            boxShadow: tokens.shadows.elevated,
+            boxShadow: 'var(--shadow-card)',
           }}
         >
           {submitted ? (
@@ -76,26 +76,26 @@ const ForgotPassword = () => {
                   height: '64px',
                   margin: '0 auto 20px',
                   borderRadius: '50%',
-                  backgroundColor: `${tokens.colors.success}15`,
+                  backgroundColor: `${'var(--success)'}15`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <CheckCircle size={32} color={tokens.colors.success} />
+                <CheckCircle size={32} color={'var(--success)'} />
               </div>
 
               <h2 style={{
-                ...tokens.typography.title3,
-                color: tokens.colors.charcoal,
+                fontSize: '20px', lineHeight: '25px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 marginBottom: '12px',
               }}>
                 Sjekk e-posten din
               </h2>
 
               <p style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 marginBottom: '24px',
                 lineHeight: '24px',
               }}>
@@ -106,14 +106,14 @@ const ForgotPassword = () => {
               <div
                 style={{
                   padding: '16px',
-                  backgroundColor: tokens.colors.snow,
-                  borderRadius: tokens.radius.md,
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderRadius: 'var(--radius-md)',
                   marginBottom: '24px',
                 }}
               >
                 <p style={{
-                  ...tokens.typography.footnote,
-                  color: tokens.colors.steel,
+                  fontSize: '13px', lineHeight: '18px',
+                  color: 'var(--text-secondary)',
                   margin: 0,
                 }}>
                   Fikk du ikke e-posten? Sjekk spam-mappen din, eller{' '}
@@ -125,7 +125,7 @@ const ForgotPassword = () => {
                     style={{
                       background: 'none',
                       border: 'none',
-                      color: tokens.colors.primary,
+                      color: 'var(--accent)',
                       textDecoration: 'underline',
                       cursor: 'pointer',
                       padding: 0,
@@ -144,15 +144,15 @@ const ForgotPassword = () => {
                   alignItems: 'center',
                   gap: '8px',
                   padding: '12px 24px',
-                  backgroundColor: tokens.colors.primary,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--accent)',
+                  color: 'var(--bg-primary)',
                   textDecoration: 'none',
-                  borderRadius: tokens.radius.md,
-                  ...tokens.typography.headline,
+                  borderRadius: 'var(--radius-md)',
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                   transition: 'background-color 0.2s',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primaryLight}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tokens.colors.primary}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
               >
                 <ArrowLeft size={18} />
                 Tilbake til innlogging
@@ -169,12 +169,12 @@ const ForgotPassword = () => {
                     alignItems: 'flex-start',
                     gap: '12px',
                     padding: '16px',
-                    backgroundColor: `${tokens.colors.error}10`,
-                    border: `1px solid ${tokens.colors.error}30`,
-                    borderRadius: tokens.radius.md,
-                    color: tokens.colors.error,
+                    backgroundColor: 'rgba(var(--error-rgb), 0.1)',
+                    border: `1px solid ${'var(--error)'}30`,
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--error)',
                     marginBottom: '24px',
-                    ...tokens.typography.subheadline,
+                    fontSize: '15px', lineHeight: '20px',
                   }}
                 >
                   <Mail size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
@@ -187,8 +187,8 @@ const ForgotPassword = () => {
                   htmlFor="email"
                   style={{
                     display: 'block',
-                    ...tokens.typography.headline,
-                    color: tokens.colors.charcoal,
+                    fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                    color: 'var(--text-primary)',
                     marginBottom: '8px',
                   }}
                 >
@@ -202,7 +202,7 @@ const ForgotPassword = () => {
                       left: '16px',
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                       pointerEvents: 'none',
                     }}
                   />
@@ -218,20 +218,20 @@ const ForgotPassword = () => {
                     style={{
                       width: '100%',
                       padding: '14px 16px 14px 48px',
-                      ...tokens.typography.body,
-                      border: `1px solid ${tokens.colors.mist}`,
-                      borderRadius: tokens.radius.md,
+                      fontSize: '15px', lineHeight: '20px',
+                      border: '1px solid var(--border-default)',
+                      borderRadius: 'var(--radius-md)',
                       outline: 'none',
                       transition: 'border-color 0.2s',
-                      backgroundColor: loading ? tokens.colors.cloud : tokens.colors.white,
+                      backgroundColor: loading ? 'var(--bg-secondary)' : 'var(--bg-primary)',
                     }}
-                    onFocus={(e) => e.target.style.borderColor = tokens.colors.primary}
-                    onBlur={(e) => e.target.style.borderColor = tokens.colors.mist}
+                    onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
+                    onBlur={(e) => e.target.style.borderColor = 'var(--border-default)'}
                   />
                 </div>
                 <p style={{
-                  ...tokens.typography.footnote,
-                  color: tokens.colors.steel,
+                  fontSize: '13px', lineHeight: '18px',
+                  color: 'var(--text-secondary)',
                   marginTop: '8px',
                 }}>
                   Skriv inn e-postadressen knyttet til kontoen din
@@ -244,11 +244,11 @@ const ForgotPassword = () => {
                 style={{
                   width: '100%',
                   padding: '14px',
-                  ...tokens.typography.headline,
-                  color: tokens.colors.white,
-                  backgroundColor: loading || !email ? tokens.colors.steel : tokens.colors.primary,
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  color: 'var(--bg-primary)',
+                  backgroundColor: loading || !email ? 'var(--text-secondary)' : 'var(--accent)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   cursor: loading || !email ? 'not-allowed' : 'pointer',
                   transition: 'background-color 0.2s',
                   display: 'flex',
@@ -258,12 +258,12 @@ const ForgotPassword = () => {
                 }}
                 onMouseEnter={(e) => {
                   if (!loading && email) {
-                    e.currentTarget.style.backgroundColor = tokens.colors.primaryLight;
+                    e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!loading && email) {
-                    e.currentTarget.style.backgroundColor = tokens.colors.primary;
+                    e.currentTarget.style.backgroundColor = 'var(--accent)';
                   }
                 }}
               >
@@ -275,7 +275,7 @@ const ForgotPassword = () => {
                 style={{
                   marginTop: '24px',
                   paddingTop: '24px',
-                  borderTop: `1px solid ${tokens.colors.mist}`,
+                  borderTop: '1px solid var(--border-default)',
                   textAlign: 'center',
                 }}
               >
@@ -285,9 +285,9 @@ const ForgotPassword = () => {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    color: tokens.colors.primary,
+                    color: 'var(--accent)',
                     textDecoration: 'none',
-                    ...tokens.typography.subheadline,
+                    fontSize: '15px', lineHeight: '20px',
                   }}
                 >
                   <ArrowLeft size={18} />
@@ -303,21 +303,21 @@ const ForgotPassword = () => {
           style={{
             marginTop: '24px',
             padding: '16px',
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
             textAlign: 'center',
           }}
         >
           <p style={{
-            ...tokens.typography.footnote,
-            color: tokens.colors.steel,
+            fontSize: '13px', lineHeight: '18px',
+            color: 'var(--text-secondary)',
             margin: 0,
           }}>
             Trenger du hjelp? Kontakt{' '}
             <a
               href="mailto:support@akgolf.no"
               style={{
-                color: tokens.colors.primary,
+                color: 'var(--accent)',
                 textDecoration: 'none',
               }}
             >

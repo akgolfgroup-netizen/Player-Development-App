@@ -3,7 +3,7 @@ import {
   Calendar, Clock, User, ChevronLeft, ChevronRight, Check,
   Video, MapPin, Star
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 
@@ -82,12 +82,12 @@ const CoachCard = ({ coach, selected, onSelect }) => (
   <div
     onClick={() => onSelect(coach)}
     style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
       padding: '14px',
       cursor: 'pointer',
       transition: 'all 0.2s',
-      border: selected ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
+      border: selected ? `2px solid ${'var(--accent)'}` : '2px solid transparent',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
     }}
     onMouseEnter={(e) => {
@@ -102,11 +102,11 @@ const CoachCard = ({ coach, selected, onSelect }) => (
         width: '48px',
         height: '48px',
         borderRadius: '50%',
-        backgroundColor: tokens.colors.primary,
+        backgroundColor: 'var(--accent)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: tokens.colors.white,
+        color: 'var(--bg-primary)',
         fontSize: '18px',
         fontWeight: 600,
       }}>
@@ -116,14 +116,14 @@ const CoachCard = ({ coach, selected, onSelect }) => (
         <h4 style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: 0,
         }}>
           {coach.name}
         </h4>
         <p style={{
           fontSize: '12px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
           margin: '2px 0 0 0',
         }}>
           {coach.role}
@@ -134,11 +134,11 @@ const CoachCard = ({ coach, selected, onSelect }) => (
           gap: '4px',
           marginTop: '4px',
         }}>
-          <Star size={12} fill={tokens.colors.gold} color={tokens.colors.gold} />
-          <span style={{ fontSize: '12px', fontWeight: 500, color: tokens.colors.charcoal }}>
+          <Star size={12} fill={'var(--achievement)'} color={'var(--achievement)'} />
+          <span style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text-primary)' }}>
             {coach.rating}
           </span>
-          <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+          <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
             ({coach.reviews} anmeldelser)
           </span>
         </div>
@@ -148,12 +148,12 @@ const CoachCard = ({ coach, selected, onSelect }) => (
           width: '24px',
           height: '24px',
           borderRadius: '50%',
-          backgroundColor: tokens.colors.primary,
+          backgroundColor: 'var(--accent)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Check size={14} color={tokens.colors.white} />
+          <Check size={14} color={'var(--bg-primary)'} />
         </div>
       )}
     </div>
@@ -170,8 +170,8 @@ const CoachCard = ({ coach, selected, onSelect }) => (
             fontSize: '10px',
             padding: '3px 8px',
             borderRadius: '4px',
-            backgroundColor: tokens.colors.snow,
-            color: tokens.colors.steel,
+            backgroundColor: 'var(--bg-secondary)',
+            color: 'var(--text-secondary)',
           }}
         >
           {specialty}
@@ -204,7 +204,7 @@ const DateSelector = ({ selectedDate, onSelectDate }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
       padding: '16px',
       marginBottom: '20px',
@@ -221,16 +221,16 @@ const DateSelector = ({ selectedDate, onSelectDate }) => {
             padding: '8px',
             borderRadius: '8px',
             border: 'none',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             cursor: 'pointer',
           }}
         >
-          <ChevronLeft size={18} color={tokens.colors.charcoal} />
+          <ChevronLeft size={18} color={'var(--text-primary)'} />
         </button>
         <h3 style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: 0,
         }}>
           {weekDates[0].toLocaleDateString('nb-NO', { month: 'long', year: 'numeric' })}
@@ -241,11 +241,11 @@ const DateSelector = ({ selectedDate, onSelectDate }) => {
             padding: '8px',
             borderRadius: '8px',
             border: 'none',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             cursor: 'pointer',
           }}
         >
-          <ChevronRight size={18} color={tokens.colors.charcoal} />
+          <ChevronRight size={18} color={'var(--text-primary)'} />
         </button>
       </div>
 
@@ -272,16 +272,16 @@ const DateSelector = ({ selectedDate, onSelectDate }) => {
                 alignItems: 'center',
                 padding: '10px 4px',
                 borderRadius: '10px',
-                border: isSelected ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
-                backgroundColor: isSelected ? `${tokens.colors.primary}15` :
-                               isToday ? tokens.colors.snow : 'transparent',
+                border: isSelected ? `2px solid ${'var(--accent)'}` : '2px solid transparent',
+                backgroundColor: isSelected ? 'rgba(var(--accent-rgb), 0.15)' :
+                               isToday ? 'var(--bg-secondary)' : 'transparent',
                 cursor: isPast ? 'not-allowed' : 'pointer',
                 opacity: isPast ? 0.4 : 1,
               }}
             >
               <span style={{
                 fontSize: '10px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
                 textTransform: 'uppercase',
               }}>
                 {date.toLocaleDateString('nb-NO', { weekday: 'short' })}
@@ -289,7 +289,7 @@ const DateSelector = ({ selectedDate, onSelectDate }) => {
               <span style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                color: isSelected ? tokens.colors.primary : tokens.colors.charcoal,
+                color: isSelected ? 'var(--accent)' : 'var(--text-primary)',
                 margin: '4px 0',
               }}>
                 {date.getDate()}
@@ -299,7 +299,7 @@ const DateSelector = ({ selectedDate, onSelectDate }) => {
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
-                  backgroundColor: tokens.colors.success,
+                  backgroundColor: 'var(--success)',
                 }} />
               )}
             </button>
@@ -320,13 +320,13 @@ const TimeSlots = ({ date, selectedSlot, onSelectSlot }) => {
   if (!date) {
     return (
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '14px',
         padding: '24px',
         textAlign: 'center',
       }}>
-        <Calendar size={32} color={tokens.colors.steel} style={{ marginBottom: '8px' }} />
-        <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+        <Calendar size={32} color={'var(--text-secondary)'} style={{ marginBottom: '8px' }} />
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
           Velg en dato for a se tilgjengelige tider
         </p>
       </div>
@@ -335,7 +335,7 @@ const TimeSlots = ({ date, selectedSlot, onSelectSlot }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
       padding: '16px',
       marginBottom: '20px',
@@ -343,7 +343,7 @@ const TimeSlots = ({ date, selectedSlot, onSelectSlot }) => {
       <h3 style={{
         fontSize: '14px',
         fontWeight: 600,
-        color: tokens.colors.charcoal,
+        color: 'var(--text-primary)',
         marginBottom: '12px',
       }}>
         Tilgjengelige tider - {new Date(date).toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' })}
@@ -364,11 +364,11 @@ const TimeSlots = ({ date, selectedSlot, onSelectSlot }) => {
                 padding: '12px 8px',
                 borderRadius: '8px',
                 border: selectedSlot?.time === slot.time
-                  ? `2px solid ${tokens.colors.primary}`
+                  ? `2px solid ${'var(--accent)'}`
                   : '2px solid transparent',
-                backgroundColor: !slot.available ? tokens.colors.mist :
-                               selectedSlot?.time === slot.time ? `${tokens.colors.primary}15` : tokens.colors.snow,
-                color: !slot.available ? tokens.colors.steel : tokens.colors.charcoal,
+                backgroundColor: !slot.available ? 'var(--border-default)' :
+                               selectedSlot?.time === slot.time ? 'rgba(var(--accent-rgb), 0.15)' : 'var(--bg-secondary)',
+                color: !slot.available ? 'var(--text-secondary)' : 'var(--text-primary)',
                 fontSize: '14px',
                 fontWeight: 500,
                 cursor: slot.available ? 'pointer' : 'not-allowed',
@@ -380,7 +380,7 @@ const TimeSlots = ({ date, selectedSlot, onSelectSlot }) => {
           ))}
         </div>
       ) : (
-        <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
           Ingen tilgjengelige tider denne dagen
         </p>
       )}
@@ -394,7 +394,7 @@ const TimeSlots = ({ date, selectedSlot, onSelectSlot }) => {
 
 const SessionTypeSelector = ({ selected, onSelect }) => (
   <div style={{
-    backgroundColor: tokens.colors.white,
+    backgroundColor: 'var(--bg-primary)',
     borderRadius: '14px',
     padding: '16px',
     marginBottom: '20px',
@@ -402,7 +402,7 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
     <h3 style={{
       fontSize: '14px',
       fontWeight: 600,
-      color: tokens.colors.charcoal,
+      color: 'var(--text-primary)',
       marginBottom: '12px',
     }}>
       Type okt
@@ -419,27 +419,27 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
             padding: '12px 14px',
             borderRadius: '10px',
             border: selected?.id === type.id
-              ? `2px solid ${tokens.colors.primary}`
-              : `1px solid ${tokens.colors.mist}`,
+              ? `2px solid ${'var(--accent)'}`
+              : '1px solid var(--border-default)',
             backgroundColor: selected?.id === type.id
-              ? `${tokens.colors.primary}10`
-              : tokens.colors.white,
+              ? 'rgba(var(--accent-rgb), 0.1)'
+              : 'var(--bg-primary)',
             cursor: 'pointer',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            {type.id === 'online' ? <Video size={18} color={tokens.colors.primary} /> :
-             type.id === 'on_course' ? <MapPin size={18} color={tokens.colors.success} /> :
-             <User size={18} color={tokens.colors.charcoal} />}
+            {type.id === 'online' ? <Video size={18} color={'var(--accent)'} /> :
+             type.id === 'on_course' ? <MapPin size={18} color={'var(--success)'} /> :
+             <User size={18} color={'var(--text-primary)'} />}
             <div style={{ textAlign: 'left' }}>
               <div style={{
                 fontSize: '14px',
                 fontWeight: 500,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
               }}>
                 {type.label}
               </div>
-              <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                 {type.duration} min
               </div>
             </div>
@@ -447,7 +447,7 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
           <div style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
           }}>
             {type.price} kr
           </div>
@@ -466,7 +466,7 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
       padding: '16px',
       position: 'sticky',
@@ -475,7 +475,7 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
       <h3 style={{
         fontSize: '15px',
         fontWeight: 600,
-        color: tokens.colors.charcoal,
+        color: 'var(--text-primary)',
         marginBottom: '16px',
       }}>
         Bookingoppsummering
@@ -488,11 +488,11 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
           gap: '10px',
           marginBottom: '12px',
           padding: '10px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           borderRadius: '8px',
         }}>
-          <User size={16} color={tokens.colors.steel} />
-          <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+          <User size={16} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
             {coach.name}
           </span>
         </div>
@@ -505,11 +505,11 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
           gap: '10px',
           marginBottom: '12px',
           padding: '10px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           borderRadius: '8px',
         }}>
-          <Calendar size={16} color={tokens.colors.steel} />
-          <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+          <Calendar size={16} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
             {new Date(date).toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' })} kl. {slot.time}
           </span>
         </div>
@@ -522,11 +522,11 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
           gap: '10px',
           marginBottom: '16px',
           padding: '10px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           borderRadius: '8px',
         }}>
-          <Clock size={16} color={tokens.colors.steel} />
-          <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+          <Clock size={16} color={'var(--text-secondary)'} />
+          <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
             {sessionType.label} ({sessionType.duration} min)
           </span>
         </div>
@@ -538,11 +538,11 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '12px 0',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
           marginBottom: '16px',
         }}>
-          <span style={{ fontSize: '14px', color: tokens.colors.steel }}>Total</span>
-          <span style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Total</span>
+          <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
             {sessionType.price} kr
           </span>
         </div>
@@ -556,8 +556,8 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
           padding: '14px',
           borderRadius: '10px',
           border: 'none',
-          backgroundColor: canBook ? tokens.colors.primary : tokens.colors.mist,
-          color: canBook ? tokens.colors.white : tokens.colors.steel,
+          backgroundColor: canBook ? 'var(--accent)' : 'var(--border-default)',
+          color: canBook ? 'var(--bg-primary)' : 'var(--text-secondary)',
           fontSize: '15px',
           fontWeight: 600,
           cursor: canBook ? 'pointer' : 'not-allowed',
@@ -615,7 +615,7 @@ const BookTrenerContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Book trener"
         subtitle="Reserver en time med din trener"
@@ -635,7 +635,7 @@ const BookTrenerContainer = () => {
             <h3 style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Velg trener

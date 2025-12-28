@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, User, TrendingUp, Calendar, Award, MessageCircle } from 'lucide-react';
-import { tokens, typographyStyle } from '../design-tokens';
 import { SkeletonCard, SkeletonLine, SkeletonCircle } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
 
@@ -69,17 +68,17 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
 
   if (loading) {
     return (
-      <div style={{ backgroundColor: tokens.colors.snow, minHeight: '100vh' }}>
-        <div style={{ padding: tokens.spacing.lg }}>
-          <SkeletonLine width="100px" height="40px" style={{ marginBottom: tokens.spacing.lg }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.md, marginBottom: tokens.spacing.xl }}>
+      <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+        <div style={{ padding: '24px' }}>
+          <SkeletonLine width="100px" height="40px" style={{ marginBottom: '24px' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
             <SkeletonCircle size="80px" />
             <div style={{ flex: 1 }}>
               <SkeletonLine width="150px" height="24px" style={{ marginBottom: '8px' }} />
               <SkeletonLine width="100px" height="16px" />
             </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: tokens.spacing.md }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
             <SkeletonCard />
             <SkeletonCard />
           </div>
@@ -90,16 +89,16 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
 
   return (
     <div style={{
-      fontFamily: tokens.typography.fontFamily,
-      backgroundColor: tokens.colors.snow,
+      fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
+      backgroundColor: 'var(--bg-secondary)',
       minHeight: '100vh',
-      paddingBottom: tokens.spacing.xl,
+      paddingBottom: '32px',
     }}>
       {/* Header */}
       <div style={{
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
-        padding: tokens.spacing.lg,
+        backgroundColor: 'var(--accent)',
+        color: 'var(--bg-primary)',
+        padding: '24px',
       }}>
         <button
           onClick={onBack}
@@ -107,43 +106,43 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: tokens.spacing.sm,
+            gap: '8px',
             background: 'none',
             border: 'none',
-            color: tokens.colors.white,
+            color: 'var(--bg-primary)',
             cursor: 'pointer',
             padding: 0,
-            marginBottom: tokens.spacing.md,
-            ...typographyStyle('subheadline'),
+            marginBottom: '16px',
+            fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           }}
         >
           <ArrowLeft size={20} />
           Tilbake
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.md }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{
             width: '80px',
             height: '80px',
             borderRadius: '50%',
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
           }}>
             <User size={40} />
           </div>
           <div style={{ flex: 1 }}>
             <h1 style={{
-              ...typographyStyle('title2'),
+              fontSize: '22px', lineHeight: '28px', fontWeight: 700,
               margin: 0,
               marginBottom: '4px',
             }}>
               {athlete.name}
             </h1>
             <div style={{
-              ...typographyStyle('subheadline'),
+              fontSize: '15px', lineHeight: '20px', fontWeight: 600,
               opacity: 0.9,
             }}>
               HCP {athlete.handicap} • {athlete.level}
@@ -155,8 +154,8 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
       {/* Quick Actions */}
       <div style={{
         display: 'flex',
-        gap: tokens.spacing.sm,
-        padding: tokens.spacing.md,
+        gap: '8px',
+        padding: '16px',
         overflowX: 'auto',
       }}>
         <ActionButton icon={<MessageCircle size={18} />} label="Melding" />
@@ -168,8 +167,8 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: tokens.spacing.md,
-        padding: `0 ${tokens.spacing.md} ${tokens.spacing.lg}`,
+        gap: '16px',
+        padding: `0 ${'16px'} ${'24px'}`,
       }}>
         <QuickStat label="Økter denne uka" value={athlete.stats.sessionsThisWeek} />
         <QuickStat label="Total økter" value={athlete.stats.totalSessions} />
@@ -180,10 +179,10 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
       {/* Tabs */}
       <div style={{
         display: 'flex',
-        gap: tokens.spacing.sm,
-        padding: `0 ${tokens.spacing.md}`,
-        marginBottom: tokens.spacing.md,
-        borderBottom: `1px solid ${tokens.colors.mist}`,
+        gap: '8px',
+        padding: `0 ${'16px'}`,
+        marginBottom: '16px',
+        borderBottom: '1px solid var(--border-default)',
       }}>
         <Tab label="Oversikt" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
         <Tab label="Økter" active={activeTab === 'sessions'} onClick={() => setActiveTab('sessions')} />
@@ -191,26 +190,26 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
       </div>
 
       {/* Tab Content */}
-      <div style={{ padding: `0 ${tokens.spacing.md}` }}>
+      <div style={{ padding: `0 ${'16px'}` }}>
         {activeTab === 'overview' && (
           <div>
             {/* Recent Sessions */}
             <div style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.md,
-              padding: tokens.spacing.lg,
-              marginBottom: tokens.spacing.md,
-              boxShadow: tokens.shadows.card,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-md)',
+              padding: '24px',
+              marginBottom: '16px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             }}>
               <h3 style={{
-                ...typographyStyle('headline'),
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
-                marginBottom: tokens.spacing.md,
+                marginBottom: '16px',
               }}>
                 Siste økter
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {athlete.recentSessions.slice(0, 3).map((session) => (
                   <SessionItem key={session.id} session={session} />
                 ))}
@@ -219,40 +218,40 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
 
             {/* Upcoming */}
             <div style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.md,
-              padding: tokens.spacing.lg,
-              boxShadow: tokens.shadows.card,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-md)',
+              padding: '24px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             }}>
               <h3 style={{
-                ...typographyStyle('headline'),
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
-                marginBottom: tokens.spacing.md,
+                marginBottom: '16px',
               }}>
                 Kommende økter
               </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {athlete.upcomingSessions.map((session) => (
                   <div
                     key={session.id}
                     style={{
-                      padding: tokens.spacing.md,
-                      border: `1px solid ${tokens.colors.mist}`,
-                      borderRadius: tokens.radius.sm,
+                      padding: '16px',
+                      border: '1px solid var(--border-default)',
+                      borderRadius: 'var(--radius-sm)',
                     }}
                   >
                     <div style={{
-                      ...typographyStyle('subheadline'),
+                      fontSize: '15px', lineHeight: '20px', fontWeight: 600,
                       fontWeight: 600,
-                      color: tokens.colors.charcoal,
+                      color: 'var(--text-primary)',
                       marginBottom: '4px',
                     }}>
                       {session.type}
                     </div>
                     <div style={{
-                      ...typographyStyle('caption1'),
-                      color: tokens.colors.steel,
+                      fontSize: '11px', lineHeight: '13px',
+                      color: 'var(--text-secondary)',
                     }}>
                       {session.date} kl. {session.time}
                     </div>
@@ -265,12 +264,12 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
 
         {activeTab === 'sessions' && (
           <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.md,
-            padding: tokens.spacing.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
+            padding: '24px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {athlete.recentSessions.map((session) => (
                 <SessionItem key={session.id} session={session} detailed />
               ))}
@@ -280,34 +279,34 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
 
         {activeTab === 'tests' && (
           <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.md,
-            padding: tokens.spacing.lg,
-            boxShadow: tokens.shadows.card,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
+            padding: '24px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.md }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {athlete.latestTests.map((test) => (
                 <div
                   key={test.id}
                   style={{
-                    padding: tokens.spacing.md,
-                    backgroundColor: tokens.colors.snow,
-                    borderRadius: tokens.radius.sm,
+                    padding: '16px',
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-sm)',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{
-                        ...typographyStyle('subheadline'),
+                        fontSize: '15px', lineHeight: '20px', fontWeight: 600,
                         fontWeight: 600,
-                        color: tokens.colors.charcoal,
+                        color: 'var(--text-primary)',
                         marginBottom: '4px',
                       }}>
                         {test.name}
                       </div>
                       <div style={{
-                        ...typographyStyle('caption1'),
-                        color: tokens.colors.steel,
+                        fontSize: '11px', lineHeight: '13px',
+                        color: 'var(--text-secondary)',
                       }}>
                         {test.date}
                       </div>
@@ -315,17 +314,17 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: tokens.spacing.sm,
+                      gap: '8px',
                     }}>
                       <div style={{
-                        ...typographyStyle('title3'),
-                        color: tokens.colors.charcoal,
+                        fontSize: '20px', lineHeight: '25px', fontWeight: 600,
+                        color: 'var(--text-primary)',
                       }}>
                         {test.score}
                       </div>
                       <TrendingUp
                         size={20}
-                        color={test.trend === 'up' ? tokens.colors.success : tokens.colors.steel}
+                        color={test.trend === 'up' ? 'var(--success)' : 'var(--text-secondary)'}
                       />
                     </div>
                   </div>
@@ -343,14 +342,14 @@ const ActionButton = ({ icon, label }) => (
   <button style={{
     display: 'flex',
     alignItems: 'center',
-    gap: tokens.spacing.sm,
-    padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-    backgroundColor: tokens.colors.white,
-    border: `1px solid ${tokens.colors.mist}`,
-    borderRadius: tokens.radius.md,
+    gap: '8px',
+    padding: `${'8px'} ${'16px'}`,
+    backgroundColor: 'var(--bg-primary)',
+    border: '1px solid var(--border-default)',
+    borderRadius: 'var(--radius-md)',
     cursor: 'pointer',
-    ...typographyStyle('subheadline'),
-    color: tokens.colors.charcoal,
+    fontSize: '15px', lineHeight: '20px', fontWeight: 600,
+    color: 'var(--text-primary)',
     whiteSpace: 'nowrap',
   }}>
     {icon}
@@ -360,21 +359,21 @@ const ActionButton = ({ icon, label }) => (
 
 const QuickStat = ({ label, value, trend }) => (
   <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: tokens.radius.md,
-    padding: tokens.spacing.lg,
-    boxShadow: tokens.shadows.card,
+    backgroundColor: 'var(--bg-primary)',
+    borderRadius: 'var(--radius-md)',
+    padding: '24px',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
   }}>
     <div style={{
-      ...typographyStyle('title2'),
-      color: trend === 'up' ? tokens.colors.success : tokens.colors.charcoal,
+      fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+      color: trend === 'up' ? 'var(--success)' : 'var(--text-primary)',
       marginBottom: '4px',
     }}>
       {value}
     </div>
     <div style={{
-      ...typographyStyle('caption1'),
-      color: tokens.colors.steel,
+      fontSize: '11px', lineHeight: '13px',
+      color: 'var(--text-secondary)',
     }}>
       {label}
     </div>
@@ -385,14 +384,14 @@ const Tab = ({ label, active, onClick }) => (
   <button
     onClick={onClick}
     style={{
-      padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
+      padding: `${'8px'} ${'16px'}`,
       background: 'none',
       border: 'none',
-      borderBottom: active ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
+      borderBottom: active ? '2px solid var(--accent)' : '2px solid transparent',
       cursor: 'pointer',
-      ...typographyStyle('subheadline'),
+      fontSize: '15px', lineHeight: '20px', fontWeight: 600,
       fontWeight: active ? 600 : 400,
-      color: active ? tokens.colors.primary : tokens.colors.steel,
+      color: active ? 'var(--accent)' : 'var(--text-secondary)',
     }}
   >
     {label}
@@ -401,30 +400,30 @@ const Tab = ({ label, active, onClick }) => (
 
 const SessionItem = ({ session, detailed = false }) => {
   const qualityColor = {
-    high: tokens.colors.success,
-    medium: tokens.colors.warning,
-    low: tokens.colors.steel,
+    high: 'var(--success)',
+    medium: 'var(--warning)',
+    low: 'var(--text-secondary)',
   }[session.quality];
 
   return (
     <div style={{
-      padding: tokens.spacing.md,
-      border: `1px solid ${tokens.colors.mist}`,
-      borderRadius: tokens.radius.sm,
+      padding: '16px',
+      border: '1px solid var(--border-default)',
+      borderRadius: 'var(--radius-sm)',
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <div style={{
-            ...typographyStyle('subheadline'),
+            fontSize: '15px', lineHeight: '20px', fontWeight: 600,
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             marginBottom: '4px',
           }}>
             {session.type}
           </div>
           <div style={{
-            ...typographyStyle('caption1'),
-            color: tokens.colors.steel,
+            fontSize: '11px', lineHeight: '13px',
+            color: 'var(--text-secondary)',
           }}>
             {session.date} • {session.duration} min
           </div>

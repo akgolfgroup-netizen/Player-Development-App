@@ -3,8 +3,11 @@ import {
   BookOpen, ChevronRight, Plus, Star, Clock,
   Target, Dumbbell, Brain, Search, AlertCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
+import Badge from '../../ui/primitives/Badge.primitive';
+import StateCard from '../../ui/composites/StateCard';
 import apiClient from '../../services/apiClient';
 
 // ============================================================================
@@ -109,17 +112,17 @@ const STATS = {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'technical':
-      return { label: 'Teknikk', color: tokens.colors.primary, icon: Target };
+      return { label: 'Teknikk', color: 'var(--accent)', icon: Target, variant: 'accent' };
     case 'short_game':
-      return { label: 'Kortspill', color: tokens.colors.success, icon: Target };
+      return { label: 'Kortspill', color: 'var(--success)', icon: Target, variant: 'success' };
     case 'physical':
-      return { label: 'Fysisk', color: tokens.colors.error, icon: Dumbbell };
+      return { label: 'Fysisk', color: 'var(--error)', icon: Dumbbell, variant: 'error' };
     case 'mental':
-      return { label: 'Mental', color: tokens.colors.gold, icon: Brain };
+      return { label: 'Mental', color: 'var(--warning)', icon: Brain, variant: 'warning' };
     case 'competition':
-      return { label: 'Runde', color: tokens.colors.charcoal, icon: Target };
+      return { label: 'Runde', color: 'var(--text-primary)', icon: Target, variant: 'neutral' };
     default:
-      return { label: type, color: tokens.colors.steel, icon: BookOpen };
+      return { label: type, color: 'var(--text-tertiary)', icon: BookOpen, variant: 'neutral' };
   }
 };
 
@@ -155,8 +158,8 @@ const RatingStars = ({ rating, size = 14 }) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? tokens.colors.gold : 'none'}
-        color={star <= rating ? tokens.colors.gold : tokens.colors.mist}
+        fill={star <= rating ? 'var(--warning)' : 'none'}
+        color={star <= rating ? 'var(--warning)' : 'var(--border-default)'}
       />
     ))}
   </div>
@@ -171,30 +174,17 @@ const DiaryEntryCard = ({ entry, onClick }) => {
   const TypeIcon = typeConfig.icon;
 
   return (
-    <div
+    <Card
+      variant="default"
+      padding="md"
       onClick={() => onClick(entry)}
-      style={{
-        backgroundColor: tokens.colors.white,
-        borderRadius: '14px',
-        padding: '16px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
+      style={{ cursor: 'pointer' }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
         <div style={{
           width: '44px',
           height: '44px',
-          borderRadius: '10px',
+          borderRadius: 'var(--radius-sm)',
           backgroundColor: `${typeConfig.color}15`,
           display: 'flex',
           alignItems: 'center',
@@ -215,7 +205,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
               <h3 style={{
                 fontSize: '15px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 {entry.title}
@@ -226,22 +216,13 @@ const DiaryEntryCard = ({ entry, onClick }) => {
                 gap: '10px',
                 marginTop: '4px',
               }}>
-                <span style={{
-                  fontSize: '11px',
-                  fontWeight: 500,
-                  padding: '2px 8px',
-                  borderRadius: '4px',
-                  backgroundColor: `${typeConfig.color}15`,
-                  color: typeConfig.color,
-                }}>
-                  {typeConfig.label}
-                </span>
-                <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <Badge variant={typeConfig.variant} size="sm">{typeConfig.label}</Badge>
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   {formatDate(entry.date)}
                 </span>
                 <span style={{
                   fontSize: '12px',
-                  color: tokens.colors.steel,
+                  color: 'var(--text-secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
@@ -259,7 +240,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
 
           <p style={{
             fontSize: '13px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '8px 0',
             lineHeight: 1.4,
             display: '-webkit-box',
@@ -273,26 +254,15 @@ const DiaryEntryCard = ({ entry, onClick }) => {
           {entry.achievements.length > 0 && (
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
               {entry.achievements.slice(0, 2).map((achievement, idx) => (
-                <span
-                  key={idx}
-                  style={{
-                    fontSize: '11px',
-                    color: tokens.colors.success,
-                    backgroundColor: `${tokens.colors.success}10`,
-                    padding: '4px 8px',
-                    borderRadius: '6px',
-                  }}
-                >
-                  ✓ {achievement}
-                </span>
+                <Badge key={idx} variant="success" size="sm">✓ {achievement}</Badge>
               ))}
             </div>
           )}
         </div>
 
-        <ChevronRight size={18} color={tokens.colors.steel} style={{ flexShrink: 0 }} />
+        <ChevronRight size={18} color="var(--text-tertiary)" style={{ flexShrink: 0 }} />
       </div>
-    </div>
+    </Card>
   );
 };
 
@@ -307,63 +277,38 @@ const StatsOverview = ({ stats }) => (
     gap: '10px',
     marginBottom: '24px',
   }}>
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.primary }}>
+    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
         {stats.totalEntries}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Totalt</div>
-    </div>
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.success }}>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Totalt</div>
+    </Card>
+    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
         {stats.thisMonth}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Denne mnd</div>
-    </div>
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Denne mnd</div>
+    </Card>
+    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
-        <span style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.gold }}>
+        <span style={{ fontSize: '22px', fontWeight: 700, color: 'var(--warning)' }}>
           {stats.avgRating}
         </span>
-        <Star size={14} fill={tokens.colors.gold} color={tokens.colors.gold} />
+        <Star size={14} fill="var(--warning)" color="var(--warning)" />
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Snittrating</div>
-    </div>
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.charcoal }}>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Snittrating</div>
+    </Card>
+    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
         {stats.avgDuration}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Min/okt</div>
-    </div>
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Min/okt</div>
+    </Card>
+    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
       <div style={{
         fontSize: '22px',
         fontWeight: 700,
-        color: tokens.colors.error,
+        color: 'var(--error)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -371,8 +316,8 @@ const StatsOverview = ({ stats }) => (
       }}>
         🔥 {stats.streak}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Streak</div>
-    </div>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Streak</div>
+    </Card>
   </div>
 );
 
@@ -415,11 +360,8 @@ const TreningsdagbokContainer = () => {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: tokens.colors.snow }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 48, height: 48, border: `4px solid ${tokens.colors.primary}20`, borderTop: `4px solid ${tokens.colors.primary}`, borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ fontSize: '15px', color: tokens.colors.steel }}>Laster...</p>
-        </div>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-primary)' }}>
+        <StateCard variant="loading" title="Laster treningsdagbok..." />
       </div>
     );
   }
@@ -433,7 +375,7 @@ const TreningsdagbokContainer = () => {
   });
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <PageHeader
         title="Treningsdagbok"
         subtitle="Logg og reflekter over dine okter"
@@ -442,39 +384,34 @@ const TreningsdagbokContainer = () => {
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* Stats */}
         {error && (
-          <div style={{ padding: '12px', backgroundColor: `${tokens.colors.error}10`, borderRadius: '8px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <AlertCircle size={16} color={tokens.colors.error} />
-            <span style={{ fontSize: '13px', color: tokens.colors.error }}>{error} (viser demo-data)</span>
+          <div style={{ padding: '12px', backgroundColor: 'var(--bg-error-subtle)', borderRadius: 'var(--radius-sm)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <AlertCircle size={16} color="var(--error)" />
+            <span style={{ fontSize: '13px', color: 'var(--error)' }}>{error} (viser demo-data)</span>
           </div>
         )}
         <StatsOverview stats={{ ...STATS, totalEntries: entries.length }} />
 
         {/* Search and Filters */}
         <div style={{ marginBottom: '20px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            backgroundColor: tokens.colors.white,
-            borderRadius: '10px',
-            padding: '10px 14px',
-            marginBottom: '12px',
-          }}>
-            <Search size={18} color={tokens.colors.steel} />
-            <input
-              type="text"
-              placeholder="Sok i dagboken..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                flex: 1,
-                border: 'none',
-                outline: 'none',
-                fontSize: '14px',
-                color: tokens.colors.charcoal,
-              }}
-            />
-          </div>
+          <Card variant="default" padding="sm" style={{ marginBottom: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Search size={18} color="var(--text-tertiary)" />
+              <input
+                type="text"
+                placeholder="Sok i dagboken..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  flex: 1,
+                  border: 'none',
+                  outline: 'none',
+                  fontSize: '14px',
+                  color: 'var(--text-primary)',
+                  backgroundColor: 'transparent',
+                }}
+              />
+            </div>
+          </Card>
 
           <div style={{
             display: 'flex',
@@ -485,44 +422,20 @@ const TreningsdagbokContainer = () => {
           }}>
             <div style={{ display: 'flex', gap: '6px', overflowX: 'auto' }}>
               {filters.map((f) => (
-                <button
+                <Button
                   key={f.key}
+                  variant={filter === f.key ? 'primary' : 'ghost'}
+                  size="sm"
                   onClick={() => setFilter(f.key)}
-                  style={{
-                    padding: '8px 14px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    backgroundColor: filter === f.key ? tokens.colors.primary : tokens.colors.white,
-                    color: filter === f.key ? tokens.colors.white : tokens.colors.charcoal,
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                  }}
                 >
                   {f.label}
-                </button>
+                </Button>
               ))}
             </div>
 
-            <button
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '10px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
-            >
-              <Plus size={16} />
+            <Button variant="primary" size="sm" leftIcon={<Plus size={16} />}>
               Nytt innlegg
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -537,17 +450,11 @@ const TreningsdagbokContainer = () => {
               />
             ))
           ) : (
-            <div style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: '14px',
-              padding: '40px',
-              textAlign: 'center',
-            }}>
-              <BookOpen size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
-                Ingen innlegg funnet
-              </p>
-            </div>
+            <StateCard
+              variant="empty"
+              icon={BookOpen}
+              title="Ingen innlegg funnet"
+            />
           )}
         </div>
       </div>

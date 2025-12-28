@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Calculator, Target, TrendingUp, BarChart2, PieChart, ChevronRight,
   Activity, Info
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -16,7 +16,7 @@ const TOOLS = [
     name: 'Handicap-kalkulator',
     description: 'Beregn forventet handicap basert pa dine siste runder',
     icon: Calculator,
-    color: tokens.colors.primary,
+    color: 'var(--accent)',
     category: 'calculators',
   },
   {
@@ -24,7 +24,7 @@ const TOOLS = [
     name: 'Strokes Gained analyse',
     description: 'Se hvor du vinner og taper slag mot feltet',
     icon: TrendingUp,
-    color: tokens.colors.success,
+    color: 'var(--success)',
     category: 'analysis',
   },
   {
@@ -32,7 +32,7 @@ const TOOLS = [
     name: 'Banestrategi',
     description: 'Planlegg strategi for kommende baner',
     icon: Target,
-    color: tokens.colors.gold,
+    color: 'var(--achievement)',
     category: 'planning',
   },
   {
@@ -40,7 +40,7 @@ const TOOLS = [
     name: 'Ytelsestrender',
     description: 'Se utvikling over tid i alle kategorier',
     icon: Activity,
-    color: tokens.colors.error,
+    color: 'var(--error)',
     category: 'analysis',
   },
   {
@@ -48,7 +48,7 @@ const TOOLS = [
     name: 'Kollelengder',
     description: 'Dine gjennomsnittlige avstander per kolle',
     icon: BarChart2,
-    color: tokens.colors.primary,
+    color: 'var(--accent)',
     category: 'reference',
   },
   {
@@ -56,7 +56,7 @@ const TOOLS = [
     name: 'Scorefordeling',
     description: 'Analyser dine scorer pa ulike hulltyper',
     icon: PieChart,
-    color: tokens.colors.gold,
+    color: 'var(--achievement)',
     category: 'analysis',
   },
 ];
@@ -105,7 +105,7 @@ const ToolCard = ({ tool, onClick }) => {
     <div
       onClick={() => onClick(tool)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '16px',
         padding: '20px',
         cursor: 'pointer',
@@ -142,21 +142,21 @@ const ToolCard = ({ tool, onClick }) => {
           <h3 style={{
             fontSize: '15px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 4px 0',
           }}>
             {tool.name}
           </h3>
           <p style={{
             fontSize: '13px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             margin: 0,
             lineHeight: 1.4,
           }}>
             {tool.description}
           </p>
         </div>
-        <ChevronRight size={20} color={tokens.colors.steel} />
+        <ChevronRight size={20} color={'var(--text-secondary)'} />
       </div>
     </div>
   );
@@ -172,7 +172,7 @@ const ClubDistancesWidget = () => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -184,11 +184,11 @@ const ClubDistancesWidget = () => {
         marginBottom: '16px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <BarChart2 size={18} color={tokens.colors.primary} />
+          <BarChart2 size={18} color={'var(--accent)'} />
           <h3 style={{
             fontSize: '15px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             Mine kollelengder
@@ -198,7 +198,7 @@ const ClubDistancesWidget = () => {
           onClick={() => setShowAll(!showAll)}
           style={{
             fontSize: '12px',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             backgroundColor: 'transparent',
             border: 'none',
             cursor: 'pointer',
@@ -216,11 +216,11 @@ const ClubDistancesWidget = () => {
           gridTemplateColumns: '80px 1fr 1fr',
           gap: '8px',
           padding: '8px 0',
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          borderBottom: '1px solid var(--border-default)',
         }}>
-          <span style={{ fontSize: '11px', color: tokens.colors.steel, fontWeight: 500 }}>Kolle</span>
-          <span style={{ fontSize: '11px', color: tokens.colors.steel, fontWeight: 500, textAlign: 'center' }}>Carry</span>
-          <span style={{ fontSize: '11px', color: tokens.colors.steel, fontWeight: 500, textAlign: 'center' }}>Total</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500 }}>Kolle</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500, textAlign: 'center' }}>Carry</span>
+          <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500, textAlign: 'center' }}>Total</span>
         </div>
 
         {displayedClubs.map((club, idx) => (
@@ -231,16 +231,16 @@ const ClubDistancesWidget = () => {
               gridTemplateColumns: '80px 1fr 1fr',
               gap: '8px',
               padding: '8px 0',
-              borderBottom: idx < displayedClubs.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
+              borderBottom: idx < displayedClubs.length - 1 ? '1px solid var(--border-default)' : 'none',
             }}
           >
-            <span style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
               {club.club}
             </span>
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal, textAlign: 'center' }}>
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)', textAlign: 'center' }}>
               {club.avgCarry}m
             </span>
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal, textAlign: 'center' }}>
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)', textAlign: 'center' }}>
               {club.avgTotal}m
             </span>
           </div>
@@ -257,7 +257,7 @@ const ClubDistancesWidget = () => {
 const StrokesGainedWidget = () => {
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -268,11 +268,11 @@ const StrokesGainedWidget = () => {
         gap: '10px',
         marginBottom: '16px',
       }}>
-        <TrendingUp size={18} color={tokens.colors.success} />
+        <TrendingUp size={18} color={'var(--success)'} />
         <h3 style={{
           fontSize: '15px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: 0,
         }}>
           Strokes Gained
@@ -281,12 +281,12 @@ const StrokesGainedWidget = () => {
           marginLeft: 'auto',
           padding: '4px 10px',
           borderRadius: '6px',
-          backgroundColor: STROKES_GAINED.total >= 0 ? `${tokens.colors.success}15` : `${tokens.colors.error}15`,
+          backgroundColor: STROKES_GAINED.total >= 0 ? `${'var(--success)'}15` : `${'var(--error)'}15`,
         }}>
           <span style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: STROKES_GAINED.total >= 0 ? tokens.colors.success : tokens.colors.error,
+            color: STROKES_GAINED.total >= 0 ? 'var(--success)' : 'var(--error)',
           }}>
             {STROKES_GAINED.total >= 0 ? '+' : ''}{STROKES_GAINED.total}
           </span>
@@ -305,7 +305,7 @@ const StrokesGainedWidget = () => {
           >
             <span style={{
               fontSize: '13px',
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               flex: 1,
             }}>
               {cat.name}
@@ -313,7 +313,7 @@ const StrokesGainedWidget = () => {
             <div style={{
               width: '100px',
               height: '8px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '4px',
               overflow: 'hidden',
               position: 'relative',
@@ -324,7 +324,7 @@ const StrokesGainedWidget = () => {
                 top: 0,
                 height: '100%',
                 width: `${Math.abs(cat.value) * 25}%`,
-                backgroundColor: cat.value >= 0 ? tokens.colors.success : tokens.colors.error,
+                backgroundColor: cat.value >= 0 ? 'var(--success)' : 'var(--error)',
                 borderRadius: '4px',
                 transform: cat.value >= 0 ? 'translateX(0)' : 'translateX(-100%)',
               }} />
@@ -332,7 +332,7 @@ const StrokesGainedWidget = () => {
             <span style={{
               fontSize: '13px',
               fontWeight: 600,
-              color: cat.value >= 0 ? tokens.colors.success : tokens.colors.error,
+              color: cat.value >= 0 ? 'var(--success)' : 'var(--error)',
               width: '40px',
               textAlign: 'right',
             }}>
@@ -345,14 +345,14 @@ const StrokesGainedWidget = () => {
       <div style={{
         marginTop: '16px',
         padding: '10px',
-        backgroundColor: `${tokens.colors.primary}08`,
+        backgroundColor: `${'var(--accent)'}08`,
         borderRadius: '8px',
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
       }}>
-        <Info size={14} color={tokens.colors.primary} />
-        <span style={{ fontSize: '12px', color: tokens.colors.charcoal }}>
+        <Info size={14} color={'var(--accent)'} />
+        <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
           Basert pa dine siste 10 turneringsrunder
         </span>
       </div>
@@ -367,7 +367,7 @@ const StrokesGainedWidget = () => {
 const QuickStatsWidget = ({ stats }) => {
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -375,7 +375,7 @@ const QuickStatsWidget = ({ stats }) => {
       <h3 style={{
         fontSize: '15px',
         fontWeight: 600,
-        color: tokens.colors.charcoal,
+        color: 'var(--text-primary)',
         margin: '0 0 16px 0',
       }}>
         Hurtigstatistikk
@@ -388,47 +388,47 @@ const QuickStatsWidget = ({ stats }) => {
       }}>
         <div style={{
           padding: '14px',
-          backgroundColor: `${tokens.colors.primary}08`,
+          backgroundColor: `${'var(--accent)'}08`,
           borderRadius: '12px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.primary }}>
+          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
             {stats.currentHandicap}
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Handicap</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Handicap</div>
         </div>
         <div style={{
           padding: '14px',
-          backgroundColor: `${tokens.colors.success}08`,
+          backgroundColor: 'rgba(var(--success-rgb), 0.08)',
           borderRadius: '12px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.success }}>
+          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
             {stats.avgScore}
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Gj.sn. score</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gj.sn. score</div>
         </div>
         <div style={{
           padding: '14px',
-          backgroundColor: `${tokens.colors.gold}08`,
+          backgroundColor: `${'var(--achievement)'}08`,
           borderRadius: '12px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.gold }}>
+          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
             {stats.bestRound}
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Beste runde</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Beste runde</div>
         </div>
         <div style={{
           padding: '14px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           borderRadius: '12px',
           textAlign: 'center',
         }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: tokens.colors.charcoal }}>
+          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
             {stats.roundsThisYear}
           </div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Runder i ar</div>
+          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Runder i ar</div>
         </div>
       </div>
     </div>
@@ -440,12 +440,31 @@ const QuickStatsWidget = ({ stats }) => {
 // ============================================================================
 
 const StatsVerktoyContainer = () => {
-  const handleToolClick = () => {
-    // TODO: Navigate to tool or open modal
+  const navigate = useNavigate();
+  const [selectedTool, setSelectedTool] = useState(null);
+
+  const handleToolClick = (tool) => {
+    // Navigate to tool-specific page or show modal
+    const toolRoutes = {
+      'handicap': '/stats/handicap-kalkulator',
+      'strokes_gained': '/stats/strokes-gained',
+      'course_strategy': '/stats/banestrategi',
+      'performance_trends': '/stats/ytelsestrender',
+      'club_distances': '/stats/kollelengder',
+      'score_distribution': '/stats/scorefordeling',
+    };
+
+    const route = toolRoutes[tool.id];
+    if (route) {
+      navigate(route);
+    } else {
+      // Fallback: show tool in modal/expanded view
+      setSelectedTool(tool);
+    }
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Stats verktoy"
         subtitle="Analyser og forbedre spillet ditt"
@@ -463,7 +482,7 @@ const StatsVerktoyContainer = () => {
             <h2 style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Verktoy

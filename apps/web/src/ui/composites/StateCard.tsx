@@ -4,7 +4,11 @@ import Card from '../primitives/Card';
 /**
  * StateCard
  * Reusable component for displaying loading, error, and empty states
- * Uses Card primitive with consistent styling
+ *
+ * UI Canon:
+ * - Uses Card primitive as base
+ * - Consistent use of semantic tokens
+ * - Three variants: info, error, empty
  */
 
 interface StateCardProps {
@@ -15,7 +19,9 @@ interface StateCardProps {
   /** Optional action button/element */
   action?: React.ReactNode;
   /** Visual variant */
-  variant?: 'info' | 'error' | 'empty';
+  variant?: 'info' | 'error' | 'empty' | 'loading';
+  /** Compact mode (less padding) */
+  compact?: boolean;
 }
 
 const StateCard: React.FC<StateCardProps> = ({
@@ -23,38 +29,22 @@ const StateCard: React.FC<StateCardProps> = ({
   description,
   action,
   variant = 'info',
+  compact = false,
 }) => {
-  const getVariantStyles = () => {
-    switch (variant) {
-      case 'error':
-        return {
-          icon: styles.iconError,
-          title: styles.titleError,
-        };
-      case 'empty':
-        return {
-          icon: styles.iconEmpty,
-          title: styles.titleEmpty,
-        };
-      default:
-        return {
-          icon: styles.iconInfo,
-          title: styles.titleInfo,
-        };
-    }
-  };
-
-  const variantStyles = getVariantStyles();
+  const variantConfig = variantStyles[variant];
 
   return (
-    <Card>
+    <Card padding={compact ? 'compact' : 'default'}>
       <div style={styles.container}>
-        <div style={{ ...styles.icon, ...variantStyles.icon }}>
+        <div style={{ ...styles.icon, ...variantConfig.icon }}>
           {variant === 'error' && '!'}
           {variant === 'empty' && '○'}
-          {variant === 'info' && '…'}
+          {variant === 'info' && 'ℹ'}
+          {variant === 'loading' && (
+            <span style={styles.spinner} />
+          )}
         </div>
-        <h3 style={{ ...styles.title, ...variantStyles.title }}>{title}</h3>
+        <h3 style={{ ...styles.title, ...variantConfig.title }}>{title}</h3>
         {description && <p style={styles.description}>{description}</p>}
         {action && <div style={styles.action}>{action}</div>}
       </div>
@@ -83,42 +73,68 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
     marginBottom: 'var(--spacing-3)',
   },
-  iconInfo: {
-    backgroundColor: 'rgba(16, 69, 106, 0.1)',
-    color: 'var(--ak-primary)',
-  },
-  iconError: {
-    backgroundColor: 'rgba(220, 53, 69, 0.1)',
-    color: 'var(--color-danger)',
-  },
-  iconEmpty: {
-    backgroundColor: 'var(--background-surface)',
-    color: 'var(--text-tertiary)',
-  },
   title: {
     fontSize: 'var(--font-size-body)',
     fontWeight: 600,
     margin: 0,
     marginBottom: 'var(--spacing-1)',
   },
-  titleInfo: {
-    color: 'var(--text-primary)',
-  },
-  titleError: {
-    color: 'var(--color-danger)',
-  },
-  titleEmpty: {
-    color: 'var(--text-secondary)',
-  },
   description: {
     fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
+    color: 'var(--color-text-muted)',
     margin: 0,
     marginBottom: 'var(--spacing-3)',
     lineHeight: 1.4,
   },
   action: {
     marginTop: 'var(--spacing-2)',
+  },
+  spinner: {
+    width: '20px',
+    height: '20px',
+    border: '2px solid var(--color-border)',
+    borderTopColor: 'var(--color-primary)',
+    borderRadius: '50%',
+    animation: 'spin 0.8s linear infinite',
+  },
+};
+
+const variantStyles: Record<string, { icon: React.CSSProperties; title: React.CSSProperties }> = {
+  info: {
+    icon: {
+      backgroundColor: 'rgba(16, 69, 106, 0.1)',
+      color: 'var(--color-primary)',
+    },
+    title: {
+      color: 'var(--color-text)',
+    },
+  },
+  error: {
+    icon: {
+      backgroundColor: 'rgba(196, 91, 78, 0.1)',
+      color: 'var(--color-danger)',
+    },
+    title: {
+      color: 'var(--color-danger)',
+    },
+  },
+  empty: {
+    icon: {
+      backgroundColor: 'var(--color-surface-2)',
+      color: 'var(--color-text-muted)',
+    },
+    title: {
+      color: 'var(--color-text-muted)',
+    },
+  },
+  loading: {
+    icon: {
+      backgroundColor: 'rgba(16, 69, 106, 0.1)',
+      color: 'var(--color-primary)',
+    },
+    title: {
+      color: 'var(--color-text)',
+    },
   },
 };
 

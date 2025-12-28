@@ -170,13 +170,22 @@
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 20px;
   --radius-full: 999px;
 
   /* ─────────────────────────────────────────
-     SHADOWS
+     SHADOWS (Apple/Stripe style - soft & subtle)
      ───────────────────────────────────────── */
-  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+
+  /* ─────────────────────────────────────────
+     FOCUS RING (Subtle, token-based)
+     ───────────────────────────────────────── */
+  --focus-ring: 0 0 0 3px rgba(16, 69, 106, 0.15);
+  --focus-ring-offset: 2px;
 
   /* ─────────────────────────────────────────
      ICONS
@@ -278,9 +287,12 @@
   --ak-surface-dark: #0a0a12;
   --ak-border: var(--border-default);
 
-  /* Shadows - Dark Mode */
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.4);
+  /* Shadows - Dark Mode (softer) */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.15);
+  --focus-ring: 0 0 0 3px rgba(60, 122, 158, 0.25);
 }
 
 /* System preference dark mode (only if no manual override) */
@@ -361,9 +373,12 @@
     --ak-surface-dark: #0a0a12;
     --ak-border: var(--border-default);
 
-    /* Shadows - Dark Mode */
-    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.4);
+    /* Shadows - Dark Mode (softer) */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.15);
+    --focus-ring: 0 0 0 3px rgba(60, 122, 158, 0.25);
   }
 }
 
@@ -401,16 +416,16 @@ code {
 
 *:focus-visible {
   outline: 2px solid var(--ak-primary);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba(16, 69, 106, 0.2);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-ring);
 }
 
 button:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible {
   outline: 2px solid var(--ak-primary);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba(16, 69, 106, 0.2);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-ring);
 }
 
 input:focus-visible,
@@ -418,7 +433,8 @@ textarea:focus-visible,
 select:focus-visible {
   outline: 2px solid var(--ak-primary);
   outline-offset: 0;
-  box-shadow: 0 0 0 3px rgba(16, 69, 106, 0.15);
+  box-shadow: var(--focus-ring);
+  border-color: var(--ak-primary);
 }
 
 /* Remove default focus styles (only for mouse users) */
@@ -793,6 +809,81 @@ select:focus-visible {
 /* Add bottom padding to main content when mobile nav is present */
 .has-mobile-nav {
   padding-bottom: calc(56px + var(--safe-area-inset-bottom));
+}
+
+/* ═══════════════════════════════════════════
+   UI CANON - BUTTON MICRO-INTERACTIONS
+   ═══════════════════════════════════════════ */
+
+.btn-interactive {
+  transition: all 0.15s ease-out;
+}
+
+.btn-interactive:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: var(--shadow-elevated);
+}
+
+.btn-interactive:active:not(:disabled) {
+  transform: translateY(1px);
+  filter: brightness(0.98);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-interactive:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Secondary button hover - subtle highlight */
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-2);
+  border-color: var(--border-brand);
+}
+
+/* Ghost button hover */
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-surface-2);
+}
+
+/* Destructive button hover */
+.btn-destructive:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+/* ═══════════════════════════════════════════
+   UI CANON - INPUT MICRO-INTERACTIONS
+   ═══════════════════════════════════════════ */
+
+.input-interactive {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-interactive:hover:not(:disabled):not(:focus) {
+  border-color: var(--border-brand);
+}
+
+.input-interactive::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════
+   INTERACTIVE CARD STATES (Apple/Stripe)
+   ═══════════════════════════════════════════ */
+
+.card-interactive {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.card-interactive:hover {
+  box-shadow: var(--shadow-elevated);
+  border-color: var(--border-subtle);
+}
+
+.card-interactive:active {
+  transform: scale(0.99);
 }
 
 /* ═══════════════════════════════════════════

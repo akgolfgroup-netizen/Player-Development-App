@@ -59,6 +59,7 @@ const UILabContainer = lazy(() => import('./features/ui-lab/UILabContainer'));
 const StatsLab = lazy(() => import('./ui/lab/StatsLab'));
 const AppShellLab = lazy(() => import('./ui/lab/AppShellLab'));
 const CalendarLab = lazy(() => import('./ui/lab/CalendarLab'));
+const UiCanonPage = lazy(() => import('./ui/lab/UiCanonPage'));
 const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage'));
 const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
 const StatsPageV2 = lazy(() => import('./features/stats/StatsPageV2'));
@@ -204,6 +205,9 @@ const AdminCoachManagement = lazy(() => import('./features/admin-coach-managemen
 const AdminTierManagement = lazy(() => import('./features/admin-tier-management').then(m => ({ default: m.AdminTierManagement })));
 const AdminFeatureFlagsEditor = lazy(() => import('./features/admin-feature-flags').then(m => ({ default: m.AdminFeatureFlagsEditor })));
 const AdminEscalationSupport = lazy(() => import('./features/admin-escalation').then(m => ({ default: m.AdminEscalationSupport })));
+
+// 404 Not Found (lazy-loaded)
+const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
 // Layout component for authenticated pages using AppShell (Player)
 const AuthenticatedLayout = ({ children, title, subtitle, actions }) => (
@@ -401,6 +405,13 @@ function App() {
                 <ProtectedRoute>
                   <AuthenticatedLayout title="Calendar Lab" subtitle="CalendarTemplate demo">
                     <CalendarLab />
+                  </AuthenticatedLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/ui-canon" element={
+                <ProtectedRoute>
+                  <AuthenticatedLayout title="UI Canon" subtitle="Single source of truth for visual style">
+                    <UiCanonPage />
                   </AuthenticatedLayout>
                 </ProtectedRoute>
               } />
@@ -1264,6 +1275,9 @@ function App() {
               </AdminLayout>
             </ProtectedRoute>
           } />
+
+          {/* 404 Catch-all route - must be last */}
+          <Route path="*" element={<NotFoundPage />} />
             </Routes>
             </Suspense>
               </ErrorBoundary>

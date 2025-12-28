@@ -4,7 +4,6 @@ import {
   Play, Camera, MessageCircle, Award,
   Repeat, Eye, BookOpen, TrendingUp
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -89,13 +88,13 @@ const TECHNICAL_PLAN = {
 const getStatusConfig = (status) => {
   switch (status) {
     case 'completed':
-      return { color: tokens.colors.success, icon: CheckCircle, label: 'Fullfort' };
+      return { color: 'var(--success)', icon: CheckCircle, label: 'Fullfort' };
     case 'in_progress':
-      return { color: tokens.colors.primary, icon: Play, label: 'Pagar' };
+      return { color: 'var(--accent)', icon: Play, label: 'Pagar' };
     case 'pending':
-      return { color: tokens.colors.steel, icon: Clock, label: 'Venter' };
+      return { color: 'var(--text-secondary)', icon: Clock, label: 'Venter' };
     default:
-      return { color: tokens.colors.steel, icon: Clock, label: status };
+      return { color: 'var(--text-secondary)', icon: Clock, label: status };
   }
 };
 
@@ -114,11 +113,11 @@ const AreaCard = ({ area }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       overflow: 'hidden',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      border: area.status === 'in_progress' ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
+      border: area.status === 'in_progress' ? '2px solid var(--accent)' : '2px solid transparent',
     }}>
       {/* Header */}
       <div
@@ -148,7 +147,7 @@ const AreaCard = ({ area }) => {
             <h3 style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               {area.name}
@@ -164,30 +163,30 @@ const AreaCard = ({ area }) => {
               {statusConfig.label}
             </span>
           </div>
-          <div style={{ fontSize: '13px', color: tokens.colors.steel, marginTop: '4px' }}>
+          <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
             {area.focus}
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.charcoal }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
               {completedCheckpoints}/{totalCheckpoints}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>checkpoints</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>checkpoints</div>
           </div>
           <div style={{
             width: '28px',
             height: '28px',
             borderRadius: '8px',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
             transition: 'transform 0.2s',
           }}>
-            <ChevronDown size={16} color={tokens.colors.steel} />
+            <ChevronDown size={16} color={'var(--text-secondary)'} />
           </div>
         </div>
       </div>
@@ -196,7 +195,7 @@ const AreaCard = ({ area }) => {
       <div style={{ padding: '0 20px 12px' }}>
         <div style={{
           height: '4px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           borderRadius: '2px',
           overflow: 'hidden',
         }}>
@@ -214,14 +213,14 @@ const AreaCard = ({ area }) => {
       {isExpanded && (
         <div style={{
           padding: '0 20px 20px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
         }}>
           {/* Checkpoints */}
           <div style={{ marginTop: '16px' }}>
             <div style={{
               fontSize: '13px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               marginBottom: '10px',
               display: 'flex',
               alignItems: 'center',
@@ -239,7 +238,7 @@ const AreaCard = ({ area }) => {
                     alignItems: 'center',
                     gap: '10px',
                     padding: '10px 12px',
-                    backgroundColor: checkpoint.completed ? `${tokens.colors.success}08` : tokens.colors.snow,
+                    backgroundColor: checkpoint.completed ? 'rgba(var(--success-rgb), 0.08)' : 'var(--bg-secondary)',
                     borderRadius: '8px',
                   }}
                 >
@@ -247,17 +246,17 @@ const AreaCard = ({ area }) => {
                     width: '22px',
                     height: '22px',
                     borderRadius: '50%',
-                    backgroundColor: checkpoint.completed ? tokens.colors.success : tokens.colors.white,
-                    border: checkpoint.completed ? 'none' : `2px solid ${tokens.colors.mist}`,
+                    backgroundColor: checkpoint.completed ? 'var(--success)' : 'var(--bg-primary)',
+                    border: checkpoint.completed ? 'none' : '2px solid var(--border-default)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                    {checkpoint.completed && <CheckCircle size={14} color={tokens.colors.white} />}
+                    {checkpoint.completed && <CheckCircle size={14} color={'var(--bg-primary)'} />}
                   </div>
                   <span style={{
                     fontSize: '13px',
-                    color: checkpoint.completed ? tokens.colors.steel : tokens.colors.charcoal,
+                    color: checkpoint.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
                     textDecoration: checkpoint.completed ? 'line-through' : 'none',
                   }}>
                     {checkpoint.text}
@@ -272,7 +271,7 @@ const AreaCard = ({ area }) => {
             <div style={{
               fontSize: '13px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               marginBottom: '10px',
               display: 'flex',
               alignItems: 'center',
@@ -290,19 +289,19 @@ const AreaCard = ({ area }) => {
                     alignItems: 'center',
                     gap: '8px',
                     padding: '8px 12px',
-                    backgroundColor: tokens.colors.snow,
+                    backgroundColor: 'var(--bg-secondary)',
                     borderRadius: '8px',
                     cursor: 'pointer',
                   }}
                 >
-                  <Video size={14} color={tokens.colors.primary} />
-                  <span style={{ fontSize: '12px', color: tokens.colors.charcoal }}>
+                  <Video size={14} color={'var(--accent)'} />
+                  <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
                     {drill.name}
                   </span>
                   <span style={{
                     fontSize: '11px',
-                    color: tokens.colors.steel,
-                    backgroundColor: tokens.colors.white,
+                    color: 'var(--text-secondary)',
+                    backgroundColor: 'var(--bg-primary)',
                     padding: '2px 6px',
                     borderRadius: '4px',
                   }}>
@@ -318,9 +317,9 @@ const AreaCard = ({ area }) => {
             <div style={{
               marginTop: '16px',
               padding: '12px',
-              backgroundColor: `${tokens.colors.primary}08`,
+              backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
               borderRadius: '10px',
-              borderLeft: `3px solid ${tokens.colors.primary}`,
+              borderLeft: '3px solid var(--accent)',
             }}>
               <div style={{
                 display: 'flex',
@@ -328,14 +327,14 @@ const AreaCard = ({ area }) => {
                 gap: '6px',
                 marginBottom: '6px',
               }}>
-                <MessageCircle size={14} color={tokens.colors.primary} />
-                <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.primary }}>
+                <MessageCircle size={14} color={'var(--accent)'} />
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)' }}>
                   Trener-feedback
                 </span>
               </div>
               <p style={{
                 fontSize: '13px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
                 lineHeight: 1.5,
               }}>
@@ -349,15 +348,15 @@ const AreaCard = ({ area }) => {
             <div style={{
               marginTop: '16px',
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '10px',
             }}>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel, marginBottom: '4px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                 Notater
               </div>
               <p style={{
                 fontSize: '13px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
                 lineHeight: 1.5,
               }}>
@@ -378,7 +377,7 @@ const AreaCard = ({ area }) => {
 const MetricsCard = ({ metrics }) => {
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -389,11 +388,11 @@ const MetricsCard = ({ metrics }) => {
         gap: '8px',
         marginBottom: '16px',
       }}>
-        <TrendingUp size={16} color={tokens.colors.gold} />
+        <TrendingUp size={16} color={'var(--achievement)'} />
         <h3 style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: 0,
         }}>
           Nokkeltall
@@ -409,29 +408,29 @@ const MetricsCard = ({ metrics }) => {
               justifyContent: 'space-between',
               marginBottom: '6px',
             }}>
-              <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
                 {metric.name}
               </span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.charcoal }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
                   {metric.current}
                 </span>
-                <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                   / {metric.target}
                 </span>
               </div>
             </div>
             <div style={{
               height: '6px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '3px',
               overflow: 'hidden',
             }}>
               <div style={{
                 height: '100%',
                 width: `${metric.progress}%`,
-                backgroundColor: metric.progress >= 80 ? tokens.colors.success :
-                  metric.progress >= 50 ? tokens.colors.primary : tokens.colors.warning,
+                backgroundColor: metric.progress >= 80 ? 'var(--success)' :
+                  metric.progress >= 50 ? 'var(--accent)' : 'var(--warning)',
                 borderRadius: '3px',
               }} />
             </div>
@@ -449,7 +448,7 @@ const MetricsCard = ({ metrics }) => {
 const RecentVideosCard = ({ videos }) => {
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -461,11 +460,11 @@ const RecentVideosCard = ({ videos }) => {
         marginBottom: '16px',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Camera size={16} color={tokens.colors.primary} />
+          <Camera size={16} color={'var(--accent)'} />
           <h3 style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             Siste videoer
@@ -473,7 +472,7 @@ const RecentVideosCard = ({ videos }) => {
         </div>
         <button style={{
           fontSize: '12px',
-          color: tokens.colors.primary,
+          color: 'var(--accent)',
           backgroundColor: 'transparent',
           border: 'none',
           cursor: 'pointer',
@@ -492,7 +491,7 @@ const RecentVideosCard = ({ videos }) => {
               alignItems: 'center',
               gap: '12px',
               padding: '10px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '10px',
               cursor: 'pointer',
             }}
@@ -501,22 +500,22 @@ const RecentVideosCard = ({ videos }) => {
               width: '48px',
               height: '36px',
               borderRadius: '6px',
-              backgroundColor: tokens.colors.charcoal,
+              backgroundColor: 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <Play size={16} color={tokens.colors.white} />
+              <Play size={16} color={'var(--bg-primary)'} />
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.charcoal }}>
+              <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
                 {video.title}
               </div>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                 {video.date} - {video.duration}
               </div>
             </div>
-            <ChevronRight size={16} color={tokens.colors.steel} />
+            <ChevronRight size={16} color={'var(--text-secondary)'} />
           </div>
         ))}
       </div>
@@ -533,7 +532,7 @@ const TekniskPlanContainer = () => {
   const completedAreas = plan.areas.filter(a => a.status === 'completed').length;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Teknisk plan"
         subtitle={`Fokus: ${plan.currentFocus}`}
@@ -542,7 +541,7 @@ const TekniskPlanContainer = () => {
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* Progress Overview */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
           padding: '20px',
           marginBottom: '20px',
@@ -558,12 +557,12 @@ const TekniskPlanContainer = () => {
               <h2 style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 Teknisk utviklingsplan
               </h2>
-              <div style={{ fontSize: '13px', color: tokens.colors.steel, marginTop: '4px' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                 Trener: {plan.coach} - Maldat: {new Date(plan.targetDate).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })}
               </div>
             </div>
@@ -573,24 +572,24 @@ const TekniskPlanContainer = () => {
               gap: '16px',
             }}>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+                <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
                   {plan.progress}%
                 </div>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel }}>total fremgang</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>total fremgang</div>
               </div>
             </div>
           </div>
 
           <div style={{
             height: '8px',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             borderRadius: '4px',
             overflow: 'hidden',
           }}>
             <div style={{
               height: '100%',
               width: `${plan.progress}%`,
-              backgroundColor: tokens.colors.primary,
+              backgroundColor: 'var(--accent)',
               borderRadius: '4px',
             }} />
           </div>
@@ -600,7 +599,7 @@ const TekniskPlanContainer = () => {
             justifyContent: 'space-between',
             marginTop: '8px',
             fontSize: '12px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
           }}>
             <span>{completedAreas}/{plan.areas.length} omrader fullfort</span>
             <span>Startet {new Date(plan.startDate).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}</span>
@@ -618,7 +617,7 @@ const TekniskPlanContainer = () => {
             <h2 style={{
               fontSize: '16px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Utviklingsomrader
@@ -637,7 +636,7 @@ const TekniskPlanContainer = () => {
 
             {/* Resources */}
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '16px',
               padding: '20px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -648,11 +647,11 @@ const TekniskPlanContainer = () => {
                 gap: '8px',
                 marginBottom: '12px',
               }}>
-                <BookOpen size={16} color={tokens.colors.success} />
+                <BookOpen size={16} color={'var(--success)'} />
                 <h3 style={{
                   fontSize: '14px',
                   fontWeight: 600,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   margin: 0,
                 }}>
                   Ressurser
@@ -664,15 +663,15 @@ const TekniskPlanContainer = () => {
                   alignItems: 'center',
                   gap: '8px',
                   padding: '10px 12px',
-                  backgroundColor: tokens.colors.snow,
+                  backgroundColor: 'var(--bg-secondary)',
                   borderRadius: '8px',
                   border: 'none',
                   cursor: 'pointer',
                   width: '100%',
                   textAlign: 'left',
                 }}>
-                  <Eye size={14} color={tokens.colors.primary} />
-                  <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+                  <Eye size={14} color={'var(--accent)'} />
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
                     Se treningsvideoer
                   </span>
                 </button>
@@ -681,15 +680,15 @@ const TekniskPlanContainer = () => {
                   alignItems: 'center',
                   gap: '8px',
                   padding: '10px 12px',
-                  backgroundColor: tokens.colors.snow,
+                  backgroundColor: 'var(--bg-secondary)',
                   borderRadius: '8px',
                   border: 'none',
                   cursor: 'pointer',
                   width: '100%',
                   textAlign: 'left',
                 }}>
-                  <Award size={14} color={tokens.colors.gold} />
-                  <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+                  <Award size={14} color={'var(--achievement)'} />
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
                     Tidligere planer
                   </span>
                 </button>

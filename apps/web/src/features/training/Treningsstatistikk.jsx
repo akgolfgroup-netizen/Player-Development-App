@@ -3,36 +3,16 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import {
   FlameIcon, ClockIcon, ChartIcon, GolfTarget
 } from '../../components/icons';
+import { tokens } from '../../design-tokens';
 
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-    // Training areas (harmonized with Blue Palette 01)
-    areas: {
-      langspill: '#2C5F7F',
-      innspill: '#4A7C59',
-      shortgame: '#C9A227',
-      putting: '#D4A84B',
-      fysisk: '#C45B4E',
-      mental: '#8E8E93',
-    }
-  }
+// Training area colors (Blue Palette 01)
+const areaColors = {
+  langspill: '#2C5F7F',
+  innspill: '#4A7C59',
+  shortgame: '#C9A227',
+  putting: '#D4A84B',
+  fysisk: '#C45B4E',
+  mental: '#8E8E93',
 };
 
 // ===== ICONS =====
@@ -101,14 +81,14 @@ const Card = ({ children, className = '', padding = true }) => (
   </div>
 );
 
-const Badge = ({ children, variant = 'default', size = 'sm' }) => {
+const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variants = {
-    default: 'bg-ak-cloud text-ak-charcoal',
-    primary: 'bg-ak-primary text-white',
-    success: 'bg-ak-success/10 text-ak-success',
-    warning: 'bg-ak-warning/10 text-ak-warning',
-    error: 'bg-ak-error/10 text-ak-error',
-    gold: 'bg-ak-gold/10 text-ak-gold',
+    neutral: 'bg-gray-100 text-gray-600',
+    accent: 'bg-blue-50 text-blue-700',
+    success: 'bg-green-50 text-green-700',
+    warning: 'bg-amber-50 text-amber-700',
+    error: 'bg-red-50 text-red-700',
+    achievement: 'bg-yellow-50 text-yellow-700',
   };
 
   const sizes = {
@@ -152,7 +132,7 @@ const BarChart = ({ data, height = 120 }) => {
             className="w-full rounded-t transition-all duration-300 hover:opacity-80"
             style={{
               height: `${(item.value / maxValue) * 100}%`,
-              backgroundColor: item.color || tokens.colors.primary,
+              backgroundColor: item.color || 'var(--accent)',
               minHeight: 4,
             }}
           />
@@ -163,7 +143,7 @@ const BarChart = ({ data, height = 120 }) => {
   );
 };
 
-const LineChart = ({ data, height = 100, color = tokens.colors.primary }) => {
+const LineChart = ({ data, height = 100, color = 'var(--accent)' }) => {
   const maxValue = Math.max(...data.map(d => d.value));
   const minValue = Math.min(...data.map(d => d.value));
   const range = maxValue - minValue || 1;
@@ -178,9 +158,9 @@ const LineChart = ({ data, height = 100, color = tokens.colors.primary }) => {
     <div style={{ height }} className="relative">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
         {/* Grid lines */}
-        <line x1="0" y1="25" x2="100" y2="25" stroke={tokens.colors.mist} strokeWidth="0.5"/>
-        <line x1="0" y1="50" x2="100" y2="50" stroke={tokens.colors.mist} strokeWidth="0.5"/>
-        <line x1="0" y1="75" x2="100" y2="75" stroke={tokens.colors.mist} strokeWidth="0.5"/>
+        <line x1="0" y1="25" x2="100" y2="25" stroke={'var(--border-default)'} strokeWidth="0.5"/>
+        <line x1="0" y1="50" x2="100" y2="50" stroke={'var(--border-default)'} strokeWidth="0.5"/>
+        <line x1="0" y1="75" x2="100" y2="75" stroke={'var(--border-default)'} strokeWidth="0.5"/>
 
         {/* Line */}
         <polyline
@@ -220,7 +200,7 @@ const LineChart = ({ data, height = 100, color = tokens.colors.primary }) => {
   );
 };
 
-const DonutChart = ({ value, max, size = 80, color = tokens.colors.primary }) => {
+const DonutChart = ({ value, max, size = 80, color = 'var(--accent)' }) => {
   const percentage = (value / max) * 100;
   const radius = 35;
   const circumference = 2 * Math.PI * radius;
@@ -234,7 +214,7 @@ const DonutChart = ({ value, max, size = 80, color = tokens.colors.primary }) =>
           cy="50"
           r={radius}
           fill="none"
-          stroke={tokens.colors.mist}
+          stroke={'var(--border-default)'}
           strokeWidth="8"
         />
         <circle
@@ -289,13 +269,13 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
 
   // Hours by day (this week) - demo data or from API
   const demoHoursByDay = [
-    { label: 'Ma', value: 3.5, color: tokens.colors.primary },
-    { label: 'Ti', value: 2.0, color: tokens.colors.primary },
-    { label: 'On', value: 4.0, color: tokens.colors.primary },
-    { label: 'To', value: 2.5, color: tokens.colors.primary },
-    { label: 'Fr', value: 3.0, color: tokens.colors.primary },
-    { label: 'Lø', value: 3.5, color: tokens.colors.primary },
-    { label: 'Sø', value: 0, color: tokens.colors.mist },
+    { label: 'Ma', value: 3.5, color: 'var(--accent)' },
+    { label: 'Ti', value: 2.0, color: 'var(--accent)' },
+    { label: 'On', value: 4.0, color: 'var(--accent)' },
+    { label: 'To', value: 2.5, color: 'var(--accent)' },
+    { label: 'Fr', value: 3.0, color: 'var(--accent)' },
+    { label: 'Lø', value: 3.5, color: 'var(--accent)' },
+    { label: 'Sø', value: 0, color: 'var(--border-default)' },
   ];
   const hoursByDay = apiStats?.hoursByDay || demoHoursByDay;
 
@@ -313,22 +293,22 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
 
   // Training distribution by area - demo data or from API
   const demoAreaDistribution = [
-    { area: 'Langspill', hours: 5.5, percentage: 30, color: tokens.colors.areas.langspill },
-    { area: 'Innspill', hours: 4.0, percentage: 22, color: tokens.colors.areas.innspill },
-    { area: 'Shortgame', hours: 3.5, percentage: 19, color: tokens.colors.areas.shortgame },
-    { area: 'Putting', hours: 3.0, percentage: 16, color: tokens.colors.areas.putting },
-    { area: 'Fysisk', hours: 2.0, percentage: 11, color: tokens.colors.areas.fysisk },
-    { area: 'Mental', hours: 0.5, percentage: 3, color: tokens.colors.areas.mental },
+    { area: 'Langspill', hours: 5.5, percentage: 30, color: areaColors.langspill },
+    { area: 'Innspill', hours: 4.0, percentage: 22, color: areaColors.innspill },
+    { area: 'Shortgame', hours: 3.5, percentage: 19, color: areaColors.shortgame },
+    { area: 'Putting', hours: 3.0, percentage: 16, color: areaColors.putting },
+    { area: 'Fysisk', hours: 2.0, percentage: 11, color: areaColors.fysisk },
+    { area: 'Mental', hours: 0.5, percentage: 3, color: areaColors.mental },
   ];
   const areaDistribution = apiStats?.areaDistribution || demoAreaDistribution;
 
   // L-Phase progression - demo data or from API
   const demoLPhaseProgress = [
-    { phase: 'L1', label: 'Eksponering', completed: 45, total: 45, color: tokens.colors.cloud },
-    { phase: 'L2', label: 'Kropp+Armer', completed: 38, total: 40, color: tokens.colors.mist },
-    { phase: 'L3', label: 'Kølle', completed: 28, total: 35, color: tokens.colors.steel },
-    { phase: 'L4', label: 'Kontrollert', completed: 15, total: 30, color: tokens.colors.primaryLight },
-    { phase: 'L5', label: 'Automatikk', completed: 5, total: 25, color: tokens.colors.primary },
+    { phase: 'L1', label: 'Eksponering', completed: 45, total: 45, color: 'var(--bg-tertiary)' },
+    { phase: 'L2', label: 'Kropp+Armer', completed: 38, total: 40, color: 'var(--border-default)' },
+    { phase: 'L3', label: 'Kølle', completed: 28, total: 35, color: 'var(--text-secondary)' },
+    { phase: 'L4', label: 'Kontrollert', completed: 15, total: 30, color: 'rgba(var(--accent-rgb), 0.8)' },
+    { phase: 'L5', label: 'Automatikk', completed: 5, total: 25, color: 'var(--accent)' },
   ];
   const lPhaseProgress = apiStats?.lPhaseProgress || demoLPhaseProgress;
 
@@ -385,7 +365,7 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
   ];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow, fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
       {/* Header */}
       <PageHeader
         title="Treningsstatistikk"
@@ -400,12 +380,12 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
                 style={{
                   appearance: 'none',
                   padding: '8px 32px 8px 12px',
-                  backgroundColor: tokens.colors.white,
-                  border: `1px solid ${tokens.colors.mist}`,
+                  backgroundColor: 'var(--bg-primary)',
+                  border: `1px solid ${'var(--border-default)'}`,
                   borderRadius: '8px',
                   fontSize: '13px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                   cursor: 'pointer',
                 }}
               >
@@ -413,7 +393,7 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
                   <option key={range.id} value={range.id}>{range.label}</option>
                 ))}
               </select>
-              <div style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: tokens.colors.steel }}>
+              <div style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-secondary)' }}>
                 <Icons.ChevronDown />
               </div>
             </div>
@@ -435,7 +415,7 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
             <p className="text-[32px] font-bold text-ak-charcoal">{weeklyStats.totalHours}t</p>
             <p className="text-[12px] text-ak-steel">av {weeklyStats.targetHours}t mål</p>
             <div className="mt-2">
-              <ProgressBar value={weeklyStats.totalHours} max={weeklyStats.targetHours} color={tokens.colors.success} />
+              <ProgressBar value={weeklyStats.totalHours} max={weeklyStats.targetHours} color={'var(--success)'} />
             </div>
           </Card>
 
@@ -445,12 +425,12 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
               <div className="w-10 h-10 rounded-lg bg-ak-success/10 flex items-center justify-center text-ak-success">
                 <Icons.Target />
               </div>
-              <Badge variant="primary">{weeklyStats.sessionsCompleted}/{weeklyStats.targetSessions}</Badge>
+              <Badge variant="accent">{weeklyStats.sessionsCompleted}/{weeklyStats.targetSessions}</Badge>
             </div>
             <p className="text-[32px] font-bold text-ak-charcoal">{weeklyStats.sessionsCompleted}</p>
             <p className="text-[12px] text-ak-steel">økter fullført</p>
             <div className="mt-2">
-              <ProgressBar value={weeklyStats.sessionsCompleted} max={weeklyStats.targetSessions} color={tokens.colors.primary} />
+              <ProgressBar value={weeklyStats.sessionsCompleted} max={weeklyStats.targetSessions} color={'var(--accent)'} />
             </div>
           </Card>
 
@@ -474,7 +454,7 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
               <div className="w-10 h-10 rounded-lg bg-ak-error/10 flex items-center justify-center text-ak-error">
                 <Icons.Award />
               </div>
-              <Badge variant="gold"><FlameIcon size={12} /> Streak</Badge>
+              <Badge variant="achievement"><FlameIcon size={12} /> Streak</Badge>
             </div>
             <p className="text-[32px] font-bold text-ak-charcoal">{weeklyStats.streak}</p>
             <p className="text-[12px] text-ak-steel">dager på rad</p>
@@ -502,14 +482,14 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
                   <Icons.TrendingUp /> +23% snitt
                 </span>
               </div>
-              <LineChart data={hoursTrend} height={120} color={tokens.colors.primary} />
+              <LineChart data={hoursTrend} height={120} color={'var(--accent)'} />
             </Card>
 
             {/* L-Phase Progression */}
             <Card>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-[15px] font-semibold text-ak-charcoal">L-fase progresjon</h3>
-                <Badge variant="primary">Totalt: 131 øvelser</Badge>
+                <Badge variant="accent">Totalt: 131 øvelser</Badge>
               </div>
               <div className="space-y-3">
                 {lPhaseProgress.map((phase) => (
@@ -572,10 +552,10 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
                       <span className="text-[11px] text-ak-steel">{session.date}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant="default" size="sm">{session.area}</Badge>
+                      <Badge variant="neutral" size="sm">{session.area}</Badge>
                       <span className="text-[11px] text-ak-steel">{session.duration} min</span>
                       {session.lPhase !== '-' && (
-                        <Badge variant="primary" size="sm">{session.lPhase}</Badge>
+                        <Badge variant="accent" size="sm">{session.lPhase}</Badge>
                       )}
                       <span className="text-[11px] text-ak-gold ml-auto">
                         {'★'.repeat(session.rating)}{'☆'.repeat(5 - session.rating)}

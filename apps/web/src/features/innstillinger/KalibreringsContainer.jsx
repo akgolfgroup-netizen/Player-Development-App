@@ -3,7 +3,6 @@ import {
   Target, Save, RotateCcw,
   Gauge, Activity, Info
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { settingsAPI } from '../../services/api';
 
@@ -57,15 +56,15 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '12px 14px',
-    backgroundColor: tokens.colors.snow,
+    backgroundColor: 'var(--bg-secondary)',
     borderRadius: '10px',
     marginBottom: '8px',
   }}>
     <div>
-      <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.charcoal }}>
+      <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
         {label}
       </div>
-      <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
         Oppdatert: {new Date(lastUpdated).toLocaleDateString('nb-NO')}
       </div>
     </div>
@@ -78,7 +77,7 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
           width: '80px',
           padding: '8px 12px',
           borderRadius: '6px',
-          border: `1px solid ${tokens.colors.mist}`,
+          border: `1px solid ${'var(--border-default)'}`,
           fontSize: '14px',
           fontWeight: 500,
           textAlign: 'right',
@@ -87,7 +86,7 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
       />
       <span style={{
         fontSize: '13px',
-        color: tokens.colors.steel,
+        color: 'var(--text-secondary)',
         minWidth: '40px',
       }}>
         {unit}
@@ -107,12 +106,12 @@ const ClubDistanceRow = ({ club, carry, total, onChange }) => (
     gap: '12px',
     alignItems: 'center',
     padding: '10px 0',
-    borderBottom: `1px solid ${tokens.colors.mist}`,
+    borderBottom: `1px solid ${'var(--border-default)'}`,
   }}>
     <span style={{
       fontSize: '13px',
       fontWeight: 500,
-      color: tokens.colors.charcoal,
+      color: 'var(--text-primary)',
     }}>
       {club}
     </span>
@@ -123,7 +122,7 @@ const ClubDistanceRow = ({ club, carry, total, onChange }) => (
       style={{
         padding: '8px 12px',
         borderRadius: '6px',
-        border: `1px solid ${tokens.colors.mist}`,
+        border: `1px solid ${'var(--border-default)'}`,
         fontSize: '14px',
         textAlign: 'center',
         outline: 'none',
@@ -136,7 +135,7 @@ const ClubDistanceRow = ({ club, carry, total, onChange }) => (
       style={{
         padding: '8px 12px',
         borderRadius: '6px',
-        border: `1px solid ${tokens.colors.mist}`,
+        border: `1px solid ${'var(--border-default)'}`,
         fontSize: '14px',
         textAlign: 'center',
         outline: 'none',
@@ -191,7 +190,7 @@ const KalibreringsContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Kalibrering"
         subtitle="Juster dine personlige mål og verdier"
@@ -204,23 +203,23 @@ const KalibreringsContainer = () => {
           alignItems: 'flex-start',
           gap: '12px',
           padding: '14px',
-          backgroundColor: `${tokens.colors.primary}10`,
+          backgroundColor: `${'var(--accent)'}10`,
           borderRadius: '12px',
           marginBottom: '24px',
         }}>
-          <Info size={20} color={tokens.colors.primary} style={{ flexShrink: 0, marginTop: '2px' }} />
+          <Info size={20} color={'var(--accent)'} style={{ flexShrink: 0, marginTop: '2px' }} />
           <div>
             <h4 style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: '0 0 4px 0',
             }}>
               Viktig for presise mål
             </h4>
             <p style={{
               fontSize: '13px',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               margin: 0,
               lineHeight: 1.4,
             }}>
@@ -232,7 +231,7 @@ const KalibreringsContainer = () => {
 
         {/* Driving Settings */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '14px',
           padding: '16px',
           marginBottom: '20px',
@@ -247,17 +246,17 @@ const KalibreringsContainer = () => {
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: `${tokens.colors.primary}15`,
+              backgroundColor: `${'var(--accent)'}15`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <Gauge size={18} color={tokens.colors.primary} />
+              <Gauge size={18} color={'var(--accent)'} />
             </div>
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               Driver-verdier
@@ -308,7 +307,7 @@ const KalibreringsContainer = () => {
 
         {/* Club Distances */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '14px',
           padding: '16px',
           marginBottom: '20px',
@@ -323,17 +322,17 @@ const KalibreringsContainer = () => {
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: `${tokens.colors.success}15`,
+              backgroundColor: `${'var(--success)'}15`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <Target size={18} color={tokens.colors.success} />
+              <Target size={18} color={'var(--success)'} />
             </div>
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               Klubbavstander
@@ -345,12 +344,12 @@ const KalibreringsContainer = () => {
             gridTemplateColumns: '80px 1fr 1fr',
             gap: '12px',
             padding: '8px 0',
-            borderBottom: `2px solid ${tokens.colors.mist}`,
+            borderBottom: `2px solid ${'var(--border-default)'}`,
             marginBottom: '8px',
           }}>
-            <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel }}>Klubb</span>
-            <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel, textAlign: 'center' }}>Carry (m)</span>
-            <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel, textAlign: 'center' }}>Total (m)</span>
+            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>Klubb</span>
+            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center' }}>Carry (m)</span>
+            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center' }}>Total (m)</span>
           </div>
 
           {clubDistances.map((club, idx) => (
@@ -371,7 +370,7 @@ const KalibreringsContainer = () => {
 
         {/* Physical Settings */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '14px',
           padding: '16px',
           marginBottom: '20px',
@@ -386,17 +385,17 @@ const KalibreringsContainer = () => {
               width: '36px',
               height: '36px',
               borderRadius: '8px',
-              backgroundColor: `${tokens.colors.error}15`,
+              backgroundColor: `${'var(--error)'}15`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <Activity size={18} color={tokens.colors.error} />
+              <Activity size={18} color={'var(--error)'} />
             </div>
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
             }}>
               Fysiske verdier
@@ -450,9 +449,9 @@ const KalibreringsContainer = () => {
               gap: '8px',
               padding: '14px',
               borderRadius: '10px',
-              border: `1px solid ${tokens.colors.mist}`,
-              backgroundColor: tokens.colors.white,
-              color: tokens.colors.charcoal,
+              border: `1px solid ${'var(--border-default)'}`,
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
               fontSize: '15px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -472,8 +471,8 @@ const KalibreringsContainer = () => {
               padding: '14px',
               borderRadius: '10px',
               border: 'none',
-              backgroundColor: hasChanges ? tokens.colors.primary : tokens.colors.mist,
-              color: hasChanges ? tokens.colors.white : tokens.colors.steel,
+              backgroundColor: hasChanges ? 'var(--accent)' : 'var(--border-default)',
+              color: hasChanges ? 'var(--bg-primary)' : 'var(--text-secondary)',
               fontSize: '15px',
               fontWeight: 600,
               cursor: hasChanges ? 'pointer' : 'not-allowed',

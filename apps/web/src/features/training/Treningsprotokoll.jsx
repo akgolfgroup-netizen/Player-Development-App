@@ -4,36 +4,17 @@ import {
   TeknikIcon, GolfslagIcon, SpillIcon, KonkurranseIcon,
   FysiskIcon, MentalIcon, GolfScorecard
 } from '../../components/icons';
+import { tokens } from '../../design-tokens';
+import StateCard from '../../ui/composites/StateCard';
 
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-    // Session Types (harmonized with Blue Palette 01)
-    sessions: {
-      teknikk: '#2C5F7F',
-      golfslag: '#4A7C59',
-      spill: '#10456A',
-      konkurranse: '#C9A227',
-      fysisk: '#D4A84B',
-      mental: '#8E8E93',
-    }
-  }
+// Session type colors (Blue Palette 01)
+const sessionColors = {
+  teknikk: '#2C5F7F',
+  golfslag: '#4A7C59',
+  spill: '#10456A',
+  konkurranse: '#C9A227',
+  fysisk: '#D4A84B',
+  mental: '#8E8E93',
 };
 
 // ===== ICONS =====
@@ -107,12 +88,12 @@ const Card = ({ children, className = '', padding = true }) => (
   </div>
 );
 
-const Badge = ({ children, variant = 'default', size = 'sm' }) => {
+const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variants = {
-    default: 'bg-ak-cloud text-ak-charcoal',
-    primary: 'bg-ak-primary text-white',
-    success: 'bg-ak-success/10 text-ak-success',
-    warning: 'bg-ak-warning/10 text-ak-warning',
+    neutral: 'bg-gray-100 text-gray-600',
+    accent: 'bg-blue-50 text-blue-700',
+    success: 'bg-green-50 text-green-700',
+    warning: 'bg-amber-50 text-amber-700',
   };
 
   const sizes = {
@@ -410,7 +391,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
 
   // Get session type color
   const getSessionColor = (category) => {
-    return tokens.colors.sessions[category] || tokens.colors.steel;
+    return sessionColors[category] || tokens.colors.steel;
   };
 
   // Filter sessions based on selected category
@@ -551,7 +532,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                     <Icons.Target />
                     <span className="text-[12px] text-white/70">Fokus:</span>
                     {selectedSession.focus.map((f, i) => (
-                      <Badge key={i} variant="default" size="sm">
+                      <Badge key={i} variant="neutral" size="sm">
                         <span className="text-ak-primary">{f}</span>
                       </Badge>
                     ))}
@@ -666,13 +647,11 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                 </div>
               </>
             ) : (
-              <Card className="h-64 flex items-center justify-center">
-                <div className="text-center">
-                  <span className="mb-3 block"><GolfScorecard size={48} color="#8E8E93" /></span>
-                  <p className="text-[15px] font-medium text-ak-charcoal">Velg en treningsøkt</p>
-                  <p className="text-[13px] text-ak-steel">Klikk på en økt i listen for å se detaljer</p>
-                </div>
-              </Card>
+              <StateCard
+                variant="empty"
+                title="Velg en treningsøkt"
+                description="Klikk på en økt i listen for å se detaljer og starte treningen."
+              />
             )}
           </div>
         </div>

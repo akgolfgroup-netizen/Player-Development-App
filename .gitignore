@@ -56,6 +56,11 @@ Thumbs.db
 *_BACKUP_*
 *.bak
 
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
 # Temporary Files
 .tmp/
 temp/

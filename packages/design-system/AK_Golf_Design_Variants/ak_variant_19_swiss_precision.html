@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Golf – Variant 19: Swiss Precision</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --white: #FFFFFF;
+      --gray-50: #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-400: #9CA3AF;
+      --gray-600: #4B5563;
+      --gray-900: #111827;
+      --black: #000000;
+      --red: #EF4444;
+      --font: 'Inter', -apple-system, Helvetica, sans-serif;
+    }
+
+    html { font-family: var(--font); background: var(--gray-100); color: var(--black); }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; gap: 40px; }
+
+    .page-header { text-align: left; max-width: 700px; width: 100%; }
+    .page-header h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .page-header p { font-size: 16px; color: var(--gray-600); line-height: 1.6; }
+    .tags { display: flex; gap: 8px; margin-top: 20px; }
+    .tag { background: var(--black); color: var(--white); padding: 6px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tag.outline { background: transparent; color: var(--black); border: 1px solid var(--black); }
+
+    .mockup-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
+    .mockup-container { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .mockup-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .device { width: 340px; height: 720px; background: var(--black); border-radius: 54px; padding: 10px; }
+    .screen { width: 100%; height: 100%; background: var(--white); border-radius: 46px; overflow: hidden; position: relative; }
+    .dynamic-island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 120px; height: 36px; background: var(--black); border-radius: 20px; z-index: 100; }
+    .home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; background: var(--black); border-radius: 3px; z-index: 100; }
+
+    .app { height: 100%; display: flex; flex-direction: column; padding-top: 60px; padding-bottom: 90px; overflow-y: auto; scrollbar-width: none; }
+
+    /* GRID SYSTEM - 4 column */
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 0 16px;
+      pointer-events: none;
+      opacity: 0.03;
+    }
+    .grid-bg > div { background: var(--black); }
+
+    .header { padding: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gray-200); }
+    .header-logo { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+    .header-time { font-size: 12px; font-weight: 500; color: var(--gray-600); font-variant-numeric: tabular-nums; }
+
+    .score-section { padding: 24px 16px; border-bottom: 1px solid var(--gray-200); }
+    .score-label { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .score-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
+    .score-value { font-size: 72px; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+    .score-unit { font-size: 24px; font-weight: 500; color: var(--gray-400); }
+    .score-change { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--gray-900); background: var(--gray-100); padding: 4px 8px; }
+    .score-change.up::before { content: '↑'; color: var(--gray-900); }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--gray-200); }
+    .metric-cell { background: var(--white); padding: 16px 12px; }
+    .metric-value { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+    .metric-label { font-size: 10px; font-weight: 500; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; }
+    .metric-bar { height: 3px; background: var(--gray-100); margin-top: 8px; }
+    .metric-bar-fill { height: 100%; background: var(--black); }
+
+    .section { border-bottom: 1px solid var(--gray-200); }
+    .section-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .section-count { font-size: 12px; font-weight: 500; color: var(--gray-400); font-variant-numeric: tabular-nums; }
+
+    .list-item { display: flex; align-items: center; gap: 12px; padding: 16px; border-top: 1px solid var(--gray-100); }
+    .list-item:first-child { border-top: none; }
+    .list-number { font-size: 14px; font-weight: 700; color: var(--gray-300); width: 24px; font-variant-numeric: tabular-nums; }
+    .list-content { flex: 1; }
+    .list-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .list-meta { font-size: 12px; color: var(--gray-400); }
+    .list-badge { font-size: 10px; font-weight: 600; text-transform: uppercase; padding: 4px 8px; background: var(--black); color: var(--white); }
+    .list-time { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    .tab-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: var(--white); border-top: 1px solid var(--gray-200); display: grid; grid-template-columns: repeat(4, 1fr); z-index: 10; }
+    .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--gray-400); }
+    .tab.active { color: var(--black); }
+    .tab-icon { width: 22px; height: 22px; }
+    .tab-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Swiss Precision</h1>
+  <p>Inspirert av sveitsisk design – streng grid, Helvetica-estetikk, og funksjonell presisjon. Informasjon først.</p>
+  <div class="tags">
+    <span class="tag">SWISS</span>
+    <span class="tag outline">GRID</span>
+    <span class="tag outline">FUNCTIONAL</span>
+  </div>
+</header>
+
+<div class="mockup-grid">
+  <div class="mockup-container">
+    <span class="mockup-label">01 — Home</span>
+    <div class="device">
+      <div class="screen">
+        <div class="dynamic-island"></div>
+        <div class="home-indicator"></div>
+        <div class="grid-bg"><div></div><div></div><div></div><div></div></div>
+        <div class="app">
+          
+          <div class="header">
+            <div class="header-logo">AK Golf</div>
+            <div class="header-time">08:45</div>
+          </div>
+
+          <div class="score-section">
+            <div class="score-label">Readiness Score</div>
+            <div class="score-row">
+              <span class="score-value">87</span>
+              <span class="score-unit">/ 100</span>
+            </div>
+            <span class="score-change up">4.2% this week</span>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-cell">
+              <div class="metric-value">92</div>
+              <div class="metric-label">Swing</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:92%"></div></div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-value">78</div>
+              <div class="metric-label">Short</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:78%"></div></div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-value">85</div>
+              <div class="metric-label">Mental</div>
+              <div class="metric-bar"><div class="metric-bar-fill" style="width:85%"></div></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title">Today's Sessions</span>
+              <span class="section-count">3</span>
+            </div>
+            <div class="list-item">
+              <div class="list-number">01</div>
+              <div class="list-content">
+                <div class="list-title">Short Game Focus</div>
+                <div class="list-meta">Chipping & Pitching</div>
+              </div>
+              <div class="list-badge">Now</div>
+            </div>
+            <div class="list-item">
+              <div class="list-number">02</div>
+              <div class="list-content">
+                <div class="list-title">Driver Technique</div>
+                <div class="list-meta">Swing fundamentals</div>
+              </div>
+              <div class="list-time">45m</div>
+            </div>
+            <div class="list-item">
+              <div class="list-number">03</div>
+              <div class="list-content">
+                <div class="list-title">Mental Training</div>
+                <div class="list-meta">Focus & visualization</div>
+              </div>
+              <div class="list-time">15m</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <span class="tab-label">Home</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg></div>
+            <span class="tab-label">Train</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+            <span class="tab-label">Profile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-container">
+    <span class="mockup-label">02 — Stats</span>
+    <div class="device">
+      <div class="screen">
+        <div class="dynamic-island"></div>
+        <div class="home-indicator"></div>
+        <div class="grid-bg"><div></div><div></div><div></div><div></div></div>
+        <div class="app">
+          
+          <div class="header">
+            <div class="header-logo">Statistics</div>
+            <div class="header-time">30 days</div>
+          </div>
+
+          <div class="metrics-grid" style="border-bottom:1px solid var(--gray-200)">
+            <div class="metric-cell">
+              <div class="metric-value">24</div>
+              <div class="metric-label">Sessions</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-value">12.5h</div>
+              <div class="metric-label">Total Time</div>
+            </div>
+            <div class="metric-cell">
+              <div class="metric-value">89%</div>
+              <div class="metric-label">Completion</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title">Category Performance</span>
+            </div>
+            <div style="padding:0 16px 16px">
+              <div style="margin-bottom:16px">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                  <span style="font-size:13px;font-weight:500">Driving</span>
+                  <span style="font-size:13px;font-weight:700;font-variant-numeric:tabular-nums">92%</span>
+                </div>
+                <div class="metric-bar" style="margin:0"><div class="metric-bar-fill" style="width:92%"></div></div>
+              </div>
+              <div style="margin-bottom:16px">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                  <span style="font-size:13px;font-weight:500">Approach</span>
+                  <span style="font-size:13px;font-weight:700;font-variant-numeric:tabular-nums">81%</span>
+                </div>
+                <div class="metric-bar" style="margin:0"><div class="metric-bar-fill" style="width:81%"></div></div>
+              </div>
+              <div style="margin-bottom:16px">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                  <span style="font-size:13px;font-weight:500">Short Game</span>
+                  <span style="font-size:13px;font-weight:700;font-variant-numeric:tabular-nums">74%</span>
+                </div>
+                <div class="metric-bar" style="margin:0"><div class="metric-bar-fill" style="width:74%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                  <span style="font-size:13px;font-weight:500">Putting</span>
+                  <span style="font-size:13px;font-weight:700;font-variant-numeric:tabular-nums">68%</span>
+                </div>
+                <div class="metric-bar" style="margin:0"><div class="metric-bar-fill" style="width:68%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <span class="section-title">Weekly Activity</span>
+            </div>
+            <div style="padding:0 16px 16px;display:flex;gap:4px;align-items:flex-end;height:100px">
+              <div style="flex:1;background:var(--gray-200);height:40%"></div>
+              <div style="flex:1;background:var(--gray-200);height:60%"></div>
+              <div style="flex:1;background:var(--gray-200);height:80%"></div>
+              <div style="flex:1;background:var(--gray-200);height:45%"></div>
+              <div style="flex:1;background:var(--gray-200);height:90%"></div>
+              <div style="flex:1;background:var(--black);height:100%"></div>
+              <div style="flex:1;background:var(--gray-100);height:20%"></div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+            <span class="tab-label">Home</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg></div>
+            <span class="tab-label">Train</span>
+          </div>
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg></div>
+            <span class="tab-label">Profile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

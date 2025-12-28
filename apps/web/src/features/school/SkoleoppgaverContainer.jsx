@@ -3,7 +3,6 @@ import {
   BookOpen, Calendar, Clock, CheckCircle, Circle,
   AlertCircle, FileText
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -88,25 +87,25 @@ const SUBJECTS = ['Alle', 'Matematikk', 'Norsk', 'Engelsk', 'Naturfag', 'Samfunn
 
 const getSubjectColor = (subject) => {
   switch (subject) {
-    case 'Matematikk': return tokens.colors.primary;
-    case 'Norsk': return tokens.colors.error;
-    case 'Engelsk': return tokens.colors.success;
-    case 'Naturfag': return tokens.colors.warning;
-    case 'Samfunnsfag': return tokens.colors.gold;
-    default: return tokens.colors.steel;
+    case 'Matematikk': return 'var(--accent)';
+    case 'Norsk': return 'var(--error)';
+    case 'Engelsk': return 'var(--success)';
+    case 'Naturfag': return 'var(--warning)';
+    case 'Samfunnsfag': return 'var(--achievement)';
+    default: return 'var(--text-secondary)';
   }
 };
 
 const getStatusConfig = (status) => {
   switch (status) {
     case 'completed':
-      return { label: 'Fullfort', color: tokens.colors.success, icon: CheckCircle };
+      return { label: 'Fullfort', color: 'var(--success)', icon: CheckCircle };
     case 'in_progress':
-      return { label: 'Pagar', color: tokens.colors.warning, icon: Clock };
+      return { label: 'Pagar', color: 'var(--warning)', icon: Clock };
     case 'pending':
-      return { label: 'Ikke startet', color: tokens.colors.steel, icon: Circle };
+      return { label: 'Ikke startet', color: 'var(--text-secondary)', icon: Circle };
     default:
-      return { label: status, color: tokens.colors.steel, icon: Circle };
+      return { label: status, color: 'var(--text-secondary)', icon: Circle };
   }
 };
 
@@ -143,7 +142,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
     <div
       onClick={() => onClick(assignment)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         padding: '14px 16px',
         cursor: 'pointer',
@@ -189,8 +188,8 @@ const AssignmentCard = ({ assignment, onClick }) => {
               fontWeight: 500,
               padding: '2px 6px',
               borderRadius: '4px',
-              backgroundColor: tokens.colors.snow,
-              color: tokens.colors.steel,
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-secondary)',
             }}>
               {assignment.type}
             </span>
@@ -198,7 +197,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
           <h4 style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
             textDecoration: assignment.status === 'completed' ? 'line-through' : 'none',
           }}>
@@ -217,8 +216,8 @@ const AssignmentCard = ({ assignment, onClick }) => {
             alignItems: 'center',
             gap: '4px',
             fontSize: '12px',
-            color: isOverdue ? tokens.colors.error :
-                   isUrgent ? tokens.colors.warning : tokens.colors.steel,
+            color: isOverdue ? 'var(--error)' :
+                   isUrgent ? 'var(--warning)' : 'var(--text-secondary)',
             fontWeight: isOverdue || isUrgent ? 500 : 400,
           }}>
             {isOverdue && <AlertCircle size={12} />}
@@ -229,7 +228,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
             <span style={{
               fontSize: '12px',
               fontWeight: 600,
-              color: tokens.colors.success,
+              color: 'var(--success)',
             }}>
               {assignment.grade}
             </span>
@@ -239,7 +238,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
 
       <p style={{
         fontSize: '12px',
-        color: tokens.colors.steel,
+        color: 'var(--text-secondary)',
         margin: '0 0 8px 0',
         lineHeight: 1.4,
       }}>
@@ -267,7 +266,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
             alignItems: 'center',
             gap: '4px',
             fontSize: '11px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
           }}>
             <FileText size={12} />
             {assignment.attachments} vedlegg
@@ -314,7 +313,7 @@ const SkoleoppgaverContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Skoleoppgaver"
         subtitle="Hold oversikt over lekser og innleveringer"
@@ -329,37 +328,37 @@ const SkoleoppgaverContainer = () => {
           marginBottom: '24px',
         }}>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
               {stats.total}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Aktive</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Aktive</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.error }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--error)' }}>
               {stats.urgent}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Haster</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Haster</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '14px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
               {stats.completed}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Fullfort</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Fullfort</div>
           </div>
         </div>
 
@@ -380,8 +379,8 @@ const SkoleoppgaverContainer = () => {
                     padding: '8px 14px',
                     borderRadius: '8px',
                     border: 'none',
-                    backgroundColor: statusFilter === f.key ? tokens.colors.primary : tokens.colors.white,
-                    color: statusFilter === f.key ? tokens.colors.white : tokens.colors.charcoal,
+                    backgroundColor: statusFilter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
+                    color: statusFilter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
                     fontSize: '13px',
                     fontWeight: 500,
                     cursor: 'pointer',
@@ -403,13 +402,13 @@ const SkoleoppgaverContainer = () => {
                   borderRadius: '6px',
                   border: subjectFilter === subject
                     ? `2px solid ${getSubjectColor(subject)}`
-                    : `1px solid ${tokens.colors.mist}`,
+                    : `1px solid ${'var(--border-default)'}`,
                   backgroundColor: subjectFilter === subject
                     ? `${getSubjectColor(subject)}10`
-                    : tokens.colors.white,
+                    : 'var(--bg-primary)',
                   color: subjectFilter === subject
                     ? getSubjectColor(subject)
-                    : tokens.colors.charcoal,
+                    : 'var(--text-primary)',
                   fontSize: '12px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -434,13 +433,13 @@ const SkoleoppgaverContainer = () => {
 
           {filteredAssignments.length === 0 && (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '14px',
               padding: '40px',
               textAlign: 'center',
             }}>
-              <BookOpen size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <BookOpen size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen oppgaver funnet
               </p>
             </div>

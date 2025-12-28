@@ -3,13 +3,13 @@ import {
   Plus, Search, Calendar, Tag, Edit, Trash2,
   Pin, Star, X, Check, MoreVertical
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 import {
   MoodIcon1, MoodIcon2, MoodIcon3, MoodIcon4, MoodIcon5,
   NotesIcon, ProfileIcon,
   TeamIcon
 } from '../../components/icons';
+import Modal from '../../ui/composites/Modal.composite';
 
 // Icons wrapper for backwards compatibility
 const Icons = {
@@ -34,14 +34,14 @@ const Card = ({ children, className = '', padding = true }) => (
   </div>
 );
 
-const Badge = ({ children, variant = 'default', size = 'sm' }) => {
+const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variants = {
-    default: 'bg-ak-cloud text-ak-charcoal',
-    primary: 'bg-ak-primary text-white',
-    success: 'bg-ak-success/10 text-ak-success',
-    warning: 'bg-ak-warning/10 text-ak-warning',
-    error: 'bg-ak-error/10 text-ak-error',
-    mental: 'bg-ak-steel/10 text-ak-steel',
+    neutral: 'bg-gray-100 text-gray-600',
+    accent: 'bg-blue-50 text-blue-700',
+    success: 'bg-green-50 text-green-700',
+    warning: 'bg-amber-50 text-amber-700',
+    error: 'bg-red-50 text-red-700',
+    mental: 'bg-gray-200 text-gray-600',
   };
 
   const sizes = {
@@ -63,6 +63,7 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
   const [selectedNote, setSelectedNote] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showNewNote, setShowNewNote] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState(null);
 
   // Note form state
   const [noteForm, setNoteForm] = useState({
@@ -93,13 +94,13 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
 
   // Tags
   const tags = [
-    { id: 'all', label: 'Alle', color: tokens.colors.steel },
-    { id: 'trening', label: 'Trening', color: tokens.colors.success },
-    { id: 'turnering', label: 'Turnering', color: tokens.colors.gold },
-    { id: 'mental', label: 'Mental', color: tokens.colors.steel },
-    { id: 'teknikk', label: 'Teknikk', color: tokens.colors.primaryLight },
-    { id: 'mål', label: 'Mål', color: tokens.colors.warning },
-    { id: 'refleksjon', label: 'Refleksjon', color: 'var(--ak-primary)' },
+    { id: 'all', label: 'Alle', color: 'var(--text-secondary)' },
+    { id: 'trening', label: 'Trening', color: 'var(--success)' },
+    { id: 'turnering', label: 'Turnering', color: 'var(--achievement)' },
+    { id: 'mental', label: 'Mental', color: 'var(--text-secondary)' },
+    { id: 'teknikk', label: 'Teknikk', color: 'var(--accent-light)' },
+    { id: 'mål', label: 'Mål', color: 'var(--warning)' },
+    { id: 'refleksjon', label: 'Refleksjon', color: 'var(--accent)' },
   ];
 
   // Default notes (fallback if no API data)
@@ -285,7 +286,7 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Notater"
         subtitle="Treningsdagbok og refleksjoner"
@@ -297,8 +298,8 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               borderRadius: '10px',
               fontSize: '13px',
               fontWeight: 500,
@@ -542,11 +543,7 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
                   <Icons.Edit />
                 </button>
                 <button
-                  onClick={() => {
-                    if (window.confirm('Er du sikker på at du vil slette dette notatet?')) {
-                      deleteNote(selectedNote.id);
-                    }
-                  }}
+                  onClick={() => setNoteToDelete(selectedNote)}
                   className="p-2 rounded-lg hover:bg-ak-error/10 text-ak-error"
                 >
                   <Icons.Trash />
@@ -569,7 +566,7 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
                   return tag ? (
                     <Badge
                       key={tagId}
-                      variant="default"
+                      variant="neutral"
                       size="md"
                     >
                       <span className="flex items-center gap-1">
@@ -802,6 +799,37 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
           </Card>
         </div>
       )}
+
+      {/* Delete Note Confirmation Modal */}
+      <Modal
+        isOpen={!!noteToDelete}
+        onClose={() => setNoteToDelete(null)}
+        title="Slett notat"
+        size="sm"
+        footer={
+          <div className="flex gap-3 justify-end">
+            <button
+              onClick={() => setNoteToDelete(null)}
+              className="px-4 py-2 bg-transparent border border-ak-mist rounded-lg text-ak-charcoal text-[14px] font-medium hover:bg-ak-snow transition-colors"
+            >
+              Avbryt
+            </button>
+            <button
+              onClick={() => {
+                deleteNote(noteToDelete.id);
+                setNoteToDelete(null);
+              }}
+              className="px-4 py-2 bg-ak-error text-white rounded-lg text-[14px] font-semibold hover:bg-ak-error/90 transition-colors"
+            >
+              Slett notat
+            </button>
+          </div>
+        }
+      >
+        <p className="text-ak-steel m-0 leading-relaxed">
+          Er du sikker på at du vil slette <strong className="text-ak-charcoal">{noteToDelete?.title}</strong>? Denne handlingen kan ikke angres.
+        </p>
+      </Modal>
 
     </div>
   );

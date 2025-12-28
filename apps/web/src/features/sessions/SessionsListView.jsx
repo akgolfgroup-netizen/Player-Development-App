@@ -8,11 +8,12 @@
  */
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { tokens, typographyStyle } from '../../design-tokens';
+// UiCanon: CSS variables
 import {
   Calendar, Clock, Target, Filter, Plus, ChevronRight,
   CheckCircle, AlertCircle, XCircle, Play, Search
 } from 'lucide-react';
+import StateCard from '../../ui/composites/StateCard';
 
 // Session type labels
 const SESSION_TYPE_LABELS = {
@@ -30,27 +31,27 @@ const SESSION_TYPE_LABELS = {
 const STATUS_CONFIG = {
   in_progress: {
     label: 'Pagar',
-    color: tokens.colors.warning,
+    color: 'var(--warning)',
     icon: Play,
-    bg: `${tokens.colors.warning}15`,
+    bg: 'rgba(var(--warning-rgb), 0.15)',
   },
   completed: {
     label: 'Fullfort',
-    color: tokens.colors.success,
+    color: 'var(--success)',
     icon: CheckCircle,
-    bg: `${tokens.colors.success}15`,
+    bg: 'rgba(var(--success-rgb), 0.15)',
   },
   auto_completed: {
     label: 'Auto-fullfort',
-    color: tokens.colors.steel,
+    color: 'var(--text-secondary)',
     icon: AlertCircle,
-    bg: `${tokens.colors.steel}15`,
+    bg: 'rgba(var(--text-secondary-rgb), 0.15)',
   },
   abandoned: {
     label: 'Avbrutt',
-    color: tokens.colors.error,
+    color: 'var(--error)',
     icon: XCircle,
-    bg: `${tokens.colors.error}15`,
+    bg: 'rgba(var(--error-rgb), 0.15)',
   },
 };
 
@@ -70,22 +71,22 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
   const [showFilters, setShowFilters] = useState(false);
 
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       {/* Search and filter toggle */}
-      <div style={{ display: 'flex', gap: tokens.spacing.sm, marginBottom: tokens.spacing.md }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
         <div
           style={{
             flex: 1,
             display: 'flex',
             alignItems: 'center',
-            gap: tokens.spacing.sm,
-            padding: tokens.spacing.sm,
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.md,
-            border: `1px solid ${tokens.colors.mist}`,
+            gap: '8px',
+            padding: '8px',
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-default)',
           }}
         >
-          <Search size={18} color={tokens.colors.steel} />
+          <Search size={18} color={'var(--text-secondary)'} />
           <input
             type="text"
             placeholder="Sok i okter..."
@@ -95,7 +96,7 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
               flex: 1,
               border: 'none',
               outline: 'none',
-              ...typographyStyle('body'),
+              fontSize: '15px', lineHeight: '20px',
             }}
           />
         </div>
@@ -104,14 +105,14 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: tokens.spacing.xs,
-            padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-            backgroundColor: showFilters ? tokens.colors.primary : tokens.colors.white,
-            color: showFilters ? tokens.colors.white : tokens.colors.charcoal,
-            border: `1px solid ${showFilters ? tokens.colors.primary : tokens.colors.mist}`,
-            borderRadius: tokens.borderRadius.md,
+            gap: '4px',
+            padding: `${'8px'} ${'16px'}`,
+            backgroundColor: showFilters ? 'var(--accent)' : 'var(--bg-primary)',
+            color: showFilters ? 'var(--bg-primary)' : 'var(--text-primary)',
+            border: `1px solid ${showFilters ? 'var(--accent)' : 'var(--border-default)'}`,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
-            ...typographyStyle('label'),
+            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
           }}
         >
           <Filter size={16} />
@@ -125,16 +126,16 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-            gap: tokens.spacing.md,
-            padding: tokens.spacing.md,
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.md,
-            border: `1px solid ${tokens.colors.mist}`,
+            gap: '16px',
+            padding: '16px',
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-default)',
           }}
         >
           {/* Status filter */}
           <div>
-            <label style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+            <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
               Status
             </label>
             <select
@@ -142,10 +143,10 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
               onChange={(e) => onFilterChange('completionStatus', e.target.value || null)}
               style={{
                 width: '100%',
-                padding: tokens.spacing.sm,
-                borderRadius: tokens.borderRadius.sm,
-                border: `1px solid ${tokens.colors.mist}`,
-                ...typographyStyle('body'),
+                padding: '8px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-default)',
+                fontSize: '15px', lineHeight: '20px',
               }}
             >
               <option value="">Alle</option>
@@ -158,7 +159,7 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
 
           {/* Session type filter */}
           <div>
-            <label style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+            <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
               Type
             </label>
             <select
@@ -166,10 +167,10 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
               onChange={(e) => onFilterChange('sessionType', e.target.value || null)}
               style={{
                 width: '100%',
-                padding: tokens.spacing.sm,
-                borderRadius: tokens.borderRadius.sm,
-                border: `1px solid ${tokens.colors.mist}`,
-                ...typographyStyle('body'),
+                padding: '8px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-default)',
+                fontSize: '15px', lineHeight: '20px',
               }}
             >
               <option value="">Alle typer</option>
@@ -181,7 +182,7 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
 
           {/* Period filter */}
           <div>
-            <label style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+            <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
               Periode
             </label>
             <select
@@ -189,10 +190,10 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
               onChange={(e) => onFilterChange('period', e.target.value || null)}
               style={{
                 width: '100%',
-                padding: tokens.spacing.sm,
-                borderRadius: tokens.borderRadius.sm,
-                border: `1px solid ${tokens.colors.mist}`,
-                ...typographyStyle('body'),
+                padding: '8px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-default)',
+                fontSize: '15px', lineHeight: '20px',
               }}
             >
               <option value="">Alle perioder</option>
@@ -204,7 +205,7 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
 
           {/* Date from */}
           <div>
-            <label style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+            <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
               Fra dato
             </label>
             <input
@@ -213,17 +214,17 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
               onChange={(e) => onFilterChange('fromDate', e.target.value || null)}
               style={{
                 width: '100%',
-                padding: tokens.spacing.sm,
-                borderRadius: tokens.borderRadius.sm,
-                border: `1px solid ${tokens.colors.mist}`,
-                ...typographyStyle('body'),
+                padding: '8px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-default)',
+                fontSize: '15px', lineHeight: '20px',
               }}
             />
           </div>
 
           {/* Date to */}
           <div>
-            <label style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+            <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
               Til dato
             </label>
             <input
@@ -232,10 +233,10 @@ function FilterBar({ filters, onFilterChange, onSearch }) {
               onChange={(e) => onFilterChange('toDate', e.target.value || null)}
               style={{
                 width: '100%',
-                padding: tokens.spacing.sm,
-                borderRadius: tokens.borderRadius.sm,
-                border: `1px solid ${tokens.colors.mist}`,
-                ...typographyStyle('body'),
+                padding: '8px',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-default)',
+                fontSize: '15px', lineHeight: '20px',
               }}
             />
           </div>
@@ -254,10 +255,10 @@ function SessionCard({ session, onClick }) {
     <div
       onClick={onClick}
       style={{
-        backgroundColor: tokens.colors.white,
-        borderRadius: tokens.borderRadius.lg,
-        padding: tokens.spacing.md,
-        marginBottom: tokens.spacing.md,
+        backgroundColor: 'var(--bg-primary)',
+        borderRadius: 'var(--radius-lg)',
+        padding: '16px',
+        marginBottom: '16px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
         cursor: 'pointer',
         transition: 'transform 0.2s, box-shadow 0.2s',
@@ -266,8 +267,8 @@ function SessionCard({ session, onClick }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={{ flex: 1 }}>
           {/* Session type and status */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm, marginBottom: tokens.spacing.sm }}>
-            <span style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
               {SESSION_TYPE_LABELS[session.sessionType] || session.sessionType}
             </span>
             <span
@@ -278,8 +279,8 @@ function SessionCard({ session, onClick }) {
                 padding: '4px 8px',
                 backgroundColor: statusConfig.bg,
                 color: statusConfig.color,
-                borderRadius: tokens.borderRadius.sm,
-                ...typographyStyle('caption'),
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '12px', lineHeight: '16px',
               }}
             >
               <StatusIcon size={12} />
@@ -288,16 +289,16 @@ function SessionCard({ session, onClick }) {
           </div>
 
           {/* Date and duration */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.md, marginBottom: tokens.spacing.sm }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.xs }}>
-              <Calendar size={14} color={tokens.colors.steel} />
-              <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Calendar size={14} color={'var(--text-secondary)'} />
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 {sessionDate.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' })}
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.xs }}>
-              <Clock size={14} color={tokens.colors.steel} />
-              <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Clock size={14} color={'var(--text-secondary)'} />
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 {session.duration} min
               </span>
             </div>
@@ -305,9 +306,9 @@ function SessionCard({ session, onClick }) {
 
           {/* Focus area */}
           {session.focusArea && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.xs }}>
-              <Target size={14} color={tokens.colors.primary} />
-              <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Target size={14} color={'var(--accent)'} />
+              <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
                 {session.focusArea}
               </span>
             </div>
@@ -315,18 +316,18 @@ function SessionCard({ session, onClick }) {
 
           {/* Evaluation ratings (if completed) */}
           {session.completionStatus === 'completed' && session.evaluationFocus && (
-            <div style={{ display: 'flex', gap: tokens.spacing.md, marginTop: tokens.spacing.sm }}>
-              <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+            <div style={{ display: 'flex', gap: '16px', marginTop: '8px' }}>
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 Fokus: {session.evaluationFocus}/10
               </span>
-              <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
                 Teknikk: {session.evaluationTechnical}/10
               </span>
             </div>
           )}
         </div>
 
-        <ChevronRight size={20} color={tokens.colors.steel} />
+        <ChevronRight size={20} color={'var(--text-secondary)'} />
       </div>
     </div>
   );
@@ -337,16 +338,16 @@ function EmptyState({ onCreateNew }) {
     <div
       style={{
         textAlign: 'center',
-        padding: tokens.spacing.xl,
-        backgroundColor: tokens.colors.white,
-        borderRadius: tokens.borderRadius.lg,
+        padding: '32px',
+        backgroundColor: 'var(--bg-primary)',
+        borderRadius: 'var(--radius-lg)',
       }}
     >
-      <Calendar size={48} color={tokens.colors.steel} style={{ marginBottom: tokens.spacing.md }} />
-      <h3 style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal, marginBottom: tokens.spacing.sm }}>
+      <Calendar size={48} color={'var(--text-secondary)'} style={{ marginBottom: '16px' }} />
+      <h3 style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
         Ingen okter funnet
       </h3>
-      <p style={{ ...typographyStyle('body'), color: tokens.colors.steel, marginBottom: tokens.spacing.lg }}>
+      <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
         Du har ingen treningsokter som matcher filtrene dine.
       </p>
       <button
@@ -354,14 +355,14 @@ function EmptyState({ onCreateNew }) {
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: tokens.spacing.sm,
-          padding: `${tokens.spacing.sm} ${tokens.spacing.lg}`,
-          backgroundColor: tokens.colors.primary,
-          color: tokens.colors.white,
+          gap: '8px',
+          padding: `${'8px'} ${'24px'}`,
+          backgroundColor: 'var(--accent)',
+          color: 'var(--bg-primary)',
           border: 'none',
-          borderRadius: tokens.borderRadius.md,
+          borderRadius: 'var(--radius-md)',
           cursor: 'pointer',
-          ...typographyStyle('label'),
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
         <Plus size={16} />
@@ -380,39 +381,39 @@ function Pagination({ page, totalPages, onPageChange }) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: tokens.spacing.sm,
-        marginTop: tokens.spacing.lg,
+        gap: '8px',
+        marginTop: '24px',
       }}
     >
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
         style={{
-          padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-          backgroundColor: page <= 1 ? tokens.colors.mist : tokens.colors.white,
-          color: page <= 1 ? tokens.colors.steel : tokens.colors.charcoal,
-          border: `1px solid ${tokens.colors.mist}`,
-          borderRadius: tokens.borderRadius.sm,
+          padding: `${'8px'} ${'16px'}`,
+          backgroundColor: page <= 1 ? 'var(--border-default)' : 'var(--bg-primary)',
+          color: page <= 1 ? 'var(--text-secondary)' : 'var(--text-primary)',
+          border: '1px solid var(--border-default)',
+          borderRadius: 'var(--radius-sm)',
           cursor: page <= 1 ? 'not-allowed' : 'pointer',
-          ...typographyStyle('body'),
+          fontSize: '15px', lineHeight: '20px',
         }}
       >
         Forrige
       </button>
-      <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+      <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
         Side {page} av {totalPages}
       </span>
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
         style={{
-          padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-          backgroundColor: page >= totalPages ? tokens.colors.mist : tokens.colors.white,
-          color: page >= totalPages ? tokens.colors.steel : tokens.colors.charcoal,
-          border: `1px solid ${tokens.colors.mist}`,
-          borderRadius: tokens.borderRadius.sm,
+          padding: `${'8px'} ${'16px'}`,
+          backgroundColor: page >= totalPages ? 'var(--border-default)' : 'var(--bg-primary)',
+          color: page >= totalPages ? 'var(--text-secondary)' : 'var(--text-primary)',
+          border: '1px solid var(--border-default)',
+          borderRadius: 'var(--radius-sm)',
           cursor: page >= totalPages ? 'not-allowed' : 'pointer',
-          ...typographyStyle('body'),
+          fontSize: '15px', lineHeight: '20px',
         }}
       >
         Neste
@@ -451,9 +452,9 @@ export default function SessionsListView({
   return (
     <div
       style={{
-        backgroundColor: tokens.colors.surface,
+        backgroundColor: 'var(--bg-primary)',
         minHeight: '100vh',
-        fontFamily: tokens.typography.fontFamily,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
       {/* Header */}
@@ -462,16 +463,16 @@ export default function SessionsListView({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: tokens.spacing.lg,
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          padding: '24px',
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
         }}
       >
         <div>
-          <h1 style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: 0 }}>
+          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
             Mine treningsokter
           </h1>
-          <p style={{ ...typographyStyle('caption'), color: tokens.colors.steel, marginTop: tokens.spacing.xs }}>
+          <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginTop: '4px' }}>
             {pagination.total} okter totalt
           </p>
         </div>
@@ -480,14 +481,14 @@ export default function SessionsListView({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: tokens.spacing.sm,
-            padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-            backgroundColor: tokens.colors.primary,
-            color: tokens.colors.white,
+            gap: '8px',
+            padding: `${'8px'} ${'16px'}`,
+            backgroundColor: 'var(--accent)',
+            color: 'var(--bg-primary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
-            ...typographyStyle('label'),
+            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
           }}
         >
           <Plus size={16} />
@@ -496,7 +497,7 @@ export default function SessionsListView({
       </div>
 
       {/* Content */}
-      <div style={{ padding: tokens.spacing.lg }}>
+      <div style={{ padding: '24px' }}>
         {/* Filters */}
         <FilterBar
           filters={filters}
@@ -506,11 +507,7 @@ export default function SessionsListView({
 
         {/* Loading state */}
         {isLoading && (
-          <div style={{ textAlign: 'center', padding: tokens.spacing.xl }}>
-            <p style={{ ...typographyStyle('body'), color: tokens.colors.steel }}>
-              Laster okter...
-            </p>
-          </div>
+          <StateCard variant="loading" title="Laster økter..." />
         )}
 
         {/* Sessions list */}

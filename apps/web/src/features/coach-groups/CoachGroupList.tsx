@@ -20,7 +20,10 @@ import {
   UserPlus,
   ClipboardList,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Modal from '../../ui/composites/Modal.composite';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
 
 interface GroupMember {
   id: string;
@@ -50,6 +53,7 @@ export default function CoachGroupList() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'wang' | 'team_norway' | 'custom'>('all');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const [groupToDelete, setGroupToDelete] = useState<CoachGroup | null>(null);
 
   // Fetch groups
   useEffect(() => {
@@ -69,7 +73,7 @@ export default function CoachGroupList() {
             name: 'WANG Toppidrett 2025',
             description: 'Hovedgruppe for WANG Toppidrett elever',
             type: 'wang',
-            avatarColor: tokens.colors.primary,
+            avatarColor: 'var(--accent)',
             avatarInitials: 'WT',
             memberCount: 8,
             members: [
@@ -87,7 +91,7 @@ export default function CoachGroupList() {
             name: 'Team Norway U18',
             description: 'Landslagskandidater under 18 år',
             type: 'team_norway',
-            avatarColor: tokens.colors.error,
+            avatarColor: 'var(--error)',
             avatarInitials: 'TN',
             memberCount: 5,
             members: [
@@ -104,7 +108,7 @@ export default function CoachGroupList() {
             name: 'Putting Fokus',
             description: 'Spillere som fokuserer på putting-forbedring',
             type: 'custom',
-            avatarColor: tokens.colors.gold,
+            avatarColor: 'var(--achievement)',
             avatarInitials: 'PF',
             memberCount: 4,
             members: [
@@ -119,7 +123,7 @@ export default function CoachGroupList() {
             name: 'Nybegynnere 2025',
             description: 'Nye spillere i programmet',
             type: 'custom',
-            avatarColor: tokens.colors.success,
+            avatarColor: 'var(--success)',
             avatarInitials: 'NB',
             memberCount: 6,
             members: [
@@ -165,9 +169,9 @@ export default function CoachGroupList() {
   // Get type badge
   const getTypeBadge = (type: string) => {
     const styles: Record<string, { bg: string; text: string; label: string }> = {
-      wang: { bg: `${tokens.colors.primary}15`, text: tokens.colors.primary, label: 'WANG' },
-      team_norway: { bg: `${tokens.colors.error}15`, text: tokens.colors.error, label: 'Team Norway' },
-      custom: { bg: `${tokens.colors.steel}15`, text: tokens.colors.steel, label: 'Egendefinert' },
+      wang: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'WANG' },
+      team_norway: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Team Norway' },
+      custom: { bg: 'rgba(var(--text-secondary-rgb), 0.15)', text: 'var(--text-secondary)', label: 'Egendefinert' },
     };
     return styles[type] || styles.custom;
   };
@@ -185,17 +189,23 @@ export default function CoachGroupList() {
     return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
   };
 
-  // Delete group
-  const handleDeleteGroup = async (groupId: string) => {
-    if (!window.confirm('Er du sikker på at du vil slette denne gruppen?')) return;
+  // Delete group - show confirmation modal
+  const handleDeleteGroup = (group: CoachGroup) => {
+    setActiveMenu(null);
+    setGroupToDelete(group);
+  };
+
+  // Confirm and execute group deletion
+  const handleConfirmDeleteGroup = async () => {
+    if (!groupToDelete) return;
 
     try {
-      await fetch(`/api/v1/coach/groups/${groupId}`, { method: 'DELETE' });
-      setGroups(groups.filter((g) => g.id !== groupId));
+      await fetch(`/api/v1/coach/groups/${groupToDelete.id}`, { method: 'DELETE' });
+      setGroups(groups.filter((g) => g.id !== groupToDelete.id));
     } catch (error) {
       console.error('Failed to delete group:', error);
     }
-    setActiveMenu(null);
+    setGroupToDelete(null);
   };
 
   // Stats
@@ -207,7 +217,7 @@ export default function CoachGroupList() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -217,8 +227,8 @@ export default function CoachGroupList() {
           style={{
             width: 48,
             height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `4px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
@@ -231,7 +241,7 @@ export default function CoachGroupList() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
@@ -248,8 +258,8 @@ export default function CoachGroupList() {
           <div>
             <h1
               style={{
-                ...tokens.typography.title1,
-                color: tokens.colors.charcoal,
+                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -257,8 +267,8 @@ export default function CoachGroupList() {
             </h1>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: '4px 0 0',
               }}
             >
@@ -273,10 +283,10 @@ export default function CoachGroupList() {
               alignItems: 'center',
               gap: '8px',
               padding: '10px 18px',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               border: 'none',
-              borderRadius: tokens.radius.md,
+              borderRadius: 'var(--radius-md)',
               fontSize: '14px',
               fontWeight: 600,
               cursor: 'pointer',
@@ -297,17 +307,17 @@ export default function CoachGroupList() {
           }}
         >
           {[
-            { label: 'Totalt grupper', value: groups.length, color: tokens.colors.primary },
-            { label: 'Spillere', value: totalMembers, color: tokens.colors.success },
-            { label: 'Med treningsplan', value: groupsWithPlans, color: tokens.colors.gold },
+            { label: 'Totalt grupper', value: groups.length, color: 'var(--accent)' },
+            { label: 'Spillere', value: totalMembers, color: 'var(--success)' },
+            { label: 'Med treningsplan', value: groupsWithPlans, color: 'var(--achievement)' },
           ].map((stat, index) => (
             <div
               key={index}
               style={{
                 padding: '16px',
-                backgroundColor: tokens.colors.white,
-                borderRadius: tokens.radius.md,
-                boxShadow: tokens.shadows.card,
+                backgroundColor: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--shadow-card)',
                 textAlign: 'center',
               }}
             >
@@ -323,8 +333,8 @@ export default function CoachGroupList() {
               </p>
               <p
                 style={{
-                  ...tokens.typography.caption1,
-                  color: tokens.colors.steel,
+                  fontSize: '12px', lineHeight: '16px',
+                  color: 'var(--text-secondary)',
                   margin: '4px 0 0',
                 }}
               >
@@ -345,7 +355,7 @@ export default function CoachGroupList() {
                 left: '12px',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}
             />
             <input
@@ -356,9 +366,9 @@ export default function CoachGroupList() {
               style={{
                 width: '100%',
                 padding: '10px 12px 10px 40px',
-                backgroundColor: tokens.colors.white,
-                border: `1px solid ${tokens.colors.gray300}`,
-                borderRadius: tokens.radius.md,
+                backgroundColor: 'var(--bg-primary)',
+                border: `1px solid ${'var(--border-default)'}`,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 outline: 'none',
               }}
@@ -380,18 +390,18 @@ export default function CoachGroupList() {
                   padding: '8px 14px',
                   backgroundColor:
                     filterType === filter.key
-                      ? tokens.colors.primary
-                      : tokens.colors.white,
+                      ? 'var(--accent)'
+                      : 'var(--bg-primary)',
                   color:
                     filterType === filter.key
-                      ? tokens.colors.white
-                      : tokens.colors.charcoal,
+                      ? 'var(--bg-primary)'
+                      : 'var(--text-primary)',
                   border: `1px solid ${
                     filterType === filter.key
-                      ? tokens.colors.primary
-                      : tokens.colors.gray300
+                      ? 'var(--accent)'
+                      : 'var(--border-default)'
                   }`,
-                  borderRadius: tokens.radius.sm,
+                  borderRadius: 'var(--radius-sm)',
                   fontSize: '13px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -411,21 +421,21 @@ export default function CoachGroupList() {
           <div
             style={{
               padding: '48px 24px',
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.radius.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
               textAlign: 'center',
-              boxShadow: tokens.shadows.card,
+              boxShadow: 'var(--shadow-card)',
             }}
           >
             <Users
               size={48}
-              color={tokens.colors.gray300}
+              color={'var(--border-default)'}
               style={{ marginBottom: '16px' }}
             />
             <p
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 8px',
               }}
             >
@@ -433,8 +443,8 @@ export default function CoachGroupList() {
             </p>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: '0 0 20px',
               }}
             >
@@ -450,10 +460,10 @@ export default function CoachGroupList() {
                   alignItems: 'center',
                   gap: '8px',
                   padding: '10px 20px',
-                  backgroundColor: tokens.colors.primary,
-                  color: tokens.colors.white,
+                  backgroundColor: 'var(--accent)',
+                  color: 'var(--bg-primary)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '14px',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -474,9 +484,9 @@ export default function CoachGroupList() {
                 <div
                   key={group.id}
                   style={{
-                    backgroundColor: tokens.colors.white,
-                    borderRadius: tokens.radius.lg,
-                    boxShadow: tokens.shadows.card,
+                    backgroundColor: 'var(--bg-primary)',
+                    borderRadius: 'var(--radius-lg)',
+                    boxShadow: 'var(--shadow-card)',
                     overflow: 'hidden',
                   }}
                 >
@@ -496,12 +506,12 @@ export default function CoachGroupList() {
                       style={{
                         width: 56,
                         height: 56,
-                        borderRadius: tokens.radius.md,
+                        borderRadius: 'var(--radius-md)',
                         backgroundColor: group.avatarColor,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: tokens.colors.white,
+                        color: 'var(--bg-primary)',
                         fontWeight: 700,
                         fontSize: '18px',
                         flexShrink: 0,
@@ -522,8 +532,8 @@ export default function CoachGroupList() {
                       >
                         <h3
                           style={{
-                            ...tokens.typography.headline,
-                            color: tokens.colors.charcoal,
+                            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                            color: 'var(--text-primary)',
                             margin: 0,
                           }}
                         >
@@ -534,7 +544,7 @@ export default function CoachGroupList() {
                             padding: '2px 8px',
                             backgroundColor: typeBadge.bg,
                             color: typeBadge.text,
-                            borderRadius: tokens.radius.sm,
+                            borderRadius: 'var(--radius-sm)',
                             fontSize: '11px',
                             fontWeight: 600,
                           }}
@@ -546,8 +556,8 @@ export default function CoachGroupList() {
                       {group.description && (
                         <p
                           style={{
-                            ...tokens.typography.subheadline,
-                            color: tokens.colors.steel,
+                            fontSize: '15px', lineHeight: '20px',
+                            color: 'var(--text-secondary)',
                             margin: '0 0 8px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
@@ -571,8 +581,8 @@ export default function CoachGroupList() {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '4px',
-                            ...tokens.typography.caption1,
-                            color: tokens.colors.steel,
+                            fontSize: '12px', lineHeight: '16px',
+                            color: 'var(--text-secondary)',
                           }}
                         >
                           <Users size={14} />
@@ -585,8 +595,8 @@ export default function CoachGroupList() {
                               display: 'flex',
                               alignItems: 'center',
                               gap: '4px',
-                              ...tokens.typography.caption1,
-                              color: tokens.colors.success,
+                              fontSize: '12px', lineHeight: '16px',
+                              color: 'var(--success)',
                             }}
                           >
                             <ClipboardList size={14} />
@@ -600,8 +610,8 @@ export default function CoachGroupList() {
                               display: 'flex',
                               alignItems: 'center',
                               gap: '4px',
-                              ...tokens.typography.caption1,
-                              color: tokens.colors.primary,
+                              fontSize: '12px', lineHeight: '16px',
+                              color: 'var(--accent)',
                             }}
                           >
                             <Calendar size={14} />
@@ -628,15 +638,15 @@ export default function CoachGroupList() {
                             width: 32,
                             height: 32,
                             borderRadius: '50%',
-                            backgroundColor: tokens.colors.primary,
-                            color: tokens.colors.white,
+                            backgroundColor: 'var(--accent)',
+                            color: 'var(--bg-primary)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: '11px',
                             fontWeight: 600,
                             marginLeft: index > 0 ? '-10px' : 0,
-                            border: `2px solid ${tokens.colors.white}`,
+                            border: `2px solid ${'var(--bg-primary)'}`,
                           }}
                         >
                           {member.avatarInitials}
@@ -648,15 +658,15 @@ export default function CoachGroupList() {
                             width: 32,
                             height: 32,
                             borderRadius: '50%',
-                            backgroundColor: tokens.colors.gray200,
-                            color: tokens.colors.steel,
+                            backgroundColor: 'var(--bg-tertiary)',
+                            color: 'var(--text-secondary)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: '10px',
                             fontWeight: 600,
                             marginLeft: '-10px',
-                            border: `2px solid ${tokens.colors.white}`,
+                            border: `2px solid ${'var(--bg-primary)'}`,
                           }}
                         >
                           +{group.memberCount - 4}
@@ -674,10 +684,10 @@ export default function CoachGroupList() {
                         style={{
                           width: 36,
                           height: 36,
-                          borderRadius: tokens.radius.sm,
+                          borderRadius: 'var(--radius-sm)',
                           backgroundColor:
                             activeMenu === group.id
-                              ? tokens.colors.gray100
+                              ? 'var(--bg-tertiary)'
                               : 'transparent',
                           border: 'none',
                           display: 'flex',
@@ -686,7 +696,7 @@ export default function CoachGroupList() {
                           cursor: 'pointer',
                         }}
                       >
-                        <MoreVertical size={18} color={tokens.colors.steel} />
+                        <MoreVertical size={18} color={'var(--text-secondary)'} />
                       </button>
 
                       {/* Dropdown menu */}
@@ -698,10 +708,10 @@ export default function CoachGroupList() {
                             right: 0,
                             marginTop: '4px',
                             width: '180px',
-                            backgroundColor: tokens.colors.white,
-                            borderRadius: tokens.radius.md,
-                            boxShadow: tokens.shadows.dropdown,
-                            border: `1px solid ${tokens.colors.gray200}`,
+                            backgroundColor: 'var(--bg-primary)',
+                            borderRadius: 'var(--radius-md)',
+                            boxShadow: 'var(--shadow-dropdown)',
+                            border: `1px solid ${'var(--bg-tertiary)'}`,
                             zIndex: 100,
                             overflow: 'hidden',
                           }}
@@ -720,7 +730,7 @@ export default function CoachGroupList() {
                               backgroundColor: 'transparent',
                               border: 'none',
                               fontSize: '13px',
-                              color: tokens.colors.charcoal,
+                              color: 'var(--text-primary)',
                               cursor: 'pointer',
                               textAlign: 'left',
                             }}
@@ -742,7 +752,7 @@ export default function CoachGroupList() {
                               backgroundColor: 'transparent',
                               border: 'none',
                               fontSize: '13px',
-                              color: tokens.colors.charcoal,
+                              color: 'var(--text-primary)',
                               cursor: 'pointer',
                               textAlign: 'left',
                             }}
@@ -764,7 +774,7 @@ export default function CoachGroupList() {
                               backgroundColor: 'transparent',
                               border: 'none',
                               fontSize: '13px',
-                              color: tokens.colors.charcoal,
+                              color: 'var(--text-primary)',
                               cursor: 'pointer',
                               textAlign: 'left',
                             }}
@@ -775,14 +785,14 @@ export default function CoachGroupList() {
                           <div
                             style={{
                               height: '1px',
-                              backgroundColor: tokens.colors.gray100,
+                              backgroundColor: 'var(--bg-tertiary)',
                               margin: '4px 0',
                             }}
                           />
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleDeleteGroup(group.id);
+                              handleDeleteGroup(group);
                             }}
                             style={{
                               display: 'flex',
@@ -793,7 +803,7 @@ export default function CoachGroupList() {
                               backgroundColor: 'transparent',
                               border: 'none',
                               fontSize: '13px',
-                              color: tokens.colors.error,
+                              color: 'var(--error)',
                               cursor: 'pointer',
                               textAlign: 'left',
                             }}
@@ -805,7 +815,7 @@ export default function CoachGroupList() {
                       )}
                     </div>
 
-                    <ChevronRight size={20} color={tokens.colors.steel} />
+                    <ChevronRight size={20} color={'var(--text-secondary)'} />
                   </div>
                 </div>
               );
@@ -828,6 +838,52 @@ export default function CoachGroupList() {
           onClick={() => setActiveMenu(null)}
         />
       )}
+
+      {/* Delete Group Confirmation Modal */}
+      <Modal
+        isOpen={!!groupToDelete}
+        onClose={() => setGroupToDelete(null)}
+        title="Slett gruppe"
+        size="sm"
+        footer={
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+            <button
+              onClick={() => setGroupToDelete(null)}
+              style={{
+                padding: '10px 18px',
+                backgroundColor: 'transparent',
+                border: `1px solid ${'var(--border-default)'}`,
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--text-primary)',
+                fontSize: '14px',
+                fontWeight: 500,
+                cursor: 'pointer',
+              }}
+            >
+              Avbryt
+            </button>
+            <button
+              onClick={handleConfirmDeleteGroup}
+              style={{
+                padding: '10px 18px',
+                backgroundColor: 'var(--error)',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--bg-primary)',
+                fontSize: '14px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              Slett gruppe
+            </button>
+          </div>
+        }
+      >
+        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          Er du sikker på at du vil slette gruppen <strong style={{ color: 'var(--text-primary)' }}>{groupToDelete?.name}</strong>? Denne handlingen kan ikke angres.
+        </p>
+      </Modal>
     </div>
   );
 }

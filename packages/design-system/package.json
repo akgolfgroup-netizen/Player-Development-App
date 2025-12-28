@@ -1,0 +1,26 @@
+{
+  "name": "@iup/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Design tokens and React components for IUP Golf",
+  "main": "./components/index.ts",
+  "types": "./components/index.ts",
+  "exports": {
+    ".": "./components/index.ts",
+    "./tokens": "./tokens/design-tokens.js",
+    "./tokens.css": "./tokens/tokens.css",
+    "./tailwind": "./tokens/tailwind.config.js"
+  },
+  "files": [
+    "components",
+    "tokens"
+  ],
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.3.3"
+  }
+}

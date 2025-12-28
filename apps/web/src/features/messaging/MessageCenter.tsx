@@ -17,7 +17,6 @@ import {
   Check,
   CheckCheck,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 
 interface ChatGroup {
   id: string;
@@ -77,7 +76,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Anders Kristiansen (Trener)',
             groupType: 'coach_player',
             avatarInitials: 'AK',
-            avatarColor: tokens.colors.gold,
+            avatarColor: 'var(--achievement)',
             lastMessage: {
               content: 'Husk å fokusere på putting i dag!',
               senderName: 'Anders',
@@ -94,7 +93,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'WANG Toppidrett',
             groupType: 'team',
             avatarInitials: 'WT',
-            avatarColor: tokens.colors.primary,
+            avatarColor: 'var(--accent)',
             lastMessage: {
               content: 'Samling på lørdag kl 10:00',
               senderName: 'Trener',
@@ -113,7 +112,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Team Norway U18',
             groupType: 'team',
             avatarInitials: 'TN',
-            avatarColor: tokens.colors.error,
+            avatarColor: 'var(--error)',
             lastMessage: {
               content: 'Treningsplan for neste uke er klar',
               senderName: 'Landslagstrener',
@@ -193,14 +192,14 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
           style={{
             width: 40,
             height: 40,
-            border: `3px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `3px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             margin: '0 auto 16px',
             animation: 'spin 1s linear infinite',
           }}
         />
-        <p style={{ color: tokens.colors.steel }}>Laster meldinger...</p>
+        <p style={{ color: 'var(--text-secondary)' }}>Laster meldinger...</p>
       </div>
     );
   }
@@ -219,8 +218,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
         <div>
           <h1
             style={{
-              ...tokens.typography.title1,
-              color: tokens.colors.charcoal,
+              fontSize: '28px', lineHeight: '34px', fontWeight: 700,
+              color: 'var(--text-primary)',
               margin: 0,
             }}
           >
@@ -229,8 +228,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
           {totalUnread > 0 && (
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '13px', lineHeight: '18px',
+                color: 'var(--text-secondary)',
                 margin: '4px 0 0',
               }}
             >
@@ -246,10 +245,10 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             alignItems: 'center',
             gap: '8px',
             padding: '10px 16px',
-            backgroundColor: tokens.colors.primary,
-            color: tokens.colors.white,
+            backgroundColor: 'var(--accent)',
+            color: 'var(--bg-primary)',
             border: 'none',
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             fontSize: '14px',
             fontWeight: 600,
             cursor: 'pointer',
@@ -282,7 +281,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               left: '12px',
               top: '50%',
               transform: 'translateY(-50%)',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
             }}
           />
           <input
@@ -293,9 +292,9 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             style={{
               width: '100%',
               padding: '10px 12px 10px 40px',
-              backgroundColor: tokens.colors.white,
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-primary)',
+              border: `1px solid ${'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               fontSize: '14px',
               outline: 'none',
             }}
@@ -316,18 +315,18 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 padding: '8px 14px',
                 backgroundColor:
                   filterType === filter.key
-                    ? tokens.colors.primary
-                    : tokens.colors.white,
+                    ? 'var(--accent)'
+                    : 'var(--bg-primary)',
                 color:
                   filterType === filter.key
-                    ? tokens.colors.white
-                    : tokens.colors.charcoal,
+                    ? 'var(--bg-primary)'
+                    : 'var(--text-primary)',
                 border: `1px solid ${
                   filterType === filter.key
-                    ? tokens.colors.primary
-                    : tokens.colors.gray300
+                    ? 'var(--accent)'
+                    : 'var(--border-default)'
                 }`,
-                borderRadius: tokens.radius.sm,
+                borderRadius: 'var(--radius-sm)',
                 fontSize: '13px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -342,9 +341,9 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
       {/* Conversations list */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: tokens.radius.lg,
-          border: `1px solid ${tokens.colors.gray300}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: 'var(--radius-lg)',
+          border: `1px solid ${'var(--border-default)'}`,
           overflow: 'hidden',
         }}
       >
@@ -357,12 +356,12 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
           >
             <MessageSquare
               size={48}
-              style={{ color: tokens.colors.gray300, marginBottom: '16px' }}
+              style={{ color: 'var(--border-default)', marginBottom: '16px' }}
             />
             <p
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 8px',
               }}
             >
@@ -370,8 +369,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             </p>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '13px', lineHeight: '18px',
+                color: 'var(--text-secondary)',
                 margin: 0,
               }}
             >
@@ -393,11 +392,11 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 textDecoration: 'none',
                 borderBottom:
                   index < filteredConversations.length - 1
-                    ? `1px solid ${tokens.colors.gray100}`
+                    ? `1px solid ${'var(--bg-tertiary)'}`
                     : 'none',
                 backgroundColor:
                   conversation.unreadCount > 0
-                    ? `${tokens.colors.primary}08`
+                    ? `${'var(--accent)'}08`
                     : 'transparent',
                 transition: 'background-color 0.15s',
               }}
@@ -407,12 +406,12 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 style={{
                   width: 48,
                   height: 48,
-                  borderRadius: tokens.radius.md,
-                  backgroundColor: conversation.avatarColor || tokens.colors.primary,
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: conversation.avatarColor || 'var(--accent)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: tokens.colors.white,
+                  color: 'var(--bg-primary)',
                   fontWeight: 700,
                   fontSize: '16px',
                   flexShrink: 0,
@@ -433,8 +432,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 >
                   <span
                     style={{
-                      ...tokens.typography.headline,
-                      color: tokens.colors.charcoal,
+                      fontSize: '17px', lineHeight: '22px',
+                      color: 'var(--text-primary)',
                       fontWeight: conversation.unreadCount > 0 ? 700 : 600,
                     }}
                   >
@@ -446,9 +445,9 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                       alignItems: 'center',
                       gap: '4px',
                       padding: '2px 6px',
-                      backgroundColor: tokens.colors.gray100,
+                      backgroundColor: 'var(--bg-tertiary)',
                       borderRadius: '4px',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                       fontSize: '11px',
                     }}
                   >
@@ -467,16 +466,16 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                     }}
                   >
                     {conversation.lastMessage.isRead ? (
-                      <CheckCheck size={14} color={tokens.colors.success} />
+                      <CheckCheck size={14} color={'var(--success)'} />
                     ) : (
-                      <Check size={14} color={tokens.colors.steel} />
+                      <Check size={14} color={'var(--text-secondary)'} />
                     )}
                     <p
                       style={{
-                        ...tokens.typography.subheadline,
+                        fontSize: '13px', lineHeight: '18px',
                         color: conversation.unreadCount > 0
-                          ? tokens.colors.charcoal
-                          : tokens.colors.steel,
+                          ? 'var(--text-primary)'
+                          : 'var(--text-secondary)',
                         fontWeight: conversation.unreadCount > 0 ? 500 : 400,
                         margin: 0,
                         overflow: 'hidden',
@@ -503,10 +502,10 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 {conversation.lastMessage && (
                   <span
                     style={{
-                      ...tokens.typography.caption1,
+                      fontSize: '12px', lineHeight: '16px',
                       color: conversation.unreadCount > 0
-                        ? tokens.colors.primary
-                        : tokens.colors.steel,
+                        ? 'var(--accent)'
+                        : 'var(--text-secondary)',
                     }}
                   >
                     {formatTime(conversation.lastMessage.sentAt)}
@@ -518,8 +517,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                       minWidth: 20,
                       height: 20,
                       borderRadius: '10px',
-                      backgroundColor: tokens.colors.primary,
-                      color: tokens.colors.white,
+                      backgroundColor: 'var(--accent)',
+                      color: 'var(--bg-primary)',
                       fontSize: '11px',
                       fontWeight: 700,
                       display: 'flex',

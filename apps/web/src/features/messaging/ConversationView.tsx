@@ -20,7 +20,6 @@ import {
   User,
   Info,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 
 interface Message {
   id: string;
@@ -94,7 +93,7 @@ export default function ConversationView() {
           name: 'Anders Kristiansen (Trener)',
           groupType: 'coach_player',
           avatarInitials: 'AK',
-          avatarColor: tokens.colors.gold,
+          avatarColor: 'var(--achievement)',
           members: [
             { id: '1', name: 'Anders Kristiansen', type: 'coach', isOnline: true },
           ],
@@ -275,14 +274,14 @@ export default function ConversationView() {
           style={{
             width: 40,
             height: 40,
-            border: `3px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `3px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             margin: '0 auto 16px',
             animation: 'spin 1s linear infinite',
           }}
         />
-        <p style={{ color: tokens.colors.steel }}>Laster samtale...</p>
+        <p style={{ color: 'var(--text-secondary)' }}>Laster samtale...</p>
       </div>
     );
   }
@@ -290,10 +289,10 @@ export default function ConversationView() {
   if (!conversation) {
     return (
       <div style={{ padding: '24px', textAlign: 'center' }}>
-        <p style={{ color: tokens.colors.error }}>Samtale ikke funnet</p>
+        <p style={{ color: 'var(--error)' }}>Samtale ikke funnet</p>
         <Link
           to="/meldinger"
-          style={{ color: tokens.colors.primary, marginTop: '16px', display: 'block' }}
+          style={{ color: 'var(--accent)', marginTop: '16px', display: 'block' }}
         >
           Tilbake til meldinger
         </Link>
@@ -318,9 +317,9 @@ export default function ConversationView() {
           alignItems: 'center',
           gap: '12px',
           padding: '16px',
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
-          borderRadius: `${tokens.radius.lg} ${tokens.radius.lg} 0 0`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
+          borderRadius: `${'var(--radius-lg)'} ${'var(--radius-lg)'} 0 0`,
         }}
       >
         <button
@@ -333,9 +332,9 @@ export default function ConversationView() {
             height: 36,
             backgroundColor: 'transparent',
             border: 'none',
-            borderRadius: tokens.radius.sm,
+            borderRadius: 'var(--radius-sm)',
             cursor: 'pointer',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
           }}
         >
           <ArrowLeft size={20} />
@@ -345,12 +344,12 @@ export default function ConversationView() {
           style={{
             width: 40,
             height: 40,
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             backgroundColor: conversation.avatarColor,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: tokens.colors.white,
+            color: 'var(--bg-primary)',
             fontWeight: 700,
             fontSize: '14px',
           }}
@@ -361,8 +360,8 @@ export default function ConversationView() {
         <div style={{ flex: 1 }}>
           <h2
             style={{
-              ...tokens.typography.headline,
-              color: tokens.colors.charcoal,
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+              color: 'var(--text-primary)',
               margin: 0,
             }}
           >
@@ -370,21 +369,21 @@ export default function ConversationView() {
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             {conversation.groupType === 'team' ? (
-              <Users size={12} color={tokens.colors.steel} />
+              <Users size={12} color={'var(--text-secondary)'} />
             ) : (
-              <User size={12} color={tokens.colors.steel} />
+              <User size={12} color={'var(--text-secondary)'} />
             )}
-            <span style={{ ...tokens.typography.caption1, color: tokens.colors.steel }}>
+            <span style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
               {conversation.members.length}{' '}
               {conversation.members.length === 1 ? 'medlem' : 'medlemmer'}
             </span>
             {conversation.members.some((m) => m.isOnline) && (
               <>
-                <span style={{ color: tokens.colors.gray300 }}>•</span>
+                <span style={{ color: 'var(--border-default)' }}>•</span>
                 <span
                   style={{
-                    ...tokens.typography.caption1,
-                    color: tokens.colors.success,
+                    fontSize: '13px', lineHeight: '18px',
+                    color: 'var(--success)',
                   }}
                 >
                   Aktiv nå
@@ -403,9 +402,9 @@ export default function ConversationView() {
             height: 36,
             backgroundColor: 'transparent',
             border: 'none',
-            borderRadius: tokens.radius.sm,
+            borderRadius: 'var(--radius-sm)',
             cursor: 'pointer',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
           }}
         >
           <Info size={20} />
@@ -418,7 +417,7 @@ export default function ConversationView() {
           flex: 1,
           overflowY: 'auto',
           padding: '16px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
         }}
       >
         {Object.entries(groupedMessages).map(([date, dateMessages]: [string, Message[]]) => (
@@ -432,12 +431,12 @@ export default function ConversationView() {
             >
               <span
                 style={{
-                  ...tokens.typography.caption1,
-                  color: tokens.colors.steel,
-                  backgroundColor: tokens.colors.white,
+                  fontSize: '13px', lineHeight: '18px',
+                  color: 'var(--text-secondary)',
+                  backgroundColor: 'var(--bg-primary)',
                   padding: '4px 12px',
-                  borderRadius: tokens.radius.full,
-                  border: `1px solid ${tokens.colors.gray200}`,
+                  borderRadius: '9999px',
+                  border: `1px solid ${'var(--border-default)'}`,
                 }}
               >
                 {formatDateHeader(dateMessages[0].createdAt)}
@@ -465,19 +464,19 @@ export default function ConversationView() {
                       style={{
                         padding: '8px 12px',
                         backgroundColor: message.isOwn
-                          ? `${tokens.colors.primary}20`
-                          : tokens.colors.gray100,
-                        borderRadius: `${tokens.radius.md} ${tokens.radius.md} 0 0`,
+                          ? 'rgba(var(--accent-rgb), 0.20)'
+                          : 'var(--bg-tertiary)',
+                        borderRadius: `${'var(--radius-md)'} ${'var(--radius-md)'} 0 0`,
                         borderLeft: `3px solid ${
-                          message.isOwn ? tokens.colors.primary : tokens.colors.gold
+                          message.isOwn ? 'var(--accent)' : 'var(--achievement)'
                         }`,
                         marginBottom: '-4px',
                       }}
                     >
                       <p
                         style={{
-                          ...tokens.typography.caption2,
-                          color: tokens.colors.primary,
+                          fontSize: '12px', lineHeight: '16px',
+                          color: 'var(--accent)',
                           fontWeight: 600,
                           margin: '0 0 2px',
                         }}
@@ -486,8 +485,8 @@ export default function ConversationView() {
                       </p>
                       <p
                         style={{
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.steel,
+                          fontSize: '13px', lineHeight: '18px',
+                          color: 'var(--text-secondary)',
                           margin: 0,
                         }}
                       >
@@ -501,20 +500,20 @@ export default function ConversationView() {
                     style={{
                       padding: '10px 14px',
                       backgroundColor: message.isOwn
-                        ? tokens.colors.primary
-                        : tokens.colors.white,
-                      color: message.isOwn ? tokens.colors.white : tokens.colors.charcoal,
+                        ? 'var(--accent)'
+                        : 'var(--bg-primary)',
+                      color: message.isOwn ? 'var(--bg-primary)' : 'var(--text-primary)',
                       borderRadius: message.replyTo
-                        ? `0 0 ${tokens.radius.md} ${tokens.radius.md}`
-                        : tokens.radius.md,
-                      boxShadow: message.isOwn ? 'none' : tokens.shadows.card,
+                        ? `0 0 ${'var(--radius-md)'} ${'var(--radius-md)'}`
+                        : 'var(--radius-md)',
+                      boxShadow: message.isOwn ? 'none' : 'var(--shadow-card)',
                     }}
                   >
                     {!message.isOwn && conversation.groupType === 'team' && (
                       <p
                         style={{
-                          ...tokens.typography.caption2,
-                          color: tokens.colors.gold,
+                          fontSize: '12px', lineHeight: '16px',
+                          color: 'var(--achievement)',
                           fontWeight: 600,
                           margin: '0 0 4px',
                         }}
@@ -524,7 +523,7 @@ export default function ConversationView() {
                     )}
                     <p
                       style={{
-                        ...tokens.typography.body,
+                        fontSize: '15px', lineHeight: '20px',
                         margin: 0,
                         whiteSpace: 'pre-wrap',
                       }}
@@ -542,10 +541,10 @@ export default function ConversationView() {
                     >
                       <span
                         style={{
-                          ...tokens.typography.caption2,
+                          fontSize: '12px', lineHeight: '16px',
                           color: message.isOwn
                             ? 'rgba(255,255,255,0.7)'
-                            : tokens.colors.steel,
+                            : 'var(--text-secondary)',
                         }}
                       >
                         {formatTime(message.createdAt)}
@@ -572,8 +571,8 @@ export default function ConversationView() {
                         padding: '4px 8px',
                         backgroundColor: 'transparent',
                         border: 'none',
-                        borderRadius: tokens.radius.sm,
-                        color: tokens.colors.steel,
+                        borderRadius: 'var(--radius-sm)',
+                        color: 'var(--text-secondary)',
                         fontSize: '12px',
                         cursor: 'pointer',
                       }}
@@ -598,16 +597,16 @@ export default function ConversationView() {
             alignItems: 'center',
             gap: '12px',
             padding: '10px 16px',
-            backgroundColor: tokens.colors.gray50,
-            borderTop: `1px solid ${tokens.colors.gray200}`,
+            backgroundColor: 'var(--bg-tertiary)',
+            borderTop: `1px solid ${'var(--border-default)'}`,
           }}
         >
-          <Reply size={16} color={tokens.colors.primary} />
+          <Reply size={16} color={'var(--accent)'} />
           <div style={{ flex: 1 }}>
             <p
               style={{
-                ...tokens.typography.caption2,
-                color: tokens.colors.primary,
+                fontSize: '12px', lineHeight: '16px',
+                color: 'var(--accent)',
                 fontWeight: 600,
                 margin: 0,
               }}
@@ -616,8 +615,8 @@ export default function ConversationView() {
             </p>
             <p
               style={{
-                ...tokens.typography.caption1,
-                color: tokens.colors.steel,
+                fontSize: '13px', lineHeight: '18px',
+                color: 'var(--text-secondary)',
                 margin: 0,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -637,9 +636,9 @@ export default function ConversationView() {
               height: 28,
               backgroundColor: 'transparent',
               border: 'none',
-              borderRadius: tokens.radius.sm,
+              borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
             }}
           >
             <X size={16} />
@@ -654,9 +653,9 @@ export default function ConversationView() {
           alignItems: 'flex-end',
           gap: '10px',
           padding: '12px 16px',
-          backgroundColor: tokens.colors.white,
-          borderTop: `1px solid ${tokens.colors.gray200}`,
-          borderRadius: `0 0 ${tokens.radius.lg} ${tokens.radius.lg}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderTop: `1px solid ${'var(--border-default)'}`,
+          borderRadius: `0 0 ${'var(--radius-lg)'} ${'var(--radius-lg)'}`,
         }}
       >
         <button
@@ -668,9 +667,9 @@ export default function ConversationView() {
             height: 40,
             backgroundColor: 'transparent',
             border: 'none',
-            borderRadius: tokens.radius.sm,
+            borderRadius: 'var(--radius-sm)',
             cursor: 'pointer',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
           }}
         >
           <Paperclip size={20} />
@@ -687,13 +686,13 @@ export default function ConversationView() {
             style={{
               width: '100%',
               padding: '10px 14px',
-              backgroundColor: tokens.colors.gray50,
-              border: `1px solid ${tokens.colors.gray200}`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-tertiary)',
+              border: `1px solid ${'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               fontSize: '15px',
               resize: 'none',
               outline: 'none',
-              fontFamily: tokens.typography.fontFamily,
+              fontFamily: 'inherit',
             }}
           />
         </div>
@@ -708,12 +707,12 @@ export default function ConversationView() {
             width: 40,
             height: 40,
             backgroundColor: newMessage.trim()
-              ? tokens.colors.primary
-              : tokens.colors.gray200,
+              ? 'var(--accent)'
+              : 'var(--border-default)',
             border: 'none',
-            borderRadius: tokens.radius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: newMessage.trim() ? 'pointer' : 'not-allowed',
-            color: tokens.colors.white,
+            color: 'var(--bg-primary)',
             transition: 'background-color 0.15s',
           }}
         >

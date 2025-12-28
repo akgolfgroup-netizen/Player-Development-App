@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Golf – Variant 6: Neon Sport</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      /* NEON SPORT - Electric, energetic, athletic */
+      --bg-base: #0A0A0A;
+      --bg-card: #141414;
+      --bg-elevated: #1E1E1E;
+      
+      /* Neon colors */
+      --neon-green: #39FF14;
+      --neon-pink: #FF1493;
+      --neon-blue: #00BFFF;
+      --neon-yellow: #FFFF00;
+      
+      --neon-green-glow: rgba(57, 255, 20, 0.4);
+      --neon-pink-glow: rgba(255, 20, 147, 0.4);
+      --neon-blue-glow: rgba(0, 191, 255, 0.4);
+      
+      --text-1: #FFFFFF;
+      --text-2: #B0B0B0;
+      --text-3: #707070;
+      
+      --border: rgba(255, 255, 255, 0.1);
+      
+      --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-full: 9999px;
+      --font-display: 'Bebas Neue', Impact, sans-serif;
+      --font-body: 'Barlow', -apple-system, sans-serif;
+    }
+
+    html { font-family: var(--font-body); background: #050505; color: var(--text-1); -webkit-font-smoothing: antialiased; }
+    body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; gap: 32px; }
+
+    .page-header { text-align: center; max-width: 700px; }
+    .page-header h1 { font-family: var(--font-display); font-size: 36px; margin-bottom: 8px; color: var(--neon-green); text-shadow: 0 0 20px var(--neon-green-glow); letter-spacing: 0.05em; }
+    .page-header p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+    .tags { display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+    .tag { background: transparent; color: var(--neon-green); padding: 6px 14px; border-radius: var(--r-sm); font-size: 11px; font-weight: 600; border: 1px solid var(--neon-green); text-transform: uppercase; }
+
+    .mockup-grid { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
+    .mockup-container { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .mockup-label { font-family: var(--font-display); font-size: 14px; color: var(--text-3); letter-spacing: 0.2em; }
+
+    .iphone { width: 320px; height: 693px; background: #000; border-radius: 46px; padding: 12px; box-shadow: 0 0 30px rgba(57, 255, 20, 0.1); }
+    .screen { width: 100%; height: 100%; background: var(--bg-base); border-radius: 36px; overflow: hidden; position: relative; }
+    .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 30px; background: #000; border-radius: 0 0 20px 20px; z-index: 100; }
+    .home-ind { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 120px; height: 4px; background: var(--neon-green); border-radius: 2px; z-index: 100; box-shadow: 0 0 10px var(--neon-green-glow); }
+
+    .app { height: 100%; display: flex; flex-direction: column; padding-top: 40px; padding-bottom: 72px; overflow-y: auto; scrollbar-width: none; }
+    .app::-webkit-scrollbar { display: none; }
+
+    /* HEADER - Bold display type */
+    .header { padding: 16px 20px; }
+    .header-row { display: flex; justify-content: space-between; align-items: center; }
+    .header-title { font-family: var(--font-display); font-size: 42px; color: var(--text-1); letter-spacing: 0.02em; line-height: 1; }
+    .header-sub { font-size: 12px; color: var(--neon-green); text-transform: uppercase; letter-spacing: 0.1em; }
+    .header-avatar { width: 40px; height: 40px; border: 2px solid var(--neon-green); display: flex; align-items: center; justify-content: center; color: var(--neon-green); }
+
+    /* SCORE - Large neon display */
+    .score-section { padding: 20px; }
+    .score-card { background: var(--bg-card); border: 1px solid var(--border); padding: 24px; position: relative; overflow: hidden; }
+    .score-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-pink)); }
+    .score-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; }
+    .score-display { display: flex; align-items: baseline; gap: 8px; }
+    .score-value { font-family: var(--font-display); font-size: 96px; color: var(--neon-green); line-height: 0.9; text-shadow: 0 0 30px var(--neon-green-glow); }
+    .score-max { font-family: var(--font-display); font-size: 32px; color: var(--text-3); }
+    .score-bar { height: 8px; background: var(--bg-elevated); margin-top: 16px; position: relative; overflow: hidden; }
+    .score-bar-fill { height: 100%; background: linear-gradient(90deg, var(--neon-green), var(--neon-blue)); width: 87%; box-shadow: 0 0 15px var(--neon-green-glow); }
+    .score-stats { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .score-stat { text-align: center; }
+    .score-stat-value { font-family: var(--font-display); font-size: 28px; color: var(--text-1); }
+    .score-stat-label { font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; }
+    .score-stat-trend { font-size: 11px; margin-top: 2px; }
+    .score-stat-trend.up { color: var(--neon-green); }
+    .score-stat-trend.down { color: var(--neon-pink); }
+
+    /* SECTION */
+    .section { padding: 0 20px; margin-bottom: 20px; }
+    .section-title { font-family: var(--font-display); font-size: 20px; color: var(--text-1); letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+    .section-title::before { content: '//'; color: var(--neon-green); }
+
+    /* ACTION BUTTONS - Neon outline */
+    .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .action-btn { background: var(--bg-card); border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; }
+    .action-btn:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green-glow); }
+    .action-icon { width: 32px; height: 32px; color: var(--neon-green); }
+    .action-label { font-size: 11px; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* SESSION LIST */
+    .session-item { background: var(--bg-card); border: 1px solid var(--border); margin-bottom: 8px; display: flex; overflow: hidden; }
+    .session-accent { width: 4px; }
+    .session-accent.green { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); }
+    .session-accent.pink { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink-glow); }
+    .session-accent.blue { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue-glow); }
+    .session-content { flex: 1; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .session-title { font-size: 14px; font-weight: 600; color: var(--text-1); margin-bottom: 2px; }
+    .session-meta { font-size: 11px; color: var(--text-3); }
+    .session-time { font-family: var(--font-display); font-size: 18px; color: var(--text-1); }
+
+    /* PROGRESS - Neon bars */
+    .progress-item { margin-bottom: 14px; }
+    .progress-header { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .progress-label { font-size: 12px; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; }
+    .progress-value { font-family: var(--font-display); font-size: 16px; color: var(--text-1); }
+    .progress-bar { height: 6px; background: var(--bg-elevated); overflow: hidden; }
+    .progress-fill { height: 100%; }
+    .progress-fill.green { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); }
+    .progress-fill.blue { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue-glow); }
+    .progress-fill.pink { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink-glow); }
+
+    /* TAB BAR - Neon underline */
+    .tab-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 72px; background: var(--bg-card); border-top: 1px solid var(--border); display: flex; }
+    .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--text-3); position: relative; }
+    .tab.active { color: var(--neon-green); }
+    .tab.active::after { content: ''; position: absolute; bottom: 20px; width: 20px; height: 2px; background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green-glow); }
+    .tab-icon { width: 22px; height: 22px; }
+    .tab-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Variant 6: Neon Sport</h1>
+  <p>Energisk og sportslig med neonfarger på mørk bakgrunn. Inspirert av e-sport, Nike Training Club og moderne fitness-apper.</p>
+  <div class="tags">
+    <span class="tag">Dark Mode</span>
+    <span class="tag">Neon Colors</span>
+    <span class="tag">Athletic</span>
+    <span class="tag">High Energy</span>
+  </div>
+</header>
+
+<div class="mockup-grid">
+
+  <!-- HOME -->
+  <div class="mockup-container">
+    <span class="mockup-label">Home</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          
+          <div class="header">
+            <div class="header-row">
+              <div>
+                <div class="header-sub">God morgen</div>
+                <div class="header-title">ANDERS</div>
+              </div>
+              <div class="header-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="score-section">
+            <div class="score-card">
+              <div class="score-label">Readiness Score</div>
+              <div class="score-display">
+                <span class="score-value">87</span>
+                <span class="score-max">/100</span>
+              </div>
+              <div class="score-bar"><div class="score-bar-fill"></div></div>
+              <div class="score-stats">
+                <div class="score-stat">
+                  <div class="score-stat-value">92</div>
+                  <div class="score-stat-label">Swing</div>
+                  <div class="score-stat-trend up">+3%</div>
+                </div>
+                <div class="score-stat">
+                  <div class="score-stat-value">78</div>
+                  <div class="score-stat-label">Short</div>
+                  <div class="score-stat-trend down">-2%</div>
+                </div>
+                <div class="score-stat">
+                  <div class="score-stat-value">85</div>
+                  <div class="score-stat-label">Mental</div>
+                  <div class="score-stat-trend up">+1%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Quick Actions</div>
+            <div class="action-grid">
+              <div class="action-btn">
+                <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                <span class="action-label">Start økt</span>
+              </div>
+              <div class="action-btn">
+                <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                <span class="action-label">Drill</span>
+              </div>
+              <div class="action-btn">
+                <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                <span class="action-label">Stats</span>
+              </div>
+              <div class="action-btn">
+                <div class="action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                <span class="action-label">Plan</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Kommende</div>
+            <div class="session-item">
+              <div class="session-accent green"></div>
+              <div class="session-content">
+                <div>
+                  <div class="session-title">Driver Teknikk</div>
+                  <div class="session-meta">I morgen • Teknikk</div>
+                </div>
+                <div class="session-time">45M</div>
+              </div>
+            </div>
+            <div class="session-item">
+              <div class="session-accent pink"></div>
+              <div class="session-content">
+                <div>
+                  <div class="session-title">Core Stability</div>
+                  <div class="session-meta">Fredag • Fysisk</div>
+                </div>
+                <div class="session-time">30M</div>
+              </div>
+            </div>
+            <div class="session-item">
+              <div class="session-accent blue"></div>
+              <div class="session-content">
+                <div>
+                  <div class="session-title">Putting Focus</div>
+                  <div class="session-meta">Lørdag • Teknikk</div>
+                </div>
+                <div class="session-time">25M</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="tab-bar">
+          <div class="tab active">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <span class="tab-label">Hjem</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+            <span class="tab-label">Tren</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <span class="tab-label">Stats</span>
+          </div>
+          <div class="tab">
+            <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span class="tab-label">Profil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRAINING -->
+  <div class="mockup-container">
+    <span class="mockup-label">Training</span>
+    <div class="iphone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="home-ind"></div>
+        <div class="app">
+          
+          <div class="header">
+            <div class="header-row">
+              <div>
+                <div class="header-sub">Øvelse 3/8</div>
+                <div class="header-title" style="font-size:28px">CHIP FRA ROUGH</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:0 20px;margin-bottom:16px">
+            <div style="aspect-ratio:16/9;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative">
+              <div style="width:64px;height:64px;border:3px solid var(--neon-green);display:flex;align-items:center;justify-content:center;color:var(--neon-green);box-shadow:0 0 20px var(--neon-green-glow)">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div style="position:absolute;bottom:10px;left:10px;font-size:11px;color:var(--text-3)">Coach: Anders K.</div>
+            </div>
+          </div>
+
+          <div style="padding:0 20px;margin-bottom:16px">
+            <div style="background:var(--bg-card);border-left:3px solid var(--neon-green);padding:14px;box-shadow:-3px 0 15px var(--neon-green-glow)">
+              <p style="font-size:13px;color:var(--text-2);font-style:italic">"Ball bak, vekt fremover, hender foran ved impact"</p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Repetisjoner</div>
+            <div style="display:flex;gap:8px;margin-bottom:12px">
+              <div style="width:32px;height:32px;background:var(--neon-green);display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--neon-green-glow)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--neon-green);display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--neon-green-glow)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--neon-green);display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--neon-green-glow)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--neon-green);display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--neon-green-glow)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--neon-green);display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px var(--neon-green-glow)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div style="width:32px;height:32px;background:var(--bg-card);border:1px solid var(--border)"></div>
+              <div style="width:32px;height:32px;background:var(--bg-card);border:1px solid var(--border)"></div>
+              <div style="width:32px;height:32px;background:var(--bg-card);border:1px solid var(--border)"></div>
+            </div>
+            <div style="font-family:var(--font-display);font-size:16px;color:var(--text-3)">5/8 FULLFØRT</div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">Feedback</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:12px;text-align:center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" stroke-width="1.5" style="margin-bottom:4px"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                <div style="font-size:9px;color:var(--text-3);text-transform:uppercase">Tungt</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:12px;text-align:center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" stroke-width="1.5" style="margin-bottom:4px"><circle cx="12" cy="12" r="10"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                <div style="font-size:9px;color:var(--text-3);text-transform:uppercase">OK</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--neon-green);padding:12px;text-align:center;box-shadow:0 0 15px var(--neon-green-glow)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--neon-green)" stroke-width="1.5" style="margin-bottom:4px"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                <div style="font-size:9px;color:var(--neon-green);text-transform:uppercase">Bra</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:12px;text-align:center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" stroke-width="1.5" style="margin-bottom:4px"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                <div style="font-size:9px;color:var(--text-3);text-transform:uppercase">Topp!</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:0 20px">
+            <button style="width:100%;padding:16px;background:var(--neon-green);border:none;color:#0A0A0A;font-family:var(--font-display);font-size:18px;letter-spacing:0.1em;cursor:pointer;box-shadow:0 0 20px var(--neon-green-glow)">LOGG REPETISJON</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Golf – Design Variants Katalog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg: #0A0A0F;
+      --card: #12121A;
+      --border: rgba(255,255,255,0.08);
+      --text-1: #FFFFFF;
+      --text-2: #A0A0B0;
+      --text-3: #606070;
+      --accent: #00FF88;
+    }
+    
+    html { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-1); }
+    body { padding: 60px 40px; max-width: 1400px; margin: 0 auto; }
+    
+    .header { margin-bottom: 60px; }
+    .header h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .header p { font-size: 18px; color: var(--text-2); line-height: 1.6; max-width: 700px; }
+    .header-meta { margin-top: 24px; display: flex; gap: 24px; font-size: 14px; color: var(--text-3); }
+    .header-meta span { display: flex; align-items: center; gap: 8px; }
+    
+    .section { margin-bottom: 60px; }
+    .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+    .section-title { font-size: 14px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
+    .section-line { flex: 1; height: 1px; background: var(--border); }
+    
+    .variants-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 24px; }
+    
+    .variant-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.2s ease;
+    }
+    .variant-card:hover {
+      border-color: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+    
+    .variant-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .variant-number { font-size: 12px; font-weight: 600; color: var(--text-3); }
+    .variant-name { font-size: 20px; font-weight: 700; margin-top: 4px; }
+    .variant-mode {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .variant-mode.dark { background: #1a1a2e; color: #8080a0; }
+    .variant-mode.light { background: #f0f0f5; color: #404050; }
+    
+    .variant-description { font-size: 14px; color: var(--text-2); line-height: 1.6; margin-bottom: 16px; }
+    
+    .variant-colors { display: flex; gap: 6px; margin-bottom: 16px; }
+    .color-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); }
+    
+    .variant-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .tag { font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 4px; color: var(--text-3); }
+    
+    .variant-meta { display: flex; gap: 16px; font-size: 12px; color: var(--text-3); padding-top: 16px; border-top: 1px solid var(--border); }
+    
+    .variant-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .variant-link:hover { text-decoration: underline; }
+    
+    .summary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .summary-table th { text-align: left; padding: 12px 16px; background: var(--card); border: 1px solid var(--border); font-weight: 600; color: var(--text-2); }
+    .summary-table td { padding: 12px 16px; border: 1px solid var(--border); color: var(--text-2); }
+    .summary-table tr:hover td { background: rgba(255,255,255,0.02); }
+    
+    @media (max-width: 768px) {
+      body { padding: 30px 20px; }
+      .header h1 { font-size: 32px; }
+      .variants-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <h1>AK Golf Design Variants</h1>
+  <p>Komplett katalog over alle design-varianter utviklet for AK Golf Academy appen. 19 unike retninger som dekker alt fra premium dark mode til retro athletics.</p>
+  <div class="header-meta">
+    <span>📁 19 Varianter</span>
+    <span>📅 Desember 2025</span>
+    <span>🎨 Full HTML Mockups</span>
+  </div>
+</header>
+
+<!-- BATCH 1: Original Variants (1-4) -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-title">Batch 1 – Foundation Variants</span>
+    <span class="section-line"></span>
+  </div>
+  
+  <div class="variants-grid">
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 01</div>
+          <div class="variant-name">Nordic Light</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Skandinavisk minimalisme med forest green, naturlige toner og luftig layout. Lys og ren.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#2D5A45"></div>
+        <div class="color-dot" style="background:#F5F7F4"></div>
+        <div class="color-dot" style="background:#8BA888"></div>
+        <div class="color-dot" style="background:#1A2F23"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Scandinavian</span>
+        <span class="tag">Minimal</span>
+        <span class="tag">Natural</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Inter</span>
+        <span>Best for: Bred appell</span>
+      </div>
+      <a href="ak_variant_1_nordic_light.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 02</div>
+          <div class="variant-name">Gradient Glow</div>
+        </div>
+        <span class="variant-mode dark">Dark</span>
+      </div>
+      <p class="variant-description">Mørk glassmorfisme med vibrant gradienter, blur-effekter og moderne dybde.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#0F0F1A"></div>
+        <div class="color-dot" style="background:#00D4AA"></div>
+        <div class="color-dot" style="background:#7C3AED"></div>
+        <div class="color-dot" style="background:#FF6B6B"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Glassmorphism</span>
+        <span class="tag">Gradients</span>
+        <span class="tag">Modern</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Inter</span>
+        <span>Best for: Tech-forward brukere</span>
+      </div>
+      <a href="ak_variant_2_gradient_glow.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 03</div>
+          <div class="variant-name">Warm Earth</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Terracotta og varme jordtoner. Tradisjonell golf-følelse med moderne touch.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#C4785A"></div>
+        <div class="color-dot" style="background:#FAF6F1"></div>
+        <div class="color-dot" style="background:#2D4A3E"></div>
+        <div class="color-dot" style="background:#8B7355"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Traditional</span>
+        <span class="tag">Warm</span>
+        <span class="tag">Earthy</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Inter</span>
+        <span>Best for: Klassisk golf-segment</span>
+      </div>
+      <a href="ak_variant_3_warm_earth.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 04</div>
+          <div class="variant-name">Brutalist Bold</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Høy kontrast sort/hvit med gul accent. Geometrisk og ufiltrert.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#000000"></div>
+        <div class="color-dot" style="background:#FFFFFF"></div>
+        <div class="color-dot" style="background:#FFE500"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Brutalist</span>
+        <span class="tag">High Contrast</span>
+        <span class="tag">Bold</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Space Grotesk</span>
+        <span>Best for: Design-bevisste</span>
+      </div>
+      <a href="ak_variant_4_brutalist.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+  </div>
+</section>
+
+<!-- BATCH 2: Extended Variants (5-9) -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-title">Batch 2 – Extended Exploration</span>
+    <span class="section-line"></span>
+  </div>
+  
+  <div class="variants-grid">
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 05</div>
+          <div class="variant-name">Midnight Ocean</div>
+        </div>
+        <span class="variant-mode dark">Dark</span>
+      </div>
+      <p class="variant-description">Dyp navy med cyan glow. Bølge-design og nordlys-inspirert ro.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#0A1628"></div>
+        <div class="color-dot" style="background:#1E3A5F"></div>
+        <div class="color-dot" style="background:#00E5CC"></div>
+        <div class="color-dot" style="background:#FF6B6B"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Ocean</span>
+        <span class="tag">Calm</span>
+        <span class="tag">Premium</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Sora</span>
+        <span>Best for: Seriøse spillere</span>
+      </div>
+      <a href="ak_variant_5_midnight_ocean.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 06</div>
+          <div class="variant-name">Soft Pastel</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Myk og vennlig med pastell-rosa, mint og lavendel. Blob-former og avrundede elementer.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#E8A0A0"></div>
+        <div class="color-dot" style="background:#7DD3B8"></div>
+        <div class="color-dot" style="background:#B8A0E8"></div>
+        <div class="color-dot" style="background:#FEFCFA"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Friendly</span>
+        <span class="tag">Soft</span>
+        <span class="tag">Approachable</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Nunito</span>
+        <span>Best for: Nybegynnere</span>
+      </div>
+      <a href="ak_variant_6_soft_pastel.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 07</div>
+          <div class="variant-name">Carbon Pro</div>
+        </div>
+        <span class="variant-mode dark">Dark</span>
+      </div>
+      <p class="variant-description">Racing-inspirert med rød og lime. Tekniske paneler og gauge-displays.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#0D0D0D"></div>
+        <div class="color-dot" style="background:#E31937"></div>
+        <div class="color-dot" style="background:#AAFF00"></div>
+        <div class="color-dot" style="background:#FF6B00"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Motorsport</span>
+        <span class="tag">Technical</span>
+        <span class="tag">Aggressive</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Orbitron + Rajdhani</span>
+        <span>Best for: Performance-fokuserte</span>
+      </div>
+      <a href="ak_variant_7_carbon_pro.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 08</div>
+          <div class="variant-name">Monochrome Minimal</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Kun sort og hvit. Ultra-minimalt med fokus på typografi og innhold.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#000000"></div>
+        <div class="color-dot" style="background:#FFFFFF"></div>
+        <div class="color-dot" style="background:#FAFAFA"></div>
+        <div class="color-dot" style="background:#171717"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Pure</span>
+        <span class="tag">Clean</span>
+        <span class="tag">Typography</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Inter</span>
+        <span>Best for: Minimalister</span>
+      </div>
+      <a href="ak_variant_8_monochrome.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 09</div>
+          <div class="variant-name">Sunset Vibrant</div>
+        </div>
+        <span class="variant-mode dark">Dark</span>
+      </div>
+      <p class="variant-description">Varme solnedgang-gradienter fra oransje til lilla. Energisk og motiverende.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#1A1625"></div>
+        <div class="color-dot" style="background:#FF7A45"></div>
+        <div class="color-dot" style="background:#FF6B9D"></div>
+        <div class="color-dot" style="background:#C471ED"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Warm</span>
+        <span class="tag">Energetic</span>
+        <span class="tag">Motivating</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Poppins</span>
+        <span>Best for: Unge, aktive spillere</span>
+      </div>
+      <a href="ak_variant_9_sunset.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+  </div>
+</section>
+
+<!-- BATCH 3: World-Class Variants (10-11) -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-title">Batch 3 – World-Class Premium</span>
+    <span class="section-line"></span>
+  </div>
+  
+  <div class="variants-grid">
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 10</div>
+          <div class="variant-name">Aurora</div>
+        </div>
+        <span class="variant-mode dark">Dark</span>
+      </div>
+      <p class="variant-description">Eterisk nordlys-design med animerte aurora-blobs, glassmorfisme og sofistikert dybde. World-class kvalitet.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#050508"></div>
+        <div class="color-dot" style="background:#00FF88"></div>
+        <div class="color-dot" style="background:#00D4FF"></div>
+        <div class="color-dot" style="background:#8B5CF6"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Premium</span>
+        <span class="tag">Animated</span>
+        <span class="tag">Glass</span>
+        <span class="tag">⭐ Top Pick</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Inter</span>
+        <span>Best for: Premium posisjonering</span>
+      </div>
+      <a href="ak_variant_10_aurora.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 11</div>
+          <div class="variant-name">Obsidian Gold</div>
+        </div>
+        <span class="variant-mode dark">Dark</span>
+      </div>
+      <p class="variant-description">Ultra-premium med gull-accenter på dyp obsidian. Eksklusivt, sofistikert og tidløst for den kresne spilleren.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#08080A"></div>
+        <div class="color-dot" style="background:#D4A84B"></div>
+        <div class="color-dot" style="background:#F5D77E"></div>
+        <div class="color-dot" style="background:#B8922F"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Luxury</span>
+        <span class="tag">Gold</span>
+        <span class="tag">Exclusive</span>
+        <span class="tag">⭐ Top Pick</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Inter</span>
+        <span>Best for: Luxury segment</span>
+      </div>
+      <a href="ak_variant_11_obsidian_gold.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+  </div>
+</section>
+
+<!-- BATCH 4: Unique Style Variants (15-19) -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-title">Batch 4 – Unique Styles</span>
+    <span class="section-line"></span>
+  </div>
+  
+  <div class="variants-grid">
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 15</div>
+          <div class="variant-name">Cyber Neon</div>
+        </div>
+        <span class="variant-mode dark">Dark</span>
+      </div>
+      <p class="variant-description">Cyberpunk-inspirert med elektriske neonfarger, glitch-effekter og futuristisk estetikk.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#0A0A0C"></div>
+        <div class="color-dot" style="background:#FF00FF"></div>
+        <div class="color-dot" style="background:#00FFFF"></div>
+        <div class="color-dot" style="background:#FFFF00"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Cyberpunk</span>
+        <span class="tag">Neon</span>
+        <span class="tag">Futuristic</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Oxanium</span>
+        <span>Best for: Tech-entusiaster</span>
+      </div>
+      <a href="ak_variant_15_cyber_neon.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 16</div>
+          <div class="variant-name">Paper & Ink</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Redaksjonelt design inspirert av klassiske aviser og magasiner. Tidløs typografi og sofistikert enkelhet.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#FDFBF7"></div>
+        <div class="color-dot" style="background:#1A1A1A"></div>
+        <div class="color-dot" style="background:#C41E3A"></div>
+        <div class="color-dot" style="background:#8A8A8A"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Editorial</span>
+        <span class="tag">Typography</span>
+        <span class="tag">Classic</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Libre Baskerville + Inter</span>
+        <span>Best for: Tradisjonalister</span>
+      </div>
+      <a href="ak_variant_16_paper_ink.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 17</div>
+          <div class="variant-name">Retro Sport</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">70/80-talls atletisk estetikk med dristige farger, vintage typografi og klassisk sports-følelse.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#FFF8E7"></div>
+        <div class="color-dot" style="background:#1B365D"></div>
+        <div class="color-dot" style="background:#FF6B35"></div>
+        <div class="color-dot" style="background:#FFD93D"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Vintage</span>
+        <span class="tag">Athletic</span>
+        <span class="tag">Bold</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Bebas Neue + Space Mono</span>
+        <span>Best for: Nostalgikere</span>
+      </div>
+      <a href="ak_variant_17_retro_sport.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 18</div>
+          <div class="variant-name">Zen Garden</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Japansk-inspirert minimalisme med naturlige farger, ro og balanse. Fokus på det essensielle.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#FAF8F5"></div>
+        <div class="color-dot" style="background:#6B8E4E"></div>
+        <div class="color-dot" style="background:#E8B4B8"></div>
+        <div class="color-dot" style="background:#2C2C2C"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Japanese</span>
+        <span class="tag">Minimal</span>
+        <span class="tag">Calm</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Noto Sans JP</span>
+        <span>Best for: Mindfulness-fokuserte</span>
+      </div>
+      <a href="ak_variant_18_zen_garden.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+    <div class="variant-card">
+      <div class="variant-header">
+        <div>
+          <div class="variant-number">Variant 19</div>
+          <div class="variant-name">Swiss Precision</div>
+        </div>
+        <span class="variant-mode light">Light</span>
+      </div>
+      <p class="variant-description">Sveitsisk design med streng grid, Helvetica-estetikk og funksjonell presisjon. Informasjon først.</p>
+      <div class="variant-colors">
+        <div class="color-dot" style="background:#FFFFFF"></div>
+        <div class="color-dot" style="background:#000000"></div>
+        <div class="color-dot" style="background:#F3F4F6"></div>
+        <div class="color-dot" style="background:#9CA3AF"></div>
+      </div>
+      <div class="variant-tags">
+        <span class="tag">Swiss</span>
+        <span class="tag">Grid</span>
+        <span class="tag">Functional</span>
+      </div>
+      <div class="variant-meta">
+        <span>Font: Inter</span>
+        <span>Best for: Data-orienterte</span>
+      </div>
+      <a href="ak_variant_19_swiss_precision.html" class="variant-link">Åpne mockup →</a>
+    </div>
+    
+  </div>
+</section>
+
+<!-- SUMMARY TABLE -->
+<section class="section">
+  <div class="section-header">
+    <span class="section-title">Quick Reference Table</span>
+    <span class="section-line"></span>
+  </div>
+  
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Navn</th>
+        <th>Mode</th>
+        <th>Primærfarger</th>
+        <th>Stil</th>
+        <th>Best For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>01</td><td>Nordic Light</td><td>Light</td><td>Forest Green, Cream</td><td>Scandinavian Minimal</td><td>Bred appell</td></tr>
+      <tr><td>02</td><td>Gradient Glow</td><td>Dark</td><td>Teal, Purple, Dark</td><td>Glassmorphism</td><td>Tech-forward</td></tr>
+      <tr><td>03</td><td>Warm Earth</td><td>Light</td><td>Terracotta, Green</td><td>Traditional Golf</td><td>Klassisk segment</td></tr>
+      <tr><td>04</td><td>Brutalist Bold</td><td>Light</td><td>Black, White, Yellow</td><td>Brutalist</td><td>Design-bevisste</td></tr>
+      <tr><td>05</td><td>Midnight Ocean</td><td>Dark</td><td>Navy, Cyan</td><td>Ocean/Calm</td><td>Seriøse spillere</td></tr>
+      <tr><td>06</td><td>Soft Pastel</td><td>Light</td><td>Rose, Mint, Lavender</td><td>Friendly/Soft</td><td>Nybegynnere</td></tr>
+      <tr><td>07</td><td>Carbon Pro</td><td>Dark</td><td>Red, Lime, Black</td><td>Racing/Technical</td><td>Performance</td></tr>
+      <tr><td>08</td><td>Monochrome Minimal</td><td>Light</td><td>Black, White</td><td>Pure Minimal</td><td>Minimalister</td></tr>
+      <tr><td>09</td><td>Sunset Vibrant</td><td>Dark</td><td>Orange→Purple</td><td>Warm Gradient</td><td>Unge spillere</td></tr>
+      <tr><td>10</td><td>Aurora ⭐</td><td>Dark</td><td>Green, Cyan, Purple</td><td>Premium Glass</td><td>Premium segment</td></tr>
+      <tr><td>11</td><td>Obsidian Gold ⭐</td><td>Dark</td><td>Black, Gold</td><td>Ultra Luxury</td><td>Luxury segment</td></tr>
+      <tr><td>15</td><td>Cyber Neon</td><td>Dark</td><td>Pink, Cyan, Yellow</td><td>Cyberpunk</td><td>Tech-entusiaster</td></tr>
+      <tr><td>16</td><td>Paper & Ink</td><td>Light</td><td>Paper, Black, Red</td><td>Editorial</td><td>Tradisjonalister</td></tr>
+      <tr><td>17</td><td>Retro Sport</td><td>Light</td><td>Navy, Orange, Gold</td><td>70s/80s Athletic</td><td>Nostalgikere</td></tr>
+      <tr><td>18</td><td>Zen Garden</td><td>Light</td><td>Bamboo, Stone, Sand</td><td>Japanese Minimal</td><td>Mindfulness</td></tr>
+      <tr><td>19</td><td>Swiss Precision</td><td>Light</td><td>Black, White, Gray</td><td>Swiss Design</td><td>Data-orienterte</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer style="text-align:center;padding:60px 0;color:var(--text-3);font-size:13px">
+  <p>AK Golf Academy Design System • 2025</p>
+  <p style="margin-top:8px">16 unike design-varianter for videre evaluering</p>
+</footer>
+
+</body>
+</html>

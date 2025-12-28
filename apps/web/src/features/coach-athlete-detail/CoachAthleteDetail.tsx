@@ -1,6 +1,6 @@
 /**
  * AK Golf Academy - Coach Athlete Detail
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Semantic CSS Variables
  *
  * Purpose:
  * - Provide neutral navigation hub for a single athlete
@@ -22,35 +22,8 @@
 
 import React from "react";
 import { ArrowLeft, FileText, TrendingUp, ClipboardList, StickyNote, ChevronRight } from "lucide-react";
-
-// Design tokens - Blue Palette 01
-const tokens = {
-  colors: {
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    white: '#FFFFFF',
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-  },
-  borderRadius: {
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
-  },
-  shadows: {
-    card: '0 2px 4px rgba(0, 0, 0, 0.06)',
-  },
-};
-
-const typography = {
-  title1: { fontSize: '28px', lineHeight: '34px', fontWeight: 700 },
-  title3: { fontSize: '17px', lineHeight: '22px', fontWeight: 600 },
-  body: { fontSize: '15px', lineHeight: '20px', fontWeight: 400 },
-  caption: { fontSize: '13px', lineHeight: '18px', fontWeight: 400 },
-};
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
 
 //////////////////////////////
 // 2. TYPES
@@ -91,8 +64,8 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 64 }) 
         width: size,
         height: size,
         borderRadius: '50%',
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
+        backgroundColor: 'var(--accent)',
+        color: 'white',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -141,46 +114,45 @@ export default function CoachAthleteDetail({
       aria-label="Athlete detail"
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header with back button */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
           padding: '16px 24px',
         }}
       >
         {onBack && (
-          <button
-            onClick={onBack}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'none',
-              border: 'none',
-              color: tokens.colors.primary,
-              cursor: 'pointer',
-              padding: 0,
-              marginBottom: '16px',
-              ...typography.body as React.CSSProperties,
-            }}
-          >
-            <ArrowLeft size={20} />
-            <span>Tilbake til spillere</span>
-          </button>
+          <div style={{ marginBottom: '16px' }}>
+            <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
+              Tilbake til spillere
+            </Button>
+          </div>
         )}
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Avatar name={athleteName} size={64} />
           <div>
-            <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+            <h1 style={{
+              fontSize: '28px',
+              lineHeight: '34px',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
               {athleteName}
             </h1>
-            <p style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, margin: 0, marginTop: '4px' }}>
+            <p style={{
+              fontSize: '13px',
+              lineHeight: '18px',
+              color: 'var(--text-secondary)',
+              margin: 0,
+              marginTop: '4px',
+            }}>
               Velg handling nedenfor
             </p>
           </div>
@@ -190,65 +162,72 @@ export default function CoachAthleteDetail({
       {/* Navigation Actions */}
       <div style={{ padding: '24px' }}>
         <nav aria-label="Athlete views">
-          <div
-            style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: tokens.borderRadius.lg,
-              boxShadow: tokens.shadows.card,
-              overflow: 'hidden',
-            }}
-          >
-            {navigationItems.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => handleAction(item.id)}
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  padding: '18px 20px',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  borderBottom: index < navigationItems.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'background-color 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = tokens.colors.snow;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-              >
-                <div
+          <Card variant="default" padding="none">
+            <div style={{ overflow: 'hidden' }}>
+              {navigationItems.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => handleAction(item.id)}
                   style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: tokens.borderRadius.md,
-                    backgroundColor: `${tokens.colors.primary}10`,
+                    width: '100%',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
+                    gap: '16px',
+                    padding: '18px 20px',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    borderBottom: index < navigationItems.length - 1 ? '1px solid var(--border-default)' : 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'background-color 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
                   }}
                 >
-                  <item.icon size={24} color={tokens.colors.primary} />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <span style={{ display: 'block', ...typography.body as React.CSSProperties, fontWeight: 600, color: tokens.colors.charcoal }}>
-                    {item.label}
-                  </span>
-                  <span style={{ display: 'block', ...typography.caption as React.CSSProperties, color: tokens.colors.steel, marginTop: '2px' }}>
-                    {item.description}
-                  </span>
-                </div>
-                <ChevronRight size={20} color={tokens.colors.steel} />
-              </button>
-            ))}
-          </div>
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 'var(--radius-md)',
+                      backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <item.icon size={24} style={{ color: 'var(--accent)' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <span style={{
+                      display: 'block',
+                      fontSize: '15px',
+                      lineHeight: '20px',
+                      fontWeight: 600,
+                      color: 'var(--text-primary)',
+                    }}>
+                      {item.label}
+                    </span>
+                    <span style={{
+                      display: 'block',
+                      fontSize: '13px',
+                      lineHeight: '18px',
+                      color: 'var(--text-secondary)',
+                      marginTop: '2px',
+                    }}>
+                      {item.description}
+                    </span>
+                  </div>
+                  <ChevronRight size={20} style={{ color: 'var(--text-secondary)' }} />
+                </button>
+              ))}
+            </div>
+          </Card>
         </nav>
       </div>
     </section>

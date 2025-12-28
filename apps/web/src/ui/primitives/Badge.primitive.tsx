@@ -3,10 +3,16 @@ import React from 'react';
 /**
  * Badge Primitive
  * Status indicators and labels
+ *
+ * UI Canon:
+ * - Consistent use of semantic tokens
+ * - Subtle backgrounds (10% opacity of semantic color)
+ * - Uppercase text for emphasis
+ * - Sizes: sm, md
  */
 
-type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'gold';
-type BadgeSize = 'sm' | 'md' | 'lg';
+type BadgeVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'error' | 'achievement';
+type BadgeSize = 'sm' | 'md';
 
 interface BadgeProps {
   /** Badge content */
@@ -27,7 +33,7 @@ interface BadgeProps {
 
 const Badge: React.FC<BadgeProps> = ({
   children,
-  variant = 'default',
+  variant = 'neutral',
   size = 'md',
   dot = false,
   pill = false,
@@ -36,81 +42,88 @@ const Badge: React.FC<BadgeProps> = ({
 }) => {
   const badgeStyle: React.CSSProperties = {
     ...styles.base,
-    ...styles.variants[variant],
-    ...styles.sizes[size],
+    ...variantStyles[variant],
+    ...sizeStyles[size],
     ...(pill && styles.pill),
     ...style,
   };
 
   return (
     <span style={badgeStyle} className={className}>
-      {dot && <span style={styles.dot} />}
+      {dot && <span style={{ ...styles.dot, ...dotVariantStyles[variant] }} />}
       {children}
     </span>
   );
 };
 
-const styles: Record<string, React.CSSProperties | Record<string, React.CSSProperties>> = {
+const styles: Record<string, React.CSSProperties> = {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
     gap: 'var(--spacing-1)',
-    fontFamily: 'var(--font-family)',
+    fontFamily: 'inherit',
     fontWeight: 600,
     borderRadius: 'var(--radius-sm)',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
     whiteSpace: 'nowrap',
-  } as React.CSSProperties,
-  variants: {
-    default: {
-      backgroundColor: 'var(--gray-100)',
-      color: 'var(--text-secondary)',
-    },
-    primary: {
-      backgroundColor: 'rgba(16, 69, 106, 0.1)',
-      color: 'var(--ak-primary)',
-    },
-    success: {
-      backgroundColor: 'rgba(74, 124, 89, 0.1)',
-      color: 'var(--ak-success)',
-    },
-    warning: {
-      backgroundColor: 'rgba(212, 168, 75, 0.1)',
-      color: 'var(--ak-warning)',
-    },
-    error: {
-      backgroundColor: 'rgba(196, 91, 78, 0.1)',
-      color: 'var(--ak-error)',
-    },
-    gold: {
-      backgroundColor: 'rgba(201, 162, 39, 0.1)',
-      color: 'var(--ak-gold)',
-    },
-  },
-  sizes: {
-    sm: {
-      padding: '2px var(--spacing-2)',
-      fontSize: 'var(--font-size-caption2)',
-    },
-    md: {
-      padding: 'var(--spacing-1) var(--spacing-2)',
-      fontSize: 'var(--font-size-caption1)',
-    },
-    lg: {
-      padding: 'var(--spacing-1) var(--spacing-3)',
-      fontSize: 'var(--font-size-footnote)',
-    },
   },
   pill: {
     borderRadius: 'var(--radius-full)',
-  } as React.CSSProperties,
+  },
   dot: {
     width: '6px',
     height: '6px',
     borderRadius: '50%',
-    backgroundColor: 'currentColor',
-  } as React.CSSProperties,
+    flexShrink: 0,
+  },
+};
+
+const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
+  neutral: {
+    backgroundColor: 'var(--bg-neutral-subtle)',
+    color: 'var(--text-secondary)',
+  },
+  accent: {
+    backgroundColor: 'var(--bg-accent-subtle)',
+    color: 'var(--accent)',
+  },
+  success: {
+    backgroundColor: 'var(--bg-success-subtle)',
+    color: 'var(--success)',
+  },
+  warning: {
+    backgroundColor: 'var(--bg-warning-subtle)',
+    color: 'var(--warning)',
+  },
+  error: {
+    backgroundColor: 'var(--bg-error-subtle)',
+    color: 'var(--error)',
+  },
+  achievement: {
+    backgroundColor: 'var(--bg-achievement-subtle)',
+    color: 'var(--achievement)',
+  },
+};
+
+const dotVariantStyles: Record<BadgeVariant, React.CSSProperties> = {
+  neutral: { backgroundColor: 'var(--text-tertiary)' },
+  accent: { backgroundColor: 'var(--accent)' },
+  success: { backgroundColor: 'var(--success)' },
+  warning: { backgroundColor: 'var(--warning)' },
+  error: { backgroundColor: 'var(--error)' },
+  achievement: { backgroundColor: 'var(--achievement)' },
+};
+
+const sizeStyles: Record<BadgeSize, React.CSSProperties> = {
+  sm: {
+    padding: '2px var(--spacing-2)',
+    fontSize: 'var(--font-size-caption2)',
+  },
+  md: {
+    padding: 'var(--spacing-1) var(--spacing-2)',
+    fontSize: 'var(--font-size-caption1)',
+  },
 };
 
 export default Badge;

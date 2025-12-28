@@ -6,7 +6,6 @@
  * Design: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
  */
 import React, { useState } from 'react';
-import { tokens, typographyStyle } from '../../design-tokens';
 
 // Format time as MM:SS
 function formatTimeShort(seconds) {
@@ -18,17 +17,17 @@ function formatTimeShort(seconds) {
 // Rating scale component
 function RatingScale({ label, value, onChange, icons, labels }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+    <div style={{ marginBottom: '24px' }}>
+      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
         {label}
       </span>
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          backgroundColor: tokens.colors.foam,
-          borderRadius: tokens.borderRadius.md,
-          padding: tokens.spacing.md,
+          backgroundColor: 'var(--bg-secondary)',
+          borderRadius: 'var(--radius-md)',
+          padding: '16px',
         }}
       >
         {[1, 2, 3, 4, 5].map((rating) => (
@@ -39,10 +38,10 @@ function RatingScale({ label, value, onChange, icons, labels }) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              padding: tokens.spacing.sm,
-              backgroundColor: value === rating ? tokens.colors.forest : 'transparent',
+              padding: '8px',
+              backgroundColor: value === rating ? 'var(--accent)' : 'transparent',
               border: 'none',
-              borderRadius: tokens.borderRadius.sm,
+              borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
               minWidth: '48px',
             }}
@@ -50,9 +49,9 @@ function RatingScale({ label, value, onChange, icons, labels }) {
             <span style={{ fontSize: '24px' }}>{icons[rating - 1]}</span>
             <span
               style={{
-                ...typographyStyle('caption'),
-                color: value === rating ? tokens.colors.white : tokens.colors.steel,
-                marginTop: tokens.spacing.xs,
+                fontSize: '12px', lineHeight: '16px',
+                color: value === rating ? 'var(--bg-primary)' : 'var(--text-secondary)',
+                marginTop: '4px',
               }}
             >
               {rating}
@@ -64,13 +63,13 @@ function RatingScale({ label, value, onChange, icons, labels }) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginTop: tokens.spacing.xs,
+          marginTop: '4px',
         }}
       >
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {labels[0]}
         </span>
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {labels[1]}
         </span>
       </div>
@@ -107,14 +106,14 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1000,
-        padding: tokens.spacing.md,
+        padding: '16px',
       }}
     >
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: tokens.borderRadius.lg,
-          padding: tokens.spacing.lg,
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '24px',
           width: '100%',
           maxWidth: '400px',
           maxHeight: '90vh',
@@ -122,18 +121,18 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
         }}
       >
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: tokens.spacing.lg }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: tokens.spacing.sm, marginBottom: tokens.spacing.sm }}>
-            <span style={{ color: tokens.colors.success, fontSize: '24px' }}>✓</span>
-            <span style={{ ...typographyStyle('title2'), color: tokens.colors.charcoal }}>
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ color: 'var(--success)', fontSize: '24px' }}>✓</span>
+            <span style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>
               Blokk fullført
             </span>
           </div>
           <div
             style={{
               height: '2px',
-              backgroundColor: tokens.colors.mist,
-              marginBottom: tokens.spacing.md,
+              backgroundColor: 'var(--border-default)',
+              marginBottom: '16px',
             }}
           />
         </div>
@@ -141,22 +140,22 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
         {/* Block summary */}
         <div
           style={{
-            backgroundColor: tokens.colors.foam,
-            borderRadius: tokens.borderRadius.md,
-            padding: tokens.spacing.md,
-            marginBottom: tokens.spacing.lg,
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
+            padding: '16px',
+            marginBottom: '24px',
           }}
         >
-          <div style={{ ...typographyStyle('label'), color: tokens.colors.forest }}>
+          <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--accent)' }}>
             {block.exercise}: {block.focus}
           </div>
-          <div style={{ ...typographyStyle('callout'), color: tokens.colors.steel }}>
+          <div style={{ fontSize: '16px', lineHeight: '21px', fontWeight: 400, color: 'var(--text-secondary)' }}>
             {block.trainingArea} • {reps} reps • {formatTimeShort(duration)}
           </div>
         </div>
 
         {/* Question */}
-        <div style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal, marginBottom: tokens.spacing.lg, textAlign: 'center' }}>
+        <div style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '24px', textAlign: 'center' }}>
           Hvordan gikk det?
         </div>
 
@@ -186,8 +185,8 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
         />
 
         {/* Note */}
-        <div style={{ marginBottom: tokens.spacing.lg }}>
-          <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.sm }}>
+        <div style={{ marginBottom: '24px' }}>
+          <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
             Notat (valgfritt)
           </span>
           <textarea
@@ -197,12 +196,12 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
             style={{
               width: '100%',
               minHeight: '80px',
-              padding: tokens.spacing.md,
-              backgroundColor: tokens.colors.foam,
+              padding: '16px',
+              backgroundColor: 'var(--bg-secondary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               resize: 'vertical',
-              ...typographyStyle('callout'),
+              fontSize: '16px', lineHeight: '21px', fontWeight: 400,
             }}
           />
         </div>
@@ -213,18 +212,18 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
           disabled={quality === 0 || focus === 0 || intensity === 0}
           style={{
             width: '100%',
-            padding: tokens.spacing.md,
+            padding: '16px',
             backgroundColor: (quality === 0 || focus === 0 || intensity === 0)
-              ? tokens.colors.mist
-              : tokens.colors.forest,
+              ? 'var(--border-default)'
+              : 'var(--accent)',
             color: (quality === 0 || focus === 0 || intensity === 0)
-              ? tokens.colors.steel
-              : tokens.colors.white,
+              ? 'var(--text-secondary)'
+              : 'var(--bg-primary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: (quality === 0 || focus === 0 || intensity === 0) ? 'not-allowed' : 'pointer',
-            marginBottom: tokens.spacing.md,
-            ...typographyStyle('title3'),
+            marginBottom: '16px',
+            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
           }}
         >
           Lagre og fortsett →
@@ -234,12 +233,12 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
           onClick={onSkip}
           style={{
             width: '100%',
-            padding: tokens.spacing.sm,
+            padding: '8px',
             backgroundColor: 'transparent',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             border: 'none',
             cursor: 'pointer',
-            ...typographyStyle('callout'),
+            fontSize: '16px', lineHeight: '21px', fontWeight: 400,
           }}
         >
           Hopp over

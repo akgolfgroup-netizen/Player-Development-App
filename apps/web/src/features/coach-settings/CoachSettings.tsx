@@ -14,7 +14,8 @@ import {
   ChevronRight,
   Check
 } from 'lucide-react';
-import { tokens as designTokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface CoachProfile {
   name: string;
@@ -90,7 +91,7 @@ export const CoachSettings: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
@@ -98,7 +99,7 @@ export const CoachSettings: React.FC = () => {
             width: '48px',
             height: '48px',
             borderRadius: '12px',
-            background: `linear-gradient(135deg, ${designTokens.colors.primary[500]}, ${designTokens.colors.primary[600]})`,
+            background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent)'})`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -109,14 +110,14 @@ export const CoachSettings: React.FC = () => {
             <h1 style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: designTokens.colors.text.primary,
+              color: 'var(--text-primary)',
               margin: 0
             }}>
               Innstillinger
             </h1>
             <p style={{
               fontSize: '14px',
-              color: designTokens.colors.text.secondary,
+              color: 'var(--text-secondary)',
               margin: 0
             }}>
               Administrer din profil og preferanser
@@ -132,9 +133,9 @@ export const CoachSettings: React.FC = () => {
           flexShrink: 0
         }}>
           <div style={{
-            backgroundColor: designTokens.colors.background.card,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '16px',
-            border: `1px solid ${designTokens.colors.border.light}`,
+            border: `1px solid ${'var(--border-default)'}`,
             overflow: 'hidden'
           }}>
             {tabs.map(tab => {
@@ -148,29 +149,29 @@ export const CoachSettings: React.FC = () => {
                     width: '100%',
                     padding: '14px 16px',
                     border: 'none',
-                    backgroundColor: isActive ? designTokens.colors.primary[50] : 'transparent',
+                    backgroundColor: isActive ? 'rgba(var(--accent-rgb), 0.1)' : 'transparent',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '12px',
                     cursor: 'pointer',
-                    borderLeft: isActive ? `3px solid ${designTokens.colors.primary[500]}` : '3px solid transparent',
+                    borderLeft: isActive ? `3px solid ${'var(--accent)'}` : '3px solid transparent',
                     transition: 'all 0.2s ease'
                   }}
                 >
                   <Icon
                     size={18}
-                    color={isActive ? designTokens.colors.primary[600] : designTokens.colors.text.secondary}
+                    color={isActive ? 'var(--accent)' : 'var(--text-secondary)'}
                   />
                   <span style={{
                     fontSize: '14px',
                     fontWeight: isActive ? '600' : '500',
-                    color: isActive ? designTokens.colors.primary[600] : designTokens.colors.text.secondary
+                    color: isActive ? 'var(--accent)' : 'var(--text-secondary)'
                   }}>
                     {tab.label}
                   </span>
                   <ChevronRight
                     size={16}
-                    color={designTokens.colors.text.tertiary}
+                    color={'var(--text-tertiary)'}
                     style={{ marginLeft: 'auto', opacity: isActive ? 1 : 0 }}
                   />
                 </button>
@@ -182,9 +183,9 @@ export const CoachSettings: React.FC = () => {
         {/* Content Area */}
         <div style={{ flex: 1 }}>
           <div style={{
-            backgroundColor: designTokens.colors.background.card,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '16px',
-            border: `1px solid ${designTokens.colors.border.light}`,
+            border: `1px solid ${'var(--border-default)'}`,
             padding: '24px'
           }}>
             {/* Profile Tab */}
@@ -193,7 +194,7 @@ export const CoachSettings: React.FC = () => {
                 <h2 style={{
                   fontSize: '18px',
                   fontWeight: '600',
-                  color: designTokens.colors.text.primary,
+                  color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Profilinformasjon
@@ -206,13 +207,13 @@ export const CoachSettings: React.FC = () => {
                       width: '80px',
                       height: '80px',
                       borderRadius: '50%',
-                      backgroundColor: designTokens.colors.primary[100],
+                      backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '28px',
                       fontWeight: '600',
-                      color: designTokens.colors.primary[700]
+                      color: 'var(--accent)'
                     }}>
                       {profile.name.split(' ').map(n => n[0]).join('')}
                     </div>
@@ -223,9 +224,9 @@ export const CoachSettings: React.FC = () => {
                         gap: '6px',
                         padding: '8px 14px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         backgroundColor: 'transparent',
-                        color: designTokens.colors.text.secondary,
+                        color: 'var(--text-secondary)',
                         fontSize: '13px',
                         cursor: 'pointer',
                         marginBottom: '6px'
@@ -233,7 +234,7 @@ export const CoachSettings: React.FC = () => {
                         <Camera size={14} />
                         Last opp bilde
                       </button>
-                      <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: 0 }}>
+                      <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
                         JPG, PNG maks 2MB
                       </p>
                     </div>
@@ -247,7 +248,7 @@ export const CoachSettings: React.FC = () => {
                       display: 'block',
                       fontSize: '13px',
                       fontWeight: '500',
-                      color: designTokens.colors.text.secondary,
+                      color: 'var(--text-secondary)',
                       marginBottom: '6px'
                     }}>
                       Fullt navn
@@ -260,9 +261,9 @@ export const CoachSettings: React.FC = () => {
                         width: '100%',
                         padding: '10px 14px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         fontSize: '14px',
-                        color: designTokens.colors.text.primary
+                        color: 'var(--text-primary)'
                       }}
                     />
                   </div>
@@ -271,7 +272,7 @@ export const CoachSettings: React.FC = () => {
                       display: 'block',
                       fontSize: '13px',
                       fontWeight: '500',
-                      color: designTokens.colors.text.secondary,
+                      color: 'var(--text-secondary)',
                       marginBottom: '6px'
                     }}>
                       Tittel
@@ -284,9 +285,9 @@ export const CoachSettings: React.FC = () => {
                         width: '100%',
                         padding: '10px 14px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         fontSize: '14px',
-                        color: designTokens.colors.text.primary
+                        color: 'var(--text-primary)'
                       }}
                     />
                   </div>
@@ -298,7 +299,7 @@ export const CoachSettings: React.FC = () => {
                       display: 'block',
                       fontSize: '13px',
                       fontWeight: '500',
-                      color: designTokens.colors.text.secondary,
+                      color: 'var(--text-secondary)',
                       marginBottom: '6px'
                     }}>
                       <Mail size={12} style={{ marginRight: '6px' }} />
@@ -312,9 +313,9 @@ export const CoachSettings: React.FC = () => {
                         width: '100%',
                         padding: '10px 14px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         fontSize: '14px',
-                        color: designTokens.colors.text.primary
+                        color: 'var(--text-primary)'
                       }}
                     />
                   </div>
@@ -323,7 +324,7 @@ export const CoachSettings: React.FC = () => {
                       display: 'block',
                       fontSize: '13px',
                       fontWeight: '500',
-                      color: designTokens.colors.text.secondary,
+                      color: 'var(--text-secondary)',
                       marginBottom: '6px'
                     }}>
                       <Phone size={12} style={{ marginRight: '6px' }} />
@@ -337,9 +338,9 @@ export const CoachSettings: React.FC = () => {
                         width: '100%',
                         padding: '10px 14px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         fontSize: '14px',
-                        color: designTokens.colors.text.primary
+                        color: 'var(--text-primary)'
                       }}
                     />
                   </div>
@@ -350,7 +351,7 @@ export const CoachSettings: React.FC = () => {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: '500',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     marginBottom: '6px'
                   }}>
                     Bio / Beskrivelse
@@ -363,9 +364,9 @@ export const CoachSettings: React.FC = () => {
                       width: '100%',
                       padding: '10px 14px',
                       borderRadius: '8px',
-                      border: `1px solid ${designTokens.colors.border.light}`,
+                      border: `1px solid ${'var(--border-default)'}`,
                       fontSize: '14px',
-                      color: designTokens.colors.text.primary,
+                      color: 'var(--text-primary)',
                       resize: 'vertical',
                       fontFamily: 'inherit'
                     }}
@@ -380,7 +381,7 @@ export const CoachSettings: React.FC = () => {
                 <h2 style={{
                   fontSize: '18px',
                   fontWeight: '600',
-                  color: designTokens.colors.text.primary,
+                  color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Varslingsinnstillinger
@@ -390,7 +391,7 @@ export const CoachSettings: React.FC = () => {
                   <h3 style={{
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     margin: '0 0 12px 0',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
@@ -409,13 +410,13 @@ export const CoachSettings: React.FC = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '12px 0',
-                      borderBottom: `1px solid ${designTokens.colors.border.light}`
+                      borderBottom: `1px solid ${'var(--border-default)'}`
                     }}>
                       <div>
-                        <p style={{ fontSize: '14px', fontWeight: '500', color: designTokens.colors.text.primary, margin: 0 }}>
+                        <p style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', margin: 0 }}>
                           {item.label}
                         </p>
-                        <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: '2px 0 0' }}>
+                        <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
                           {item.desc}
                         </p>
                       </div>
@@ -430,8 +431,8 @@ export const CoachSettings: React.FC = () => {
                           borderRadius: '13px',
                           border: 'none',
                           backgroundColor: notifications[item.key as keyof NotificationSettings]
-                            ? designTokens.colors.primary[500]
-                            : designTokens.colors.border.light,
+                            ? 'var(--accent)'
+                            : 'var(--border-default)',
                           position: 'relative',
                           cursor: 'pointer',
                           transition: 'background-color 0.2s ease'
@@ -457,7 +458,7 @@ export const CoachSettings: React.FC = () => {
                   <h3 style={{
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     margin: '0 0 12px 0',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
@@ -473,11 +474,11 @@ export const CoachSettings: React.FC = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '12px 0',
-                      borderBottom: `1px solid ${designTokens.colors.border.light}`
+                      borderBottom: `1px solid ${'var(--border-default)'}`
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <item.icon size={18} color={designTokens.colors.text.secondary} />
-                        <span style={{ fontSize: '14px', fontWeight: '500', color: designTokens.colors.text.primary }}>
+                        <item.icon size={18} color={'var(--text-secondary)'} />
+                        <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)' }}>
                           {item.label}
                         </span>
                       </div>
@@ -492,8 +493,8 @@ export const CoachSettings: React.FC = () => {
                           borderRadius: '13px',
                           border: 'none',
                           backgroundColor: notifications[item.key as keyof NotificationSettings]
-                            ? designTokens.colors.primary[500]
-                            : designTokens.colors.border.light,
+                            ? 'var(--accent)'
+                            : 'var(--border-default)',
                           position: 'relative',
                           cursor: 'pointer',
                           transition: 'background-color 0.2s ease'
@@ -523,7 +524,7 @@ export const CoachSettings: React.FC = () => {
                 <h2 style={{
                   fontSize: '18px',
                   fontWeight: '600',
-                  color: designTokens.colors.text.primary,
+                  color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Visningsinnstillinger
@@ -534,7 +535,7 @@ export const CoachSettings: React.FC = () => {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: '500',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     marginBottom: '10px'
                   }}>
                     Tema
@@ -555,10 +556,10 @@ export const CoachSettings: React.FC = () => {
                             padding: '16px',
                             borderRadius: '12px',
                             border: isSelected
-                              ? `2px solid ${designTokens.colors.primary[500]}`
-                              : `1px solid ${designTokens.colors.border.light}`,
+                              ? `2px solid ${'var(--accent)'}`
+                              : `1px solid ${'var(--border-default)'}`,
                             backgroundColor: isSelected
-                              ? designTokens.colors.primary[50]
+                              ? 'rgba(var(--accent-rgb), 0.1)'
                               : 'transparent',
                             display: 'flex',
                             flexDirection: 'column',
@@ -569,12 +570,12 @@ export const CoachSettings: React.FC = () => {
                         >
                           <option.icon
                             size={24}
-                            color={isSelected ? designTokens.colors.primary[600] : designTokens.colors.text.secondary}
+                            color={isSelected ? 'var(--accent)' : 'var(--text-secondary)'}
                           />
                           <span style={{
                             fontSize: '14px',
                             fontWeight: isSelected ? '600' : '500',
-                            color: isSelected ? designTokens.colors.primary[600] : designTokens.colors.text.secondary
+                            color: isSelected ? 'var(--accent)' : 'var(--text-secondary)'
                           }}>
                             {option.label}
                           </span>
@@ -589,7 +590,7 @@ export const CoachSettings: React.FC = () => {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: '500',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     marginBottom: '10px'
                   }}>
                     <Globe size={14} style={{ marginRight: '6px' }} />
@@ -602,9 +603,9 @@ export const CoachSettings: React.FC = () => {
                       width: '200px',
                       padding: '10px 14px',
                       borderRadius: '8px',
-                      border: `1px solid ${designTokens.colors.border.light}`,
+                      border: `1px solid ${'var(--border-default)'}`,
                       fontSize: '14px',
-                      color: designTokens.colors.text.primary,
+                      color: 'var(--text-primary)',
                       cursor: 'pointer'
                     }}
                   >
@@ -617,7 +618,7 @@ export const CoachSettings: React.FC = () => {
                   <h3 style={{
                     fontSize: '14px',
                     fontWeight: '600',
-                    color: designTokens.colors.text.secondary,
+                    color: 'var(--text-secondary)',
                     margin: '0 0 12px 0',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
@@ -633,13 +634,13 @@ export const CoachSettings: React.FC = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '12px 0',
-                      borderBottom: `1px solid ${designTokens.colors.border.light}`
+                      borderBottom: `1px solid ${'var(--border-default)'}`
                     }}>
                       <div>
-                        <p style={{ fontSize: '14px', fontWeight: '500', color: designTokens.colors.text.primary, margin: 0 }}>
+                        <p style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', margin: 0 }}>
                           {item.label}
                         </p>
-                        <p style={{ fontSize: '12px', color: designTokens.colors.text.tertiary, margin: '2px 0 0' }}>
+                        <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
                           {item.desc}
                         </p>
                       </div>
@@ -654,8 +655,8 @@ export const CoachSettings: React.FC = () => {
                           borderRadius: '13px',
                           border: 'none',
                           backgroundColor: display[item.key as keyof DisplaySettings]
-                            ? designTokens.colors.primary[500]
-                            : designTokens.colors.border.light,
+                            ? 'var(--accent)'
+                            : 'var(--border-default)',
                           position: 'relative',
                           cursor: 'pointer',
                           transition: 'background-color 0.2s ease'
@@ -685,7 +686,7 @@ export const CoachSettings: React.FC = () => {
                 <h2 style={{
                   fontSize: '18px',
                   fontWeight: '600',
-                  color: designTokens.colors.text.primary,
+                  color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Personvern og sikkerhet
@@ -703,7 +704,7 @@ export const CoachSettings: React.FC = () => {
                       Din konto er beskyttet
                     </span>
                   </div>
-                  <p style={{ fontSize: '13px', color: designTokens.colors.text.secondary, margin: 0 }}>
+                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
                     Tofaktorautentisering er aktivert. Sist innlogget: I dag kl 08:45
                   </p>
                 </div>
@@ -715,14 +716,14 @@ export const CoachSettings: React.FC = () => {
                     justifyContent: 'space-between',
                     padding: '14px 16px',
                     borderRadius: '10px',
-                    border: `1px solid ${designTokens.colors.border.light}`,
+                    border: `1px solid ${'var(--border-default)'}`,
                     backgroundColor: 'transparent',
                     cursor: 'pointer'
                   }}>
-                    <span style={{ fontSize: '14px', color: designTokens.colors.text.primary }}>
+                    <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                       Endre passord
                     </span>
-                    <ChevronRight size={18} color={designTokens.colors.text.tertiary} />
+                    <ChevronRight size={18} color={'var(--text-tertiary)'} />
                   </button>
                   <button style={{
                     display: 'flex',
@@ -730,14 +731,14 @@ export const CoachSettings: React.FC = () => {
                     justifyContent: 'space-between',
                     padding: '14px 16px',
                     borderRadius: '10px',
-                    border: `1px solid ${designTokens.colors.border.light}`,
+                    border: `1px solid ${'var(--border-default)'}`,
                     backgroundColor: 'transparent',
                     cursor: 'pointer'
                   }}>
-                    <span style={{ fontSize: '14px', color: designTokens.colors.text.primary }}>
+                    <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                       Administrer tofaktorautentisering
                     </span>
-                    <ChevronRight size={18} color={designTokens.colors.text.tertiary} />
+                    <ChevronRight size={18} color={'var(--text-tertiary)'} />
                   </button>
                   <button style={{
                     display: 'flex',
@@ -745,14 +746,14 @@ export const CoachSettings: React.FC = () => {
                     justifyContent: 'space-between',
                     padding: '14px 16px',
                     borderRadius: '10px',
-                    border: `1px solid ${designTokens.colors.border.light}`,
+                    border: `1px solid ${'var(--border-default)'}`,
                     backgroundColor: 'transparent',
                     cursor: 'pointer'
                   }}>
-                    <span style={{ fontSize: '14px', color: designTokens.colors.text.primary }}>
+                    <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                       Last ned mine data
                     </span>
-                    <ChevronRight size={18} color={designTokens.colors.text.tertiary} />
+                    <ChevronRight size={18} color={'var(--text-tertiary)'} />
                   </button>
                   <button style={{
                     display: 'flex',
@@ -777,7 +778,7 @@ export const CoachSettings: React.FC = () => {
             <div style={{
               marginTop: '24px',
               paddingTop: '20px',
-              borderTop: `1px solid ${designTokens.colors.border.light}`,
+              borderTop: `1px solid ${'var(--border-default)'}`,
               display: 'flex',
               justifyContent: 'flex-end',
               gap: '12px'
@@ -805,7 +806,7 @@ export const CoachSettings: React.FC = () => {
                   padding: '12px 24px',
                   borderRadius: '10px',
                   border: 'none',
-                  backgroundColor: designTokens.colors.primary[500],
+                  backgroundColor: 'var(--accent)',
                   color: 'white',
                   fontSize: '14px',
                   fontWeight: '600',

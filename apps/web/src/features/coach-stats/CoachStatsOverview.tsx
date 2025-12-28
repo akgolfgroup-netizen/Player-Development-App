@@ -15,7 +15,8 @@ import {
   Search,
   Minus,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 
 interface PlayerStat {
   id: string;
@@ -231,30 +232,30 @@ export default function CoachStatsOverview() {
   const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'up':
-        return { icon: TrendingUp, color: tokens.colors.success };
+        return { icon: TrendingUp, color: 'var(--success)' };
       case 'down':
-        return { icon: TrendingDown, color: tokens.colors.error };
+        return { icon: TrendingDown, color: 'var(--error)' };
       default:
-        return { icon: Minus, color: tokens.colors.steel };
+        return { icon: Minus, color: 'var(--text-secondary)' };
     }
   };
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: 48, height: 48, border: `4px solid ${tokens.colors.gray300}`, borderTopColor: tokens.colors.primary, borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 48, height: 48, border: `4px solid ${'var(--border-default)'}`, borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow, fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif" }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif" }}>
       {/* Header */}
-      <div style={{ backgroundColor: tokens.colors.white, borderBottom: `1px solid ${tokens.colors.gray200}`, padding: '20px 24px' }}>
+      <div style={{ backgroundColor: 'var(--bg-primary)', borderBottom: `1px solid ${'var(--border-default)'}`, padding: '20px 24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div>
-            <h1 style={{ ...tokens.typography.title1, color: tokens.colors.charcoal, margin: 0 }}>Spillerstatistikk</h1>
-            <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, margin: '4px 0 0' }}>
+            <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Spillerstatistikk</h1>
+            <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Oversikt over fremgang og utvikling
             </p>
           </div>
@@ -263,8 +264,8 @@ export default function CoachStatsOverview() {
               onClick={() => navigate('/coach/stats/progress')}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
-                backgroundColor: `${tokens.colors.success}10`, color: tokens.colors.success,
-                border: `1px solid ${tokens.colors.success}`, borderRadius: tokens.radius.md,
+                backgroundColor: 'rgba(var(--success-rgb), 0.10)', color: 'var(--success)',
+                border: `1px solid ${'var(--success)'}`, borderRadius: 'var(--radius-md)',
                 fontSize: '14px', fontWeight: 500, cursor: 'pointer',
               }}
             >
@@ -275,8 +276,8 @@ export default function CoachStatsOverview() {
               onClick={() => navigate('/coach/stats/regression')}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
-                backgroundColor: `${tokens.colors.error}10`, color: tokens.colors.error,
-                border: `1px solid ${tokens.colors.error}`, borderRadius: tokens.radius.md,
+                backgroundColor: 'rgba(var(--error-rgb), 0.10)', color: 'var(--error)',
+                border: `1px solid ${'var(--error)'}`, borderRadius: 'var(--radius-md)',
                 fontSize: '14px', fontWeight: 500, cursor: 'pointer',
               }}
             >
@@ -287,8 +288,8 @@ export default function CoachStatsOverview() {
               onClick={() => navigate('/coach/stats/datagolf')}
               style={{
                 display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
-                backgroundColor: tokens.colors.primary, color: tokens.colors.white,
-                border: 'none', borderRadius: tokens.radius.md,
+                backgroundColor: 'var(--accent)', color: 'var(--bg-primary)',
+                border: 'none', borderRadius: 'var(--radius-md)',
                 fontSize: '14px', fontWeight: 600, cursor: 'pointer',
               }}
             >
@@ -300,61 +301,61 @@ export default function CoachStatsOverview() {
 
         {/* Quick stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
-          <div style={{ padding: '16px', backgroundColor: `${tokens.colors.success}10`, borderRadius: tokens.radius.md, textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: tokens.colors.success }}>{overallStats.improving}</div>
-            <div style={{ fontSize: '13px', color: tokens.colors.charcoal }}>Spillere i fremgang</div>
+          <div style={{ padding: '16px', backgroundColor: 'rgba(var(--success-rgb), 0.10)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--success)' }}>{overallStats.improving}</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Spillere i fremgang</div>
           </div>
-          <div style={{ padding: '16px', backgroundColor: `${tokens.colors.error}10`, borderRadius: tokens.radius.md, textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: tokens.colors.error }}>{overallStats.declining}</div>
-            <div style={{ fontSize: '13px', color: tokens.colors.charcoal }}>Trenger oppfølging</div>
+          <div style={{ padding: '16px', backgroundColor: 'rgba(var(--error-rgb), 0.10)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--error)' }}>{overallStats.declining}</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Trenger oppfølging</div>
           </div>
-          <div style={{ padding: '16px', backgroundColor: `${tokens.colors.primary}10`, borderRadius: tokens.radius.md, textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: tokens.colors.primary }}>
+          <div style={{ padding: '16px', backgroundColor: 'rgba(var(--accent-rgb), 0.10)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--accent)' }}>
               {overallStats.avgHandicapChange > 0 ? '+' : ''}{overallStats.avgHandicapChange}
             </div>
-            <div style={{ fontSize: '13px', color: tokens.colors.charcoal }}>Snitt HCP-endring</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Snitt HCP-endring</div>
           </div>
-          <div style={{ padding: '16px', backgroundColor: tokens.colors.gray100, borderRadius: tokens.radius.md, textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: tokens.colors.charcoal }}>{overallStats.totalSessions}</div>
-            <div style={{ fontSize: '13px', color: tokens.colors.charcoal }}>Økter denne mnd</div>
+          <div style={{ padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>{overallStats.totalSessions}</div>
+            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Økter denne mnd</div>
           </div>
         </div>
       </div>
 
       {/* Category summary */}
-      <div style={{ padding: '24px', borderBottom: `1px solid ${tokens.colors.gray200}`, backgroundColor: tokens.colors.white }}>
-        <h2 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: '0 0 16px' }}>Kategori-oversikt</h2>
+      <div style={{ padding: '24px', borderBottom: `1px solid ${'var(--border-default)'}`, backgroundColor: 'var(--bg-primary)' }}>
+        <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>Kategori-oversikt</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
           {categorySummary.map((cat) => (
             <div
               key={cat.category}
               onClick={() => setCategoryFilter(cat.category)}
               style={{
-                padding: '16px', backgroundColor: categoryFilter === cat.category ? `${tokens.colors.primary}08` : tokens.colors.gray50,
-                borderRadius: tokens.radius.md, cursor: 'pointer',
-                border: categoryFilter === cat.category ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
+                padding: '16px', backgroundColor: categoryFilter === cat.category ? `${'var(--accent)'}08` : 'var(--bg-tertiary)',
+                borderRadius: 'var(--radius-md)', cursor: 'pointer',
+                border: categoryFilter === cat.category ? `2px solid ${'var(--accent)'}` : '2px solid transparent',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <span style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.primary }}>Kategori {cat.category}</span>
-                <span style={{ fontSize: '14px', color: tokens.colors.steel }}>{cat.playerCount} spillere</span>
+                <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--accent)' }}>Kategori {cat.category}</span>
+                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{cat.playerCount} spillere</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                 <div>
-                  <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Snitt HCP</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>{cat.avgHandicap}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Snitt HCP</div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>{cat.avgHandicap}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Økter/uke</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>{cat.avgSessions}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Økter/uke</div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>{cat.avgSessions}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '12px', color: tokens.colors.steel }}>I fremgang</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.success }}>{cat.improving}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>I fremgang</div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--success)' }}>{cat.improving}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Tilbakegang</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.error }}>{cat.declining}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Tilbakegang</div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--error)' }}>{cat.declining}</div>
                 </div>
               </div>
             </div>
@@ -363,15 +364,15 @@ export default function CoachStatsOverview() {
       </div>
 
       {/* Filters */}
-      <div style={{ padding: '16px 24px', backgroundColor: tokens.colors.white, borderBottom: `1px solid ${tokens.colors.gray200}`, display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', backgroundColor: tokens.colors.gray100, borderRadius: tokens.radius.md, flex: 1, maxWidth: '250px' }}>
-          <Search size={18} color={tokens.colors.steel} />
+      <div style={{ padding: '16px 24px', backgroundColor: 'var(--bg-primary)', borderBottom: `1px solid ${'var(--border-default)'}`, display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', flex: 1, maxWidth: '250px' }}>
+          <Search size={18} color={'var(--text-secondary)'} />
           <input
             type="text"
             placeholder="Søk spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ flex: 1, border: 'none', backgroundColor: 'transparent', fontSize: '14px', color: tokens.colors.charcoal, outline: 'none' }}
+            style={{ flex: 1, border: 'none', backgroundColor: 'transparent', fontSize: '14px', color: 'var(--text-primary)', outline: 'none' }}
           />
         </div>
 
@@ -382,10 +383,10 @@ export default function CoachStatsOverview() {
               onClick={() => setCategoryFilter(cat)}
               style={{
                 padding: '8px 14px',
-                backgroundColor: categoryFilter === cat ? tokens.colors.primary : tokens.colors.white,
-                color: categoryFilter === cat ? tokens.colors.white : tokens.colors.charcoal,
-                border: `1px solid ${categoryFilter === cat ? tokens.colors.primary : tokens.colors.gray300}`,
-                borderRadius: tokens.radius.md, fontSize: '13px', fontWeight: 500, cursor: 'pointer',
+                backgroundColor: categoryFilter === cat ? 'var(--accent)' : 'var(--bg-primary)',
+                color: categoryFilter === cat ? 'var(--bg-primary)' : 'var(--text-primary)',
+                border: `1px solid ${categoryFilter === cat ? 'var(--accent)' : 'var(--border-default)'}`,
+                borderRadius: 'var(--radius-md)', fontSize: '13px', fontWeight: 500, cursor: 'pointer',
               }}
             >
               {cat === 'all' ? 'Alle' : `Kat. ${cat}`}
@@ -396,7 +397,7 @@ export default function CoachStatsOverview() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          style={{ padding: '8px 12px', backgroundColor: tokens.colors.white, border: `1px solid ${tokens.colors.gray300}`, borderRadius: tokens.radius.md, fontSize: '13px', color: tokens.colors.charcoal }}
+          style={{ padding: '8px 12px', backgroundColor: 'var(--bg-primary)', border: `1px solid ${'var(--border-default)'}`, borderRadius: 'var(--radius-md)', fontSize: '13px', color: 'var(--text-primary)' }}
         >
           <option value="trend">Sorter: Trend</option>
           <option value="name">Sorter: Navn</option>
@@ -417,9 +418,9 @@ export default function CoachStatsOverview() {
                 key={player.id}
                 onClick={() => navigate(`/coach/athletes/${player.id}`)}
                 style={{
-                  backgroundColor: tokens.colors.white, borderRadius: tokens.radius.lg,
-                  boxShadow: tokens.shadows.card, padding: '16px 20px', cursor: 'pointer',
-                  border: player.trend === 'down' ? `2px solid ${tokens.colors.error}` : `1px solid ${tokens.colors.gray200}`,
+                  backgroundColor: 'var(--bg-primary)', borderRadius: 'var(--radius-lg)',
+                  boxShadow: 'var(--shadow-card)', padding: '16px 20px', cursor: 'pointer',
+                  border: player.trend === 'down' ? `2px solid ${'var(--error)'}` : `1px solid ${'var(--border-default)'}`,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -427,7 +428,7 @@ export default function CoachStatsOverview() {
                     <div style={{ position: 'relative' }}>
                       <div style={{
                         width: 48, height: 48, borderRadius: '50%', backgroundColor: player.avatarColor,
-                        color: tokens.colors.white, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: '16px', fontWeight: 600,
                       }}>
                         {player.initials}
@@ -441,13 +442,13 @@ export default function CoachStatsOverview() {
                       </div>
                     </div>
                     <div>
-                      <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>{player.name}</h3>
+                      <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{player.name}</h3>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                        <span style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.primary, backgroundColor: `${tokens.colors.primary}15`, padding: '2px 8px', borderRadius: '4px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)', backgroundColor: 'rgba(var(--accent-rgb), 0.15)', padding: '2px 8px', borderRadius: '4px' }}>
                           Kategori {player.category}
                         </span>
                         {player.highlights.map((h, i) => (
-                          <span key={i} style={{ fontSize: '11px', color: tokens.colors.gold, backgroundColor: `${tokens.colors.gold}15`, padding: '2px 6px', borderRadius: '4px' }}>
+                          <span key={i} style={{ fontSize: '11px', color: 'var(--achievement)', backgroundColor: 'rgba(var(--achievement-rgb), 0.15)', padding: '2px 6px', borderRadius: '4px' }}>
                             {h}
                           </span>
                         ))}
@@ -457,22 +458,22 @@ export default function CoachStatsOverview() {
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
                     <div style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Handicap</div>
-                      <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>{player.handicap}</div>
-                      <div style={{ fontSize: '12px', fontWeight: 500, color: player.handicapChange < 0 ? tokens.colors.success : player.handicapChange > 0 ? tokens.colors.error : tokens.colors.steel }}>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Handicap</div>
+                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{player.handicap}</div>
+                      <div style={{ fontSize: '12px', fontWeight: 500, color: player.handicapChange < 0 ? 'var(--success)' : player.handicapChange > 0 ? 'var(--error)' : 'var(--text-secondary)' }}>
                         {player.handicapChange > 0 ? '+' : ''}{player.handicapChange}
                       </div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Økter/mnd</div>
-                      <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>{player.sessionsThisMonth}</div>
-                      <div style={{ fontSize: '12px', color: tokens.colors.steel }}>{player.avgSessionsPerWeek}/uke</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Økter/mnd</div>
+                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{player.sessionsThisMonth}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{player.avgSessionsPerWeek}/uke</div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Snitt score</div>
-                      <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>{player.tournamentScore}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Snitt score</div>
+                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{player.tournamentScore}</div>
                     </div>
-                    <ChevronRight size={20} color={tokens.colors.steel} />
+                    <ChevronRight size={20} color={'var(--text-secondary)'} />
                   </div>
                 </div>
               </div>

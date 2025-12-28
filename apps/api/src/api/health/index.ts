@@ -9,6 +9,7 @@
 
 import { FastifyPluginAsync } from 'fastify';
 import { getPrismaClient } from '../../core/db/prisma';
+import { setNoStore, setPublicShort } from '../../middleware/cacheHeaders';
 
 interface HealthCheckResponse {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -55,6 +56,8 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
    * Basic health check (fast, lightweight)
    */
   fastify.get('/', async (request, reply) => {
+    // Public short cache for health checks
+    setPublicShort(reply, 30);
     return {
       status: 'ok',
       timestamp: new Date().toISOString(),
@@ -99,6 +102,9 @@ const healthRoutes: FastifyPluginAsync = async (fastify) => {
    * Readiness probe (for Kubernetes/Docker)
    */
   fastify.get('/ready', async (request, reply) => {
+    // No-store: readiness must be real-time
+    setNoStore(reply);
+
     const databaseCheck = await checkDatabase();
 
     if (databaseCheck.status === 'ok') {

@@ -4,7 +4,6 @@ import {
   ChevronRight, RotateCcw, Flame, Dumbbell, Brain, Flag,
   Video, MessageCircle, Plus, Award
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -112,32 +111,32 @@ const TODAY_PLAN = {
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'warmup':
-      return { color: tokens.colors.warning, icon: Flame, label: 'Oppvarming' };
+      return { color: 'var(--warning)', icon: Flame, label: 'Oppvarming' };
     case 'technical':
-      return { color: tokens.colors.primary, icon: Target, label: 'Teknikk' };
+      return { color: 'var(--accent)', icon: Target, label: 'Teknikk' };
     case 'short_game':
-      return { color: tokens.colors.success, icon: Flag, label: 'Kortspill' };
+      return { color: 'var(--success)', icon: Flag, label: 'Kortspill' };
     case 'physical':
-      return { color: tokens.colors.error, icon: Dumbbell, label: 'Fysisk' };
+      return { color: 'var(--error)', icon: Dumbbell, label: 'Fysisk' };
     case 'mental':
-      return { color: tokens.colors.gold, icon: Brain, label: 'Mental' };
+      return { color: 'var(--achievement)', icon: Brain, label: 'Mental' };
     case 'cooldown':
-      return { color: tokens.colors.steel, icon: RotateCcw, label: 'Avslutning' };
+      return { color: 'var(--text-secondary)', icon: RotateCcw, label: 'Avslutning' };
     default:
-      return { color: tokens.colors.steel, icon: Calendar, label: type };
+      return { color: 'var(--text-secondary)', icon: Calendar, label: type };
   }
 };
 
 const getStatusConfig = (status) => {
   switch (status) {
     case 'completed':
-      return { color: tokens.colors.success, icon: CheckCircle, label: 'Fullfort' };
+      return { color: 'var(--success)', icon: CheckCircle, label: 'Fullfort' };
     case 'in_progress':
-      return { color: tokens.colors.primary, icon: Play, label: 'Pagar' };
+      return { color: 'var(--accent)', icon: Play, label: 'Pagar' };
     case 'pending':
-      return { color: tokens.colors.steel, icon: Clock, label: 'Venter' };
+      return { color: 'var(--text-secondary)', icon: Clock, label: 'Venter' };
     default:
-      return { color: tokens.colors.steel, icon: Clock, label: status };
+      return { color: 'var(--text-secondary)', icon: Clock, label: status };
   }
 };
 
@@ -156,11 +155,11 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       overflow: 'hidden',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      border: session.status === 'in_progress' ? `2px solid ${tokens.colors.primary}` : '2px solid transparent',
+      border: session.status === 'in_progress' ? '2px solid var(--accent)' : '2px solid transparent',
       opacity: session.status === 'completed' ? 0.8 : 1,
     }}>
       {/* Header */}
@@ -184,7 +183,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
           justifyContent: 'center',
         }}>
           {session.status === 'completed' ? (
-            <CheckCircle size={22} color={tokens.colors.success} />
+            <CheckCircle size={22} color={'var(--success)'} />
           ) : (
             <TypeIcon size={22} color={typeConfig.color} />
           )}
@@ -195,7 +194,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
             <h3 style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
               textDecoration: session.status === 'completed' ? 'line-through' : 'none',
             }}>
@@ -212,7 +211,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
               {statusConfig.label}
             </span>
           </div>
-          <div style={{ fontSize: '12px', color: tokens.colors.steel, marginTop: '2px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
             {session.duration} min - {completedExercises}/{totalExercises} ovelser
           </div>
         </div>
@@ -221,14 +220,14 @@ const SessionCard = ({ session, onStart, onComplete }) => {
           width: '28px',
           height: '28px',
           borderRadius: '8px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
           transition: 'transform 0.2s',
         }}>
-          <ChevronRight size={16} color={tokens.colors.steel} />
+          <ChevronRight size={16} color={'var(--text-secondary)'} />
         </div>
       </div>
 
@@ -237,14 +236,14 @@ const SessionCard = ({ session, onStart, onComplete }) => {
         <div style={{ padding: '0 16px 8px' }}>
           <div style={{
             height: '4px',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             borderRadius: '2px',
             overflow: 'hidden',
           }}>
             <div style={{
               height: '100%',
               width: `${(completedExercises / totalExercises) * 100}%`,
-              backgroundColor: session.status === 'completed' ? tokens.colors.success : tokens.colors.primary,
+              backgroundColor: session.status === 'completed' ? 'var(--success)' : 'var(--accent)',
               borderRadius: '2px',
               transition: 'width 0.3s ease',
             }} />
@@ -256,12 +255,12 @@ const SessionCard = ({ session, onStart, onComplete }) => {
       {isExpanded && (
         <div style={{
           padding: '0 16px 16px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
           marginTop: '8px',
         }}>
           <p style={{
             fontSize: '13px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             margin: '12px 0',
             lineHeight: 1.5,
           }}>
@@ -278,7 +277,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
                   alignItems: 'center',
                   gap: '10px',
                   padding: '10px 12px',
-                  backgroundColor: exercise.completed ? `${tokens.colors.success}08` : tokens.colors.snow,
+                  backgroundColor: exercise.completed ? 'rgba(var(--success-rgb), 0.08)' : 'var(--bg-secondary)',
                   borderRadius: '8px',
                 }}
               >
@@ -286,33 +285,33 @@ const SessionCard = ({ session, onStart, onComplete }) => {
                   width: '22px',
                   height: '22px',
                   borderRadius: '50%',
-                  backgroundColor: exercise.completed ? tokens.colors.success : tokens.colors.white,
-                  border: exercise.completed ? 'none' : `2px solid ${tokens.colors.mist}`,
+                  backgroundColor: exercise.completed ? 'var(--success)' : 'var(--bg-primary)',
+                  border: exercise.completed ? 'none' : '2px solid var(--border-default)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
                 }}>
-                  {exercise.completed && <CheckCircle size={14} color={tokens.colors.white} />}
+                  {exercise.completed && <CheckCircle size={14} color={'var(--bg-primary)'} />}
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{
                     fontSize: '13px',
-                    color: exercise.completed ? tokens.colors.steel : tokens.colors.charcoal,
+                    color: exercise.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
                     textDecoration: exercise.completed ? 'line-through' : 'none',
                   }}>
                     {exercise.name}
                   </div>
                   {exercise.notes && (
-                    <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
                       {exercise.notes}
                     </div>
                   )}
                 </div>
                 <span style={{
                   fontSize: '12px',
-                  color: tokens.colors.steel,
-                  backgroundColor: tokens.colors.white,
+                  color: 'var(--text-secondary)',
+                  backgroundColor: 'var(--bg-primary)',
                   padding: '4px 8px',
                   borderRadius: '6px',
                 }}>
@@ -327,13 +326,13 @@ const SessionCard = ({ session, onStart, onComplete }) => {
             <div style={{
               marginTop: '12px',
               padding: '12px',
-              backgroundColor: `${tokens.colors.primary}08`,
+              backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
               borderRadius: '10px',
             }}>
               <div style={{
                 fontSize: '12px',
                 fontWeight: 600,
-                color: tokens.colors.primary,
+                color: 'var(--accent)',
                 marginBottom: '8px',
                 display: 'flex',
                 alignItems: 'center',
@@ -345,10 +344,10 @@ const SessionCard = ({ session, onStart, onComplete }) => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
                 {Object.entries(session.trackmanData).map(([key, value]) => (
                   <div key={key} style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.charcoal }}>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
                       {value}
                     </div>
-                    <div style={{ fontSize: '10px', color: tokens.colors.steel }}>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>
                       {key.replace('avg', 'Gj.sn ')}
                     </div>
                   </div>
@@ -370,8 +369,8 @@ const SessionCard = ({ session, onStart, onComplete }) => {
                 padding: '12px',
                 borderRadius: '10px',
                 border: 'none',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -397,8 +396,8 @@ const SessionCard = ({ session, onStart, onComplete }) => {
                 padding: '12px',
                 borderRadius: '10px',
                 border: 'none',
-                backgroundColor: tokens.colors.success,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--success)',
+                color: 'var(--bg-primary)',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -453,7 +452,7 @@ const DagensTreningsplanContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Dagens treningsplan"
         subtitle={`${plan.dayName.charAt(0).toUpperCase() + plan.dayName.slice(1)} - ${plan.theme}`}
@@ -462,7 +461,7 @@ const DagensTreningsplanContainer = () => {
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* Progress Overview */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
           padding: '20px',
           marginBottom: '20px',
@@ -478,19 +477,19 @@ const DagensTreningsplanContainer = () => {
               <h2 style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 Dagens fremgang
               </h2>
-              <div style={{ fontSize: '13px', color: tokens.colors.steel, marginTop: '2px' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
                 {completedSessions}/{plan.sessions.length} okter fullfort
               </div>
             </div>
             <div style={{
               fontSize: '28px',
               fontWeight: 700,
-              color: progressPercent >= 100 ? tokens.colors.success : tokens.colors.primary,
+              color: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
             }}>
               {progressPercent}%
             </div>
@@ -498,14 +497,14 @@ const DagensTreningsplanContainer = () => {
 
           <div style={{
             height: '8px',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             borderRadius: '4px',
             overflow: 'hidden',
           }}>
             <div style={{
               height: '100%',
               width: `${progressPercent}%`,
-              backgroundColor: progressPercent >= 100 ? tokens.colors.success : tokens.colors.primary,
+              backgroundColor: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
               borderRadius: '4px',
               transition: 'width 0.5s ease',
             }} />
@@ -516,7 +515,7 @@ const DagensTreningsplanContainer = () => {
             justifyContent: 'space-between',
             marginTop: '12px',
             fontSize: '12px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
           }}>
             <span>{plan.completedDuration} min fullfort</span>
             <span>{plan.totalDuration - plan.completedDuration} min gjenstar</span>
@@ -526,11 +525,11 @@ const DagensTreningsplanContainer = () => {
         {/* Coach Note */}
         {plan.coachNote && (
           <div style={{
-            backgroundColor: `${tokens.colors.primary}08`,
+            backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
             borderRadius: '12px',
             padding: '16px',
             marginBottom: '20px',
-            borderLeft: `4px solid ${tokens.colors.primary}`,
+            borderLeft: '4px solid var(--accent)',
           }}>
             <div style={{
               display: 'flex',
@@ -538,14 +537,14 @@ const DagensTreningsplanContainer = () => {
               gap: '8px',
               marginBottom: '8px',
             }}>
-              <MessageCircle size={16} color={tokens.colors.primary} />
-              <span style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.primary }}>
+              <MessageCircle size={16} color={'var(--accent)'} />
+              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
                 Beskjed fra trener
               </span>
             </div>
             <p style={{
               fontSize: '13px',
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: 0,
               lineHeight: 1.5,
             }}>
@@ -556,7 +555,7 @@ const DagensTreningsplanContainer = () => {
 
         {/* Today's Goals */}
         <div style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
           padding: '16px',
           marginBottom: '20px',
@@ -567,8 +566,8 @@ const DagensTreningsplanContainer = () => {
             gap: '8px',
             marginBottom: '12px',
           }}>
-            <Award size={16} color={tokens.colors.gold} />
-            <span style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.charcoal }}>
+            <Award size={16} color={'var(--achievement)'} />
+            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
               Dagens mal
             </span>
           </div>
@@ -581,10 +580,10 @@ const DagensTreningsplanContainer = () => {
                   alignItems: 'center',
                   gap: '8px',
                   fontSize: '13px',
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                 }}
               >
-                <Target size={12} color={tokens.colors.gold} />
+                <Target size={12} color={'var(--achievement)'} />
                 {goal}
               </div>
             ))}
@@ -595,7 +594,7 @@ const DagensTreningsplanContainer = () => {
         <h2 style={{
           fontSize: '16px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: '0 0 16px 0',
         }}>
           Okter
@@ -618,9 +617,9 @@ const DagensTreningsplanContainer = () => {
           marginTop: '16px',
           padding: '14px',
           borderRadius: '12px',
-          border: `2px dashed ${tokens.colors.mist}`,
+          border: '2px dashed var(--border-default)',
           backgroundColor: 'transparent',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
           fontSize: '14px',
           fontWeight: 500,
           cursor: 'pointer',

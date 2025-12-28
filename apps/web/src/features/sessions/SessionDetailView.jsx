@@ -7,79 +7,42 @@
  */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-  },
-  spacing: { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '32px' },
-  borderRadius: { sm: '4px', md: '8px', lg: '12px', full: '9999px' },
-  shadows: { card: '0 2px 8px rgba(0,0,0,0.08)' },
-  typography: { fontFamily: 'Inter, -apple-system, system-ui, sans-serif' },
-};
-
-// Typography style helper
-const typographyStyle = (variant) => {
-  const styles = {
-    title3: { fontSize: '17px', fontWeight: 600, lineHeight: 1.3 },
-    body: { fontSize: '15px', fontWeight: 400, lineHeight: 1.5 },
-    callout: { fontSize: '14px', fontWeight: 400, lineHeight: 1.4 },
-    caption: { fontSize: '12px', fontWeight: 500, lineHeight: 1.3, letterSpacing: '0.5px' },
-    label: { fontSize: '13px', fontWeight: 600, lineHeight: 1.3 },
-  };
-  return styles[variant] || styles.body;
-};
+import { tokens } from '../../design-tokens';
 
 // Learning phase colors - Blue Palette 01
 const learningPhaseColors = {
-  Ball: { bg: `${tokens.colors.success}15`, text: tokens.colors.primary },
-  Teknikk: { bg: `${tokens.colors.success}20`, text: tokens.colors.primary },
-  Transfer: { bg: `${tokens.colors.success}30`, text: tokens.colors.primary },
-  Variasjon: { bg: `${tokens.colors.success}50`, text: tokens.colors.white },
-  Spill: { bg: tokens.colors.success, text: tokens.colors.white },
+  Ball: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--accent)' },
+  Teknikk: { bg: 'rgba(var(--success-rgb), 0.2)', text: 'var(--accent)' },
+  Transfer: { bg: 'rgba(var(--success-rgb), 0.3)', text: 'var(--accent)' },
+  Variasjon: { bg: 'rgba(var(--success-rgb), 0.5)', text: 'var(--bg-primary)' },
+  Spill: { bg: 'var(--success)', text: 'var(--bg-primary)' },
 };
 
 // CS level colors - Blue Palette 01
 const csLevelColors = {
-  20: { bg: tokens.colors.snow, text: tokens.colors.steel },
-  40: { bg: `${tokens.colors.success}15`, text: tokens.colors.primary },
-  60: { bg: `${tokens.colors.success}20`, text: tokens.colors.primary },
-  80: { bg: `${tokens.colors.success}30`, text: tokens.colors.primary },
-  100: { bg: tokens.colors.primary, text: tokens.colors.white },
+  20: { bg: 'var(--bg-secondary)', text: 'var(--text-secondary)' },
+  40: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--accent)' },
+  60: { bg: 'rgba(var(--success-rgb), 0.2)', text: 'var(--accent)' },
+  80: { bg: 'rgba(var(--success-rgb), 0.3)', text: 'var(--accent)' },
+  100: { bg: 'var(--accent)', text: 'var(--bg-primary)' },
 };
 
 // Environment colors - Blue Palette 01
 const environmentColors = {
-  M1: { bg: tokens.colors.mist, text: tokens.colors.charcoal, label: 'Inne' },
-  M2: { bg: tokens.colors.snow, text: tokens.colors.charcoal, label: 'Matte' },
-  M3: { bg: `${tokens.colors.success}20`, text: tokens.colors.primary, label: 'Treningsområde' },
-  M4: { bg: `${tokens.colors.success}30`, text: tokens.colors.primary, label: 'Øvingsbane' },
-  M5: { bg: tokens.colors.primary, text: tokens.colors.white, label: 'Bane' },
+  M1: { bg: 'var(--border-default)', text: 'var(--text-primary)', label: 'Inne' },
+  M2: { bg: 'var(--bg-secondary)', text: 'var(--text-primary)', label: 'Matte' },
+  M3: { bg: 'rgba(var(--success-rgb), 0.2)', text: 'var(--accent)', label: 'Treningsområde' },
+  M4: { bg: 'rgba(var(--success-rgb), 0.3)', text: 'var(--accent)', label: 'Øvingsbane' },
+  M5: { bg: 'var(--accent)', text: 'var(--bg-primary)', label: 'Bane' },
 };
 
 // Pressure rating colors - Blue Palette 01
 const pressureColors = {
-  PR1: { bg: tokens.colors.snow, text: tokens.colors.steel, label: 'Ingen press' },
-  PR2: { bg: `${tokens.colors.gold}10`, text: tokens.colors.charcoal, label: 'Lavt press' },
-  PR3: { bg: `${tokens.colors.warning}50`, text: tokens.colors.charcoal, label: 'Medium press' },
-  PR4: { bg: tokens.colors.warning, text: tokens.colors.white, label: 'Høyt press' },
-  PR5: { bg: tokens.colors.gold, text: tokens.colors.white, label: 'Maks press' },
+  PR1: { bg: 'var(--bg-secondary)', text: 'var(--text-secondary)', label: 'Ingen press' },
+  PR2: { bg: 'rgba(var(--achievement-rgb), 0.1)', text: 'var(--text-primary)', label: 'Lavt press' },
+  PR3: { bg: 'rgba(var(--warning-rgb), 0.5)', text: 'var(--text-primary)', label: 'Medium press' },
+  PR4: { bg: 'var(--warning)', text: 'var(--bg-primary)', label: 'Høyt press' },
+  PR5: { bg: 'var(--achievement)', text: 'var(--bg-primary)', label: 'Maks press' },
 };
 
 // Tag component for block parameters
@@ -90,10 +53,10 @@ function Tag({ label, color }) {
         display: 'inline-flex',
         alignItems: 'center',
         padding: '4px 10px',
-        borderRadius: tokens.borderRadius.sm,
+        borderRadius: 'var(--radius-sm)',
         backgroundColor: color.bg,
         color: color.text,
-        ...typographyStyle('caption'),
+        fontSize: '12px', lineHeight: '16px',
         fontWeight: 500,
       }}
     >
@@ -112,10 +75,10 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
   return (
     <div
       style={{
-        backgroundColor: tokens.colors.white,
-        borderRadius: tokens.borderRadius.lg,
-        boxShadow: tokens.shadows.card,
-        marginBottom: tokens.spacing.md,
+        backgroundColor: 'var(--bg-primary)',
+        borderRadius: 'var(--radius-lg)',
+        boxShadow: 'var(--shadow-card)',
+        marginBottom: '16px',
         overflow: 'hidden',
       }}
     >
@@ -126,58 +89,58 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: tokens.spacing.md,
+          padding: '16px',
           cursor: 'pointer',
-          borderBottom: expanded ? `1px solid ${tokens.colors.mist}` : 'none',
+          borderBottom: expanded ? '1px solid var(--border-default)' : 'none',
         }}
       >
         <div>
-          <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
             BLOKK {index + 1} av {total}
           </span>
         </div>
-        <span style={{ ...typographyStyle('callout'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
           {block.duration} min
         </span>
       </div>
 
       {/* Block content */}
-      <div style={{ padding: tokens.spacing.md }}>
+      <div style={{ padding: '16px' }}>
         {/* Exercise name and focus */}
-        <div style={{ marginBottom: tokens.spacing.md }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm, marginBottom: tokens.spacing.xs }}>
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
             <span style={{ fontSize: '18px' }}>📋</span>
-            <span style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
               {block.exercise}
             </span>
           </div>
-          <span style={{ ...typographyStyle('callout'), color: tokens.colors.steel }}>
+          <span style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
             Fokus: {block.focus}
           </span>
         </div>
 
         {/* Training area */}
-        <div style={{ marginBottom: tokens.spacing.md }}>
-          <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+        <div style={{ marginBottom: '16px' }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
             Treningsområde
           </span>
-          <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
             {block.trainingArea}
           </span>
         </div>
 
         {/* Volume */}
-        <div style={{ marginBottom: tokens.spacing.md }}>
-          <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+        <div style={{ marginBottom: '16px' }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
             Volum
           </span>
-          <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
             {block.reps} repetisjoner
           </span>
         </div>
 
         {/* Tags */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: tokens.spacing.sm, marginBottom: tokens.spacing.md }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
           <Tag label={block.learningPhase} color={phaseColor} />
           <Tag label={`CS ${block.csLevel}%`} color={csColor} />
           <Tag label={block.environment} color={envColor} />
@@ -188,16 +151,16 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
         {expanded && block.instructions && (
           <div
             style={{
-              backgroundColor: tokens.colors.snow,
-              borderRadius: tokens.borderRadius.md,
-              padding: tokens.spacing.md,
-              marginBottom: tokens.spacing.md,
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: 'var(--radius-md)',
+              padding: '16px',
+              marginBottom: '16px',
             }}
           >
-            <span style={{ ...typographyStyle('label'), color: tokens.colors.primary, display: 'block', marginBottom: tokens.spacing.xs }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)', display: 'block', marginBottom: '4px' }}>
               Instruksjoner
             </span>
-            <span style={{ ...typographyStyle('callout'), color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-primary)' }}>
               {block.instructions}
             </span>
           </div>
@@ -211,13 +174,13 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
-            padding: tokens.spacing.md,
-            backgroundColor: block.completed ? tokens.colors.success : tokens.colors.snow,
-            color: block.completed ? tokens.colors.white : tokens.colors.charcoal,
+            padding: '16px',
+            backgroundColor: block.completed ? 'var(--success)' : 'var(--bg-secondary)',
+            color: block.completed ? 'var(--bg-primary)' : 'var(--text-primary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
-            ...typographyStyle('label'),
+            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
           }}
         >
           {block.completed ? '✓ Fullført' : '☐ Marker som fullført'}
@@ -254,9 +217,9 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
   // Status badge
   const getStatusBadge = (status) => {
     const styles = {
-      Planlagt: { bg: tokens.colors.snow, text: tokens.colors.steel },
-      Pågår: { bg: tokens.colors.warning, text: tokens.colors.white },
-      Fullført: { bg: tokens.colors.success, text: tokens.colors.white },
+      Planlagt: { bg: 'var(--bg-secondary)', text: 'var(--text-secondary)' },
+      Pågår: { bg: 'var(--warning)', text: 'var(--bg-primary)' },
+      Fullført: { bg: 'var(--success)', text: 'var(--bg-primary)' },
     };
     const style = styles[status] || styles.Planlagt;
 
@@ -266,10 +229,10 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
           display: 'inline-flex',
           alignItems: 'center',
           padding: '6px 12px',
-          borderRadius: tokens.borderRadius.full,
+          borderRadius: '9999px',
           backgroundColor: style.bg,
           color: style.text,
-          ...typographyStyle('caption'),
+          fontSize: '12px', lineHeight: '16px',
           fontWeight: 600,
         }}
       >
@@ -280,8 +243,8 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
 
   if (!session) {
     return (
-      <div style={{ padding: tokens.spacing.lg, textAlign: 'center' }}>
-        <span style={{ ...typographyStyle('body'), color: tokens.colors.steel }}>
+      <div style={{ padding: '24px', textAlign: 'center' }}>
+        <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
           Ingen økt valgt
         </span>
       </div>
@@ -290,9 +253,9 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.surface,
+      backgroundColor: 'var(--bg-primary)',
       minHeight: '100vh',
-      fontFamily: tokens.typography.fontFamily,
+      fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
     }}>
       {/* Header */}
       <div
@@ -300,9 +263,9 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          padding: '16px',
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
         }}
       >
         <button
@@ -310,12 +273,12 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: tokens.spacing.xs,
+            gap: '4px',
             background: 'none',
             border: 'none',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             cursor: 'pointer',
-            ...typographyStyle('body'),
+            fontSize: '15px', lineHeight: '20px',
           }}
         >
           ← Tilbake
@@ -324,7 +287,7 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
           style={{
             background: 'none',
             border: 'none',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             cursor: 'pointer',
             fontSize: '20px',
           }}
@@ -334,43 +297,43 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
       </div>
 
       {/* Session info */}
-      <div style={{ padding: tokens.spacing.lg }}>
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, letterSpacing: '0.5px' }}>
+      <div style={{ padding: '24px' }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>
           TRENINGSØKT
         </span>
         <div
           style={{
             height: '2px',
-            backgroundColor: tokens.colors.primary,
-            marginTop: tokens.spacing.xs,
-            marginBottom: tokens.spacing.md,
+            backgroundColor: 'var(--accent)',
+            marginTop: '4px',
+            marginBottom: '16px',
           }}
         />
 
         {/* Date, time, location */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm, marginBottom: tokens.spacing.lg }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>📅</span>
-            <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
               {session.date}
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>🕐</span>
-            <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
               {session.startTime} - {session.endTime} ({session.duration} min)
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span>📍</span>
-            <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
               {session.location}
             </span>
           </div>
         </div>
 
         {/* Status */}
-        <div style={{ marginBottom: tokens.spacing.lg }}>
+        <div style={{ marginBottom: '24px' }}>
           {getStatusBadge(session.status)}
         </div>
 
@@ -390,15 +353,15 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
         {/* Notes */}
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            padding: tokens.spacing.md,
-            marginBottom: tokens.spacing.lg,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '16px',
+            marginBottom: '24px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm, marginBottom: tokens.spacing.sm }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span>📝</span>
-            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)' }}>
               Notater
             </span>
           </div>
@@ -407,18 +370,18 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
             style={{
               width: '100%',
               minHeight: '80px',
-              padding: tokens.spacing.md,
-              backgroundColor: tokens.colors.snow,
+              padding: '16px',
+              backgroundColor: 'var(--bg-secondary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               resize: 'vertical',
-              ...typographyStyle('callout'),
+              fontSize: '14px', lineHeight: '19px',
             }}
           />
         </div>
 
         {/* Action buttons based on session status */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {/* Start session button - only for planned sessions */}
           {session.status === 'Planlagt' && (
             <button
@@ -428,13 +391,13 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
-                padding: tokens.spacing.md,
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                padding: '16px',
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.borderRadius.md,
+                borderRadius: 'var(--radius-md)',
                 cursor: 'pointer',
-                ...typographyStyle('title3'),
+                fontSize: '20px', lineHeight: '25px', fontWeight: 600,
               }}
             >
               Start økt
@@ -450,13 +413,13 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
-                padding: tokens.spacing.md,
-                backgroundColor: tokens.colors.success,
-                color: tokens.colors.white,
+                padding: '16px',
+                backgroundColor: 'var(--success)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.borderRadius.md,
+                borderRadius: 'var(--radius-md)',
                 cursor: 'pointer',
-                ...typographyStyle('title3'),
+                fontSize: '20px', lineHeight: '25px', fontWeight: 600,
               }}
             >
               Evaluer økt
@@ -472,13 +435,13 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 width: '100%',
-                padding: tokens.spacing.md,
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                padding: '16px',
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.borderRadius.md,
+                borderRadius: 'var(--radius-md)',
                 cursor: 'pointer',
-                ...typographyStyle('title3'),
+                fontSize: '20px', lineHeight: '25px', fontWeight: 600,
               }}
             >
               Fortsett økt

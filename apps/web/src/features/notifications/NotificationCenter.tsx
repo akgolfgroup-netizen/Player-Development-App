@@ -22,7 +22,6 @@ import {
   Video,
   PlayCircle,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { useNotifications } from '../../hooks/useNotifications';
 
 interface NotificationCenterProps {
@@ -37,29 +36,29 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
   const getNotificationIcon = (notificationType: string) => {
     switch (notificationType) {
       case 'video_shared':
-        return { icon: PlayCircle, color: tokens.colors.primary };
+        return { icon: PlayCircle, color: 'var(--accent)' };
       case 'video_reviewed':
-        return { icon: CheckCircle, color: tokens.colors.success };
+        return { icon: CheckCircle, color: 'var(--success)' };
       case 'comment_created':
-        return { icon: MessageSquare, color: tokens.colors.primary };
+        return { icon: MessageSquare, color: 'var(--accent)' };
       case 'achievement':
-        return { icon: Star, color: tokens.colors.gold };
+        return { icon: Star, color: 'var(--achievement)' };
       case 'success':
-        return { icon: CheckCircle, color: tokens.colors.success };
+        return { icon: CheckCircle, color: 'var(--success)' };
       case 'warning':
-        return { icon: AlertCircle, color: tokens.colors.warning };
+        return { icon: AlertCircle, color: 'var(--warning)' };
       case 'error':
-        return { icon: AlertCircle, color: tokens.colors.error };
+        return { icon: AlertCircle, color: 'var(--error)' };
       case 'training':
-        return { icon: TrendingUp, color: tokens.colors.primary };
+        return { icon: TrendingUp, color: 'var(--accent)' };
       case 'test':
-        return { icon: Target, color: tokens.colors.success };
+        return { icon: Target, color: 'var(--success)' };
       case 'tournament':
-        return { icon: Trophy, color: tokens.colors.gold };
+        return { icon: Trophy, color: 'var(--achievement)' };
       case 'message':
-        return { icon: MessageSquare, color: tokens.colors.primary };
+        return { icon: MessageSquare, color: 'var(--accent)' };
       default:
-        return { icon: Video, color: tokens.colors.steel };
+        return { icon: Video, color: 'var(--text-secondary)' };
     }
   };
 
@@ -121,14 +120,14 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
           style={{
             width: 40,
             height: 40,
-            border: `3px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `3px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             margin: '0 auto 16px',
             animation: 'spin 1s linear infinite',
           }}
         />
-        <p style={{ color: tokens.colors.steel }}>Laster varsler...</p>
+        <p style={{ color: 'var(--text-secondary)' }}>Laster varsler...</p>
       </div>
     );
   }
@@ -147,8 +146,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
         <div>
           <h1
             style={{
-              ...tokens.typography.title1,
-              color: tokens.colors.charcoal,
+              fontSize: '28px', lineHeight: '34px', fontWeight: 700,
+              color: 'var(--text-primary)',
               margin: 0,
             }}
           >
@@ -157,8 +156,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
           {unreadCount > 0 && (
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: '4px 0 0',
               }}
             >
@@ -176,9 +175,9 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
               gap: '6px',
               padding: '8px 14px',
               backgroundColor: 'transparent',
-              color: tokens.colors.primary,
-              border: `1px solid ${tokens.colors.primary}`,
-              borderRadius: tokens.radius.md,
+              color: 'var(--accent)',
+              border: `1px solid ${'var(--accent)'}`,
+              borderRadius: 'var(--radius-md)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -197,8 +196,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
           gap: '4px',
           marginBottom: '20px',
           padding: '4px',
-          backgroundColor: tokens.colors.gray100,
-          borderRadius: tokens.radius.md,
+          backgroundColor: 'var(--bg-tertiary)',
+          borderRadius: 'var(--radius-md)',
           width: 'fit-content',
         }}
       >
@@ -212,18 +211,18 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
             style={{
               padding: '8px 16px',
               backgroundColor:
-                filterType === filter.key ? tokens.colors.white : 'transparent',
+                filterType === filter.key ? 'var(--bg-primary)' : 'transparent',
               color:
                 filterType === filter.key
-                  ? tokens.colors.charcoal
-                  : tokens.colors.steel,
+                  ? 'var(--text-primary)'
+                  : 'var(--text-secondary)',
               border: 'none',
-              borderRadius: tokens.radius.sm,
+              borderRadius: 'var(--radius-sm)',
               fontSize: '14px',
               fontWeight: 500,
               cursor: 'pointer',
               boxShadow:
-                filterType === filter.key ? tokens.shadows.card : 'none',
+                filterType === filter.key ? 'var(--shadow-card)' : 'none',
             }}
           >
             {filter.label}
@@ -234,9 +233,9 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
       {/* Notifications list */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: tokens.radius.lg,
-          border: `1px solid ${tokens.colors.gray300}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: 'var(--radius-lg)',
+          border: `1px solid ${'var(--border-default)'}`,
           overflow: 'hidden',
         }}
       >
@@ -249,12 +248,12 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
           >
             <Bell
               size={48}
-              style={{ color: tokens.colors.gray300, marginBottom: '16px' }}
+              style={{ color: 'var(--border-default)', marginBottom: '16px' }}
             />
             <p
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: '0 0 8px',
               }}
             >
@@ -262,8 +261,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
             </p>
             <p
               style={{
-                ...tokens.typography.subheadline,
-                color: tokens.colors.steel,
+                fontSize: '15px', lineHeight: '20px',
+                color: 'var(--text-secondary)',
                 margin: 0,
               }}
             >
@@ -287,11 +286,11 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                   padding: '16px',
                   borderBottom:
                     index < filteredNotifications.length - 1
-                      ? `1px solid ${tokens.colors.gray100}`
+                      ? `1px solid ${'var(--bg-tertiary)'}`
                       : 'none',
                   backgroundColor: isRead
                     ? 'transparent'
-                    : `${tokens.colors.primary}06`,
+                    : `${'var(--accent)'}06`,
                   transition: 'background-color 0.15s',
                 }}
               >
@@ -300,7 +299,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                   style={{
                     width: 40,
                     height: 40,
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     backgroundColor: `${color}15`,
                     display: 'flex',
                     alignItems: 'center',
@@ -324,8 +323,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                   >
                     <h3
                       style={{
-                        ...tokens.typography.headline,
-                        color: tokens.colors.charcoal,
+                        fontSize: '17px', lineHeight: '22px',
+                        color: 'var(--text-primary)',
                         fontWeight: isRead ? 500 : 600,
                         margin: 0,
                       }}
@@ -335,8 +334,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span
                         style={{
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.steel,
+                          fontSize: '13px', lineHeight: '18px',
+                          color: 'var(--text-secondary)',
                           whiteSpace: 'nowrap',
                         }}
                       >
@@ -348,7 +347,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                             width: 8,
                             height: 8,
                             borderRadius: '50%',
-                            backgroundColor: tokens.colors.primary,
+                            backgroundColor: 'var(--accent)',
                           }}
                         />
                       )}
@@ -357,8 +356,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
 
                   <p
                     style={{
-                      ...tokens.typography.subheadline,
-                      color: tokens.colors.steel,
+                      fontSize: '15px', lineHeight: '20px',
+                      color: 'var(--text-secondary)',
                       margin: '0 0 10px',
                     }}
                   >
@@ -378,8 +377,8 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                         to={link}
                         onClick={() => markAsRead(notification.id)}
                         style={{
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.primary,
+                          fontSize: '13px', lineHeight: '18px',
+                          color: 'var(--accent)',
                           fontWeight: 500,
                           textDecoration: 'none',
                         }}
@@ -397,7 +396,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                           padding: 0,
                           backgroundColor: 'transparent',
                           border: 'none',
-                          color: tokens.colors.steel,
+                          color: 'var(--text-secondary)',
                           fontSize: '12px',
                           cursor: 'pointer',
                         }}

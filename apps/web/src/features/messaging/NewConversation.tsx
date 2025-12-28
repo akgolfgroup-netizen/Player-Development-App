@@ -14,7 +14,6 @@ import {
   Search,
   X,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 
 interface Contact {
   id: string;
@@ -55,21 +54,21 @@ export default function NewConversation({ userId }: NewConversationProps) {
             name: 'Anders Kristiansen',
             role: 'coach',
             avatarInitials: 'AK',
-            avatarColor: tokens.colors.gold,
+            avatarColor: 'var(--achievement)',
           },
           {
             id: '2',
             name: 'Erik Hansen',
             role: 'coach',
             avatarInitials: 'EH',
-            avatarColor: tokens.colors.primary,
+            avatarColor: 'var(--accent)',
           },
           {
             id: '3',
             name: 'Lars Olsen',
             role: 'player',
             avatarInitials: 'LO',
-            avatarColor: tokens.colors.success,
+            avatarColor: 'var(--success)',
           },
         ]);
       } finally {
@@ -146,18 +145,18 @@ export default function NewConversation({ userId }: NewConversationProps) {
             justifyContent: 'center',
             width: 40,
             height: 40,
-            backgroundColor: tokens.colors.white,
-            border: `1px solid ${tokens.colors.gray300}`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-primary)',
+            border: `1px solid ${'var(--border-default)'}`,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={tokens.colors.charcoal} />
+          <ArrowLeft size={20} color={'var(--text-primary)'} />
         </button>
         <h1
           style={{
-            ...tokens.typography.title2,
-            color: tokens.colors.charcoal,
+            fontSize: '22px', lineHeight: '28px', fontWeight: 700,
+            color: 'var(--text-primary)',
             margin: 0,
           }}
         >
@@ -169,9 +168,9 @@ export default function NewConversation({ userId }: NewConversationProps) {
       {!selectedContact ? (
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
-            border: `1px solid ${tokens.colors.gray300}`,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            border: `1px solid ${'var(--border-default)'}`,
             overflow: 'hidden',
           }}
         >
@@ -179,7 +178,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
           <div
             style={{
               padding: '16px',
-              borderBottom: `1px solid ${tokens.colors.gray100}`,
+              borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
             }}
           >
             <div style={{ position: 'relative' }}>
@@ -190,7 +189,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
                   left: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: tokens.colors.steel,
+                  color: 'var(--text-secondary)',
                 }}
               />
               <input
@@ -201,9 +200,9 @@ export default function NewConversation({ userId }: NewConversationProps) {
                 style={{
                   width: '100%',
                   padding: '10px 12px 10px 40px',
-                  backgroundColor: tokens.colors.gray100,
+                  backgroundColor: 'var(--bg-tertiary)',
                   border: 'none',
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   fontSize: '14px',
                   outline: 'none',
                 }}
@@ -218,8 +217,8 @@ export default function NewConversation({ userId }: NewConversationProps) {
                 style={{
                   width: 32,
                   height: 32,
-                  border: `3px solid ${tokens.colors.gray300}`,
-                  borderTopColor: tokens.colors.primary,
+                  border: `3px solid ${'var(--border-default)'}`,
+                  borderTopColor: 'var(--accent)',
                   borderRadius: '50%',
                   margin: '0 auto',
                   animation: 'spin 1s linear infinite',
@@ -230,8 +229,8 @@ export default function NewConversation({ userId }: NewConversationProps) {
             <div style={{ padding: '32px', textAlign: 'center' }}>
               <p
                 style={{
-                  ...tokens.typography.subheadline,
-                  color: tokens.colors.steel,
+                  fontSize: '15px', lineHeight: '20px',
+                  color: 'var(--text-secondary)',
                   margin: 0,
                 }}
               >
@@ -253,7 +252,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
                   padding: '14px 16px',
                   backgroundColor: 'transparent',
                   border: 'none',
-                  borderBottom: `1px solid ${tokens.colors.gray100}`,
+                  borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
                   cursor: 'pointer',
                   textAlign: 'left',
                 }}
@@ -262,12 +261,12 @@ export default function NewConversation({ userId }: NewConversationProps) {
                   style={{
                     width: 44,
                     height: 44,
-                    borderRadius: tokens.radius.md,
+                    borderRadius: 'var(--radius-md)',
                     backgroundColor: contact.avatarColor,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: tokens.colors.white,
+                    color: 'var(--bg-primary)',
                     fontWeight: 700,
                     fontSize: '14px',
                     flexShrink: 0,
@@ -278,8 +277,8 @@ export default function NewConversation({ userId }: NewConversationProps) {
                 <div style={{ flex: 1 }}>
                   <p
                     style={{
-                      ...tokens.typography.headline,
-                      color: tokens.colors.charcoal,
+                      fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                      color: 'var(--text-primary)',
                       margin: '0 0 2px',
                     }}
                   >
@@ -287,8 +286,8 @@ export default function NewConversation({ userId }: NewConversationProps) {
                   </p>
                   <p
                     style={{
-                      ...tokens.typography.caption1,
-                      color: tokens.colors.steel,
+                      fontSize: '13px', lineHeight: '18px',
+                      color: 'var(--text-secondary)',
                       margin: 0,
                     }}
                   >
@@ -302,9 +301,9 @@ export default function NewConversation({ userId }: NewConversationProps) {
       ) : (
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.radius.lg,
-            border: `1px solid ${tokens.colors.gray300}`,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            border: `1px solid ${'var(--border-default)'}`,
             overflow: 'hidden',
           }}
         >
@@ -315,19 +314,19 @@ export default function NewConversation({ userId }: NewConversationProps) {
               alignItems: 'center',
               gap: '12px',
               padding: '16px',
-              borderBottom: `1px solid ${tokens.colors.gray100}`,
+              borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
             }}
           >
             <div
               style={{
                 width: 44,
                 height: 44,
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 backgroundColor: selectedContact.avatarColor,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: tokens.colors.white,
+                color: 'var(--bg-primary)',
                 fontWeight: 700,
                 fontSize: '14px',
               }}
@@ -337,8 +336,8 @@ export default function NewConversation({ userId }: NewConversationProps) {
             <div style={{ flex: 1 }}>
               <p
                 style={{
-                  ...tokens.typography.headline,
-                  color: tokens.colors.charcoal,
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  color: 'var(--text-primary)',
                   margin: '0 0 2px',
                 }}
               >
@@ -346,8 +345,8 @@ export default function NewConversation({ userId }: NewConversationProps) {
               </p>
               <p
                 style={{
-                  ...tokens.typography.caption1,
-                  color: tokens.colors.steel,
+                  fontSize: '13px', lineHeight: '18px',
+                  color: 'var(--text-secondary)',
                   margin: 0,
                 }}
               >
@@ -362,13 +361,13 @@ export default function NewConversation({ userId }: NewConversationProps) {
                 justifyContent: 'center',
                 width: 32,
                 height: 32,
-                backgroundColor: tokens.colors.gray100,
+                backgroundColor: 'var(--bg-tertiary)',
                 border: 'none',
-                borderRadius: tokens.radius.sm,
+                borderRadius: 'var(--radius-sm)',
                 cursor: 'pointer',
               }}
             >
-              <X size={16} color={tokens.colors.steel} />
+              <X size={16} color={'var(--text-secondary)'} />
             </button>
           </div>
 
@@ -382,9 +381,9 @@ export default function NewConversation({ userId }: NewConversationProps) {
                 width: '100%',
                 minHeight: '120px',
                 padding: '12px',
-                backgroundColor: tokens.colors.gray100,
+                backgroundColor: 'var(--bg-tertiary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 lineHeight: '1.5',
                 resize: 'vertical',
@@ -398,7 +397,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
           <div
             style={{
               padding: '16px',
-              borderTop: `1px solid ${tokens.colors.gray100}`,
+              borderTop: `1px solid ${'var(--bg-tertiary)'}`,
               display: 'flex',
               justifyContent: 'flex-end',
             }}
@@ -412,11 +411,11 @@ export default function NewConversation({ userId }: NewConversationProps) {
                 gap: '8px',
                 padding: '10px 20px',
                 backgroundColor: message.trim()
-                  ? tokens.colors.primary
-                  : tokens.colors.gray300,
-                color: tokens.colors.white,
+                  ? 'var(--accent)'
+                  : 'var(--border-default)',
+                color: 'var(--bg-primary)',
                 border: 'none',
-                borderRadius: tokens.radius.md,
+                borderRadius: 'var(--radius-md)',
                 fontSize: '14px',
                 fontWeight: 600,
                 cursor: message.trim() ? 'pointer' : 'not-allowed',

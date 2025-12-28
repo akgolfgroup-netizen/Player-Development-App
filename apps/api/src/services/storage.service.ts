@@ -11,8 +11,10 @@ import {
   UploadPartCommand,
   GetObjectCommand,
   DeleteObjectCommand,
+  DeleteObjectsCommand,
   HeadObjectCommand,
   PutObjectCommand,
+  ListObjectsV2Command,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Upload } from '@aws-sdk/lib-storage';
@@ -371,6 +373,132 @@ export class StorageService {
     });
 
     await this.s3.send(command);
+  }
+
+  /**
+   * Delete all objects under a prefix (for HLS cleanup, etc.)
+   * Uses batch deletion for efficiency.
+   *
+   * @param prefix - The prefix to delete (e.g., 'videos/{id}/hls/')
+   * @returns Number of objects deleted
+   */
+  async deletePrefix(prefix: string): Promise<number> {
+    let totalDeleted = 0;
+    let continuationToken: string | undefined;
+
+    do {
+      // List objects under prefix
+      const listCommand = new ListObjectsV2Command({
+        Bucket: this.bucket,
+        Prefix: prefix,
+        MaxKeys: 1000,
+        ContinuationToken: continuationToken,
+      });
+
+      const listResponse = await this.s3.send(listCommand);
+      const objects = listResponse.Contents || [];
+
+      if (objects.length === 0) {
+        break;
+      }
+
+      // Batch delete (max 1000 objects per request)
+      const deleteCommand = new DeleteObjectsCommand({
+        Bucket: this.bucket,
+        Delete: {
+          Objects: objects.map((obj) => ({ Key: obj.Key })),
+          Quiet: true,
+        },
+      });
+
+      const deleteResponse = await this.s3.send(deleteCommand);
+      totalDeleted += objects.length - (deleteResponse.Errors?.length || 0);
+
+      continuationToken = listResponse.NextContinuationToken;
+    } while (continuationToken);
+
+    return totalDeleted;
+  }
+
+  /**
+   * Delete all video-related assets (video, thumbnail, HLS)
+   * Idempotent - does not fail if assets don't exist.
+   *
+   * @param videoKey - The main video S3 key
+   * @param thumbnailKey - The thumbnail S3 key (optional)
+   * @param hlsPrefix - The HLS assets prefix (optional)
+   * @returns Summary of deletion
+   */
+  async deleteVideoAssets(
+    videoKey: string,
+    thumbnailKey?: string | null,
+    hlsPrefix?: string | null
+  ): Promise<{ video: boolean; thumbnail: boolean; hlsCount: number }> {
+    const result = { video: false, thumbnail: false, hlsCount: 0 };
+
+    // Delete main video
+    try {
+      await this.deleteObject(videoKey);
+      result.video = true;
+    } catch (err: any) {
+      // Ignore 404 errors (already deleted)
+      if (err.$metadata?.httpStatusCode !== 404) {
+        throw err;
+      }
+    }
+
+    // Delete thumbnail
+    if (thumbnailKey) {
+      try {
+        await this.deleteObject(thumbnailKey);
+        result.thumbnail = true;
+      } catch (err: any) {
+        if (err.$metadata?.httpStatusCode !== 404) {
+          throw err;
+        }
+      }
+    }
+
+    // Delete HLS assets
+    if (hlsPrefix) {
+      result.hlsCount = await this.deletePrefix(hlsPrefix);
+    }
+
+    return result;
+  }
+
+  /**
+   * List all objects under a prefix
+   *
+   * @param prefix - The prefix to list
+   * @param maxKeys - Maximum keys to return (default 1000)
+   * @returns Array of object keys
+   */
+  async listObjects(prefix: string, maxKeys: number = 1000): Promise<string[]> {
+    const keys: string[] = [];
+    let continuationToken: string | undefined;
+
+    do {
+      const command = new ListObjectsV2Command({
+        Bucket: this.bucket,
+        Prefix: prefix,
+        MaxKeys: Math.min(maxKeys - keys.length, 1000),
+        ContinuationToken: continuationToken,
+      });
+
+      const response = await this.s3.send(command);
+      const objects = response.Contents || [];
+
+      for (const obj of objects) {
+        if (obj.Key) {
+          keys.push(obj.Key);
+        }
+      }
+
+      continuationToken = response.NextContinuationToken;
+    } while (continuationToken && keys.length < maxKeys);
+
+    return keys;
   }
 }
 

@@ -1,9 +1,9 @@
 /**
  * AK Golf Academy - Coach Injury/Illness Tracker Widget
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Semantic CSS Variables
  *
  * Viser oversikt over spillere med skader eller sykdom.
- * Hjelper treneren å holde oversikt over hvem som er ute.
+ * Hjelper treneren a holde oversikt over hvem som er ute.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -16,7 +16,7 @@ import {
   Clock,
   CheckCircle,
 } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
+import Button from '../../../ui/primitives/Button';
 
 interface InjuryRecord {
   id: string;
@@ -60,12 +60,12 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
             playerName: 'Lars Olsen',
             avatarInitials: 'LO',
             type: 'injury',
-            description: 'Strekk i høyre skulder',
+            description: 'Strekk i hoyre skulder',
             affectedArea: 'Skulder',
             startDate: '2025-12-15',
             expectedReturn: '2025-12-28',
             status: 'active',
-            notes: 'Unngå full svingstyrke',
+            notes: 'Unnga full svingstyrke',
           },
           {
             id: '2',
@@ -73,7 +73,7 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
             playerName: 'Erik Johansen',
             avatarInitials: 'EJ',
             type: 'illness',
-            description: 'Forkjølelse',
+            description: 'Forkjolelse',
             startDate: '2025-12-19',
             expectedReturn: '2025-12-23',
             status: 'recovering',
@@ -105,8 +105,8 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
     if (status === 'cleared') {
       return {
         Icon: CheckCircle,
-        bg: `${tokens.colors.success}10`,
-        color: tokens.colors.success,
+        bg: 'rgba(var(--success-rgb), 0.1)',
+        color: 'var(--success)',
         label: 'Friskmeldt',
       };
     }
@@ -114,20 +114,20 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
     const styles: Record<string, { Icon: React.ElementType; bg: string; color: string; label: string }> = {
       injury: {
         Icon: Activity,
-        bg: `${tokens.colors.error}10`,
-        color: tokens.colors.error,
+        bg: 'rgba(var(--error-rgb), 0.1)',
+        color: 'var(--error)',
         label: 'Skade',
       },
       illness: {
         Icon: Thermometer,
-        bg: `${tokens.colors.warning}10`,
-        color: '#B8860B',
+        bg: 'rgba(var(--warning-rgb), 0.1)',
+        color: 'var(--warning)',
         label: 'Sykdom',
       },
       recovery: {
         Icon: Heart,
-        bg: `${tokens.colors.primary}10`,
-        color: tokens.colors.primary,
+        bg: 'rgba(var(--accent-rgb), 0.1)',
+        color: 'var(--accent)',
         label: 'Rehabilitering',
       },
     };
@@ -152,9 +152,9 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
   // Get status badge
   const getStatusBadge = (status: string) => {
     const styles: Record<string, { bg: string; color: string; label: string }> = {
-      active: { bg: `${tokens.colors.error}15`, color: tokens.colors.error, label: 'Aktiv' },
-      recovering: { bg: `${tokens.colors.warning}15`, color: '#B8860B', label: 'Under behandling' },
-      cleared: { bg: `${tokens.colors.success}15`, color: tokens.colors.success, label: 'Friskmeldt' },
+      active: { bg: 'rgba(var(--error-rgb), 0.15)', color: 'var(--error)', label: 'Aktiv' },
+      recovering: { bg: 'rgba(var(--warning-rgb), 0.15)', color: 'var(--warning)', label: 'Under behandling' },
+      cleared: { bg: 'rgba(var(--success-rgb), 0.15)', color: 'var(--success)', label: 'Friskmeldt' },
     };
     return styles[status] || styles.active;
   };
@@ -170,8 +170,8 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
           style={{
             width: 32,
             height: 32,
-            border: `3px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.error,
+            border: '3px solid var(--bg-tertiary)',
+            borderTopColor: 'var(--error)',
             borderRadius: '50%',
             margin: '0 auto',
             animation: 'spin 1s linear infinite',
@@ -197,20 +197,21 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
             style={{
               width: 36,
               height: 36,
-              borderRadius: tokens.radius.md,
-              backgroundColor: `${tokens.colors.error}10`,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'rgba(var(--error-rgb), 0.1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <Heart size={20} color={tokens.colors.error} />
+            <Heart size={20} style={{ color: 'var(--error)' }} />
           </div>
           <div>
             <h3
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -218,8 +219,8 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
             </h3>
             <span
               style={{
-                ...tokens.typography.caption1,
-                color: tokens.colors.steel,
+                fontSize: '13px',
+                color: 'var(--text-secondary)',
               }}
             >
               {activeCount} aktive, {recoveringCount} under behandling
@@ -227,24 +228,10 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
           </div>
         </div>
         {onViewAll && (
-          <button
-            onClick={onViewAll}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              backgroundColor: 'transparent',
-              border: 'none',
-              color: tokens.colors.primary,
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
-          >
+          <Button variant="ghost" size="sm" onClick={onViewAll}>
             Se alle
             <ChevronRight size={16} />
-          </button>
+          </Button>
         )}
       </div>
 
@@ -254,15 +241,16 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
           style={{
             padding: '32px 16px',
             textAlign: 'center',
-            backgroundColor: `${tokens.colors.success}08`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'rgba(var(--success-rgb), 0.08)',
+            borderRadius: 'var(--radius-md)',
           }}
         >
-          <CheckCircle size={32} color={tokens.colors.success} style={{ marginBottom: '8px' }} />
+          <CheckCircle size={32} style={{ color: 'var(--success)', marginBottom: '8px' }} />
           <p
             style={{
-              ...tokens.typography.subheadline,
-              color: tokens.colors.success,
+              fontSize: '15px',
+              fontWeight: 500,
+              color: 'var(--success)',
               margin: 0,
             }}
           >
@@ -286,7 +274,7 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                   gap: '12px',
                   padding: '14px',
                   backgroundColor: recordStyle.bg,
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
                 }}
@@ -296,15 +284,15 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                   style={{
                     width: 36,
                     height: 36,
-                    borderRadius: tokens.radius.sm,
-                    backgroundColor: tokens.colors.white,
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'var(--bg-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
                   }}
                 >
-                  <recordStyle.Icon size={18} color={recordStyle.color} />
+                  <recordStyle.Icon size={18} style={{ color: recordStyle.color }} />
                 </div>
 
                 {/* Content */}
@@ -322,8 +310,8 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                         width: 28,
                         height: 28,
                         borderRadius: '50%',
-                        backgroundColor: tokens.colors.primary,
-                        color: tokens.colors.white,
+                        backgroundColor: 'var(--accent)',
+                        color: 'white',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -335,8 +323,8 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                     </span>
                     <span
                       style={{
-                        ...tokens.typography.headline,
-                        color: tokens.colors.charcoal,
+                        fontSize: '15px',
+                        color: 'var(--text-primary)',
                         fontWeight: 600,
                       }}
                     >
@@ -347,7 +335,7 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                         padding: '2px 8px',
                         backgroundColor: statusBadge.bg,
                         color: statusBadge.color,
-                        borderRadius: tokens.radius.sm,
+                        borderRadius: 'var(--radius-sm)',
                         fontSize: '10px',
                         fontWeight: 600,
                       }}
@@ -358,14 +346,14 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
 
                   <p
                     style={{
-                      ...tokens.typography.subheadline,
-                      color: tokens.colors.charcoal,
+                      fontSize: '14px',
+                      color: 'var(--text-primary)',
                       margin: '0 0 4px',
                     }}
                   >
                     {record.description}
                     {record.affectedArea && (
-                      <span style={{ color: tokens.colors.steel }}>
+                      <span style={{ color: 'var(--text-secondary)' }}>
                         {' '}
                         ({record.affectedArea})
                       </span>
@@ -375,8 +363,8 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                   {record.notes && (
                     <p
                       style={{
-                        ...tokens.typography.caption1,
-                        color: tokens.colors.steel,
+                        fontSize: '13px',
+                        color: 'var(--text-secondary)',
                         margin: '0 0 6px',
                         fontStyle: 'italic',
                       }}
@@ -394,15 +382,15 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                         gap: '6px',
                       }}
                     >
-                      <Clock size={12} color={tokens.colors.steel} />
+                      <Clock size={12} style={{ color: 'var(--text-secondary)' }} />
                       <span
                         style={{
-                          ...tokens.typography.caption1,
-                          color: tokens.colors.steel,
+                          fontSize: '13px',
+                          color: 'var(--text-secondary)',
                         }}
                       >
                         Forventet tilbake:{' '}
-                        <strong style={{ color: tokens.colors.charcoal }}>
+                        <strong style={{ color: 'var(--text-primary)' }}>
                           {daysUntil}
                         </strong>
                       </span>
@@ -410,7 +398,7 @@ export default function CoachInjuryTracker({ onViewAll }: CoachInjuryTrackerProp
                   )}
                 </div>
 
-                <ChevronRight size={16} color={tokens.colors.steel} style={{ flexShrink: 0 }} />
+                <ChevronRight size={16} style={{ color: 'var(--text-secondary)', flexShrink: 0 }} />
               </div>
             );
           })}

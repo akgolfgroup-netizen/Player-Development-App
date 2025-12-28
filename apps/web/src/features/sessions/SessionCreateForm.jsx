@@ -15,7 +15,7 @@
  * - Notes
  */
 import React, { useState, useCallback } from 'react';
-import { tokens, typographyStyle } from '../../design-tokens';
+// UiCanon: CSS variables
 import { ChevronLeft, Calendar, Clock, Target, Zap, FileText, Plus } from 'lucide-react';
 
 // Session type options
@@ -41,10 +41,10 @@ const LEARNING_PHASES = [
 
 // Periods
 const PERIODS = [
-  { id: 'E', label: 'Etableringsfase', color: tokens.colors.primary },
-  { id: 'G', label: 'Grunnfase', color: tokens.colors.success },
-  { id: 'S', label: 'Spesifikkfase', color: tokens.colors.warning },
-  { id: 'T', label: 'Toppfase', color: tokens.colors.error },
+  { id: 'E', label: 'Etableringsfase', color: 'var(--accent)' },
+  { id: 'G', label: 'Grunnfase', color: 'var(--success)' },
+  { id: 'S', label: 'Spesifikkfase', color: 'var(--warning)' },
+  { id: 'T', label: 'Toppfase', color: 'var(--error)' },
 ];
 
 // Duration options (in minutes)
@@ -56,13 +56,13 @@ const DURATION_OPTIONS = [15, 30, 45, 60, 90, 120, 150, 180];
 
 function TypeSelector({ selected, onChange }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       <label
         style={{
           display: 'block',
-          marginBottom: tokens.spacing.sm,
-          color: tokens.colors.charcoal,
-          ...typographyStyle('label'),
+          marginBottom: '8px',
+          color: 'var(--text-primary)',
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
         Type trening *
@@ -71,7 +71,7 @@ function TypeSelector({ selected, onChange }) {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: tokens.spacing.sm,
+          gap: '8px',
         }}
       >
         {SESSION_TYPES.map((type) => (
@@ -83,16 +83,16 @@ function TypeSelector({ selected, onChange }) {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              padding: tokens.spacing.md,
-              backgroundColor: selected === type.id ? tokens.colors.primary : tokens.colors.white,
-              color: selected === type.id ? tokens.colors.white : tokens.colors.charcoal,
-              border: `1px solid ${selected === type.id ? tokens.colors.primary : tokens.colors.mist}`,
-              borderRadius: tokens.borderRadius.md,
+              padding: '16px',
+              backgroundColor: selected === type.id ? 'var(--accent)' : 'var(--bg-primary)',
+              color: selected === type.id ? 'var(--bg-primary)' : 'var(--text-primary)',
+              border: `1px solid ${selected === type.id ? 'var(--accent)' : 'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
             }}
           >
-            <span style={{ fontSize: '24px', marginBottom: tokens.spacing.xs }}>{type.icon}</span>
-            <span style={{ ...typographyStyle('caption'), textAlign: 'center' }}>{type.label}</span>
+            <span style={{ fontSize: '24px', marginBottom: '4px' }}>{type.icon}</span>
+            <span style={{ fontSize: '12px', lineHeight: '16px', textAlign: 'center' }}>{type.label}</span>
           </button>
         ))}
       </div>
@@ -102,16 +102,16 @@ function TypeSelector({ selected, onChange }) {
 
 function DateTimePicker({ date, onDateChange }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       <label
         style={{
           display: 'block',
-          marginBottom: tokens.spacing.sm,
-          color: tokens.colors.charcoal,
-          ...typographyStyle('label'),
+          marginBottom: '8px',
+          color: 'var(--text-primary)',
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
-        <Calendar size={16} style={{ marginRight: tokens.spacing.xs, verticalAlign: 'middle' }} />
+        <Calendar size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
         Dato og tid *
       </label>
       <input
@@ -120,11 +120,11 @@ function DateTimePicker({ date, onDateChange }) {
         onChange={(e) => onDateChange(e.target.value)}
         style={{
           width: '100%',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.snow,
-          border: `1px solid ${tokens.colors.mist}`,
-          borderRadius: tokens.borderRadius.md,
-          ...typographyStyle('body'),
+          padding: '16px',
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-default)',
+          borderRadius: 'var(--radius-md)',
+          fontSize: '15px', lineHeight: '20px',
         }}
       />
     </div>
@@ -133,23 +133,23 @@ function DateTimePicker({ date, onDateChange }) {
 
 function DurationSelector({ duration, onChange }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       <label
         style={{
           display: 'block',
-          marginBottom: tokens.spacing.sm,
-          color: tokens.colors.charcoal,
-          ...typographyStyle('label'),
+          marginBottom: '8px',
+          color: 'var(--text-primary)',
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
-        <Clock size={16} style={{ marginRight: tokens.spacing.xs, verticalAlign: 'middle' }} />
+        <Clock size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
         Varighet *
       </label>
       <div
         style={{
           display: 'flex',
           flexWrap: 'wrap',
-          gap: tokens.spacing.sm,
+          gap: '8px',
         }}
       >
         {DURATION_OPTIONS.map((mins) => (
@@ -158,13 +158,13 @@ function DurationSelector({ duration, onChange }) {
             type="button"
             onClick={() => onChange(mins)}
             style={{
-              padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-              backgroundColor: duration === mins ? tokens.colors.primary : tokens.colors.white,
-              color: duration === mins ? tokens.colors.white : tokens.colors.charcoal,
-              border: `1px solid ${duration === mins ? tokens.colors.primary : tokens.colors.mist}`,
-              borderRadius: tokens.borderRadius.md,
+              padding: `${'8px'} ${'16px'}`,
+              backgroundColor: duration === mins ? 'var(--accent)' : 'var(--bg-primary)',
+              color: duration === mins ? 'var(--bg-primary)' : 'var(--text-primary)',
+              border: `1px solid ${duration === mins ? 'var(--accent)' : 'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
-              ...typographyStyle('body'),
+              fontSize: '15px', lineHeight: '20px',
             }}
           >
             {mins} min
@@ -177,18 +177,18 @@ function DurationSelector({ duration, onChange }) {
 
 function LearningPhaseSelector({ selected, onChange }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       <label
         style={{
           display: 'block',
-          marginBottom: tokens.spacing.sm,
-          color: tokens.colors.charcoal,
-          ...typographyStyle('label'),
+          marginBottom: '8px',
+          color: 'var(--text-primary)',
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
         Laeringsfase
       </label>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: tokens.spacing.sm }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {LEARNING_PHASES.map((phase) => (
           <button
             key={phase.id}
@@ -198,30 +198,30 @@ function LearningPhaseSelector({ selected, onChange }) {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: tokens.spacing.md,
-              backgroundColor: selected === phase.id ? `${tokens.colors.primary}10` : tokens.colors.white,
-              border: `1px solid ${selected === phase.id ? tokens.colors.primary : tokens.colors.mist}`,
-              borderRadius: tokens.borderRadius.md,
+              padding: '16px',
+              backgroundColor: selected === phase.id ? 'rgba(var(--accent-rgb), 0.1)' : 'var(--bg-primary)',
+              border: `1px solid ${selected === phase.id ? 'var(--accent)' : 'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
               textAlign: 'left',
             }}
           >
             <div>
-              <span style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+              <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
                 {phase.label}
               </span>
               <span
                 style={{
                   display: 'block',
-                  ...typographyStyle('caption'),
-                  color: tokens.colors.steel,
+                  fontSize: '12px', lineHeight: '16px',
+                  color: 'var(--text-secondary)',
                 }}
               >
                 {phase.description}
               </span>
             </div>
             {selected === phase.id && (
-              <span style={{ color: tokens.colors.primary, fontSize: '18px' }}>✓</span>
+              <span style={{ color: 'var(--accent)', fontSize: '18px' }}>✓</span>
             )}
           </button>
         ))}
@@ -232,13 +232,13 @@ function LearningPhaseSelector({ selected, onChange }) {
 
 function PeriodSelector({ selected, onChange }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       <label
         style={{
           display: 'block',
-          marginBottom: tokens.spacing.sm,
-          color: tokens.colors.charcoal,
-          ...typographyStyle('label'),
+          marginBottom: '8px',
+          color: 'var(--text-primary)',
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
         Treningsperiode
@@ -247,7 +247,7 @@ function PeriodSelector({ selected, onChange }) {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: tokens.spacing.sm,
+          gap: '8px',
         }}
       >
         {PERIODS.map((period) => (
@@ -256,13 +256,13 @@ function PeriodSelector({ selected, onChange }) {
             type="button"
             onClick={() => onChange(selected === period.id ? null : period.id)}
             style={{
-              padding: tokens.spacing.md,
-              backgroundColor: selected === period.id ? period.color : tokens.colors.white,
-              color: selected === period.id ? tokens.colors.white : tokens.colors.charcoal,
-              border: `1px solid ${selected === period.id ? period.color : tokens.colors.mist}`,
-              borderRadius: tokens.borderRadius.md,
+              padding: '16px',
+              backgroundColor: selected === period.id ? period.color : 'var(--bg-primary)',
+              color: selected === period.id ? 'var(--bg-primary)' : 'var(--text-primary)',
+              border: `1px solid ${selected === period.id ? period.color : 'var(--border-default)'}`,
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
-              ...typographyStyle('label'),
+              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
             }}
           >
             {period.id}
@@ -273,9 +273,9 @@ function PeriodSelector({ selected, onChange }) {
         <span
           style={{
             display: 'block',
-            marginTop: tokens.spacing.xs,
-            ...typographyStyle('caption'),
-            color: tokens.colors.steel,
+            marginTop: '4px',
+            fontSize: '12px', lineHeight: '16px',
+            color: 'var(--text-secondary)',
           }}
         >
           {PERIODS.find((p) => p.id === selected)?.label}
@@ -287,21 +287,21 @@ function PeriodSelector({ selected, onChange }) {
 
 function IntensitySlider({ value, onChange }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       <label
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginBottom: tokens.spacing.sm,
-          color: tokens.colors.charcoal,
-          ...typographyStyle('label'),
+          marginBottom: '8px',
+          color: 'var(--text-primary)',
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
         <span>
-          <Zap size={16} style={{ marginRight: tokens.spacing.xs, verticalAlign: 'middle' }} />
+          <Zap size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
           Intensitet
         </span>
-        <span style={{ color: tokens.colors.primary }}>{value || '-'}/10</span>
+        <span style={{ color: 'var(--accent)' }}>{value || '-'}/10</span>
       </label>
       <input
         type="range"
@@ -312,18 +312,18 @@ function IntensitySlider({ value, onChange }) {
         style={{
           width: '100%',
           height: '8px',
-          borderRadius: tokens.borderRadius.full,
+          borderRadius: '9999px',
           appearance: 'none',
-          background: `linear-gradient(to right, ${tokens.colors.primary} ${((value || 5) - 1) * 11.1}%, ${tokens.colors.mist} ${((value || 5) - 1) * 11.1}%)`,
+          background: `linear-gradient(to right, var(--accent) ${((value || 5) - 1) * 11.1}%, var(--border-default) ${((value || 5) - 1) * 11.1}%)`,
         }}
       />
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginTop: tokens.spacing.xs,
-          ...typographyStyle('caption'),
-          color: tokens.colors.steel,
+          marginTop: '4px',
+          fontSize: '12px', lineHeight: '16px',
+          color: 'var(--text-secondary)',
         }}
       >
         <span>Lett</span>
@@ -336,16 +336,16 @@ function IntensitySlider({ value, onChange }) {
 
 function TextAreaField({ label, value, onChange, placeholder, icon: Icon }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginBottom: '24px' }}>
       <label
         style={{
           display: 'block',
-          marginBottom: tokens.spacing.sm,
-          color: tokens.colors.charcoal,
-          ...typographyStyle('label'),
+          marginBottom: '8px',
+          color: 'var(--text-primary)',
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
-        {Icon && <Icon size={16} style={{ marginRight: tokens.spacing.xs, verticalAlign: 'middle' }} />}
+        {Icon && <Icon size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />}
         {label}
       </label>
       <textarea
@@ -355,12 +355,12 @@ function TextAreaField({ label, value, onChange, placeholder, icon: Icon }) {
         rows={3}
         style={{
           width: '100%',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.snow,
-          border: `1px solid ${tokens.colors.mist}`,
-          borderRadius: tokens.borderRadius.md,
+          padding: '16px',
+          backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid var(--border-default)',
+          borderRadius: 'var(--radius-md)',
           resize: 'vertical',
-          ...typographyStyle('body'),
+          fontSize: '15px', lineHeight: '20px',
         }}
       />
     </div>
@@ -447,9 +447,9 @@ export default function SessionCreateForm({
   return (
     <div
       style={{
-        backgroundColor: tokens.colors.surface,
+        backgroundColor: 'var(--bg-primary)',
         minHeight: '100vh',
-        fontFamily: tokens.typography.fontFamily,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
       {/* Header */}
@@ -458,9 +458,9 @@ export default function SessionCreateForm({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          padding: '16px',
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
           position: 'sticky',
           top: 0,
           zIndex: 10,
@@ -472,32 +472,32 @@ export default function SessionCreateForm({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: tokens.spacing.xs,
+            gap: '4px',
             background: 'none',
             border: 'none',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             cursor: 'pointer',
-            ...typographyStyle('body'),
+            fontSize: '15px', lineHeight: '20px',
           }}
         >
           <ChevronLeft size={20} />
           Avbryt
         </button>
-        <span style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal }}>
+        <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
           Ny treningsokt
         </span>
         <div style={{ width: '60px' }} /> {/* Spacer for centering */}
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} style={{ padding: tokens.spacing.lg }}>
+      <form onSubmit={handleSubmit} style={{ padding: '24px' }}>
         {/* Session Type */}
         <TypeSelector
           selected={formData.sessionType}
           onChange={(value) => updateField('sessionType', value)}
         />
         {errors.sessionType && (
-          <span style={{ color: tokens.colors.error, ...typographyStyle('caption') }}>
+          <span style={{ color: 'var(--error)', fontSize: '12px', lineHeight: '16px' }}>
             {errors.sessionType}
           </span>
         )}
@@ -508,7 +508,7 @@ export default function SessionCreateForm({
           onDateChange={(value) => updateField('sessionDate', value)}
         />
         {errors.sessionDate && (
-          <span style={{ color: tokens.colors.error, ...typographyStyle('caption') }}>
+          <span style={{ color: 'var(--error)', fontSize: '12px', lineHeight: '16px' }}>
             {errors.sessionDate}
           </span>
         )}
@@ -519,7 +519,7 @@ export default function SessionCreateForm({
           onChange={(value) => updateField('duration', value)}
         />
         {errors.duration && (
-          <span style={{ color: tokens.colors.error, ...typographyStyle('caption') }}>
+          <span style={{ color: 'var(--error)', fontSize: '12px', lineHeight: '16px' }}>
             {errors.duration}
           </span>
         )}
@@ -568,16 +568,16 @@ export default function SessionCreateForm({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: tokens.spacing.sm,
+            gap: '8px',
             width: '100%',
-            padding: tokens.spacing.md,
-            backgroundColor: isLoading ? tokens.colors.steel : tokens.colors.primary,
-            color: tokens.colors.white,
+            padding: '16px',
+            backgroundColor: isLoading ? 'var(--text-secondary)' : 'var(--accent)',
+            color: 'var(--bg-primary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: isLoading ? 'not-allowed' : 'pointer',
-            marginTop: tokens.spacing.lg,
-            ...typographyStyle('title3'),
+            marginTop: '24px',
+            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
           }}
         >
           <Plus size={20} />

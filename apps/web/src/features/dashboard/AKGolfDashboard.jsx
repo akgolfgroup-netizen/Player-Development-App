@@ -197,12 +197,12 @@ const BreakingPointsWidget = ({ points, onViewAll }) => {
     return (
       <DashboardCard padding="lg">
         <WidgetHeader title="Breaking Points" icon={Target} />
-        <div style={{ textAlign: 'center', padding: '24px 0' }}>
-          <Info size={24} style={{ color: 'var(--text-tertiary)', margin: '0 auto 8px' }} />
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
-            Ingen aktive breaking points
-          </p>
-        </div>
+        <StateCard
+          variant="empty"
+          title="Ingen aktive breaking points"
+          description="Breaking points legges til når du identifiserer områder som trenger fokus."
+          compact
+        />
       </DashboardCard>
     );
   }
@@ -519,15 +519,17 @@ const AKGolfDashboard = () => {
               action={() => navigate('/kalender')}
             />
             {upcomingSessions.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '32px 0' }}>
-                <Calendar size={32} style={{ color: 'var(--text-tertiary)', marginBottom: '8px' }} />
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '0 0 12px 0' }}>
-                  Ingen økter i dag
-                </p>
-                <Button variant="ghost" size="sm" onClick={() => navigate('/kalender')}>
-                  Gå til kalender
-                </Button>
-              </div>
+              <StateCard
+                variant="empty"
+                title="Ingen økter i dag"
+                description="Du har ingen planlagte treningsøkter i dag."
+                action={
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/kalender')}>
+                    Gå til kalender
+                  </Button>
+                }
+                compact
+              />
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {upcomingSessions.map(session => (

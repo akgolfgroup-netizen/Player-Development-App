@@ -3,7 +3,6 @@ import {
   MessageSquare, Search, Plus, ChevronRight, Check,
   CheckCheck, Clock, Send, Paperclip, User
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 
@@ -115,17 +114,17 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
         alignItems: 'center',
         gap: '12px',
         padding: '12px 14px',
-        backgroundColor: selected ? `${tokens.colors.primary}10` : tokens.colors.white,
+        backgroundColor: selected ? `${'var(--accent)'}10` : 'var(--bg-primary)',
         borderRadius: '12px',
         cursor: 'pointer',
         transition: 'all 0.2s',
-        borderLeft: selected ? `3px solid ${tokens.colors.primary}` : '3px solid transparent',
+        borderLeft: selected ? `3px solid ${'var(--accent)'}` : '3px solid transparent',
       }}
       onMouseEnter={(e) => {
-        if (!selected) e.currentTarget.style.backgroundColor = tokens.colors.snow;
+        if (!selected) e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
       }}
       onMouseLeave={(e) => {
-        if (!selected) e.currentTarget.style.backgroundColor = tokens.colors.white;
+        if (!selected) e.currentTarget.style.backgroundColor = 'var(--bg-primary)';
       }}
     >
       <div style={{ position: 'relative' }}>
@@ -133,11 +132,11 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
           width: '48px',
           height: '48px',
           borderRadius: '50%',
-          backgroundColor: tokens.colors.primary,
+          backgroundColor: 'var(--accent)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: tokens.colors.white,
+          color: 'var(--bg-primary)',
           fontSize: '16px',
           fontWeight: 600,
         }}>
@@ -151,7 +150,7 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
             width: '12px',
             height: '12px',
             borderRadius: '50%',
-            backgroundColor: tokens.colors.success,
+            backgroundColor: 'var(--success)',
             border: '2px solid white',
           }} />
         )}
@@ -167,12 +166,12 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
           <h4 style={{
             fontSize: '14px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             {contact.name}
           </h4>
-          <span style={{ fontSize: '11px', color: tokens.colors.steel }}>
+          <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
             {timeStr}
           </span>
         </div>
@@ -183,7 +182,7 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
         }}>
           <p style={{
             fontSize: '13px',
-            color: unread > 0 ? tokens.colors.charcoal : tokens.colors.steel,
+            color: unread > 0 ? 'var(--text-primary)' : 'var(--text-secondary)',
             fontWeight: unread > 0 ? 500 : 400,
             margin: 0,
             overflow: 'hidden',
@@ -198,8 +197,8 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
               minWidth: '20px',
               height: '20px',
               borderRadius: '10px',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               fontSize: '11px',
               fontWeight: 600,
               display: 'flex',
@@ -233,8 +232,8 @@ const MessageBubble = ({ message, isOwn }) => {
         maxWidth: '70%',
         padding: '10px 14px',
         borderRadius: isOwn ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-        backgroundColor: isOwn ? tokens.colors.primary : tokens.colors.white,
-        color: isOwn ? tokens.colors.white : tokens.colors.charcoal,
+        backgroundColor: isOwn ? 'var(--accent)' : 'var(--bg-primary)',
+        color: isOwn ? 'var(--bg-primary)' : 'var(--text-primary)',
         boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
       }}>
         <p style={{
@@ -253,7 +252,7 @@ const MessageBubble = ({ message, isOwn }) => {
         }}>
           <span style={{
             fontSize: '10px',
-            color: isOwn ? 'rgba(255,255,255,0.7)' : tokens.colors.steel,
+            color: isOwn ? 'rgba(255,255,255,0.7)' : 'var(--text-secondary)',
           }}>
             {time.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
           </span>
@@ -305,11 +304,11 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         borderRadius: '14px',
       }}>
-        <MessageSquare size={48} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-        <p style={{ fontSize: '14px', color: tokens.colors.steel }}>
+        <MessageSquare size={48} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+        <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
           Velg en samtale for a starte
         </p>
       </div>
@@ -321,15 +320,15 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: tokens.colors.snow,
+      backgroundColor: 'var(--bg-secondary)',
       borderRadius: '14px',
       overflow: 'hidden',
     }}>
       {/* Header */}
       <div style={{
         padding: '14px 16px',
-        backgroundColor: tokens.colors.white,
-        borderBottom: `1px solid ${tokens.colors.mist}`,
+        backgroundColor: 'var(--bg-primary)',
+        borderBottom: `1px solid ${'var(--border-default)'}`,
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
@@ -338,11 +337,11 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
           width: '40px',
           height: '40px',
           borderRadius: '50%',
-          backgroundColor: tokens.colors.primary,
+          backgroundColor: 'var(--accent)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: tokens.colors.white,
+          color: 'var(--bg-primary)',
           fontSize: '14px',
           fontWeight: 600,
         }}>
@@ -352,14 +351,14 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
           <h3 style={{
             fontSize: '15px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             {conversation.contact.name}
           </h3>
           <p style={{
             fontSize: '12px',
-            color: conversation.isOnline ? tokens.colors.success : tokens.colors.steel,
+            color: conversation.isOnline ? 'var(--success)' : 'var(--text-secondary)',
             margin: 0,
           }}>
             {conversation.isOnline ? 'Online' : conversation.contact.role}
@@ -385,8 +384,8 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
       {/* Input */}
       <div style={{
         padding: '12px 16px',
-        backgroundColor: tokens.colors.white,
-        borderTop: `1px solid ${tokens.colors.mist}`,
+        backgroundColor: 'var(--bg-primary)',
+        borderTop: `1px solid ${'var(--border-default)'}`,
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
@@ -398,7 +397,7 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
           backgroundColor: 'transparent',
           cursor: 'pointer',
         }}>
-          <Paperclip size={20} color={tokens.colors.steel} />
+          <Paperclip size={20} color={'var(--text-secondary)'} />
         </button>
         <input
           type="text"
@@ -410,7 +409,7 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
             flex: 1,
             padding: '10px 14px',
             borderRadius: '20px',
-            border: `1px solid ${tokens.colors.mist}`,
+            border: `1px solid ${'var(--border-default)'}`,
             fontSize: '14px',
             outline: 'none',
           }}
@@ -422,12 +421,12 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
             padding: '10px',
             borderRadius: '50%',
             border: 'none',
-            backgroundColor: newMessage.trim() && !isSending ? tokens.colors.primary : tokens.colors.mist,
+            backgroundColor: newMessage.trim() && !isSending ? 'var(--accent)' : 'var(--border-default)',
             cursor: newMessage.trim() && !isSending ? 'pointer' : 'not-allowed',
             opacity: isSending ? 0.7 : 1,
           }}
         >
-          <Send size={18} color={newMessage.trim() && !isSending ? tokens.colors.white : tokens.colors.steel} />
+          <Send size={18} color={newMessage.trim() && !isSending ? 'var(--bg-primary)' : 'var(--text-secondary)'} />
         </button>
       </div>
     </div>
@@ -451,7 +450,7 @@ const MeldingerContainer = () => {
     : [];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Meldinger"
         subtitle="Kommuniser med trenere og administrasjon"
@@ -477,11 +476,11 @@ const MeldingerContainer = () => {
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '10px',
             padding: '10px 14px',
           }}>
-            <Search size={18} color={tokens.colors.steel} />
+            <Search size={18} color={'var(--text-secondary)'} />
             <input
               type="text"
               placeholder="Sok i samtaler..."
@@ -492,7 +491,7 @@ const MeldingerContainer = () => {
                 border: 'none',
                 outline: 'none',
                 fontSize: '14px',
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
               }}
             />
           </div>

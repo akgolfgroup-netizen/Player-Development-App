@@ -201,6 +201,15 @@ export class BadgeEvaluatorService {
     // Total swings
     const totalSwings = sessions.reduce((sum, s) => sum + (s.totalShots || 0), 0);
 
+    // Calculate completion rate (completed sessions / planned sessions)
+    const completedSessions = sessions.length;
+    // Assume average of 5 planned sessions per week for active players
+    const weeksActive = Math.max(1, Math.ceil(
+      (Date.now() - Math.min(...sessions.map(s => new Date(s.sessionDate).getTime()))) / (7 * 24 * 60 * 60 * 1000)
+    ));
+    const estimatedPlanned = weeksActive * 5;
+    const completionRate = Math.min(100, Math.round((completedSessions / estimatedPlanned) * 100));
+
     return {
       totalHours,
       hoursByType: hoursByType as any,
@@ -208,7 +217,7 @@ export class BadgeEvaluatorService {
       sessionsThisWeek,
       sessionsThisMonth,
       sessionsThisYear,
-      completionRate: 100, // TODO: calculate from planned vs actual
+      completionRate,
       totalSwings,
       swingsByClub: {} as any,
       totalDrillsCompleted: 0,
@@ -310,11 +319,46 @@ export class BadgeEvaluatorService {
       if (day === 0 || day === 6) weekendSessions++;
     });
 
+    // Calculate perfect weeks (weeks with 5+ sessions)
+    const weekMap = new Map<string, number>();
+    sessions.forEach((s) => {
+      const date = new Date(s.sessionDate);
+      const weekStart = new Date(date);
+      weekStart.setDate(date.getDate() - date.getDay() + 1);
+      const weekKey = weekStart.toISOString().split('T')[0];
+      weekMap.set(weekKey, (weekMap.get(weekKey) || 0) + 1);
+    });
+
+    const perfectWeeks = Array.from(weekMap.values()).filter(count => count >= 5).length;
+
+    // Calculate consecutive perfect weeks
+    const sortedWeeks = Array.from(weekMap.entries())
+      .filter(([_, count]) => count >= 5)
+      .map(([week]) => week)
+      .sort()
+      .reverse();
+
+    let consecutivePerfectWeeks = 0;
+    for (let i = 0; i < sortedWeeks.length; i++) {
+      if (i === 0) {
+        consecutivePerfectWeeks = 1;
+      } else {
+        const prevWeek = new Date(sortedWeeks[i - 1]);
+        const currWeek = new Date(sortedWeeks[i]);
+        const diffWeeks = (prevWeek.getTime() - currWeek.getTime()) / (7 * 24 * 60 * 60 * 1000);
+        if (Math.abs(diffWeeks - 1) < 0.5) {
+          consecutivePerfectWeeks++;
+        } else {
+          break;
+        }
+      }
+    }
+
     return {
       currentStreak,
       longestStreak,
-      perfectWeeks: 0, // TODO: calculate from weekly stats
-      consecutivePerfectWeeks: 0,
+      perfectWeeks,
+      consecutivePerfectWeeks,
       earlyMorningSessions,
       eveningSessions,
       weekendSessions,

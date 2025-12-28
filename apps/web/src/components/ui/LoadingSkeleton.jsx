@@ -1,22 +1,20 @@
 import React from 'react';
-import { tokens } from '../../design-tokens';
 
-// Base skeleton pulse animation
+/**
+ * Skeleton loading components - UI Canon compliant
+ * Uses semantic CSS variables
+ */
+
 const pulseKeyframes = `
   @keyframes skeletonPulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
   }
 `;
 
-// Base skeleton styles
 const baseSkeletonStyle = {
-  backgroundColor: tokens.colors.mist,
-  borderRadius: '8px',
+  backgroundColor: 'var(--bg-tertiary)',
+  borderRadius: 'var(--radius-sm)',
   animation: 'skeletonPulse 1.5s ease-in-out infinite',
 };
 
@@ -64,10 +62,11 @@ export function SkeletonCard({ style = {} }) {
       <style>{pulseKeyframes}</style>
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: '12px',
-          padding: tokens.spacing.lg,
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '16px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+          border: '1px solid var(--border-default)',
           ...style,
         }}
         aria-hidden="true"
@@ -90,11 +89,11 @@ export function SkeletonCard({ style = {} }) {
 // Dashboard skeleton layout
 export function DashboardSkeleton() {
   return (
-    <div style={{ fontFamily: '"Inter", -apple-system, system-ui, sans-serif' }}>
+    <div style={{ fontFamily: 'var(--font-family)' }}>
       <style>{pulseKeyframes}</style>
 
       {/* Header skeleton */}
-      <div style={{ marginBottom: tokens.spacing.lg }}>
+      <div style={{ marginBottom: '24px' }}>
         <SkeletonLine width="300px" height="32px" style={{ marginBottom: '8px' }} />
         <SkeletonLine width="200px" height="18px" />
       </div>
@@ -103,19 +102,17 @@ export function DashboardSkeleton() {
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
         {/* Left column */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {/* Countdown cards row */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <SkeletonCard />
             <SkeletonCard />
           </div>
-
-          {/* Calendar placeholder */}
           <div
             style={{
-              backgroundColor: tokens.colors.white,
-              borderRadius: '12px',
-              padding: tokens.spacing.lg,
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '16px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+              border: '1px solid var(--border-default)',
               height: '200px',
             }}
           >
@@ -126,8 +123,6 @@ export function DashboardSkeleton() {
               <SkeletonLine width="100%" height="40px" />
             </div>
           </div>
-
-          {/* Sessions card */}
           <SkeletonCard style={{ height: '200px' }} />
         </div>
 
@@ -150,10 +145,11 @@ export function WidgetSkeleton({ lines = 3 }) {
       <style>{pulseKeyframes}</style>
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: '12px',
-          padding: tokens.spacing.lg,
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '16px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+          border: '1px solid var(--border-default)',
         }}
         aria-hidden="true"
       >

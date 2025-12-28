@@ -8,45 +8,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BlockRatingModal from './BlockRatingModal';
-
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-  },
-  spacing: { xs: '4px', sm: '8px', md: '16px', lg: '24px', xl: '32px' },
-  borderRadius: { sm: '4px', md: '8px', lg: '12px', full: '9999px' },
-  typography: { fontFamily: 'Inter, -apple-system, system-ui, sans-serif' },
-};
-
-// Typography style helper
-const typographyStyle = (variant) => {
-  const styles = {
-    display: { fontSize: '48px', fontWeight: 700, lineHeight: 1.1 },
-    title1: { fontSize: '24px', fontWeight: 700, lineHeight: 1.2 },
-    title3: { fontSize: '17px', fontWeight: 600, lineHeight: 1.3 },
-    body: { fontSize: '15px', fontWeight: 400, lineHeight: 1.5 },
-    callout: { fontSize: '14px', fontWeight: 400, lineHeight: 1.4 },
-    caption: { fontSize: '12px', fontWeight: 500, lineHeight: 1.3 },
-    label: { fontSize: '13px', fontWeight: 600, lineHeight: 1.3 },
-  };
-  return styles[variant] || styles.body;
-};
+import { tokens } from '../../design-tokens';
 
 // Format time as HH:MM:SS
 function formatTime(seconds) {
@@ -64,8 +26,8 @@ function ProgressBar({ current, total, color }) {
       style={{
         width: '100%',
         height: '8px',
-        backgroundColor: tokens.colors.mist,
-        borderRadius: tokens.borderRadius.full,
+        backgroundColor: 'var(--border-default)',
+        borderRadius: '9999px',
         overflow: 'hidden',
       }}
     >
@@ -73,7 +35,7 @@ function ProgressBar({ current, total, color }) {
         style={{
           width: `${percentage}%`,
           height: '100%',
-          backgroundColor: color || tokens.colors.primary,
+          backgroundColor: color || 'var(--accent)',
           transition: 'width 0.3s ease',
         }}
       />
@@ -86,13 +48,13 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
   return (
     <div
       style={{
-        backgroundColor: tokens.colors.white,
-        borderRadius: tokens.borderRadius.lg,
-        padding: tokens.spacing.lg,
+        backgroundColor: 'var(--bg-primary)',
+        borderRadius: 'var(--radius-lg)',
+        padding: '24px',
         textAlign: 'center',
       }}
     >
-      <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
         Repetisjonsteller
       </span>
 
@@ -101,8 +63,8 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: tokens.spacing.xl,
-          marginTop: tokens.spacing.md,
+          gap: '32px',
+          marginTop: '16px',
         }}
       >
         <button
@@ -110,18 +72,18 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
           style={{
             width: '56px',
             height: '56px',
-            borderRadius: tokens.borderRadius.md,
-            backgroundColor: tokens.colors.snow,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--bg-secondary)',
             border: 'none',
             fontSize: '24px',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             cursor: 'pointer',
           }}
         >
           −
         </button>
 
-        <span style={{ ...typographyStyle('display'), color: tokens.colors.charcoal, fontSize: '48px' }}>
+        <span style={{ fontSize: '48px', fontWeight: 700, color: 'var(--text-primary)', fontSize: '48px' }}>
           {current}
         </span>
 
@@ -130,11 +92,11 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
           style={{
             width: '56px',
             height: '56px',
-            borderRadius: tokens.borderRadius.md,
-            backgroundColor: tokens.colors.primary,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--accent)',
             border: 'none',
             fontSize: '24px',
-            color: tokens.colors.white,
+            color: 'var(--bg-primary)',
             cursor: 'pointer',
           }}
         >
@@ -147,20 +109,20 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          gap: tokens.spacing.sm,
-          marginTop: tokens.spacing.md,
+          gap: '8px',
+          marginTop: '16px',
         }}
       >
         <button
           onClick={() => onIncrement(10)}
           style={{
-            padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-            borderRadius: tokens.borderRadius.md,
-            backgroundColor: tokens.colors.snow,
+            padding: `${'8px'} ${'16px'}`,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--bg-secondary)',
             border: 'none',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             cursor: 'pointer',
-            ...typographyStyle('label'),
+            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
           }}
         >
           + 10
@@ -168,13 +130,13 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
         <button
           onClick={() => onIncrement(25)}
           style={{
-            padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-            borderRadius: tokens.borderRadius.md,
-            backgroundColor: tokens.colors.snow,
+            padding: `${'8px'} ${'16px'}`,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--bg-secondary)',
             border: 'none',
-            color: tokens.colors.primary,
+            color: 'var(--accent)',
             cursor: 'pointer',
-            ...typographyStyle('label'),
+            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
           }}
         >
           + 25
@@ -182,9 +144,9 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
       </div>
 
       {/* Progress */}
-      <div style={{ marginTop: tokens.spacing.md }}>
+      <div style={{ marginTop: '16px' }}>
         <ProgressBar current={current} total={target} />
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {current} / {target} repetisjoner ({Math.round((current / target) * 100)}%)
         </span>
       </div>
@@ -195,16 +157,16 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
 // Block navigation chips
 function BlockNavigationChips({ blocks, currentIndex, completedIndices, onSelectBlock }) {
   return (
-    <div style={{ padding: tokens.spacing.md }}>
-      <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel, marginBottom: tokens.spacing.sm, display: 'block' }}>
+    <div style={{ padding: '16px' }}>
+      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>
         Alle blokker
       </span>
       <div
         style={{
           display: 'flex',
-          gap: tokens.spacing.sm,
+          gap: '8px',
           overflowX: 'auto',
-          paddingBottom: tokens.spacing.sm,
+          paddingBottom: '8px',
         }}
       >
         {blocks.map((block, index) => {
@@ -217,26 +179,26 @@ function BlockNavigationChips({ blocks, currentIndex, completedIndices, onSelect
               onClick={() => onSelectBlock(index)}
               style={{
                 minWidth: '64px',
-                padding: tokens.spacing.sm,
-                borderRadius: tokens.borderRadius.md,
+                padding: '8px',
+                borderRadius: 'var(--radius-md)',
                 backgroundColor: isActive
-                  ? tokens.colors.primary
+                  ? 'var(--accent)'
                   : isCompleted
-                    ? tokens.colors.success
-                    : tokens.colors.white,
-                border: isActive || isCompleted ? 'none' : `1px solid ${tokens.colors.mist}`,
-                color: isActive || isCompleted ? tokens.colors.white : tokens.colors.charcoal,
+                    ? 'var(--success)'
+                    : 'var(--bg-primary)',
+                border: isActive || isCompleted ? 'none' : '1px solid var(--border-default)',
+                color: isActive || isCompleted ? 'var(--bg-primary)' : 'var(--text-primary)',
                 cursor: 'pointer',
                 textAlign: 'center',
               }}
             >
-              <div style={{ ...typographyStyle('label'), fontWeight: 600 }}>
+              <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, fontWeight: 600 }}>
                 {isCompleted ? '✓' : index + 1}
               </div>
-              <div style={{ ...typographyStyle('caption') }}>
+              <div style={{ fontSize: '12px', lineHeight: '16px' }}>
                 {block.duration}m
               </div>
-              <div style={{ ...typographyStyle('caption'), fontSize: '9px' }}>
+              <div style={{ fontSize: '12px', lineHeight: '16px', fontSize: '9px' }}>
                 {block.exercise.substring(0, 6)}
               </div>
             </button>
@@ -265,19 +227,19 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
         zIndex: 1000,
       }}
     >
-      <span style={{ fontSize: '48px', marginBottom: tokens.spacing.lg }}>⏸️</span>
-      <span style={{ ...typographyStyle('title1'), color: tokens.colors.white, marginBottom: tokens.spacing.sm }}>
+      <span style={{ fontSize: '48px', marginBottom: '24px' }}>⏸️</span>
+      <span style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--bg-primary)', marginBottom: '8px' }}>
         PAUSE
       </span>
-      <span style={{ ...typographyStyle('body'), color: tokens.colors.steel, marginBottom: tokens.spacing.lg }}>
+      <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
         Økten er pauset
       </span>
 
-      <div style={{ textAlign: 'center', marginBottom: tokens.spacing.xl }}>
-        <div style={{ ...typographyStyle('callout'), color: tokens.colors.steel }}>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <div style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
           Total tid: {formatTime(totalTime)}
         </div>
-        <div style={{ ...typographyStyle('callout'), color: tokens.colors.steel }}>
+        <div style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
           Pause: {formatTime(pauseTime)}
         </div>
       </div>
@@ -286,14 +248,14 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
         onClick={onResume}
         style={{
           width: '200px',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.primary,
-          color: tokens.colors.white,
+          padding: '16px',
+          backgroundColor: 'var(--accent)',
+          color: 'var(--bg-primary)',
           border: 'none',
-          borderRadius: tokens.borderRadius.md,
+          borderRadius: 'var(--radius-md)',
           cursor: 'pointer',
-          marginBottom: tokens.spacing.md,
-          ...typographyStyle('title3'),
+          marginBottom: '16px',
+          fontSize: '20px', lineHeight: '25px', fontWeight: 600,
         }}
       >
         ▶️ Fortsett økt
@@ -303,13 +265,13 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
         onClick={onEnd}
         style={{
           width: '200px',
-          padding: tokens.spacing.md,
+          padding: '16px',
           backgroundColor: 'transparent',
-          color: tokens.colors.error,
-          border: `1px solid ${tokens.colors.error}`,
-          borderRadius: tokens.borderRadius.md,
+          color: 'var(--error)',
+          border: '1px solid var(--error)',
+          borderRadius: 'var(--radius-md)',
           cursor: 'pointer',
-          ...typographyStyle('label'),
+          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
         }}
       >
         Avslutt økt
@@ -414,8 +376,8 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
 
   if (!session || !currentBlock) {
     return (
-      <div style={{ padding: tokens.spacing.lg, textAlign: 'center' }}>
-        <span style={{ ...typographyStyle('body'), color: tokens.colors.steel }}>
+      <div style={{ padding: '24px', textAlign: 'center' }}>
+        <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
           Ingen økt aktiv
         </span>
       </div>
@@ -425,9 +387,9 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
   return (
     <div
       style={{
-        backgroundColor: tokens.colors.surface,
+        backgroundColor: 'var(--bg-primary)',
         minHeight: '100vh',
-        fontFamily: tokens.typography.fontFamily,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
       {/* Pause overlay */}
@@ -467,21 +429,21 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          padding: '16px',
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
         }}
       >
         <button
           onClick={togglePause}
           style={{
-            padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-            backgroundColor: tokens.colors.snow,
+            padding: `${'8px'} ${'16px'}`,
+            backgroundColor: 'var(--bg-secondary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
-            color: tokens.colors.primary,
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--accent)',
             cursor: 'pointer',
-            ...typographyStyle('label'),
+            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
           }}
         >
           ← Pause
@@ -489,13 +451,13 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
         <button
           onClick={() => handleEndSessionAndEvaluate(totalSeconds, completedBlocks)}
           style={{
-            padding: `${tokens.spacing.sm} ${tokens.spacing.md}`,
-            backgroundColor: tokens.colors.error,
+            padding: `${'8px'} ${'16px'}`,
+            backgroundColor: 'var(--error)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
-            color: tokens.colors.white,
+            borderRadius: 'var(--radius-md)',
+            color: 'var(--bg-primary)',
             cursor: 'pointer',
-            ...typographyStyle('label'),
+            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
           }}
         >
           Avslutt økt
@@ -506,25 +468,25 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
       <div
         style={{
           textAlign: 'center',
-          padding: tokens.spacing.lg,
-          backgroundColor: tokens.colors.primary,
+          padding: '24px',
+          backgroundColor: 'var(--accent)',
         }}
       >
-        <div style={{ ...typographyStyle('display'), color: tokens.colors.white, fontSize: '48px' }}>
+        <div style={{ fontSize: '48px', fontWeight: 700, color: 'var(--bg-primary)', fontSize: '48px' }}>
           {formatTime(totalSeconds)}
         </div>
-        <span style={{ ...typographyStyle('callout'), color: 'rgba(255,255,255,0.7)' }}>
+        <span style={{ fontSize: '14px', lineHeight: '19px', color: 'rgba(255,255,255,0.7)' }}>
           Total økttid
         </span>
 
-        <div style={{ marginTop: tokens.spacing.md }}>
-          <span style={{ ...typographyStyle('callout'), color: 'rgba(255,255,255,0.7)' }}>
+        <div style={{ marginTop: '16px' }}>
+          <span style={{ fontSize: '14px', lineHeight: '19px', color: 'rgba(255,255,255,0.7)' }}>
             Blokk {currentBlockIndex + 1} av {session.blocks.length}
           </span>
           <ProgressBar
             current={currentBlockIndex + 1}
             total={session.blocks.length}
-            color={tokens.colors.gold}
+            color={'var(--achievement)'}
           />
         </div>
       </div>
@@ -533,58 +495,58 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
       <div
         style={{
           textAlign: 'center',
-          padding: tokens.spacing.lg,
-          backgroundColor: tokens.colors.white,
+          padding: '24px',
+          backgroundColor: 'var(--bg-primary)',
         }}
       >
-        <div style={{ ...typographyStyle('display'), color: tokens.colors.charcoal, fontSize: '40px' }}>
+        <div style={{ fontSize: '48px', fontWeight: 700, color: 'var(--text-primary)', fontSize: '40px' }}>
           {formatTime(Math.max(0, blockTimeRemaining))}
         </div>
-        <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           Gjenstående tid
         </span>
       </div>
 
       {/* Current block info */}
-      <div style={{ padding: tokens.spacing.md }}>
+      <div style={{ padding: '16px' }}>
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            padding: tokens.spacing.md,
-            marginBottom: tokens.spacing.md,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '16px',
+            marginBottom: '16px',
           }}
         >
-          <span style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
             BLOKK {currentBlockIndex + 1}: {currentBlock.exercise}
           </span>
 
           <div
             style={{
-              backgroundColor: tokens.colors.snow,
-              borderRadius: tokens.borderRadius.md,
-              padding: tokens.spacing.md,
-              marginTop: tokens.spacing.md,
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: 'var(--radius-md)',
+              padding: '16px',
+              marginTop: '16px',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>🎯</span>
-              <span style={{ ...typographyStyle('label'), color: tokens.colors.primary }}>
+              <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>
                 {currentBlock.focus}
               </span>
             </div>
             {currentBlock.instructions && (
-              <div style={{ ...typographyStyle('callout'), color: tokens.colors.charcoal, marginTop: tokens.spacing.sm }}>
+              <div style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-primary)', marginTop: '8px' }}>
                 {currentBlock.instructions}
               </div>
             )}
           </div>
 
-          <div style={{ marginTop: tokens.spacing.md }}>
-            <span style={{ ...typographyStyle('caption'), color: tokens.colors.steel }}>
+          <div style={{ marginTop: '16px' }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
               Treningsområde
             </span>
-            <div style={{ ...typographyStyle('body'), color: tokens.colors.charcoal }}>
+            <div style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
               {currentBlock.trainingArea}
             </div>
           </div>
@@ -608,19 +570,19 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
       />
 
       {/* Next block / Note */}
-      <div style={{ padding: tokens.spacing.md }}>
+      <div style={{ padding: '16px' }}>
         <button
           onClick={handleNextBlock}
           style={{
             width: '100%',
-            padding: tokens.spacing.md,
-            backgroundColor: tokens.colors.primary,
-            color: tokens.colors.white,
+            padding: '16px',
+            backgroundColor: 'var(--accent)',
+            color: 'var(--bg-primary)',
             border: 'none',
-            borderRadius: tokens.borderRadius.md,
+            borderRadius: 'var(--radius-md)',
             cursor: 'pointer',
-            marginBottom: tokens.spacing.md,
-            ...typographyStyle('title3'),
+            marginBottom: '16px',
+            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
           }}
         >
           {currentBlockIndex < session.blocks.length - 1 ? 'Neste blokk →' : 'Fullfør økt'}
@@ -628,14 +590,14 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
 
         <div
           style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            padding: tokens.spacing.md,
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '16px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm, marginBottom: tokens.spacing.sm }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span>📝</span>
-            <span style={{ ...typographyStyle('label'), color: tokens.colors.charcoal }}>
+            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)' }}>
               Legg til notat...
             </span>
           </div>
@@ -646,12 +608,12 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
             style={{
               width: '100%',
               minHeight: '60px',
-              padding: tokens.spacing.sm,
-              backgroundColor: tokens.colors.snow,
+              padding: '8px',
+              backgroundColor: 'var(--bg-secondary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               resize: 'none',
-              ...typographyStyle('callout'),
+              fontSize: '14px', lineHeight: '19px',
             }}
           />
         </div>

@@ -4,7 +4,6 @@ import {
   Search, ChevronRight, Clock, Star, BookOpen, ExternalLink,
   Bookmark, BookmarkCheck, Eye
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -170,15 +169,15 @@ const CATEGORIES = [
 const getTypeConfig = (type) => {
   switch (type) {
     case 'video':
-      return { icon: Video, color: tokens.colors.error, label: 'Video' };
+      return { icon: Video, color: 'var(--error)', label: 'Video' };
     case 'article':
-      return { icon: FileText, color: tokens.colors.primary, label: 'Artikkel' };
+      return { icon: FileText, color: 'var(--accent)', label: 'Artikkel' };
     case 'document':
-      return { icon: Download, color: tokens.colors.success, label: 'Dokument' };
+      return { icon: Download, color: 'var(--success)', label: 'Dokument' };
     case 'link':
-      return { icon: LinkIcon, color: tokens.colors.gold, label: 'Lenke' };
+      return { icon: LinkIcon, color: 'var(--achievement)', label: 'Lenke' };
     default:
-      return { icon: BookMarked, color: tokens.colors.steel, label: type };
+      return { icon: BookMarked, color: 'var(--text-secondary)', label: type };
   }
 };
 
@@ -194,7 +193,7 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
     <div
       onClick={() => onOpen(resource)}
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '16px',
         overflow: 'hidden',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -233,11 +232,11 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
           gap: '6px',
           padding: '4px 10px',
           borderRadius: '6px',
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
         }}>
           <TypeIcon size={12} color={typeConfig.color} />
-          <span style={{ fontSize: '11px', fontWeight: 500, color: tokens.colors.charcoal }}>
+          <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-primary)' }}>
             {typeConfig.label}
           </span>
         </div>
@@ -250,8 +249,8 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
             right: '12px',
             padding: '4px 8px',
             borderRadius: '6px',
-            backgroundColor: tokens.colors.success,
-            color: tokens.colors.white,
+            backgroundColor: 'var(--success)',
+            color: 'var(--bg-primary)',
             fontSize: '10px',
             fontWeight: 600,
           }}>
@@ -271,7 +270,7 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
             padding: '4px 8px',
             borderRadius: '6px',
             backgroundColor: 'rgba(0,0,0,0.7)',
-            color: tokens.colors.white,
+            color: 'var(--bg-primary)',
           }}>
             <Clock size={12} />
             <span style={{ fontSize: '11px', fontWeight: 500 }}>
@@ -286,7 +285,7 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
         <h3 style={{
           fontSize: '15px',
           fontWeight: 600,
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           margin: '0 0 8px 0',
           lineHeight: 1.3,
         }}>
@@ -295,7 +294,7 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
 
         <p style={{
           fontSize: '13px',
-          color: tokens.colors.steel,
+          color: 'var(--text-secondary)',
           margin: '0 0 12px 0',
           lineHeight: 1.5,
           flex: 1,
@@ -313,29 +312,29 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           paddingTop: '12px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {resource.rating && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Star size={12} color={tokens.colors.gold} fill={tokens.colors.gold} />
-                <span style={{ fontSize: '12px', color: tokens.colors.charcoal, fontWeight: 500 }}>
+                <Star size={12} color={'var(--achievement)'} fill={'var(--achievement)'} />
+                <span style={{ fontSize: '12px', color: 'var(--text-primary)', fontWeight: 500 }}>
                   {resource.rating}
                 </span>
               </div>
             )}
             {resource.views && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Eye size={12} color={tokens.colors.steel} />
-                <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <Eye size={12} color={'var(--text-secondary)'} />
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   {resource.views.toLocaleString()}
                 </span>
               </div>
             )}
             {resource.downloads && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Download size={12} color={tokens.colors.steel} />
-                <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <Download size={12} color={'var(--text-secondary)'} />
+                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   {resource.downloads.toLocaleString()}
                 </span>
               </div>
@@ -356,15 +355,15 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
               height: '32px',
               borderRadius: '8px',
               border: 'none',
-              backgroundColor: resource.isSaved ? `${tokens.colors.primary}15` : tokens.colors.snow,
+              backgroundColor: resource.isSaved ? 'rgba(var(--accent-rgb), 0.15)' : 'var(--bg-secondary)',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
             }}
           >
             {resource.isSaved ? (
-              <BookmarkCheck size={16} color={tokens.colors.primary} />
+              <BookmarkCheck size={16} color={'var(--accent)'} />
             ) : (
-              <Bookmark size={16} color={tokens.colors.steel} />
+              <Bookmark size={16} color={'var(--text-secondary)'} />
             )}
           </button>
         </div>
@@ -385,10 +384,10 @@ const FeaturedResource = ({ resource, onOpen }) => {
     <div
       onClick={() => onOpen(resource)}
       style={{
-        backgroundColor: tokens.colors.primary,
+        backgroundColor: 'var(--accent)',
         borderRadius: '20px',
         padding: '24px',
-        color: tokens.colors.white,
+        color: 'var(--bg-primary)',
         cursor: 'pointer',
         transition: 'all 0.2s ease',
         display: 'flex',
@@ -413,7 +412,7 @@ const FeaturedResource = ({ resource, onOpen }) => {
         justifyContent: 'center',
         flexShrink: 0,
       }}>
-        <TypeIcon size={36} color={tokens.colors.white} />
+        <TypeIcon size={36} color={'var(--bg-primary)'} />
       </div>
 
       {/* Content */}
@@ -492,8 +491,8 @@ const CategoryFilter = ({ activeCategory, onCategoryChange, resources }) => {
               padding: '10px 16px',
               borderRadius: '12px',
               border: 'none',
-              backgroundColor: activeCategory === category.key ? tokens.colors.primary : tokens.colors.white,
-              color: activeCategory === category.key ? tokens.colors.white : tokens.colors.charcoal,
+              backgroundColor: activeCategory === category.key ? 'var(--accent)' : 'var(--bg-primary)',
+              color: activeCategory === category.key ? 'var(--bg-primary)' : 'var(--text-primary)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -510,7 +509,7 @@ const CategoryFilter = ({ activeCategory, onCategoryChange, resources }) => {
               borderRadius: '6px',
               backgroundColor: activeCategory === category.key
                 ? 'rgba(255,255,255,0.2)'
-                : tokens.colors.snow,
+                : 'var(--bg-secondary)',
             }}>
               {count}
             </span>
@@ -533,7 +532,7 @@ const SearchBar = ({ value, onChange }) => {
     }}>
       <Search
         size={18}
-        color={tokens.colors.steel}
+        color={'var(--text-secondary)'}
         style={{
           position: 'absolute',
           left: '16px',
@@ -550,18 +549,18 @@ const SearchBar = ({ value, onChange }) => {
           width: '100%',
           padding: '14px 16px 14px 48px',
           borderRadius: '12px',
-          border: `1px solid ${tokens.colors.mist}`,
-          backgroundColor: tokens.colors.white,
+          border: '1px solid var(--border-default)',
+          backgroundColor: 'var(--bg-primary)',
           fontSize: '14px',
-          color: tokens.colors.charcoal,
+          color: 'var(--text-primary)',
           outline: 'none',
           transition: 'border-color 0.2s ease',
         }}
         onFocus={(e) => {
-          e.target.style.borderColor = tokens.colors.primary;
+          e.target.style.borderColor = 'var(--accent)';
         }}
         onBlur={(e) => {
-          e.target.style.borderColor = tokens.colors.mist;
+          e.target.style.borderColor = 'var(--border-default)';
         }}
       />
     </div>
@@ -590,7 +589,7 @@ const ResourceDetailModal = ({ resource, onClose }) => {
       padding: '20px',
     }} onClick={onClose}>
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         borderRadius: '20px',
         maxWidth: '600px',
         width: '100%',
@@ -617,10 +616,10 @@ const ResourceDetailModal = ({ resource, onClose }) => {
               height: '36px',
               borderRadius: '10px',
               border: 'none',
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               cursor: 'pointer',
               fontSize: '20px',
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
             }}
           >
@@ -650,8 +649,8 @@ const ResourceDetailModal = ({ resource, onClose }) => {
               <span style={{
                 padding: '4px 8px',
                 borderRadius: '6px',
-                backgroundColor: tokens.colors.success,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--success)',
+                color: 'var(--bg-primary)',
                 fontSize: '10px',
                 fontWeight: 600,
               }}>
@@ -663,7 +662,7 @@ const ResourceDetailModal = ({ resource, onClose }) => {
           <h2 style={{
             fontSize: '22px',
             fontWeight: 700,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 12px 0',
           }}>
             {resource.title}
@@ -671,7 +670,7 @@ const ResourceDetailModal = ({ resource, onClose }) => {
 
           <p style={{
             fontSize: '15px',
-            color: tokens.colors.steel,
+            color: 'var(--text-secondary)',
             lineHeight: 1.6,
             margin: '0 0 20px 0',
           }}>
@@ -688,13 +687,13 @@ const ResourceDetailModal = ({ resource, onClose }) => {
             {resource.author && (
               <div style={{
                 padding: '12px',
-                backgroundColor: tokens.colors.snow,
+                backgroundColor: 'var(--bg-secondary)',
                 borderRadius: '10px',
               }}>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel, marginBottom: '4px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                   Forfatter
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {resource.author}
                 </div>
               </div>
@@ -702,13 +701,13 @@ const ResourceDetailModal = ({ resource, onClose }) => {
             {(resource.duration || resource.readTime) && (
               <div style={{
                 padding: '12px',
-                backgroundColor: tokens.colors.snow,
+                backgroundColor: 'var(--bg-secondary)',
                 borderRadius: '10px',
               }}>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel, marginBottom: '4px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                   {resource.type === 'video' ? 'Varighet' : 'Lesetid'}
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {resource.duration || resource.readTime}
                 </div>
               </div>
@@ -716,13 +715,13 @@ const ResourceDetailModal = ({ resource, onClose }) => {
             {resource.fileType && (
               <div style={{
                 padding: '12px',
-                backgroundColor: tokens.colors.snow,
+                backgroundColor: 'var(--bg-secondary)',
                 borderRadius: '10px',
               }}>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel, marginBottom: '4px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                   Filtype
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {resource.fileType} ({resource.fileSize})
                 </div>
               </div>
@@ -730,13 +729,13 @@ const ResourceDetailModal = ({ resource, onClose }) => {
             {resource.domain && (
               <div style={{
                 padding: '12px',
-                backgroundColor: tokens.colors.snow,
+                backgroundColor: 'var(--bg-secondary)',
                 borderRadius: '10px',
               }}>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel, marginBottom: '4px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                   Kilde
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {resource.domain}
                 </div>
               </div>
@@ -755,8 +754,8 @@ const ResourceDetailModal = ({ resource, onClose }) => {
               padding: '14px',
               borderRadius: '12px',
               border: 'none',
-              backgroundColor: tokens.colors.primary,
-              color: tokens.colors.white,
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               fontSize: '15px',
               fontWeight: 600,
               cursor: 'pointer',
@@ -803,7 +802,7 @@ const RessurserContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Ressurser"
         subtitle="Videoer, artikler og læringsmateriale"
@@ -818,48 +817,48 @@ const RessurserContainer = () => {
           marginBottom: '24px',
         }}>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
               {resources.length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Ressurser</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Ressurser</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.error }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--error)' }}>
               {resources.filter(r => r.type === 'video').length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Videoer</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Videoer</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
               {resources.filter(r => r.type === 'article').length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Artikler</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Artikler</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
               {savedResources.length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Lagret</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Lagret</div>
           </div>
         </div>
 
@@ -891,13 +890,13 @@ const RessurserContainer = () => {
             <h2 style={{
               fontSize: '18px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
             }}>
-              <BookmarkCheck size={20} color={tokens.colors.primary} />
+              <BookmarkCheck size={20} color={'var(--accent)'} />
               Lagrede ressurser
             </h2>
             <div style={{
@@ -922,14 +921,14 @@ const RessurserContainer = () => {
           <h2 style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             {category === 'all' ? 'Alle ressurser' : CATEGORIES.find(c => c.key === category)?.label}
             <span style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: tokens.colors.steel,
+              color: 'var(--text-secondary)',
               marginLeft: '8px',
             }}>
               ({filteredResources.length})
@@ -953,13 +952,13 @@ const RessurserContainer = () => {
             </div>
           ) : (
             <div style={{
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '16px',
               padding: '60px 20px',
               textAlign: 'center',
             }}>
-              <Search size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
+              <Search size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen ressurser funnet
               </p>
             </div>

@@ -18,6 +18,8 @@ import { useNotification } from '../../contexts/NotificationContext';
 import { useVideoRequests, REQUEST_STATUS } from '../../hooks/useVideoRequests';
 import * as videoApi from '../../services/videoApi';
 import { track } from '../../analytics/track';
+import Button from '../../ui/primitives/Button';
+import Input from '../../ui/primitives/Input';
 
 // Tailwind classes
 const tw = {
@@ -305,18 +307,20 @@ export function VideoLibraryPage() {
             </p>
           </div>
           <div className={tw.requestActions}>
-            <button
-              className={tw.dismissButton}
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => handleDismissRequest(videoRequests[0].id)}
             >
               Senere
-            </button>
-            <button
-              className={tw.requestButton}
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => handleFulfillRequest(videoRequests[0])}
             >
               Last opp nå
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -412,10 +416,8 @@ export function VideoLibraryPage() {
                   {!uploading && (
                     <>
                       <div className={tw.formGroup}>
-                        <label className={tw.label}>Tittel *</label>
-                        <input
-                          type="text"
-                          className={tw.input}
+                        <Input
+                          label="Tittel *"
                           value={uploadForm.title}
                           onChange={(e) =>
                             setUploadForm((prev) => ({ ...prev, title: e.target.value }))
@@ -464,20 +466,21 @@ export function VideoLibraryPage() {
             </div>
 
             <div className={tw.uploadActions}>
-              <button
-                className={tw.cancelButton}
+              <Button
+                variant="ghost"
                 onClick={handleCloseUpload}
                 disabled={uploading}
               >
                 Avbryt
-              </button>
-              <button
-                className={`${tw.submitButton} ${!uploadFile || !uploadForm.title || uploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleUploadSubmit}
                 disabled={!uploadFile || !uploadForm.title || uploading}
+                loading={uploading}
               >
                 {uploading ? 'Laster opp...' : 'Last opp'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

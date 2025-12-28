@@ -20,7 +20,6 @@ import {
   Star,
   Award,
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 
 interface TournamentResult {
   id: string;
@@ -349,7 +348,7 @@ export default function CoachTournamentResults() {
   // Get position badge
   const getPositionBadge = (position: number) => {
     if (position === 1) {
-      return { icon: Trophy, color: tokens.colors.gold, bg: `${tokens.colors.gold}20`, label: '1.' };
+      return { icon: Trophy, color: 'var(--achievement)', bg: 'rgba(var(--achievement-rgb), 0.20)', label: '1.' };
     } else if (position === 2) {
       return { icon: Medal, color: '#A0A0A0', bg: '#A0A0A015', label: '2.' };
     } else if (position === 3) {
@@ -363,7 +362,7 @@ export default function CoachTournamentResults() {
       <div
         style={{
           minHeight: '100vh',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--bg-secondary)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -373,8 +372,8 @@ export default function CoachTournamentResults() {
           style={{
             width: 48,
             height: 48,
-            border: `4px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: `4px solid ${'var(--border-default)'}`,
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }}
@@ -387,15 +386,15 @@ export default function CoachTournamentResults() {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           padding: '20px 24px',
         }}
       >
@@ -405,8 +404,8 @@ export default function CoachTournamentResults() {
             style={{
               width: 40,
               height: 40,
-              borderRadius: tokens.radius.md,
-              backgroundColor: tokens.colors.gray100,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -414,13 +413,13 @@ export default function CoachTournamentResults() {
               cursor: 'pointer',
             }}
           >
-            <ArrowLeft size={20} color={tokens.colors.charcoal} />
+            <ArrowLeft size={20} color={'var(--text-primary)'} />
           </button>
           <div>
-            <h1 style={{ ...tokens.typography.title1, color: tokens.colors.charcoal, margin: 0 }}>
+            <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
               Turneringsresultater
             </h1>
-            <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, margin: '4px 0 0' }}>
+            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Resultater og statistikk for dine spillere
             </p>
           </div>
@@ -434,12 +433,12 @@ export default function CoachTournamentResults() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.primary}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <Trophy size={16} color={tokens.colors.primary} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <Trophy size={16} color={'var(--accent)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{summary.totalTournaments}</strong> turneringer
             </span>
           </div>
@@ -449,12 +448,12 @@ export default function CoachTournamentResults() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.gold}15`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--achievement-rgb), 0.15)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <Star size={16} color={tokens.colors.gold} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <Star size={16} color={'var(--achievement)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{summary.totalWins}</strong> seiere
             </span>
           </div>
@@ -464,12 +463,12 @@ export default function CoachTournamentResults() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: `${tokens.colors.success}10`,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'rgba(var(--success-rgb), 0.10)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <Medal size={16} color={tokens.colors.success} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <Medal size={16} color={'var(--success)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               <strong>{summary.totalTopThree}</strong> pallplasser
             </span>
           </div>
@@ -479,12 +478,12 @@ export default function CoachTournamentResults() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: tokens.colors.gray100,
-              borderRadius: tokens.radius.md,
+              backgroundColor: 'var(--bg-tertiary)',
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <Award size={16} color={tokens.colors.steel} />
-            <span style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+            <Award size={16} color={'var(--text-secondary)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
               Snitt: <strong>{summary.avgPosition}.</strong> plass
             </span>
           </div>
@@ -494,28 +493,28 @@ export default function CoachTournamentResults() {
       {/* View toggle and filters */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--bg-primary)',
           padding: '16px 24px',
-          borderBottom: `1px solid ${tokens.colors.gray200}`,
+          borderBottom: `1px solid ${'var(--border-default)'}`,
           display: 'flex',
           gap: '12px',
           flexWrap: 'wrap',
           alignItems: 'center',
         }}
       >
-        <div style={{ display: 'flex', gap: '4px', backgroundColor: tokens.colors.gray100, borderRadius: tokens.radius.md, padding: '4px' }}>
+        <div style={{ display: 'flex', gap: '4px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', padding: '4px' }}>
           <button
             onClick={() => setView('results')}
             style={{
               padding: '8px 16px',
-              backgroundColor: view === 'results' ? tokens.colors.white : 'transparent',
-              color: view === 'results' ? tokens.colors.charcoal : tokens.colors.steel,
+              backgroundColor: view === 'results' ? 'var(--bg-primary)' : 'transparent',
+              color: view === 'results' ? 'var(--text-primary)' : 'var(--text-secondary)',
               border: 'none',
-              borderRadius: tokens.radius.sm,
+              borderRadius: 'var(--radius-sm)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
-              boxShadow: view === 'results' ? tokens.shadows.card : 'none',
+              boxShadow: view === 'results' ? 'var(--shadow-card)' : 'none',
             }}
           >
             Resultater
@@ -524,14 +523,14 @@ export default function CoachTournamentResults() {
             onClick={() => setView('stats')}
             style={{
               padding: '8px 16px',
-              backgroundColor: view === 'stats' ? tokens.colors.white : 'transparent',
-              color: view === 'stats' ? tokens.colors.charcoal : tokens.colors.steel,
+              backgroundColor: view === 'stats' ? 'var(--bg-primary)' : 'transparent',
+              color: view === 'stats' ? 'var(--text-primary)' : 'var(--text-secondary)',
               border: 'none',
-              borderRadius: tokens.radius.sm,
+              borderRadius: 'var(--radius-sm)',
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
-              boxShadow: view === 'stats' ? tokens.shadows.card : 'none',
+              boxShadow: view === 'stats' ? 'var(--shadow-card)' : 'none',
             }}
           >
             Spillerstatistikk
@@ -544,13 +543,13 @@ export default function CoachTournamentResults() {
             alignItems: 'center',
             gap: '8px',
             padding: '8px 12px',
-            backgroundColor: tokens.colors.gray100,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: 'var(--radius-md)',
             flex: 1,
             maxWidth: '250px',
           }}
         >
-          <Search size={18} color={tokens.colors.steel} />
+          <Search size={18} color={'var(--text-secondary)'} />
           <input
             type="text"
             placeholder="Søk..."
@@ -561,7 +560,7 @@ export default function CoachTournamentResults() {
               border: 'none',
               backgroundColor: 'transparent',
               fontSize: '14px',
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               outline: 'none',
             }}
           />
@@ -572,11 +571,11 @@ export default function CoachTournamentResults() {
           onChange={(e) => setPlayerFilter(e.target.value)}
           style={{
             padding: '8px 12px',
-            backgroundColor: tokens.colors.white,
-            border: `1px solid ${tokens.colors.gray300}`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-primary)',
+            border: `1px solid ${'var(--border-default)'}`,
+            borderRadius: 'var(--radius-md)',
             fontSize: '13px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
           }}
         >
           <option value="all">Alle spillere</option>
@@ -592,11 +591,11 @@ export default function CoachTournamentResults() {
           onChange={(e) => setPeriodFilter(e.target.value as typeof periodFilter)}
           style={{
             padding: '8px 12px',
-            backgroundColor: tokens.colors.white,
-            border: `1px solid ${tokens.colors.gray300}`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'var(--bg-primary)',
+            border: `1px solid ${'var(--border-default)'}`,
+            borderRadius: 'var(--radius-md)',
             fontSize: '13px',
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
           }}
         >
           <option value="all">All tid</option>
@@ -613,18 +612,18 @@ export default function CoachTournamentResults() {
           filteredResults.length === 0 ? (
             <div
               style={{
-                backgroundColor: tokens.colors.white,
-                borderRadius: tokens.radius.lg,
+                backgroundColor: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-lg)',
                 padding: '48px',
                 textAlign: 'center',
-                boxShadow: tokens.shadows.card,
+                boxShadow: 'var(--shadow-card)',
               }}
             >
-              <Trophy size={48} color={tokens.colors.steel} style={{ marginBottom: '16px' }} />
-              <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: '0 0 8px' }}>
+              <Trophy size={48} color={'var(--text-secondary)'} style={{ marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 8px' }}>
                 Ingen resultater funnet
               </h3>
-              <p style={{ ...tokens.typography.subheadline, color: tokens.colors.steel, margin: 0 }}>
+              <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
                 Prøv å endre filter eller søkekriterier
               </p>
             </div>
@@ -637,11 +636,11 @@ export default function CoachTournamentResults() {
                   <div
                     key={result.id}
                     style={{
-                      backgroundColor: tokens.colors.white,
-                      borderRadius: tokens.radius.lg,
-                      boxShadow: tokens.shadows.card,
+                      backgroundColor: 'var(--bg-primary)',
+                      borderRadius: 'var(--radius-lg)',
+                      boxShadow: 'var(--shadow-card)',
                       overflow: 'hidden',
-                      border: positionBadge ? `2px solid ${positionBadge.color}` : `1px solid ${tokens.colors.gray200}`,
+                      border: positionBadge ? `2px solid ${positionBadge.color}` : `1px solid ${'var(--border-default)'}`,
                     }}
                   >
                     <div style={{ padding: '16px 20px' }}>
@@ -652,8 +651,8 @@ export default function CoachTournamentResults() {
                             style={{
                               width: 48,
                               height: 48,
-                              borderRadius: tokens.radius.md,
-                              backgroundColor: positionBadge ? positionBadge.bg : tokens.colors.gray100,
+                              borderRadius: 'var(--radius-md)',
+                              backgroundColor: positionBadge ? positionBadge.bg : 'var(--bg-tertiary)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -662,24 +661,24 @@ export default function CoachTournamentResults() {
                             {positionBadge ? (
                               <positionBadge.icon size={24} color={positionBadge.color} />
                             ) : (
-                              <span style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>
+                              <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
                                 {result.position}
                               </span>
                             )}
                           </div>
 
                           <div>
-                            <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                            <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                               {result.tournamentName}
                             </h3>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                              <Calendar size={14} color={tokens.colors.steel} />
-                              <span style={{ fontSize: '13px', color: tokens.colors.steel }}>
+                              <Calendar size={14} color={'var(--text-secondary)'} />
+                              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                                 {formatDate(result.date)}
                               </span>
-                              <span style={{ color: tokens.colors.gray300 }}>•</span>
-                              <MapPin size={14} color={tokens.colors.steel} />
-                              <span style={{ fontSize: '13px', color: tokens.colors.steel }}>
+                              <span style={{ color: 'var(--border-default)' }}>•</span>
+                              <MapPin size={14} color={'var(--text-secondary)'} />
+                              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                                 {result.location}
                               </span>
                             </div>
@@ -690,9 +689,9 @@ export default function CoachTournamentResults() {
                           <div
                             style={{
                               padding: '6px 12px',
-                              backgroundColor: `${tokens.colors.gold}15`,
-                              color: tokens.colors.gold,
-                              borderRadius: tokens.radius.full,
+                              backgroundColor: 'rgba(var(--achievement-rgb), 0.15)',
+                              color: 'var(--achievement)',
+                              borderRadius: '50%',
                               fontSize: '12px',
                               fontWeight: 600,
                             }}
@@ -710,8 +709,8 @@ export default function CoachTournamentResults() {
                           justifyContent: 'space-between',
                           marginTop: '16px',
                           padding: '12px',
-                          backgroundColor: tokens.colors.gray50,
-                          borderRadius: tokens.radius.md,
+                          backgroundColor: 'var(--bg-tertiary)',
+                          borderRadius: 'var(--radius-md)',
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -720,8 +719,8 @@ export default function CoachTournamentResults() {
                               width: 32,
                               height: 32,
                               borderRadius: '50%',
-                              backgroundColor: tokens.colors.primary,
-                              color: tokens.colors.white,
+                              backgroundColor: 'var(--accent)',
+                              color: 'var(--bg-primary)',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -732,10 +731,10 @@ export default function CoachTournamentResults() {
                             {result.playerInitials}
                           </div>
                           <div>
-                            <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                            <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                               {result.playerName}
                             </div>
-                            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                               Kategori {result.playerCategory}
                             </div>
                           </div>
@@ -743,29 +742,29 @@ export default function CoachTournamentResults() {
 
                         <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
                           <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Plassering</div>
-                            <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Plassering</div>
+                            <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
                               {result.position}/{result.totalParticipants}
                             </div>
                           </div>
                           <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Score</div>
-                            <div style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.charcoal }}>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Score</div>
+                            <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
                               {result.score}
                             </div>
                           </div>
                           <div style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Til par</div>
+                            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Til par</div>
                             <div
                               style={{
                                 fontSize: '18px',
                                 fontWeight: 700,
                                 color:
                                   result.scoreToPar < 0
-                                    ? tokens.colors.success
+                                    ? 'var(--success)'
                                     : result.scoreToPar > 0
-                                    ? tokens.colors.error
-                                    : tokens.colors.charcoal,
+                                    ? 'var(--error)'
+                                    : 'var(--text-primary)',
                               }}
                             >
                               {result.scoreToPar > 0 ? '+' : ''}
@@ -774,8 +773,8 @@ export default function CoachTournamentResults() {
                           </div>
                           {result.rounds.length > 1 && (
                             <div style={{ textAlign: 'center' }}>
-                              <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Runder</div>
-                              <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
+                              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Runder</div>
+                              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                                 {result.rounds.join(' / ')}
                               </div>
                             </div>
@@ -795,9 +794,9 @@ export default function CoachTournamentResults() {
               <div
                 key={player.id}
                 style={{
-                  backgroundColor: tokens.colors.white,
-                  borderRadius: tokens.radius.lg,
-                  boxShadow: tokens.shadows.card,
+                  backgroundColor: 'var(--bg-primary)',
+                  borderRadius: 'var(--radius-lg)',
+                  boxShadow: 'var(--shadow-card)',
                   padding: '20px',
                 }}
               >
@@ -809,7 +808,7 @@ export default function CoachTournamentResults() {
                         height: 48,
                         borderRadius: '50%',
                         backgroundColor: player.avatarColor,
-                        color: tokens.colors.white,
+                        color: 'var(--bg-primary)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -820,11 +819,11 @@ export default function CoachTournamentResults() {
                       {player.initials}
                     </div>
                     <div>
-                      <h3 style={{ ...tokens.typography.headline, color: tokens.colors.charcoal, margin: 0 }}>
+                      <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                         {player.name}
                       </h3>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                        <span style={{ fontSize: '13px', color: tokens.colors.steel }}>
+                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                           {player.tournamentsPlayed} turneringer
                         </span>
                         <span
@@ -836,10 +835,10 @@ export default function CoachTournamentResults() {
                             fontWeight: 500,
                             color:
                               player.trend === 'up'
-                                ? tokens.colors.success
+                                ? 'var(--success)'
                                 : player.trend === 'down'
-                                ? tokens.colors.error
-                                : tokens.colors.steel,
+                                ? 'var(--error)'
+                                : 'var(--text-secondary)',
                           }}
                         >
                           {player.trend === 'up' && <TrendingUp size={14} />}
@@ -857,10 +856,10 @@ export default function CoachTournamentResults() {
                     onClick={() => navigate(`/coach/athletes/${player.id}`)}
                     style={{
                       padding: '8px 14px',
-                      backgroundColor: tokens.colors.gray100,
-                      color: tokens.colors.charcoal,
+                      backgroundColor: 'var(--bg-tertiary)',
+                      color: 'var(--text-primary)',
                       border: 'none',
-                      borderRadius: tokens.radius.md,
+                      borderRadius: 'var(--radius-md)',
                       fontSize: '13px',
                       fontWeight: 500,
                       cursor: 'pointer',
@@ -875,60 +874,60 @@ export default function CoachTournamentResults() {
                   <div
                     style={{
                       padding: '12px',
-                      backgroundColor: `${tokens.colors.gold}10`,
-                      borderRadius: tokens.radius.md,
+                      backgroundColor: 'rgba(var(--achievement-rgb), 0.10)',
+                      borderRadius: 'var(--radius-md)',
                       textAlign: 'center',
                     }}
                   >
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+                    <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
                       {player.wins}
                     </div>
-                    <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Seiere</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Seiere</div>
                   </div>
                   <div
                     style={{
                       padding: '12px',
-                      backgroundColor: `${tokens.colors.success}10`,
-                      borderRadius: tokens.radius.md,
+                      backgroundColor: 'rgba(var(--success-rgb), 0.10)',
+                      borderRadius: 'var(--radius-md)',
                       textAlign: 'center',
                     }}
                   >
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
+                    <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
                       {player.topThree}
                     </div>
-                    <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Top 3</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Top 3</div>
                   </div>
                   <div
                     style={{
                       padding: '12px',
-                      backgroundColor: `${tokens.colors.primary}10`,
-                      borderRadius: tokens.radius.md,
+                      backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
+                      borderRadius: 'var(--radius-md)',
                       textAlign: 'center',
                     }}
                   >
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+                    <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
                       {player.topTen}
                     </div>
-                    <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Top 10</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Top 10</div>
                   </div>
                   <div
                     style={{
                       padding: '12px',
-                      backgroundColor: tokens.colors.gray100,
-                      borderRadius: tokens.radius.md,
+                      backgroundColor: 'var(--bg-tertiary)',
+                      borderRadius: 'var(--radius-md)',
                       textAlign: 'center',
                     }}
                   >
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.charcoal }}>
+                    <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
                       {player.averagePosition}
                     </div>
-                    <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Snitt plass</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Snitt plass</div>
                   </div>
                   <div
                     style={{
                       padding: '12px',
-                      backgroundColor: tokens.colors.gray100,
-                      borderRadius: tokens.radius.md,
+                      backgroundColor: 'var(--bg-tertiary)',
+                      borderRadius: 'var(--radius-md)',
                       textAlign: 'center',
                     }}
                   >
@@ -938,16 +937,16 @@ export default function CoachTournamentResults() {
                         fontWeight: 700,
                         color:
                           player.averageScore < 0
-                            ? tokens.colors.success
+                            ? 'var(--success)'
                             : player.averageScore > 0
-                            ? tokens.colors.error
-                            : tokens.colors.charcoal,
+                            ? 'var(--error)'
+                            : 'var(--text-primary)',
                       }}
                     >
                       {player.averageScore > 0 ? '+' : ''}
                       {player.averageScore}
                     </div>
-                    <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Snitt til par</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Snitt til par</div>
                   </div>
                 </div>
               </div>

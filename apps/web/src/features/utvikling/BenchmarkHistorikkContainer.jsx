@@ -3,8 +3,9 @@ import {
   TrendingUp, ChevronRight,
   ArrowUp, ArrowDown, Minus, BarChart2
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
 
 // ============================================================================
 // MOCK DATA
@@ -121,9 +122,9 @@ const getChange = (history) => {
 };
 
 const TrendIcon = ({ trend }) => {
-  if (trend === 'up') return <ArrowUp size={14} color={tokens.colors.success} />;
-  if (trend === 'down') return <ArrowDown size={14} color={tokens.colors.error} />;
-  return <Minus size={14} color={tokens.colors.steel} />;
+  if (trend === 'up') return <ArrowUp size={14} style={{ color: 'var(--success)' }} />;
+  if (trend === 'down') return <ArrowDown size={14} style={{ color: 'var(--error)' }} />;
+  return <Minus size={14} style={{ color: 'var(--text-secondary)' }} />;
 };
 
 // ============================================================================
@@ -139,149 +140,146 @@ const BenchmarkCard = ({ test, onClick }) => {
     : Math.max(0, Math.min(100, (latest.value / test.target) * 100));
 
   return (
-    <div
-      onClick={() => onClick(test)}
-      style={{
-        backgroundColor: tokens.colors.white,
-        borderRadius: '14px',
-        padding: '16px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
-    >
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        marginBottom: '12px',
-      }}>
-        <div>
-          <span style={{
-            fontSize: '11px',
-            fontWeight: 500,
-            padding: '2px 8px',
-            borderRadius: '4px',
-            backgroundColor: `${tokens.colors.primary}15`,
-            color: tokens.colors.primary,
-          }}>
-            {test.category}
-          </span>
-          <h3 style={{
-            fontSize: '15px',
-            fontWeight: 600,
-            color: tokens.colors.charcoal,
-            margin: '6px 0 0 0',
-          }}>
-            {test.name}
-          </h3>
-        </div>
-        <ChevronRight size={18} color={tokens.colors.steel} />
-      </div>
-
-      {/* Current Value */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'baseline',
-        gap: '8px',
-        marginBottom: '12px',
-      }}>
-        <span style={{
-          fontSize: '28px',
-          fontWeight: 700,
-          color: tokens.colors.charcoal,
-        }}>
-          {latest.value}
-        </span>
-        <span style={{ fontSize: '14px', color: tokens.colors.steel }}>
-          {test.unit}
-        </span>
+    <Card variant="default" padding="none">
+      <div
+        onClick={() => onClick(test)}
+        style={{
+          padding: '16px',
+          cursor: 'pointer',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+        }}
+      >
         <div style={{
           display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          marginLeft: '8px',
-        }}>
-          <TrendIcon trend={trend} />
-          <span style={{
-            fontSize: '13px',
-            fontWeight: 500,
-            color: trend === 'up' ? tokens.colors.success :
-                   trend === 'down' ? tokens.colors.error : tokens.colors.steel,
-          }}>
-            {change}
-          </span>
-        </div>
-      </div>
-
-      {/* Progress to Target */}
-      <div style={{ marginBottom: '12px' }}>
-        <div style={{
-          display: 'flex',
+          alignItems: 'flex-start',
           justifyContent: 'space-between',
-          fontSize: '11px',
-          color: tokens.colors.steel,
-          marginBottom: '4px',
+          marginBottom: '12px',
         }}>
-          <span>Mal: {test.target}{test.unit}</span>
-          <span>{Math.round(progressToTarget)}%</span>
+          <div>
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 500,
+              padding: '2px 8px',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+              color: 'var(--accent)',
+            }}>
+              {test.category}
+            </span>
+            <h3 style={{
+              fontSize: '15px',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              margin: '6px 0 0 0',
+            }}>
+              {test.name}
+            </h3>
+          </div>
+          <ChevronRight size={18} style={{ color: 'var(--text-secondary)' }} />
         </div>
-        <div style={{
-          height: '6px',
-          backgroundColor: tokens.colors.mist,
-          borderRadius: '3px',
-          overflow: 'hidden',
-        }}>
-          <div style={{
-            height: '100%',
-            width: `${progressToTarget}%`,
-            backgroundColor: progressToTarget >= 100 ? tokens.colors.success :
-                           progressToTarget >= 75 ? tokens.colors.primary : tokens.colors.warning,
-            borderRadius: '3px',
-          }} />
-        </div>
-      </div>
 
-      {/* Stats Row */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        paddingTop: '12px',
-        borderTop: `1px solid ${tokens.colors.mist}`,
-      }}>
-        <div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Persentil</div>
-          <div style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: latest.percentile >= 75 ? tokens.colors.success :
-                   latest.percentile >= 50 ? tokens.colors.primary : tokens.colors.warning,
+        {/* Current Value */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: '8px',
+          marginBottom: '12px',
+        }}>
+          <span style={{
+            fontSize: '28px',
+            fontWeight: 700,
+            color: 'var(--text-primary)',
           }}>
-            {latest.percentile}%
+            {latest.value}
+          </span>
+          <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+            {test.unit}
+          </span>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            marginLeft: '8px',
+          }}>
+            <TrendIcon trend={trend} />
+            <span style={{
+              fontSize: '13px',
+              fontWeight: 500,
+              color: trend === 'up' ? 'var(--success)' :
+                     trend === 'down' ? 'var(--error)' : 'var(--text-secondary)',
+            }}>
+              {change}
+            </span>
           </div>
         </div>
-        <div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Kat. snitt</div>
-          <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
-            {test.categoryAvg}{test.unit}
+
+        {/* Progress to Target */}
+        <div style={{ marginBottom: '12px' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: '11px',
+            color: 'var(--text-secondary)',
+            marginBottom: '4px',
+          }}>
+            <span>Mal: {test.target}{test.unit}</span>
+            <span>{Math.round(progressToTarget)}%</span>
+          </div>
+          <div style={{
+            height: '6px',
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: '3px',
+            overflow: 'hidden',
+          }}>
+            <div style={{
+              height: '100%',
+              width: `${progressToTarget}%`,
+              backgroundColor: progressToTarget >= 100 ? 'var(--success)' :
+                             progressToTarget >= 75 ? 'var(--accent)' : 'var(--warning)',
+              borderRadius: '3px',
+            }} />
           </div>
         </div>
-        <div>
-          <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Malinger</div>
-          <div style={{ fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal }}>
-            {test.history.length}
+
+        {/* Stats Row */}
+        <div style={{
+          display: 'flex',
+          gap: '16px',
+          paddingTop: '12px',
+          borderTop: '1px solid var(--border-default)',
+        }}>
+          <div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Persentil</div>
+            <div style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: latest.percentile >= 75 ? 'var(--success)' :
+                     latest.percentile >= 50 ? 'var(--accent)' : 'var(--warning)',
+            }}>
+              {latest.percentile}%
+            </div>
+          </div>
+          <div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Kat. snitt</div>
+            <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+              {test.categoryAvg}{test.unit}
+            </div>
+          </div>
+          <div>
+            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Malinger</div>
+            <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+              {test.history.length}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
@@ -297,7 +295,7 @@ const BenchmarkHistorikkContainer = () => {
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Benchmark-historie"
         subtitle="Sammenlign dine resultater over tid"
@@ -311,48 +309,39 @@ const BenchmarkHistorikkContainer = () => {
           gap: '10px',
           marginBottom: '24px',
         }}>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
-              {BENCHMARK_TESTS.length}
+          <Card variant="default" padding="none">
+            <div style={{ padding: '14px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+                {BENCHMARK_TESTS.length}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Benchmarks</div>
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Benchmarks</div>
-          </div>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              fontSize: '24px',
-              fontWeight: 700,
-              color: tokens.colors.success,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '4px',
-            }}>
-              <TrendingUp size={18} />
-              {BENCHMARK_TESTS.filter((t) => getTrend(t.history, t.lowerIsBetter) === 'up').length}
+          </Card>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '14px', textAlign: 'center' }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: 700,
+                color: 'var(--success)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px',
+              }}>
+                <TrendingUp size={18} />
+                {BENCHMARK_TESTS.filter((t) => getTrend(t.history, t.lowerIsBetter) === 'up').length}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Forbedret</div>
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Forbedret</div>
-          </div>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
-              {Math.round(BENCHMARK_TESTS.reduce((sum, t) => sum + t.history[0].percentile, 0) / BENCHMARK_TESTS.length)}%
+          </Card>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '14px', textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--warning)' }}>
+                {Math.round(BENCHMARK_TESTS.reduce((sum, t) => sum + t.history[0].percentile, 0) / BENCHMARK_TESTS.length)}%
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Snitt persentil</div>
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Snitt persentil</div>
-          </div>
+          </Card>
         </div>
 
         {/* Category Filter */}
@@ -364,23 +353,14 @@ const BenchmarkHistorikkContainer = () => {
           paddingBottom: '4px',
         }}>
           {CATEGORIES.map((cat) => (
-            <button
+            <Button
               key={cat}
+              variant={selectedCategory === cat ? 'primary' : 'ghost'}
+              size="sm"
               onClick={() => setSelectedCategory(cat)}
-              style={{
-                padding: '8px 14px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: selectedCategory === cat ? tokens.colors.primary : tokens.colors.white,
-                color: selectedCategory === cat ? tokens.colors.white : tokens.colors.charcoal,
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
             >
               {cat}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -400,17 +380,14 @@ const BenchmarkHistorikkContainer = () => {
         </div>
 
         {filteredTests.length === 0 && (
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '14px',
-            padding: '40px',
-            textAlign: 'center',
-          }}>
-            <BarChart2 size={40} color={tokens.colors.steel} style={{ marginBottom: '12px' }} />
-            <p style={{ fontSize: '14px', color: tokens.colors.steel, margin: 0 }}>
-              Ingen benchmarks funnet i denne kategorien
-            </p>
-          </div>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '40px', textAlign: 'center' }}>
+              <BarChart2 size={40} style={{ color: 'var(--text-secondary)', marginBottom: '12px' }} />
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
+                Ingen benchmarks funnet i denne kategorien
+              </p>
+            </div>
+          </Card>
         )}
       </div>
     </div>

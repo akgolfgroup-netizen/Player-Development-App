@@ -3,8 +3,8 @@ import {
   TrendingUp, Target,
   ArrowUp, ArrowDown, Minus, CheckCircle
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Card from '../../ui/primitives/Card';
 
 // ============================================================================
 // MOCK DATA
@@ -100,9 +100,9 @@ const HISTORY = [
 // ============================================================================
 
 const TrendIcon = ({ trend }) => {
-  if (trend === 'up') return <ArrowUp size={12} color={tokens.colors.success} />;
-  if (trend === 'down') return <ArrowDown size={12} color={tokens.colors.error} />;
-  return <Minus size={12} color={tokens.colors.steel} />;
+  if (trend === 'up') return <ArrowUp size={12} style={{ color: 'var(--success)' }} />;
+  if (trend === 'down') return <ArrowDown size={12} style={{ color: 'var(--error)' }} />;
+  return <Minus size={12} style={{ color: 'var(--text-secondary)' }} />;
 };
 
 // ============================================================================
@@ -113,83 +113,80 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
   const reversedCategories = [...CATEGORIES].reverse();
 
   return (
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '14px',
-      padding: '16px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
-      <h3 style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        color: tokens.colors.charcoal,
-        marginBottom: '12px',
-      }}>
-        Kategoristige
-      </h3>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-        {reversedCategories.map((cat) => {
-          const isCurrent = cat.level === currentCategory;
-          const isPast = CATEGORIES.findIndex((c) => c.level === cat.level) <
-                        CATEGORIES.findIndex((c) => c.level === currentCategory);
+    <Card variant="default" padding="none">
+      <div style={{ padding: '16px' }}>
+        <h3 style={{
+          fontSize: '14px',
+          fontWeight: 600,
+          color: 'var(--text-primary)',
+          marginBottom: '12px',
+        }}>
+          Kategoristige
+        </h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {reversedCategories.map((cat) => {
+            const isCurrent = cat.level === currentCategory;
+            const isPast = CATEGORIES.findIndex((c) => c.level === cat.level) <
+                          CATEGORIES.findIndex((c) => c.level === currentCategory);
 
-          return (
-            <div
-              key={cat.level}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '8px 10px',
-                borderRadius: '8px',
-                backgroundColor: isCurrent ? `${tokens.colors.primary}15` :
-                               isPast ? `${tokens.colors.success}10` : 'transparent',
-              }}
-            >
-              <div style={{
-                width: '28px',
-                height: '28px',
-                borderRadius: '6px',
-                backgroundColor: isCurrent ? tokens.colors.primary :
-                               isPast ? tokens.colors.success : tokens.colors.mist,
-                color: (isCurrent || isPast) ? tokens.colors.white : tokens.colors.steel,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '12px',
-                fontWeight: 600,
-              }}>
-                {cat.level}
-              </div>
-              <div style={{ flex: 1 }}>
+            return (
+              <div
+                key={cat.level}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '8px 10px',
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: isCurrent ? 'rgba(var(--accent-rgb), 0.1)' :
+                                 isPast ? 'rgba(var(--success-rgb), 0.08)' : 'transparent',
+                }}
+              >
                 <div style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: isCurrent ? 'var(--accent)' :
+                                 isPast ? 'var(--success)' : 'var(--bg-tertiary)',
+                  color: (isCurrent || isPast) ? 'white' : 'var(--text-secondary)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   fontSize: '12px',
-                  fontWeight: isCurrent ? 600 : 400,
-                  color: isCurrent ? tokens.colors.charcoal : tokens.colors.steel,
-                }}>
-                  Kategori {cat.level}
-                </div>
-                <div style={{ fontSize: '10px', color: tokens.colors.steel }}>
-                  {cat.minPoints} - {cat.maxPoints} poeng
-                </div>
-              </div>
-              {isCurrent && (
-                <div style={{
-                  fontSize: '11px',
                   fontWeight: 600,
-                  color: tokens.colors.primary,
                 }}>
-                  {currentPoints} p
+                  {cat.level}
                 </div>
-              )}
-              {isPast && (
-                <CheckCircle size={14} color={tokens.colors.success} />
-              )}
-            </div>
-          );
-        })}
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    fontSize: '12px',
+                    fontWeight: isCurrent ? 600 : 400,
+                    color: isCurrent ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  }}>
+                    Kategori {cat.level}
+                  </div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>
+                    {cat.minPoints} - {cat.maxPoints} poeng
+                  </div>
+                </div>
+                {isCurrent && (
+                  <div style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: 'var(--accent)',
+                  }}>
+                    {currentPoints} p
+                  </div>
+                )}
+                {isPast && (
+                  <CheckCircle size={14} style={{ color: 'var(--success)' }} />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
@@ -198,85 +195,82 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
 // ============================================================================
 
 const RequirementsChecklist = ({ requirements, targetCategory }) => (
-  <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: '14px',
-    padding: '16px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-  }}>
-    <h3 style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      color: tokens.colors.charcoal,
-      marginBottom: '4px',
-    }}>
-      Krav for Kategori {targetCategory}
-    </h3>
-    <p style={{
-      fontSize: '12px',
-      color: tokens.colors.steel,
-      margin: '0 0 12px 0',
-    }}>
-      {requirements.filter((r) => r.met).length} av {requirements.length} oppfylt
-    </p>
+  <Card variant="default" padding="none">
+    <div style={{ padding: '16px' }}>
+      <h3 style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        color: 'var(--text-primary)',
+        marginBottom: '4px',
+      }}>
+        Krav for Kategori {targetCategory}
+      </h3>
+      <p style={{
+        fontSize: '12px',
+        color: 'var(--text-secondary)',
+        margin: '0 0 12px 0',
+      }}>
+        {requirements.filter((r) => r.met).length} av {requirements.length} oppfylt
+      </p>
 
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      {requirements.map((req) => (
-        <div
-          key={req.id}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            padding: '10px 12px',
-            borderRadius: '8px',
-            backgroundColor: req.met ? `${tokens.colors.success}10` : `${tokens.colors.error}10`,
-          }}
-        >
-          <div style={{
-            width: '24px',
-            height: '24px',
-            borderRadius: '6px',
-            backgroundColor: req.met ? tokens.colors.success : tokens.colors.error,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            {req.met ? (
-              <CheckCircle size={14} color={tokens.colors.white} />
-            ) : (
-              <Target size={14} color={tokens.colors.white} />
-            )}
-          </div>
-          <div style={{ flex: 1 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {requirements.map((req) => (
+          <div
+            key={req.id}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '10px 12px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: req.met ? 'rgba(var(--success-rgb), 0.08)' : 'rgba(var(--error-rgb), 0.08)',
+            }}
+          >
             <div style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: tokens.colors.charcoal,
+              width: '24px',
+              height: '24px',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: req.met ? 'var(--success)' : 'var(--error)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}>
-              {req.name}
+              {req.met ? (
+                <CheckCircle size={14} color="white" />
+              ) : (
+                <Target size={14} color="white" />
+              )}
             </div>
-            <div style={{
-              fontSize: '11px',
-              color: tokens.colors.steel,
-            }}>
-              Krav: {req.requiredScore} | Din: {req.currentScore}
+            <div style={{ flex: 1 }}>
+              <div style={{
+                fontSize: '13px',
+                fontWeight: 500,
+                color: 'var(--text-primary)',
+              }}>
+                {req.name}
+              </div>
+              <div style={{
+                fontSize: '11px',
+                color: 'var(--text-secondary)',
+              }}>
+                Krav: {req.requiredScore} | Din: {req.currentScore}
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <TrendIcon trend={req.trend} />
+              <span style={{
+                fontSize: '14px',
+                fontWeight: 600,
+                color: req.met ? 'var(--success)' : 'var(--error)',
+              }}>
+                {req.currentScore}
+              </span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <TrendIcon trend={req.trend} />
-            <span style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              color: req.met ? tokens.colors.success : tokens.colors.error,
-            }}>
-              {req.currentScore}
-            </span>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
+  </Card>
 );
 
 // ============================================================================
@@ -284,70 +278,67 @@ const RequirementsChecklist = ({ requirements, targetCategory }) => (
 // ============================================================================
 
 const ProgressHistory = ({ history }) => (
-  <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: '14px',
-    padding: '16px',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-  }}>
-    <h3 style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      color: tokens.colors.charcoal,
-      marginBottom: '12px',
-    }}>
-      Poenghistorikk
-    </h3>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-      {history.map((entry, idx) => (
-        <div
-          key={idx}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            padding: '10px 12px',
-            borderRadius: '8px',
-            backgroundColor: idx === 0 ? `${tokens.colors.primary}10` : tokens.colors.snow,
-          }}
-        >
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: idx === 0 ? tokens.colors.primary : tokens.colors.mist,
-            color: idx === 0 ? tokens.colors.white : tokens.colors.steel,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '11px',
-            fontWeight: 600,
-          }}>
-            {entry.category}
-          </div>
-          <div style={{ flex: 1 }}>
+  <Card variant="default" padding="none">
+    <div style={{ padding: '16px' }}>
+      <h3 style={{
+        fontSize: '14px',
+        fontWeight: 600,
+        color: 'var(--text-primary)',
+        marginBottom: '12px',
+      }}>
+        Poenghistorikk
+      </h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        {history.map((entry, idx) => (
+          <div
+            key={idx}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: idx === 0 ? 'rgba(var(--accent-rgb), 0.08)' : 'var(--bg-secondary)',
+            }}
+          >
             <div style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: tokens.colors.charcoal,
+              width: '32px',
+              height: '32px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: idx === 0 ? 'var(--accent)' : 'var(--bg-tertiary)',
+              color: idx === 0 ? 'white' : 'var(--text-secondary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '11px',
+              fontWeight: 600,
             }}>
-              {entry.points} poeng
+              {entry.category}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
-              {new Date(entry.date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' })}
+            <div style={{ flex: 1 }}>
+              <div style={{
+                fontSize: '13px',
+                fontWeight: 500,
+                color: 'var(--text-primary)',
+              }}>
+                {entry.points} poeng
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                {new Date(entry.date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' })}
+              </div>
+            </div>
+            <div style={{
+              fontSize: '12px',
+              fontWeight: 500,
+              color: entry.change.startsWith('+') ? 'var(--success)' : 'var(--error)',
+            }}>
+              {entry.change}
             </div>
           </div>
-          <div style={{
-            fontSize: '12px',
-            fontWeight: 500,
-            color: entry.change.startsWith('+') ? tokens.colors.success : tokens.colors.error,
-          }}>
-            {entry.change}
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
+  </Card>
 );
 
 // ============================================================================
@@ -360,7 +351,7 @@ const KategoriFremgangContainer = () => {
                             CATEGORIES.findIndex((c) => c.level === CURRENT_STATUS.startOfSeasonCategory);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Kategori-fremgang"
         subtitle="Din reise gjennom kategoriene"
@@ -374,79 +365,67 @@ const KategoriFremgangContainer = () => {
           gap: '10px',
           marginBottom: '24px',
         }}>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              fontSize: '32px',
-              fontWeight: 700,
-              color: tokens.colors.primary,
-            }}>
-              {CURRENT_STATUS.currentCategory}
+          <Card variant="default" padding="none">
+            <div style={{ padding: '16px', textAlign: 'center' }}>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: 700,
+                color: 'var(--accent)',
+              }}>
+                {CURRENT_STATUS.currentCategory}
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                Navaerende
+              </div>
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
-              Navaerende
+          </Card>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '16px', textAlign: 'center' }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: 700,
+                color: 'var(--text-primary)',
+              }}>
+                {CURRENT_STATUS.currentPoints}
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                Poeng
+              </div>
             </div>
-          </div>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              fontSize: '24px',
-              fontWeight: 700,
-              color: tokens.colors.charcoal,
-            }}>
-              {CURRENT_STATUS.currentPoints}
+          </Card>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '16px', textAlign: 'center' }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: 700,
+                color: 'var(--success)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px',
+              }}>
+                <TrendingUp size={20} />
+                +{pointsGained}
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                Denne sesongen
+              </div>
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
-              Poeng
+          </Card>
+          <Card variant="default" padding="none">
+            <div style={{ padding: '16px', textAlign: 'center' }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: 700,
+                color: 'var(--warning)',
+              }}>
+                {categoriesAdvanced > 0 ? `+${categoriesAdvanced}` : categoriesAdvanced}
+              </div>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                Kategorier opp
+              </div>
             </div>
-          </div>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              fontSize: '24px',
-              fontWeight: 700,
-              color: tokens.colors.success,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '4px',
-            }}>
-              <TrendingUp size={20} />
-              +{pointsGained}
-            </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
-              Denne sesongen
-            </div>
-          </div>
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              fontSize: '24px',
-              fontWeight: 700,
-              color: tokens.colors.gold,
-            }}>
-              {categoriesAdvanced > 0 ? `+${categoriesAdvanced}` : categoriesAdvanced}
-            </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
-              Kategorier opp
-            </div>
-          </div>
+          </Card>
         </div>
 
         {/* Main Content Grid */}

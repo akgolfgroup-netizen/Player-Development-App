@@ -7,7 +7,7 @@
  * Design: AK Golf Academy Design System v3.0
  */
 import React, { useState, useEffect } from 'react';
-import { tokens, typographyStyle } from '../../design-tokens';
+// UiCanon: CSS variables
 import { Check, X, ChevronLeft, Clock, Target, Zap, Brain } from 'lucide-react';
 
 // ============================================================================
@@ -19,25 +19,25 @@ import { Check, X, ChevronLeft, Clock, Target, Zap, Brain } from 'lucide-react';
  */
 function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel, highLabel }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacing.sm, marginBottom: tokens.spacing.xs }}>
-        {Icon && <Icon size={18} color={tokens.colors.forest} />}
-        <span style={{ ...typographyStyle('headline'), color: tokens.colors.charcoal }}>
+    <div style={{ marginBottom: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+        {Icon && <Icon size={18} color={'var(--accent)'} />}
+        <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)' }}>
           {label}
         </span>
       </div>
       {description && (
-        <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.sm }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
           {description}
         </span>
       )}
       <div
         style={{
           display: 'flex',
-          gap: tokens.spacing.xs,
-          backgroundColor: tokens.colors.foam,
-          borderRadius: tokens.borderRadius.md,
-          padding: tokens.spacing.sm,
+          gap: '4px',
+          backgroundColor: 'var(--bg-tertiary)',
+          borderRadius: 'var(--radius-md)',
+          padding: '8px',
         }}
       >
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((rating) => (
@@ -46,13 +46,13 @@ function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel
             onClick={() => onChange(rating)}
             style={{
               flex: 1,
-              padding: `${tokens.spacing.sm} 0`,
-              backgroundColor: value === rating ? tokens.colors.forest : 'transparent',
-              color: value === rating ? tokens.colors.white : tokens.colors.charcoal,
+              padding: `${'8px'} 0`,
+              backgroundColor: value === rating ? 'var(--accent)' : 'transparent',
+              color: value === rating ? 'var(--bg-primary)' : 'var(--text-primary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.sm,
+              borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
-              ...typographyStyle('label'),
+              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
               fontWeight: value === rating ? 600 : 400,
               transition: 'all 0.15s ease',
             }}
@@ -65,13 +65,13 @@ function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginTop: tokens.spacing.xs,
+          marginTop: '4px',
         }}
       >
-        <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {lowLabel || '1'}
         </span>
-        <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
           {highLabel || '10'}
         </span>
       </div>
@@ -84,34 +84,34 @@ function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel
  */
 function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShotCountChange, onTotalShotsChange }) {
   const options = [
-    { value: 'yes', label: 'Ja', color: tokens.colors.success },
-    { value: 'partial', label: 'Delvis', color: tokens.colors.warning },
-    { value: 'no', label: 'Nei', color: tokens.colors.error },
+    { value: 'yes', label: 'Ja', color: 'var(--success)' },
+    { value: 'partial', label: 'Delvis', color: 'var(--warning)' },
+    { value: 'no', label: 'Nei', color: 'var(--error)' },
   ];
 
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <span style={{ ...typographyStyle('headline'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.xs }}>
+    <div style={{ marginBottom: '24px' }}>
+      <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
         Konsistent pre-shot rutine?
       </span>
-      <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.sm }}>
+      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
         Fulgte du pre-shot rutinen din konsekvent?
       </span>
 
-      <div style={{ display: 'flex', gap: tokens.spacing.sm, marginBottom: tokens.spacing.md }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
         {options.map((option) => (
           <button
             key={option.value}
             onClick={() => onChange(option.value)}
             style={{
               flex: 1,
-              padding: tokens.spacing.md,
-              backgroundColor: value === option.value ? option.color : tokens.colors.foam,
-              color: value === option.value ? tokens.colors.white : tokens.colors.charcoal,
+              padding: '16px',
+              backgroundColor: value === option.value ? option.color : 'var(--bg-tertiary)',
+              color: value === option.value ? 'var(--bg-primary)' : 'var(--text-primary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               cursor: 'pointer',
-              ...typographyStyle('label'),
+              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
               fontWeight: value === option.value ? 600 : 400,
               transition: 'all 0.15s ease',
             }}
@@ -122,9 +122,9 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
       </div>
 
       {/* Shot count inputs */}
-      <div style={{ display: 'flex', gap: tokens.spacing.md }}>
+      <div style={{ display: 'flex', gap: '16px' }}>
         <div style={{ flex: 1 }}>
-          <label style={{ ...typographyStyle('caption1'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+          <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
             Slag med rutine
           </label>
           <input
@@ -135,16 +135,16 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
             placeholder="0"
             style={{
               width: '100%',
-              padding: tokens.spacing.sm,
-              backgroundColor: tokens.colors.foam,
+              padding: '8px',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.sm,
-              ...typographyStyle('body'),
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '15px', lineHeight: '20px',
             }}
           />
         </div>
         <div style={{ flex: 1 }}>
-          <label style={{ ...typographyStyle('caption1'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.xs }}>
+          <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
             Totalt slag
           </label>
           <input
@@ -155,11 +155,11 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
             placeholder="0"
             style={{
               width: '100%',
-              padding: tokens.spacing.sm,
-              backgroundColor: tokens.colors.foam,
+              padding: '8px',
+              backgroundColor: 'var(--bg-tertiary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.sm,
-              ...typographyStyle('body'),
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '15px', lineHeight: '20px',
             }}
           />
         </div>
@@ -167,11 +167,11 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
 
       {/* Percentage display */}
       {totalShots > 0 && shotCount >= 0 && (
-        <div style={{ marginTop: tokens.spacing.sm, textAlign: 'center' }}>
-          <span style={{ ...typographyStyle('headline'), color: tokens.colors.forest }}>
+        <div style={{ marginTop: '8px', textAlign: 'center' }}>
+          <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--accent)' }}>
             {Math.round((shotCount / totalShots) * 100)}%
           </span>
-          <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel, marginLeft: tokens.spacing.xs }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginLeft: '4px' }}>
             konsistens
           </span>
         </div>
@@ -185,15 +185,15 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
  */
 function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCustomCueChange }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <span style={{ ...typographyStyle('headline'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.xs }}>
+    <div style={{ marginBottom: '24px' }}>
+      <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
         Tekniske cues brukt
       </span>
-      <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.sm }}>
+      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
         Velg cues du fokuserte på i dag
       </span>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: tokens.spacing.sm, marginBottom: tokens.spacing.md }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
         {cues.map((cue) => {
           const isSelected = selectedCues.includes(cue);
           return (
@@ -201,16 +201,16 @@ function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCust
               key={cue}
               onClick={() => onToggle(cue)}
               style={{
-                padding: `${tokens.spacing.xs} ${tokens.spacing.md}`,
-                backgroundColor: isSelected ? tokens.colors.forest : tokens.colors.foam,
-                color: isSelected ? tokens.colors.white : tokens.colors.charcoal,
+                padding: `${'4px'} ${'16px'}`,
+                backgroundColor: isSelected ? 'var(--accent)' : 'var(--bg-tertiary)',
+                color: isSelected ? 'var(--bg-primary)' : 'var(--text-primary)',
                 border: 'none',
-                borderRadius: tokens.borderRadius.full,
+                borderRadius: '9999px',
                 cursor: 'pointer',
-                ...typographyStyle('label'),
+                fontSize: '12px', lineHeight: '16px', fontWeight: 500,
                 display: 'flex',
                 alignItems: 'center',
-                gap: tokens.spacing.xs,
+                gap: '4px',
                 transition: 'all 0.15s ease',
               }}
             >
@@ -229,11 +229,11 @@ function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCust
         placeholder="Egen cue..."
         style={{
           width: '100%',
-          padding: tokens.spacing.sm,
-          backgroundColor: tokens.colors.foam,
+          padding: '8px',
+          backgroundColor: 'var(--bg-tertiary)',
           border: 'none',
-          borderRadius: tokens.borderRadius.sm,
-          ...typographyStyle('body'),
+          borderRadius: 'var(--radius-sm)',
+          fontSize: '15px', lineHeight: '20px',
         }}
       />
     </div>
@@ -245,12 +245,12 @@ function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCust
  */
 function TextAreaField({ label, description, value, onChange, placeholder }) {
   return (
-    <div style={{ marginBottom: tokens.spacing.lg }}>
-      <span style={{ ...typographyStyle('headline'), color: tokens.colors.charcoal, display: 'block', marginBottom: tokens.spacing.xs }}>
+    <div style={{ marginBottom: '24px' }}>
+      <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
         {label}
       </span>
       {description && (
-        <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel, display: 'block', marginBottom: tokens.spacing.sm }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
           {description}
         </span>
       )}
@@ -261,12 +261,12 @@ function TextAreaField({ label, description, value, onChange, placeholder }) {
         style={{
           width: '100%',
           minHeight: '80px',
-          padding: tokens.spacing.md,
-          backgroundColor: tokens.colors.foam,
+          padding: '16px',
+          backgroundColor: 'var(--bg-tertiary)',
           border: 'none',
-          borderRadius: tokens.borderRadius.md,
+          borderRadius: 'var(--radius-md)',
           resize: 'vertical',
-          ...typographyStyle('body'),
+          fontSize: '15px', lineHeight: '20px',
         }}
       />
     </div>
@@ -278,16 +278,16 @@ function TextAreaField({ label, description, value, onChange, placeholder }) {
  */
 function SectionDivider({ title }) {
   return (
-    <div style={{ marginTop: tokens.spacing.xl, marginBottom: tokens.spacing.lg }}>
+    <div style={{ marginTop: '32px', marginBottom: '24px' }}>
       <div
         style={{
           height: '1px',
-          backgroundColor: tokens.colors.mist,
-          marginBottom: title ? tokens.spacing.md : 0,
+          backgroundColor: 'var(--border-default)',
+          marginBottom: title ? '16px' : 0,
         }}
       />
       {title && (
-        <span style={{ ...typographyStyle('label'), color: tokens.colors.steel, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
           {title}
         </span>
       )}
@@ -392,17 +392,17 @@ export default function SessionEvaluationForm({
   return (
     <div
       style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--bg-primary)',
         minHeight: '100vh',
-        fontFamily: tokens.typography.fontFamily,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.forest,
-          color: tokens.colors.white,
-          padding: tokens.spacing.lg,
+          backgroundColor: 'var(--accent)',
+          color: 'var(--bg-primary)',
+          padding: '24px',
           position: 'sticky',
           top: 0,
           zIndex: 10,
@@ -414,17 +414,17 @@ export default function SessionEvaluationForm({
             style={{
               background: 'none',
               border: 'none',
-              color: tokens.colors.white,
+              color: 'var(--bg-primary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: tokens.spacing.xs,
-              padding: tokens.spacing.xs,
+              gap: '4px',
+              padding: '4px',
             }}
           >
             <ChevronLeft size={24} />
           </button>
-          <span style={{ ...typographyStyle('title2') }}>
+          <span style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700 }}>
             Evaluer Okt
           </span>
           <div style={{ width: 40 }} /> {/* Spacer for centering */}
@@ -434,16 +434,16 @@ export default function SessionEvaluationForm({
         {session && (
           <div
             style={{
-              marginTop: tokens.spacing.md,
-              padding: tokens.spacing.md,
+              marginTop: '16px',
+              padding: '16px',
               backgroundColor: 'rgba(255,255,255,0.1)',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ ...typographyStyle('headline') }}>
+            <div style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600 }}>
               {session.focusArea || session.sessionType}
             </div>
-            <div style={{ ...typographyStyle('caption1'), opacity: 0.8, marginTop: tokens.spacing.xs }}>
+            <div style={{ fontSize: '12px', lineHeight: '16px', opacity: 0.8, marginTop: '4px' }}>
               {session.duration} min | {session.learningPhase} | {session.period}
             </div>
           </div>
@@ -451,7 +451,7 @@ export default function SessionEvaluationForm({
       </div>
 
       {/* Form content */}
-      <div style={{ padding: tokens.spacing.lg }}>
+      <div style={{ padding: '24px' }}>
         {/* Ratings Section */}
         <SectionDivider title="Vurdering" />
 
@@ -545,24 +545,24 @@ export default function SessionEvaluationForm({
         />
 
         {/* Action buttons */}
-        <div style={{ marginTop: tokens.spacing.xl }}>
+        <div style={{ marginTop: '32px' }}>
           <button
             onClick={handleComplete}
             disabled={isLoading}
             style={{
               width: '100%',
-              padding: tokens.spacing.md,
-              backgroundColor: tokens.colors.forest,
-              color: tokens.colors.white,
+              padding: '16px',
+              backgroundColor: 'var(--accent)',
+              color: 'var(--bg-primary)',
               border: 'none',
-              borderRadius: tokens.borderRadius.md,
+              borderRadius: 'var(--radius-md)',
               cursor: isLoading ? 'not-allowed' : 'pointer',
-              marginBottom: tokens.spacing.md,
-              ...typographyStyle('headline'),
+              marginBottom: '16px',
+              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: tokens.spacing.sm,
+              gap: '8px',
               opacity: isLoading ? 0.7 : 1,
             }}
           >
@@ -575,17 +575,17 @@ export default function SessionEvaluationForm({
             disabled={isLoading}
             style={{
               width: '100%',
-              padding: tokens.spacing.sm,
+              padding: '8px',
               backgroundColor: 'transparent',
-              color: tokens.colors.error,
-              border: `1px solid ${tokens.colors.error}`,
-              borderRadius: tokens.borderRadius.md,
+              color: 'var(--error)',
+              border: '1px solid var(--error)',
+              borderRadius: 'var(--radius-md)',
               cursor: isLoading ? 'not-allowed' : 'pointer',
-              ...typographyStyle('label'),
+              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: tokens.spacing.sm,
+              gap: '8px',
             }}
           >
             <X size={16} />
@@ -597,10 +597,10 @@ export default function SessionEvaluationForm({
         {autoSaveEnabled && hasMinimumData && (
           <div
             style={{
-              marginTop: tokens.spacing.lg,
+              marginTop: '24px',
               textAlign: 'center',
-              ...typographyStyle('caption1'),
-              color: tokens.colors.steel,
+              fontSize: '12px', lineHeight: '16px',
+              color: 'var(--text-secondary)',
             }}
           >
             Lagres automatisk
@@ -610,13 +610,13 @@ export default function SessionEvaluationForm({
         {/* Info box */}
         <div
           style={{
-            backgroundColor: tokens.colors.foam,
-            borderRadius: tokens.borderRadius.md,
-            padding: tokens.spacing.md,
-            marginTop: tokens.spacing.xl,
+            backgroundColor: 'var(--bg-tertiary)',
+            borderRadius: 'var(--radius-md)',
+            padding: '16px',
+            marginTop: '32px',
           }}
         >
-          <span style={{ ...typographyStyle('caption1'), color: tokens.colors.steel }}>
+          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
             Evalueringen hjelper deg og treneren din med a folge utviklingen over tid.
             Okten auto-fullføres etter 15 minutter uten aktivitet.
           </span>

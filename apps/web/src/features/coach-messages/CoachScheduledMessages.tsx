@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Clock,
   Search,
@@ -8,10 +8,14 @@ import {
   Edit2,
   Trash2,
   Send,
-  Plus
+  Plus,
+  AlertCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { tokens as designTokens } from '../../design-tokens';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
+import { messagesAPI } from '../../services/api';
 
 interface ScheduledMessage {
   id: string;
@@ -74,16 +78,37 @@ const mockScheduledMessages: ScheduledMessage[] = [
 export const CoachScheduledMessages: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
+  const [messages, setMessages] = useState<ScheduledMessage[]>(mockScheduledMessages);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  // Fetch scheduled messages from API
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        setLoading(true);
+        const response = await messagesAPI.getScheduled();
+        setMessages(response.data?.data || response.data || mockScheduledMessages);
+      } catch (err: any) {
+        setError(err.response?.data?.message || 'Kunne ikke laste planlagte beskjeder');
+        setMessages(mockScheduledMessages);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMessages();
+  }, []);
 
   const filteredMessages = useMemo(() => {
-    if (!searchQuery) return mockScheduledMessages;
+    if (!searchQuery) return messages;
     const query = searchQuery.toLowerCase();
-    return mockScheduledMessages.filter(m =>
+    return messages.filter(m =>
       m.subject.toLowerCase().includes(query) ||
       m.preview.toLowerCase().includes(query) ||
       m.recipients.name.toLowerCase().includes(query)
     );
-  }, [searchQuery]);
+  }, [searchQuery, messages]);
 
   // Sort by scheduled date
   const sortedMessages = useMemo(() => {
@@ -133,14 +158,34 @@ export const CoachScheduledMessages: React.FC = () => {
     return styles[category] || styles.general;
   };
 
-  const handleDelete = (e: React.MouseEvent, _messageId: string) => {
+  const handleDelete = async (e: React.MouseEvent, messageId: string) => {
     e.stopPropagation();
-    // TODO: Implement delete via API
+    if (!confirm('Er du sikker på at du vil slette denne beskjeden?')) return;
+
+    try {
+      setActionLoading(messageId);
+      await messagesAPI.delete(messageId);
+      setMessages(prev => prev.filter(m => m.id !== messageId));
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Kunne ikke slette beskjeden');
+    } finally {
+      setActionLoading(null);
+    }
   };
 
-  const handleSendNow = (e: React.MouseEvent, _messageId: string) => {
+  const handleSendNow = async (e: React.MouseEvent, messageId: string) => {
     e.stopPropagation();
-    // TODO: Implement send now via API
+    if (!confirm('Er du sikker på at du vil sende denne beskjeden nå?')) return;
+
+    try {
+      setActionLoading(messageId);
+      await messagesAPI.sendNow(messageId);
+      setMessages(prev => prev.filter(m => m.id !== messageId));
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Kunne ikke sende beskjeden');
+    } finally {
+      setActionLoading(null);
+    }
   };
 
   const handleEdit = (e: React.MouseEvent, messageId: string) => {
@@ -149,7 +194,7 @@ export const CoachScheduledMessages: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: designTokens.colors.background.primary, minHeight: '100vh' }}>
+    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
         <div>
@@ -169,14 +214,14 @@ export const CoachScheduledMessages: React.FC = () => {
               <h1 style={{
                 fontSize: '28px',
                 fontWeight: '700',
-                color: designTokens.colors.text.primary,
+                color: 'var(--text-primary)',
                 margin: 0
               }}>
                 Planlagte beskjeder
               </h1>
               <p style={{
                 fontSize: '14px',
-                color: designTokens.colors.text.secondary,
+                color: 'var(--text-secondary)',
                 margin: 0
               }}>
                 {mockScheduledMessages.length} beskjeder i kø
@@ -193,7 +238,7 @@ export const CoachScheduledMessages: React.FC = () => {
             padding: '12px 20px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: designTokens.colors.primary[500],
+            backgroundColor: 'var(--accent)',
             color: 'white',
             fontSize: '14px',
             fontWeight: '600',
@@ -214,7 +259,7 @@ export const CoachScheduledMessages: React.FC = () => {
             left: '12px',
             top: '50%',
             transform: 'translateY(-50%)',
-            color: designTokens.colors.text.tertiary
+            color: 'var(--text-tertiary)'
           }}
         />
         <input
@@ -227,10 +272,10 @@ export const CoachScheduledMessages: React.FC = () => {
             maxWidth: '400px',
             padding: '12px 12px 12px 40px',
             borderRadius: '10px',
-            border: `1px solid ${designTokens.colors.border.light}`,
-            backgroundColor: designTokens.colors.background.card,
+            border: `1px solid ${'var(--border-default)'}`,
+            backgroundColor: 'var(--bg-primary)',
             fontSize: '14px',
-            color: designTokens.colors.text.primary,
+            color: 'var(--text-primary)',
             outline: 'none'
           }}
         />
@@ -260,26 +305,26 @@ export const CoachScheduledMessages: React.FC = () => {
                     ? 'rgba(239, 68, 68, 0.1)'
                     : daysUntil <= 7
                       ? 'rgba(245, 158, 11, 0.1)'
-                      : designTokens.colors.primary[100],
+                      : 'rgba(var(--accent-rgb), 0.15)',
                   border: daysUntil <= 1
                     ? '2px solid #dc2626'
                     : daysUntil <= 7
                       ? '2px solid #f59e0b'
-                      : `2px solid ${designTokens.colors.primary[500]}`,
+                      : `2px solid ${'var(--accent)'}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
                   <Clock
                     size={18}
-                    color={daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : designTokens.colors.primary[600]}
+                    color={daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : 'var(--accent)'}
                   />
                 </div>
                 {index < sortedMessages.length - 1 && (
                   <div style={{
                     width: '2px',
                     flex: 1,
-                    backgroundColor: designTokens.colors.border.light,
+                    backgroundColor: 'var(--border-default)',
                     marginTop: '8px',
                     minHeight: '40px'
                   }} />
@@ -290,10 +335,10 @@ export const CoachScheduledMessages: React.FC = () => {
               <div
                 style={{
                   flex: 1,
-                  backgroundColor: designTokens.colors.background.card,
+                  backgroundColor: 'var(--bg-primary)',
                   borderRadius: '12px',
                   padding: '16px 20px',
-                  border: `1px solid ${designTokens.colors.border.light}`,
+                  border: `1px solid ${'var(--border-default)'}`,
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
                 }}
@@ -308,18 +353,18 @@ export const CoachScheduledMessages: React.FC = () => {
                     ? 'rgba(239, 68, 68, 0.1)'
                     : daysUntil <= 7
                       ? 'rgba(245, 158, 11, 0.1)'
-                      : designTokens.colors.primary[50],
+                      : 'rgba(var(--accent-rgb), 0.1)',
                   borderRadius: '6px',
                   marginBottom: '12px'
                 }}>
                   <Calendar
                     size={12}
-                    color={daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : designTokens.colors.primary[600]}
+                    color={daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : 'var(--accent)'}
                   />
                   <span style={{
                     fontSize: '12px',
                     fontWeight: '600',
-                    color: daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : designTokens.colors.primary[600]
+                    color: daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : 'var(--accent)'
                   }}>
                     {formatScheduledDate(message.scheduledFor)}
                   </span>
@@ -331,7 +376,7 @@ export const CoachScheduledMessages: React.FC = () => {
                       <h3 style={{
                         fontSize: '15px',
                         fontWeight: '600',
-                        color: designTokens.colors.text.primary,
+                        color: 'var(--text-primary)',
                         margin: 0
                       }}>
                         {message.subject}
@@ -349,7 +394,7 @@ export const CoachScheduledMessages: React.FC = () => {
                     </div>
                     <p style={{
                       fontSize: '13px',
-                      color: designTokens.colors.text.secondary,
+                      color: 'var(--text-secondary)',
                       margin: '0 0 8px 0',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -361,13 +406,13 @@ export const CoachScheduledMessages: React.FC = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {getRecipientIcon(message.recipients.type)}
-                        <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                        <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                           {message.recipients.name}
                           {message.recipients.count && ` (${message.recipients.count})`}
                         </span>
                       </div>
                       {message.hasAttachment && (
-                        <span style={{ fontSize: '12px', color: designTokens.colors.text.tertiary }}>
+                        <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                           📎 Vedlegg
                         </span>
                       )}
@@ -382,7 +427,7 @@ export const CoachScheduledMessages: React.FC = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '8px',
-                        border: `1px solid ${designTokens.colors.border.light}`,
+                        border: `1px solid ${'var(--border-default)'}`,
                         backgroundColor: 'transparent',
                         display: 'flex',
                         alignItems: 'center',
@@ -391,7 +436,7 @@ export const CoachScheduledMessages: React.FC = () => {
                       }}
                       title="Rediger"
                     >
-                      <Edit2 size={16} color={designTokens.colors.text.secondary} />
+                      <Edit2 size={16} color={'var(--text-secondary)'} />
                     </button>
                     <button
                       onClick={(e) => handleSendNow(e, message.id)}
@@ -439,14 +484,14 @@ export const CoachScheduledMessages: React.FC = () => {
         <div style={{
           textAlign: 'center',
           padding: '60px 20px',
-          backgroundColor: designTokens.colors.background.card,
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '16px',
-          border: `1px solid ${designTokens.colors.border.light}`
+          border: `1px solid ${'var(--border-default)'}`
         }}>
-          <Clock size={48} color={designTokens.colors.text.tertiary} style={{ marginBottom: '16px' }} />
+          <Clock size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
           <p style={{
             fontSize: '16px',
-            color: designTokens.colors.text.secondary,
+            color: 'var(--text-secondary)',
             margin: '0 0 16px 0'
           }}>
             {searchQuery ? 'Ingen planlagte beskjeder funnet' : 'Ingen planlagte beskjeder'}
@@ -461,7 +506,7 @@ export const CoachScheduledMessages: React.FC = () => {
                 padding: '10px 20px',
                 borderRadius: '10px',
                 border: 'none',
-                backgroundColor: designTokens.colors.primary[500],
+                backgroundColor: 'var(--accent)',
                 color: 'white',
                 fontSize: '14px',
                 fontWeight: '500',

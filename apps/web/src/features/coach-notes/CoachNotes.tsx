@@ -21,10 +21,8 @@
 
 import React, { useState } from "react";
 import { ArrowLeft, StickyNote, Send, CheckCircle } from "lucide-react";
-import { tokens } from "../../design-tokens";
-
-// Typography from design tokens
-const typography = tokens.typography;
+import Button from '../../ui/primitives/Button';
+import Card from '../../ui/primitives/Card';
 
 //////////////////////////////
 // 1. TYPES
@@ -109,56 +107,55 @@ export default function CoachNotes({
       aria-label="Coach notes"
       style={{
         minHeight: '100vh',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: tokens.colors.white,
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          backgroundColor: 'var(--bg-primary)',
+          borderBottom: '1px solid var(--border-default)',
           padding: '16px 24px',
         }}
       >
-        <button
-          onClick={onBack}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'none',
-            border: 'none',
-            color: tokens.colors.primary,
-            cursor: 'pointer',
-            padding: 0,
-            marginBottom: '16px',
-            ...typography.body as React.CSSProperties,
-          }}
-        >
-          <ArrowLeft size={20} />
-          <span>Tilbake</span>
-        </button>
+        <div style={{ marginBottom: '16px' }}>
+          <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
+            Tilbake
+          </Button>
+        </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div
             style={{
               width: 48,
               height: 48,
-              borderRadius: tokens.borderRadius.md,
-              backgroundColor: `${tokens.colors.primary}10`,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <StickyNote size={24} color={tokens.colors.primary} />
+            <StickyNote size={24} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <h1 style={{ ...typography.title1 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+            <h1 style={{
+              fontSize: '28px',
+              lineHeight: '34px',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
               Notater
             </h1>
-            <p style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, margin: 0, marginTop: '4px' }}>
+            <p style={{
+              fontSize: '13px',
+              lineHeight: '18px',
+              color: 'var(--text-secondary)',
+              margin: 0,
+              marginTop: '4px',
+            }}>
               {athleteName} • {sortedNotes.length} notater
             </p>
           </div>
@@ -167,16 +164,15 @@ export default function CoachNotes({
 
       {/* New Note Input */}
       <div style={{ padding: '24px' }}>
-        <div
-          style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            boxShadow: tokens.shadows.card,
-            padding: '20px',
-            marginBottom: '24px',
-          }}
-        >
-          <h2 style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0, marginBottom: '16px' }}>
+        <Card variant="default" padding="lg" style={{ marginBottom: '24px' }}>
+          <h2 style={{
+            fontSize: '17px',
+            lineHeight: '22px',
+            fontWeight: 600,
+            color: 'var(--text-primary)',
+            margin: 0,
+            marginBottom: '16px',
+          }}>
             Nytt notat
           </h2>
 
@@ -188,11 +184,12 @@ export default function CoachNotes({
             style={{
               width: '100%',
               padding: '14px',
-              borderRadius: tokens.borderRadius.md,
-              border: `1px solid ${tokens.colors.mist}`,
-              backgroundColor: tokens.colors.snow,
-              ...typography.body as React.CSSProperties,
-              color: tokens.colors.charcoal,
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-default)',
+              backgroundColor: 'var(--bg-secondary)',
+              fontSize: '15px',
+              lineHeight: '22px',
+              color: 'var(--text-primary)',
               resize: 'vertical',
               outline: 'none',
               boxSizing: 'border-box',
@@ -200,54 +197,49 @@ export default function CoachNotes({
           />
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
-            <p style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel, margin: 0 }}>
+            <p style={{
+              fontSize: '13px',
+              lineHeight: '18px',
+              color: 'var(--text-secondary)',
+              margin: 0,
+            }}>
               Notatet vises i spillerens "Fra din trener"-seksjon
             </p>
 
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="md"
               onClick={handleSubmit}
               disabled={!newNote.trim()}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 20px',
-                borderRadius: tokens.borderRadius.md,
-                border: 'none',
-                backgroundColor: newNote.trim() ? tokens.colors.primary : tokens.colors.mist,
-                color: newNote.trim() ? tokens.colors.white : tokens.colors.steel,
-                cursor: newNote.trim() ? 'pointer' : 'not-allowed',
-                ...typography.body as React.CSSProperties,
-                fontWeight: 600,
-                transition: 'all 0.2s ease',
-              }}
+              leftIcon={<Send size={18} />}
             >
-              <Send size={18} />
               Legg til notat
-            </button>
+            </Button>
           </div>
-        </div>
+        </Card>
 
         {/* Note History */}
-        <div
-          style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: tokens.borderRadius.lg,
-            boxShadow: tokens.shadows.card,
-            overflow: 'hidden',
-          }}
-        >
-          <div style={{ padding: '20px', borderBottom: `1px solid ${tokens.colors.mist}` }}>
-            <h2 style={{ ...typography.title3 as React.CSSProperties, color: tokens.colors.charcoal, margin: 0 }}>
+        <Card variant="default" padding="none">
+          <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
+            <h2 style={{
+              fontSize: '17px',
+              lineHeight: '22px',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
               Tidligere notater
             </h2>
           </div>
 
           {sortedNotes.length === 0 ? (
             <div style={{ padding: '48px 24px', textAlign: 'center' }}>
-              <StickyNote size={40} color={tokens.colors.mist} style={{ marginBottom: '12px' }} />
-              <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.steel }}>
+              <StickyNote size={40} style={{ color: 'var(--text-tertiary)', marginBottom: '12px' }} />
+              <p style={{
+                fontSize: '15px',
+                lineHeight: '22px',
+                color: 'var(--text-secondary)',
+              }}>
                 Ingen notater ennå
               </p>
             </div>
@@ -259,7 +251,7 @@ export default function CoachNotes({
                   aria-label="Coach note"
                   style={{
                     padding: '20px',
-                    borderBottom: index < sortedNotes.length - 1 ? `1px solid ${tokens.colors.mist}` : 'none',
+                    borderBottom: index < sortedNotes.length - 1 ? '1px solid var(--border-default)' : 'none',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
@@ -269,32 +261,50 @@ export default function CoachNotes({
                         alignItems: 'center',
                         gap: '6px',
                         padding: '4px 10px',
-                        borderRadius: tokens.borderRadius.sm,
-                        backgroundColor: `${tokens.colors.primary}10`,
+                        borderRadius: 'var(--radius-sm)',
+                        backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
                       }}
                     >
-                      <StickyNote size={14} color={tokens.colors.primary} />
-                      <span style={{ ...typography.caption as React.CSSProperties, fontWeight: 600, color: tokens.colors.primary }}>
+                      <StickyNote size={14} style={{ color: 'var(--accent)' }} />
+                      <span style={{
+                        fontSize: '13px',
+                        lineHeight: '18px',
+                        fontWeight: 600,
+                        color: 'var(--accent)',
+                      }}>
                         Trenernotat
                       </span>
                     </div>
 
                     <time
                       dateTime={note.createdAt}
-                      style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.steel }}
+                      style={{
+                        fontSize: '13px',
+                        lineHeight: '18px',
+                        color: 'var(--text-secondary)',
+                      }}
                     >
                       {formatDate(note.createdAt)}
                     </time>
                   </div>
 
-                  <p style={{ ...typography.body as React.CSSProperties, color: tokens.colors.charcoal, margin: 0, lineHeight: '1.6' }}>
+                  <p style={{
+                    fontSize: '15px',
+                    lineHeight: '1.6',
+                    color: 'var(--text-primary)',
+                    margin: 0,
+                  }}>
                     {note.content}
                   </p>
 
                   {note.delivered && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
-                      <CheckCircle size={14} color={tokens.colors.success} />
-                      <span style={{ ...typography.caption as React.CSSProperties, color: tokens.colors.success }}>
+                      <CheckCircle size={14} style={{ color: 'var(--success)' }} />
+                      <span style={{
+                        fontSize: '13px',
+                        lineHeight: '18px',
+                        color: 'var(--success)',
+                      }}>
                         Levert til spiller
                       </span>
                     </div>
@@ -303,7 +313,7 @@ export default function CoachNotes({
               ))}
             </div>
           )}
-        </div>
+        </Card>
       </div>
     </section>
   );

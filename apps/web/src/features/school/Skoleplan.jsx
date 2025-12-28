@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { tokens } from '../../design-tokens';
+// UiCanon: Using CSS variables instead of tokens
 import { PageHeader } from '../../components/layout/PageHeader';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import {
@@ -32,9 +32,9 @@ const UKEDAG_LABELS = {
 // const TIME_SLOTS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
 
 const PRIORITET_COLORS = {
-  low: tokens.colors.steel,
-  medium: tokens.colors.warning,
-  high: tokens.colors.error
+  low: 'var(--text-secondary)',
+  medium: 'var(--warning)',
+  high: 'var(--error)'
 };
 
 const PRIORITET_LABELS = {
@@ -108,9 +108,9 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '20px 24px',
-          borderBottom: `1px solid ${tokens.colors.mist}`
+          borderBottom: '1px solid var(--border-default)'
         }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 600, color: tokens.colors.charcoal, margin: 0 }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             {title}
           </h2>
           <button
@@ -120,7 +120,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
               border: 'none',
               cursor: 'pointer',
               padding: '4px',
-              color: tokens.colors.steel
+              color: 'var(--text-secondary)'
             }}
           >
             <X size={20} />
@@ -181,7 +181,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
     <Modal isOpen={isOpen} onClose={onClose} title={fag ? 'Rediger fag' : 'Nytt fag'}>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Fagnavn *
           </label>
           <input
@@ -192,7 +192,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box'
@@ -202,7 +202,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Larer
           </label>
           <input
@@ -213,7 +213,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box'
@@ -222,7 +222,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Rom
           </label>
           <input
@@ -233,7 +233,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box'
@@ -242,7 +242,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
         </div>
 
         <div style={{ marginBottom: '24px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '8px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '8px' }}>
             Farge
           </label>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -256,7 +256,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
                   height: '32px',
                   borderRadius: '8px',
                   backgroundColor: color,
-                  border: form.farge === color ? '3px solid ' + tokens.colors.charcoal : '2px solid transparent',
+                  border: form.farge === color ? '3px solid ' + 'var(--text-primary)' : '2px solid transparent',
                   cursor: 'pointer'
                 }}
               />
@@ -271,8 +271,8 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
               onClick={handleDelete}
               style={{
                 padding: '10px 16px',
-                backgroundColor: `${tokens.colors.error}15`,
-                color: tokens.colors.error,
+                backgroundColor: 'rgba(var(--error-rgb), 0.15)',
+                color: 'var(--error)',
                 border: 'none',
                 borderRadius: '8px',
                 fontSize: '14px',
@@ -289,8 +289,8 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             onClick={onClose}
             style={{
               padding: '10px 16px',
-              backgroundColor: tokens.colors.cloud,
-              color: tokens.colors.charcoal,
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '14px',
@@ -305,7 +305,7 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             disabled={saving || !form.navn.trim()}
             style={{
               padding: '10px 20px',
-              backgroundColor: tokens.colors.primary,
+              backgroundColor: 'var(--accent)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -381,15 +381,15 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
     return (
       <Modal isOpen={isOpen} onClose={onClose} title="Legg til time">
         <div style={{ textAlign: 'center', padding: '20px' }}>
-          <BookOpen size={48} color={tokens.colors.steel} style={{ marginBottom: '16px' }} />
-          <p style={{ color: tokens.colors.steel, marginBottom: '16px' }}>
+          <BookOpen size={48} color={'var(--text-secondary)'} style={{ marginBottom: '16px' }} />
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
             Du ma opprette minst ett fag for du kan legge til timer.
           </p>
           <button
             onClick={onClose}
             style={{
               padding: '10px 20px',
-              backgroundColor: tokens.colors.primary,
+              backgroundColor: 'var(--accent)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -409,7 +409,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
     <Modal isOpen={isOpen} onClose={onClose} title={time ? 'Rediger time' : 'Ny time'}>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Fag *
           </label>
           <select
@@ -418,7 +418,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box',
@@ -433,7 +433,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Ukedag *
           </label>
           <select
@@ -442,7 +442,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box',
@@ -460,7 +460,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
 
         <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
           <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
               Start *
             </label>
             <input
@@ -470,7 +470,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: `1px solid ${tokens.colors.mist}`,
+                border: '1px solid var(--border-default)',
                 borderRadius: '8px',
                 fontSize: '15px',
                 boxSizing: 'border-box'
@@ -479,7 +479,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
             />
           </div>
           <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
               Slutt *
             </label>
             <input
@@ -489,7 +489,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: `1px solid ${tokens.colors.mist}`,
+                border: '1px solid var(--border-default)',
                 borderRadius: '8px',
                 fontSize: '15px',
                 boxSizing: 'border-box'
@@ -506,8 +506,8 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
               onClick={handleDelete}
               style={{
                 padding: '10px 16px',
-                backgroundColor: `${tokens.colors.error}15`,
-                color: tokens.colors.error,
+                backgroundColor: 'rgba(var(--error-rgb), 0.15)',
+                color: 'var(--error)',
                 border: 'none',
                 borderRadius: '8px',
                 fontSize: '14px',
@@ -524,8 +524,8 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
             onClick={onClose}
             style={{
               padding: '10px 16px',
-              backgroundColor: tokens.colors.cloud,
-              color: tokens.colors.charcoal,
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '14px',
@@ -540,7 +540,7 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
             disabled={saving}
             style={{
               padding: '10px 20px',
-              backgroundColor: tokens.colors.primary,
+              backgroundColor: 'var(--accent)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -617,15 +617,15 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
     return (
       <Modal isOpen={isOpen} onClose={onClose} title="Legg til oppgave">
         <div style={{ textAlign: 'center', padding: '20px' }}>
-          <BookOpen size={48} color={tokens.colors.steel} style={{ marginBottom: '16px' }} />
-          <p style={{ color: tokens.colors.steel, marginBottom: '16px' }}>
+          <BookOpen size={48} color={'var(--text-secondary)'} style={{ marginBottom: '16px' }} />
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
             Du ma opprette minst ett fag for du kan legge til oppgaver.
           </p>
           <button
             onClick={onClose}
             style={{
               padding: '10px 20px',
-              backgroundColor: tokens.colors.primary,
+              backgroundColor: 'var(--accent)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -645,7 +645,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
     <Modal isOpen={isOpen} onClose={onClose} title={oppgave ? 'Rediger oppgave' : 'Ny oppgave'}>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Fag *
           </label>
           <select
@@ -654,7 +654,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box',
@@ -669,7 +669,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Tittel *
           </label>
           <input
@@ -680,7 +680,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box'
@@ -690,7 +690,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
             Beskrivelse
           </label>
           <textarea
@@ -701,7 +701,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             style={{
               width: '100%',
               padding: '10px 12px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '8px',
               fontSize: '15px',
               boxSizing: 'border-box',
@@ -712,7 +712,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
 
         <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
           <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
               Frist *
             </label>
             <input
@@ -722,7 +722,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: `1px solid ${tokens.colors.mist}`,
+                border: '1px solid var(--border-default)',
                 borderRadius: '8px',
                 fontSize: '15px',
                 boxSizing: 'border-box'
@@ -731,7 +731,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             />
           </div>
           <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: tokens.colors.charcoal, marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
               Prioritet
             </label>
             <select
@@ -740,7 +740,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: `1px solid ${tokens.colors.mist}`,
+                border: '1px solid var(--border-default)',
                 borderRadius: '8px',
                 fontSize: '15px',
                 boxSizing: 'border-box',
@@ -761,8 +761,8 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
               onClick={handleDelete}
               style={{
                 padding: '10px 16px',
-                backgroundColor: `${tokens.colors.error}15`,
-                color: tokens.colors.error,
+                backgroundColor: 'rgba(var(--error-rgb), 0.15)',
+                color: 'var(--error)',
                 border: 'none',
                 borderRadius: '8px',
                 fontSize: '14px',
@@ -779,8 +779,8 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             onClick={onClose}
             style={{
               padding: '10px 16px',
-              backgroundColor: tokens.colors.cloud,
-              color: tokens.colors.charcoal,
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '14px',
@@ -795,7 +795,7 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             disabled={saving || !form.tittel.trim()}
             style={{
               padding: '10px 20px',
-              backgroundColor: tokens.colors.primary,
+              backgroundColor: 'var(--accent)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -845,7 +845,7 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
     <div style={{
       backgroundColor: 'white',
       borderRadius: '12px',
-      border: `1px solid ${tokens.colors.mist}`,
+      border: '1px solid var(--border-default)',
       overflow: 'hidden'
     }}>
       <div style={{
@@ -853,11 +853,11 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '16px 20px',
-        borderBottom: `1px solid ${tokens.colors.mist}`
+        borderBottom: '1px solid var(--border-default)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Clock size={20} color={tokens.colors.primary} />
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal, margin: 0 }}>
+          <Clock size={20} color={'var(--accent)'} />
+          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             Timeplan
           </h3>
         </div>
@@ -868,8 +868,8 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
             alignItems: 'center',
             gap: '6px',
             padding: '8px 12px',
-            backgroundColor: `${tokens.colors.primary}10`,
-            color: tokens.colors.primary,
+            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+            color: 'var(--accent)',
             border: 'none',
             borderRadius: '8px',
             fontSize: '13px',
@@ -885,15 +885,15 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
       <div style={{ overflowX: 'auto' }}>
         <div style={{ display: 'flex', minWidth: '600px' }}>
           {UKEDAGER.map(dag => (
-            <div key={dag} style={{ flex: 1, borderRight: dag !== 'fredag' ? `1px solid ${tokens.colors.mist}` : 'none' }}>
+            <div key={dag} style={{ flex: 1, borderRight: dag !== 'fredag' ? '1px solid var(--border-default)' : 'none' }}>
               <div style={{
                 padding: '12px',
                 textAlign: 'center',
-                backgroundColor: tokens.colors.cloud,
-                borderBottom: `1px solid ${tokens.colors.mist}`,
+                backgroundColor: 'var(--bg-secondary)',
+                borderBottom: '1px solid var(--border-default)',
                 fontWeight: 600,
                 fontSize: '13px',
-                color: tokens.colors.charcoal
+                color: 'var(--text-primary)'
               }}>
                 {UKEDAG_LABELS[dag]}
               </div>
@@ -904,7 +904,7 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: tokens.colors.steel,
+                    color: 'var(--text-secondary)',
                     fontSize: '12px'
                   }}>
                     Ingen timer
@@ -919,8 +919,8 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
                         style={{
                           padding: '10px',
                           marginBottom: '6px',
-                          backgroundColor: `${fagInfo?.farge || tokens.colors.primary}15`,
-                          borderLeft: `3px solid ${fagInfo?.farge || tokens.colors.primary}`,
+                          backgroundColor: `${fagInfo?.farge || 'var(--accent)'}15`,
+                          borderLeft: `3px solid ${fagInfo?.farge || 'var(--accent)'}`,
                           borderRadius: '6px',
                           cursor: 'pointer',
                           transition: 'transform 0.1s'
@@ -928,7 +928,7 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
                       >
                         <div style={{
                           fontSize: '12px',
-                          color: tokens.colors.steel,
+                          color: 'var(--text-secondary)',
                           marginBottom: '4px'
                         }}>
                           {time.startTid} - {time.sluttTid}
@@ -936,14 +936,14 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
                         <div style={{
                           fontSize: '13px',
                           fontWeight: 600,
-                          color: tokens.colors.charcoal
+                          color: 'var(--text-primary)'
                         }}>
                           {fagInfo?.navn || 'Ukjent fag'}
                         </div>
                         {fagInfo?.rom && (
                           <div style={{
                             fontSize: '11px',
-                            color: tokens.colors.steel,
+                            color: 'var(--text-secondary)',
                             marginTop: '2px'
                           }}>
                             Rom: {fagInfo.rom}
@@ -992,7 +992,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
     <div style={{
       backgroundColor: 'white',
       borderRadius: '12px',
-      border: `1px solid ${tokens.colors.mist}`,
+      border: '1px solid var(--border-default)',
       overflow: 'hidden'
     }}>
       <div style={{
@@ -1000,19 +1000,19 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '16px 20px',
-        borderBottom: `1px solid ${tokens.colors.mist}`,
+        borderBottom: '1px solid var(--border-default)',
         flexWrap: 'wrap',
         gap: '12px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <BookOpen size={20} color={tokens.colors.primary} />
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal, margin: 0 }}>
+          <BookOpen size={20} color={'var(--accent)'} />
+          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             Oppgaver
           </h3>
           {pendingCount > 0 && (
             <span style={{
               padding: '2px 8px',
-              backgroundColor: tokens.colors.primary,
+              backgroundColor: 'var(--accent)',
               color: 'white',
               borderRadius: '12px',
               fontSize: '12px',
@@ -1024,7 +1024,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
           {overdueCount > 0 && (
             <span style={{
               padding: '2px 8px',
-              backgroundColor: tokens.colors.error,
+              backgroundColor: 'var(--error)',
               color: 'white',
               borderRadius: '12px',
               fontSize: '12px',
@@ -1041,7 +1041,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
             onChange={e => setFagFilter(e.target.value)}
             style={{
               padding: '6px 10px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '6px',
               fontSize: '13px',
               backgroundColor: 'white'
@@ -1058,7 +1058,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
             onChange={e => setFilter(e.target.value)}
             style={{
               padding: '6px 10px',
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               borderRadius: '6px',
               fontSize: '13px',
               backgroundColor: 'white'
@@ -1076,8 +1076,8 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
               alignItems: 'center',
               gap: '6px',
               padding: '8px 12px',
-              backgroundColor: `${tokens.colors.primary}10`,
-              color: tokens.colors.primary,
+              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+              color: 'var(--accent)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '13px',
@@ -1096,7 +1096,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
           <div style={{
             padding: '40px',
             textAlign: 'center',
-            color: tokens.colors.steel
+            color: 'var(--text-secondary)'
           }}>
             <CheckCircle2 size={40} style={{ marginBottom: '12px', opacity: 0.5 }} />
             <p style={{ margin: 0 }}>Ingen oppgaver a vise</p>
@@ -1115,8 +1115,8 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                   alignItems: 'flex-start',
                   gap: '12px',
                   padding: '14px 20px',
-                  borderBottom: `1px solid ${tokens.colors.mist}`,
-                  backgroundColor: oppgave.status === 'completed' ? `${tokens.colors.cloud}50` : 'white'
+                  borderBottom: '1px solid var(--border-default)',
+                  backgroundColor: oppgave.status === 'completed' ? 'var(--bg-secondary)' : 'white'
                 }}
               >
                 <button
@@ -1130,9 +1130,9 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                   }}
                 >
                   {oppgave.status === 'completed' ? (
-                    <CheckCircle2 size={22} color={tokens.colors.success} />
+                    <CheckCircle2 size={22} color={'var(--success)'} />
                   ) : (
-                    <Circle size={22} color={tokens.colors.steel} />
+                    <Circle size={22} color={'var(--text-secondary)'} />
                   )}
                 </button>
 
@@ -1141,8 +1141,8 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                     <span
                       style={{
                         padding: '2px 8px',
-                        backgroundColor: `${fagInfo?.farge || tokens.colors.primary}20`,
-                        color: fagInfo?.farge || tokens.colors.primary,
+                        backgroundColor: `${fagInfo?.farge || 'var(--accent)'}20`,
+                        color: fagInfo?.farge || 'var(--accent)',
                         borderRadius: '4px',
                         fontSize: '11px',
                         fontWeight: 500
@@ -1164,7 +1164,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                   <div style={{
                     fontSize: '14px',
                     fontWeight: 500,
-                    color: oppgave.status === 'completed' ? tokens.colors.steel : tokens.colors.charcoal,
+                    color: oppgave.status === 'completed' ? 'var(--text-secondary)' : 'var(--text-primary)',
                     textDecoration: oppgave.status === 'completed' ? 'line-through' : 'none',
                     marginBottom: '4px'
                   }}>
@@ -1174,7 +1174,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                   {oppgave.beskrivelse && (
                     <div style={{
                       fontSize: '13px',
-                      color: tokens.colors.steel,
+                      color: 'var(--text-secondary)',
                       marginBottom: '4px',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -1189,7 +1189,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                     alignItems: 'center',
                     gap: '6px',
                     fontSize: '12px',
-                    color: overdue ? tokens.colors.error : tokens.colors.steel
+                    color: overdue ? 'var(--error)' : 'var(--text-secondary)'
                   }}>
                     {overdue && <AlertCircle size={12} />}
                     <Calendar size={12} />
@@ -1218,7 +1218,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
                     border: 'none',
                     cursor: 'pointer',
                     padding: '4px',
-                    color: tokens.colors.steel
+                    color: 'var(--text-secondary)'
                   }}
                 >
                   <Edit2 size={16} />
@@ -1241,7 +1241,7 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
     <div style={{
       backgroundColor: 'white',
       borderRadius: '12px',
-      border: `1px solid ${tokens.colors.mist}`,
+      border: '1px solid var(--border-default)',
       overflow: 'hidden'
     }}>
       <div style={{
@@ -1249,17 +1249,17 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '16px 20px',
-        borderBottom: `1px solid ${tokens.colors.mist}`
+        borderBottom: '1px solid var(--border-default)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <GraduationCap size={20} color={tokens.colors.primary} />
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal, margin: 0 }}>
+          <GraduationCap size={20} color={'var(--accent)'} />
+          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             Fag
           </h3>
           <span style={{
             padding: '2px 8px',
-            backgroundColor: tokens.colors.cloud,
-            color: tokens.colors.steel,
+            backgroundColor: 'var(--bg-secondary)',
+            color: 'var(--text-secondary)',
             borderRadius: '12px',
             fontSize: '12px',
             fontWeight: 500
@@ -1274,8 +1274,8 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
             alignItems: 'center',
             gap: '6px',
             padding: '8px 12px',
-            backgroundColor: `${tokens.colors.primary}10`,
-            color: tokens.colors.primary,
+            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+            color: 'var(--accent)',
             border: 'none',
             borderRadius: '8px',
             fontSize: '13px',
@@ -1292,7 +1292,7 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
         <div style={{
           padding: '40px',
           textAlign: 'center',
-          color: tokens.colors.steel
+          color: 'var(--text-secondary)'
         }}>
           <BookOpen size={40} style={{ marginBottom: '12px', opacity: 0.5 }} />
           <p style={{ margin: 0 }}>Ingen fag enda. Opprett ditt forste fag!</p>
@@ -1308,18 +1308,18 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
                 alignItems: 'center',
                 gap: '10px',
                 padding: '10px 14px',
-                backgroundColor: `${f.farge || tokens.colors.primary}15`,
-                borderLeft: `3px solid ${f.farge || tokens.colors.primary}`,
+                backgroundColor: `${f.farge || 'var(--accent)'}15`,
+                borderLeft: `3px solid ${f.farge || 'var(--accent)'}`,
                 borderRadius: '8px',
                 cursor: 'pointer'
               }}
             >
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.charcoal }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
                   {f.navn}
                 </div>
                 {(f.larer || f.rom) && (
-                  <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {f.larer}{f.larer && f.rom && ' | '}{f.rom}
                   </div>
                 )}
@@ -1435,7 +1435,7 @@ const Skoleplan = ({
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Skoleplan"
         subtitle="Administrer timeplan, fag og oppgaver"

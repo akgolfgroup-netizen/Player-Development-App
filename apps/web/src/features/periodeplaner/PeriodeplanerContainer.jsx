@@ -4,7 +4,6 @@ import {
   Snowflake, Sun, Leaf, Flower2, CheckCircle, Clock, Play,
   Dumbbell, Brain
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 
 // ============================================================================
@@ -126,35 +125,35 @@ const getPhaseConfig = (phase) => {
     case 'off-season':
       return {
         label: 'Off-season',
-        color: tokens.colors.primary,
+        color: 'var(--accent)',
         icon: Snowflake,
         description: 'Grunnlagsperiode',
       };
     case 'pre-season':
       return {
         label: 'Forberedelse',
-        color: tokens.colors.success,
+        color: 'var(--success)',
         icon: Flower2,
         description: 'Oppkjoring',
       };
     case 'competition':
       return {
         label: 'Konkurranse',
-        color: tokens.colors.gold,
+        color: 'var(--achievement)',
         icon: Sun,
         description: 'Turneringssesong',
       };
     case 'transition':
       return {
         label: 'Overgang',
-        color: tokens.colors.warning,
+        color: 'var(--warning)',
         icon: Leaf,
         description: 'Evaluering og planlegging',
       };
     default:
       return {
         label: phase,
-        color: tokens.colors.steel,
+        color: 'var(--text-secondary)',
         icon: Calendar,
         description: '',
       };
@@ -164,29 +163,29 @@ const getPhaseConfig = (phase) => {
 const getStatusConfig = (status) => {
   switch (status) {
     case 'active':
-      return { label: 'Aktiv', color: tokens.colors.success, icon: Play };
+      return { label: 'Aktiv', color: 'var(--success)', icon: Play };
     case 'upcoming':
-      return { label: 'Kommende', color: tokens.colors.steel, icon: Clock };
+      return { label: 'Kommende', color: 'var(--text-secondary)', icon: Clock };
     case 'completed':
-      return { label: 'Fullfort', color: tokens.colors.primary, icon: CheckCircle };
+      return { label: 'Fullfort', color: 'var(--accent)', icon: CheckCircle };
     default:
-      return { label: status, color: tokens.colors.steel, icon: Clock };
+      return { label: status, color: 'var(--text-secondary)', icon: Clock };
   }
 };
 
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'Styrke':
-      return { color: tokens.colors.error, icon: Dumbbell };
+      return { color: 'var(--error)', icon: Dumbbell };
     case 'Simulator':
     case 'Teknikk':
-      return { color: tokens.colors.primary, icon: Target };
+      return { color: 'var(--accent)', icon: Target };
     case 'Mental':
-      return { color: tokens.colors.gold, icon: Brain };
+      return { color: 'var(--achievement)', icon: Brain };
     case 'Hvile':
-      return { color: tokens.colors.steel, icon: Clock };
+      return { color: 'var(--text-secondary)', icon: Clock };
     default:
-      return { color: tokens.colors.steel, icon: Calendar };
+      return { color: 'var(--text-secondary)', icon: Calendar };
   }
 };
 
@@ -205,11 +204,11 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       overflow: 'hidden',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      border: period.status === 'active' ? `2px solid ${tokens.colors.success}` : '2px solid transparent',
+      border: period.status === 'active' ? '2px solid var(--success)' : '2px solid transparent',
     }}>
       {/* Header */}
       <div
@@ -239,7 +238,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
               <h3 style={{
                 fontSize: '16px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 {period.name}
@@ -259,7 +258,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
                 {statusConfig.label}
               </span>
             </div>
-            <div style={{ fontSize: '13px', color: tokens.colors.steel, marginTop: '4px' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
               {formatDateRange(period.startDate, period.endDate)} - {phaseConfig.description}
             </div>
           </div>
@@ -268,24 +267,24 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           {period.status === 'active' && (
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '20px', fontWeight: 700, color: tokens.colors.primary }}>
+              <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--accent)' }}>
                 {period.progress}%
               </div>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel }}>fullfort</div>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>fullfort</div>
             </div>
           )}
           <div style={{
             width: '32px',
             height: '32px',
             borderRadius: '8px',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             transition: 'transform 0.2s',
             transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
           }}>
-            <ChevronDown size={18} color={tokens.colors.steel} />
+            <ChevronDown size={18} color={'var(--text-secondary)'} />
           </div>
         </div>
       </div>
@@ -295,14 +294,14 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
         <div style={{ padding: '0 20px 16px' }}>
           <div style={{
             height: '6px',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--bg-secondary)',
             borderRadius: '3px',
             overflow: 'hidden',
           }}>
             <div style={{
               height: '100%',
               width: `${period.progress}%`,
-              backgroundColor: tokens.colors.success,
+              backgroundColor: 'var(--success)',
               borderRadius: '3px',
               transition: 'width 0.3s ease',
             }} />
@@ -314,11 +313,11 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
       {isExpanded && (
         <div style={{
           padding: '0 20px 20px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--border-default)',
         }}>
           {/* Focus Areas */}
           <div style={{ marginTop: '16px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.charcoal, marginBottom: '8px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
               Fokusomrader
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -347,10 +346,10 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
               justifyContent: 'space-between',
               marginBottom: '12px',
             }}>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.charcoal }}>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
                 Mal for perioden
               </div>
-              <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                 {completedGoals}/{totalGoals} fullfort
               </div>
             </div>
@@ -363,7 +362,7 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
                     alignItems: 'center',
                     gap: '10px',
                     padding: '10px 12px',
-                    backgroundColor: goal.completed ? `${tokens.colors.success}08` : tokens.colors.snow,
+                    backgroundColor: goal.completed ? 'rgba(var(--success-rgb), 0.08)' : 'var(--bg-secondary)',
                     borderRadius: '8px',
                   }}
                 >
@@ -371,17 +370,17 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
                     width: '20px',
                     height: '20px',
                     borderRadius: '50%',
-                    backgroundColor: goal.completed ? tokens.colors.success : tokens.colors.white,
-                    border: goal.completed ? 'none' : `2px solid ${tokens.colors.mist}`,
+                    backgroundColor: goal.completed ? 'var(--success)' : 'var(--bg-primary)',
+                    border: goal.completed ? 'none' : '2px solid var(--border-default)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                    {goal.completed && <CheckCircle size={14} color={tokens.colors.white} />}
+                    {goal.completed && <CheckCircle size={14} color={'var(--bg-primary)'} />}
                   </div>
                   <span style={{
                     fontSize: '13px',
-                    color: goal.completed ? tokens.colors.steel : tokens.colors.charcoal,
+                    color: goal.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
                     textDecoration: goal.completed ? 'line-through' : 'none',
                     flex: 1,
                   }}>
@@ -390,8 +389,8 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
                   {goal.current !== undefined && !goal.completed && (
                     <span style={{
                       fontSize: '11px',
-                      color: tokens.colors.primary,
-                      backgroundColor: `${tokens.colors.primary}10`,
+                      color: 'var(--accent)',
+                      backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
                       padding: '2px 8px',
                       borderRadius: '4px',
                     }}>
@@ -405,45 +404,45 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
 
           {/* Weekly Hours Distribution */}
           <div style={{ marginTop: '20px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: tokens.colors.charcoal, marginBottom: '12px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '12px' }}>
               Ukentlig treningstid
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>
               <div style={{
                 flex: 1,
-                backgroundColor: `${tokens.colors.primary}10`,
+                backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
                 padding: '12px',
                 borderRadius: '10px',
                 textAlign: 'center',
               }}>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: tokens.colors.primary }}>
+                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--accent)' }}>
                   {period.weeklyHours.technical}t
                 </div>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Teknisk</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Teknisk</div>
               </div>
               <div style={{
                 flex: 1,
-                backgroundColor: `${tokens.colors.error}10`,
+                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
                 padding: '12px',
                 borderRadius: '10px',
                 textAlign: 'center',
               }}>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: tokens.colors.error }}>
+                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--error)' }}>
                   {period.weeklyHours.physical}t
                 </div>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Fysisk</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Fysisk</div>
               </div>
               <div style={{
                 flex: 1,
-                backgroundColor: `${tokens.colors.gold}10`,
+                backgroundColor: 'rgba(var(--achievement-rgb), 0.10)',
                 padding: '12px',
                 borderRadius: '10px',
                 textAlign: 'center',
               }}>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: tokens.colors.gold }}>
+                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--achievement)' }}>
                   {period.weeklyHours.mental}t
                 </div>
-                <div style={{ fontSize: '11px', color: tokens.colors.steel }}>Mental</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Mental</div>
               </div>
             </div>
           </div>
@@ -453,14 +452,14 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
             <div style={{
               marginTop: '16px',
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '10px',
               borderLeft: `3px solid ${phaseConfig.color}`,
             }}>
-              <div style={{ fontSize: '11px', color: tokens.colors.steel, marginBottom: '4px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
                 Trenernotat - {period.coach}
               </div>
-              <div style={{ fontSize: '13px', color: tokens.colors.charcoal, lineHeight: 1.5 }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.5 }}>
                 {period.notes}
               </div>
             </div>
@@ -481,7 +480,7 @@ const CurrentWeekPlan = ({ weekPlan }) => {
 
   return (
     <div style={{
-      backgroundColor: tokens.colors.white,
+      backgroundColor: 'var(--bg-primary)',
       borderRadius: '16px',
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -496,21 +495,21 @@ const CurrentWeekPlan = ({ weekPlan }) => {
           <h3 style={{
             fontSize: '16px',
             fontWeight: 600,
-            color: tokens.colors.charcoal,
+            color: 'var(--text-primary)',
             margin: 0,
           }}>
             Denne uken (Uke {weekPlan.week})
           </h3>
-          <div style={{ fontSize: '13px', color: tokens.colors.steel, marginTop: '2px' }}>
+          <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
             Tema: {weekPlan.theme}
           </div>
         </div>
         <div style={{
-          backgroundColor: `${tokens.colors.success}10`,
+          backgroundColor: 'rgba(var(--success-rgb), 0.10)',
           padding: '8px 12px',
           borderRadius: '8px',
         }}>
-          <span style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.success }}>
+          <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--success)' }}>
             {completedSessions}/{totalSessions} okter
           </span>
         </div>
@@ -529,7 +528,7 @@ const CurrentWeekPlan = ({ weekPlan }) => {
                 alignItems: 'center',
                 gap: '12px',
                 padding: '12px',
-                backgroundColor: session.completed ? `${tokens.colors.success}05` : tokens.colors.snow,
+                backgroundColor: session.completed ? 'rgba(var(--success-rgb), 0.05)' : 'var(--bg-secondary)',
                 borderRadius: '10px',
                 opacity: session.type === 'Hvile' ? 0.6 : 1,
               }}
@@ -538,13 +537,13 @@ const CurrentWeekPlan = ({ weekPlan }) => {
                 width: '36px',
                 height: '36px',
                 borderRadius: '8px',
-                backgroundColor: session.completed ? `${tokens.colors.success}15` : `${config.color}15`,
+                backgroundColor: session.completed ? 'rgba(var(--success-rgb), 0.15)' : `${config.color}15`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
                 {session.completed ? (
-                  <CheckCircle size={18} color={tokens.colors.success} />
+                  <CheckCircle size={18} color={'var(--success)'} />
                 ) : (
                   <Icon size={18} color={config.color} />
                 )}
@@ -553,19 +552,19 @@ const CurrentWeekPlan = ({ weekPlan }) => {
                 <div style={{
                   fontSize: '14px',
                   fontWeight: 500,
-                  color: tokens.colors.charcoal,
+                  color: 'var(--text-primary)',
                 }}>
                   {session.day}
                 </div>
-                <div style={{ fontSize: '12px', color: tokens.colors.steel }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                   {session.type} - {session.focus}
                 </div>
               </div>
               {session.duration > 0 && (
                 <div style={{
                   fontSize: '12px',
-                  color: tokens.colors.steel,
-                  backgroundColor: tokens.colors.white,
+                  color: 'var(--text-secondary)',
+                  backgroundColor: 'var(--bg-primary)',
                   padding: '4px 8px',
                   borderRadius: '6px',
                 }}>
@@ -593,7 +592,7 @@ const PeriodeplanerContainer = () => {
     : 0;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Periodeplaner"
         subtitle="Sesongplanlegging og periodisering"
@@ -608,48 +607,48 @@ const PeriodeplanerContainer = () => {
           marginBottom: '24px',
         }}>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.success }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
               {activePeriod?.name.split(' ')[0] || '-'}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Aktiv periode</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Aktiv periode</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.primary }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
               {activePeriod?.progress || 0}%
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Fullfort</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Fullfort</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.gold }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
               {totalWeeklyHours}t
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Timer/uke</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Timer/uke</div>
           </div>
           <div style={{
-            backgroundColor: tokens.colors.white,
+            backgroundColor: 'var(--bg-primary)',
             borderRadius: '12px',
             padding: '16px',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: tokens.colors.charcoal }}>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
               {MOCK_PERIODS.length}
             </div>
-            <div style={{ fontSize: '12px', color: tokens.colors.steel }}>Perioder i ar</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Perioder i ar</div>
           </div>
         </div>
 
@@ -664,7 +663,7 @@ const PeriodeplanerContainer = () => {
             <h2 style={{
               fontSize: '18px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Arsplan 2025
@@ -686,7 +685,7 @@ const PeriodeplanerContainer = () => {
             <h2 style={{
               fontSize: '18px',
               fontWeight: 600,
-              color: tokens.colors.charcoal,
+              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Ukeoversikt
@@ -696,7 +695,7 @@ const PeriodeplanerContainer = () => {
             {/* Period Timeline Visual */}
             <div style={{
               marginTop: '24px',
-              backgroundColor: tokens.colors.white,
+              backgroundColor: 'var(--bg-primary)',
               borderRadius: '16px',
               padding: '20px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
@@ -704,7 +703,7 @@ const PeriodeplanerContainer = () => {
               <h3 style={{
                 fontSize: '14px',
                 fontWeight: 600,
-                color: tokens.colors.charcoal,
+                color: 'var(--text-primary)',
                 margin: '0 0 16px 0',
               }}>
                 Arshjul
@@ -733,7 +732,7 @@ const PeriodeplanerContainer = () => {
                         <span style={{
                           fontSize: '10px',
                           fontWeight: 600,
-                          color: period.status === 'active' ? tokens.colors.white : phaseConfig.color,
+                          color: period.status === 'active' ? 'var(--bg-primary)' : phaseConfig.color,
                         }}>
                           {period.name.split(' ')[0]}
                         </span>
@@ -747,7 +746,7 @@ const PeriodeplanerContainer = () => {
                 justifyContent: 'space-between',
                 marginTop: '8px',
                 fontSize: '10px',
-                color: tokens.colors.steel,
+                color: 'var(--text-secondary)',
               }}>
                 <span>Jan</span>
                 <span>Apr</span>

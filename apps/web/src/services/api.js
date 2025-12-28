@@ -41,6 +41,7 @@ export const authAPI = {
   logout: () => api.post('/auth/logout'),
   // Password reset
   requestPasswordReset: (email) => api.post('/auth/forgot-password', { email }),
+  verifyResetToken: (token) => api.post('/auth/verify-reset-token', { token }),
   resetPassword: (token, email, newPassword) =>
     api.post('/auth/reset-password', { token, email, newPassword }),
   // 2FA
@@ -63,6 +64,8 @@ export const playersAPI = {
   create: (data) => api.post('/players', data),
   update: (id, data) => api.put(`/players/${id}`, data),
   delete: (id) => api.delete(`/players/${id}`),
+  updateProfile: (data) => api.put('/players/profile', data),
+  getProfile: () => api.get('/players/profile'),
 };
 
 // Coaches API
@@ -93,6 +96,8 @@ export const exercisesAPI = {
   getById: (id) => api.get(`/exercises/${id}`),
   create: (data) => api.post('/exercises', data),
   update: (id, data) => api.put(`/exercises/${id}`, data),
+  delete: (id) => api.delete(`/exercises/${id}`),
+  duplicate: (id) => api.post(`/exercises/${id}/duplicate`),
 };
 
 // Training Plan API
@@ -192,6 +197,8 @@ export const messagesAPI = {
   schedule: (data) => api.post('/messages/schedule', data),
   list: (params) => api.get('/messages', { params }),
   delete: (id) => api.delete(`/messages/${id}`),
+  sendNow: (id) => api.post(`/messages/${id}/send-now`),
+  getScheduled: () => api.get('/messages/scheduled'),
 };
 
 // Golf Courses API

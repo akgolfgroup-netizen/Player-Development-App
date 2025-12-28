@@ -4,28 +4,6 @@ import {
   HomeIcon, CalendarIcon, GolfScorecard, ChartIcon, ProfileIcon
 } from '../../components/icons';
 
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-  }
-};
-
 // ===== ICONS =====
 const Icons = {
   TrendingUp: () => (
@@ -94,13 +72,13 @@ const Card = ({ children, className = '', padding = true }) => (
   </div>
 );
 
-const Badge = ({ children, variant = 'default', size = 'sm' }) => {
+const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variants = {
-    default: 'bg-ak-cloud text-ak-charcoal',
-    primary: 'bg-ak-primary text-white',
-    success: 'bg-ak-success/10 text-ak-success',
-    warning: 'bg-ak-warning/10 text-ak-warning',
-    error: 'bg-ak-error/10 text-ak-error',
+    neutral: 'bg-gray-100 text-gray-600',
+    accent: 'bg-blue-50 text-blue-700',
+    success: 'bg-green-50 text-green-700',
+    warning: 'bg-amber-50 text-amber-700',
+    error: 'bg-red-50 text-red-700',
   };
 
   const sizes = {
@@ -141,10 +119,10 @@ const MultiLineChart = ({ data, height = 200 }) => {
     <div style={{ height }} className="relative">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
         {/* Grid lines */}
-        <line x1="0" y1="20" x2="100" y2="20" stroke={tokens.colors.mist} strokeWidth="0.3"/>
-        <line x1="0" y1="40" x2="100" y2="40" stroke={tokens.colors.mist} strokeWidth="0.3"/>
-        <line x1="0" y1="60" x2="100" y2="60" stroke={tokens.colors.mist} strokeWidth="0.3"/>
-        <line x1="0" y1="80" x2="100" y2="80" stroke={tokens.colors.mist} strokeWidth="0.3"/>
+        <line x1="0" y1="20" x2="100" y2="20" stroke={'var(--border-default)'} strokeWidth="0.3"/>
+        <line x1="0" y1="40" x2="100" y2="40" stroke={'var(--border-default)'} strokeWidth="0.3"/>
+        <line x1="0" y1="60" x2="100" y2="60" stroke={'var(--border-default)'} strokeWidth="0.3"/>
+        <line x1="0" y1="80" x2="100" y2="80" stroke={'var(--border-default)'} strokeWidth="0.3"/>
 
         {/* Requirement line */}
         {data[0]?.requirement && (
@@ -153,7 +131,7 @@ const MultiLineChart = ({ data, height = 200 }) => {
             y1={100 - ((data[0].requirement - minValue) / range) * 80 - 10}
             x2="100"
             y2={100 - ((data[0].requirement - minValue) / range) * 80 - 10}
-            stroke={tokens.colors.error}
+            stroke={'var(--error)'}
             strokeWidth="0.5"
             strokeDasharray="2,2"
           />
@@ -244,7 +222,7 @@ const RadarChart = ({ data, size = 200 }) => {
             cy={center}
             r={radius * scale}
             fill="none"
-            stroke={tokens.colors.mist}
+            stroke={'var(--border-default)'}
             strokeWidth="0.5"
           />
         ))}
@@ -261,7 +239,7 @@ const RadarChart = ({ data, size = 200 }) => {
               y1={center}
               x2={x}
               y2={y}
-              stroke={tokens.colors.mist}
+              stroke={'var(--border-default)'}
               strokeWidth="0.5"
             />
           );
@@ -271,7 +249,7 @@ const RadarChart = ({ data, size = 200 }) => {
         <polygon
           points={reqPoints.map(p => `${p.x},${p.y}`).join(' ')}
           fill="none"
-          stroke={tokens.colors.error}
+          stroke={'var(--error)'}
           strokeWidth="1"
           strokeDasharray="2,2"
         />
@@ -279,8 +257,8 @@ const RadarChart = ({ data, size = 200 }) => {
         {/* Data polygon */}
         <polygon
           points={points.map(p => `${p.x},${p.y}`).join(' ')}
-          fill={`${tokens.colors.primary}30`}
-          stroke={tokens.colors.primary}
+          fill="rgba(var(--accent-rgb), 0.18)"
+          stroke={'var(--accent)'}
           strokeWidth="1.5"
         />
 
@@ -292,7 +270,7 @@ const RadarChart = ({ data, size = 200 }) => {
             cy={p.y}
             r="2.5"
             fill="white"
-            stroke={tokens.colors.primary}
+            stroke={'var(--accent)'}
             strokeWidth="1.5"
           />
         ))}
@@ -583,7 +561,7 @@ const AKGolfTestresultater = ({ player: apiPlayer = null, testResults: apiTestRe
     : testResults.filter(t => t.category === categoryFilter);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
       <PageHeader
         title="Testresultater"
         subtitle="Historikk og fremgang"
@@ -594,12 +572,12 @@ const AKGolfTestresultater = ({ player: apiPlayer = null, testResults: apiTestRe
               alignItems: 'center',
               gap: '8px',
               padding: '8px 16px',
-              backgroundColor: tokens.colors.snow,
-              color: tokens.colors.charcoal,
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
               borderRadius: '10px',
               fontSize: '13px',
               fontWeight: 500,
-              border: `1px solid ${tokens.colors.mist}`,
+              border: '1px solid var(--border-default)',
               cursor: 'pointer',
             }}
           >
@@ -614,7 +592,7 @@ const AKGolfTestresultater = ({ player: apiPlayer = null, testResults: apiTestRe
         <Card className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-[15px] font-semibold text-ak-charcoal">Benchmark-historikk</h3>
-            <Badge variant="primary">Kategori {player.category}</Badge>
+            <Badge variant="accent">Kategori {player.category}</Badge>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {benchmarks.map((b) => (
@@ -799,7 +777,7 @@ const AKGolfTestresultater = ({ player: apiPlayer = null, testResults: apiTestRe
                               : (status.currentValue / test.requirement) * 100
                             }
                             max={100}
-                            color={status.meetsReq ? tokens.colors.success : tokens.colors.warning}
+                            color={status.meetsReq ? 'var(--success)' : 'var(--warning)'}
                           />
                         </div>
                       </div>
@@ -812,7 +790,7 @@ const AKGolfTestresultater = ({ player: apiPlayer = null, testResults: apiTestRe
                       <h4 className="text-[13px] font-medium text-ak-charcoal mb-3">Historikk (6 benchmark)</h4>
                       <MultiLineChart
                         data={[{
-                          color: tokens.colors.primary,
+                          color: 'var(--accent)',
                           values: test.history,
                           requirement: test.requirement,
                         }]}

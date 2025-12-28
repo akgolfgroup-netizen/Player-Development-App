@@ -1,12 +1,12 @@
 /**
  * AK Golf Academy - Coach Player Alerts Widget
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Semantic CSS Variables
  *
- * Viser røde flagg fra spillere som krever oppmerksomhet:
- * - Dårlig søvn
- * - Dårlig mat/ernæring
+ * Viser rode flagg fra spillere som krever oppmerksomhet:
+ * - Darlig sovn
+ * - Darlig mat/ernaering
  * - Lav energi
- * - Høyt stressnivå
+ * - Hoyt stressniva
  * - Manglende trening
  */
 
@@ -22,7 +22,7 @@ import {
   ChevronRight,
   X,
 } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
+import Button from '../../../ui/primitives/Button';
 
 interface PlayerAlert {
   id: string;
@@ -68,7 +68,7 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
             avatarInitials: 'AH',
             type: 'sleep',
             severity: 'critical',
-            message: 'Har rapportert under 5 timer søvn 3 netter på rad',
+            message: 'Har rapportert under 5 timer sovn 3 netter pa rad',
             value: '4.5t snitt',
             daysAgo: 0,
             createdAt: '2025-12-21T08:00:00Z',
@@ -92,7 +92,7 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
             avatarInitials: 'SA',
             type: 'stress',
             severity: 'warning',
-            message: 'Høyt stressnivå rapportert før turnering',
+            message: 'Hoyt stressniva rapportert for turnering',
             value: '8/10',
             daysAgo: 1,
             createdAt: '2025-12-20T14:00:00Z',
@@ -104,7 +104,7 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
             avatarInitials: 'LO',
             type: 'nutrition',
             severity: 'warning',
-            message: 'Lav ernæringsscore denne uken',
+            message: 'Lav ernaeringsscore denne uken',
             value: '3.2/10',
             daysAgo: 2,
             createdAt: '2025-12-19T10:00:00Z',
@@ -142,14 +142,14 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
 
     const colors = {
       critical: {
-        bg: `${tokens.colors.error}10`,
-        border: tokens.colors.error,
-        icon: tokens.colors.error,
+        bg: 'rgba(var(--error-rgb), 0.1)',
+        border: 'var(--error)',
+        icon: 'var(--error)',
       },
       warning: {
-        bg: `${tokens.colors.warning}10`,
-        border: tokens.colors.warning,
-        icon: '#B8860B',
+        bg: 'rgba(var(--warning-rgb), 0.1)',
+        border: 'var(--warning)',
+        icon: 'var(--warning)',
       },
     };
 
@@ -186,8 +186,8 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
           style={{
             width: 32,
             height: 32,
-            border: `3px solid ${tokens.colors.gray300}`,
-            borderTopColor: tokens.colors.primary,
+            border: '3px solid var(--bg-tertiary)',
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             margin: '0 auto',
             animation: 'spin 1s linear infinite',
@@ -213,20 +213,21 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
             style={{
               width: 36,
               height: 36,
-              borderRadius: tokens.radius.md,
-              backgroundColor: `${tokens.colors.error}15`,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'rgba(var(--error-rgb), 0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <AlertTriangle size={20} color={tokens.colors.error} />
+            <AlertTriangle size={20} style={{ color: 'var(--error)' }} />
           </div>
           <div>
             <h3
               style={{
-                ...tokens.typography.headline,
-                color: tokens.colors.charcoal,
+                fontSize: '17px',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
                 margin: 0,
               }}
             >
@@ -235,8 +236,8 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
             {criticalCount > 0 && (
               <span
                 style={{
-                  ...tokens.typography.caption1,
-                  color: tokens.colors.error,
+                  fontSize: '13px',
+                  color: 'var(--error)',
                 }}
               >
                 {criticalCount} kritiske
@@ -245,24 +246,10 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
           </div>
         </div>
         {onViewAll && (
-          <button
-            onClick={onViewAll}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              backgroundColor: 'transparent',
-              border: 'none',
-              color: tokens.colors.primary,
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
-          >
+          <Button variant="ghost" size="sm" onClick={onViewAll}>
             Se alle
             <ChevronRight size={16} />
-          </button>
+          </Button>
         )}
       </div>
 
@@ -272,14 +259,15 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
           style={{
             padding: '32px 16px',
             textAlign: 'center',
-            backgroundColor: `${tokens.colors.success}08`,
-            borderRadius: tokens.radius.md,
+            backgroundColor: 'rgba(var(--success-rgb), 0.08)',
+            borderRadius: 'var(--radius-md)',
           }}
         >
           <p
             style={{
-              ...tokens.typography.subheadline,
-              color: tokens.colors.success,
+              fontSize: '15px',
+              fontWeight: 500,
+              color: 'var(--success)',
               margin: 0,
             }}
           >
@@ -300,7 +288,7 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                   gap: '12px',
                   padding: '14px',
                   backgroundColor: colors.bg,
-                  borderRadius: tokens.radius.md,
+                  borderRadius: 'var(--radius-md)',
                   borderLeft: `3px solid ${colors.border}`,
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
@@ -311,15 +299,15 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                   style={{
                     width: 36,
                     height: 36,
-                    borderRadius: tokens.radius.sm,
-                    backgroundColor: tokens.colors.white,
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'var(--bg-primary)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
                   }}
                 >
-                  <Icon size={18} color={colors.icon} />
+                  <Icon size={18} style={{ color: colors.icon }} />
                 </div>
 
                 {/* Content */}
@@ -337,8 +325,8 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                         width: 28,
                         height: 28,
                         borderRadius: '50%',
-                        backgroundColor: tokens.colors.primary,
-                        color: tokens.colors.white,
+                        backgroundColor: 'var(--accent)',
+                        color: 'white',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -350,8 +338,8 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                     </span>
                     <span
                       style={{
-                        ...tokens.typography.headline,
-                        color: tokens.colors.charcoal,
+                        fontSize: '15px',
+                        color: 'var(--text-primary)',
                         fontWeight: 600,
                       }}
                     >
@@ -361,8 +349,8 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                       <span
                         style={{
                           padding: '2px 8px',
-                          backgroundColor: tokens.colors.white,
-                          borderRadius: tokens.radius.sm,
+                          backgroundColor: 'var(--bg-primary)',
+                          borderRadius: 'var(--radius-sm)',
                           fontSize: '11px',
                           fontWeight: 600,
                           color: colors.icon,
@@ -374,8 +362,8 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                   </div>
                   <p
                     style={{
-                      ...tokens.typography.caption1,
-                      color: tokens.colors.steel,
+                      fontSize: '13px',
+                      color: 'var(--text-secondary)',
                       margin: 0,
                     }}
                   >
@@ -389,7 +377,7 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                   style={{
                     width: 28,
                     height: 28,
-                    borderRadius: tokens.radius.sm,
+                    borderRadius: 'var(--radius-sm)',
                     backgroundColor: 'transparent',
                     border: 'none',
                     display: 'flex',
@@ -400,7 +388,7 @@ export default function CoachPlayerAlerts({ maxItems = 5, onViewAll }: CoachPlay
                     opacity: 0.6,
                   }}
                 >
-                  <X size={16} color={tokens.colors.steel} />
+                  <X size={16} style={{ color: 'var(--text-secondary)' }} />
                 </button>
               </div>
             );

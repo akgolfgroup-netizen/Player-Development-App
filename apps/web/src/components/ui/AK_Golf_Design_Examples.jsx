@@ -7,6 +7,16 @@ import {
 } from 'lucide-react';
 import { tokens } from '../design-tokens';
 
+// Session type colors (Blue Palette 01)
+const sessionTypeColors = {
+  teknikk: '#2C5F7F',
+  golfslag: '#4A7C59',
+  spill: '#10456A',
+  kompetanse: '#C9A227',
+  fysisk: '#D4A84B',
+  funksjonell: '#8E8E93',
+};
+
 // ============================================================================
 // AK GOLF ACADEMY – DESIGN SYSTEM EKSEMPLER v2.1
 // Forest Theme - Design System v2.1
@@ -16,40 +26,40 @@ import { tokens } from '../design-tokens';
 const theme = {
   colors: {
     // Primær
-    primary: tokens.colors.forest,
-    primaryDark: tokens.colors.forest,
-    primaryLight: tokens.colors.primaryLight,
+    primary: 'var(--accent)',
+    primaryDark: 'var(--accent)',
+    primaryLight: 'rgba(var(--accent-rgb), 0.8)',
     
     // Nøytrale
-    gray900: tokens.colors.charcoal,
-    gray700: tokens.colors.charcoal,
-    gray600: tokens.colors.steel,
-    gray500: tokens.colors.steel,
-    gray400: tokens.colors.steel,
-    gray300: tokens.colors.mist,
-    gray200: tokens.colors.mist,
-    gray100: tokens.colors.cloud,
-    gray50: tokens.colors.foam,
-    white: tokens.colors.white,
+    gray900: 'var(--text-primary)',
+    gray700: 'var(--text-primary)',
+    gray600: 'var(--text-secondary)',
+    gray500: 'var(--text-secondary)',
+    gray400: 'var(--text-secondary)',
+    gray300: 'var(--border-default)',
+    gray200: 'var(--border-default)',
+    gray100: 'var(--bg-tertiary)',
+    gray50: 'var(--bg-secondary)',
+    white: 'var(--bg-primary)',
 
     // Semantiske
-    success: tokens.colors.success,
-    warning: tokens.colors.warning,
-    error: tokens.colors.error,
-    info: tokens.colors.sessionTypes.golfslag,
+    success: 'var(--success)',
+    warning: 'var(--warning)',
+    error: 'var(--error)',
+    info: sessionTypeColors.golfslag,
     
     // Perioder
-    periodE: tokens.colors.steel,
-    periodG: tokens.colors.primaryLight,
-    periodS: tokens.colors.success,
-    periodT: tokens.colors.gold,
+    periodE: 'var(--text-secondary)',
+    periodG: 'rgba(var(--accent-rgb), 0.8)',
+    periodS: 'var(--success)',
+    periodT: 'var(--achievement)',
 
     // L-faser
-    l1: tokens.colors.success,
-    l2: tokens.colors.sessionTypes.spill,
-    l3: tokens.colors.warning,
-    l4: tokens.colors.sessionTypes.fysisk,
-    l5: tokens.colors.error,
+    l1: 'var(--success)',
+    l2: sessionTypeColors.spill,
+    l3: 'var(--warning)',
+    l4: sessionTypeColors.fysisk,
+    l5: 'var(--error)',
     
     // Kategorier
     categories: {
@@ -60,12 +70,12 @@ const theme = {
     
     // Økt-typer
     sessions: {
-      teknikk: tokens.colors.sessionTypes.teknikk,
-      golfslag: tokens.colors.sessionTypes.golfslag,
-      spill: tokens.colors.sessionTypes.spill,
-      konkurranse: tokens.colors.sessionTypes.kompetanse,
-      fysisk: tokens.colors.sessionTypes.fysisk,
-      mental: tokens.colors.sessionTypes.funksjonell,
+      teknikk: sessionTypeColors.teknikk,
+      golfslag: sessionTypeColors.golfslag,
+      spill: sessionTypeColors.spill,
+      konkurranse: sessionTypeColors.kompetanse,
+      fysisk: sessionTypeColors.fysisk,
+      mental: sessionTypeColors.funksjonell,
     },
   },
   

@@ -5,28 +5,6 @@ import {
   GolfBunker
 } from '../../components/icons';
 
-// ===== AK GOLF DESIGN TOKENS v3.0 (Blue Palette 01) =====
-const tokens = {
-  colors: {
-    // Brand Colors - Blue Palette 01
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
-    // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
-    // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
-    white: '#FFFFFF',
-  }
-};
-
 // ===== ICONS =====
 const Icons = {
   Search: () => (
@@ -67,7 +45,7 @@ const Icons = {
     </svg>
   ),
   HeartFilled: () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill={tokens.colors.error} stroke={tokens.colors.error} strokeWidth="2">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill={'var(--error)'} stroke={'var(--error)'} strokeWidth="2">
       <path d="M20.84,4.61 C20.33,4.1 19.72,3.7 19.05,3.43 C18.38,3.15 17.66,3.01 16.93,3.01 C16.2,3.01 15.48,3.15 14.81,3.43 C14.14,3.7 13.53,4.1 13.02,4.61 L12,5.64 L10.98,4.61 C9.95,3.58 8.55,3.01 7.07,3.01 C5.59,3.01 4.19,3.58 3.16,4.61 C2.13,5.64 1.56,7.04 1.56,8.52 C1.56,10 2.13,11.4 3.16,12.43 L4.18,13.45 L12,21.27 L19.82,13.45 L20.84,12.43 C21.35,11.92 21.75,11.31 22.03,10.64 C22.3,9.97 22.45,9.25 22.45,8.52 C22.45,7.79 22.3,7.07 22.03,6.4 C21.75,5.73 21.35,5.12 20.84,4.61 Z"/>
     </svg>
   ),
@@ -110,13 +88,13 @@ const Card = ({ children, className = '', padding = true }) => (
   </div>
 );
 
-const Badge = ({ children, variant = 'default', size = 'sm' }) => {
+const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   const variants = {
-    default: 'bg-ak-cloud text-ak-charcoal',
-    primary: 'bg-ak-primary text-white',
-    success: 'bg-ak-success/10 text-ak-success',
-    warning: 'bg-ak-warning/10 text-ak-warning',
-    error: 'bg-ak-error/10 text-ak-error',
+    neutral: 'bg-gray-100 text-gray-600',
+    accent: 'bg-blue-50 text-blue-700',
+    success: 'bg-green-50 text-green-700',
+    warning: 'bg-amber-50 text-amber-700',
+    error: 'bg-red-50 text-red-700',
   };
 
   const sizes = {
@@ -135,11 +113,11 @@ const Badge = ({ children, variant = 'default', size = 'sm' }) => {
 // ===== L-PHASE TAG =====
 const LevelTag = ({ level }) => {
   const config = {
-    L1: { bg: tokens.colors.cloud, text: tokens.colors.steel, label: 'L1' },
-    L2: { bg: tokens.colors.mist, text: tokens.colors.charcoal, label: 'L2' },
-    L3: { bg: `${tokens.colors.success}20`, text: tokens.colors.primaryLight, label: 'L3' },
-    L4: { bg: tokens.colors.success, text: tokens.colors.white, label: 'L4' },
-    L5: { bg: 'var(--ak-primary)', text: tokens.colors.white, label: 'L5' },
+    L1: { bg: 'var(--bg-tertiary)', text: 'var(--text-secondary)', label: 'L1' },
+    L2: { bg: 'var(--border-default)', text: 'var(--text-primary)', label: 'L2' },
+    L3: { bg: 'rgba(var(--success-rgb), 0.12)', text: 'var(--accent-light)', label: 'L3' },
+    L4: { bg: 'var(--success)', text: 'var(--bg-primary)', label: 'L4' },
+    L5: { bg: 'var(--accent)', text: 'var(--bg-primary)', label: 'L5' },
   };
 
   const { bg, text, label } = config[level] || config.L3;
@@ -406,7 +384,7 @@ const AKGolfOvelser = ({ player: apiPlayer = null, exercises: apiExercises = nul
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow, fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
       {/* Header */}
       <PageHeader
         title="Øvelsesbibliotek"
@@ -640,7 +618,7 @@ const AKGolfOvelser = ({ player: apiPlayer = null, exercises: apiExercises = nul
                   <h2 className="text-[20px] font-bold text-ak-charcoal mb-2">{selectedExercise.name}</h2>
                   <div className="flex items-center gap-2">
                     <LevelTag level={selectedExercise.level} />
-                    <Badge variant="default">
+                    <Badge variant="neutral">
                       {categories.find(c => c.id === selectedExercise.category)?.label}
                     </Badge>
                   </div>
@@ -677,7 +655,7 @@ const AKGolfOvelser = ({ player: apiPlayer = null, exercises: apiExercises = nul
                 <h3 className="text-[14px] font-semibold text-ak-charcoal mb-3">Utstyr</h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedExercise.equipment.map((item, idx) => (
-                    <Badge key={idx} variant="default" size="md">{item}</Badge>
+                    <Badge key={idx} variant="neutral" size="md">{item}</Badge>
                   ))}
                 </div>
               </div>
