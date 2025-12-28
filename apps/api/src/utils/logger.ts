@@ -21,7 +21,7 @@ const PII_FIELDS = [
 ];
 
 // Recursive function to redact PII from objects
-function redactPII(obj: any, depth = 0): any {
+function redactPII(obj: unknown, depth = 0): unknown {
   if (depth > 10) return '[Max Depth Reached]';
 
   if (obj === null || obj === undefined) return obj;
@@ -32,7 +32,7 @@ function redactPII(obj: any, depth = 0): any {
     return obj.map(item => redactPII(item, depth + 1));
   }
 
-  const redacted: any = {};
+  const redacted: Record<string, unknown> = {};
 
   for (const [key, value] of Object.entries(obj)) {
     const lowerKey = key.toLowerCase();
@@ -144,7 +144,7 @@ export function createRequestLogger(requestId: string) {
 export function logWithContext(
   level: 'info' | 'error' | 'warn' | 'debug',
   message: string,
-  context?: Record<string, any>
+  context?: Record<string, unknown>
 ) {
   const sanitizedContext = context ? redactPII(context) : undefined;
   logger[level]({ ...sanitizedContext }, message);
@@ -154,7 +154,7 @@ export function logWithContext(
 export function createPerformanceLogger(operation: string) {
   const start = Date.now();
   return {
-    end: (metadata?: Record<string, any>) => {
+    end: (metadata?: Record<string, unknown>) => {
       const duration = Date.now() - start;
       logger.info(
         {
@@ -165,7 +165,7 @@ export function createPerformanceLogger(operation: string) {
         `${operation} completed in ${duration}ms`
       );
     },
-    error: (error: Error, metadata?: Record<string, any>) => {
+    error: (error: Error, metadata?: Record<string, unknown>) => {
       const duration = Date.now() - start;
       logger.error(
         {

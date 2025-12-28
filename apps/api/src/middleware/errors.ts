@@ -7,7 +7,7 @@ export class AppError extends Error {
     public statusCode: number,
     public code: string,
     message: string,
-    public details?: any,
+    public details?: Record<string, unknown>,
     public isOperational: boolean = true
   ) {
     super(message);
@@ -17,7 +17,7 @@ export class AppError extends Error {
 }
 
 export class BadRequestError extends AppError {
-  constructor(message: string = 'Bad request', details?: any) {
+  constructor(message: string = 'Bad request', details?: Record<string, unknown>) {
     super(400, 'BAD_REQUEST', message, details);
   }
 }
@@ -41,19 +41,19 @@ export class NotFoundError extends AppError {
 }
 
 export class ConflictError extends AppError {
-  constructor(message: string = 'Resource conflict', details?: any) {
+  constructor(message: string = 'Resource conflict', details?: Record<string, unknown>) {
     super(409, 'CONFLICT', message, details);
   }
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string = 'Validation failed', details?: any) {
+  constructor(message: string = 'Validation failed', details?: Record<string, unknown>) {
     super(400, 'VALIDATION_ERROR', message, details);
   }
 }
 
 export class TooManyRequestsError extends AppError {
-  constructor(message: string = 'Too many requests', details?: any) {
+  constructor(message: string = 'Too many requests', details?: Record<string, unknown>) {
     super(429, 'TOO_MANY_REQUESTS', message, details);
   }
 }

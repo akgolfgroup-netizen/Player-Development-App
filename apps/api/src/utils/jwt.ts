@@ -85,6 +85,6 @@ export function verifyRefreshToken(token: string): RefreshTokenPayload {
 /**
  * Decode a token without verifying (useful for debugging)
  */
-export function decodeToken(token: string): any {
+export function decodeToken(token: string): jwt.JwtPayload | string | null {
   return jwt.decode(token);
 }

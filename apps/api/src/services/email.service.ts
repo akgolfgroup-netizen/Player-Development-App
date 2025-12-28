@@ -16,7 +16,7 @@ interface EmailOptions {
   to: string | string[];
   subject: string;
   template: EmailTemplate;
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   attachments?: Array<{
     filename: string;
     content?: Buffer;
@@ -483,7 +483,7 @@ export class EmailService {
   /**
    * Preview email template (for development)
    */
-  async previewEmail(template: EmailTemplate, data: Record<string, any>): Promise<string> {
+  async previewEmail(template: EmailTemplate, data: Record<string, unknown>): Promise<string> {
     // Load template content
     const templatePath = join(this.templatesDir, `${template}.html`);
     const templateContent = readFileSync(templatePath, 'utf-8');
@@ -505,6 +505,9 @@ export class EmailService {
     };
 
     // Render final HTML
+    if (!this.baseTemplate) {
+      return content; // Return content without base wrapper if base template not loaded
+    }
     return this.baseTemplate(baseData);
   }
 }
