@@ -58,10 +58,11 @@ jobs:
         continue-on-error: true
 
   # =============================================================================
-  # Security Audit
+  # Security Audit (temporarily disabled - snyk.sarif/CodeQL issues)
   # =============================================================================
   security:
     name: Security Audit
+    if: false  # Disabled: snyk.sarif missing, CodeQL v1/v2 deprecated
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
