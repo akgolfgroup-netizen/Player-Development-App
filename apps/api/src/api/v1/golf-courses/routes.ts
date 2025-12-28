@@ -195,8 +195,9 @@ export default async function golfCourseRoutes(app: FastifyInstance) {
           message: `Synced ${country} courses successfully`,
           ...result,
         });
-      } catch (error: any) {
-        if (error.message.includes('not configured')) {
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : '';
+        if (message.includes('not configured')) {
           return reply.status(503).send({
             success: false,
             error: 'GolfCourseAPI not configured',

@@ -11,7 +11,7 @@ export interface UnlockAchievementInput {
   tier?: string;
   icon: string;
   pointsValue?: number;
-  context?: any;
+  context?: Record<string, unknown>;
 }
 
 export class AchievementsService {

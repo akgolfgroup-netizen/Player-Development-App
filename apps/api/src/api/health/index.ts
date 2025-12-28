@@ -30,7 +30,7 @@ interface HealthCheckResponse {
 interface HealthCheckResult {
   status: 'ok' | 'warning' | 'error';
   message: string;
-  details?: Record<string, any>;
+  details?: Record<string, unknown>;
   responseTime?: number;
 }
 

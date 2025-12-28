@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { BadRequestError } from '../../../middleware/errors';
 import {
   CalendarEventsQuery,
@@ -57,7 +57,7 @@ export class CalendarService {
       throw new BadRequestError('End date must be after start date');
     }
 
-    const where: any = {
+    const where: Prisma.CalendarEventWhereInput = {
       tenantId,
       startTime: { gte: startDate },
       endTime: { lte: endDate },

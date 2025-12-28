@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export interface ArchiveItemInput {
   entityType: string;
   entityId: string;
-  entityData: any;
+  entityData: Record<string, unknown>;
   reason?: string;
 }
 
