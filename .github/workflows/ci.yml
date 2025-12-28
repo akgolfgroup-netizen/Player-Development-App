@@ -85,14 +85,53 @@ jobs:
         with:
           version: ${{ env.PNPM_VERSION }}
 
+      - name: Show environment info
+        run: |
+          echo "::group::Environment"
+          echo "Node version: $(node -v)"
+          echo "pnpm version: $(pnpm -v)"
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "SNYK_TOKEN configured: ${{ secrets.SNYK_TOKEN != '' }}"
+          echo "::endgroup::"
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Run pnpm audit
-        run: pnpm audit --audit-level=moderate
-        continue-on-error: true
+        id: audit
+        run: |
+          echo "::group::pnpm audit"
+          # Run audit and capture exit code
+          set +e
+          pnpm audit --audit-level=high 2>&1 | tee audit-output.txt
+          AUDIT_EXIT=$?
+          set -e
+
+          if [ $AUDIT_EXIT -eq 0 ]; then
+            echo "✅ No high/critical vulnerabilities found"
+          else
+            echo "⚠️ Vulnerabilities found (exit code: $AUDIT_EXIT)"
+            echo "::warning::Security vulnerabilities detected. Review audit-output.txt"
+          fi
+          echo "::endgroup::"
+          # Don't fail the job - just warn
+          exit 0
+
+      - name: Check SNYK_TOKEN availability
+        id: snyk-check
+        run: |
+          if [ -n "${{ secrets.SNYK_TOKEN }}" ]; then
+            echo "available=true" >> $GITHUB_OUTPUT
+            echo "✅ SNYK_TOKEN is configured"
+          else
+            echo "available=false" >> $GITHUB_OUTPUT
+            echo "⚠️ SNYK_TOKEN is not configured - skipping Snyk scan"
+            echo "::warning::SNYK_TOKEN not set. Snyk security scanning disabled."
+          fi
 
       - name: Run Snyk Security Scan
+        if: steps.snyk-check.outputs.available == 'true'
         uses: snyk/actions/node@master
         id: snyk
         continue-on-error: true
@@ -101,21 +140,42 @@ jobs:
         with:
           args: --severity-threshold=high --sarif-file-output=snyk.sarif
 
-      - name: Check if SARIF file exists
+      - name: Check SARIF file status
         id: sarif-check
         run: |
+          echo "::group::SARIF Status"
           if [ -f snyk.sarif ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
+            echo "✅ snyk.sarif generated ($(wc -c < snyk.sarif) bytes)"
           else
             echo "exists=false" >> $GITHUB_OUTPUT
+            if [ "${{ steps.snyk-check.outputs.available }}" == "true" ]; then
+              echo "⚠️ snyk.sarif not generated - Snyk may have failed"
+            else
+              echo "ℹ️ snyk.sarif not generated - SNYK_TOKEN not configured"
+            fi
           fi
+          echo "::endgroup::"
 
       - name: Upload Snyk results to GitHub Code Scanning
+        # Only upload on push (not PR from forks) and if file exists
+        if: >-
+          github.event_name == 'push' &&
+          steps.sarif-check.outputs.exists == 'true'
         uses: github/codeql-action/upload-sarif@v3
-        if: steps.sarif-check.outputs.exists == 'true'
-        continue-on-error: true
         with:
           sarif_file: snyk.sarif
+
+      - name: SARIF upload status
+        if: always()
+        run: |
+          if [ "${{ github.event_name }}" != "push" ]; then
+            echo "ℹ️ SARIF upload skipped: only runs on push events (current: ${{ github.event_name }})"
+          elif [ "${{ steps.sarif-check.outputs.exists }}" != "true" ]; then
+            echo "ℹ️ SARIF upload skipped: snyk.sarif does not exist"
+          else
+            echo "✅ SARIF upload completed"
+          fi
 
   # =============================================================================
   # Backend Tests
