@@ -63,8 +63,9 @@ export default async function weatherRoutes(app: FastifyInstance) {
         }
 
         return reply.send({ success: true, data: weather });
-      } catch (error: any) {
-        return reply.status(400).send({ success: false, error: error.message });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return reply.status(400).send({ success: false, error: message });
       }
     }
   );
@@ -99,8 +100,9 @@ export default async function weatherRoutes(app: FastifyInstance) {
         }
 
         return reply.send({ success: true, data: weather });
-      } catch (error: any) {
-        return reply.status(400).send({ success: false, error: error.message });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return reply.status(400).send({ success: false, error: message });
       }
     }
   );
@@ -133,8 +135,9 @@ export default async function weatherRoutes(app: FastifyInstance) {
       try {
         const weather = await service.getWeatherByCoordinates(lat, lng);
         return reply.send({ success: true, data: weather });
-      } catch (error: any) {
-        return reply.status(400).send({ success: false, error: error.message });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return reply.status(400).send({ success: false, error: message });
       }
     }
   );
@@ -169,8 +172,9 @@ export default async function weatherRoutes(app: FastifyInstance) {
           data: courses,
           total: courses.length,
         });
-      } catch (error: any) {
-        return reply.status(400).send({ success: false, error: error.message });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return reply.status(400).send({ success: false, error: message });
       }
     }
   );
@@ -206,8 +210,9 @@ export default async function weatherRoutes(app: FastifyInstance) {
           data: courses,
           total: courses.length,
         });
-      } catch (error: any) {
-        return reply.status(400).send({ success: false, error: error.message });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return reply.status(400).send({ success: false, error: message });
       }
     }
   );
@@ -242,8 +247,9 @@ export default async function weatherRoutes(app: FastifyInstance) {
         }
 
         return reply.send({ success: true, data: windForecast });
-      } catch (error: any) {
-        return reply.status(400).send({ success: false, error: error.message });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return reply.status(400).send({ success: false, error: message });
       }
     }
   );

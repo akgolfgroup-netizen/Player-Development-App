@@ -164,8 +164,9 @@ export class WeatherService {
           weather,
           rank: 0,
         });
-      } catch (error: any) {
-        logger.warn({ club: club.name, error: error.message }, 'Failed to fetch weather for club');
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        logger.warn({ club: club.name, error: message }, 'Failed to fetch weather for club');
       }
     }
 
@@ -215,8 +216,9 @@ export class WeatherService {
           clubName: club.name,
           weather,
         });
-      } catch (error: any) {
-        logger.warn({ club: club.name, error: error.message }, 'Failed to fetch weather');
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        logger.warn({ club: club.name, error: message }, 'Failed to fetch weather');
       }
     }
 
