@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main, develop]
 
+# Top-level permissions for security scanning
+permissions:
+  contents: read
+  security-events: write
+
 env:
   NODE_VERSION: '20.x'
   PNPM_VERSION: 8
@@ -37,7 +42,7 @@ jobs:
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Cache pnpm dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -89,15 +94,25 @@ jobs:
 
       - name: Run Snyk Security Scan
         uses: snyk/actions/node@master
+        id: snyk
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --severity-threshold=high --sarif-file-output=snyk.sarif
 
+      - name: Check if SARIF file exists
+        id: sarif-check
+        run: |
+          if [ -f snyk.sarif ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Upload Snyk results to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
-        if: always() && hashFiles('snyk.sarif') != ''
+        if: steps.sarif-check.outputs.exists == 'true'
         continue-on-error: true
         with:
           sarif_file: snyk.sarif
@@ -169,7 +184,7 @@ jobs:
           JWT_SECRET: test-secret-key-for-ci
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./apps/api/coverage/lcov.info
           flags: api
@@ -205,7 +220,7 @@ jobs:
           CI: true
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./apps/web/coverage/lcov.info
           flags: web
@@ -267,7 +282,7 @@ jobs:
           CI: true
 
       - name: Upload Playwright report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
@@ -307,14 +322,14 @@ jobs:
           REACT_APP_API_URL: ${{ secrets.API_URL || 'https://api.example.com' }}
 
       - name: Upload API build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: api-build
           path: apps/api/dist/
           retention-days: 7
 
       - name: Upload Web build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: web-build
           path: apps/web/build/
@@ -333,13 +348,13 @@ jobs:
       url: https://staging.example.com
     steps:
       - name: Download API build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: api-build
           path: api-dist/
 
       - name: Download Web build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: web-build
           path: web-dist/
@@ -362,13 +377,13 @@ jobs:
       url: https://app.example.com
     steps:
       - name: Download API build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: api-build
           path: api-dist/
 
       - name: Download Web build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: web-build
           path: web-dist/
