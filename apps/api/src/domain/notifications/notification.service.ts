@@ -3,6 +3,7 @@
  * Handles sending notifications via email, push, and in-app
  */
 
+import { Prisma } from '@prisma/client';
 import { getPrismaClient } from '../../core/db/prisma';
 import { EmailService } from './email.service';
 import { logger } from '../../utils/logger';
@@ -319,7 +320,7 @@ export class NotificationService {
           notificationType: data.type,
           title: data.title,
           message: data.message,
-          metadata: data.metadata || {},
+          metadata: (data.metadata || {}) as Prisma.InputJsonValue,
           priority: 'normal',
           status: 'pending',
         },

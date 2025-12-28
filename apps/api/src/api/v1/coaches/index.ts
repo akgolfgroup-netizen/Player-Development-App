@@ -272,7 +272,7 @@ export async function coachRoutes(app: FastifyInstance): Promise<void> {
   /**
    * Get current coach's alerts (uses auth user)
    */
-  app.get(
+  app.get<{ Querystring: { unread?: boolean } }>(
     '/me/alerts',
     {
       preHandler: preHandlers,

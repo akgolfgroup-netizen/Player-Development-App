@@ -78,9 +78,8 @@ interface FormattedApproachSkill {
     '150-175': number | null;
     '175-200': number | null;
     '200+': number | null;
-    overall: number | null;
   };
-  lastUpdated: Date;
+  lastSynced: Date;
 }
 
 /**
@@ -88,16 +87,19 @@ interface FormattedApproachSkill {
  */
 interface RankedProPlayer {
   rank: number;
-  dataGolfId: number;
+  dataGolfId: string;
   playerName: string;
-  tour: string;
+  tour: string | null;
   stats: {
     sgTotal: number | null;
     sgTee: number | null;
     sgApproach: number | null;
     sgAround: number | null;
     sgPutting: number | null;
+    drivingDistance: number | null;
+    drivingAccuracy: number | null;
   };
+  lastSynced: Date;
 }
 
 /**
@@ -454,7 +456,7 @@ export class DataGolfService {
         syncStatus: 'failed',
         playersUpdated: 0,
         tourAveragesUpdated: 0,
-        errors: [error.message],
+        errors: [message],
       };
     }
   }
@@ -738,7 +740,7 @@ export class DataGolfService {
    */
   private formatApproachSkillRecord(record: DataGolfApproachSkill): FormattedApproachSkill {
     return {
-      dataGolfId: record.dataGolfId,
+      dataGolfId: Number(record.dataGolfId),
       playerName: record.playerName,
       tour: record.tour,
       season: record.season,

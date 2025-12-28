@@ -145,19 +145,23 @@ export class TestResultsEnhancedService {
       handicap: player.handicap ? Number(player.handicap) : undefined,
     };
 
+    // Build test input with metadata and test-specific data
+    // Type assertion is safe because validateTestInput verifies the shape matches testNumber
+    const testInput = {
+      metadata: {
+        testDate: input.testDate,
+        testTime: input.testTime,
+        location: input.location,
+        facility: input.facility,
+        environment: input.environment,
+        conditions: input.conditions,
+      },
+      ...input.testData,
+    } as Parameters<typeof calculateTestResultAsync>[1];
+
     const calculatedResult = await calculateTestResultAsync(
       input.testNumber,
-      {
-        metadata: {
-          testDate: input.testDate,
-          testTime: input.testTime,
-          location: input.location,
-          facility: input.facility,
-          environment: input.environment,
-          conditions: input.conditions,
-        },
-        ...input.testData,
-      },
+      testInput,
       playerContext,
       this.requirementsRepo
     );
@@ -458,6 +462,15 @@ export class TestResultsEnhancedService {
       },
       include: {
         test: true,
+        player: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            category: true,
+            gender: true,
+          },
+        },
         peerComparisons: {
           orderBy: {
             calculatedAt: 'desc',

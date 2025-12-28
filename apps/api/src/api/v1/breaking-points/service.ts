@@ -21,7 +21,7 @@ type BreakingPointWithPlayer = Prisma.BreakingPointGetPayload<{
  */
 interface SuccessHistoryEntry {
   date: string;
-  measurement: number;
+  measurement: string;
   notes?: string;
 }
 
@@ -139,10 +139,11 @@ export class BreakingPointService {
         },
       });
 
+      // Return with exercises as extended property (type assertion for additional data)
       return {
         ...breakingPoint,
         assignedExercises: exercises,
-      };
+      } as BreakingPointWithPlayer & { assignedExercises: typeof exercises };
     }
 
     return breakingPoint;
@@ -324,16 +325,17 @@ export class BreakingPointService {
 
     // Add to success history
     const successHistory = (existing.successHistory as SuccessHistoryEntry[] | null) ?? [];
-    successHistory.push({
+    const newEntry: SuccessHistoryEntry = {
       date: new Date().toISOString().split('T')[0],
-      measurement: input.currentMeasurement,
+      measurement: input.currentMeasurement || '',
       notes: input.notes,
-    });
+    };
+    successHistory.push(newEntry);
 
     const updateData: Prisma.BreakingPointUpdateInput = {
       currentMeasurement: input.currentMeasurement,
       progressPercent: input.progressPercent,
-      successHistory: successHistory as Prisma.InputJsonValue,
+      successHistory: successHistory as unknown as Prisma.InputJsonValue,
     };
 
     if (input.status) {
@@ -358,6 +360,7 @@ export class BreakingPointService {
             id: true,
             firstName: true,
             lastName: true,
+            category: true,
           },
         },
       },

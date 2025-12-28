@@ -17,7 +17,7 @@ interface CoachPlayerView {
   firstName: string;
   lastName: string;
   name: string;
-  email: string;
+  email: string | null;
   category: string;
   gender: string;
   birthDate: Date | null;

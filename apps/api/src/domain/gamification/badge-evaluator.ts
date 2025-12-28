@@ -896,7 +896,7 @@ export class BadgeEvaluatorService {
    */
   private async calculateComplianceMetrics(
     playerId: string,
-    assignments: Array<{ status: string | null; assignedDate: Date; durationMinutes: number | null; intensity: number | null }>,
+    assignments: Array<{ status: string; assignedDate: Date; estimatedDuration: number; intensity: number | null }>,
     phaseStartDate: Date,
     now: Date
   ): Promise<{
@@ -942,7 +942,7 @@ export class BadgeEvaluatorService {
     const sessions = SessionFilter.from(rawSessions);
     const actualMinutes = sessions.sumDuration();
     const defaultDuration = GamificationConfig.sessions.defaultDurationMinutes;
-    const plannedMinutes = phaseAssignments.reduce((sum, a) => sum + (a.durationMinutes || defaultDuration), 0);
+    const plannedMinutes = phaseAssignments.reduce((sum, a) => sum + (a.estimatedDuration || defaultDuration), 0);
     const volumeVsPlan = plannedMinutes > 0 ? Math.round((actualMinutes / plannedMinutes) * 100) : 0;
 
     // Calculate intensity ratio

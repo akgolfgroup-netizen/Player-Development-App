@@ -124,7 +124,7 @@ export class GoalsService {
         icon: input.icon,
         color: input.color,
         notes: input.notes,
-        milestones: input.milestones || []
+        milestones: (input.milestones || []) as unknown as Prisma.InputJsonValue
       }
     });
   }
@@ -149,7 +149,7 @@ export class GoalsService {
     if (input.icon !== undefined) updateData.icon = input.icon;
     if (input.color !== undefined) updateData.color = input.color;
     if (input.notes !== undefined) updateData.notes = input.notes;
-    if (input.milestones !== undefined) updateData.milestones = input.milestones;
+    if (input.milestones !== undefined) updateData.milestones = input.milestones as unknown as Prisma.InputJsonValue;
 
     // Numeric fields (convert to Decimal)
     if (input.targetValue !== undefined) {

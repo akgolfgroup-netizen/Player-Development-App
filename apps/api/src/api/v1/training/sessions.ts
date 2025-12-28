@@ -104,7 +104,7 @@ const sessionsRoutes: FastifyPluginAsync = async (fastify) => {
       if (session.dailyAssignmentId) {
         await prisma.dailyTrainingAssignment.update({
           where: { id: session.dailyAssignmentId },
-          data: { completionStatus: 'completed' },
+          data: { status: 'completed' },
         });
       }
 

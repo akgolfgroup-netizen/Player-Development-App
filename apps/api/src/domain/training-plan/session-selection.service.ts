@@ -159,7 +159,7 @@ export class SessionSelectionService {
       sessionTemplateId: best.template.id,
       sessionType: best.template.sessionType,
       estimatedDuration: best.template.duration,
-      learningPhase: best.template.learningPhase,
+      learningPhase: best.template.learningPhase || 'N',
       setting: (best.template.setting as string) || 'S1',
       period: (best.template.periods as string[])[0] || 'E',
       priority: best.score,
@@ -179,7 +179,7 @@ export class SessionSelectionService {
     }
 
     // Learning phase match
-    if (criteria.learningPhases.includes(template.learningPhase)) {
+    if (template.learningPhase && criteria.learningPhases.includes(template.learningPhase)) {
       score += 50;
     }
 
@@ -209,9 +209,10 @@ export class SessionSelectionService {
     const usageCount = template._count?.dailyAssignments || 0;
     score -= usageCount * 2;
 
-    // Intensity match
-    const intensityMatch = this.matchesIntensity(template.intensity, criteria.intensity);
-    if (intensityMatch) {
+    // Intensity match (use duration as proxy if intensity not available)
+    // Longer sessions typically have higher intensity
+    const estimatedIntensity = template.duration >= 90 ? 'high' : template.duration >= 60 ? 'medium' : 'low';
+    if (estimatedIntensity === criteria.intensity) {
       score += 40;
     }
 
@@ -231,24 +232,6 @@ export class SessionSelectionService {
     // 3. Compare with template's exercise IDs
     // For now, just return a base score
     return breakingPointIds.length > 0 ? 20 : 0;
-  }
-
-  /**
-   * Check if template intensity matches criteria
-   */
-  private static matchesIntensity(templateIntensity: number, criteriaIntensity: string): boolean {
-    const intensityMap: Record<string, [number, number]> = {
-      low: [1, 4],
-      medium: [4, 7],
-      high: [7, 9],
-      peak: [9, 10],
-      taper: [3, 6],
-    };
-
-    const range = intensityMap[criteriaIntensity];
-    if (!range) return false;
-
-    return templateIntensity >= range[0] && templateIntensity <= range[1];
   }
 
   /**

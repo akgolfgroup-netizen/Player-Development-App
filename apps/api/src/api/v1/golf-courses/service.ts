@@ -55,11 +55,17 @@ export class GolfCourseService {
     }
 
     if (country) {
-      where.club = { ...where.club, country: { equals: country, mode: 'insensitive' } };
+      where.club = {
+        ...(where.club as Prisma.GolfClubWhereInput || {}),
+        country: { equals: country, mode: 'insensitive' }
+      };
     }
 
     if (city) {
-      where.club = { ...where.club, city: { contains: city, mode: 'insensitive' } };
+      where.club = {
+        ...(where.club as Prisma.GolfClubWhereInput || {}),
+        city: { contains: city, mode: 'insensitive' }
+      };
     }
 
     const [courses, total] = await Promise.all([
@@ -388,7 +394,7 @@ export class GolfCourseService {
       location: club.latitude && club.longitude
         ? { lat: Number(club.latitude), lng: Number(club.longitude) }
         : null,
-      courses: club.courses?.map((c) => this.formatCourse({ ...c, club: null })) || [],
+      courses: club.courses?.map((c) => this.formatCourse({ ...c, club: null } as CourseWithRelations & { club: null })) || [],
     };
   }
 }

@@ -45,7 +45,7 @@ export class ExerciseService {
         videoUrl: input.videoUrl,
         imageUrl: input.imageUrl,
         source: input.source,
-        tags: input.tags as Prisma.InputJsonValue,
+        tags: input.tags,
         isActive: input.isActive,
       },
     });

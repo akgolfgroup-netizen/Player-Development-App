@@ -593,6 +593,13 @@ export class TestService {
         improvement.percentage = (improvement.absolute / Number(firstResult.pei)) * 100;
       }
 
+      // Convert latestResult Decimal fields to number if present
+      const formattedLatestResult = latestResult ? {
+        ...latestResult,
+        pei: latestResult.pei ? Number(latestResult.pei) : null,
+        improvementFromLast: latestResult.improvementFromLast ? Number(latestResult.improvementFromLast) : null,
+      } : null;
+
       return {
         test: {
           id: test.id,
@@ -606,7 +613,7 @@ export class TestService {
           improvementFromLast: r.improvementFromLast ? Number(r.improvementFromLast) : null,
           categoryBenchmark: r.categoryBenchmark,
         })),
-        latestResult,
+        latestResult: formattedLatestResult,
         improvement,
       };
     });
