@@ -5,7 +5,7 @@ import { config } from '../config';
 /**
  * Register Helmet for security headers
  */
-export async function registerHelmet(app: FastifyInstance<any, any, any, any>): Promise<void> {
+export async function registerHelmet(app: FastifyInstance): Promise<void> {
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3001';
   const s3Endpoint = process.env.S3_ENDPOINT || 'https://s3.eu-north-1.amazonaws.com';
 

@@ -6,7 +6,7 @@ import { config } from '../config';
 /**
  * Register Swagger/OpenAPI documentation
  */
-export async function registerSwagger(app: FastifyInstance<any, any, any, any>): Promise<void> {
+export async function registerSwagger(app: FastifyInstance): Promise<void> {
   // Add shared schemas that can be referenced by all routes
   app.addSchema({
     $id: 'Error',

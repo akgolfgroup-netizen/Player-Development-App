@@ -261,17 +261,17 @@ export const CacheTTL = {
  * Usage: @Cached(CacheKeys.player, CacheTTL.MEDIUM)
  */
 export function withCache<T>(
-  keyFn: (...args: any[]) => string,
+  keyFn: (...args: unknown[]) => string,
   ttl: number = CacheTTL.MEDIUM
 ) {
   return function (
-    _target: any,
+    _target: unknown,
     _propertyKey: string,
     descriptor: PropertyDescriptor
   ) {
     const originalMethod = descriptor.value;
 
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function (...args: unknown[]) {
       const cacheKey = keyFn(...args);
       const cached = await cache.get<T>(cacheKey);
 
@@ -291,7 +291,7 @@ export function withCache<T>(
 /**
  * Register cache plugin with Fastify
  */
-export async function registerCache(app: FastifyInstance<any, any, any, any>): Promise<void> {
+export async function registerCache(app: FastifyInstance): Promise<void> {
   await cache.connect();
 
   // Decorate app with cache instance

@@ -231,11 +231,14 @@ export const WS_EVENTS = {
 /**
  * Register WebSocket plugin with Fastify
  */
-export async function registerWebSocket(app: FastifyInstance<any, any, any, any>): Promise<void> {
+export async function registerWebSocket(app: FastifyInstance): Promise<void> {
   await app.register(websocket, {
     options: {
       maxPayload: 1048576, // 1MB
-      verifyClient: async (info: any, callback: any) => {
+      verifyClient: async (
+        info: { origin: string; secure: boolean; req: IncomingMessage },
+        callback: (result: boolean, code?: number, message?: string) => void
+      ) => {
         // Extract token from query string
         const url = new URL(info.req.url || '', `http://${info.req.headers.host}`);
         const token = url.searchParams.get('token');
