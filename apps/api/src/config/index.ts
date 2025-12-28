@@ -30,12 +30,12 @@ const envSchema = z.object({
   JWT_ACCESS_EXPIRY: z.string().default('15m'),
   JWT_REFRESH_EXPIRY: z.string().default('7d'),
 
-  // S3
-  S3_ENDPOINT: z.string().url(),
-  S3_BUCKET: z.string(),
+  // S3 (optional - file uploads disabled if not configured)
+  S3_ENDPOINT: z.string().url().optional(),
+  S3_BUCKET: z.string().optional(),
   S3_REGION: z.string().default('eu-north-1'),
-  S3_ACCESS_KEY_ID: z.string(),
-  S3_SECRET_ACCESS_KEY: z.string(),
+  S3_ACCESS_KEY_ID: z.string().optional(),
+  S3_SECRET_ACCESS_KEY: z.string().optional(),
   S3_FORCE_PATH_STYLE: z.string().transform(val => val === 'true').default('false'),
 
   // CORS
@@ -57,8 +57,8 @@ const envSchema = z.object({
   QUEUE_NAME: z.string().default('iup-golf-events'),
   QUEUE_CONCURRENCY: z.string().transform(Number).default('5'),
 
-  // Default Tenant
-  DEFAULT_TENANT_ID: z.string().uuid(),
+  // Default Tenant (uses demo tenant UUID if not specified)
+  DEFAULT_TENANT_ID: z.string().uuid().default('00000000-0000-0000-0000-000000000001'),
   DEFAULT_TENANT_NAME: z.string().default('AK Golf Academy'),
   DEFAULT_TENANT_SLUG: z.string().default('ak-golf'),
 
@@ -119,13 +119,22 @@ export const config = {
     refreshExpiry: env.JWT_REFRESH_EXPIRY,
   },
 
-  s3: {
+  s3: env.S3_ENDPOINT && env.S3_BUCKET && env.S3_ACCESS_KEY_ID && env.S3_SECRET_ACCESS_KEY ? {
     endpoint: env.S3_ENDPOINT,
     bucket: env.S3_BUCKET,
     region: env.S3_REGION,
     accessKeyId: env.S3_ACCESS_KEY_ID,
     secretAccessKey: env.S3_SECRET_ACCESS_KEY,
     forcePathStyle: env.S3_FORCE_PATH_STYLE,
+    enabled: true,
+  } : {
+    endpoint: undefined,
+    bucket: undefined,
+    region: env.S3_REGION,
+    accessKeyId: undefined,
+    secretAccessKey: undefined,
+    forcePathStyle: env.S3_FORCE_PATH_STYLE,
+    enabled: false,
   },
 
   cors: {
