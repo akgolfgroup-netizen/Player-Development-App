@@ -276,7 +276,7 @@ export class GoogleCalendarService {
     event: Partial<CalendarEvent>,
     calendarId: string = 'primary'
   ): Promise<void> {
-    const googleEvent: any = {};
+    const googleEvent: Record<string, unknown> = {};
 
     if (event.title) googleEvent.summary = event.title;
     if (event.description) googleEvent.description = event.description;
@@ -342,7 +342,7 @@ export class GoogleCalendarService {
     startTime: Date,
     endTime: Date,
     calendarId: string = 'primary'
-  ): Promise<any[]> {
+  ): Promise<unknown[]> {
     const params = new URLSearchParams({
       timeMin: startTime.toISOString(),
       timeMax: endTime.toISOString(),

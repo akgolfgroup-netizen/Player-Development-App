@@ -161,7 +161,7 @@ export async function calculateTestResultAsync(
  * @param input - Test input data to validate
  * @returns true if valid, throws error if invalid
  */
-export function validateTestInput(testNumber: number, input: any): boolean {
+export function validateTestInput(testNumber: number, input: TestInput): boolean {
   // Validate common metadata
   if (!input.metadata) {
     throw new Error('Test input must include metadata');

@@ -51,7 +51,7 @@ export class BaselineRecommendationService {
     return rounds as Array<{ score: number; date: Date }>;
   }
 
-  private calculateMetrics(allRounds: any[], last8Rounds: any[]) {
+  private calculateMetrics(allRounds: Array<{ score: number; date: Date }>, last8Rounds: Array<{ score: number; date: Date }>) {
     // Standardavvik for siste 8
     const last8Scores = last8Rounds.map(r => r.score);
     const last8Avg = this.average(last8Scores);
@@ -79,7 +79,15 @@ export class BaselineRecommendationService {
     };
   }
 
-  private generateRecommendation(metrics: any): RecommendationResult {
+  private generateRecommendation(metrics: {
+    last8StdDev: number;
+    seasonStdDev: number;
+    last8Avg: number;
+    seasonAvg: number;
+    trendDirection: 'improving' | 'declining' | 'stable';
+    trendStrength: number;
+    consistencyScore: number;
+  }): RecommendationResult {
     const reasoning: string[] = [];
     let score = 0; // Poeng-system: positiv = last_8_rounds, negativ = season_average
 
