@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma, Exercise } from '@prisma/client';
 import { NotFoundError } from '../../../middleware/errors';
 import { CreateExerciseInput, UpdateExerciseInput, ListExercisesQuery } from './schema';
 
 export interface ExerciseListResponse {
-  exercises: any[];
+  exercises: Exercise[];
   pagination: {
     page: number;
     limit: number;
@@ -18,7 +18,7 @@ export class ExerciseService {
   /**
    * Create a new exercise
    */
-  async createExercise(tenantId: string, input: CreateExerciseInput): Promise<any> {
+  async createExercise(tenantId: string, input: CreateExerciseInput): Promise<Exercise> {
     const exercise = await this.prisma.exercise.create({
       data: {
         tenantId,
@@ -32,7 +32,7 @@ export class ExerciseService {
         categories: input.categories,
         periods: input.periods,
         repsOrTime: input.repsOrTime,
-        equipment: input.equipment as any,
+        equipment: input.equipment as Prisma.InputJsonValue,
         location: input.location,
         difficulty: input.difficulty,
         progressionSteps: input.progressionSteps,
@@ -45,7 +45,7 @@ export class ExerciseService {
         videoUrl: input.videoUrl,
         imageUrl: input.imageUrl,
         source: input.source,
-        tags: input.tags as any,
+        tags: input.tags as Prisma.InputJsonValue,
         isActive: input.isActive,
       },
     });
@@ -56,7 +56,7 @@ export class ExerciseService {
   /**
    * Get exercise by ID
    */
-  async getExerciseById(tenantId: string, exerciseId: string): Promise<any> {
+  async getExerciseById(tenantId: string, exerciseId: string): Promise<Exercise> {
     const exercise = await this.prisma.exercise.findFirst({
       where: {
         id: exerciseId,
@@ -95,7 +95,7 @@ export class ExerciseService {
     } = query;
 
     // Build where clause
-    const where: any = { tenantId };
+    const where: Prisma.ExerciseWhereInput = { tenantId };
 
     if (search) {
       where.OR = [
@@ -186,7 +186,7 @@ export class ExerciseService {
   /**
    * Update exercise
    */
-  async updateExercise(tenantId: string, exerciseId: string, input: UpdateExerciseInput): Promise<any> {
+  async updateExercise(tenantId: string, exerciseId: string, input: UpdateExerciseInput): Promise<Exercise> {
     // Check if exercise exists
     const existingExercise = await this.prisma.exercise.findFirst({
       where: { id: exerciseId, tenantId },
@@ -197,7 +197,7 @@ export class ExerciseService {
     }
 
     // Build update data
-    const updateData: any = {};
+    const updateData: Prisma.ExerciseUpdateInput = {};
 
     if (input.name !== undefined) updateData.name = input.name;
     if (input.description !== undefined) updateData.description = input.description;

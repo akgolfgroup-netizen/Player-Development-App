@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { NotFoundError, BadRequestError } from '../../../middleware/errors';
 import {
   CreateBreakingPointInput,
@@ -7,8 +7,26 @@ import {
   ListBreakingPointsQuery,
 } from './schema';
 
+/**
+ * Breaking point with player relations
+ */
+type BreakingPointWithPlayer = Prisma.BreakingPointGetPayload<{
+  include: {
+    player: { select: { id: true; firstName: true; lastName: true; category: true } };
+  };
+}>;
+
+/**
+ * Success history entry
+ */
+interface SuccessHistoryEntry {
+  date: string;
+  measurement: number;
+  notes?: string;
+}
+
 export interface BreakingPointListResponse {
-  breakingPoints: any[];
+  breakingPoints: BreakingPointWithPlayer[];
   pagination: {
     page: number;
     limit: number;
@@ -23,7 +41,7 @@ export class BreakingPointService {
   /**
    * Create a new breaking point
    */
-  async createBreakingPoint(tenantId: string, input: CreateBreakingPointInput): Promise<any> {
+  async createBreakingPoint(tenantId: string, input: CreateBreakingPointInput): Promise<BreakingPointWithPlayer> {
     // Verify player exists
     const player = await this.prisma.player.findFirst({
       where: { id: input.playerId, tenantId },
@@ -62,7 +80,7 @@ export class BreakingPointService {
         assignedExerciseIds: input.assignedExerciseIds,
         hoursPerWeek: input.hoursPerWeek,
         status: input.status,
-        successHistory: input.successHistory as any,
+        successHistory: input.successHistory as Prisma.InputJsonValue,
         resolvedDate: input.resolvedDate ? new Date(input.resolvedDate) : null,
         notes: input.notes,
       },
@@ -84,7 +102,7 @@ export class BreakingPointService {
   /**
    * Get breaking point by ID
    */
-  async getBreakingPointById(tenantId: string, breakingPointId: string): Promise<any> {
+  async getBreakingPointById(tenantId: string, breakingPointId: string): Promise<BreakingPointWithPlayer> {
     const breakingPoint = await this.prisma.breakingPoint.findFirst({
       where: {
         id: breakingPointId,
@@ -147,7 +165,7 @@ export class BreakingPointService {
     } = query;
 
     // Build where clause
-    const where: any = {
+    const where: Prisma.BreakingPointWhereInput = {
       player: { tenantId },
     };
 
@@ -214,7 +232,7 @@ export class BreakingPointService {
     tenantId: string,
     breakingPointId: string,
     input: UpdateBreakingPointInput
-  ): Promise<any> {
+  ): Promise<BreakingPointWithPlayer> {
     // Check if breaking point exists
     const existing = await this.prisma.breakingPoint.findFirst({
       where: {
@@ -242,7 +260,7 @@ export class BreakingPointService {
     }
 
     // Build update data
-    const updateData: any = {};
+    const updateData: Prisma.BreakingPointUpdateInput = {};
 
     if (input.processCategory !== undefined) updateData.processCategory = input.processCategory;
     if (input.specificArea !== undefined) updateData.specificArea = input.specificArea;
@@ -292,7 +310,7 @@ export class BreakingPointService {
     tenantId: string,
     breakingPointId: string,
     input: UpdateProgressInput
-  ): Promise<any> {
+  ): Promise<BreakingPointWithPlayer> {
     const existing = await this.prisma.breakingPoint.findFirst({
       where: {
         id: breakingPointId,
@@ -305,17 +323,17 @@ export class BreakingPointService {
     }
 
     // Add to success history
-    const successHistory = existing.successHistory as any[];
+    const successHistory = (existing.successHistory as SuccessHistoryEntry[] | null) ?? [];
     successHistory.push({
       date: new Date().toISOString().split('T')[0],
       measurement: input.currentMeasurement,
       notes: input.notes,
     });
 
-    const updateData: any = {
+    const updateData: Prisma.BreakingPointUpdateInput = {
       currentMeasurement: input.currentMeasurement,
       progressPercent: input.progressPercent,
-      successHistory,
+      successHistory: successHistory as Prisma.InputJsonValue,
     };
 
     if (input.status) {
