@@ -81,6 +81,7 @@ const SESSION_TYPES = [
 const CoachCard = ({ coach, selected, onSelect }) => (
   <div
     onClick={() => onSelect(coach)}
+    className="hover:-translate-y-0.5 transition-transform"
     style={{
       backgroundColor: 'var(--bg-primary)',
       borderRadius: '12px',
@@ -89,12 +90,6 @@ const CoachCard = ({ coach, selected, onSelect }) => (
       transition: 'all 0.2s',
       border: selected ? `2px solid ${'var(--accent)'}` : '2px solid transparent',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'translateY(-2px)';
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'translateY(0)';
     }}
   >
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

@@ -40,7 +40,7 @@ const colors = {
 
 const Card = ({ children, className = '', onClick, style: customStyle = {} }) => (
   <div
-    className={className}
+    className={`${className} ${onClick ? 'hover:-translate-y-px transition-transform' : ''}`}
     onClick={onClick}
     style={{
       backgroundColor: colors.white,
@@ -51,14 +51,6 @@ const Card = ({ children, className = '', onClick, style: customStyle = {} }) =>
       transition: 'all 0.2s ease',
       ...customStyle
     }}
-    onMouseEnter={onClick ? (e) => {
-      e.currentTarget.style.boxShadow = 'var(--shadow-card)';
-      e.currentTarget.style.transform = 'translateY(-1px)';
-    } : undefined}
-    onMouseLeave={onClick ? (e) => {
-      e.currentTarget.style.boxShadow = 'var(--shadow-card)';
-      e.currentTarget.style.transform = 'translateY(0)';
-    } : undefined}
   >
     {children}
   </div>
@@ -114,6 +106,7 @@ const Button = ({ children, variant = 'primary', size = 'md', onClick, icon, dis
     <button
       onClick={onClick}
       disabled={disabled}
+      className={disabled ? '' : 'hover:opacity-90'}
       style={{
         ...sizeStyle,
         backgroundColor: variantStyle.bg,
@@ -127,12 +120,6 @@ const Button = ({ children, variant = 'primary', size = 'md', onClick, icon, dis
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.5 : 1,
         transition: 'all 0.15s ease'
-      }}
-      onMouseEnter={(e) => {
-        if (!disabled) e.currentTarget.style.opacity = '0.9';
-      }}
-      onMouseLeave={(e) => {
-        if (!disabled) e.currentTarget.style.opacity = '1';
       }}
     >
       {icon && <span>{icon}</span>}
@@ -333,6 +320,7 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
           {!isCompleted && onUpdateProgress && (
             <button
               onClick={() => onUpdateProgress(goal)}
+              className="hover:brightness-110"
               style={{
                 marginTop: '8px',
                 padding: `${'8px'} ${'12px'}`,
@@ -348,8 +336,6 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
                 alignItems: 'center',
                 gap: '8px'
               }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = colors.primaryLight}
-              onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary}
             >
               📊 Oppdater progresjon
             </button>
@@ -1190,6 +1176,7 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
               </button>
               <button
                 onClick={handleUpdateProgress}
+                className="hover:brightness-110"
                 style={{
                   flex: 1,
                   padding: 'var(--space-3)',
@@ -1201,8 +1188,6 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
                   fontWeight: 500,
                   cursor: 'pointer'
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = colors.primaryLight}
-                onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary}
               >
                 Lagre
               </button>

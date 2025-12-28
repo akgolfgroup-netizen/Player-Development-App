@@ -234,6 +234,9 @@ export function VideoComparisonPage() {
   );
 
   // Render video selector modal
+  // UI Canon: Modal backdrop dismiss pattern
+  // - Outer div (backdrop) closes modal on click
+  // - Inner div uses stopPropagation() to prevent dismiss when clicking content
   const renderVideoSelector = () => (
     <div className={tw.modal} onClick={() => setShowSelector(false)}>
       <div className={tw.modalContent} onClick={(e) => e.stopPropagation()}>
