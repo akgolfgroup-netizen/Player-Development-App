@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { Prisma, TrainingSession, PlayerGoal, PlayerBadge, DailyTrainingAssignment } from '@prisma/client';
+import { Prisma, DailyTrainingAssignment } from '@prisma/client';
 import prisma from '../../../core/db/prisma';
 import {
   generatePlayerReportPDF,
@@ -12,15 +12,6 @@ import {
   TrainingSessionExport,
 } from '../../../services/export';
 import { logger } from '../../../utils/logger';
-
-// Type definitions for query results with includes
-type TestResultWithIncludes = Prisma.TestResultGetPayload<{
-  include: { player: true; test: true };
-}>;
-
-type TrainingSessionWithPlayer = Prisma.TrainingSessionGetPayload<{
-  include: { player: true };
-}>;
 
 /**
  * Export API Routes
@@ -88,7 +79,7 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
     const focusAreaCounts: Record<string, number> = {};
     let totalMinutes = 0;
 
-    player.trainingSessions.forEach((session: any) => {
+    player.trainingSessions.forEach((session) => {
       totalMinutes += session.durationMinutes || 0;
       const area = session.focusArea || 'Generelt';
       focusAreaCounts[area] = (focusAreaCounts[area] || 0) + 1;
@@ -108,7 +99,7 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
         handicap: player.handicap ? Number(player.handicap) : undefined,
         category: player.category || undefined,
       },
-      testResults: player.testResults.map((tr: any) => ({
+      testResults: player.testResults.map((tr) => ({
         date: tr.createdAt,
         testName: tr.test.name,
         score: Number(tr.value),
@@ -120,14 +111,14 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
         totalHours: Math.round(totalMinutes / 60),
         focusAreas,
       },
-      goals: player.playerGoals.map((g: any) => ({
+      goals: player.playerGoals.map((g) => ({
         title: g.title,
         status: g.status,
         progress: g.progressPercent || 0,
       })),
       achievements: player.badges
-        .filter((pb: any) => pb.earnedAt)
-        .map((pb: any) => ({
+        .filter((pb) => pb.earnedAt)
+        .map((pb) => ({
           name: pb.badgeId, // badgeId is the string identifier
           unlockedAt: pb.earnedAt!,
         })),
@@ -201,7 +192,7 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
       orderBy: { createdAt: 'desc' },
     });
 
-    const exportData: TestResultsExport[] = results.map((r: any) => ({
+    const exportData: TestResultsExport[] = results.map((r) => ({
       playerName: `${r.player.firstName} ${r.player.lastName}`,
       testDate: r.createdAt,
       testName: r.test.name,
@@ -271,7 +262,7 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
       orderBy: { sessionDate: 'desc' },
     });
 
-    const exportData: TrainingSessionExport[] = sessions.map((s: any) => ({
+    const exportData: TrainingSessionExport[] = sessions.map((s) => ({
       date: s.sessionDate,
       playerName: s.player ? `${s.player.firstName} ${s.player.lastName}` : 'Ukjent',
       duration: s.duration || 0,
@@ -417,8 +408,8 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
     }
 
     // Group daily assignments by week
-    const weekMap = new Map<number, any[]>();
-    plan.dailyAssignments.forEach((assignment: any) => {
+    const weekMap = new Map<number, DailyTrainingAssignment[]>();
+    plan.dailyAssignments.forEach((assignment) => {
       if (!weekMap.has(assignment.weekNumber)) {
         weekMap.set(assignment.weekNumber, []);
       }
@@ -432,7 +423,7 @@ export async function exportRoutes(app: FastifyInstance): Promise<void> {
       weeks: Array.from(weekMap.entries()).map(([weekNumber, assignments]) => ({
         weekNumber,
         focus: 'Generell trening',
-        sessions: assignments.map((s: any) => ({
+        sessions: assignments.map((s) => ({
           day: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'][s.dayOfWeek] || 'Ukjent',
           type: s.sessionType || 'Trening',
           duration: s.estimatedDuration || 0,
