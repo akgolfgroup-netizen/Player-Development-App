@@ -24,6 +24,8 @@ module.exports = {
     },
   },
   moduleNameMapper: {
+    // Prisma client resolution for pnpm
+    '^@prisma/client$': '<rootDir>/../../node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/@prisma/client',
     // Source code aliases
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/api/(.*)$': '<rootDir>/src/api/$1',
