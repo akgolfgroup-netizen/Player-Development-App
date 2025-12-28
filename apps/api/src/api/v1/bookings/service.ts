@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma, Booking, Event } from '@prisma/client';
 import {
   NotFoundError,
   ConflictError,
@@ -17,12 +17,15 @@ export interface ConflictDetails {
   conflicts: Array<{
     type: 'coach_busy' | 'player_busy' | 'capacity_full';
     message: string;
-    event?: any;
+    event?: Partial<Event>;
   }>;
 }
 
+/** Booking with related event data */
+type BookingWithEvent = Booking & { event: Event };
+
 export interface BookingListResponse {
-  bookings: any[];
+  bookings: BookingWithEvent[];
   pagination: {
     page: number;
     limit: number;
@@ -161,7 +164,7 @@ export class BookingService {
     tenantId: string,
     userId: string,
     input: CreateBookingInput
-  ): Promise<any> {
+  ): Promise<BookingWithEvent> {
     // Check for conflicts
     const conflictCheck = await this.checkConflicts(tenantId, {
       coachId: input.coachId,
@@ -325,7 +328,7 @@ export class BookingService {
     tenantId: string,
     query: ListBookingsQuery
   ): Promise<BookingListResponse> {
-    const where: any = {
+    const where: Prisma.BookingWhereInput = {
       event: {
         tenantId,
       },
@@ -423,7 +426,7 @@ export class BookingService {
   /**
    * Get booking by ID
    */
-  async getBookingById(tenantId: string, bookingId: string): Promise<any> {
+  async getBookingById(tenantId: string, bookingId: string): Promise<BookingWithEvent> {
     const booking = await this.prisma.booking.findFirst({
       where: {
         id: bookingId,
@@ -471,7 +474,7 @@ export class BookingService {
     tenantId: string,
     bookingId: string,
     input: UpdateBookingInput
-  ): Promise<any> {
+  ): Promise<BookingWithEvent> {
     const existing = await this.getBookingById(tenantId, bookingId);
 
     if (existing.status === 'cancelled') {
@@ -513,7 +516,7 @@ export class BookingService {
     }
 
     // Update booking
-    const updateData: any = {};
+    const updateData: Prisma.BookingUpdateInput = {};
     if (input.notes !== undefined) updateData.notes = input.notes;
     if (input.paymentStatus) updateData.paymentStatus = input.paymentStatus;
     if (input.paymentAmount !== undefined)
@@ -553,7 +556,7 @@ export class BookingService {
   /**
    * Confirm booking
    */
-  async confirmBooking(tenantId: string, bookingId: string): Promise<any> {
+  async confirmBooking(tenantId: string, bookingId: string): Promise<BookingWithEvent> {
     const booking = await this.getBookingById(tenantId, bookingId);
 
     if (booking.status === 'confirmed') {
@@ -610,7 +613,7 @@ export class BookingService {
     tenantId: string,
     bookingId: string,
     input: CancelBookingInput
-  ): Promise<any> {
+  ): Promise<BookingWithEvent> {
     const booking = await this.getBookingById(tenantId, bookingId);
 
     if (booking.status === 'cancelled') {

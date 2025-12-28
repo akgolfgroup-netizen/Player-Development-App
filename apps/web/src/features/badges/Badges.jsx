@@ -148,8 +148,8 @@ const Badges = () => {
   }, [token, fetchData, loadDemoData]);
 
   const handleBadgeClick = (badge) => {
-    // Badge click handler - can be used to show badge details modal
-    setSelectedBadge?.(badge);
+    // Badge click handler - placeholder for future badge details modal
+    console.debug('Badge clicked:', badge.name);
   };
 
   if (loading) {

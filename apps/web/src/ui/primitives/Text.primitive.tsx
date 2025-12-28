@@ -59,7 +59,7 @@ const Text: React.FC<TextProps> = ({
   className = '',
   style = {},
 }) => {
-  const Component = as;
+  const Component = as as keyof JSX.IntrinsicElements;
 
   const textStyle: React.CSSProperties = {
     ...styles.base,

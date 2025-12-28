@@ -160,7 +160,7 @@ export const CoachScheduledMessages: React.FC = () => {
 
   const handleDelete = async (e: React.MouseEvent, messageId: string) => {
     e.stopPropagation();
-    if (!confirm('Er du sikker på at du vil slette denne beskjeden?')) return;
+    if (!window.confirm('Er du sikker på at du vil slette denne beskjeden?')) return;
 
     try {
       setActionLoading(messageId);
@@ -175,7 +175,7 @@ export const CoachScheduledMessages: React.FC = () => {
 
   const handleSendNow = async (e: React.MouseEvent, messageId: string) => {
     e.stopPropagation();
-    if (!confirm('Er du sikker på at du vil sende denne beskjeden nå?')) return;
+    if (!window.confirm('Er du sikker på at du vil sende denne beskjeden nå?')) return;
 
     try {
       setActionLoading(messageId);

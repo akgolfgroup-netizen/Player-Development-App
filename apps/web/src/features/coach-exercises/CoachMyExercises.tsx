@@ -210,7 +210,7 @@ export const CoachMyExercises: React.FC = () => {
   };
 
   const handleDelete = async (exerciseId: string) => {
-    if (!confirm('Er du sikker på at du vil slette denne øvelsen?')) return;
+    if (!window.confirm('Er du sikker på at du vil slette denne øvelsen?')) return;
 
     try {
       setActionLoading(exerciseId);

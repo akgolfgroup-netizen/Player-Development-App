@@ -112,7 +112,7 @@ const Tabs: React.FC<TabsProps> = ({
       {/* Tab List */}
       <div
         role="tablist"
-        aria-orientation={orientation}
+        aria-orientation={orientation as 'horizontal' | 'vertical'}
         style={tabListStyle}
       >
         {tabs.map((tab, index) => {
