@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, User, TrendingUp, Calendar, Award, MessageCircle } from 'lucide-react';
 import { SkeletonCard, SkeletonLine, SkeletonCircle } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
+import { playersAPI, sessionsAPI, testsAPI } from '../services/api';
 
 const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
   const [loading, setLoading] = useState(true);
@@ -18,45 +19,89 @@ const MobileCoachAthleteDetail = ({ athleteId, onBack }) => {
     setError(null);
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await apiClient.get(`/coach/athletes/${athleteId}`);
+      const [playerRes, sessionsRes, testsRes] = await Promise.all([
+        playersAPI.getById(athleteId),
+        sessionsAPI.list({ playerId: athleteId }),
+        testsAPI.getResults(athleteId),
+      ]);
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const player = playerRes.data;
+      const sessionsData = sessionsRes.data.sessions || sessionsRes.data || [];
+      const testsData = testsRes.data.results || testsRes.data || [];
 
-      const mockData = {
-        id: athleteId,
-        name: 'Emma Hansen',
-        email: 'emma.hansen@example.com',
-        avatar: null,
-        handicap: 12.4,
-        level: 'B-nivå',
-        joinDate: '2024-01-15',
+      // Calculate stats
+      const now = new Date();
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const sessionsThisWeek = sessionsData.filter(
+        (s) => new Date(s.sessionDate || s.date) >= weekAgo
+      ).length;
+
+      // Map sessions
+      const recentSessions = sessionsData.slice(0, 5).map((s) => ({
+        id: s.id,
+        date: s.sessionDate?.split('T')[0] || s.date,
+        type: s.sessionType || s.type || 'Trening',
+        duration: s.duration || 60,
+        quality: s.quality || 'medium',
+      }));
+
+      // Map tests
+      const latestTests = testsData.slice(0, 5).map((t) => ({
+        id: t.id,
+        name: t.testName || t.name || 'Test',
+        date: t.date?.split('T')[0] || t.createdAt?.split('T')[0],
+        score: t.score || t.value || 0,
+        trend: t.trend || 'stable',
+      }));
+
+      // Get upcoming sessions
+      const upcomingSessions = sessionsData
+        .filter((s) => s.status !== 'completed' && new Date(s.sessionDate || s.date) > now)
+        .slice(0, 3)
+        .map((s) => ({
+          id: s.id,
+          date: s.sessionDate?.split('T')[0] || s.date,
+          time: s.startTime || s.sessionDate?.split('T')[1]?.slice(0, 5) || '00:00',
+          type: s.sessionType || s.type || 'Trening',
+        }));
+
+      setAthlete({
+        id: player.id,
+        name: player.name || `${player.firstName} ${player.lastName}`,
+        email: player.email || '',
+        avatar: player.avatar || null,
+        handicap: player.handicap || 0,
+        level: player.category || player.level || 'Ukjent',
+        joinDate: player.createdAt?.split('T')[0] || '',
         stats: {
-          sessionsThisWeek: 4,
-          totalSessions: 127,
-          avgScore: 78.5,
-          improvement: '+2.3',
+          sessionsThisWeek,
+          totalSessions: sessionsData.length,
+          avgScore: player.averageScore || 0,
+          improvement: player.improvement || '0',
         },
-        recentSessions: [
-          { id: 1, date: '2024-12-22', type: 'Putting', duration: 45, quality: 'high' },
-          { id: 2, date: '2024-12-20', type: 'Driver', duration: 60, quality: 'medium' },
-          { id: 3, date: '2024-12-19', type: 'Short Game', duration: 50, quality: 'high' },
-        ],
-        latestTests: [
-          { id: 1, name: 'Driver Accuracy', date: '2024-12-18', score: 85, trend: 'up' },
-          { id: 2, name: 'Putting Consistency', date: '2024-12-15', score: 78, trend: 'up' },
-          { id: 3, name: 'Approach Shots', date: '2024-12-10', score: 72, trend: 'stable' },
-        ],
-        upcomingSessions: [
-          { id: 1, date: '2024-12-24', time: '14:00', type: 'Technique Review' },
-          { id: 2, date: '2024-12-26', time: '10:00', type: 'Mental Training' },
-        ],
-      };
-
-      setAthlete(mockData);
+        recentSessions,
+        latestTests,
+        upcomingSessions,
+      });
     } catch (err) {
-      setError(err.message || 'Kunne ikke laste utøverdata');
+      // Fallback to empty state on 404
+      if (err.response?.status === 404) {
+        setAthlete({
+          id: athleteId,
+          name: 'Ukjent utøver',
+          email: '',
+          avatar: null,
+          handicap: 0,
+          level: 'Ukjent',
+          joinDate: '',
+          stats: { sessionsThisWeek: 0, totalSessions: 0, avgScore: 0, improvement: '0' },
+          recentSessions: [],
+          latestTests: [],
+          upcomingSessions: [],
+        });
+      } else {
+        setError(err.message || 'Kunne ikke laste utøverdata');
+      }
     } finally {
       setLoading(false);
     }

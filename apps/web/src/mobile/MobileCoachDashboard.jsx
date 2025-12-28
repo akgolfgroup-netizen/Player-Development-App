@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, TrendingUp, Calendar, Activity } from 'lucide-react';
 import { SkeletonCard, SkeletonLine } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
+import { coachesAPI } from '../services/api';
 
 const MobileCoachDashboard = () => {
   const [loading, setLoading] = useState(true);
@@ -17,32 +18,36 @@ const MobileCoachDashboard = () => {
     setError(null);
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await apiClient.get('/coach/dashboard/stats');
+      const [dashboardRes, scheduleRes] = await Promise.all([
+        coachesAPI.getDashboard(),
+        coachesAPI.getTodaySchedule(),
+      ]);
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      const dashboard = dashboardRes.data;
+      const schedule = scheduleRes.data;
 
-      const mockData = {
-        totalAthletes: 24,
-        activeToday: 12,
-        upcomingSessions: 5,
-        recentTests: 3,
-        activeAthletes: [
-          { id: 1, name: 'Emma Hansen', activity: 'Putting Practice', time: '10 min siden' },
-          { id: 2, name: 'Lars Olsen', activity: 'Range Session', time: '25 min siden' },
-          { id: 3, name: 'Maria Berg', activity: 'Course Play', time: '1 time siden' },
-        ],
-        upcomingSchedule: [
-          { id: 1, athlete: 'Emma Hansen', time: '14:00', type: 'Technique' },
-          { id: 2, athlete: 'Lars Olsen', time: '15:30', type: 'Strategy' },
-          { id: 3, athlete: 'Maria Berg', time: '16:00', type: 'Mental' },
-        ],
-      };
-
-      setStats(mockData);
+      setStats({
+        totalAthletes: dashboard.totalAthletes || 0,
+        activeToday: dashboard.activeToday || 0,
+        upcomingSessions: dashboard.upcomingSessions || 0,
+        recentTests: dashboard.recentTests || 0,
+        activeAthletes: dashboard.recentActivity || [],
+        upcomingSchedule: schedule.sessions || [],
+      });
     } catch (err) {
-      setError(err.message || 'Kunne ikke laste dashboard-data');
+      // Fallback to empty state on 404 (endpoint not implemented)
+      if (err.response?.status === 404) {
+        setStats({
+          totalAthletes: 0,
+          activeToday: 0,
+          upcomingSessions: 0,
+          recentTests: 0,
+          activeAthletes: [],
+          upcomingSchedule: [],
+        });
+      } else {
+        setError(err.message || 'Kunne ikke laste dashboard-data');
+      }
     } finally {
       setLoading(false);
     }

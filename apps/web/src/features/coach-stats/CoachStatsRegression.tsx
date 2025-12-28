@@ -262,36 +262,36 @@ export const CoachStatsRegression: React.FC = () => {
           border: '1px solid rgba(239, 68, 68, 0.2)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-            <AlertTriangle size={14} color="#dc2626" />
-            <p style={{ fontSize: '12px', color: '#dc2626', margin: 0 }}>Høy risiko</p>
+            <AlertTriangle size={14} color="var(--error)" />
+            <p style={{ fontSize: '12px', color: 'var(--error)', margin: 0 }}>Høy risiko</p>
           </div>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: '#dc2626', margin: 0 }}>
+          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--error)', margin: 0 }}>
             {stats.highRisk}
           </p>
         </div>
         <div style={{
-          backgroundColor: 'rgba(245, 158, 11, 0.05)',
+          backgroundColor: 'rgba(var(--warning-rgb), 0.05)',
           borderRadius: '12px',
           padding: '16px',
-          border: '1px solid rgba(245, 158, 11, 0.2)'
+          border: '1px solid rgba(var(--warning-rgb), 0.2)'
         }}>
-          <p style={{ fontSize: '12px', color: '#d97706', margin: '0 0 4px 0' }}>
+          <p style={{ fontSize: '12px', color: 'var(--warning)', margin: '0 0 4px 0' }}>
             Medium risiko
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: '#d97706', margin: 0 }}>
+          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--warning)', margin: 0 }}>
             {stats.mediumRisk}
           </p>
         </div>
         <div style={{
-          backgroundColor: 'rgba(34, 197, 94, 0.05)',
+          backgroundColor: 'rgba(var(--success-rgb), 0.05)',
           borderRadius: '12px',
           padding: '16px',
-          border: '1px solid rgba(34, 197, 94, 0.2)'
+          border: '1px solid rgba(var(--success-rgb), 0.2)'
         }}>
-          <p style={{ fontSize: '12px', color: '#16a34a', margin: '0 0 4px 0' }}>
+          <p style={{ fontSize: '12px', color: 'var(--success)', margin: '0 0 4px 0' }}>
             Lav risiko
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: '#16a34a', margin: 0 }}>
+          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--success)', margin: 0 }}>
             {stats.lowRisk}
           </p>
         </div>
@@ -436,8 +436,8 @@ export const CoachStatsRegression: React.FC = () => {
                       flexWrap: 'wrap'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Clock size={14} color="#dc2626" />
-                        <span style={{ fontSize: '13px', color: '#dc2626', fontWeight: '500' }}>
+                        <Clock size={14} color="var(--error)" />
+                        <span style={{ fontSize: '13px', color: 'var(--error)', fontWeight: '500' }}>
                           {player.daysSinceSession} dager siden sist
                         </span>
                       </div>

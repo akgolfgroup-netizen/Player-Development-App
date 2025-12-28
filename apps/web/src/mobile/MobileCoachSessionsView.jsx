@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, Filter, Search } from 'lucide-react';
 import { SkeletonCard } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
+import { sessionsAPI } from '../services/api';
 
 const MobileCoachSessionsView = () => {
   const [loading, setLoading] = useState(true);
@@ -19,68 +20,39 @@ const MobileCoachSessionsView = () => {
     setError(null);
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await apiClient.get(`/coach/sessions?filter=${filter}`);
+      const params = {};
+      if (filter === 'today') {
+        const today = new Date().toISOString().split('T')[0];
+        params.date = today;
+      } else if (filter === 'upcoming') {
+        params.status = 'scheduled';
+      } else if (filter === 'past') {
+        params.status = 'completed';
+      }
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const response = await sessionsAPI.list(params);
+      const sessionsData = response.data.sessions || response.data || [];
 
-      const mockSessions = [
-        {
-          id: 1,
-          athlete: 'Emma Hansen',
-          date: '2024-12-23',
-          time: '14:00',
-          duration: 60,
-          type: 'Technique',
-          status: 'upcoming',
-          notes: 'Focus on driver swing plane',
-        },
-        {
-          id: 2,
-          athlete: 'Lars Olsen',
-          date: '2024-12-23',
-          time: '15:30',
-          duration: 45,
-          type: 'Strategy',
-          status: 'upcoming',
-          notes: 'Course management discussion',
-        },
-        {
-          id: 3,
-          athlete: 'Maria Berg',
-          date: '2024-12-22',
-          time: '10:00',
-          duration: 60,
-          type: 'Mental',
-          status: 'completed',
-          notes: 'Pre-round routine practice',
-        },
-        {
-          id: 4,
-          athlete: 'Emma Hansen',
-          date: '2024-12-21',
-          time: '16:00',
-          duration: 50,
-          type: 'Short Game',
-          status: 'completed',
-          notes: 'Chipping from various lies',
-        },
-        {
-          id: 5,
-          athlete: 'Johan Vik',
-          date: '2024-12-24',
-          time: '11:00',
-          duration: 60,
-          type: 'Full Swing',
-          status: 'upcoming',
-          notes: 'Iron contact improvement',
-        },
-      ];
+      // Map API response to expected format
+      const mappedSessions = sessionsData.map((s) => ({
+        id: s.id,
+        athlete: s.player?.name || s.playerName || 'Ukjent utøver',
+        date: s.sessionDate?.split('T')[0] || s.date,
+        time: s.startTime || s.sessionDate?.split('T')[1]?.slice(0, 5) || '00:00',
+        duration: s.duration || 60,
+        type: s.sessionType || s.type || 'Trening',
+        status: s.status === 'completed' ? 'completed' : 'upcoming',
+        notes: s.notes || s.coachNotes || '',
+      }));
 
-      setSessions(mockSessions);
+      setSessions(mappedSessions);
     } catch (err) {
-      setError(err.message || 'Kunne ikke laste økter');
+      // Fallback to empty state on 404
+      if (err.response?.status === 404) {
+        setSessions([]);
+      } else {
+        setError(err.message || 'Kunne ikke laste økter');
+      }
     } finally {
       setLoading(false);
     }

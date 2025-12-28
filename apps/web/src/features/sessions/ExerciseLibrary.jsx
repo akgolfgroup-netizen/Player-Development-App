@@ -733,7 +733,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
   };
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* PageHeader */}
       <PageHeader
         title="Øvelsesbibliotek"

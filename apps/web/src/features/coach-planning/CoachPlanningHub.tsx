@@ -198,10 +198,10 @@ export const CoachPlanningHub: React.FC = () => {
           border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <User size={16} color="#f59e0b" />
+            <User size={16} color="var(--warning)" />
             <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Mangler plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: '#f59e0b', margin: 0 }}>
+          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--warning)', margin: 0 }}>
             {stats.playersWithoutPlan}
           </p>
         </div>
@@ -212,10 +212,10 @@ export const CoachPlanningHub: React.FC = () => {
           border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <Users size={16} color="#16a34a" />
+            <Users size={16} color="var(--success)" />
             <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Grupper med plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: '#16a34a', margin: 0 }}>
+          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--success)', margin: 0 }}>
             {stats.groupsWithPlan}
           </p>
         </div>
@@ -226,10 +226,10 @@ export const CoachPlanningHub: React.FC = () => {
           border: `1px solid ${'var(--border-default)'}`
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <Users size={16} color="#dc2626" />
+            <Users size={16} color="var(--error)" />
             <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Grupper uten plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: '#dc2626', margin: 0 }}>
+          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--error)', margin: 0 }}>
             {stats.groupsWithoutPlan}
           </p>
         </div>

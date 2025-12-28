@@ -1,6 +1,7 @@
 import React from 'react';
 // UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
+import StateCard from '../../ui/composites/StateCard';
 
 // Design tokens
 const colors = {
@@ -18,7 +19,7 @@ const colors = {
 };
 
 export default function ProgressDashboard({ data }) {
-  if (!data) return <div style={{ padding: '32px', color: colors.steel }}>Laster data...</div>;
+  if (!data) return <StateCard variant="loading" title="Laster fremgangsdata..." />;
 
   const { overview, weeklyTrend, periodBreakdown, upcomingSessions } = data;
 

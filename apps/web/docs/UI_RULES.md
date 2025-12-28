@@ -168,4 +168,8 @@ Exceptions require:
 
 ## Changelog
 
+- **v1.1** (2025-12-28): UiCanon locked - polish complete
+  - All hardcoded hex colors replaced with semantic CSS variables
+  - StateCard used consistently for loading/empty/error states
+  - UiCanon enforcement script passes with zero violations
 - **v1.0** (2025-12-28): Initial lock

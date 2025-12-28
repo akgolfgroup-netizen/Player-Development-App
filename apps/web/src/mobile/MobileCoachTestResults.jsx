@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Minus, BarChart3, Users } from 'lucide-react';
 import { SkeletonCard } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
+import { testsAPI, coachesAPI } from '../services/api';
 
 const MobileCoachTestResults = () => {
   const [loading, setLoading] = useState(true);
@@ -18,90 +19,64 @@ const MobileCoachTestResults = () => {
     setError(null);
 
     try {
-      // TODO: Replace with actual API call
-      // const response = await apiClient.get('/coach/test-results/recent');
+      // Get all athletes for the coach, then fetch their test results
+      const athletesRes = await coachesAPI.getAthletes();
+      const athletes = athletesRes.data.athletes || athletesRes.data || [];
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 900));
+      // Fetch test results for all athletes
+      const allResults = [];
+      for (const athlete of athletes.slice(0, 10)) { // Limit to 10 athletes
+        try {
+          const testsRes = await testsAPI.getResults(athlete.id);
+          const tests = testsRes.data.results || testsRes.data || [];
+          tests.forEach((t) => {
+            allResults.push({
+              ...t,
+              athleteName: athlete.name || `${athlete.firstName} ${athlete.lastName}`,
+            });
+          });
+        } catch {
+          // Skip athletes without test results
+        }
+      }
 
-      const mockResults = [
-        {
-          id: 1,
-          athlete: 'Emma Hansen',
-          testName: 'Driver Accuracy',
-          category: 'technique',
-          date: '2024-12-22',
-          score: 85,
-          previousScore: 78,
-          trend: 'up',
-          improvement: 9,
-          notes: 'Excellent progress on ball flight control',
-        },
-        {
-          id: 2,
-          athlete: 'Lars Olsen',
-          testName: 'Putting Consistency',
-          category: 'technique',
-          date: '2024-12-21',
-          score: 72,
-          previousScore: 75,
-          trend: 'down',
-          improvement: -4,
-          notes: 'Need to work on distance control',
-        },
-        {
-          id: 3,
-          athlete: 'Maria Berg',
-          testName: 'Mental Toughness',
-          category: 'mental',
-          date: '2024-12-20',
-          score: 88,
-          previousScore: 85,
-          trend: 'up',
-          improvement: 3.5,
-          notes: 'Showing great resilience under pressure',
-        },
-        {
-          id: 4,
-          athlete: 'Johan Vik',
-          testName: 'Core Stability',
-          category: 'physical',
-          date: '2024-12-20',
-          score: 91,
-          previousScore: 91,
-          trend: 'stable',
-          improvement: 0,
-          notes: 'Maintaining excellent form',
-        },
-        {
-          id: 5,
-          athlete: 'Emma Hansen',
-          testName: 'Short Game Precision',
-          category: 'technique',
-          date: '2024-12-19',
-          score: 79,
-          previousScore: 72,
-          trend: 'up',
-          improvement: 9.7,
-          notes: 'Chipping technique significantly improved',
-        },
-        {
-          id: 6,
-          athlete: 'Sara Nilsen',
-          testName: 'Flexibility Assessment',
-          category: 'physical',
-          date: '2024-12-18',
-          score: 83,
-          previousScore: 80,
-          trend: 'up',
-          improvement: 3.8,
-          notes: 'ROM improvements in shoulder rotation',
-        },
-      ];
+      // Sort by date descending and map to expected format
+      const sortedResults = allResults
+        .sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt))
+        .slice(0, 20)
+        .map((t) => {
+          const score = t.score || t.value || 0;
+          const previousScore = t.previousScore || t.previousValue || score;
+          const improvement = previousScore > 0
+            ? Math.round(((score - previousScore) / previousScore) * 100 * 10) / 10
+            : 0;
 
-      setTestResults(mockResults);
+          let trend = 'stable';
+          if (improvement > 2) trend = 'up';
+          else if (improvement < -2) trend = 'down';
+
+          return {
+            id: t.id,
+            athlete: t.athleteName,
+            testName: t.testName || t.name || 'Test',
+            category: t.category || 'technique',
+            date: t.date?.split('T')[0] || t.createdAt?.split('T')[0],
+            score,
+            previousScore,
+            trend,
+            improvement,
+            notes: t.notes || t.coachNotes || '',
+          };
+        });
+
+      setTestResults(sortedResults);
     } catch (err) {
-      setError(err.message || 'Kunne ikke laste testresultater');
+      // Fallback to empty state on 404
+      if (err.response?.status === 404) {
+        setTestResults([]);
+      } else {
+        setError(err.message || 'Kunne ikke laste testresultater');
+      }
     } finally {
       setLoading(false);
     }

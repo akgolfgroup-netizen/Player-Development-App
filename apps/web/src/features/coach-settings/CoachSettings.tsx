@@ -699,8 +699,8 @@ export const CoachSettings: React.FC = () => {
                   marginBottom: '24px'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                    <Shield size={20} color="#2563eb" />
-                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#2563eb' }}>
+                    <Shield size={20} color="var(--accent)" />
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--accent)' }}>
                       Din konto er beskyttet
                     </span>
                   </div>
@@ -765,10 +765,10 @@ export const CoachSettings: React.FC = () => {
                     backgroundColor: 'rgba(239, 68, 68, 0.05)',
                     cursor: 'pointer'
                   }}>
-                    <span style={{ fontSize: '14px', color: '#dc2626' }}>
+                    <span style={{ fontSize: '14px', color: 'var(--error)' }}>
                       Slett konto
                     </span>
-                    <ChevronRight size={18} color="#dc2626" />
+                    <ChevronRight size={18} color="var(--error)" />
                   </button>
                 </div>
               </div>

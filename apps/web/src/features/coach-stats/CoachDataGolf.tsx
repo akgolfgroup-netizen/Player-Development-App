@@ -367,13 +367,13 @@ export const CoachDataGolf: React.FC = () => {
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              backgroundColor: '#16a34a'
+              backgroundColor: 'var(--success)'
             }} />
             <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
               Med testdata
             </p>
           </div>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: '#16a34a', margin: 0 }}>
+          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--success)', margin: 0 }}>
             {stats.connectedPlayers}
           </p>
         </div>
