@@ -24,6 +24,7 @@ import Modal from '../../ui/composites/Modal.composite';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface GroupMember {
   id: string;
@@ -245,57 +246,22 @@ export default function CoachGroupList() {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header */}
-      <div style={{ padding: '24px', paddingBottom: '16px' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            marginBottom: '16px',
-          }}
-        >
-          <div>
-            <h1
-              style={{
-                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
-              Mine grupper
-            </h1>
-            <p
-              style={{
-                fontSize: '15px', lineHeight: '20px',
-                color: 'var(--text-secondary)',
-                margin: '4px 0 0',
-              }}
-            >
-              {groups.length} grupper · {totalMembers} spillere totalt
-            </p>
-          </div>
-
-          <button
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Mine grupper"
+        subtitle={`${groups.length} grupper · ${totalMembers} spillere totalt`}
+        actions={
+          <Button
+            variant="primary"
             onClick={() => navigate('/coach/groups/create')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 18px',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
+            leftIcon={<Plus size={18} />}
           >
-            <Plus size={18} />
             Ny gruppe
-          </button>
-        </div>
+          </Button>
+        }
+      />
+
+      <div style={{ padding: '0 24px' }}>
 
         {/* Quick stats */}
         <div

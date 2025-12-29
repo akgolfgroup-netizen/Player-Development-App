@@ -10,6 +10,8 @@ import {
   Loader2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import Button from '../../ui/primitives/Button';
 
 interface Player {
   id: string;
@@ -150,61 +152,23 @@ export const CoachPlanningHub: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent)'})`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <ClipboardList size={24} color="white" />
-            </div>
-            <div>
-              <h1 style={{
-                fontSize: '28px',
-                fontWeight: '700',
-                color: 'var(--text-primary)',
-                margin: 0
-              }}>
-                Treningsplanlegger
-              </h1>
-              <p style={{
-                fontSize: '14px',
-                color: 'var(--text-secondary)',
-                margin: 0
-              }}>
-                Velg spiller eller gruppe for å opprette/redigere treningsplan
-              </p>
-            </div>
-          </div>
-          <button
+    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Treningsplanlegger"
+        subtitle="Velg spiller eller gruppe for å opprette/redigere treningsplan"
+        actions={
+          <Button
+            variant="secondary"
+            leftIcon={<FileText size={18} />}
             onClick={() => navigate('/coach/exercises/templates')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '12px 20px',
-              borderRadius: '10px',
-              border: `1px solid ${'var(--border-default)'}`,
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-secondary)',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer'
-            }}
           >
-            <FileText size={18} />
             Maler
-          </button>
-        </div>
-      </div>
+          </Button>
+        }
+      />
+
+      <div style={{ padding: '0 24px 24px' }}>
 
       {/* Stats Cards */}
       <div style={{
@@ -584,6 +548,7 @@ export const CoachPlanningHub: React.FC = () => {
           </p>
         </div>
       )}
+      </div>
     </div>
   );
 };

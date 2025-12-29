@@ -17,6 +17,7 @@ import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface Message {
   id: string;
@@ -227,47 +228,23 @@ export const CoachMessageList: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: 48,
-            height: 48,
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-accent-subtle)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <MessageCircle size={24} color="var(--accent)" />
-          </div>
-          <div>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
-              Sendte beskjeder
-            </h1>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-secondary)',
-              margin: 0,
-            }}>
-              {stats.total} beskjeder sendt • {stats.read} lest
-            </p>
-          </div>
-        </div>
-        <Button
-          variant="primary"
-          leftIcon={<Plus size={18} />}
-          onClick={() => navigate('/coach/messages/compose')}
-        >
-          Ny beskjed
-        </Button>
-      </div>
+    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Sendte beskjeder"
+        subtitle={`${stats.total} beskjeder sendt • ${stats.read} lest`}
+        actions={
+          <Button
+            variant="primary"
+            leftIcon={<Plus size={18} />}
+            onClick={() => navigate('/coach/messages/compose')}
+          >
+            Ny beskjed
+          </Button>
+        }
+      />
+
+      <div style={{ padding: '0 24px 24px' }}>
 
       {/* Search and Filter */}
       <div style={{
@@ -428,6 +405,7 @@ export const CoachMessageList: React.FC = () => {
           title="Ingen beskjeder funnet"
         />
       )}
+      </div>
     </div>
   );
 };

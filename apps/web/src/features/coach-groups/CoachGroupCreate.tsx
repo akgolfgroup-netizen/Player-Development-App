@@ -8,7 +8,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft,
   Users,
   X,
   Search,
@@ -17,6 +16,7 @@ import {
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface AvailablePlayer {
   id: string;
@@ -175,54 +175,12 @@ export default function CoachGroupCreate() {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-          padding: '20px 24px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <button
-            onClick={() => navigate('/coach/groups')}
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-          >
-            <ArrowLeft size={20} color={'var(--text-primary)'} />
-          </button>
-
-          <div>
-            <h1
-              style={{
-                fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
-              Opprett ny gruppe
-            </h1>
-            <p
-              style={{
-                fontSize: '15px', lineHeight: '20px',
-                color: 'var(--text-secondary)',
-                margin: '4px 0 0',
-              }}
-            >
-              Legg til spillere og konfigurer gruppen
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Opprett ny gruppe"
+        subtitle="Legg til spillere og konfigurer gruppen"
+        onBack={() => navigate('/coach/groups')}
+      />
 
       <form onSubmit={handleSubmit}>
         <div style={{ padding: '24px', maxWidth: '800px' }}>

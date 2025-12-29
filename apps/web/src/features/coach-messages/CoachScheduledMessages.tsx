@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { messagesAPI } from '../../services/api';
 
 interface ScheduledMessage {
@@ -194,61 +195,23 @@ export const CoachScheduledMessages: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, #f59e0b, #d97706)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <Clock size={24} color="white" />
-            </div>
-            <div>
-              <h1 style={{
-                fontSize: '28px',
-                fontWeight: '700',
-                color: 'var(--text-primary)',
-                margin: 0
-              }}>
-                Planlagte beskjeder
-              </h1>
-              <p style={{
-                fontSize: '14px',
-                color: 'var(--text-secondary)',
-                margin: 0
-              }}>
-                {mockScheduledMessages.length} beskjeder i kø
-              </p>
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/coach/messages/compose')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            borderRadius: '10px',
-            border: 'none',
-            backgroundColor: 'var(--accent)',
-            color: 'white',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer'
-          }}
-        >
-          <Plus size={18} />
-          Ny planlagt beskjed
-        </button>
-      </div>
+    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Planlagte beskjeder"
+        subtitle={`${mockScheduledMessages.length} beskjeder i kø`}
+        actions={
+          <Button
+            variant="primary"
+            leftIcon={<Plus size={18} />}
+            onClick={() => navigate('/coach/messages/compose')}
+          >
+            Ny planlagt beskjed
+          </Button>
+        }
+      />
+
+      <div style={{ padding: '0 24px 24px' }}>
 
       {/* Search */}
       <div style={{ position: 'relative', marginBottom: '20px' }}>
@@ -519,6 +482,7 @@ export const CoachScheduledMessages: React.FC = () => {
           )}
         </div>
       )}
+      </div>
     </div>
   );
 };

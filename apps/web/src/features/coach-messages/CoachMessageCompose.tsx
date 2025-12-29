@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
   Send,
-  ArrowLeft,
   Users,
   User,
   X,
@@ -14,6 +13,7 @@ import { messagesAPI } from '../../services/api';
 import { sanitizeText, sanitizeSearchQuery } from '../../utils/sanitize';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface Recipient {
   id: string;
@@ -112,35 +112,15 @@ export const CoachMessageCompose: React.FC = () => {
   const canSend = subject.trim() && message.trim() && (sendToAll || selectedRecipients.length > 0);
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate('/coach/messages')}
-          leftIcon={<ArrowLeft size={20} />}
-        >
-          Tilbake
-        </Button>
-        <div>
-          <h1 style={{
-            fontSize: '24px',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
-            Ny beskjed
-          </h1>
-          <p style={{
-            fontSize: '14px',
-            color: 'var(--text-secondary)',
-            margin: 0,
-          }}>
-            Send til spillere eller grupper
-          </p>
-        </div>
-      </div>
+    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Ny beskjed"
+        subtitle="Send til spillere eller grupper"
+        onBack={() => navigate('/coach/messages')}
+      />
+
+      <div style={{ padding: '0 24px 24px' }}>
 
       <Card variant="default" padding="none" style={{ overflow: 'hidden' }}>
         {/* Recipients Section */}
@@ -515,6 +495,7 @@ export const CoachMessageCompose: React.FC = () => {
           }}
         />
       )}
+      </div>
     </div>
   );
 };
