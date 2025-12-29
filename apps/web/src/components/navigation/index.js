@@ -5,6 +5,7 @@
  * Designed for premium professional golf development platform.
  *
  * Exports:
+ * - AppShellV2: Complete application shell with navigation
  * - NavigationProvider: Context provider for navigation state
  * - useNavigation: Hook to access navigation state
  * - SideNavigationDesktop: Desktop rail + flyout navigation
@@ -14,6 +15,7 @@
  * - navigationSections: Navigation data structure
  */
 
+export { default as AppShellV2 } from './AppShellV2';
 export { NavigationProvider, useNavigation } from './NavigationContext';
 export { default as SideNavigationDesktop } from './SideNavigationDesktop';
 export { default as SideNavigationMobile } from './SideNavigationMobile';
