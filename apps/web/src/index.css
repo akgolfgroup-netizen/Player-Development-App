@@ -2262,3 +2262,44 @@ html {
     scroll-behavior: auto !important;
   }
 }
+
+/* ═══════════════════════════════════════════
+   SPLIT SCREEN LANDING PAGE
+   ═══════════════════════════════════════════ */
+
+/* Mobile: Stack panels vertically */
+@media (max-width: 767px) {
+  .split-screen-landing {
+    flex-direction: column;
+  }
+
+  .split-screen-left,
+  .split-screen-right {
+    flex: none;
+    width: 100%;
+    min-height: auto;
+    padding: 32px 20px;
+    border-left: none;
+  }
+
+  .split-screen-right {
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .split-headline {
+    font-size: 32px !important;
+  }
+
+  .split-description {
+    font-size: 16px !important;
+  }
+
+  .split-ctas {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .split-ctas button {
+    width: 100%;
+  }
+}

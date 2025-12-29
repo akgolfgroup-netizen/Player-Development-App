@@ -8,7 +8,7 @@
  */
 
 import React from 'react';
-import TopNavbar from './TopNavbar';
+import DashboardHeader from './DashboardHeader';
 import BackToTop from '../ui/BackToTop';
 
 export default function ApplicationLayoutTopNav({ children, title, subtitle, actions }) {
@@ -22,8 +22,8 @@ export default function ApplicationLayoutTopNav({ children, title, subtitle, act
         Hopp til hovedinnhold
       </a>
 
-      {/* Top Navigation */}
-      <TopNavbar />
+      {/* Top Navigation - Premium header with flyout menus */}
+      <DashboardHeader />
 
       {/* Page Header */}
       {(title || subtitle || actions) && (
