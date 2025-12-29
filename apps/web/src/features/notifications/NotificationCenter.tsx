@@ -23,6 +23,7 @@ import {
   PlayCircle,
 } from 'lucide-react';
 import { useNotifications } from '../../hooks/useNotifications';
+import Button from '../../ui/primitives/Button';
 
 interface NotificationCenterProps {
   userId?: string;
@@ -167,25 +168,14 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
         </div>
 
         {unreadCount > 0 && (
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={markAllAsRead}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              backgroundColor: 'transparent',
-              color: 'var(--accent)',
-              border: `1px solid ${'var(--accent)'}`,
-              borderRadius: 'var(--radius-md)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
+            leftIcon={<Check size={16} />}
           >
-            <Check size={16} />
             Merk alle som lest
-          </button>
+          </Button>
         )}
       </div>
 

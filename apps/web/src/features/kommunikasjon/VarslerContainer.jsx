@@ -4,6 +4,7 @@ import {
   MessageSquare, Award, AlertCircle, Clock, Filter, Trash2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA
@@ -319,25 +320,14 @@ const VarslerContainer = () => {
           </div>
 
           {unreadCount > 0 && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleMarkAllRead}
-              style={{
-                padding: '8px 14px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: 'var(--bg-primary)',
-                color: 'var(--accent)',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}
+              leftIcon={<Check size={14} />}
             >
-              <Check size={14} />
               Merk alle som lest
-            </button>
+            </Button>
           )}
         </div>
 

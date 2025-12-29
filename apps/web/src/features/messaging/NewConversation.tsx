@@ -14,6 +14,7 @@ import {
   Search,
   X,
 } from 'lucide-react';
+import Button from '../../ui/primitives/Button';
 
 interface Contact {
   id: string;
@@ -402,29 +403,15 @@ export default function NewConversation({ userId }: NewConversationProps) {
               justifyContent: 'flex-end',
             }}
           >
-            <button
+            <Button
+              variant="primary"
               onClick={handleSend}
               disabled={!message.trim() || sending}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 20px',
-                backgroundColor: message.trim()
-                  ? 'var(--accent)'
-                  : 'var(--border-default)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: message.trim() ? 'pointer' : 'not-allowed',
-                opacity: sending ? 0.7 : 1,
-              }}
+              loading={sending}
+              leftIcon={<Send size={16} />}
             >
-              <Send size={16} />
               {sending ? 'Sender...' : 'Send melding'}
-            </button>
+            </Button>
           </div>
         </div>
       )}
