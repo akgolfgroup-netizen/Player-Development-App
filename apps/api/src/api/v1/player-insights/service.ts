@@ -71,11 +71,16 @@ export class PlayerInsightsService {
       select: { gender: true, category: true, createdAt: true },
     });
 
-    // Get test results for SG calculation
+    // Get test results for SG calculation (filter by test.testNumber via relation)
     const testResults = await this.prisma.testResult.findMany({
       where: {
         playerId,
-        testNumber: { in: [8, 9, 10, 11, 15, 16, 17, 18] },
+        test: {
+          testNumber: { in: [8, 9, 10, 11, 15, 16, 17, 18] },
+        },
+      },
+      include: {
+        test: { select: { testNumber: true } },
       },
       orderBy: { testDate: 'desc' },
       take: 100,
@@ -91,19 +96,20 @@ export class PlayerInsightsService {
     const categoryTotals = { approach: 0, aroundGreen: 0, putting: 0 };
     const categoryCounts = { approach: 0, aroundGreen: 0, putting: 0 };
 
-    for (const test of testResults) {
-      const sg = this.calculateTestSG(test);
+    for (const result of testResults) {
+      const testNumber = result.test.testNumber;
+      const sg = this.calculateTestSG({ ...result, testNumber });
 
-      sgHistory.push({ date: test.testDate, sg: sg.total });
+      sgHistory.push({ date: result.testDate, sg: sg.total });
 
       // Accumulate by category
-      if ([8, 9, 10, 11].includes(test.testNumber)) {
+      if ([8, 9, 10, 11].includes(testNumber)) {
         categoryTotals.approach += sg.total;
         categoryCounts.approach++;
-      } else if ([17, 18].includes(test.testNumber)) {
+      } else if ([17, 18].includes(testNumber)) {
         categoryTotals.aroundGreen += sg.total;
         categoryCounts.aroundGreen++;
-      } else if ([15, 16].includes(test.testNumber)) {
+      } else if ([15, 16].includes(testNumber)) {
         categoryTotals.putting += sg.total;
         categoryCounts.putting++;
       }
@@ -151,17 +157,19 @@ export class PlayerInsightsService {
 
     const gender = (player?.gender === 'K' ? 'K' : 'M') as 'M' | 'K';
 
-    // Get latest test results by type
+    // Get latest test results by type (include test relation for testNumber)
     const testResults = await this.prisma.testResult.findMany({
       where: { playerId },
+      include: { test: { select: { testNumber: true } } },
       orderBy: { testDate: 'desc' },
     });
 
     // Group by test number and take latest
-    const latestByTest = new Map<number, typeof testResults[0]>();
+    const latestByTest = new Map<number, (typeof testResults)[0]>();
     for (const result of testResults) {
-      if (!latestByTest.has(result.testNumber)) {
-        latestByTest.set(result.testNumber, result);
+      const testNumber = result.test.testNumber;
+      if (!latestByTest.has(testNumber)) {
+        latestByTest.set(testNumber, result);
       }
     }
 
@@ -178,40 +186,40 @@ export class PlayerInsightsService {
     // Distance tests (1-4)
     for (const testNum of [1, 2, 3, 4]) {
       const result = latestByTest.get(testNum);
-      if (result?.score) {
-        dimensionTests.distance.push({ testNumber: testNum, value: result.score });
+      if (result?.value) {
+        dimensionTests.distance.push({ testNumber: testNum, value: Number(result.value) });
       }
     }
 
     // Speed tests (5-7)
     for (const testNum of [5, 6, 7]) {
       const result = latestByTest.get(testNum);
-      if (result?.score) {
-        dimensionTests.speed.push({ testNumber: testNum, value: result.score });
+      if (result?.value) {
+        dimensionTests.speed.push({ testNumber: testNum, value: Number(result.value) });
       }
     }
 
-    // Accuracy/Approach tests (8-11) - using PEI
+    // Accuracy/Approach tests (8-11) - using PEI or value
     for (const testNum of [8, 9, 10, 11]) {
       const result = latestByTest.get(testNum);
-      if (result?.score) {
-        dimensionTests.accuracy.push({ testNumber: testNum, value: result.score });
+      if (result?.value) {
+        dimensionTests.accuracy.push({ testNumber: testNum, value: Number(result.pei || result.value) });
       }
     }
 
     // Short game tests (17-18)
     for (const testNum of [17, 18]) {
       const result = latestByTest.get(testNum);
-      if (result?.score) {
-        dimensionTests.shortGame.push({ testNumber: testNum, value: result.score });
+      if (result?.value) {
+        dimensionTests.shortGame.push({ testNumber: testNum, value: Number(result.value) });
       }
     }
 
     // Putting tests (15-16)
     for (const testNum of [15, 16]) {
       const result = latestByTest.get(testNum);
-      if (result?.score) {
-        dimensionTests.putting.push({ testNumber: testNum, value: result.score });
+      if (result?.value) {
+        dimensionTests.putting.push({ testNumber: testNum, value: Number(result.value) });
       }
     }
 
@@ -356,15 +364,15 @@ export class PlayerInsightsService {
 
   private calculateTestSG(test: {
     testNumber: number;
-    score: number | null;
-    shots?: unknown;
+    value: unknown;
+    pei?: unknown;
   }): { total: number; category: string } {
     const distanceMap: Record<number, number> = {
       8: 25, 9: 50, 10: 75, 11: 100, 15: 3, 16: 6, 17: 15, 18: 15,
     };
 
     const distance = distanceMap[test.testNumber] || 50;
-    const pei = test.score || 20;
+    const pei = Number(test.pei || test.value) || 20;
 
     // Determine lie based on test
     const lie = test.testNumber === 18 ? 'bunker' : 'fairway';
