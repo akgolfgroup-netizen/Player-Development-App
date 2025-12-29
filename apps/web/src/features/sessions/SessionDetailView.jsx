@@ -4,10 +4,13 @@
  * Viser full økt med alle blokker når spiller trykker på en økt.
  * Basert på: APP_FUNCTIONALITY.md Section 6
  * Design: Blue Palette 01 (v3.0)
+ *
+ * Uses design system components for consistent styling.
  */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { tokens } from '../../design-tokens';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { Button } from '../../ui/primitives';
 
 // Learning phase colors - Blue Palette 01
 const learningPhaseColors = {
@@ -257,44 +260,17 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
       minHeight: '100vh',
       fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
     }}>
-      {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '16px',
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: '1px solid var(--border-default)',
-        }}
-      >
-        <button
-          onClick={onBack}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            background: 'none',
-            border: 'none',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-            fontSize: '15px', lineHeight: '20px',
-          }}
-        >
-          ← Tilbake
-        </button>
-        <button
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--text-secondary)',
-            cursor: 'pointer',
-            fontSize: '20px',
-          }}
-        >
-          ⋮
-        </button>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Treningsøkt"
+        subtitle={session.date}
+        onBack={onBack}
+        actions={
+          <Button variant="ghost" size="sm">
+            ⋮
+          </Button>
+        }
+      />
 
       {/* Session info */}
       <div style={{ padding: '24px' }}>

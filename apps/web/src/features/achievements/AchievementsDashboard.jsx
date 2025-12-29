@@ -1,3 +1,13 @@
+/**
+ * AchievementsDashboard - Achievements and XP overview
+ *
+ * Shows player achievements with:
+ * - Total XP and unlocked badges
+ * - Category filters
+ * - Progress to next levels
+ *
+ * Uses design system colors (Blue Palette 01) for consistent styling.
+ */
 import React, { useState, useEffect } from 'react';
 import apiClient from '../../services/apiClient';
 
@@ -38,18 +48,18 @@ export default function AchievementsDashboard({ planId }) {
 
   return (
     <div className="space-y-6">
-      {/* XP Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+      {/* XP Header - using AK Golf Academy brand colors */}
+      <div className="bg-gradient-to-r from-ak-primary to-ak-primary-light rounded-lg shadow-lg p-6 text-white">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold">Achievements</h1>
-            <p className="text-purple-100 mt-1">
+            <p className="text-white/80 mt-1">
               {unlockedAchievements} / {availableAchievements} badges unlocked
             </p>
           </div>
           <div className="text-right">
             <div className="text-4xl font-bold">{totalXP}</div>
-            <div className="text-purple-100">Total XP</div>
+            <div className="text-white/80">Total XP</div>
           </div>
         </div>
       </div>
@@ -62,8 +72,8 @@ export default function AchievementsDashboard({ planId }) {
             onClick={() => setFilter(cat)}
             className={`px-4 py-2 rounded-lg font-medium capitalize whitespace-nowrap ${
               filter === cat
-                ? 'bg-purple-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-ak-primary text-white'
+                : 'bg-ak-surface text-ak-ink hover:bg-ak-surface/80'
             }`}
           >
             {cat}
@@ -88,7 +98,7 @@ function AchievementCard({ achievement }) {
   return (
     <div
       className={`rounded-lg shadow p-6 ${
-        isUnlocked ? 'bg-white border-2 border-purple-200' : 'bg-gray-50 opacity-75'
+        isUnlocked ? 'bg-white border-2 border-ak-primary/20' : 'bg-ak-snow opacity-75'
       }`}
     >
       <div className="flex items-start gap-4">
@@ -98,11 +108,11 @@ function AchievementCard({ achievement }) {
         <div className="flex-1">
           <div className="flex justify-between items-start mb-2">
             <div>
-              <h3 className="text-xl font-bold text-gray-900">{name}</h3>
-              <p className="text-sm text-gray-600">{description}</p>
+              <h3 className="text-xl font-bold text-ak-ink">{name}</h3>
+              <p className="text-sm text-ak-steel">{description}</p>
             </div>
             {totalXP > 0 && (
-              <span className="text-purple-600 font-bold text-lg">{totalXP} XP</span>
+              <span className="text-ak-gold font-bold text-lg">{totalXP} XP</span>
             )}
           </div>
 
@@ -122,17 +132,17 @@ function AchievementCard({ achievement }) {
           {/* Progress Bar */}
           {nextLevel && (
             <div className="mt-3">
-              <div className="flex justify-between text-sm text-gray-600 mb-1">
+              <div className="flex justify-between text-sm text-ak-steel mb-1">
                 <span>Progress to next level</span>
                 <span>{Math.round(progress)}%</span>
               </div>
-              <div className="bg-gray-200 rounded-full h-3 overflow-hidden">
+              <div className="bg-ak-mist rounded-full h-3 overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-purple-500 to-blue-500 h-full transition-all"
+                  className="bg-gradient-to-r from-ak-primary to-ak-primary-light h-full transition-all"
                   style={{ width: `${Math.min(progress, 100)}%` }}
                 />
               </div>
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-ak-steel mt-1">
                 Next: {nextLevel.title} ({nextLevel.requirement} required)
               </div>
             </div>
@@ -148,7 +158,7 @@ function AchievementCard({ achievement }) {
                     <div
                       key={level}
                       className={`w-8 h-8 rounded flex items-center justify-center text-xs font-bold ${
-                        isEarned ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-400'
+                        isEarned ? 'bg-ak-primary text-white' : 'bg-ak-mist text-ak-steel'
                       }`}
                     >
                       {level}

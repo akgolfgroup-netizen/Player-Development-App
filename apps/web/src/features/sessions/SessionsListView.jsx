@@ -5,15 +5,18 @@
  * - Filter by status, type, period, date range
  * - Session cards with key info
  * - Navigation to session detail/evaluation
+ *
+ * Uses design system components and CSS variables for consistent styling.
  */
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-// UiCanon: CSS variables
 import {
   Calendar, Clock, Target, Filter, Plus, ChevronRight,
   CheckCircle, AlertCircle, XCircle, Play, Search
 } from 'lucide-react';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { Button } from '../../ui/primitives';
 
 // Session type labels
 const SESSION_TYPE_LABELS = {
@@ -452,49 +455,22 @@ export default function SessionsListView({
   return (
     <div
       style={{
-        backgroundColor: 'var(--bg-primary)',
+        backgroundColor: 'var(--background-default)',
         minHeight: '100vh',
-        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
+        fontFamily: 'var(--font-family)',
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '24px',
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: '1px solid var(--border-default)',
-        }}
-      >
-        <div>
-          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-            Mine treningsokter
-          </h1>
-          <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-            {pagination.total} okter totalt
-          </p>
-        </div>
-        <button
-          onClick={handleCreateNew}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: `${'8px'} ${'16px'}`,
-            backgroundColor: 'var(--accent)',
-            color: 'var(--bg-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-          }}
-        >
-          <Plus size={16} />
-          Ny okt
-        </button>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Mine treningsøkter"
+        subtitle={`${pagination.total} økter totalt`}
+        actions={
+          <Button variant="primary" onClick={handleCreateNew}>
+            <Plus size={16} />
+            Ny økt
+          </Button>
+        }
+      />
 
       {/* Content */}
       <div style={{ padding: '24px' }}>
