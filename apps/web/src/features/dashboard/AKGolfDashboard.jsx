@@ -52,7 +52,7 @@ const WelcomeHeader = ({ player, greeting }) => (
   </div>
 );
 
-const ProfileCard = ({ player, stats }) => {
+const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile }) => {
   // Get initials for avatar fallback
   const getInitials = (name) => {
     if (!name) return 'SP';
@@ -117,9 +117,9 @@ const ProfileCard = ({ player, stats }) => {
         <div style={styles.profileStats}>
           <div style={styles.profileStatItem}>
             <span style={styles.profileStatValue}>
-              {player.handicap?.toFixed(1) || '—'}
+              {stats?.scoringAverage?.toFixed(1) || '—'}
             </span>
-            <span style={styles.profileStatLabel}>HCP</span>
+            <span style={styles.profileStatLabel}>Snitt</span>
           </div>
           <div style={styles.profileStatDivider} />
           <div style={styles.profileStatItem}>
@@ -145,15 +145,30 @@ const ProfileCard = ({ player, stats }) => {
 
       {/* Bottom Action Row */}
       <div style={styles.profileActions}>
-        <button style={styles.profileActionButton}>
+        <button
+          style={styles.profileActionButton}
+          onClick={onViewProgress}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
           <TrendingUp size={14} />
           <span>Se fremgang</span>
         </button>
-        <button style={styles.profileActionButton}>
+        <button
+          style={styles.profileActionButton}
+          onClick={onViewPlan}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
           <Calendar size={14} />
           <span>Treningsplan</span>
         </button>
-        <button style={styles.profileActionButton}>
+        <button
+          style={{ ...styles.profileActionButton, borderRight: 'none' }}
+          onClick={onViewProfile}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
           <ChevronRight size={14} />
           <span>Full profil</span>
         </button>
@@ -420,7 +435,7 @@ const AKGolfDashboard = () => {
 
   // Extract data with fallbacks
   const player = dashboardData?.player || { name: 'Spiller', category: 'B' };
-  const stats = dashboardData?.stats || { sessionsCompleted: 0, sessionsTotal: 12, hoursThisWeek: 0, hoursGoal: 20, streak: 0 };
+  const stats = dashboardData?.stats || { sessionsCompleted: 0, sessionsTotal: 12, hoursThisWeek: 0, hoursGoal: 20, streak: 0, scoringAverage: 74.2, strokesGained: 1.3, totalSessions: 47 };
   const nextTournament = dashboardData?.nextTournament;
   const nextTest = dashboardData?.nextTest;
   const notifications = dashboardData?.notifications || [];
@@ -443,7 +458,13 @@ const AKGolfDashboard = () => {
         <WelcomeHeader player={player} greeting={getGreeting()} />
 
         {/* Profile Card with Avatar and Stats */}
-        <ProfileCard player={player} stats={stats} />
+        <ProfileCard
+          player={player}
+          stats={stats}
+          onViewProgress={() => navigate('/progress')}
+          onViewPlan={() => navigate('/kalender?view=week')}
+          onViewProfile={() => navigate('/profil')}
+        />
 
         {/* Quick Stats Row */}
         <div style={styles.statsRow}>

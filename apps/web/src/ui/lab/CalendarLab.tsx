@@ -1,13 +1,72 @@
 import React, { useState } from 'react';
 import AppShellTemplate from '../templates/AppShellTemplate';
 import CalendarTemplate, { CalendarSession } from '../templates/CalendarTemplate';
+import WeekView from '../../features/calendar/views/WeekView';
 
 /**
  * CalendarLab - Demo page for CalendarTemplate
  * Shows a week view with example sessions inside AppShellTemplate
  */
+// WeekView session format (keyed by day number)
+interface WeekViewSession {
+  id: number;
+  time: string;
+  name: string;
+  type: string;
+  duration: number;
+  level: string;
+  status: string;
+  location?: string;
+}
+
 const CalendarLab: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [activeView, setActiveView] = useState<'template' | 'weekview'>('template');
+
+  // Generate WeekView-format sessions (keyed by day number)
+  const getWeekViewSessions = (): Record<number, WeekViewSession[]> => {
+    const today = new Date();
+    const sessions: Record<number, WeekViewSession[]> = {};
+
+    // Today's sessions
+    sessions[today.getDate()] = [
+      { id: 1, time: '09:00', name: 'Putting-trening', type: 'teknikk', duration: 90, level: 'L3', status: 'upcoming', location: 'Indoor Range' },
+      { id: 2, time: '14:00', name: 'Videoanalyse med coach', type: 'golfslag', duration: 60, level: 'L4', status: 'upcoming', location: 'Treningssenter' },
+    ];
+
+    // Tomorrow
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    sessions[tomorrow.getDate()] = [
+      { id: 3, time: '10:00', name: 'Driving range', type: 'golfslag', duration: 90, level: 'L3', status: 'upcoming', location: 'Range' },
+    ];
+
+    // Day after tomorrow
+    const dayAfter = new Date(today);
+    dayAfter.setDate(today.getDate() + 2);
+    sessions[dayAfter.getDate()] = [
+      { id: 4, time: '08:00', name: 'Klubbturnering', type: 'konkurranse', duration: 480, level: 'L5', status: 'upcoming', location: 'Holtsmark GK' },
+    ];
+
+    // Yesterday
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    sessions[yesterday.getDate()] = [
+      { id: 5, time: '11:00', name: 'Teknikk-test', type: 'teknikk', duration: 60, level: 'L3', status: 'completed' },
+    ];
+
+    // Two days ago - multiple sessions
+    const twoDaysAgo = new Date(today);
+    twoDaysAgo.setDate(today.getDate() - 2);
+    sessions[twoDaysAgo.getDate()] = [
+      { id: 6, time: '07:00', name: 'Morgentrening', type: 'fysisk', duration: 60, level: 'L2', status: 'completed', location: 'Gym' },
+      { id: 7, time: '10:00', name: 'Kort spill', type: 'spill', duration: 60, level: 'L3', status: 'completed' },
+      { id: 8, time: '14:00', name: 'Putting drill', type: 'teknikk', duration: 60, level: 'L4', status: 'completed' },
+      { id: 9, time: '18:00', name: 'Kveldsrunde', type: 'spill', duration: 120, level: 'L3', status: 'completed' },
+    ];
+
+    return sessions;
+  };
 
   // Generate example sessions for the current week
   const getExampleSessions = (): CalendarSession[] => {
@@ -113,6 +172,7 @@ const CalendarLab: React.FC = () => {
   };
 
   const sessions = getExampleSessions();
+  const weekViewSessions = getWeekViewSessions();
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -123,6 +183,16 @@ const CalendarLab: React.FC = () => {
     if (session) {
       alert(`Valgt økt: ${session.title}\n${session.start} - ${session.end}`);
     }
+  };
+
+  const handleWeekViewSessionClick = (session: WeekViewSession, date: Date) => {
+    alert(`WeekView Session: ${session.name}\nTid: ${session.time}\nType: ${session.type}\nDato: ${date.toLocaleDateString('nb-NO')}`);
+  };
+
+  const handleNavigate = (direction: number) => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(selectedDate.getDate() + direction * 7);
+    setSelectedDate(newDate);
   };
 
   // Bottom navigation for demo
@@ -149,48 +219,73 @@ const CalendarLab: React.FC = () => {
 
   return (
     <div style={styles.labContainer}>
-      {/* Demo Frame */}
-      <div style={styles.demoFrame}>
-        <AppShellTemplate
-          title="Kalender"
-          subtitle="Din treningsuke"
-          bottomNav={bottomNavContent}
+      {/* View Toggle */}
+      <div style={styles.viewToggle}>
+        <button
+          style={{
+            ...styles.toggleButton,
+            ...(activeView === 'template' ? styles.toggleButtonActive : {}),
+          }}
+          onClick={() => setActiveView('template')}
         >
-          <CalendarTemplate
-            selectedDate={selectedDate}
-            sessions={sessions}
-            onSelectDate={handleDateSelect}
-            onSelectSession={handleSessionSelect}
-          />
+          CalendarTemplate
+        </button>
+        <button
+          style={{
+            ...styles.toggleButton,
+            ...(activeView === 'weekview' ? styles.toggleButtonActive : {}),
+          }}
+          onClick={() => setActiveView('weekview')}
+        >
+          WeekView (ny)
+        </button>
+      </div>
 
-          {/* Legend */}
-          <div style={styles.legend}>
-            <div style={styles.legendItem}>
-              <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--accent)' }}
-              />
-              <span style={styles.legendText}>Trening</span>
+      {/* Demo Frame */}
+      <div style={activeView === 'weekview' ? styles.demoFrameWide : styles.demoFrame}>
+        {activeView === 'template' ? (
+          <AppShellTemplate
+            title="Kalender"
+            subtitle="Din treningsuke"
+            bottomNav={bottomNavContent}
+          >
+            <CalendarTemplate
+              selectedDate={selectedDate}
+              sessions={sessions}
+              onSelectDate={handleDateSelect}
+              onSelectSession={handleSessionSelect}
+            />
+            {/* Legend */}
+            <div style={styles.legend}>
+              <div style={styles.legendItem}>
+                <div style={{ ...styles.legendDot, backgroundColor: 'var(--accent)' }} />
+                <span style={styles.legendText}>Trening</span>
+              </div>
+              <div style={styles.legendItem}>
+                <div style={{ ...styles.legendDot, backgroundColor: 'var(--achievement)' }} />
+                <span style={styles.legendText}>Turnering</span>
+              </div>
+              <div style={styles.legendItem}>
+                <div style={{ ...styles.legendDot, backgroundColor: 'var(--warning)' }} />
+                <span style={styles.legendText}>Test</span>
+              </div>
+              <div style={styles.legendItem}>
+                <div style={{ ...styles.legendDot, backgroundColor: 'var(--success)' }} />
+                <span style={styles.legendText}>Økt</span>
+              </div>
             </div>
-            <div style={styles.legendItem}>
-              <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--achievement)' }}
-              />
-              <span style={styles.legendText}>Turnering</span>
-            </div>
-            <div style={styles.legendItem}>
-              <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--warning)' }}
-              />
-              <span style={styles.legendText}>Test</span>
-            </div>
-            <div style={styles.legendItem}>
-              <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--success)' }}
-              />
-              <span style={styles.legendText}>Økt</span>
-            </div>
-          </div>
-        </AppShellTemplate>
+          </AppShellTemplate>
+        ) : (
+          <WeekView
+            currentDate={selectedDate}
+            sessions={weekViewSessions}
+            selectedDate={selectedDate}
+            onDateSelect={handleDateSelect}
+            onSessionClick={handleWeekViewSessionClick}
+            onNavigate={handleNavigate}
+            onAddEvent={() => alert('Legg til ny hendelse')}
+          />
+        )}
       </div>
 
       {/* Info Panel */}
@@ -238,6 +333,27 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#1a1a2e',
     padding: 'var(--spacing-6)',
   },
+  viewToggle: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 'var(--spacing-2)',
+    marginBottom: 'var(--spacing-4)',
+  },
+  toggleButton: {
+    padding: 'var(--spacing-2) var(--spacing-4)',
+    borderRadius: 'var(--radius-md)',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'transparent',
+    color: 'rgba(255, 255, 255, 0.6)',
+    cursor: 'pointer',
+    fontSize: 'var(--font-size-footnote)',
+    transition: 'all 0.2s',
+  },
+  toggleButtonActive: {
+    backgroundColor: 'var(--accent)',
+    color: 'white',
+    borderColor: 'var(--accent)',
+  },
   demoFrame: {
     maxWidth: '480px',
     margin: '0 auto',
@@ -246,6 +362,16 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
     height: '700px',
     position: 'relative',
+  },
+  demoFrameWide: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    borderRadius: 'var(--radius-lg)',
+    overflow: 'hidden',
+    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+    height: '700px',
+    position: 'relative',
+    backgroundColor: 'white',
   },
   legend: {
     display: 'flex',

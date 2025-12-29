@@ -1,9 +1,9 @@
 /**
  * AK GOLF ACADEMY — DESIGN SYSTEM v3.0
- * Blue Palette 01 (Production Ready)
+ * Premium Light (Forest Green)
  *
  * JavaScript Design Tokens
- * Source: AK_GOLF_DESIGN_SYSTEM_COMPLETE.html
+ * Source: AK_GOLF_PREMIUM_LIGHT_SPEC.html
  *
  * IMPORTANT: This file mirrors the CSS variables in index.css.
  * Use these tokens for inline styles and JavaScript-based styling.
@@ -12,64 +12,78 @@
 
 export const tokens = {
   colors: {
-    // Brand Colors
-    ink: '#02060D',
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
+    // Brand Colors - Deep Forest Green (Premium Golf Brand)
+    ink: '#111827',
+    primary: '#1B4D3E',
+    primaryLight: '#2A6B55',
+    primaryDark: '#133629',
+    snow: '#FAFBFC',
+    surface: '#F5F7F9',
+    gold: '#B8860B',
+    goldLight: '#DAA520',
     white: '#FFFFFF',
 
     // Legacy aliases (backwards compatible)
-    forest: '#10456A',
-    forestLight: '#2C5F7F',
-    foam: '#EDF0F2',
-    ivory: '#EBE5DA',
+    forest: '#1B4D3E',
+    forestLight: '#2A6B55',
+    foam: '#FAFBFC',
+    ivory: '#F5F7F9',
 
-    // Gray scale
-    gray50: '#F9FAFB',
-    gray100: '#F2F4F7',
-    gray300: '#D5D7DA',
-    gray500: '#8E8E93',
-    gray600: '#535862',
-    gray700: '#414651',
-    gray900: '#1C1C1E',
+    // Gray scale (Per Premium Light Spec)
+    gray50: '#FAFBFC',
+    gray100: '#F5F7F9',
+    gray200: '#EEF1F4',
+    gray300: '#E5E7EB',
+    gray400: '#D1D5DB',
+    gray500: '#9CA3AF',
+    gray600: '#6B7280',
+    gray700: '#374151',
+    gray900: '#111827',
 
     // Legacy neutral aliases
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
+    charcoal: '#111827',
+    steel: '#6B7280',
+    mist: '#E5E7EB',
+    cloud: '#F5F7F9',
 
-    // Status colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
+    // Status colors (Per Premium Light Spec)
+    success: '#059669',
+    successLight: '#10B981',
+    warning: '#D97706',
+    warningLight: '#F59E0B',
+    error: '#DC2626',
+    errorLight: '#EF4444',
+    info: '#0284C7',
+    infoLight: '#0EA5E9',
   },
 
   // Semantic tokens
   semantic: {
     background: {
-      default: '#EDF0F2',
-      surface: '#EBE5DA',
-      inverse: '#02060D',
-      accent: '#10456A',
+      default: '#FAFBFC',
+      surface: '#F5F7F9',
+      elevated: '#EEF1F4',
+      inverse: '#111827',
+      accent: '#1B4D3E',
       white: '#FFFFFF',
     },
     text: {
-      primary: '#02060D',
-      secondary: '#8E8E93',
-      tertiary: '#535862',
-      brand: '#10456A',
+      primary: '#111827',
+      secondary: '#374151',
+      tertiary: '#6B7280',
+      muted: '#9CA3AF',
+      brand: '#1B4D3E',
       inverse: '#FFFFFF',
-      accent: '#C9A227',
+      accent: '#1B4D3E',
+      achievement: '#B8860B',
     },
     border: {
-      default: '#D5D7DA',
-      subtle: '#E5E5EA',
-      brand: '#10456A',
-      accent: '#C9A227',
+      default: '#E5E7EB',
+      strong: '#D1D5DB',
+      subtle: '#EEF1F4',
+      brand: '#1B4D3E',
+      accent: '#1B4D3E',
+      achievement: '#B8860B',
     },
   },
 

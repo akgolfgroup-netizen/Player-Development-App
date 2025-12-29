@@ -8,7 +8,7 @@ import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { tokens } from './design-tokens';
 
 // Shared components (NOT lazy - needed immediately)
-import ApplicationLayoutV2 from './components/layout/ApplicationLayoutV2';
+import ApplicationLayoutTopNav from './components/layout/ApplicationLayoutTopNav';
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
 import ProtectedRoute from './components/guards/ProtectedRoute';
@@ -217,16 +217,16 @@ const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then
 // Landing page (lazy-loaded)
 const LandingHero = lazy(() => import('./features/landing').then(m => ({ default: m.LandingHero })));
 
-// Layout component for authenticated pages using Rail + Flyout Navigation (Player)
+// Layout component for authenticated pages using Top Navigation (Player)
 const AuthenticatedLayout = ({ children, title, subtitle, actions }) => (
-  <ApplicationLayoutV2 title={title} subtitle={subtitle} actions={actions}>
+  <ApplicationLayoutTopNav title={title} subtitle={subtitle} actions={actions}>
     {children}
-  </ApplicationLayoutV2>
+  </ApplicationLayoutTopNav>
 );
 
-// Dashboard layout - uses Rail + Flyout Navigation
+// Dashboard layout - uses Top Navigation
 const DashboardLayout = ({ children }) => (
-  <ApplicationLayoutV2>{children}</ApplicationLayoutV2>
+  <ApplicationLayoutTopNav>{children}</ApplicationLayoutTopNav>
 );
 
 // Layout component for coach pages using CoachAppShell
