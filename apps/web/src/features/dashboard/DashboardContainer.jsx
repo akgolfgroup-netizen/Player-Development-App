@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import AKGolfDashboard from './AKGolfDashboard';
+import AKGolfDashboard from './AKGolfDashboardV3';
 
 const DashboardContainer = () => {
   const { user } = useAuth();
