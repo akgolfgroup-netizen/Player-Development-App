@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { calendarAPI } from '../../services/api';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA
@@ -421,25 +422,14 @@ const RegistrerTurneringsResultatContainer = () => {
               Scorer
             </h3>
             {formData.rounds.length < 4 && (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={addRound}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
-                  color: 'var(--accent)',
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                }}
+                leftIcon={<Plus size={14} />}
               >
-                <Plus size={14} />
                 Legg til runde
-              </button>
+              </Button>
             )}
           </div>
 
@@ -645,29 +635,16 @@ const RegistrerTurneringsResultatContainer = () => {
         )}
 
         {/* Submit */}
-        <button
+        <Button
+          variant="primary"
           onClick={handleSubmit}
           disabled={!canSubmit || saving}
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            padding: '14px',
-            borderRadius: '10px',
-            border: 'none',
-            backgroundColor: (canSubmit && !saving) ? 'var(--accent)' : 'var(--border-default)',
-            color: (canSubmit && !saving) ? 'var(--bg-primary)' : 'var(--text-secondary)',
-            fontSize: '15px',
-            fontWeight: 600,
-            cursor: (canSubmit && !saving) ? 'pointer' : 'not-allowed',
-            opacity: saving ? 0.7 : 1,
-          }}
+          loading={saving}
+          leftIcon={<Save size={18} />}
+          style={{ width: '100%' }}
         >
-          <Save size={18} />
           {saving ? 'Lagrer...' : 'Lagre resultat'}
-        </button>
+        </Button>
       </div>
     </div>
   );

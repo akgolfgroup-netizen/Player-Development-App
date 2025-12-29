@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { tokens } from '../../design-tokens';
+import Button from '../../ui/primitives/Button';
 
 // Import view components
 import DayView from './views/DayView';
@@ -466,13 +467,13 @@ const AKGolfKalender = ({ events = [] }) => {
         logoSize={40}
         badgeSize={48}
         actions={
-          <button
+          <Button
+            variant="primary"
             onClick={openNewSession}
-            className="flex items-center gap-2 px-4 py-2 bg-ak-primary text-white rounded-xl text-sm font-medium hover:bg-ak-primary-light transition-colors"
+            leftIcon={<Plus size={18} />}
           >
-            <Plus size={18} />
             Ny økt
-          </button>
+          </Button>
         }
       />
 
@@ -703,18 +704,20 @@ const AKGolfKalender = ({ events = [] }) => {
             </div>
 
             <div className="flex gap-3 mt-6">
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setShowSessionModal(false)}
-                className="flex-1 py-3 bg-ak-snow text-ak-charcoal rounded-xl font-medium hover:bg-ak-mist transition-colors"
+                style={{ flex: 1 }}
               >
                 Avbryt
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleSaveSession}
-                className="flex-1 py-3 bg-ak-primary text-white rounded-xl font-medium hover:bg-ak-primary-light transition-colors"
+                style={{ flex: 1 }}
               >
                 Lagre
-              </button>
+              </Button>
             </div>
           </div>
         </div>

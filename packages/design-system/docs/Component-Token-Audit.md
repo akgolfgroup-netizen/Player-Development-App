@@ -374,10 +374,10 @@ grep -n "var(--ak-\|var(--gray-" src/ui/primitives/Button.primitive.tsx
 | Avatar | [x] | [x] | [x] |
 | Dropdown | [x] | [x] | [x] |
 | Pagination | [x] | [x] | [x] |
-| Checkbox | [ ] | [ ] | [ ] |
-| Switch | [ ] | [ ] | [ ] |
-| Spinner | [ ] | [ ] | [ ] |
-| Text | [ ] | [ ] | [ ] |
+| Checkbox | [x] | [x] | [x] |
+| Switch | [x] | [x] | [x] |
+| Spinner | [x] | [x] | [x] |
+| Text | [x] | [x] | [x] |
 
 ---
 
@@ -444,3 +444,27 @@ grep -n "var(--ak-\|var(--gray-" src/ui/primitives/Button.primitive.tsx
 **Pagination** (`src/ui/composites/Pagination.composite.tsx`)
 - ✅ Uses `--text-primary`, `--background-white`, `--border-default`, `--accent`, `--text-inverse`, `--text-secondary`
 - All semantic tokens compliant
+
+### 2025-12-29 - Priority 3 Components
+
+**Checkbox** (`src/ui/primitives/Checkbox.primitive.tsx`)
+- ✅ Uses `--border-default`, `--background-white`, `--text-inverse`, `--text-primary`, `--error`, `--text-secondary`, `--accent`
+- All semantic tokens compliant
+
+**Switch** (`src/ui/primitives/Switch.primitive.tsx`)
+- ✅ Uses `--accent`, `--border`, `--background-white`, `--text-primary`
+- All semantic tokens compliant
+
+**Spinner** (`src/ui/primitives/Spinner.primitive.tsx`)
+- ✅ Uses `--accent` as default color
+- All semantic tokens compliant
+
+**Text** (`src/ui/primitives/Text.primitive.tsx`)
+- ✅ Uses `--text-primary`, `--text-secondary`, `--text-tertiary`, `--text-brand`, `--text-inverse`, `--text-accent`, `--error`, `--success`, `--warning`
+- All semantic tokens compliant
+
+---
+
+## Audit Complete ✅
+
+All 15 UI components have been audited and are now fully compliant with the semantic token system.

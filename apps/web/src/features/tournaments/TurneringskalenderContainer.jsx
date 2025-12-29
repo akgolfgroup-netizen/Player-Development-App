@@ -5,6 +5,7 @@ import {
   Hotel, FileText, Plus
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -441,30 +442,17 @@ const TournamentCard = ({ tournament, onSelect }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           {/* Registration Link */}
           {tournament.status === 'registration_open' && !tournament.isRegistered && (
-            <button
+            <Button
+              variant="primary"
+              size="sm"
               onClick={(e) => {
                 e.stopPropagation();
-                // Open registration in new tab
                 window.open(`https://mingolf.no/pamelding/${tournament.id}`, '_blank');
               }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '6px 12px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                fontSize: '12px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-              }}
+              leftIcon={<ExternalLink size={12} />}
             >
-              <ExternalLink size={12} />
               Meld på
-            </button>
+            </Button>
           )}
           <div style={{
             display: 'flex',
@@ -723,23 +711,13 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
 
           {/* Action button */}
           {tournament.status === 'registration_open' && !tournament.isRegistered && (
-            <button
+            <Button
+              variant="primary"
               onClick={() => onRegister(tournament.id)}
-              style={{
-                width: '100%',
-                padding: '14px',
-                borderRadius: '12px',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                fontSize: '15px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'background-color 0.2s ease',
-              }}
+              style={{ width: '100%' }}
             >
               Meld deg på
-            </button>
+            </Button>
           )}
           {tournament.isRegistered && (
             <div style={{

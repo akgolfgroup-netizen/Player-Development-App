@@ -6,6 +6,7 @@ import {
 // UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA
@@ -543,23 +544,14 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
         </div>
       )}
 
-      <button
+      <Button
+        variant="primary"
         onClick={onConfirm}
         disabled={!canBook}
-        style={{
-          width: '100%',
-          padding: '14px',
-          borderRadius: '10px',
-          border: 'none',
-          backgroundColor: canBook ? 'var(--accent)' : 'var(--border-default)',
-          color: canBook ? 'var(--bg-primary)' : 'var(--text-secondary)',
-          fontSize: '15px',
-          fontWeight: 600,
-          cursor: canBook ? 'pointer' : 'not-allowed',
-        }}
+        style={{ width: '100%' }}
       >
         Bekreft booking
-      </button>
+      </Button>
     </div>
   );
 };
