@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Play, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { tokens } from '../../design-tokens';
+import Button from '../../ui/primitives/Button';
 
 const StartTestModal = ({ test, player, onClose, onSubmit }) => {
   const [step, setStep] = useState('instructions'); // instructions, recording, review

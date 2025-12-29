@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 import apiClient from '../../services/apiClient';
 
 // ============================================================================
