@@ -172,7 +172,7 @@ const StrokesGainedPage: React.FC = () => {
       {/* Info Banner */}
       <section style={styles.section}>
         <div style={styles.infoBanner}>
-          <Info size={18} color="#6366f1" />
+          <Info size={18} color="var(--datagolf-accent)" />
           <div style={{ flex: 1 }}>
             <p style={styles.infoText}>
               <strong>Strokes Gained</strong> måler hvor mange slag du tjener eller taper sammenlignet med en referansespiller.
@@ -193,7 +193,7 @@ const StrokesGainedPage: React.FC = () => {
                 onClick={() => setSelectedTour(tour)}
                 style={{
                   ...styles.tourButton,
-                  backgroundColor: selectedTour === tour ? '#6366f1' : 'var(--background-surface)',
+                  backgroundColor: selectedTour === tour ? 'var(--datagolf-accent)' : 'var(--background-surface)',
                   color: selectedTour === tour ? 'white' : 'var(--text-secondary)',
                 }}
               >
@@ -456,7 +456,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '48px',
     height: '48px',
     borderRadius: 'var(--radius-lg)',
-    background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+    background: 'linear-gradient(135deg, var(--datagolf-accent), var(--datagolf-accent-dark))',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

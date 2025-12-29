@@ -8,9 +8,7 @@ import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { tokens } from './design-tokens';
 
 // Shared components (NOT lazy - needed immediately)
-import ApplicationLayout from './components/layout/ApplicationLayout';
 import ApplicationLayoutV2 from './components/layout/ApplicationLayoutV2';
-import AppShell from './components/layout/AppShell';
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
 import ProtectedRoute from './components/guards/ProtectedRoute';
@@ -219,24 +217,15 @@ const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then
 // Landing page (lazy-loaded)
 const LandingHero = lazy(() => import('./features/landing').then(m => ({ default: m.LandingHero })));
 
-// Layout component for authenticated pages using Catalyst ApplicationLayout (Player)
-const AuthenticatedLayout = ({ children }) => (
-  <ApplicationLayout>{children}</ApplicationLayout>
-);
-
-// Dashboard layout - now uses Catalyst ApplicationLayout
-const DashboardLayout = ({ children }) => (
-  <ApplicationLayout>{children}</ApplicationLayout>
-);
-
-// NEW: Layout V2 - Left Rail + Flyout Navigation (Premium)
-const AuthenticatedLayoutV2 = ({ children, title, subtitle, actions }) => (
+// Layout component for authenticated pages using Rail + Flyout Navigation (Player)
+const AuthenticatedLayout = ({ children, title, subtitle, actions }) => (
   <ApplicationLayoutV2 title={title} subtitle={subtitle} actions={actions}>
     {children}
   </ApplicationLayoutV2>
 );
 
-const DashboardLayoutV2 = ({ children }) => (
+// Dashboard layout - uses Rail + Flyout Navigation
+const DashboardLayout = ({ children }) => (
   <ApplicationLayoutV2>{children}</ApplicationLayoutV2>
 );
 
@@ -423,24 +412,6 @@ function App() {
           {/* UI Lab Routes - DEV ONLY */}
           {IS_DEV && (
             <>
-              {/* NEW: Test route for Rail + Flyout Navigation */}
-              <Route path="/nav-v2" element={
-                <ProtectedRoute>
-                  <DashboardLayoutV2>
-                    <DashboardContainer />
-                  </DashboardLayoutV2>
-                </ProtectedRoute>
-              } />
-              <Route path="/nav-v2/*" element={
-                <ProtectedRoute>
-                  <AuthenticatedLayoutV2 title="Test Nav V2">
-                    <div style={{ padding: '24px' }}>
-                      <h2>Rail + Flyout Navigation Test</h2>
-                      <p>Denne ruten bruker den nye navigasjonen.</p>
-                    </div>
-                  </AuthenticatedLayoutV2>
-                </ProtectedRoute>
-              } />
               <Route path="/ui-lab" element={
                 <ProtectedRoute>
                   <AuthenticatedLayout title="UI Lab" subtitle="Komponentbibliotek">

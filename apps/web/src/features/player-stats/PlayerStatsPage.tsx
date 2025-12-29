@@ -133,7 +133,7 @@ const PlayerStatsPage: React.FC = () => {
       {sgData?.isDemo && (
         <section style={styles.section}>
           <div style={styles.demoBanner}>
-            <Info size={16} color="#6366f1" />
+            <Info size={16} color="var(--datagolf-accent)" />
             <span>Viser demodata. Fullfør tester for å se dine egne resultater.</span>
           </div>
         </section>
@@ -352,7 +352,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '48px',
     height: '48px',
     borderRadius: 'var(--radius-lg)',
-    background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+    background: 'linear-gradient(135deg, var(--datagolf-accent), var(--datagolf-accent-dark))',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
