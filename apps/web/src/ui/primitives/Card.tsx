@@ -14,7 +14,7 @@ import React from 'react';
  */
 
 type CardVariant = 'default' | 'outlined' | 'flat' | 'elevated' | 'accent';
-type CardPadding = 'none' | 'compact' | 'sm' | 'default' | 'spacious';
+type CardPadding = 'none' | 'compact' | 'sm' | 'md' | 'default' | 'spacious' | 'lg';
 
 interface CardProps {
   /** Card content */
@@ -131,11 +131,17 @@ const paddingStyles: Record<CardPadding, React.CSSProperties> = {
   sm: {
     padding: 'var(--spacing-3)', // 12px - alias for compact
   },
+  md: {
+    padding: 'var(--spacing-4)', // 16px
+  },
   default: {
     padding: 'var(--spacing-5)', // 20px
   },
   spacious: {
     padding: 'var(--spacing-6)', // 24px
+  },
+  lg: {
+    padding: 'var(--spacing-6)', // 24px - alias for spacious
   },
 };
 
