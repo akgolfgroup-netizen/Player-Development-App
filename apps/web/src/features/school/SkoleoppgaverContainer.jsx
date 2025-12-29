@@ -4,6 +4,7 @@ import {
   AlertCircle, FileText
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA
@@ -450,32 +451,15 @@ const SkoleoppgaverContainer = () => {
                     {assignment.description}
                   </p>
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    <button style={{
-                      padding: '10px 20px',
-                      backgroundColor: 'var(--accent)',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                    }}>
+                    <Button variant="primary">
                       {assignment.status === 'completed' ? 'Se detaljer' : 'Start oppgave'}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      variant="secondary"
                       onClick={() => setSelectedAssignment(null)}
-                      style={{
-                        padding: '10px 20px',
-                        backgroundColor: 'var(--bg-secondary)',
-                        color: 'var(--text-primary)',
-                        border: 'none',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                      }}
                     >
                       Lukk
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}

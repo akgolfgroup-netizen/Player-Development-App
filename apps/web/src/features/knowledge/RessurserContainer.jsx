@@ -5,6 +5,7 @@ import {
   Bookmark, BookmarkCheck, Eye
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data

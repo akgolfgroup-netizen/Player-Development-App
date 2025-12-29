@@ -5,6 +5,7 @@ import {
   BookOpen, Utensils, Car
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -672,23 +673,13 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
 
           {/* Action button */}
           {camp.status === 'registration_open' && !camp.isRegistered && (
-            <button
+            <Button
+              variant="primary"
               onClick={() => onRegister(camp.id)}
-              style={{
-                width: '100%',
-                padding: '14px',
-                borderRadius: '12px',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                fontSize: '15px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'background-color 0.2s ease',
-              }}
+              style={{ width: '100%' }}
             >
               Meld deg pa
-            </button>
+            </Button>
           )}
           {camp.isRegistered && (
             <div style={{
