@@ -21,7 +21,7 @@ const BrukerprofilContainer = () => {
     try {
       setState('loading');
       setError(null);
-      const response = await apiClient.get('/api/v1/me');
+      const response = await apiClient.get('/me');
       setProfile(response.data);
       setState('idle');
     } catch (err) {
