@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 import {
   GolfslagIcon, GolfTarget, GolfFlag, GolfPutter, FysiskIcon, MentalIcon,
   GolfBunker
@@ -662,16 +663,19 @@ const AKGolfOvelser = ({ player: apiPlayer = null, exercises: apiExercises = nul
 
               {/* Actions */}
               <div className="flex gap-3">
-                <button className="flex-1 py-3 bg-ak-primary text-white rounded-xl text-[14px] font-medium hover:bg-ak-primary-light transition-colors flex items-center justify-center gap-2">
-                  <Icons.Play />
+                <Button
+                  variant="primary"
+                  leftIcon={<Icons.Play />}
+                  style={{ flex: 1, justifyContent: 'center' }}
+                >
                   Start øvelse
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="secondary"
                   onClick={() => setSelectedExercise(null)}
-                  className="px-6 py-3 bg-ak-snow text-ak-charcoal rounded-xl text-[14px] font-medium hover:bg-ak-mist transition-colors"
                 >
                   Lukk
-                </button>
+                </Button>
               </div>
             </div>
           </Card>

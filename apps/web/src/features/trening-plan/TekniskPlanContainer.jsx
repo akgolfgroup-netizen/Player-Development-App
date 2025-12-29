@@ -5,6 +5,7 @@ import {
   Repeat, Eye, BookOpen, TrendingUp
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -470,16 +471,9 @@ const RecentVideosCard = ({ videos }) => {
             Siste videoer
           </h3>
         </div>
-        <button style={{
-          fontSize: '12px',
-          color: 'var(--accent)',
-          backgroundColor: 'transparent',
-          border: 'none',
-          cursor: 'pointer',
-          fontWeight: 500,
-        }}>
+        <Button variant="ghost" size="sm">
           Se alle
-        </button>
+        </Button>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -658,40 +652,22 @@ const TekniskPlanContainer = () => {
                 </h3>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <button style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 12px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderRadius: '8px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  width: '100%',
-                  textAlign: 'left',
-                }}>
-                  <Eye size={14} color={'var(--accent)'} />
-                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
-                    Se treningsvideoer
-                  </span>
-                </button>
-                <button style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 12px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderRadius: '8px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  width: '100%',
-                  textAlign: 'left',
-                }}>
-                  <Award size={14} color={'var(--achievement)'} />
-                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
-                    Tidligere planer
-                  </span>
-                </button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  leftIcon={<Eye size={14} />}
+                  style={{ width: '100%', justifyContent: 'flex-start' }}
+                >
+                  Se treningsvideoer
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  leftIcon={<Award size={14} />}
+                  style={{ width: '100%', justifyContent: 'flex-start' }}
+                >
+                  Tidligere planer
+                </Button>
               </div>
             </div>
           </div>

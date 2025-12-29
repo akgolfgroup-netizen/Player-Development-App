@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 import { sessionsAPI } from '../../services/api';
 
 // ============================================================================
@@ -423,29 +424,16 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
       </div>
 
       {/* Submit Button */}
-      <button
+      <Button
         type="submit"
+        variant="primary"
+        leftIcon={<Save size={18} />}
         disabled={saving}
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '8px',
-          padding: '14px',
-          borderRadius: '10px',
-          border: 'none',
-          backgroundColor: saving ? 'var(--text-secondary)' : 'var(--accent)',
-          color: 'var(--bg-primary)',
-          fontSize: '15px',
-          fontWeight: 600,
-          cursor: saving ? 'not-allowed' : 'pointer',
-          opacity: saving ? 0.7 : 1,
-        }}
+        loading={saving}
+        style={{ width: '100%', justifyContent: 'center' }}
       >
-        <Save size={18} />
         {saving ? 'Lagrer...' : 'Lagre økt'}
-      </button>
+      </Button>
     </form>
   );
 };

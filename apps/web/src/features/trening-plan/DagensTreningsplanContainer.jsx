@@ -5,6 +5,7 @@ import {
   Video, MessageCircle, Plus, Award
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -358,58 +359,30 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
           {/* Action Buttons */}
           {session.status === 'pending' && (
-            <button
+            <Button
+              variant="primary"
+              leftIcon={<Play size={16} />}
               onClick={(e) => {
                 e.stopPropagation();
                 onStart(session.id);
               }}
-              style={{
-                width: '100%',
-                marginTop: '12px',
-                padding: '12px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-              }}
+              style={{ width: '100%', marginTop: '12px', justifyContent: 'center' }}
             >
-              <Play size={16} />
               Start okt
-            </button>
+            </Button>
           )}
           {session.status === 'in_progress' && (
-            <button
+            <Button
+              variant="primary"
+              leftIcon={<CheckCircle size={16} />}
               onClick={(e) => {
                 e.stopPropagation();
                 onComplete(session.id);
               }}
-              style={{
-                width: '100%',
-                marginTop: '12px',
-                padding: '12px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: 'var(--success)',
-                color: 'var(--bg-primary)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-              }}
+              style={{ width: '100%', marginTop: '12px', justifyContent: 'center', backgroundColor: 'var(--success)' }}
             >
-              <CheckCircle size={16} />
               Marker som fullfort
-            </button>
+            </Button>
           )}
         </div>
       )}
@@ -612,25 +585,19 @@ const DagensTreningsplanContainer = () => {
         </div>
 
         {/* Add Custom Exercise */}
-        <button style={{
-          width: '100%',
-          marginTop: '16px',
-          padding: '14px',
-          borderRadius: '12px',
-          border: '2px dashed var(--border-default)',
-          backgroundColor: 'transparent',
-          color: 'var(--text-secondary)',
-          fontSize: '14px',
-          fontWeight: 500,
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '8px',
-        }}>
-          <Plus size={18} />
+        <Button
+          variant="secondary"
+          leftIcon={<Plus size={18} />}
+          style={{
+            width: '100%',
+            marginTop: '16px',
+            justifyContent: 'center',
+            border: '2px dashed var(--border-default)',
+            backgroundColor: 'transparent',
+          }}
+        >
           Legg til egen okt
-        </button>
+        </Button>
       </div>
     </div>
   );

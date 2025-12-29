@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 import {
   TeknikIcon, GolfslagIcon, SpillIcon, KonkurranseIcon,
   FysiskIcon, MentalIcon, GolfScorecard
@@ -569,17 +570,20 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                       >
                         <Icons.ChevronRight style={{ transform: 'rotate(180deg)' }} />
                       </button>
-                      <button
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        leftIcon={<Icons.Check />}
                         onClick={() => {
                           toggleExerciseComplete(selectedSession.exercises[activeExercise].id);
                           if (activeExercise < selectedSession.exercises.length - 1) {
                             setActiveExercise(activeExercise + 1);
                           }
                         }}
-                        className="px-4 py-2 bg-ak-success text-white rounded-lg text-[13px] font-medium flex items-center gap-2"
+                        style={{ backgroundColor: 'var(--success)' }}
                       >
-                        <Icons.Check /> Fullfør
-                      </button>
+                        Fullfør
+                      </Button>
                       <button
                         onClick={() => setActiveExercise(Math.min(selectedSession.exercises.length - 1, activeExercise + 1))}
                         disabled={activeExercise === selectedSession.exercises.length - 1}

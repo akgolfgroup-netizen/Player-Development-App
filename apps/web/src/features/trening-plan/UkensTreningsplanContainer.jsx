@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -509,26 +510,14 @@ const UkensTreningsplanContainer = () => {
           justifyContent: 'space-between',
           marginBottom: '20px',
         }}>
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<ChevronLeft size={16} />}
             onClick={() => setWeekOffset(weekOffset - 1)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-            }}
           >
-            <ChevronLeft size={16} />
             Forrige uke
-          </button>
+          </Button>
 
           <div style={{ textAlign: 'center' }}>
             <div style={{
@@ -543,26 +532,13 @@ const UkensTreningsplanContainer = () => {
             </div>
           </div>
 
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => setWeekOffset(weekOffset + 1)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-            }}
           >
-            Neste uke
-            <ChevronRight size={16} />
-          </button>
+            Neste uke <ChevronRight size={16} style={{ marginLeft: '4px' }} />
+          </Button>
         </div>
 
         {/* Period Badge */}

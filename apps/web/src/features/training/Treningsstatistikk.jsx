@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 import {
   FlameIcon, ClockIcon, ChartIcon, GolfTarget
 } from '../../components/icons';
@@ -565,9 +566,9 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
                 ))}
               </div>
               <div className="p-4 pt-2 border-t border-ak-mist">
-                <button className="w-full text-center text-[13px] text-ak-primary font-medium hover:underline">
+                <Button variant="ghost" style={{ width: '100%', justifyContent: 'center' }}>
                   Se alle økter →
-                </button>
+                </Button>
               </div>
             </Card>
 
