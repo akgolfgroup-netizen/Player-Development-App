@@ -94,8 +94,8 @@ const RadarChart = ({ dimensions, proMatch }) => {
       {proPolygon && (
         <polygon
           points={proPolygon}
-          fill="rgba(255, 215, 0, 0.1)"
-          stroke="#FFD700"
+          fill="var(--achievement-muted)"
+          stroke="var(--medal-gold)"
           strokeWidth="1.5"
           strokeDasharray="4 2"
           opacity="0.6"
@@ -253,7 +253,7 @@ const ProMatchCard = ({ match, rank }) => {
         width: '28px',
         height: '28px',
         borderRadius: '50%',
-        backgroundColor: rank === 1 ? '#FFD700' : rank === 2 ? '#C0C0C0' : '#CD7F32',
+        backgroundColor: rank === 1 ? 'var(--medal-gold)' : rank === 2 ? 'var(--medal-silver)' : 'var(--medal-bronze)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -467,7 +467,7 @@ const SkillDNAWidget = ({ data, loading, error, onViewDetails }) => {
             <div style={{
               width: '12px',
               height: '3px',
-              backgroundColor: '#FFD700',
+              backgroundColor: 'var(--medal-gold)',
               borderRadius: '2px',
             }} />
             <span style={{ color: 'var(--text-secondary)' }}>{topMatch.proName}</span>

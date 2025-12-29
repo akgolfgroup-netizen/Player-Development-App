@@ -139,32 +139,61 @@ const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
       <div style={styles.container}>
         {/* Welcome Section */}
         {(welcomeMessage || user) && (
-          <div style={styles.welcomeSection}>
-            {user && (
-              <div style={styles.userInfo}>
-                <Avatar
-                  src={user.avatar}
-                  name={user.name}
-                  size="lg"
-                  status="online"
-                />
-                <div style={styles.userDetails}>
-                  <Text variant="title3" weight={600}>
-                    Welcome back, {user.name}!
-                  </Text>
-                  {user.role && (
-                    <Badge variant="accent" size="sm">
-                      {user.role}
-                    </Badge>
-                  )}
+          <div style={styles.welcomeCard}>
+            <div style={styles.welcomeSection}>
+              {user && (
+                <div style={styles.welcomeMain}>
+                  <div style={styles.userInfo}>
+                    <Avatar
+                      src={user.avatar}
+                      name={user.name}
+                      size="lg"
+                      status="online"
+                    />
+                    <div style={styles.userDetails}>
+                      <Text variant="caption1" color="tertiary">
+                        Welcome back,
+                      </Text>
+                      <Text variant="title2" weight={700}>
+                        {user.name}
+                      </Text>
+                      {user.role && (
+                        <Text variant="caption1" color="tertiary">
+                          {user.role}
+                        </Text>
+                      )}
+                    </div>
+                  </div>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => window.location.href = '/profile'}
+                  >
+                    View profile
+                  </Button>
                 </div>
-              </div>
-            )}
-            {welcomeMessage && (
-              <Text variant="body" color="secondary">
-                {welcomeMessage}
-              </Text>
-            )}
+              )}
+              {welcomeMessage && (
+                <Text variant="body" color="secondary">
+                  {welcomeMessage}
+                </Text>
+              )}
+            </div>
+            {/* Profile Stats Row */}
+            <div style={styles.profileStats}>
+              {stats.slice(0, 3).map((stat, idx) => (
+                <div
+                  key={stat.id}
+                  style={{
+                    ...styles.profileStatItem,
+                    borderLeft: idx > 0 ? '1px solid var(--border-default)' : 'none',
+                  }}
+                >
+                  <span style={styles.profileStatValue}>{stat.value}</span>
+                  <span style={styles.profileStatLabel}>{stat.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -268,22 +297,55 @@ const styles: Record<string, React.CSSProperties> = {
     margin: '0 auto',
     width: '100%',
   },
-  welcomeSection: {
-    backgroundColor: 'var(--background-white)',
+  welcomeCard: {
+    backgroundColor: 'var(--card)',
     borderRadius: 'var(--radius-lg)',
-    padding: 'var(--spacing-6)',
     boxShadow: 'var(--shadow-card)',
+    overflow: 'hidden',
+  },
+  welcomeSection: {
+    padding: 'var(--spacing-6)',
+  },
+  welcomeMain: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: 'var(--spacing-4)',
   },
   userInfo: {
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-4)',
-    marginBottom: 'var(--spacing-3)',
   },
   userDetails: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--spacing-2)',
+    gap: '2px',
+  },
+  profileStats: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    backgroundColor: 'var(--bg-elevated)',
+    borderTop: '1px solid var(--border-default)',
+  },
+  profileStatItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 'var(--spacing-5) var(--spacing-6)',
+    textAlign: 'center',
+  },
+  profileStatValue: {
+    fontSize: '18px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+  },
+  profileStatLabel: {
+    fontSize: '13px',
+    color: 'var(--text-tertiary)',
+    marginTop: '2px',
   },
   section: {
     width: '100%',

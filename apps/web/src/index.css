@@ -149,6 +149,111 @@
   --achievement-light: var(--ak-gold-light);
   --achievement-muted: rgba(184, 134, 11, 0.1);
 
+  /* Overlay/Backdrop tokens */
+  --overlay-backdrop: rgba(0, 0, 0, 0.5);
+  --overlay-light: rgba(0, 0, 0, 0.02);
+
+  /* Table/List interaction tokens */
+  --table-hover: rgba(0, 0, 0, 0.02);
+  --table-selected: rgba(var(--accent-rgb), 0.05);
+
+  /* ─────────────────────────────────────────
+     TRAINING CATEGORY TOKENS
+     Semantic colors for training pyramid levels
+     ───────────────────────────────────────── */
+  /* FYS (Fysisk) - Physical training */
+  --category-fys: #DC2626;
+  --category-fys-muted: rgba(220, 38, 38, 0.1);
+  /* TEK (Teknikk) - Technical training */
+  --category-tek: #2563EB;
+  --category-tek-muted: rgba(37, 99, 235, 0.1);
+  /* SLAG (Golfslag) - Golf shots */
+  --category-slag: #059669;
+  --category-slag-muted: rgba(5, 150, 105, 0.1);
+  /* SPILL (Spill) - Game play */
+  --category-spill: #7C3AED;
+  --category-spill-muted: rgba(124, 58, 237, 0.1);
+  /* TURN (Turnering) - Tournament */
+  --category-turn: #D97706;
+  --category-turn-muted: rgba(217, 119, 6, 0.1);
+
+  /* Advanced filter tokens */
+  --filter-lfase: #7C3AED;
+  --filter-miljo: #0D9488;
+  --filter-press: #EA580C;
+
+  /* Group color picker tokens */
+  --group-lightblue: #60A5FA;
+  --group-purple: #7C3AED;
+  --group-pink: #EC4899;
+  --group-teal: #14B8A6;
+
+  /* Medal/Rank tokens */
+  --medal-gold: #FFD700;
+  --medal-silver: #C0C0C0;
+  --medal-bronze: #CD7F32;
+  --medal-platinum: #E5E4E2;
+  --rank-legendary: #9333EA;
+  --rank-rookie: #9CA3AF;
+
+  /* SG Journey Level tokens */
+  --sg-pga-elite: var(--medal-gold);
+  --sg-pga-top50: var(--medal-silver);
+  --sg-pga-average: var(--medal-bronze);
+  --sg-mini-tour: #4A90D9;
+  --sg-scratch: #50C878;
+  --sg-single-digit: #87CEEB;
+  --sg-mid-handicap: #DDA0DD;
+  --sg-beginner: #98FB98;
+
+  /* Message category tokens */
+  --msg-training: var(--accent);
+  --msg-training-muted: var(--accent-muted);
+  --msg-tournament: var(--category-spill);
+  --msg-tournament-muted: var(--category-spill-muted);
+  --msg-general: var(--text-tertiary);
+  --msg-general-muted: rgba(107, 114, 128, 0.1);
+  --msg-urgent: var(--error);
+  --msg-urgent-muted: var(--error-muted);
+
+  /* Exercise category tokens */
+  --ex-putting: var(--success);
+  --ex-putting-muted: var(--success-muted);
+  --ex-driving: #2563EB;
+  --ex-driving-muted: rgba(37, 99, 235, 0.1);
+  --ex-iron: #4F46E5;
+  --ex-iron-muted: rgba(79, 70, 229, 0.1);
+  --ex-wedge: #7C3AED;
+  --ex-wedge-muted: rgba(124, 58, 237, 0.1);
+  --ex-bunker: var(--warning);
+  --ex-bunker-muted: var(--warning-muted);
+  --ex-mental: #DB2777;
+  --ex-mental-muted: rgba(219, 39, 119, 0.1);
+  --ex-fitness: var(--error);
+  --ex-fitness-muted: var(--error-muted);
+  --ex-fullspill: var(--accent);
+  --ex-fullspill-muted: var(--accent-muted);
+  --ex-kortspill: #7C3AED;
+  --ex-kortspill-muted: rgba(124, 58, 237, 0.1);
+  --ex-blandet: var(--text-tertiary);
+  --ex-blandet-muted: rgba(107, 114, 128, 0.1);
+
+  /* RGB values for rgba constructs */
+  --success-rgb: 5, 150, 105;
+  --warning-rgb: 217, 119, 6;
+
+  /* Streak/achievement badge tokens */
+  --streak-gold: #eab308;
+  --streak-gold-muted: rgba(234, 179, 8, 0.15);
+  --streak-gold-border: rgba(234, 179, 8, 0.3);
+  --streak-gold-text: #b45309;
+
+  /* Data Golf feature tokens (indigo) */
+  --datagolf-accent: #6366f1;
+  --datagolf-accent-dark: #4f46e5;
+  --datagolf-accent-muted: rgba(99, 102, 241, 0.1);
+  --datagolf-accent-border: rgba(99, 102, 241, 0.2);
+
   /* Badge background tokens */
   --bg-neutral-subtle: var(--gray-100);
   --bg-accent-subtle: var(--accent-muted);
@@ -384,6 +489,47 @@
   --achievement-light: var(--ak-gold-light);
   --achievement-muted: rgba(218, 165, 32, 0.15);
 
+  /* Training Category Tokens - Dark Mode */
+  --category-fys: #EF4444;
+  --category-fys-muted: rgba(239, 68, 68, 0.2);
+  --category-tek: #3B82F6;
+  --category-tek-muted: rgba(59, 130, 246, 0.2);
+  --category-slag: #10B981;
+  --category-slag-muted: rgba(16, 185, 129, 0.2);
+  --category-spill: #8B5CF6;
+  --category-spill-muted: rgba(139, 92, 246, 0.2);
+  --category-turn: #F59E0B;
+  --category-turn-muted: rgba(245, 158, 11, 0.2);
+
+  /* Advanced filter tokens - Dark Mode */
+  --filter-lfase: #8B5CF6;
+  --filter-miljo: #14B8A6;
+  --filter-press: #F97316;
+
+  /* Group color picker tokens - Dark Mode */
+  --group-lightblue: #93C5FD;
+  --group-purple: #A78BFA;
+  --group-pink: #F472B6;
+  --group-teal: #2DD4BF;
+
+  /* Medal/Rank tokens - Dark Mode */
+  --medal-gold: #FFD700;
+  --medal-silver: #D1D5DB;
+  --medal-bronze: #D4A574;
+  --medal-platinum: #F0F0F0;
+  --rank-legendary: #A855F7;
+  --rank-rookie: #A1A1AA;
+
+  /* SG Journey Level tokens - Dark Mode */
+  --sg-pga-elite: var(--medal-gold);
+  --sg-pga-top50: var(--medal-silver);
+  --sg-pga-average: var(--medal-bronze);
+  --sg-mini-tour: #60A5FA;
+  --sg-scratch: #6EE7B7;
+  --sg-single-digit: #93C5FD;
+  --sg-mid-handicap: #E9D5FF;
+  --sg-beginner: #BBF7D0;
+
   /* Badge background tokens - Dark Mode */
   --bg-neutral-subtle: var(--gray-100);
   --bg-accent-subtle: var(--accent-muted);
@@ -519,6 +665,47 @@
     --achievement: var(--ak-gold);
     --achievement-light: var(--ak-gold-light);
     --achievement-muted: rgba(218, 165, 32, 0.15);
+
+    /* Training Category Tokens - Dark Mode (System) */
+    --category-fys: #EF4444;
+    --category-fys-muted: rgba(239, 68, 68, 0.2);
+    --category-tek: #3B82F6;
+    --category-tek-muted: rgba(59, 130, 246, 0.2);
+    --category-slag: #10B981;
+    --category-slag-muted: rgba(16, 185, 129, 0.2);
+    --category-spill: #8B5CF6;
+    --category-spill-muted: rgba(139, 92, 246, 0.2);
+    --category-turn: #F59E0B;
+    --category-turn-muted: rgba(245, 158, 11, 0.2);
+
+    /* Advanced filter tokens - Dark Mode (System) */
+    --filter-lfase: #8B5CF6;
+    --filter-miljo: #14B8A6;
+    --filter-press: #F97316;
+
+    /* Group color picker tokens - Dark Mode (System) */
+    --group-lightblue: #93C5FD;
+    --group-purple: #A78BFA;
+    --group-pink: #F472B6;
+    --group-teal: #2DD4BF;
+
+    /* Medal/Rank tokens - Dark Mode (System) */
+    --medal-gold: #FFD700;
+    --medal-silver: #D1D5DB;
+    --medal-bronze: #D4A574;
+    --medal-platinum: #F0F0F0;
+    --rank-legendary: #A855F7;
+    --rank-rookie: #A1A1AA;
+
+    /* SG Journey Level tokens - Dark Mode (System) */
+    --sg-pga-elite: var(--medal-gold);
+    --sg-pga-top50: var(--medal-silver);
+    --sg-pga-average: var(--medal-bronze);
+    --sg-mini-tour: #60A5FA;
+    --sg-scratch: #6EE7B7;
+    --sg-single-digit: #93C5FD;
+    --sg-mid-handicap: #E9D5FF;
+    --sg-beginner: #BBF7D0;
 
     /* Badge background tokens - Dark Mode (System) */
     --bg-neutral-subtle: var(--gray-100);

@@ -238,7 +238,7 @@ export const CoachDataGolf: React.FC = () => {
           width: '48px',
           height: '48px',
           borderRadius: '12px',
-          background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+          background: 'linear-gradient(135deg, var(--datagolf-accent), var(--datagolf-accent-dark))',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -269,16 +269,16 @@ export const CoachDataGolf: React.FC = () => {
 
       {/* Info Banner */}
       <div style={{
-        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        backgroundColor: 'var(--datagolf-accent-muted)',
         borderRadius: '12px',
         padding: '16px',
         marginBottom: '24px',
-        border: '1px solid rgba(99, 102, 241, 0.2)',
+        border: '1px solid var(--datagolf-accent-border)',
         display: 'flex',
         alignItems: 'center',
         gap: '12px'
       }}>
-        <Info size={20} color="#6366f1" />
+        <Info size={20} color="var(--datagolf-accent)" />
         <div style={{ flex: 1 }}>
           <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>
             <strong>Strokes Gained</strong> estimeres basert på testresultater og sammenlignes med {selectedTour.toUpperCase()} Tour gjennomsnitt.
@@ -293,8 +293,8 @@ export const CoachDataGolf: React.FC = () => {
                 padding: '6px 12px',
                 borderRadius: '6px',
                 border: 'none',
-                backgroundColor: selectedTour === tour ? '#6366f1' : 'rgba(99, 102, 241, 0.2)',
-                color: selectedTour === tour ? 'white' : '#6366f1',
+                backgroundColor: selectedTour === tour ? 'var(--datagolf-accent)' : 'var(--datagolf-accent-border)',
+                color: selectedTour === tour ? 'white' : 'var(--datagolf-accent)',
                 fontSize: '12px',
                 fontWeight: '600',
                 cursor: 'pointer'
@@ -484,8 +484,8 @@ export const CoachDataGolf: React.FC = () => {
                       padding: '2px 8px',
                       borderRadius: '4px',
                       backgroundColor: player.dataGolfConnected
-                        ? 'rgba(34, 197, 94, 0.1)'
-                        : 'rgba(239, 68, 68, 0.1)',
+                        ? 'var(--success-muted)'
+                        : 'var(--error-muted)',
                       color: player.dataGolfConnected ? 'var(--success)' : 'var(--error)',
                       fontWeight: '500'
                     }}>
@@ -523,8 +523,8 @@ export const CoachDataGolf: React.FC = () => {
                     textAlign: 'right',
                     padding: '8px 16px',
                     backgroundColor: (player.stats.sgTotal ?? 0) >= 0
-                      ? 'rgba(34, 197, 94, 0.1)'
-                      : 'rgba(239, 68, 68, 0.1)',
+                      ? 'var(--success-muted)'
+                      : 'var(--error-muted)',
                     borderRadius: '10px'
                   }}>
                     <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', margin: '0 0 2px 0' }}>
@@ -567,7 +567,7 @@ export const CoachDataGolf: React.FC = () => {
               ) : (
                 <div style={{
                   padding: '8px 16px',
-                  backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                  backgroundColor: 'var(--error-muted)',
                   borderRadius: '8px',
                   fontSize: '12px',
                   color: 'var(--error)'

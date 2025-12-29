@@ -180,10 +180,10 @@ export const CoachStatsRegression: React.FC = () => {
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'high': return { bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', text: 'var(--error)' };
-      case 'medium': return { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', text: 'var(--warning)' };
-      case 'low': return { bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)', text: 'var(--success)' };
-      default: return { bg: 'var(--card)', border: 'var(--border-color)', text: 'var(--text-secondary)' };
+      case 'high': return { bg: 'var(--error-muted)', border: 'rgba(var(--error-rgb), 0.3)', text: 'var(--error)' };
+      case 'medium': return { bg: 'var(--warning-muted)', border: 'rgba(var(--warning-rgb), 0.3)', text: 'var(--warning)' };
+      case 'low': return { bg: 'var(--success-muted)', border: 'rgba(var(--success-rgb), 0.3)', text: 'var(--success)' };
+      default: return { bg: 'var(--card)', border: 'var(--border-default)', text: 'var(--text-secondary)' };
     }
   };
 
@@ -247,10 +247,10 @@ export const CoachStatsRegression: React.FC = () => {
           </p>
         </div>
         <div style={{
-          backgroundColor: 'rgba(239, 68, 68, 0.05)',
+          backgroundColor: 'var(--bg-error-subtle)',
           borderRadius: '12px',
           padding: '16px',
-          border: '1px solid rgba(239, 68, 68, 0.2)'
+          border: '1px solid rgba(var(--error-rgb), 0.2)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
             <AlertTriangle size={14} color="var(--error)" />
@@ -440,7 +440,7 @@ export const CoachStatsRegression: React.FC = () => {
                           fontSize: '11px',
                           padding: '4px 10px',
                           borderRadius: '6px',
-                          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                          backgroundColor: 'var(--error-muted)',
                           color: 'var(--error)',
                           fontWeight: '500'
                         }}>
@@ -453,7 +453,7 @@ export const CoachStatsRegression: React.FC = () => {
                     {player.notes && (
                       <div style={{
                         padding: '10px 12px',
-                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        backgroundColor: 'var(--warning-muted)',
                         borderRadius: '8px',
                         borderLeft: '3px solid var(--warning)',
                         marginBottom: '12px'
@@ -508,7 +508,7 @@ export const CoachStatsRegression: React.FC = () => {
                     alignItems: 'center',
                     gap: '4px',
                     padding: '8px 16px',
-                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    backgroundColor: 'var(--error-muted)',
                     borderRadius: '10px'
                   }}>
                     <ArrowDownRight size={18} color="var(--error)" />

@@ -183,12 +183,12 @@ export const CoachExerciseTemplates: React.FC = () => {
 
   const getCategoryColor = (cat: string) => {
     const colors: Record<string, { bg: string; text: string }> = {
-      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)' },
-      fullspill: { bg: 'rgba(59, 130, 246, 0.1)', text: '#2563eb' },
-      kortspill: { bg: 'rgba(168, 85, 247, 0.1)', text: '#7c3aed' },
-      fysisk: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)' },
-      mental: { bg: 'rgba(236, 72, 153, 0.1)', text: '#db2777' },
-      blandet: { bg: 'rgba(107, 114, 128, 0.1)', text: 'var(--text-tertiary)' }
+      putting: { bg: 'var(--ex-putting-muted)', text: 'var(--ex-putting)' },
+      fullspill: { bg: 'var(--ex-fullspill-muted)', text: 'var(--ex-fullspill)' },
+      kortspill: { bg: 'var(--ex-kortspill-muted)', text: 'var(--ex-kortspill)' },
+      fysisk: { bg: 'var(--ex-fitness-muted)', text: 'var(--ex-fitness)' },
+      mental: { bg: 'var(--ex-mental-muted)', text: 'var(--ex-mental)' },
+      blandet: { bg: 'var(--ex-blandet-muted)', text: 'var(--ex-blandet)' }
     };
     return colors[cat] || { bg: 'var(--card)', text: 'var(--text-tertiary)' };
   };
@@ -218,7 +218,7 @@ export const CoachExerciseTemplates: React.FC = () => {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+              background: 'linear-gradient(135deg, var(--ex-kortspill), var(--ex-wedge))',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -406,7 +406,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                         fontWeight: '500',
                         padding: '3px 8px',
                         borderRadius: '4px',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        backgroundColor: 'var(--success-muted)',
                         color: 'var(--success)'
                       }}>
                         Egen
@@ -527,7 +527,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                         backgroundColor: 'var(--bg-primary)',
                         borderRadius: '10px',
                         border: `1px solid ${'var(--border-default)'}`,
-                        boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                        boxShadow: 'var(--shadow-float)',
                         zIndex: 100,
                         minWidth: '160px',
                         overflow: 'hidden'

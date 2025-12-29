@@ -197,7 +197,7 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     minWidth: '200px',
     backgroundColor: 'var(--background-white)',
     borderRadius: 'var(--radius-md)',
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+    boxShadow: 'var(--shadow-float)',
     padding: 'var(--spacing-2)',
     marginTop: 'var(--spacing-2)',
     opacity: 0,

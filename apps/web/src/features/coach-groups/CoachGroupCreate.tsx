@@ -39,10 +39,10 @@ const GROUP_COLORS = [
   { value: 'var(--success)', label: 'Grønn' },
   { value: 'var(--achievement)', label: 'Gull' },
   { value: 'var(--error)', label: 'Rød' },
-  { value: '#60A5FA', label: 'Lys blå' },
-  { value: 'var(--ak-accent-purple)', label: 'Lilla' },
-  { value: '#EC4899', label: 'Rosa' },
-  { value: '#14B8A6', label: 'Turkis' },
+  { value: 'var(--group-lightblue)', label: 'Lys blå' },
+  { value: 'var(--group-purple)', label: 'Lilla' },
+  { value: 'var(--group-pink)', label: 'Rosa' },
+  { value: 'var(--group-teal)', label: 'Turkis' },
 ];
 
 export default function CoachGroupCreate() {

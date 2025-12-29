@@ -103,6 +103,20 @@ export const navigationConfig = [
   },
 
   // ────────────────────────────────────────────────────────────
+  // STATISTIKK
+  // DataGolf, Strokes Gained, testresultater
+  // ────────────────────────────────────────────────────────────
+  {
+    label: 'Statistikk',
+    icon: 'BarChart3',
+    submenu: [
+      { href: '/statistikk', label: 'Oversikt' },
+      { href: '/statistikk/strokes-gained', label: 'Strokes Gained' },
+      { href: '/statistikk/testresultater', label: 'Alle testresultater' },
+    ]
+  },
+
+  // ────────────────────────────────────────────────────────────
   // KOMMUNIKASJON
   // Meldinger, varsler, fra trener
   // ────────────────────────────────────────────────────────────
@@ -238,10 +252,10 @@ export const badgeConfig = {
  */
 
 export const sidebarSections = {
-  main: navigationConfig.slice(0, 6),      // Dashboard, Utvikling, Trening, Kalender, Testing, Turneringer
-  communication: navigationConfig.slice(6, 8), // Kommunikasjon, Mål & Fremgang
-  resources: navigationConfig.slice(8, 10),    // Kunnskap, Skole
-  settings: navigationConfig.slice(10),        // Innstillinger
+  main: navigationConfig.slice(0, 7),      // Dashboard, Utvikling, Trening, Kalender, Testing, Turneringer, Statistikk
+  communication: navigationConfig.slice(7, 9), // Kommunikasjon, Mål & Fremgang
+  resources: navigationConfig.slice(9, 11),    // Kunnskap, Skole
+  settings: navigationConfig.slice(11),        // Innstillinger
 };
 
 /**

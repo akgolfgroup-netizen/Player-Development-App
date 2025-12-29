@@ -1,0 +1,10 @@
+/**
+ * Dashboard v2
+ *
+ * Premium elite golf talent development dashboard.
+ * Follows AK Golf Design System v3.0 (Premium Light - Forest Green).
+ */
+
+export { default as DashboardV2 } from './DashboardV2';
+export { default as DashboardV2Layout, dashboardV2CSS } from './DashboardV2Layout';
+export * from './components';

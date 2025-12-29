@@ -349,11 +349,11 @@ export default function CoachTournamentResults() {
   // Get position badge
   const getPositionBadge = (position: number) => {
     if (position === 1) {
-      return { icon: Trophy, color: 'var(--achievement)', bg: 'rgba(var(--achievement-rgb), 0.20)', label: '1.' };
+      return { icon: Trophy, color: 'var(--medal-gold)', bg: 'var(--achievement-muted)', label: '1.' };
     } else if (position === 2) {
-      return { icon: Medal, color: '#A0A0A0', bg: '#A0A0A015', label: '2.' };
+      return { icon: Medal, color: 'var(--medal-silver)', bg: 'rgba(192, 192, 192, 0.1)', label: '2.' };
     } else if (position === 3) {
-      return { icon: Medal, color: '#CD7F32', bg: '#CD7F3215', label: '3.' };
+      return { icon: Medal, color: 'var(--medal-bronze)', bg: 'rgba(205, 127, 50, 0.1)', label: '3.' };
     }
     return null;
   };

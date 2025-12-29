@@ -9,16 +9,16 @@ import { DashboardCard, WidgetHeader } from '../../ui/widgets';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 
-// Journey level colors
+// Journey level colors - using semantic SG tokens
 const LEVEL_COLORS = {
-  pga_elite: '#FFD700',
-  pga_top50: '#C0C0C0',
-  pga_average: '#CD7F32',
-  mini_tour: '#4A90D9',
-  scratch: '#50C878',
-  single_digit: '#87CEEB',
-  mid_handicap: '#DDA0DD',
-  beginner: '#98FB98',
+  pga_elite: 'var(--sg-pga-elite)',
+  pga_top50: 'var(--sg-pga-top50)',
+  pga_average: 'var(--sg-pga-average)',
+  mini_tour: 'var(--sg-mini-tour)',
+  scratch: 'var(--sg-scratch)',
+  single_digit: 'var(--sg-single-digit)',
+  mid_handicap: 'var(--sg-mid-handicap)',
+  beginner: 'var(--sg-beginner)',
 };
 
 const LEVEL_LABELS = {
@@ -43,6 +43,7 @@ const MountainVisualization = ({ position, levels }) => {
   const visualPosition = Math.min(100, (altitudeMeters / maxAltitude) * 100);
 
   return (
+    // eslint-disable-next-line ak-golf/no-raw-colors -- Decorative mountain visualization gradient
     <div style={{
       position: 'relative',
       height: '200px',
@@ -183,11 +184,11 @@ const ProgressToNextLevel = ({ position }) => {
     return (
       <div style={{
         padding: '16px',
-        backgroundColor: 'rgba(255, 215, 0, 0.1)',
+        backgroundColor: 'var(--achievement-muted)',
         borderRadius: 'var(--radius-md)',
         textAlign: 'center',
       }}>
-        <Award size={24} style={{ color: '#FFD700', marginBottom: '8px' }} />
+        <Award size={24} style={{ color: 'var(--medal-gold)', marginBottom: '8px' }} />
         <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
           Du har nådd toppen! 🏔️
         </p>

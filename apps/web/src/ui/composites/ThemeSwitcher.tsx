@@ -87,7 +87,7 @@ const styles: Record<string, React.CSSProperties> = {
   buttonActive: {
     backgroundColor: 'var(--background-white)',
     color: 'var(--text-primary)',
-    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+    boxShadow: 'var(--shadow-xs)',
   },
 };
 

@@ -65,6 +65,11 @@ const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage'));
 const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
 const StatsPageV2 = lazy(() => import('./features/stats/StatsPageV2'));
 const CalendarPage = lazy(() => import('./features/calendar/CalendarPage'));
+
+// Player Stats (DataGolf & Test Results)
+const PlayerStatsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.PlayerStatsPage })));
+const StrokesGainedPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StrokesGainedPage })));
+const PlayerTestResultsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.TestResultsPage })));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -611,6 +616,23 @@ function App() {
               <AuthenticatedLayout title="Statistikkverktøy" subtitle="Analyseverktøy">
                 <StatsVerktoyContainer />
               </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Statistikk - Player Stats with DataGolf & Test Results */}
+          <Route path="/statistikk" element={
+            <ProtectedRoute>
+              <PlayerStatsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/statistikk/strokes-gained" element={
+            <ProtectedRoute>
+              <StrokesGainedPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/statistikk/testresultater" element={
+            <ProtectedRoute>
+              <PlayerTestResultsPage />
             </ProtectedRoute>
           } />
 

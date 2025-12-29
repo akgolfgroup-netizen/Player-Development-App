@@ -151,10 +151,10 @@ export const CoachScheduledMessages: React.FC = () => {
 
   const getCategoryBadge = (category: string) => {
     const styles: Record<string, { bg: string; text: string; label: string }> = {
-      training: { bg: 'rgba(59, 130, 246, 0.1)', text: '#2563eb', label: 'Trening' },
-      tournament: { bg: 'rgba(168, 85, 247, 0.1)', text: '#7c3aed', label: 'Turnering' },
-      general: { bg: 'rgba(107, 114, 128, 0.1)', text: 'var(--text-tertiary)', label: 'Generelt' },
-      urgent: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)', label: 'Viktig' }
+      training: { bg: 'var(--msg-training-muted)', text: 'var(--msg-training)', label: 'Trening' },
+      tournament: { bg: 'var(--msg-tournament-muted)', text: 'var(--msg-tournament)', label: 'Turnering' },
+      general: { bg: 'var(--msg-general-muted)', text: 'var(--msg-general)', label: 'Generelt' },
+      urgent: { bg: 'var(--msg-urgent-muted)', text: 'var(--msg-urgent)', label: 'Viktig' }
     };
     return styles[category] || styles.general;
   };
@@ -265,10 +265,10 @@ export const CoachScheduledMessages: React.FC = () => {
                   height: '40px',
                   borderRadius: '50%',
                   backgroundColor: daysUntil <= 1
-                    ? 'rgba(239, 68, 68, 0.1)'
+                    ? 'var(--error-muted)'
                     : daysUntil <= 7
-                      ? 'rgba(245, 158, 11, 0.1)'
-                      : 'rgba(var(--accent-rgb), 0.15)',
+                      ? 'var(--warning-muted)'
+                      : 'var(--accent-muted)',
                   border: daysUntil <= 1
                     ? '2px solid var(--error)'
                     : daysUntil <= 7
@@ -313,10 +313,10 @@ export const CoachScheduledMessages: React.FC = () => {
                   gap: '6px',
                   padding: '4px 10px',
                   backgroundColor: daysUntil <= 1
-                    ? 'rgba(239, 68, 68, 0.1)'
+                    ? 'var(--error-muted)'
                     : daysUntil <= 7
-                      ? 'rgba(245, 158, 11, 0.1)'
-                      : 'rgba(var(--accent-rgb), 0.1)',
+                      ? 'var(--warning-muted)'
+                      : 'var(--accent-muted)',
                   borderRadius: '6px',
                   marginBottom: '12px'
                 }}>
@@ -408,7 +408,7 @@ export const CoachScheduledMessages: React.FC = () => {
                         height: '36px',
                         borderRadius: '8px',
                         border: 'none',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        backgroundColor: 'var(--success-muted)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -425,7 +425,7 @@ export const CoachScheduledMessages: React.FC = () => {
                         height: '36px',
                         borderRadius: '8px',
                         border: 'none',
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        backgroundColor: 'var(--error-muted)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

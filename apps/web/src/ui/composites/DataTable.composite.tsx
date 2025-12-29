@@ -282,7 +282,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderBottom: '1px solid var(--border-subtle)',
   },
   trStriped: {
-    backgroundColor: 'rgba(0, 0, 0, 0.02)',
+    backgroundColor: 'var(--table-hover)',
   },
   trHoverable: {
     transition: 'background-color 0.15s ease',
@@ -291,7 +291,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
   },
   trSelected: {
-    backgroundColor: 'rgba(16, 69, 106, 0.05)',
+    backgroundColor: 'var(--table-selected)',
   },
   td: {
     padding: 'var(--spacing-3) var(--spacing-4)',

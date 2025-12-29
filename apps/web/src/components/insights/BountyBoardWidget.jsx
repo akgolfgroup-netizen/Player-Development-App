@@ -15,17 +15,17 @@ const DIFFICULTY_CONFIG = {
   easy: { color: 'var(--success)', label: 'Enkel', icon: '🟢' },
   medium: { color: 'var(--warning)', label: 'Middels', icon: '🟡' },
   hard: { color: 'var(--error)', label: 'Vanskelig', icon: '🔴' },
-  legendary: { color: '#9333EA', label: 'Legendarisk', icon: '💜' },
+  legendary: { color: 'var(--rank-legendary)', label: 'Legendarisk', icon: '💜' },
 };
 
-// Hunter rank configuration
+// Hunter rank configuration - using semantic medal/rank tokens
 const RANK_CONFIG = {
-  rookie: { icon: '🎯', color: '#9CA3AF' },
-  bronze: { icon: '🥉', color: '#CD7F32' },
-  silver: { icon: '🥈', color: '#C0C0C0' },
-  gold: { icon: '🥇', color: '#FFD700' },
-  platinum: { icon: '💎', color: '#E5E4E2' },
-  legendary: { icon: '👑', color: '#9333EA' },
+  rookie: { icon: '🎯', color: 'var(--rank-rookie)' },
+  bronze: { icon: '🥉', color: 'var(--medal-bronze)' },
+  silver: { icon: '🥈', color: 'var(--medal-silver)' },
+  gold: { icon: '🥇', color: 'var(--medal-gold)' },
+  platinum: { icon: '💎', color: 'var(--medal-platinum)' },
+  legendary: { icon: '👑', color: 'var(--rank-legendary)' },
 };
 
 /**
@@ -169,13 +169,13 @@ const BountyCard = ({ bounty, onActivate, onViewDetails, isActive }) => {
         <div style={{
           textAlign: 'right',
           padding: '8px 12px',
-          backgroundColor: 'rgba(255, 215, 0, 0.1)',
+          backgroundColor: 'var(--achievement-muted)',
           borderRadius: 'var(--radius-md)',
         }}>
           <p style={{
             fontSize: '18px',
             fontWeight: 700,
-            color: '#FFD700',
+            color: 'var(--medal-gold)',
             margin: 0,
           }}>
             {bounty.xpReward}

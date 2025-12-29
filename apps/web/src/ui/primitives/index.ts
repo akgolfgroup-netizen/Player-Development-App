@@ -20,3 +20,7 @@ export { default as Spinner } from './Spinner.primitive';
 export { default as Divider } from './Divider.primitive';
 export { default as Switch } from './Switch.primitive';
 export { default as Checkbox } from './Checkbox.primitive';
+
+// Feedback primitives (UI Canon v1.2)
+export { default as Alert } from './Alert.primitive';
+export { default as ProgressBar, SegmentedProgressBar, CircularProgress } from './ProgressBar.primitive';

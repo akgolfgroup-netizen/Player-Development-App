@@ -95,6 +95,49 @@ module.exports = {
         'border-subtle': 'var(--border-subtle)',
         'border-brand': 'var(--border-brand)',
         'border-accent': 'var(--border-accent)',
+
+        // Training Category Colors
+        'category-fys': 'var(--category-fys)',
+        'category-fys-muted': 'var(--category-fys-muted)',
+        'category-tek': 'var(--category-tek)',
+        'category-tek-muted': 'var(--category-tek-muted)',
+        'category-slag': 'var(--category-slag)',
+        'category-slag-muted': 'var(--category-slag-muted)',
+        'category-spill': 'var(--category-spill)',
+        'category-spill-muted': 'var(--category-spill-muted)',
+        'category-turn': 'var(--category-turn)',
+        'category-turn-muted': 'var(--category-turn-muted)',
+
+        // Advanced Filter Colors
+        'filter-lfase': 'var(--filter-lfase)',
+        'filter-miljo': 'var(--filter-miljo)',
+        'filter-press': 'var(--filter-press)',
+
+        // Group Color Picker
+        'group-lightblue': 'var(--group-lightblue)',
+        'group-purple': 'var(--group-purple)',
+        'group-pink': 'var(--group-pink)',
+        'group-teal': 'var(--group-teal)',
+
+        // Medal/Rank Colors
+        'medal-gold': 'var(--medal-gold)',
+        'medal-silver': 'var(--medal-silver)',
+        'medal-bronze': 'var(--medal-bronze)',
+        'medal-platinum': 'var(--medal-platinum)',
+        'rank-legendary': 'var(--rank-legendary)',
+        'rank-rookie': 'var(--rank-rookie)',
+
+        // Streak/Achievement Badge Colors
+        'streak-gold': 'var(--streak-gold)',
+        'streak-gold-muted': 'var(--streak-gold-muted)',
+        'streak-gold-border': 'var(--streak-gold-border)',
+        'streak-gold-text': 'var(--streak-gold-text)',
+
+        // Data Golf Feature Colors
+        'datagolf-accent': 'var(--datagolf-accent)',
+        'datagolf-accent-dark': 'var(--datagolf-accent-dark)',
+        'datagolf-accent-muted': 'var(--datagolf-accent-muted)',
+        'datagolf-accent-border': 'var(--datagolf-accent-border)',
       },
 
       // ═══════════════════════════════════════════

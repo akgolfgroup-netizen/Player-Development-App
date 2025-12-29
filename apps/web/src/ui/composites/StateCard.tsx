@@ -112,7 +112,7 @@ const styles: Record<string, React.CSSProperties> = {
 const variantStyles: Record<string, { icon: React.CSSProperties; title: React.CSSProperties }> = {
   info: {
     icon: {
-      backgroundColor: 'rgba(16, 69, 106, 0.1)',
+      backgroundColor: 'var(--accent-muted)',
       color: 'var(--color-primary)',
     },
     title: {
@@ -121,7 +121,7 @@ const variantStyles: Record<string, { icon: React.CSSProperties; title: React.CS
   },
   error: {
     icon: {
-      backgroundColor: 'rgba(196, 91, 78, 0.1)',
+      backgroundColor: 'var(--error-muted)',
       color: 'var(--color-danger)',
     },
     title: {
@@ -139,7 +139,7 @@ const variantStyles: Record<string, { icon: React.CSSProperties; title: React.CS
   },
   loading: {
     icon: {
-      backgroundColor: 'rgba(16, 69, 106, 0.1)',
+      backgroundColor: 'var(--accent-muted)',
       color: 'var(--color-primary)',
     },
     title: {

@@ -232,10 +232,10 @@ export const CoachStatsProgress: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
           {topPerformers.map((player, index) => (
             <div key={player.id} style={{
-              backgroundColor: index === 0 ? 'rgba(234, 179, 8, 0.1)' : 'var(--bg-secondary)',
+              backgroundColor: index === 0 ? 'var(--streak-gold-muted)' : 'var(--bg-secondary)',
               borderRadius: '12px',
               padding: '16px',
-              border: index === 0 ? '2px solid rgba(234, 179, 8, 0.3)' : `1px solid ${'var(--border-default)'}`,
+              border: index === 0 ? '2px solid var(--streak-gold-border)' : `1px solid ${'var(--border-default)'}`,
               position: 'relative'
             }}>
               {index === 0 && (
@@ -246,7 +246,7 @@ export const CoachStatsProgress: React.FC = () => {
                   width: '28px',
                   height: '28px',
                   borderRadius: '50%',
-                  backgroundColor: '#eab308',
+                  backgroundColor: 'var(--streak-gold)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
@@ -295,7 +295,7 @@ export const CoachStatsProgress: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '8px 12px',
-                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                backgroundColor: 'var(--success-muted)',
                 borderRadius: '8px'
               }}>
                 <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
@@ -424,8 +424,8 @@ export const CoachStatsProgress: React.FC = () => {
                         fontWeight: '500',
                         padding: '2px 8px',
                         borderRadius: '4px',
-                        backgroundColor: 'rgba(234, 179, 8, 0.15)',
-                        color: '#b45309',
+                        backgroundColor: 'var(--streak-gold-muted)',
+                        color: 'var(--streak-gold-text)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '4px'
@@ -469,7 +469,7 @@ export const CoachStatsProgress: React.FC = () => {
                         fontSize: '11px',
                         padding: '4px 10px',
                         borderRadius: '6px',
-                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        backgroundColor: 'var(--success-muted)',
                         color: 'var(--success)',
                         fontWeight: '500'
                       }}>
@@ -530,7 +530,7 @@ export const CoachStatsProgress: React.FC = () => {
                   alignItems: 'center',
                   gap: '4px',
                   padding: '8px 16px',
-                  backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                  backgroundColor: 'var(--success-muted)',
                   borderRadius: '10px'
                 }}>
                   <ArrowUpRight size={18} color="var(--success)" />

@@ -278,22 +278,22 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
   const pyramideLabel = pyramideLevels.find(p => p.id === exercise.pyramide)?.label || exercise.pyramide;
   const areaLabel = golfAreas.find(a => a.id === exercise.golfArea)?.label || exercise.golfArea;
 
-  // Pyramide colors
+  // Pyramide colors - using semantic category tokens
   const pyramideColors = {
-    FYS: '#e74c3c',    // Red
-    TEK: '#3498db',    // Blue
-    SLAG: '#27ae60',   // Green
-    SPILL: '#9b59b6',  // Purple
-    TURN: '#f39c12',   // Orange
+    FYS: 'var(--category-fys)',
+    TEK: 'var(--category-tek)',
+    SLAG: 'var(--category-slag)',
+    SPILL: 'var(--category-spill)',
+    TURN: 'var(--category-turn)',
   };
 
   // Background colors with opacity (for tags)
   const pyramideBgColors = {
-    FYS: '#e74c3c15',
-    TEK: '#3498db15',
-    SLAG: '#27ae6015',
-    SPILL: '#9b59b615',
-    TURN: '#f39c1215',
+    FYS: 'var(--category-fys-muted)',
+    TEK: 'var(--category-tek-muted)',
+    SLAG: 'var(--category-slag-muted)',
+    SPILL: 'var(--category-spill-muted)',
+    TURN: 'var(--category-turn-muted)',
   };
 
   return (
@@ -303,17 +303,17 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
         backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         overflow: 'hidden',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+        boxShadow: 'var(--shadow-card)',
         cursor: 'pointer',
         transition: 'transform 0.2s, box-shadow 0.2s',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+        e.currentTarget.style.boxShadow = 'var(--shadow-elevated)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.08)';
+        e.currentTarget.style.boxShadow = 'var(--shadow-card)';
       }}
     >
       {/* Top color bar based on pyramide level */}
@@ -859,7 +859,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                     onClick={() => setSelectedLFase(fase.id)}
                     style={{
                       padding: '5px 10px',
-                      backgroundColor: selectedLFase === fase.id ? '#8e44ad' : 'transparent',
+                      backgroundColor: selectedLFase === fase.id ? 'var(--filter-lfase)' : 'transparent',
                       color: selectedLFase === fase.id ? 'white' : 'var(--text-secondary)',
                       border: selectedLFase === fase.id ? 'none' : '1px solid var(--border-default)',
                       borderRadius: '14px',
@@ -886,7 +886,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                     onClick={() => setSelectedMiljo(miljo.id)}
                     style={{
                       padding: '5px 10px',
-                      backgroundColor: selectedMiljo === miljo.id ? '#16a085' : 'transparent',
+                      backgroundColor: selectedMiljo === miljo.id ? 'var(--filter-miljo)' : 'transparent',
                       color: selectedMiljo === miljo.id ? 'white' : 'var(--text-secondary)',
                       border: selectedMiljo === miljo.id ? 'none' : '1px solid var(--border-default)',
                       borderRadius: '14px',
@@ -913,7 +913,7 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                     onClick={() => setSelectedPress(press.id)}
                     style={{
                       padding: '5px 10px',
-                      backgroundColor: selectedPress === press.id ? '#e67e22' : 'transparent',
+                      backgroundColor: selectedPress === press.id ? 'var(--filter-press)' : 'transparent',
                       color: selectedPress === press.id ? 'white' : 'var(--text-secondary)',
                       border: selectedPress === press.id ? 'none' : '1px solid var(--border-default)',
                       borderRadius: '14px',
