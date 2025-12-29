@@ -363,18 +363,84 @@ grep -n "var(--ak-\|var(--gray-" src/ui/primitives/Button.primitive.tsx
 
 | Komponent | Auditert | Fikset | Verifisert |
 |-----------|----------|--------|------------|
-| Button | [ ] | [ ] | [ ] |
-| Badge | [ ] | [ ] | [ ] |
-| Card | [ ] | [ ] | [ ] |
-| Input | [ ] | [ ] | [ ] |
-| Toast | [ ] | [ ] | [ ] |
-| Modal | [ ] | [ ] | [ ] |
-| Tabs | [ ] | [ ] | [ ] |
-| Progress | [ ] | [ ] | [ ] |
-| Avatar | [ ] | [ ] | [ ] |
-| Dropdown | [ ] | [ ] | [ ] |
-| Pagination | [ ] | [ ] | [ ] |
+| Button | [x] | [x] | [x] |
+| Badge | [x] | [x] | [x] |
+| Card | [x] | [x] | [x] |
+| Input | [x] | [x] | [x] |
+| Toast | [x] | [x] | [x] |
+| Modal | [x] | [x] | [x] |
+| Tabs | [x] | [x] | [x] |
+| Progress | [x] | [x] | [x] |
+| Avatar | [x] | [x] | [x] |
+| Dropdown | [x] | [x] | [x] |
+| Pagination | [x] | [x] | [x] |
 | Checkbox | [ ] | [ ] | [ ] |
 | Switch | [ ] | [ ] | [ ] |
 | Spinner | [ ] | [ ] | [ ] |
 | Text | [ ] | [ ] | [ ] |
+
+---
+
+## Audit Log
+
+### 2025-12-29 - Priority 1 Components
+
+**Button** (`src/ui/primitives/Button.primitive.tsx`)
+- ✅ Uses `--accent`, `--text-on-accent`, `--border-accent`, `--text-primary`, `--error`, `--text-inverse`
+- All semantic tokens compliant
+
+**Badge** (`src/ui/primitives/Badge.primitive.tsx`)
+- ✅ Uses `--bg-neutral-subtle`, `--text-secondary`, `--bg-accent-subtle`, `--accent`, `--success`, `--warning`, `--error`, `--achievement`
+- All semantic tokens compliant
+
+**Card** (`src/ui/primitives/Card.tsx`)
+- Fixed: `--color-surface` → `--card`
+- Fixed: `--color-border` → `--border`
+- Fixed: `--color-surface-2` → `--bg-neutral-subtle`
+- Fixed: `--color-primary` → `--accent`
+- Fixed: `--color-primary-foreground` → `--text-inverse`
+
+**Input** (`src/ui/primitives/Input.primitive.tsx`)
+- ✅ Uses `--text-primary`, `--border-default`, `--background-white`, `--bg-neutral-subtle`, `--text-secondary`, `--error`
+- All semantic tokens compliant
+
+**Toast** (`src/ui/composites/Toast.composite.tsx`)
+- ✅ Uses `--background-white`, `--accent`, `--success`, `--warning`, `--error`, `--text-primary`, `--text-secondary`
+- All semantic tokens compliant
+
+**Modal** (`src/ui/composites/Modal.composite.tsx`)
+- ✅ Uses `--background-white`, `--border-subtle`, `--text-primary`, `--text-secondary`
+- rgba overlay acceptable per audit spec
+- All semantic tokens compliant
+
+### 2025-12-29 - Priority 2 Components
+
+**Tabs** (`src/ui/composites/Tabs.composite.tsx`)
+- Fixed: `--color-border` → `--border`
+- Fixed: `--color-text-muted` → `--text-tertiary`
+- Fixed: `--color-primary` → `--accent`
+- Fixed: `--color-primary-foreground` → `--text-inverse`
+- Fixed: `--color-surface-2` → `--bg-neutral-subtle`
+- Fixed: `--color-surface` → `--card`
+
+**Progress** (`packages/design-system/components/Progress.tsx`)
+- Fixed: Hardcoded variant colors → `var(--accent)`, `var(--success)`, `var(--warning)`, `var(--error)`
+- Fixed: `#E5E5EA` → `var(--bg-neutral-subtle)`
+- Fixed: `#1C1C1E` → `var(--text-primary)`
+- Fixed: `#10456A` → `var(--accent)`
+- Fixed: `#8E8E93` → `var(--text-tertiary)`
+- Fixed: `#FFFFFF` → `var(--card)`
+- Fixed: `#4A7C59` → `var(--success)`
+- Fixed: `#EDF0F2` → `var(--bg-neutral-subtle)`
+
+**Avatar** (`src/ui/primitives/Avatar.primitive.tsx`)
+- ✅ Uses `--accent`, `--text-inverse`, `--success`, `--warning`, `--error`, `--text-tertiary`, `--background-white`
+- All semantic tokens compliant
+
+**Dropdown** (`src/ui/composites/Dropdown.composite.tsx`)
+- ✅ Uses `--background-white`, `--text-primary`, `--bg-neutral-subtle`, `--error`, `--border-subtle`
+- All semantic tokens compliant
+
+**Pagination** (`src/ui/composites/Pagination.composite.tsx`)
+- ✅ Uses `--text-primary`, `--background-white`, `--border-default`, `--accent`, `--text-inverse`, `--text-secondary`
+- All semantic tokens compliant

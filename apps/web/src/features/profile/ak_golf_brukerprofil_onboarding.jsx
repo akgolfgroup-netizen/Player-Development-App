@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { tokens } from '../../design-tokens';
 import { playersAPI } from '../../services/api';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================
 // AK GOLF ACADEMY - SPILLERPROFIL ONBOARDING
@@ -1727,77 +1728,38 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
           alignItems: 'center',
           backgroundColor: colors.foam
         }}>
-          <button
+          <Button
+            variant="secondary"
             onClick={handlePrev}
             disabled={currentStep === 1}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: spacing.xs,
-              padding: '12px 20px',
-              fontSize: '14px',
-              fontWeight: '500',
-              border: `1px solid ${colors.borderMedium}`,
-              borderRadius: '8px',
-              backgroundColor: colors.white,
-              color: currentStep === 1 ? colors.textMuted : colors.textPrimary,
-              cursor: currentStep === 1 ? 'not-allowed' : 'pointer',
-              opacity: currentStep === 1 ? 0.5 : 1
-            }}
+            leftIcon={<ChevronLeft size={18} />}
           >
-            <ChevronLeft size={18} />
             Tilbake
-          </button>
-          
+          </Button>
+
           <span style={{ fontSize: '13px', color: colors.textMuted, fontWeight: '500' }}>
             Steg {currentStep} av 9
           </span>
-          
+
           {currentStep < 9 ? (
-            <button
+            <Button
+              variant="primary"
               onClick={handleNext}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: spacing.xs,
-                padding: '12px 24px',
-                fontSize: '14px',
-                fontWeight: '600',
-                border: 'none',
-                borderRadius: '8px',
-                backgroundColor: colors.forest,
-                color: colors.white,
-                cursor: 'pointer'
-              }}
             >
               Neste
-              <ChevronRight size={18} />
-            </button>
+              <ChevronRight size={18} style={{ marginLeft: '4px' }} />
+            </Button>
           ) : (
-            <button
+            <Button
+              variant="primary"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: spacing.xs,
-                padding: '12px 24px',
-                fontSize: '14px',
-                fontWeight: '600',
-                border: 'none',
-                borderRadius: '8px',
-                backgroundColor: isSubmitting ? colors.textMuted : colors.success,
-                color: colors.white,
-                cursor: isSubmitting ? 'not-allowed' : 'pointer'
-              }}
+              loading={isSubmitting}
+              leftIcon={!isSubmitting ? <Check size={18} /> : undefined}
+              style={{ backgroundColor: colors.success }}
             >
-              {isSubmitting ? 'Registrerer...' : (
-                <>
-                  <Check size={18} />
-                  Fullfør
-                </>
-              )}
-            </button>
+              {isSubmitting ? 'Registrerer...' : 'Fullfør'}
+            </Button>
           )}
         </div>
       </div>

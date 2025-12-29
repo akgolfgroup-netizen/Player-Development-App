@@ -176,12 +176,12 @@ const styles: Record<string, React.CSSProperties> = {
   tabList: {
     display: 'flex',
     gap: 'var(--spacing-1)',
-    borderBottom: '1px solid var(--color-border)',
+    borderBottom: '1px solid var(--border)',
   },
   tabListVertical: {
     flexDirection: 'column',
     borderBottom: 'none',
-    borderRight: '1px solid var(--color-border)',
+    borderRight: '1px solid var(--border)',
     minWidth: '200px',
   },
   tabListFullWidth: {
@@ -194,7 +194,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 'var(--spacing-3) var(--spacing-4)',
     fontSize: 'var(--font-size-body)',
     fontWeight: 500,
-    color: 'var(--color-text-muted)',
+    color: 'var(--text-tertiary)',
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
@@ -203,7 +203,7 @@ const styles: Record<string, React.CSSProperties> = {
     position: 'relative',
   },
   tabActive: {
-    color: 'var(--color-primary)',
+    color: 'var(--accent)',
     fontWeight: 600,
   },
   tabDisabled: {
@@ -229,8 +229,8 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0 var(--spacing-1)',
     fontSize: 'var(--font-size-caption2)',
     fontWeight: 600,
-    backgroundColor: 'var(--color-primary)',
-    color: 'var(--color-primary-foreground)',
+    backgroundColor: 'var(--accent)',
+    color: 'var(--text-inverse)',
     borderRadius: 'var(--radius-full)',
   },
   tabPanel: {
@@ -241,7 +241,7 @@ const styles: Record<string, React.CSSProperties> = {
 const variantListStyles: Record<string, React.CSSProperties> = {
   default: {},
   pills: {
-    backgroundColor: 'var(--color-surface-2)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderRadius: 'var(--radius-md)',
     padding: 'var(--spacing-1)',
     border: 'none',
@@ -265,14 +265,14 @@ const variantTabStyles: Record<string, React.CSSProperties> = {
 
 const variantTabActiveStyles: Record<string, React.CSSProperties> = {
   default: {
-    borderBottomColor: 'var(--color-primary)',
+    borderBottomColor: 'var(--accent)',
   },
   pills: {
-    backgroundColor: 'var(--color-surface)',
+    backgroundColor: 'var(--card)',
     boxShadow: 'var(--shadow-card)',
   },
   underline: {
-    borderBottomColor: 'var(--color-primary)',
+    borderBottomColor: 'var(--accent)',
   },
 };
 

@@ -76,19 +76,19 @@ const Card: React.FC<CardProps> = ({
 
 const styles: Record<string, React.CSSProperties> = {
   base: {
-    backgroundColor: 'var(--color-surface)',
+    backgroundColor: 'var(--card)',
     borderRadius: 'var(--radius-xl)', // 20px - Apple/Stripe premium
     transition: 'box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease',
   },
   header: {
     marginBottom: 'var(--spacing-3)',
     paddingBottom: 'var(--spacing-2)',
-    borderBottom: '1px solid var(--color-border)',
+    borderBottom: '1px solid var(--border)',
   },
   footer: {
     marginTop: 'var(--spacing-3)',
     paddingTop: 'var(--spacing-2)',
-    borderTop: '1px solid var(--color-border)',
+    borderTop: '1px solid var(--border)',
   },
   clickable: {
     cursor: 'pointer',
@@ -102,20 +102,20 @@ const variantStyles: Record<CardVariant, React.CSSProperties> = {
   },
   outlined: {
     boxShadow: 'none',
-    border: '1px solid var(--color-border)',
+    border: '1px solid var(--border)',
   },
   flat: {
     boxShadow: 'none',
     border: 'none',
-    backgroundColor: 'var(--color-surface-2)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
   },
   elevated: {
     boxShadow: 'var(--shadow-elevated)',
     border: '1px solid transparent',
   },
   accent: {
-    backgroundColor: 'var(--color-primary)',
-    color: 'var(--color-primary-foreground)',
+    backgroundColor: 'var(--accent)',
+    color: 'var(--text-inverse)',
     boxShadow: 'var(--shadow-card)',
     border: 'none',
   },

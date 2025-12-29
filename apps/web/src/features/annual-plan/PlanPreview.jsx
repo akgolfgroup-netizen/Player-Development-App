@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
+import Button from '../../ui/primitives/Button';
 
 /**
  * Plan Preview Component
@@ -176,12 +177,12 @@ export default function PlanPreview() {
           <div className="text-red-500 text-5xl mb-4">⚠️</div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Plan ikke funnet</h1>
           <p className="text-gray-600 mb-6">{error?.message}</p>
-          <button
+          <Button
+            variant="primary"
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
             Tilbake til dashboard
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -195,18 +196,18 @@ export default function PlanPreview() {
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Systemfeil</h1>
           <p className="text-gray-600 mb-6">{error?.message}</p>
           <div className="flex gap-3 justify-center">
-            <button
+            <Button
+              variant="primary"
               onClick={loadPlan}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
             >
               Retry
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => navigate('/dashboard')}
-              className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
             >
               Return to Dashboard
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -235,12 +236,12 @@ export default function PlanPreview() {
           <p className="text-gray-600 mb-6">
             Your training plan is now active. Redirecting to dashboard...
           </p>
-          <button
+          <Button
+            variant="primary"
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
             Go to Dashboard Now
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -256,12 +257,12 @@ export default function PlanPreview() {
           <p className="text-gray-600 mb-6">
             Your coach will review your request within 24-48 hours.
           </p>
-          <button
+          <Button
+            variant="primary"
             onClick={() => navigate('/dashboard')}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
             Return to Dashboard
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -313,24 +314,28 @@ export default function PlanPreview() {
 
         {/* Action Buttons */}
         <div className="mt-8 flex gap-4 justify-center flex-wrap">
-          <button
+          <Button
+            variant="primary"
+            size="md"
             onClick={handleAcceptPlan}
-            className="px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium text-lg"
           >
             Accept Training Plan
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="secondary"
+            size="md"
             onClick={() => setShowModificationModal(true)}
-            className="px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-lg"
           >
             Request Modifications
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => setShowRejectModal(true)}
-            className="px-8 py-4 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium text-lg"
+            style={{ color: 'var(--color-status-error)' }}
           >
             Reject Plan
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -394,19 +399,19 @@ export default function PlanPreview() {
               </select>
             </div>
             <div className="flex gap-3 justify-end mt-6">
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setShowModificationModal(false)}
-                className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleRequestModifications}
                 disabled={modificationForm.concerns.length === 0}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Submit Request
-              </button>
+              </Button>
             </div>
           </div>
         </Modal>
@@ -442,19 +447,20 @@ export default function PlanPreview() {
               <span className="text-sm">I will create a new intake form</span>
             </label>
             <div className="flex gap-3 justify-end mt-6">
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setShowRejectModal(false)}
-                className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleRejectPlan}
                 disabled={rejectForm.reason.length < 10}
-                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ backgroundColor: 'var(--color-status-error)' }}
               >
                 Confirm Rejection
-              </button>
+              </Button>
             </div>
           </div>
         </Modal>

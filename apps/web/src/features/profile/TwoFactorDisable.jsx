@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldOff, Lock, AlertTriangle, CheckCircle } from 'lucide-react';
 import { authAPI } from '../../services/api';
+import Button from '../../ui/primitives/Button';
 
 const TwoFactorDisable = ({ onConfirm, onCancel }) => {
   const [step, setStep] = useState(1); // 1: Warning, 2: Confirm with password, 3: Success
@@ -121,43 +122,21 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
 
       <div style={{ display: 'flex', gap: '12px' }}>
         {onCancel && (
-          <button
+          <Button
+            variant="secondary"
             onClick={onCancel}
-            style={{
-              flex: 1,
-              padding: '14px',
-              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-              color: 'var(--text-primary)',
-              backgroundColor: 'var(--bg-secondary)',
-              border: '1px solid var(--border-default)',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
+            style={{ flex: 1 }}
           >
             Avbryt
-          </button>
+          </Button>
         )}
-        <button
+        <Button
+          variant="primary"
           onClick={() => setStep(2)}
-          style={{
-            flex: 1,
-            padding: '14px',
-            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-            color: 'var(--bg-primary)',
-            backgroundColor: 'var(--error)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s',
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--error)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--error)'}
+          style={{ flex: 1, backgroundColor: 'var(--color-status-error)' }}
         >
           Fortsett allikevel
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -275,50 +254,24 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         </div>
 
         <div style={{ display: 'flex', gap: '12px' }}>
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => setStep(1)}
             disabled={loading}
-            style={{
-              flex: 1,
-              padding: '14px',
-              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-              color: 'var(--text-secondary)',
-              backgroundColor: 'var(--bg-secondary)',
-              border: '1px solid var(--border-default)',
-              borderRadius: 'var(--radius-md)',
-              cursor: loading ? 'not-allowed' : 'pointer',
-            }}
+            style={{ flex: 1 }}
           >
             Tilbake
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
+            variant="primary"
             disabled={loading || !password}
-            style={{
-              flex: 1,
-              padding: '14px',
-              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-              color: 'var(--bg-primary)',
-              backgroundColor: loading || !password ? 'var(--text-secondary)' : 'var(--error)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              cursor: loading || !password ? 'not-allowed' : 'pointer',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              if (!loading && password) {
-                e.currentTarget.style.backgroundColor = 'var(--error)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!loading && password) {
-                e.currentTarget.style.backgroundColor = 'var(--error)';
-              }
-            }}
+            loading={loading}
+            style={{ flex: 1, backgroundColor: 'var(--color-status-error)' }}
           >
             {loading ? 'Deaktiverer...' : 'Deaktiver 2FA'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

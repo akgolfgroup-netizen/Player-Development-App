@@ -108,8 +108,13 @@ function shouldIgnore(filePath) {
     }
   }
 
-  // Check .colorlintignore file
-  const ignoreFile = path.join(process.cwd(), '.colorlintignore');
+  // Check .colorlintignore file (look relative to script location first, then cwd)
+  const scriptDir = path.dirname(__filename);
+  const packageRoot = path.resolve(scriptDir, '..');
+  let ignoreFile = path.join(packageRoot, '.colorlintignore');
+  if (!fs.existsSync(ignoreFile)) {
+    ignoreFile = path.join(process.cwd(), '.colorlintignore');
+  }
   if (fs.existsSync(ignoreFile)) {
     const ignoreList = fs.readFileSync(ignoreFile, 'utf-8')
       .split('\n')
@@ -179,10 +184,18 @@ function scanFile(filePath) {
       });
     }
 
-    // Check for legacy color patterns
+    // Check for legacy color patterns (but not inside CSS variables)
     for (const pattern of CONFIG.legacyPatterns) {
       pattern.lastIndex = 0; // Reset regex state
       while ((match = pattern.exec(line)) !== null) {
+        // Skip if this match is inside a var(--...) CSS variable reference
+        const beforeMatch = line.substring(0, match.index);
+        const lastVarOpen = beforeMatch.lastIndexOf('var(--');
+        const lastVarClose = beforeMatch.lastIndexOf(')');
+        if (lastVarOpen !== -1 && lastVarOpen > lastVarClose) {
+          continue; // Inside a CSS variable, skip this match
+        }
+
         issues.push({
           type: 'warning',
           line: lineNum,

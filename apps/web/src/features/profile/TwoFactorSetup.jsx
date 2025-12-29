@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Smartphone, Copy, CheckCircle, AlertCircle } from 'lucide-react';
 import { authAPI } from '../../services/api';
+import Button from '../../ui/primitives/Button';
 
 const TwoFactorSetup = ({ onComplete, onCancel }) => {
   const [step, setStep] = useState(1); // 1: Intro, 2: QR Code, 3: Verify
@@ -128,40 +129,21 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
       </div>
 
       <div style={{ display: 'flex', gap: '12px' }}>
-        <button
+        <Button
+          variant="primary"
           onClick={() => setStep(2)}
-          style={{
-            flex: 1,
-            padding: '14px',
-            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-            color: 'var(--bg-primary)',
-            backgroundColor: 'var(--accent)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s',
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
+          style={{ flex: 1 }}
         >
           Kom i gang
-        </button>
+        </Button>
         {onCancel && (
-          <button
+          <Button
+            variant="secondary"
             onClick={onCancel}
-            style={{
-              flex: 1,
-              padding: '14px',
-              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-              color: 'var(--text-secondary)',
-              backgroundColor: 'var(--bg-secondary)',
-              border: '1px solid var(--border-default)',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-            }}
+            style={{ flex: 1 }}
           >
             Avbryt
-          </button>
+          </Button>
         )}
       </div>
     </div>
@@ -282,29 +264,14 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         </>
       )}
 
-      <button
+      <Button
+        variant="primary"
         onClick={() => setStep(3)}
         disabled={loading}
-        style={{
-          width: '100%',
-          padding: '14px',
-          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-          color: 'var(--bg-primary)',
-          backgroundColor: loading ? 'var(--text-secondary)' : 'var(--accent)',
-          border: 'none',
-          borderRadius: 'var(--radius-md)',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          transition: 'background-color 0.2s',
-        }}
-        onMouseEnter={(e) => {
-          if (!loading) e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
-        }}
-        onMouseLeave={(e) => {
-          if (!loading) e.currentTarget.style.backgroundColor = 'var(--accent)';
-        }}
+        style={{ width: '100%' }}
       >
         Neste: Verifiser
-      </button>
+      </Button>
     </div>
   );
 
@@ -397,49 +364,23 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
       </div>
 
       <div style={{ display: 'flex', gap: '12px' }}>
-        <button
+        <Button
+          variant="secondary"
           onClick={() => setStep(2)}
           disabled={loading}
-          style={{
-            flex: 1,
-            padding: '14px',
-            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-            color: 'var(--text-secondary)',
-            backgroundColor: 'var(--bg-secondary)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-md)',
-            cursor: loading ? 'not-allowed' : 'pointer',
-          }}
+          style={{ flex: 1 }}
         >
           Tilbake
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="primary"
           onClick={handleVerify}
           disabled={loading || verificationCode.length !== 6}
-          style={{
-            flex: 1,
-            padding: '14px',
-            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-            color: 'var(--bg-primary)',
-            backgroundColor: loading || verificationCode.length !== 6 ? 'var(--text-secondary)' : 'var(--accent)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: loading || verificationCode.length !== 6 ? 'not-allowed' : 'pointer',
-            transition: 'background-color 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            if (!loading && verificationCode.length === 6) {
-              e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!loading && verificationCode.length === 6) {
-              e.currentTarget.style.backgroundColor = 'var(--accent)';
-            }
-          }}
+          loading={loading}
+          style={{ flex: 1 }}
         >
           {loading ? 'Verifiserer...' : 'Verifiser'}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -524,24 +465,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         </p>
       </div>
 
-      <button
+      <Button
+        variant="primary"
         onClick={handleComplete}
-        style={{
-          width: '100%',
-          padding: '14px',
-          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-          color: 'var(--bg-primary)',
-          backgroundColor: 'var(--accent)',
-          border: 'none',
-          borderRadius: 'var(--radius-md)',
-          cursor: 'pointer',
-          transition: 'background-color 0.2s',
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)'}
-        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent)'}
+        style={{ width: '100%' }}
       >
         Fullfør
-      </button>
+      </Button>
     </div>
   );
 

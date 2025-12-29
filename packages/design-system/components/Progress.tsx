@@ -24,10 +24,10 @@ const barHeights = {
 };
 
 const variantColors = {
-  primary: '#10456A',
-  success: '#4A7C59',
-  warning: '#D4A84B',
-  error: '#C45B4E',
+  primary: 'var(--accent)',
+  success: 'var(--success)',
+  warning: 'var(--warning)',
+  error: 'var(--error)',
 };
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
@@ -50,7 +50,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const trackStyles: React.CSSProperties = {
     width: '100%',
     height: barHeights[size],
-    backgroundColor: '#E5E5EA',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderRadius: barHeights[size] / 2,
     overflow: 'hidden',
   };
@@ -76,7 +76,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     <div style={containerStyles}>
       {(showLabel || label) && (
         <div style={labelStyles}>
-          <span style={{ color: '#1C1C1E' }}>{label || ''}</span>
+          <span style={{ color: 'var(--text-primary)' }}>{label || ''}</span>
           {showLabel && (
             <span style={{ color: variantColors[variant] }}>
               {Math.round(percentage)}%
@@ -134,13 +134,13 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   const valueStyles: React.CSSProperties = {
     fontSize: size * 0.25,
     fontWeight: 700,
-    color: '#10456A',
+    color: 'var(--accent)',
     lineHeight: 1,
   };
 
   const labelStyles: React.CSSProperties = {
     fontSize: size * 0.12,
-    color: '#8E8E93',
+    color: 'var(--text-tertiary)',
     marginTop: '2px',
   };
 
@@ -153,7 +153,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#E5E5EA"
+          stroke="var(--bg-neutral-subtle)"
           strokeWidth={strokeWidth}
         />
         {/* Progress circle */}
@@ -206,10 +206,10 @@ export const GoalProgress: React.FC<GoalProgressProps> = ({
   return (
     <div
       style={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'var(--card)',
         borderRadius: '16px',
         padding: '16px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.06)',
+        boxShadow: 'var(--shadow-card)',
       }}
     >
       <div
@@ -225,11 +225,12 @@ export const GoalProgress: React.FC<GoalProgressProps> = ({
             width: '40px',
             height: '40px',
             borderRadius: '10px',
-            backgroundColor: isComplete ? '#4A7C59' : '#EDF0F2',
+            backgroundColor: isComplete ? 'var(--success)' : 'var(--bg-neutral-subtle)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '20px',
+            color: isComplete ? 'var(--text-inverse)' : 'inherit',
           }}
         >
           {isComplete ? '✓' : icon}
@@ -239,13 +240,13 @@ export const GoalProgress: React.FC<GoalProgressProps> = ({
             style={{
               fontSize: '15px',
               fontWeight: 600,
-              color: '#1C1C1E',
+              color: 'var(--text-primary)',
               marginBottom: '2px',
             }}
           >
             {title}
           </div>
-          <div style={{ fontSize: '13px', color: '#8E8E93' }}>
+          <div style={{ fontSize: '13px', color: 'var(--text-tertiary)' }}>
             {current} / {target} {unit}
           </div>
         </div>
