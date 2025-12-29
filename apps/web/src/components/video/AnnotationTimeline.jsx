@@ -56,9 +56,9 @@ const styles = {
   filterButton: {
     padding: '4px 8px',
     backgroundColor: 'transparent',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--video-border)',
     borderRadius: 'var(--radius-sm, 4px)',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
     fontSize: '11px',
     cursor: 'pointer',
     display: 'flex',
@@ -117,7 +117,7 @@ const styles = {
     backgroundColor: 'var(--accent)',
     borderRadius: '50%',
     border: '2px solid white',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+    boxShadow: 'var(--video-shadow-sm)',
   },
   markersContainer: {
     position: 'absolute',
@@ -132,7 +132,7 @@ const styles = {
     marginTop: '4px',
     fontSize: '10px',
     fontFamily: 'var(--font-mono, monospace)',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--video-text-tertiary)',
   },
   emptyState: {
     display: 'flex',
@@ -140,7 +140,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 'var(--spacing-4, 16px)',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--video-text-tertiary)',
     textAlign: 'center',
   },
   emptyIcon: {
@@ -195,12 +195,12 @@ const styles = {
   },
   annotationTimestamp: {
     fontSize: '11px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--video-text-tertiary)',
     fontFamily: 'var(--font-mono, monospace)',
   },
   annotationNote: {
     fontSize: '11px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',

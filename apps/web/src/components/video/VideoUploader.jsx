@@ -80,7 +80,7 @@ const styles = {
   },
   dropZoneActive: {
     borderColor: 'var(--accent)',
-    backgroundColor: 'rgba(16, 69, 106, 0.1)',
+    backgroundColor: 'var(--accent-muted)',
   },
   dropZoneDisabled: {
     opacity: 0.5,
@@ -156,7 +156,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: 'var(--video-bg-light)',
     cursor: 'pointer',
   },
   previewPlayButton: {
@@ -165,7 +165,7 @@ const styles = {
     justifyContent: 'center',
     width: '64px',
     height: '64px',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'var(--overlay-glass)',
     borderRadius: 'var(--radius-full)',
     color: 'var(--accent)',
   },

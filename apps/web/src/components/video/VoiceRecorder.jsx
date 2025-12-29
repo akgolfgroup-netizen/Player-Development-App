@@ -23,7 +23,7 @@ const styles = {
     padding: 'var(--spacing-4, 16px)',
     backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--video-border)',
   },
   header: {
     display: 'flex',
@@ -82,7 +82,7 @@ const styles = {
     transform: 'translateY(-50%)',
     width: '4px',
     height: '60px',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'var(--video-control-bg)',
     borderRadius: '2px',
     overflow: 'hidden',
   },
@@ -205,8 +205,8 @@ const styles = {
   },
   discardButton: {
     backgroundColor: 'transparent',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
+    color: 'var(--video-text-secondary)',
+    border: '1px solid var(--video-border-strong)',
   },
   permissionPrompt: {
     display: 'flex',
@@ -219,12 +219,12 @@ const styles = {
   permissionIcon: {
     width: '48px',
     height: '48px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--video-text-tertiary)',
     marginBottom: 'var(--spacing-3, 12px)',
   },
   permissionText: {
     fontSize: '14px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
     marginBottom: 'var(--spacing-4, 16px)',
     maxWidth: '280px',
   },
@@ -240,7 +240,7 @@ const styles = {
   },
   errorMessage: {
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    backgroundColor: 'var(--error-muted)',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--error)',
     fontSize: '13px',
@@ -570,7 +570,7 @@ export function VoiceRecorder({
 
       {/* Max duration warning */}
       {isRecording && duration > maxDuration - 30 && (
-        <div style={{ ...styles.errorMessage, backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--warning)' }}>
+        <div style={{ ...styles.errorMessage, backgroundColor: 'var(--warning-muted)', color: 'var(--warning)' }}>
           {Math.ceil(maxDuration - duration)} sekunder igjen
         </div>
       )}

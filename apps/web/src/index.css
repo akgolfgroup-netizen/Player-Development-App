@@ -165,11 +165,27 @@
   --video-border: rgba(255, 255, 255, 0.1);
   --video-border-strong: rgba(255, 255, 255, 0.2);
   --video-border-light: rgba(255, 255, 255, 0.05);
+  --video-overlay: rgba(0, 0, 0, 0.5);
   --video-control-bg: rgba(255, 255, 255, 0.1);
   --video-control-hover: rgba(255, 255, 255, 0.2);
   --video-control-active: rgba(255, 255, 255, 0.3);
   --video-progress-bg: rgba(255, 255, 255, 0.3);
   --video-progress-buffer: rgba(255, 255, 255, 0.5);
+  --video-focus-ring: rgba(99, 102, 241, 0.4);
+  --video-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --video-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --video-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --video-gradient-bottom: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  --video-gradient-top: linear-gradient(rgba(0, 0, 0, 0.6), transparent);
+  --video-shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.4);
+
+  /* Social Sharing Tokens (for share dialogs) */
+  --share-whatsapp: #25D366;
+  --share-whatsapp-muted: rgba(37, 211, 102, 0.1);
+  --share-whatsapp-border: rgba(37, 211, 102, 0.3);
+  --share-email: #3B82F6;
+  --share-email-muted: rgba(59, 130, 246, 0.1);
+  --share-email-border: rgba(59, 130, 246, 0.3);
 
   /* Table/List interaction tokens */
   --table-hover: rgba(0, 0, 0, 0.02);

@@ -49,24 +49,24 @@ const tw = {
   container: 'flex flex-col gap-3 p-4 bg-surface rounded-ak-lg border border-border',
   row: 'flex flex-wrap gap-3 items-center',
   searchContainer: 'flex-[1_1_250px] relative',
-  searchIcon: 'absolute left-3 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[var(--text-tertiary,rgba(255,255,255,0.4))] pointer-events-none',
-  searchInput: 'w-full py-2.5 pr-3 pl-10 text-sm text-[var(--text-primary,white)] bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md outline-none transition-colors duration-200 focus:border-primary',
-  clearButton: 'absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none cursor-pointer text-[var(--text-tertiary,rgba(255,255,255,0.4))] rounded-ak-sm flex items-center justify-center',
-  select: "py-2.5 pl-3 pr-9 text-sm text-[var(--text-primary,white)] bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md outline-none cursor-pointer appearance-none bg-no-repeat bg-[right_10px_center] min-w-[150px] transition-colors duration-200 focus:border-primary",
+  searchIcon: 'absolute left-3 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[var(--video-text-tertiary)] pointer-events-none',
+  searchInput: 'w-full py-2.5 pr-3 pl-10 text-sm text-[var(--text-inverse)] bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md outline-none transition-colors duration-200 focus:border-primary',
+  clearButton: 'absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none cursor-pointer text-[var(--video-text-tertiary)] rounded-ak-sm flex items-center justify-center',
+  select: "py-2.5 pl-3 pr-9 text-sm text-[var(--text-inverse)] bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md outline-none cursor-pointer appearance-none bg-no-repeat bg-[right_10px_center] min-w-[150px] transition-colors duration-200 focus:border-primary",
   viewToggle: 'flex bg-[var(--ak-surface-dark-elevated)] rounded-ak-md p-1 gap-1',
-  viewButton: 'py-2 px-3 bg-transparent border-none rounded-ak-sm cursor-pointer text-[var(--text-secondary,rgba(255,255,255,0.7))] flex items-center justify-center transition-all duration-200',
+  viewButton: 'py-2 px-3 bg-transparent border-none rounded-ak-sm cursor-pointer text-[var(--video-text-secondary)] flex items-center justify-center transition-all duration-200',
   viewButtonActive: 'bg-primary text-white',
   viewIcon: 'w-[18px] h-[18px]',
   playerSelect: 'min-w-[180px]',
   activeFilters: 'flex flex-wrap gap-2 items-center',
   filterChip: 'flex items-center gap-1 py-1 pl-3 pr-2 bg-primary/20 text-primary rounded-full text-xs font-medium',
   filterChipRemove: 'p-0.5 bg-transparent border-none cursor-pointer text-inherit rounded-full flex items-center justify-center opacity-70 transition-opacity duration-200 hover:opacity-100',
-  clearAllButton: 'py-1 px-3 bg-transparent border border-border rounded-full text-[var(--text-secondary,rgba(255,255,255,0.7))] text-xs cursor-pointer transition-all duration-200 hover:border-primary',
-  resultCount: 'ml-auto text-[13px] text-[var(--text-secondary,rgba(255,255,255,0.7))]',
+  clearAllButton: 'py-1 px-3 bg-transparent border border-border rounded-full text-[var(--video-text-secondary)] text-xs cursor-pointer transition-all duration-200 hover:border-primary',
+  resultCount: 'ml-auto text-[13px] text-[var(--video-text-secondary)]',
 };
 
 // Select dropdown arrow SVG as background
-const selectBgImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`;
+const selectBgImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")`;
 
 // Icons
 const SearchIcon = () => (

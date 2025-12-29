@@ -53,7 +53,7 @@ const styles = {
   subtitle: {
     margin: 0,
     fontSize: '14px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
   },
   headerActions: {
     display: 'flex',
@@ -85,11 +85,11 @@ const styles = {
   },
   listCard: {
     display: 'flex',
-    gap: 'var(--spacing-4, 16px)',
-    padding: 'var(--spacing-3, 12px)',
+    gap: 'var(--spacing-4)',
+    padding: 'var(--spacing-3)',
     backgroundColor: 'var(--ak-toast-bg)',
-    borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
+    borderRadius: 'var(--radius-lg)',
+    border: '1px solid var(--video-border)',
     cursor: 'pointer',
     transition: 'border-color 0.2s ease',
   },
@@ -125,10 +125,10 @@ const styles = {
   listMeta: {
     display: 'flex',
     flexWrap: 'wrap',
-    gap: 'var(--spacing-3, 12px)',
-    marginTop: 'var(--spacing-1, 4px)',
+    gap: 'var(--spacing-3)',
+    marginTop: 'var(--spacing-1)',
     fontSize: '13px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
   },
   listActions: {
     display: 'flex',
@@ -156,12 +156,12 @@ const styles = {
   bulkButton: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--spacing-1, 4px)',
+    gap: 'var(--spacing-1)',
     padding: '6px 12px',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'var(--video-control-hover)',
     color: 'white',
     border: 'none',
-    borderRadius: 'var(--radius-md, 8px)',
+    borderRadius: 'var(--radius-md)',
     fontSize: '13px',
     fontWeight: '500',
     cursor: 'pointer',
@@ -170,9 +170,9 @@ const styles = {
   cancelButton: {
     padding: '6px 12px',
     backgroundColor: 'transparent',
-    color: 'var(--text-primary, white)',
-    border: '1px solid var(--border-default, rgba(255, 255, 255, 0.3))',
-    borderRadius: 'var(--radius-md, 8px)',
+    color: 'var(--text-inverse)',
+    border: '1px solid var(--video-progress-bg)',
+    borderRadius: 'var(--radius-md)',
     fontSize: '13px',
     cursor: 'pointer',
   },
@@ -197,19 +197,19 @@ const styles = {
   emptyIcon: {
     width: '80px',
     height: '80px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.3))',
-    marginBottom: 'var(--spacing-4, 16px)',
+    color: 'var(--video-text-muted)',
+    marginBottom: 'var(--spacing-4)',
   },
   emptyTitle: {
     margin: 0,
     fontSize: '18px',
     fontWeight: '600',
-    color: 'var(--text-primary, white)',
+    color: 'var(--text-inverse)',
   },
   emptyDescription: {
-    margin: 'var(--spacing-2, 8px) 0 0',
+    margin: 'var(--spacing-2) 0 0',
     fontSize: '14px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
     maxWidth: '300px',
   },
   loadingContainer: {
@@ -221,7 +221,7 @@ const styles = {
   spinner: {
     width: '40px',
     height: '40px',
-    border: '3px solid var(--border, rgba(255, 255, 255, 0.1))',
+    border: '3px solid var(--video-border)',
     borderTopColor: 'var(--accent)',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
@@ -231,11 +231,11 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    padding: 'var(--spacing-3, 12px)',
+    padding: 'var(--spacing-3)',
     backgroundColor: 'var(--ak-toast-bg)',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
+    color: 'var(--video-text-secondary)',
+    border: '1px solid var(--video-border)',
+    borderRadius: 'var(--radius-md)',
     fontSize: '14px',
     fontWeight: '500',
     cursor: 'pointer',
@@ -481,7 +481,7 @@ export function VideoLibrary({
             ...styles.listCard,
             borderColor: selectedVideos.has(video.id)
               ? 'var(--accent)'
-              : 'var(--border, rgba(255, 255, 255, 0.1))',
+              : 'var(--video-border)',
           }}
           onClick={() => onVideoClick?.(video)}
           role="button"
@@ -592,7 +592,7 @@ export function VideoLibrary({
               </button>
             )}
             <button
-              style={{ ...styles.bulkButton, backgroundColor: 'rgba(239, 68, 68, 0.3)' }}
+              style={{ ...styles.bulkButton, backgroundColor: 'var(--error-muted)' }}
               onClick={handleDeleteSelected}
             >
               <DeleteIcon />

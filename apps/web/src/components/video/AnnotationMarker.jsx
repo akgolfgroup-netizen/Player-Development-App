@@ -65,16 +65,16 @@ const styles = {
     height: '12px',
     borderRadius: '50%',
     border: '2px solid white',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+    boxShadow: 'var(--video-shadow-sm)',
     transition: 'transform 0.15s ease, box-shadow 0.15s ease',
   },
   markerHovered: {
     transform: 'scale(1.3)',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)',
+    boxShadow: 'var(--video-shadow-md)',
   },
   markerSelected: {
     transform: 'scale(1.4)',
-    boxShadow: '0 0 0 3px rgba(99, 102, 241, 0.4)',
+    boxShadow: '0 0 0 3px var(--video-focus-ring)',
   },
   stem: {
     position: 'absolute',
@@ -84,7 +84,7 @@ const styles = {
     height: '8px',
     backgroundColor: 'white',
     transform: 'translateX(-50%)',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+    boxShadow: 'var(--video-shadow-sm)',
   },
   tooltip: {
     position: 'absolute',
@@ -95,7 +95,7 @@ const styles = {
     backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-md, 8px)',
     border: '1px solid var(--ak-surface-dark-border)',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+    boxShadow: 'var(--video-shadow-lg)',
     minWidth: '180px',
     maxWidth: '280px',
     zIndex: 100,
@@ -136,7 +136,7 @@ const styles = {
   },
   tooltipTimestamp: {
     fontSize: '11px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--video-text-tertiary)',
     fontFamily: 'var(--font-mono, monospace)',
   },
   tooltipPreview: {
@@ -152,7 +152,7 @@ const styles = {
   },
   tooltipNote: {
     fontSize: '12px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
     lineHeight: 1.4,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -165,15 +165,15 @@ const styles = {
     gap: 'var(--spacing-2, 8px)',
     marginTop: 'var(--spacing-3, 12px)',
     paddingTop: 'var(--spacing-2, 8px)',
-    borderTop: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
+    borderTop: '1px solid var(--video-border)',
   },
   actionButton: {
     flex: 1,
     padding: '6px 10px',
     backgroundColor: 'transparent',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
+    border: '1px solid var(--video-border-strong)',
     borderRadius: 'var(--radius-sm, 4px)',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--video-text-secondary)',
     fontSize: '11px',
     fontWeight: '500',
     cursor: 'pointer',
@@ -192,7 +192,7 @@ const styles = {
     alignItems: 'center',
     gap: '4px',
     fontSize: '11px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--video-text-tertiary)',
     marginTop: 'var(--spacing-1, 4px)',
   },
 };
