@@ -310,6 +310,13 @@ function App() {
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
+          <Route path="/profil/oppdater" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Oppdater profil" subtitle="Rediger din spillerprofil">
+                <BrukerprofilContainer forceOnboarding />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
           <Route path="/trenerteam" element={
             <ProtectedRoute>
               <AuthenticatedLayout title="Trenerteam" subtitle="Dine trenere og støtteapparat">
