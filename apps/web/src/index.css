@@ -104,6 +104,22 @@
   --color-danger: var(--ak-error);
 
   /* ─────────────────────────────────────────
+     COMPONENT LEGACY ALIASES
+     For backward compatibility with existing pages
+     TODO: Gradually migrate to semantic tokens
+     ───────────────────────────────────────── */
+  --accent: var(--ak-primary);
+  --accent-rgb: 16, 69, 106;
+  --bg-primary: var(--background-white);
+  --bg-secondary: var(--background-default);
+  --bg-tertiary: var(--gray-100);
+  --success: var(--ak-success);
+  --warning: var(--ak-warning);
+  --error: var(--ak-error);
+  --error-rgb: 196, 91, 78;
+  --card: var(--background-white);
+
+  /* ─────────────────────────────────────────
      VIDEO FEATURE TOKENS
      Dark-themed tokens for video components
      ───────────────────────────────────────── */
@@ -287,6 +303,18 @@
   --ak-surface-dark: #0a0a12;
   --ak-border: var(--border-default);
 
+  /* Component Legacy Aliases - Dark Mode */
+  --accent: var(--ak-primary);
+  --accent-rgb: 44, 95, 127;
+  --bg-primary: var(--background-white);
+  --bg-secondary: var(--background-default);
+  --bg-tertiary: var(--gray-100);
+  --success: var(--ak-success);
+  --warning: var(--ak-warning);
+  --error: var(--ak-error);
+  --error-rgb: 212, 115, 103;
+  --card: var(--background-white);
+
   /* Shadows - Dark Mode (softer) */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -372,6 +400,18 @@
     --ak-text-tertiary: var(--text-tertiary);
     --ak-surface-dark: #0a0a12;
     --ak-border: var(--border-default);
+
+    /* Component Legacy Aliases - Dark Mode (System) */
+    --accent: var(--ak-primary);
+    --accent-rgb: 44, 95, 127;
+    --bg-primary: var(--background-white);
+    --bg-secondary: var(--background-default);
+    --bg-tertiary: var(--gray-100);
+    --success: var(--ak-success);
+    --warning: var(--ak-warning);
+    --error: var(--ak-error);
+    --error-rgb: 212, 115, 103;
+    --card: var(--background-white);
 
     /* Shadows - Dark Mode (softer) */
     --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
