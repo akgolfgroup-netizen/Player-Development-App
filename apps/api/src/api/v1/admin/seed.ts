@@ -69,9 +69,23 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
         }
 
         // Clean existing demo data if requested
-        if (cleanFirst && existingTenant) {
-          await prisma.user.deleteMany({ where: { tenantId: DEMO_TENANT_ID } });
-          await prisma.tenant.delete({ where: { id: DEMO_TENANT_ID } });
+        if (cleanFirst) {
+          // Delete in order due to foreign key constraints
+          await prisma.player.deleteMany({ where: { id: DEMO_PLAYER_ID } });
+          await prisma.coach.deleteMany({ where: { id: DEMO_COACH_ID } });
+          await prisma.user.deleteMany({
+            where: {
+              OR: [
+                { id: DEMO_ADMIN_ID },
+                { id: DEMO_COACH_ID },
+                { id: DEMO_PLAYER_ID },
+                { email: { in: ['admin@demo.com', 'coach@demo.com', 'player@demo.com'] } },
+              ]
+            }
+          });
+          if (existingTenant) {
+            await prisma.tenant.delete({ where: { id: DEMO_TENANT_ID } });
+          }
           results.push('Cleaned existing demo data');
         }
 
