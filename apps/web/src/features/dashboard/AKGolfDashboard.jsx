@@ -2,30 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, MapPin, Trophy, Target, CheckCircle2,
-  Play, Bell, Calendar, RefreshCw, ChevronRight, Flame,
-  Dumbbell, BarChart3, MessageSquare, User
+  Play, Bell, RefreshCw, Flame, Calendar, TrendingUp, ChevronRight
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
-import { DashboardWidget } from './components';
-import Card from '../../ui/primitives/Card';
+import { DashboardWidget, KPIValue, KPIMeta } from './components';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
-import ActionsGrid from '../../ui/composites/ActionsGrid.composite';
 
 /**
  * AKGolfDashboard - Premium Player Dashboard
  *
- * 3-Zone Layout:
- * Zone A (Top): Welcome header + countdown + primary stats
- * Zone B (Mid): Plan completion + hours + notifications
- * Zone C (Bottom): Tasks + activity feed
+ * Card Shell Contract applied to all modules:
+ * - Consistent surface, borders, shadows
+ * - Unified header row pattern
+ * - Standard KPI typography
+ * - Single vertical rhythm
  *
- * Design principles:
- * - Clear hierarchy: one top header only
- * - Consistent card shell for all modules
- * - Compact error/loading states
- * - Semantic tokens only (no raw colors)
+ * Layout:
+ * Zone A (Top): Welcome + Quick Stats + Countdowns
+ * Zone B (Mid): Plan completion + Hours + Notifications
+ * Zone C (Bottom): Tasks + Sessions
  */
+
+// ===== CARD SHELL STYLES =====
+
+const cardShell = {
+  base: {
+    backgroundColor: 'var(--card)',
+    borderRadius: '16px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03)',
+    border: '1px solid var(--border-subtle)',
+    overflow: 'hidden',
+  },
+  padding: {
+    default: '20px 24px',
+    compact: '16px 20px',
+  },
+};
 
 // ===== ZONE A: TOP SECTION =====
 
@@ -39,6 +52,131 @@ const WelcomeHeader = ({ player, greeting }) => (
   </div>
 );
 
+const ProfileCard = ({ player, stats }) => {
+  // Get initials for avatar fallback
+  const getInitials = (name) => {
+    if (!name) return 'SP';
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
+  // Category color mapping
+  const getCategoryColor = (category) => {
+    const colors = {
+      'A': 'var(--ak-success)',
+      'B': 'var(--text-brand)',
+      'C': 'var(--ak-warning)',
+      'D': 'var(--text-secondary)',
+    };
+    return colors[category] || colors['B'];
+  };
+
+  return (
+    <div style={{ ...cardShell.base, padding: '0' }}>
+      <div style={styles.profileContent}>
+        {/* Left: Avatar and Info */}
+        <div style={styles.profileLeft}>
+          {/* Avatar */}
+          <div style={styles.avatarContainer}>
+            {player.avatarUrl ? (
+              <img
+                src={player.avatarUrl}
+                alt={player.name}
+                style={styles.avatarImage}
+              />
+            ) : (
+              <div style={styles.avatarFallback}>
+                {getInitials(player.name)}
+              </div>
+            )}
+            <div style={{
+              ...styles.categoryBadge,
+              backgroundColor: getCategoryColor(player.category),
+            }}>
+              {player.category || 'B'}
+            </div>
+          </div>
+
+          {/* Player Info */}
+          <div style={styles.profileInfo}>
+            <h2 style={styles.profileName}>{player.name || 'Spiller'}</h2>
+            <p style={styles.profileClub}>{player.club || 'Klubb ikke satt'}</p>
+            <div style={styles.profileMeta}>
+              <Badge variant="accent" size="sm">Kategori {player.category || 'B'}</Badge>
+              {player.memberSince && (
+                <span style={styles.memberSince}>Medlem siden {player.memberSince}</span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Quick Stats */}
+        <div style={styles.profileStats}>
+          <div style={styles.profileStatItem}>
+            <span style={styles.profileStatValue}>
+              {player.handicap?.toFixed(1) || '—'}
+            </span>
+            <span style={styles.profileStatLabel}>HCP</span>
+          </div>
+          <div style={styles.profileStatDivider} />
+          <div style={styles.profileStatItem}>
+            <span style={{
+              ...styles.profileStatValue,
+              color: (stats?.strokesGained || 0) >= 0 ? 'var(--ak-success)' : 'var(--ak-error)',
+            }}>
+              {stats?.strokesGained !== undefined
+                ? `${stats.strokesGained >= 0 ? '+' : ''}${stats.strokesGained.toFixed(1)}`
+                : '—'}
+            </span>
+            <span style={styles.profileStatLabel}>SG Total</span>
+          </div>
+          <div style={styles.profileStatDivider} />
+          <div style={styles.profileStatItem}>
+            <span style={styles.profileStatValue}>
+              {stats?.totalSessions || '0'}
+            </span>
+            <span style={styles.profileStatLabel}>Økter</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Action Row */}
+      <div style={styles.profileActions}>
+        <button style={styles.profileActionButton}>
+          <TrendingUp size={14} />
+          <span>Se fremgang</span>
+        </button>
+        <button style={styles.profileActionButton}>
+          <Calendar size={14} />
+          <span>Treningsplan</span>
+        </button>
+        <button style={styles.profileActionButton}>
+          <ChevronRight size={14} />
+          <span>Full profil</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const StatCard = ({ icon: Icon, label, value, subValue }) => (
+  <div style={{ ...cardShell.base, padding: cardShell.padding.compact }}>
+    <div style={styles.statContent}>
+      <div style={styles.statIcon}>
+        <Icon size={18} />
+      </div>
+      <div style={styles.statText}>
+        <KPIValue style={{ fontSize: '24px' }}>{value}</KPIValue>
+        <KPIMeta>{label}</KPIMeta>
+        {subValue && <KPIMeta style={{ marginTop: '2px' }}>{subValue}</KPIMeta>}
+      </div>
+    </div>
+  </div>
+);
+
 const CountdownCard = ({ title, date, type, location }) => {
   const targetDate = new Date(date);
   const today = new Date();
@@ -46,58 +184,35 @@ const CountdownCard = ({ title, date, type, location }) => {
   const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
   const typeConfig = {
-    tournament: {
-      label: 'Neste turnering',
-      icon: Trophy,
-      bgColor: 'var(--warning-muted)',
-      accentColor: 'var(--ak-warning)',
-    },
-    test: {
-      label: 'Neste test',
-      icon: Target,
-      bgColor: 'var(--info-muted)',
-      accentColor: 'var(--ak-info)',
-    },
+    tournament: { label: 'Neste turnering', icon: Trophy },
+    test: { label: 'Neste test', icon: Target },
   };
-
   const config = typeConfig[type] || typeConfig.test;
   const Icon = config.icon;
 
   return (
-    <div style={{ ...styles.countdownCard, backgroundColor: config.bgColor }}>
-      <div style={styles.countdownLeft}>
-        <div style={{ ...styles.countdownIcon, color: config.accentColor }}>
-          <Icon size={18} />
+    <div style={{ ...cardShell.base, padding: cardShell.padding.compact }}>
+      <div style={styles.countdownContent}>
+        <div style={styles.countdownLeft}>
+          <div style={styles.countdownIcon}>
+            <Icon size={18} />
+          </div>
+          <div>
+            <KPIMeta style={{ textTransform: 'uppercase', letterSpacing: '0.03em', fontWeight: 500 }}>
+              {config.label}
+            </KPIMeta>
+            <p style={styles.countdownTitle}>{title || 'Ikke planlagt'}</p>
+            {location && (
+              <p style={styles.countdownLocation}>
+                <MapPin size={12} /> {location}
+              </p>
+            )}
+          </div>
         </div>
-        <div>
-          <p style={styles.countdownLabel}>{config.label}</p>
-          <p style={styles.countdownTitle}>{title || 'Ikke planlagt'}</p>
-          {location && (
-            <p style={styles.countdownLocation}>
-              <MapPin size={12} /> {location}
-            </p>
-          )}
+        <div style={styles.countdownRight}>
+          <KPIValue style={{ fontSize: '28px', color: 'var(--text-brand)' }}>{diffDays}</KPIValue>
+          <KPIMeta>dager</KPIMeta>
         </div>
-      </div>
-      <div style={styles.countdownRight}>
-        <span style={{ ...styles.countdownDays, color: config.accentColor }}>{diffDays}</span>
-        <span style={styles.countdownDaysLabel}>dager</span>
-      </div>
-    </div>
-  );
-};
-
-const StatCard = ({ icon, label, value, subValue, trend }) => {
-  const Icon = icon;
-  return (
-    <div style={styles.statCard}>
-      <div style={styles.statIcon}>
-        <Icon size={18} />
-      </div>
-      <div style={styles.statContent}>
-        <p style={styles.statValue}>{value}</p>
-        <p style={styles.statLabel}>{label}</p>
-        {subValue && <p style={styles.statSubValue}>{subValue}</p>}
       </div>
     </div>
   );
@@ -112,6 +227,7 @@ const PlanProgressWidget = ({ completed, total, loading, error }) => {
     <DashboardWidget
       title="Fullførte økter"
       subtitle="Denne uken"
+      icon={CheckCircle2}
       loading={loading}
       error={error}
       compact
@@ -121,8 +237,8 @@ const PlanProgressWidget = ({ completed, total, loading, error }) => {
           <div style={{ ...styles.progressFill, width: `${percentage}%` }} />
         </div>
         <div style={styles.progressStats}>
-          <span style={styles.progressValue}>{completed}/{total}</span>
-          <span style={styles.progressPercent}>{percentage}%</span>
+          <KPIValue style={{ fontSize: '20px' }}>{completed}/{total}</KPIValue>
+          <KPIMeta>{percentage}%</KPIMeta>
         </div>
       </div>
     </DashboardWidget>
@@ -136,12 +252,13 @@ const HoursWidget = ({ hours, goal, loading, error }) => {
     <DashboardWidget
       title="Timer denne uke"
       subtitle={`Mål: ${goal}t`}
+      icon={Clock}
       loading={loading}
       error={error}
       compact
     >
       <div style={styles.hoursContent}>
-        <span style={styles.hoursValue}>{hours}t</span>
+        <KPIValue style={{ fontSize: '24px', color: 'var(--text-brand)', minWidth: '48px' }}>{hours}t</KPIValue>
         <div style={styles.hoursProgress}>
           <div style={{ ...styles.hoursProgressFill, width: `${Math.min(percentage, 100)}%` }} />
         </div>
@@ -150,33 +267,32 @@ const HoursWidget = ({ hours, goal, loading, error }) => {
   );
 };
 
-const NotificationsWidget = ({ notifications, onViewAll, loading, error }) => {
-  return (
-    <DashboardWidget
-      title="Varslinger"
-      action={onViewAll}
-      actionLabel={notifications.length > 0 ? `${notifications.length} nye` : 'Se alle'}
-      loading={loading}
-      error={error}
-      empty={notifications.length === 0}
-      emptyMessage="Ingen nye varslinger"
-      noPadding
-    >
-      <div style={styles.notificationsList}>
-        {notifications.slice(0, 3).map((notif, idx) => (
-          <div key={notif.id || idx} style={styles.notificationItem}>
-            <div style={styles.notificationDot} />
-            <div style={styles.notificationContent}>
-              <p style={styles.notificationTitle}>{notif.title}</p>
-              <p style={styles.notificationMessage}>{notif.message}</p>
-            </div>
-            <span style={styles.notificationTime}>{notif.time || 'Nylig'}</span>
+const NotificationsWidget = ({ notifications, onViewAll, loading, error }) => (
+  <DashboardWidget
+    title="Varslinger"
+    icon={Bell}
+    action={onViewAll}
+    actionLabel={notifications.length > 0 ? `${notifications.length} nye` : 'Se alle'}
+    loading={loading}
+    error={error}
+    empty={notifications.length === 0}
+    emptyMessage="Ingen nye varslinger"
+    noPadding
+  >
+    <div style={styles.notificationsList}>
+      {notifications.slice(0, 3).map((notif, idx) => (
+        <div key={notif.id || idx} style={styles.notificationItem}>
+          <div style={styles.notificationDot} />
+          <div style={styles.notificationContent}>
+            <p style={styles.notificationTitle}>{notif.title}</p>
+            <p style={styles.notificationMessage}>{notif.message}</p>
           </div>
-        ))}
-      </div>
-    </DashboardWidget>
-  );
-};
+          <KPIMeta>{notif.time || 'Nylig'}</KPIMeta>
+        </div>
+      ))}
+    </div>
+  </DashboardWidget>
+);
 
 // ===== ZONE C: BOTTOM SECTION =====
 
@@ -187,7 +303,9 @@ const TasksWidget = ({ tasks, onToggle, onViewAll, loading, error }) => {
     <DashboardWidget
       title="Mine oppgaver"
       subtitle={`${completedCount}/${tasks.length} fullført`}
+      icon={Target}
       action={onViewAll}
+      actionLabel="Se alle"
       loading={loading}
       error={error}
       empty={tasks.length === 0}
@@ -225,7 +343,7 @@ const TasksWidget = ({ tasks, onToggle, onViewAll, loading, error }) => {
               }}>
                 {task.title}
               </p>
-              <p style={styles.taskArea}>{task.area}</p>
+              <KPIMeta>{task.area}</KPIMeta>
             </div>
             {task.priority === 'high' && !task.completed && (
               <Badge variant="error" size="sm">Viktig</Badge>
@@ -237,42 +355,44 @@ const TasksWidget = ({ tasks, onToggle, onViewAll, loading, error }) => {
   );
 };
 
-const SessionsWidget = ({ sessions, onViewAll, onSessionClick, loading, error }) => {
-  return (
-    <DashboardWidget
-      title="Dagens økter"
-      action={onViewAll}
-      loading={loading}
-      error={error}
-      empty={sessions.length === 0}
-      emptyMessage="Ingen økter planlagt i dag"
-      emptyAction={onViewAll}
-      emptyActionLabel="Gå til kalender"
-      noPadding
-    >
-      <div style={styles.sessionsList}>
-        {sessions.map(session => (
-          <div
-            key={session.id}
-            style={styles.sessionItem}
-            onClick={() => onSessionClick?.(session)}
-          >
-            <div style={styles.sessionIcon}>
-              <Play size={16} />
-            </div>
-            <div style={styles.sessionContent}>
-              <p style={styles.sessionTitle}>{session.title}</p>
-              <p style={styles.sessionMeta}>
-                <Clock size={12} /> {session.time} &middot; <MapPin size={12} /> {session.location}
-              </p>
-            </div>
-            <span style={styles.sessionDuration}>{session.duration} min</span>
+const SessionsWidget = ({ sessions, onViewAll, onSessionClick, loading, error }) => (
+  <DashboardWidget
+    title="Dagens økter"
+    icon={Calendar}
+    action={onViewAll}
+    actionLabel="Kalender"
+    loading={loading}
+    error={error}
+    empty={sessions.length === 0}
+    emptyMessage="Ingen økter planlagt i dag"
+    emptyAction={onViewAll}
+    emptyActionLabel="Gå til kalender"
+    noPadding
+  >
+    <div style={styles.sessionsList}>
+      {sessions.map(session => (
+        <div
+          key={session.id}
+          style={styles.sessionItem}
+          onClick={() => onSessionClick?.(session)}
+        >
+          <div style={styles.sessionIcon}>
+            <Play size={16} />
           </div>
-        ))}
-      </div>
-    </DashboardWidget>
-  );
-};
+          <div style={styles.sessionContent}>
+            <p style={styles.sessionTitle}>{session.title}</p>
+            <KPIMeta style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Clock size={12} /> {session.time} &middot; <MapPin size={12} /> {session.location}
+            </KPIMeta>
+          </div>
+          <div style={styles.sessionDuration}>
+            <KPIMeta style={{ fontWeight: 500 }}>{session.duration} min</KPIMeta>
+          </div>
+        </div>
+      ))}
+    </div>
+  </DashboardWidget>
+);
 
 // ===== MAIN DASHBOARD =====
 
@@ -281,7 +401,6 @@ const AKGolfDashboard = () => {
   const { data: dashboardData, loading, error, refetch } = useDashboard();
   const [tasks, setTasks] = useState([]);
 
-  // Update tasks when data loads
   useEffect(() => {
     if (dashboardData?.tasks) {
       setTasks(dashboardData.tasks);
@@ -306,67 +425,6 @@ const AKGolfDashboard = () => {
   const nextTest = dashboardData?.nextTest;
   const notifications = dashboardData?.notifications || [];
   const upcomingSessions = dashboardData?.upcomingSessions || [];
-  const messages = dashboardData?.messages || [];
-
-  // Quick actions for navigation
-  const quickActions = [
-    {
-      id: 'training',
-      title: 'Start trening',
-      description: 'Start en ny treningsøkt eller velg fra ukeplanen.',
-      href: '/sessions',
-      icon: Dumbbell,
-      iconForeground: 'text-teal-700',
-      iconBackground: 'bg-teal-50',
-    },
-    {
-      id: 'calendar',
-      title: 'Kalender',
-      description: 'Se og planlegg treningsøkter, tester og turneringer.',
-      href: '/kalender',
-      icon: Calendar,
-      iconForeground: 'text-purple-700',
-      iconBackground: 'bg-purple-50',
-    },
-    {
-      id: 'stats',
-      title: 'Statistikk',
-      description: 'Se din fremgang og strokes gained analyse.',
-      href: '/stats',
-      icon: BarChart3,
-      iconForeground: 'text-sky-700',
-      iconBackground: 'bg-sky-50',
-    },
-    {
-      id: 'messages',
-      title: 'Meldinger',
-      description: 'Kommuniser med treneren din og lagkamerater.',
-      href: '/meldinger',
-      icon: MessageSquare,
-      iconForeground: 'text-yellow-700',
-      iconBackground: 'bg-yellow-50',
-      badge: messages.filter(m => !m.read).length || undefined,
-    },
-    {
-      id: 'goals',
-      title: 'Mål & oppgaver',
-      description: 'Følg opp målene dine og daglige oppgaver.',
-      href: '/maalsetninger',
-      icon: Target,
-      iconForeground: 'text-rose-700',
-      iconBackground: 'bg-rose-50',
-      badge: tasks.filter(t => !t.completed).length || undefined,
-    },
-    {
-      id: 'profile',
-      title: 'Min profil',
-      description: 'Oppdater profilen din og se din utvikling.',
-      href: '/profil',
-      icon: User,
-      iconForeground: 'text-indigo-700',
-      iconBackground: 'bg-indigo-50',
-    },
-  ];
 
   return (
     <div style={styles.dashboard}>
@@ -383,6 +441,9 @@ const AKGolfDashboard = () => {
       {/* ZONE A: Top Section */}
       <section style={styles.zoneA}>
         <WelcomeHeader player={player} greeting={getGreeting()} />
+
+        {/* Profile Card with Avatar and Stats */}
+        <ProfileCard player={player} stats={stats} />
 
         {/* Quick Stats Row */}
         <div style={styles.statsRow}>
@@ -462,7 +523,7 @@ const AKGolfDashboard = () => {
         </div>
       </section>
 
-      {/* Primary CTA */}
+      {/* Primary CTA - Single button */}
       <div style={styles.primaryCTA}>
         <Button
           variant="primary"
@@ -484,10 +545,10 @@ const styles = {
   dashboard: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--spacing-6)',
+    gap: '24px', // Consistent spacing
     maxWidth: '800px',
     margin: '0 auto',
-    padding: 'var(--spacing-4)',
+    padding: '16px',
   },
 
   // Stale banner
@@ -495,69 +556,200 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 'var(--spacing-3) var(--spacing-4)',
+    padding: '12px 16px',
     backgroundColor: 'var(--warning-muted)',
-    borderRadius: 'var(--radius-md)',
+    borderRadius: '12px',
     borderLeft: '3px solid var(--ak-warning)',
-    fontSize: 'var(--font-size-caption1)',
+    fontSize: '13px',
     color: 'var(--text-secondary)',
   },
   staleRetry: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--spacing-1)',
-    fontSize: 'var(--font-size-caption1)',
+    gap: '4px',
+    fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--ak-warning)',
+    color: 'var(--text-secondary)',
     backgroundColor: 'transparent',
     border: 'none',
     padding: '4px 8px',
     cursor: 'pointer',
+    textDecoration: 'underline',
   },
 
   // Zone A
   zoneA: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--spacing-5)',
+    gap: '20px',
   },
   welcomeHeader: {
-    paddingBottom: 'var(--spacing-2)',
+    paddingBottom: '8px',
   },
   greetingLabel: {
-    fontSize: 'var(--font-size-caption1)',
+    fontSize: '12px',
     color: 'var(--text-tertiary)',
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
     margin: '0 0 4px 0',
   },
   playerName: {
-    fontSize: 'var(--font-size-title1)',
+    fontSize: '28px',
     fontWeight: 700,
     color: 'var(--text-primary)',
     margin: '0 0 4px 0',
     letterSpacing: '-0.01em',
   },
   categoryLabel: {
-    fontSize: 'var(--font-size-footnote)',
+    fontSize: '14px',
     color: 'var(--text-secondary)',
     margin: 0,
+  },
+
+  // Profile Card
+  profileContent: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '20px 24px',
+    gap: '24px',
+    flexWrap: 'wrap',
+  },
+  profileLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+  },
+  avatarContainer: {
+    position: 'relative',
+    flexShrink: 0,
+  },
+  avatarImage: {
+    width: '64px',
+    height: '64px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '3px solid var(--border-subtle)',
+  },
+  avatarFallback: {
+    width: '64px',
+    height: '64px',
+    borderRadius: '50%',
+    backgroundColor: 'var(--accent-muted)',
+    color: 'var(--text-brand)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '20px',
+    fontWeight: 700,
+    border: '3px solid var(--border-subtle)',
+  },
+  categoryBadge: {
+    position: 'absolute',
+    bottom: '-2px',
+    right: '-2px',
+    width: '22px',
+    height: '22px',
+    borderRadius: '50%',
+    color: 'white',
+    fontSize: '11px',
+    fontWeight: 700,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '2px solid var(--card)',
+  },
+  profileInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+  },
+  profileName: {
+    fontSize: '18px',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    margin: 0,
+    letterSpacing: '-0.01em',
+  },
+  profileClub: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    margin: 0,
+  },
+  profileMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginTop: '4px',
+  },
+  memberSince: {
+    fontSize: '12px',
+    color: 'var(--text-tertiary)',
+  },
+  profileStats: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+  },
+  profileStatItem: {
+    textAlign: 'center',
+    minWidth: '48px',
+  },
+  profileStatValue: {
+    display: 'block',
+    fontSize: '22px',
+    fontWeight: 700,
+    fontFeatureSettings: '"tnum"',
+    color: 'var(--text-primary)',
+    lineHeight: 1,
+  },
+  profileStatLabel: {
+    display: 'block',
+    fontSize: '11px',
+    fontWeight: 500,
+    color: 'var(--text-tertiary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+    marginTop: '4px',
+  },
+  profileStatDivider: {
+    width: '1px',
+    height: '32px',
+    backgroundColor: 'var(--border-subtle)',
+  },
+  profileActions: {
+    display: 'flex',
+    alignItems: 'center',
+    borderTop: '1px solid var(--border-subtle)',
+    backgroundColor: 'var(--bg-tertiary)',
+  },
+  profileActionButton: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    padding: '12px 16px',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-secondary)',
+    backgroundColor: 'transparent',
+    border: 'none',
+    borderRight: '1px solid var(--border-subtle)',
+    cursor: 'pointer',
+    transition: 'background-color 0.15s ease',
   },
 
   // Stats Row
   statsRow: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: 'var(--spacing-3)',
+    gap: '12px',
   },
-  statCard: {
+  statContent: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-4)',
-    backgroundColor: 'var(--card)',
-    borderRadius: 'var(--radius-lg)',
-    boxShadow: 'var(--shadow-sm)',
+    gap: '12px',
   },
   statIcon: {
     width: '36px',
@@ -567,47 +759,29 @@ const styles = {
     justifyContent: 'center',
     backgroundColor: 'var(--accent-muted)',
     color: 'var(--text-brand)',
-    borderRadius: 'var(--radius-md)',
+    borderRadius: '10px',
   },
-  statContent: {
-    flex: 1,
-    minWidth: 0,
-  },
-  statValue: {
-    fontSize: 'var(--font-size-headline)',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    margin: 0,
-    lineHeight: 1.2,
-  },
-  statLabel: {
-    fontSize: 'var(--font-size-caption2)',
-    color: 'var(--text-tertiary)',
-    margin: 0,
-  },
-  statSubValue: {
-    fontSize: 'var(--font-size-caption2)',
-    color: 'var(--text-secondary)',
-    margin: 0,
+  statText: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
   },
 
   // Countdown Row
   countdownRow: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: 'var(--spacing-3)',
+    gap: '12px',
   },
-  countdownCard: {
+  countdownContent: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 'var(--spacing-4)',
-    borderRadius: 'var(--radius-lg)',
   },
   countdownLeft: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: 'var(--spacing-3)',
+    gap: '12px',
   },
   countdownIcon: {
     width: '36px',
@@ -615,26 +789,18 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'var(--card)',
-    borderRadius: 'var(--radius-md)',
-    boxShadow: 'var(--shadow-sm)',
-  },
-  countdownLabel: {
-    fontSize: 'var(--font-size-caption2)',
-    fontWeight: 500,
+    backgroundColor: 'var(--bg-tertiary)',
     color: 'var(--text-secondary)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.03em',
-    margin: 0,
+    borderRadius: '10px',
   },
   countdownTitle: {
-    fontSize: 'var(--font-size-footnote)',
+    fontSize: '14px',
     fontWeight: 600,
     color: 'var(--text-primary)',
-    margin: '2px 0 0 0',
+    margin: '4px 0 0 0',
   },
   countdownLocation: {
-    fontSize: 'var(--font-size-caption2)',
+    fontSize: '12px',
     color: 'var(--text-secondary)',
     display: 'flex',
     alignItems: 'center',
@@ -643,35 +809,29 @@ const styles = {
   },
   countdownRight: {
     textAlign: 'right',
-  },
-  countdownDays: {
-    fontSize: 'var(--font-size-title2)',
-    fontWeight: 700,
-    display: 'block',
-    lineHeight: 1,
-  },
-  countdownDaysLabel: {
-    fontSize: 'var(--font-size-caption2)',
-    color: 'var(--text-secondary)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: '2px',
   },
 
   // Zone B
   zoneB: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--spacing-4)',
+    gap: '16px',
   },
   zoneBGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: 'var(--spacing-4)',
+    gap: '16px',
   },
 
   // Progress Widget
   progressContent: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--spacing-2)',
+    gap: '12px',
   },
   progressBar: {
     height: '8px',
@@ -690,27 +850,12 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  progressValue: {
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-  },
-  progressPercent: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-  },
 
   // Hours Widget
   hoursContent: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--spacing-3)',
-  },
-  hoursValue: {
-    fontSize: 'var(--font-size-title2)',
-    fontWeight: 700,
-    color: 'var(--text-brand)',
-    minWidth: '48px',
+    gap: '16px',
   },
   hoursProgress: {
     flex: 1,
@@ -734,8 +879,8 @@ const styles = {
   notificationItem: {
     display: 'flex',
     alignItems: 'flex-start',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-4)',
+    gap: '12px',
+    padding: '16px 24px',
     borderBottom: '1px solid var(--border-subtle)',
   },
   notificationDot: {
@@ -751,35 +896,30 @@ const styles = {
     minWidth: 0,
   },
   notificationTitle: {
-    fontSize: 'var(--font-size-footnote)',
+    fontSize: '14px',
     fontWeight: 500,
     color: 'var(--text-primary)',
     margin: 0,
   },
   notificationMessage: {
-    fontSize: 'var(--font-size-caption1)',
+    fontSize: '13px',
     color: 'var(--text-secondary)',
     margin: '2px 0 0 0',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
-  notificationTime: {
-    fontSize: 'var(--font-size-caption2)',
-    color: 'var(--text-tertiary)',
-    flexShrink: 0,
-  },
 
   // Zone C
   zoneC: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--spacing-4)',
+    gap: '16px',
   },
   zoneCGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: 'var(--spacing-4)',
+    gap: '16px',
   },
 
   // Tasks
@@ -790,8 +930,8 @@ const styles = {
   taskItem: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
+    gap: '12px',
+    padding: '12px 24px',
     borderBottom: '1px solid var(--border-subtle)',
     cursor: 'pointer',
     transition: 'background-color 0.15s ease',
@@ -812,15 +952,10 @@ const styles = {
     minWidth: 0,
   },
   taskTitle: {
-    fontSize: 'var(--font-size-footnote)',
+    fontSize: '14px',
     fontWeight: 500,
     margin: 0,
     transition: 'color 0.15s ease',
-  },
-  taskArea: {
-    fontSize: 'var(--font-size-caption2)',
-    color: 'var(--text-tertiary)',
-    margin: '2px 0 0 0',
   },
 
   // Sessions
@@ -831,8 +966,8 @@ const styles = {
   sessionItem: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
+    gap: '12px',
+    padding: '12px 24px',
     borderBottom: '1px solid var(--border-subtle)',
     cursor: 'pointer',
     transition: 'background-color 0.15s ease',
@@ -845,49 +980,28 @@ const styles = {
     justifyContent: 'center',
     backgroundColor: 'var(--ak-primary)',
     color: 'white',
-    borderRadius: 'var(--radius-md)',
+    borderRadius: '10px',
   },
   sessionContent: {
     flex: 1,
     minWidth: 0,
   },
   sessionTitle: {
-    fontSize: 'var(--font-size-footnote)',
+    fontSize: '14px',
     fontWeight: 500,
     color: 'var(--text-primary)',
     margin: 0,
   },
-  sessionMeta: {
-    fontSize: 'var(--font-size-caption2)',
-    color: 'var(--text-secondary)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    margin: '2px 0 0 0',
-  },
   sessionDuration: {
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 500,
-    color: 'var(--text-brand)',
-    padding: '4px 8px',
+    padding: '4px 10px',
     backgroundColor: 'var(--accent-muted)',
-    borderRadius: 'var(--radius-sm)',
+    borderRadius: '6px',
   },
 
   // Primary CTA
   primaryCTA: {
-    paddingTop: 'var(--spacing-2)',
+    paddingTop: '8px',
   },
 };
-
-// Add responsive styles via CSS class
-const responsiveCSS = `
-  @media (max-width: 640px) {
-    .dashboard-stats-row { grid-template-columns: 1fr !important; }
-    .dashboard-countdown-row { grid-template-columns: 1fr !important; }
-    .dashboard-zone-b-grid { grid-template-columns: 1fr !important; }
-    .dashboard-zone-c-grid { grid-template-columns: 1fr !important; }
-  }
-`;
 
 export default AKGolfDashboard;

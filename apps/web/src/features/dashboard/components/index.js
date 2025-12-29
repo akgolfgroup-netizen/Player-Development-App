@@ -3,4 +3,4 @@
  * Shared UI components for the player dashboard
  */
 
-export { default as DashboardWidget } from './DashboardWidget';
+export { default as DashboardWidget, KPIValue, KPIMeta, KPIDelta } from './DashboardWidget';

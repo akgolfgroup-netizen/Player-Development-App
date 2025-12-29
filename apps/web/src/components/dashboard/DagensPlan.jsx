@@ -1,8 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Card from '../../ui/primitives/Card';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
+
+/**
+ * DagensPlan - Today's Schedule Widget
+ *
+ * Card Shell Contract applied:
+ * - Consistent surface, borders, shadows (rounded-2xl)
+ * - Unified header row pattern
+ * - Standard KPI typography
+ * - Single vertical rhythm
+ * - Semantic tokens only
+ */
+
+// Card Shell base styles
+const cardShell = {
+  base: {
+    backgroundColor: 'var(--card)',
+    borderRadius: '16px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03)',
+    border: '1px solid var(--border-subtle)',
+    overflow: 'hidden',
+  },
+};
 
 export default function DagensPlan({ events: propEvents }) {
   const navigate = useNavigate();
@@ -38,31 +59,17 @@ export default function DagensPlan({ events: propEvents }) {
   };
 
   return (
-    <Card variant="default" padding="none">
-      <header style={{
-        padding: '20px',
-        borderBottom: '1px solid var(--border-default)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
-        <div>
-          <div style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-          }}>
-            Dagens plan
-          </div>
-          <div style={{
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-            marginTop: '4px',
-          }}>
-            {formatDate(selectedDate)}
+    <div style={cardShell.base}>
+      {/* Header */}
+      <header style={styles.header}>
+        <div style={styles.headerLeft}>
+          <Calendar size={18} style={{ color: 'var(--text-secondary)' }} />
+          <div>
+            <span style={styles.title}>Dagens plan</span>
+            <span style={styles.subtitle}>{formatDate(selectedDate)}</span>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={styles.headerActions}>
           <Button variant="ghost" size="sm" onClick={goToPrevDay}>
             <ChevronLeft size={16} />
           </Button>
@@ -72,92 +79,153 @@ export default function DagensPlan({ events: propEvents }) {
         </div>
       </header>
 
-      {/* Fixed height container with overflow protection */}
-      <div style={{
-        position: 'relative',
-        height: '520px',
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          overflowY: 'auto',
-        }}>
-          <div style={{
-            padding: '20px',
-            display: 'grid',
-            gridTemplateColumns: '64px 1fr',
-            gap: '16px',
-          }}>
+      {/* Content - Fixed height with overflow protection */}
+      <div style={styles.contentContainer}>
+        <div style={styles.scrollArea}>
+          <div style={styles.gridLayout}>
             {/* Hour labels column */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '24px',
-            }}>
+            <div style={styles.hoursColumn}>
               {hours.map((h) => (
-                <div
-                  key={h}
-                  style={{
-                    fontSize: '12px',
-                    color: 'var(--text-tertiary)',
-                    lineHeight: '1',
-                  }}
-                >
+                <div key={h} style={styles.hourLabel}>
                   {String(h).padStart(2, '0')}:00
                 </div>
               ))}
             </div>
 
-            {/* Events column - simple vertical list */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-            }}>
-              {events.map((e) => (
-                <div
-                  key={e.id}
-                  style={{
-                    borderRadius: 'var(--radius-lg)',
-                    backgroundColor: 'var(--accent)',
-                    color: 'white',
-                    padding: '12px 16px',
-                    cursor: e.sessionId ? 'pointer' : 'default',
-                    transition: 'opacity 0.2s',
-                  }}
-                  onClick={() => e.sessionId && navigate(`/session/${e.sessionId}`)}
-                  onMouseEnter={(evt) => {
-                    if (e.sessionId) {
-                      evt.currentTarget.style.opacity = '0.9';
-                    }
-                  }}
-                  onMouseLeave={(evt) => {
-                    evt.currentTarget.style.opacity = '1';
-                  }}
-                >
-                  <div style={{
-                    fontWeight: 600,
-                    fontSize: '14px',
-                  }}>
-                    {e.title}
-                  </div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    marginTop: '4px',
-                  }}>
-                    {e.startTime} - {e.endTime} • {e.location}
-                  </div>
+            {/* Events column */}
+            <div style={styles.eventsColumn}>
+              {events.length === 0 ? (
+                <div style={styles.emptyState}>
+                  <span style={styles.emptyText}>Ingen aktiviteter planlagt</span>
                 </div>
-              ))}
+              ) : (
+                events.map((e) => (
+                  <div
+                    key={e.id}
+                    style={styles.eventCard}
+                    onClick={() => e.sessionId && navigate(`/session/${e.sessionId}`)}
+                    onMouseEnter={(evt) => {
+                      if (e.sessionId) {
+                        evt.currentTarget.style.opacity = '0.9';
+                      }
+                    }}
+                    onMouseLeave={(evt) => {
+                      evt.currentTarget.style.opacity = '1';
+                    }}
+                  >
+                    <div style={styles.eventTitle}>{e.title}</div>
+                    <div style={styles.eventMeta}>
+                      {e.startTime} - {e.endTime} • {e.location}
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }
+
+const styles = {
+  // Header
+  header: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    padding: '20px 24px 16px 24px',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  headerLeft: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '12px',
+  },
+  title: {
+    display: 'block',
+    fontSize: '14px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+  },
+  subtitle: {
+    display: 'block',
+    fontSize: '12px',
+    color: 'var(--text-tertiary)',
+    marginTop: '2px',
+  },
+  headerActions: {
+    display: 'flex',
+    gap: '4px',
+  },
+
+  // Content
+  contentContainer: {
+    position: 'relative',
+    height: '480px',
+    overflow: 'hidden',
+  },
+  scrollArea: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflowY: 'auto',
+  },
+  gridLayout: {
+    padding: '20px 24px',
+    display: 'grid',
+    gridTemplateColumns: '56px 1fr',
+    gap: '16px',
+  },
+
+  // Hours column
+  hoursColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+  },
+  hourLabel: {
+    fontSize: '12px',
+    fontFeatureSettings: '"tnum"',
+    color: 'var(--text-tertiary)',
+    lineHeight: 1,
+  },
+
+  // Events column
+  eventsColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  eventCard: {
+    borderRadius: '12px',
+    backgroundColor: 'var(--ak-primary)',
+    color: 'white',
+    padding: '14px 16px',
+    cursor: 'pointer',
+    transition: 'opacity 0.2s',
+  },
+  eventTitle: {
+    fontWeight: 600,
+    fontSize: '14px',
+  },
+  eventMeta: {
+    fontSize: '13px',
+    color: 'rgba(255, 255, 255, 0.8)',
+    marginTop: '4px',
+  },
+
+  // Empty state
+  emptyState: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '48px 16px',
+  },
+  emptyText: {
+    fontSize: '14px',
+    color: 'var(--text-tertiary)',
+  },
+};

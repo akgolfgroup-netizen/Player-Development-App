@@ -1,10 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import {
   Cloud, Sun, CloudRain, Wind, Thermometer,
-  Droplets, ArrowUp, MapPin, RefreshCw, ChevronRight,
+  Droplets, ArrowUp, MapPin, RefreshCw,
   CloudSnow, CloudLightning, CloudFog
 } from 'lucide-react';
 import { weatherAPI, golfCoursesAPI } from '../../services/api';
+
+/**
+ * WeatherWidget - Golf Weather Card
+ *
+ * Card Shell Contract applied:
+ * - Consistent surface, borders, shadows (rounded-2xl)
+ * - Unified header row pattern
+ * - Standard KPI typography
+ * - Single vertical rhythm (space-y-4)
+ * - Semantic tokens only
+ */
+
+// Card Shell base styles
+const cardShell = {
+  base: {
+    backgroundColor: 'var(--card)',
+    borderRadius: '16px',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03)',
+    border: '1px solid var(--border-subtle)',
+    overflow: 'hidden',
+  },
+};
 
 // Weather icon mapping
 const getWeatherIcon = (symbol, size = 24) => {
@@ -24,21 +46,19 @@ const getWeatherIcon = (symbol, size = 24) => {
     thunder: CloudLightning,
   };
 
-  // Find matching icon
   const key = Object.keys(iconMap).find(k => symbol.toLowerCase().includes(k));
   const Icon = key ? iconMap[key] : Cloud;
-
   return <Icon size={size} />;
 };
 
 // Playability color mapping using semantic tokens
 const getPlayabilityColor = (playability) => {
   switch (playability) {
-    case 'excellent': return 'var(--success)';
-    case 'good': return 'var(--success)';
-    case 'fair': return 'var(--warning)';
-    case 'poor': return 'var(--warning)';
-    case 'unplayable': return 'var(--error)';
+    case 'excellent': return 'var(--ak-success)';
+    case 'good': return 'var(--ak-success)';
+    case 'fair': return 'var(--ak-warning)';
+    case 'poor': return 'var(--ak-warning)';
+    case 'unplayable': return 'var(--ak-error)';
     default: return 'var(--text-secondary)';
   }
 };
@@ -126,42 +146,42 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
     }
   };
 
+  // Loading state
   if (loading && !weather) {
     return (
-      <div style={{
-        padding: '24px',
-        borderRadius: 'var(--radius-lg)',
-        backgroundColor: 'var(--bg-primary)',
-        border: '1px solid var(--border-default)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-          <Cloud size={20} style={{ color: 'var(--accent)' }} />
-          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Golfvær</span>
+      <div style={cardShell.base}>
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <Cloud size={18} style={{ color: 'var(--text-secondary)' }} />
+            <span style={styles.title}>Golfvær</span>
+          </div>
         </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '120px',
-          color: 'var(--text-secondary)',
-        }}>
-          <RefreshCw size={24} style={{ animation: 'spin 1s linear infinite' }} />
+        <div style={styles.loadingContent}>
+          <RefreshCw size={20} style={{ color: 'var(--text-tertiary)', animation: 'spin 1s linear infinite' }} />
+          <span style={styles.loadingText}>Laster værdata...</span>
         </div>
+        <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
 
+  // Error state
   if (error) {
     return (
-      <div style={{
-        padding: '24px',
-        borderRadius: 'var(--radius-lg)',
-        backgroundColor: 'var(--bg-primary)',
-        border: '1px solid var(--border-default)',
-      }}>
-        <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <Cloud size={32} style={{ marginBottom: '8px', opacity: 0.5 }} />
-          <p style={{ margin: 0 }}>{error}</p>
+      <div style={cardShell.base}>
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <Cloud size={18} style={{ color: 'var(--text-secondary)' }} />
+            <span style={styles.title}>Golfvær</span>
+          </div>
+        </div>
+        <div style={styles.content}>
+          <div style={styles.errorState}>
+            <span style={styles.errorText}>{error}</span>
+            <button style={styles.retryButton} onClick={handleRefresh}>
+              Prøv igjen
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -171,58 +191,25 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
   const conditions = weather?.weather?.golfConditions;
 
   return (
-    <div style={{
-      borderRadius: 'var(--radius-lg)',
-      backgroundColor: 'var(--bg-primary)',
-      border: '1px solid var(--border-default)',
-      overflow: 'hidden',
-    }}>
+    <div style={cardShell.base}>
       {/* Header */}
-      <div style={{
-        padding: '16px 20px',
-        borderBottom: '1px solid var(--border-default)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Cloud size={20} style={{ color: 'var(--accent)' }} />
-          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Golfvær</span>
+      <div style={styles.header}>
+        <div style={styles.headerLeft}>
+          <Cloud size={18} style={{ color: 'var(--text-secondary)' }} />
+          <span style={styles.title}>Golfvær</span>
         </div>
-        <button
-          onClick={handleRefresh}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '4px',
-            borderRadius: 'var(--radius-sm)',
-            color: 'var(--text-secondary)',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-          title="Oppdater"
-        >
+        <button onClick={handleRefresh} style={styles.refreshButton} title="Oppdater">
           <RefreshCw size={16} style={{ opacity: loading ? 0.5 : 1 }} />
         </button>
       </div>
 
       {/* Course Selector */}
       {courses.length > 1 && (
-        <div style={{ padding: '12px 20px', borderBottom: '1px solid var(--border-default)' }}>
+        <div style={styles.selectorSection}>
           <select
             value={selectedCourse || ''}
             onChange={(e) => setSelectedCourse(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-default)',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              fontSize: '13px',
-              cursor: 'pointer',
-            }}
+            style={styles.select}
           >
             {courses.map(course => (
               <option key={course.id} value={course.id}>
@@ -234,42 +221,19 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
       )}
 
       {/* Main Weather Display */}
-      <div style={{ padding: '20px' }}>
+      <div style={styles.content}>
         {/* Current Weather */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '20px' }}>
+        <div style={styles.currentWeather}>
           {/* Temperature & Icon */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            flex: 1,
-          }}>
-            <div style={{
-              width: '56px',
-              height: '56px',
-              borderRadius: 'var(--radius-lg)',
-              background: 'linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-            }}>
+          <div style={styles.tempSection}>
+            <div style={styles.weatherIconBg}>
               {getWeatherIcon(current?.symbol, 28)}
             </div>
             <div>
-              <div style={{
-                fontSize: '32px',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                lineHeight: 1,
-              }}>
+              <div style={styles.tempValue}>
                 {current?.temperature?.toFixed(0) || '--'}°
               </div>
-              <div style={{
-                fontSize: '12px',
-                color: 'var(--text-secondary)',
-                marginTop: '2px',
-              }}>
+              <div style={styles.tempMeta}>
                 Føles som {current?.feelsLike?.toFixed(0) || '--'}°
               </div>
             </div>
@@ -277,24 +241,18 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
 
           {/* Golf Conditions Score */}
           <div style={{
-            textAlign: 'center',
-            padding: '12px 16px',
-            borderRadius: 'var(--radius-lg)',
-            backgroundColor: `${getPlayabilityColor(conditions?.playability)}15`,
+            ...styles.conditionsScore,
+            backgroundColor: `color-mix(in srgb, ${getPlayabilityColor(conditions?.playability)} 10%, transparent)`,
           }}>
             <div style={{
-              fontSize: '24px',
-              fontWeight: 700,
+              ...styles.scoreValue,
               color: getPlayabilityColor(conditions?.playability),
             }}>
               {conditions?.score || '--'}
             </div>
             <div style={{
-              fontSize: '10px',
-              fontWeight: 600,
+              ...styles.scoreLabel,
               color: getPlayabilityColor(conditions?.playability),
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
             }}>
               {conditions?.playability || 'N/A'}
             </div>
@@ -302,114 +260,57 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
         </div>
 
         {/* Weather Details Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '12px',
-          marginBottom: '16px',
-        }}>
+        <div style={styles.detailsGrid}>
           {/* Wind */}
-          <div style={{
-            padding: '12px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-secondary)',
-            textAlign: 'center',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '4px',
-              marginBottom: '4px',
-            }}>
-              <Wind size={14} style={{ color: 'var(--text-secondary)' }} />
+          <div style={styles.detailCard}>
+            <div style={styles.detailIconRow}>
+              <Wind size={14} style={{ color: 'var(--text-tertiary)' }} />
               {current?.windDirection && (
                 <WindArrow direction={current.windDirection} size={12} />
               )}
             </div>
-            <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+            <div style={styles.detailValue}>
               {current?.windSpeed?.toFixed(1) || '--'} m/s
             </div>
-            <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>
+            <div style={styles.detailLabel}>
               {current?.windDirectionText || '--'}
             </div>
           </div>
 
           {/* Humidity */}
-          <div style={{
-            padding: '12px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-secondary)',
-            textAlign: 'center',
-          }}>
-            <Droplets size={14} style={{ color: 'var(--text-secondary)', marginBottom: '4px' }} />
-            <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <div style={styles.detailCard}>
+            <Droplets size={14} style={{ color: 'var(--text-tertiary)', marginBottom: '4px' }} />
+            <div style={styles.detailValue}>
               {current?.humidity?.toFixed(0) || '--'}%
             </div>
-            <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>
-              Luftfuktighet
-            </div>
+            <div style={styles.detailLabel}>Luftfuktighet</div>
           </div>
 
           {/* Precipitation */}
-          <div style={{
-            padding: '12px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-secondary)',
-            textAlign: 'center',
-          }}>
-            <CloudRain size={14} style={{ color: 'var(--text-secondary)', marginBottom: '4px' }} />
-            <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <div style={styles.detailCard}>
+            <CloudRain size={14} style={{ color: 'var(--text-tertiary)', marginBottom: '4px' }} />
+            <div style={styles.detailValue}>
               {current?.precipitation?.toFixed(1) || '0'} mm
             </div>
-            <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>
-              Nedbør
-            </div>
+            <div style={styles.detailLabel}>Nedbør</div>
           </div>
         </div>
 
         {/* Condition Factors */}
         {conditions?.factors && (
-          <div style={{
-            padding: '12px 16px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-secondary)',
-          }}>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              marginBottom: '8px',
-            }}>
-              Spilleforhold
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={styles.factorsSection}>
+            <div style={styles.factorsLabel}>Spilleforhold</div>
+            <div style={styles.factorsList}>
               {Object.entries(conditions.factors).map(([key, factor]) => (
-                <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{
-                    flex: 1,
-                    height: '4px',
-                    borderRadius: '2px',
-                    backgroundColor: 'var(--border-default)',
-                    overflow: 'hidden',
-                  }}>
+                <div key={key} style={styles.factorRow}>
+                  <div style={styles.factorBar}>
                     <div style={{
-                      height: '100%',
+                      ...styles.factorFill,
                       width: `${factor.score}%`,
-                      borderRadius: '2px',
-                      backgroundColor: factor.score >= 70 ? 'var(--success)' : factor.score >= 40 ? 'var(--warning)' : 'var(--error)',
-                      transition: 'width 0.3s ease',
+                      backgroundColor: factor.score >= 70 ? 'var(--ak-success)' : factor.score >= 40 ? 'var(--ak-warning)' : 'var(--ak-error)',
                     }} />
                   </div>
-                  <span style={{
-                    fontSize: '11px',
-                    color: 'var(--text-secondary)',
-                    minWidth: '80px',
-                  }}>
-                    {factor.description}
-                  </span>
+                  <span style={styles.factorDescription}>{factor.description}</span>
                 </div>
               ))}
             </div>
@@ -419,62 +320,28 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
         {/* Recommendation */}
         {conditions?.recommendation && (
           <div style={{
-            marginTop: '12px',
-            padding: '10px 14px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: `${getPlayabilityColor(conditions.playability)}10`,
-            borderLeft: `3px solid ${getPlayabilityColor(conditions.playability)}`,
+            ...styles.recommendation,
+            borderLeftColor: getPlayabilityColor(conditions.playability),
           }}>
-            <p style={{
-              margin: 0,
-              fontSize: '13px',
-              color: 'var(--text-primary)',
-              fontWeight: 500,
-            }}>
-              {conditions.recommendation}
-            </p>
+            <p style={styles.recommendationText}>{conditions.recommendation}</p>
           </div>
         )}
 
         {/* Hourly Forecast Preview */}
         {showForecast && weather?.weather?.hourly && (
-          <div style={{ marginTop: '16px' }}>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              marginBottom: '8px',
-            }}>
-              Neste timer
-            </div>
-            <div style={{
-              display: 'flex',
-              gap: '8px',
-              overflowX: 'auto',
-              paddingBottom: '4px',
-            }}>
+          <div style={styles.forecastSection}>
+            <div style={styles.forecastLabel}>Neste timer</div>
+            <div style={styles.forecastGrid}>
               {weather.weather.hourly.slice(1, 7).map((hour, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    flex: '0 0 auto',
-                    width: '60px',
-                    padding: '10px 8px',
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: 'var(--bg-secondary)',
-                    textAlign: 'center',
-                  }}
-                >
-                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                <div key={idx} style={styles.forecastItem}>
+                  <div style={styles.forecastTime}>
                     {new Date(hour.time).getHours()}:00
                   </div>
                   {getWeatherIcon(hour.symbol, 18)}
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '4px' }}>
+                  <div style={styles.forecastTemp}>
                     {hour.temperature?.toFixed(0)}°
                   </div>
-                  <div style={{ fontSize: '10px', color: 'var(--text-tertiary)' }}>
+                  <div style={styles.forecastWind}>
                     {hour.windSpeed?.toFixed(0)} m/s
                   </div>
                 </div>
@@ -484,37 +351,315 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
         )}
 
         {/* Location & Update Time */}
-        <div style={{
-          marginTop: '16px',
-          paddingTop: '12px',
-          borderTop: '1px solid var(--border-default)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontSize: '11px',
-          color: 'var(--text-tertiary)',
-        }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div style={styles.footer}>
+          <span style={styles.footerLocation}>
             <MapPin size={12} />
             {weather?.clubName || 'Ukjent bane'}
           </span>
-          <span>
+          <span style={styles.footerTime}>
             Oppdatert: {weather?.weather?.updatedAt
               ? new Date(weather.weather.updatedAt).toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' })
               : '--:--'}
           </span>
         </div>
       </div>
-
-      {/* CSS for spin animation */}
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
+};
+
+const styles = {
+  // Header
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '20px 24px 16px 24px',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  headerLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  title: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+  },
+  refreshButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: '4px',
+    borderRadius: '6px',
+    color: 'var(--text-secondary)',
+    display: 'flex',
+    alignItems: 'center',
+  },
+
+  // Content
+  content: {
+    padding: '20px 24px 24px 24px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+
+  // Loading
+  loadingContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '12px',
+    padding: '48px 24px',
+  },
+  loadingText: {
+    fontSize: '13px',
+    color: 'var(--text-tertiary)',
+  },
+
+  // Error
+  errorState: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '24px 16px',
+    textAlign: 'center',
+  },
+  errorText: {
+    fontSize: '14px',
+    color: 'var(--text-tertiary)',
+  },
+  retryButton: {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-brand)',
+    backgroundColor: 'transparent',
+    border: 'none',
+    padding: '6px 12px',
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  },
+
+  // Course Selector
+  selectorSection: {
+    padding: '12px 24px',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  select: {
+    width: '100%',
+    padding: '10px 12px',
+    borderRadius: '8px',
+    border: '1px solid var(--border-subtle)',
+    backgroundColor: 'var(--bg-secondary)',
+    color: 'var(--text-primary)',
+    fontSize: '13px',
+    cursor: 'pointer',
+  },
+
+  // Current Weather
+  currentWeather: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: '16px',
+  },
+  tempSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    flex: 1,
+  },
+  weatherIconBg: {
+    width: '56px',
+    height: '56px',
+    borderRadius: '12px',
+    backgroundColor: 'var(--accent-muted)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'var(--text-brand)',
+  },
+  tempValue: {
+    fontSize: '30px',
+    fontWeight: 600,
+    fontFeatureSettings: '"tnum"',
+    color: 'var(--text-primary)',
+    lineHeight: 1,
+  },
+  tempMeta: {
+    fontSize: '12px',
+    color: 'var(--text-tertiary)',
+    marginTop: '4px',
+  },
+  conditionsScore: {
+    textAlign: 'center',
+    padding: '12px 16px',
+    borderRadius: '12px',
+  },
+  scoreValue: {
+    fontSize: '24px',
+    fontWeight: 600,
+    fontFeatureSettings: '"tnum"',
+    lineHeight: 1,
+  },
+  scoreLabel: {
+    fontSize: '10px',
+    fontWeight: 600,
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+    marginTop: '4px',
+  },
+
+  // Details Grid
+  detailsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '12px',
+  },
+  detailCard: {
+    padding: '12px',
+    borderRadius: '10px',
+    backgroundColor: 'var(--bg-tertiary)',
+    textAlign: 'center',
+  },
+  detailIconRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '4px',
+    marginBottom: '4px',
+  },
+  detailValue: {
+    fontSize: '16px',
+    fontWeight: 600,
+    fontFeatureSettings: '"tnum"',
+    color: 'var(--text-primary)',
+  },
+  detailLabel: {
+    fontSize: '10px',
+    color: 'var(--text-tertiary)',
+    marginTop: '2px',
+  },
+
+  // Factors
+  factorsSection: {
+    padding: '12px 16px',
+    borderRadius: '10px',
+    backgroundColor: 'var(--bg-tertiary)',
+  },
+  factorsLabel: {
+    fontSize: '11px',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+    marginBottom: '10px',
+  },
+  factorsList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  factorRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  factorBar: {
+    flex: 1,
+    height: '4px',
+    borderRadius: '2px',
+    backgroundColor: 'var(--border-subtle)',
+    overflow: 'hidden',
+  },
+  factorFill: {
+    height: '100%',
+    borderRadius: '2px',
+    transition: 'width 0.3s ease',
+  },
+  factorDescription: {
+    fontSize: '11px',
+    color: 'var(--text-secondary)',
+    minWidth: '80px',
+  },
+
+  // Recommendation
+  recommendation: {
+    padding: '10px 14px',
+    borderRadius: '8px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderLeft: '3px solid',
+  },
+  recommendationText: {
+    margin: 0,
+    fontSize: '13px',
+    color: 'var(--text-primary)',
+    fontWeight: 500,
+  },
+
+  // Forecast
+  forecastSection: {
+    marginTop: '4px',
+  },
+  forecastLabel: {
+    fontSize: '11px',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+    marginBottom: '10px',
+  },
+  forecastGrid: {
+    display: 'flex',
+    gap: '8px',
+    overflowX: 'auto',
+    paddingBottom: '4px',
+  },
+  forecastItem: {
+    flex: '0 0 auto',
+    width: '60px',
+    padding: '10px 8px',
+    borderRadius: '10px',
+    backgroundColor: 'var(--bg-tertiary)',
+    textAlign: 'center',
+  },
+  forecastTime: {
+    fontSize: '11px',
+    color: 'var(--text-secondary)',
+    marginBottom: '4px',
+  },
+  forecastTemp: {
+    fontSize: '13px',
+    fontWeight: 600,
+    fontFeatureSettings: '"tnum"',
+    color: 'var(--text-primary)',
+    marginTop: '4px',
+  },
+  forecastWind: {
+    fontSize: '10px',
+    color: 'var(--text-tertiary)',
+  },
+
+  // Footer
+  footer: {
+    marginTop: '4px',
+    paddingTop: '12px',
+    borderTop: '1px solid var(--border-subtle)',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontSize: '12px',
+    color: 'var(--text-tertiary)',
+  },
+  footerLocation: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  },
+  footerTime: {},
 };
 
 export default WeatherWidget;
