@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../primitives/Card';
+import { LucideIcon } from 'lucide-react';
 
 /**
  * StateCard
@@ -22,6 +23,8 @@ interface StateCardProps {
   variant?: 'info' | 'error' | 'empty' | 'loading';
   /** Compact mode (less padding) */
   compact?: boolean;
+  /** Optional custom icon (Lucide icon component) */
+  icon?: LucideIcon;
 }
 
 const StateCard: React.FC<StateCardProps> = ({
@@ -30,19 +33,26 @@ const StateCard: React.FC<StateCardProps> = ({
   action,
   variant = 'info',
   compact = false,
+  icon: IconComponent,
 }) => {
   const variantConfig = variantStyles[variant];
+
+  const renderIcon = () => {
+    if (IconComponent) {
+      return <IconComponent size={20} />;
+    }
+    if (variant === 'error') return '!';
+    if (variant === 'empty') return '○';
+    if (variant === 'info') return 'ℹ';
+    if (variant === 'loading') return <span style={styles.spinner} />;
+    return null;
+  };
 
   return (
     <Card padding={compact ? 'compact' : 'default'}>
       <div style={styles.container}>
         <div style={{ ...styles.icon, ...variantConfig.icon }}>
-          {variant === 'error' && '!'}
-          {variant === 'empty' && '○'}
-          {variant === 'info' && 'ℹ'}
-          {variant === 'loading' && (
-            <span style={styles.spinner} />
-          )}
+          {renderIcon()}
         </div>
         <h3 style={{ ...styles.title, ...variantConfig.title }}>{title}</h3>
         {description && <p style={styles.description}>{description}</p>}
