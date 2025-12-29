@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { LogIn, AlertCircle } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
+import Button from '../../ui/primitives/Button';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -162,7 +163,7 @@ const Login = () => {
                   outline: 'none',
                   transition: 'border-color 0.2s',
                 }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--ak-primary)'}
+                onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
                 onBlur={(e) => e.target.style.borderColor = 'var(--border-default)'}
               />
             </div>
@@ -192,7 +193,7 @@ const Login = () => {
                   outline: 'none',
                   transition: 'border-color 0.2s',
                 }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--ak-primary)'}
+                onFocus={(e) => e.target.style.borderColor = 'var(--accent)'}
                 onBlur={(e) => e.target.style.borderColor = 'var(--border-default)'}
               />
             </div>
@@ -214,35 +215,16 @@ const Login = () => {
               </button>
             </div>
 
-            <button
+            <Button
               type="submit"
+              variant="primary"
+              leftIcon={<LogIn size={20} />}
               disabled={loading}
-              style={{
-                width: '100%',
-                padding: '14px',
-                fontSize: '17px',
-                fontWeight: '600',
-                color: 'var(--bg-primary)',
-                backgroundColor: loading ? 'var(--text-secondary)' : 'var(--accent)',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                transition: 'background-color 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                if (!loading) e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) e.currentTarget.style.backgroundColor = 'var(--accent)';
-              }}
+              loading={loading}
+              style={{ width: '100%', justifyContent: 'center', padding: '14px', fontSize: '17px' }}
             >
-              <LogIn size={20} />
               {loading ? 'Logger inn...' : 'Logg Inn'}
-            </button>
+            </Button>
           </form>
 
           {/* Demo Login Buttons */}
@@ -260,51 +242,33 @@ const Login = () => {
               Demo innlogginger
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <button
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => handleDemoLogin('player')}
                 disabled={loading}
-                style={{
-                  padding: '8px 16px',
-                  fontSize: '14px',
-                  color: 'var(--ak-primary)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: '1px solid var(--border-default)',
-                  borderRadius: '6px',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                }}
+                style={{ width: '100%', justifyContent: 'center' }}
               >
                 Spiller (player@demo.com)
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => handleDemoLogin('coach')}
                 disabled={loading}
-                style={{
-                  padding: '8px 16px',
-                  fontSize: '14px',
-                  color: 'var(--ak-primary)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: '1px solid var(--border-default)',
-                  borderRadius: '6px',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                }}
+                style={{ width: '100%', justifyContent: 'center' }}
               >
                 Trener (coach@demo.com)
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => handleDemoLogin('admin')}
                 disabled={loading}
-                style={{
-                  padding: '8px 16px',
-                  fontSize: '14px',
-                  color: 'var(--ak-primary)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: '1px solid var(--border-default)',
-                  borderRadius: '6px',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                }}
+                style={{ width: '100%', justifyContent: 'center' }}
               >
                 Admin (admin@demo.com)
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -407,22 +371,13 @@ const Login = () => {
                     />
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
-                    style={{
-                      width: '100%',
-                      padding: '12px',
-                      fontSize: '15px',
-                      fontWeight: '600',
-                      color: 'white',
-                      backgroundColor: 'var(--accent)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: 'pointer'
-                    }}
+                    variant="primary"
+                    style={{ width: '100%', justifyContent: 'center' }}
                   >
                     Send tilbakestillingslenke
-                  </button>
+                  </Button>
                 </form>
               )}
             </div>

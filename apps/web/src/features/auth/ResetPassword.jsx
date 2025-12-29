@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Lock, Eye, EyeOff, CheckCircle, AlertCircle } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
+import Button from '../../ui/primitives/Button';
 import { authAPI } from '../../services/api';
 
 const ResetPassword = () => {
@@ -440,33 +441,15 @@ const ResetPassword = () => {
                 )}
               </div>
 
-              <button
+              <Button
                 type="submit"
+                variant="primary"
                 disabled={loading || !canSubmit}
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                  color: 'var(--bg-primary)',
-                  backgroundColor: loading || !canSubmit ? 'var(--text-secondary)' : 'var(--accent)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  cursor: loading || !canSubmit ? 'not-allowed' : 'pointer',
-                  transition: 'background-color 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading && canSubmit) {
-                    e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!loading && canSubmit) {
-                    e.currentTarget.style.backgroundColor = 'var(--accent)';
-                  }
-                }}
+                loading={loading}
+                style={{ width: '100%', justifyContent: 'center', padding: '14px', fontSize: '17px' }}
               >
                 {loading ? 'Tilbakestiller...' : 'Tilbakestill passord'}
-              </button>
+              </Button>
             </form>
           )}
         </div>

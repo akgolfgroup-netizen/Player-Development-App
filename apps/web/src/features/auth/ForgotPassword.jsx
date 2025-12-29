@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
+import Button from '../../ui/primitives/Button';
 import { authAPI } from '../../services/api';
 
 const ForgotPassword = () => {
@@ -238,38 +239,16 @@ const ForgotPassword = () => {
                 </p>
               </div>
 
-              <button
+              <Button
                 type="submit"
+                variant="primary"
+                leftIcon={<Mail size={20} />}
                 disabled={loading || !email}
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                  color: 'var(--bg-primary)',
-                  backgroundColor: loading || !email ? 'var(--text-secondary)' : 'var(--accent)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  cursor: loading || !email ? 'not-allowed' : 'pointer',
-                  transition: 'background-color 0.2s',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading && email) {
-                    e.currentTarget.style.backgroundColor = 'rgba(var(--accent-rgb), 0.8)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!loading && email) {
-                    e.currentTarget.style.backgroundColor = 'var(--accent)';
-                  }
-                }}
+                loading={loading}
+                style={{ width: '100%', justifyContent: 'center', padding: '14px', fontSize: '17px' }}
               >
-                <Mail size={20} />
                 {loading ? 'Sender...' : 'Send tilbakestillingslenke'}
-              </button>
+              </Button>
 
               <div
                 style={{
