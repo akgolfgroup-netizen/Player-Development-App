@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import CoachAthleteList from './CoachAthleteList.tsx';
+import CoachAthleteList from './CoachAthleteList';
 
 const CoachAthleteListContainer: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [state, setState] = useState<'loading' | 'idle' | 'error'>('loading');
   const [error, setError] = useState<Error | null>(null);
@@ -35,6 +37,10 @@ const CoachAthleteListContainer: React.FC = () => {
     }
   };
 
+  const handleSelectAthlete = (athleteId: string) => {
+    navigate(`/coach/athletes/${athleteId}`);
+  };
+
   if (state === 'loading') {
     return <LoadingState message="Laster spillere..." />;
   }
@@ -49,7 +55,12 @@ const CoachAthleteListContainer: React.FC = () => {
     );
   }
 
-  return <CoachAthleteList athletes={athletes} />;
+  return (
+    <CoachAthleteList
+      athletes={athletes}
+      onSelectAthlete={handleSelectAthlete}
+    />
+  );
 };
 
 function getDemoAthletes() {

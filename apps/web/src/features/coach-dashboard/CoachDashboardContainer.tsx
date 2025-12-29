@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import CoachDashboard from './CoachDashboard.tsx';
+import CoachDashboard from './CoachDashboard';
 
 interface DashboardData {
   athletes: any[];
@@ -57,7 +57,13 @@ const CoachDashboardContainer: React.FC = () => {
     );
   }
 
-  return <CoachDashboard data={dashboardData} onRefresh={fetchDashboard} />;
+  // Pass athletes and pendingItems to CoachDashboard
+  return (
+    <CoachDashboard
+      athletes={dashboardData?.athletes}
+      pendingItems={dashboardData?.pendingItems}
+    />
+  );
 };
 
 function getDemoData(): DashboardData {

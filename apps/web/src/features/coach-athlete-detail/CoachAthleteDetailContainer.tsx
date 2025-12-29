@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import CoachAthleteDetail from './CoachAthleteDetail.tsx';
+import CoachAthleteDetail from './CoachAthleteDetail';
 
 const CoachAthleteDetailContainer: React.FC = () => {
   const { playerId } = useParams<{ playerId: string }>();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [state, setState] = useState<'loading' | 'idle' | 'error'>('loading');
   const [error, setError] = useState<Error | null>(null);
@@ -35,6 +36,26 @@ const CoachAthleteDetailContainer: React.FC = () => {
     }
   };
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handleViewProof = (athleteId: string) => {
+    navigate(`/coach/athletes/${athleteId}/proof`);
+  };
+
+  const handleViewTrajectory = (athleteId: string) => {
+    navigate(`/coach/athletes/${athleteId}/trajectory`);
+  };
+
+  const handleEditTrainingPlan = (athleteId: string) => {
+    navigate(`/coach/athletes/${athleteId}/training-plan`);
+  };
+
+  const handleViewNotes = (athleteId: string) => {
+    navigate(`/coach/athletes/${athleteId}/notes`);
+  };
+
   if (state === 'loading') {
     return <LoadingState message="Laster spillerdetaljer..." />;
   }
@@ -49,7 +70,21 @@ const CoachAthleteDetailContainer: React.FC = () => {
     );
   }
 
-  return <CoachAthleteDetail athlete={athleteData} playerId={playerId!} />;
+  const athleteName = athleteData
+    ? `${athleteData.firstName || ''} ${athleteData.lastName || ''}`.trim()
+    : undefined;
+
+  return (
+    <CoachAthleteDetail
+      athleteId={playerId!}
+      athleteName={athleteName}
+      onBack={handleBack}
+      onViewProof={handleViewProof}
+      onViewTrajectory={handleViewTrajectory}
+      onEditTrainingPlan={handleEditTrainingPlan}
+      onViewNotes={handleViewNotes}
+    />
+  );
 };
 
 export default CoachAthleteDetailContainer;
