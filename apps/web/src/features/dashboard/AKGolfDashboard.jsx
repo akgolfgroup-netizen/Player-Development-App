@@ -434,7 +434,7 @@ const AKGolfDashboard = () => {
   };
 
   // Extract data with fallbacks
-  const player = dashboardData?.player || { name: 'Spiller', category: 'B' };
+  const player = dashboardData?.player || { name: 'Andreas Holm', category: 'B', club: 'Slice Country Club', memberSince: '2023' };
   const stats = dashboardData?.stats || { sessionsCompleted: 0, sessionsTotal: 12, hoursThisWeek: 0, hoursGoal: 20, streak: 0, scoringAverage: 74.2, strokesGained: 1.3, totalSessions: 47 };
   const nextTournament = dashboardData?.nextTournament;
   const nextTest = dashboardData?.nextTest;
