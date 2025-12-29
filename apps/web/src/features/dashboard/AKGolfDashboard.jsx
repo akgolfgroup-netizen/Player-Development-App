@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, MapPin, Trophy, Target, CheckCircle2,
-  Play, Bell, Calendar, RefreshCw, ChevronRight, Flame
+  Play, Bell, Calendar, RefreshCw, ChevronRight, Flame,
+  Dumbbell, BarChart3, MessageSquare, User
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { DashboardWidget } from './components';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
+import ActionsGrid from '../../ui/composites/ActionsGrid.composite';
 
 /**
  * AKGolfDashboard - Premium Player Dashboard
@@ -304,6 +306,67 @@ const AKGolfDashboard = () => {
   const nextTest = dashboardData?.nextTest;
   const notifications = dashboardData?.notifications || [];
   const upcomingSessions = dashboardData?.upcomingSessions || [];
+  const messages = dashboardData?.messages || [];
+
+  // Quick actions for navigation
+  const quickActions = [
+    {
+      id: 'training',
+      title: 'Start trening',
+      description: 'Start en ny treningsøkt eller velg fra ukeplanen.',
+      href: '/sessions',
+      icon: Dumbbell,
+      iconForeground: 'text-teal-700',
+      iconBackground: 'bg-teal-50',
+    },
+    {
+      id: 'calendar',
+      title: 'Kalender',
+      description: 'Se og planlegg treningsøkter, tester og turneringer.',
+      href: '/kalender',
+      icon: Calendar,
+      iconForeground: 'text-purple-700',
+      iconBackground: 'bg-purple-50',
+    },
+    {
+      id: 'stats',
+      title: 'Statistikk',
+      description: 'Se din fremgang og strokes gained analyse.',
+      href: '/stats',
+      icon: BarChart3,
+      iconForeground: 'text-sky-700',
+      iconBackground: 'bg-sky-50',
+    },
+    {
+      id: 'messages',
+      title: 'Meldinger',
+      description: 'Kommuniser med treneren din og lagkamerater.',
+      href: '/meldinger',
+      icon: MessageSquare,
+      iconForeground: 'text-yellow-700',
+      iconBackground: 'bg-yellow-50',
+      badge: messages.filter(m => !m.read).length || undefined,
+    },
+    {
+      id: 'goals',
+      title: 'Mål & oppgaver',
+      description: 'Følg opp målene dine og daglige oppgaver.',
+      href: '/maalsetninger',
+      icon: Target,
+      iconForeground: 'text-rose-700',
+      iconBackground: 'bg-rose-50',
+      badge: tasks.filter(t => !t.completed).length || undefined,
+    },
+    {
+      id: 'profile',
+      title: 'Min profil',
+      description: 'Oppdater profilen din og se din utvikling.',
+      href: '/profil',
+      icon: User,
+      iconForeground: 'text-indigo-700',
+      iconBackground: 'bg-indigo-50',
+    },
+  ];
 
   return (
     <div style={styles.dashboard}>

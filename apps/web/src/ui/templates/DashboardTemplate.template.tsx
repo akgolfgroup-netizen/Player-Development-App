@@ -1,8 +1,7 @@
 import React from 'react';
 import { AppShell, PageHeader, CardSimple, CardHeader } from '../raw-blocks';
-import { Button, Text, Badge, Avatar } from '../primitives';
+import { Button, Text, Avatar } from '../primitives';
 import { Tabs } from '../composites';
-import StatsGridTemplate from './StatsGridTemplate';
 
 /**
  * DashboardTemplate
@@ -115,17 +114,6 @@ const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
     return date.toLocaleDateString();
   };
 
-  // Transform stats to match StatsGridTemplate API
-  const transformedStats = stats.map(stat => ({
-    id: stat.id,
-    label: stat.label,
-    value: stat.value,
-    change: stat.change !== undefined ? {
-      value: `${Math.abs(stat.change)}%`,
-      direction: (stat.trend || 'neutral') as 'up' | 'down' | 'neutral',
-    } : undefined,
-  }));
-
   return (
     <AppShell
       header={
@@ -196,17 +184,6 @@ const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
             </div>
           </div>
         )}
-
-        {/* Stats Grid */}
-        <div style={styles.section}>
-          {loading ? (
-            <div style={styles.loadingState}>
-              <Text color="secondary">Loading statistics...</Text>
-            </div>
-          ) : (
-            <StatsGridTemplate items={transformedStats} columns={3} />
-          )}
-        </div>
 
         {/* Main Content Area */}
         <div style={styles.mainContent}>
