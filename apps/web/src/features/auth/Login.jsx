@@ -44,9 +44,9 @@ const Login = () => {
 
   const handleDemoLogin = async (role) => {
     const credentials = {
-      admin: { email: 'admin@demo.com', password: 'admin123' },
-      coach: { email: 'coach@demo.com', password: 'coach123' },
-      player: { email: 'player@demo.com', password: 'player123' },
+      admin: { email: 'admin@demo.com', password: 'demo123' },
+      coach: { email: 'coach@demo.com', password: 'demo123' },
+      player: { email: 'player@demo.com', password: 'demo123' },
     };
 
     setEmail(credentials[role].email);
