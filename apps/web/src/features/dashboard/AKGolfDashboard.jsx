@@ -1,383 +1,293 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, MapPin, Trophy, Target, CheckCircle2,
-  MessageCircle, Award, Flame, TrendingUp,
-  Play, Bell, Users, Star, Calendar, Info, AlertCircle, RefreshCw
+  Play, Bell, Calendar, RefreshCw, ChevronRight, Flame
 } from 'lucide-react';
-import DagensPlan from '../../components/dashboard/DagensPlan';
-import WeatherWidget from '../../components/dashboard/WeatherWidget';
-import StrokesGainedWidget from '../../components/dashboard/StrokesGainedWidget';
-import { SGJourneyWidget, SkillDNAWidget, BountyBoardWidget } from '../../components/insights';
 import { useDashboard } from '../../hooks/useDashboard';
-import { useStrokesGained } from '../../hooks/useStrokesGained';
-import { useSGJourney, useSkillDNA, useBountyBoard } from '../../hooks/usePlayerInsights';
-import { FocusWidget } from '../focus-engine';
-import SessionEvaluationWidget from '../sessions/SessionEvaluationWidget';
-import { DashboardTemplate } from '../../ui/templates';
-import { Button } from '../../ui/primitives';
-import Badge from '../../ui/primitives/Badge.primitive';
+import { DashboardWidget } from './components';
 import Card from '../../ui/primitives/Card';
-import StateCard from '../../ui/composites/StateCard';
-import { DashboardSkeleton } from '../../ui/skeletons';
-import { WidgetHeader, DashboardCard, SkeletonLoader } from '../../ui/widgets';
+import Button from '../../ui/primitives/Button';
+import Badge from '../../ui/primitives/Badge.primitive';
 
-// ===== SKELETON COMPONENTS (now using shared widgets) =====
+/**
+ * AKGolfDashboard - Premium Player Dashboard
+ *
+ * 3-Zone Layout:
+ * Zone A (Top): Welcome header + countdown + primary stats
+ * Zone B (Mid): Plan completion + hours + notifications
+ * Zone C (Bottom): Tasks + activity feed
+ *
+ * Design principles:
+ * - Clear hierarchy: one top header only
+ * - Consistent card shell for all modules
+ * - Compact error/loading states
+ * - Semantic tokens only (no raw colors)
+ */
 
-const StatsSkeleton = () => <SkeletonLoader variant="stats-grid" />;
-const TasksSkeleton = () => <SkeletonLoader variant="tasks" count={4} />;
-const CountdownSkeleton = () => <SkeletonLoader variant="countdown" />;
+// ===== ZONE A: TOP SECTION =====
 
-// ===== COUNTDOWN WIDGET =====
-const CountdownWidget = ({ title, date, type, location }) => {
+const WelcomeHeader = ({ player, greeting }) => (
+  <div style={styles.welcomeHeader}>
+    <div>
+      <p style={styles.greetingLabel}>{greeting}</p>
+      <h1 style={styles.playerName}>{player.name?.split(' ')[0] || 'Spiller'}</h1>
+      <p style={styles.categoryLabel}>Kategori {player.category || 'B'}</p>
+    </div>
+  </div>
+);
+
+const CountdownCard = ({ title, date, type, location }) => {
   const targetDate = new Date(date);
   const today = new Date();
   const diffTime = targetDate - today;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
-  const getIcon = () => {
-    switch (type) {
-      case 'tournament': return <Trophy size={20} style={{ color: 'var(--warning)' }} />;
-      case 'test': return <Target size={20} style={{ color: 'var(--accent)' }} />;
-      default: return <Calendar size={20} style={{ color: 'var(--accent)' }} />;
-    }
+  const typeConfig = {
+    tournament: {
+      label: 'Neste turnering',
+      icon: Trophy,
+      bgColor: 'var(--warning-muted)',
+      accentColor: 'var(--ak-warning)',
+    },
+    test: {
+      label: 'Neste test',
+      icon: Target,
+      bgColor: 'var(--info-muted)',
+      accentColor: 'var(--ak-info)',
+    },
   };
 
-  const getBgColor = () => {
-    switch (type) {
-      case 'tournament': return 'linear-gradient(to bottom right, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05))';
-      case 'test': return 'linear-gradient(to bottom right, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05))';
-      default: return 'var(--bg-secondary)';
-    }
-  };
+  const config = typeConfig[type] || typeConfig.test;
+  const Icon = config.icon;
 
   return (
-    <div style={{
-      padding: '16px',
-      borderRadius: 'var(--radius-lg)',
-      background: getBgColor(),
-    }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: 'var(--radius-md)',
-          backgroundColor: 'var(--bg-primary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        }}>
-          {getIcon()}
+    <div style={{ ...styles.countdownCard, backgroundColor: config.bgColor }}>
+      <div style={styles.countdownLeft}>
+        <div style={{ ...styles.countdownIcon, color: config.accentColor }}>
+          <Icon size={18} />
         </div>
-        <div style={{ flex: 1 }}>
-          <p style={{
-            fontSize: '11px',
-            fontWeight: 500,
-            color: 'var(--text-secondary)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            margin: 0,
-          }}>
-            {type === 'tournament' ? 'Neste turnering' : 'Neste test'}
-          </p>
-          <p style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            marginTop: '2px',
-            margin: '2px 0 0 0',
-          }}>
-            {title}
-          </p>
+        <div>
+          <p style={styles.countdownLabel}>{config.label}</p>
+          <p style={styles.countdownTitle}>{title || 'Ikke planlagt'}</p>
           {location && (
-            <p style={{
-              fontSize: '12px',
-              color: 'var(--text-secondary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              marginTop: '4px',
-              margin: '4px 0 0 0',
-            }}>
+            <p style={styles.countdownLocation}>
               <MapPin size={12} /> {location}
             </p>
           )}
         </div>
-        <div style={{ textAlign: 'right' }}>
-          <p style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            color: 'var(--accent)',
-            margin: 0,
-          }}>
-            {diffDays}
-          </p>
-          <p style={{
-            fontSize: '11px',
-            color: 'var(--text-secondary)',
-            margin: 0,
-          }}>
-            dager
-          </p>
-        </div>
+      </div>
+      <div style={styles.countdownRight}>
+        <span style={{ ...styles.countdownDays, color: config.accentColor }}>{diffDays}</span>
+        <span style={styles.countdownDaysLabel}>dager</span>
       </div>
     </div>
   );
 };
 
-// ===== TASKS WIDGET =====
-const TasksWidget = ({ tasks, onToggle, onViewAll }) => {
+const StatCard = ({ icon, label, value, subValue, trend }) => {
+  const Icon = icon;
+  return (
+    <div style={styles.statCard}>
+      <div style={styles.statIcon}>
+        <Icon size={18} />
+      </div>
+      <div style={styles.statContent}>
+        <p style={styles.statValue}>{value}</p>
+        <p style={styles.statLabel}>{label}</p>
+        {subValue && <p style={styles.statSubValue}>{subValue}</p>}
+      </div>
+    </div>
+  );
+};
+
+// ===== ZONE B: MIDDLE SECTION =====
+
+const PlanProgressWidget = ({ completed, total, loading, error }) => {
+  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  return (
+    <DashboardWidget
+      title="Fullførte økter"
+      subtitle="Denne uken"
+      loading={loading}
+      error={error}
+      compact
+    >
+      <div style={styles.progressContent}>
+        <div style={styles.progressBar}>
+          <div style={{ ...styles.progressFill, width: `${percentage}%` }} />
+        </div>
+        <div style={styles.progressStats}>
+          <span style={styles.progressValue}>{completed}/{total}</span>
+          <span style={styles.progressPercent}>{percentage}%</span>
+        </div>
+      </div>
+    </DashboardWidget>
+  );
+};
+
+const HoursWidget = ({ hours, goal, loading, error }) => {
+  const percentage = goal > 0 ? Math.round((hours / goal) * 100) : 0;
+
+  return (
+    <DashboardWidget
+      title="Timer denne uke"
+      subtitle={`Mål: ${goal}t`}
+      loading={loading}
+      error={error}
+      compact
+    >
+      <div style={styles.hoursContent}>
+        <span style={styles.hoursValue}>{hours}t</span>
+        <div style={styles.hoursProgress}>
+          <div style={{ ...styles.hoursProgressFill, width: `${Math.min(percentage, 100)}%` }} />
+        </div>
+      </div>
+    </DashboardWidget>
+  );
+};
+
+const NotificationsWidget = ({ notifications, onViewAll, loading, error }) => {
+  return (
+    <DashboardWidget
+      title="Varslinger"
+      action={onViewAll}
+      actionLabel={notifications.length > 0 ? `${notifications.length} nye` : 'Se alle'}
+      loading={loading}
+      error={error}
+      empty={notifications.length === 0}
+      emptyMessage="Ingen nye varslinger"
+      noPadding
+    >
+      <div style={styles.notificationsList}>
+        {notifications.slice(0, 3).map((notif, idx) => (
+          <div key={notif.id || idx} style={styles.notificationItem}>
+            <div style={styles.notificationDot} />
+            <div style={styles.notificationContent}>
+              <p style={styles.notificationTitle}>{notif.title}</p>
+              <p style={styles.notificationMessage}>{notif.message}</p>
+            </div>
+            <span style={styles.notificationTime}>{notif.time || 'Nylig'}</span>
+          </div>
+        ))}
+      </div>
+    </DashboardWidget>
+  );
+};
+
+// ===== ZONE C: BOTTOM SECTION =====
+
+const TasksWidget = ({ tasks, onToggle, onViewAll, loading, error }) => {
   const completedCount = tasks.filter(t => t.completed).length;
 
   return (
-    <DashboardCard padding="lg">
-      <WidgetHeader
-        title="Mine oppgaver"
-        icon={CheckCircle2}
-        action={onViewAll}
-        actionLabel={`${completedCount}/${tasks.length} fullført`}
-      />
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {tasks.map(task => (
+    <DashboardWidget
+      title="Mine oppgaver"
+      subtitle={`${completedCount}/${tasks.length} fullført`}
+      action={onViewAll}
+      loading={loading}
+      error={error}
+      empty={tasks.length === 0}
+      emptyMessage="Ingen oppgaver"
+      emptyAction={onViewAll}
+      emptyActionLabel="Legg til oppgave"
+      noPadding
+    >
+      <div style={styles.tasksList}>
+        {tasks.slice(0, 5).map(task => (
           <div
             key={task.id}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '12px',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              backgroundColor: task.completed ? 'rgba(34, 197, 94, 0.1)' : 'var(--bg-secondary)',
+              ...styles.taskItem,
+              backgroundColor: task.completed ? 'var(--success-muted)' : 'transparent',
             }}
-            onClick={() => onToggle(task.id)}
+            onClick={() => onToggle?.(task.id)}
           >
             <div style={{
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
-              border: `2px solid ${task.completed ? 'var(--success)' : 'var(--border-default)'}`,
-              backgroundColor: task.completed ? 'var(--success)' : 'transparent',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              transition: 'all 0.2s',
+              ...styles.taskCheckbox,
+              borderColor: task.completed ? 'var(--ak-success)' : 'var(--border-default)',
+              backgroundColor: task.completed ? 'var(--ak-success)' : 'transparent',
             }}>
               {task.completed && (
-                <svg style={{ width: '12px', height: '12px', color: 'white' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12" />
                 </svg>
               )}
             </div>
-            <div style={{ flex: 1 }}>
+            <div style={styles.taskContent}>
               <p style={{
-                fontSize: '14px',
-                color: task.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
+                ...styles.taskTitle,
                 textDecoration: task.completed ? 'line-through' : 'none',
-                margin: 0,
+                color: task.completed ? 'var(--text-tertiary)' : 'var(--text-primary)',
               }}>
                 {task.title}
               </p>
-              <p style={{ fontSize: '11px', color: 'var(--text-tertiary)', margin: 0 }}>
-                {task.area}
-              </p>
+              <p style={styles.taskArea}>{task.area}</p>
             </div>
             {task.priority === 'high' && !task.completed && (
-              <Badge variant="error" size="sm" pill>Viktig</Badge>
+              <Badge variant="error" size="sm">Viktig</Badge>
             )}
           </div>
         ))}
       </div>
-    </DashboardCard>
+    </DashboardWidget>
   );
 };
 
-// ===== BREAKING POINTS WIDGET =====
-const BreakingPointsWidget = ({ points, onViewAll }) => {
-  if (!points || points.length === 0) {
-    return (
-      <DashboardCard padding="lg">
-        <WidgetHeader title="Breaking Points" icon={Target} />
-        <StateCard
-          variant="empty"
-          title="Ingen aktive breaking points"
-          description="Breaking points legges til når du identifiserer områder som trenger fokus."
-          compact
-        />
-      </DashboardCard>
-    );
-  }
-
+const SessionsWidget = ({ sessions, onViewAll, onSessionClick, loading, error }) => {
   return (
-    <DashboardCard padding="lg">
-      <WidgetHeader title="Breaking Points" icon={Target} action={onViewAll} />
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        {points.map((point) => (
-          <div key={point.id} style={{
-            padding: '12px',
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: 'var(--radius-md)',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-              marginBottom: '8px',
-            }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                  <Badge variant="accent" size="sm">{point.area}</Badge>
-                  <Badge
-                    variant={point.priority === 'high' ? 'error' : point.priority === 'medium' ? 'warning' : 'neutral'}
-                    size="sm"
-                  >
-                    {point.priority}
-                  </Badge>
-                </div>
-                <p style={{
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                }}>
-                  {point.title}
-                </p>
-              </div>
+    <DashboardWidget
+      title="Dagens økter"
+      action={onViewAll}
+      loading={loading}
+      error={error}
+      empty={sessions.length === 0}
+      emptyMessage="Ingen økter planlagt i dag"
+      emptyAction={onViewAll}
+      emptyActionLabel="Gå til kalender"
+      noPadding
+    >
+      <div style={styles.sessionsList}>
+        {sessions.map(session => (
+          <div
+            key={session.id}
+            style={styles.sessionItem}
+            onClick={() => onSessionClick?.(session)}
+          >
+            <div style={styles.sessionIcon}>
+              <Play size={16} />
             </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{
-                flex: 1,
-                height: '8px',
-                backgroundColor: 'var(--bg-tertiary)',
-                borderRadius: '4px',
-                overflow: 'hidden',
-              }}>
-                <div style={{
-                  height: '100%',
-                  backgroundColor: 'var(--accent)',
-                  borderRadius: '4px',
-                  transition: 'all 0.3s',
-                  width: `${point.progress}%`,
-                }} />
-              </div>
-              <span style={{
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-                whiteSpace: 'nowrap',
-              }}>
-                {point.progress}%
-              </span>
+            <div style={styles.sessionContent}>
+              <p style={styles.sessionTitle}>{session.title}</p>
+              <p style={styles.sessionMeta}>
+                <Clock size={12} /> {session.time} &middot; <MapPin size={12} /> {session.location}
+              </p>
             </div>
+            <span style={styles.sessionDuration}>{session.duration} min</span>
           </div>
         ))}
       </div>
-    </DashboardCard>
+    </DashboardWidget>
   );
 };
 
-// ===== SESSION CARD WITH LOCATION =====
-const SessionCardCompact = ({ session, onClick }) => {
-  const statusColors = {
-    completed: 'var(--success)',
-    current: 'var(--accent)',
-    upcoming: 'var(--text-secondary)',
-  };
+// ===== MAIN DASHBOARD =====
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '12px',
-        backgroundColor: 'var(--bg-secondary)',
-        borderRadius: 'var(--radius-lg)',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-      }}
-      onClick={onClick}
-    >
-      <div style={{
-        width: '48px',
-        height: '48px',
-        borderRadius: 'var(--radius-md)',
-        backgroundColor: statusColors[session.status] || 'var(--accent)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <Play size={20} style={{ color: 'white' }} />
-      </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'var(--text-primary)',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          margin: 0,
-        }}>
-          {session.title}
-        </p>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          fontSize: '12px',
-          color: 'var(--text-secondary)',
-        }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Clock size={12} /> {session.time}
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <MapPin size={12} /> {session.location}
-          </span>
-        </div>
-      </div>
-      <div style={{ textAlign: 'right' }}>
-        <span style={{
-          fontSize: '11px',
-          padding: '4px 8px',
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: 'var(--radius-md)',
-          color: 'var(--accent)',
-          fontWeight: 500,
-        }}>
-          {session.duration} min
-        </span>
-      </div>
-    </div>
-  );
-};
-
-// ===== MAIN DASHBOARD COMPONENT =====
 const AKGolfDashboard = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading, error, refetch } = useDashboard();
-  const { data: sgData, loading: sgLoading, error: sgError } = useStrokesGained();
-
-  // Player Insights hooks
-  const { data: sgJourneyData, loading: sgJourneyLoading, error: sgJourneyError } = useSGJourney();
-  const { data: skillDNAData, loading: skillDNALoading, error: skillDNAError } = useSkillDNA();
-  const { data: bountyData, loading: bountyLoading, error: bountyError, activateBounty, updateProgress } = useBountyBoard();
-
   const [tasks, setTasks] = useState([]);
 
   // Update tasks when data loads
-  React.useEffect(() => {
+  useEffect(() => {
     if (dashboardData?.tasks) {
       setTasks(dashboardData.tasks);
     }
   }, [dashboardData]);
 
   const toggleTask = (id) => {
-    setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
   };
 
   const getGreeting = () => {
@@ -387,288 +297,534 @@ const AKGolfDashboard = () => {
     return 'God kveld';
   };
 
-  // Navigation handlers for "Se alle" buttons
-  const handleViewTasks = () => navigate('/maalsetninger');
-  const handleViewBreakingPoints = () => navigate('/utvikling/breaking-points');
-
-  // Show loading skeletons
-  if (loading) {
-    return <DashboardSkeleton />;
-  }
-
-  // Show error state (only if no data at all)
-  if (error && !dashboardData) {
-    return (
-      <div>
-        <div style={{ marginBottom: '24px' }}>
-          <h1 style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
-            Dashboard
-          </h1>
-        </div>
-        <StateCard
-          variant="error"
-          icon={AlertCircle}
-          title="Kunne ikke laste dashboard"
-          description={error}
-          action={
-            <Button variant="primary" size="sm" onClick={refetch} leftIcon={<RefreshCw size={14} />}>
-              Prøv igjen
-            </Button>
-          }
-        />
-      </div>
-    );
-  }
-
   // Extract data with fallbacks
   const player = dashboardData?.player || { name: 'Spiller', category: 'B' };
-  const trainingStats = dashboardData?.stats || { sessionsCompleted: 0, sessionsTotal: 12, hoursThisWeek: 0, hoursGoal: 20, streak: 0 };
+  const stats = dashboardData?.stats || { sessionsCompleted: 0, sessionsTotal: 12, hoursThisWeek: 0, hoursGoal: 20, streak: 0 };
   const nextTournament = dashboardData?.nextTournament;
   const nextTest = dashboardData?.nextTest;
-  const breakingPoints = dashboardData?.breakingPoints || [];
-  const calendarEvents = dashboardData?.calendarEvents || [];
-  const upcomingSessions = dashboardData?.upcomingSessions || [];
   const notifications = dashboardData?.notifications || [];
-  const messages = dashboardData?.messages || [];
-
-  // Transform data for DashboardTemplate
-  const stats = [
-    {
-      id: 'sessions',
-      label: 'Økter fullført',
-      value: trainingStats.sessionsCompleted,
-      change: 12,
-      trend: 'up',
-      icon: <CheckCircle2 size={20} style={{ color: 'var(--accent)' }} />,
-    },
-    {
-      id: 'hours',
-      label: 'Timer denne uke',
-      value: `${trainingStats.hoursThisWeek}t`,
-      change: 5,
-      trend: 'up',
-      icon: <Clock size={20} style={{ color: 'var(--accent)' }} />,
-    },
-    {
-      id: 'streak',
-      label: 'Dager i strekk',
-      value: trainingStats.streak,
-      icon: <Flame size={20} style={{ color: 'var(--warning)' }} />,
-    },
-  ];
-
-  // Transform notifications and messages into activities
-  const activities = [
-    ...notifications.slice(0, 5).map(notif => ({
-      id: `notif-${notif.id}`,
-      title: notif.title,
-      description: notif.message,
-      timestamp: notif.time || new Date().toISOString(),
-      type: notif.type === 'achievement' ? 'success' : 'info',
-    })),
-    ...messages.slice(0, 3).map(msg => ({
-      id: `msg-${msg.id}`,
-      title: msg.from,
-      description: msg.preview,
-      timestamp: msg.time || new Date().toISOString(),
-      type: 'info',
-      userName: msg.from,
-    })),
-  ];
-
-  // Create tabs for different sections
-  const tabs = [
-    {
-      id: 'overview',
-      label: 'Oversikt',
-      content: (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {/* Countdown Cards */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '16px',
-          }}>
-            <DashboardCard padding="md">
-              <CountdownWidget
-                title={nextTournament?.title || 'Ingen kommende turnering'}
-                date={nextTournament?.date || '2026-12-31'}
-                type="tournament"
-                location={nextTournament?.location || ''}
-              />
-            </DashboardCard>
-            <DashboardCard padding="md">
-              <CountdownWidget
-                title={nextTest?.title || 'Ingen kommende test'}
-                date={nextTest?.date || '2026-12-31'}
-                type="test"
-                location={nextTest?.location || 'AK Golf Academy'}
-              />
-            </DashboardCard>
-          </div>
-
-          {/* Focus Widget */}
-          <FocusWidget />
-
-          {/* Strokes Gained Widget */}
-          <StrokesGainedWidget
-            data={sgData}
-            loading={sgLoading}
-            error={sgError}
-            onViewDetails={() => navigate('/stats/strokes-gained')}
-          />
-
-          {/* Player Insights Section */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '20px',
-          }}>
-            {/* SG Journey Widget */}
-            <SGJourneyWidget
-              data={sgJourneyData}
-              loading={sgJourneyLoading}
-              error={sgJourneyError}
-              onViewDetails={() => navigate('/insights/sg-journey')}
-            />
-
-            {/* Skill DNA Widget */}
-            <SkillDNAWidget
-              data={skillDNAData}
-              loading={skillDNALoading}
-              error={skillDNAError}
-              onViewDetails={() => navigate('/insights/skill-dna')}
-            />
-          </div>
-
-          {/* Bounty Board Widget - Full width */}
-          <BountyBoardWidget
-            data={bountyData}
-            loading={bountyLoading}
-            error={bountyError}
-            onActivateBounty={activateBounty}
-            onUpdateProgress={updateProgress}
-            onViewDetails={() => navigate('/insights/bounties')}
-          />
-
-          {/* Weather Widget */}
-          <WeatherWidget showForecast={true} />
-
-          {/* Calendar Day View */}
-          <DagensPlan events={calendarEvents} />
-
-          {/* Upcoming Sessions */}
-          <DashboardCard padding="lg">
-            <WidgetHeader
-              title="Dagens økter"
-              icon={Play}
-              action={() => navigate('/kalender')}
-            />
-            {upcomingSessions.length === 0 ? (
-              <StateCard
-                variant="empty"
-                title="Ingen økter i dag"
-                description="Du har ingen planlagte treningsøkter i dag."
-                action={
-                  <Button variant="ghost" size="sm" onClick={() => navigate('/kalender')}>
-                    Gå til kalender
-                  </Button>
-                }
-                compact
-              />
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {upcomingSessions.map(session => (
-                  <SessionCardCompact
-                    key={session.id}
-                    session={session}
-                    onClick={() => navigate(`/session/${session.id}`)}
-                  />
-                ))}
-              </div>
-            )}
-          </DashboardCard>
-        </div>
-      ),
-    },
-    {
-      id: 'tasks',
-      label: 'Oppgaver',
-      badge: tasks.filter(t => !t.completed).length,
-      content: (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <TasksWidget tasks={tasks} onToggle={toggleTask} onViewAll={handleViewTasks} />
-          <BreakingPointsWidget
-            points={breakingPoints}
-            onViewAll={handleViewBreakingPoints}
-          />
-          <SessionEvaluationWidget />
-        </div>
-      ),
-    },
-  ];
+  const upcomingSessions = dashboardData?.upcomingSessions || [];
 
   return (
-    <div>
-      {/* Error banner if API failed but we have fallback data */}
-      {error && (
-        <Card variant="default" padding="md" style={{ marginBottom: '16px', borderLeft: '4px solid var(--warning)' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-            <AlertCircle size={20} style={{ color: 'var(--warning)', flexShrink: 0, marginTop: '2px' }} />
-            <div style={{ flex: 1 }}>
-              <p style={{
-                fontSize: '14px',
-                fontWeight: 500,
-                color: 'var(--text-primary)',
-                marginBottom: '4px',
-                margin: '0 0 4px 0',
-              }}>
-                Kunne ikke laste ny data
-              </p>
-              <p style={{
-                fontSize: '13px',
-                color: 'var(--text-secondary)',
-                margin: 0,
-              }}>
-                Viser tidligere data. Noe informasjon kan være utdatert.
-              </p>
-            </div>
-            <Button variant="primary" size="sm" onClick={refetch} leftIcon={<RefreshCw size={14} />}>
-              Prøv igjen
-            </Button>
-          </div>
-        </Card>
+    <div style={styles.dashboard}>
+      {/* Stale data banner */}
+      {error && dashboardData && (
+        <div style={styles.staleBanner}>
+          <span>Viser tidligere data. Noe kan være utdatert.</span>
+          <button style={styles.staleRetry} onClick={refetch}>
+            <RefreshCw size={14} /> Oppdater
+          </button>
+        </div>
       )}
 
-      <DashboardTemplate
-        title={`${getGreeting()}, ${player.name.split(' ')[0]}`}
-        subtitle={`Kategori ${player.category} · Her er din oversikt for i dag`}
-        user={{
-          name: player.name,
-          avatar: player.avatar,
-          role: `Kategori ${player.category}`,
-        }}
-        stats={stats}
-        activities={activities}
-        tabs={tabs}
-        showActivity={activities.length > 0}
-        actions={
-          <Button
-            variant="primary"
-            onClick={() => navigate('/sessions')}
-            leftIcon={<Play size={16} />}
-          >
-            Start økt
-          </Button>
-        }
-      />
+      {/* ZONE A: Top Section */}
+      <section style={styles.zoneA}>
+        <WelcomeHeader player={player} greeting={getGreeting()} />
+
+        {/* Quick Stats Row */}
+        <div style={styles.statsRow}>
+          <StatCard
+            icon={CheckCircle2}
+            label="Økter denne uke"
+            value={stats.sessionsCompleted}
+            subValue={`av ${stats.sessionsTotal}`}
+          />
+          <StatCard
+            icon={Clock}
+            label="Treningstid"
+            value={`${stats.hoursThisWeek}t`}
+            subValue={`mål: ${stats.hoursGoal}t`}
+          />
+          <StatCard
+            icon={Flame}
+            label="Streak"
+            value={stats.streak}
+            subValue="dager på rad"
+          />
+        </div>
+
+        {/* Countdown Cards */}
+        <div style={styles.countdownRow}>
+          <CountdownCard
+            title={nextTournament?.title}
+            date={nextTournament?.date || '2026-12-31'}
+            type="tournament"
+            location={nextTournament?.location}
+          />
+          <CountdownCard
+            title={nextTest?.title}
+            date={nextTest?.date || '2026-12-31'}
+            type="test"
+            location={nextTest?.location}
+          />
+        </div>
+      </section>
+
+      {/* ZONE B: Middle Section */}
+      <section style={styles.zoneB}>
+        <div style={styles.zoneBGrid}>
+          <PlanProgressWidget
+            completed={stats.sessionsCompleted}
+            total={stats.sessionsTotal}
+            loading={loading}
+          />
+          <HoursWidget
+            hours={stats.hoursThisWeek}
+            goal={stats.hoursGoal}
+            loading={loading}
+          />
+          <NotificationsWidget
+            notifications={notifications}
+            onViewAll={() => navigate('/varslinger')}
+            loading={loading}
+          />
+        </div>
+      </section>
+
+      {/* ZONE C: Bottom Section */}
+      <section style={styles.zoneC}>
+        <div style={styles.zoneCGrid}>
+          <TasksWidget
+            tasks={tasks}
+            onToggle={toggleTask}
+            onViewAll={() => navigate('/maalsetninger')}
+            loading={loading}
+          />
+          <SessionsWidget
+            sessions={upcomingSessions}
+            onViewAll={() => navigate('/kalender')}
+            onSessionClick={(s) => navigate(`/session/${s.id}`)}
+            loading={loading}
+          />
+        </div>
+      </section>
+
+      {/* Primary CTA */}
+      <div style={styles.primaryCTA}>
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={() => navigate('/sessions')}
+          leftIcon={<Play size={18} />}
+          fullWidth
+        >
+          Start treningsøkt
+        </Button>
+      </div>
     </div>
   );
 };
+
+// ===== STYLES =====
+
+const styles = {
+  dashboard: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--spacing-6)',
+    maxWidth: '800px',
+    margin: '0 auto',
+    padding: 'var(--spacing-4)',
+  },
+
+  // Stale banner
+  staleBanner: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 'var(--spacing-3) var(--spacing-4)',
+    backgroundColor: 'var(--warning-muted)',
+    borderRadius: 'var(--radius-md)',
+    borderLeft: '3px solid var(--ak-warning)',
+    fontSize: 'var(--font-size-caption1)',
+    color: 'var(--text-secondary)',
+  },
+  staleRetry: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-1)',
+    fontSize: 'var(--font-size-caption1)',
+    fontWeight: 500,
+    color: 'var(--ak-warning)',
+    backgroundColor: 'transparent',
+    border: 'none',
+    padding: '4px 8px',
+    cursor: 'pointer',
+  },
+
+  // Zone A
+  zoneA: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--spacing-5)',
+  },
+  welcomeHeader: {
+    paddingBottom: 'var(--spacing-2)',
+  },
+  greetingLabel: {
+    fontSize: 'var(--font-size-caption1)',
+    color: 'var(--text-tertiary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+    margin: '0 0 4px 0',
+  },
+  playerName: {
+    fontSize: 'var(--font-size-title1)',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    margin: '0 0 4px 0',
+    letterSpacing: '-0.01em',
+  },
+  categoryLabel: {
+    fontSize: 'var(--font-size-footnote)',
+    color: 'var(--text-secondary)',
+    margin: 0,
+  },
+
+  // Stats Row
+  statsRow: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: 'var(--spacing-3)',
+  },
+  statCard: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-3)',
+    padding: 'var(--spacing-4)',
+    backgroundColor: 'var(--card)',
+    borderRadius: 'var(--radius-lg)',
+    boxShadow: 'var(--shadow-sm)',
+  },
+  statIcon: {
+    width: '36px',
+    height: '36px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'var(--accent-muted)',
+    color: 'var(--text-brand)',
+    borderRadius: 'var(--radius-md)',
+  },
+  statContent: {
+    flex: 1,
+    minWidth: 0,
+  },
+  statValue: {
+    fontSize: 'var(--font-size-headline)',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    margin: 0,
+    lineHeight: 1.2,
+  },
+  statLabel: {
+    fontSize: 'var(--font-size-caption2)',
+    color: 'var(--text-tertiary)',
+    margin: 0,
+  },
+  statSubValue: {
+    fontSize: 'var(--font-size-caption2)',
+    color: 'var(--text-secondary)',
+    margin: 0,
+  },
+
+  // Countdown Row
+  countdownRow: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: 'var(--spacing-3)',
+  },
+  countdownCard: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 'var(--spacing-4)',
+    borderRadius: 'var(--radius-lg)',
+  },
+  countdownLeft: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 'var(--spacing-3)',
+  },
+  countdownIcon: {
+    width: '36px',
+    height: '36px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'var(--card)',
+    borderRadius: 'var(--radius-md)',
+    boxShadow: 'var(--shadow-sm)',
+  },
+  countdownLabel: {
+    fontSize: 'var(--font-size-caption2)',
+    fontWeight: 500,
+    color: 'var(--text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+    margin: 0,
+  },
+  countdownTitle: {
+    fontSize: 'var(--font-size-footnote)',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+    margin: '2px 0 0 0',
+  },
+  countdownLocation: {
+    fontSize: 'var(--font-size-caption2)',
+    color: 'var(--text-secondary)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    margin: '4px 0 0 0',
+  },
+  countdownRight: {
+    textAlign: 'right',
+  },
+  countdownDays: {
+    fontSize: 'var(--font-size-title2)',
+    fontWeight: 700,
+    display: 'block',
+    lineHeight: 1,
+  },
+  countdownDaysLabel: {
+    fontSize: 'var(--font-size-caption2)',
+    color: 'var(--text-secondary)',
+  },
+
+  // Zone B
+  zoneB: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--spacing-4)',
+  },
+  zoneBGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: 'var(--spacing-4)',
+  },
+
+  // Progress Widget
+  progressContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--spacing-2)',
+  },
+  progressBar: {
+    height: '8px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '4px',
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    backgroundColor: 'var(--ak-success)',
+    borderRadius: '4px',
+    transition: 'width 0.3s ease',
+  },
+  progressStats: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  progressValue: {
+    fontSize: 'var(--font-size-footnote)',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+  },
+  progressPercent: {
+    fontSize: 'var(--font-size-caption1)',
+    color: 'var(--text-tertiary)',
+  },
+
+  // Hours Widget
+  hoursContent: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-3)',
+  },
+  hoursValue: {
+    fontSize: 'var(--font-size-title2)',
+    fontWeight: 700,
+    color: 'var(--text-brand)',
+    minWidth: '48px',
+  },
+  hoursProgress: {
+    flex: 1,
+    height: '8px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '4px',
+    overflow: 'hidden',
+  },
+  hoursProgressFill: {
+    height: '100%',
+    backgroundColor: 'var(--ak-primary)',
+    borderRadius: '4px',
+    transition: 'width 0.3s ease',
+  },
+
+  // Notifications
+  notificationsList: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  notificationItem: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: 'var(--spacing-3)',
+    padding: 'var(--spacing-4)',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  notificationDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    backgroundColor: 'var(--ak-info)',
+    marginTop: '6px',
+    flexShrink: 0,
+  },
+  notificationContent: {
+    flex: 1,
+    minWidth: 0,
+  },
+  notificationTitle: {
+    fontSize: 'var(--font-size-footnote)',
+    fontWeight: 500,
+    color: 'var(--text-primary)',
+    margin: 0,
+  },
+  notificationMessage: {
+    fontSize: 'var(--font-size-caption1)',
+    color: 'var(--text-secondary)',
+    margin: '2px 0 0 0',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  notificationTime: {
+    fontSize: 'var(--font-size-caption2)',
+    color: 'var(--text-tertiary)',
+    flexShrink: 0,
+  },
+
+  // Zone C
+  zoneC: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 'var(--spacing-4)',
+  },
+  zoneCGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: 'var(--spacing-4)',
+  },
+
+  // Tasks
+  tasksList: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  taskItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-3)',
+    padding: 'var(--spacing-3) var(--spacing-4)',
+    borderBottom: '1px solid var(--border-subtle)',
+    cursor: 'pointer',
+    transition: 'background-color 0.15s ease',
+  },
+  taskCheckbox: {
+    width: '20px',
+    height: '20px',
+    borderRadius: '50%',
+    border: '2px solid',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    transition: 'all 0.15s ease',
+  },
+  taskContent: {
+    flex: 1,
+    minWidth: 0,
+  },
+  taskTitle: {
+    fontSize: 'var(--font-size-footnote)',
+    fontWeight: 500,
+    margin: 0,
+    transition: 'color 0.15s ease',
+  },
+  taskArea: {
+    fontSize: 'var(--font-size-caption2)',
+    color: 'var(--text-tertiary)',
+    margin: '2px 0 0 0',
+  },
+
+  // Sessions
+  sessionsList: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  sessionItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-3)',
+    padding: 'var(--spacing-3) var(--spacing-4)',
+    borderBottom: '1px solid var(--border-subtle)',
+    cursor: 'pointer',
+    transition: 'background-color 0.15s ease',
+  },
+  sessionIcon: {
+    width: '36px',
+    height: '36px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'var(--ak-primary)',
+    color: 'white',
+    borderRadius: 'var(--radius-md)',
+  },
+  sessionContent: {
+    flex: 1,
+    minWidth: 0,
+  },
+  sessionTitle: {
+    fontSize: 'var(--font-size-footnote)',
+    fontWeight: 500,
+    color: 'var(--text-primary)',
+    margin: 0,
+  },
+  sessionMeta: {
+    fontSize: 'var(--font-size-caption2)',
+    color: 'var(--text-secondary)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    margin: '2px 0 0 0',
+  },
+  sessionDuration: {
+    fontSize: 'var(--font-size-caption1)',
+    fontWeight: 500,
+    color: 'var(--text-brand)',
+    padding: '4px 8px',
+    backgroundColor: 'var(--accent-muted)',
+    borderRadius: 'var(--radius-sm)',
+  },
+
+  // Primary CTA
+  primaryCTA: {
+    paddingTop: 'var(--spacing-2)',
+  },
+};
+
+// Add responsive styles via CSS class
+const responsiveCSS = `
+  @media (max-width: 640px) {
+    .dashboard-stats-row { grid-template-columns: 1fr !important; }
+    .dashboard-countdown-row { grid-template-columns: 1fr !important; }
+    .dashboard-zone-b-grid { grid-template-columns: 1fr !important; }
+    .dashboard-zone-c-grid { grid-template-columns: 1fr !important; }
+  }
+`;
 
 export default AKGolfDashboard;

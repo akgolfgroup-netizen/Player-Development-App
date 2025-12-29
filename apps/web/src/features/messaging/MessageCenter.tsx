@@ -16,7 +16,11 @@ import {
   User,
   Check,
   CheckCheck,
+  X,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
+import MembersList, { Member } from '../../ui/composites/MembersList.composite';
 
 interface ChatGroup {
   id: string;
@@ -50,6 +54,8 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'unread' | 'coach'>(initialFilterType || 'all');
+  const [showContacts, setShowContacts] = useState(false);
+  const [contacts, setContacts] = useState<Member[]>([]);
 
   // Sync filter when prop changes
   useEffect(() => {
@@ -129,6 +135,76 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
     };
 
     fetchConversations();
+  }, []);
+
+  // Fetch contacts
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await fetch('/api/v1/messages/contacts');
+        if (response.ok) {
+          const data = await response.json();
+          setContacts(data.contacts || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch contacts:', error);
+        // Mock data for development
+        setContacts([
+          {
+            id: 'c1',
+            name: 'Anders Kristiansen',
+            email: 'anders@akgolf.no',
+            role: 'Hovedtrener',
+            avatarInitials: 'AK',
+            avatarColor: 'var(--achievement)',
+            type: 'coach',
+            isOnline: true,
+          },
+          {
+            id: 'c2',
+            name: 'Erik Johansen',
+            email: 'erik@demo.no',
+            avatarInitials: 'EJ',
+            avatarColor: 'var(--success)',
+            category: 'Kat. A',
+            type: 'player',
+            lastSeen: '2t siden',
+          },
+          {
+            id: 'c3',
+            name: 'Sofie Andersen',
+            email: 'sofie@demo.no',
+            avatarInitials: 'SA',
+            avatarColor: 'var(--accent)',
+            category: 'Kat. A',
+            type: 'player',
+            isOnline: true,
+          },
+          {
+            id: 'c4',
+            name: 'Lars Olsen',
+            email: 'lars@demo.no',
+            avatarInitials: 'LO',
+            avatarColor: 'var(--error)',
+            category: 'Kat. B',
+            type: 'player',
+            lastSeen: '1d siden',
+          },
+          {
+            id: 'c5',
+            name: 'Emma Berg',
+            email: 'emma@demo.no',
+            avatarInitials: 'EB',
+            avatarColor: 'var(--accent)',
+            category: 'Kat. B',
+            type: 'player',
+            lastSeen: '3t siden',
+          },
+        ]);
+      }
+    };
+
+    fetchContacts();
   }, []);
 
   // Filter and search conversations
@@ -533,6 +609,91 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               </div>
             </Link>
           ))
+        )}
+      </div>
+
+      {/* Contacts Section */}
+      <div style={{ marginTop: '24px' }}>
+        <button
+          onClick={() => setShowContacts(!showContacts)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            padding: '16px 20px',
+            backgroundColor: 'var(--bg-primary)',
+            border: `1px solid ${'var(--border-default)'}`,
+            borderRadius: showContacts ? 'var(--radius-lg) var(--radius-lg) 0 0' : 'var(--radius-lg)',
+            cursor: 'pointer',
+            textAlign: 'left',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                backgroundColor: 'var(--accent)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Users size={20} color="white" />
+            </div>
+            <div>
+              <h3
+                style={{
+                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  margin: 0,
+                }}
+              >
+                Kontakter
+              </h3>
+              <p
+                style={{
+                  fontSize: '13px', lineHeight: '18px',
+                  color: 'var(--text-secondary)',
+                  margin: '2px 0 0',
+                }}
+              >
+                {contacts.length} personer · {contacts.filter(c => c.isOnline).length} online
+              </p>
+            </div>
+          </div>
+          {showContacts ? (
+            <ChevronUp size={20} color="var(--text-secondary)" />
+          ) : (
+            <ChevronDown size={20} color="var(--text-secondary)" />
+          )}
+        </button>
+
+        {showContacts && (
+          <div
+            style={{
+              backgroundColor: 'var(--bg-primary)',
+              border: `1px solid ${'var(--border-default)'}`,
+              borderTop: 'none',
+              borderRadius: '0 0 var(--radius-lg) var(--radius-lg)',
+              overflow: 'hidden',
+            }}
+          >
+            <MembersList
+              members={contacts}
+              onMemberClick={(member) => {
+                // Navigate to or create conversation with this contact
+                navigate(`/meldinger/ny?contact=${member.id}`);
+              }}
+              showEmail={true}
+              showStatus={true}
+              showRole={true}
+              size="md"
+              emptyMessage="Ingen kontakter tilgjengelig"
+            />
+          </div>
         )}
       </div>
     </div>

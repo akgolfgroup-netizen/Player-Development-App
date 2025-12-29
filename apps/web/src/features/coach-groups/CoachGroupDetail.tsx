@@ -33,6 +33,7 @@ import {
 import Modal from '../../ui/composites/Modal.composite';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
+import MembersList, { Member } from '../../ui/composites/MembersList.composite';
 
 interface GroupMember {
   id: string;
@@ -617,123 +618,119 @@ export default function CoachGroupDetail() {
               </button>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {/* Members List using reusable component */}
+            <div
+              style={{
+                backgroundColor: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: 'var(--shadow-card)',
+                overflow: 'hidden',
+              }}
+            >
+              <MembersList
+                members={group.members.map((m): Member => ({
+                  id: m.id,
+                  name: m.name,
+                  avatarInitials: m.avatarInitials,
+                  avatarColor: m.avatarColor,
+                  category: `Kat. ${m.category}`,
+                  role: `${m.sessionsThisWeek} økter/uke`,
+                  lastSeen: formatDate(m.lastActive),
+                  type: 'player',
+                }))}
+                onMemberClick={(member) => navigate(`/coach/athletes/${member.id}`)}
+                showEmail={false}
+                showStatus={true}
+                size="lg"
+              />
+            </div>
+
+            {/* Additional member actions */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
               {group.members.map((member) => {
                 const trendStyle = getTrendStyle(member.trend);
                 return (
                   <div
-                    key={member.id}
+                    key={`actions-${member.id}`}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '14px',
-                      padding: '14px 16px',
+                      justifyContent: 'space-between',
+                      padding: '12px 16px',
                       backgroundColor: 'var(--bg-primary)',
                       borderRadius: 'var(--radius-md)',
                       boxShadow: 'var(--shadow-card)',
                     }}
                   >
-                    <div
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: '50%',
-                        backgroundColor: member.avatarColor,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--bg-primary)',
-                        fontWeight: 600,
-                        fontSize: '14px',
-                      }}
-                    >
-                      {member.avatarInitials}
-                    </div>
-
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span
-                          style={{
-                            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                            color: 'var(--text-primary)',
-                          }}
-                        >
-                          {member.name}
-                        </span>
-                        <span
-                          style={{
-                            padding: '2px 8px',
-                            backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
-                            color: 'var(--accent)',
-                            borderRadius: 'var(--radius-sm)',
-                            fontSize: '11px',
-                            fontWeight: 600,
-                          }}
-                        >
-                          Kat. {member.category}
-                        </span>
-                      </div>
-                      <p
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div
                         style={{
-                          fontSize: '13px', lineHeight: '18px',
-                          color: 'var(--text-secondary)',
-                          margin: '2px 0 0',
+                          width: 36,
+                          height: 36,
+                          borderRadius: '50%',
+                          backgroundColor: member.avatarColor,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'var(--bg-primary)',
+                          fontWeight: 600,
+                          fontSize: '12px',
                         }}
                       >
-                        Sist aktiv: {formatDate(member.lastActive)}
-                      </p>
+                        {member.avatarInitials}
+                      </div>
+                      <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                        {member.name}
+                      </span>
                     </div>
 
-                    <div style={{ textAlign: 'center', marginRight: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <span style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
-                          {member.sessionsThisWeek}
-                        </span>
                         <TrendingUp
                           size={16}
                           color={trendStyle.color}
                           style={{ transform: `rotate(${trendStyle.rotation})` }}
                         />
+                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                          {member.sessionsThisWeek} økter
+                        </span>
                       </div>
-                      <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
-                        økter/uke
-                      </p>
+
+                      <button
+                        onClick={() => navigate(`/coach/athletes/${member.id}`)}
+                        style={{
+                          padding: '6px 12px',
+                          backgroundColor: 'var(--bg-tertiary)',
+                          border: 'none',
+                          borderRadius: 'var(--radius-sm)',
+                          fontSize: '12px',
+                          fontWeight: 500,
+                          color: 'var(--text-primary)',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Se profil
+                      </button>
+
+                      <button
+                        onClick={() => handleRemoveMember(member)}
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 'var(--radius-sm)',
+                          backgroundColor: 'transparent',
+                          border: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          cursor: 'pointer',
+                          opacity: 0.6,
+                        }}
+                        title="Fjern fra gruppe"
+                      >
+                        <UserMinus size={16} color={'var(--error)'} />
+                      </button>
                     </div>
-
-                    <button
-                      onClick={() => navigate(`/coach/athletes/${member.id}`)}
-                      style={{
-                        padding: '8px 12px',
-                        backgroundColor: 'var(--bg-tertiary)',
-                        border: 'none',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        color: 'var(--text-primary)',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      Se profil
-                    </button>
-
-                    <button
-                      onClick={() => handleRemoveMember(member)}
-                      style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 'var(--radius-sm)',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        opacity: 0.6,
-                      }}
-                      title="Fjern fra gruppe"
-                    >
-                      <UserMinus size={16} color={'var(--error)'} />
-                    </button>
                   </div>
                 );
               })}

@@ -321,6 +321,45 @@ function App() {
                   },
                 ],
               }}
+              footer={{
+                sections: [
+                  {
+                    title: 'Plattform',
+                    links: [
+                      { label: 'Funksjoner', onClick: () => console.log('Features') },
+                      { label: 'Priser', onClick: () => console.log('Pricing') },
+                      { label: 'For trenere', onClick: () => console.log('For coaches') },
+                      { label: 'For klubber', onClick: () => console.log('For clubs') },
+                    ],
+                  },
+                  {
+                    title: 'Ressurser',
+                    links: [
+                      { label: 'Brukerveiledning', onClick: () => console.log('Guide') },
+                      { label: 'FAQ', onClick: () => console.log('FAQ') },
+                      { label: 'Blogg', onClick: () => console.log('Blog') },
+                    ],
+                  },
+                  {
+                    title: 'Juridisk',
+                    links: [
+                      { label: 'Personvern', href: '/privacy' },
+                      { label: 'Vilkår', href: '/terms' },
+                      { label: 'Cookies', href: '/cookies' },
+                    ],
+                  },
+                ],
+                contact: {
+                  email: 'kontakt@akgolf.no',
+                  phone: '+47 123 45 678',
+                  address: 'Oslo, Norge',
+                },
+                social: [
+                  { platform: 'instagram', href: 'https://instagram.com/akgolf' },
+                  { platform: 'facebook', href: 'https://facebook.com/akgolf' },
+                  { platform: 'youtube', href: 'https://youtube.com/akgolf' },
+                ],
+              }}
             />
           } />
 

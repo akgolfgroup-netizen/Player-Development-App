@@ -1,11 +1,51 @@
-import React from 'react';
-import { MapPin, Play, Check } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
+import React, { useRef, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, MapPin, Play, Check, Clock, MoreVertical } from 'lucide-react';
 
-const hours = Array.from({ length: 18 }, (_, i) => i + 5); // 05:00 - 22:00
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
 
-const DayView = ({ date, sessions = [], onSessionClick, onTimeSlotClick }) => {
+const DayView = ({
+  date,
+  sessions = [],
+  onSessionClick,
+  onTimeSlotClick,
+  onNavigate,
+  onAddEvent,
+  onStartSession,
+}) => {
+  const container = useRef(null);
+  const hours = Array.from({ length: 18 }, (_, i) => i + 5); // 05:00 - 22:00
+
+  const dayNames = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
+  const monthNames = ['januar', 'februar', 'mars', 'april', 'mai', 'juni',
+                      'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+
+  const today = new Date();
+  const isToday = date.toDateString() === today.toDateString();
+
+  // Scroll to current time on mount
+  useEffect(() => {
+    if (container.current && isToday) {
+      const currentMinute = new Date().getHours() * 60 + new Date().getMinutes();
+      container.current.scrollTop =
+        ((currentMinute - 5 * 60) / (18 * 60)) * container.current.scrollHeight - 200;
+    }
+  }, [isToday]);
+
   const formatHour = (hour) => `${hour.toString().padStart(2, '0')}:00`;
+
+  const getSessionColor = (type) => {
+    const colors = {
+      teknikk: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', accent: 'bg-blue-500' },
+      golfslag: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700', accent: 'bg-green-500' },
+      spill: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', accent: 'bg-purple-500' },
+      konkurranse: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', accent: 'bg-amber-500' },
+      fysisk: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', accent: 'bg-red-500' },
+      mental: { bg: 'bg-gray-50', border: 'border-gray-200', text: 'text-gray-700', accent: 'bg-gray-500' },
+    };
+    return colors[type] || { bg: 'bg-gray-50', border: 'border-gray-200', text: 'text-gray-700', accent: 'bg-gray-400' };
+  };
 
   const getSessionsForHour = (hour) => {
     return sessions.filter(session => {
@@ -14,107 +54,293 @@ const DayView = ({ date, sessions = [], onSessionClick, onTimeSlotClick }) => {
     });
   };
 
-  const getSessionColor = (type) => {
-    const colors = {
-      teknikk: 'var(--ak-session-teknikk)',
-      golfslag: 'var(--ak-session-golfslag)',
-      spill: 'var(--ak-session-spill)',
-      konkurranse: 'var(--achievement)',
-      fysisk: 'var(--achievement)',
-      mental: 'var(--text-muted)',
+  // Calculate session position and height for time grid view
+  const getSessionStyle = (session) => {
+    const [hours, minutes] = (session.time || '09:00').split(':').map(Number);
+    const startMinutes = (hours - 5) * 60 + minutes;
+    const duration = session.duration || 60;
+
+    return {
+      top: `${(startMinutes / (18 * 60)) * 100}%`,
+      height: `${(duration / (18 * 60)) * 100}%`,
     };
-    return colors[type] || tokens.colors.steel;
   };
 
-  const dayNames = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
-  const monthNames = ['januar', 'februar', 'mars', 'april', 'mai', 'juni',
-                      'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+  // Get current time indicator position
+  const getCurrentTimePosition = () => {
+    const now = new Date();
+    const currentMinutes = (now.getHours() - 5) * 60 + now.getMinutes();
+    return `${(currentMinutes / (18 * 60)) * 100}%`;
+  };
 
   return (
-    <div className="bg-white rounded-xl border border-ak-mist overflow-hidden">
-      {/* Day Header */}
-      <div className="bg-ak-primary text-white p-4">
-        <div className="text-sm opacity-75">{dayNames[date.getDay()]}</div>
-        <div className="text-2xl font-bold">
-          {date.getDate()}. {monthNames[date.getMonth()]}
+    <div className="flex h-full flex-col bg-white rounded-ak-lg shadow-sm ring-1 ring-border-default overflow-hidden">
+      {/* Header */}
+      <header className="flex flex-none items-center justify-between border-b border-border-default px-6 py-4">
+        <div>
+          <h1 className="text-base font-semibold leading-6 text-ak-charcoal">
+            {dayNames[date.getDay()]}
+          </h1>
+          <p className="mt-1 text-sm text-ak-steel">
+            <time dateTime={date.toISOString().split('T')[0]}>
+              {date.getDate()}. {monthNames[date.getMonth()]} {date.getFullYear()}
+            </time>
+          </p>
         </div>
-      </div>
+        <div className="flex items-center">
+          <div className="relative flex items-center rounded-ak-md bg-white shadow-sm ring-1 ring-border-default md:items-stretch">
+            <button
+              type="button"
+              onClick={() => onNavigate?.(-1)}
+              className="flex h-9 w-9 items-center justify-center rounded-l-ak-md text-ak-steel hover:text-ak-charcoal focus:relative md:hover:bg-ak-snow"
+            >
+              <span className="sr-only">Forrige dag</span>
+              <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                // Navigate to today - parent handles this
+                onNavigate?.(0, true);
+              }}
+              className="hidden px-3.5 text-sm font-semibold text-ak-charcoal hover:bg-ak-snow focus:relative md:block"
+            >
+              I dag
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate?.(1)}
+              className="flex h-9 w-9 items-center justify-center rounded-r-ak-md text-ak-steel hover:text-ak-charcoal focus:relative md:hover:bg-ak-snow"
+            >
+              <span className="sr-only">Neste dag</span>
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </div>
+          {onAddEvent && (
+            <div className="hidden md:ml-4 md:flex md:items-center">
+              <div className="ml-6 h-6 w-px bg-border-default" />
+              <button
+                type="button"
+                onClick={onAddEvent}
+                className="ml-6 rounded-ak-md bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary-light"
+              >
+                Ny hendelse
+              </button>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Today indicator badge */}
+      {isToday && (
+        <div className="flex-none bg-ak-primary text-white px-6 py-2 text-sm font-medium">
+          I dag
+        </div>
+      )}
 
       {/* Time Grid */}
-      <div className="divide-y divide-ak-mist max-h-[600px] overflow-y-auto">
-        {hours.map(hour => {
-          const hourSessions = getSessionsForHour(hour);
+      <div
+        ref={container}
+        className="flex flex-auto overflow-auto"
+        style={{ maxHeight: 'calc(100vh - 280px)' }}
+      >
+        <div className="flex flex-auto">
+          {/* Time Labels */}
+          <div className="sticky left-0 z-10 w-16 flex-none bg-white">
+            <div className="relative" style={{ height: `${hours.length * 4}rem` }}>
+              {hours.map((hour) => (
+                <div
+                  key={hour}
+                  className="absolute w-full text-right pr-3"
+                  style={{ top: `${((hour - 5) / 18) * 100}%` }}
+                >
+                  <span className="relative -top-2 text-xs font-medium text-ak-steel">
+                    {formatHour(hour)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-          return (
+          {/* Events Column */}
+          <div className="flex-auto border-l border-border-default">
             <div
-              key={hour}
-              className="flex min-h-[60px] hover:bg-ak-snow/50 cursor-pointer"
-              onClick={() => !hourSessions.length && onTimeSlotClick?.(hour)}
+              className="relative"
+              style={{ height: `${hours.length * 4}rem` }}
             >
-              {/* Time Label */}
-              <div className="w-16 flex-shrink-0 p-2 text-right border-r border-ak-mist">
-                <span className="text-xs text-ak-steel font-medium">
-                  {formatHour(hour)}
-                </span>
-              </div>
+              {/* Hour grid lines */}
+              {hours.map((hour) => (
+                <div
+                  key={hour}
+                  onClick={() => onTimeSlotClick?.(hour)}
+                  className="absolute w-full border-b border-border-default hover:bg-ak-snow/50 cursor-pointer transition-colors"
+                  style={{
+                    top: `${((hour - 5) / 18) * 100}%`,
+                    height: `${(1 / 18) * 100}%`,
+                  }}
+                />
+              ))}
+
+              {/* Current time indicator */}
+              {isToday && (
+                <div
+                  className="absolute left-0 right-0 z-20 flex items-center"
+                  style={{ top: getCurrentTimePosition() }}
+                >
+                  <div className="h-3 w-3 rounded-full bg-red-500 -ml-1.5" />
+                  <div className="flex-auto h-0.5 bg-red-500" />
+                </div>
+              )}
 
               {/* Sessions */}
-              <div className="flex-1 p-2 space-y-1">
-                {hourSessions.map(session => (
+              {sessions.map((session) => {
+                const colors = getSessionColor(session.type);
+                const style = getSessionStyle(session);
+                const isCompleted = session.status === 'completed';
+                const isRest = session.status === 'rest';
+
+                return (
                   <div
                     key={session.id}
-                    className="rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+                    className={classNames(
+                      'absolute left-2 right-2 rounded-ak-md overflow-hidden shadow-sm',
+                      colors.bg,
+                      'border-l-4',
+                      isCompleted && 'opacity-60',
+                      'hover:shadow-md transition-shadow cursor-pointer'
+                    )}
                     style={{
-                      backgroundColor: `${getSessionColor(session.type)}15`,
-                      borderLeft: `4px solid ${getSessionColor(session.type)}`
+                      top: style.top,
+                      height: style.height,
+                      minHeight: '3.5rem',
+                      borderLeftColor: `var(--${colors.accent.replace('bg-', '').replace('-500', '-600')}, #6B7280)`,
                     }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSessionClick?.(session);
-                    }}
+                    onClick={() => onSessionClick?.(session)}
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+                    <div className="flex h-full p-3">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs text-ak-steel">{session.time}</span>
+                          <span className={classNames('text-xs font-medium', colors.text)}>
+                            {session.time}
+                          </span>
                           {session.duration > 0 && (
-                            <span className="text-xs text-ak-steel">• {session.duration} min</span>
+                            <span className={classNames('text-xs', colors.text)}>
+                              · {session.duration} min
+                            </span>
                           )}
                         </div>
-                        <h4 className="text-sm font-semibold text-ak-charcoal">{session.name}</h4>
+                        <h4 className={classNames('text-sm font-semibold truncate', colors.text)}>
+                          {session.name}
+                        </h4>
                         {session.location && (
-                          <div className="flex items-center gap-1 mt-1 text-xs text-ak-steel">
-                            <MapPin size={12} />
-                            <span>{session.location}</span>
+                          <div className="flex items-center gap-1 mt-1">
+                            <MapPin className={classNames('h-3 w-3', colors.text)} />
+                            <span className={classNames('text-xs truncate', colors.text)}>
+                              {session.location}
+                            </span>
                           </div>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        {session.status === 'completed' ? (
-                          <div className="w-6 h-6 rounded-full bg-ak-success flex items-center justify-center">
-                            <Check size={14} className="text-white" />
+                      {/* Action buttons */}
+                      <div className="flex items-start gap-2 ml-2">
+                        {isCompleted ? (
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-success">
+                            <Check className="h-4 w-4 text-white" />
                           </div>
-                        ) : session.status !== 'rest' && (
+                        ) : !isRest && onStartSession && (
                           <button
-                            className="w-8 h-8 rounded-full bg-ak-primary flex items-center justify-center hover:bg-ak-primary-light transition-colors"
                             onClick={(e) => {
                               e.stopPropagation();
-                              // Start session
+                              onStartSession?.(session);
                             }}
+                            className="flex h-8 w-8 items-center justify-center rounded-full bg-ak-primary hover:bg-ak-primary-light transition-colors"
                           >
-                            <Play size={14} className="text-white ml-0.5" />
+                            <Play className="h-4 w-4 text-white ml-0.5" />
                           </button>
                         )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSessionClick?.(session);
+                          }}
+                          className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-white/50 transition-colors"
+                        >
+                          <MoreVertical className={classNames('h-4 w-4', colors.text)} />
+                        </button>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
-          );
-        })}
+          </div>
+        </div>
       </div>
+
+      {/* Session Summary (Mobile) */}
+      {sessions.length > 0 && (
+        <div className="flex-none border-t border-border-default p-4 sm:hidden">
+          <h3 className="text-sm font-semibold text-ak-charcoal mb-3">
+            {sessions.length} {sessions.length === 1 ? 'hendelse' : 'hendelser'} i dag
+          </h3>
+          <div className="space-y-2">
+            {sessions.slice(0, 3).map((session) => {
+              const colors = getSessionColor(session.type);
+              return (
+                <button
+                  key={session.id}
+                  onClick={() => onSessionClick?.(session)}
+                  className={classNames(
+                    'w-full flex items-center gap-3 p-3 rounded-ak-md text-left',
+                    colors.bg,
+                    'hover:opacity-80 transition-opacity'
+                  )}
+                >
+                  <div className={classNames('h-10 w-1 rounded-full', colors.accent)} />
+                  <div className="flex-1 min-w-0">
+                    <p className={classNames('text-sm font-semibold truncate', colors.text)}>
+                      {session.name}
+                    </p>
+                    <p className={classNames('text-xs', colors.text)}>
+                      {session.time} · {session.duration} min
+                    </p>
+                  </div>
+                  {session.status === 'completed' && (
+                    <Check className="h-5 w-5 text-ak-success" />
+                  )}
+                </button>
+              );
+            })}
+            {sessions.length > 3 && (
+              <p className="text-xs text-ak-steel text-center pt-1">
+                + {sessions.length - 3} flere hendelser
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {sessions.length === 0 && (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <Clock className="h-12 w-12 text-ak-mist mb-4" />
+          <h3 className="text-lg font-semibold text-ak-charcoal mb-2">
+            Ingen hendelser
+          </h3>
+          <p className="text-sm text-ak-steel mb-4">
+            Du har ingen planlagte hendelser denne dagen.
+          </p>
+          {onAddEvent && (
+            <button
+              onClick={onAddEvent}
+              className="rounded-ak-md bg-ak-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary-light"
+            >
+              Legg til hendelse
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
