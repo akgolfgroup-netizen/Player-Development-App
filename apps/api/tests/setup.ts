@@ -3,6 +3,20 @@
  * Runs before all tests to configure the test environment
  */
 
+// Mock exceljs to avoid ESM/uuid issues with Jest
+jest.mock('exceljs', () => ({
+  Workbook: jest.fn().mockImplementation(() => ({
+    addWorksheet: jest.fn().mockReturnValue({
+      columns: [],
+      addRow: jest.fn(),
+      getRow: jest.fn().mockReturnValue({ font: {}, fill: {} }),
+    }),
+    xlsx: {
+      writeBuffer: jest.fn().mockResolvedValue(Buffer.from('')),
+    },
+  })),
+}));
+
 // Set test environment variables BEFORE any imports
 process.env.NODE_ENV = 'test';
 process.env.LOG_LEVEL = 'error';

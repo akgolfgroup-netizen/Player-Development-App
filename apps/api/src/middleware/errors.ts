@@ -47,8 +47,9 @@ export class ConflictError extends AppError {
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string = 'Validation failed', details?: Record<string, unknown>) {
-    super(400, 'VALIDATION_ERROR', message, details);
+  constructor(message: string = 'Validation failed', details?: { field: string; message: string }[] | Record<string, unknown>) {
+    // Cast to Record for AppError compatibility - the array format is intentional for validation errors
+    super(400, 'VALIDATION_ERROR', message, details as Record<string, unknown>);
   }
 }
 

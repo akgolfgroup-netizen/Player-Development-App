@@ -4,8 +4,17 @@ module.exports = {
   roots: ['<rootDir>/tests', '<rootDir>/src'],
   testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.ts$': ['ts-jest', {
+      tsconfig: 'tsconfig.test.json',
+      isolatedModules: true, // Skip type-checking for faster tests
+    }],
+    // Transform ESM modules that Jest can't parse by default
+    '^.+\\.js$': 'babel-jest',
   },
+  // Transform uuid and other ESM modules in node_modules (works with pnpm)
+  transformIgnorePatterns: [
+    'node_modules/(?!(\\.pnpm/(uuid|exceljs)@))',
+  ],
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.d.ts',
