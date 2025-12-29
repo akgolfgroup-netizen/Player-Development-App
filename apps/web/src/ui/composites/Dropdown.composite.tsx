@@ -232,7 +232,7 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     textAlign: 'left',
   } as React.CSSProperties,
   itemFocused: {
-    backgroundColor: 'var(--gray-100)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
   } as React.CSSProperties,
   itemDisabled: {
     opacity: 0.5,
@@ -240,7 +240,7 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     pointerEvents: 'none',
   } as React.CSSProperties,
   itemDanger: {
-    color: 'var(--ak-error)',
+    color: 'var(--error)',
   } as React.CSSProperties,
   itemIcon: {
     display: 'flex',

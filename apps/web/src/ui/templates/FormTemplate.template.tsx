@@ -179,7 +179,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
               padding="md"
               style={{
                 backgroundColor: 'rgba(196, 91, 78, 0.05)',
-                borderLeft: '4px solid var(--ak-error)',
+                borderLeft: '4px solid var(--error)',
               }}
             >
               <Text variant="footnote" weight={600} color="error">
@@ -203,7 +203,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
               padding="md"
               style={{
                 backgroundColor: 'rgba(74, 124, 89, 0.05)',
-                borderLeft: '4px solid var(--ak-success)',
+                borderLeft: '4px solid var(--success)',
               }}
             >
               <Text variant="body" color="success">
@@ -310,13 +310,13 @@ const styles: Record<string, React.CSSProperties> = {
   progressBar: {
     width: '100%',
     height: '8px',
-    backgroundColor: 'var(--gray-100)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderRadius: 'var(--radius-full)',
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
     transition: 'width 0.3s ease',
   },
   sectionContent: {

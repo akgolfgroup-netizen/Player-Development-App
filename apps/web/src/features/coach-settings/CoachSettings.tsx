@@ -763,7 +763,7 @@ export const CoachSettings: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  color: 'var(--ak-status-success)',
+                  color: 'var(--success)',
                   fontSize: '14px',
                   fontWeight: '500'
                 }}>

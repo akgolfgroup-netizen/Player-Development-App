@@ -33,7 +33,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: 'var(--spacing-1, 4px)',
     padding: '8px 12px',
-    backgroundColor: 'var(--ak-surface)',
+    backgroundColor: 'var(--background-surface)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--text-secondary)',
@@ -98,16 +98,16 @@ const styles: Record<string, React.CSSProperties> = {
     textTransform: 'uppercase' as const,
   },
   statusPending: {
-    backgroundColor: 'color-mix(in srgb, var(--ak-warning) 15%, transparent)',
-    color: 'var(--ak-warning)',
+    backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
+    color: 'var(--warning)',
   },
   statusReviewed: {
-    backgroundColor: 'color-mix(in srgb, var(--ak-success) 15%, transparent)',
-    color: 'var(--ak-success)',
+    backgroundColor: 'color-mix(in srgb, var(--success) 15%, transparent)',
+    color: 'var(--success)',
   },
   statusFollowup: {
-    backgroundColor: 'color-mix(in srgb, var(--ak-error) 15%, transparent)',
-    color: 'var(--ak-error)',
+    backgroundColor: 'color-mix(in srgb, var(--error) 15%, transparent)',
+    color: 'var(--error)',
   },
   progressBar: {
     display: 'flex',
@@ -123,7 +123,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   progressFill: {
     height: '100%',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
     borderRadius: '3px',
     transition: 'width 0.3s ease',
   },

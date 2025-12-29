@@ -148,17 +148,17 @@ export const CoachDataGolf: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'var(--ak-status-success-bg)', text: 'var(--ak-status-success-text)' };
-      case 'B': return { bg: 'var(--ak-status-info-bg)', text: 'var(--ak-status-info-text)' };
-      case 'C': return { bg: 'var(--ak-status-warning-bg)', text: 'var(--ak-status-warning-text)' };
-      default: return { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-secondary)' };
+      case 'A': return { bg: 'var(--bg-success-subtle)', text: 'var(--success)' };
+      case 'B': return { bg: 'var(--bg-accent-subtle)', text: 'var(--info)' };
+      case 'C': return { bg: 'var(--bg-warning-subtle)', text: 'var(--warning)' };
+      default: return { bg: 'var(--card)', text: 'var(--text-secondary)' };
     }
   };
 
   const getTrendIcon = useCallback((trend: string) => {
     switch (trend) {
-      case 'up': return <TrendingUp size={12} color="var(--ak-status-success)" />;
-      case 'down': return <TrendingDown size={12} color="var(--ak-status-error)" />;
+      case 'up': return <TrendingUp size={12} color="var(--success)" />;
+      case 'down': return <TrendingDown size={12} color="var(--error)" />;
       default: return <Activity size={12} color={'var(--text-tertiary)'} />;
     }
   }, []);
@@ -171,8 +171,8 @@ export const CoachDataGolf: React.FC = () => {
 
   const getSGColor = (value: number | null) => {
     if (value === null) return 'var(--text-tertiary)';
-    if (value > 0) return 'var(--ak-status-success)';
-    if (value < 0) return 'var(--ak-status-error)';
+    if (value > 0) return 'var(--success)';
+    if (value < 0) return 'var(--error)';
     return 'var(--text-secondary)';
   };
 
@@ -486,7 +486,7 @@ export const CoachDataGolf: React.FC = () => {
                       backgroundColor: player.dataGolfConnected
                         ? 'rgba(34, 197, 94, 0.1)'
                         : 'rgba(239, 68, 68, 0.1)',
-                      color: player.dataGolfConnected ? 'var(--ak-status-success)' : 'var(--ak-status-error)',
+                      color: player.dataGolfConnected ? 'var(--success)' : 'var(--error)',
                       fontWeight: '500'
                     }}>
                       {player.dataGolfConnected ? 'Har testdata' : 'Mangler testdata'}
@@ -570,7 +570,7 @@ export const CoachDataGolf: React.FC = () => {
                   backgroundColor: 'rgba(239, 68, 68, 0.1)',
                   borderRadius: '8px',
                   fontSize: '12px',
-                  color: 'var(--ak-status-error)'
+                  color: 'var(--error)'
                 }}>
                   Ingen testresultater enda
                 </div>

@@ -422,7 +422,7 @@ export default function CoachTournamentCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: 'color-mix(in srgb, var(--ak-success) 15%, transparent)',
+              backgroundColor: 'color-mix(in srgb, var(--success) 15%, transparent)',
               borderRadius: 'var(--radius-md)',
             }}
           >
@@ -437,7 +437,7 @@ export default function CoachTournamentCalendar() {
               alignItems: 'center',
               gap: '8px',
               padding: '8px 14px',
-              backgroundColor: 'color-mix(in srgb, var(--ak-warning) 15%, transparent)',
+              backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
               borderRadius: 'var(--radius-md)',
             }}
           >
@@ -453,7 +453,7 @@ export default function CoachTournamentCalendar() {
                 alignItems: 'center',
                 gap: '8px',
                 padding: '8px 14px',
-                backgroundColor: 'color-mix(in srgb, var(--ak-warning) 15%, transparent)',
+                backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
                 borderRadius: 'var(--radius-md)',
               }}
             >
@@ -573,7 +573,7 @@ export default function CoachTournamentCalendar() {
                             width: 48,
                             height: 48,
                             borderRadius: 'var(--radius-md)',
-                            backgroundColor: 'color-mix(in srgb, var(--ak-warning) 15%, transparent)',
+                            backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',

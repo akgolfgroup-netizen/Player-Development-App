@@ -20,10 +20,10 @@ const YearView = ({
     const period = periods.find(p => p.months?.includes(month));
     if (period) {
       const periodColors = {
-        evaluering: 'var(--ak-text-muted)',
+        evaluering: 'var(--text-muted)',
         grunnlag: 'var(--ak-session-teknikk)',
         spesialisering: 'var(--ak-session-golfslag)',
-        turnering: 'var(--ak-achievement-gold)',
+        turnering: 'var(--achievement)',
       };
       return periodColors[period.type] || null;
     }
@@ -144,10 +144,10 @@ const YearView = ({
         <div className="flex items-center gap-4 px-4 py-2 border-b border-ak-mist bg-ak-snow/50">
           <span className="text-xs text-ak-steel">Perioder:</span>
           {[
-            { type: 'evaluering', label: 'Evaluering', color: 'var(--ak-text-muted)' },
+            { type: 'evaluering', label: 'Evaluering', color: 'var(--text-muted)' },
             { type: 'grunnlag', label: 'Grunnlag', color: 'var(--ak-session-teknikk)' },
             { type: 'spesialisering', label: 'Spesialisering', color: 'var(--ak-session-golfslag)' },
-            { type: 'turnering', label: 'Turnering', color: 'var(--ak-achievement-gold)' },
+            { type: 'turnering', label: 'Turnering', color: 'var(--achievement)' },
           ].map(p => (
             <div key={p.type} className="flex items-center gap-1">
               <div className="w-3 h-3 rounded" style={{ backgroundColor: p.color }} />

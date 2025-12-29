@@ -17,16 +17,16 @@ const variants = {
     color: 'var(--accent)',
   },
   success: {
-    backgroundColor: 'color-mix(in srgb, var(--ak-success) 15%, transparent)',
-    color: 'var(--ak-success)',
+    backgroundColor: 'color-mix(in srgb, var(--success) 15%, transparent)',
+    color: 'var(--success)',
   },
   warning: {
-    backgroundColor: 'color-mix(in srgb, var(--ak-warning) 15%, transparent)',
-    color: 'var(--ak-warning)',
+    backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
+    color: 'var(--warning)',
   },
   error: {
-    backgroundColor: 'color-mix(in srgb, var(--ak-error) 15%, transparent)',
-    color: 'var(--ak-error)',
+    backgroundColor: 'color-mix(in srgb, var(--error) 15%, transparent)',
+    color: 'var(--error)',
   },
   achievement: {
     backgroundColor: 'var(--bg-achievement-subtle)',

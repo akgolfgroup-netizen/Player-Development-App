@@ -91,9 +91,9 @@ const WeekView = ({ currentDate, sessions, selectedDate, onDateSelect, onSession
       spill: 'var(--ak-session-spill)',
       konkurranse: 'var(--ak-session-kompetanse)',
       fysisk: 'var(--ak-session-fysisk)',
-      mental: 'var(--ak-text-muted)',
+      mental: 'var(--text-muted)',
     };
-    return colors[type] || 'var(--ak-text-tertiary)';
+    return colors[type] || 'var(--text-tertiary)';
   };
 
   const getDayStats = (date) => {

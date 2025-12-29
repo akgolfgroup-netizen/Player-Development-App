@@ -4,9 +4,9 @@
  * Sidebar components with AK Golf Blue Palette
  *
  * Uses Tailwind classes mapped to CSS variables in tailwind.config.js:
- * - bg-ak-primary → var(--ak-primary)
- * - bg-ak-primary-light → var(--ak-primary-light)
- * - bg-ak-gold → var(--ak-gold)
+ * - bg-ak-primary → var(--accent)
+ * - bg-ak-primary-light → var(--accent-hover)
+ * - bg-ak-gold → var(--achievement)
  */
 
 import * as Headless from '@headlessui/react'

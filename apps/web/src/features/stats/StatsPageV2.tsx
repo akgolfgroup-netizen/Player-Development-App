@@ -16,9 +16,9 @@ import { useScreenView } from '../../analytics/useScreenView';
 const getTrendColor = (trend?: 'positive' | 'negative' | 'neutral') => {
   switch (trend) {
     case 'positive':
-      return 'var(--ak-success)';
+      return 'var(--success)';
     case 'negative':
-      return 'var(--ak-error)';
+      return 'var(--error)';
     default:
       return 'var(--text-secondary)';
   }

@@ -75,7 +75,7 @@ const UILabContainer = () => {
           <StatsTrend
             title="Utviklingskurve"
             data={sampleTrendData}
-            color="var(--ak-primary)"
+            color="var(--accent)"
           />
         </section>
 

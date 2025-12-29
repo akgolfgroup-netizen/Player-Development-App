@@ -4,10 +4,10 @@ import { tokens } from '../../design-tokens';
 
 // Period colors (Blue Palette 01)
 const periodColors = {
-  evaluering: 'var(--ak-text-muted)',
+  evaluering: 'var(--text-muted)',
   grunnlag: 'var(--ak-session-teknikk)',
   spesialisering: 'var(--ak-session-golfslag)',
-  turnering: 'var(--ak-achievement-gold)',
+  turnering: 'var(--achievement)',
 };
 
 // ===== ICONS =====
@@ -571,7 +571,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
-              { name: 'Teknisk', icon: '⚙️', color: 'var(--ak-primary)', desc: 'Sving, slag, teknikk' },
+              { name: 'Teknisk', icon: '⚙️', color: 'var(--accent)', desc: 'Sving, slag, teknikk' },
               { name: 'Fysisk', icon: '💪', color: 'var(--success)', desc: 'Styrke, utholdenhet, mobilitet' },
               { name: 'Mental', icon: '🧠', color: 'rgba(var(--accent-rgb), 0.8)', desc: 'Fokus, visualisering, rutiner' },
               { name: 'Strategisk', icon: '🎯', color: 'var(--achievement)', desc: 'Banestrategi, beslutninger' },

@@ -153,7 +153,7 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             cursor: 'pointer',
             transition: 'background-color 0.2s',
           }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--ak-status-error)'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--error)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--error)'}
         >
           Fortsett allikevel
@@ -308,7 +308,7 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
             }}
             onMouseEnter={(e) => {
               if (!loading && password) {
-                e.currentTarget.style.backgroundColor = 'var(--ak-status-error)';
+                e.currentTarget.style.backgroundColor = 'var(--error)';
               }
             }}
             onMouseLeave={(e) => {

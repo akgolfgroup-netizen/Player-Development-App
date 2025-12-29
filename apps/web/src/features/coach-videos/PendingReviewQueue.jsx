@@ -23,9 +23,9 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
   },
   header: {
     display: 'flex',
@@ -37,14 +37,14 @@ const styles = {
     margin: 0,
     fontSize: '16px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
   },
   badge: {
     padding: '2px 8px',
-    backgroundColor: 'var(--ak-warning, var(--ak-status-warning-light))',
+    backgroundColor: 'var(--warning)',
     borderRadius: 'var(--radius-full, 9999px)',
     fontSize: '12px',
     fontWeight: '700',
@@ -53,9 +53,9 @@ const styles = {
   viewAllButton: {
     padding: '6px 12px',
     backgroundColor: 'transparent',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     fontSize: '12px',
     fontWeight: '500',
     cursor: 'pointer',
@@ -67,7 +67,7 @@ const styles = {
     overflowX: 'auto',
     paddingBottom: 'var(--spacing-2, 8px)',
     scrollbarWidth: 'thin',
-    scrollbarColor: 'var(--ak-border) transparent',
+    scrollbarColor: 'var(--border) transparent',
   },
   queueItem: {
     flex: '0 0 auto',
@@ -87,7 +87,7 @@ const styles = {
     height: '80px',
     borderRadius: 'var(--radius-md, 8px)',
     overflow: 'hidden',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
   },
   thumbnail: {
     width: '100%',
@@ -100,7 +100,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.3))',
   },
   playOverlay: {
     position: 'absolute',
@@ -119,7 +119,7 @@ const styles = {
     width: '36px',
     height: '36px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -154,14 +154,14 @@ const styles = {
   playerName: {
     fontSize: '12px',
     fontWeight: '500',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
   uploadTime: {
     fontSize: '11px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
   },
   emptyState: {
     display: 'flex',
@@ -174,12 +174,12 @@ const styles = {
   emptyIcon: {
     width: '40px',
     height: '40px',
-    color: 'var(--ak-success, var(--ak-status-success-light))',
+    color: 'var(--success)',
     marginBottom: 'var(--spacing-2, 8px)',
   },
   emptyText: {
     fontSize: '13px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     margin: 0,
   },
   scrollButton: {
@@ -189,9 +189,9 @@ const styles = {
     width: '32px',
     height: '32px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
-    color: 'var(--ak-text-primary, white)',
+    backgroundColor: 'var(--ak-toast-bg)',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
+    color: 'var(--text-primary, white)',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -279,14 +279,14 @@ function formatRelativeTime(dateString) {
  * Get priority color based on wait time
  */
 function getPriorityColor(dateString) {
-  if (!dateString) return 'var(--ak-status-success-light)';
+  if (!dateString) return 'var(--success)';
   const date = new Date(dateString);
   const now = new Date();
   const diffHours = (now - date) / (1000 * 60 * 60);
 
-  if (diffHours > 48) return 'var(--ak-status-error-light)'; // Red - urgent
-  if (diffHours > 24) return 'var(--ak-status-warning-light)'; // Yellow - attention
-  return 'var(--ak-status-success-light)'; // Green - ok
+  if (diffHours > 48) return 'var(--error)'; // Red - urgent
+  if (diffHours > 24) return 'var(--warning)'; // Yellow - attention
+  return 'var(--success)'; // Green - ok
 }
 
 /**

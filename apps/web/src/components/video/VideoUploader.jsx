@@ -74,12 +74,12 @@ const styles = {
     borderRadius: 'var(--radius-lg)',
     padding: 'var(--spacing-8)',
     textAlign: 'center',
-    backgroundColor: 'var(--ak-surface)',
+    backgroundColor: 'var(--background-surface)',
     cursor: 'pointer',
     transition: 'all 0.2s',
   },
   dropZoneActive: {
-    borderColor: 'var(--ak-primary)',
+    borderColor: 'var(--accent)',
     backgroundColor: 'rgba(16, 69, 106, 0.1)',
   },
   dropZoneDisabled: {
@@ -87,19 +87,19 @@ const styles = {
     cursor: 'not-allowed',
   },
   uploadIcon: {
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
     marginBottom: 'var(--spacing-3)',
   },
   dropZoneTitle: {
     fontSize: 'var(--font-size-headline)',
     fontWeight: 600,
-    color: 'var(--ak-ink)',
+    color: 'var(--background-inverse)',
     marginBottom: 'var(--spacing-2)',
     fontFamily: 'var(--font-family)',
   },
   dropZoneText: {
     fontSize: 'var(--font-size-body)',
-    color: 'var(--ak-gray600)',
+    color: 'var(--text-secondary)',
     marginBottom: 'var(--spacing-4)',
     fontFamily: 'var(--font-family)',
   },
@@ -114,8 +114,8 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-2)',
     padding: 'var(--spacing-2) var(--spacing-4)',
-    backgroundColor: 'var(--ak-primary)',
-    color: 'var(--ak-white)',
+    backgroundColor: 'var(--accent)',
+    color: 'var(--text-inverse)',
     border: 'none',
     borderRadius: 'var(--radius-sm)',
     fontSize: 'var(--font-size-body)',
@@ -124,12 +124,12 @@ const styles = {
     transition: 'opacity 0.2s',
   },
   buttonSecondary: {
-    backgroundColor: 'var(--ak-surface)',
-    color: 'var(--ak-primary)',
+    backgroundColor: 'var(--background-surface)',
+    color: 'var(--accent)',
     border: '1px solid var(--border-default)',
   },
   buttonDanger: {
-    backgroundColor: 'var(--ak-error)',
+    backgroundColor: 'var(--error)',
   },
   buttonDisabled: {
     opacity: 0.5,
@@ -139,7 +139,7 @@ const styles = {
     marginTop: 'var(--spacing-4)',
     borderRadius: 'var(--radius-md)',
     overflow: 'hidden',
-    backgroundColor: 'var(--ak-ink)',
+    backgroundColor: 'var(--background-inverse)',
     position: 'relative',
   },
   previewVideo: {
@@ -167,19 +167,19 @@ const styles = {
     height: '64px',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 'var(--radius-full)',
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
   },
   fileInfo: {
     display: 'flex',
     justifyContent: 'space-between',
     padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--ak-surface)',
+    backgroundColor: 'var(--background-surface)',
     borderRadius: 'var(--radius-sm)',
     marginTop: 'var(--spacing-3)',
   },
   fileInfoText: {
     fontSize: 'var(--font-size-footnote)',
-    color: 'var(--ak-gray600)',
+    color: 'var(--text-secondary)',
     fontFamily: 'var(--font-family)',
   },
   form: {
@@ -196,7 +196,7 @@ const styles = {
   label: {
     fontSize: 'var(--font-size-footnote)',
     fontWeight: 600,
-    color: 'var(--ak-ink)',
+    color: 'var(--background-inverse)',
     fontFamily: 'var(--font-family)',
   },
   input: {
@@ -205,7 +205,7 @@ const styles = {
     borderRadius: 'var(--radius-sm)',
     fontSize: 'var(--font-size-body)',
     fontFamily: 'var(--font-family)',
-    backgroundColor: 'var(--ak-white)',
+    backgroundColor: 'var(--text-inverse)',
   },
   textarea: {
     padding: 'var(--spacing-2) var(--spacing-3)',
@@ -213,7 +213,7 @@ const styles = {
     borderRadius: 'var(--radius-sm)',
     fontSize: 'var(--font-size-body)',
     fontFamily: 'var(--font-family)',
-    backgroundColor: 'var(--ak-white)',
+    backgroundColor: 'var(--text-inverse)',
     minHeight: '80px',
     resize: 'vertical',
   },
@@ -223,7 +223,7 @@ const styles = {
     borderRadius: 'var(--radius-sm)',
     fontSize: 'var(--font-size-body)',
     fontFamily: 'var(--font-family)',
-    backgroundColor: 'var(--ak-white)',
+    backgroundColor: 'var(--text-inverse)',
     cursor: 'pointer',
   },
   formRow: {
@@ -234,7 +234,7 @@ const styles = {
   progressContainer: {
     marginTop: 'var(--spacing-4)',
     padding: 'var(--spacing-4)',
-    backgroundColor: 'var(--ak-surface)',
+    backgroundColor: 'var(--background-surface)',
     borderRadius: 'var(--radius-md)',
   },
   progressHeader: {
@@ -246,13 +246,13 @@ const styles = {
   progressTitle: {
     fontSize: 'var(--font-size-body)',
     fontWeight: 600,
-    color: 'var(--ak-ink)',
+    color: 'var(--background-inverse)',
     fontFamily: 'var(--font-family)',
   },
   progressPercent: {
     fontSize: 'var(--font-size-headline)',
     fontWeight: 700,
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
     fontFamily: 'var(--font-family)',
   },
   progressBar: {
@@ -263,14 +263,14 @@ const styles = {
   },
   progressFill: {
     height: '100%',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
     borderRadius: 'var(--radius-full)',
     transition: 'width 0.3s ease',
   },
   progressText: {
     marginTop: 'var(--spacing-2)',
     fontSize: 'var(--font-size-footnote)',
-    color: 'var(--ak-gray600)',
+    color: 'var(--text-secondary)',
     fontFamily: 'var(--font-family)',
     textAlign: 'center',
   },
@@ -282,26 +282,26 @@ const styles = {
     marginBottom: 'var(--spacing-3)',
   },
   statusIconSuccess: {
-    color: 'var(--ak-success)',
+    color: 'var(--success)',
   },
   statusIconError: {
-    color: 'var(--ak-error)',
+    color: 'var(--error)',
   },
   statusTitle: {
     fontSize: 'var(--font-size-title3)',
     fontWeight: 600,
-    color: 'var(--ak-ink)',
+    color: 'var(--background-inverse)',
     marginBottom: 'var(--spacing-2)',
     fontFamily: 'var(--font-family)',
   },
   statusText: {
     fontSize: 'var(--font-size-body)',
-    color: 'var(--ak-gray600)',
+    color: 'var(--text-secondary)',
     marginBottom: 'var(--spacing-4)',
     fontFamily: 'var(--font-family)',
   },
   errorText: {
-    color: 'var(--ak-error)',
+    color: 'var(--error)',
     fontSize: 'var(--font-size-footnote)',
     marginTop: 'var(--spacing-2)',
     fontFamily: 'var(--font-family)',

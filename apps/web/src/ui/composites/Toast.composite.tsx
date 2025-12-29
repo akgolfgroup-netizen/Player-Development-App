@@ -225,10 +225,10 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     animation: 'toastSlideIn 0.3s ease',
   } as React.CSSProperties,
   variants: {
-    info: { borderLeft: '4px solid var(--ak-primary)' },
-    success: { borderLeft: '4px solid var(--ak-success)' },
-    warning: { borderLeft: '4px solid var(--ak-warning)' },
-    error: { borderLeft: '4px solid var(--ak-error)' },
+    info: { borderLeft: '4px solid var(--accent)' },
+    success: { borderLeft: '4px solid var(--success)' },
+    warning: { borderLeft: '4px solid var(--warning)' },
+    error: { borderLeft: '4px solid var(--error)' },
   },
   iconContainer: {
     flexShrink: 0,
@@ -248,7 +248,7 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     padding: 'var(--spacing-1) var(--spacing-2)',
     fontSize: 'var(--font-size-footnote)',
     fontWeight: 600,
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
     background: 'none',
     border: 'none',
     cursor: 'pointer',

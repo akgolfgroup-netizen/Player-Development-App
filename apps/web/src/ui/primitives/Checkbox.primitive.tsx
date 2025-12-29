@@ -160,7 +160,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-primary)',
   },
   error: {
-    borderColor: 'var(--ak-error)',
+    borderColor: 'var(--error)',
   },
   disabled: {
     opacity: 0.5,
@@ -172,7 +172,7 @@ const styles: Record<string, React.CSSProperties> = {
     marginLeft: 'var(--spacing-6)',
   },
   errorText: {
-    color: 'var(--ak-error)',
+    color: 'var(--error)',
   },
 };
 
@@ -180,15 +180,15 @@ const styles: Record<string, React.CSSProperties> = {
 const styleSheet = document.createElement('style');
 styleSheet.textContent = `
   input[type="checkbox"]:checked + label span:first-child {
-    background-color: var(--ak-primary);
-    border-color: var(--ak-primary);
+    background-color: var(--accent);
+    border-color: var(--accent);
   }
   input[type="checkbox"]:indeterminate + label span:first-child {
-    background-color: var(--ak-primary);
-    border-color: var(--ak-primary);
+    background-color: var(--accent);
+    border-color: var(--accent);
   }
   input[type="checkbox"]:focus-visible + label span:first-child {
-    outline: 2px solid var(--ak-primary);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 `;

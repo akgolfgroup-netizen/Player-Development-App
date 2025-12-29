@@ -70,19 +70,19 @@ const styles = {
     margin: 0,
     fontSize: '20px',
     fontWeight: '700',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   videoCount: {
     padding: '4px 10px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: 'var(--radius-full, 9999px)',
     fontSize: '12px',
     fontWeight: '600',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
   },
   uploadButton: {
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -100,9 +100,9 @@ const styles = {
     gap: 'var(--spacing-3, 12px)',
     flexWrap: 'wrap',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
   },
   searchContainer: {
     flex: '1 1 200px',
@@ -111,10 +111,10 @@ const styles = {
   searchInput: {
     width: '100%',
     padding: '10px 12px 10px 36px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     fontSize: '14px',
     outline: 'none',
     transition: 'border-color 0.15s ease',
@@ -124,15 +124,15 @@ const styles = {
     left: '12px',
     top: '50%',
     transform: 'translateY(-50%)',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
     pointerEvents: 'none',
   },
   select: {
     padding: '10px 32px 10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     fontSize: '14px',
     cursor: 'pointer',
     outline: 'none',
@@ -157,19 +157,19 @@ const styles = {
   emptyIcon: {
     width: '64px',
     height: '64px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.3))',
     marginBottom: 'var(--spacing-4, 16px)',
   },
   emptyTitle: {
     margin: '0 0 8px 0',
     fontSize: '18px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   emptyText: {
     margin: '0 0 16px 0',
     fontSize: '14px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     maxWidth: '300px',
   },
   // Upload modal styles
@@ -186,9 +186,9 @@ const styles = {
   modal: {
     width: '100%',
     maxWidth: '500px',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-xl, 16px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     boxShadow: '0 24px 48px rgba(0, 0, 0, 0.4)',
     overflow: 'hidden',
   },
@@ -197,13 +197,13 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 'var(--spacing-4, 16px)',
-    borderBottom: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    borderBottom: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
   },
   modalTitle: {
     margin: 0,
     fontSize: '18px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   closeButton: {
     width: '32px',
@@ -211,7 +211,7 @@ const styles = {
     borderRadius: 'var(--radius-md, 8px)',
     backgroundColor: 'transparent',
     border: 'none',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -232,24 +232,24 @@ const styles = {
   label: {
     fontSize: '13px',
     fontWeight: '500',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
   },
   input: {
     padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     fontSize: '14px',
     outline: 'none',
     transition: 'border-color 0.15s ease',
   },
   textarea: {
     padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     fontSize: '14px',
     outline: 'none',
     resize: 'vertical',
@@ -258,7 +258,7 @@ const styles = {
   },
   dropZone: {
     padding: 'var(--spacing-6, 24px)',
-    border: '2px dashed var(--ak-border, rgba(255, 255, 255, 0.2))',
+    border: '2px dashed var(--border, rgba(255, 255, 255, 0.2))',
     borderRadius: 'var(--radius-lg, 12px)',
     display: 'flex',
     flexDirection: 'column',
@@ -269,36 +269,36 @@ const styles = {
     transition: 'all 0.2s ease',
   },
   dropZoneActive: {
-    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    borderColor: 'var(--accent)',
     backgroundColor: 'rgba(99, 102, 241, 0.1)',
   },
   dropZoneIcon: {
     width: '48px',
     height: '48px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
   },
   dropZoneText: {
     fontSize: '14px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     textAlign: 'center',
   },
   dropZoneHint: {
     fontSize: '12px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
   },
   selectedFile: {
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: 'var(--radius-md, 8px)',
   },
   fileIcon: {
     width: '40px',
     height: '40px',
     borderRadius: 'var(--radius-md, 8px)',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -311,14 +311,14 @@ const styles = {
   fileName: {
     fontSize: '13px',
     fontWeight: '500',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
   fileSize: {
     fontSize: '12px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
   },
   removeFileButton: {
     width: '28px',
@@ -326,7 +326,7 @@ const styles = {
     borderRadius: 'var(--radius-sm, 4px)',
     backgroundColor: 'transparent',
     border: 'none',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -338,21 +338,21 @@ const styles = {
     justifyContent: 'flex-end',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-4, 16px)',
-    borderTop: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    borderTop: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
   },
   cancelButton: {
     padding: '10px 20px',
     backgroundColor: 'transparent',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     fontSize: '14px',
     fontWeight: '500',
     cursor: 'pointer',
   },
   submitButton: {
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -367,7 +367,7 @@ const styles = {
   },
   deleteButton: {
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-error)',
+    backgroundColor: 'var(--error)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -391,20 +391,20 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: 'var(--radius-md, 8px)',
     cursor: 'pointer',
     transition: 'background-color 0.15s ease',
   },
   playerItemSelected: {
     backgroundColor: 'rgba(99, 102, 241, 0.2)',
-    outline: '1px solid var(--ak-primary, var(--ak-brand-primary))',
+    outline: '1px solid var(--accent)',
   },
   playerAvatar: {
     width: '36px',
     height: '36px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -418,17 +418,17 @@ const styles = {
   playerName: {
     fontSize: '14px',
     fontWeight: '500',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   playerLevel: {
     fontSize: '12px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
   },
   checkbox: {
     width: '20px',
     height: '20px',
     borderRadius: 'var(--radius-sm, 4px)',
-    border: '2px solid var(--ak-border, rgba(255, 255, 255, 0.3))',
+    border: '2px solid var(--border, rgba(255, 255, 255, 0.3))',
     backgroundColor: 'transparent',
     display: 'flex',
     alignItems: 'center',
@@ -436,8 +436,8 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   checkboxChecked: {
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
-    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
+    borderColor: 'var(--accent)',
   },
 };
 
@@ -909,8 +909,8 @@ export function ReferenceLibrary({
           <div style={{
             width: '32px',
             height: '32px',
-            border: '3px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-            borderTopColor: 'var(--ak-primary, var(--ak-brand-primary))',
+            border: '3px solid var(--border, rgba(255, 255, 255, 0.1))',
+            borderTopColor: 'var(--accent)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }} />
@@ -928,13 +928,13 @@ export function ReferenceLibrary({
           padding: 'var(--spacing-4, 16px)',
           backgroundColor: 'rgba(239, 68, 68, 0.1)',
           borderRadius: 'var(--radius-lg, 12px)',
-          border: '1px solid var(--ak-error, var(--ak-status-error-light))',
+          border: '1px solid var(--error)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           marginBottom: 'var(--spacing-4, 16px)',
         }}>
-          <span style={{ color: 'var(--ak-text-primary, white)', fontSize: '14px' }}>
+          <span style={{ color: 'var(--text-primary, white)', fontSize: '14px' }}>
             {error}
           </span>
           <Button variant="primary" size="sm" onClick={refetchVideos}>
@@ -1180,7 +1180,7 @@ export function ReferenceLibrary({
               </button>
             </div>
             <div style={styles.modalBody}>
-              <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
+              <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)' }}>
                 Velg spillere som skal få tilgang til "{selectedVideo.title}"
               </p>
               <div style={styles.playerList}>
@@ -1246,7 +1246,7 @@ export function ReferenceLibrary({
               </button>
             </div>
             <div style={styles.modalBody}>
-              <p style={{ margin: 0, color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))' }}>
+              <p style={{ margin: 0, color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))' }}>
                 Er du sikker på at du vil slette "{videoToDelete.title}"?
                 Denne handlingen kan ikke angres.
               </p>
@@ -1263,7 +1263,7 @@ export function ReferenceLibrary({
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
                 loading={isDeleting}
-                style={{ backgroundColor: 'var(--ak-error)' }}
+                style={{ backgroundColor: 'var(--error)' }}
               >
                 {isDeleting ? 'Sletter...' : 'Slett video'}
               </Button>

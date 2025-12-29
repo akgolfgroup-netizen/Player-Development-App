@@ -168,7 +168,7 @@ const CountdownSkeleton: React.FC = () => (
 const styles: Record<string, React.CSSProperties> = {
   pulse: {
     animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-    backgroundColor: 'var(--gray-200)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderRadius: 'var(--radius-sm)',
   },
   cardSkeleton: {
@@ -181,7 +181,7 @@ const styles: Record<string, React.CSSProperties> = {
   statSkeleton: {
     textAlign: 'center',
     padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--gray-100)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderRadius: 'var(--radius-lg)',
   },
   listContainer: {
@@ -219,7 +219,7 @@ const styles: Record<string, React.CSSProperties> = {
   statCard: {
     textAlign: 'center',
     padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--gray-100)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderRadius: 'var(--radius-lg)',
   },
   progressBars: {
@@ -237,7 +237,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: 'var(--spacing-3)',
     padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--gray-100)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderRadius: 'var(--radius-md)',
   },
   countdownContainer: {

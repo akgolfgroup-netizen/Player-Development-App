@@ -24,7 +24,7 @@ interface SpinnerProps {
 const Spinner: React.FC<SpinnerProps> = ({
   size = 'md',
   variant = 'circular',
-  color = 'var(--ak-primary)',
+  color = 'var(--accent)',
   label = 'Loading',
   className = '',
 }) => {

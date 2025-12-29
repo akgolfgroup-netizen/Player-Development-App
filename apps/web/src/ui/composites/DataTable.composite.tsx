@@ -249,7 +249,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'var(--font-size-body)',
   },
   thead: {
-    backgroundColor: 'var(--gray-100)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
     borderBottom: '2px solid var(--border-default)',
   },
   th: {

@@ -98,7 +98,7 @@ const styles = {
   },
   sectionLabel: {
     fontSize: 'var(--font-size-caption2)',
-    color: 'var(--ak-gray500)',
+    color: 'var(--text-tertiary)',
     fontFamily: 'var(--font-family)',
     textTransform: 'uppercase',
     letterSpacing: '0.5px',
@@ -117,13 +117,13 @@ const styles = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     border: '2px solid transparent',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-white)',
+    color: 'var(--text-inverse)',
     cursor: 'pointer',
     transition: 'all 0.2s',
   },
   toolButtonActive: {
-    backgroundColor: 'var(--ak-primary)',
-    borderColor: 'var(--ak-gold)',
+    backgroundColor: 'var(--accent)',
+    borderColor: 'var(--achievement)',
   },
   toolButtonDisabled: {
     opacity: 0.4,
@@ -142,7 +142,7 @@ const styles = {
     transition: 'transform 0.2s, border-color 0.2s',
   },
   colorButtonActive: {
-    borderColor: 'var(--ak-white)',
+    borderColor: 'var(--text-inverse)',
     transform: 'scale(1.1)',
   },
   strokeRow: {
@@ -163,10 +163,10 @@ const styles = {
     transition: 'all 0.2s',
   },
   strokeButtonActive: {
-    borderColor: 'var(--ak-gold)',
+    borderColor: 'var(--achievement)',
   },
   strokePreview: {
-    backgroundColor: 'var(--ak-white)',
+    backgroundColor: 'var(--text-inverse)',
     borderRadius: 'var(--radius-full)',
   },
   divider: {

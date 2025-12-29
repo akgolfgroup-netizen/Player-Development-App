@@ -30,19 +30,19 @@ const TYPE_LABELS = {
 
 // Type colors
 const TYPE_COLORS = {
-  [REFERENCE_TYPES.COACH_DEMO]: 'var(--ak-brand-primary)',
-  [REFERENCE_TYPES.PRO_REFERENCE]: 'var(--ak-status-warning-light)',
-  [REFERENCE_TYPES.DRILL_INSTRUCTION]: 'var(--ak-status-success-light)',
-  [REFERENCE_TYPES.TECHNIQUE_BREAKDOWN]: 'var(--ak-status-info)',
+  [REFERENCE_TYPES.COACH_DEMO]: 'var(--accent)',
+  [REFERENCE_TYPES.PRO_REFERENCE]: 'var(--warning)',
+  [REFERENCE_TYPES.DRILL_INSTRUCTION]: 'var(--success)',
+  [REFERENCE_TYPES.TECHNIQUE_BREAKDOWN]: 'var(--info)',
 };
 
 // Tailwind classes
 const tw = {
   card: 'relative flex flex-col bg-surface rounded-ak-lg border border-border overflow-hidden cursor-pointer transition-all duration-200',
   cardHover: 'hover:-translate-y-0.5 hover:border-primary hover:shadow-lg',
-  thumbnailContainer: 'relative aspect-video bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] overflow-hidden',
+  thumbnailContainer: 'relative aspect-video bg-[var(--ak-surface-dark-elevated)] overflow-hidden',
   thumbnail: 'w-full h-full object-cover',
-  thumbnailPlaceholder: 'w-full h-full flex items-center justify-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
+  thumbnailPlaceholder: 'w-full h-full flex items-center justify-center text-[var(--text-tertiary,rgba(255,255,255,0.3))]',
   playOverlay: 'absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200',
   playOverlayVisible: 'opacity-100',
   playButton: 'w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg',
@@ -52,17 +52,17 @@ const tw = {
   menuButton: 'absolute top-2 right-2 w-7 h-7 rounded-ak-sm bg-black/60 border-none text-white cursor-pointer flex items-center justify-center opacity-0 transition-opacity duration-200',
   menuButtonVisible: 'opacity-100',
   content: 'p-3 flex flex-col gap-2',
-  title: 'm-0 text-sm font-semibold text-[var(--ak-text-primary,white)] overflow-hidden text-ellipsis whitespace-nowrap',
-  description: 'm-0 text-xs text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] overflow-hidden text-ellipsis line-clamp-2 leading-snug',
+  title: 'm-0 text-sm font-semibold text-[var(--text-primary,white)] overflow-hidden text-ellipsis whitespace-nowrap',
+  description: 'm-0 text-xs text-[var(--text-secondary,rgba(255,255,255,0.7))] overflow-hidden text-ellipsis line-clamp-2 leading-snug',
   meta: 'flex items-center justify-between mt-auto',
-  category: 'text-[11px] text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))] uppercase tracking-wide',
-  stats: 'flex items-center gap-2 text-[11px] text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))]',
+  category: 'text-[11px] text-[var(--text-tertiary,rgba(255,255,255,0.5))] uppercase tracking-wide',
+  stats: 'flex items-center gap-2 text-[11px] text-[var(--text-tertiary,rgba(255,255,255,0.5))]',
   statItem: 'flex items-center gap-1',
   actions: 'flex gap-2 pt-2 border-t border-border',
-  actionButton: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center justify-center gap-1 transition-all duration-150',
+  actionButton: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark-elevated)] border border-border rounded-ak-md text-[var(--text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center justify-center gap-1 transition-all duration-150',
   shareButton: 'bg-primary border-primary text-white',
   dropdown: 'absolute top-10 right-2 min-w-[140px] bg-surface rounded-ak-md border border-border shadow-xl z-[100] overflow-hidden',
-  dropdownItem: 'flex items-center gap-2 w-full py-2.5 px-3 bg-transparent border-none text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-[13px] cursor-pointer text-left transition-colors duration-150 hover:bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))]',
+  dropdownItem: 'flex items-center gap-2 w-full py-2.5 px-3 bg-transparent border-none text-[var(--text-secondary,rgba(255,255,255,0.7))] text-[13px] cursor-pointer text-left transition-colors duration-150 hover:bg-[var(--ak-surface-dark-elevated)]',
   dropdownItemDanger: 'text-ak-status-error',
 };
 

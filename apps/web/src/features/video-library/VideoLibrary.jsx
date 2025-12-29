@@ -48,12 +48,12 @@ const styles = {
     margin: 0,
     fontSize: '24px',
     fontWeight: '700',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   subtitle: {
     margin: 0,
     fontSize: '14px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
   },
   headerActions: {
     display: 'flex',
@@ -64,7 +64,7 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -87,9 +87,9 @@ const styles = {
     display: 'flex',
     gap: 'var(--spacing-4, 16px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     cursor: 'pointer',
     transition: 'border-color 0.2s ease',
   },
@@ -99,7 +99,7 @@ const styles = {
     borderRadius: 'var(--radius-md, 8px)',
     overflow: 'hidden',
     flexShrink: 0,
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
   },
   listThumbnailImg: {
     width: '100%',
@@ -117,7 +117,7 @@ const styles = {
     margin: 0,
     fontSize: '16px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -128,7 +128,7 @@ const styles = {
     gap: 'var(--spacing-3, 12px)',
     marginTop: 'var(--spacing-1, 4px)',
     fontSize: '13px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
   },
   listActions: {
     display: 'flex',
@@ -140,7 +140,7 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-4, 16px)',
     padding: 'var(--spacing-3, 12px) var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     borderRadius: 'var(--radius-lg, 12px)',
     color: 'white',
   },
@@ -178,7 +178,7 @@ const styles = {
   },
   deleteButton: {
     padding: '6px 16px',
-    backgroundColor: 'var(--color-danger, var(--ak-status-error))',
+    backgroundColor: 'var(--color-danger, var(--error))',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -197,19 +197,19 @@ const styles = {
   emptyIcon: {
     width: '80px',
     height: '80px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.3))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.3))',
     marginBottom: 'var(--spacing-4, 16px)',
   },
   emptyTitle: {
     margin: 0,
     fontSize: '18px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   emptyDescription: {
     margin: 'var(--spacing-2, 8px) 0 0',
     fontSize: '14px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     maxWidth: '300px',
   },
   loadingContainer: {
@@ -221,8 +221,8 @@ const styles = {
   spinner: {
     width: '40px',
     height: '40px',
-    border: '3px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    borderTopColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    border: '3px solid var(--border, rgba(255, 255, 255, 0.1))',
+    borderTopColor: 'var(--accent)',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
   },
@@ -232,9 +232,9 @@ const styles = {
     justifyContent: 'center',
     width: '100%',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    backgroundColor: 'var(--ak-toast-bg)',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     fontSize: '14px',
     fontWeight: '500',
@@ -480,8 +480,8 @@ export function VideoLibrary({
           style={{
             ...styles.listCard,
             borderColor: selectedVideos.has(video.id)
-              ? 'var(--ak-primary, var(--ak-brand-primary))'
-              : 'var(--ak-border, rgba(255, 255, 255, 0.1))',
+              ? 'var(--accent)'
+              : 'var(--border, rgba(255, 255, 255, 0.1))',
           }}
           onClick={() => onVideoClick?.(video)}
           role="button"
@@ -502,7 +502,7 @@ export function VideoLibrary({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--ak-text-tertiary)',
+                  color: 'var(--text-tertiary)',
                 }}
               >
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">

@@ -312,8 +312,8 @@ export const CoachMessageList: React.FC = () => {
                   backgroundColor: message.recipients.type === 'player'
                     ? 'var(--bg-accent-subtle)'
                     : message.recipients.type === 'group'
-                      ? 'color-mix(in srgb, var(--ak-warning) 15%, transparent)'
-                      : 'color-mix(in srgb, var(--ak-success) 15%, transparent)',
+                      ? 'color-mix(in srgb, var(--warning) 15%, transparent)'
+                      : 'color-mix(in srgb, var(--success) 15%, transparent)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

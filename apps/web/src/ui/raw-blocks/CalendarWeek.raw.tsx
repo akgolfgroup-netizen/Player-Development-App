@@ -102,15 +102,15 @@ const CalendarWeek: React.FC<CalendarWeekProps> = ({
   const getEventTypeColor = (type?: CalendarEvent['type']) => {
     switch (type) {
       case 'training':
-        return 'var(--ak-primary)';
+        return 'var(--accent)';
       case 'tournament':
-        return 'var(--ak-gold)';
+        return 'var(--achievement)';
       case 'test':
-        return 'var(--ak-warning)';
+        return 'var(--warning)';
       case 'session':
-        return 'var(--ak-success)';
+        return 'var(--success)';
       default:
-        return 'var(--gray-500)';
+        return 'var(--text-tertiary)';
     }
   };
 
@@ -275,7 +275,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: 'rgba(16, 69, 106, 0.05)',
   },
   daySelected: {
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
   },
   dayNumber: {
     fontSize: 'var(--font-size-body)',
@@ -283,7 +283,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-primary)',
   },
   dayNumberToday: {
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
     fontWeight: 700,
   },
   dayNumberSelected: {

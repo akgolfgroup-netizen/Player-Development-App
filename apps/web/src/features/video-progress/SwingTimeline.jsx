@@ -21,9 +21,9 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
   },
   header: {
     display: 'flex',
@@ -35,14 +35,14 @@ const styles = {
     margin: 0,
     fontSize: '16px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   compareButton: {
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
     padding: '8px 16px',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -71,7 +71,7 @@ const styles = {
     left: 0,
     right: 0,
     height: '2px',
-    backgroundColor: 'var(--ak-border, rgba(255, 255, 255, 0.2))',
+    backgroundColor: 'var(--border, rgba(255, 255, 255, 0.2))',
   },
   videoPoint: {
     position: 'absolute',
@@ -88,7 +88,7 @@ const styles = {
   thumbnail: {
     width: '60px',
     height: '45px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: 'var(--radius-sm, 4px)',
     border: '2px solid transparent',
     overflow: 'hidden',
@@ -96,7 +96,7 @@ const styles = {
     transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
   },
   thumbnailSelected: {
-    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    borderColor: 'var(--accent)',
     boxShadow: '0 0 0 2px rgba(99, 102, 241, 0.3)',
   },
   thumbnailImage: {
@@ -110,7 +110,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
   },
   dateMarker: {
     position: 'absolute',
@@ -118,7 +118,7 @@ const styles = {
     left: '50%',
     transform: 'translateX(-50%)',
     fontSize: '10px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
     whiteSpace: 'nowrap',
     fontFamily: 'var(--font-mono, monospace)',
   },
@@ -129,9 +129,9 @@ const styles = {
     transform: 'translateX(-50%)',
     width: '10px',
     height: '10px',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     borderRadius: '50%',
-    border: '2px solid var(--ak-surface, var(--ak-toast-bg))',
+    border: '2px solid var(--ak-toast-bg)',
   },
   emptyState: {
     display: 'flex',
@@ -139,7 +139,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 'var(--spacing-6, 24px)',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
     textAlign: 'center',
   },
   emptyText: {
@@ -154,14 +154,14 @@ const styles = {
     backgroundColor: 'var(--ak-primary-soft, rgba(99, 102, 241, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     fontSize: '12px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
   },
   clearButton: {
     padding: '4px 8px',
     backgroundColor: 'transparent',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
     borderRadius: 'var(--radius-sm, 4px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     fontSize: '11px',
     cursor: 'pointer',
   },
@@ -377,9 +377,9 @@ export function SwingTimeline({
                   style={{
                     width: '80px',
                     height: '60px',
-                    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+                    backgroundColor: 'var(--ak-surface-dark-elevated)',
                     borderRadius: 'var(--radius-md, 8px)',
-                    border: isSelected(video.id) ? '2px solid var(--ak-primary, var(--ak-brand-primary))' : '2px solid transparent',
+                    border: isSelected(video.id) ? '2px solid var(--accent)' : '2px solid transparent',
                     overflow: 'hidden',
                     boxShadow: isSelected(video.id) ? '0 0 0 2px rgba(99, 102, 241, 0.3)' : 'none',
                   }}
@@ -398,7 +398,7 @@ export function SwingTimeline({
                 </div>
                 <span style={{
                   fontSize: '11px',
-                  color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+                  color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
                   fontFamily: 'var(--font-mono, monospace)',
                 }}>
                   {formatDate(video.createdAt)}

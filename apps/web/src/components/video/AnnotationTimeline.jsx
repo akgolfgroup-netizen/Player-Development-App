@@ -36,15 +36,15 @@ const styles = {
     margin: 0,
     fontSize: '14px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
   },
   count: {
     padding: '2px 8px',
-    backgroundColor: 'var(--ak-brand-primary-muted)',
-    color: 'var(--ak-brand-primary)',
+    backgroundColor: 'var(--bg-accent-subtle)',
+    color: 'var(--accent)',
     borderRadius: 'var(--radius-full, 9999px)',
     fontSize: '12px',
     fontWeight: '600',
@@ -56,9 +56,9 @@ const styles = {
   filterButton: {
     padding: '4px 8px',
     backgroundColor: 'transparent',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-sm, 4px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     fontSize: '11px',
     cursor: 'pointer',
     display: 'flex',
@@ -67,8 +67,8 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   filterButtonActive: {
-    backgroundColor: 'var(--ak-brand-primary)',
-    borderColor: 'var(--ak-brand-primary)',
+    backgroundColor: 'var(--accent)',
+    borderColor: 'var(--accent)',
     color: 'white',
   },
   timelineContainer: {
@@ -92,7 +92,7 @@ const styles = {
     left: 0,
     top: 0,
     height: '100%',
-    backgroundColor: 'var(--ak-brand-primary-muted)',
+    backgroundColor: 'var(--bg-accent-subtle)',
     borderRadius: '4px',
     pointerEvents: 'none',
   },
@@ -101,7 +101,7 @@ const styles = {
     top: '-4px',
     width: '2px',
     height: '16px',
-    backgroundColor: 'var(--ak-brand-primary)',
+    backgroundColor: 'var(--accent)',
     borderRadius: '1px',
     transform: 'translateX(-50%)',
     zIndex: 20,
@@ -114,7 +114,7 @@ const styles = {
     transform: 'translateX(-50%)',
     width: '12px',
     height: '12px',
-    backgroundColor: 'var(--ak-brand-primary)',
+    backgroundColor: 'var(--accent)',
     borderRadius: '50%',
     border: '2px solid white',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
@@ -132,7 +132,7 @@ const styles = {
     marginTop: '4px',
     fontSize: '10px',
     fontFamily: 'var(--font-mono, monospace)',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
   },
   emptyState: {
     display: 'flex',
@@ -140,7 +140,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 'var(--spacing-4, 16px)',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
     textAlign: 'center',
   },
   emptyIcon: {
@@ -172,7 +172,7 @@ const styles = {
     transition: 'background-color 0.15s ease',
   },
   annotationItemActive: {
-    backgroundColor: 'var(--ak-brand-primary-muted)',
+    backgroundColor: 'var(--bg-accent-subtle)',
   },
   annotationIcon: {
     width: '24px',
@@ -191,16 +191,16 @@ const styles = {
   annotationType: {
     fontSize: '12px',
     fontWeight: '500',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   annotationTimestamp: {
     fontSize: '11px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
     fontFamily: 'var(--font-mono, monospace)',
   },
   annotationNote: {
     fontSize: '11px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -470,7 +470,7 @@ export function AnnotationTimeline({
                 <div
                   style={{
                     ...styles.annotationIcon,
-                    backgroundColor: annotation.color || config.color || 'var(--ak-brand-primary)',
+                    backgroundColor: annotation.color || config.color || 'var(--accent)',
                   }}
                 >
                   {getTypeIcon(annotation.type)}

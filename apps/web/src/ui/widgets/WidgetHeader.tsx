@@ -58,7 +58,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   actionButton: {
     fontSize: 'var(--font-size-caption1)',
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
     fontWeight: 500,
     background: 'none',
     border: 'none',

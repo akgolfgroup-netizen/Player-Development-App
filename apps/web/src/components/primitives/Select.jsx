@@ -49,7 +49,7 @@ export function Select({
     padding: 'var(--spacing-2) var(--spacing-3)',
     paddingRight: 'var(--spacing-8)',
     borderRadius: 'var(--radius-sm)',
-    border: `1px solid ${error ? 'var(--ak-error)' : 'var(--border-default)'}`,
+    border: `1px solid ${error ? 'var(--error)' : 'var(--border-default)'}`,
     backgroundColor: 'var(--background-white)',
     color: 'var(--text-primary)',
     outline: 'none',
@@ -68,7 +68,7 @@ export function Select({
     fontFamily: 'var(--font-family)',
     fontSize: 'var(--font-size-footnote)',
     lineHeight: 'var(--line-height-footnote)',
-    color: error ? 'var(--ak-error)' : 'var(--text-secondary)',
+    color: error ? 'var(--error)' : 'var(--text-secondary)',
   };
 
   return (

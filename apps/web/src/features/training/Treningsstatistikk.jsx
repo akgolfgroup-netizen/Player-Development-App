@@ -10,10 +10,10 @@ import { tokens } from '../../design-tokens';
 const areaColors = {
   langspill: 'var(--ak-session-teknikk)',
   innspill: 'var(--ak-session-golfslag)',
-  shortgame: 'var(--ak-achievement-gold)',
-  putting: 'var(--ak-achievement-gold-light)',
-  fysisk: 'var(--ak-status-error)',
-  mental: 'var(--ak-text-muted)',
+  shortgame: 'var(--achievement)',
+  putting: 'var(--achievement)',
+  fysisk: 'var(--error)',
+  mental: 'var(--text-muted)',
 };
 
 // ===== ICONS =====
@@ -104,7 +104,7 @@ const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
   );
 };
 
-const ProgressBar = ({ value, max, color = 'var(--ak-primary)', showLabel = false }) => {
+const ProgressBar = ({ value, max, color = 'var(--accent)', showLabel = false }) => {
   const percentage = Math.min((value / max) * 100, 100);
   return (
     <div className="relative">

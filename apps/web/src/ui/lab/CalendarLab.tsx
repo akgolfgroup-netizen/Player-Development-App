@@ -167,25 +167,25 @@ const CalendarLab: React.FC = () => {
           <div style={styles.legend}>
             <div style={styles.legendItem}>
               <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--ak-primary)' }}
+                style={{ ...styles.legendDot, backgroundColor: 'var(--accent)' }}
               />
               <span style={styles.legendText}>Trening</span>
             </div>
             <div style={styles.legendItem}>
               <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--ak-gold)' }}
+                style={{ ...styles.legendDot, backgroundColor: 'var(--achievement)' }}
               />
               <span style={styles.legendText}>Turnering</span>
             </div>
             <div style={styles.legendItem}>
               <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--ak-warning)' }}
+                style={{ ...styles.legendDot, backgroundColor: 'var(--warning)' }}
               />
               <span style={styles.legendText}>Test</span>
             </div>
             <div style={styles.legendItem}>
               <div
-                style={{ ...styles.legendDot, backgroundColor: 'var(--ak-success)' }}
+                style={{ ...styles.legendDot, backgroundColor: 'var(--success)' }}
               />
               <span style={styles.legendText}>Økt</span>
             </div>
@@ -286,7 +286,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 'var(--spacing-1)',
   },
   navButtonActive: {
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
   },
   navIcon: {
     fontSize: '20px',

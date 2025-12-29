@@ -243,7 +243,7 @@ const styles: Record<string, React.CSSProperties> = {
   progressPercent: {
     fontSize: 'var(--font-size-caption1)',
     fontWeight: 600,
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
   },
   progressBar: {
     height: '6px',
@@ -253,14 +253,14 @@ const styles: Record<string, React.CSSProperties> = {
   },
   progressFill: {
     height: '100%',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
     borderRadius: '3px',
     transition: 'width 0.3s ease',
   },
   statusBadge: {
     fontSize: 'var(--font-size-caption1)',
     fontWeight: 500,
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
     backgroundColor: 'rgba(16, 69, 106, 0.1)',
     padding: '2px 8px',
     borderRadius: '4px',

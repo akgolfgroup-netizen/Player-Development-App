@@ -43,9 +43,9 @@ const StatsGrid: React.FC<StatsGridProps> = ({
   const getTrendColor = (trend?: 'up' | 'down' | 'neutral') => {
     switch (trend) {
       case 'up':
-        return 'var(--ak-success)';
+        return 'var(--success)';
       case 'down':
-        return 'var(--ak-error)';
+        return 'var(--error)';
       default:
         return 'var(--text-secondary)';
     }
@@ -148,7 +148,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
   },
   statContent: {
     flex: 1,

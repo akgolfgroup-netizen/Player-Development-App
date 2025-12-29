@@ -138,7 +138,7 @@ const UiCanonPage: React.FC = () => {
           ]}
           donts={[
             'Hardcode hex values like #10456A',
-            'Use raw tokens like var(--ak-primary)',
+            'Use raw tokens like var(--accent)',
             'Create new color variables in feature files'
           ]}
         />

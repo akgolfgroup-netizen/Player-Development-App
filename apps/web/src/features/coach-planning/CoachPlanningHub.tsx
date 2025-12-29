@@ -124,10 +124,10 @@ export const CoachPlanningHub: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'var(--ak-status-success-bg)', text: 'var(--ak-status-success-text)' };
-      case 'B': return { bg: 'var(--ak-status-info-bg)', text: 'var(--ak-status-info-text)' };
-      case 'C': return { bg: 'var(--ak-status-warning-bg)', text: 'var(--ak-status-warning-text)' };
-      default: return { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-secondary)' };
+      case 'A': return { bg: 'var(--bg-success-subtle)', text: 'var(--success)' };
+      case 'B': return { bg: 'var(--bg-accent-subtle)', text: 'var(--info)' };
+      case 'C': return { bg: 'var(--bg-warning-subtle)', text: 'var(--warning)' };
+      default: return { bg: 'var(--card)', text: 'var(--text-secondary)' };
     }
   };
 
@@ -380,13 +380,13 @@ export const CoachPlanningHub: React.FC = () => {
                   backgroundColor: player.hasActivePlan
                     ? 'rgba(34, 197, 94, 0.1)'
                     : 'rgba(245, 158, 11, 0.1)',
-                  border: `2px solid ${player.hasActivePlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'}`,
+                  border: `2px solid ${player.hasActivePlan ? 'var(--success)' : 'var(--warning)'}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: player.hasActivePlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'
+                  color: player.hasActivePlan ? 'var(--success)' : 'var(--warning)'
                 }}>
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
@@ -419,7 +419,7 @@ export const CoachPlanningHub: React.FC = () => {
                       <>
                         <span style={{
                           fontSize: '11px',
-                          color: 'var(--ak-status-success)',
+                          color: 'var(--success)',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px'
@@ -436,7 +436,7 @@ export const CoachPlanningHub: React.FC = () => {
                     ) : (
                       <span style={{
                         fontSize: '11px',
-                        color: 'var(--ak-status-warning-light)',
+                        color: 'var(--warning)',
                         fontWeight: '500'
                       }}>
                         Ingen aktiv plan
@@ -474,12 +474,12 @@ export const CoachPlanningHub: React.FC = () => {
                 backgroundColor: group.hasGroupPlan
                   ? 'rgba(34, 197, 94, 0.1)'
                   : 'rgba(245, 158, 11, 0.1)',
-                border: `2px solid ${group.hasGroupPlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'}`,
+                border: `2px solid ${group.hasGroupPlan ? 'var(--success)' : 'var(--warning)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Users size={20} color={group.hasGroupPlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'} />
+                <Users size={20} color={group.hasGroupPlan ? 'var(--success)' : 'var(--warning)'} />
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
@@ -498,7 +498,7 @@ export const CoachPlanningHub: React.FC = () => {
                     <>
                       <span style={{
                         fontSize: '11px',
-                        color: 'var(--ak-status-success)',
+                        color: 'var(--success)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '4px'
@@ -515,7 +515,7 @@ export const CoachPlanningHub: React.FC = () => {
                   ) : (
                     <span style={{
                       fontSize: '11px',
-                      color: 'var(--ak-status-warning-light)',
+                      color: 'var(--warning)',
                       fontWeight: '500'
                     }}>
                       Ingen gruppeplan

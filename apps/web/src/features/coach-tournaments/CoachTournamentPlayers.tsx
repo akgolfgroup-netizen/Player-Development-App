@@ -114,7 +114,7 @@ export default function CoachTournamentPlayers() {
         id: 'p2',
         name: 'Sofie Andersen',
         initials: 'SA',
-        avatarColor: 'var(--ak-achievement-gold)',
+        avatarColor: 'var(--achievement)',
         category: 'B',
         upcomingTournaments: [
           { id: 'e4', tournamentId: 't2', tournamentName: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
@@ -140,7 +140,7 @@ export default function CoachTournamentPlayers() {
         id: 'p4',
         name: 'Maria Berg',
         initials: 'MB',
-        avatarColor: 'var(--ak-status-error)',
+        avatarColor: 'var(--error)',
         category: 'C',
         upcomingTournaments: [
           { id: 'e8', tournamentId: 't2', tournamentName: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
@@ -152,7 +152,7 @@ export default function CoachTournamentPlayers() {
         id: 'p5',
         name: 'Lars Olsen',
         initials: 'LO',
-        avatarColor: 'var(--ak-text-muted)',
+        avatarColor: 'var(--text-muted)',
         category: 'B',
         upcomingTournaments: [
           { id: 'e9', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'pending', category: 'junior' },

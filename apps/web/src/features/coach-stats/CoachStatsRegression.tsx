@@ -171,19 +171,19 @@ export const CoachStatsRegression: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'var(--ak-status-success-bg)', text: 'var(--ak-status-success-text)' };
-      case 'B': return { bg: 'var(--ak-status-info-bg)', text: 'var(--ak-status-info-text)' };
-      case 'C': return { bg: 'var(--ak-status-warning-bg)', text: 'var(--ak-status-warning-text)' };
-      default: return { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-secondary)' };
+      case 'A': return { bg: 'var(--bg-success-subtle)', text: 'var(--success)' };
+      case 'B': return { bg: 'var(--bg-accent-subtle)', text: 'var(--info)' };
+      case 'C': return { bg: 'var(--bg-warning-subtle)', text: 'var(--warning)' };
+      default: return { bg: 'var(--card)', text: 'var(--text-secondary)' };
     }
   };
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'high': return { bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', text: 'var(--ak-status-error)' };
-      case 'medium': return { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', text: 'var(--ak-status-warning)' };
-      case 'low': return { bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)', text: 'var(--ak-status-success)' };
-      default: return { bg: 'var(--ak-surface-elevated)', border: 'var(--border-color)', text: 'var(--ak-text-secondary)' };
+      case 'high': return { bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', text: 'var(--error)' };
+      case 'medium': return { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', text: 'var(--warning)' };
+      case 'low': return { bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)', text: 'var(--success)' };
+      default: return { bg: 'var(--card)', border: 'var(--border-color)', text: 'var(--text-secondary)' };
     }
   };
 
@@ -209,7 +209,7 @@ export const CoachStatsRegression: React.FC = () => {
           width: '48px',
           height: '48px',
           borderRadius: '12px',
-          background: 'linear-gradient(135deg, var(--ak-status-error-light), var(--ak-status-error))',
+          background: 'linear-gradient(135deg, var(--error), var(--error))',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -441,7 +441,7 @@ export const CoachStatsRegression: React.FC = () => {
                           padding: '4px 10px',
                           borderRadius: '6px',
                           backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                          color: 'var(--ak-status-error)',
+                          color: 'var(--error)',
                           fontWeight: '500'
                         }}>
                           {concern}
@@ -455,12 +455,12 @@ export const CoachStatsRegression: React.FC = () => {
                         padding: '10px 12px',
                         backgroundColor: 'rgba(245, 158, 11, 0.1)',
                         borderRadius: '8px',
-                        borderLeft: '3px solid var(--ak-status-warning-light)',
+                        borderLeft: '3px solid var(--warning)',
                         marginBottom: '12px'
                       }}>
                         <p style={{
                           fontSize: '13px',
-                          color: 'var(--ak-status-warning-text)',
+                          color: 'var(--warning)',
                           margin: 0,
                           fontStyle: 'italic'
                         }}>
@@ -511,11 +511,11 @@ export const CoachStatsRegression: React.FC = () => {
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
                     borderRadius: '10px'
                   }}>
-                    <ArrowDownRight size={18} color="var(--ak-status-error)" />
+                    <ArrowDownRight size={18} color="var(--error)" />
                     <span style={{
                       fontSize: '20px',
                       fontWeight: '700',
-                      color: 'var(--ak-status-error)'
+                      color: 'var(--error)'
                     }}>
                       +{player.hcpChange}
                     </span>

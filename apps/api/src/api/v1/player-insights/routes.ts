@@ -64,7 +64,7 @@ export async function playerInsightsRoutes(app: FastifyInstance): Promise<void> 
             type: 'object',
             properties: {
               success: { type: 'boolean' },
-              data: { type: 'object' },
+              data: { type: 'object', additionalProperties: true },
             },
           },
         },
@@ -122,7 +122,7 @@ export async function playerInsightsRoutes(app: FastifyInstance): Promise<void> 
             type: 'object',
             properties: {
               success: { type: 'boolean' },
-              data: { type: 'object' },
+              data: { type: 'object', additionalProperties: true },
             },
           },
         },
@@ -179,7 +179,7 @@ export async function playerInsightsRoutes(app: FastifyInstance): Promise<void> 
             type: 'object',
             properties: {
               success: { type: 'boolean' },
-              data: { type: 'object' },
+              data: { type: 'object', additionalProperties: true },
             },
           },
         },
@@ -236,7 +236,7 @@ export async function playerInsightsRoutes(app: FastifyInstance): Promise<void> 
             type: 'object',
             properties: {
               success: { type: 'boolean' },
-              data: { type: 'object' },
+              data: { type: 'object', additionalProperties: true },
             },
           },
         },
@@ -294,7 +294,7 @@ export async function playerInsightsRoutes(app: FastifyInstance): Promise<void> 
             type: 'object',
             properties: {
               success: { type: 'boolean' },
-              data: { type: 'object' },
+              data: { type: 'object', additionalProperties: true },
             },
           },
         },
@@ -370,7 +370,7 @@ export async function playerInsightsRoutes(app: FastifyInstance): Promise<void> 
             type: 'object',
             properties: {
               success: { type: 'boolean' },
-              data: { type: 'object' },
+              data: { type: 'object', additionalProperties: true },
             },
           },
         },

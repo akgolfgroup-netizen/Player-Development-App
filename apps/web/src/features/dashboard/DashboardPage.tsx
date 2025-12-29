@@ -27,9 +27,9 @@ const getStatusText = (status: DashboardSession['status']) => {
 const getStatusColor = (status: DashboardSession['status']) => {
   switch (status) {
     case 'completed':
-      return 'var(--ak-success)';
+      return 'var(--success)';
     case 'in_progress':
-      return 'var(--ak-primary)';
+      return 'var(--accent)';
     default:
       return 'var(--text-secondary)';
   }

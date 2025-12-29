@@ -174,15 +174,15 @@ export const CoachMyExercises: React.FC = () => {
 
   const getCategoryColor = (cat: string) => {
     const colors: Record<string, { bg: string; text: string }> = {
-      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--ak-status-success)' },
+      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)' },
       driving: { bg: 'rgba(59, 130, 246, 0.1)', text: '#2563eb' },
       iron: { bg: 'rgba(99, 102, 241, 0.1)', text: '#4f46e5' },
       wedge: { bg: 'rgba(168, 85, 247, 0.1)', text: '#7c3aed' },
-      bunker: { bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--ak-status-warning)' },
+      bunker: { bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--warning)' },
       mental: { bg: 'rgba(236, 72, 153, 0.1)', text: '#db2777' },
-      fitness: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--ak-status-error)' }
+      fitness: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)' }
     };
-    return colors[cat] || { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-tertiary)' };
+    return colors[cat] || { bg: 'var(--card)', text: 'var(--text-tertiary)' };
   };
 
   const formatDate = (dateString: string) => {
@@ -233,7 +233,7 @@ export const CoachMyExercises: React.FC = () => {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--ak-status-warning-light), var(--ak-status-warning))',
+              background: 'linear-gradient(135deg, var(--warning), var(--warning))',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -414,7 +414,7 @@ export const CoachMyExercises: React.FC = () => {
                       padding: '2px 8px',
                       borderRadius: '4px',
                       backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      color: 'var(--ak-success)'
+                      color: 'var(--success)'
                     }}>
                       Egen
                     </span>
@@ -541,7 +541,7 @@ export const CoachMyExercises: React.FC = () => {
                           gap: '10px',
                           cursor: 'pointer',
                           fontSize: '13px',
-                          color: 'var(--ak-status-error)'
+                          color: 'var(--error)'
                         }}
                       >
                         <Trash2 size={14} />

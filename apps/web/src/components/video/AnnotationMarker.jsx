@@ -17,17 +17,17 @@ import ConfirmDialog from '../ui/ConfirmDialog';
 export const ANNOTATION_TYPE_CONFIG = {
   line: {
     label: 'Linje',
-    color: 'var(--ak-brand-primary)', // Forest green
+    color: 'var(--accent)', // Forest green
     icon: 'line',
   },
   circle: {
     label: 'Sirkel',
-    color: 'var(--ak-status-success)', // Green
+    color: 'var(--success)', // Green
     icon: 'circle',
   },
   arrow: {
     label: 'Pil',
-    color: 'var(--ak-status-warning-light)', // Amber
+    color: 'var(--warning)', // Amber
     icon: 'arrow',
   },
   angle: {
@@ -42,12 +42,12 @@ export const ANNOTATION_TYPE_CONFIG = {
   },
   text: {
     label: 'Tekst',
-    color: 'var(--ak-status-info)', // Cyan
+    color: 'var(--info)', // Cyan
     icon: 'text',
   },
   voiceover: {
     label: 'Stemme',
-    color: 'var(--ak-status-error)', // Red
+    color: 'var(--error)', // Red
     icon: 'mic',
   },
 };
@@ -132,11 +132,11 @@ const styles = {
     margin: 0,
     fontSize: '13px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
   },
   tooltipTimestamp: {
     fontSize: '11px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
     fontFamily: 'var(--font-mono, monospace)',
   },
   tooltipPreview: {
@@ -152,7 +152,7 @@ const styles = {
   },
   tooltipNote: {
     fontSize: '12px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     lineHeight: 1.4,
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -165,15 +165,15 @@ const styles = {
     gap: 'var(--spacing-2, 8px)',
     marginTop: 'var(--spacing-3, 12px)',
     paddingTop: 'var(--spacing-2, 8px)',
-    borderTop: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    borderTop: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
   },
   actionButton: {
     flex: 1,
     padding: '6px 10px',
     backgroundColor: 'transparent',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
     borderRadius: 'var(--radius-sm, 4px)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     fontSize: '11px',
     fontWeight: '500',
     cursor: 'pointer',
@@ -184,15 +184,15 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   deleteButton: {
-    color: 'var(--ak-status-error)',
-    borderColor: 'var(--ak-status-error-muted)',
+    color: 'var(--error)',
+    borderColor: 'var(--bg-error-subtle)',
   },
   voiceIndicator: {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
     fontSize: '11px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.5))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
     marginTop: 'var(--spacing-1, 4px)',
   },
 };

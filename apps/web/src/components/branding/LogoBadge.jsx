@@ -8,7 +8,7 @@ import { tokens } from '../../design-tokens';
  *
  * @param {number} logoSize - Size of the logo in pixels (default: 44px)
  * @param {number} badgeSize - Size of the badge container (default: 56px)
- * @param {string} backgroundColor - Background color of the badge (default: var(--ak-primary))
+ * @param {string} backgroundColor - Background color of the badge (default: var(--accent))
  * @param {string} logoColor - Color of the logo (default: white)
  * @param {string} borderRadius - Border radius of the badge (default: 16px)
  * @param {string} className - Additional CSS classes
@@ -17,7 +17,7 @@ import { tokens } from '../../design-tokens';
 export const LogoBadge = ({
   logoSize = 44,
   badgeSize = 56,
-  backgroundColor = 'var(--ak-primary)',
+  backgroundColor = 'var(--accent)',
   logoColor = tokens.colors.white,
   borderRadius = '16px',
   className = '',

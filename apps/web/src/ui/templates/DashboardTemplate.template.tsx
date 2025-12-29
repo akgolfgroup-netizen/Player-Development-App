@@ -90,13 +90,13 @@ const DashboardTemplate: React.FC<DashboardTemplateProps> = ({
   const getActivityColor = (type?: string) => {
     switch (type) {
       case 'success':
-        return 'var(--ak-success)';
+        return 'var(--success)';
       case 'warning':
-        return 'var(--ak-warning)';
+        return 'var(--warning)';
       case 'error':
-        return 'var(--ak-error)';
+        return 'var(--error)';
       default:
-        return 'var(--ak-primary)';
+        return 'var(--accent)';
     }
   };
 

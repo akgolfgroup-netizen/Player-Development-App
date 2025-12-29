@@ -83,7 +83,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       planer: {
         label: 'Årsplaner',
         icon: <Icons.Calendar />,
-        color: 'var(--ak-primary)',
+        color: 'var(--accent)',
         documents: [
           { id: 1, name: 'Årsplan 2025', type: 'plan', date: '2025-01-15', size: '2.4 MB', status: 'active' },
           { id: 2, name: 'Sommersesong Plan', type: 'plan', date: '2025-04-01', size: '1.8 MB', status: 'completed' },
@@ -126,7 +126,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       planer: {
         label: 'Årsplaner',
         icon: <Icons.Calendar />,
-        color: 'var(--ak-primary)',
+        color: 'var(--accent)',
         documents: [
           { id: 14, name: 'Årsplan 2024', type: 'plan', date: '2024-01-10', size: '2.1 MB', status: 'completed' },
         ],
@@ -161,7 +161,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
       planer: {
         label: 'Årsplaner',
         icon: <Icons.Calendar />,
-        color: 'var(--ak-primary)',
+        color: 'var(--accent)',
         documents: [
           { id: 19, name: 'Årsplan 2023', type: 'plan', date: '2023-01-15', size: '1.9 MB', status: 'completed' },
         ],

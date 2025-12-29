@@ -244,8 +244,8 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     transition: 'all 0.15s ease',
   } as React.CSSProperties,
   buttonActive: {
-    backgroundColor: 'var(--ak-primary)',
-    borderColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
+    borderColor: 'var(--accent)',
     color: 'var(--text-inverse)',
   } as React.CSSProperties,
   buttonDisabled: {

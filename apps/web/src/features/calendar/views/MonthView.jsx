@@ -66,9 +66,9 @@ const MonthView = ({
       teknikk: 'var(--ak-session-teknikk)',
       golfslag: 'var(--ak-session-golfslag)',
       spill: 'var(--ak-session-spill)',
-      konkurranse: 'var(--ak-achievement-gold)',
-      fysisk: 'var(--ak-achievement-gold-light)',
-      mental: 'var(--ak-text-muted)',
+      konkurranse: 'var(--achievement)',
+      fysisk: 'var(--achievement)',
+      mental: 'var(--text-muted)',
     };
     return colors[type] || tokens.colors.steel;
   };

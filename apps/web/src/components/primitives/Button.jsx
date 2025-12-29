@@ -9,28 +9,28 @@ import React from 'react';
 
 const variants = {
   primary: {
-    backgroundColor: 'var(--ak-primary)',
-    color: 'var(--ak-white)',
+    backgroundColor: 'var(--accent)',
+    color: 'var(--text-inverse)',
     border: 'none',
   },
   secondary: {
-    backgroundColor: 'var(--ak-surface)',
-    color: 'var(--ak-primary)',
+    backgroundColor: 'var(--background-surface)',
+    color: 'var(--accent)',
     border: '1px solid var(--border-default)',
   },
   outline: {
     backgroundColor: 'transparent',
-    color: 'var(--ak-primary)',
-    border: '1px solid var(--ak-primary)',
+    color: 'var(--accent)',
+    border: '1px solid var(--accent)',
   },
   ghost: {
     backgroundColor: 'transparent',
-    color: 'var(--ak-primary)',
+    color: 'var(--accent)',
     border: 'none',
   },
   danger: {
-    backgroundColor: 'var(--ak-error)',
-    color: 'var(--ak-white)',
+    backgroundColor: 'var(--error)',
+    color: 'var(--text-inverse)',
     border: 'none',
   },
 };

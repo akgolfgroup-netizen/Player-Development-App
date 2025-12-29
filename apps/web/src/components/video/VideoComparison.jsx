@@ -99,7 +99,7 @@ const styles = {
   container: {
     position: 'relative',
     width: '100%',
-    backgroundColor: 'var(--ak-ink)',
+    backgroundColor: 'var(--background-inverse)',
     borderRadius: 'var(--radius-md)',
     overflow: 'hidden',
   },
@@ -118,7 +118,7 @@ const styles = {
     width: '100%',
     height: '100%',
     objectFit: 'contain',
-    backgroundColor: 'var(--ak-ink)',
+    backgroundColor: 'var(--background-inverse)',
   },
   videoLabel: {
     position: 'absolute',
@@ -127,7 +127,7 @@ const styles = {
     padding: 'var(--spacing-1) var(--spacing-2)',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-white)',
+    color: 'var(--text-inverse)',
     fontSize: 'var(--font-size-caption1)',
     fontFamily: 'var(--font-family)',
     zIndex: 5,
@@ -137,9 +137,9 @@ const styles = {
     bottom: 'var(--spacing-2)',
     left: 'var(--spacing-2)',
     padding: 'var(--spacing-1) var(--spacing-2)',
-    backgroundColor: 'var(--ak-gold)',
+    backgroundColor: 'var(--achievement)',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-ink)',
+    color: 'var(--background-inverse)',
     fontSize: 'var(--font-size-caption2)',
     fontFamily: 'var(--font-family)',
     fontWeight: 600,
@@ -150,7 +150,7 @@ const styles = {
   },
   divider: {
     width: '2px',
-    backgroundColor: 'var(--ak-gold)',
+    backgroundColor: 'var(--achievement)',
     zIndex: 10,
   },
   overlayVideo: {
@@ -187,10 +187,10 @@ const styles = {
     borderRadius: 'var(--radius-full)',
   },
   progressPrimary: {
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
   },
   progressSecondary: {
-    backgroundColor: 'var(--ak-gold)',
+    backgroundColor: 'var(--achievement)',
     opacity: 0.7,
   },
   syncMarker: {
@@ -198,15 +198,15 @@ const styles = {
     top: '-4px',
     width: '14px',
     height: '14px',
-    backgroundColor: 'var(--ak-gold)',
+    backgroundColor: 'var(--achievement)',
     borderRadius: 'var(--radius-full)',
-    border: '2px solid var(--ak-white)',
+    border: '2px solid var(--text-inverse)',
     transform: 'translateX(-50%)',
     cursor: 'pointer',
     zIndex: 5,
   },
   timeDisplay: {
-    color: 'var(--ak-white)',
+    color: 'var(--text-inverse)',
     fontSize: 'var(--font-size-caption1)',
     fontFamily: 'var(--font-family)',
     minWidth: '90px',
@@ -232,7 +232,7 @@ const styles = {
     backgroundColor: 'transparent',
     border: 'none',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-white)',
+    color: 'var(--text-inverse)',
     cursor: 'pointer',
     transition: 'background-color 0.2s',
   },
@@ -241,7 +241,7 @@ const styles = {
     height: '32px',
   },
   buttonActive: {
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
   },
   speedButton: {
     minWidth: '48px',
@@ -249,7 +249,7 @@ const styles = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     border: '1px solid rgba(255, 255, 255, 0.2)',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-white)',
+    color: 'var(--text-inverse)',
     fontSize: 'var(--font-size-caption1)',
     fontFamily: 'var(--font-family)',
     cursor: 'pointer',
@@ -263,14 +263,14 @@ const styles = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     border: '1px solid transparent',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-white)',
+    color: 'var(--text-inverse)',
     fontSize: 'var(--font-size-caption2)',
     fontFamily: 'var(--font-family)',
     cursor: 'pointer',
   },
   modeButtonActive: {
-    backgroundColor: 'var(--ak-primary)',
-    borderColor: 'var(--ak-gold)',
+    backgroundColor: 'var(--accent)',
+    borderColor: 'var(--achievement)',
   },
   syncControls: {
     display: 'flex',
@@ -281,12 +281,12 @@ const styles = {
     borderRadius: 'var(--radius-sm)',
   },
   syncLabel: {
-    color: 'var(--ak-gray500)',
+    color: 'var(--text-tertiary)',
     fontSize: 'var(--font-size-caption2)',
     fontFamily: 'var(--font-family)',
   },
   syncValue: {
-    color: 'var(--ak-gold)',
+    color: 'var(--achievement)',
     fontSize: 'var(--font-size-caption1)',
     fontFamily: 'var(--font-family)',
     fontWeight: 600,
@@ -315,7 +315,7 @@ const styles = {
     width: '32px',
     height: '32px',
     border: '3px solid rgba(255, 255, 255, 0.3)',
-    borderTopColor: 'var(--ak-gold)',
+    borderTopColor: 'var(--achievement)',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
   },
@@ -668,13 +668,13 @@ export function VideoComparison({
         }}
         className={className}
       >
-        <div style={{ textAlign: 'center', color: 'var(--ak-white)' }}>
+        <div style={{ textAlign: 'center', color: 'var(--text-inverse)' }}>
           <p style={{ marginBottom: 'var(--spacing-3)' }}>{apiError}</p>
           <button
             style={{
               padding: 'var(--spacing-2) var(--spacing-4)',
-              backgroundColor: 'var(--ak-primary)',
-              color: 'var(--ak-white)',
+              backgroundColor: 'var(--accent)',
+              color: 'var(--text-inverse)',
               border: 'none',
               borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
@@ -734,7 +734,7 @@ export function VideoComparison({
                 style={{
                   ...styles.syncMarker,
                   left: `${(syncPoint1 / primaryDuration) * 100}%`,
-                  backgroundColor: 'var(--ak-primary)',
+                  backgroundColor: 'var(--accent)',
                 }}
                 title={`Sync 1: ${formatTime(syncPoint1)}`}
               />
@@ -744,7 +744,7 @@ export function VideoComparison({
                 style={{
                   ...styles.syncMarker,
                   left: `${(syncPoint2 / secondaryDuration) * 100}%`,
-                  backgroundColor: 'var(--ak-gold)',
+                  backgroundColor: 'var(--achievement)',
                 }}
                 title={`Sync 2: ${formatTime(syncPoint2)}`}
               />

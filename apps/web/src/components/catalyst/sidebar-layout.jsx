@@ -4,9 +4,9 @@
  * SidebarLayout - Catalyst-based layout with AK Golf Blue Palette
  *
  * Uses Tailwind classes mapped to CSS variables in tailwind.config.js:
- * - bg-ak-primary → var(--ak-primary)
- * - bg-ak-snow → var(--ak-snow)
- * - bg-ak-ink → var(--ak-ink)
+ * - bg-ak-primary → var(--accent)
+ * - bg-ak-snow → var(--bg)
+ * - bg-ak-ink → var(--background-inverse)
  */
 
 import * as Headless from '@headlessui/react'

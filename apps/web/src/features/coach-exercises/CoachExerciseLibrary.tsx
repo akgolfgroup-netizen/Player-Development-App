@@ -197,15 +197,15 @@ export const CoachExerciseLibrary: React.FC = () => {
 
   const getCategoryColor = (cat: string) => {
     const colors: Record<string, { bg: string; text: string }> = {
-      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--ak-status-success)' },
-      driving: { bg: 'rgba(59, 130, 246, 0.1)', text: 'var(--ak-status-info)' },
-      iron: { bg: 'rgba(99, 102, 241, 0.1)', text: 'var(--ak-brand-primary)' },
+      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)' },
+      driving: { bg: 'rgba(59, 130, 246, 0.1)', text: 'var(--info)' },
+      iron: { bg: 'rgba(99, 102, 241, 0.1)', text: 'var(--accent)' },
       wedge: { bg: 'rgba(168, 85, 247, 0.1)', text: 'var(--ak-accent-purple)' },
-      bunker: { bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--ak-status-warning)' },
+      bunker: { bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--warning)' },
       mental: { bg: 'rgba(236, 72, 153, 0.1)', text: 'var(--ak-accent-pink)' },
-      fitness: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--ak-status-error)' }
+      fitness: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)' }
     };
-    return colors[cat] || { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-tertiary)' };
+    return colors[cat] || { bg: 'var(--card)', text: 'var(--text-tertiary)' };
   };
 
   const getDifficultyLabel = (diff: string) => {
@@ -219,10 +219,10 @@ export const CoachExerciseLibrary: React.FC = () => {
 
   const getDifficultyColor = (diff: string) => {
     switch (diff) {
-      case 'beginner': return 'var(--ak-status-success)';
-      case 'intermediate': return 'var(--ak-status-warning-light)';
-      case 'advanced': return 'var(--ak-status-error)';
-      default: return 'var(--ak-text-tertiary)';
+      case 'beginner': return 'var(--success)';
+      case 'intermediate': return 'var(--warning)';
+      case 'advanced': return 'var(--error)';
+      default: return 'var(--text-tertiary)';
     }
   };
 
@@ -407,7 +407,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                   </span>
                 </div>
                 {exercise.isFavorite && (
-                  <Star size={18} color="var(--ak-status-warning-light)" fill="var(--ak-status-warning-light)" />
+                  <Star size={18} color="var(--warning)" fill="var(--warning)" />
                 )}
               </div>
 
@@ -455,7 +455,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Star size={14} color="var(--ak-status-warning-light)" fill="var(--ak-status-warning-light)" />
+                  <Star size={14} color="var(--warning)" fill="var(--warning)" />
                   <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                     {exercise.rating}
                   </span>
@@ -478,7 +478,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                     borderRadius: '8px',
                     border: 'none',
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    color: 'var(--ak-status-error)',
+                    color: 'var(--error)',
                     fontSize: '12px',
                     fontWeight: '500',
                     cursor: 'pointer'
@@ -496,7 +496,7 @@ export const CoachExerciseLibrary: React.FC = () => {
                     borderRadius: '8px',
                     border: 'none',
                     backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    color: 'var(--ak-status-info)',
+                    color: 'var(--info)',
                     fontSize: '12px',
                     fontWeight: '500',
                     cursor: 'pointer'

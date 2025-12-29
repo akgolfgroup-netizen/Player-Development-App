@@ -150,7 +150,7 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
       // Base styles already applied
     },
     filled: {
-      backgroundColor: 'var(--gray-100)',
+      backgroundColor: 'var(--bg-neutral-subtle)',
       border: '1px solid transparent',
     },
     flushed: {
@@ -202,16 +202,16 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     color: 'var(--text-secondary)',
   } as React.CSSProperties,
   error: {
-    borderColor: 'var(--ak-error)',
+    borderColor: 'var(--error)',
   } as React.CSSProperties,
   disabled: {
     opacity: 0.5,
     cursor: 'not-allowed',
-    backgroundColor: 'var(--gray-100)',
+    backgroundColor: 'var(--bg-neutral-subtle)',
   } as React.CSSProperties,
   errorMessage: {
     fontSize: 'var(--font-size-caption1)',
-    color: 'var(--ak-error)',
+    color: 'var(--error)',
     marginTop: '2px',
   } as React.CSSProperties,
   helperText: {

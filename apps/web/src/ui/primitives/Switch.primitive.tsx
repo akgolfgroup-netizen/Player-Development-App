@@ -58,7 +58,7 @@ const Switch: React.FC<SwitchProps> = ({
     ...styles.track,
     width: sizeConfig.trackWidth,
     height: sizeConfig.trackHeight,
-    backgroundColor: isChecked ? 'var(--ak-primary)' : 'var(--gray-300)',
+    backgroundColor: isChecked ? 'var(--accent)' : 'var(--border)',
     ...(disabled && styles.disabled),
   };
 

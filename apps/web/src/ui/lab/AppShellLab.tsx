@@ -156,8 +156,8 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'var(--font-size-body)',
   },
   selectorButtonActive: {
-    backgroundColor: 'var(--ak-primary)',
-    borderColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
+    borderColor: 'var(--accent)',
     color: 'white',
   },
   demoFrame: {
@@ -210,7 +210,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   actionButton: {
     padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md)',

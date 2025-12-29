@@ -7,25 +7,25 @@ const getWeatherIcon = (symbol, size = 20) => {
   if (!symbol) return <Cloud size={size} />;
 
   if (symbol.includes('clearsky') || symbol.includes('fair')) {
-    return <Sun size={size} style={{ color: 'var(--ak-status-warning-light)' }} />;
+    return <Sun size={size} style={{ color: 'var(--warning)' }} />;
   }
   if (symbol.includes('rain')) {
-    return <CloudRain size={size} style={{ color: 'var(--ak-status-info)' }} />;
+    return <CloudRain size={size} style={{ color: 'var(--info)' }} />;
   }
   if (symbol.includes('snow') || symbol.includes('sleet')) {
-    return <CloudSnow size={size} style={{ color: 'var(--ak-status-info-light)' }} />;
+    return <CloudSnow size={size} style={{ color: 'var(--info)' }} />;
   }
-  return <Cloud size={size} style={{ color: 'var(--ak-text-muted)' }} />;
+  return <Cloud size={size} style={{ color: 'var(--text-muted)' }} />;
 };
 
 // Playability badge color using semantic tokens
 const getPlayabilityStyle = (playability) => {
   const styles = {
-    excellent: { bg: 'var(--ak-status-success-muted)', color: 'var(--ak-status-success)', text: 'Perfekt' },
-    good: { bg: 'var(--ak-status-success-muted)', color: 'var(--ak-status-success-light)', text: 'Bra' },
-    fair: { bg: 'var(--ak-status-warning-muted)', color: 'var(--ak-status-warning)', text: 'OK' },
-    poor: { bg: 'var(--ak-status-warning-muted)', color: 'var(--ak-status-warning-light)', text: 'Dårlig' },
-    unplayable: { bg: 'var(--ak-status-error-muted)', color: 'var(--ak-status-error)', text: 'Ikke spillbart' },
+    excellent: { bg: 'var(--bg-success-subtle)', color: 'var(--success)', text: 'Perfekt' },
+    good: { bg: 'var(--bg-success-subtle)', color: 'var(--success)', text: 'Bra' },
+    fair: { bg: 'var(--bg-warning-subtle)', color: 'var(--warning)', text: 'OK' },
+    poor: { bg: 'var(--bg-warning-subtle)', color: 'var(--warning)', text: 'Dårlig' },
+    unplayable: { bg: 'var(--bg-error-subtle)', color: 'var(--error)', text: 'Ikke spillbart' },
   };
   return styles[playability] || styles.fair;
 };

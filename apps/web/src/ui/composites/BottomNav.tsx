@@ -71,7 +71,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
             <span
               style={{
                 ...styles.icon,
-                color: active ? 'var(--ak-primary)' : 'var(--text-tertiary)',
+                color: active ? 'var(--accent)' : 'var(--text-tertiary)',
               }}
               aria-hidden="true"
             >
@@ -80,7 +80,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
             <span
               style={{
                 ...styles.label,
-                color: active ? 'var(--ak-primary)' : 'var(--text-tertiary)',
+                color: active ? 'var(--accent)' : 'var(--text-tertiary)',
                 fontWeight: active ? 600 : 500,
               }}
             >

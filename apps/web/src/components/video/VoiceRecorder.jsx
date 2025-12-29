@@ -21,9 +21,9 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
   },
   header: {
     display: 'flex',
@@ -35,7 +35,7 @@ const styles = {
     margin: 0,
     fontSize: '14px',
     fontWeight: '600',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
@@ -44,17 +44,17 @@ const styles = {
     fontSize: '24px',
     fontWeight: '700',
     fontFamily: 'var(--font-mono, monospace)',
-    color: 'var(--ak-text-primary, white)',
+    color: 'var(--text-primary, white)',
     minWidth: '80px',
     textAlign: 'center',
   },
   timerRecording: {
-    color: 'var(--ak-error, var(--ak-status-error-light))',
+    color: 'var(--error)',
   },
   waveformContainer: {
     position: 'relative',
     height: '80px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: 'var(--radius-md, 8px)',
     overflow: 'hidden',
   },
@@ -68,12 +68,12 @@ const styles = {
   },
   waveformBar: {
     width: '3px',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     borderRadius: '2px',
     transition: 'height 0.05s ease',
   },
   waveformBarRecording: {
-    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
+    backgroundColor: 'var(--error)',
   },
   inputLevelContainer: {
     position: 'absolute',
@@ -91,15 +91,15 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'var(--ak-success, var(--ak-status-success-light))',
+    backgroundColor: 'var(--success)',
     borderRadius: '2px',
     transition: 'height 0.05s ease',
   },
   inputLevelHigh: {
-    backgroundColor: 'var(--ak-warning, var(--ak-status-warning-light))',
+    backgroundColor: 'var(--warning)',
   },
   inputLevelClipping: {
-    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
+    backgroundColor: 'var(--error)',
   },
   playbackContainer: {
     display: 'flex',
@@ -109,7 +109,7 @@ const styles = {
   progressBar: {
     position: 'relative',
     height: '8px',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: '4px',
     cursor: 'pointer',
     overflow: 'hidden',
@@ -119,7 +119,7 @@ const styles = {
     left: 0,
     top: 0,
     height: '100%',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     borderRadius: '4px',
     transition: 'width 0.1s ease',
   },
@@ -128,7 +128,7 @@ const styles = {
     justifyContent: 'space-between',
     fontSize: '12px',
     fontFamily: 'var(--font-mono, monospace)',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
   },
   controls: {
     display: 'flex',
@@ -140,7 +140,7 @@ const styles = {
     width: '64px',
     height: '64px',
     borderRadius: '50%',
-    border: '3px solid var(--ak-error, var(--ak-status-error-light))',
+    border: '3px solid var(--error)',
     backgroundColor: 'transparent',
     cursor: 'pointer',
     display: 'flex',
@@ -152,7 +152,7 @@ const styles = {
     width: '32px',
     height: '32px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
+    backgroundColor: 'var(--error)',
     transition: 'all 0.2s ease',
   },
   recordButtonRecording: {
@@ -165,8 +165,8 @@ const styles = {
     height: '48px',
     borderRadius: '50%',
     border: 'none',
-    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
-    color: 'var(--ak-text-primary, white)',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
+    color: 'var(--text-primary, white)',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
@@ -178,7 +178,7 @@ const styles = {
     cursor: 'not-allowed',
   },
   primaryButton: {
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
   },
   actions: {
     display: 'flex',
@@ -200,13 +200,13 @@ const styles = {
     transition: 'all 0.2s ease',
   },
   saveButton: {
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     color: 'white',
   },
   discardButton: {
     backgroundColor: 'transparent',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
+    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
   },
   permissionPrompt: {
     display: 'flex',
@@ -219,18 +219,18 @@ const styles = {
   permissionIcon: {
     width: '48px',
     height: '48px',
-    color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
+    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
     marginBottom: 'var(--spacing-3, 12px)',
   },
   permissionText: {
     fontSize: '14px',
-    color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
+    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
     marginBottom: 'var(--spacing-4, 16px)',
     maxWidth: '280px',
   },
   permissionButton: {
     padding: '10px 24px',
-    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    backgroundColor: 'var(--accent)',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -242,7 +242,7 @@ const styles = {
     padding: 'var(--spacing-3, 12px)',
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-error, var(--ak-status-error-light))',
+    color: 'var(--error)',
     fontSize: '13px',
     textAlign: 'center',
   },
@@ -250,7 +250,7 @@ const styles = {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
+    backgroundColor: 'var(--error)',
     animation: 'pulse 1s ease-in-out infinite',
   },
 };
@@ -570,7 +570,7 @@ export function VoiceRecorder({
 
       {/* Max duration warning */}
       {isRecording && duration > maxDuration - 30 && (
-        <div style={{ ...styles.errorMessage, backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--ak-warning, var(--ak-status-warning-light))' }}>
+        <div style={{ ...styles.errorMessage, backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--warning)' }}>
           {Math.ceil(maxDuration - duration)} sekunder igjen
         </div>
       )}

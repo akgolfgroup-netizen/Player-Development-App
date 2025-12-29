@@ -53,15 +53,15 @@ const Avatar: React.FC<AvatarProps> = ({
     switch (status) {
       case 'online':
       case 'active':
-        return 'var(--ak-success)';
+        return 'var(--success)';
       case 'away':
-        return 'var(--ak-warning)';
+        return 'var(--warning)';
       case 'busy':
-        return 'var(--ak-error)';
+        return 'var(--error)';
       case 'offline':
       case 'inactive':
       default:
-        return 'var(--gray-500)';
+        return 'var(--text-tertiary)';
     }
   };
 
@@ -138,7 +138,7 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary)',
+    backgroundColor: 'var(--accent)',
     color: 'var(--text-inverse)',
     fontWeight: 600,
     flexShrink: 0,

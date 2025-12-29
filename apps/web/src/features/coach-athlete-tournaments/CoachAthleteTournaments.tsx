@@ -135,9 +135,9 @@ const generateMockAthletes = (): Athlete[] => {
     'var(--ak-session-spill)', // accent
     'var(--ak-session-teknikk)', // accent-light
     'var(--ak-session-golfslag)', // success
-    'var(--ak-achievement-gold)', // achievement
+    'var(--achievement)', // achievement
     '#8E6E53', // warm neutral (no mapping)
-    'var(--ak-text-tertiary)', // cool neutral
+    'var(--text-tertiary)', // cool neutral
   ];
 
   return [

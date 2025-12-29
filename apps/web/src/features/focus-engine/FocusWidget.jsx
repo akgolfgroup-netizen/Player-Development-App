@@ -14,9 +14,9 @@ const COMPONENT_LABELS = {
 };
 
 const COMPONENT_COLORS = {
-  OTT: 'var(--ak-status-info)', // Blue
-  APP: 'var(--ak-status-success-light)', // Green
-  ARG: 'var(--ak-status-warning-light)', // Amber
+  OTT: 'var(--info)', // Blue
+  APP: 'var(--success)', // Green
+  ARG: 'var(--warning)', // Amber
   PUTT: 'var(--ak-accent-purple)', // Purple
 };
 

@@ -119,9 +119,9 @@ const styles = {
     padding: "var(--spacing-1) var(--spacing-3)",
     fontSize: "var(--font-size-footnote)",
     fontWeight: 500,
-    color: "var(--ak-white)",
-    backgroundColor: "var(--ak-charcoal)", // Neutral charcoal - contract requirement
-    border: "1px solid var(--ak-charcoal)",
+    color: "var(--text-inverse)",
+    backgroundColor: "var(--background-inverse)", // Neutral charcoal - contract requirement
+    border: "1px solid var(--background-inverse)",
     borderRadius: "var(--radius-full)",
     cursor: "pointer",
   } as React.CSSProperties,

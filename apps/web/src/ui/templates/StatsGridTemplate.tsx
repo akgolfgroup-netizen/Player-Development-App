@@ -40,9 +40,9 @@ const StatsGridTemplate: React.FC<StatsGridTemplateProps> = ({
   const getTrendColor = (direction: 'up' | 'down' | 'neutral') => {
     switch (direction) {
       case 'up':
-        return 'var(--ak-success)';
+        return 'var(--success)';
       case 'down':
-        return 'var(--ak-error)';
+        return 'var(--error)';
       default:
         return 'var(--text-secondary)';
     }

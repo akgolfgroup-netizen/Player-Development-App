@@ -21,7 +21,7 @@ const styles = {
     position: 'relative',
     width: '100%',
     maxWidth: '100%',
-    backgroundColor: 'var(--ak-ink)',
+    backgroundColor: 'var(--background-inverse)',
     borderRadius: 'var(--radius-md)',
     overflow: 'hidden',
     aspectRatio: '16 / 9',
@@ -36,7 +36,7 @@ const styles = {
     width: '100%',
     height: '100%',
     objectFit: 'contain',
-    backgroundColor: 'var(--ak-ink)',
+    backgroundColor: 'var(--background-inverse)',
   },
   controlsWrapper: {
     position: 'absolute',
@@ -77,7 +77,7 @@ const styles = {
     width: '48px',
     height: '48px',
     border: '4px solid rgba(255, 255, 255, 0.3)',
-    borderTopColor: 'var(--ak-gold)',
+    borderTopColor: 'var(--achievement)',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
   },
@@ -88,13 +88,13 @@ const styles = {
     justifyContent: 'center',
     gap: 'var(--spacing-3)',
     padding: 'var(--spacing-6)',
-    color: 'var(--ak-white)',
+    color: 'var(--text-inverse)',
     textAlign: 'center',
   },
   errorIcon: {
     width: '48px',
     height: '48px',
-    color: 'var(--ak-error)',
+    color: 'var(--error)',
   },
   errorText: {
     fontSize: 'var(--font-size-body)',
@@ -102,8 +102,8 @@ const styles = {
   },
   retryButton: {
     padding: 'var(--spacing-2) var(--spacing-4)',
-    backgroundColor: 'var(--ak-primary)',
-    color: 'var(--ak-white)',
+    backgroundColor: 'var(--accent)',
+    color: 'var(--text-inverse)',
     border: 'none',
     borderRadius: 'var(--radius-sm)',
     fontSize: 'var(--font-size-body)',
@@ -125,7 +125,7 @@ const styles = {
     position: 'absolute',
     bottom: 0,
     width: '2px',
-    backgroundColor: 'var(--ak-gold)',
+    backgroundColor: 'var(--achievement)',
     borderRadius: '1px',
   },
 };
@@ -139,7 +139,7 @@ const spinnerKeyframes = `
 
 // Large play icon for overlay
 const LargePlayIcon = () => (
-  <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--ak-primary)">
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--accent)">
     <path d="M8 5v14l11-7z" />
   </svg>
 );

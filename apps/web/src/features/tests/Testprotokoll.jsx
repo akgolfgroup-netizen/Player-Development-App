@@ -98,7 +98,7 @@ const Avatar = ({ name, size = 40 }) => {
   );
 };
 
-const ProgressBar = ({ value, max, color = 'var(--ak-primary)' }) => {
+const ProgressBar = ({ value, max, color = 'var(--accent)' }) => {
   const percentage = Math.min((value / max) * 100, 100);
   return (
     <div className="h-2 bg-ak-mist rounded-full overflow-hidden">

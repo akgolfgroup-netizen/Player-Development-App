@@ -147,7 +147,7 @@ const styles = {
     fontSize: "var(--font-size-title1)",
     lineHeight: "var(--line-height-title1)",
     fontWeight: 700,
-    color: "var(--ak-charcoal)", // Neutral - contract requirement
+    color: "var(--background-inverse)", // Neutral - contract requirement
   } as React.CSSProperties,
 
   dismissButton: {
@@ -155,7 +155,7 @@ const styles = {
     padding: "var(--spacing-3)",
     fontSize: "var(--font-size-body)",
     fontWeight: 600,
-    color: "var(--ak-charcoal)",
+    color: "var(--background-inverse)",
     backgroundColor: "var(--background-surface)",
     border: "1px solid var(--border-default)",
     borderRadius: "var(--radius-sm)",

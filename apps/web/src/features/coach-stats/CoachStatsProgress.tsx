@@ -178,10 +178,10 @@ export const CoachStatsProgress: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'var(--ak-status-success-bg)', text: 'var(--ak-status-success-text)' };
-      case 'B': return { bg: 'var(--ak-status-info-bg)', text: 'var(--ak-status-info-text)' };
-      case 'C': return { bg: 'var(--ak-status-warning-bg)', text: 'var(--ak-status-warning-text)' };
-      default: return { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-secondary)' };
+      case 'A': return { bg: 'var(--bg-success-subtle)', text: 'var(--success)' };
+      case 'B': return { bg: 'var(--bg-accent-subtle)', text: 'var(--info)' };
+      case 'C': return { bg: 'var(--bg-warning-subtle)', text: 'var(--warning)' };
+      default: return { bg: 'var(--card)', text: 'var(--text-secondary)' };
     }
   };
 
@@ -304,7 +304,7 @@ export const CoachStatsProgress: React.FC = () => {
                 <span style={{
                   fontSize: '18px',
                   fontWeight: '700',
-                  color: 'var(--ak-status-success)'
+                  color: 'var(--success)'
                 }}>
                   {player.hcpChange}
                 </span>
@@ -470,7 +470,7 @@ export const CoachStatsProgress: React.FC = () => {
                         padding: '4px 10px',
                         borderRadius: '6px',
                         backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                        color: 'var(--ak-status-success)',
+                        color: 'var(--success)',
                         fontWeight: '500'
                       }}>
                         {imp}
@@ -533,11 +533,11 @@ export const CoachStatsProgress: React.FC = () => {
                   backgroundColor: 'rgba(34, 197, 94, 0.1)',
                   borderRadius: '10px'
                 }}>
-                  <ArrowUpRight size={18} color="var(--ak-status-success)" />
+                  <ArrowUpRight size={18} color="var(--success)" />
                   <span style={{
                     fontSize: '20px',
                     fontWeight: '700',
-                    color: 'var(--ak-status-success)'
+                    color: 'var(--success)'
                   }}>
                     {player.hcpChange}
                   </span>

@@ -89,9 +89,9 @@ const colors: Record<TextColor, string> = {
   brand: 'var(--text-brand)',
   inverse: 'var(--text-inverse)',
   accent: 'var(--text-accent)',
-  error: 'var(--ak-error)',
-  success: 'var(--ak-success)',
-  warning: 'var(--ak-warning)',
+  error: 'var(--error)',
+  success: 'var(--success)',
+  warning: 'var(--warning)',
 };
 
 const styles: Record<string, React.CSSProperties | Record<string, React.CSSProperties>> = {

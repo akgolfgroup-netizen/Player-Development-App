@@ -157,32 +157,32 @@ const styles = {
     ],
     // AK Golf Academy Custom Colors (using semantic tokens)
     primary: [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--ak-brand-primary)] [--btn-border:var(--ak-brand-primary-active)]/90',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--accent)] [--btn-border:var(--ak-brand-primary-active)]/90',
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     'primary-light': [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--ak-brand-primary-hover)] [--btn-border:var(--ak-brand-primary)]/90',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--ak-brand-primary-hover)] [--btn-border:var(--accent)]/90',
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     gold: [
-      'text-ak-text-primary [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--ak-achievement-gold)] [--btn-border:var(--ak-achievement-gold-border)]/80',
-      '[--btn-icon:var(--ak-text-primary)]/60 data-active:[--btn-icon:var(--ak-text-primary)]/80 data-hover:[--btn-icon:var(--ak-text-primary)]/80',
+      'text-ak-text-primary [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--achievement)] [--btn-border:var(--ak-achievement-gold-border)]/80',
+      '[--btn-icon:var(--text-primary)]/60 data-active:[--btn-icon:var(--text-primary)]/80 data-hover:[--btn-icon:var(--text-primary)]/80',
     ],
     success: [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--ak-status-success)] [--btn-border:var(--ak-status-success)]/90',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--success)] [--btn-border:var(--success)]/90',
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     error: [
-      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--ak-status-error)] [--btn-border:var(--ak-status-error)]/90',
+      'text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--error)] [--btn-border:var(--error)]/90',
       '[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80',
     ],
     warning: [
-      'text-ak-text-primary [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--ak-status-warning)] [--btn-border:var(--ak-status-warning)]/80',
-      '[--btn-icon:var(--ak-text-primary)]/60 data-active:[--btn-icon:var(--ak-text-primary)]/80 data-hover:[--btn-icon:var(--ak-text-primary)]/80',
+      'text-ak-text-primary [--btn-hover-overlay:var(--color-white)]/25 [--btn-bg:var(--warning)] [--btn-border:var(--warning)]/80',
+      '[--btn-icon:var(--text-primary)]/60 data-active:[--btn-icon:var(--text-primary)]/80 data-hover:[--btn-icon:var(--text-primary)]/80',
     ],
     surface: [
-      'text-ak-text-primary [--btn-hover-overlay:var(--color-black)]/5 [--btn-bg:var(--ak-surface-card)] [--btn-border:var(--ak-border)]/80',
-      '[--btn-icon:var(--ak-text-tertiary)] data-active:[--btn-icon:var(--ak-text-secondary)] data-hover:[--btn-icon:var(--ak-text-secondary)]',
+      'text-ak-text-primary [--btn-hover-overlay:var(--color-black)]/5 [--btn-bg:var(--ak-surface-card)] [--btn-border:var(--border)]/80',
+      '[--btn-icon:var(--text-tertiary)] data-active:[--btn-icon:var(--text-secondary)] data-hover:[--btn-icon:var(--text-secondary)]',
     ],
   },
 }

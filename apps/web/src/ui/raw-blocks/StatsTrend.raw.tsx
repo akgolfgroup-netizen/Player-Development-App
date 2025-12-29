@@ -43,21 +43,21 @@ const StatsTrend: React.FC<StatsTrendProps> = ({
   const getColor = () => {
     switch (color) {
       case 'success':
-        return 'var(--ak-success)';
+        return 'var(--success)';
       case 'warning':
-        return 'var(--ak-warning)';
+        return 'var(--warning)';
       case 'error':
-        return 'var(--ak-error)';
+        return 'var(--error)';
       case 'gold':
-        return 'var(--ak-gold)';
+        return 'var(--achievement)';
       default:
-        return 'var(--ak-primary)';
+        return 'var(--accent)';
     }
   };
 
   const getTrendColor = () => {
-    if (trend === 'up') return 'var(--ak-success)';
-    if (trend === 'down') return 'var(--ak-error)';
+    if (trend === 'up') return 'var(--success)';
+    if (trend === 'down') return 'var(--error)';
     return 'var(--text-secondary)';
   };
 
