@@ -6,6 +6,7 @@
  * Design: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
  */
 import React, { useState } from 'react';
+import Button from '../../ui/primitives/Button';
 
 // Format time as MM:SS
 function formatTimeShort(seconds) {
@@ -207,42 +208,22 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
         </div>
 
         {/* Buttons */}
-        <button
+        <Button
+          variant="primary"
           onClick={handleSubmit}
           disabled={quality === 0 || focus === 0 || intensity === 0}
-          style={{
-            width: '100%',
-            padding: '16px',
-            backgroundColor: (quality === 0 || focus === 0 || intensity === 0)
-              ? 'var(--border-default)'
-              : 'var(--accent)',
-            color: (quality === 0 || focus === 0 || intensity === 0)
-              ? 'var(--text-secondary)'
-              : 'var(--bg-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: (quality === 0 || focus === 0 || intensity === 0) ? 'not-allowed' : 'pointer',
-            marginBottom: '16px',
-            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-          }}
+          style={{ width: '100%', marginBottom: '16px' }}
         >
           Lagre og fortsett →
-        </button>
+        </Button>
 
-        <button
+        <Button
+          variant="ghost"
           onClick={onSkip}
-          style={{
-            width: '100%',
-            padding: '8px',
-            backgroundColor: 'transparent',
-            color: 'var(--text-secondary)',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '16px', lineHeight: '21px', fontWeight: 400,
-          }}
+          style={{ width: '100%' }}
         >
           Hopp over
-        </button>
+        </Button>
       </div>
     </div>
   );

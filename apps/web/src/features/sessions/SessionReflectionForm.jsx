@@ -6,6 +6,7 @@
  * Design: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
  */
 import React, { useState } from 'react';
+import Button from '../../ui/primitives/Button';
 
 // Format time as HH:MM:SS
 function formatTime(seconds) {
@@ -351,38 +352,22 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
         <SectionDivider />
 
         {/* Submit button */}
-        <button
+        <Button
+          variant="primary"
           onClick={handleSubmit}
           disabled={!isComplete}
-          style={{
-            width: '100%',
-            padding: '16px',
-            backgroundColor: isComplete ? 'var(--accent)' : 'var(--border-default)',
-            color: isComplete ? 'var(--bg-primary)' : 'var(--text-secondary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: isComplete ? 'pointer' : 'not-allowed',
-            marginBottom: '16px',
-            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-          }}
+          style={{ width: '100%', marginBottom: '16px' }}
         >
           Lagre refleksjon
-        </button>
+        </Button>
 
-        <button
+        <Button
+          variant="ghost"
           onClick={onSkip}
-          style={{
-            width: '100%',
-            padding: '8px',
-            backgroundColor: 'transparent',
-            color: 'var(--text-secondary)',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '16px', lineHeight: '21px', fontWeight: 400,
-          }}
+          style={{ width: '100%' }}
         >
           Hopp over
-        </button>
+        </Button>
 
         {/* Sports science info */}
         <div

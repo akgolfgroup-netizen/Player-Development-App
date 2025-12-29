@@ -360,68 +360,35 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {/* Start session button - only for planned sessions */}
           {session.status === 'Planlagt' && (
-            <button
+            <Button
+              variant="primary"
               onClick={onStartSession}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                padding: '16px',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-              }}
+              style={{ width: '100%' }}
             >
               Start økt
-            </button>
+            </Button>
           )}
 
           {/* Evaluate button - for in-progress sessions */}
           {(session.status === 'Pågår' || session.completionStatus === 'in_progress') && (
-            <button
+            <Button
+              variant="primary"
               onClick={handleEvaluate}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                padding: '16px',
-                backgroundColor: 'var(--success)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-              }}
+              style={{ width: '100%', backgroundColor: 'var(--success)' }}
             >
               Evaluer økt
-            </button>
+            </Button>
           )}
 
           {/* Continue session button - for in-progress */}
           {session.status === 'Pågår' && onStartSession && (
-            <button
+            <Button
+              variant="primary"
               onClick={onStartSession}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                padding: '16px',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-              }}
+              style={{ width: '100%' }}
             >
               Fortsett økt
-            </button>
+            </Button>
           )}
         </div>
       </div>

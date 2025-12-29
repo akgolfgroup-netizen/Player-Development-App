@@ -353,24 +353,13 @@ function EmptyState({ onCreateNew }) {
       <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
         Du har ingen treningsokter som matcher filtrene dine.
       </p>
-      <button
+      <Button
+        variant="primary"
         onClick={onCreateNew}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: `${'8px'} ${'24px'}`,
-          backgroundColor: 'var(--accent)',
-          color: 'var(--bg-primary)',
-          border: 'none',
-          borderRadius: 'var(--radius-md)',
-          cursor: 'pointer',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
+        leftIcon={<Plus size={16} />}
       >
-        <Plus size={16} />
         Opprett ny okt
-      </button>
+      </Button>
     </div>
   );
 }
@@ -388,39 +377,25 @@ function Pagination({ page, totalPages, onPageChange }) {
         marginTop: '24px',
       }}
     >
-      <button
+      <Button
+        variant="secondary"
+        size="sm"
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        style={{
-          padding: `${'8px'} ${'16px'}`,
-          backgroundColor: page <= 1 ? 'var(--border-default)' : 'var(--bg-primary)',
-          color: page <= 1 ? 'var(--text-secondary)' : 'var(--text-primary)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-sm)',
-          cursor: page <= 1 ? 'not-allowed' : 'pointer',
-          fontSize: '15px', lineHeight: '20px',
-        }}
       >
         Forrige
-      </button>
+      </Button>
       <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
         Side {page} av {totalPages}
       </span>
-      <button
+      <Button
+        variant="secondary"
+        size="sm"
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
-        style={{
-          padding: `${'8px'} ${'16px'}`,
-          backgroundColor: page >= totalPages ? 'var(--border-default)' : 'var(--bg-primary)',
-          color: page >= totalPages ? 'var(--text-secondary)' : 'var(--text-primary)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-sm)',
-          cursor: page >= totalPages ? 'not-allowed' : 'pointer',
-          fontSize: '15px', lineHeight: '20px',
-        }}
       >
         Neste
-      </button>
+      </Button>
     </div>
   );
 }
