@@ -20,10 +20,11 @@ import * as videoApi from '../../services/videoApi';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 // Tailwind classes
 const tw = {
-  container: 'flex flex-col h-full bg-[var(--ak-ink,#0a0a0a)]',
+  container: 'flex flex-col h-full bg-[var(--ak-ink,var(--ak-surface-dark-base))]',
   header: 'flex items-center gap-3 py-3 px-4 border-b border-border',
   backButton: 'flex items-center gap-1 py-2 px-3 bg-surface border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-[13px] cursor-pointer',
   title: 'm-0 text-lg font-semibold text-[var(--ak-text-primary,white)] flex-1',
@@ -33,7 +34,7 @@ const tw = {
   selectionContainer: 'flex-1 flex items-center justify-center gap-6 p-6',
   videoSlot: 'flex-1 max-w-[400px] bg-surface rounded-ak-lg border-2 border-dashed border-border p-6 text-center cursor-pointer transition-all duration-200',
   videoSlotActive: 'border-primary bg-primary/10',
-  videoSlotFilled: 'border-solid border-success',
+  videoSlotFilled: 'border-solid border-ak-status-success',
   slotLabel: 'block text-xs font-semibold text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))] uppercase tracking-wide mb-3',
   slotIcon: 'w-12 h-12 mx-auto mb-3 text-[var(--ak-text-tertiary,rgba(255,255,255,0.4))]',
   slotText: 'text-sm text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] m-0',
@@ -48,7 +49,7 @@ const tw = {
   closeButton: 'w-8 h-8 flex items-center justify-center bg-transparent border-none rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] cursor-pointer text-xl',
   modalBody: 'flex-1 overflow-y-auto p-4',
   videoGrid: 'grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-3',
-  videoOption: 'bg-[var(--ak-surface-dark,#0f0f1a)] rounded-ak-md border-2 border-transparent overflow-hidden cursor-pointer transition-all duration-200',
+  videoOption: 'bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] rounded-ak-md border-2 border-transparent overflow-hidden cursor-pointer transition-all duration-200',
   videoOptionSelected: 'border-primary',
   videoThumbnail: 'w-full aspect-video bg-surface flex items-center justify-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.4))]',
   videoOptionTitle: 'p-2 text-xs font-medium text-[var(--ak-text-primary,white)] overflow-hidden text-ellipsis whitespace-nowrap',
@@ -281,12 +282,10 @@ export function VideoComparisonPage() {
   return (
     <div className={tw.container}>
       {/* Header */}
-      <div className={tw.header}>
-        <Button variant="ghost" size="sm" onClick={handleBack}>
-          ← Tilbake
-        </Button>
-        <h1 className={tw.title}>Sammenlign videoer</h1>
-        {comparingMode && (
+      <PageHeader
+        title="Sammenlign videoer"
+        onBack={handleBack}
+        actions={comparingMode ? (
           <Button
             variant="primary"
             size="sm"
@@ -296,8 +295,8 @@ export function VideoComparisonPage() {
           >
             {saving ? 'Lagrer...' : 'Lagre sammenligning'}
           </Button>
-        )}
-      </div>
+        ) : null}
+      />
 
       {/* Main Content */}
       <div className={tw.main}>

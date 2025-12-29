@@ -29,32 +29,33 @@ import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
 // ═══════════════════════════════════════════
 
 const tw = {
-  container: 'flex flex-col h-full bg-[var(--ak-ink,#0a0a0a)]',
+  container: 'flex flex-col h-full bg-[var(--ak-ink,var(--ak-surface-dark-base))]',
   main: 'flex-1 flex gap-4 p-4 overflow-hidden',
   videoSection: 'flex-1 flex flex-col gap-3 min-w-0',
   header: 'flex items-center gap-3',
   backButton: 'flex items-center gap-1 py-2 px-3 bg-surface border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-[13px] cursor-pointer',
   title: 'm-0 text-lg font-semibold text-[var(--ak-text-primary,white)] overflow-hidden text-ellipsis whitespace-nowrap flex-1',
   headerActions: 'flex gap-2 ml-auto',
-  markReviewedButton: 'flex items-center gap-1 py-2 px-4 bg-success border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer',
-  reviewedBadge: 'flex items-center gap-1 py-1.5 px-3 bg-success/20 border border-success rounded-ak-md text-success text-xs font-medium',
+  markReviewedButton: 'flex items-center gap-1 py-2 px-4 bg-ak-status-success border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer',
+  reviewedBadge: 'flex items-center gap-1 py-1.5 px-3 bg-ak-status-success/20 border border-ak-status-success rounded-ak-md text-ak-status-success text-xs font-medium',
   analyzerWrapper: 'flex-1 rounded-ak-lg overflow-hidden',
   sidebar: 'w-80 flex flex-col gap-3 bg-surface rounded-ak-lg border border-border overflow-hidden',
   sidebarHeader: 'py-3 px-4 border-b border-border',
   sidebarTitle: 'm-0 text-sm font-semibold text-[var(--ak-text-primary,white)]',
   commentsList: 'flex-1 overflow-y-auto p-3',
-  commentItem: 'p-3 bg-[var(--ak-surface-dark,#0f0f1a)] rounded-ak-md mb-2',
+  commentItem: 'p-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] rounded-ak-md mb-2',
   commentAuthor: 'text-xs font-semibold text-primary mb-1',
   commentBody: 'text-[13px] text-[var(--ak-text-primary,white)] leading-snug',
   commentTime: 'text-[11px] text-[var(--ak-text-tertiary,rgba(255,255,255,0.4))] mt-1',
   commentInput: 'flex gap-2 p-3 border-t border-border',
-  textarea: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-[13px] resize-none min-h-[60px]',
+  textarea: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-[13px] resize-none min-h-[60px]',
   sendButton: 'py-2 px-4 bg-primary border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer self-end',
   loadingContainer: 'flex-1 flex items-center justify-center flex-col gap-4 text-[var(--ak-text-secondary,rgba(255,255,255,0.7))]',
   spinner: 'w-10 h-10 border-[3px] border-border border-t-primary rounded-full animate-spin',
@@ -80,7 +81,7 @@ function apiToAnalyzerAnnotation(apiAnnotation) {
     duration: apiAnnotation.duration || 0,
     // Drawing data from API
     tool: apiAnnotation.drawingData?.tool || 'line',
-    color: apiAnnotation.drawingData?.color || '#ff0000',
+    color: apiAnnotation.drawingData?.color || 'var(--ak-status-error)',
     strokeWidth: apiAnnotation.drawingData?.strokeWidth || 3,
     points: apiAnnotation.drawingData?.points || [],
     // Text content if applicable
@@ -294,31 +295,26 @@ export function VideoAnalysisPage({ showComments = true }) {
         {/* Video Section */}
         <div className={tw.videoSection}>
           {/* Header */}
-          <div className={tw.header}>
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              ← Tilbake
-            </Button>
-            <h1 className={tw.title}>{video.title || 'Video'}</h1>
-
-            {/* Coach actions */}
-            {isCoach && (
-              <div className={tw.headerActions}>
-                {isReviewed ? (
-                  <Badge variant="success">✓ Gjennomgått</Badge>
-                ) : (
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={handleMarkReviewed}
-                    disabled={markingReviewed}
-                    loading={markingReviewed}
-                  >
-                    {markingReviewed ? 'Lagrer...' : '✓ Marker gjennomgått'}
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
+          <PageHeader
+            title={video.title || 'Video'}
+            onBack={handleBack}
+            divider={false}
+            actions={isCoach ? (
+              isReviewed ? (
+                <Badge variant="success">✓ Gjennomgått</Badge>
+              ) : (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleMarkReviewed}
+                  disabled={markingReviewed}
+                  loading={markingReviewed}
+                >
+                  {markingReviewed ? 'Lagrer...' : '✓ Marker gjennomgått'}
+                </Button>
+              )
+            ) : null}
+          />
 
           {/* Video Analyzer */}
           <div className={tw.analyzerWrapper}>

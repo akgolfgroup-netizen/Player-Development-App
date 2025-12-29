@@ -14,6 +14,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useVideos } from '../../hooks/useVideos';
 import { SwingTimeline } from './SwingTimeline';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 // Styles
 const styles = {
@@ -53,7 +54,7 @@ const styles = {
   },
   filterButton: {
     padding: '8px 16px',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
@@ -63,8 +64,8 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   filterButtonActive: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    borderColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
     color: 'white',
   },
   statsRow: {
@@ -77,7 +78,7 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-1, 4px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-lg, 12px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     textAlign: 'center',
@@ -110,7 +111,7 @@ const styles = {
   sectionBadge: {
     padding: '2px 8px',
     backgroundColor: 'var(--ak-primary-soft, rgba(99, 102, 241, 0.2))',
-    color: 'var(--ak-primary, #6366f1)',
+    color: 'var(--ak-primary, var(--ak-brand-primary))',
     borderRadius: 'var(--radius-full, 9999px)',
     fontSize: '11px',
     fontWeight: '600',
@@ -130,7 +131,7 @@ const styles = {
     padding: 'var(--spacing-8, 32px)',
     color: 'var(--ak-text-tertiary, rgba(255, 255, 255, 0.4))',
     textAlign: 'center',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-lg, 12px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
   },
@@ -145,7 +146,7 @@ const styles = {
   uploadLink: {
     marginTop: 'var(--spacing-3, 12px)',
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -276,14 +277,11 @@ export function VideoProgressView({
   if (videos.length === 0 && !loading) {
     return (
       <div className={className} style={{ ...styles.container, ...style }}>
-        <div style={styles.header}>
-          <div style={styles.headerLeft}>
-            <h1 style={styles.title}>Videofremgang</h1>
-            <p style={styles.subtitle}>
-              Spor din utvikling over tid
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          title="Videofremgang"
+          subtitle="Spor din utvikling over tid"
+          divider={false}
+        />
 
         <div style={styles.emptyState}>
           <div style={styles.emptyIcon}>
@@ -308,29 +306,26 @@ export function VideoProgressView({
   return (
     <div className={className} style={{ ...styles.container, ...style }}>
       {/* Header */}
-      <div style={styles.header}>
-        <div style={styles.headerLeft}>
-          <h1 style={styles.title}>Videofremgang</h1>
-          <p style={styles.subtitle}>
-            Spor din utvikling over tid og sammenlign videoer
-          </p>
-        </div>
+      <PageHeader
+        title="Videofremgang"
+        subtitle="Spor din utvikling over tid og sammenlign videoer"
+        divider={false}
+      />
 
-        {/* Category filters */}
-        <div style={styles.filters}>
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              style={{
-                ...styles.filterButton,
-                ...(activeCategory === cat.id ? styles.filterButtonActive : {}),
-              }}
-              onClick={() => handleCategoryChange(cat.id)}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+      {/* Category filters */}
+      <div style={styles.filters}>
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat.id}
+            style={{
+              ...styles.filterButton,
+              ...(activeCategory === cat.id ? styles.filterButtonActive : {}),
+            }}
+            onClick={() => handleCategoryChange(cat.id)}
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
 
       {/* Stats */}

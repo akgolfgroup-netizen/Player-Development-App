@@ -21,6 +21,7 @@ import * as videoApi from '../../services/videoApi';
 import StateCard from '../../ui/composites/StateCard';
 import Modal from '../../ui/composites/Modal.composite';
 import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { Upload, RefreshCw } from 'lucide-react';
 
 // Styles
@@ -63,7 +64,7 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -86,7 +87,7 @@ const styles = {
     display: 'flex',
     gap: 'var(--spacing-4, 16px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-lg, 12px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     cursor: 'pointer',
@@ -98,7 +99,7 @@ const styles = {
     borderRadius: 'var(--radius-md, 8px)',
     overflow: 'hidden',
     flexShrink: 0,
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
   },
   listThumbnailImg: {
     width: '100%',
@@ -139,7 +140,7 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-4, 16px)',
     padding: 'var(--spacing-3, 12px) var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     borderRadius: 'var(--radius-lg, 12px)',
     color: 'white',
   },
@@ -177,7 +178,7 @@ const styles = {
   },
   deleteButton: {
     padding: '6px 16px',
-    backgroundColor: 'var(--color-danger, #dc3545)',
+    backgroundColor: 'var(--color-danger, var(--ak-status-error))',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -221,7 +222,7 @@ const styles = {
     width: '40px',
     height: '40px',
     border: '3px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-    borderTopColor: 'var(--ak-primary, #6366f1)',
+    borderTopColor: 'var(--ak-primary, var(--ak-brand-primary))',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
   },
@@ -231,7 +232,7 @@ const styles = {
     justifyContent: 'center',
     width: '100%',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     color: 'var(--ak-text-secondary, rgba(255, 255, 255, 0.7))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
@@ -479,7 +480,7 @@ export function VideoLibrary({
           style={{
             ...styles.listCard,
             borderColor: selectedVideos.has(video.id)
-              ? 'var(--ak-primary, #6366f1)'
+              ? 'var(--ak-primary, var(--ak-brand-primary))'
               : 'var(--ak-border, rgba(255, 255, 255, 0.1))',
           }}
           onClick={() => onVideoClick?.(video)}
@@ -549,22 +550,19 @@ export function VideoLibrary({
   return (
     <div className={className} style={{ ...styles.container, ...style }}>
       {/* Header */}
-      <div style={styles.header}>
-        <div style={styles.headerLeft}>
-          <h1 style={styles.title}>Videobibliotek</h1>
-          <p style={styles.subtitle}>
-            Se og analyser dine sving-videoer
-          </p>
-        </div>
-        <div style={styles.headerActions}>
+      <PageHeader
+        title="Videobibliotek"
+        subtitle="Se og analyser dine sving-videoer"
+        actions={
           <Button
             onClick={onUploadClick}
             leftIcon={<Upload size={18} />}
           >
             Last opp video
           </Button>
-        </div>
-      </div>
+        }
+        divider={false}
+      />
 
       {/* Filters */}
       <VideoFilters

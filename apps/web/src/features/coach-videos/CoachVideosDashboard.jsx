@@ -27,6 +27,7 @@ import * as videoApi from '../../services/videoApi';
 import { coachesAPI } from '../../services/api';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 // Tailwind classes
 const tw = {
@@ -44,8 +45,8 @@ const tw = {
   filtersRow: 'flex flex-wrap gap-3 p-4 bg-surface rounded-ak-lg border border-border',
   filterGroup: 'flex flex-col gap-1',
   filterLabel: 'text-[11px] font-semibold text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))] uppercase tracking-wide',
-  filterSelect: "py-2 pl-3 pr-8 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-[13px] cursor-pointer appearance-none bg-no-repeat bg-[right_8px_center] min-w-[140px]",
-  searchInput: 'py-2 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-[13px] min-w-[200px]',
+  filterSelect: "py-2 pl-3 pr-8 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-[13px] cursor-pointer appearance-none bg-no-repeat bg-[right_8px_center] min-w-[140px]",
+  searchInput: 'py-2 px-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-[13px] min-w-[200px]',
   bulkActionsBar: 'flex items-center gap-4 py-3 px-4 bg-primary rounded-ak-lg text-white',
   bulkCount: 'text-sm font-semibold',
   bulkActions: 'flex gap-2 ml-auto',
@@ -54,9 +55,9 @@ const tw = {
   section: 'flex flex-col gap-3',
   sectionHeader: 'flex items-center justify-between',
   sectionTitle: 'm-0 text-base font-semibold text-[var(--ak-text-primary,white)]',
-  errorBar: 'p-4 bg-error/10 rounded-ak-lg border border-error flex items-center justify-between',
+  errorBar: 'p-4 bg-ak-status-error/10 rounded-ak-lg border border-ak-status-error flex items-center justify-between',
   errorText: 'text-[var(--ak-text-primary,white)] text-sm',
-  retryButton: 'py-2 px-4 bg-error border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer',
+  retryButton: 'py-2 px-4 bg-ak-status-error border-none rounded-ak-md text-white text-[13px] font-medium cursor-pointer',
   // Request Modal
   modalOverlay: 'fixed inset-0 bg-black/70 flex items-center justify-center z-[1000] p-4',
   modal: 'w-full max-w-[480px] bg-surface rounded-ak-xl border border-border shadow-2xl overflow-hidden',
@@ -66,8 +67,8 @@ const tw = {
   modalContent: 'p-4 flex flex-col gap-4',
   formGroup: 'flex flex-col gap-2',
   formLabel: 'text-[13px] font-medium text-[var(--ak-text-secondary,rgba(255,255,255,0.7))]',
-  formInput: 'py-2.5 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-sm',
-  formTextarea: 'py-2.5 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-sm min-h-[100px] resize-y',
+  formInput: 'py-2.5 px-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-sm',
+  formTextarea: 'py-2.5 px-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-primary,white)] text-sm min-h-[100px] resize-y',
   modalFooter: 'flex justify-end gap-2 p-4 border-t border-border',
   modalCancelButton: 'py-2.5 px-5 bg-transparent border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-sm font-medium cursor-pointer',
   modalSubmitButton: 'py-2.5 px-5 bg-primary border-none rounded-ak-md text-white text-sm font-semibold cursor-pointer',
@@ -374,14 +375,10 @@ export function CoachVideosDashboard({
   return (
     <div className={`${tw.container} ${className || ''}`} style={style}>
       {/* Header */}
-      <div className={tw.header}>
-        <div className={tw.headerLeft}>
-          <h1 className={tw.title}>Spillervideoer</h1>
-          <p className={tw.subtitle}>
-            Gjennomgå og annotér videoer fra dine spillere
-          </p>
-        </div>
-        <div className={tw.headerActions}>
+      <PageHeader
+        title="Spillervideoer"
+        subtitle="Gjennomgå og annotér videoer fra dine spillere"
+        actions={
           <Button
             variant="primary"
             onClick={() => setShowRequestModal(true)}
@@ -389,8 +386,9 @@ export function CoachVideosDashboard({
           >
             Be om video
           </Button>
-        </div>
-      </div>
+        }
+        divider={false}
+      />
 
       {/* Stats */}
       <div className={tw.statsRow}>
@@ -405,13 +403,13 @@ export function CoachVideosDashboard({
           <span className={tw.statLabel}>Venter</span>
         </div>
         <div className={tw.statCard}>
-          <span className={`${tw.statValue} text-success`}>
+          <span className={`${tw.statValue} text-ak-status-success`}>
             {stats.reviewed}
           </span>
           <span className={tw.statLabel}>Gjennomgått</span>
         </div>
         <div className={tw.statCard}>
-          <span className={`${tw.statValue} text-error`}>
+          <span className={`${tw.statValue} text-ak-status-error`}>
             {stats.needsFollowup}
           </span>
           <span className={tw.statLabel}>Oppfølging</span>
