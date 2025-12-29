@@ -6,7 +6,7 @@
 
 import { FastifyPluginAsync } from 'fastify';
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import { hashPassword } from '../../../utils/crypto';
 
 const prisma = new PrismaClient();
 
@@ -88,7 +88,7 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
         results.push('Created demo tenant');
 
         // Hash password
-        const hashedPassword = await bcrypt.hash('demo123', 10);
+        const hashedPassword = await hashPassword('demo123');
 
         // Create admin user
         await prisma.user.create({
