@@ -31,15 +31,15 @@ const getWeatherIcon = (symbol, size = 24) => {
   return <Icon size={size} />;
 };
 
-// Playability color mapping
+// Playability color mapping using semantic tokens
 const getPlayabilityColor = (playability) => {
   switch (playability) {
-    case 'excellent': return '#22c55e';
-    case 'good': return '#84cc16';
-    case 'fair': return '#eab308';
-    case 'poor': return '#f97316';
-    case 'unplayable': return '#ef4444';
-    default: return 'var(--text-secondary)';
+    case 'excellent': return 'var(--ak-status-success)';
+    case 'good': return 'var(--ak-status-success-light)';
+    case 'fair': return 'var(--ak-status-warning)';
+    case 'poor': return 'var(--ak-status-warning-light)';
+    case 'unplayable': return 'var(--ak-status-error)';
+    default: return 'var(--ak-text-secondary)';
   }
 };
 
@@ -399,7 +399,7 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
                       height: '100%',
                       width: `${factor.score}%`,
                       borderRadius: '2px',
-                      backgroundColor: factor.score >= 70 ? '#22c55e' : factor.score >= 40 ? '#eab308' : '#ef4444',
+                      backgroundColor: factor.score >= 70 ? 'var(--ak-status-success)' : factor.score >= 40 ? 'var(--ak-status-warning)' : 'var(--ak-status-error)',
                       transition: 'width 0.3s ease',
                     }} />
                   </div>

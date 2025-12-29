@@ -1,8 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, X, Star, Flame, Clock, Dumbbell, Zap, Target, Flag, Brain, Snowflake, Sun } from 'lucide-react';
+import clsx from 'clsx';
+import {
+  Award,
+  BookOpen,
+  Brain,
+  Check,
+  Clock,
+  Dumbbell,
+  Flag,
+  Flame,
+  Medal,
+  Moon,
+  Snowflake,
+  Star,
+  Sun,
+  Sunrise,
+  Target,
+  Trophy,
+  X,
+  Zap,
+} from 'lucide-react';
 
 /**
  * Symbol to icon mapping
+ * Matches BadgeSymbol enum from backend types.ts
  */
 const SYMBOL_TO_ICON = {
   flame: Flame,
@@ -10,24 +31,56 @@ const SYMBOL_TO_ICON = {
   star: Star,
   target: Target,
   clock: Clock,
+  check: Check,
   lightning: Zap,
   zap: Zap,
   flag: Flag,
+  medal: Medal,
   dumbbell: Dumbbell,
   brain: Brain,
+  sunrise: Sunrise,
+  moon: Moon,
   snowflake: Snowflake,
   sun: Sun,
+  book: BookOpen,
+  award: Award,
 };
 
 /**
- * Tier colors
+ * Tier styling configuration using semantic tokens
+ * CSS variables are used for dynamic glow effects
  */
-const TIER_COLORS = {
-  standard: { bg: '#64748b', glow: 'rgba(100, 116, 139, 0.4)' },
-  bronze: { bg: '#CD7F32', glow: 'rgba(205, 127, 50, 0.4)' },
-  silver: { bg: '#9CA3AF', glow: 'rgba(156, 163, 175, 0.4)' },
-  gold: { bg: '#F59E0B', glow: 'rgba(245, 158, 11, 0.4)' },
-  platinum: { bg: '#8B5CF6', glow: 'rgba(139, 92, 246, 0.4)' },
+const TIER_CONFIG = {
+  standard: {
+    iconBg: 'bg-ak-tier-standard',
+    border: 'border-ak-tier-standard',
+    labelColor: 'text-ak-tier-standard',
+    glowColor: 'var(--tier-standard-glow, rgba(100, 116, 139, 0.4))',
+  },
+  bronze: {
+    iconBg: 'bg-ak-tier-bronze',
+    border: 'border-ak-tier-bronze',
+    labelColor: 'text-ak-tier-bronze',
+    glowColor: 'var(--tier-bronze-glow, rgba(205, 127, 50, 0.4))',
+  },
+  silver: {
+    iconBg: 'bg-ak-tier-silver',
+    border: 'border-ak-tier-silver',
+    labelColor: 'text-ak-tier-silver',
+    glowColor: 'var(--tier-silver-glow, rgba(156, 163, 175, 0.4))',
+  },
+  gold: {
+    iconBg: 'bg-ak-tier-gold',
+    border: 'border-ak-tier-gold',
+    labelColor: 'text-ak-tier-gold',
+    glowColor: 'var(--tier-gold-glow, rgba(245, 158, 11, 0.4))',
+  },
+  platinum: {
+    iconBg: 'bg-ak-tier-platinum',
+    border: 'border-ak-tier-platinum',
+    labelColor: 'text-ak-tier-platinum',
+    glowColor: 'var(--tier-platinum-glow, rgba(139, 92, 246, 0.4))',
+  },
 };
 
 /**
@@ -38,7 +91,7 @@ const BadgeToast = ({ badge, onClose, index }) => {
   const [isExiting, setIsExiting] = useState(false);
 
   const Icon = SYMBOL_TO_ICON[badge.symbol] || Trophy;
-  const tierColor = TIER_COLORS[badge.tier] || TIER_COLORS.standard;
+  const tierConfig = TIER_CONFIG[badge.tier] || TIER_CONFIG.standard;
 
   useEffect(() => {
     // Stagger animation
@@ -63,78 +116,41 @@ const BadgeToast = ({ badge, onClose, index }) => {
 
   return (
     <div
+      className={clsx(
+        'relative bg-ak-toast-bg rounded-2xl p-5 mb-3 flex items-center gap-4 border-2 max-w-[360px] cursor-pointer',
+        'transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+        tierConfig.border,
+        isVisible && !isExiting ? 'translate-x-0 opacity-100' : 'translate-x-[120%] opacity-0'
+      )}
       style={{
-        position: 'relative',
-        backgroundColor: '#1e293b',
-        borderRadius: 16,
-        padding: 20,
-        marginBottom: 12,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 16,
-        boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 40px ${tierColor.glow}`,
-        border: `2px solid ${tierColor.bg}`,
-        transform: isVisible && !isExiting ? 'translateX(0)' : 'translateX(120%)',
-        opacity: isVisible && !isExiting ? 1 : 0,
-        transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        maxWidth: 360,
-        cursor: 'pointer',
+        boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 40px ${tierConfig.glowColor}`,
       }}
       onClick={handleClose}
     >
       {/* Badge icon */}
       <div
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: '50%',
-          backgroundColor: tierColor.bg,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          animation: 'pulse 2s infinite',
-        }}
+        className={clsx(
+          'w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 animate-pulse',
+          tierConfig.iconBg
+        )}
       >
-        <Icon size={28} color="#ffffff" />
+        <Icon size={28} className="text-ak-toast-text" />
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div className="flex-1 min-w-0">
         <div
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            color: tierColor.bg,
-            marginBottom: 4,
-          }}
+          className={clsx(
+            'text-[11px] font-semibold uppercase tracking-widest mb-1',
+            tierConfig.labelColor
+          )}
         >
           Badge Opptjent!
         </div>
-        <div
-          style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: '#ffffff',
-            marginBottom: 4,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
+        <div className="text-base font-bold text-ak-toast-text mb-1 truncate">
           {badge.name}
         </div>
-        <div
-          style={{
-            fontSize: 13,
-            color: '#94a3b8',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
+        <div className="text-[13px] text-ak-toast-text-muted truncate">
           +{badge.xp} XP
         </div>
       </div>
@@ -145,22 +161,7 @@ const BadgeToast = ({ badge, onClose, index }) => {
           e.stopPropagation();
           handleClose();
         }}
-        style={{
-          position: 'absolute',
-          top: 8,
-          right: 8,
-          width: 24,
-          height: 24,
-          borderRadius: '50%',
-          border: 'none',
-          backgroundColor: 'rgba(255,255,255,0.1)',
-          color: '#94a3b8',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'all 0.2s',
-        }}
+        className="absolute top-2 right-2 w-6 h-6 rounded-full border-none bg-white/10 text-ak-toast-text-muted cursor-pointer flex items-center justify-center transition-all duration-200 hover:bg-white/20"
       >
         <X size={14} />
       </button>
@@ -189,51 +190,25 @@ const LevelUpToast = ({ newLevel, onClose }) => {
 
   return (
     <div
+      className={clsx(
+        'relative bg-ak-toast-bg rounded-2xl p-6 mb-3 text-center border-2 border-ak-tier-gold max-w-[360px] cursor-pointer',
+        'transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+        isVisible && !isExiting
+          ? 'translate-x-0 scale-100 opacity-100'
+          : 'translate-x-[120%] scale-[0.8] opacity-0'
+      )}
       style={{
-        position: 'relative',
-        backgroundColor: '#1e293b',
-        borderRadius: 16,
-        padding: 24,
-        marginBottom: 12,
-        textAlign: 'center',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.3), 0 0 60px rgba(245, 158, 11, 0.5)',
-        border: '2px solid #F59E0B',
-        transform: isVisible && !isExiting ? 'translateX(0) scale(1)' : 'translateX(120%) scale(0.8)',
-        opacity: isVisible && !isExiting ? 1 : 0,
-        transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        maxWidth: 360,
+        boxShadow: '0 4px 20px rgba(0,0,0,0.3), 0 0 60px var(--tier-gold-glow, rgba(245, 158, 11, 0.5))',
       }}
       onClick={handleClose}
     >
-      <div
-        style={{
-          fontSize: 12,
-          fontWeight: 600,
-          textTransform: 'uppercase',
-          letterSpacing: '0.15em',
-          color: '#F59E0B',
-          marginBottom: 8,
-        }}
-      >
+      <div className="text-xs font-semibold uppercase tracking-[0.15em] text-ak-tier-gold mb-2">
         Nivå Opp!
       </div>
-      <div
-        style={{
-          fontSize: 48,
-          fontWeight: 800,
-          color: '#ffffff',
-          lineHeight: 1,
-          marginBottom: 8,
-        }}
-      >
+      <div className="text-5xl font-extrabold text-ak-toast-text leading-none mb-2">
         {newLevel}
       </div>
-      <div
-        style={{
-          fontSize: 14,
-          color: '#94a3b8',
-        }}
-      >
+      <div className="text-sm text-ak-toast-text-muted">
         Fortsett den gode innsatsen!
       </div>
     </div>
@@ -271,27 +246,7 @@ export const BadgeUnlockToast = ({ badges = [], levelUp = null, onDismiss }) => 
   }
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: 24,
-        right: 24,
-        zIndex: 9999,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-      }}
-    >
-      {/* CSS for pulse animation */}
-      <style>
-        {`
-          @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-          }
-        `}
-      </style>
-
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end">
       {/* Level up toast (shows first) */}
       {showLevelUp && (
         <LevelUpToast newLevel={levelUp} onClose={handleLevelUpClose} />

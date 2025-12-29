@@ -40,7 +40,7 @@ const GROUP_COLORS = [
   { value: 'var(--achievement)', label: 'Gull' },
   { value: 'var(--error)', label: 'Rød' },
   { value: '#60A5FA', label: 'Lys blå' },
-  { value: '#8B5CF6', label: 'Lilla' },
+  { value: 'var(--ak-accent-purple)', label: 'Lilla' },
   { value: '#EC4899', label: 'Rosa' },
   { value: '#14B8A6', label: 'Turkis' },
 ];

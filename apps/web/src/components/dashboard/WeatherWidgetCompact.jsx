@@ -2,30 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { Cloud, Sun, Wind, Droplets, MapPin, CloudRain, CloudSnow } from 'lucide-react';
 import { weatherAPI } from '../../services/api';
 
-// Weather icon mapping
+// Weather icon mapping using semantic tokens
 const getWeatherIcon = (symbol, size = 20) => {
   if (!symbol) return <Cloud size={size} />;
 
   if (symbol.includes('clearsky') || symbol.includes('fair')) {
-    return <Sun size={size} style={{ color: '#fbbf24' }} />;
+    return <Sun size={size} style={{ color: 'var(--ak-status-warning-light)' }} />;
   }
   if (symbol.includes('rain')) {
-    return <CloudRain size={size} style={{ color: '#60a5fa' }} />;
+    return <CloudRain size={size} style={{ color: 'var(--ak-status-info)' }} />;
   }
   if (symbol.includes('snow') || symbol.includes('sleet')) {
-    return <CloudSnow size={size} style={{ color: '#93c5fd' }} />;
+    return <CloudSnow size={size} style={{ color: 'var(--ak-status-info-light)' }} />;
   }
-  return <Cloud size={size} style={{ color: '#9ca3af' }} />;
+  return <Cloud size={size} style={{ color: 'var(--ak-text-muted)' }} />;
 };
 
-// Playability badge color
+// Playability badge color using semantic tokens
 const getPlayabilityStyle = (playability) => {
   const styles = {
-    excellent: { bg: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', text: 'Perfekt' },
-    good: { bg: 'rgba(132, 204, 22, 0.15)', color: '#84cc16', text: 'Bra' },
-    fair: { bg: 'rgba(234, 179, 8, 0.15)', color: '#eab308', text: 'OK' },
-    poor: { bg: 'rgba(249, 115, 22, 0.15)', color: '#f97316', text: 'Dårlig' },
-    unplayable: { bg: 'rgba(239, 68, 68, 0.15)', color: '#ef4444', text: 'Ikke spillbart' },
+    excellent: { bg: 'var(--ak-status-success-muted)', color: 'var(--ak-status-success)', text: 'Perfekt' },
+    good: { bg: 'var(--ak-status-success-muted)', color: 'var(--ak-status-success-light)', text: 'Bra' },
+    fair: { bg: 'var(--ak-status-warning-muted)', color: 'var(--ak-status-warning)', text: 'OK' },
+    poor: { bg: 'var(--ak-status-warning-muted)', color: 'var(--ak-status-warning-light)', text: 'Dårlig' },
+    unplayable: { bg: 'var(--ak-status-error-muted)', color: 'var(--ak-status-error)', text: 'Ikke spillbart' },
   };
   return styles[playability] || styles.fair;
 };

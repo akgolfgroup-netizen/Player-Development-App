@@ -44,7 +44,7 @@ const PRIORITET_LABELS = {
 };
 
 const DEFAULT_COLORS = [
-  '#10456A', '#4A7C59', '#C9A227', '#C45B4E', '#6B5B95',
+  'var(--ak-session-spill)', 'var(--ak-session-golfslag)', 'var(--ak-achievement-gold)', 'var(--ak-status-error)', '#6B5B95',
   '#88B04B', '#F7CAC9', '#92A8D1', '#955251', '#009B77'
 ];
 

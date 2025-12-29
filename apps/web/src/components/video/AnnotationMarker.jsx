@@ -13,41 +13,41 @@
 import React, { useState, useCallback, useRef } from 'react';
 import ConfirmDialog from '../ui/ConfirmDialog';
 
-// Annotation type icons and colors
+// Annotation type icons and colors using semantic tokens
 export const ANNOTATION_TYPE_CONFIG = {
   line: {
     label: 'Linje',
-    color: '#6366f1',
+    color: 'var(--ak-brand-primary)', // Forest green
     icon: 'line',
   },
   circle: {
     label: 'Sirkel',
-    color: '#22c55e',
+    color: 'var(--ak-status-success)', // Green
     icon: 'circle',
   },
   arrow: {
     label: 'Pil',
-    color: '#f59e0b',
+    color: 'var(--ak-status-warning-light)', // Amber
     icon: 'arrow',
   },
   angle: {
     label: 'Vinkel',
-    color: '#ec4899',
+    color: 'var(--ak-tier-platinum)', // Purple
     icon: 'angle',
   },
   freehand: {
     label: 'Frihånd',
-    color: '#8b5cf6',
+    color: 'var(--ak-tier-platinum)', // Purple
     icon: 'freehand',
   },
   text: {
     label: 'Tekst',
-    color: '#06b6d4',
+    color: 'var(--ak-status-info)', // Cyan
     icon: 'text',
   },
   voiceover: {
     label: 'Stemme',
-    color: '#ef4444',
+    color: 'var(--ak-status-error)', // Red
     icon: 'mic',
   },
 };
@@ -92,9 +92,9 @@ const styles = {
     left: '50%',
     transform: 'translateX(-50%)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-md, 8px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--ak-surface-dark-border)',
     boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
     minWidth: '180px',
     maxWidth: '280px',
@@ -108,8 +108,8 @@ const styles = {
     transform: 'translateX(-50%) rotate(45deg)',
     width: '12px',
     height: '12px',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    backgroundColor: 'var(--ak-toast-bg)',
+    border: '1px solid var(--ak-surface-dark-border)',
     borderTop: 'none',
     borderLeft: 'none',
   },
@@ -142,7 +142,7 @@ const styles = {
   tooltipPreview: {
     width: '100%',
     height: '80px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: 'var(--radius-sm, 4px)',
     marginBottom: 'var(--spacing-2, 8px)',
     overflow: 'hidden',
@@ -184,8 +184,8 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   deleteButton: {
-    color: 'var(--ak-error, #ef4444)',
-    borderColor: 'rgba(239, 68, 68, 0.3)',
+    color: 'var(--ak-status-error)',
+    borderColor: 'var(--ak-status-error-muted)',
   },
   voiceIndicator: {
     display: 'flex',

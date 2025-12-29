@@ -122,7 +122,7 @@ const categoryColors: Record<string, { bg: string; text: string; label: string }
   kort_spill: { bg: 'rgba(var(--achievement-rgb), 0.15)', text: 'var(--achievement)', label: 'Kort spill' },
   langt_spill: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Langt spill' },
   bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)', label: 'Bane' },
-  mental: { bg: 'rgba(139, 92, 246, 0.15)', text: '#8B5CF6', label: 'Mental' },
+  mental: { bg: 'rgba(139, 92, 246, 0.15)', text: 'var(--ak-accent-purple)', label: 'Mental' },
   fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Fysisk' },
 };
 

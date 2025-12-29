@@ -99,7 +99,7 @@ export default function CoachTournamentPlayers() {
         id: 'p1',
         name: 'Anders Hansen',
         initials: 'AH',
-        avatarColor: '#10456A',
+        avatarColor: 'var(--ak-session-spill)',
         category: 'A',
         upcomingTournaments: [
           { id: 'e1', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'registered', category: 'junior' },
@@ -113,7 +113,7 @@ export default function CoachTournamentPlayers() {
         id: 'p2',
         name: 'Sofie Andersen',
         initials: 'SA',
-        avatarColor: '#C9A227',
+        avatarColor: 'var(--ak-achievement-gold)',
         category: 'B',
         upcomingTournaments: [
           { id: 'e4', tournamentId: 't2', tournamentName: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
@@ -125,7 +125,7 @@ export default function CoachTournamentPlayers() {
         id: 'p3',
         name: 'Erik Johansen',
         initials: 'EJ',
-        avatarColor: '#4A7C59',
+        avatarColor: 'var(--ak-session-golfslag)',
         category: 'A',
         upcomingTournaments: [
           { id: 'e5', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'registered', category: 'junior' },
@@ -139,7 +139,7 @@ export default function CoachTournamentPlayers() {
         id: 'p4',
         name: 'Maria Berg',
         initials: 'MB',
-        avatarColor: '#C45B4E',
+        avatarColor: 'var(--ak-status-error)',
         category: 'C',
         upcomingTournaments: [
           { id: 'e8', tournamentId: 't2', tournamentName: 'AK Golf Academy Cup', date: '2025-01-20', location: 'Miklagard', status: 'registered', category: 'open' },
@@ -151,7 +151,7 @@ export default function CoachTournamentPlayers() {
         id: 'p5',
         name: 'Lars Olsen',
         initials: 'LO',
-        avatarColor: '#8E8E93',
+        avatarColor: 'var(--ak-text-muted)',
         category: 'B',
         upcomingTournaments: [
           { id: 'e9', tournamentId: 't1', tournamentName: 'NM Junior 2025', date: '2025-06-15', location: 'Oslo GK', status: 'pending', category: 'junior' },

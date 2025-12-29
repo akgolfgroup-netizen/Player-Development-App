@@ -7,7 +7,11 @@ import {
 } from 'lucide-react';
 import DagensPlan from '../../components/dashboard/DagensPlan';
 import WeatherWidget from '../../components/dashboard/WeatherWidget';
+import StrokesGainedWidget from '../../components/dashboard/StrokesGainedWidget';
+import { SGJourneyWidget, SkillDNAWidget, BountyBoardWidget } from '../../components/insights';
 import { useDashboard } from '../../hooks/useDashboard';
+import { useStrokesGained } from '../../hooks/useStrokesGained';
+import { useSGJourney, useSkillDNA, useBountyBoard } from '../../hooks/usePlayerInsights';
 import { FocusWidget } from '../focus-engine';
 import SessionEvaluationWidget from '../sessions/SessionEvaluationWidget';
 import { DashboardTemplate } from '../../ui/templates';
@@ -356,6 +360,12 @@ const SessionCardCompact = ({ session, onClick }) => {
 const AKGolfDashboard = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading, error, refetch } = useDashboard();
+  const { data: sgData, loading: sgLoading, error: sgError } = useStrokesGained();
+
+  // Player Insights hooks
+  const { data: sgJourneyData, loading: sgJourneyLoading, error: sgJourneyError } = useSGJourney();
+  const { data: skillDNAData, loading: skillDNALoading, error: skillDNAError } = useSkillDNA();
+  const { data: bountyData, loading: bountyLoading, error: bountyError, activateBounty, updateProgress } = useBountyBoard();
 
   const [tasks, setTasks] = useState([]);
 
@@ -504,6 +514,47 @@ const AKGolfDashboard = () => {
 
           {/* Focus Widget */}
           <FocusWidget />
+
+          {/* Strokes Gained Widget */}
+          <StrokesGainedWidget
+            data={sgData}
+            loading={sgLoading}
+            error={sgError}
+            onViewDetails={() => navigate('/stats/strokes-gained')}
+          />
+
+          {/* Player Insights Section */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gap: '20px',
+          }}>
+            {/* SG Journey Widget */}
+            <SGJourneyWidget
+              data={sgJourneyData}
+              loading={sgJourneyLoading}
+              error={sgJourneyError}
+              onViewDetails={() => navigate('/insights/sg-journey')}
+            />
+
+            {/* Skill DNA Widget */}
+            <SkillDNAWidget
+              data={skillDNAData}
+              loading={skillDNALoading}
+              error={skillDNAError}
+              onViewDetails={() => navigate('/insights/skill-dna')}
+            />
+          </div>
+
+          {/* Bounty Board Widget - Full width */}
+          <BountyBoardWidget
+            data={bountyData}
+            loading={bountyLoading}
+            error={bountyError}
+            onActivateBounty={activateBounty}
+            onUpdateProgress={updateProgress}
+            onViewDetails={() => navigate('/insights/bounties')}
+          />
 
           {/* Weather Widget */}
           <WeatherWidget showForecast={true} />

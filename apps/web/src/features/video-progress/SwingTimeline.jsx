@@ -21,7 +21,7 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-lg, 12px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
   },
@@ -42,7 +42,7 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
     padding: '8px 16px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -88,7 +88,7 @@ const styles = {
   thumbnail: {
     width: '60px',
     height: '45px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     borderRadius: 'var(--radius-sm, 4px)',
     border: '2px solid transparent',
     overflow: 'hidden',
@@ -96,7 +96,7 @@ const styles = {
     transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
   },
   thumbnailSelected: {
-    borderColor: 'var(--ak-primary, #6366f1)',
+    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
     boxShadow: '0 0 0 2px rgba(99, 102, 241, 0.3)',
   },
   thumbnailImage: {
@@ -129,9 +129,9 @@ const styles = {
     transform: 'translateX(-50%)',
     width: '10px',
     height: '10px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     borderRadius: '50%',
-    border: '2px solid var(--ak-surface, #1a1a2e)',
+    border: '2px solid var(--ak-surface, var(--ak-toast-bg))',
   },
   emptyState: {
     display: 'flex',
@@ -377,9 +377,9 @@ export function SwingTimeline({
                   style={{
                     width: '80px',
                     height: '60px',
-                    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+                    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
                     borderRadius: 'var(--radius-md, 8px)',
-                    border: isSelected(video.id) ? '2px solid var(--ak-primary, #6366f1)' : '2px solid transparent',
+                    border: isSelected(video.id) ? '2px solid var(--ak-primary, var(--ak-brand-primary))' : '2px solid transparent',
                     overflow: 'hidden',
                     boxShadow: isSelected(video.id) ? '0 0 0 2px rgba(99, 102, 241, 0.3)' : 'none',
                   }}

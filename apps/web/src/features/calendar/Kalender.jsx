@@ -84,15 +84,16 @@ const WeekView = ({ currentDate, sessions, selectedDate, onDateSelect, onSession
   const today = new Date();
 
   const getSessionColor = (type) => {
+    // Use semantic session tokens from design system
     const colors = {
-      teknikk: '#2C5F7F',
-      golfslag: '#4A7C59',
-      spill: '#10456A',
-      konkurranse: '#C9A227',
-      fysisk: '#D4A84B',
-      mental: '#8E8E93',
+      teknikk: 'var(--ak-session-teknikk)',
+      golfslag: 'var(--ak-session-golfslag)',
+      spill: 'var(--ak-session-spill)',
+      konkurranse: 'var(--ak-session-kompetanse)',
+      fysisk: 'var(--ak-session-fysisk)',
+      mental: 'var(--ak-text-muted)',
     };
-    return colors[type] || tokens.colors.steel;
+    return colors[type] || 'var(--ak-text-tertiary)';
   };
 
   const getDayStats = (date) => {

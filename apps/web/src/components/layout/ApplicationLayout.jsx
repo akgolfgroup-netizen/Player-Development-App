@@ -1,15 +1,9 @@
 'use client'
 
 /**
- * ApplicationLayout - Catalyst-based layout with AK Golf Blue Palette
+ * ApplicationLayout - Catalyst-based layout with AK Golf Premium Light styling
  *
- * Colors from design-system.md:
- * - Primary Blue: #10456A
- * - Primary Light: #2C5F7F
- * - Snow: #EDF0F2
- * - Surface: #EBE5DA
- * - Ink: #02060D
- * - Gold: #C9A227
+ * Uses semantic color tokens from design-system.
  */
 
 import React, { useMemo, useState } from 'react'
@@ -83,7 +77,9 @@ function NavMenuItem({ item, pathname, openMenus, toggleMenu }) {
           className={`
             flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium
             transition-colors duration-150
-            ${hasActiveChild ? 'text-white bg-[#2C5F7F]' : 'text-white/80 hover:bg-[#2C5F7F] hover:text-white'}
+            ${hasActiveChild
+              ? 'text-ak-text-inverse bg-ak-brand-primary-hover'
+              : 'text-white/80 hover:bg-ak-brand-primary-hover hover:text-ak-text-inverse'}
           `}
         >
           <Icon className="size-5 shrink-0" />
@@ -175,7 +171,7 @@ export default function ApplicationLayout({ children }) {
               <DropdownButton as={NavbarItem}>
                 <Avatar
                   initials={userInitials}
-                  className="size-8 bg-[#10456A] text-white text-sm"
+                  className="size-8 bg-ak-brand-primary text-ak-text-inverse text-sm"
                   square
                 />
               </DropdownButton>
@@ -188,7 +184,7 @@ export default function ApplicationLayout({ children }) {
         <Sidebar>
           <SidebarHeader>
             <div className="flex justify-center py-2">
-              <AKLogo size={44} color="#EBE5DA" />
+              <AKLogo size={44} className="text-ak-surface-subtle" />
             </div>
           </SidebarHeader>
 
@@ -213,7 +209,7 @@ export default function ApplicationLayout({ children }) {
               <DropdownButton as={SidebarItem}>
                 <Avatar
                   initials={userInitials}
-                  className="size-8 bg-white/10 text-white text-sm"
+                  className="size-8 bg-white/10 text-ak-text-inverse text-sm"
                   square
                 />
                 <SidebarLabel className="text-white/90">{userName}</SidebarLabel>

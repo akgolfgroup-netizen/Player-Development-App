@@ -11,3 +11,4 @@ export { default as useVideos, useVideo, useVideoPlayback } from './useVideos';
 export { default as useVideoAnnotations, useAnnotationAudio, useVideoComments } from './useVideoAnnotations';
 export { default as useComparisonData, useComparisonVideos, useComparisonsList } from './useVideoComparisonApi';
 export { default as useVideoRequests, REQUEST_STATUS } from './useVideoRequests';
+export { default as useStrokesGained, useStrokesGained as useStrokesGainedNamed, usePeiToSg } from './useStrokesGained';

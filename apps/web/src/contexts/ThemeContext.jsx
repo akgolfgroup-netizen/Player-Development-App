@@ -12,8 +12,8 @@ const THEME_KEY = 'ak-golf-theme';
  */
 export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState(() => {
-    if (typeof window === 'undefined') return 'system';
-    return localStorage.getItem(THEME_KEY) || 'system';
+    if (typeof window === 'undefined') return 'light';
+    return localStorage.getItem(THEME_KEY) || 'light';
   });
 
   const [resolvedTheme, setResolvedTheme] = useState('light');

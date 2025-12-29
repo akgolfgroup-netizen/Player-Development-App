@@ -120,8 +120,8 @@ const getTypeConfig = (type) => {
 
 const getPositionColor = (position) => {
   if (position === 1) return 'var(--achievement)';
-  if (position === 2) return '#C0C0C0';
-  if (position === 3) return '#CD7F32';
+  if (position === 2) return 'var(--ak-medal-silver)';
+  if (position === 3) return 'var(--ak-medal-bronze)';
   if (position <= 10) return 'var(--accent)';
   return 'var(--text-secondary)';
 };

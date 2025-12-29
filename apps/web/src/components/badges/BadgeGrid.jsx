@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import clsx from 'clsx';
 import {
   Award,
   Clock,
@@ -62,14 +63,45 @@ const CATEGORY_DEFAULT_ICONS = {
 };
 
 /**
- * Tier colors - matches backend BadgeTier enum
+ * Tier styling classes - using semantic tokens from design system
+ * Maps to bg-ak-tier-{tier}, border-ak-tier-{tier}-border, text-ak-tier-{tier}-text
  */
-const TIER_COLORS = {
-  standard: { bg: '#64748b', text: '#FFFFFF', border: '#475569' },
-  bronze: { bg: '#CD7F32', text: '#FFFFFF', border: '#b86f2c' },
-  silver: { bg: '#9CA3AF', text: '#FFFFFF', border: '#6B7280' },
-  gold: { bg: '#F59E0B', text: '#FFFFFF', border: '#D97706' },
-  platinum: { bg: '#8B5CF6', text: '#FFFFFF', border: '#7C3AED' },
+const TIER_CLASSES = {
+  standard: {
+    card: 'bg-ak-tier-standard border-ak-tier-standard-border',
+    text: 'text-ak-tier-standard-text',
+    icon: 'text-ak-tier-standard-text',
+  },
+  bronze: {
+    card: 'bg-ak-tier-bronze border-ak-tier-bronze-border',
+    text: 'text-ak-tier-bronze-text',
+    icon: 'text-ak-tier-bronze-text',
+  },
+  silver: {
+    card: 'bg-ak-tier-silver border-ak-tier-silver-border',
+    text: 'text-ak-tier-silver-text',
+    icon: 'text-ak-tier-silver-text',
+  },
+  gold: {
+    card: 'bg-ak-tier-gold border-ak-tier-gold-border',
+    text: 'text-ak-tier-gold-text',
+    icon: 'text-ak-tier-gold-text',
+  },
+  platinum: {
+    card: 'bg-ak-tier-platinum border-ak-tier-platinum-border',
+    text: 'text-ak-tier-platinum-text',
+    icon: 'text-ak-tier-platinum-text',
+  },
+};
+
+/**
+ * Locked badge styling
+ */
+const LOCKED_CLASSES = {
+  card: 'bg-ak-surface-card border-ak-tier-locked-border',
+  text: 'text-ak-text-primary',
+  textSecondary: 'text-ak-text-tertiary',
+  icon: 'text-ak-tier-locked-icon opacity-50',
 };
 
 /**
@@ -127,7 +159,7 @@ const getIconForBadge = (badge) => {
  */
 const BadgeCard = ({ badge, isUnlocked, progress, onClick }) => {
   const Icon = getIconForBadge(badge);
-  const tierColor = TIER_COLORS[badge.tier] || TIER_COLORS.standard;
+  const tierClasses = TIER_CLASSES[badge.tier] || TIER_CLASSES.standard;
 
   // Get first requirement description for display
   const requirement = badge.requirements?.[0]?.description || badge.description || '';
@@ -135,68 +167,43 @@ const BadgeCard = ({ badge, isUnlocked, progress, onClick }) => {
   return (
     <div
       onClick={() => onClick?.({ ...badge, isUnlocked, progress })}
-      style={{
-        backgroundColor: isUnlocked ? tierColor.bg : '#ffffff',
-        cursor: 'pointer',
-        borderRadius: 12,
-        padding: 20,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 10,
-        transition: 'transform 0.2s, box-shadow 0.2s',
-        border: isUnlocked ? `1px solid ${tierColor.border}` : '1px solid #e2e8f0',
-        boxShadow: isUnlocked ? '0 4px 12px rgba(0,0,0,0.1)' : '0 1px 3px rgba(0,0,0,0.05)',
-        opacity: badge.isAvailable === false ? 0.5 : 1,
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.12)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = isUnlocked
-          ? '0 4px 12px rgba(0,0,0,0.1)'
-          : '0 1px 3px rgba(0,0,0,0.05)';
-      }}
+      className={clsx(
+        'cursor-pointer rounded-xl p-5 flex flex-col items-center gap-2.5 border transition-all duration-200',
+        'hover:-translate-y-0.5 hover:shadow-ak-elevated',
+        isUnlocked
+          ? [tierClasses.card, 'shadow-ak-md']
+          : [LOCKED_CLASSES.card, 'shadow-ak-xs'],
+        badge.isAvailable === false && 'opacity-50'
+      )}
     >
+      {/* Icon container */}
       <div
-        style={{
-          width: 52,
-          height: 52,
-          borderRadius: '50%',
-          backgroundColor: isUnlocked ? 'rgba(255,255,255,0.25)' : '#f1f5f9',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        className={clsx(
+          'w-13 h-13 rounded-full flex items-center justify-center',
+          isUnlocked ? 'bg-white/25' : 'bg-ak-surface-subtle'
+        )}
       >
         <Icon
           size={26}
-          style={{
-            color: isUnlocked ? '#ffffff' : '#94a3b8',
-            opacity: isUnlocked ? 1 : 0.5,
-          }}
+          className={isUnlocked ? tierClasses.icon : LOCKED_CLASSES.icon}
         />
       </div>
 
-      <div style={{ textAlign: 'center' }}>
+      {/* Badge info */}
+      <div className="text-center">
         <div
-          style={{
-            fontWeight: 600,
-            fontSize: 14,
-            color: isUnlocked ? '#ffffff' : '#1e293b',
-            marginBottom: 4,
-          }}
+          className={clsx(
+            'font-semibold text-sm mb-1',
+            isUnlocked ? tierClasses.text : LOCKED_CLASSES.text
+          )}
         >
           {badge.name}
         </div>
         <div
-          style={{
-            fontSize: 12,
-            color: isUnlocked ? 'rgba(255,255,255,0.85)' : '#64748b',
-            lineHeight: 1.4,
-          }}
+          className={clsx(
+            'text-xs leading-relaxed',
+            isUnlocked ? 'text-white/85' : LOCKED_CLASSES.textSecondary
+          )}
         >
           {requirement}
         </div>
@@ -204,33 +211,16 @@ const BadgeCard = ({ badge, isUnlocked, progress, onClick }) => {
 
       {/* Progress bar for locked badges */}
       {!isUnlocked && progress && progress.current > 0 && (
-        <div style={{ width: '100%', marginTop: 4 }}>
-          <div
-            style={{
-              height: 4,
-              backgroundColor: '#e2e8f0',
-              borderRadius: 2,
-              overflow: 'hidden',
-            }}
-          >
+        <div className="w-full mt-1">
+          <div className="h-1 bg-ak-component-progress-bg rounded-sm overflow-hidden">
             <div
+              className="h-full bg-ak-status-info-light rounded-sm transition-all duration-300"
               style={{
-                height: '100%',
-                backgroundColor: '#0ea5e9',
                 width: `${Math.min(100, (progress.current / (progress.target || 1)) * 100)}%`,
-                borderRadius: 2,
-                transition: 'width 0.3s ease',
               }}
             />
           </div>
-          <div
-            style={{
-              fontSize: 10,
-              color: '#64748b',
-              textAlign: 'center',
-              marginTop: 4,
-            }}
-          >
+          <div className="text-[10px] text-ak-text-tertiary text-center mt-1">
             {progress.current} / {progress.target}
           </div>
         </div>
@@ -238,18 +228,7 @@ const BadgeCard = ({ badge, isUnlocked, progress, onClick }) => {
 
       {/* Tier badge for unlocked */}
       {isUnlocked && (
-        <div
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            color: 'rgba(255,255,255,0.9)',
-            backgroundColor: 'rgba(0,0,0,0.15)',
-            padding: '4px 12px',
-            borderRadius: 12,
-          }}
-        >
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-white/90 bg-black/15 px-3 py-1 rounded-xl">
           {badge.tier}
         </div>
       )}
@@ -257,11 +236,10 @@ const BadgeCard = ({ badge, isUnlocked, progress, onClick }) => {
       {/* XP indicator */}
       {badge.xp && (
         <div
-          style={{
-            fontSize: 10,
-            color: isUnlocked ? 'rgba(255,255,255,0.7)' : '#94a3b8',
-            fontWeight: 500,
-          }}
+          className={clsx(
+            'text-[10px] font-medium',
+            isUnlocked ? 'text-white/70' : 'text-ak-text-muted'
+          )}
         >
           +{badge.xp} XP
         </div>
@@ -270,13 +248,10 @@ const BadgeCard = ({ badge, isUnlocked, progress, onClick }) => {
       {/* Seasonal/Limited indicator */}
       {badge.isLimited && (
         <div
-          style={{
-            fontSize: 9,
-            color: isUnlocked ? 'rgba(255,255,255,0.7)' : '#f59e0b',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-          }}
+          className={clsx(
+            'text-[9px] font-semibold uppercase tracking-wide',
+            isUnlocked ? 'text-white/70' : 'text-ak-status-warning-light'
+          )}
         >
           Tidsbegrenset
         </div>
@@ -378,33 +353,18 @@ export const BadgeGrid = ({
   };
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div className="p-6">
       {/* Filters */}
       {showFilters && (
-        <div
-          style={{
-            display: 'flex',
-            gap: 8,
-            marginBottom: 24,
-            flexWrap: 'wrap',
-            paddingBottom: 20,
-            borderBottom: '1px solid #e2e8f0',
-            alignItems: 'center',
-          }}
-        >
+        <div className="flex gap-2 mb-6 flex-wrap pb-5 border-b border-ak-neutral-divider items-center">
           <button
             onClick={() => setFilter('all')}
-            style={{
-              padding: '8px 16px',
-              borderRadius: 20,
-              border: filter === 'all' ? 'none' : '1px solid #e2e8f0',
-              backgroundColor: filter === 'all' ? '#0ea5e9' : '#ffffff',
-              color: filter === 'all' ? 'white' : '#64748b',
-              fontWeight: 500,
-              fontSize: 13,
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
+            className={clsx(
+              'px-4 py-2 rounded-full font-medium text-[13px] cursor-pointer transition-all duration-200',
+              filter === 'all'
+                ? 'bg-ak-status-info-light text-ak-text-inverse border-none'
+                : 'bg-ak-surface-card text-ak-text-tertiary border border-ak-border'
+            )}
           >
             Alle ({badges.length})
           </button>
@@ -414,39 +374,24 @@ export const BadgeGrid = ({
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: 20,
-                  border: filter === cat ? 'none' : '1px solid #e2e8f0',
-                  backgroundColor: filter === cat ? '#0ea5e9' : '#ffffff',
-                  color: filter === cat ? 'white' : '#64748b',
-                  fontWeight: 500,
-                  fontSize: 13,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
+                className={clsx(
+                  'px-4 py-2 rounded-full font-medium text-[13px] cursor-pointer transition-all duration-200',
+                  filter === cat
+                    ? 'bg-ak-status-info-light text-ak-text-inverse border-none'
+                    : 'bg-ak-surface-card text-ak-text-tertiary border border-ak-border'
+                )}
               >
                 {CATEGORY_LABELS[cat] || cat} ({count})
               </button>
             );
           })}
 
-          <label
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              marginLeft: 'auto',
-              cursor: 'pointer',
-              fontSize: 13,
-              color: '#64748b',
-            }}
-          >
+          <label className="flex items-center gap-2 ml-auto cursor-pointer text-[13px] text-ak-text-tertiary">
             <input
               type="checkbox"
               checked={showUnlockedOnly}
               onChange={(e) => setShowUnlockedOnly(e.target.checked)}
-              style={{ width: 16, height: 16 }}
+              className="w-4 h-4"
             />
             <span>Kun opptjent</span>
           </label>
@@ -455,41 +400,19 @@ export const BadgeGrid = ({
 
       {/* Badge groups */}
       {Object.entries(groupedBadges).map(([groupKey, groupBadges]) => (
-        <div key={groupKey} style={{ marginBottom: 32 }}>
+        <div key={groupKey} className="mb-8">
           {groupBy !== 'none' && (
-            <h3
-              style={{
-                fontSize: 16,
-                fontWeight: 600,
-                marginBottom: 16,
-                color: '#1e293b',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-              }}
-            >
+            <h3 className="text-base font-semibold mb-4 text-ak-text-primary flex items-center gap-2">
               {groupBy === 'category' && CATEGORY_LABELS[groupKey]}
               {groupBy === 'tier' && tierLabels[groupKey]}
               {groupBy === 'none' && 'Alle badges'}
-              <span
-                style={{
-                  fontSize: 12,
-                  fontWeight: 400,
-                  color: '#94a3b8',
-                }}
-              >
+              <span className="text-xs font-normal text-ak-text-muted">
                 ({groupBadges.length})
               </span>
             </h3>
           )}
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-              gap: 16,
-            }}
-          >
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">
             {groupBadges.map((badge) => (
               <BadgeCard
                 key={badge.id}
@@ -505,13 +428,7 @@ export const BadgeGrid = ({
 
       {/* Empty state */}
       {filteredBadges.length === 0 && (
-        <div
-          style={{
-            textAlign: 'center',
-            padding: 48,
-            color: '#64748b',
-          }}
-        >
+        <div className="text-center p-12 text-ak-text-tertiary">
           Ingen badges funnet med valgte filter
         </div>
       )}

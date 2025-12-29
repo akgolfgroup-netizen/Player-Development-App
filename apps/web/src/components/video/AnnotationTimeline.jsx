@@ -22,9 +22,9 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-2, 8px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-toast-bg)',
     borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
+    border: '1px solid var(--ak-surface-dark-border)',
   },
   header: {
     display: 'flex',
@@ -43,8 +43,8 @@ const styles = {
   },
   count: {
     padding: '2px 8px',
-    backgroundColor: 'var(--ak-primary-soft, rgba(99, 102, 241, 0.2))',
-    color: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-brand-primary-muted)',
+    color: 'var(--ak-brand-primary)',
     borderRadius: 'var(--radius-full, 9999px)',
     fontSize: '12px',
     fontWeight: '600',
@@ -67,8 +67,8 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   filterButtonActive: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    borderColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-brand-primary)',
+    borderColor: 'var(--ak-brand-primary)',
     color: 'white',
   },
   timelineContainer: {
@@ -82,7 +82,7 @@ const styles = {
     right: 0,
     top: '20px',
     height: '8px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: '4px',
     cursor: 'pointer',
     overflow: 'visible',
@@ -92,7 +92,7 @@ const styles = {
     left: 0,
     top: 0,
     height: '100%',
-    backgroundColor: 'rgba(99, 102, 241, 0.3)',
+    backgroundColor: 'var(--ak-brand-primary-muted)',
     borderRadius: '4px',
     pointerEvents: 'none',
   },
@@ -101,7 +101,7 @@ const styles = {
     top: '-4px',
     width: '2px',
     height: '16px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-brand-primary)',
     borderRadius: '1px',
     transform: 'translateX(-50%)',
     zIndex: 20,
@@ -114,7 +114,7 @@ const styles = {
     transform: 'translateX(-50%)',
     width: '12px',
     height: '12px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-brand-primary)',
     borderRadius: '50%',
     border: '2px solid white',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
@@ -166,13 +166,13 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-2, 8px)',
     padding: 'var(--spacing-2, 8px)',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark-elevated)',
     borderRadius: 'var(--radius-sm, 4px)',
     cursor: 'pointer',
     transition: 'background-color 0.15s ease',
   },
   annotationItemActive: {
-    backgroundColor: 'rgba(99, 102, 241, 0.2)',
+    backgroundColor: 'var(--ak-brand-primary-muted)',
   },
   annotationIcon: {
     width: '24px',
@@ -470,7 +470,7 @@ export function AnnotationTimeline({
                 <div
                   style={{
                     ...styles.annotationIcon,
-                    backgroundColor: annotation.color || config.color || '#6366f1',
+                    backgroundColor: annotation.color || config.color || 'var(--ak-brand-primary)',
                   }}
                 >
                   {getTypeIcon(annotation.type)}

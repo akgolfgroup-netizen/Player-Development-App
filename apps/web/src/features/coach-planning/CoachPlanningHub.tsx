@@ -124,10 +124,10 @@ export const CoachPlanningHub: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'A': return { bg: '#dcfce7', text: '#166534' };
-      case 'B': return { bg: '#dbeafe', text: '#1e40af' };
-      case 'C': return { bg: '#fef3c7', text: '#92400e' };
-      default: return { bg: '#f3f4f6', text: '#374151' };
+      case 'A': return { bg: 'var(--ak-status-success-bg)', text: 'var(--ak-status-success-text)' };
+      case 'B': return { bg: 'var(--ak-status-info-bg)', text: 'var(--ak-status-info-text)' };
+      case 'C': return { bg: 'var(--ak-status-warning-bg)', text: 'var(--ak-status-warning-text)' };
+      default: return { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-secondary)' };
     }
   };
 
@@ -380,13 +380,13 @@ export const CoachPlanningHub: React.FC = () => {
                   backgroundColor: player.hasActivePlan
                     ? 'rgba(34, 197, 94, 0.1)'
                     : 'rgba(245, 158, 11, 0.1)',
-                  border: `2px solid ${player.hasActivePlan ? '#16a34a' : '#f59e0b'}`,
+                  border: `2px solid ${player.hasActivePlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: player.hasActivePlan ? '#16a34a' : '#f59e0b'
+                  color: player.hasActivePlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'
                 }}>
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
@@ -419,7 +419,7 @@ export const CoachPlanningHub: React.FC = () => {
                       <>
                         <span style={{
                           fontSize: '11px',
-                          color: '#16a34a',
+                          color: 'var(--ak-status-success)',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '4px'
@@ -436,7 +436,7 @@ export const CoachPlanningHub: React.FC = () => {
                     ) : (
                       <span style={{
                         fontSize: '11px',
-                        color: '#f59e0b',
+                        color: 'var(--ak-status-warning-light)',
                         fontWeight: '500'
                       }}>
                         Ingen aktiv plan
@@ -474,12 +474,12 @@ export const CoachPlanningHub: React.FC = () => {
                 backgroundColor: group.hasGroupPlan
                   ? 'rgba(34, 197, 94, 0.1)'
                   : 'rgba(245, 158, 11, 0.1)',
-                border: `2px solid ${group.hasGroupPlan ? '#16a34a' : '#f59e0b'}`,
+                border: `2px solid ${group.hasGroupPlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Users size={20} color={group.hasGroupPlan ? '#16a34a' : '#f59e0b'} />
+                <Users size={20} color={group.hasGroupPlan ? 'var(--ak-status-success)' : 'var(--ak-status-warning-light)'} />
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
@@ -498,7 +498,7 @@ export const CoachPlanningHub: React.FC = () => {
                     <>
                       <span style={{
                         fontSize: '11px',
-                        color: '#16a34a',
+                        color: 'var(--ak-status-success)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '4px'
@@ -515,7 +515,7 @@ export const CoachPlanningHub: React.FC = () => {
                   ) : (
                     <span style={{
                       fontSize: '11px',
-                      color: '#f59e0b',
+                      color: 'var(--ak-status-warning-light)',
                       fontWeight: '500'
                     }}>
                       Ingen gruppeplan

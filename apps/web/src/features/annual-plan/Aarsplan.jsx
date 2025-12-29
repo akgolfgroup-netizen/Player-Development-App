@@ -4,10 +4,10 @@ import { tokens } from '../../design-tokens';
 
 // Period colors (Blue Palette 01)
 const periodColors = {
-  evaluering: '#8E8E93',
-  grunnlag: '#2C5F7F',
-  spesialisering: '#4A7C59',
-  turnering: '#C9A227',
+  evaluering: 'var(--ak-text-muted)',
+  grunnlag: 'var(--ak-session-teknikk)',
+  spesialisering: 'var(--ak-session-golfslag)',
+  turnering: 'var(--ak-achievement-gold)',
 };
 
 // ===== ICONS =====

@@ -21,7 +21,7 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-lg, 12px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
   },
@@ -49,12 +49,12 @@ const styles = {
     textAlign: 'center',
   },
   timerRecording: {
-    color: 'var(--ak-error, #ef4444)',
+    color: 'var(--ak-error, var(--ak-status-error-light))',
   },
   waveformContainer: {
     position: 'relative',
     height: '80px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     borderRadius: 'var(--radius-md, 8px)',
     overflow: 'hidden',
   },
@@ -68,12 +68,12 @@ const styles = {
   },
   waveformBar: {
     width: '3px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     borderRadius: '2px',
     transition: 'height 0.05s ease',
   },
   waveformBarRecording: {
-    backgroundColor: 'var(--ak-error, #ef4444)',
+    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
   },
   inputLevelContainer: {
     position: 'absolute',
@@ -91,15 +91,15 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'var(--ak-success, #22c55e)',
+    backgroundColor: 'var(--ak-success, var(--ak-status-success-light))',
     borderRadius: '2px',
     transition: 'height 0.05s ease',
   },
   inputLevelHigh: {
-    backgroundColor: 'var(--ak-warning, #f59e0b)',
+    backgroundColor: 'var(--ak-warning, var(--ak-status-warning-light))',
   },
   inputLevelClipping: {
-    backgroundColor: 'var(--ak-error, #ef4444)',
+    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
   },
   playbackContainer: {
     display: 'flex',
@@ -109,7 +109,7 @@ const styles = {
   progressBar: {
     position: 'relative',
     height: '8px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     borderRadius: '4px',
     cursor: 'pointer',
     overflow: 'hidden',
@@ -119,7 +119,7 @@ const styles = {
     left: 0,
     top: 0,
     height: '100%',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     borderRadius: '4px',
     transition: 'width 0.1s ease',
   },
@@ -140,7 +140,7 @@ const styles = {
     width: '64px',
     height: '64px',
     borderRadius: '50%',
-    border: '3px solid var(--ak-error, #ef4444)',
+    border: '3px solid var(--ak-error, var(--ak-status-error-light))',
     backgroundColor: 'transparent',
     cursor: 'pointer',
     display: 'flex',
@@ -152,7 +152,7 @@ const styles = {
     width: '32px',
     height: '32px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-error, #ef4444)',
+    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
     transition: 'all 0.2s ease',
   },
   recordButtonRecording: {
@@ -165,7 +165,7 @@ const styles = {
     height: '48px',
     borderRadius: '50%',
     border: 'none',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     color: 'var(--ak-text-primary, white)',
     cursor: 'pointer',
     display: 'flex',
@@ -178,7 +178,7 @@ const styles = {
     cursor: 'not-allowed',
   },
   primaryButton: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
   },
   actions: {
     display: 'flex',
@@ -200,7 +200,7 @@ const styles = {
     transition: 'all 0.2s ease',
   },
   saveButton: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     color: 'white',
   },
   discardButton: {
@@ -230,7 +230,7 @@ const styles = {
   },
   permissionButton: {
     padding: '10px 24px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
@@ -242,7 +242,7 @@ const styles = {
     padding: 'var(--spacing-3, 12px)',
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-error, #ef4444)',
+    color: 'var(--ak-error, var(--ak-status-error-light))',
     fontSize: '13px',
     textAlign: 'center',
   },
@@ -250,7 +250,7 @@ const styles = {
     width: '8px',
     height: '8px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-error, #ef4444)',
+    backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
     animation: 'pulse 1s ease-in-out infinite',
   },
 };
@@ -570,7 +570,7 @@ export function VoiceRecorder({
 
       {/* Max duration warning */}
       {isRecording && duration > maxDuration - 30 && (
-        <div style={{ ...styles.errorMessage, backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--ak-warning, #f59e0b)' }}>
+        <div style={{ ...styles.errorMessage, backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--ak-warning, var(--ak-status-warning-light))' }}>
           {Math.ceil(maxDuration - duration)} sekunder igjen
         </div>
       )}

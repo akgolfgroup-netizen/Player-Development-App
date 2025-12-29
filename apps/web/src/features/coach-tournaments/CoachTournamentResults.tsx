@@ -244,7 +244,7 @@ export default function CoachTournamentResults() {
     });
 
     const stats: PlayerStats[] = [];
-    const colors = ['#10456A', '#C9A227', '#4A7C59', '#C45B4E', '#8E8E93'];
+    const colors = ['var(--ak-session-spill)', 'var(--ak-achievement-gold)', 'var(--ak-session-golfslag)', 'var(--ak-status-error)', 'var(--ak-text-muted)'];
 
     playerMap.forEach((playerResults, playerId) => {
       const first = playerResults[0];

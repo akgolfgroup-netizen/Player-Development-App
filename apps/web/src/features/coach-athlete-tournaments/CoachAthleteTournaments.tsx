@@ -130,12 +130,12 @@ const getStatusConfig = (status: string) => {
 const generateMockAthletes = (): Athlete[] => {
   // Avatar colors - using CSS variable values as fallback hex for mock data
   const avatarColors = [
-    '#10456A', // accent
-    '#2C5F7F', // accent-light
-    '#4A7C59', // success
-    '#C9A227', // achievement
-    '#8E6E53', // warm neutral
-    '#6B7280', // cool neutral
+    'var(--ak-session-spill)', // accent
+    'var(--ak-session-teknikk)', // accent-light
+    'var(--ak-session-golfslag)', // success
+    'var(--ak-achievement-gold)', // achievement
+    '#8E6E53', // warm neutral (no mapping)
+    'var(--ak-text-tertiary)', // cool neutral
   ];
 
   return [

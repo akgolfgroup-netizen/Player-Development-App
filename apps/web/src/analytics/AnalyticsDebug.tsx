@@ -122,7 +122,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   toggle: {
     padding: '6px 10px',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: 'var(--ak-toast-bg)',
     color: '#fff',
     border: 'none',
     borderRadius: '4px',
@@ -134,7 +134,7 @@ const styles: Record<string, React.CSSProperties> = {
     right: 0,
     width: '320px',
     maxHeight: '300px',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: 'var(--ak-toast-bg)',
     color: '#e0e0e0',
     borderRadius: '6px',
     overflow: 'hidden',
@@ -171,7 +171,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '2px',
     padding: '4px 6px',
     marginBottom: '4px',
-    backgroundColor: '#252540',
+    backgroundColor: 'var(--ak-surface-dark-subtle)',
     borderRadius: '3px',
   },
   time: {
@@ -179,7 +179,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '9px',
   },
   eventName: {
-    color: '#4fc3f7',
+    color: 'var(--ak-accent-cyan)',
     fontWeight: 'bold',
   },
   payload: {

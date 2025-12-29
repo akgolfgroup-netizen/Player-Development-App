@@ -72,7 +72,7 @@ export default function AppLayout({ children, userRole = 'player', user }) {
   return (
     <SidebarLayout
       navbar={
-        <Navbar className="bg-white dark:bg-[#1C1C1E] border-b border-[#D5D7DA] dark:border-[#3A3A3C]">
+        <Navbar className="bg-ak-surface-card dark:bg-ak-surface-dark-base border-b border-ak-border dark:border-ak-surface-dark-border">
           <NavbarSpacer />
           <NavbarSection>
             <Dropdown>
@@ -80,12 +80,12 @@ export default function AppLayout({ children, userRole = 'player', user }) {
                 <Avatar
                   src={user?.avatar}
                   initials={user?.name?.charAt(0) || 'U'}
-                  className="size-8 bg-[#10456A] text-white"
+                  className="size-8 bg-ak-brand-primary text-ak-text-inverse"
                 />
-                <span className="ml-2 hidden sm:inline text-[#02060D] dark:text-white">
+                <span className="ml-2 hidden sm:inline text-ak-text-primary dark:text-ak-text-inverse">
                   {user?.name || 'Bruker'}
                 </span>
-                <ChevronDown className="ml-1 size-4 text-[#8E8E93]" />
+                <ChevronDown className="ml-1 size-4 text-ak-text-muted" />
               </DropdownButton>
               <DropdownMenu anchor="bottom end" className="min-w-48">
                 <DropdownItem href="/profile">
@@ -107,17 +107,17 @@ export default function AppLayout({ children, userRole = 'player', user }) {
         </Navbar>
       }
       sidebar={
-        <Sidebar className="bg-white dark:bg-[#1C1C1E]">
+        <Sidebar className="bg-ak-surface-card dark:bg-ak-surface-dark-base">
           <SidebarHeader>
             <div className="flex items-center gap-3 px-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#10456A]">
-                <span className="font-logo text-lg font-bold text-white">AK</span>
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-ak-brand-primary">
+                <span className="font-logo text-lg font-bold text-ak-text-inverse">AK</span>
               </div>
               <div>
-                <p className="text-sm font-semibold text-[#02060D] dark:text-white">
+                <p className="text-sm font-semibold text-ak-text-primary dark:text-ak-text-inverse">
                   AK Golf Academy
                 </p>
-                <p className="text-xs text-[#8E8E93]">
+                <p className="text-xs text-ak-text-muted">
                   {userRole === 'coach' ? 'Trener' : 'Spiller'}
                 </p>
               </div>
@@ -159,7 +159,7 @@ export default function AppLayout({ children, userRole = 'player', user }) {
         </Sidebar>
       }
     >
-      <main className="min-h-screen bg-[#EDF0F2] dark:bg-[#1C1C1E]">
+      <main className="min-h-screen bg-ak-surface-base dark:bg-ak-surface-dark-base">
         {children}
       </main>
     </SidebarLayout>

@@ -143,9 +143,9 @@ const PastResultCard = ({ result }) => {
 
   const getMedalColor = (position) => {
     switch (position) {
-      case 1: return '#FFD700';
-      case 2: return '#C0C0C0';
-      case 3: return '#CD7F32';
+      case 1: return 'var(--ak-medal-gold)';
+      case 2: return 'var(--ak-medal-silver)';
+      case 3: return 'var(--ak-medal-bronze)';
       default: return null;
     }
   };
