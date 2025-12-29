@@ -16,7 +16,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import { tokens } from '@ak-golf/design-system';
+import { tokens } from '@iup/design-system';
 
 // Types
 interface NextSession {

@@ -28,4 +28,4 @@ export { ProgressBar, CircularProgress, GoalProgress } from './Progress';
 export { TextInput, Textarea, Select } from './Input';
 
 // Re-export tokens for convenience
-export { tokens, typographyStyle, cssVar } from '../tokens/design-tokens.js';
+export { tokens, getTypographyStyle, colorWithOpacity } from '../tokens/design-tokens.js';

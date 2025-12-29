@@ -13,9 +13,9 @@
  * - TRAJECTORY: Show history without prediction
  */
 
-export { SessionScreen } from './SESSION';
-export { ReflectionScreen } from './REFLECTION';
-export { HomeScreen } from './HOME';
-export { BaselineScreen } from './BASELINE';
-export { ProofScreen } from './PROOF';
-export { TrajectoryScreen } from './TRAJECTORY';
+export { default as SessionScreen } from './SESSION';
+export { default as ReflectionScreen } from './REFLECTION';
+export { default as HomeScreen } from './HOME';
+export { default as BaselineScreen } from './BASELINE';
+export { default as ProofScreen } from './PROOF';
+export { default as TrajectoryScreen } from './TRAJECTORY';
