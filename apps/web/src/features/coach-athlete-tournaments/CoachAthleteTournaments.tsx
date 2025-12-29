@@ -24,6 +24,8 @@ import {
   Award,
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import Button from '../../ui/primitives/Button';
+
 // Types
 interface TournamentEntry {
   id: string;
@@ -604,26 +606,15 @@ export default function CoachAthleteTournaments() {
         </div>
 
         {/* Filter button */}
-        <button
+        <Button
+          variant={showFilters ? 'primary' : 'secondary'}
+          size="sm"
           onClick={() => setShowFilters(!showFilters)}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '10px 14px',
-            backgroundColor: showFilters ? 'var(--accent)' : 'var(--bg-tertiary)',
-            color: showFilters ? 'var(--bg-primary)' : 'var(--text-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '14px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
+          leftIcon={<Filter size={16} />}
         >
-          <Filter size={16} />
           Filter
-          <ChevronDown size={16} style={{ transform: showFilters ? 'rotate(180deg)' : 'none' }} />
-        </button>
+          <ChevronDown size={16} style={{ transform: showFilters ? 'rotate(180deg)' : 'none', marginLeft: '4px' }} />
+        </Button>
 
         {/* Sort select */}
         <select
@@ -1015,50 +1006,28 @@ export default function CoachAthleteTournaments() {
                           borderTop: '1px solid var(--bg-tertiary)',
                         }}
                       >
-                        <button
+                        <Button
+                          variant="primary"
+                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/coach/athletes/${athlete.id}`);
                           }}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            padding: '10px 16px',
-                            backgroundColor: 'var(--accent)',
-                            color: 'var(--bg-primary)',
-                            border: 'none',
-                            borderRadius: 'var(--radius-md)',
-                            fontSize: '13px',
-                            fontWeight: 500,
-                            cursor: 'pointer',
-                          }}
                         >
                           Se spillerprofil
-                          <ChevronRight size={16} />
-                        </button>
-                        <button
+                          <ChevronRight size={16} style={{ marginLeft: '4px' }} />
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          leftIcon={<Trophy size={16} />}
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/coach/tournaments/players?athlete=${athlete.id}`);
                           }}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            padding: '10px 16px',
-                            backgroundColor: 'var(--bg-tertiary)',
-                            color: 'var(--text-primary)',
-                            border: 'none',
-                            borderRadius: 'var(--radius-md)',
-                            fontSize: '13px',
-                            fontWeight: 500,
-                            cursor: 'pointer',
-                          }}
                         >
-                          <Trophy size={16} />
                           Meld på turnering
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   )}

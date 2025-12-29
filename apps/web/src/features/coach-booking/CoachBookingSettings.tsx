@@ -24,6 +24,8 @@ import {
   Unlock,
   Copy,
 } from 'lucide-react';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import Button from '../../ui/primitives/Button';
 
 interface TimeSlot {
   start: string;
@@ -321,88 +323,23 @@ export default function CoachBookingSettings() {
       }}
     >
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-          padding: '20px 24px',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <button
-              onClick={() => navigate('/coach/booking')}
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--bg-tertiary)',
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <ArrowLeft size={20} color={'var(--text-primary)'} />
-            </button>
-            <div>
-              <h1
-                style={{
-                  fontSize: '28px', lineHeight: '34px', fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                }}
-              >
-                Tilgjengelighet
-              </h1>
-              <p
-                style={{
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-secondary)',
-                  margin: '4px 0 0',
-                }}
-              >
-                Konfigurer arbeidstider og bookingpreferanser
-              </p>
-            </div>
-          </div>
-
-          <button
+      <PageHeader
+        title="Tilgjengelighet"
+        subtitle="Konfigurer arbeidstider og bookingpreferanser"
+        onBack={() => navigate('/coach/booking')}
+        actions={
+          <Button
+            variant={saved ? 'primary' : 'primary'}
             onClick={handleSave}
             disabled={saving}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 20px',
-              backgroundColor: saved ? 'var(--success)' : 'var(--accent)',
-              color: 'var(--bg-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: saving ? 'not-allowed' : 'pointer',
-              opacity: saving ? 0.7 : 1,
-            }}
+            loading={saving}
+            leftIcon={saved ? <CheckCircle size={18} /> : <Save size={18} />}
+            style={saved ? { backgroundColor: 'var(--success)' } : undefined}
           >
-            {saved ? (
-              <>
-                <CheckCircle size={18} />
-                Lagret!
-              </>
-            ) : (
-              <>
-                <Save size={18} />
-                {saving ? 'Lagrer...' : 'Lagre endringer'}
-              </>
-            )}
-          </button>
-        </div>
-      </div>
+            {saved ? 'Lagret!' : 'Lagre endringer'}
+          </Button>
+        }
+      />
 
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* Weekly Schedule */}
@@ -608,45 +545,24 @@ export default function CoachBookingSettings() {
                       ))}
 
                       <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={() => addTimeSlot(key)}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '6px',
-                            padding: '8px 12px',
-                            backgroundColor: 'transparent',
-                            color: 'var(--accent)',
-                            border: `1px dashed ${'var(--accent)'}`,
-                            borderRadius: 'var(--radius-md)',
-                            fontSize: '13px',
-                            fontWeight: 500,
-                            cursor: 'pointer',
-                          }}
+                          leftIcon={<Plus size={16} />}
+                          style={{ border: '1px dashed var(--accent)' }}
                         >
-                          <Plus size={16} />
                           Legg til tidsluke
-                        </button>
+                        </Button>
                         {['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].includes(key) && (
-                          <button
+                          <Button
+                            variant="secondary"
+                            size="sm"
                             onClick={() => copyToAllWeekdays(key)}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '6px',
-                              padding: '8px 12px',
-                              backgroundColor: 'transparent',
-                              color: 'var(--text-secondary)',
-                              border: `1px solid ${'var(--border-default)'}`,
-                              borderRadius: 'var(--radius-md)',
-                              fontSize: '13px',
-                              fontWeight: 500,
-                              cursor: 'pointer',
-                            }}
+                            leftIcon={<Copy size={16} />}
                           >
-                            <Copy size={16} />
                             Kopier til alle ukedager
-                          </button>
+                          </Button>
                         )}
                       </div>
                     </div>
@@ -812,25 +728,14 @@ export default function CoachBookingSettings() {
                 Blokkerte datoer
               </h2>
             </div>
-            <button
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => setShowAddBlockedDate(true)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 12px',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              leftIcon={<Plus size={16} />}
             >
-              <Plus size={16} />
               Legg til
-            </button>
+            </Button>
           </div>
 
           <div style={{ padding: '16px 20px' }}>
@@ -869,23 +774,14 @@ export default function CoachBookingSettings() {
                     fontSize: '14px',
                   }}
                 />
-                <button
+                <Button
+                  variant="primary"
+                  size="sm"
                   onClick={addBlockedDate}
                   disabled={!newBlockedDate.date}
-                  style={{
-                    padding: '8px 16px',
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--bg-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    cursor: newBlockedDate.date ? 'pointer' : 'not-allowed',
-                    opacity: newBlockedDate.date ? 1 : 0.5,
-                  }}
                 >
                   Legg til
-                </button>
+                </Button>
                 <button
                   onClick={() => setShowAddBlockedDate(false)}
                   style={{

@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { dataGolfAPI } from '../../services/api';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import Button from '../../ui/primitives/Button';
 
 interface PlayerStats {
   sgTotal: number | null;
@@ -219,21 +221,9 @@ export const CoachDataGolf: React.FC = () => {
           title="Kunne ikke laste data"
           description={error}
           action={
-            <button
-              onClick={fetchDashboard}
-              style={{
-                padding: '10px 20px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'white',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
-            >
+            <Button variant="primary" onClick={fetchDashboard}>
               Prøv igjen
-            </button>
+            </Button>
           }
         />
       </div>
@@ -243,57 +233,37 @@ export const CoachDataGolf: React.FC = () => {
   return (
     <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '12px',
-            background: `linear-gradient(135deg, #6366f1, #4f46e5)`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <BarChart3 size={24} color="white" />
-          </div>
-          <div style={{ flex: 1 }}>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              margin: 0
-            }}>
-              Data Golf Statistikk
-            </h1>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-secondary)',
-              margin: 0
-            }}>
-              Strokes Gained analyse og avansert spillerstatistikk
-            </p>
-          </div>
-          <button
-            onClick={handleSync}
-            disabled={syncing}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '10px 16px',
-              borderRadius: '8px',
-              border: '1px solid var(--border-default)',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-secondary)',
-              fontSize: '13px',
-              fontWeight: '500',
-              cursor: syncing ? 'not-allowed' : 'pointer',
-              opacity: syncing ? 0.7 : 1
-            }}
-          >
-            <RefreshCw size={14} style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} />
-            {syncing ? 'Synkroniserer...' : 'Oppdater'}
-          </button>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '24px' }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          borderRadius: '12px',
+          background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}>
+          <BarChart3 size={24} color="white" />
+        </div>
+        <div style={{ flex: 1 }}>
+          <PageHeader
+            title="Data Golf Statistikk"
+            subtitle="Strokes Gained analyse og avansert spillerstatistikk"
+            actions={
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleSync}
+                disabled={syncing}
+                loading={syncing}
+                leftIcon={<RefreshCw size={14} />}
+              >
+                {syncing ? 'Synkroniserer...' : 'Oppdater'}
+              </Button>
+            }
+            divider={false}
+          />
         </div>
       </div>
 
