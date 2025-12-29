@@ -13,6 +13,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface Exercise {
   id: string;
@@ -227,60 +228,16 @@ export const CoachExerciseLibrary: React.FC = () => {
 
   return (
     <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent)'})`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <Dumbbell size={24} color="white" />
-            </div>
-            <div>
-              <h1 style={{
-                fontSize: '28px',
-                fontWeight: '700',
-                color: 'var(--text-primary)',
-                margin: 0
-              }}>
-                Øvelsesbank
-              </h1>
-              <p style={{
-                fontSize: '14px',
-                color: 'var(--text-secondary)',
-                margin: 0
-              }}>
-                {mockExercises.length} øvelser tilgjengelig
-              </p>
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={() => navigate('/coach/exercises/create')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            borderRadius: '10px',
-            border: 'none',
-            backgroundColor: 'var(--accent)',
-            color: 'white',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer'
-          }}
-        >
-          <Plus size={18} />
-          Ny øvelse
-        </button>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Øvelsesbank"
+        subtitle={`${mockExercises.length} øvelser tilgjengelig`}
+        actions={
+          <Button variant="primary" onClick={() => navigate('/coach/exercises/create')} leftIcon={<Plus size={18} />}>
+            Ny øvelse
+          </Button>
+        }
+      />
 
       {/* Quick Links */}
       <div style={{

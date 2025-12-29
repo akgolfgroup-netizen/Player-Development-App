@@ -12,11 +12,12 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Search, ChevronRight, Users } from "lucide-react";
+import { Search, ChevronRight } from "lucide-react";
 import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 //////////////////////////////
 // 1. DATA MODEL (READ-ONLY)
@@ -179,27 +180,11 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header */}
-      <div style={{ padding: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Users size={28} style={{ color: 'var(--accent)' }} />
-          <h1 style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
-            Spillere
-          </h1>
-        </div>
-        <p style={{
-          fontSize: '15px',
-          color: 'var(--text-secondary)',
-          margin: 0,
-        }}>
-          {filteredAthletes.length} spillere (sortert alfabetisk)
-        </p>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Spillere"
+        subtitle={`${filteredAthletes.length} spillere (sortert alfabetisk)`}
+      />
 
       {/* Search */}
       <div style={{ padding: '0 24px', marginBottom: '16px' }}>

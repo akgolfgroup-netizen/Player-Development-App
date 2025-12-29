@@ -21,9 +21,10 @@
 //////////////////////////////
 
 import React from "react";
-import { ArrowLeft, FileText, TrendingUp, ClipboardList, StickyNote, ChevronRight } from "lucide-react";
+import { FileText, TrendingUp, ClipboardList, StickyNote, ChevronRight } from "lucide-react";
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 //////////////////////////////
 // 2. TYPES
@@ -118,46 +119,19 @@ export default function CoachAthleteDetail({
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header with back button */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: '1px solid var(--border-default)',
-          padding: '16px 24px',
-        }}
-      >
-        {onBack && (
-          <div style={{ marginBottom: '16px' }}>
-            <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
-              Tilbake til spillere
-            </Button>
-          </div>
-        )}
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Avatar name={athleteName} size={64} />
-          <div>
-            <h1 style={{
-              fontSize: '28px',
-              lineHeight: '34px',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
-              {athleteName}
-            </h1>
-            <p style={{
-              fontSize: '13px',
-              lineHeight: '18px',
-              color: 'var(--text-secondary)',
-              margin: 0,
-              marginTop: '4px',
-            }}>
-              Velg handling nedenfor
-            </p>
-          </div>
+      {/* Header - using PageHeader from design system with Avatar */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '0 24px' }}>
+        <Avatar name={athleteName} size={64} />
+        <div style={{ flex: 1 }}>
+          <PageHeader
+            title={athleteName}
+            subtitle="Velg handling nedenfor"
+            onBack={onBack}
+            divider={false}
+          />
         </div>
       </div>
+      <div style={{ borderBottom: '1px solid var(--border-default)', marginBottom: '24px' }} />
 
       {/* Navigation Actions */}
       <div style={{ padding: '24px' }}>

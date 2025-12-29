@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface PlayerStat {
   id: string;
@@ -250,54 +251,26 @@ export default function CoachStatsOverview() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif" }}>
-      {/* Header */}
-      <div style={{ backgroundColor: 'var(--bg-primary)', borderBottom: `1px solid ${'var(--border-default)'}`, padding: '20px 24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-          <div>
-            <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Spillerstatistikk</h1>
-            <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
-              Oversikt over fremgang og utvikling
-            </p>
-          </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Spillerstatistikk"
+        subtitle="Oversikt over fremgang og utvikling"
+        actions={
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button
-              onClick={() => navigate('/coach/stats/progress')}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
-                backgroundColor: 'rgba(var(--success-rgb), 0.10)', color: 'var(--success)',
-                border: `1px solid ${'var(--success)'}`, borderRadius: 'var(--radius-md)',
-                fontSize: '14px', fontWeight: 500, cursor: 'pointer',
-              }}
-            >
-              <TrendingUp size={18} />
+            <Button variant="ghost" size="sm" onClick={() => navigate('/coach/stats/progress')} leftIcon={<TrendingUp size={18} />}>
               Fremgang
-            </button>
-            <button
-              onClick={() => navigate('/coach/stats/regression')}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
-                backgroundColor: 'rgba(var(--error-rgb), 0.10)', color: 'var(--error)',
-                border: `1px solid ${'var(--error)'}`, borderRadius: 'var(--radius-md)',
-                fontSize: '14px', fontWeight: 500, cursor: 'pointer',
-              }}
-            >
-              <TrendingDown size={18} />
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/coach/stats/regression')} leftIcon={<TrendingDown size={18} />}>
               Tilbakegang
-            </button>
-            <button
-              onClick={() => navigate('/coach/stats/datagolf')}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px',
-                backgroundColor: 'var(--accent)', color: 'var(--bg-primary)',
-                border: 'none', borderRadius: 'var(--radius-md)',
-                fontSize: '14px', fontWeight: 600, cursor: 'pointer',
-              }}
-            >
-              <BarChart3 size={18} />
+            </Button>
+            <Button variant="primary" size="sm" onClick={() => navigate('/coach/stats/datagolf')} leftIcon={<BarChart3 size={18} />}>
               Data Golf
-            </button>
+            </Button>
           </div>
-        </div>
+        }
+        divider={false}
+      />
+      <div style={{ backgroundColor: 'var(--bg-primary)', borderBottom: `1px solid ${'var(--border-default)'}`, padding: '0 24px 20px' }}>
 
         {/* Quick stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
