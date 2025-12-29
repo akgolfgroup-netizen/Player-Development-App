@@ -192,10 +192,12 @@
   /* ─────────────────────────────────────────
      SHADOWS (Apple/Stripe style - soft & subtle)
      ───────────────────────────────────────── */
+  /* Shadows - per UI_DESIGN_SYSTEM_KOMPLETT.md */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-hover: var(--shadow-float); /* Alias for backwards compatibility */
 
   /* ─────────────────────────────────────────
      FOCUS RING (Subtle, token-based)
@@ -315,11 +317,12 @@
   --error-rgb: 212, 115, 103;
   --card: var(--background-white);
 
-  /* Shadows - Dark Mode (softer) */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
-  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.15);
+  /* Shadows - Dark Mode (stronger for visibility) */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-hover: var(--shadow-float);
   --focus-ring: 0 0 0 3px rgba(60, 122, 158, 0.25);
 }
 
@@ -413,11 +416,12 @@
     --error-rgb: 212, 115, 103;
     --card: var(--background-white);
 
-    /* Shadows - Dark Mode (softer) */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
-    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.2);
-    --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
-    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.15);
+    /* Shadows - Dark Mode (stronger for visibility) */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.25);
+    --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-hover: var(--shadow-float);
     --focus-ring: 0 0 0 3px rgba(60, 122, 158, 0.25);
   }
 }
