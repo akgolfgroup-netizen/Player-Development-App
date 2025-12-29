@@ -166,3 +166,70 @@ export interface DataGolfSyncStatus {
   tourAveragesUpdated: number;
   errors?: string[];
 }
+
+// ============================================================================
+// PEI TO STROKES GAINED
+// ============================================================================
+
+export type LieType = 'tee' | 'fairway' | 'rough' | 'bunker' | 'recovery' | 'green';
+
+export interface PeiToSgRequest {
+  startDistance: number; // meters
+  pei: number; // PEI value (lower = better)
+  lie?: LieType;
+}
+
+export interface PeiToSgResponse {
+  strokesGained: number;
+  expectedBefore: number;
+  expectedAfter: number;
+  leaveDistance: number;
+  lie: LieType;
+  category: 'approach' | 'around_green' | 'putting';
+  tourPercentile: number;
+  tourComparison: {
+    pgaElite: number;
+    pgaAverage: number;
+    amateur: number;
+  };
+}
+
+export interface BatchPeiToSgRequest {
+  shots: Array<{
+    startDistance: number;
+    pei: number;
+    lie?: LieType;
+  }>;
+}
+
+export interface BatchPeiToSgResponse {
+  shots: PeiToSgResponse[];
+  totalStrokesGained: number;
+  averageStrokesGained: number;
+  category: string;
+  tourPercentile: number;
+}
+
+export interface IupTestToSgRequest {
+  testNumber: 8 | 9 | 10 | 11 | 15 | 16 | 17 | 18;
+  peiValues?: number[]; // For approach/chipping/bunker tests
+  madeCount?: number; // For putting tests
+  totalAttempts?: number; // For putting tests
+  startDistance?: number; // Optional override for chipping
+  lie?: 'fairway' | 'bunker'; // For chipping test
+}
+
+export interface IupTestToSgResponse {
+  testNumber: number;
+  testName: string;
+  strokesGained: number;
+  averageStrokesGained: number;
+  category: 'approach' | 'around_green' | 'putting';
+  shotCount: number;
+  tourPercentile: number;
+  comparison: {
+    vsPgaElite: number;
+    vsPgaAverage: number;
+    vsAmateur: number;
+  };
+}
