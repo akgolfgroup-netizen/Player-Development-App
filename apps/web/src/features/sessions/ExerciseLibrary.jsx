@@ -10,6 +10,7 @@ import { Heart, Plus, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 // UiCanon: Using CSS variables instead of tokens
 import { PageHeader } from '../../components/layout/PageHeader';
 import StateCard from '../../ui/composites/StateCard';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================
 // AK GOLF KATEGORI HIERARKI v2.0 - Komplett filter-system
@@ -333,19 +334,14 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
           }}>
             {exercise.name}
           </h3>
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={(e) => { e.stopPropagation(); onToggleFavorite(exercise.id); }}
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: '4px',
-              cursor: 'pointer',
-              color: isFavorite ? 'var(--error)' : 'var(--border-default)',
-              transition: 'color 0.2s',
-            }}
+            style={{ color: isFavorite ? 'var(--error)' : 'var(--border-default)', padding: '4px' }}
           >
             <Heart size={18} fill={isFavorite ? 'var(--error)' : 'none'} />
-          </button>
+          </Button>
         </div>
 
         {/* Tags row */}
@@ -418,25 +414,14 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
           </div>
 
           {/* Add to plan button */}
-          <button
+          <Button
+            variant="primary"
+            size="sm"
+            leftIcon={<Plus size={14} />}
             onClick={(e) => { e.stopPropagation(); onAddToPlan(exercise); }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              backgroundColor: 'var(--accent)',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              color: 'var(--bg-primary)',
-              fontSize: '12px',
-              fontWeight: 500,
-            }}
           >
-            <Plus size={14} />
             Legg til
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -477,18 +462,14 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
           <span style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>
             📋 {exercise.name}
           </span>
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onClose}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '24px',
-              color: 'var(--text-secondary)',
-              cursor: 'pointer',
-            }}
+            style={{ fontSize: '24px', padding: '4px' }}
           >
             ✕
-          </button>
+          </Button>
         </div>
 
         {/* Meta info */}
@@ -647,21 +628,13 @@ function ExerciseDetailModal({ exercise, onClose, onAddToSession }) {
         </div>
 
         {/* Add button */}
-        <button
+        <Button
+          variant="primary"
           onClick={() => onAddToSession(exercise)}
-          style={{
-            width: '100%',
-            padding: '16px',
-            backgroundColor: 'var(--accent)',
-            color: 'var(--bg-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-          }}
+          style={{ width: '100%', padding: '16px', fontSize: '20px', fontWeight: 600 }}
         >
           Legg til i økt
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -739,36 +712,27 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
         title="Øvelsesbibliotek"
         subtitle={`${exercises.length} øvelser`}
         actions={
-          <button
+          <Button
+            variant={showOnlyFavorites ? 'primary' : 'secondary'}
+            size="sm"
+            leftIcon={<Heart size={16} fill={showOnlyFavorites ? 'currentColor' : 'none'} />}
             onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              backgroundColor: showOnlyFavorites ? 'rgba(var(--error-rgb), 0.15)' : 'transparent',
-              border: `1px solid ${showOnlyFavorites ? 'var(--error)' : 'var(--border-default)'}`,
-              borderRadius: '8px',
-              cursor: 'pointer',
-              color: showOnlyFavorites ? 'var(--error)' : 'var(--text-primary)',
-              fontSize: '13px',
-              fontWeight: 500,
-            }}
+            style={showOnlyFavorites ? { backgroundColor: 'var(--error)' } : undefined}
           >
-            <Heart size={16} fill={showOnlyFavorites ? 'var(--error)' : 'none'} />
             Favoritter
             {favorites.length > 0 && (
               <span style={{
-                backgroundColor: showOnlyFavorites ? 'var(--error)' : 'var(--text-secondary)',
+                backgroundColor: showOnlyFavorites ? 'rgba(255,255,255,0.3)' : 'var(--text-secondary)',
                 color: 'white',
                 borderRadius: '10px',
                 padding: '1px 6px',
                 fontSize: '11px',
+                marginLeft: '4px',
               }}>
                 {favorites.length}
               </span>
             )}
-          </button>
+          </Button>
         }
       />
 
@@ -975,18 +939,9 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
             {filteredExercises.length} øvelser
           </span>
           {hasActiveFilters && (
-            <button
-              onClick={resetAllFilters}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--accent)',
-                cursor: 'pointer',
-                fontSize: '12px',
-              }}
-            >
+            <Button variant="ghost" size="sm" onClick={resetAllFilters}>
               Nullstill filter
-            </button>
+            </Button>
           )}
         </div>
 

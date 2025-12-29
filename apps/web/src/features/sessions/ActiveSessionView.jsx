@@ -9,6 +9,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BlockRatingModal from './BlockRatingModal';
 import { tokens } from '../../design-tokens';
+import Button from '../../ui/primitives/Button';
 
 // Format time as HH:MM:SS
 function formatTime(seconds) {
@@ -244,38 +245,21 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
         </div>
       </div>
 
-      <button
+      <Button
+        variant="primary"
         onClick={onResume}
-        style={{
-          width: '200px',
-          padding: '16px',
-          backgroundColor: 'var(--accent)',
-          color: 'var(--bg-primary)',
-          border: 'none',
-          borderRadius: 'var(--radius-md)',
-          cursor: 'pointer',
-          marginBottom: '16px',
-          fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-        }}
+        style={{ width: '200px', padding: '16px', marginBottom: '16px', fontSize: '20px', fontWeight: 600 }}
       >
         ▶️ Fortsett økt
-      </button>
+      </Button>
 
-      <button
+      <Button
+        variant="secondary"
         onClick={onEnd}
-        style={{
-          width: '200px',
-          padding: '16px',
-          backgroundColor: 'transparent',
-          color: 'var(--error)',
-          border: '1px solid var(--error)',
-          borderRadius: 'var(--radius-md)',
-          cursor: 'pointer',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
+        style={{ width: '200px', padding: '16px', color: 'var(--error)', borderColor: 'var(--error)' }}
       >
         Avslutt økt
-      </button>
+      </Button>
     </div>
   );
 }
@@ -434,34 +418,17 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
           borderBottom: '1px solid var(--border-default)',
         }}
       >
-        <button
-          onClick={togglePause}
-          style={{
-            padding: `${'8px'} ${'16px'}`,
-            backgroundColor: 'var(--bg-secondary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-          }}
-        >
+        <Button variant="secondary" size="sm" onClick={togglePause}>
           ← Pause
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="primary"
+          size="sm"
           onClick={() => handleEndSessionAndEvaluate(totalSeconds, completedBlocks)}
-          style={{
-            padding: `${'8px'} ${'16px'}`,
-            backgroundColor: 'var(--error)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            color: 'var(--bg-primary)',
-            cursor: 'pointer',
-            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-          }}
+          style={{ backgroundColor: 'var(--error)' }}
         >
           Avslutt økt
-        </button>
+        </Button>
       </div>
 
       {/* Total timer */}
@@ -571,22 +538,13 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
 
       {/* Next block / Note */}
       <div style={{ padding: '16px' }}>
-        <button
+        <Button
+          variant="primary"
           onClick={handleNextBlock}
-          style={{
-            width: '100%',
-            padding: '16px',
-            backgroundColor: 'var(--accent)',
-            color: 'var(--bg-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-            marginBottom: '16px',
-            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-          }}
+          style={{ width: '100%', padding: '16px', marginBottom: '16px', fontSize: '20px', fontWeight: 600 }}
         >
           {currentBlockIndex < session.blocks.length - 1 ? 'Neste blokk →' : 'Fullfør økt'}
-        </button>
+        </Button>
 
         <div
           style={{

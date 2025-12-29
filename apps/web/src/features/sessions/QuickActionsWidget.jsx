@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
+import Button from '../../ui/primitives/Button';
 
 export default function QuickActionsWidget({ planId }) {
   const navigate = useNavigate();
