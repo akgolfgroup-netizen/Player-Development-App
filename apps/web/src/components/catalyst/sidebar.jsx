@@ -3,12 +3,10 @@
 /**
  * Sidebar components with AK Golf Blue Palette
  *
- * Colors:
- * - Primary Blue: #10456A
- * - Primary Light: #2C5F7F (hover)
- * - Gold: #C9A227 (active indicator)
- * - Surface: #EBE5DA
- * - White: #FFFFFF
+ * Uses Tailwind classes mapped to CSS variables in tailwind.config.js:
+ * - bg-ak-primary → var(--ak-primary)
+ * - bg-ak-primary-light → var(--ak-primary-light)
+ * - bg-ak-gold → var(--ak-gold)
  */
 
 import * as Headless from '@headlessui/react'
@@ -19,7 +17,7 @@ import { TouchTarget } from './button'
 import { Link } from './link'
 
 export function Sidebar({ className, ...props }) {
-  return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col bg-[#10456A]')} />
+  return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col bg-ak-primary')} />
 }
 
 export function SidebarHeader({ className, ...props }) {
@@ -96,10 +94,10 @@ export const SidebarItem = forwardRef(function SidebarItem(
     '*:last:data-[slot=icon]:ml-auto *:last:data-[slot=icon]:size-5 sm:*:last:data-[slot=icon]:size-4',
     // Avatar
     '*:data-[slot=avatar]:-m-0.5 *:data-[slot=avatar]:size-7 sm:*:data-[slot=avatar]:size-6',
-    // Hover - lighter blue (#2C5F7F)
-    'data-hover:bg-[#2C5F7F] data-hover:text-white data-hover:*:data-[slot=icon]:text-white',
+    // Hover - lighter blue
+    'data-hover:bg-ak-primary-light data-hover:text-white data-hover:*:data-[slot=icon]:text-white',
     // Active
-    'data-active:bg-[#2C5F7F] data-active:text-white data-active:*:data-[slot=icon]:text-white',
+    'data-active:bg-ak-primary-light data-active:text-white data-active:*:data-[slot=icon]:text-white',
     // Current - full white
     'data-current:text-white data-current:*:data-[slot=icon]:text-white'
   )
@@ -109,7 +107,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
       {current && (
         <motion.span
           layoutId="current-indicator"
-          className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-[#C9A227]"
+          className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-ak-gold"
         />
       )}
       {typeof props.href === 'string' ? (

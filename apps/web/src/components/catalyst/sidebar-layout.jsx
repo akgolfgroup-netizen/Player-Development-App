@@ -3,22 +3,21 @@
 /**
  * SidebarLayout - Catalyst-based layout with AK Golf Blue Palette
  *
- * Colors from design-system.md:
- * - Primary Blue: #10456A
- * - Snow (background): #EDF0F2
- * - Surface: #EBE5DA
- * - Ink: #02060D
- * - Gold: #C9A227
+ * Uses Tailwind classes mapped to CSS variables in tailwind.config.js:
+ * - bg-ak-primary → var(--ak-primary)
+ * - bg-ak-snow → var(--ak-snow)
+ * - bg-ak-ink → var(--ak-ink)
  */
 
 import * as Headless from '@headlessui/react'
 import React, { useState } from 'react'
 import { NavbarItem } from './navbar'
 import { AKLogo } from '../branding/AKLogo'
+import { tokens } from '../../design-tokens'
 
 function OpenMenuIcon() {
   return (
-    <svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true" className="fill-[#10456A]">
+    <svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true" className="fill-ak-primary">
       <path d="M2 6.75C2 6.33579 2.33579 6 2.75 6H17.25C17.6642 6 18 6.33579 18 6.75C18 7.16421 17.6642 7.5 17.25 7.5H2.75C2.33579 7.5 2 7.16421 2 6.75ZM2 13.25C2 12.8358 2.33579 12.5 2.75 12.5H17.25C17.6642 12.5 18 12.8358 18 13.25C18 13.6642 17.6642 14 17.25 14H2.75C2.33579 14 2 13.6642 2 13.25Z" />
     </svg>
   )
@@ -26,7 +25,7 @@ function OpenMenuIcon() {
 
 function CloseMenuIcon() {
   return (
-    <svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true" className="fill-[#10456A]">
+    <svg data-slot="icon" viewBox="0 0 20 20" aria-hidden="true" className="fill-ak-primary">
       <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
     </svg>
   )
@@ -37,15 +36,15 @@ function MobileSidebar({ open, close, children }) {
     <Headless.Dialog open={open} onClose={close} className="lg:hidden">
       <Headless.DialogBackdrop
         transition
-        className="fixed inset-0 bg-[#02060D]/30 transition data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
+        className="fixed inset-0 bg-ak-ink/30 transition data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
       />
       <Headless.DialogPanel
         transition
         className="fixed inset-y-0 w-full max-w-80 p-2 transition duration-300 ease-in-out data-closed:-translate-x-full"
       >
-        <div className="flex h-full flex-col rounded-lg bg-[#10456A] shadow-lg ring-1 ring-white/10">
+        <div className="flex h-full flex-col rounded-lg bg-ak-primary shadow-lg ring-1 ring-white/10">
           <div className="-mb-3 px-4 pt-3 flex items-center justify-between">
-            <AKLogo size={32} color="#EBE5DA" />
+            <AKLogo size={32} color={tokens.colors.surface} />
             <Headless.CloseButton as={NavbarItem} aria-label="Close navigation" className="text-white">
               <CloseMenuIcon />
             </Headless.CloseButton>
@@ -61,7 +60,7 @@ export function SidebarLayout({ navbar, sidebar, children }) {
   let [showSidebar, setShowSidebar] = useState(false)
 
   return (
-    <div className="relative isolate flex min-h-svh w-full bg-[#EDF0F2] max-lg:flex-col">
+    <div className="relative isolate flex min-h-svh w-full bg-ak-snow max-lg:flex-col">
       {/* Sidebar on desktop */}
       <div className="fixed inset-y-0 left-0 w-64 max-lg:hidden">{sidebar}</div>
 
@@ -71,7 +70,7 @@ export function SidebarLayout({ navbar, sidebar, children }) {
       </MobileSidebar>
 
       {/* Navbar on mobile */}
-      <header className="flex items-center px-4 lg:hidden bg-white border-b border-[#D5D7DA]">
+      <header className="flex items-center px-4 lg:hidden bg-white border-b border-border-default">
         <div className="py-2.5">
           <NavbarItem onClick={() => setShowSidebar(true)} aria-label="Open navigation">
             <OpenMenuIcon />
@@ -82,7 +81,7 @@ export function SidebarLayout({ navbar, sidebar, children }) {
 
       {/* Content */}
       <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pt-2 lg:pr-2 lg:pl-64">
-        <div className="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-[#D5D7DA]">
+        <div className="grow p-6 lg:rounded-lg lg:bg-white lg:p-10 lg:shadow-sm lg:ring-1 lg:ring-border-default">
           <div className="mx-auto max-w-6xl">{children}</div>
         </div>
       </main>

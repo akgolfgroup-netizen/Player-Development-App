@@ -32,13 +32,13 @@ const colors = {
   pink: 'bg-pink-400/15 text-pink-700 group-data-hover:bg-pink-400/25 dark:bg-pink-400/10 dark:text-pink-400 dark:group-data-hover:bg-pink-400/20',
   rose: 'bg-rose-400/15 text-rose-700 group-data-hover:bg-rose-400/25 dark:bg-rose-400/10 dark:text-rose-400 dark:group-data-hover:bg-rose-400/20',
   zinc: 'bg-zinc-600/10 text-zinc-700 group-data-hover:bg-zinc-600/20 dark:bg-white/5 dark:text-zinc-400 dark:group-data-hover:bg-white/10',
-  // AK Golf Academy Custom Colors
-  primary: 'bg-[#10456A]/15 text-[#10456A] group-data-hover:bg-[#10456A]/25 dark:bg-[#2C5F7F]/20 dark:text-[#5A8BA8] dark:group-data-hover:bg-[#2C5F7F]/30',
-  gold: 'bg-[#C9A227]/20 text-[#8B7119] group-data-hover:bg-[#C9A227]/30 dark:bg-[#C9A227]/15 dark:text-[#D4A84B] dark:group-data-hover:bg-[#C9A227]/25',
-  success: 'bg-[#4A7C59]/15 text-[#4A7C59] group-data-hover:bg-[#4A7C59]/25 dark:bg-[#5FA87A]/20 dark:text-[#5FA87A] dark:group-data-hover:bg-[#5FA87A]/30',
-  error: 'bg-[#C45B4E]/15 text-[#C45B4E] group-data-hover:bg-[#C45B4E]/25 dark:bg-[#D47367]/20 dark:text-[#D47367] dark:group-data-hover:bg-[#D47367]/30',
-  warning: 'bg-[#D4A84B]/20 text-[#8B7119] group-data-hover:bg-[#D4A84B]/30 dark:bg-[#D4A84B]/15 dark:text-[#E5C062] dark:group-data-hover:bg-[#D4A84B]/25',
-  surface: 'bg-[#EBE5DA] text-[#535862] group-data-hover:bg-[#E5DFD4] dark:bg-[#2C2C2E] dark:text-[#AEAEB2] dark:group-data-hover:bg-[#3A3A3C]',
+  // AK Golf Academy Custom Colors (using CSS variables from tailwind.config.js)
+  primary: 'bg-ak-primary/15 text-ak-primary group-data-hover:bg-ak-primary/25 dark:bg-ak-primary-light/20 dark:text-ak-primary-light dark:group-data-hover:bg-ak-primary-light/30',
+  gold: 'bg-ak-gold/20 text-ak-gold group-data-hover:bg-ak-gold/30 dark:bg-ak-gold/15 dark:text-ak-gold dark:group-data-hover:bg-ak-gold/25',
+  success: 'bg-ak-success/15 text-ak-success group-data-hover:bg-ak-success/25 dark:bg-ak-success/20 dark:text-ak-success dark:group-data-hover:bg-ak-success/30',
+  error: 'bg-ak-error/15 text-ak-error group-data-hover:bg-ak-error/25 dark:bg-ak-error/20 dark:text-ak-error dark:group-data-hover:bg-ak-error/30',
+  warning: 'bg-ak-warning/20 text-ak-warning group-data-hover:bg-ak-warning/30 dark:bg-ak-warning/15 dark:text-ak-warning dark:group-data-hover:bg-ak-warning/25',
+  surface: 'bg-ak-surface text-gray-600 group-data-hover:bg-ak-surface/80 dark:bg-gray-700 dark:text-gray-300 dark:group-data-hover:bg-gray-600',
 }
 
 export function Badge({ color = 'zinc', className, ...props }) {
