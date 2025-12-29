@@ -101,7 +101,6 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
             role: 'admin',
             tenantId: DEMO_TENANT_ID,
             isActive: true,
-            emailVerified: true,
           },
         });
         results.push('Created admin user (admin@demo.com / demo123)');
@@ -117,7 +116,6 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
             role: 'coach',
             tenantId: DEMO_TENANT_ID,
             isActive: true,
-            emailVerified: true,
           },
         });
 
@@ -146,7 +144,6 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
             role: 'player',
             tenantId: DEMO_TENANT_ID,
             isActive: true,
-            emailVerified: true,
           },
         });
 
