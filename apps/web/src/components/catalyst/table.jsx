@@ -67,7 +67,7 @@ export function TableHeader({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'border-b border-b-zinc-950/10 px-4 py-2 font-medium first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) dark:border-b-white/10',
+        'border-b border-b-zinc-950/10 px-4 py-2 font-medium first:pl-(--gutter,0.5rem) last:pr-(--gutter,0.5rem) dark:border-b-white/10',
         grid && 'border-l border-l-zinc-950/5 first:border-l-0 dark:border-l-white/5',
         !bleed && 'sm:first:pl-1 sm:last:pr-1'
       )}
@@ -86,7 +86,7 @@ export function TableCell({ className, children, ...props }) {
       {...props}
       className={clsx(
         className,
-        'relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2))',
+        'relative px-4 first:pl-(--gutter,0.5rem) last:pr-(--gutter,0.5rem)',
         !striped && 'border-b border-zinc-950/5 dark:border-white/5',
         grid && 'border-l border-l-zinc-950/5 first:border-l-0 dark:border-l-white/5',
         dense ? 'py-2.5' : 'py-4',
