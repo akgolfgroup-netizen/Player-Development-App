@@ -14,7 +14,7 @@ import React from 'react';
  * - Micro-interactions: hover brightness, active press, smooth transitions
  */
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive' | 'danger' | 'outline';
 type ButtonSize = 'sm' | 'md';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -60,7 +60,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   // Build class list for micro-interactions
   const variantClass = variant === 'secondary' ? 'btn-secondary' :
                        variant === 'ghost' ? 'btn-ghost' :
-                       variant === 'destructive' ? 'btn-destructive' : '';
+                       variant === 'destructive' ? 'btn-destructive' :
+                       variant === 'danger' ? 'btn-destructive' :
+                       variant === 'outline' ? 'btn-secondary' : '';
   const buttonClasses = [
     'btn-interactive',
     variantClass,
@@ -161,6 +163,16 @@ const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
     backgroundColor: 'var(--color-danger)',
     color: 'var(--color-primary-foreground)',
     boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+  },
+  danger: {
+    backgroundColor: 'var(--color-danger)',
+    color: 'var(--color-primary-foreground)',
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+  },
+  outline: {
+    backgroundColor: 'transparent',
+    color: 'var(--color-text)',
+    border: '1px solid var(--color-border)',
   },
 };
 
