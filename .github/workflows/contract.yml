@@ -1,0 +1,39 @@
+# .github/workflows/contract.yml
+# Implementation Contract Enforcement
+#
+# This workflow MUST block merges if any contract rule is violated.
+# No exceptions. No overrides.
+
+name: Implementation Contract Check
+
+on:
+  pull_request:
+    paths:
+      - "apps/**"
+      - "packages/**"
+      - "scripts/**"
+      - "docs/IMPLEMENTATION_CONTRACT.md"
+  push:
+    branches: [main]
+    paths:
+      - "apps/**"
+      - "packages/**"
+      - "scripts/**"
+
+jobs:
+  contract:
+    name: Enforce Contract
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Run Implementation Contract Check
+        run: npx tsx scripts/contract-check.ts

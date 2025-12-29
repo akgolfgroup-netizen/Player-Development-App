@@ -1,0 +1,223 @@
+{
+  "database_name": "UKEPLANER_TEMPLATES",
+  "description": "Weekly training plan templates - 88 templates covering all categories × periods × variants",
+  "properties": {
+    "Template_navn": {
+      "type": "title",
+      "description": "Template name (e.g., 'Cat D - Grunnperiode - Standard')"
+    },
+    "Kategori": {
+      "type": "select",
+      "options": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
+      "description": "Player category this template is designed for"
+    },
+    "Periode": {
+      "type": "select",
+      "options": ["Evaluering", "Grunnperiode", "Spesialiseringsperiode", "Turneringsperiode"],
+      "description": "Training period"
+    },
+    "Variant": {
+      "type": "select",
+      "options": ["Standard", "Intensiv", "Lett"],
+      "description": "Training load variation"
+    },
+    "Timer_per_uke": {
+      "type": "number",
+      "description": "Total training hours per week"
+    },
+    "Mandag": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Monday session(s)"
+    },
+    "Tirsdag": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Tuesday session(s)"
+    },
+    "Onsdag": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Wednesday session(s)"
+    },
+    "Torsdag": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Thursday session(s)"
+    },
+    "Fredag": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Friday session(s)"
+    },
+    "Lørdag": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Saturday session(s)"
+    },
+    "Søndag": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Sunday session(s)"
+    },
+    "Fridag": {
+      "type": "select",
+      "options": ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag", "Ingen"],
+      "description": "Designated rest day"
+    },
+    "Distribusjon": {
+      "type": "text",
+      "description": "Training distribution breakdown (e.g., 'Teknikk 40%, Fysisk 30%, Shortgame 20%, Mental 10%')"
+    },
+    "Hovedfokus": {
+      "type": "multi_select",
+      "options": [
+        "Teknikk - Full Swing",
+        "Teknikk - Short Game",
+        "Putting",
+        "Fysisk - Styrke",
+        "Fysisk - Mobilitet",
+        "Mental",
+        "Strategisk",
+        "Spill",
+        "Testing"
+      ],
+      "description": "Primary focus areas for the week"
+    },
+    "L_fase_fokus": {
+      "type": "select",
+      "options": ["L1", "L2", "L3", "L4", "L5"],
+      "description": "Predominant learning phase for this week"
+    },
+    "Setting_fokus": {
+      "type": "select",
+      "options": ["S1-S3", "S4-S6", "S7-S10"],
+      "description": "Setting range (Practice/Game/Competition)"
+    },
+    "Intensitet": {
+      "type": "select",
+      "options": ["E", "G", "S", "T"],
+      "description": "Training period intensity marker"
+    },
+    "Ukemål": {
+      "type": "text",
+      "description": "Typical weekly goal for this template"
+    },
+    "Notater": {
+      "type": "text",
+      "description": "Template notes, customization tips, when to use"
+    },
+    "Egnet_for_uker": {
+      "type": "text",
+      "description": "Which week numbers this template suits (e.g., 'Weeks 47-52, 1-6')"
+    },
+    "Forutsetninger": {
+      "type": "text",
+      "description": "Prerequisites or conditions (e.g., 'Access to gym', 'Indoor facility needed')"
+    },
+    "Justeringsmuligheter": {
+      "type": "text",
+      "description": "How to adapt template (add/remove sessions, swap days, etc.)"
+    },
+    "Brukt_av_spillere": {
+      "type": "relation",
+      "related_database": "SPILLERE",
+      "description": "Players currently using this template"
+    },
+    "Popularitet": {
+      "type": "number",
+      "description": "Number of times template has been used"
+    },
+    "Trener_rating": {
+      "type": "select",
+      "options": ["Utmerket", "Bra", "Ok", "Trenger forbedring"],
+      "description": "Coach assessment of template effectiveness"
+    },
+    "Sist_oppdatert": {
+      "type": "last_edited_time"
+    }
+  },
+  "views": [
+    {
+      "name": "Alle templates",
+      "type": "table",
+      "sort": [
+        {"property": "Kategori", "direction": "ascending"},
+        {"property": "Periode", "direction": "ascending"}
+      ]
+    },
+    {
+      "name": "Per kategori",
+      "type": "board",
+      "group_by": "Kategori"
+    },
+    {
+      "name": "Per periode",
+      "type": "board",
+      "group_by": "Periode"
+    },
+    {
+      "name": "Grunnperiode templates",
+      "type": "table",
+      "filter": {"property": "Periode", "select": {"equals": "Grunnperiode"}}
+    },
+    {
+      "name": "Standard variants",
+      "type": "table",
+      "filter": {"property": "Variant", "select": {"equals": "Standard"}}
+    },
+    {
+      "name": "Calendar view",
+      "type": "table",
+      "properties_visible": ["Template_navn", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag", "Fridag"]
+    }
+  ],
+  "template_library_structure": {
+    "total_templates": 88,
+    "breakdown": {
+      "by_category": {
+        "A_B_elite": 8,
+        "C_D_competitive": 16,
+        "E_F_G_development": 24,
+        "H_I_J_K_beginner": 16,
+        "All_categories": 24
+      },
+      "by_period": {
+        "Evaluering": 11,
+        "Grunnperiode": 33,
+        "Spesialiseringsperiode": 22,
+        "Turneringsperiode": 22
+      },
+      "by_variant": {
+        "Standard": 44,
+        "Intensiv": 22,
+        "Lett": 22
+      }
+    }
+  },
+  "weekly_structure_guidelines": {
+    "training_days": {
+      "Elite_A_B": "6 days/week",
+      "Competitive_C_D_E": "5-6 days/week",
+      "Development_F_G": "4-5 days/week",
+      "Beginner_H_I_J_K": "3-4 days/week"
+    },
+    "rest_days": {
+      "minimum": 1,
+      "recommended": "Day after heaviest training or before competition"
+    },
+    "session_distribution": {
+      "Grunnperiode": "Teknikk 40%, Fysisk 30%, Short game 20%, Mental 10%",
+      "Spesialiseringsperiode": "Short game 35%, Teknikk 30%, Spill 20%, Fysisk 15%",
+      "Turneringsperiode": "Spill 50%, Short game 25%, Teknikk 15%, Mental 10%"
+    }
+  },
+  "naming_convention": {
+    "format": "Cat [X] - [Period] - [Variant]",
+    "examples": [
+      "Cat D - Grunnperiode - Standard",
+      "Cat B - Turneringsperiode - Intensiv",
+      "Cat G - Spesialiseringsperiode - Lett"
+    ]
+  }
+}

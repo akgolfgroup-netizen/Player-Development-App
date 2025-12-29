@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf Academy - Alle Funksjoner</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #F5F7F6 0%, #E5E5EA 100%);
+            padding: 40px 20px;
+        }
+        .container { max-width: 1600px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 60px; }
+        .header h1 { font-size: 42px; font-weight: 700; color: #1A3D2E; margin-bottom: 12px; }
+        .header p { font-size: 18px; color: #8E8E93; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-bottom: 60px; }
+
+        /* iPhone Frame */
+        .iphone {
+            background: #1C1C1E;
+            border-radius: 48px;
+            padding: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 375px;
+            margin: 0 auto;
+        }
+        .iphone::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 28px;
+            background: #1C1C1E;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+        .screen {
+            background: white;
+            border-radius: 36px;
+            overflow: hidden;
+            aspect-ratio: 9 / 19.5;
+        }
+        .screen-content { height: 100%; overflow-y: auto; }
+
+        /* Common Components */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 52px 24px 12px;
+            background: #1A3D2E;
+            color: white;
+            font-size: 14px;
+        }
+        .nav-bar {
+            background: white;
+            border-bottom: 1px solid #E5E5EA;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-bar h2 { font-size: 21px; font-weight: 700; color: #1A3D2E; }
+        .content { padding: 24px; }
+        .hero {
+            background: linear-gradient(180deg, #1A3D2E 0%, #2D5A45 100%);
+            padding: 32px 24px;
+            color: white;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: #C9A227;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+        }
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-success { background: #E8F5E9; color: #4A7C59; }
+        .badge-warning { background: #FFF9E6; color: #D4A84B; }
+        .section-label {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .section-label h3 { font-size: 21px; font-weight: 700; color: #1A3D2E; margin-bottom: 8px; }
+        .section-label p { font-size: 15px; color: #8E8E93; }
+        .input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #E5E5EA;
+            border-radius: 12px;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .stat-value { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+        .stat-label { font-size: 12px; opacity: 0.8; }
+        .progress-bar {
+            height: 8px;
+            background: #E5E5EA;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4A7C59 0%, #C9A227 100%);
+        }
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #F2F2F7;
+        }
+        .list-item:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AK Golf Academy - Alle Funksjoner</h1>
+            <p>Komplett oversikt over alle funksjoner i IUP-plattformen</p>
+        </div>
+
+        <!-- Row 1: Login, Dashboard, Profile -->
+        <div class="grid">
+            <div>
+                <div class="section-label">
+                    <h3>1. Innlogging</h3>
+                    <p>JWT autentisering</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div style="background: linear-gradient(180deg, #1A3D2E 0%, #2D5A45 100%); padding: 80px 32px; text-align: center; color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                            <div style="width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 30px; margin: 0 auto 32px; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 700;">AK</div>
+                            <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">Velkommen</h1>
+                            <p style="opacity: 0.8; margin-bottom: 48px;">AK Golf Academy</p>
+                            <input type="email" placeholder="E-post" style="width: 100%; padding: 16px; border: none; border-radius: 12px; background: rgba(255,255,255,0.15); color: white; margin-bottom: 12px;">
+                            <input type="password" placeholder="Passord" style="width: 100%; padding: 16px; border: none; border-radius: 12px; background: rgba(255,255,255,0.15); color: white; margin-bottom: 24px;">
+                            <button class="btn-primary">Logg inn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>2. Dashboard</h3>
+                    <p>Oversikt og dagens plan</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="hero">
+                                <p style="font-size: 15px; opacity: 0.8;">God morgen,</p>
+                                <h1 style="font-size: 26px; font-weight: 700; margin-bottom: 24px;">Magnus Olsen</h1>
+                                <div class="stat-grid">
+                                    <div class="stat-card"><div class="stat-value">B</div><div class="stat-label">Kategori</div></div>
+                                    <div class="stat-card"><div class="stat-value">8.2</div><div class="stat-label">HCP</div></div>
+                                    <div class="stat-card"><div class="stat-value">23</div><div class="stat-label">Tester</div></div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <h2 style="font-size: 19px; font-weight: 600; margin-bottom: 16px;">Dagens Plan</h2>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong style="font-size: 17px;">Putting økt</strong>
+                                        <span class="badge badge-success">I dag</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93;">13:00 - 14:30 • Bane 1</p>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong style="font-size: 17px;">Driver test</strong>
+                                        <span class="badge badge-warning">I morgen</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93;">10:00 - 11:00 • Range</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>3. Brukerprofil</h3>
+                    <p>Personlig info og kategori</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div style="background: linear-gradient(180deg, #1A3D2E 0%, #2D5A45 100%); padding: 32px 24px 80px; text-align: center; color: white;">
+                                <div style="width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.2); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 700; border: 4px solid rgba(255,255,255,0.3);">MO</div>
+                                <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 4px;">Magnus Olsen</h2>
+                                <p style="opacity: 0.8;">Junior Spiller • 16 år</p>
+                            </div>
+                            <div style="margin-top: -60px; padding: 0 24px;">
+                                <div class="card">
+                                    <div class="list-item">
+                                        <span style="color: #8E8E93;">Kategori</span>
+                                        <strong>B</strong>
+                                    </div>
+                                    <div class="list-item">
+                                        <span style="color: #8E8E93;">Handicap</span>
+                                        <strong>8.2</strong>
+                                    </div>
+                                    <div class="list-item">
+                                        <span style="color: #8E8E93;">Målsetning</span>
+                                        <strong>A-kategori 2026</strong>
+                                    </div>
+                                    <div class="list-item">
+                                        <span style="color: #8E8E93;">Trener</span>
+                                        <strong>Anders K.</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Goals, Annual Plan, Tests -->
+        <div class="grid">
+            <div>
+                <div class="section-label">
+                    <h3>4. Målsetninger</h3>
+                    <p>Kortsiktige og langsiktige mål</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Målsetninger</h2>
+                                <span>+</span>
+                            </div>
+                            <div class="content">
+                                <div style="background: #F5F7F6; padding: 12px 16px; margin: 0 -24px 16px; font-size: 14px; font-weight: 600; color: #1A3D2E; text-transform: uppercase;">2025 Sesong</div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <strong>Oppnå A-kategori</strong>
+                                        <span class="badge badge-warning">Pågående</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Frist: 31. des 2025</p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <strong>Handicap under 5.0</strong>
+                                        <span class="badge badge-warning">Pågående</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Nåværende: 8.2 • Mål: 5.0</p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <strong>Driver 250m+ konsistent</strong>
+                                        <span class="badge badge-success">Fullført</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93;">✓ Gjennomsnitt 252m</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>5. Årsplan</h3>
+                    <p>Periodisert treningsplan</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Årsplan 2025</h2>
+                                <span>⋮</span>
+                            </div>
+                            <div class="content">
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <strong>E-fase (Etablering)</strong>
+                                        <span class="badge badge-success">Aktiv</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 12px;">Jan - Mar • 12 uker</p>
+                                    <p style="font-size: 14px;">Fokus på grunnleggende teknikk og fysisk base</p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <strong>G-fase (Generell)</strong>
+                                        <span style="font-size: 12px; color: #8E8E93;">Kommende</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 12px;">Apr - Jun • 12 uker</p>
+                                    <p style="font-size: 14px;">Økning i volum og intensitet</p>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <strong>S-fase (Spesifikk)</strong>
+                                        <span style="font-size: 12px; color: #8E8E93;">Kommende</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 12px;">Jul - Sep • 12 uker</p>
+                                    <p style="font-size: 14px;">Konkurranseforberedelse</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>6. Testprotokoll</h3>
+                    <p>Registrer nye tester</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Ny Test</h2>
+                                <span style="color: #C9A227; font-weight: 600;">Lagre</span>
+                            </div>
+                            <div class="content">
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #1A3D2E;">Velg test</label>
+                                    <select class="input" style="appearance: none;">
+                                        <option>Driver Distance & Accuracy</option>
+                                        <option>100m Approach</option>
+                                        <option>2m Putting</option>
+                                    </select>
+                                </div>
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #1A3D2E;">Avstand (m)</label>
+                                    <input type="number" class="input" placeholder="245" value="245">
+                                </div>
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #1A3D2E;">Fairway treff</label>
+                                    <input type="number" class="input" placeholder="7/10" value="7">
+                                </div>
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #1A3D2E;">Notater</label>
+                                    <textarea class="input" rows="4" placeholder="Vind fra venstre, gode treff generelt..."></textarea>
+                                </div>
+                                <button class="btn-primary">Lagre Test</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Test Results, Training, Exercises -->
+        <div class="grid">
+            <div>
+                <div class="section-label">
+                    <h3>7. Testresultater</h3>
+                    <p>Historikk med percentiler</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Testresultater</h2>
+                                <span>⋮</span>
+                            </div>
+                            <div class="content">
+                                <div style="background: #F5F7F6; padding: 12px 16px; margin: 0 -24px 16px; font-size: 14px; font-weight: 600; color: #1A3D2E;">Driver Tester</div>
+                                <div class="card">
+                                    <strong style="display: block; margin-bottom: 12px;">Driver Distance</strong>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 12px;">
+                                        <div style="text-align: center;">
+                                            <div style="font-size: 21px; font-weight: 700;">245m</div>
+                                            <div style="font-size: 12px; color: #8E8E93;">Avstand</div>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <div style="font-size: 21px; font-weight: 700;">68%</div>
+                                            <div style="font-size: 12px; color: #8E8E93;">Fairway</div>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <div style="font-size: 21px; font-weight: 700;">82</div>
+                                            <div style="font-size: 12px; color: #8E8E93;">Percentil</div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 82%"></div>
+                                    </div>
+                                    <p style="font-size: 12px; color: #8E8E93; margin-top: 8px;">15. des 2025</p>
+                                </div>
+                                <div style="background: #F5F7F6; padding: 12px 16px; margin: 0 -24px 16px; font-size: 14px; font-weight: 600; color: #1A3D2E;">Putting Tester</div>
+                                <div class="card">
+                                    <strong style="display: block; margin-bottom: 12px;">2m Putting</strong>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 12px;">
+                                        <div style="text-align: center;">
+                                            <div style="font-size: 21px; font-weight: 700;">9/10</div>
+                                            <div style="font-size: 12px; color: #8E8E93;">Treff</div>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <div style="font-size: 21px; font-weight: 700;">90%</div>
+                                            <div style="font-size: 12px; color: #8E8E93;">Prosent</div>
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <div style="font-size: 21px; font-weight: 700;">88</div>
+                                            <div style="font-size: 12px; color: #8E8E93;">Percentil</div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 88%"></div>
+                                    </div>
+                                    <p style="font-size: 12px; color: #8E8E93; margin-top: 8px;">14. des 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>8. Treningsprotokoll</h3>
+                    <p>Loggfør økter</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Logg Økt</h2>
+                                <span style="color: #C9A227; font-weight: 600;">Lagre</span>
+                            </div>
+                            <div class="content">
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">Type økt</label>
+                                    <select class="input">
+                                        <option>Putting økt</option>
+                                        <option>Driver trening</option>
+                                        <option>Kort spill</option>
+                                        <option>Fysisk trening</option>
+                                    </select>
+                                </div>
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">Varighet (min)</label>
+                                    <input type="number" class="input" value="90">
+                                </div>
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">RPE (1-10)</label>
+                                    <input type="range" min="1" max="10" value="7" style="width: 100%;">
+                                    <p style="text-align: center; font-size: 24px; font-weight: 700; color: #C9A227; margin-top: 8px;">7</p>
+                                </div>
+                                <div style="margin-bottom: 24px;">
+                                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">Notater</label>
+                                    <textarea class="input" rows="4" placeholder="Hva gikk bra? Hva kan forbedres?"></textarea>
+                                </div>
+                                <button class="btn-primary">Lagre Økt</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>9. Øvelsesbibliotek</h3>
+                    <p>150+ øvelser med videoer</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Øvelser</h2>
+                                <span>🔍</span>
+                            </div>
+                            <div class="content">
+                                <div style="background: #F5F7F6; padding: 12px 16px; margin: 0 -24px 16px; font-size: 14px; font-weight: 600; color: #1A3D2E;">Putting Øvelser</div>
+                                <div class="card">
+                                    <div style="display: flex; gap: 16px;">
+                                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #1A3D2E, #2D5A45); border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px;">▶</div>
+                                        <div style="flex: 1;">
+                                            <strong style="display: block; margin-bottom: 4px;">Lag Putting Drill</strong>
+                                            <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Distansekontroll 5-10m</p>
+                                            <span class="badge badge-success">Nybegynner</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; gap: 16px;">
+                                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #1A3D2E, #2D5A45); border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px;">▶</div>
+                                        <div style="flex: 1;">
+                                            <strong style="display: block; margin-bottom: 4px;">Gate Drill</strong>
+                                            <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Forbedre startlinje</p>
+                                            <span class="badge badge-warning">Middels</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background: #F5F7F6; padding: 12px 16px; margin: 0 -24px 16px; font-size: 14px; font-weight: 600; color: #1A3D2E;">Driver Øvelser</div>
+                                <div class="card">
+                                    <div style="display: flex; gap: 16px;">
+                                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #1A3D2E, #2D5A45); border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px;">▶</div>
+                                        <div style="flex: 1;">
+                                            <strong style="display: block; margin-bottom: 4px;">Tee Height Test</strong>
+                                            <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Optimal launch</p>
+                                            <span class="badge badge-success">Alle nivåer</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 4: Notes, Calendar, Progress -->
+        <div class="grid">
+            <div>
+                <div class="section-label">
+                    <h3>10. Notater</h3>
+                    <p>Trenernotater og feedback</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Notater</h2>
+                                <span>+</span>
+                            </div>
+                            <div class="content">
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong>Driver teknikk</strong>
+                                        <span style="font-size: 12px; color: #8E8E93;">I dag</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Fra: Anders Kristiansen</p>
+                                    <p style="font-size: 15px; line-height: 1.5;">Magnus viser god fremgang på driver. Fokus på å holde balanse gjennom svingen. Neste økt: arbeid med timing.</p>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong>Putting analyse</strong>
+                                        <span style="font-size: 12px; color: #8E8E93;">I går</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Fra: Anders Kristiansen</p>
+                                    <p style="font-size: 15px; line-height: 1.5;">Veldig bra resultater på 2m putting (90%). Fortsett med gate drill for å forbedre startlinjen.</p>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <strong>Mental trening</strong>
+                                        <span style="font-size: 12px; color: #8E8E93;">2 dager siden</span>
+                                    </div>
+                                    <p style="font-size: 14px; color: #8E8E93; margin-bottom: 8px;">Fra: Anders Kristiansen</p>
+                                    <p style="font-size: 15px; line-height: 1.5;">Start med visualiseringsøvelser før runder. 5 min daglig.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>11. Kalender</h3>
+                    <p>Booking og planlegging</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Kalender</h2>
+                                <span>+</span>
+                            </div>
+                            <div class="content">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                                    <span>←</span>
+                                    <strong style="font-size: 19px;">Desember 2025</strong>
+                                    <span>→</span>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 24px;">
+                                    <div style="text-align: center; font-size: 12px; font-weight: 600; color: #8E8E93;">M</div>
+                                    <div style="text-align: center; font-size: 12px; font-weight: 600; color: #8E8E93;">T</div>
+                                    <div style="text-align: center; font-size: 12px; font-weight: 600; color: #8E8E93;">O</div>
+                                    <div style="text-align: center; font-size: 12px; font-weight: 600; color: #8E8E93;">T</div>
+                                    <div style="text-align: center; font-size: 12px; font-weight: 600; color: #8E8E93;">F</div>
+                                    <div style="text-align: center; font-size: 12px; font-weight: 600; color: #8E8E93;">L</div>
+                                    <div style="text-align: center; font-size: 12px; font-weight: 600; color: #8E8E93;">S</div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 32px;">
+                                    <div style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px;">1</div>
+                                    <div style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px;">2</div>
+                                    <div style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #FFF9E6; color: #D4A84B;">15</div>
+                                    <div style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px;">16</div>
+                                    <div style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #1A3D2E; color: white; font-weight: 700;">17</div>
+                                    <div style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #FFF9E6; color: #D4A84B;">18</div>
+                                    <div style="aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px;">19</div>
+                                </div>
+                                <h3 style="font-size: 17px; font-weight: 600; margin-bottom: 16px;">17. desember</h3>
+                                <div class="card">
+                                    <div style="display: flex; gap: 16px;">
+                                        <div style="width: 4px; background: #C9A227; border-radius: 2px;"></div>
+                                        <div style="flex: 1;">
+                                            <strong>Putting økt</strong>
+                                            <p style="font-size: 14px; color: #8E8E93; margin-top: 4px;">13:00 - 14:30 • Bane 1</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-label">
+                    <h3>12. Fremgang</h3>
+                    <p>Progresjon over tid</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content">
+                            <div class="status-bar">
+                                <span>9:41</span>
+                                <span>📶 🔋</span>
+                            </div>
+                            <div class="nav-bar">
+                                <span>←</span>
+                                <h2>Fremgang</h2>
+                                <span>📊</span>
+                            </div>
+                            <div class="content">
+                                <div class="card">
+                                    <strong style="display: block; margin-bottom: 16px;">Handicap Utvikling</strong>
+                                    <div style="height: 120px; background: linear-gradient(to top, #E8F5E9, transparent); border-radius: 8px; position: relative; margin-bottom: 12px;">
+                                        <svg width="100%" height="120" style="position: absolute;">
+                                            <polyline points="0,80 60,70 120,65 180,55 240,50 300,45" fill="none" stroke="#4A7C59" stroke-width="3"/>
+                                        </svg>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #8E8E93;">
+                                        <span>Jan</span>
+                                        <span>Mar</span>
+                                        <span>Jun</span>
+                                        <span>Sep</span>
+                                        <span>Des</span>
+                                    </div>
+                                </div>
+                                <div class="stat-grid" style="margin-bottom: 16px;">
+                                    <div class="card" style="margin: 0;">
+                                        <div style="font-size: 24px; font-weight: 700; color: #1A3D2E; margin-bottom: 4px;">-2.5</div>
+                                        <div style="font-size: 12px; color: #8E8E93;">HCP endring</div>
+                                    </div>
+                                    <div class="card" style="margin: 0;">
+                                        <div style="font-size: 24px; font-weight: 700; color: #1A3D2E; margin-bottom: 4px;">48</div>
+                                        <div style="font-size: 12px; color: #8E8E93;">Økter</div>
+                                    </div>
+                                    <div class="card" style="margin: 0;">
+                                        <div style="font-size: 24px; font-weight: 700; color: #1A3D2E; margin-bottom: 4px;">92h</div>
+                                        <div style="font-size: 12px; color: #8E8E93;">Totalt</div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <strong style="display: block; margin-bottom: 12px;">Kategorifremgang</strong>
+                                    <div style="margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                            <span style="font-size: 14px;">Teknisk</span>
+                                            <span style="font-size: 14px; font-weight: 600;">85%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 12px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                            <span style="font-size: 14px;">Taktisk</span>
+                                            <span style="font-size: 14px; font-weight: 600;">72%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 72%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                            <span style="font-size: 14px;">Fysisk</span>
+                                            <span style="font-size: 14px; font-weight: 600;">78%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 78%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 80px; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+            <h2 style="font-size: 32px; font-weight: 700; color: #1A3D2E; margin-bottom: 16px;">AK Golf Academy</h2>
+            <p style="font-size: 17px; color: #8E8E93; margin-bottom: 32px;">Komplett IUP-plattform for juniorgolfere</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; max-width: 900px; margin: 0 auto;">
+                <div>
+                    <div style="font-size: 42px; font-weight: 700; color: #1A3D2E; margin-bottom: 8px;">12</div>
+                    <div style="font-size: 15px; color: #8E8E93;">Hovedfunksjoner</div>
+                </div>
+                <div>
+                    <div style="font-size: 42px; font-weight: 700; color: #1A3D2E; margin-bottom: 8px;">20+</div>
+                    <div style="font-size: 15px; color: #8E8E93;">Testprotokoller</div>
+                </div>
+                <div>
+                    <div style="font-size: 42px; font-weight: 700; color: #1A3D2E; margin-bottom: 8px;">150+</div>
+                    <div style="font-size: 15px; color: #8E8E93;">Øvelser</div>
+                </div>
+                <div>
+                    <div style="font-size: 42px; font-weight: 700; color: #1A3D2E; margin-bottom: 8px;">A-K</div>
+                    <div style="font-size: 15px; color: #8E8E93;">11 Kategorier</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

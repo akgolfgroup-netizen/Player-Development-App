@@ -1,0 +1,136 @@
+{
+  "database_name": "PERIODISERING",
+  "description": "52-week periodization plan (Week 43-42) for individual players",
+  "properties": {
+    "Ukenummer": {
+      "type": "title",
+      "description": "Week number (Uke 1-52 or Uke 43-42 annual cycle)"
+    },
+    "Spiller": {
+      "type": "relation",
+      "related_database": "SPILLERE",
+      "description": "Link to player profile"
+    },
+    "Periode": {
+      "type": "select",
+      "options": [
+        "Evaluering (E)",
+        "Grunnperiode (G)",
+        "Spesialiseringsperiode (S)",
+        "Turneringsperiode (T)"
+      ],
+      "description": "Training period phase"
+    },
+    "Intensitet": {
+      "type": "select",
+      "options": ["E", "G", "S", "T"],
+      "description": "Training intensity marker"
+    },
+    "Hovedfokus": {
+      "type": "multi_select",
+      "options": [
+        "Teknikk",
+        "Fysisk",
+        "Mental",
+        "Strategisk",
+        "Sosial",
+        "Shortgame",
+        "Putting",
+        "Spill",
+        "Testing"
+      ],
+      "description": "Primary focus areas for the week"
+    },
+    "Timer_totalt": {
+      "type": "number",
+      "description": "Total training hours for the week"
+    },
+    "L_fase": {
+      "type": "select",
+      "options": ["L1", "L2", "L3", "L4", "L5"],
+      "description": "Learning phase (L1=Exposure to L5=Automation)"
+    },
+    "Setting": {
+      "type": "select",
+      "options": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"],
+      "description": "Training setting (S1=Range to S10=High-stakes tournament)"
+    },
+    "CS_nivå": {
+      "type": "select",
+      "options": ["CS20", "CS30", "CS40", "CS50", "CS60", "CS70", "CS80", "CS90", "CS100"],
+      "description": "Clubspeed level (CS20=20% to CS100=100% max speed)"
+    },
+    "Ukemål": {
+      "type": "text",
+      "description": "Weekly training goal"
+    },
+    "Treningsøkter": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Scheduled training sessions for the week"
+    },
+    "Benchmark": {
+      "type": "checkbox",
+      "description": "Is this a benchmark testing week? (Every 3rd week: 3, 6, 9, 12, etc.)"
+    },
+    "Turnering": {
+      "type": "relation",
+      "related_database": "TURNERINGER",
+      "description": "Tournament scheduled this week"
+    },
+    "Notater": {
+      "type": "text",
+      "description": "Weekly notes and observations"
+    },
+    "Ukeplan_template": {
+      "type": "relation",
+      "related_database": "UKEPLANER_TEMPLATES",
+      "description": "Link to week template used"
+    }
+  },
+  "views": [
+    {
+      "name": "Årsplan oversikt",
+      "type": "table",
+      "sort": [{"property": "Ukenummer", "direction": "ascending"}]
+    },
+    {
+      "name": "Per periode",
+      "type": "board",
+      "group_by": "Periode"
+    },
+    {
+      "name": "Benchmark uker",
+      "type": "table",
+      "filter": {"property": "Benchmark", "checkbox": {"equals": true}}
+    },
+    {
+      "name": "Kalender",
+      "type": "calendar",
+      "calendar_by": "Ukenummer"
+    }
+  ],
+  "annual_structure": {
+    "Evaluering": {
+      "weeks": "43-46",
+      "duration": "4 weeks",
+      "focus": "Reflection, testing, goal setting"
+    },
+    "Grunnperiode": {
+      "weeks": "47-12",
+      "duration": "18 weeks",
+      "focus": "Building foundation - physical, technical fundamentals"
+    },
+    "Spesialiseringsperiode": {
+      "weeks": "13-25",
+      "duration": "13 weeks",
+      "focus": "Golf-specific development, variation training"
+    },
+    "Turneringsperiode": {
+      "weeks": "26-42",
+      "duration": "17 weeks",
+      "focus": "Performance and competition"
+    }
+  },
+  "benchmark_weeks": [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42]
+}

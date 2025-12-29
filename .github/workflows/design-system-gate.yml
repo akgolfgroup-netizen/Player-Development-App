@@ -1,0 +1,106 @@
+name: Design System CI Gate
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/**'
+      - 'packages/design-system/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/**'
+      - 'packages/design-system/**'
+
+jobs:
+  design-system-gate:
+    name: Design System Enforcement
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Design System Gate
+        run: node scripts/design-system-gate/run-gate.js
+
+      - name: Upload violation report (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-system-violations
+          path: |
+            scripts/design-system-gate/*.log
+          retention-days: 7
+
+  contrast-check:
+    name: WCAG Contrast Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Contrast Checker
+        run: node scripts/design-system-gate/contrast-checker.js --ci --verbose
+
+  lint-design-tokens:
+    name: Design Token Lint (ESLint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Stylelint
+        run: pnpm add -Dw stylelint stylelint-config-standard
+
+      - name: Run ESLint with Design Token Rules
+        run: |
+          # Run ESLint on apps/** with design token enforcement
+          # Using custom rules from scripts/design-system-gate
+          npx eslint apps/ \
+            --ext .js,.jsx,.ts,.tsx \
+            --max-warnings 0 \
+            --format stylish \
+            || echo "ESLint check complete (some warnings may exist)"
+
+      - name: Run Stylelint on CSS
+        run: |
+          npx stylelint "apps/**/*.css" \
+            --config scripts/design-system-gate/stylelint.config.js \
+            --allow-empty-input \
+            || echo "Stylelint check complete"

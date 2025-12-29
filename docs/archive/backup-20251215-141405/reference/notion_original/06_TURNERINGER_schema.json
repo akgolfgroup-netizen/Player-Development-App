@@ -1,0 +1,292 @@
+{
+  "database_name": "TURNERINGER",
+  "description": "Tournament calendar and planning - categorized by purpose (RESULTAT/UTVIKLING/TRENING)",
+  "properties": {
+    "Turneringsnavn": {
+      "type": "title",
+      "description": "Tournament name"
+    },
+    "Dato": {
+      "type": "date",
+      "description": "Tournament start date (multi-day events span dates)"
+    },
+    "Sluttdato": {
+      "type": "date",
+      "description": "Tournament end date (for multi-day events)"
+    },
+    "Uke": {
+      "type": "number",
+      "description": "Week number when tournament occurs"
+    },
+    "Kategori": {
+      "type": "select",
+      "options": ["RESULTAT", "UTVIKLING", "TRENING"],
+      "description": "Tournament category/purpose"
+    },
+    "Prioritet": {
+      "type": "select",
+      "options": ["Høy", "Middels", "Lav"],
+      "description": "Tournament priority level"
+    },
+    "Spillere": {
+      "type": "relation",
+      "related_database": "SPILLERE",
+      "description": "Players participating"
+    },
+    "Antall_spillere": {
+      "type": "rollup",
+      "relation_property": "Spillere",
+      "rollup_function": "count",
+      "description": "Number of players participating"
+    },
+    "Lokasjon": {
+      "type": "text",
+      "description": "Tournament location (city, course name)"
+    },
+    "Bane": {
+      "type": "text",
+      "description": "Golf course name"
+    },
+    "Format": {
+      "type": "select",
+      "options": [
+        "Slagspill 18 hull",
+        "Slagspill 36 hull",
+        "Slagspill 54 hull",
+        "Slagspill 72 hull",
+        "Matchspill",
+        "Foursome",
+        "Fourball",
+        "Scramble",
+        "Stableford"
+      ],
+      "description": "Tournament format"
+    },
+    "Nivå": {
+      "type": "select",
+      "options": [
+        "Internasjonal",
+        "Nasjonal",
+        "Regional",
+        "Klubb",
+        "Junior",
+        "Trenings-turnering"
+      ],
+      "description": "Competition level"
+    },
+    "Påmelding_frist": {
+      "type": "date",
+      "description": "Registration deadline"
+    },
+    "Påmeldt": {
+      "type": "checkbox",
+      "description": "Registration completed"
+    },
+    "Taperingsplan": {
+      "type": "text",
+      "description": "Tapering/preparation plan for week(s) before tournament"
+    },
+    "Uker_før_taper": {
+      "type": "select",
+      "options": ["Ingen", "1 uke", "2 uker", "3 uker"],
+      "description": "How far in advance to begin tapering"
+    },
+    "Mål": {
+      "type": "text",
+      "description": "Tournament goals (process, score, result)"
+    },
+    "Type_mål": {
+      "type": "select",
+      "options": ["Prosesspål", "Resultatmål", "Prestasjons-mål", "Læring"],
+      "description": "Type of goal set"
+    },
+    "Forventet_score": {
+      "type": "number",
+      "description": "Expected/target score"
+    },
+    "Resultat": {
+      "type": "number",
+      "description": "Actual final score/result"
+    },
+    "Plassering": {
+      "type": "text",
+      "description": "Final placement (e.g., 'T5', '1st', '12/45')"
+    },
+    "Score_vs_forventet": {
+      "type": "formula",
+      "formula": "prop('Resultat') - prop('Forventet_score')",
+      "description": "Actual vs expected score difference"
+    },
+    "Rundescore": {
+      "type": "text",
+      "description": "Individual round scores (e.g., '72-75-73-74')"
+    },
+    "Beste_runde": {
+      "type": "number",
+      "description": "Best round score"
+    },
+    "Strokes_gained_data": {
+      "type": "text",
+      "description": "SG breakdown if available (Tee, Approach, Short, Putting)"
+    },
+    "Evaluering": {
+      "type": "text",
+      "description": "Post-tournament evaluation and learnings"
+    },
+    "Hva_fungerte": {
+      "type": "text",
+      "description": "What worked well"
+    },
+    "Hva_å_forbedre": {
+      "type": "text",
+      "description": "Areas for improvement"
+    },
+    "Mental_prestasjon": {
+      "type": "select",
+      "options": ["Utmerket", "Bra", "Ok", "Under forventning"],
+      "description": "Mental game assessment"
+    },
+    "Rutine_konsistens": {
+      "type": "select",
+      "options": ["90%+", "70-90%", "50-70%", "<50%"],
+      "description": "Pre-shot routine consistency"
+    },
+    "Notater": {
+      "type": "text",
+      "description": "Additional notes, conditions, observations"
+    },
+    "Vær_forhold": {
+      "type": "text",
+      "description": "Weather conditions during tournament"
+    },
+    "Video_highlights": {
+      "type": "url",
+      "description": "Link to tournament highlights or key shots"
+    },
+    "Rapport_link": {
+      "type": "url",
+      "description": "Link to detailed tournament report (PDF)"
+    },
+    "Kostnader": {
+      "type": "number",
+      "description": "Tournament costs (entry, travel, accommodation)"
+    },
+    "Reise_detaljer": {
+      "type": "text",
+      "description": "Travel and accommodation information"
+    },
+    "Trener_deltakelse": {
+      "type": "people",
+      "description": "Coach attending tournament"
+    },
+    "Status": {
+      "type": "select",
+      "options": ["Planlagt", "Påmeldt", "Bekreftet", "Gjennomført", "Avlyst", "Trukket"],
+      "description": "Tournament status"
+    }
+  },
+  "views": [
+    {
+      "name": "Alle turneringer",
+      "type": "table",
+      "sort": [{"property": "Dato", "direction": "ascending"}]
+    },
+    {
+      "name": "Timeline",
+      "type": "timeline",
+      "timeline_by": "Dato",
+      "group_by": "Kategori"
+    },
+    {
+      "name": "Per kategori (RUT)",
+      "type": "board",
+      "group_by": "Kategori"
+    },
+    {
+      "name": "RESULTAT turneringer",
+      "type": "table",
+      "filter": {"property": "Kategori", "select": {"equals": "RESULTAT"}},
+      "sort": [{"property": "Prioritet", "direction": "ascending"}]
+    },
+    {
+      "name": "Kommende",
+      "type": "table",
+      "filter": {"property": "Dato", "date": {"next_month": {}}},
+      "sort": [{"property": "Dato", "direction": "ascending"}]
+    },
+    {
+      "name": "Gjennomført",
+      "type": "table",
+      "filter": {"property": "Status", "select": {"equals": "Gjennomført"}},
+      "sort": [{"property": "Dato", "direction": "descending"}]
+    },
+    {
+      "name": "Høy prioritet",
+      "type": "table",
+      "filter": {"property": "Prioritet", "select": {"equals": "Høy"}}
+    },
+    {
+      "name": "Calendar",
+      "type": "calendar",
+      "calendar_by": "Dato"
+    }
+  ],
+  "tournament_categorization": {
+    "RESULTAT": {
+      "description": "High priority tournaments where results matter",
+      "purpose": "Peak performance, ranking points, qualifying",
+      "preparation": "Full tapering, mental preparation, pre-tournament practice rounds",
+      "typical_count": "4-6 per season",
+      "examples": [
+        "National Championships",
+        "Tour Q-School",
+        "Major regional events",
+        "Ranking tournaments"
+      ]
+    },
+    "UTVIKLING": {
+      "description": "Medium priority developmental tournaments",
+      "purpose": "Gain experience, test skills, build competition temperament",
+      "preparation": "Standard training, light taper, process focus",
+      "typical_count": "8-12 per season",
+      "examples": [
+        "Regional tour events",
+        "Junior series",
+        "Development circuits",
+        "Match play events"
+      ]
+    },
+    "TRENING": {
+      "description": "Low priority training tournaments",
+      "purpose": "Practice under competition conditions, experiment, learn",
+      "preparation": "No tapering, maintain training volume, experimentation allowed",
+      "typical_count": "6-10 per season",
+      "examples": [
+        "Club championships",
+        "Practice events",
+        "Internal competitions",
+        "Off-season events"
+      ]
+    }
+  },
+  "tapering_guidelines": {
+    "RESULTAT": {
+      "weeks_before": "2-3 weeks",
+      "volume_reduction": "30-50%",
+      "intensity_maintenance": "High quality, low volume",
+      "focus": "Sharpness, feel, confidence building"
+    },
+    "UTVIKLING": {
+      "weeks_before": "1 week",
+      "volume_reduction": "15-25%",
+      "intensity_maintenance": "Moderate reduction",
+      "focus": "Maintenance with slight freshness"
+    },
+    "TRENING": {
+      "weeks_before": "None",
+      "volume_reduction": "0%",
+      "intensity_maintenance": "Normal training",
+      "focus": "Continue development work"
+    }
+  }
+}

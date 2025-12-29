@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf IUP App - Komplett Mockup Oversikt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #EBE5DA 0%, #EDF0F2 100%);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #10456A;
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #10456A;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #8E8E93;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #10456A;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #10456A;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #8E8E93;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category {
+            margin-bottom: 60px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #E5E5EA;
+        }
+
+        .category-icon {
+            font-size: 32px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1C1C1E;
+        }
+
+        .category-count {
+            margin-left: auto;
+            background: #F2F2F7;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #8E8E93;
+            font-weight: 600;
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .screen-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .screen-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .screen-preview {
+            height: 240px;
+            background: linear-gradient(135deg, #10456A 0%, #2C5F7F 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+        }
+
+        .screen-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-implemented {
+            background: rgba(44, 95, 127, 0.2);
+            color: #2C5F7F;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-existing {
+            background: rgba(201, 162, 39, 0.2);
+            color: #C9A227;
+            backdrop-filter: blur(10px);
+        }
+
+        .screen-content {
+            padding: 20px;
+        }
+
+        .screen-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1C1C1E;
+            margin-bottom: 8px;
+        }
+
+        .screen-description {
+            font-size: 13px;
+            color: #8E8E93;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .screen-features {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .screen-features li {
+            font-size: 12px;
+            color: #1C1C1E;
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .screen-features li:before {
+            content: "✓";
+            color: #2C5F7F;
+            font-weight: bold;
+        }
+
+        .screen-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            background: #F2F2F7;
+            color: #1C1C1E;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .tag-tech {
+            background: rgba(16, 69, 106, 0.1);
+            color: #10456A;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #E5E5EA;
+            color: #8E8E93;
+            font-size: 14px;
+        }
+
+        .design-system {
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .color-swatch {
+            text-align: center;
+        }
+
+        .color-box {
+            height: 80px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .color-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1C1C1E;
+        }
+
+        .color-hex {
+            font-size: 11px;
+            color: #8E8E93;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <svg viewBox="0 0 196.41 204.13" fill="white" style="width: 48px; height: 48px;">
+                    <path d="M170.3,185.77c-6.31-6.32-12.14-13.2-17.5-20.66l-34.14-46.91,2.13-1.92-20.32,17.03,32.11,45.71,9.32,13.77.72,2.16c-.19,1.72-1.53,2.72-4.02,3.01l-7.17.43v5.74h64.98v-5.74c-10.61-1.34-19.32-5.55-26.11-12.62ZM129.42,66.56v5.74l8.03.72,3.59.71c1.91.86,2.82,2.06,2.73,3.59.09,1.72-1.96,4.59-6.17,8.61l-8.18,8.46-31.7,28.98V0l-46.19,14.2v5.74l6.31-.14c8.51.38,13.1,3.87,13.77,10.47l.29,6.17v120.84l25.82-21.66,2.75-2.31,20.32-17.03,22.4-20.31,13.06-10.9c7.93-6.41,16.4-10.33,25.39-11.77l9.18-1v-5.74h-61.4ZM97.72,129.39v6.23l2.75-2.31-2.75-3.92ZM71.25,178.91l-37.82,25.03c1.44-.07,2.9-.21,4.36-.44,6.84-1.28,20.73-6.23,34.37-25.19l-.91.6ZM33.43,203.94c.15.01,1.74.05,4.36-.44-1.46.23-2.92.37-4.36.44ZM71.9,113.67l-15.52,5.97c-16.26,6.6-28.74,13.1-37.44,19.51-5.93,4.3-10.6,9.2-13.99,14.7C1.56,159.35-.09,165.54,0,172.42c.1,9.38,2.99,16.96,8.68,22.74,5.69,5.79,13.36,8.73,23.02,8.82.58,0,1.14-.02,1.72-.04h.01l37.82-25.03c-21.68,14.17-34.35,4.73-34.35,4.73-1.73-1.06-3.32-2.44-4.77-4.19-3.34-4.11-4.97-9.08-4.87-14.91-.39-13.68,9.94-24.92,30.98-33.71l13.66-5.65.26-.11v-11.5l-.26.1ZM46.07,70c-2.91.53-13.6,2.32-16.37,3.22-7.17,2.39-13.15,5.98-17.93,10.76-5.83,5.83-8.75,11.96-8.75,18.36-.19,3.92.84,7.44,3.09,10.54,2.24,3.11,5.61,4.57,10.11,4.38,8.89,0,13.36-6.09,13.56-15.94l-.36-5.92c-.44-5.91-2.7-15.76,16.65-25.4Z"/>
+                </svg>
+            </div>
+            <h1>AK Golf IUP App</h1>
+            <p class="subtitle">Individuell Utviklingsplan for Junior Golf</p>
+            <span class="badge">Komplett Skjermoversikt v3.0 - Blue Palette 01</span>
+        </header>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">13</div>
+                <div class="stat-label">Hovedskjermer</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Kategorier</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Blue Palette 01</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">React</div>
+                <div class="stat-label">Framework</div>
+            </div>
+        </div>
+
+        <!-- CATEGORY 1: CORE NAVIGATION -->
+        <div class="category">
+            <div class="category-header">
+                <span class="category-icon">🧭</span>
+                <h2 class="category-title">Kjernenavigasjon</h2>
+                <span class="category-count">4 skjermer</span>
+            </div>
+            <div class="screens-grid">
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        🏠
+                        <span class="screen-status status-existing">Eksisterende</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Dashboard</h3>
+                        <p class="screen-description">Hovedskjerm med oversikt over dagens fokus, kommende økter og målfremdrift</p>
+                        <ul class="screen-features">
+                            <li>Dagens fokusområder</li>
+                            <li>Kommende treningsøkter</li>
+                            <li>Hurtigstatistikk</li>
+                            <li>Kategori & snittscore</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">L4 · CS60 · S6</span>
+                            <span class="tag tag-tech">Bottom Nav</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📅
+                        <span class="screen-status status-existing">Eksisterende</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Kalender</h3>
+                        <p class="screen-description">Ukeoversikt og dagsvisning med alle planlagte treningsøkter</p>
+                        <ul class="screen-features">
+                            <li>Ukeoversikt (Uke 50)</li>
+                            <li>Dagsoversikt med detaljer</li>
+                            <li>Økter fullført tracking</li>
+                            <li>Timer og økter statistikk</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">12 økter</span>
+                            <span class="tag">14.5t timer</span>
+                            <span class="tag tag-tech">Week View</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📊
+                        <span class="screen-status status-existing">Eksisterende</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Statistikk</h3>
+                        <p class="screen-description">Treningsstatistikk med oversikt over aktivitet og fremgang</p>
+                        <ul class="screen-features">
+                            <li>Treningstimer totalt</li>
+                            <li>Økter fullført ratio</li>
+                            <li>Timer per dag diagram</li>
+                            <li>Ukentlig aktivitet</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">12.5t treningstimer</span>
+                            <span class="tag tag-tech">Charts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        🎯
+                        <span class="screen-status status-existing">Eksisterende</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Målsetninger</h3>
+                        <p class="screen-description">Sett og følg opp kort-, mellomlang- og langsiktige mål</p>
+                        <ul class="screen-features">
+                            <li>Kortsiktige mål</li>
+                            <li>Mellomlange mål</li>
+                            <li>Langsiktige mål</li>
+                            <li>Fremdriftsvisning</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Snittscore &lt; 73</span>
+                            <span class="tag">L5 wedge</span>
+                            <span class="tag">Topp 10 NM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORY 2: PLANNING & STRATEGY -->
+        <div class="category">
+            <div class="category-header">
+                <span class="category-icon">📋</span>
+                <h2 class="category-title">Planlegging & Strategi</h2>
+                <span class="category-count">1 skjerm</span>
+            </div>
+            <div class="screens-grid">
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📅
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Årsplan</h3>
+                        <p class="screen-description">Komplett årsplan med perioder, fokusområder og benchmarks</p>
+                        <ul class="screen-features">
+                            <li>Timeline & Grid visning</li>
+                            <li>4 perioder (E, G, S, T)</li>
+                            <li>Fem-prosess prioritering</li>
+                            <li>Benchmark-uker markert</li>
+                            <li>Turneringer & samlinger</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Uke 43-42</span>
+                            <span class="tag">12 måneder</span>
+                            <span class="tag tag-tech">Interactive</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORY 3: TESTING & EVALUATION -->
+        <div class="category">
+            <div class="category-header">
+                <span class="category-icon">📝</span>
+                <h2 class="category-title">Testing & Evaluering</h2>
+                <span class="category-count">2 skjermer</span>
+            </div>
+            <div class="screens-grid">
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        ✅
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Testprotokoll</h3>
+                        <p class="screen-description">20 offisielle tester med krav for Kategori B</p>
+                        <ul class="screen-features">
+                            <li>20 tester totalt</li>
+                            <li>7 Golf Shots</li>
+                            <li>4 Teknikk</li>
+                            <li>3 Fysisk</li>
+                            <li>4 Mental</li>
+                            <li>2 Strategisk</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">12/20 bestått</span>
+                            <span class="tag">75% forbedret</span>
+                            <span class="tag tag-tech">Filters</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📈
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Testresultater</h3>
+                        <p class="screen-description">Detaljert visning av testresultater med historikk og grafer</p>
+                        <ul class="screen-features">
+                            <li>Radar chart profil</li>
+                            <li>6 benchmarks historikk</li>
+                            <li>Trend-indikatorer</li>
+                            <li>Progresjon mot krav</li>
+                            <li>Kategori-filtrering</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Multi-line charts</span>
+                            <span class="tag">Radar view</span>
+                            <span class="tag tag-tech">D3/SVG</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORY 4: TRAINING EXECUTION -->
+        <div class="category">
+            <div class="category-header">
+                <span class="category-icon">💪</span>
+                <h2 class="category-title">Treningsutførelse</h2>
+                <span class="category-count">3 skjermer</span>
+            </div>
+            <div class="screens-grid">
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📖
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Treningsprotokoll</h3>
+                        <p class="screen-description">Øktbibliotek med strukturerte treningsøkter</p>
+                        <ul class="screen-features">
+                            <li>6+ strukturerte økter</li>
+                            <li>L-fase & CS tagging</li>
+                            <li>Setting indikatorer</li>
+                            <li>Øvelse-for-øvelse guide</li>
+                            <li>Playback controls</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Driver Teknikk</span>
+                            <span class="tag">Putting Lab</span>
+                            <span class="tag">Golf Styrke</span>
+                            <span class="tag tag-tech">Step tracking</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📚
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Øvelsesbibliotek</h3>
+                        <p class="screen-description">Komplett katalog med treningsøvelser og drills</p>
+                        <ul class="screen-features">
+                            <li>24+ øvelser</li>
+                            <li>6 kategorier</li>
+                            <li>L-fase filtrering</li>
+                            <li>Favoritt-funksjon</li>
+                            <li>Grid/List visning</li>
+                            <li>Videolenker</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Langspill</span>
+                            <span class="tag">Shortgame</span>
+                            <span class="tag">Putting</span>
+                            <span class="tag tag-tech">Search</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📊
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Treningsstatistikk</h3>
+                        <p class="screen-description">Detaljert innsikt i treningsvolum og fordeling</p>
+                        <ul class="screen-features">
+                            <li>Treningstimer</li>
+                            <li>Økter fullført</li>
+                            <li>Daglig fordeling</li>
+                            <li>Ukentlig oversikt</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Timer per dag</span>
+                            <span class="tag tag-tech">Bar charts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORY 5: DOCUMENTATION & HISTORY -->
+        <div class="category">
+            <div class="category-header">
+                <span class="category-icon">📁</span>
+                <h2 class="category-title">Dokumentasjon & Historikk</h2>
+                <span class="category-count">2 skjermer</span>
+            </div>
+            <div class="screens-grid">
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        🗂️
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Arkiv</h3>
+                        <p class="screen-description">Historiske dokumenter og arkiverte planer</p>
+                        <ul class="screen-features">
+                            <li>Årsplaner</li>
+                            <li>Testresultater</li>
+                            <li>Turneringsresultater</li>
+                            <li>Målsetninger</li>
+                            <li>Årsfiltrering (2023-2025)</li>
+                            <li>Timeline-visning</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">3 år historikk</span>
+                            <span class="tag tag-tech">Folder view</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📝
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Treningsdagbok (Notater)</h3>
+                        <p class="screen-description">Personlige notater og refleksjoner fra trening</p>
+                        <ul class="screen-features">
+                            <li>Rik tekst-editor</li>
+                            <li>Tag-system (6 tags)</li>
+                            <li>Humør-tracking</li>
+                            <li>Fest viktige notater</li>
+                            <li>Søk & filter</li>
+                            <li>Grid visning</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Trening</span>
+                            <span class="tag">Turnering</span>
+                            <span class="tag">Mental</span>
+                            <span class="tag">Refleksjon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORY 6: TEAM & COLLABORATION -->
+        <div class="category">
+            <div class="category-header">
+                <span class="category-icon">👥</span>
+                <h2 class="category-title">Team & Samarbeid</h2>
+                <span class="category-count">1 skjerm</span>
+            </div>
+            <div class="screens-grid">
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        👨‍🏫
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Trenerteam</h3>
+                        <p class="screen-description">Oversikt over trenere med kontakt og booking</p>
+                        <ul class="screen-features">
+                            <li>4 trenere</li>
+                            <li>Hovedtrener, Teknisk, Fysisk, Mental</li>
+                            <li>Kontaktinfo</li>
+                            <li>Meldinger</li>
+                            <li>Kommende økter</li>
+                            <li>Book ny økt</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Magnus (Hoved)</span>
+                            <span class="tag">Line (Teknikk)</span>
+                            <span class="tag">Erik (Fysisk)</span>
+                            <span class="tag tag-tech">Tabs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORY 7: ONBOARDING -->
+        <div class="category">
+            <div class="category-header">
+                <span class="category-icon">🚀</span>
+                <h2 class="category-title">Onboarding & Oppsett</h2>
+                <span class="category-count">2 skjermer</span>
+            </div>
+            <div class="screens-grid">
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        👤
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Brukerprofil & Onboarding</h3>
+                        <p class="screen-description">Initial setup og profilregistrering</p>
+                        <ul class="screen-features">
+                            <li>Personlige opplysninger</li>
+                            <li>Kategori-setting</li>
+                            <li>Klubbtilknytning</li>
+                            <li>Profilbilde</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag tag-tech">Multi-step</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="screen-card">
+                    <div class="screen-preview">
+                        📋
+                        <span class="screen-status status-implemented">Implementert</span>
+                    </div>
+                    <div class="screen-content">
+                        <h3 class="screen-title">Intake-skjemaer</h3>
+                        <p class="screen-description">Innledende kartlegging av spiller</p>
+                        <ul class="screen-features">
+                            <li>Player Intake v1</li>
+                            <li>Premium Intake v2</li>
+                            <li>Baseline testing</li>
+                            <li>Målsetting workshop</li>
+                        </ul>
+                        <div class="screen-tags">
+                            <span class="tag">Initial assessment</span>
+                            <span class="tag tag-tech">Form validation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESIGN SYSTEM -->
+        <div class="design-system">
+            <h2 style="font-size: 24px; color: #1C1C1E; margin-bottom: 10px;">Design System v3.0 - Blue Palette 01</h2>
+            <p style="color: #8E8E93; margin-bottom: 20px;">Konsistent fargepalett og komponenter på tvers av alle skjermer</p>
+
+            <div class="color-palette">
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #10456A;"></div>
+                    <div class="color-name">Primary</div>
+                    <div class="color-hex">#10456A</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #2C5F7F;"></div>
+                    <div class="color-name">Primary Light</div>
+                    <div class="color-hex">#2C5F7F</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #EDF0F2; border: 1px solid #E5E5EA;"></div>
+                    <div class="color-name">Snow</div>
+                    <div class="color-hex">#EDF0F2</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #EBE5DA; border: 1px solid #E5E5EA;"></div>
+                    <div class="color-name">Surface</div>
+                    <div class="color-hex">#EBE5DA</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-box" style="background: #C9A227;"></div>
+                    <div class="color-name">Gold</div>
+                    <div class="color-hex">#C9A227</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>AK Golf Academy × Team Norway Golf</strong></p>
+            <p>Individuell Utviklingsplan for Junior Golf</p>
+            <p style="margin-top: 10px;">Design System v3.0 | Blue Palette 01 | React + TailwindCSS</p>
+            <p style="margin-top: 10px; font-size: 12px;">Generert: Desember 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

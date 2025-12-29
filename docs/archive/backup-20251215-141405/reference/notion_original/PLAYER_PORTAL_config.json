@@ -1,0 +1,110 @@
+{
+  "portal_name": "Player Portal",
+  "description": "Individual player access to their own training data and progress",
+  "access_level": "player",
+  "permissions": {
+    "view": ["own_profile", "own_plan", "own_tests", "own_sessions", "own_progress"],
+    "edit": ["session_completion", "session_notes", "self_assessment"],
+    "create": ["progress_logs", "notes"],
+    "delete": []
+  },
+  "dashboard_components": [
+    {
+      "component": "Welcome_Header",
+      "data_source": "SPILLERE",
+      "fields": ["Navn", "Kategori", "Hovedmål"]
+    },
+    {
+      "component": "Current_Week_Overview",
+      "data_source": "PERIODISERING",
+      "fields": ["Ukenummer", "Periode", "Ukemål", "Treningsøkter"],
+      "filter": "current_week"
+    },
+    {
+      "component": "This_Week_Sessions",
+      "data_source": "TRENINGSØKTER",
+      "fields": ["Øktnavn", "Type", "Varighet", "Beskrivelse"],
+      "filter": "current_week_scheduled"
+    },
+    {
+      "component": "Progress_Summary",
+      "data_source": "PROGRESJON_LOGG",
+      "fields": ["Dato", "Gjennomført", "Kvalitet"],
+      "filter": "last_30_days",
+      "visualization": "chart"
+    },
+    {
+      "component": "Latest_Test_Results",
+      "data_source": "TESTER",
+      "fields": ["Testnavn", "Resultat", "Krav for kategori", "Differanse", "Godkjent"],
+      "filter": "last_benchmark",
+      "limit": 7
+    },
+    {
+      "component": "Next_Benchmark",
+      "data_source": "PERIODISERING",
+      "fields": ["Ukenummer", "Benchmark"],
+      "filter": "next_benchmark_week"
+    },
+    {
+      "component": "Upcoming_Tournaments",
+      "data_source": "TURNERINGER",
+      "fields": ["Turneringsnavn", "Dato", "Kategori", "Mål"],
+      "filter": "next_3_tournaments"
+    },
+    {
+      "component": "Breaking_Points_Focus",
+      "data_source": "BRUDDPUNKTER",
+      "fields": ["Bruddpunkt", "Alvorlighetsgrad", "Fremdrift", "Øvelser"],
+      "filter": "active_only"
+    }
+  ],
+  "features": [
+    {
+      "name": "My Calendar",
+      "description": "52-week training calendar",
+      "database": "PERIODISERING",
+      "view": "Kalender"
+    },
+    {
+      "name": "My Training Sessions",
+      "description": "All scheduled and completed sessions",
+      "database": "TRENINGSØKTER",
+      "view": "table"
+    },
+    {
+      "name": "My Test Results",
+      "description": "All test results with progression tracking",
+      "database": "TESTER",
+      "view": "chart_and_table"
+    },
+    {
+      "name": "My Progress Log",
+      "description": "Daily training log and notes",
+      "database": "PROGRESJON_LOGG",
+      "view": "timeline"
+    },
+    {
+      "name": "Exercise Library",
+      "description": "Browse available exercises (filtered by category)",
+      "database": "ØVELSER",
+      "view": "gallery",
+      "filter": "appropriate_for_player_category"
+    },
+    {
+      "name": "My Goals",
+      "description": "Personal goals and targets",
+      "database": "SPILLERE",
+      "fields": ["Hovedmål", "Kategori", "Bruddpunkter"]
+    }
+  ],
+  "notifications": [
+    "new_session_scheduled",
+    "benchmark_week_reminder",
+    "tournament_upcoming",
+    "coach_note_added",
+    "test_results_uploaded"
+  ],
+  "mobile_optimized": true,
+  "offline_access": ["current_week_sessions", "progress_log"]
+}

@@ -1,0 +1,224 @@
+{
+  "database_name": "BRUDDPUNKTER",
+  "description": "Breaking points tracking - Systematic identification and resolution of performance barriers",
+  "properties": {
+    "Bruddpunkt": {
+      "type": "title",
+      "description": "Breaking point description (e.g., 'Putting under press - 2m range')"
+    },
+    "Spiller": {
+      "type": "relation",
+      "related_database": "SPILLERE",
+      "description": "Link to player profile"
+    },
+    "Kategori_prosess": {
+      "type": "select",
+      "options": ["Teknisk", "Fysisk", "Mental", "Strategisk", "Sosial"],
+      "description": "Which of the 5 processes this relates to"
+    },
+    "Spesifikk_område": {
+      "type": "select",
+      "options": [
+        "Driver avstand",
+        "Driver konsistens",
+        "Jern nøyaktighet",
+        "Wedge PEI",
+        "Putting under press",
+        "Putting lesing",
+        "Bunker",
+        "Shortgame generelt",
+        "Fysisk styrke",
+        "Fysisk mobilitet",
+        "Mental styrke",
+        "Rutiner",
+        "Strategisk forståelse",
+        "Utholdenhet",
+        "Klubbfart",
+        "Annet"
+      ],
+      "description": "Specific area of weakness"
+    },
+    "Alvorlighetsgrad": {
+      "type": "select",
+      "options": ["Kritisk", "Høy", "Middels", "Lav"],
+      "description": "Severity/impact on category progression"
+    },
+    "Hindrer_kategori_opprykk": {
+      "type": "checkbox",
+      "description": "Is this preventing category advancement?"
+    },
+    "Identifisert_dato": {
+      "type": "date",
+      "description": "When breaking point was first identified"
+    },
+    "Identifisert_via": {
+      "type": "select",
+      "options": [
+        "Benchmark testing",
+        "Tournament observation",
+        "Training session",
+        "Coach assessment",
+        "Player self-report",
+        "Video analysis"
+      ],
+      "description": "How breaking point was identified"
+    },
+    "Baseline_måling": {
+      "type": "text",
+      "description": "Initial measurement/assessment (e.g., 'PEI: 0.09, Need: <0.07')"
+    },
+    "Mål_måling": {
+      "type": "text",
+      "description": "Target measurement to resolve breaking point"
+    },
+    "Nåværende_måling": {
+      "type": "text",
+      "description": "Most recent measurement"
+    },
+    "Progresjon_prosent": {
+      "type": "number",
+      "description": "Estimated % progress toward resolution (0-100%)"
+    },
+    "Treningsplan": {
+      "type": "text",
+      "description": "Specific training approach to address this breaking point"
+    },
+    "Øvelser_tildelt": {
+      "type": "relation",
+      "related_database": "ØVELSER",
+      "description": "Specific drills assigned to address this"
+    },
+    "Antall_øvelser": {
+      "type": "rollup",
+      "relation_property": "Øvelser_tildelt",
+      "rollup_function": "count",
+      "description": "Number of corrective exercises"
+    },
+    "Timer_per_uke": {
+      "type": "number",
+      "description": "Hours per week dedicated to this breaking point"
+    },
+    "Fremdrift": {
+      "type": "select",
+      "options": ["Ikke startet", "Pågår - Tidlig", "Pågår - Fremgang", "Nær løsning", "Løst", "Tilbakefall"],
+      "description": "Current status"
+    },
+    "Neste_evaluering": {
+      "type": "date",
+      "description": "When to re-assess progress (typically next benchmark)"
+    },
+    "Forventet_løsningsdato": {
+      "type": "date",
+      "description": "Estimated date for resolution"
+    },
+    "Faktisk_løsningsdato": {
+      "type": "date",
+      "description": "Actual date when resolved"
+    },
+    "Tid_til_løsning": {
+      "type": "formula",
+      "formula": "dateBetween(prop('Identifisert_dato'), prop('Faktisk_løsningsdato'), 'weeks')",
+      "description": "Weeks from identification to resolution"
+    },
+    "Trener_notater": {
+      "type": "text",
+      "description": "Coach observations and strategy notes"
+    },
+    "Spiller_tilbakemelding": {
+      "type": "text",
+      "description": "Player's perspective on progress and challenges"
+    },
+    "Relaterte_tester": {
+      "type": "relation",
+      "related_database": "TESTER",
+      "description": "Tests that measure this breaking point"
+    },
+    "Suksess_historikk": {
+      "type": "text",
+      "description": "Timeline of improvements and setbacks"
+    }
+  },
+  "views": [
+    {
+      "name": "Alle bruddpunkter",
+      "type": "table",
+      "sort": [
+        {"property": "Alvorlighetsgrad", "direction": "ascending"},
+        {"property": "Spiller", "direction": "ascending"}
+      ]
+    },
+    {
+      "name": "Aktive (Pågår)",
+      "type": "table",
+      "filter": {
+        "or": [
+          {"property": "Fremdrift", "select": {"equals": "Pågår - Tidlig"}},
+          {"property": "Fremdrift", "select": {"equals": "Pågår - Fremgang"}},
+          {"property": "Fremdrift", "select": {"equals": "Nær løsning"}}
+        ]
+      }
+    },
+    {
+      "name": "Kritiske",
+      "type": "table",
+      "filter": {"property": "Alvorlighetsgrad", "select": {"equals": "Kritisk"}}
+    },
+    {
+      "name": "Løste bruddpunkter",
+      "type": "table",
+      "filter": {"property": "Fremdrift", "select": {"equals": "Løst"}},
+      "sort": [{"property": "Faktisk_løsningsdato", "direction": "descending"}]
+    },
+    {
+      "name": "Per spiller",
+      "type": "board",
+      "group_by": "Spiller"
+    },
+    {
+      "name": "Per kategori-prosess",
+      "type": "board",
+      "group_by": "Kategori_prosess"
+    },
+    {
+      "name": "Progresjon tracking",
+      "type": "table",
+      "properties_visible": ["Bruddpunkt", "Spiller", "Baseline_måling", "Nåværende_måling", "Progresjon_prosent", "Fremdrift"],
+      "sort": [{"property": "Progresjon_prosent", "direction": "descending"}]
+    }
+  ],
+  "workflow": {
+    "identification": [
+      "Breaking point identified through testing or observation",
+      "Create entry in BRUDDPUNKTER database",
+      "Set severity and baseline measurement",
+      "Link to player profile (auto-sync to SPILLERE.Bruddpunkter)"
+    ],
+    "planning": [
+      "Coach develops specific training plan",
+      "Assign corrective exercises from ØVELSER database",
+      "Allocate weekly hours (typically 1-3 hours/week per breaking point)",
+      "Set expected resolution timeline",
+      "Schedule next evaluation (usually next benchmark)"
+    ],
+    "execution": [
+      "Player completes assigned exercises weekly",
+      "Log progress in PROGRESJON_LOGG",
+      "Coach monitors execution and quality",
+      "Adjust exercises if no progress after 3-4 weeks"
+    ],
+    "evaluation": [
+      "Re-test at benchmark weeks",
+      "Update Nåværende_måling",
+      "Calculate Progresjon_prosent",
+      "Update Fremdrift status",
+      "Adjust training plan if needed"
+    ],
+    "resolution": [
+      "When target measurement achieved consistently (2+ benchmarks)",
+      "Mark Fremdrift = 'Løst'",
+      "Set Faktisk_løsningsdato",
+      "Remove from active focus (but maintain in maintenance)",
+      "Update player profile"
+    ]
+  }
+}

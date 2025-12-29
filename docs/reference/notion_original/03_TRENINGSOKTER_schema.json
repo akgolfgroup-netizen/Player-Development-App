@@ -1,0 +1,234 @@
+{
+  "database_name": "TRENINGSØKTER",
+  "description": "Training session library - 150 sessions across all categories and periods",
+  "properties": {
+    "Øktnavn": {
+      "type": "title",
+      "description": "Session name (descriptive and unique)"
+    },
+    "Kategori": {
+      "type": "multi_select",
+      "options": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
+      "description": "Appropriate categories for this session"
+    },
+    "Type": {
+      "type": "select",
+      "options": [
+        "Teknikk - Full Swing",
+        "Teknikk - Short Game",
+        "Putting - Lag",
+        "Putting - Lesing",
+        "Fysisk - Styrke",
+        "Fysisk - Mobilitet",
+        "Fysisk - Eksplosivitet",
+        "Mental - Rutiner",
+        "Mental - Press",
+        "Spill - Range",
+        "Spill - Bane",
+        "Kompetanse - Turnering",
+        "Test - Benchmark",
+        "Hybrid"
+      ],
+      "description": "Primary session type"
+    },
+    "Periode": {
+      "type": "multi_select",
+      "options": ["Evaluering", "Grunnperiode", "Spesialiseringsperiode", "Turneringsperiode"],
+      "description": "Training periods where this session is appropriate"
+    },
+    "Varighet": {
+      "type": "number",
+      "description": "Session duration in minutes"
+    },
+    "L_fase": {
+      "type": "select",
+      "options": ["L1", "L2", "L3", "L4", "L5"],
+      "description": "Learning phase (L1=Eksponering to L5=Automatisering)"
+    },
+    "Setting": {
+      "type": "select",
+      "options": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"],
+      "description": "Training setting (S1=Range perfect to S10=High-stakes tournament)"
+    },
+    "CS_nivå": {
+      "type": "select",
+      "options": ["CS20", "CS30", "CS40", "CS50", "CS60", "CS70", "CS80", "CS90", "CS100"],
+      "description": "Clubspeed level (CS20=20% to CS100=100% max)"
+    },
+    "Hovedfokus": {
+      "type": "multi_select",
+      "options": ["Teknisk", "Fysisk", "Mental", "Strategisk", "Sosial"],
+      "description": "Primary focus areas (5-prosess pyramide)"
+    },
+    "Underfokus": {
+      "type": "multi_select",
+      "options": [
+        "Driver",
+        "Jern",
+        "Wedge",
+        "Bunker",
+        "Putting lag",
+        "Putting lesing",
+        "Pre-shot rutine",
+        "Press-håndtering",
+        "Klubbvalg",
+        "Banestrategi",
+        "Styrke",
+        "Mobilitet",
+        "Eksplosivitet",
+        "Utholdenhet"
+      ],
+      "description": "Specific sub-focus areas"
+    },
+    "AK_formel": {
+      "type": "formula",
+      "formula": "prop('L_fase') + '_' + prop('CS_nivå') + '_' + prop('Setting')",
+      "description": "AK formula identifier (e.g., L3_CS60_S2)"
+    },
+    "Beskrivelse": {
+      "type": "text",
+      "description": "Detailed session description and flow"
+    },
+    "Målsetting": {
+      "type": "text",
+      "description": "Session goals and desired outcomes"
+    },
+    "Deløvelser": {
+      "type": "relation",
+      "related_database": "ØVELSER",
+      "description": "Exercises included in this session"
+    },
+    "Antall_øvelser": {
+      "type": "rollup",
+      "relation_property": "Deløvelser",
+      "rollup_function": "count",
+      "description": "Number of exercises in session"
+    },
+    "Utstyr": {
+      "type": "multi_select",
+      "options": [
+        "Launch monitor",
+        "Videokamera",
+        "Alignment sticks",
+        "Impact bag",
+        "Foam roller",
+        "Medisinball",
+        "Kettlebell",
+        "Resistance bands",
+        "Balance board",
+        "Putting mirror",
+        "Metronom",
+        "Clubs",
+        "Balls",
+        "Targets",
+        "Ingen spesielt"
+      ],
+      "description": "Required equipment"
+    },
+    "Lokasjon": {
+      "type": "select",
+      "options": ["Range", "Putting green", "Shortgame område", "Bane", "Gym", "Inne (simulator)", "Hjemme"],
+      "description": "Where session takes place"
+    },
+    "Intensitet": {
+      "type": "select",
+      "options": ["Lav", "Moderat", "Høy", "Maks"],
+      "description": "Physical/mental intensity level"
+    },
+    "Struktur": {
+      "type": "text",
+      "description": "Session structure (Warmup → Drill 1 → Drill 2 → Cooldown)"
+    },
+    "Suksesskriterier": {
+      "type": "text",
+      "description": "How to measure session success"
+    },
+    "Notater": {
+      "type": "text",
+      "description": "Additional notes, variations, tips"
+    },
+    "Video_link": {
+      "type": "url",
+      "description": "Link to demonstration video"
+    },
+    "Opprettet": {
+      "type": "created_time"
+    },
+    "Sist_brukt": {
+      "type": "date",
+      "description": "Last time this session was assigned"
+    },
+    "Popularitet": {
+      "type": "number",
+      "description": "Times this session has been used"
+    }
+  },
+  "views": [
+    {
+      "name": "Alle økter",
+      "type": "table",
+      "sort": [{"property": "Type", "direction": "ascending"}]
+    },
+    {
+      "name": "Per type",
+      "type": "board",
+      "group_by": "Type"
+    },
+    {
+      "name": "Per kategori",
+      "type": "table",
+      "group_by": "Kategori"
+    },
+    {
+      "name": "Per periode",
+      "type": "board",
+      "group_by": "Periode"
+    },
+    {
+      "name": "Per L-fase",
+      "type": "board",
+      "group_by": "L_fase"
+    },
+    {
+      "name": "Gallery view",
+      "type": "gallery",
+      "cover_property": "Video_link"
+    },
+    {
+      "name": "Grunnperiode økter",
+      "type": "table",
+      "filter": {"property": "Periode", "multi_select": {"contains": "Grunnperiode"}}
+    },
+    {
+      "name": "Quick reference",
+      "type": "table",
+      "properties_visible": ["Øktnavn", "Type", "Kategori", "Varighet", "L_fase", "Setting"]
+    }
+  ],
+  "session_library_structure": {
+    "total_sessions": 150,
+    "breakdown": {
+      "Teknikk_sessions": 40,
+      "Shortgame_Putting_sessions": 40,
+      "Fysisk_sessions": 25,
+      "Mental_sessions": 15,
+      "Spill_sessions": 20,
+      "Hybrid_sessions": 10
+    },
+    "category_coverage": {
+      "A_B_elite": 30,
+      "C_D_competitive": 40,
+      "E_F_G_development": 50,
+      "H_I_J_K_beginner": 30
+    }
+  },
+  "naming_convention": {
+    "format": "[Type] - [Focus] - [L-fase][Setting]",
+    "examples": [
+      "Teknikk - Driver Distance - L2_S1",
+      "Putting - Lag Control - L4_S3",
+      "Fysisk - Rotational Power - Gym",
+      "Spill - Pressure Scenarios - L5_S7"
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "database_name": "SPILLERE",
+  "description": "Player database - Core player profiles and tracking",
+  "properties": {
+    "Navn": {
+      "type": "title",
+      "description": "Player name"
+    },
+    "Kategori": {
+      "type": "select",
+      "options": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
+      "description": "Current player category (A=World Elite to K=Junior Beginner)"
+    },
+    "Alder": {
+      "type": "number",
+      "description": "Player age"
+    },
+    "Snittscore_10_runder": {
+      "type": "number",
+      "format": "decimal",
+      "description": "Average score over last 10 rounds"
+    },
+    "Snittscore_12_måneder": {
+      "type": "number",
+      "format": "decimal",
+      "description": "Average score over last 12 months"
+    },
+    "Klubb": {
+      "type": "text",
+      "description": "Golf club affiliation"
+    },
+    "Status": {
+      "type": "select",
+      "options": ["Aktiv", "Inaktiv", "Pause"],
+      "description": "Current player status"
+    },
+    "Bruddpunkter": {
+      "type": "multi_select",
+      "options": [
+        "Driver avstand",
+        "Driver konsistens",
+        "Jern nøyaktighet",
+        "Wedge PEI",
+        "Putting under press",
+        "Putting lesing",
+        "Bunker",
+        "Shortgame generelt",
+        "Fysisk styrke",
+        "Mental styrke",
+        "Strategisk forståelse",
+        "Utholdenhet"
+      ],
+      "description": "Identified breaking points preventing progression"
+    },
+    "Hovedmål": {
+      "type": "text",
+      "description": "Primary development goal"
+    },
+    "Treningsplan": {
+      "type": "relation",
+      "related_database": "PERIODISERING",
+      "description": "Link to player's periodization plan"
+    },
+    "Tester": {
+      "type": "relation",
+      "related_database": "TESTER",
+      "description": "Link to player's test results"
+    },
+    "Opprettet": {
+      "type": "created_time",
+      "description": "Profile creation date"
+    },
+    "Sist_oppdatert": {
+      "type": "last_edited_time",
+      "description": "Last profile update"
+    }
+  },
+  "views": [
+    {
+      "name": "Alle spillere",
+      "type": "table",
+      "sort": [{"property": "Kategori", "direction": "ascending"}]
+    },
+    {
+      "name": "Aktive spillere",
+      "type": "table",
+      "filter": {"property": "Status", "select": {"equals": "Aktiv"}}
+    },
+    {
+      "name": "Per kategori",
+      "type": "board",
+      "group_by": "Kategori"
+    }
+  ]
+}

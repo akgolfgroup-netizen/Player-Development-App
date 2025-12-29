@@ -1,0 +1,285 @@
+{
+  "database_name": "ØVELSER",
+  "description": "Exercise/drill library - 300+ drills across all training types",
+  "properties": {
+    "Øvelsesnavn": {
+      "type": "title",
+      "description": "Exercise name (descriptive and searchable)"
+    },
+    "Type": {
+      "type": "select",
+      "options": [
+        "Teknikk - Driver",
+        "Teknikk - Jern",
+        "Teknikk - Wedge",
+        "Shortgame - Chipping",
+        "Shortgame - Pitching",
+        "Shortgame - Bunker",
+        "Putting - Lag",
+        "Putting - Lesing",
+        "Putting - Rutine",
+        "Fysisk - Styrke",
+        "Fysisk - Mobilitet",
+        "Fysisk - Eksplosivitet",
+        "Fysisk - Utholdenhet",
+        "Mental - Fokus",
+        "Mental - Rutiner",
+        "Mental - Visualisering",
+        "Mental - Press",
+        "Strategisk - Klubbvalg",
+        "Strategisk - Banestrategi"
+      ],
+      "description": "Exercise type and category"
+    },
+    "L_fase": {
+      "type": "select",
+      "options": ["L1", "L2", "L3", "L4", "L5"],
+      "description": "Appropriate learning phase"
+    },
+    "Setting": {
+      "type": "multi_select",
+      "options": ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10"],
+      "description": "Appropriate settings for this drill"
+    },
+    "CS_nivå": {
+      "type": "multi_select",
+      "options": ["CS20", "CS30", "CS40", "CS50", "CS60", "CS70", "CS80", "CS90", "CS100"],
+      "description": "Appropriate clubspeed levels"
+    },
+    "Kategori": {
+      "type": "multi_select",
+      "options": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"],
+      "description": "Player categories this drill suits"
+    },
+    "Periode": {
+      "type": "multi_select",
+      "options": ["Evaluering", "Grunnperiode", "Spesialiseringsperiode", "Turneringsperiode"],
+      "description": "Training periods where drill is appropriate"
+    },
+    "Beskrivelse": {
+      "type": "text",
+      "description": "Detailed drill description and execution"
+    },
+    "Formål": {
+      "type": "text",
+      "description": "Purpose and learning objective of drill"
+    },
+    "Reps_eller_tid": {
+      "type": "text",
+      "description": "Recommended repetitions or time (e.g., '3×10 reps' or '15 min')"
+    },
+    "Utstyr": {
+      "type": "multi_select",
+      "options": [
+        "Klubber",
+        "Baller",
+        "Launch monitor",
+        "Videokamera",
+        "Alignment sticks",
+        "Impact bag",
+        "Foam roller",
+        "Medisinball",
+        "Kettlebell",
+        "Vekter",
+        "Resistance bands",
+        "Balance board",
+        "Putting mirror",
+        "Metronom",
+        "Targets",
+        "Cones",
+        "Matte",
+        "Ingen spesielt"
+      ],
+      "description": "Required equipment"
+    },
+    "Lokasjon": {
+      "type": "select",
+      "options": ["Range", "Putting green", "Shortgame område", "Bane", "Gym", "Inne", "Hjemme"],
+      "description": "Where drill can be performed"
+    },
+    "Vanskelighetsgrad": {
+      "type": "select",
+      "options": ["Lett", "Middels", "Vanskelig", "Avansert"],
+      "description": "Difficulty level"
+    },
+    "Progresjon": {
+      "type": "text",
+      "description": "How to progress drill (make easier/harder)"
+    },
+    "Regresjon": {
+      "type": "text",
+      "description": "Simplified version if too difficult"
+    },
+    "Suksesskriterier": {
+      "type": "text",
+      "description": "How to measure success/completion"
+    },
+    "Vanlige_feil": {
+      "type": "text",
+      "description": "Common mistakes and corrections"
+    },
+    "Coaching_cues": {
+      "type": "text",
+      "description": "Key coaching points and cues"
+    },
+    "Prosess": {
+      "type": "select",
+      "options": ["Teknisk", "Fysisk", "Mental", "Strategisk", "Sosial"],
+      "description": "Primary process from 5-prosess pyramide"
+    },
+    "Bruddpunkt_fokus": {
+      "type": "multi_select",
+      "options": [
+        "Driver avstand",
+        "Driver konsistens",
+        "Jern nøyaktighet",
+        "Wedge PEI",
+        "Putting under press",
+        "Putting lesing",
+        "Bunker",
+        "Shortgame generelt",
+        "Fysisk styrke",
+        "Mental styrke",
+        "Strategisk forståelse",
+        "Utholdenhet"
+      ],
+      "description": "Which breaking points this drill addresses"
+    },
+    "Video_link": {
+      "type": "url",
+      "description": "Demonstration video link"
+    },
+    "Bilde_link": {
+      "type": "url",
+      "description": "Setup diagram or photo"
+    },
+    "Kilde": {
+      "type": "text",
+      "description": "Source/creator of drill"
+    },
+    "Varianter": {
+      "type": "text",
+      "description": "Drill variations"
+    },
+    "Brukt_i_økter": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Sessions that include this drill"
+    },
+    "Popularitet": {
+      "type": "number",
+      "description": "Times this drill has been assigned"
+    },
+    "Spillertilbakemeldinger": {
+      "type": "text",
+      "description": "Player feedback and effectiveness notes"
+    },
+    "Tags": {
+      "type": "multi_select",
+      "options": [
+        "Favoritt",
+        "Høy effektivitet",
+        "Lav utstyr",
+        "Hjemmetrening",
+        "Konkurranseoverføring",
+        "Begynner-vennlig",
+        "Elite-level",
+        "Morsom",
+        "Utfordrende"
+      ],
+      "description": "Drill tags for filtering"
+    }
+  },
+  "views": [
+    {
+      "name": "Alle øvelser",
+      "type": "table",
+      "sort": [{"property": "Type", "direction": "ascending"}]
+    },
+    {
+      "name": "Per type",
+      "type": "board",
+      "group_by": "Type"
+    },
+    {
+      "name": "Per kategori",
+      "type": "table",
+      "group_by": "Kategori"
+    },
+    {
+      "name": "Per bruddpunkt",
+      "type": "board",
+      "group_by": "Bruddpunkt_fokus"
+    },
+    {
+      "name": "Gallery",
+      "type": "gallery",
+      "cover_property": "Video_link",
+      "properties_visible": ["Øvelsesnavn", "Type", "Vanskelighetsgrad"]
+    },
+    {
+      "name": "Hjemmetrening",
+      "type": "table",
+      "filter": {
+        "or": [
+          {"property": "Lokasjon", "select": {"equals": "Hjemme"}},
+          {"property": "Tags", "multi_select": {"contains": "Hjemmetrening"}}
+        ]
+      }
+    },
+    {
+      "name": "Begynner øvelser (H-K)",
+      "type": "table",
+      "filter": {
+        "or": [
+          {"property": "Kategori", "multi_select": {"contains": "H"}},
+          {"property": "Kategori", "multi_select": {"contains": "I"}},
+          {"property": "Kategori", "multi_select": {"contains": "J"}},
+          {"property": "Kategori", "multi_select": {"contains": "K"}}
+        ]
+      }
+    },
+    {
+      "name": "Elite øvelser (A-C)",
+      "type": "table",
+      "filter": {
+        "or": [
+          {"property": "Kategori", "multi_select": {"contains": "A"}},
+          {"property": "Kategori", "multi_select": {"contains": "B"}},
+          {"property": "Kategori", "multi_select": {"contains": "C"}}
+        ]
+      }
+    },
+    {
+      "name": "Quick add",
+      "type": "table",
+      "properties_visible": ["Øvelsesnavn", "Type", "Kategori", "Reps_eller_tid", "Utstyr"]
+    }
+  ],
+  "exercise_library_structure": {
+    "total_exercises": "300+",
+    "breakdown": {
+      "Teknikk_drills": 100,
+      "Shortgame_Putting_drills": 100,
+      "Fysisk_drills": 60,
+      "Mental_drills": 30,
+      "Strategisk_drills": 10
+    },
+    "by_learning_phase": {
+      "L1_Eksponering": 50,
+      "L2_Fundamentals": 80,
+      "L3_Variasjon": 70,
+      "L4_Timing_Flow": 60,
+      "L5_Automatisering": 40
+    }
+  },
+  "naming_convention": {
+    "format": "[Type] - [Specific focus] - [Key characteristic]",
+    "examples": [
+      "Teknikk - Driver - Slow Motion Swings",
+      "Putting - Lag - 3-6-9 Drill",
+      "Fysisk - Rotasjon - Med Ball Throws",
+      "Mental - Fokus - Breath Control 5-Count"
+    ]
+  }
+}
