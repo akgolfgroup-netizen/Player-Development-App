@@ -1,6 +1,18 @@
 'use client'
 
-import React, { useMemo } from 'react'
+/**
+ * ApplicationLayout - Catalyst-based layout with AK Golf Blue Palette
+ *
+ * Colors from design-system.md:
+ * - Primary Blue: #10456A
+ * - Primary Light: #2C5F7F
+ * - Snow: #EDF0F2
+ * - Surface: #EBE5DA
+ * - Ink: #02060D
+ * - Gold: #C9A227
+ */
+
+import React, { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as LucideIcons from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
@@ -16,6 +28,7 @@ import {
   SidebarLabel,
   SidebarSection,
   SidebarSpacer,
+  SidebarDivider,
 } from '../catalyst/sidebar'
 import { SidebarLayout } from '../catalyst/sidebar-layout'
 import { Navbar, NavbarItem, NavbarSection, NavbarSpacer } from '../catalyst/navbar'
@@ -29,7 +42,7 @@ import {
   DropdownMenu,
 } from '../catalyst/dropdown'
 
-const { LogOut, Settings, User, ChevronUp } = LucideIcons
+const { LogOut, Settings, User, ChevronUp, ChevronDown, ChevronRight } = LucideIcons
 
 // Helper to get icon from string
 const getIcon = (iconName) => {
@@ -39,11 +52,11 @@ const getIcon = (iconName) => {
 function AccountDropdownMenu({ anchor, user, onLogout }) {
   return (
     <DropdownMenu className="min-w-64" anchor={anchor}>
-      <DropdownItem href="/profile">
+      <DropdownItem href="/profil">
         <User data-slot="icon" className="size-4" />
         <DropdownLabel>Min profil</DropdownLabel>
       </DropdownItem>
-      <DropdownItem href="/settings">
+      <DropdownItem href="/innstillinger">
         <Settings data-slot="icon" className="size-4" />
         <DropdownLabel>Innstillinger</DropdownLabel>
       </DropdownItem>
@@ -56,15 +69,74 @@ function AccountDropdownMenu({ anchor, user, onLogout }) {
   )
 }
 
+// Collapsible menu item with submenu
+function NavMenuItem({ item, pathname, openMenus, toggleMenu }) {
+  const Icon = getIcon(item.icon)
+  const isOpen = openMenus[item.label]
+  const hasActiveChild = item.submenu?.some(sub => pathname === sub.href || pathname.startsWith(sub.href + '/'))
+
+  if (item.submenu) {
+    return (
+      <div>
+        <button
+          onClick={() => toggleMenu(item.label)}
+          className={`
+            flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-sm font-medium
+            transition-colors duration-150
+            ${hasActiveChild ? 'text-white bg-[#2C5F7F]' : 'text-white/80 hover:bg-[#2C5F7F] hover:text-white'}
+          `}
+        >
+          <Icon className="size-5 shrink-0" />
+          <span className="flex-1">{item.label}</span>
+          {isOpen ? (
+            <ChevronDown className="size-4 text-white/50" />
+          ) : (
+            <ChevronRight className="size-4 text-white/50" />
+          )}
+        </button>
+
+        {isOpen && (
+          <div className="mt-1 ml-7 space-y-0.5">
+            {item.submenu.map((subItem) => {
+              const active = pathname === subItem.href || pathname.startsWith(subItem.href + '/')
+              return (
+                <SidebarItem key={subItem.href} href={subItem.href} current={active}>
+                  <SidebarLabel>{subItem.label}</SidebarLabel>
+                </SidebarItem>
+              )
+            })}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  const active = pathname === item.href
+  return (
+    <SidebarItem href={item.href} current={active}>
+      <Icon data-slot="icon" className="size-5" />
+      <SidebarLabel>{item.label}</SidebarLabel>
+    </SidebarItem>
+  )
+}
+
 export default function ApplicationLayout({ children }) {
   const location = useLocation()
   const navigate = useNavigate()
   const { user, logout } = useAuth()
   const pathname = location.pathname
+  const [openMenus, setOpenMenus] = useState({})
 
   const handleLogout = async () => {
     await logout()
     navigate('/login')
+  }
+
+  const toggleMenu = (label) => {
+    setOpenMenus(prev => ({
+      ...prev,
+      [label]: !prev[label]
+    }))
   }
 
   // Filter navigation items based on user role
@@ -73,15 +145,25 @@ export default function ApplicationLayout({ children }) {
     return navigationConfig.filter(item => {
       if (!item.roles) return true
       return item.roles.includes(userRole)
-    }).map(item => ({
-      ...item,
-      Icon: getIcon(item.icon),
-    }))
+    })
   }, [user?.role])
+
+  // Auto-open menu if current path matches a submenu item
+  React.useEffect(() => {
+    items.forEach(item => {
+      if (item.submenu) {
+        const hasActiveChild = item.submenu.some(sub =>
+          pathname === sub.href || pathname.startsWith(sub.href + '/')
+        )
+        if (hasActiveChild && !openMenus[item.label]) {
+          setOpenMenus(prev => ({ ...prev, [item.label]: true }))
+        }
+      }
+    })
+  }, [pathname, items])
 
   const userInitials = `${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`.toUpperCase() || 'U'
   const userName = `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || 'Bruker'
-  const userEmail = user?.email || ''
 
   return (
     <SidebarLayout
@@ -103,46 +185,30 @@ export default function ApplicationLayout({ children }) {
         </Navbar>
       }
       sidebar={
-        <Sidebar className="bg-[#10456A]">
-          <SidebarHeader className="border-white/10">
+        <Sidebar>
+          <SidebarHeader>
             <div className="flex justify-center py-2">
               <AKLogo size={44} color="#EBE5DA" />
             </div>
           </SidebarHeader>
 
-          <SidebarBody className="[&_[data-slot=section]]:gap-1">
+          <SidebarBody>
             <SidebarSection>
-              {items.map((item) => {
-                if (item.submenu) {
-                  // For now, render submenu items as flat list
-                  return item.submenu.map((subItem) => {
-                    const active = pathname === subItem.href
-                    return (
-                      <SidebarItem key={subItem.href} href={subItem.href} current={active}>
-                        <SidebarLabel className="text-white/80 data-[current=true]:text-white">
-                          {subItem.label}
-                        </SidebarLabel>
-                      </SidebarItem>
-                    )
-                  })
-                }
-
-                const active = pathname === item.href
-                return (
-                  <SidebarItem key={item.href} href={item.href} current={active}>
-                    <item.Icon data-slot="icon" className="size-5 text-white/70" />
-                    <SidebarLabel className="text-white/80 data-[current=true]:text-white">
-                      {item.label}
-                    </SidebarLabel>
-                  </SidebarItem>
-                )
-              })}
+              {items.map((item) => (
+                <NavMenuItem
+                  key={item.label}
+                  item={item}
+                  pathname={pathname}
+                  openMenus={openMenus}
+                  toggleMenu={toggleMenu}
+                />
+              ))}
             </SidebarSection>
 
             <SidebarSpacer />
           </SidebarBody>
 
-          <SidebarFooter className="border-white/10">
+          <SidebarFooter>
             <Dropdown>
               <DropdownButton as={SidebarItem}>
                 <Avatar

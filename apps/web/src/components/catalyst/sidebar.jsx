@@ -1,5 +1,16 @@
 'use client'
 
+/**
+ * Sidebar components with AK Golf Blue Palette
+ *
+ * Colors:
+ * - Primary Blue: #10456A
+ * - Primary Light: #2C5F7F (hover)
+ * - Gold: #C9A227 (active indicator)
+ * - Surface: #EBE5DA
+ * - White: #FFFFFF
+ */
+
 import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
 import { LayoutGroup, motion } from 'motion/react'
@@ -8,7 +19,7 @@ import { TouchTarget } from './button'
 import { Link } from './link'
 
 export function Sidebar({ className, ...props }) {
-  return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col')} />
+  return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col bg-[#10456A]')} />
 }
 
 export function SidebarHeader({ className, ...props }) {
@@ -17,7 +28,7 @@ export function SidebarHeader({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5'
+        'flex flex-col border-b border-white/10 p-4 [&>[data-slot=section]+[data-slot=section]]:mt-2.5'
       )}
     />
   )
@@ -41,7 +52,7 @@ export function SidebarFooter({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&>[data-slot=section]+[data-slot=section]]:mt-2.5'
+        'flex flex-col border-t border-white/10 p-4 [&>[data-slot=section]+[data-slot=section]]:mt-2.5'
       )}
     />
   )
@@ -58,7 +69,7 @@ export function SidebarSection({ className, ...props }) {
 }
 
 export function SidebarDivider({ className, ...props }) {
-  return <hr {...props} className={clsx(className, 'my-4 border-t border-zinc-950/5 lg:-mx-4 dark:border-white/5')} />
+  return <hr {...props} className={clsx(className, 'my-4 border-t border-white/10 lg:-mx-4')} />
 }
 
 export function SidebarSpacer({ className, ...props }) {
@@ -67,7 +78,7 @@ export function SidebarSpacer({ className, ...props }) {
 
 export function SidebarHeading({ className, ...props }) {
   return (
-    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-zinc-500 dark:text-zinc-400')} />
+    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-white/60')} />
   )
 }
 
@@ -77,25 +88,20 @@ export const SidebarItem = forwardRef(function SidebarItem(
   ref
 ) {
   let classes = clsx(
-    // Base
-    'flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base/6 font-medium text-zinc-950 sm:py-2 sm:text-sm/5',
-    // Leading icon/icon-only
-    '*:data-[slot=icon]:size-6 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:fill-zinc-500 sm:*:data-[slot=icon]:size-5',
+    // Base - white text on blue sidebar
+    'flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base/6 font-medium text-white/80 sm:py-2 sm:text-sm/5',
+    // Leading icon
+    '*:data-[slot=icon]:size-6 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-white/70 sm:*:data-[slot=icon]:size-5',
     // Trailing icon (down chevron or similar)
     '*:last:data-[slot=icon]:ml-auto *:last:data-[slot=icon]:size-5 sm:*:last:data-[slot=icon]:size-4',
     // Avatar
     '*:data-[slot=avatar]:-m-0.5 *:data-[slot=avatar]:size-7 sm:*:data-[slot=avatar]:size-6',
-    // Hover
-    'data-hover:bg-zinc-950/5 data-hover:*:data-[slot=icon]:fill-zinc-950',
+    // Hover - lighter blue (#2C5F7F)
+    'data-hover:bg-[#2C5F7F] data-hover:text-white data-hover:*:data-[slot=icon]:text-white',
     // Active
-    'data-active:bg-zinc-950/5 data-active:*:data-[slot=icon]:fill-zinc-950',
-    // Current
-    'data-current:*:data-[slot=icon]:fill-zinc-950',
-    // Dark mode
-    'dark:text-white dark:*:data-[slot=icon]:fill-zinc-400',
-    'dark:data-hover:bg-white/5 dark:data-hover:*:data-[slot=icon]:fill-white',
-    'dark:data-active:bg-white/5 dark:data-active:*:data-[slot=icon]:fill-white',
-    'dark:data-current:*:data-[slot=icon]:fill-white'
+    'data-active:bg-[#2C5F7F] data-active:text-white data-active:*:data-[slot=icon]:text-white',
+    // Current - full white
+    'data-current:text-white data-current:*:data-[slot=icon]:text-white'
   )
 
   return (
@@ -103,7 +109,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
       {current && (
         <motion.span
           layoutId="current-indicator"
-          className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-[#10456A] dark:bg-[#C9A227]"
+          className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-[#C9A227]"
         />
       )}
       {typeof props.href === 'string' ? (
