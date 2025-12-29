@@ -24,6 +24,10 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, '
   leadingIcon?: React.ReactNode;
   /** Icon on the right side */
   trailingIcon?: React.ReactNode;
+  /** Left addon - alias for leadingIcon */
+  leftAddon?: React.ReactNode;
+  /** Right addon - alias for trailingIcon */
+  rightAddon?: React.ReactNode;
   /** Size variant */
   size?: InputSize;
 }
@@ -34,6 +38,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   error,
   leadingIcon,
   trailingIcon,
+  leftAddon,
+  rightAddon,
   size = 'md',
   className = '',
   style = {},
@@ -45,13 +51,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   const inputId = id || `input-${generatedId}`;
   const hasError = Boolean(error);
 
+  // Support both naming conventions
+  const leftIcon = leadingIcon || leftAddon;
+  const rightIcon = trailingIcon || rightAddon;
+
   const inputStyle: React.CSSProperties = {
     ...styles.input,
     ...sizeStyles[size],
     ...(hasError && styles.inputError),
     ...(disabled && styles.inputDisabled),
-    ...(leadingIcon && styles.inputWithLeadingIcon),
-    ...(trailingIcon && styles.inputWithTrailingIcon),
+    ...(leftIcon && styles.inputWithLeadingIcon),
+    ...(rightIcon && styles.inputWithTrailingIcon),
     ...style,
   };
 
@@ -67,8 +77,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
       )}
 
       <div style={styles.inputContainer}>
-        {leadingIcon && (
-          <span style={styles.leadingIcon}>{leadingIcon}</span>
+        {leftIcon && (
+          <span style={styles.leadingIcon}>{leftIcon}</span>
         )}
 
         <input
@@ -85,8 +95,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({
           {...props}
         />
 
-        {trailingIcon && (
-          <span style={styles.trailingIcon}>{trailingIcon}</span>
+        {rightIcon && (
+          <span style={styles.trailingIcon}>{rightIcon}</span>
         )}
       </div>
 
