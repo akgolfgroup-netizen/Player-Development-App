@@ -5,6 +5,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // MOCK DATA
@@ -503,24 +504,13 @@ const TurneringsevalueringContainer = () => {
             ))}
           </div>
 
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '10px 16px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
+          <Button
+            variant="primary"
+            size="sm"
+            leftIcon={<Plus size={16} />}
           >
-            <Plus size={16} />
             Ny evaluering
-          </button>
+          </Button>
         </div>
 
         {/* Evaluations List */}
