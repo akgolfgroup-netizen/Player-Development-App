@@ -192,9 +192,16 @@ Returns complete dashboard data for the authenticated player including:
 
       const date = request.query.date ? new Date(request.query.date) : new Date();
 
-      const dashboard = await dashboardService.getDashboard(tenantId, playerId, date);
-
-      return dashboard;
+      try {
+        const dashboard = await dashboardService.getDashboard(tenantId, playerId, date);
+        return dashboard;
+      } catch (error: any) {
+        request.log.error({ error, playerId, tenantId }, 'Dashboard fetch failed');
+        return reply.status(500).send({
+          error: error.message || 'Failed to fetch dashboard data',
+          code: error.code || 'DASHBOARD_ERROR'
+        });
+      }
     }
   );
 
@@ -288,9 +295,16 @@ coaches and administrators to monitor their athletes' progress and training data
 
       const date = request.query.date ? new Date(request.query.date) : new Date();
 
-      const dashboard = await dashboardService.getDashboard(tenantId, playerId, date);
-
-      return dashboard;
+      try {
+        const dashboard = await dashboardService.getDashboard(tenantId, playerId, date);
+        return dashboard;
+      } catch (error: any) {
+        request.log.error({ error, playerId, tenantId }, 'Dashboard fetch failed');
+        return reply.status(500).send({
+          error: error.message || 'Failed to fetch dashboard data',
+          code: error.code || 'DASHBOARD_ERROR'
+        });
+      }
     }
   );
 
