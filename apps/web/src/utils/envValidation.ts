@@ -63,7 +63,8 @@ export function validateEnv(): { valid: boolean; warnings: string[] } {
  */
 export async function checkApiHealth(): Promise<boolean> {
   const config = getEnvConfig();
-  const healthUrl = config.apiUrl.replace(/\/api\/v1$/, '') + '/api/v1/health';
+  // Health endpoint is at /health, not /api/v1/health
+  const healthUrl = config.apiUrl.replace(/\/api\/v1$/, '') + '/health';
 
   try {
     const response = await fetch(healthUrl, {
