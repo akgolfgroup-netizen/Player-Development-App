@@ -67,4 +67,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 # Sync database schema, seed (one-time), and start server
 # TODO: Remove "npx prisma db seed" after first successful deploy
 # TODO: Change back to "prisma migrate deploy" after schema is synced
-CMD ["sh", "-c", "npx prisma db push --skip-generate && npx prisma db seed && node dist/server.js"]
+CMD ["sh", "-c", "npx prisma db push --skip-generate --accept-data-loss && npx prisma db seed && node dist/server.js"]
