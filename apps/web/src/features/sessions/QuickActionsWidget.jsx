@@ -72,12 +72,13 @@ export default function QuickActionsWidget({ planId }) {
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-xl font-bold mb-2">Today's Training</h3>
         <p className="text-gray-600 mb-4">No session scheduled for today</p>
-        <button
+        <Button
+          variant="primary"
           onClick={() => navigate('/session/new')}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+          style={{ width: '100%' }}
         >
           + Opprett treningsokt
-        </button>
+        </Button>
       </div>
     );
   }
@@ -137,68 +138,75 @@ export default function QuickActionsWidget({ planId }) {
               </div>
             ))}
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => setShowSubstitute(false)}
-            className="mt-3 text-sm text-blue-600 hover:text-blue-700"
+            style={{ marginTop: '12px' }}
           >
             ← Back
-          </button>
+          </Button>
         </div>
       ) : (
         <div className="flex gap-2 flex-wrap">
           {assignment.status === 'planned' && (
             <>
-              <button
+              <Button
+                variant="primary"
                 onClick={() => handleQuickAction('start')}
                 disabled={loading}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50"
+                style={{ flex: 1 }}
               >
                 ▶️ Start
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={() => handleQuickAction('complete')}
                 disabled={loading}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium disabled:opacity-50"
+                style={{ flex: 1, backgroundColor: 'var(--success)' }}
               >
                 ✅ Complete
-              </button>
+              </Button>
             </>
           )}
           {assignment.status === 'in_progress' && (
             <>
-              <button
+              <Button
+                variant="primary"
                 onClick={handleEvaluate}
                 disabled={loading}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium disabled:opacity-50"
+                style={{ flex: 1, backgroundColor: 'var(--success)' }}
               >
                 📝 Evaluer
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={() => handleQuickAction('complete')}
                 disabled={loading}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50"
+                style={{ flex: 1 }}
               >
                 ✅ Complete
-              </button>
+              </Button>
             </>
           )}
           {assignment.status === 'planned' && (
-            <button
+            <Button
+              variant="secondary"
               onClick={() => handleQuickAction('skip')}
               disabled={loading}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50"
             >
               Skip
-            </button>
+            </Button>
           )}
           {assignment.canBeSubstituted && assignment.status === 'planned' && (
-            <button
+            <Button
+              variant="secondary"
               onClick={loadSubstitutes}
               disabled={loading}
-              className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 font-medium disabled:opacity-50"
+              style={{ backgroundColor: 'rgba(251, 146, 60, 0.2)', color: 'rgb(194, 65, 12)' }}
             >
               🔄 Substitute
-            </button>
+            </Button>
           )}
         </div>
       )}

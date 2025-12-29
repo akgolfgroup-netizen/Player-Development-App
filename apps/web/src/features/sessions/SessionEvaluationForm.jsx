@@ -9,6 +9,7 @@
 import React, { useState, useEffect } from 'react';
 // UiCanon: CSS variables
 import { Check, X, ChevronLeft, Clock, Target, Zap, Brain } from 'lucide-react';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // SUB-COMPONENTS
@@ -409,21 +410,9 @@ export default function SessionEvaluationForm({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <button
-            onClick={onCancel}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--bg-primary)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '4px',
-            }}
-          >
+          <Button variant="ghost" onClick={onCancel} style={{ color: 'var(--bg-primary)', padding: '4px' }}>
             <ChevronLeft size={24} />
-          </button>
+          </Button>
           <span style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700 }}>
             Evaluer Okt
           </span>
@@ -546,51 +535,26 @@ export default function SessionEvaluationForm({
 
         {/* Action buttons */}
         <div style={{ marginTop: '32px' }}>
-          <button
+          <Button
+            variant="primary"
             onClick={handleComplete}
             disabled={isLoading}
-            style={{
-              width: '100%',
-              padding: '16px',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              marginBottom: '16px',
-              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              opacity: isLoading ? 0.7 : 1,
-            }}
+            loading={isLoading}
+            leftIcon={<Check size={20} />}
+            style={{ width: '100%', padding: '16px', marginBottom: '16px', fontSize: '17px', fontWeight: 600 }}
           >
-            <Check size={20} />
             Fullfør økt
-          </button>
+          </Button>
 
-          <button
+          <Button
+            variant="secondary"
             onClick={handleAbandon}
             disabled={isLoading}
-            style={{
-              width: '100%',
-              padding: '8px',
-              backgroundColor: 'transparent',
-              color: 'var(--error)',
-              border: '1px solid var(--error)',
-              borderRadius: 'var(--radius-md)',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-            }}
+            leftIcon={<X size={16} />}
+            style={{ width: '100%', color: 'var(--error)', borderColor: 'var(--error)' }}
           >
-            <X size={16} />
             Avbryt okt
-          </button>
+          </Button>
         </div>
 
         {/* Auto-save indicator */}

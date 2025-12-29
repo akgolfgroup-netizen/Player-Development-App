@@ -13,6 +13,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import Button from '../../ui/primitives/Button';
 
 const colors = {
   // Brand Colors
@@ -603,29 +604,19 @@ const ShareSessionModal = ({
             background: colors.white,
           }}
         >
-          <button
+          <Button
+            variant="primary"
             onClick={handleShare}
             disabled={selectedFriends.length === 0 || isSharing}
-            style={{
-              width: '100%',
-              height: '48px',
-              background: selectedFriends.length === 0 ? colors.mist : colors.forest,
-              color: selectedFriends.length === 0 ? colors.steel : colors.white,
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '17px',
-              fontWeight: '600',
-              cursor: selectedFriends.length === 0 ? 'not-allowed' : 'pointer',
-              transition: 'all 150ms ease',
-              opacity: isSharing ? 0.7 : 1,
-            }}
+            loading={isSharing}
+            style={{ width: '100%', height: '48px', fontSize: '17px', fontWeight: 600 }}
           >
             {isSharing
               ? 'Deler...'
               : selectedFriends.length === 0
               ? 'Velg mottakere'
               : `Del med ${selectedFriends.length} spiller${selectedFriends.length > 1 ? 'e' : ''}`}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -801,52 +792,27 @@ export const ReceivedSessionModal = ({
 
           {/* Actions */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button
+            <Button
+              variant="primary"
               onClick={() => onAccept && onAccept(demoSharedSession)}
-              style={{
-                width: '100%',
-                height: '48px',
-                background: colors.forest,
-                color: colors.white,
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '17px',
-                fontWeight: '600',
-                cursor: 'pointer',
-              }}
+              style={{ width: '100%', height: '48px', fontSize: '17px', fontWeight: 600 }}
             >
               Legg til i mine økter
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
               onClick={onClose}
-              style={{
-                width: '100%',
-                height: '44px',
-                background: 'transparent',
-                color: colors.forest,
-                border: `1px solid ${colors.forest}`,
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: '600',
-                cursor: 'pointer',
-              }}
+              style={{ width: '100%', height: '44px', fontSize: '15px', fontWeight: 600 }}
             >
               Se detaljer
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
               onClick={() => onDecline && onDecline(demoSharedSession)}
-              style={{
-                width: '100%',
-                height: '40px',
-                background: 'transparent',
-                color: colors.steel,
-                border: 'none',
-                fontSize: '14px',
-                cursor: 'pointer',
-              }}
+              style={{ width: '100%', height: '40px', fontSize: '14px', color: colors.steel }}
             >
               Avvis
-            </button>
+            </Button>
           </div>
         </div>
       </div>

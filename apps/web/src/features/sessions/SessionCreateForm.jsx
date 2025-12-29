@@ -17,6 +17,7 @@
 import React, { useState, useCallback } from 'react';
 // UiCanon: CSS variables
 import { ChevronLeft, Calendar, Clock, Target, Zap, FileText, Plus } from 'lucide-react';
+import Button from '../../ui/primitives/Button';
 
 // Session type options
 const SESSION_TYPES = [
@@ -466,23 +467,9 @@ export default function SessionCreateForm({
           zIndex: 10,
         }}
       >
-        <button
-          type="button"
-          onClick={onCancel}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            background: 'none',
-            border: 'none',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-            fontSize: '15px', lineHeight: '20px',
-          }}
-        >
-          <ChevronLeft size={20} />
+        <Button variant="ghost" onClick={onCancel} leftIcon={<ChevronLeft size={20} />}>
           Avbryt
-        </button>
+        </Button>
         <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
           Ny treningsokt
         </span>
@@ -561,28 +548,16 @@ export default function SessionCreateForm({
         />
 
         {/* Submit Button */}
-        <button
+        <Button
           type="submit"
+          variant="primary"
           disabled={isLoading}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            width: '100%',
-            padding: '16px',
-            backgroundColor: isLoading ? 'var(--text-secondary)' : 'var(--accent)',
-            color: 'var(--bg-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            marginTop: '24px',
-            fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-          }}
+          loading={isLoading}
+          leftIcon={<Plus size={20} />}
+          style={{ width: '100%', padding: '16px', marginTop: '24px', fontSize: '20px', fontWeight: 600 }}
         >
-          <Plus size={20} />
           {isLoading ? 'Oppretter...' : 'Opprett treningsokt'}
-        </button>
+        </Button>
       </form>
     </div>
   );
