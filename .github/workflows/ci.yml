@@ -425,15 +425,21 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      - name: Deploy to Railway Staging
+      - name: Deploy API to Railway Staging
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        working-directory: apps/api
         run: |
-          echo "Deploying to staging environment..."
-          railway up --environment staging
-          # TODO: For monorepo with multiple services, deploy each separately:
-          # railway up --environment staging --service iup-golf-api
-          # railway up --environment staging --service iup-golf-web
+          echo "Deploying API to staging..."
+          railway up --environment staging --service iup-golf-backend
+
+      - name: Deploy Web to Railway Staging
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        working-directory: apps/web
+        run: |
+          echo "Deploying Web to staging..."
+          railway up --environment staging --service iup-golf-web
 
   # =============================================================================
   # Deploy to Production (on main branch)
@@ -461,12 +467,18 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      - name: Deploy to Railway Production
+      - name: Deploy API to Railway Production
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        working-directory: apps/api
         run: |
-          echo "Deploying to production environment..."
-          railway up --environment production
-          # TODO: For monorepo with multiple services, deploy each separately:
-          # railway up --environment production --service iup-golf-api
-          # railway up --environment production --service iup-golf-web
+          echo "Deploying API to production..."
+          railway up --environment production --service iup-golf-backend
+
+      - name: Deploy Web to Railway Production
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        working-directory: apps/web
+        run: |
+          echo "Deploying Web to production..."
+          railway up --environment production --service iup-golf-web
