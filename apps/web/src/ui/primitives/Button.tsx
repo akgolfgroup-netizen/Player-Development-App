@@ -24,6 +24,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: ButtonSize;
   /** Loading state - shows spinner */
   isLoading?: boolean;
+  /** Loading state - alias for isLoading */
+  loading?: boolean;
   /** Icon on the left side */
   leftIcon?: React.ReactNode;
   /** Icon on the right side */
@@ -38,6 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   variant = 'primary',
   size = 'md',
   isLoading = false,
+  loading,
   leftIcon,
   rightIcon,
   fullWidth = false,
@@ -47,7 +50,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   style = {},
   ...props
 }, ref) => {
-  const isDisabled = disabled || isLoading;
+  const isLoadingState = isLoading || loading;
+  const isDisabled = disabled || isLoadingState;
 
   const buttonStyle: React.CSSProperties = {
     ...styles.base,
@@ -77,7 +81,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
       className={buttonClasses}
       {...props}
     >
-      {isLoading ? (
+      {isLoadingState ? (
         <span style={styles.spinner}>
           <svg
             width="16"
