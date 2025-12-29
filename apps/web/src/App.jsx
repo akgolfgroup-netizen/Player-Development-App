@@ -12,6 +12,7 @@ import ApplicationLayoutTopNav from './components/layout/ApplicationLayoutTopNav
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
 import ProtectedRoute from './components/guards/ProtectedRoute';
+import PublicRoute from './components/guards/PublicRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingState from './components/ui/LoadingState';
 import Toast from './components/Toast';
@@ -279,6 +280,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/welcome" element={<SplitScreenLanding />} />
 
+          {/* Landing page - redirects to dashboard if logged in */}
+          <Route path="/" element={
+            <PublicRoute>
+              <SplitScreenLanding />
+            </PublicRoute>
+          } />
+
           {/* Mobile routes */}
           <Route path="/m" element={<ProtectedRoute><MobileShell /></ProtectedRoute>}>
             <Route path="home" element={<MobileHome />} />
@@ -289,13 +297,6 @@ function App() {
           </Route>
 
           {/* Desktop protected routes */}
-          <Route path="/" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <DashboardContainer />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <DashboardLayout>

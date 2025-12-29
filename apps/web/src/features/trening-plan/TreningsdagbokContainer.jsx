@@ -3,7 +3,6 @@ import {
   BookOpen, ChevronRight, Plus, Star, Clock,
   Target, Dumbbell, Brain, Search, AlertCircle
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
@@ -376,12 +375,7 @@ const TreningsdagbokContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
-      <PageHeader
-        title="Treningsdagbok"
-        subtitle="Logg og reflekter over dine okter"
-      />
-
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '0' }}>
         {/* Stats */}
         {error && (
           <div style={{ padding: '12px', backgroundColor: 'color-mix(in srgb, var(--error) 15%, transparent)', borderRadius: 'var(--radius-sm)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>

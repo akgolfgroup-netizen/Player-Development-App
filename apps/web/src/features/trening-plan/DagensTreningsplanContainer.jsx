@@ -60,14 +60,14 @@ const TODAY_PLAN = {
       description: 'Presisjon og avstandskontroll',
       exercises: [
         { name: 'Alignment check', reps: '5 baller', completed: true },
-        { name: '6-jern til mal 175y', reps: '20 baller', completed: false },
-        { name: '5-jern til mal 190y', reps: '15 baller', completed: false },
-        { name: '4-jern til mal 205y', reps: '15 baller', completed: false },
+        { name: '6-jern til mål 160m', reps: '20 baller', completed: false },
+        { name: '5-jern til mål 175m', reps: '15 baller', completed: false },
+        { name: '4-jern til mål 190m', reps: '15 baller', completed: false },
       ],
       targetZones: [
-        { club: '6-jern', distance: '175y', tolerance: '±8y' },
-        { club: '5-jern', distance: '190y', tolerance: '±10y' },
-        { club: '4-jern', distance: '205y', tolerance: '±12y' },
+        { club: '6-jern', distance: '160m', tolerance: '±7m' },
+        { club: '5-jern', distance: '175m', tolerance: '±9m' },
+        { club: '4-jern', distance: '190m', tolerance: '±11m' },
       ],
     },
     {
@@ -79,8 +79,8 @@ const TODAY_PLAN = {
       description: 'Chipping og pitching',
       exercises: [
         { name: 'Chip fra tight lie', reps: '15 baller', completed: false },
-        { name: 'Pitch 30-50 yard', reps: '20 baller', completed: false },
-        { name: 'Up-and-down challenge', reps: '10 forsok', completed: false },
+        { name: 'Pitch 27-46 meter', reps: '20 baller', completed: false },
+        { name: 'Up-and-down challenge', reps: '10 forsøk', completed: false },
       ],
     },
     {
@@ -92,15 +92,15 @@ const TODAY_PLAN = {
       description: 'Putting og stretching',
       exercises: [
         { name: 'Gate-putting drill', reps: '20 putter', completed: false },
-        { name: 'Avstandskontroll 20-40 fot', reps: '10 putter', completed: false },
+        { name: 'Avstandskontroll 6-12 meter', reps: '10 putter', completed: false },
         { name: 'Stretching', reps: '5 min', completed: false },
       ],
     },
   ],
-  coachNote: 'Husk a fokusere pa tempo i dag. Vi justerte litt pa grip forrige okt - vær bevisst pa dette gjennom hele treningen.',
+  coachNote: 'Husk å fokusere på tempo i dag. Vi justerte litt på grip forrige økt - vær bevisst på dette gjennom hele treningen.',
   goals: [
-    'Oppna minimum 65% fairway-treff med driver',
-    'Gjennomsnittlig avvik fra mal under 10y med lange jern',
+    'Oppnå minimum 65% fairway-treff med driver',
+    'Gjennomsnittlig avvik fra mål under 10m med lange jern',
     'Minimum 5/10 up-and-downs',
   ],
 };
@@ -431,7 +431,7 @@ const DagensTreningsplanContainer = () => {
         subtitle={`${plan.dayName.charAt(0).toUpperCase() + plan.dayName.slice(1)} - ${plan.theme}`}
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '0' }}>
         {/* Progress Overview */}
         <div style={{
           backgroundColor: 'var(--bg-primary)',

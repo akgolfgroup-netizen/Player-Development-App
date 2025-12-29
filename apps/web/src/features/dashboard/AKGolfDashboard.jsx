@@ -567,9 +567,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '24px', // Consistent spacing
-    maxWidth: '800px',
-    margin: '0 auto',
-    padding: '16px',
+    width: '100%',
+    padding: '0', // Layout handles padding
   },
 
   // Stale banner

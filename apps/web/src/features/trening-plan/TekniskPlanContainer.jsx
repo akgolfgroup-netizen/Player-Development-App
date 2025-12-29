@@ -532,7 +532,7 @@ const TekniskPlanContainer = () => {
         subtitle={`Fokus: ${plan.currentFocus}`}
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '0' }}>
         {/* Progress Overview */}
         <div style={{
           backgroundColor: 'var(--bg-primary)',

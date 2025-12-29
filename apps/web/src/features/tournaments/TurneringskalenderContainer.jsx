@@ -768,13 +768,7 @@ const TurneringskalenderContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Turneringskalender"
-        subtitle="Kommende turneringer og resultater"
-        icon={Trophy}
-      />
-
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '0' }}>
         {/* Stats Row */}
         <div style={{
           display: 'grid',

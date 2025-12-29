@@ -61,7 +61,7 @@ export default function ApplicationLayoutTopNav({ children, title, subtitle, act
 
       {/* Footer (optional - can be extended) */}
       <footer className="bg-[var(--background-white)] border-t border-[var(--border-subtle)]">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+        <div className="px-4 py-4 sm:px-6 lg:px-12 xl:px-16">
           <p className="text-center text-sm text-[var(--text-tertiary)]">
             AK Golf IUP
           </p>

@@ -222,14 +222,13 @@ export function DashboardHeader() {
       >
         {/* Logo */}
         <div className="flex lg:flex-1">
-          <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-2">
-            <span className="sr-only">AK Golf</span>
-            <div className="h-8 w-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">AK</span>
-            </div>
-            <span className="text-lg font-semibold text-gray-900 dark:text-white">
-              Golf Academy
-            </span>
+          <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-3">
+            <span className="sr-only">AK Golf Academy</span>
+            <img
+              src="/logo.svg"
+              alt="AK Golf"
+              className="h-10 w-auto"
+            />
           </Link>
         </div>
 
@@ -271,7 +270,7 @@ export function DashboardHeader() {
 
               <PopoverPanel
                 transition
-                className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-gray-800 dark:ring-white/10"
+                className="absolute -left-8 top-full z-50 mt-3 w-screen max-w-md overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-gray-800 dark:ring-white/10"
               >
                 <div className="p-4">
                   {category.items.map((item) => (
@@ -354,7 +353,7 @@ export function DashboardHeader() {
 
             <PopoverPanel
               transition
-              className="absolute right-0 z-10 mt-3 w-56 origin-top-right rounded-xl bg-white p-2 shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-gray-800 dark:ring-white/10"
+              className="absolute right-0 z-50 mt-3 w-56 origin-top-right rounded-xl bg-white p-2 shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-gray-800 dark:ring-white/10"
             >
               {/* User info */}
               <div className="px-3 py-2 border-b border-gray-100 dark:border-gray-700 mb-2">
@@ -387,8 +386,8 @@ export function DashboardHeader() {
         onClose={setMobileMenuOpen}
         className="lg:hidden"
       >
-        <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:ring-white/10">
+        <div className="fixed inset-0 z-50 bg-black/20" />
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-gray-900 dark:ring-white/10">
           {/* Mobile header */}
           <div className="flex items-center justify-between">
             <Link
@@ -396,12 +395,11 @@ export function DashboardHeader() {
               className="-m-1.5 p-1.5 flex items-center gap-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <div className="h-8 w-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-                <span className="text-white font-bold text-sm">AK</span>
-              </div>
-              <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                Golf
-              </span>
+              <img
+                src="/logo.svg"
+                alt="AK Golf"
+                className="h-8 w-auto"
+              />
             </Link>
             <button
               type="button"

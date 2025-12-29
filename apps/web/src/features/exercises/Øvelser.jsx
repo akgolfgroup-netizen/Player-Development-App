@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
 import {
   GolfslagIcon, GolfTarget, GolfFlag, GolfPutter, FysiskIcon, MentalIcon,
@@ -386,13 +385,7 @@ const AKGolfOvelser = ({ player: apiPlayer = null, exercises: apiExercises = nul
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
-      {/* Header */}
-      <PageHeader
-        title="Øvelsesbibliotek"
-        subtitle="Finn og utforsk øvelser"
-      />
-
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '0' }}>
         {/* Search & Filters */}
         <div className="mb-6">
           <div className="flex flex-col lg:flex-row gap-4">

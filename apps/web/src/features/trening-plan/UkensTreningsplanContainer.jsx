@@ -502,7 +502,7 @@ const UkensTreningsplanContainer = () => {
         subtitle={`Uke ${WEEK_DATA.weekNumber} - ${WEEK_DATA.theme}`}
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '0' }}>
         {/* Week Navigation */}
         <div style={{
           display: 'flex',

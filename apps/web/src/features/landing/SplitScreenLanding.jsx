@@ -139,7 +139,7 @@ export function SplitScreenLanding() {
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              Kom i gang
+              Registrer deg
             </button>
             <button
               style={styles.secondaryButton}
