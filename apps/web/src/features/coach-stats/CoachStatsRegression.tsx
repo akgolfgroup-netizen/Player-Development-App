@@ -13,6 +13,8 @@ import {
   XCircle
 } from 'lucide-react';
 import StateCard from '../../ui/composites/StateCard';
+import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface PlayerRegression {
   id: string;
@@ -201,37 +203,26 @@ export const CoachStatsRegression: React.FC = () => {
 
   return (
     <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '12px',
-            background: 'linear-gradient(135deg, var(--ak-status-error-light), var(--ak-status-error))',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <TrendingDown size={24} color="white" />
-          </div>
-          <div>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              margin: 0
-            }}>
-              Oppfølging påkrevd
-            </h1>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-secondary)',
-              margin: 0
-            }}>
-              Spillere med negativ utvikling som trenger oppmerksomhet
-            </p>
-          </div>
+      {/* Header with icon */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '24px' }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          borderRadius: '12px',
+          background: 'linear-gradient(135deg, var(--ak-status-error-light), var(--ak-status-error))',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}>
+          <TrendingDown size={24} color="white" />
+        </div>
+        <div style={{ flex: 1 }}>
+          <PageHeader
+            title="Oppfølging påkrevd"
+            subtitle="Spillere med negativ utvikling som trenger oppmerksomhet"
+            divider={false}
+          />
         </div>
       </div>
 
@@ -334,28 +325,15 @@ export const CoachStatsRegression: React.FC = () => {
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           {(['all', 'high', 'medium', 'low'] as const).map(risk => (
-            <button
+            <Button
               key={risk}
+              variant={riskFilter === risk ? 'primary' : 'secondary'}
+              size="sm"
               onClick={() => setRiskFilter(risk)}
-              style={{
-                padding: '10px 16px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: riskFilter === risk
-                  ? risk === 'all' ? 'var(--accent)'
-                    : getRiskColor(risk).text
-                  : 'var(--bg-primary)',
-                color: riskFilter === risk
-                  ? 'white'
-                  : 'var(--text-secondary)',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
+              style={riskFilter === risk && risk !== 'all' ? { backgroundColor: getRiskColor(risk).text } : undefined}
             >
               {risk === 'all' ? 'Alle' : getRiskLabel(risk)}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

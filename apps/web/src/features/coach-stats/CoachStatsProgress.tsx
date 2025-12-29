@@ -11,6 +11,8 @@ import {
   Zap
 } from 'lucide-react';
 import StateCard from '../../ui/composites/StateCard';
+import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface PlayerProgress {
   id: string;
@@ -185,37 +187,26 @@ export const CoachStatsProgress: React.FC = () => {
 
   return (
     <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '12px',
-            background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent-dark)'})`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <TrendingUp size={24} color="white" />
-          </div>
-          <div>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              margin: 0
-            }}>
-              Spillere i fremgang
-            </h1>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-secondary)',
-              margin: 0
-            }}>
-              {filteredAndSortedPlayers.length} spillere viser positiv utvikling
-            </p>
-          </div>
+      {/* Header with icon */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '24px' }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          borderRadius: '12px',
+          background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}>
+          <TrendingUp size={24} color="white" />
+        </div>
+        <div style={{ flex: 1 }}>
+          <PageHeader
+            title="Spillere i fremgang"
+            subtitle={`${filteredAndSortedPlayers.length} spillere viser positiv utvikling`}
+            divider={false}
+          />
         </div>
       </div>
 
@@ -364,27 +355,14 @@ export const CoachStatsProgress: React.FC = () => {
             { key: 'streak', label: 'Treningsrekke' },
             { key: 'sessions', label: 'Økter denne mnd' }
           ].map(option => (
-            <button
+            <Button
               key={option.key}
+              variant={sortBy === option.key ? 'primary' : 'secondary'}
+              size="sm"
               onClick={() => setSortBy(option.key as typeof sortBy)}
-              style={{
-                padding: '10px 16px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: sortBy === option.key
-                  ? 'var(--accent)'
-                  : 'var(--bg-primary)',
-                color: sortBy === option.key
-                  ? 'white'
-                  : 'var(--text-secondary)',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
             >
               {option.label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
