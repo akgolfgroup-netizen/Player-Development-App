@@ -5,6 +5,7 @@ import {
   Target, MapPin, AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 import { calendarAPI } from '../../services/api';
 
 // ============================================================================

@@ -5,6 +5,7 @@ import {
   Medal, CheckCircle, XCircle, AlertCircle, FileText, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import Button from '../../ui/primitives/Button';
 import { useAuth } from '../../contexts/AuthContext';
 
 const formatDate = (dateStr) => {
@@ -126,9 +127,9 @@ const UpcomingTournamentCard = ({ tournament, onViewDetails }) => {
 
       {/* Actions */}
       <div className="flex items-center justify-between pt-3 border-t border-ak-mist">
-        <button className="text-sm text-ak-steel hover:text-ak-error transition-colors">
+        <Button variant="ghost" size="sm" style={{ color: 'var(--error)' }}>
           Meld av
-        </button>
+        </Button>
         <div className="flex items-center gap-1 text-sm text-ak-primary font-medium">
           Se detaljer
           <ChevronRight size={16} />
@@ -247,21 +248,13 @@ const MineTurneringerContainer = () => {
         title="Mine turneringer"
         subtitle="Dine påmeldinger og resultater"
         actions={
-          <button
+          <Button
+            variant="primary"
+            size="sm"
             onClick={() => navigate('/turneringskalender')}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              borderRadius: '10px',
-              fontSize: '13px',
-              fontWeight: 500,
-              border: 'none',
-              cursor: 'pointer',
-            }}
           >
             Finn turnering
-          </button>
+          </Button>
         }
       />
 
@@ -332,12 +325,12 @@ const MineTurneringerContainer = () => {
                 <p className="text-sm text-ak-steel mb-4">
                   Finn din neste turnering i turneringskalenderen
                 </p>
-                <button
+                <Button
+                  variant="primary"
                   onClick={() => navigate('/turneringskalender')}
-                  className="px-6 py-3 bg-ak-primary text-white rounded-xl text-sm font-medium"
                 >
                   Se turneringer
-                </button>
+                </Button>
               </div>
             )}
           </div>
