@@ -9,7 +9,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  ArrowLeft,
   Users,
   Calendar,
   ClipboardList,
@@ -32,6 +31,8 @@ import {
   Play,
 } from 'lucide-react';
 import Modal from '../../ui/composites/Modal.composite';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import Button from '../../ui/primitives/Button';
 
 interface GroupMember {
   id: string;
@@ -438,153 +439,68 @@ export default function CoachGroupDetail() {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-          padding: '20px 24px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-          <button
-            onClick={() => navigate('/coach/groups')}
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-          >
-            <ArrowLeft size={20} color={'var(--text-primary)'} />
-          </button>
-
-          <div
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: group.avatarColor,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--bg-primary)',
-              fontWeight: 700,
-              fontSize: '20px',
-            }}
-          >
-            {group.avatarInitials}
-          </div>
-
-          <div style={{ flex: 1 }}>
-            <h1
-              style={{
-                fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
-              {group.name}
-            </h1>
-            {group.description && (
-              <p
-                style={{
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-secondary)',
-                  margin: '4px 0 0',
-                }}
+      {/* Header - using PageHeader from design system */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '24px 24px 0' }}>
+        <div
+          style={{
+            width: 56,
+            height: 56,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: group.avatarColor,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'var(--bg-primary)',
+            fontWeight: 700,
+            fontSize: '20px',
+            flexShrink: 0,
+          }}
+        >
+          {group.avatarInitials}
+        </div>
+        <div style={{ flex: 1 }}>
+          <PageHeader
+            title={group.name}
+            subtitle={group.description}
+            onBack={() => navigate('/coach/groups')}
+            actions={
+              <Button
+                variant="secondary"
+                size="sm"
+                leftIcon={<Settings size={16} />}
+                onClick={() => navigate(`/coach/groups/${groupId}/edit`)}
               >
-                {group.description}
-              </p>
-            )}
-          </div>
-
-          <button
-            onClick={() => navigate(`/coach/groups/${groupId}/edit`)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              backgroundColor: 'transparent',
-              border: `1px solid ${'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              fontSize: '13px',
-              fontWeight: 500,
-              color: 'var(--text-primary)',
-              cursor: 'pointer',
-            }}
-          >
-            <Settings size={16} />
-            Innstillinger
-          </button>
+                Innstillinger
+              </Button>
+            }
+            divider={false}
+          />
         </div>
+      </div>
 
-        {/* Quick actions */}
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={() => navigate(`/coach/groups/${groupId}/plan`)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            <ClipboardList size={18} />
-            Treningsplan
-          </button>
-          <button
-            onClick={() => navigate(`/coach/groups/${groupId}/message`)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              border: `1px solid ${'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
-          >
-            <MessageSquare size={18} />
-            Send melding
-          </button>
-          <button
-            onClick={() => navigate(`/coach/groups/${groupId}/session/new`)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              border: `1px solid ${'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
-          >
-            <Calendar size={18} />
-            Planlegg økt
-          </button>
-        </div>
+      {/* Quick actions */}
+      <div style={{ display: 'flex', gap: '10px', padding: '16px 24px', borderBottom: '1px solid var(--border-default)' }}>
+        <Button
+          variant="primary"
+          leftIcon={<ClipboardList size={18} />}
+          onClick={() => navigate(`/coach/groups/${groupId}/plan`)}
+        >
+          Treningsplan
+        </Button>
+        <Button
+          variant="secondary"
+          leftIcon={<MessageSquare size={18} />}
+          onClick={() => navigate(`/coach/groups/${groupId}/message`)}
+        >
+          Send melding
+        </Button>
+        <Button
+          variant="secondary"
+          leftIcon={<Calendar size={18} />}
+          onClick={() => navigate(`/coach/groups/${groupId}/session/new`)}
+        >
+          Planlegg økt
+        </Button>
       </div>
 
       {/* Stats bar */}

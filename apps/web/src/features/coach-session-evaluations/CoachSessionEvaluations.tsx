@@ -11,13 +11,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft, Calendar, Clock, Target, Zap, Brain, Battery,
+  Calendar, Clock, Target, Zap, Brain, Battery,
   ChevronRight, Filter, User
 } from 'lucide-react';
 
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 // Semantic color mappings
 const colors = {
@@ -310,79 +311,58 @@ export function CoachSessionEvaluations() {
       fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
     }}>
       {/* Header */}
+      <PageHeader
+        title="Øktevalueringer"
+        subtitle="Se dine spilleres evalueringer"
+        onBack={handleBack}
+        divider={false}
+      />
+
+      {/* Athlete filter */}
       <div style={{
-        backgroundColor: colors.white,
-        padding: '16px',
+        display: 'flex',
+        gap: '8px',
+        padding: '0 24px 16px',
         borderBottom: `1px solid ${colors.mist}`,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <button
-            onClick={handleBack}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '36px',
-              height: '36px',
-              backgroundColor: colors.snow,
-              border: 'none',
-              borderRadius: borderRadius.sm,
-              cursor: 'pointer',
-            }}
-          >
-            <ArrowLeft size={20} color={colors.charcoal} />
-          </button>
-          <div>
-            <h1 style={{ ...typography.title1, color: colors.charcoal, margin: 0 }}>
-              Oktevalueringer
-            </h1>
-            <p style={{ ...typography.caption, color: colors.steel, marginTop: '4px' }}>
-              Se dine spilleres evalueringer
-            </p>
-          </div>
-        </div>
-
-        {/* Athlete filter */}
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <select
-            value={selectedAthlete}
-            onChange={(e) => setSelectedAthlete(e.target.value)}
-            style={{
-              flex: 1,
-              padding: '10px 12px',
-              backgroundColor: colors.snow,
-              border: `1px solid ${colors.mist}`,
-              borderRadius: borderRadius.sm,
-              ...typography.body,
-            }}
-          >
-            <option value="">Alle spillere</option>
-            {athletes.map(a => (
-              <option key={a.id} value={a.id}>
-                {a.firstName} {a.lastName} ({a.category})
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '10px 16px',
-              backgroundColor: showFilters ? colors.primary : colors.snow,
-              color: showFilters ? colors.white : colors.charcoal,
-              border: `1px solid ${showFilters ? colors.primary : colors.mist}`,
-              borderRadius: borderRadius.sm,
-              cursor: 'pointer',
-              gap: '6px',
-              ...typography.label,
-            }}
-          >
-            <Filter size={16} />
-            Filter
-          </button>
-        </div>
+        <select
+          value={selectedAthlete}
+          onChange={(e) => setSelectedAthlete(e.target.value)}
+          style={{
+            flex: 1,
+            padding: '10px 12px',
+            backgroundColor: colors.snow,
+            border: `1px solid ${colors.mist}`,
+            borderRadius: borderRadius.sm,
+            ...typography.body,
+          }}
+        >
+          <option value="">Alle spillere</option>
+          {athletes.map(a => (
+            <option key={a.id} value={a.id}>
+              {a.firstName} {a.lastName} ({a.category})
+            </option>
+          ))}
+        </select>
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '10px 16px',
+            backgroundColor: showFilters ? colors.primary : colors.snow,
+            color: showFilters ? colors.white : colors.charcoal,
+            border: `1px solid ${showFilters ? colors.primary : colors.mist}`,
+            borderRadius: borderRadius.sm,
+            cursor: 'pointer',
+            gap: '6px',
+            ...typography.label,
+          }}
+        >
+          <Filter size={16} />
+          Filter
+        </button>
       </div>
 
       {/* Summary stats */}

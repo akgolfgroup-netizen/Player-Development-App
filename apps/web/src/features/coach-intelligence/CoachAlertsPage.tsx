@@ -20,6 +20,7 @@ import React, { useState, useEffect } from "react";
 import { Bell, CheckCircle, Clock, AlertCircle, ChevronRight, Filter } from "lucide-react";
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 // Typography
 const typography = {
@@ -191,51 +192,49 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
       }}
     >
       {/* Header */}
-      <div style={{ padding: "24px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
-          <div
-            style={{
-              position: "relative",
-              width: 48,
-              height: 48,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Bell size={24} color={'var(--accent)'} />
-            {unreadCount > 0 && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: -4,
-                  right: -4,
-                  width: 20,
-                  height: 20,
-                  borderRadius: "50%",
-                  backgroundColor: 'var(--error)',
-                  color: 'var(--bg-primary)',
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {unreadCount}
-              </div>
-            )}
-          </div>
-          <div>
-            <h1 style={{ ...typography.title1 as React.CSSProperties, color: 'var(--text-primary)', margin: 0 }}>
-              Varsler
-            </h1>
-            <p style={{ ...typography.caption as React.CSSProperties, color: 'var(--text-secondary)', margin: 0, marginTop: "4px" }}>
-              {unreadCount} uleste av {alerts.length} totalt
-            </p>
-          </div>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '24px 24px 0' }}>
+        <div
+          style={{
+            position: "relative",
+            width: 48,
+            height: 48,
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Bell size={24} color={'var(--accent)'} />
+          {unreadCount > 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: -4,
+                right: -4,
+                width: 20,
+                height: 20,
+                borderRadius: "50%",
+                backgroundColor: 'var(--error)',
+                color: 'var(--bg-primary)',
+                fontSize: "11px",
+                fontWeight: 700,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {unreadCount}
+            </div>
+          )}
+        </div>
+        <div style={{ flex: 1 }}>
+          <PageHeader
+            title="Varsler"
+            subtitle={`${unreadCount} uleste av ${alerts.length} totalt`}
+            divider={false}
+          />
         </div>
       </div>
 

@@ -23,6 +23,7 @@ import {
   ChevronDown,
   Award,
 } from 'lucide-react';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 // Types
 interface TournamentEntry {
   id: string;
@@ -486,105 +487,78 @@ export default function CoachAthleteTournaments() {
         fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: '1px solid var(--border-default)',
-          padding: '20px 24px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Trophy size={28} color={'var(--accent)'} />
-          <div>
-            <h1
-              style={{
-                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
-              Turneringsdeltakelse
-            </h1>
-            <p
-              style={{
-                fontSize: '15px', lineHeight: '20px',
-                color: 'var(--text-secondary)',
-                margin: '4px 0 0',
-              }}
-            >
-              Oversikt over spillernes påmeldinger og deltakelse
-            </p>
-          </div>
-        </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Turneringsdeltakelse"
+        subtitle="Oversikt over spillernes påmeldinger og deltakelse"
+      />
 
-        {/* Stats */}
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '16px' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'rgba(var(--success-rgb), 0.1)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <CheckCircle size={16} color={'var(--success)'} />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
-              <strong>{stats.totalRegistrations}</strong> påmeldinger
-            </span>
-          </div>
-          {stats.pendingRegistrations > 0 && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '8px 14px',
-                backgroundColor: 'rgba(var(--warning-rgb), 0.15)',
-                borderRadius: 'var(--radius-md)',
-              }}
-            >
-              <Clock size={16} color={'var(--warning)'} />
-              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
-                <strong>{stats.pendingRegistrations}</strong> venter
-              </span>
-            </div>
-          )}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <Users size={16} color={'var(--accent)'} />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
-              <strong>{stats.athletesWithTournaments}</strong> med turneringer
-            </span>
-          </div>
-          {stats.athletesWithoutTournaments > 0 && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '8px 14px',
-                backgroundColor: 'var(--bg-tertiary)',
-                borderRadius: 'var(--radius-md)',
-              }}
-            >
-              <AlertCircle size={16} color={'var(--text-secondary)'} />
-              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
-                <strong>{stats.athletesWithoutTournaments}</strong> uten påmeldinger
-              </span>
-            </div>
-          )}
+      {/* Stats badges */}
+      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', padding: '0 24px 16px', borderBottom: '1px solid var(--border-default)' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 14px',
+            backgroundColor: 'rgba(var(--success-rgb), 0.1)',
+            borderRadius: 'var(--radius-md)',
+          }}
+        >
+          <CheckCircle size={16} color={'var(--success)'} />
+          <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+            <strong>{stats.totalRegistrations}</strong> påmeldinger
+          </span>
         </div>
+        {stats.pendingRegistrations > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 14px',
+              backgroundColor: 'rgba(var(--warning-rgb), 0.15)',
+              borderRadius: 'var(--radius-md)',
+            }}
+          >
+            <Clock size={16} color={'var(--warning)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+              <strong>{stats.pendingRegistrations}</strong> venter
+            </span>
+          </div>
+        )}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 14px',
+            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+            borderRadius: 'var(--radius-md)',
+          }}
+        >
+          <Users size={16} color={'var(--accent)'} />
+          <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+            <strong>{stats.athletesWithTournaments}</strong> med turneringer
+          </span>
+        </div>
+        {stats.athletesWithoutTournaments > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 14px',
+              backgroundColor: 'var(--bg-tertiary)',
+              borderRadius: 'var(--radius-md)',
+            }}
+          >
+            <AlertCircle size={16} color={'var(--text-secondary)'} />
+            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+              <strong>{stats.athletesWithoutTournaments}</strong> uten påmeldinger
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Search and filters */}
