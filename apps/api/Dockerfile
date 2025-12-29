@@ -64,6 +64,7 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/health || exit 1
 
-# Run database migrations, seed (one-time), and start server
+# Sync database schema, seed (one-time), and start server
 # TODO: Remove "npx prisma db seed" after first successful deploy
-CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && node dist/server.js"]
+# TODO: Change back to "prisma migrate deploy" after schema is synced
+CMD ["sh", "-c", "npx prisma db push --skip-generate && npx prisma db seed && node dist/server.js"]
