@@ -11,7 +11,7 @@ import React from 'react';
  * - Sizes: sm, md
  */
 
-type BadgeVariant = 'neutral' | 'accent' | 'success' | 'warning' | 'error' | 'achievement';
+type BadgeVariant = 'neutral' | 'default' | 'primary' | 'accent' | 'success' | 'warning' | 'error' | 'achievement';
 type BadgeSize = 'sm' | 'md';
 
 interface BadgeProps {
@@ -84,6 +84,14 @@ const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
     backgroundColor: 'var(--bg-neutral-subtle)',
     color: 'var(--text-secondary)',
   },
+  default: {
+    backgroundColor: 'var(--bg-neutral-subtle)',
+    color: 'var(--text-secondary)',
+  },
+  primary: {
+    backgroundColor: 'var(--bg-accent-subtle)',
+    color: 'var(--accent)',
+  },
   accent: {
     backgroundColor: 'var(--bg-accent-subtle)',
     color: 'var(--accent)',
@@ -108,6 +116,8 @@ const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
 
 const dotVariantStyles: Record<BadgeVariant, React.CSSProperties> = {
   neutral: { backgroundColor: 'var(--text-tertiary)' },
+  default: { backgroundColor: 'var(--text-tertiary)' },
+  primary: { backgroundColor: 'var(--accent)' },
   accent: { backgroundColor: 'var(--accent)' },
   success: { backgroundColor: 'var(--success)' },
   warning: { backgroundColor: 'var(--warning)' },
