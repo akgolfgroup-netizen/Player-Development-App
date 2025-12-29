@@ -542,21 +542,13 @@ export const CoachStatsProgress: React.FC = () => {
                     {player.hcpChange}
                   </span>
                 </div>
-                <button style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: '8px 12px',
-                  borderRadius: '8px',
-                  border: `1px solid ${'var(--border-default)'}`,
-                  backgroundColor: 'transparent',
-                  color: 'var(--text-secondary)',
-                  fontSize: '12px',
-                  cursor: 'pointer'
-                }}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                >
                   Se detaljer
-                  <ChevronRight size={14} />
-                </button>
+                  <ChevronRight size={14} style={{ marginLeft: '4px' }} />
+                </Button>
               </div>
             </div>
           </div>

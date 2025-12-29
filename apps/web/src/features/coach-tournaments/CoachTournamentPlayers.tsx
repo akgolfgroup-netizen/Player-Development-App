@@ -8,7 +8,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  ArrowLeft,
   Trophy,
   User,
   Users,
@@ -19,6 +18,8 @@ import {
   AlertCircle,
   Plus,
 } from 'lucide-react';
+import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface TournamentEntry {
   id: string;
@@ -303,32 +304,12 @@ export default function CoachTournamentPlayers() {
           padding: '20px 24px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-          <button
-            onClick={() => navigate('/coach/tournaments')}
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-          >
-            <ArrowLeft size={20} color={'var(--text-primary)'} />
-          </button>
-          <div>
-            <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-              Spillerdeltakelse
-            </h1>
-            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
-              Oversikt over spillernes turneringspåmeldinger
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          title="Spillerdeltakelse"
+          subtitle="Oversikt over spillernes turneringspåmeldinger"
+          onBack={() => navigate('/coach/tournaments')}
+          divider={false}
+        />
 
         {/* Stats */}
         <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
@@ -422,25 +403,13 @@ export default function CoachTournamentPlayers() {
           />
         </div>
 
-        <button
+        <Button
+          variant="primary"
           onClick={() => setShowRegisterModal(true)}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 16px',
-            backgroundColor: 'var(--accent)',
-            color: 'var(--bg-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '14px',
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
+          leftIcon={<Plus size={18} />}
         >
-          <Plus size={18} />
           Meld på spiller
-        </button>
+        </Button>
       </div>
 
       {/* Player list */}
@@ -507,25 +476,14 @@ export default function CoachTournamentPlayers() {
                   </div>
                 </div>
 
-                <button
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() => navigate(`/coach/athletes/${player.id}`)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '8px 12px',
-                    backgroundColor: 'var(--bg-tertiary)',
-                    color: 'var(--text-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                  }}
+                  leftIcon={<User size={16} />}
                 >
-                  <User size={16} />
                   Profil
-                </button>
+                </Button>
               </div>
 
               {/* Tournaments */}
@@ -729,21 +687,13 @@ export default function CoachTournamentPlayers() {
                             Allerede påmeldt
                           </span>
                         ) : (
-                          <button
+                          <Button
+                            variant="primary"
+                            size="sm"
                             onClick={() => handleRegisterPlayer(player.id, selectedTournamentForRegister)}
-                            style={{
-                              padding: '6px 12px',
-                              backgroundColor: 'var(--accent)',
-                              color: 'var(--bg-primary)',
-                              border: 'none',
-                              borderRadius: 'var(--radius-md)',
-                              fontSize: '13px',
-                              fontWeight: 500,
-                              cursor: 'pointer',
-                            }}
                           >
                             Meld på
-                          </button>
+                          </Button>
                         )}
                       </div>
                     );
@@ -753,24 +703,15 @@ export default function CoachTournamentPlayers() {
             )}
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => {
                   setShowRegisterModal(false);
                   setSelectedTournamentForRegister(null);
                 }}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  color: 'var(--text-primary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                }}
               >
                 Lukk
-              </button>
+              </Button>
             </div>
           </div>
         </>

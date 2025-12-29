@@ -13,6 +13,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { track } from '../../analytics/track';
+import Button from '../../ui/primitives/Button';
 
 // Review status options
 export const REVIEW_STATUS = {
@@ -338,28 +339,31 @@ export function PlayerVideoFeed({
 
               {/* Actions */}
               <div className={tw.actions}>
-                <button
-                  className={`${tw.actionButton} ${tw.primaryAction}`}
+                <Button
+                  variant="primary"
+                  size="sm"
+                  leftIcon={<PlayIcon />}
                   onClick={(e) => handleAnnotate(e, video)}
                 >
-                  <PlayIcon />
                   Analyser
-                </button>
-                <button
-                  className={tw.actionButton}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  leftIcon={<CommentIcon />}
                   onClick={(e) => handleComment(e, video)}
                 >
-                  <CommentIcon />
                   Kommenter
-                </button>
+                </Button>
                 {video.reviewStatus !== REVIEW_STATUS.REVIEWED && (
-                  <button
-                    className={tw.actionButton}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    leftIcon={<CheckIcon />}
                     onClick={(e) => handleMarkReviewed(e, video)}
                   >
-                    <CheckIcon />
                     Merk gjennomgått
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>

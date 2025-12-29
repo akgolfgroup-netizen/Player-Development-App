@@ -21,6 +21,7 @@ import { coachesAPI } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
 import { track } from '../../analytics/track';
+import Button from '../../ui/primitives/Button';
 
 // Video categories for golf
 const VIDEO_CATEGORIES = [
@@ -936,21 +937,9 @@ export function ReferenceLibrary({
           <span style={{ color: 'var(--ak-text-primary, white)', fontSize: '14px' }}>
             {error}
           </span>
-          <button
-            onClick={refetchVideos}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
-              border: 'none',
-              borderRadius: 'var(--radius-md, 8px)',
-              color: 'white',
-              fontSize: '13px',
-              fontWeight: '500',
-              cursor: 'pointer',
-            }}
-          >
+          <Button variant="primary" size="sm" onClick={refetchVideos}>
             Prøv igjen
-          </button>
+          </Button>
         </div>
       )}
 
@@ -960,13 +949,13 @@ export function ReferenceLibrary({
           <h2 style={styles.title}>Referansebibliotek</h2>
           <span style={styles.videoCount}>{videos.length} videoer</span>
         </div>
-        <button
-          style={styles.uploadButton}
+        <Button
+          variant="primary"
+          leftIcon={<PlusIcon />}
           onClick={() => setShowUploadModal(true)}
         >
-          <PlusIcon />
           Last opp video
-        </button>
+        </Button>
       </div>
 
       {/* Filters */}
@@ -1031,13 +1020,13 @@ export function ReferenceLibrary({
               : 'Last opp din første referansevideo for å komme i gang.'}
           </p>
           {!searchQuery && !categoryFilter && !typeFilter && (
-            <button
-              style={styles.uploadButton}
+            <Button
+              variant="primary"
+              leftIcon={<PlusIcon />}
               onClick={() => setShowUploadModal(true)}
             >
-              <PlusIcon />
               Last opp video
-            </button>
+            </Button>
           )}
         </div>
       )}
@@ -1159,22 +1148,19 @@ export function ReferenceLibrary({
               </div>
             </div>
             <div style={styles.modalFooter}>
-              <button
-                style={styles.cancelButton}
+              <Button
+                variant="secondary"
                 onClick={() => setShowUploadModal(false)}
               >
                 Avbryt
-              </button>
-              <button
-                style={{
-                  ...styles.submitButton,
-                  ...(!uploadForm.title || !uploadForm.file ? styles.submitButtonDisabled : {}),
-                }}
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleUploadSubmit}
                 disabled={!uploadForm.title || !uploadForm.file}
               >
                 Last opp
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1228,22 +1214,19 @@ export function ReferenceLibrary({
               </div>
             </div>
             <div style={styles.modalFooter}>
-              <button
-                style={styles.cancelButton}
+              <Button
+                variant="secondary"
                 onClick={() => setShowShareModal(false)}
               >
                 Avbryt
-              </button>
-              <button
-                style={{
-                  ...styles.submitButton,
-                  ...(selectedPlayers.size === 0 ? styles.submitButtonDisabled : {}),
-                }}
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleShareConfirm}
                 disabled={selectedPlayers.size === 0}
               >
                 Del med {selectedPlayers.size} {selectedPlayers.size === 1 ? 'spiller' : 'spillere'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -1269,19 +1252,21 @@ export function ReferenceLibrary({
               </p>
             </div>
             <div style={styles.modalFooter}>
-              <button
-                style={styles.cancelButton}
+              <Button
+                variant="secondary"
                 onClick={() => setVideoToDelete(null)}
               >
                 Avbryt
-              </button>
-              <button
-                style={styles.deleteButton}
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
+                loading={isDeleting}
+                style={{ backgroundColor: 'var(--ak-error)' }}
               >
                 {isDeleting ? 'Sletter...' : 'Slett video'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

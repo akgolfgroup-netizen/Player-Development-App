@@ -471,52 +471,27 @@ export const CoachStatsRegression: React.FC = () => {
 
                     {/* Action buttons */}
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <button style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '8px 14px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: 'var(--accent)',
-                        color: 'white',
-                        fontSize: '12px',
-                        fontWeight: '500',
-                        cursor: 'pointer'
-                      }}>
-                        <MessageCircle size={14} />
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        leftIcon={<MessageCircle size={14} />}
+                      >
                         Send melding
-                      </button>
-                      <button style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '8px 14px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        backgroundColor: 'transparent',
-                        color: 'var(--text-secondary)',
-                        fontSize: '12px',
-                        cursor: 'pointer'
-                      }}>
-                        <Phone size={14} />
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        leftIcon={<Phone size={14} />}
+                      >
                         Ring
-                      </button>
-                      <button style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '8px 14px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        backgroundColor: 'transparent',
-                        color: 'var(--text-secondary)',
-                        fontSize: '12px',
-                        cursor: 'pointer'
-                      }}>
-                        <Mail size={14} />
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        leftIcon={<Mail size={14} />}
+                      >
                         E-post
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -550,21 +525,13 @@ export const CoachStatsRegression: React.FC = () => {
                       HCP: {player.previousHcp} → {player.currentHcp}
                     </p>
                   </div>
-                  <button style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    backgroundColor: 'transparent',
-                    color: 'var(--text-secondary)',
-                    fontSize: '12px',
-                    cursor: 'pointer'
-                  }}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                  >
                     Se historikk
-                    <ChevronRight size={14} />
-                  </button>
+                    <ChevronRight size={14} style={{ marginLeft: '4px' }} />
+                  </Button>
                 </div>
               </div>
             </div>

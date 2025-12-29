@@ -8,7 +8,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ArrowLeft,
   Trophy,
   Medal,
   Calendar,
@@ -20,6 +19,8 @@ import {
   Star,
   Award,
 } from 'lucide-react';
+import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface TournamentResult {
   id: string;
@@ -398,32 +399,12 @@ export default function CoachTournamentResults() {
           padding: '20px 24px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-          <button
-            onClick={() => navigate('/coach/tournaments')}
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-          >
-            <ArrowLeft size={20} color={'var(--text-primary)'} />
-          </button>
-          <div>
-            <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-              Turneringsresultater
-            </h1>
-            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
-              Resultater og statistikk for dine spillere
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          title="Turneringsresultater"
+          subtitle="Resultater og statistikk for dine spillere"
+          onBack={() => navigate('/coach/tournaments')}
+          divider={false}
+        />
 
         {/* Summary stats */}
         <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
@@ -503,38 +484,20 @@ export default function CoachTournamentResults() {
         }}
       >
         <div style={{ display: 'flex', gap: '4px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', padding: '4px' }}>
-          <button
+          <Button
+            variant={view === 'results' ? 'primary' : 'ghost'}
+            size="sm"
             onClick={() => setView('results')}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: view === 'results' ? 'var(--bg-primary)' : 'transparent',
-              color: view === 'results' ? 'var(--text-primary)' : 'var(--text-secondary)',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              boxShadow: view === 'results' ? 'var(--shadow-card)' : 'none',
-            }}
           >
             Resultater
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={view === 'stats' ? 'primary' : 'ghost'}
+            size="sm"
             onClick={() => setView('stats')}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: view === 'stats' ? 'var(--bg-primary)' : 'transparent',
-              color: view === 'stats' ? 'var(--text-primary)' : 'var(--text-secondary)',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              boxShadow: view === 'stats' ? 'var(--shadow-card)' : 'none',
-            }}
           >
             Spillerstatistikk
-          </button>
+          </Button>
         </div>
 
         <div
@@ -852,21 +815,13 @@ export default function CoachTournamentResults() {
                     </div>
                   </div>
 
-                  <button
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => navigate(`/coach/athletes/${player.id}`)}
-                    style={{
-                      padding: '8px 14px',
-                      backgroundColor: 'var(--bg-tertiary)',
-                      color: 'var(--text-primary)',
-                      border: 'none',
-                      borderRadius: 'var(--radius-md)',
-                      fontSize: '13px',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                    }}
                   >
                     Se profil
-                  </button>
+                  </Button>
                 </div>
 
                 {/* Stats grid */}

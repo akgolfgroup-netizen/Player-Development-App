@@ -14,6 +14,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { REVIEW_STATUS } from './PlayerVideoFeed';
 import { track } from '../../analytics/track';
+import Button from '../../ui/primitives/Button';
 
 // Styles
 const styles = {
@@ -363,9 +364,9 @@ export function PendingReviewQueue({
           <span style={styles.badge}>{pendingVideos.length}</span>
         </h3>
         {pendingVideos.length > maxVisible && (
-          <button style={styles.viewAllButton} onClick={onViewAll}>
+          <Button variant="ghost" size="sm" onClick={onViewAll}>
             Se alle
-          </button>
+          </Button>
         )}
       </div>
 

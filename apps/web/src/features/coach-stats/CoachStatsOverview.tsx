@@ -351,19 +351,14 @@ export default function CoachStatsOverview() {
 
         <div style={{ display: 'flex', gap: '8px' }}>
           {['all', 'A', 'B', 'C'].map((cat) => (
-            <button
+            <Button
               key={cat}
+              variant={categoryFilter === cat ? 'primary' : 'secondary'}
+              size="sm"
               onClick={() => setCategoryFilter(cat)}
-              style={{
-                padding: '8px 14px',
-                backgroundColor: categoryFilter === cat ? 'var(--accent)' : 'var(--bg-primary)',
-                color: categoryFilter === cat ? 'var(--bg-primary)' : 'var(--text-primary)',
-                border: `1px solid ${categoryFilter === cat ? 'var(--accent)' : 'var(--border-default)'}`,
-                borderRadius: 'var(--radius-md)', fontSize: '13px', fontWeight: 500, cursor: 'pointer',
-              }}
             >
               {cat === 'all' ? 'Alle' : `Kat. ${cat}`}
-            </button>
+            </Button>
           ))}
         </div>
 
