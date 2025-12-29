@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Settings,
   User,
   Bell,
   Moon,
@@ -12,10 +11,12 @@ import {
   Phone,
   Save,
   ChevronRight,
-  Check
+  Check,
+  Settings
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 interface CoachProfile {
   name: string;
@@ -91,40 +92,14 @@ export const CoachSettings: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
-      {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '12px',
-            background: `linear-gradient(135deg, ${'var(--accent)'}, ${'var(--accent)'})`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Settings size={24} color="white" />
-          </div>
-          <div>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              margin: 0
-            }}>
-              Innstillinger
-            </h1>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-secondary)',
-              margin: 0
-            }}>
-              Administrer din profil og preferanser
-            </p>
-          </div>
-        </div>
-      </div>
+    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Innstillinger"
+        subtitle="Administrer din profil og preferanser"
+      />
+
+      <div style={{ padding: '0 24px 24px' }}>
 
       <div style={{ display: 'flex', gap: '24px' }}>
         {/* Sidebar Navigation */}
@@ -820,6 +795,7 @@ export const CoachSettings: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
