@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import StateCard from '../../ui/composites/StateCard';
+import Button from '../../ui/primitives/Button';
 
 // =====================================================
 // AK GOLF - MÅLSETNINGER SKJERM
@@ -84,49 +85,6 @@ const Badge = ({ children, variant = 'neutral' }) => {
   );
 };
 
-const Button = ({ children, variant = 'primary', size = 'md', onClick, icon, disabled }) => {
-  const variants = {
-    primary: { bg: colors.primary, color: 'white', border: 'none' },
-    secondary: { bg: colors.foam, color: colors.primary, border: 'none' },
-    outline: { bg: 'transparent', color: colors.primary, border: `1px solid ${colors.primary}` },
-    ghost: { bg: 'transparent', color: colors.steel, border: 'none' },
-    success: { bg: colors.success, color: 'white', border: 'none' }
-  };
-
-  const sizes = {
-    sm: { padding: `${'8px'} ${'12px'}`, fontSize: '12px' },
-    md: { padding: `${'12px'} ${'16px'}`, fontSize: '14px' },
-    lg: { padding: `${'16px'} ${'24px'}`, fontSize: '16px' }
-  };
-
-  const variantStyle = variants[variant];
-  const sizeStyle = sizes[size];
-
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={disabled ? '' : 'hover:opacity-90'}
-      style={{
-        ...sizeStyle,
-        backgroundColor: variantStyle.bg,
-        color: variantStyle.color,
-        border: variantStyle.border,
-        borderRadius: 'var(--radius-lg)',
-        fontWeight: 500,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
-        transition: 'all 0.15s ease'
-      }}
-    >
-      {icon && <span>{icon}</span>}
-      {children}
-    </button>
-  );
-};
 
 const ProgressBar = ({ value, max = 100, showLabel = false, height = 8, color }) => {
   const percentage = Math.min((value / max) * 100, 100);
@@ -318,27 +276,15 @@ const GoalCard = ({ goal, onEdit, onToggleComplete, onUpdateProgress, onShareWit
           </div>
           <ProgressBar value={goal.current} max={goal.target} />
           {!isCompleted && onUpdateProgress && (
-            <button
+            <Button
+              variant="primary"
+              size="sm"
+              leftIcon={<span>📊</span>}
               onClick={() => onUpdateProgress(goal)}
-              className="hover:brightness-110"
-              style={{
-                marginTop: '8px',
-                padding: `${'8px'} ${'12px'}`,
-                backgroundColor: colors.primary,
-                color: 'white',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '13px',
-                fontWeight: 500,
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
+              style={{ marginTop: '8px' }}
             >
-              📊 Oppdater progresjon
-            </button>
+              Oppdater progresjon
+            </Button>
           )}
         </div>
       )}
@@ -912,7 +858,7 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
           <Button
             variant="secondary"
             size="sm"
-            icon="➕"
+            leftIcon={<span>➕</span>}
             onClick={() => {
               setEditingGoal(null);
               setShowModal(true);
@@ -1154,43 +1100,24 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
             </div>
 
             <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => {
                   setShowUpdateProgress(false);
                   setUpdatingGoal(null);
                   setNewProgressValue('');
                 }}
-                style={{
-                  flex: 1,
-                  padding: 'var(--space-3)',
-                  backgroundColor: colors.snow,
-                  color: colors.charcoal,
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  cursor: 'pointer'
-                }}
+                style={{ flex: 1, justifyContent: 'center' }}
               >
                 Avbryt
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleUpdateProgress}
-                className="hover:brightness-110"
-                style={{
-                  flex: 1,
-                  padding: 'var(--space-3)',
-                  backgroundColor: colors.primary,
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  cursor: 'pointer'
-                }}
+                style={{ flex: 1, justifyContent: 'center' }}
               >
                 Lagre
-              </button>
+              </Button>
             </div>
           </div>
         </div>

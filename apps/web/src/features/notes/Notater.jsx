@@ -10,6 +10,7 @@ import {
   TeamIcon
 } from '../../components/icons';
 import Modal from '../../ui/composites/Modal.composite';
+import Button from '../../ui/primitives/Button';
 
 // Icons wrapper for backwards compatibility
 const Icons = {
@@ -291,25 +292,14 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
         title="Notater"
         subtitle="Treningsdagbok og refleksjoner"
         actions={
-          <button
+          <Button
+            variant="primary"
+            size="sm"
+            leftIcon={<Plus size={16} />}
             onClick={() => setShowNewNote(true)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 16px',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              borderRadius: '10px',
-              fontSize: '13px',
-              fontWeight: 500,
-              border: 'none',
-              cursor: 'pointer',
-            }}
           >
-            <Plus size={16} />
             Nytt notat
-          </button>
+          </Button>
         }
       />
 
@@ -677,19 +667,21 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
 
               {/* Actions */}
               <div className="flex gap-3 pt-4">
-                <button
+                <Button
+                  variant="primary"
+                  leftIcon={<Icons.Check />}
                   onClick={saveEditNote}
-                  className="flex-1 py-3 bg-ak-primary text-white rounded-xl text-[14px] font-medium hover:bg-ak-primary-light transition-colors flex items-center justify-center gap-2"
+                  style={{ flex: 1, padding: '12px', justifyContent: 'center' }}
                 >
-                  <Icons.Check />
                   Lagre endringer
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="secondary"
                   onClick={() => setIsEditing(false)}
-                  className="px-6 py-3 bg-ak-snow text-ak-charcoal rounded-xl text-[14px] font-medium hover:bg-ak-mist transition-colors"
+                  style={{ padding: '12px 24px' }}
                 >
                   Avbryt
-                </button>
+                </Button>
               </div>
             </div>
           </Card>
@@ -781,19 +773,21 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
 
               {/* Actions */}
               <div className="flex gap-3 pt-4">
-                <button
+                <Button
+                  variant="primary"
+                  leftIcon={<Icons.Check />}
                   onClick={saveNewNote}
-                  className="flex-1 py-3 bg-ak-primary text-white rounded-xl text-[14px] font-medium hover:bg-ak-primary-light transition-colors flex items-center justify-center gap-2"
+                  style={{ flex: 1, padding: '12px', justifyContent: 'center' }}
                 >
-                  <Icons.Check />
                   Lagre notat
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="secondary"
                   onClick={() => setShowNewNote(false)}
-                  className="px-6 py-3 bg-ak-snow text-ak-charcoal rounded-xl text-[14px] font-medium hover:bg-ak-mist transition-colors"
+                  style={{ padding: '12px 24px' }}
                 >
                   Avbryt
-                </button>
+                </Button>
               </div>
             </div>
           </Card>
@@ -808,21 +802,19 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
         size="sm"
         footer={
           <div className="flex gap-3 justify-end">
-            <button
-              onClick={() => setNoteToDelete(null)}
-              className="px-4 py-2 bg-transparent border border-ak-mist rounded-lg text-ak-charcoal text-[14px] font-medium hover:bg-ak-snow transition-colors"
-            >
+            <Button variant="secondary" onClick={() => setNoteToDelete(null)}>
               Avbryt
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="primary"
               onClick={() => {
                 deleteNote(noteToDelete.id);
                 setNoteToDelete(null);
               }}
-              className="px-4 py-2 bg-ak-error text-white rounded-lg text-[14px] font-semibold hover:bg-ak-error/90 transition-colors"
+              style={{ backgroundColor: 'var(--error)' }}
             >
               Slett notat
-            </button>
+            </Button>
           </div>
         }
       >

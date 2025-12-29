@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 // UiCanon: Using CSS variables instead of tokens
 import { PageHeader } from '../../components/layout/PageHeader';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
+import Button from '../../ui/primitives/Button';
 import {
   GraduationCap,
   Plus,
@@ -266,57 +267,27 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
 
         <div style={{ display: 'flex', gap: '12px' }}>
           {fag && (
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleDelete}
-              style={{
-                padding: '10px 16px',
-                backgroundColor: 'rgba(var(--error-rgb), 0.15)',
-                color: 'var(--error)',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer'
-              }}
+              style={{ backgroundColor: 'rgba(var(--error-rgb), 0.15)', color: 'var(--error)' }}
             >
               Slett
-            </button>
+            </Button>
           )}
           <div style={{ flex: 1 }} />
-          <button
-            type="button"
-            onClick={onClose}
-            style={{
-              padding: '10px 16px',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
-          >
+          <Button variant="secondary" onClick={onClose}>
             Avbryt
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
+            variant="primary"
             disabled={saving || !form.navn.trim()}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: 'var(--accent)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: saving ? 'wait' : 'pointer',
-              opacity: saving || !form.navn.trim() ? 0.6 : 1
-            }}
+            loading={saving}
           >
             {saving ? 'Lagrer...' : (fag ? 'Oppdater' : 'Opprett')}
-          </button>
+          </Button>
         </div>
       </form>
 
@@ -385,21 +356,9 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
             Du ma opprette minst ett fag for du kan legge til timer.
           </p>
-          <button
-            onClick={onClose}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: 'var(--accent)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
-          >
+          <Button variant="primary" onClick={onClose}>
             OK
-          </button>
+          </Button>
         </div>
       </Modal>
     );
@@ -501,57 +460,27 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
 
         <div style={{ display: 'flex', gap: '12px' }}>
           {time && (
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleDelete}
-              style={{
-                padding: '10px 16px',
-                backgroundColor: 'rgba(var(--error-rgb), 0.15)',
-                color: 'var(--error)',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer'
-              }}
+              style={{ backgroundColor: 'rgba(var(--error-rgb), 0.15)', color: 'var(--error)' }}
             >
               Slett
-            </button>
+            </Button>
           )}
           <div style={{ flex: 1 }} />
-          <button
-            type="button"
-            onClick={onClose}
-            style={{
-              padding: '10px 16px',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
-          >
+          <Button variant="secondary" onClick={onClose}>
             Avbryt
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
+            variant="primary"
             disabled={saving}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: 'var(--accent)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: saving ? 'wait' : 'pointer',
-              opacity: saving ? 0.6 : 1
-            }}
+            loading={saving}
           >
             {saving ? 'Lagrer...' : (time ? 'Oppdater' : 'Opprett')}
-          </button>
+          </Button>
         </div>
       </form>
 
@@ -621,21 +550,9 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
             Du ma opprette minst ett fag for du kan legge til oppgaver.
           </p>
-          <button
-            onClick={onClose}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: 'var(--accent)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
-          >
+          <Button variant="primary" onClick={onClose}>
             OK
-          </button>
+          </Button>
         </div>
       </Modal>
     );
@@ -756,57 +673,27 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
 
         <div style={{ display: 'flex', gap: '12px' }}>
           {oppgave && (
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={handleDelete}
-              style={{
-                padding: '10px 16px',
-                backgroundColor: 'rgba(var(--error-rgb), 0.15)',
-                color: 'var(--error)',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer'
-              }}
+              style={{ backgroundColor: 'rgba(var(--error-rgb), 0.15)', color: 'var(--error)' }}
             >
               Slett
-            </button>
+            </Button>
           )}
           <div style={{ flex: 1 }} />
-          <button
-            type="button"
-            onClick={onClose}
-            style={{
-              padding: '10px 16px',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
-          >
+          <Button variant="secondary" onClick={onClose}>
             Avbryt
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
+            variant="primary"
             disabled={saving || !form.tittel.trim()}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: 'var(--accent)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: saving ? 'wait' : 'pointer',
-              opacity: saving || !form.tittel.trim() ? 0.6 : 1
-            }}
+            loading={saving}
           >
             {saving ? 'Lagrer...' : (oppgave ? 'Oppdater' : 'Opprett')}
-          </button>
+          </Button>
         </div>
       </form>
 
@@ -861,25 +748,14 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
             Timeplan
           </h3>
         </div>
-        <button
+        <Button
+          variant="secondary"
+          size="sm"
+          leftIcon={<Plus size={16} />}
           onClick={onAddTime}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '8px 12px',
-            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-            color: 'var(--accent)',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '13px',
-            fontWeight: 500,
-            cursor: 'pointer'
-          }}
         >
-          <Plus size={16} />
           Legg til
-        </button>
+        </Button>
       </div>
 
       <div style={{ overflowX: 'auto' }}>
@@ -1069,25 +945,14 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
             <option value="completed">Fullfort</option>
           </select>
 
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<Plus size={16} />}
             onClick={onAdd}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 12px',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-              color: 'var(--accent)',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}
           >
-            <Plus size={16} />
             Ny oppgave
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -1267,25 +1132,14 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
             {fag.length}
           </span>
         </div>
-        <button
+        <Button
+          variant="secondary"
+          size="sm"
+          leftIcon={<Plus size={16} />}
           onClick={onAdd}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '8px 12px',
-            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-            color: 'var(--accent)',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '13px',
-            fontWeight: 500,
-            cursor: 'pointer'
-          }}
         >
-          <Plus size={16} />
           Nytt fag
-        </button>
+        </Button>
       </div>
 
       {fag.length === 0 ? (
