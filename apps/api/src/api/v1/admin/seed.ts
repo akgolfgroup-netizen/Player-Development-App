@@ -173,7 +173,7 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
             gender: 'male',
             category: 'B',
             handicap: 12.5,
-            clubMembership: 'Oslo Golfklubb',
+            club: 'Oslo Golfklubb',
             coachId: DEMO_COACH_ID,
           },
         });
