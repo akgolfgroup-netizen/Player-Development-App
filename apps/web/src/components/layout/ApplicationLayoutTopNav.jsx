@@ -28,7 +28,7 @@ export default function ApplicationLayoutTopNav({ children, title, subtitle, act
       {/* Page Header */}
       {(title || subtitle || actions) && (
         <header className="bg-[var(--background-white)] shadow-sm border-b border-[var(--border-subtle)]">
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <div className="px-4 py-6 sm:px-6 lg:px-12 xl:px-16">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
                 {title && (
@@ -54,7 +54,7 @@ export default function ApplicationLayoutTopNav({ children, title, subtitle, act
 
       {/* Main Content */}
       <main id="main-content" className="flex-1" tabIndex="-1">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-6 lg:px-12 xl:px-16">
           {children}
         </div>
       </main>

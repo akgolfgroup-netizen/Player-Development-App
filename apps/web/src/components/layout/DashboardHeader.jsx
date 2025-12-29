@@ -218,7 +218,7 @@ export function DashboardHeader() {
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
       <nav
         aria-label="Global"
-        className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
+        className="flex items-center justify-between p-4 lg:px-12 xl:px-16"
       >
         {/* Logo */}
         <div className="flex lg:flex-1">
