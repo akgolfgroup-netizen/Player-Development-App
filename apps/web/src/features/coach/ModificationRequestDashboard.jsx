@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { tokens } from '../../design-tokens';
 import apiClient from '../../services/apiClient';
+import Button from '../../ui/primitives/Button';
 
 export default function ModificationRequestDashboard() {
   const [requests, setRequests] = useState([]);
@@ -171,31 +172,31 @@ export default function ModificationRequestDashboard() {
                         </label>
                       </div>
                       <div className="flex gap-2">
-                        <button
+                        <Button
+                          variant="primary"
                           onClick={() => handleRespond(req.id)}
                           disabled={response.length < 10}
-                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
                         >
                           Send Response
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                          variant="secondary"
                           onClick={() => {
                             setRespondingTo(null);
                             setResponse('');
                           }}
-                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
                         >
                           Cancel
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   ) : (
-                    <button
+                    <Button
+                      variant="primary"
                       onClick={() => setRespondingTo(req.id)}
-                      className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
                     >
                       Respond
-                    </button>
+                    </Button>
                   )}
                 </div>
               )}

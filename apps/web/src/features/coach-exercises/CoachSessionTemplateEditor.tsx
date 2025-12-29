@@ -21,6 +21,7 @@ import {
   Check,
   Dumbbell,
 } from 'lucide-react';
+import Button from '../../ui/primitives/Button';
 // Types
 interface Exercise {
   id: string;
@@ -269,42 +270,21 @@ export default function CoachSessionTemplateEditor() {
           </div>
 
           <div style={{ display: 'flex', gap: '10px' }}>
-            <button
+            <Button
+              variant="secondary"
               onClick={() => navigate('/coach/exercises/templates')}
-              style={{
-                padding: '10px 18px',
-                backgroundColor: 'var(--bg-tertiary)',
-                color: 'var(--text-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
             >
               Avbryt
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="primary"
               onClick={handleSave}
               disabled={isSaving}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 18px',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                opacity: isSaving ? 0.7 : 1,
-              }}
+              loading={isSaving}
+              leftIcon={<Save size={18} />}
             >
-              <Save size={18} />
               {isSaving ? 'Lagrer...' : 'Lagre mal'}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -473,25 +453,14 @@ export default function CoachSessionTemplateEditor() {
                 </span>
               </div>
             </div>
-            <button
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => setShowExerciseLibrary(true)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 14px',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              leftIcon={<Plus size={16} />}
             >
-              <Plus size={16} />
-              Legg til ovelse
-            </button>
+              Legg til øvelse
+            </Button>
           </div>
 
           {/* Drag and drop exercise list */}
@@ -519,25 +488,13 @@ export default function CoachSessionTemplateEditor() {
                 >
                   Klikk "Legg til ovelse" for a begynne
                 </p>
-                <button
+                <Button
+                  variant="primary"
                   onClick={() => setShowExerciseLibrary(true)}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '12px 20px',
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--bg-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  leftIcon={<Plus size={18} />}
                 >
-                  <Plus size={18} />
-                  Legg til forste ovelse
-                </button>
+                  Legg til første øvelse
+                </Button>
               </div>
             ) : (
               template.exercises.map((exercise, index) => {
