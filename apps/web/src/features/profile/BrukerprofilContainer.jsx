@@ -34,16 +34,12 @@ const BrukerprofilContainer = ({ forceOnboarding = false }) => {
       const response = await apiClient.get('/me');
       const userData = response.data;
 
-      // Check if player has completed onboarding
-      // First check explicit flag, then fall back to checking if profile has essential data
-      const hasCompletedOnboarding =
-        userData.onboardingComplete === true ||
-        userData.intakeComplete === true ||
-        // Fallback: check if essential profile fields are filled
-        (userData.club && userData.dateOfBirth && userData.handicap !== undefined);
+      // Existing players always see ProfileView
+      // Only show onboarding for truly new users (no name set)
+      const isExistingPlayer = Boolean(userData.firstName && userData.lastName);
 
       setProfile(userData);
-      setOnboardingComplete(hasCompletedOnboarding);
+      setOnboardingComplete(isExistingPlayer);
       setState('idle');
     } catch (err) {
       console.error('Error fetching profile:', err);
