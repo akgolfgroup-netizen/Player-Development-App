@@ -16,7 +16,8 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { ToggleLeft, ToggleRight, Settings } from "lucide-react";
+import { ToggleLeft, ToggleRight } from "lucide-react";
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 
 //////////////////////////////
@@ -113,18 +114,11 @@ export default function AdminFeatureFlagsEditor({ flags: apiFlags }: AdminFeatur
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header */}
-      <div style={{ padding: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Settings size={28} color={'var(--accent)'} />
-          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-            Feature Flags
-          </h1>
-        </div>
-        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: 0 }}>
-          {enabledCount} av {flags.length} funksjoner aktivert
-        </p>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Feature Flags"
+        subtitle={`${enabledCount} av ${flags.length} funksjoner aktivert`}
+      />
 
       {/* Flags List */}
       <div style={{ padding: '0 24px 24px' }}>

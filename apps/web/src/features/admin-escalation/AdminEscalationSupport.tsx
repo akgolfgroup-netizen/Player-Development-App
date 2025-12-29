@@ -16,7 +16,8 @@
  */
 
 import React, { useState } from "react";
-import { AlertCircle, Clock, CheckCircle, Headphones } from "lucide-react";
+import { AlertCircle, Clock, CheckCircle } from "lucide-react";
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 //////////////////////////////
 // 1. TYPES
@@ -94,18 +95,11 @@ export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalat
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header */}
-      <div style={{ padding: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <Headphones size={28} color={'var(--accent)'} />
-          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-            Support & Eskalering
-          </h1>
-        </div>
-        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: 0 }}>
-          {openCount} aktive saker
-        </p>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Support & Eskalering"
+        subtitle={`${openCount} aktive saker`}
+      />
 
       {/* Cases List */}
       <div style={{ padding: '0 24px 24px' }}>

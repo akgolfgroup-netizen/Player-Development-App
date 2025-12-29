@@ -17,8 +17,9 @@
  */
 
 import React, { useState, useEffect, useCallback } from "react";
-import { CreditCard, ChevronDown, ChevronUp, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronUp, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import apiClient from "../../services/apiClient";
+import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 
 
 //////////////////////////////
@@ -147,18 +148,11 @@ export default function AdminTierManagement() {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
       }}
     >
-      {/* Header */}
-      <div style={{ padding: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <CreditCard size={28} color={'var(--accent)'} />
-          <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-            Abonnementsnivåer
-          </h1>
-        </div>
-        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: 0 }}>
-          Konfigurasjon av faktureringsnivåer
-        </p>
-      </div>
+      {/* Header - using PageHeader from design system */}
+      <PageHeader
+        title="Abonnementsnivåer"
+        subtitle="Konfigurasjon av faktureringsnivåer"
+      />
 
       {/* Tier List */}
       <div style={{ padding: '0 24px 24px' }}>
