@@ -15,12 +15,12 @@ const SessionPreviewModal = ({
 
   const getSessionColor = (type) => {
     const colors = {
-      teknikk: '#2C5F7F',
-      golfslag: '#4A7C59',
-      spill: '#10456A',
-      konkurranse: '#C9A227',
-      fysisk: '#D4A84B',
-      mental: '#8E8E93',
+      teknikk: 'var(--ak-session-teknikk)',
+      golfslag: 'var(--ak-session-golfslag)',
+      spill: 'var(--ak-session-spill)',
+      konkurranse: 'var(--ak-achievement-gold)',
+      fysisk: 'var(--ak-achievement-gold-light)',
+      mental: 'var(--ak-text-muted)',
     };
     return colors[type] || tokens.colors.steel;
   };

@@ -7,12 +7,12 @@ import { tokens } from '../../design-tokens';
 
 // Training area colors (Blue Palette 01)
 const areaColors = {
-  langspill: '#2C5F7F',
-  innspill: '#4A7C59',
-  shortgame: '#C9A227',
-  putting: '#D4A84B',
-  fysisk: '#C45B4E',
-  mental: '#8E8E93',
+  langspill: 'var(--ak-session-teknikk)',
+  innspill: 'var(--ak-session-golfslag)',
+  shortgame: 'var(--ak-achievement-gold)',
+  putting: 'var(--ak-achievement-gold-light)',
+  fysisk: 'var(--ak-status-error)',
+  mental: 'var(--ak-text-muted)',
 };
 
 // ===== ICONS =====

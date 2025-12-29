@@ -153,8 +153,8 @@ export const CoachScheduledMessages: React.FC = () => {
     const styles: Record<string, { bg: string; text: string; label: string }> = {
       training: { bg: 'rgba(59, 130, 246, 0.1)', text: '#2563eb', label: 'Trening' },
       tournament: { bg: 'rgba(168, 85, 247, 0.1)', text: '#7c3aed', label: 'Turnering' },
-      general: { bg: 'rgba(107, 114, 128, 0.1)', text: '#6b7280', label: 'Generelt' },
-      urgent: { bg: 'rgba(239, 68, 68, 0.1)', text: '#dc2626', label: 'Viktig' }
+      general: { bg: 'rgba(107, 114, 128, 0.1)', text: 'var(--ak-text-tertiary)', label: 'Generelt' },
+      urgent: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--ak-status-error)', label: 'Viktig' }
     };
     return styles[category] || styles.general;
   };
@@ -270,9 +270,9 @@ export const CoachScheduledMessages: React.FC = () => {
                       ? 'rgba(245, 158, 11, 0.1)'
                       : 'rgba(var(--accent-rgb), 0.15)',
                   border: daysUntil <= 1
-                    ? '2px solid #dc2626'
+                    ? '2px solid var(--ak-status-error)'
                     : daysUntil <= 7
-                      ? '2px solid #f59e0b'
+                      ? '2px solid var(--ak-status-warning-light)'
                       : `2px solid ${'var(--accent)'}`,
                   display: 'flex',
                   alignItems: 'center',
@@ -280,7 +280,7 @@ export const CoachScheduledMessages: React.FC = () => {
                 }}>
                   <Clock
                     size={18}
-                    color={daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : 'var(--accent)'}
+                    color={daysUntil <= 1 ? 'var(--ak-status-error)' : daysUntil <= 7 ? 'var(--ak-status-warning-light)' : 'var(--accent)'}
                   />
                 </div>
                 {index < sortedMessages.length - 1 && (
@@ -322,12 +322,12 @@ export const CoachScheduledMessages: React.FC = () => {
                 }}>
                   <Calendar
                     size={12}
-                    color={daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : 'var(--accent)'}
+                    color={daysUntil <= 1 ? 'var(--ak-status-error)' : daysUntil <= 7 ? 'var(--ak-status-warning-light)' : 'var(--accent)'}
                   />
                   <span style={{
                     fontSize: '12px',
                     fontWeight: '600',
-                    color: daysUntil <= 1 ? '#dc2626' : daysUntil <= 7 ? '#f59e0b' : 'var(--accent)'
+                    color: daysUntil <= 1 ? 'var(--ak-status-error)' : daysUntil <= 7 ? 'var(--ak-status-warning-light)' : 'var(--accent)'
                   }}>
                     {formatScheduledDate(message.scheduledFor)}
                   </span>
@@ -416,7 +416,7 @@ export const CoachScheduledMessages: React.FC = () => {
                       }}
                       title="Send nå"
                     >
-                      <Send size={16} color="#059669" />
+                      <Send size={16} color="var(--ak-success)" />
                     </button>
                     <button
                       onClick={(e) => handleDelete(e, message.id)}
@@ -433,7 +433,7 @@ export const CoachScheduledMessages: React.FC = () => {
                       }}
                       title="Slett"
                     >
-                      <Trash2 size={16} color="#dc2626" />
+                      <Trash2 size={16} color="var(--ak-status-error)" />
                     </button>
                   </div>
                 </div>

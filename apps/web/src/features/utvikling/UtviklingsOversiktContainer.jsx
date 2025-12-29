@@ -417,7 +417,7 @@ const UtviklingsOversiktContainer = () => {
                   width: '32px',
                   height: '32px',
                   borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--bg-warning-subtle)',
+                  backgroundColor: 'color-mix(in srgb, var(--ak-warning) 15%, transparent)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

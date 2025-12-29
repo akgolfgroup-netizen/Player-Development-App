@@ -14,10 +14,10 @@ const COMPONENT_LABELS = {
 };
 
 const COMPONENT_COLORS = {
-  OTT: '#3B82F6', // Blue
-  APP: '#10B981', // Green
-  ARG: '#F59E0B', // Amber
-  PUTT: '#8B5CF6', // Purple
+  OTT: 'var(--ak-status-info)', // Blue
+  APP: 'var(--ak-status-success-light)', // Green
+  ARG: 'var(--ak-status-warning-light)', // Amber
+  PUTT: 'var(--ak-accent-purple)', // Purple
 };
 
 const REASON_MESSAGES = {
@@ -146,7 +146,7 @@ export function FocusWidget({ className = '' }) {
 
       {/* CTAs */}
       <div className="mt-6 flex gap-2">
-        <button className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
+        <button className="flex-1 px-4 py-2 bg-ak-primary text-white rounded-lg text-sm font-medium hover:bg-ak-primary/90 transition-colors">
           Start økt
         </button>
         <button className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">

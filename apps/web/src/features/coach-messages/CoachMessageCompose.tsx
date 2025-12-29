@@ -139,7 +139,7 @@ export const CoachMessageCompose: React.FC = () => {
                   alignItems: 'center',
                   gap: '6px',
                   padding: '6px 12px',
-                  backgroundColor: 'var(--bg-success-subtle)',
+                  backgroundColor: 'color-mix(in srgb, var(--ak-success) 15%, transparent)',
                   borderRadius: 'var(--radius-full)',
                   color: 'var(--success)',
                   fontSize: '13px',
@@ -169,7 +169,7 @@ export const CoachMessageCompose: React.FC = () => {
                       gap: '6px',
                       padding: '6px 12px',
                       backgroundColor: recipient.type === 'group'
-                        ? 'var(--bg-warning-subtle)'
+                        ? 'color-mix(in srgb, var(--ak-warning) 15%, transparent)'
                         : 'var(--bg-accent-subtle)',
                       borderRadius: 'var(--radius-full)',
                       color: recipient.type === 'group'
@@ -242,7 +242,7 @@ export const CoachMessageCompose: React.FC = () => {
                             alignItems: 'center',
                             gap: '10px',
                             borderBottom: '1px solid var(--border-default)',
-                            backgroundColor: 'var(--bg-success-subtle)',
+                            backgroundColor: 'color-mix(in srgb, var(--ak-success) 15%, transparent)',
                           }}
                         >
                           <Users size={16} color="var(--success)" />
@@ -272,7 +272,7 @@ export const CoachMessageCompose: React.FC = () => {
                               height: 32,
                               borderRadius: '50%',
                               backgroundColor: recipient.type === 'group'
-                                ? 'var(--bg-warning-subtle)'
+                                ? 'color-mix(in srgb, var(--ak-warning) 15%, transparent)'
                                 : 'var(--bg-accent-subtle)',
                               display: 'flex',
                               alignItems: 'center',

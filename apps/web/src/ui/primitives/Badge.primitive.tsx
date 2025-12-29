@@ -97,16 +97,16 @@ const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
     color: 'var(--accent)',
   },
   success: {
-    backgroundColor: 'var(--bg-success-subtle)',
-    color: 'var(--success)',
+    backgroundColor: 'color-mix(in srgb, var(--ak-success) 15%, transparent)',
+    color: 'var(--ak-success)',
   },
   warning: {
-    backgroundColor: 'var(--bg-warning-subtle)',
-    color: 'var(--warning)',
+    backgroundColor: 'color-mix(in srgb, var(--ak-warning) 15%, transparent)',
+    color: 'var(--ak-warning)',
   },
   error: {
-    backgroundColor: 'var(--bg-error-subtle)',
-    color: 'var(--error)',
+    backgroundColor: 'color-mix(in srgb, var(--ak-error) 15%, transparent)',
+    color: 'var(--ak-error)',
   },
   achievement: {
     backgroundColor: 'var(--bg-achievement-subtle)',
@@ -119,9 +119,9 @@ const dotVariantStyles: Record<BadgeVariant, React.CSSProperties> = {
   default: { backgroundColor: 'var(--text-tertiary)' },
   primary: { backgroundColor: 'var(--accent)' },
   accent: { backgroundColor: 'var(--accent)' },
-  success: { backgroundColor: 'var(--success)' },
-  warning: { backgroundColor: 'var(--warning)' },
-  error: { backgroundColor: 'var(--error)' },
+  success: { backgroundColor: 'var(--ak-success)' },
+  warning: { backgroundColor: 'var(--ak-warning)' },
+  error: { backgroundColor: 'var(--ak-error)' },
   achievement: { backgroundColor: 'var(--achievement)' },
 };
 

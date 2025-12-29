@@ -384,7 +384,7 @@ const TreningsdagbokContainer = () => {
       <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
         {/* Stats */}
         {error && (
-          <div style={{ padding: '12px', backgroundColor: 'var(--bg-error-subtle)', borderRadius: 'var(--radius-sm)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ padding: '12px', backgroundColor: 'color-mix(in srgb, var(--ak-error) 15%, transparent)', borderRadius: 'var(--radius-sm)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AlertCircle size={16} color="var(--error)" />
             <span style={{ fontSize: '13px', color: 'var(--error)' }}>{error} (viser demo-data)</span>
           </div>

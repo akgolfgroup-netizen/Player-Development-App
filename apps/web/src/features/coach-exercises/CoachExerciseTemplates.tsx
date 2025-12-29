@@ -183,14 +183,14 @@ export const CoachExerciseTemplates: React.FC = () => {
 
   const getCategoryColor = (cat: string) => {
     const colors: Record<string, { bg: string; text: string }> = {
-      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: '#16a34a' },
+      putting: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--ak-status-success)' },
       fullspill: { bg: 'rgba(59, 130, 246, 0.1)', text: '#2563eb' },
       kortspill: { bg: 'rgba(168, 85, 247, 0.1)', text: '#7c3aed' },
-      fysisk: { bg: 'rgba(239, 68, 68, 0.1)', text: '#dc2626' },
+      fysisk: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--ak-status-error)' },
       mental: { bg: 'rgba(236, 72, 153, 0.1)', text: '#db2777' },
-      blandet: { bg: 'rgba(107, 114, 128, 0.1)', text: '#6b7280' }
+      blandet: { bg: 'rgba(107, 114, 128, 0.1)', text: 'var(--ak-text-tertiary)' }
     };
-    return colors[cat] || { bg: '#f3f4f6', text: '#6b7280' };
+    return colors[cat] || { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-tertiary)' };
   };
 
   const getDifficultyLabel = (diff: string) => {
@@ -407,7 +407,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                         padding: '3px 8px',
                         borderRadius: '4px',
                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        color: '#059669'
+                        color: 'var(--ak-success)'
                       }}>
                         Egen
                       </span>
@@ -580,7 +580,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                             gap: '10px',
                             cursor: 'pointer',
                             fontSize: '13px',
-                            color: '#dc2626'
+                            color: 'var(--ak-status-error)'
                           }}
                         >
                           <Trash2 size={14} />

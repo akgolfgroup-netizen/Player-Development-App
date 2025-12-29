@@ -32,7 +32,7 @@ const InputField = ({ label, type = 'text', value, onChange, placeholder, unit, 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest-500 focus:border-forest-500 transition-all"
+        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ak-primary focus:border-ak-primary transition-all"
       />
       {unit && <span className="absolute right-3 top-2.5 text-gray-400 text-sm">{unit}</span>}
     </div>
@@ -48,7 +48,7 @@ const TextArea = ({ label, value, onChange, placeholder, rows = 3 }) => (
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       rows={rows}
-      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest-500 focus:border-forest-500 transition-all resize-none"
+      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ak-primary focus:border-ak-primary transition-all resize-none"
     />
   </div>
 );
@@ -59,7 +59,7 @@ const SelectField = ({ label, value, onChange, options }) => (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forest-500 focus:border-forest-500 transition-all bg-white"
+      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ak-primary focus:border-ak-primary transition-all bg-white"
     >
       <option value="">Velg...</option>
       {options.map(opt => (
@@ -71,8 +71,8 @@ const SelectField = ({ label, value, onChange, options }) => (
 
 const RatingBadge = ({ rating }) => {
   const colors = {
-    'Excellent': 'bg-forest-100 text-forest-700',
-    'Good': 'bg-forest-100 text-forest-700',
+    'Excellent': 'bg-ak-primary/10 text-ak-primary',
+    'Good': 'bg-ak-primary/10 text-ak-primary',
     'Developing': 'bg-amber-100 text-amber-700',
     'Needs Work': 'bg-red-100 text-red-700'
   };
@@ -93,7 +93,7 @@ const ProgressBar = ({ current, target, label }) => {
       </div>
       <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
         <div 
-          className={`h-full rounded-full transition-all ${percentage >= 100 ? 'bg-forest-500' : percentage >= 75 ? 'bg-forest-500' : 'bg-warning'}`}
+          className={`h-full rounded-full transition-all ${percentage >= 100 ? 'bg-ak-primary/50' : percentage >= 75 ? 'bg-ak-primary/50' : 'bg-ak-status-warning'}`}
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -224,7 +224,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Treningstimer Sesong 2025</h3>
             <p className="text-gray-600 mb-6">Loggfør dine treningstimer fra sesongen. Vær så nøyaktig som mulig.</p>
             
-            <div className="bg-forest-50 rounded-xl p-4 mb-6">
+            <div className="bg-ak-primary/5 rounded-xl p-4 mb-6">
               <InputField 
                 label="Totalt antall treningstimer" 
                 type="number"
@@ -482,9 +482,9 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Grunnperiode Plan (Uke 45+)</h3>
             <p className="text-gray-600 mb-6">Planlegg strukturen for grunnperioden. Dette blir fundamentet for sesongen.</p>
             
-            <div className="bg-forest-50 rounded-xl p-4 mb-6">
-              <h4 className="font-medium text-forest-800 mb-2">Grunnperioden starter uke 45</h4>
-              <p className="text-sm text-forest-700">
+            <div className="bg-ak-primary/5 rounded-xl p-4 mb-6">
+              <h4 className="font-medium text-ak-primary mb-2">Grunnperioden starter uke 45</h4>
+              <p className="text-sm text-ak-primary">
                 Fokus i grunnperioden er å bygge et solid fundament gjennom teknisk arbeid, fysisk trening og mental forberedelse. 
                 Konkurransespill er nedprioritert.
               </p>
@@ -606,8 +606,8 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
             <div 
               key={section.id}
               className={`flex-1 h-2 rounded-full transition-all ${
-                idx < currentSection ? 'bg-forest-500' : 
-                idx === currentSection ? 'bg-forest-400' : 'bg-gray-200'
+                idx < currentSection ? 'bg-ak-primary/50' : 
+                idx === currentSection ? 'bg-ak-primary-light' : 'bg-gray-200'
               }`}
             />
           ))}
@@ -621,9 +621,9 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
                 onClick={() => setCurrentSection(idx)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm whitespace-nowrap transition-all ${
                   idx === currentSection 
-                    ? 'bg-forest-100 text-forest-700 font-medium' 
+                    ? 'bg-ak-primary/10 text-ak-primary font-medium' 
                     : idx < currentSection 
-                      ? 'bg-forest-50 text-forest-600' 
+                      ? 'bg-ak-primary/5 text-ak-primary' 
                       : 'bg-white text-gray-500 hover:bg-gray-100'
                 }`}
               >
@@ -658,7 +658,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
         {currentSection < intakeSections.length - 1 ? (
           <button
             onClick={() => setCurrentSection(prev => prev + 1)}
-            className="flex items-center gap-2 px-6 py-2 bg-forest-600 text-white rounded-lg font-medium hover:bg-forest-700 transition-all"
+            className="flex items-center gap-2 px-6 py-2 bg-ak-primary text-white rounded-lg font-medium hover:bg-ak-primary-dark transition-all"
           >
             Neste
             <ChevronRight className="w-4 h-4" />
@@ -669,8 +669,8 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
             disabled={isSubmitting}
             className={`flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-all ${
               isSubmitting
-                ? 'bg-forest-400 text-white cursor-not-allowed'
-                : 'bg-forest-600 text-white hover:bg-forest-700'
+                ? 'bg-ak-primary-light text-white cursor-not-allowed'
+                : 'bg-ak-primary text-white hover:bg-ak-primary-dark'
             }`}
           >
             {isSubmitting ? (
@@ -733,21 +733,21 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
           </div>
           <div>
             <h2 className="font-semibold text-white">Ukentlig Oppfølging</h2>
-            <p className="text-forest-100 text-sm">Uke {weekNumber} • Grunnperioden</p>
+            <p className="text-ak-primary-light text-sm">Uke {weekNumber} • Grunnperioden</p>
           </div>
         </div>
       </div>
 
       <div className="p-6 space-y-6">
         {/* Training Hours Check */}
-        <div className="bg-forest-50 rounded-xl p-4">
-          <h3 className="font-medium text-forest-900 mb-3 flex items-center gap-2">
+        <div className="bg-ak-primary/5 rounded-xl p-4">
+          <h3 className="font-medium text-ak-primary mb-3 flex items-center gap-2">
             <Clock className="w-5 h-5" />
             Treningstimer denne uken
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-forest-800 mb-1">
+              <label className="block text-sm font-medium text-ak-primary mb-1">
                 Planlagt: 15 timer
               </label>
               <InputField 
@@ -774,7 +774,7 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
         {/* Session Completion */}
         <div>
           <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-forest-600" />
+            <CheckCircle2 className="w-5 h-5 text-ak-primary" />
             Gjennomførte du de planlagte øktene?
           </h3>
           <div className="flex gap-3 mb-3">
@@ -784,7 +784,7 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
                 onClick={() => updateResponse('sessionsCompleted', option)}
                 className={`px-4 py-2 rounded-lg border-2 transition-all ${
                   responses.sessionsCompleted === option
-                    ? 'border-forest-500 bg-forest-50 text-forest-700'
+                    ? 'border-ak-primary bg-ak-primary/5 text-ak-primary'
                     : 'border-gray-200 text-gray-600 hover:border-gray-300'
                 }`}
               >
@@ -828,7 +828,7 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
                 </div>
                 <p className="text-sm text-gray-600 mb-2">{q.question}</p>
                 <div className="flex gap-2">
-                  <button className="px-3 py-1.5 text-sm rounded-lg bg-forest-100 text-forest-700 hover:bg-forest-200 transition-all">
+                  <button className="px-3 py-1.5 text-sm rounded-lg bg-ak-primary/10 text-ak-primary hover:bg-ak-primary/20 transition-all">
                     Ja, fokusert på dette
                   </button>
                   <button className="px-3 py-1.5 text-sm rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">
@@ -865,9 +865,9 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
                   onClick={() => updateResponse('energyLevel', n)}
                   className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
                     responses.energyLevel === n
-                      ? 'bg-forest-600 text-white'
+                      ? 'bg-ak-primary text-white'
                       : n <= responses.energyLevel
-                        ? 'bg-forest-100 text-forest-700'
+                        ? 'bg-ak-primary/10 text-ak-primary'
                         : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                   }`}
                 >
@@ -887,9 +887,9 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
                   onClick={() => updateResponse('motivationLevel', n)}
                   className={`w-8 h-8 rounded-lg text-sm font-medium transition-all ${
                     responses.motivationLevel === n
-                      ? 'bg-forest-600 text-white'
+                      ? 'bg-ak-primary text-white'
                       : n <= responses.motivationLevel
-                        ? 'bg-forest-100 text-forest-700'
+                        ? 'bg-ak-primary/10 text-ak-primary'
                         : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                   }`}
                 >
@@ -926,7 +926,7 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
           rows={2}
         />
 
-        <button className="w-full py-3 bg-forest-600 text-white rounded-xl font-medium hover:bg-forest-700 transition-all flex items-center justify-center gap-2">
+        <button className="w-full py-3 bg-ak-primary text-white rounded-xl font-medium hover:bg-ak-primary-dark transition-all flex items-center justify-center gap-2">
           <Save className="w-5 h-5" />
           Send inn ukerapport
         </button>
@@ -1041,7 +1041,7 @@ export default function PlayerIntakeSystem() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 bg-forest-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-ak-primary rounded-xl flex items-center justify-center">
               <ClipboardList className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -1057,7 +1057,7 @@ export default function PlayerIntakeSystem() {
             onClick={() => setActiveView('intake')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
               activeView === 'intake'
-                ? 'bg-forest-600 text-white'
+                ? 'bg-ak-primary text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
             }`}
           >
@@ -1068,7 +1068,7 @@ export default function PlayerIntakeSystem() {
             onClick={() => setActiveView('followup')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
               activeView === 'followup'
-                ? 'bg-forest-600 text-white'
+                ? 'bg-ak-primary text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
             }`}
           >
@@ -1092,8 +1092,8 @@ export default function PlayerIntakeSystem() {
         {activeView === 'intake' ? (
           intakeComplete ? (
             <div className="bg-white rounded-2xl p-8 text-center shadow-sm border border-gray-100">
-              <div className="w-16 h-16 bg-forest-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="w-8 h-8 text-forest-600" />
+              <div className="w-16 h-16 bg-ak-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 className="w-8 h-8 text-ak-primary" />
               </div>
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Intake fullført!</h2>
               <p className="text-gray-600 mb-4">
@@ -1101,7 +1101,7 @@ export default function PlayerIntakeSystem() {
               </p>
               <button
                 onClick={() => { setIntakeComplete(false); setSubmitError(null); }}
-                className="text-forest-600 hover:underline"
+                className="text-ak-primary hover:underline"
               >
                 Se gjennom svarene
               </button>

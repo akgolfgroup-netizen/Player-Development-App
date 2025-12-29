@@ -73,7 +73,7 @@ const styles = {
   },
   videoCount: {
     padding: '4px 10px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     borderRadius: 'var(--radius-full, 9999px)',
     fontSize: '12px',
     fontWeight: '600',
@@ -81,7 +81,7 @@ const styles = {
   },
   uploadButton: {
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -99,7 +99,7 @@ const styles = {
     gap: 'var(--spacing-3, 12px)',
     flexWrap: 'wrap',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-lg, 12px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
   },
@@ -110,7 +110,7 @@ const styles = {
   searchInput: {
     width: '100%',
     padding: '10px 12px 10px 36px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-primary, white)',
@@ -128,7 +128,7 @@ const styles = {
   },
   select: {
     padding: '10px 32px 10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-primary, white)',
@@ -185,7 +185,7 @@ const styles = {
   modal: {
     width: '100%',
     maxWidth: '500px',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-xl, 16px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     boxShadow: '0 24px 48px rgba(0, 0, 0, 0.4)',
@@ -235,7 +235,7 @@ const styles = {
   },
   input: {
     padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-primary, white)',
@@ -245,7 +245,7 @@ const styles = {
   },
   textarea: {
     padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-primary, white)',
@@ -268,7 +268,7 @@ const styles = {
     transition: 'all 0.2s ease',
   },
   dropZoneActive: {
-    borderColor: 'var(--ak-primary, #6366f1)',
+    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
     backgroundColor: 'rgba(99, 102, 241, 0.1)',
   },
   dropZoneIcon: {
@@ -290,14 +290,14 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     borderRadius: 'var(--radius-md, 8px)',
   },
   fileIcon: {
     width: '40px',
     height: '40px',
     borderRadius: 'var(--radius-md, 8px)',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -351,7 +351,7 @@ const styles = {
   },
   submitButton: {
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -366,7 +366,7 @@ const styles = {
   },
   deleteButton: {
     padding: '10px 20px',
-    backgroundColor: 'var(--color-danger, #dc3545)',
+    backgroundColor: 'var(--ak-error)',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -390,20 +390,20 @@ const styles = {
     alignItems: 'center',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     borderRadius: 'var(--radius-md, 8px)',
     cursor: 'pointer',
     transition: 'background-color 0.15s ease',
   },
   playerItemSelected: {
     backgroundColor: 'rgba(99, 102, 241, 0.2)',
-    outline: '1px solid var(--ak-primary, #6366f1)',
+    outline: '1px solid var(--ak-primary, var(--ak-brand-primary))',
   },
   playerAvatar: {
     width: '36px',
     height: '36px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -435,8 +435,8 @@ const styles = {
     transition: 'all 0.15s ease',
   },
   checkboxChecked: {
-    backgroundColor: 'var(--ak-primary, #6366f1)',
-    borderColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
+    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
   },
 };
 
@@ -909,7 +909,7 @@ export function ReferenceLibrary({
             width: '32px',
             height: '32px',
             border: '3px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
-            borderTopColor: 'var(--ak-primary, #6366f1)',
+            borderTopColor: 'var(--ak-primary, var(--ak-brand-primary))',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
           }} />
@@ -927,7 +927,7 @@ export function ReferenceLibrary({
           padding: 'var(--spacing-4, 16px)',
           backgroundColor: 'rgba(239, 68, 68, 0.1)',
           borderRadius: 'var(--radius-lg, 12px)',
-          border: '1px solid var(--ak-error, #ef4444)',
+          border: '1px solid var(--ak-error, var(--ak-status-error-light))',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -940,7 +940,7 @@ export function ReferenceLibrary({
             onClick={refetchVideos}
             style={{
               padding: '8px 16px',
-              backgroundColor: 'var(--ak-error, #ef4444)',
+              backgroundColor: 'var(--ak-error, var(--ak-status-error-light))',
               border: 'none',
               borderRadius: 'var(--radius-md, 8px)',
               color: 'white',

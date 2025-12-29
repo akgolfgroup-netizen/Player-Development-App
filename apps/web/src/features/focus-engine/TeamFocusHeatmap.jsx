@@ -14,10 +14,10 @@ const COMPONENT_LABELS = {
 };
 
 const COMPONENT_COLORS = {
-  OTT: '#3B82F6',
-  APP: '#10B981',
-  ARG: '#F59E0B',
-  PUTT: '#8B5CF6',
+  OTT: 'var(--ak-status-info)',
+  APP: 'var(--ak-status-success-light)',
+  ARG: 'var(--ak-status-warning-light)',
+  PUTT: 'var(--ak-accent-purple)',
 };
 
 const REASON_LABELS = {

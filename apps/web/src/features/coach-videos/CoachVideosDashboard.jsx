@@ -397,7 +397,7 @@ export function CoachVideosDashboard({
           <span className={tw.statLabel}>Totalt</span>
         </div>
         <div className={tw.statCard}>
-          <span className={`${tw.statValue} text-warning`}>
+          <span className={`${tw.statValue} text-ak-warning`}>
             {stats.pending}
           </span>
           <span className={tw.statLabel}>Venter</span>

@@ -30,17 +30,17 @@ const TYPE_LABELS = {
 
 // Type colors
 const TYPE_COLORS = {
-  [REFERENCE_TYPES.COACH_DEMO]: '#6366f1',
-  [REFERENCE_TYPES.PRO_REFERENCE]: '#f59e0b',
-  [REFERENCE_TYPES.DRILL_INSTRUCTION]: '#22c55e',
-  [REFERENCE_TYPES.TECHNIQUE_BREAKDOWN]: '#ec4899',
+  [REFERENCE_TYPES.COACH_DEMO]: 'var(--ak-brand-primary)',
+  [REFERENCE_TYPES.PRO_REFERENCE]: 'var(--ak-status-warning-light)',
+  [REFERENCE_TYPES.DRILL_INSTRUCTION]: 'var(--ak-status-success-light)',
+  [REFERENCE_TYPES.TECHNIQUE_BREAKDOWN]: 'var(--ak-status-info)',
 };
 
 // Tailwind classes
 const tw = {
   card: 'relative flex flex-col bg-surface rounded-ak-lg border border-border overflow-hidden cursor-pointer transition-all duration-200',
   cardHover: 'hover:-translate-y-0.5 hover:border-primary hover:shadow-lg',
-  thumbnailContainer: 'relative aspect-video bg-[var(--ak-surface-dark,#0f0f1a)] overflow-hidden',
+  thumbnailContainer: 'relative aspect-video bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] overflow-hidden',
   thumbnail: 'w-full h-full object-cover',
   thumbnailPlaceholder: 'w-full h-full flex items-center justify-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
   playOverlay: 'absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200',
@@ -59,11 +59,11 @@ const tw = {
   stats: 'flex items-center gap-2 text-[11px] text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))]',
   statItem: 'flex items-center gap-1',
   actions: 'flex gap-2 pt-2 border-t border-border',
-  actionButton: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center justify-center gap-1 transition-all duration-150',
+  actionButton: 'flex-1 py-2 px-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center justify-center gap-1 transition-all duration-150',
   shareButton: 'bg-primary border-primary text-white',
   dropdown: 'absolute top-10 right-2 min-w-[140px] bg-surface rounded-ak-md border border-border shadow-xl z-[100] overflow-hidden',
-  dropdownItem: 'flex items-center gap-2 w-full py-2.5 px-3 bg-transparent border-none text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-[13px] cursor-pointer text-left transition-colors duration-150 hover:bg-[var(--ak-surface-dark,#0f0f1a)]',
-  dropdownItemDanger: 'text-error',
+  dropdownItem: 'flex items-center gap-2 w-full py-2.5 px-3 bg-transparent border-none text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-[13px] cursor-pointer text-left transition-colors duration-150 hover:bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))]',
+  dropdownItemDanger: 'text-ak-status-error',
 };
 
 // Icons

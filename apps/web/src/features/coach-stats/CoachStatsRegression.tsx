@@ -169,19 +169,19 @@ export const CoachStatsRegression: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'A': return { bg: '#dcfce7', text: '#166534' };
-      case 'B': return { bg: '#dbeafe', text: '#1e40af' };
-      case 'C': return { bg: '#fef3c7', text: '#92400e' };
-      default: return { bg: '#f3f4f6', text: '#374151' };
+      case 'A': return { bg: 'var(--ak-status-success-bg)', text: 'var(--ak-status-success-text)' };
+      case 'B': return { bg: 'var(--ak-status-info-bg)', text: 'var(--ak-status-info-text)' };
+      case 'C': return { bg: 'var(--ak-status-warning-bg)', text: 'var(--ak-status-warning-text)' };
+      default: return { bg: 'var(--ak-surface-elevated)', text: 'var(--ak-text-secondary)' };
     }
   };
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'high': return { bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', text: '#dc2626' };
-      case 'medium': return { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', text: '#d97706' };
-      case 'low': return { bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)', text: '#16a34a' };
-      default: return { bg: '#f3f4f6', border: '#e5e7eb', text: '#374151' };
+      case 'high': return { bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.3)', text: 'var(--ak-status-error)' };
+      case 'medium': return { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.3)', text: 'var(--ak-status-warning)' };
+      case 'low': return { bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)', text: 'var(--ak-status-success)' };
+      default: return { bg: 'var(--ak-surface-elevated)', border: 'var(--border-color)', text: 'var(--ak-text-secondary)' };
     }
   };
 
@@ -208,7 +208,7 @@ export const CoachStatsRegression: React.FC = () => {
             width: '48px',
             height: '48px',
             borderRadius: '12px',
-            background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+            background: 'linear-gradient(135deg, var(--ak-status-error-light), var(--ak-status-error))',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -463,7 +463,7 @@ export const CoachStatsRegression: React.FC = () => {
                           padding: '4px 10px',
                           borderRadius: '6px',
                           backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                          color: '#dc2626',
+                          color: 'var(--ak-status-error)',
                           fontWeight: '500'
                         }}>
                           {concern}
@@ -477,12 +477,12 @@ export const CoachStatsRegression: React.FC = () => {
                         padding: '10px 12px',
                         backgroundColor: 'rgba(245, 158, 11, 0.1)',
                         borderRadius: '8px',
-                        borderLeft: '3px solid #f59e0b',
+                        borderLeft: '3px solid var(--ak-status-warning-light)',
                         marginBottom: '12px'
                       }}>
                         <p style={{
                           fontSize: '13px',
-                          color: '#92400e',
+                          color: 'var(--ak-status-warning-text)',
                           margin: 0,
                           fontStyle: 'italic'
                         }}>
@@ -558,11 +558,11 @@ export const CoachStatsRegression: React.FC = () => {
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
                     borderRadius: '10px'
                   }}>
-                    <ArrowDownRight size={18} color="#dc2626" />
+                    <ArrowDownRight size={18} color="var(--ak-status-error)" />
                     <span style={{
                       fontSize: '20px',
                       fontWeight: '700',
-                      color: '#dc2626'
+                      color: 'var(--ak-status-error)'
                     }}>
                       +{player.hcpChange}
                     </span>

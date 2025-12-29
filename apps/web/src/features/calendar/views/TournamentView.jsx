@@ -97,10 +97,10 @@ const TournamentView = ({
 
   const getCategoryConfig = (category) => {
     const configs = {
-      club: { bg: '#8E8E93', label: 'Klubb' },
-      regional: { bg: '#4A7C59', label: 'Regional' },
-      national: { bg: '#2C5F7F', label: 'Nasjonal' },
-      international: { bg: '#C9A227', label: 'Internasjonal' },
+      club: { bg: 'var(--ak-text-muted)', label: 'Klubb' },
+      regional: { bg: 'var(--ak-session-golfslag)', label: 'Regional' },
+      national: { bg: 'var(--ak-session-teknikk)', label: 'Nasjonal' },
+      international: { bg: 'var(--ak-achievement-gold)', label: 'Internasjonal' },
     };
     return configs[category] || configs.club;
   };

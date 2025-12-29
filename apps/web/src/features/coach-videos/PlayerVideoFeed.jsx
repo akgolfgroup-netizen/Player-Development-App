@@ -32,10 +32,10 @@ const STATUS_LABELS = {
 
 // Status colors
 const STATUS_COLORS = {
-  [REVIEW_STATUS.PENDING]: '#f59e0b',
-  [REVIEW_STATUS.IN_PROGRESS]: '#6366f1',
-  [REVIEW_STATUS.REVIEWED]: '#22c55e',
-  [REVIEW_STATUS.NEEDS_FOLLOWUP]: '#ef4444',
+  [REVIEW_STATUS.PENDING]: 'var(--ak-status-warning-light)',
+  [REVIEW_STATUS.IN_PROGRESS]: 'var(--ak-brand-primary)',
+  [REVIEW_STATUS.REVIEWED]: 'var(--ak-status-success-light)',
+  [REVIEW_STATUS.NEEDS_FOLLOWUP]: 'var(--ak-status-error-light)',
 };
 
 // Tailwind classes
@@ -45,7 +45,7 @@ const tw = {
   feedItemHover: 'hover:border-primary hover:-translate-y-0.5',
   feedItemSelected: 'border-primary bg-primary/10',
   checkbox: 'w-5 h-5 mt-1 cursor-pointer accent-primary',
-  thumbnailContainer: 'relative w-40 h-[90px] rounded-ak-md overflow-hidden shrink-0 bg-[var(--ak-surface-dark,#0f0f1a)]',
+  thumbnailContainer: 'relative w-40 h-[90px] rounded-ak-md overflow-hidden shrink-0 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))]',
   thumbnail: 'w-full h-full object-cover',
   thumbnailPlaceholder: 'w-full h-full flex items-center justify-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.3))]',
   duration: 'absolute bottom-1 right-1 py-0.5 px-1.5 bg-black/80 rounded-ak-sm text-[11px] font-mono text-white',
@@ -61,7 +61,7 @@ const tw = {
   playerName: 'text-[13px] font-medium text-[var(--ak-text-primary,white)]',
   annotations: 'flex items-center gap-1 text-xs text-[var(--ak-text-tertiary,rgba(255,255,255,0.5))]',
   actions: 'flex gap-2',
-  actionButton: 'py-1.5 px-3 bg-[var(--ak-surface-dark,#0f0f1a)] border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center gap-1 transition-all duration-150',
+  actionButton: 'py-1.5 px-3 bg-[var(--ak-surface-dark,var(--ak-surface-dark-elevated))] border border-border rounded-ak-md text-[var(--ak-text-secondary,rgba(255,255,255,0.7))] text-xs font-medium cursor-pointer flex items-center gap-1 transition-all duration-150',
   primaryAction: 'bg-primary border-primary text-white',
   emptyState: 'flex flex-col items-center justify-center p-8 text-center text-[var(--ak-text-tertiary,rgba(255,255,255,0.4))]',
   emptyIcon: 'w-12 h-12 mb-3 opacity-50',

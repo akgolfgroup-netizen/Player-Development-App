@@ -22,7 +22,7 @@ const styles = {
     flexDirection: 'column',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-4, 16px)',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-lg, 12px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
   },
@@ -43,7 +43,7 @@ const styles = {
   },
   badge: {
     padding: '2px 8px',
-    backgroundColor: 'var(--ak-warning, #f59e0b)',
+    backgroundColor: 'var(--ak-warning, var(--ak-status-warning-light))',
     borderRadius: 'var(--radius-full, 9999px)',
     fontSize: '12px',
     fontWeight: '700',
@@ -86,7 +86,7 @@ const styles = {
     height: '80px',
     borderRadius: 'var(--radius-md, 8px)',
     overflow: 'hidden',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
   },
   thumbnail: {
     width: '100%',
@@ -118,7 +118,7 @@ const styles = {
     width: '36px',
     height: '36px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -173,7 +173,7 @@ const styles = {
   emptyIcon: {
     width: '40px',
     height: '40px',
-    color: 'var(--ak-success, #22c55e)',
+    color: 'var(--ak-success, var(--ak-status-success-light))',
     marginBottom: 'var(--spacing-2, 8px)',
   },
   emptyText: {
@@ -188,7 +188,7 @@ const styles = {
     width: '32px',
     height: '32px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.2))',
     color: 'var(--ak-text-primary, white)',
     cursor: 'pointer',
@@ -278,14 +278,14 @@ function formatRelativeTime(dateString) {
  * Get priority color based on wait time
  */
 function getPriorityColor(dateString) {
-  if (!dateString) return '#22c55e';
+  if (!dateString) return 'var(--ak-status-success-light)';
   const date = new Date(dateString);
   const now = new Date();
   const diffHours = (now - date) / (1000 * 60 * 60);
 
-  if (diffHours > 48) return '#ef4444'; // Red - urgent
-  if (diffHours > 24) return '#f59e0b'; // Yellow - attention
-  return '#22c55e'; // Green - ok
+  if (diffHours > 48) return 'var(--ak-status-error-light)'; // Red - urgent
+  if (diffHours > 24) return 'var(--ak-status-warning-light)'; // Yellow - attention
+  return 'var(--ak-status-success-light)'; // Green - ok
 }
 
 /**

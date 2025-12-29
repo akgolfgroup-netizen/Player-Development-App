@@ -46,7 +46,7 @@ const styles = {
   dialog: {
     width: '100%',
     maxWidth: '480px',
-    backgroundColor: 'var(--ak-surface, #1a1a2e)',
+    backgroundColor: 'var(--ak-surface, var(--ak-toast-bg))',
     borderRadius: 'var(--radius-xl, 16px)',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     boxShadow: '0 24px 48px rgba(0, 0, 0, 0.4)',
@@ -109,14 +109,14 @@ const styles = {
     alignItems: 'flex-start',
     gap: 'var(--spacing-3, 12px)',
     padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     borderRadius: 'var(--radius-md, 8px)',
     border: '2px solid transparent',
     cursor: 'pointer',
     transition: 'all 0.15s ease',
   },
   visibilityOptionSelected: {
-    borderColor: 'var(--ak-primary, #6366f1)',
+    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
     backgroundColor: 'rgba(99, 102, 241, 0.1)',
   },
   radioCircle: {
@@ -131,13 +131,13 @@ const styles = {
     marginTop: '2px',
   },
   radioCircleSelected: {
-    borderColor: 'var(--ak-primary, #6366f1)',
+    borderColor: 'var(--ak-primary, var(--ak-brand-primary))',
   },
   radioInner: {
     width: '10px',
     height: '10px',
     borderRadius: '50%',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
   },
   optionContent: {
     flex: 1,
@@ -165,7 +165,7 @@ const styles = {
   linkInput: {
     flex: 1,
     padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-primary, white)',
@@ -174,7 +174,7 @@ const styles = {
   },
   copyButton: {
     padding: '10px 16px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -188,11 +188,11 @@ const styles = {
     whiteSpace: 'nowrap',
   },
   copyButtonCopied: {
-    backgroundColor: 'var(--ak-success, #22c55e)',
+    backgroundColor: 'var(--ak-success, var(--ak-status-success-light))',
   },
   expirationSelect: {
     padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-primary, white)',
@@ -211,7 +211,7 @@ const styles = {
   shareButton: {
     flex: 1,
     padding: '12px 16px',
-    backgroundColor: 'var(--ak-surface-dark, #0f0f1a)',
+    backgroundColor: 'var(--ak-surface-dark, var(--ak-surface-dark-elevated))',
     border: '1px solid var(--ak-border, rgba(255, 255, 255, 0.1))',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'var(--ak-text-primary, white)',
@@ -227,12 +227,12 @@ const styles = {
   whatsappButton: {
     backgroundColor: 'rgba(37, 211, 102, 0.1)',
     borderColor: 'rgba(37, 211, 102, 0.3)',
-    color: '#25D366',
+    color: 'var(--ak-whatsapp-green)',
   },
   emailButton: {
     backgroundColor: 'rgba(59, 130, 246, 0.1)',
     borderColor: 'rgba(59, 130, 246, 0.3)',
-    color: '#3B82F6',
+    color: 'var(--ak-email-blue)',
   },
   footer: {
     display: 'flex',
@@ -253,7 +253,7 @@ const styles = {
   },
   saveButton: {
     padding: '10px 20px',
-    backgroundColor: 'var(--ak-primary, #6366f1)',
+    backgroundColor: 'var(--ak-primary, var(--ak-brand-primary))',
     border: 'none',
     borderRadius: 'var(--radius-md, 8px)',
     color: 'white',
@@ -275,7 +275,7 @@ const styles = {
     padding: 'var(--spacing-3, 12px)',
     backgroundColor: 'rgba(34, 197, 94, 0.1)',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-success, #22c55e)',
+    color: 'var(--ak-success, var(--ak-status-success-light))',
     fontSize: '13px',
   },
   errorMessage: {
@@ -285,7 +285,7 @@ const styles = {
     padding: 'var(--spacing-3, 12px)',
     backgroundColor: 'rgba(239, 68, 68, 0.1)',
     borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--ak-error, #ef4444)',
+    color: 'var(--ak-error)',
     fontSize: '13px',
   },
 };
