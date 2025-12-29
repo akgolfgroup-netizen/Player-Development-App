@@ -17,7 +17,7 @@ interface AvatarProps {
   /** Size variant */
   size?: AvatarSize;
   /** Status indicator */
-  status?: 'online' | 'offline' | 'away' | 'busy';
+  status?: 'online' | 'offline' | 'away' | 'busy' | 'active' | 'inactive';
   /** Custom background color */
   bgColor?: string;
   /** Fallback icon */
@@ -52,11 +52,14 @@ const Avatar: React.FC<AvatarProps> = ({
   const getStatusColor = () => {
     switch (status) {
       case 'online':
+      case 'active':
         return 'var(--ak-success)';
       case 'away':
         return 'var(--ak-warning)';
       case 'busy':
         return 'var(--ak-error)';
+      case 'offline':
+      case 'inactive':
       default:
         return 'var(--gray-500)';
     }
