@@ -628,25 +628,13 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
         title="Testprotokoll"
         subtitle="IUP Tester og benchmarks"
         actions={
-          <button
+          <Button
+            variant="primary"
             onClick={() => filteredTests[0] && handleStartTest(filteredTests[0])}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 16px',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              borderRadius: '10px',
-              fontSize: '13px',
-              fontWeight: 500,
-              border: 'none',
-              cursor: 'pointer',
-            }}
           >
             <Icons.Play />
             Start test
-          </button>
+          </Button>
         }
       />
 
@@ -818,15 +806,16 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                     )}
 
                     <div className="flex gap-2">
-                      <button
+                      <Button
+                        variant="primary"
+                        className="flex-1"
                         onClick={(e) => { e.stopPropagation(); handleStartTest(test); }}
-                        className="flex-1 px-3 py-2 bg-ak-primary text-white rounded-lg text-[12px] font-medium hover:bg-ak-primary-light"
                       >
                         Start test
-                      </button>
-                      <button className="px-3 py-2 bg-ak-snow text-ak-charcoal rounded-lg text-[12px] font-medium hover:bg-ak-mist">
+                      </Button>
+                      <Button variant="secondary">
                         Historikk
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 )}

@@ -18,6 +18,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Mail, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import apiClient from "../../services/apiClient";
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import Button from '../../ui/primitives/Button';
 
 
 //////////////////////////////
@@ -121,9 +122,9 @@ export default function AdminCoachManagement() {
     return (
       <div style={{ padding: '24px', textAlign: 'center' }}>
         <p style={{ color: 'var(--error)' }}>{error}</p>
-        <button onClick={loadCoaches} style={{ marginTop: '12px', padding: '8px 16px' }}>
+        <Button variant="secondary" onClick={loadCoaches} style={{ marginTop: '12px' }}>
           Prøv igjen
-        </button>
+        </Button>
       </div>
     );
   }

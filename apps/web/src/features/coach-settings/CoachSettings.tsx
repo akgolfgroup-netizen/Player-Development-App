@@ -193,22 +193,10 @@ export const CoachSettings: React.FC = () => {
                       {profile.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <button style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '8px 14px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        backgroundColor: 'transparent',
-                        color: 'var(--text-secondary)',
-                        fontSize: '13px',
-                        cursor: 'pointer',
-                        marginBottom: '6px'
-                      }}>
+                      <Button variant="secondary" style={{ marginBottom: '6px' }}>
                         <Camera size={14} />
                         Last opp bilde
-                      </button>
+                      </Button>
                       <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
                         JPG, PNG maks 2MB
                       </p>
@@ -771,27 +759,14 @@ export const CoachSettings: React.FC = () => {
                   Lagret!
                 </div>
               )}
-              <button
+              <Button
+                variant="primary"
                 onClick={handleSave}
                 disabled={isSaving}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '12px 24px',
-                  borderRadius: '10px',
-                  border: 'none',
-                  backgroundColor: 'var(--accent)',
-                  color: 'white',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: isSaving ? 'not-allowed' : 'pointer',
-                  opacity: isSaving ? 0.7 : 1
-                }}
               >
                 <Save size={16} />
                 {isSaving ? 'Lagrer...' : 'Lagre endringer'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

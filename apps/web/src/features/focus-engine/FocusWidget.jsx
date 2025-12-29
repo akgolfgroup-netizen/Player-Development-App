@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
+import Button from '../../ui/primitives/Button';
 
 const COMPONENT_LABELS = {
   OTT: 'Off the Tee',
@@ -146,12 +147,12 @@ export function FocusWidget({ className = '' }) {
 
       {/* CTAs */}
       <div className="mt-6 flex gap-2">
-        <button className="flex-1 px-4 py-2 bg-ak-primary text-white rounded-lg text-sm font-medium hover:bg-ak-primary/90 transition-colors">
+        <Button variant="primary" className="flex-1">
           Start økt
-        </button>
-        <button className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+        </Button>
+        <Button variant="secondary" className="flex-1">
           Oppdater plan
-        </button>
+        </Button>
       </div>
     </div>
   );

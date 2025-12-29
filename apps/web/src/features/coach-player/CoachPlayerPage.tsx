@@ -9,6 +9,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useCoachPlayer } from '../../data/hooks/useCoachPlayer';
 import { track } from '../../analytics/track';
 import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import StateCard from '../../ui/composites/StateCard';
 
@@ -218,9 +219,9 @@ export function CoachPlayerPage() {
           description={error}
           variant="error"
           action={
-            <button onClick={refetch} style={styles.backButton}>
+            <Button variant="secondary" onClick={refetch}>
               Prøv igjen
-            </button>
+            </Button>
           }
         />
       </div>
@@ -246,12 +247,9 @@ export function CoachPlayerPage() {
     <div style={styles.container}>
       {/* Header with back button and player info */}
       <div style={styles.header}>
-        <button
-          onClick={() => navigate(-1)}
-          style={styles.backButton}
-        >
+        <Button variant="ghost" onClick={() => navigate(-1)}>
           ← Tilbake
-        </button>
+        </Button>
         <div style={styles.playerInfo}>
           <h1 style={styles.playerName}>{player.name}</h1>
           {player.tier && (
