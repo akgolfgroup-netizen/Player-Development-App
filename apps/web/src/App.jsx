@@ -8,6 +8,7 @@ import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { tokens } from './design-tokens';
 
 // Shared components (NOT lazy - needed immediately)
+import ApplicationLayout from './components/layout/ApplicationLayout';
 import AppShell from './components/layout/AppShell';
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
@@ -209,40 +210,15 @@ const AdminEscalationSupport = lazy(() => import('./features/admin-escalation').
 // 404 Not Found (lazy-loaded)
 const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
-// Layout component for authenticated pages using AppShell (Player)
-const AuthenticatedLayout = ({ children, title, subtitle, actions }) => (
-  <AppShell title={title} subtitle={subtitle} actions={actions}>{children}</AppShell>
+// Layout component for authenticated pages using Catalyst ApplicationLayout (Player)
+const AuthenticatedLayout = ({ children }) => (
+  <ApplicationLayout>{children}</ApplicationLayout>
 );
 
-// Dashboard layout with dynamic user greeting
-const DashboardLayout = ({ children }) => {
-  const { user } = useAuth();
-  const userName = user?.firstName && user?.lastName
-    ? `${user.firstName} ${user.lastName}`
-    : user?.firstName || user?.email || 'spiller';
-
-  return (
-    <AppShell
-      title="Dashboard"
-      subtitle={`Velkommen tilbake, ${userName}`}
-      actions={
-        <button style={{
-          padding: '8px 16px',
-          backgroundColor: 'var(--ak-primary)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '8px',
-          fontWeight: 600,
-          cursor: 'pointer',
-        }}>
-          + Ny økt
-        </button>
-      }
-    >
-      {children}
-    </AppShell>
-  );
-};
+// Dashboard layout - now uses Catalyst ApplicationLayout
+const DashboardLayout = ({ children }) => (
+  <ApplicationLayout>{children}</ApplicationLayout>
+);
 
 // Layout component for coach pages using CoachAppShell
 const CoachLayout = ({ children }) => (
