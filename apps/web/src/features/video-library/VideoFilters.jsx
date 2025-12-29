@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import Button from '../../ui/primitives/Button';
 
 // Filter options
 export const VIDEO_CATEGORIES = [
@@ -389,12 +390,13 @@ export function VideoFilters({
 
           {/* Clear all button */}
           {hasActiveFilters && (
-            <button
-              className={tw.clearAllButton}
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={handleClearAll}
             >
               Nullstill filtre
-            </button>
+            </Button>
           )}
 
           {/* Result count */}

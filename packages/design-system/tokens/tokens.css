@@ -1,6 +1,6 @@
 /* AK Golf Academy - Design Tokens v3.0 */
-/* Based on: Blue Palette 01 (Production Ready) */
-/* Source: Design/ak_golf_figma_kit_blue_palette01.svg */
+/* Based on: AK Golf Premium Light (Forest Green) */
+/* Source: Design/AK_GOLF_PREMIUM_LIGHT_SPEC.html */
 /* Font: Inter (Open Source, Cross-Platform) */
 /* Import Inter from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -8,39 +8,48 @@
 :root {
   /* ==================== COLORS ==================== */
 
-  /* Brand Colors - Blue Palette 01 */
-  --ak-ink: #02060D;
-  --ak-primary: #10456A;
-  --ak-primary-light: #2C5F7F;
-  --ak-snow: #EDF0F2;
-  --ak-surface: #EBE5DA;
-  --ak-gold: #C9A227;
+  /* Brand Colors - Deep Forest Green (Premium Golf Brand) */
+  --ak-ink: #111827;
+  --ak-primary: #1B4D3E;
+  --ak-primary-light: #2A6B55;
+  --ak-primary-dark: #133629;
+  --ak-snow: #FAFBFC;
+  --ak-surface: #F5F7F9;
+  --ak-gold: #B8860B;
+  --ak-gold-light: #DAA520;
 
   /* Legacy aliases (backwards compatible) */
-  --ak-forest: #10456A;
-  --ak-forest-light: #2C5F7F;
-  --ak-foam: #EDF0F2;
-  --ak-ivory: #EBE5DA;
+  --ak-forest: #1B4D3E;
+  --ak-forest-light: #2A6B55;
+  --ak-foam: #FAFBFC;
+  --ak-ivory: #F5F7F9;
 
-  /* Semantic Colors */
-  --ak-success: #4A7C59;
-  --ak-warning: #D4A84B;
-  --ak-error: #C45B4E;
+  /* Semantic Colors (Per Premium Light Spec) */
+  --ak-success: #059669;
+  --ak-success-light: #10B981;
+  --ak-warning: #D97706;
+  --ak-warning-light: #F59E0B;
+  --ak-error: #DC2626;
+  --ak-error-light: #EF4444;
+  --ak-info: #0284C7;
+  --ak-info-light: #0EA5E9;
 
   /* Neutrals */
-  --ak-charcoal: #1C1C1E;
-  --ak-steel: #8E8E93;
-  --ak-mist: #E5E5EA;
-  --ak-cloud: #F2F2F7;
+  --ak-charcoal: #111827;
+  --ak-steel: #6B7280;
+  --ak-mist: #E5E7EB;
+  --ak-cloud: #F5F7F9;
 
-  /* Gray Scale */
-  --gray-50: #F9FAFB;
-  --gray-100: #F2F4F7;
-  --gray-300: #D5D7DA;
-  --gray-500: #8E8E93;
-  --gray-600: #535862;
-  --gray-700: #414651;
-  --gray-900: #1C1C1E;
+  /* Gray Scale (Per Premium Light Spec) */
+  --gray-50: #FAFBFC;
+  --gray-100: #F5F7F9;
+  --gray-200: #EEF1F4;
+  --gray-300: #E5E7EB;
+  --gray-400: #D1D5DB;
+  --gray-500: #9CA3AF;
+  --gray-600: #6B7280;
+  --gray-700: #374151;
+  --gray-900: #111827;
 
   /* ==================== TYPOGRAPHY ==================== */
 
@@ -219,35 +228,55 @@
 
 /* ==================== SEMANTIC TOKEN LAYER ==================== */
 /* These are the ONLY tokens allowed in component code */
+/* Based on: AK Golf Premium Light Spec */
 
 :root {
-  /* Core surfaces */
-  --bg: #FAFAFA;
+  /* Core surfaces (Per Premium Light Spec) */
+  --bg: #FAFBFC;
+  --bg-base: #FAFBFC;
+  --bg-elevated: #F5F7F9;
+  --bg-subtle: #EEF1F4;
+  --bg-muted: #E4E8EC;
   --card: #FFFFFF;
   --border: var(--gray-300);
 
-  /* Accent = Action (CTA, links, focus) */
+  /* Accent = Action (CTA, links, focus) - Forest Green */
   --accent: var(--ak-primary);
   --accent-hover: var(--ak-primary-light);
+  --accent-dark: var(--ak-primary-dark);
+  --accent-muted: rgba(27, 77, 62, 0.08);
+  --accent-soft: rgba(27, 77, 62, 0.12);
 
   /* Achievement = Gold (badges/tiers ONLY) */
   --achievement: var(--ak-gold);
+  --achievement-light: var(--ak-gold-light);
+  --achievement-muted: rgba(184, 134, 11, 0.1);
 
-  /* Text hierarchy */
-  --text-primary: var(--ak-ink);
-  --text-secondary: var(--gray-600);
-  --text-tertiary: var(--gray-500);
+  /* Text hierarchy (Per Premium Light Spec) */
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-tertiary: #6B7280;
+  --text-muted: #9CA3AF;
+  --text-faint: #D1D5DB;
   --text-inverse: #FFFFFF;
   --text-on-accent: #FFFFFF;
   --text-brand: var(--ak-primary);
   --text-accent: var(--accent);
   --text-achievement: var(--achievement);
 
-  /* Status tokens */
+  /* Status tokens (Per Premium Light Spec) */
   --success: var(--ak-success);
+  --success-light: var(--ak-success-light);
+  --success-muted: rgba(5, 150, 105, 0.1);
   --warning: var(--ak-warning);
+  --warning-light: var(--ak-warning-light);
+  --warning-muted: rgba(217, 119, 6, 0.1);
   --error: var(--ak-error);
-  --info: #2B6CB0;
+  --error-light: var(--ak-error-light);
+  --error-muted: rgba(220, 38, 38, 0.08);
+  --info: var(--ak-info);
+  --info-light: var(--ak-info-light);
+  --info-muted: rgba(2, 132, 199, 0.1);
 
   /* Background semantic */
   --background-default: var(--bg);
@@ -256,20 +285,22 @@
   --background-accent: var(--accent);
   --background-inverse: var(--ak-ink);
 
-  /* Border semantic */
-  --border-default: var(--gray-300);
-  --border-subtle: #E5E5EA;
+  /* Border semantic (Per Premium Light Spec) */
+  --border-default: #E5E7EB;
+  --border-strong: #D1D5DB;
+  --border-subtle: #EEF1F4;
   --border-brand: var(--ak-primary);
+  --border-primary: rgba(27, 77, 62, 0.2);
   --border-accent: var(--accent);
   --border-achievement: var(--achievement);
 
   /* Badge-only background tokens (subtle/10% opacity) */
   --bg-neutral-subtle: var(--gray-100);
-  --bg-accent-subtle: color-mix(in srgb, var(--accent) 10%, transparent);
-  --bg-success-subtle: color-mix(in srgb, var(--success) 10%, transparent);
-  --bg-warning-subtle: color-mix(in srgb, var(--warning) 10%, transparent);
-  --bg-error-subtle: color-mix(in srgb, var(--error) 10%, transparent);
-  --bg-achievement-subtle: color-mix(in srgb, var(--achievement) 10%, transparent);
+  --bg-accent-subtle: var(--accent-muted);
+  --bg-success-subtle: var(--success-muted);
+  --bg-warning-subtle: var(--warning-muted);
+  --bg-error-subtle: var(--error-muted);
+  --bg-achievement-subtle: var(--achievement-muted);
 }
 
 /* ==================== ICON TONE CLASSES ==================== */
