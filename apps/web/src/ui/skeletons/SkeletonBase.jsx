@@ -46,7 +46,7 @@ export const SkeletonCard = ({ children, style = {} }) => (
         borderRadius: 'var(--radius-lg)',
         border: '1px solid var(--border-default)',
         padding: '20px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+        boxShadow: 'var(--shadow-sm)',
         ...style,
       }}
     >

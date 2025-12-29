@@ -259,7 +259,7 @@ export const CoachPlanningHub: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            boxShadow: activeTab === 'players' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+            boxShadow: activeTab === 'players' ? 'var(--shadow-xs)' : 'none'
           }}
         >
           <User size={16} />
@@ -279,7 +279,7 @@ export const CoachPlanningHub: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
-            boxShadow: activeTab === 'groups' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none'
+            boxShadow: activeTab === 'groups' ? 'var(--shadow-xs)' : 'none'
           }}
         >
           <Users size={16} />
@@ -378,8 +378,8 @@ export const CoachPlanningHub: React.FC = () => {
                   height: '48px',
                   borderRadius: '50%',
                   backgroundColor: player.hasActivePlan
-                    ? 'rgba(34, 197, 94, 0.1)'
-                    : 'rgba(245, 158, 11, 0.1)',
+                    ? 'var(--success-muted)'
+                    : 'var(--warning-muted)',
                   border: `2px solid ${player.hasActivePlan ? 'var(--success)' : 'var(--warning)'}`,
                   display: 'flex',
                   alignItems: 'center',
@@ -472,8 +472,8 @@ export const CoachPlanningHub: React.FC = () => {
                 height: '48px',
                 borderRadius: '12px',
                 backgroundColor: group.hasGroupPlan
-                  ? 'rgba(34, 197, 94, 0.1)'
-                  : 'rgba(245, 158, 11, 0.1)',
+                  ? 'var(--success-muted)'
+                  : 'var(--warning-muted)',
                 border: `2px solid ${group.hasGroupPlan ? 'var(--success)' : 'var(--warning)'}`,
                 display: 'flex',
                 alignItems: 'center',

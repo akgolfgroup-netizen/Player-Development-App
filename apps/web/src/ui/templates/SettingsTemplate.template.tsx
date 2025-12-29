@@ -220,7 +220,7 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     right: 0,
     zIndex: 30,
-    boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)',
+    boxShadow: 'var(--shadow-sm)',
   },
   footerContent: {
     maxWidth: '1200px',

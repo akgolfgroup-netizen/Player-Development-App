@@ -232,7 +232,7 @@ export default function CoachBookingRequests() {
       default:
         return {
           bg: 'rgba(var(--warning-rgb), 0.15)',
-          color: '#8B6914',
+          color: 'var(--status-pending)',
           text: 'Venter',
           icon: Clock,
         };

@@ -111,13 +111,13 @@ const getSizeStyles = (size: ProgressSize) => {
 
 const getVariantColor = (variant: ProgressVariant): string => {
   const colors = {
-    default: 'var(--ak-primary)',
-    success: 'var(--ak-success)',
-    warning: 'var(--ak-warning)',
-    error: 'var(--ak-error)',
+    default: 'var(--accent)',
+    success: 'var(--success)',
+    warning: 'var(--warning)',
+    error: 'var(--error)',
     // IMPORTANT: Only use for earned achievements
     // Must be the single gold element in viewport
-    achievement: 'var(--ak-gold)',
+    achievement: 'var(--achievement)',
   };
   return colors[variant];
 };

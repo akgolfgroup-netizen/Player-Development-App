@@ -306,7 +306,7 @@ export default function CoachBookingCalendar() {
                 gap: '8px',
                 padding: '10px 16px',
                 backgroundColor: stats.pending > 0 ? 'rgba(var(--warning-rgb), 0.15)' : 'var(--bg-primary)',
-                color: stats.pending > 0 ? '#8B6914' : 'var(--text-primary)',
+                color: stats.pending > 0 ? 'var(--status-pending)' : 'var(--text-primary)',
                 border: `1px solid ${stats.pending > 0 ? 'var(--warning)' : 'var(--border-default)'}`,
                 borderRadius: 'var(--radius-md)',
                 fontSize: '14px',

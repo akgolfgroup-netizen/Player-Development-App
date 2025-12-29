@@ -144,7 +144,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: 'var(--background-white)',
     borderRadius: '50%',
     transition: 'transform 0.2s ease',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+    boxShadow: 'var(--shadow-sm)',
   },
   label: {
     fontFamily: 'var(--font-family)',

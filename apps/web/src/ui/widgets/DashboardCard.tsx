@@ -50,7 +50,7 @@ const styles: Record<string, React.CSSProperties | Record<string, React.CSSPrope
     backgroundColor: 'var(--background-white)',
     borderRadius: 'var(--radius-lg)',
     border: '1px solid var(--border-subtle)',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+    boxShadow: 'var(--shadow-sm)',
   },
   clickableCard: {
     cursor: 'pointer',

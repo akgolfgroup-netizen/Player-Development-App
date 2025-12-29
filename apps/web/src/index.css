@@ -152,6 +152,24 @@
   /* Overlay/Backdrop tokens */
   --overlay-backdrop: rgba(0, 0, 0, 0.5);
   --overlay-light: rgba(0, 0, 0, 0.02);
+  --overlay-glass: rgba(255, 255, 255, 0.95);
+
+  /* Video Dark Theme Tokens (for dark video player contexts) */
+  --video-bg: rgba(0, 0, 0, 0.85);
+  --video-bg-light: rgba(0, 0, 0, 0.7);
+  --video-bg-heavy: rgba(0, 0, 0, 0.9);
+  --video-text-primary: rgba(255, 255, 255, 0.95);
+  --video-text-secondary: rgba(255, 255, 255, 0.7);
+  --video-text-tertiary: rgba(255, 255, 255, 0.5);
+  --video-text-muted: rgba(255, 255, 255, 0.3);
+  --video-border: rgba(255, 255, 255, 0.1);
+  --video-border-strong: rgba(255, 255, 255, 0.2);
+  --video-border-light: rgba(255, 255, 255, 0.05);
+  --video-control-bg: rgba(255, 255, 255, 0.1);
+  --video-control-hover: rgba(255, 255, 255, 0.2);
+  --video-control-active: rgba(255, 255, 255, 0.3);
+  --video-progress-bg: rgba(255, 255, 255, 0.3);
+  --video-progress-buffer: rgba(255, 255, 255, 0.5);
 
   /* Table/List interaction tokens */
   --table-hover: rgba(0, 0, 0, 0.02);
@@ -187,6 +205,7 @@
   --group-purple: #7C3AED;
   --group-pink: #EC4899;
   --group-teal: #14B8A6;
+  --group-warmearth: #8E6E53;
 
   /* Medal/Rank tokens */
   --medal-gold: #FFD700;
@@ -247,6 +266,22 @@
   --streak-gold-muted: rgba(234, 179, 8, 0.15);
   --streak-gold-border: rgba(234, 179, 8, 0.3);
   --streak-gold-text: #b45309;
+
+  /* Booking/pending status tokens */
+  --status-pending: #8B6914;
+  --status-pending-muted: rgba(139, 105, 20, 0.1);
+
+  /* Grade color tokens (A-F scale) */
+  --grade-e: #FF9800;
+  --grade-f: #FF5722;
+
+  /* School/course color tokens */
+  --course-purple: #6B5B95;
+  --course-green: #88B04B;
+  --course-pink: #F7CAC9;
+  --course-blue: #92A8D1;
+  --course-maroon: #955251;
+  --course-teal: #009B77;
 
   /* Data Golf feature tokens (indigo) */
   --datagolf-accent: #6366f1;

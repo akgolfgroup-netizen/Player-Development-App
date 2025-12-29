@@ -272,7 +272,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 'var(--spacing-1)',
   },
   dayToday: {
-    backgroundColor: 'rgba(16, 69, 106, 0.05)',
+    backgroundColor: 'var(--accent-muted)',
   },
   daySelected: {
     backgroundColor: 'var(--accent)',

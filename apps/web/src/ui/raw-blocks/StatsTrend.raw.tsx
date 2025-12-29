@@ -237,7 +237,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 600,
     padding: 'var(--spacing-1) var(--spacing-2)',
     borderRadius: 'var(--radius-sm)',
-    backgroundColor: 'rgba(0, 0, 0, 0.03)',
+    backgroundColor: 'var(--overlay-light)',
   },
   trendIcon: {
     fontSize: '16px',

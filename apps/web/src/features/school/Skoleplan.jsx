@@ -45,8 +45,8 @@ const PRIORITET_LABELS = {
 };
 
 const DEFAULT_COLORS = [
-  'var(--ak-session-spill)', 'var(--ak-session-golfslag)', 'var(--achievement)', 'var(--error)', '#6B5B95',
-  '#88B04B', '#F7CAC9', '#92A8D1', '#955251', '#009B77'
+  'var(--category-spill)', 'var(--category-slag)', 'var(--achievement)', 'var(--error)', 'var(--course-purple)',
+  'var(--course-green)', 'var(--course-pink)', 'var(--course-blue)', 'var(--course-maroon)', 'var(--course-teal)'
 ];
 
 // ============================================================================

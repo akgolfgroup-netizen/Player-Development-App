@@ -152,7 +152,7 @@ const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
   primary: {
     backgroundColor: 'var(--color-primary)',
     color: 'var(--color-primary-foreground)',
-    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+    boxShadow: 'var(--shadow-xs)',
   },
   secondary: {
     backgroundColor: 'var(--color-surface)',
@@ -166,12 +166,12 @@ const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
   destructive: {
     backgroundColor: 'var(--color-danger)',
     color: 'var(--color-primary-foreground)',
-    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+    boxShadow: 'var(--shadow-xs)',
   },
   danger: {
     backgroundColor: 'var(--color-danger)',
     color: 'var(--color-primary-foreground)',
-    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+    boxShadow: 'var(--shadow-xs)',
   },
   outline: {
     backgroundColor: 'transparent',

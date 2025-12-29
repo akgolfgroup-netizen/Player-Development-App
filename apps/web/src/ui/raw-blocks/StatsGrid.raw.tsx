@@ -144,7 +144,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '40px',
     height: '40px',
     borderRadius: 'var(--radius-sm)',
-    backgroundColor: 'rgba(16, 69, 106, 0.1)',
+    backgroundColor: 'var(--accent-muted)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

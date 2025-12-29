@@ -155,8 +155,8 @@ const CategoryChart: React.FC<{ data: Record<string, number> }> = ({ data }) => 
       B: 'rgba(var(--accent-rgb), 0.7)',
       C: 'var(--success)',
       D: 'var(--achievement)',
-      E: '#FF9800',
-      F: '#FF5722',
+      E: 'var(--grade-e)',
+      F: 'var(--grade-f)',
     };
     return colors[cat] || 'var(--text-secondary)';
   };

@@ -104,7 +104,7 @@ export const CardGridTemplate: React.FC<CardGridTemplateProps> = ({
         onClick={card.onClick}
         role={hasClickHandler ? 'button' : undefined}
         tabIndex={hasClickHandler ? 0 : undefined}
-        style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}
+        style={{ boxShadow: 'var(--shadow-sm)' }}
       >
         {/* Image or Icon */}
         {card.image ? (

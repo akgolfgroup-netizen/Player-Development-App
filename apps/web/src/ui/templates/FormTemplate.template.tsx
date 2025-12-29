@@ -178,7 +178,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
             <CardSimple
               padding="md"
               style={{
-                backgroundColor: 'rgba(196, 91, 78, 0.05)',
+                backgroundColor: 'var(--error-muted)',
                 borderLeft: '4px solid var(--error)',
               }}
             >
@@ -202,7 +202,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
             <CardSimple
               padding="md"
               style={{
-                backgroundColor: 'rgba(74, 124, 89, 0.05)',
+                backgroundColor: 'var(--success-muted)',
                 borderLeft: '4px solid var(--success)',
               }}
             >

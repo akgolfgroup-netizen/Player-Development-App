@@ -7,10 +7,10 @@ import Skoleplan from './Skoleplan';
 
 // Mock data for development/demo
 const MOCK_FAG = [
-  { id: '1', userId: '1', navn: 'Matematikk', larer: 'Hansen', rom: 'A101', farge: 'var(--ak-session-spill)' },
-  { id: '2', userId: '1', navn: 'Norsk', larer: 'Olsen', rom: 'B202', farge: 'var(--ak-session-golfslag)' },
+  { id: '1', userId: '1', navn: 'Matematikk', larer: 'Hansen', rom: 'A101', farge: 'var(--category-spill)' },
+  { id: '2', userId: '1', navn: 'Norsk', larer: 'Olsen', rom: 'B202', farge: 'var(--category-slag)' },
   { id: '3', userId: '1', navn: 'Engelsk', larer: 'Smith', rom: 'C303', farge: 'var(--achievement)' },
-  { id: '4', userId: '1', navn: 'Naturfag', larer: 'Berg', rom: 'D404', farge: '#6B5B95' },
+  { id: '4', userId: '1', navn: 'Naturfag', larer: 'Berg', rom: 'D404', farge: 'var(--course-purple)' },
   { id: '5', userId: '1', navn: 'Gym', larer: 'Pedersen', rom: 'Gym', farge: 'var(--error)' },
 ];
 

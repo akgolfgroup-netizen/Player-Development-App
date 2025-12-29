@@ -138,7 +138,7 @@ const styles: Record<string, React.CSSProperties> = {
     zIndex: 30,
     backdropFilter: 'blur(10px)',
     WebkitBackdropFilter: 'blur(10px)',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'var(--overlay-glass)',
   },
   breadcrumbs: {
     display: 'flex',

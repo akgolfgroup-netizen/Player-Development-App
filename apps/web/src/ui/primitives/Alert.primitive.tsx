@@ -111,34 +111,34 @@ const getVariantStyles = (variant: AlertVariant) => {
     info: {
       container: {
         backgroundColor: 'var(--info-muted)',
-        borderColor: 'var(--ak-info)',
+        borderColor: 'var(--info)',
       },
-      iconColor: 'var(--ak-info)',
-      actionColor: 'var(--ak-info)',
+      iconColor: 'var(--info)',
+      actionColor: 'var(--info)',
     },
     success: {
       container: {
         backgroundColor: 'var(--success-muted)',
-        borderColor: 'var(--ak-success)',
+        borderColor: 'var(--success)',
       },
-      iconColor: 'var(--ak-success)',
-      actionColor: 'var(--ak-success)',
+      iconColor: 'var(--success)',
+      actionColor: 'var(--success)',
     },
     warning: {
       container: {
         backgroundColor: 'var(--warning-muted)',
-        borderColor: 'var(--ak-warning)',
+        borderColor: 'var(--warning)',
       },
-      iconColor: 'var(--ak-warning)',
-      actionColor: 'var(--ak-warning)',
+      iconColor: 'var(--warning)',
+      actionColor: 'var(--warning)',
     },
     error: {
       container: {
         backgroundColor: 'var(--error-muted)',
-        borderColor: 'var(--ak-error)',
+        borderColor: 'var(--error)',
       },
-      iconColor: 'var(--ak-error)',
-      actionColor: 'var(--ak-error)',
+      iconColor: 'var(--error)',
+      actionColor: 'var(--error)',
     },
   };
 

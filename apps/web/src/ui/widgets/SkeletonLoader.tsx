@@ -176,7 +176,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: 'var(--radius-lg)',
     border: '1px solid var(--border-subtle)',
     padding: 'var(--spacing-5)',
-    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+    boxShadow: 'var(--shadow-sm)',
   },
   statSkeleton: {
     textAlign: 'center',
