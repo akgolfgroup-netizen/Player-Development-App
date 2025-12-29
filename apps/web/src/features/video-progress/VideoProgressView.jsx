@@ -15,6 +15,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useVideos } from '../../hooks/useVideos';
 import { SwingTimeline } from './SwingTimeline';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import Button from '../../ui/primitives/Button';
 
 // Styles
 const styles = {
@@ -292,12 +293,12 @@ export function VideoProgressView({
             <br />
             Last opp din forste video for a begynne a spore fremgangen.
           </p>
-          <button
-            style={styles.uploadLink}
+          <Button
+            variant="primary"
             onClick={() => navigate('/videos')}
           >
-            Ga til videobibliotek
-          </button>
+            Gå til videobibliotek
+          </Button>
         </div>
       </div>
     );

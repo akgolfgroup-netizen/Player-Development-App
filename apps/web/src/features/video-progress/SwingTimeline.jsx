@@ -13,6 +13,7 @@
 
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from '../../ui/primitives/Button';
 
 // Styles
 const styles = {
@@ -316,17 +317,15 @@ export function SwingTimeline({
       <div style={styles.header}>
         <h3 style={styles.title}>{title}</h3>
         {selectable && (
-          <button
-            style={{
-              ...styles.compareButton,
-              ...(selectedVideos.length !== 2 ? styles.compareButtonDisabled : {}),
-            }}
+          <Button
+            variant="primary"
+            size="sm"
             onClick={handleCompare}
             disabled={selectedVideos.length !== 2}
+            leftIcon={<CompareIcon />}
           >
-            <CompareIcon />
             Sammenlign ({selectedVideos.length}/2)
-          </button>
+          </Button>
         )}
       </div>
 
@@ -338,9 +337,9 @@ export function SwingTimeline({
               ? `1 video valgt - velg 1 til for å sammenligne`
               : `2 videoer valgt - klar til sammenligning`}
           </span>
-          <button style={styles.clearButton} onClick={clearSelection}>
+          <Button variant="ghost" size="sm" onClick={clearSelection}>
             Nullstill
-          </button>
+          </Button>
         </div>
       )}
 
