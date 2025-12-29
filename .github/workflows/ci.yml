@@ -439,7 +439,7 @@ jobs:
         working-directory: apps/web
         run: |
           echo "Deploying Web to staging..."
-          railway up --environment staging --service iup-golf-web
+          railway up --environment staging --service ak-golf-iup-frontend
 
   # =============================================================================
   # Deploy to Production (on main branch)
@@ -481,4 +481,4 @@ jobs:
         working-directory: apps/web
         run: |
           echo "Deploying Web to production..."
-          railway up --environment production --service iup-golf-web
+          railway up --environment production --service ak-golf-iup-frontend
