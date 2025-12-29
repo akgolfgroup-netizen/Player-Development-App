@@ -15,7 +15,7 @@ import React from 'react';
  */
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive' | 'danger' | 'outline';
-type ButtonSize = 'sm' | 'md';
+type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual variant */
@@ -186,6 +186,11 @@ const sizeStyles: Record<ButtonSize, React.CSSProperties> = {
     padding: 'var(--spacing-2) var(--spacing-4)',
     fontSize: 'var(--font-size-body)',
     minHeight: '44px',
+  },
+  lg: {
+    padding: 'var(--spacing-3) var(--spacing-5)',
+    fontSize: 'var(--font-size-body)',
+    minHeight: '52px',
   },
 };
 
