@@ -7,9 +7,8 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Build arguments
-ARG REACT_APP_API_URL
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
+# Set production API URL
+ENV REACT_APP_API_URL=https://iup-golf-backend-production.up.railway.app/api/v1
 
 # Disable CI mode to allow build with ESLint warnings
 ENV CI=false
