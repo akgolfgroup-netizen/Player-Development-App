@@ -39,6 +39,9 @@ const AchievementsDashboardContainer = lazy(() => import('./features/achievement
 const BadgesContainer = lazy(() => import('./features/badges/Badges'));
 const TurneringskalenderContainer = lazy(() => import('./features/tournaments/TurneringskalenderContainer'));
 const MineTurneringerContainer = lazy(() => import('./features/tournaments/MineTurneringerContainer'));
+
+// Tournament Calendar (new list-first design)
+const TournamentCalendarPage = lazy(() => import('./features/tournament-calendar').then(m => ({ default: m.TournamentCalendarPage })));
 const RessurserContainer = lazy(() => import('./features/knowledge/RessurserContainer'));
 const SkoleplanContainer = lazy(() => import('./features/school/SkoleplanContainer'));
 const PlaceholderPage = lazy(() => import('./features/planning/PlaceholderPage'));
@@ -447,12 +450,9 @@ function App() {
           } />
           <Route path="/kalender" element={
             <ProtectedRoute>
-              <CalendarPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/kalender/dag" element={
-            <ProtectedRoute>
-              <DayViewPage />
+              <DashboardLayout>
+                <CalendarPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan-preview/:planId" element={
@@ -491,6 +491,12 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/turneringskalender" element={
+            <ProtectedRoute>
+              <TournamentCalendarPage />
+            </ProtectedRoute>
+          } />
+          {/* Legacy route - keep for backwards compatibility */}
+          <Route path="/turneringskalender-old" element={
             <ProtectedRoute>
               <AuthenticatedLayout title="Turneringskalender" subtitle="Kommende turneringer">
                 <TurneringskalenderContainer />
