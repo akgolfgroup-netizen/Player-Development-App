@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -226,7 +226,6 @@ const AdminEscalationSupport = lazy(() => import('./features/admin-escalation').
 const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
 // Landing page (lazy-loaded)
-const LandingHero = lazy(() => import('./features/landing').then(m => ({ default: m.LandingHero })));
 const SplitScreenLanding = lazy(() => import('./features/landing/SplitScreenLanding'));
 
 // Layout component for authenticated pages using Top Navigation (Player)

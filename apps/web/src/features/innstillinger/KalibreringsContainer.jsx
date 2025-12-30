@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Target, Save, RotateCcw,
-  Gauge, Activity, Info
+  Gauge, Activity, Info, Check
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
-import { settingsAPI } from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
 
 // ============================================================================
-// MOCK DATA
+// STORAGE KEY & DEFAULT DATA
 // ============================================================================
 
-const CALIBRATION_SETTINGS = {
+const STORAGE_KEY = 'ak_golf_calibration';
+
+const DEFAULT_CALIBRATION = {
   driving: {
-    clubSpeed: { value: 108, unit: 'mph', lastUpdated: '2025-01-15' },
-    ballSpeed: { value: 158, unit: 'mph', lastUpdated: '2025-01-15' },
-    launchAngle: { value: 11.5, unit: '°', lastUpdated: '2025-01-15' },
-    spinRate: { value: 2400, unit: 'rpm', lastUpdated: '2025-01-15' },
-    carryDistance: { value: 255, unit: 'm', lastUpdated: '2025-01-15' },
+    clubSpeed: { value: 108, unit: 'mph', lastUpdated: null },
+    ballSpeed: { value: 158, unit: 'mph', lastUpdated: null },
+    launchAngle: { value: 11.5, unit: '°', lastUpdated: null },
+    spinRate: { value: 2400, unit: 'rpm', lastUpdated: null },
+    carryDistance: { value: 255, unit: 'm', lastUpdated: null },
   },
   irons: {
-    '7iron_carry': { value: 160, unit: 'm', lastUpdated: '2025-01-10' },
-    '7iron_total': { value: 168, unit: 'm', lastUpdated: '2025-01-10' },
-    'gapping': { value: 12, unit: 'm', lastUpdated: '2025-01-10' },
+    '7iron_carry': { value: 160, unit: 'm', lastUpdated: null },
+    '7iron_total': { value: 168, unit: 'm', lastUpdated: null },
+    'gapping': { value: 12, unit: 'm', lastUpdated: null },
   },
   physical: {
-    coreStrength: { value: 90, unit: 'sek', lastUpdated: '2025-01-12' },
-    flexibility: { value: 45, unit: 'cm', lastUpdated: '2025-01-12' },
-    rotationSpeed: { value: 650, unit: '°/s', lastUpdated: '2025-01-08' },
+    coreStrength: { value: 90, unit: 'sek', lastUpdated: null },
+    flexibility: { value: 45, unit: 'cm', lastUpdated: null },
+    rotationSpeed: { value: 650, unit: '°/s', lastUpdated: null },
   },
 };
 
-const CLUB_DISTANCES = [
+const DEFAULT_CLUB_DISTANCES = [
   { club: 'Driver', carry: 255, total: 270 },
   { club: '3-wood', carry: 230, total: 242 },
   { club: '5-wood', carry: 215, total: 225 },
@@ -45,6 +47,32 @@ const CLUB_DISTANCES = [
   { club: 'SW', carry: 90, total: 92 },
   { club: 'LW', carry: 75, total: 77 },
 ];
+
+// Load calibration from localStorage
+const loadCalibration = (userId) => {
+  try {
+    const key = `${STORAGE_KEY}_${userId}`;
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (err) {
+    console.error('Error loading calibration:', err);
+  }
+  return null;
+};
+
+// Save calibration to localStorage
+const saveCalibrationToStorage = (userId, data) => {
+  try {
+    const key = `${STORAGE_KEY}_${userId}`;
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch (err) {
+    console.error('Error saving calibration:', err);
+    return false;
+  }
+};
 
 // ============================================================================
 // CALIBRATION INPUT
@@ -149,45 +177,97 @@ const ClubDistanceRow = ({ club, carry, total, onChange }) => (
 // ============================================================================
 
 const KalibreringsContainer = () => {
-  const [drivingSettings, setDrivingSettings] = useState(CALIBRATION_SETTINGS.driving);
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  const [ironsSettings, setIronsSettings] = useState(CALIBRATION_SETTINGS.irons);
-  const [physicalSettings, setPhysicalSettings] = useState(CALIBRATION_SETTINGS.physical);
-  const [clubDistances, setClubDistances] = useState(CLUB_DISTANCES);
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [drivingSettings, setDrivingSettings] = useState(DEFAULT_CALIBRATION.driving);
+  const [ironsSettings, setIronsSettings] = useState(DEFAULT_CALIBRATION.irons);
+  const [physicalSettings, setPhysicalSettings] = useState(DEFAULT_CALIBRATION.physical);
+  const [clubDistances, setClubDistances] = useState(DEFAULT_CLUB_DISTANCES);
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const handleSave = async () => {
+  // Load saved calibration on mount
+  useEffect(() => {
+    if (user?.id) {
+      const saved = loadCalibration(user.id);
+      if (saved) {
+        if (saved.driving) setDrivingSettings(saved.driving);
+        if (saved.irons) setIronsSettings(saved.irons);
+        if (saved.physical) setPhysicalSettings(saved.physical);
+        if (saved.clubDistances) setClubDistances(saved.clubDistances);
+      }
+      setLoading(false);
+    }
+  }, [user?.id]);
+
+  const handleSave = useCallback(async () => {
+    if (!user?.id) return;
+
     setSaving(true);
     setError(null);
 
-    try {
-      await settingsAPI.saveCalibration({
-        driver: drivingSettings,
-        irons: ironsSettings,
-        physical: physicalSettings,
-        clubDistances,
-      });
+    // Update timestamps
+    const now = new Date().toISOString().split('T')[0];
+    const updatedDriving = { ...drivingSettings };
+    Object.keys(updatedDriving).forEach(key => {
+      if (updatedDriving[key].lastUpdated === null) {
+        updatedDriving[key] = { ...updatedDriving[key], lastUpdated: now };
+      }
+    });
 
-      setSuccess(true);
-      setHasChanges(false);
-      setTimeout(() => setSuccess(false), 3000);
+    const updatedPhysical = { ...physicalSettings };
+    Object.keys(updatedPhysical).forEach(key => {
+      if (updatedPhysical[key].lastUpdated === null) {
+        updatedPhysical[key] = { ...updatedPhysical[key], lastUpdated: now };
+      }
+    });
+
+    const dataToSave = {
+      driving: updatedDriving,
+      irons: ironsSettings,
+      physical: updatedPhysical,
+      clubDistances,
+      savedAt: new Date().toISOString(),
+    };
+
+    try {
+      const saved = saveCalibrationToStorage(user.id, dataToSave);
+      if (saved) {
+        setDrivingSettings(updatedDriving);
+        setPhysicalSettings(updatedPhysical);
+        setSuccess(true);
+        setHasChanges(false);
+        setTimeout(() => setSuccess(false), 3000);
+      } else {
+        throw new Error('Kunne ikke lagre');
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'Kunne ikke lagre kalibrering.');
+      setError(err.message || 'Kunne ikke lagre kalibrering.');
     } finally {
       setSaving(false);
     }
-  };
+  }, [user?.id, drivingSettings, ironsSettings, physicalSettings, clubDistances]);
 
   const handleReset = () => {
-    setDrivingSettings(CALIBRATION_SETTINGS.driving);
-    setIronsSettings(CALIBRATION_SETTINGS.irons);
-    setPhysicalSettings(CALIBRATION_SETTINGS.physical);
-    setClubDistances(CLUB_DISTANCES);
-    setHasChanges(false);
+    setDrivingSettings(DEFAULT_CALIBRATION.driving);
+    setIronsSettings(DEFAULT_CALIBRATION.irons);
+    setPhysicalSettings(DEFAULT_CALIBRATION.physical);
+    setClubDistances(DEFAULT_CLUB_DISTANCES);
+    setHasChanges(true);
   };
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ width: 40, height: 40, border: '3px solid var(--border-default)', borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
+          <p style={{ color: 'var(--text-secondary)' }}>Laster kalibrering...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
@@ -228,6 +308,42 @@ const KalibreringsContainer = () => {
             </p>
           </div>
         </div>
+
+        {/* Success Banner */}
+        {success && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '12px 14px',
+            backgroundColor: `${'var(--success)'}15`,
+            borderRadius: '10px',
+            marginBottom: '16px',
+          }}>
+            <Check size={18} color={'var(--success)'} />
+            <span style={{ fontSize: '14px', color: 'var(--success)', fontWeight: 500 }}>
+              Kalibrering lagret!
+            </span>
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {error && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '12px 14px',
+            backgroundColor: `${'var(--error)'}15`,
+            borderRadius: '10px',
+            marginBottom: '16px',
+          }}>
+            <Info size={18} color={'var(--error)'} />
+            <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>
+              {error}
+            </span>
+          </div>
+        )}
 
         {/* Driving Settings */}
         <div style={{

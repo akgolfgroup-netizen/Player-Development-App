@@ -229,8 +229,23 @@ export const weatherAPI = {
 
 // Settings API
 export const settingsAPI = {
-  saveCalibration: (data) => api.post('/settings/calibration', data),
   saveNotifications: (data) => api.post('/settings/notifications', data),
+};
+
+// Calibration API
+export const calibrationAPI = {
+  // Get calibration for a player
+  getCalibration: (playerId) => api.get(`/calibration/player/${playerId}`),
+  // Create new calibration
+  createCalibration: (data) => api.post('/calibration', data),
+  // Update calibration for a player
+  updateCalibration: (playerId, data) => api.put(`/calibration/player/${playerId}`, data),
+  // Delete calibration
+  deleteCalibration: (playerId) => api.delete(`/calibration/player/${playerId}`),
+  // Start mobile calibration session
+  startSession: () => api.post('/calibration/start'),
+  // Submit mobile calibration samples
+  submitSamples: (sessionId, samples) => api.post('/calibration/submit', { sessionId, samples }),
 };
 
 export default api;

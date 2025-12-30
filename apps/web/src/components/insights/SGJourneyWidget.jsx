@@ -4,9 +4,8 @@
  */
 
 import React from 'react';
-import { TrendingUp, TrendingDown, Minus, Mountain, Flag, Award } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Mountain, Award } from 'lucide-react';
 import { DashboardCard, WidgetHeader } from '../../ui/widgets';
-import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 
 // Journey level colors - using semantic SG tokens
