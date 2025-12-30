@@ -8,12 +8,15 @@
 
 import { PrismaClient } from '@prisma/client';
 import {
-  BPEvidenceService,
-  createBPEvidenceService,
+  createBpEvidenceService,
+  shouldTransitionStatus,
   evaluateSuccessRule,
   buildDefaultSuccessRule,
-  type BPStatus,
+  calculateEffortFromSessions,
+  PROGRESS_THRESHOLDS,
+  type BpStatus,
 } from '../../../src/domain/performance/bp-evidence';
+import { parseSuccessRule } from '../../../src/domain/performance/domain-mapping';
 
 // Mock Prisma Client
 const createMockPrisma = () =>
@@ -33,8 +36,7 @@ const createMockPrisma = () =>
     },
   } as unknown as PrismaClient);
 
-describe('BPEvidenceService', () => {
-  let service: BPEvidenceService;
+describe('BpEvidenceService', () => {
   let mockPrisma: ReturnType<typeof createMockPrisma>;
 
   const mockBreakingPoint = {
@@ -49,279 +51,221 @@ describe('BPEvidenceService', () => {
     benchmarkWindowDays: 21,
     baselineMeasurement: '180',
     targetMeasurement: '220',
-    successRule: null,
+    currentMeasurement: null,
+    successRule: 'DRIVER_DISTANCE_CARRY:>=:220',
     createdAt: new Date(),
+    resolvedDate: null,
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
     mockPrisma = createMockPrisma();
-    service = createBPEvidenceService(mockPrisma);
   });
 
-  describe('evaluateBreakingPoint', () => {
-    beforeEach(() => {
-      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(mockBreakingPoint);
-      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(5);
-      (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
+  describe('createBpEvidenceService', () => {
+    it('should create a service with required methods', () => {
+      const service = createBpEvidenceService(mockPrisma);
+
+      expect(service).toBeDefined();
+      expect(typeof service.recordTrainingEffort).toBe('function');
+      expect(typeof service.evaluateBenchmark).toBe('function');
+      expect(typeof service.getBreakingPointStatus).toBe('function');
     });
+  });
 
-    it('should return evaluation result with correct structure', async () => {
-      const result = await service.evaluateBreakingPoint('bp-1');
+  describe('recordTrainingEffort', () => {
+    it('should update effort based on session count', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(mockBreakingPoint);
+      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(6);
+      (mockPrisma.breakingPoint.update as jest.Mock).mockResolvedValue({
+        ...mockBreakingPoint,
+        effortPercent: 50,
+      });
 
-      expect(result).toHaveProperty('bpId', 'bp-1');
-      expect(result).toHaveProperty('playerId', 'player-1');
-      expect(result).toHaveProperty('effortPercent');
-      expect(result).toHaveProperty('progressPercent');
-      expect(result).toHaveProperty('previousStatus');
-      expect(result).toHaveProperty('recommendedStatus');
-      expect(result).toHaveProperty('confidence');
-      expect(result).toHaveProperty('reasonCodes');
+      const service = createBpEvidenceService(mockPrisma);
+      const result = await service.recordTrainingEffort({
+        breakingPointId: 'bp-1',
+      });
+
+      expect(result.breakingPointId).toBe('bp-1');
+      expect(result.previousEffort).toBe(30);
+      expect(result.newEffort).toBeGreaterThanOrEqual(0);
+      expect(result.sessionsCounted).toBe(6);
     });
 
     it('should throw error if breaking point not found', async () => {
       (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(null);
 
-      await expect(service.evaluateBreakingPoint('nonexistent')).rejects.toThrow(
-        'Breaking point not found'
-      );
+      const service = createBpEvidenceService(mockPrisma);
+
+      await expect(
+        service.recordTrainingEffort({ breakingPointId: 'nonexistent' })
+      ).rejects.toThrow('Breaking point not found');
     });
+  });
 
-    it('should calculate progress based on test results gap closure', async () => {
-      // Mock test results showing improvement
-      (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([
-        { value: '185', testDate: new Date('2024-01-01') }, // Baseline-ish
-        { value: '200', testDate: new Date('2024-01-15') }, // Progress
-      ]);
-
-      // Need to mock the second findUnique call for computeProgressPercent
-      (mockPrisma.breakingPoint.findUnique as jest.Mock)
-        .mockResolvedValueOnce(mockBreakingPoint)
-        .mockResolvedValueOnce({
-          ...mockBreakingPoint,
-          progressPercent: 0,
-        });
-
-      const result = await service.evaluateBreakingPoint('bp-1');
-
-      expect(result.progressPercent).toBeGreaterThan(0);
-      expect(result.latestTestDate).not.toBeNull();
-    });
-
-    it('should determine low confidence with no test data', async () => {
-      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(1);
-      (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
-
-      const result = await service.evaluateBreakingPoint('bp-1');
-
-      expect(result.confidence).toBe('low');
-    });
-
-    it('should recommend awaiting_proof when effort high but no test', async () => {
+  describe('evaluateBenchmark', () => {
+    it('should update progress when benchmark meets target', async () => {
       (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
         ...mockBreakingPoint,
-        effortPercent: 80,
-        status: 'in_progress',
+        progressPercent: 50,
       });
-      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(20);
-      (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([]);
-
-      const result = await service.evaluateBreakingPoint('bp-1');
-
-      expect(result.recommendedStatus).toBe('awaiting_proof');
-      expect(result.reasonCodes).toContain('high_effort_no_test');
-    });
-  });
-
-  describe('computeEffortPercent', () => {
-    it('should calculate effort based on completed sessions', async () => {
-      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
-        playerId: 'player-1',
-        hoursPerWeek: 3,
-        createdAt: new Date(),
-        effortPercent: 0,
-      });
-      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(6);
-
-      const result = await service.computeEffortPercent('bp-1', 21);
-
-      expect(result.sessionsCompleted).toBe(6);
-      expect(result.totalSessionsExpected).toBeGreaterThan(0);
-      expect(result.effortPercent).toBeGreaterThan(0);
-      expect(result.effortPercent).toBeLessThanOrEqual(100);
-    });
-
-    it('should return zero effort if BP not found', async () => {
-      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(null);
-
-      const result = await service.computeEffortPercent('nonexistent', 21);
-
-      expect(result.effortPercent).toBe(0);
-      expect(result.sessionsCompleted).toBe(0);
-    });
-  });
-
-  describe('updateEffortAfterSession', () => {
-    it('should update effort without changing progress', async () => {
-      (mockPrisma.breakingPoint.findMany as jest.Mock).mockResolvedValue([
-        { id: 'bp-1', effortPercent: 20, status: 'in_progress' },
-      ]);
       (mockPrisma.breakingPoint.update as jest.Mock).mockResolvedValue({});
 
-      const updates = await service.updateEffortAfterSession('player-1', 'session-1', 60);
-
-      expect(updates.length).toBe(1);
-      expect(updates[0].previousEffortPercent).toBe(20);
-      expect(updates[0].newEffortPercent).toBeGreaterThan(20);
-
-      // Verify update was called with effort, not progress
-      expect(mockPrisma.breakingPoint.update).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: expect.objectContaining({
-            effortPercent: expect.any(Number),
-          }),
-        })
-      );
-    });
-
-    it('should transition from identified to in_progress on first effort', async () => {
-      (mockPrisma.breakingPoint.findMany as jest.Mock).mockResolvedValue([
-        { id: 'bp-1', effortPercent: 0, status: 'identified' },
-      ]);
-      (mockPrisma.breakingPoint.update as jest.Mock).mockResolvedValue({});
-
-      await service.updateEffortAfterSession('player-1', 'session-1', 60);
-
-      expect(mockPrisma.breakingPoint.update).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: expect.objectContaining({
-            status: 'in_progress',
-          }),
-        })
-      );
-    });
-
-    it('should respect maximum effort cap', async () => {
-      (mockPrisma.breakingPoint.findMany as jest.Mock).mockResolvedValue([
-        { id: 'bp-1', effortPercent: 98, status: 'in_progress' },
-      ]);
-      (mockPrisma.breakingPoint.update as jest.Mock).mockResolvedValue({});
-
-      const updates = await service.updateEffortAfterSession('player-1', 'session-1', 60);
-
-      expect(updates[0].newEffortPercent).toBeLessThanOrEqual(100);
-    });
-  });
-
-  describe('updateProgressAfterTest', () => {
-    it('should update progress based on test result', async () => {
-      (mockPrisma.breakingPoint.findMany as jest.Mock).mockResolvedValue([
-        {
-          id: 'bp-1',
-          progressPercent: 0,
-          status: 'in_progress',
-          benchmarkTestId: 1,
-          benchmarkWindowDays: 21,
-          baselineMeasurement: '180',
-          targetMeasurement: '220',
-          successRule: null,
+      const service = createBpEvidenceService(mockPrisma);
+      const result = await service.evaluateBenchmark({
+        breakingPointId: 'bp-1',
+        proofMetric: {
+          metricId: 'DRIVER_DISTANCE_CARRY',
+          label: 'Driver Carry',
+          unit: 'm',
+          direction: 'higher_better',
         },
-      ]);
+        testValue: 225,
+        testDate: new Date(),
+        successRule: 'DRIVER_DISTANCE_CARRY:>=:220',
+      });
+
+      expect(result.breakingPointId).toBe('bp-1');
+      expect(result.meetsTarget).toBe(true);
+      expect(result.newProgress).toBe(PROGRESS_THRESHOLDS.RESOLVED);
+      expect(result.isResolved).toBe(true);
+    });
+
+    it('should calculate partial progress for improvement', async () => {
       (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
-        playerId: 'player-1',
-        benchmarkTestId: 1,
-        benchmarkWindowDays: 21,
-        baselineMeasurement: '180',
-        targetMeasurement: '220',
+        ...mockBreakingPoint,
+        currentMeasurement: '180',
         progressPercent: 0,
       });
-      (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([
-        { value: '200', testDate: new Date() },
-      ]);
       (mockPrisma.breakingPoint.update as jest.Mock).mockResolvedValue({});
 
-      const updates = await service.updateProgressAfterTest(
-        'player-1',
-        'test-1',
-        1,
-        200,
-        new Date()
-      );
+      const service = createBpEvidenceService(mockPrisma);
+      const result = await service.evaluateBenchmark({
+        breakingPointId: 'bp-1',
+        proofMetric: {
+          metricId: 'DRIVER_DISTANCE_CARRY',
+          label: 'Driver Carry',
+          unit: 'm',
+          direction: 'higher_better',
+        },
+        testValue: 200, // Progress but not at target
+        testDate: new Date(),
+        successRule: 'DRIVER_DISTANCE_CARRY:>=:220',
+      });
 
-      expect(updates.length).toBe(1);
-      expect(updates[0].newProgressPercent).toBeGreaterThan(0);
-      expect(mockPrisma.breakingPoint.update).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: expect.objectContaining({
-            progressPercent: expect.any(Number),
-            currentMeasurement: '200',
-          }),
-        })
-      );
+      expect(result.meetsTarget).toBe(false);
+      expect(result.benchmarkResult.improvementPercent).toBeGreaterThan(0);
     });
 
-    it('should mark as resolved when progress reaches 100%', async () => {
-      (mockPrisma.breakingPoint.findMany as jest.Mock).mockResolvedValue([
-        {
-          id: 'bp-1',
-          progressPercent: 90,
-          status: 'in_progress',
-          benchmarkTestId: 1,
-          benchmarkWindowDays: 21,
-          baselineMeasurement: '180',
-          targetMeasurement: '220',
-          successRule: null,
-        },
-      ]);
-      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
-        playerId: 'player-1',
-        benchmarkTestId: 1,
-        benchmarkWindowDays: 21,
-        baselineMeasurement: '180',
-        targetMeasurement: '220',
-        progressPercent: 90,
+    it('should throw error if breaking point not found', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(null);
+
+      const service = createBpEvidenceService(mockPrisma);
+
+      await expect(
+        service.evaluateBenchmark({
+          breakingPointId: 'nonexistent',
+          proofMetric: { metricId: 'test', label: 'Test', unit: 'm', direction: 'higher_better' },
+          testValue: 200,
+          testDate: new Date(),
+          successRule: 'test:>=:180',
+        })
+      ).rejects.toThrow('Breaking point not found');
+    });
+  });
+
+  describe('getBreakingPointStatus', () => {
+    it('should return current status of breaking point', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(mockBreakingPoint);
+
+      const service = createBpEvidenceService(mockPrisma);
+      const result = await service.getBreakingPointStatus({
+        breakingPointId: 'bp-1',
       });
-      (mockPrisma.testResult.findMany as jest.Mock).mockResolvedValue([
-        { value: '220', testDate: new Date() }, // Target met
-      ]);
-      (mockPrisma.breakingPoint.update as jest.Mock).mockResolvedValue({});
 
-      const updates = await service.updateProgressAfterTest(
-        'player-1',
-        'test-1',
-        1,
-        220,
-        new Date()
-      );
+      expect(result.breakingPointId).toBe('bp-1');
+      expect(result.domainCode).toBe('TEE');
+      expect(result.effortPercent).toBe(30);
+      expect(result.progressPercent).toBe(0);
+      expect(result.isResolved).toBe(false);
+    });
 
-      expect(updates[0].newStatus).toBe('resolved');
+    it('should throw error if breaking point not found', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(null);
+
+      const service = createBpEvidenceService(mockPrisma);
+
+      await expect(
+        service.getBreakingPointStatus({ breakingPointId: 'nonexistent' })
+      ).rejects.toThrow('Breaking point not found');
     });
   });
 
   describe('shouldTransitionStatus', () => {
-    it('should recommend resolved when progress is 100%', () => {
-      const result = service.shouldTransitionStatus('in_progress', 80, 100, new Date());
+    it('should transition from not_started to in_progress when effort starts', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
+        ...mockBreakingPoint,
+        status: 'not_started',
+        effortPercent: 10,
+      });
+      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(2);
 
-      expect(result.shouldTransition).toBe(true);
-      expect(result.newStatus).toBe('resolved');
-      expect(result.reason).toBe('progress_complete');
+      const result = await shouldTransitionStatus(mockPrisma, 'bp-1');
+
+      expect(result).not.toBeNull();
+      expect(result?.from).toBe('not_started');
+      expect(result?.to).toBe('in_progress');
     });
 
-    it('should recommend stalled after extended period without test', () => {
-      const oldTestDate = new Date();
-      oldTestDate.setDate(oldTestDate.getDate() - 45); // 45 days ago
+    it('should transition from in_progress to awaiting_proof when effort is high', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
+        ...mockBreakingPoint,
+        status: 'in_progress',
+        effortPercent: 60,
+      });
+      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(15);
 
-      const result = service.shouldTransitionStatus('in_progress', 50, 30, oldTestDate);
+      const result = await shouldTransitionStatus(mockPrisma, 'bp-1');
 
-      expect(result.shouldTransition).toBe(true);
-      expect(result.newStatus).toBe('stalled');
-      expect(result.reason).toBe('no_recent_benchmark');
+      expect(result).not.toBeNull();
+      expect(result?.to).toBe('awaiting_proof');
     });
 
-    it('should not transition if status is appropriate', () => {
-      const result = service.shouldTransitionStatus('in_progress', 50, 40, new Date());
+    it('should transition to resolved when progress hits 100%', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
+        ...mockBreakingPoint,
+        status: 'awaiting_proof',
+        progressPercent: PROGRESS_THRESHOLDS.RESOLVED,
+      });
+      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(20);
 
-      expect(result.shouldTransition).toBe(false);
+      const result = await shouldTransitionStatus(mockPrisma, 'bp-1');
+
+      expect(result).not.toBeNull();
+      expect(result?.to).toBe('resolved');
+    });
+
+    it('should return null if no transition needed', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue({
+        ...mockBreakingPoint,
+        status: 'in_progress',
+        effortPercent: 30,
+        progressPercent: 20,
+      });
+      (mockPrisma.trainingSession.count as jest.Mock).mockResolvedValue(5);
+
+      const result = await shouldTransitionStatus(mockPrisma, 'bp-1');
+
+      expect(result).toBeNull();
+    });
+
+    it('should return null if breaking point not found', async () => {
+      (mockPrisma.breakingPoint.findUnique as jest.Mock).mockResolvedValue(null);
+
+      const result = await shouldTransitionStatus(mockPrisma, 'nonexistent');
+
+      expect(result).toBeNull();
     });
   });
 });
@@ -341,7 +285,6 @@ describe('evaluateSuccessRule', () => {
     });
 
     const result = await evaluateSuccessRule(mockPrisma, {
-      bpId: 'bp-1',
       playerId: 'player-1',
       successRule: '15:pass',
       benchmarkTestId: 15,
@@ -361,7 +304,6 @@ describe('evaluateSuccessRule', () => {
     });
 
     const result = await evaluateSuccessRule(mockPrisma, {
-      bpId: 'bp-1',
       playerId: 'player-1',
       successRule: '15:pass',
       benchmarkTestId: 15,
@@ -374,7 +316,6 @@ describe('evaluateSuccessRule', () => {
 
   it('should return invalid for unparseable rules', async () => {
     const result = await evaluateSuccessRule(mockPrisma, {
-      bpId: 'bp-1',
       playerId: 'player-1',
       successRule: 'invalid_rule',
       benchmarkTestId: null,
@@ -384,6 +325,59 @@ describe('evaluateSuccessRule', () => {
 
     expect(result.passed).toBe(false);
     expect(result.reason).toBe('invalid_rule_format');
+  });
+
+  it('should evaluate metric threshold rule', async () => {
+    (mockPrisma.testResult.findFirst as jest.Mock).mockResolvedValue({
+      value: '230',
+      testDate: new Date(),
+    });
+
+    const result = await evaluateSuccessRule(mockPrisma, {
+      playerId: 'player-1',
+      successRule: 'DRIVER_DISTANCE_CARRY:>=:220',
+      benchmarkTestId: 1,
+      benchmarkWindowDays: 21,
+      asOfDate: new Date(),
+    });
+
+    expect(result.passed).toBe(true);
+    expect(result.operator).toBe('>=');
+    expect(result.actualValue).toBe(230);
+    expect(result.requiredValue).toBe(220);
+  });
+
+  it('should fail metric threshold when not met', async () => {
+    (mockPrisma.testResult.findFirst as jest.Mock).mockResolvedValue({
+      value: '200',
+      testDate: new Date(),
+    });
+
+    const result = await evaluateSuccessRule(mockPrisma, {
+      playerId: 'player-1',
+      successRule: 'DRIVER_DISTANCE_CARRY:>=:220',
+      benchmarkTestId: 1,
+      benchmarkWindowDays: 21,
+      asOfDate: new Date(),
+    });
+
+    expect(result.passed).toBe(false);
+    expect(result.actualValue).toBe(200);
+  });
+
+  it('should return no_test_in_window when no test found', async () => {
+    (mockPrisma.testResult.findFirst as jest.Mock).mockResolvedValue(null);
+
+    const result = await evaluateSuccessRule(mockPrisma, {
+      playerId: 'player-1',
+      successRule: 'DRIVER_DISTANCE_CARRY:>=:220',
+      benchmarkTestId: 1,
+      benchmarkWindowDays: 21,
+      asOfDate: new Date(),
+    });
+
+    expect(result.passed).toBe(false);
+    expect(result.reason).toBe('no_test_in_window');
   });
 });
 
@@ -401,5 +395,65 @@ describe('buildDefaultSuccessRule', () => {
 
     expect(rule).toContain('improvement');
     expect(rule).toContain('percent');
+  });
+
+  it('should use threshold rule when gap is less than 15%', () => {
+    // 210 to 220 = 4.8% gap
+    const rule = buildDefaultSuccessRule(1, 210, 220, '>=');
+    expect(rule).not.toContain('improvement');
+  });
+});
+
+describe('calculateEffortFromSessions', () => {
+  it('should return 0 for 0 sessions', () => {
+    expect(calculateEffortFromSessions(0)).toBe(0);
+  });
+
+  it('should return proportional effort for sessions', () => {
+    const effort5 = calculateEffortFromSessions(5);
+    const effort10 = calculateEffortFromSessions(10);
+
+    expect(effort5).toBeGreaterThan(0);
+    expect(effort10).toBeGreaterThan(effort5);
+  });
+
+  it('should cap effort at MAX_EFFORT_PERCENT (150%)', () => {
+    // MAX_EFFORT_PERCENT is 150 to show "extra effort"
+    const effort = calculateEffortFromSessions(100);
+    expect(effort).toBeLessThanOrEqual(150);
+    expect(effort).toBe(150); // 100 sessions = 1000% raw, capped at 150%
+  });
+});
+
+describe('parseSuccessRule', () => {
+  it('should parse test pass rule', () => {
+    const result = parseSuccessRule('15:pass');
+
+    expect(result).not.toBeNull();
+    expect(result?.type).toBe('test_pass');
+    expect(result?.testId).toBe(15);
+  });
+
+  it('should parse metric threshold rule', () => {
+    const result = parseSuccessRule('DRIVER_DISTANCE_CARRY:>=:230');
+
+    expect(result).not.toBeNull();
+    expect(result?.type).toBe('metric_threshold');
+    expect(result?.metricId).toBe('DRIVER_DISTANCE_CARRY');
+    expect(result?.operator).toBe('>=');
+    expect(result?.threshold).toBe(230);
+  });
+
+  it('should parse improvement percent rule', () => {
+    const result = parseSuccessRule('improvement:percent:15');
+
+    expect(result).not.toBeNull();
+    expect(result?.type).toBe('improvement_percent');
+    expect(result?.improvementPercent).toBe(15);
+  });
+
+  it('should return null for invalid rules', () => {
+    expect(parseSuccessRule('')).toBeNull();
+    expect(parseSuccessRule('invalid')).toBeNull();
   });
 });

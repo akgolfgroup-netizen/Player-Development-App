@@ -3,254 +3,258 @@
  * Tests for binding constraint computation
  */
 
-import { PrismaClient } from '@prisma/client';
 import {
-  CategoryConstraintsService,
+  calculateBindingConstraints,
+  analyzePlayerConstraints,
   createCategoryConstraintsService,
+  getNextCategory,
+  type BindingConstraint,
+  type PlayerDomainPerformance,
   type CategoryAK,
+  type Gender,
 } from '../../../src/domain/performance/category-constraints';
 
-// Mock Prisma Client
-const createMockPrisma = () =>
-  ({
-    categoryRequirement: {
-      findMany: jest.fn(),
-    },
-  } as unknown as PrismaClient);
-
 describe('CategoryConstraintsService', () => {
-  let service: CategoryConstraintsService;
-  let mockPrisma: ReturnType<typeof createMockPrisma>;
+  describe('calculateBindingConstraints', () => {
+    it('should identify binding constraints when player is below requirements', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 180, testCount: 1 }, // Below typical requirement
+        { domainCode: 'INN150', currentValue: 45, testCount: 1 }, // Below requirement
+        { domainCode: 'PUTT', currentValue: 75, testCount: 1 }, // Above typical requirement
+      ];
 
-  // Sample category requirements matching real data structure
-  const mockRequirements = [
-    {
-      id: 'req-1',
-      category: 'F',
-      gender: 'M',
-      testNumber: 1,
-      minimumValue: 200,
-      isHardConstraint: true,
-      testDomainCode: 'TEE',
-    },
-    {
-      id: 'req-2',
-      category: 'F',
-      gender: 'M',
-      testNumber: 5,
-      minimumValue: 95,
-      isHardConstraint: true,
-      testDomainCode: 'TEE',
-    },
-    {
-      id: 'req-3',
-      category: 'F',
-      gender: 'M',
-      testNumber: 15,
-      minimumValue: 70,
-      isHardConstraint: false,
-      testDomainCode: 'PUTT',
-    },
-    {
-      id: 'req-4',
-      category: 'F',
-      gender: 'M',
-      testNumber: 17,
-      minimumValue: 5.0,
-      isHardConstraint: false,
-      testDomainCode: 'ARG',
-    },
-  ];
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    mockPrisma = createMockPrisma();
-    service = createCategoryConstraintsService(mockPrisma);
-
-    // Setup default mock
-    (mockPrisma.categoryRequirement.findMany as jest.Mock).mockResolvedValue(mockRequirements);
-  });
-
-  describe('computeCategoryConstraints', () => {
-    it('should identify binding constraints when player is below requirements', async () => {
-      const result = await service.computeCategoryConstraints({
+      const result = calculateBindingConstraints({
         playerId: 'player-1',
-        currentCategory: 'G', // One below F
+        currentCategory: 'G',
+        targetCategory: 'F',
         gender: 'M',
-        latestTestValues: {
-          1: 180, // Below 200 requirement for driver
-          5: 90, // Below 95 requirement for club speed
-          15: 75, // Above 70 requirement (passing)
-          17: 4.5, // Below 5.0 requirement for chip
-        },
+        performances,
       });
 
       expect(result.bindingConstraints.length).toBeGreaterThan(0);
-      expect(result.canAdvance).toBe(false);
-
-      // Should identify driver and club speed as binding (hard constraints not met)
-      const driverConstraint = result.bindingConstraints.find((c) => c.testNumber === 1);
-      const clubSpeedConstraint = result.bindingConstraints.find((c) => c.testNumber === 5);
-
-      expect(driverConstraint).toBeDefined();
-      expect(driverConstraint?.severity).toBe('hard');
-      expect(clubSpeedConstraint).toBeDefined();
-      expect(clubSpeedConstraint?.severity).toBe('hard');
+      expect(result.bindingConstraints.some(c => c.isBinding)).toBe(true);
     });
 
-    it('should return canAdvance=true when all hard constraints are met', async () => {
-      const result = await service.computeCategoryConstraints({
+    it('should return empty binding constraints when all requirements are met', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 250, testCount: 1 }, // Above requirement
+        { domainCode: 'INN150', currentValue: 70, testCount: 1 }, // Above requirement
+        { domainCode: 'PUTT', currentValue: 90, testCount: 1 }, // Above requirement
+        { domainCode: 'ARG', currentValue: 2.0, testCount: 1 }, // Below requirement (lower is better)
+      ];
+
+      const result = calculateBindingConstraints({
         playerId: 'player-1',
         currentCategory: 'G',
+        targetCategory: 'F',
         gender: 'M',
-        latestTestValues: {
-          1: 210, // Above 200 (passing hard constraint)
-          5: 98, // Above 95 (passing hard constraint)
-          15: 65, // Below 70 (soft constraint)
-          17: 4.0, // Below 5.0 (soft constraint)
-        },
+        performances,
       });
 
-      expect(result.canAdvance).toBe(true);
-      // Should still have binding constraints (soft ones not met)
-      expect(result.bindingConstraints.length).toBeGreaterThan(0);
-      expect(result.bindingConstraints.every((c) => c.severity === 'soft')).toBe(true);
+      // All binding constraints should have gap = 0
+      const actuallyBinding = result.bindingConstraints.filter(c => c.gap > 0);
+      expect(actuallyBinding.length).toBe(0);
     });
 
-    it('should calculate normalized gap correctly', async () => {
-      const result = await service.computeCategoryConstraints({
+    it('should calculate gap correctly for higher-is-better metrics', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 160, testCount: 1 }, // 40 below 200 requirement
+      ];
+
+      const result = calculateBindingConstraints({
         playerId: 'player-1',
         currentCategory: 'G',
+        targetCategory: 'F',
         gender: 'M',
-        latestTestValues: {
-          1: 160, // 40 below 200 = 20% gap
-          5: 95, // Exactly at requirement = 0% gap
-          15: 80, // 10 above 70 = no gap (exceeded)
-          17: 6.0, // 1 above 5.0 = no gap (exceeded)
-        },
+        performances,
       });
 
-      const driverConstraint = result.bindingConstraints.find((c) => c.testNumber === 1);
-      expect(driverConstraint).toBeDefined();
-      expect(driverConstraint?.gapNormalized).toBeGreaterThan(0);
+      const teeConstraint = result.bindingConstraints.find(c => c.domainCode === 'TEE');
+      expect(teeConstraint).toBeDefined();
+      expect(teeConstraint?.gap).toBeGreaterThan(0);
+      expect(teeConstraint?.gapPercent).toBeGreaterThan(0);
+    });
 
-      // Club speed should not be in constraints (met exactly)
-      const clubSpeedConstraint = result.bindingConstraints.find((c) => c.testNumber === 5);
-      // May or may not be present depending on implementation
-      if (clubSpeedConstraint) {
-        expect(clubSpeedConstraint.gapNormalized).toBe(0);
+    it('should calculate gap correctly for lower-is-better metrics (ARG)', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'ARG', currentValue: 8.0, testCount: 1 }, // 3m above 5.0 requirement (worse)
+      ];
+
+      const result = calculateBindingConstraints({
+        playerId: 'player-1',
+        currentCategory: 'G',
+        targetCategory: 'F',
+        gender: 'M',
+        performances,
+      });
+
+      const argConstraint = result.bindingConstraints.find(c => c.domainCode === 'ARG');
+      expect(argConstraint).toBeDefined();
+      expect(argConstraint?.gap).toBeGreaterThan(0); // Gap positive when current > required
+    });
+
+    it('should limit binding constraints to top 3', () => {
+      // Create performances below requirements for all domains
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 100, testCount: 1 },
+        { domainCode: 'INN200', currentValue: 10, testCount: 1 },
+        { domainCode: 'INN150', currentValue: 10, testCount: 1 },
+        { domainCode: 'INN100', currentValue: 10, testCount: 1 },
+        { domainCode: 'INN50', currentValue: 10, testCount: 1 },
+        { domainCode: 'ARG', currentValue: 20, testCount: 1 },
+        { domainCode: 'PUTT', currentValue: 10, testCount: 1 },
+      ];
+
+      const result = calculateBindingConstraints({
+        playerId: 'player-1',
+        currentCategory: 'G',
+        targetCategory: 'F',
+        gender: 'M',
+        performances,
+      });
+
+      // Should limit to top 3 binding constraints
+      expect(result.bindingConstraints.length).toBeLessThanOrEqual(3);
+    });
+
+    it('should sort binding constraints by gap percent descending', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 190, testCount: 1 }, // Small gap
+        { domainCode: 'INN150', currentValue: 20, testCount: 1 }, // Large gap
+      ];
+
+      const result = calculateBindingConstraints({
+        playerId: 'player-1',
+        currentCategory: 'G',
+        targetCategory: 'F',
+        gender: 'M',
+        performances,
+      });
+
+      if (result.bindingConstraints.length >= 2) {
+        expect(result.bindingConstraints[0].gapPercent).toBeGreaterThanOrEqual(
+          result.bindingConstraints[1].gapPercent
+        );
       }
     });
 
-    it('should prioritize hard constraints over soft ones', async () => {
-      const result = await service.computeCategoryConstraints({
+    it('should include domainCode in all constraints', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 180, testCount: 1 },
+        { domainCode: 'PUTT', currentValue: 60, testCount: 1 },
+      ];
+
+      const result = calculateBindingConstraints({
         playerId: 'player-1',
         currentCategory: 'G',
+        targetCategory: 'F',
         gender: 'M',
-        latestTestValues: {
-          1: 190, // Small gap (10) on hard constraint
-          5: 94, // Small gap (1) on hard constraint
-          15: 50, // Large gap (20) on soft constraint
-          17: 2.0, // Large gap (3) on soft constraint
-        },
+        performances,
       });
 
-      expect(result.bindingConstraints.length).toBeGreaterThan(0);
-
-      // Hard constraints should come before soft, regardless of gap size
-      const firstSoftIndex = result.bindingConstraints.findIndex((c) => c.severity === 'soft');
-      const lastHardIndex = result.bindingConstraints.reduce(
-        (idx, c, i) => (c.severity === 'hard' ? i : idx),
-        -1
-      );
-
-      if (firstSoftIndex !== -1 && lastHardIndex !== -1) {
-        expect(lastHardIndex).toBeLessThan(firstSoftIndex);
-      }
-    });
-
-    it('should limit binding constraints to top N', async () => {
-      // Create many requirements
-      const manyRequirements = Array.from({ length: 10 }, (_, i) => ({
-        id: `req-${i}`,
-        category: 'F',
-        gender: 'M',
-        testNumber: i + 1,
-        minimumValue: 100,
-        isHardConstraint: i < 3, // First 3 are hard
-        testDomainCode: 'TEE',
-      }));
-
-      (mockPrisma.categoryRequirement.findMany as jest.Mock).mockResolvedValue(manyRequirements);
-
-      const result = await service.computeCategoryConstraints({
-        playerId: 'player-1',
-        currentCategory: 'G',
-        gender: 'M',
-        latestTestValues: Object.fromEntries(
-          Array.from({ length: 10 }, (_, i) => [i + 1, 50]) // All below requirement
-        ),
-      });
-
-      // Should limit to configurable max (default 4)
-      expect(result.bindingConstraints.length).toBeLessThanOrEqual(4);
-    });
-
-    it('should include testDomainCode in constraints', async () => {
-      const result = await service.computeCategoryConstraints({
-        playerId: 'player-1',
-        currentCategory: 'G',
-        gender: 'M',
-        latestTestValues: {
-          1: 180,
-          17: 4.0,
-        },
-      });
-
-      result.bindingConstraints.forEach((constraint) => {
-        expect(constraint.testDomainCode).toBeDefined();
+      result.bindingConstraints.forEach(constraint => {
+        expect(constraint.domainCode).toBeDefined();
         expect(['TEE', 'INN200', 'INN150', 'INN100', 'INN50', 'ARG', 'PUTT', 'PHYS']).toContain(
-          constraint.testDomainCode
+          constraint.domainCode
         );
       });
     });
 
-    it('should calculate readiness score based on constraints', async () => {
-      const result = await service.computeCategoryConstraints({
+    it('should calculate totalGap as sum of binding constraint gaps', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 180, testCount: 1 },
+        { domainCode: 'INN150', currentValue: 40, testCount: 1 },
+      ];
+
+      const result = calculateBindingConstraints({
         playerId: 'player-1',
         currentCategory: 'G',
+        targetCategory: 'F',
         gender: 'M',
-        latestTestValues: {
-          1: 190, // 5% gap
-          5: 93, // 2% gap
-          15: 68, // 3% gap
-          17: 4.8, // 4% gap
-        },
+        performances,
       });
 
-      expect(result.readinessScore).toBeGreaterThanOrEqual(0);
-      expect(result.readinessScore).toBeLessThanOrEqual(100);
+      const expectedTotal = result.bindingConstraints.reduce((sum, c) => sum + c.gap, 0);
+      expect(result.totalGap).toBe(expectedTotal);
+    });
+  });
+
+  describe('analyzePlayerConstraints', () => {
+    it('should return full analysis with current and target category', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 180, testCount: 1 },
+      ];
+
+      const result = analyzePlayerConstraints(
+        'player-1',
+        'G',
+        'M',
+        performances
+      );
+
+      expect(result.playerId).toBe('player-1');
+      expect(result.currentCategory).toBe('G');
+      expect(result.targetCategory).toBe('F'); // Next category from G
+      expect(result.gender).toBe('M');
+      expect(result.bindingConstraints).toBeDefined();
+      expect(result.analysisDate).toBeInstanceOf(Date);
     });
 
-    it('should handle missing test values gracefully', async () => {
-      const result = await service.computeCategoryConstraints({
-        playerId: 'player-1',
-        currentCategory: 'G',
-        gender: 'M',
-        latestTestValues: {}, // No test values at all
-      });
+    it('should return same category as target when already at highest', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 280, testCount: 1 },
+      ];
 
-      // Should still return valid result
-      expect(result).toBeDefined();
-      expect(result.bindingConstraints).toBeDefined();
-      expect(result.readinessScore).toBeDefined();
+      const result = analyzePlayerConstraints(
+        'player-1',
+        'A', // Highest category
+        'M',
+        performances
+      );
+
+      expect(result.targetCategory).toBe('A');
+      expect(result.bindingConstraints).toHaveLength(0);
+    });
+
+    it('should include nonBindingGaps for constraints that are met', () => {
+      const performances: PlayerDomainPerformance[] = [
+        { domainCode: 'TEE', currentValue: 250, testCount: 1 }, // Above requirement
+        { domainCode: 'PUTT', currentValue: 90, testCount: 1 }, // Above requirement
+      ];
+
+      const result = analyzePlayerConstraints(
+        'player-1',
+        'G',
+        'M',
+        performances
+      );
+
+      expect(result.nonBindingGaps).toBeDefined();
+    });
+  });
+
+  describe('getNextCategory', () => {
+    it('should return next category in sequence', () => {
+      expect(getNextCategory('K')).toBe('J');
+      expect(getNextCategory('J')).toBe('I');
+      expect(getNextCategory('G')).toBe('F');
+      expect(getNextCategory('B')).toBe('A');
+    });
+
+    it('should return null for highest category', () => {
+      expect(getNextCategory('A')).toBeNull();
     });
   });
 
   describe('createCategoryConstraintsService', () => {
-    it('should create a valid service instance', () => {
-      const newService = createCategoryConstraintsService(mockPrisma);
-      expect(newService).toBeInstanceOf(CategoryConstraintsService);
+    it('should create a service with required methods', () => {
+      const mockPrisma = {} as any;
+      const service = createCategoryConstraintsService(mockPrisma);
+
+      expect(service).toBeDefined();
+      expect(typeof service.calculateBindingConstraints).toBe('function');
+      expect(typeof service.analyzePlayerConstraints).toBe('function');
+      expect(typeof service.getPlayerPerformances).toBe('function');
     });
   });
 });
