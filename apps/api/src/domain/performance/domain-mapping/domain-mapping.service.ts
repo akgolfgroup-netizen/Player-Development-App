@@ -271,10 +271,31 @@ export function validateDomainCode(code: string): code is TestDomainCode {
 }
 
 /**
+ * Check if string is a valid TestDomainCode
+ */
+export function isValidTestDomainCode(code: string): boolean {
+  return isValidDomainCode(code);
+}
+
+/**
+ * Check if string is a valid SgComponent
+ */
+export function isValidSgComponent(component: string): component is SgComponent {
+  return ['OTT', 'APP', 'ARG', 'PUTT', 'TOTAL'].includes(component);
+}
+
+/**
  * Get all valid domain codes
  */
 export function getAllDomainCodes(): TestDomainCode[] {
   return [...ALL_DOMAIN_CODES];
+}
+
+/**
+ * Get test number to domain mapping (useful for reverse lookups)
+ */
+export function getTestToDomainMapping(): Record<number, TestDomainCode> {
+  return { ...TEST_TO_DOMAIN_MAP };
 }
 
 // ============================================================================

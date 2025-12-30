@@ -70,4 +70,7 @@ export {
   // Validation
   validateDomainCode,
   getAllDomainCodes,
+  isValidTestDomainCode,
+  isValidSgComponent,
+  getTestToDomainMapping,
 } from './domain-mapping.service';
