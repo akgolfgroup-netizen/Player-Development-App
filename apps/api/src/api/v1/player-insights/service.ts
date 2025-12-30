@@ -62,11 +62,11 @@ export class PlayerInsightsService {
    * Get SG Journey data for a player
    */
   async getSGJourney(_tenantId: string, playerId: string): Promise<SGJourneyData> {
-    // Get player info
-    const _player = await this.prisma.player.findUnique({
-      where: { id: playerId },
-      select: { gender: true, category: true, createdAt: true },
-    });
+    // Player info available if needed for future SG calculations
+    // const player = await this.prisma.player.findUnique({
+    //   where: { id: playerId },
+    //   select: { gender: true, category: true, createdAt: true },
+    // });
 
     // Get test results for SG calculation (filter by test.testNumber via relation)
     const testResults = await this.prisma.testResult.findMany({

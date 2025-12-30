@@ -291,13 +291,13 @@ export function generateMatchInsight(
   pro: ProPlayerDNA,
   similarity: number
 ): string {
-  const _playerStrengths = Object.entries(playerDNA)
-    .filter(([_, score]) => score >= 75)
-    .map(([dim]) => dim);
-
-  const _playerWeaknesses = Object.entries(playerDNA)
-    .filter(([_, score]) => score < 60)
-    .map(([dim]) => dim);
+  // Strengths/weaknesses available for enhanced recommendations
+  // const playerStrengths = Object.entries(playerDNA)
+  //   .filter(([_, score]) => score >= 75)
+  //   .map(([dim]) => dim);
+  // const playerWeaknesses = Object.entries(playerDNA)
+  //   .filter(([_, score]) => score < 60)
+  //   .map(([dim]) => dim);
 
   if (similarity >= 80) {
     return `Du har en veldig lik spillestil som ${pro.name}. Fokuser på ${pro.famousFor.toLowerCase()} for videre utvikling.`;
