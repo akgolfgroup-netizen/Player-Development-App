@@ -7,8 +7,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   BarChart3, TrendingUp, TrendingDown, Users, Target,
-  Award, Calendar, Download, Filter, RefreshCw, ChevronDown,
-  Activity, CheckCircle, XCircle, AlertTriangle
+  Award, Download,
+  Activity, CheckCircle, AlertTriangle
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Card from '../../ui/primitives/Card';

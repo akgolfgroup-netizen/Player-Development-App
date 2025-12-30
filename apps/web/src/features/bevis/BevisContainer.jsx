@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Video, Play, Plus, Calendar,
@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { PageHeader } from '../../components/layout/PageHeader';
-import apiClient from '../../services/apiClient';
+import { listVideos } from '../../services/videoApi';
 
 // ============================================================================
 // MOCK DATA
@@ -88,6 +88,35 @@ const VIDEO_PROOFS = [
 ];
 
 const CATEGORIES = ['Alle', 'Driving', 'Jernspill', 'Kortspill', 'Putting', 'Fysisk'];
+
+// Map API category to display category
+const mapCategoryToDisplay = (category) => {
+  const mapping = {
+    driving: 'Driving',
+    driver: 'Driving',
+    ott: 'Driving',
+    iron: 'Jernspill',
+    approach: 'Jernspill',
+    app: 'Jernspill',
+    short_game: 'Kortspill',
+    arg: 'Kortspill',
+    chip: 'Kortspill',
+    bunker: 'Kortspill',
+    putting: 'Putting',
+    putt: 'Putting',
+    physical: 'Fysisk',
+    fitness: 'Fysisk',
+  };
+  return mapping[category?.toLowerCase()] || category || 'Driving';
+};
+
+// Format duration in seconds to mm:ss
+const formatDuration = (seconds) => {
+  if (!seconds) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
 
 // ============================================================================
 // VIDEO CARD
@@ -280,25 +309,42 @@ const BevisContainer = () => {
   };
 
   // Fetch video proofs from API
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const fetchVideos = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const response = await apiClient.get('/video-proofs');
-        setVideos(response.data?.data || response.data || VIDEO_PROOFS);
-      } catch (err) {
-        setError(err.response?.data?.message || err.message || 'Kunne ikke laste videoer');
-        // Fallback to mock data
-        setVideos(VIDEO_PROOFS);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const result = await listVideos({ status: 'ready', sortBy: 'createdAt', sortOrder: 'desc' });
+      const apiVideos = result.videos || [];
 
-    fetchVideos();
+      // Transform API videos to expected format
+      const transformedVideos = apiVideos.map((v) => ({
+        id: v.id,
+        title: v.title || v.fileName,
+        type: v.category || 'swing',
+        category: mapCategoryToDisplay(v.category),
+        date: v.createdAt?.split('T')[0] || new Date().toISOString().split('T')[0],
+        duration: formatDuration(v.duration),
+        thumbnail: v.thumbnailUrl || null,
+        verified: v.status === 'reviewed',
+        coachNote: v.coachNotes || null,
+        tags: v.tags || [],
+      }));
+
+      setVideos(transformedVideos.length > 0 ? transformedVideos : VIDEO_PROOFS);
+    } catch (err) {
+      console.error('Error fetching videos:', err);
+      setError(err.message || 'Kunne ikke laste videoer');
+      // Fallback to mock data
+      setVideos(VIDEO_PROOFS);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchVideos();
+  }, [fetchVideos]);
 
   const filteredVideos = videos.filter((v) => {
     const matchesCategory = categoryFilter === 'Alle' || v.category === categoryFilter;
