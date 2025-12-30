@@ -5,7 +5,22 @@ import {
   UpdateBreakingPointInput,
   UpdateProgressInput,
   ListBreakingPointsQuery,
+  EvaluateBenchmarkInput,
+  ConfigureEvidenceInput,
 } from './schema';
+import {
+  recordTrainingEffort,
+  evaluateBenchmark,
+  getBreakingPointStatus,
+  shouldTransitionStatus,
+  applyStatusTransition,
+  type BpStatus,
+  type StatusTransition,
+} from '../../../domain/performance/bp-evidence';
+import {
+  getProofMetricById,
+  type ProofMetric,
+} from '../../../domain/performance/domain-mapping';
 
 /**
  * Breaking point with player relations
@@ -387,5 +402,229 @@ export class BreakingPointService {
     await this.prisma.breakingPoint.delete({
       where: { id: breakingPointId },
     });
+  }
+
+  // ==========================================================================
+  // BP-EVIDENCE METHODS (V2)
+  // ==========================================================================
+
+  /**
+   * Record training effort for a breaking point
+   * This increases effortPercent based on completed sessions, NOT progressPercent
+   */
+  async recordEffort(tenantId: string, breakingPointId: string) {
+    // Verify BP exists and belongs to tenant
+    const bp = await this.prisma.breakingPoint.findFirst({
+      where: {
+        id: breakingPointId,
+        player: { tenantId },
+      },
+    });
+
+    if (!bp) {
+      throw new NotFoundError('Breaking point not found');
+    }
+
+    // Record effort using bp-evidence service
+    const result = await recordTrainingEffort(this.prisma, { breakingPointId });
+
+    // Check for status transition
+    const transition = await applyStatusTransition(this.prisma, breakingPointId);
+
+    return {
+      ...result,
+      statusTransition: transition,
+    };
+  }
+
+  /**
+   * Evaluate a benchmark test result against the breaking point
+   * This is the ONLY way to increase progressPercent
+   */
+  async evaluateBenchmarkTest(
+    tenantId: string,
+    breakingPointId: string,
+    input: EvaluateBenchmarkInput
+  ) {
+    // Verify BP exists and belongs to tenant
+    const bp = await this.prisma.breakingPoint.findFirst({
+      where: {
+        id: breakingPointId,
+        player: { tenantId },
+      },
+    });
+
+    if (!bp) {
+      throw new NotFoundError('Breaking point not found');
+    }
+
+    // Get proof metric - either from input override or from BP configuration
+    const metricId = input.metricId || bp.proofMetricId;
+    if (!metricId) {
+      throw new BadRequestError(
+        'No proof metric configured. Set proofMetricId on the breaking point or provide metricId in request.'
+      );
+    }
+
+    const proofMetric = getProofMetricById(metricId);
+    if (!proofMetric) {
+      throw new BadRequestError(`Unknown proof metric: ${metricId}`);
+    }
+
+    // Get success rule - either from input override or from BP configuration
+    const successRule = input.successRule || bp.successRule;
+    if (!successRule) {
+      throw new BadRequestError(
+        'No success rule configured. Set successRule on the breaking point or provide successRule in request.'
+      );
+    }
+
+    // Evaluate benchmark
+    const result = await evaluateBenchmark(this.prisma, {
+      breakingPointId,
+      proofMetric: {
+        metricId: proofMetric.id,
+        direction: proofMetric.direction,
+      },
+      testValue: input.testValue,
+      testDate: new Date(input.testDate || new Date()),
+      successRule,
+    });
+
+    // Check for status transition
+    const transition = await applyStatusTransition(this.prisma, breakingPointId);
+
+    return {
+      ...result,
+      statusTransition: transition,
+    };
+  }
+
+  /**
+   * Get detailed evidence status for a breaking point
+   */
+  async getEvidenceStatus(tenantId: string, breakingPointId: string) {
+    // Verify BP exists and belongs to tenant
+    const bp = await this.prisma.breakingPoint.findFirst({
+      where: {
+        id: breakingPointId,
+        player: { tenantId },
+      },
+      include: {
+        player: {
+          select: { id: true, firstName: true, lastName: true, category: true },
+        },
+      },
+    });
+
+    if (!bp) {
+      throw new NotFoundError('Breaking point not found');
+    }
+
+    // Get status from bp-evidence service
+    const status = await getBreakingPointStatus(this.prisma, { breakingPointId });
+
+    // Check if a transition is pending
+    const pendingTransition = await shouldTransitionStatus(this.prisma, breakingPointId);
+
+    // Get proof metric details if configured
+    let proofMetricDetails: ProofMetric | null = null;
+    if (bp.proofMetricId) {
+      proofMetricDetails = getProofMetricById(bp.proofMetricId);
+    }
+
+    return {
+      breakingPoint: {
+        id: bp.id,
+        specificArea: bp.specificArea,
+        description: bp.description,
+        status: bp.status as BpStatus,
+        player: bp.player,
+      },
+      evidence: {
+        effortPercent: status.effortPercent,
+        progressPercent: status.progressPercent,
+        isResolved: status.isResolved,
+        lastBenchmarkDate: status.lastBenchmarkDate,
+        createdAt: status.createdAt,
+      },
+      configuration: {
+        testDomainCode: bp.testDomainCode,
+        proofMetricId: bp.proofMetricId,
+        proofMetricDetails,
+        successRule: bp.successRule,
+        benchmarkTestId: bp.benchmarkTestId,
+        benchmarkWindowDays: bp.benchmarkWindowDays,
+        confidence: bp.confidence,
+      },
+      pendingTransition,
+    };
+  }
+
+  /**
+   * Configure evidence tracking for a breaking point
+   */
+  async configureEvidence(
+    tenantId: string,
+    breakingPointId: string,
+    input: ConfigureEvidenceInput
+  ) {
+    // Verify BP exists and belongs to tenant
+    const bp = await this.prisma.breakingPoint.findFirst({
+      where: {
+        id: breakingPointId,
+        player: { tenantId },
+      },
+    });
+
+    if (!bp) {
+      throw new NotFoundError('Breaking point not found');
+    }
+
+    // Validate proof metric if provided
+    if (input.proofMetricId) {
+      const metric = getProofMetricById(input.proofMetricId);
+      if (!metric) {
+        throw new BadRequestError(`Unknown proof metric: ${input.proofMetricId}`);
+      }
+    }
+
+    // Update BP with evidence configuration
+    const updated = await this.prisma.breakingPoint.update({
+      where: { id: breakingPointId },
+      data: {
+        testDomainCode: input.testDomainCode,
+        proofMetricId: input.proofMetricId,
+        successRule: input.successRule,
+        benchmarkTestId: input.benchmarkTestId,
+        benchmarkWindowDays: input.benchmarkWindowDays,
+      },
+      include: {
+        player: {
+          select: { id: true, firstName: true, lastName: true, category: true },
+        },
+      },
+    });
+
+    return updated;
+  }
+
+  /**
+   * Apply pending status transition
+   */
+  async applyTransition(tenantId: string, breakingPointId: string): Promise<StatusTransition | null> {
+    // Verify BP exists and belongs to tenant
+    const bp = await this.prisma.breakingPoint.findFirst({
+      where: {
+        id: breakingPointId,
+        player: { tenantId },
+      },
+    });
+
+    if (!bp) {
+      throw new NotFoundError('Breaking point not found');
+    }
+
+    return applyStatusTransition(this.prisma, breakingPointId);
   }
 }

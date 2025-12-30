@@ -77,3 +77,52 @@ export const breakingPointIdParamSchema = z.object({
 });
 
 export type BreakingPointIdParam = z.infer<typeof breakingPointIdParamSchema>;
+
+// ============================================================================
+// BP-EVIDENCE SCHEMAS (V2)
+// ============================================================================
+
+/**
+ * Record training effort - increases effortPercent based on completed sessions
+ */
+export const recordEffortSchema = z.object({
+  // No body required - effort is calculated from completed sessions
+});
+
+export type RecordEffortInput = z.infer<typeof recordEffortSchema>;
+
+/**
+ * Evaluate benchmark test result - the ONLY way to increase progressPercent
+ */
+export const evaluateBenchmarkSchema = z.object({
+  testValue: z.number().describe('The measured value from the benchmark test'),
+  testDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
+    message: 'Invalid date format',
+  }).optional().default(() => new Date().toISOString()),
+  metricId: z.string().optional().describe('Override the proof metric ID'),
+  successRule: z.string().optional().describe('Override the success rule (e.g., "DRIVER_DISTANCE:>=:230")'),
+});
+
+export type EvaluateBenchmarkInput = z.infer<typeof evaluateBenchmarkSchema>;
+
+/**
+ * Get BP evidence status - detailed status with effort/progress separation
+ */
+export const getEvidenceStatusSchema = z.object({
+  // No params needed beyond the BP ID
+});
+
+export type GetEvidenceStatusInput = z.infer<typeof getEvidenceStatusSchema>;
+
+/**
+ * Configure BP evidence tracking
+ */
+export const configureEvidenceSchema = z.object({
+  testDomainCode: z.enum(['TEE', 'INN200', 'INN150', 'INN100', 'INN50', 'ARG', 'PUTT', 'PHYS']).optional(),
+  proofMetricId: z.string().optional(),
+  successRule: z.string().optional(),
+  benchmarkTestId: z.number().int().optional(),
+  benchmarkWindowDays: z.number().int().min(7).max(90).optional(),
+});
+
+export type ConfigureEvidenceInput = z.infer<typeof configureEvidenceSchema>;

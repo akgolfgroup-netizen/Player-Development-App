@@ -7,11 +7,15 @@ import {
   updateProgressSchema,
   listBreakingPointsQuerySchema,
   breakingPointIdParamSchema,
+  evaluateBenchmarkSchema,
+  configureEvidenceSchema,
   CreateBreakingPointInput,
   UpdateBreakingPointInput,
   UpdateProgressInput,
   ListBreakingPointsQuery,
   BreakingPointIdParam,
+  EvaluateBenchmarkInput,
+  ConfigureEvidenceInput,
 } from './schema';
 import { authenticateUser } from '../../../middleware/auth';
 import { injectTenantContext } from '../../../middleware/tenant';
@@ -182,6 +186,148 @@ export async function breakingPointRoutes(app: FastifyInstance): Promise<void> {
       const params = validate(breakingPointIdParamSchema, request.params);
       await breakingPointService.deleteBreakingPoint(request.tenant!.id, params.id);
       return reply.send({ success: true, message: 'Breaking point deleted successfully' });
+    }
+  );
+
+  // ==========================================================================
+  // BP-EVIDENCE ENDPOINTS (V2)
+  // ==========================================================================
+
+  /**
+   * Get evidence status for a breaking point
+   * Returns effort/progress separation and configuration details
+   */
+  app.get<{ Params: BreakingPointIdParam }>(
+    '/:id/evidence',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Get evidence-based status for a breaking point (effort vs progress)',
+        tags: ['breaking-points', 'bp-evidence'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: BreakingPointIdParam }>, reply: FastifyReply) => {
+      const params = validate(breakingPointIdParamSchema, request.params);
+      const result = await breakingPointService.getEvidenceStatus(request.tenant!.id, params.id);
+      return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Record training effort for a breaking point
+   * This increases effortPercent based on completed sessions, NOT progressPercent
+   */
+  app.post<{ Params: BreakingPointIdParam }>(
+    '/:id/effort',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Record training effort (session completions → effortPercent). Does NOT change progressPercent.',
+        tags: ['breaking-points', 'bp-evidence'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: BreakingPointIdParam }>, reply: FastifyReply) => {
+      const params = validate(breakingPointIdParamSchema, request.params);
+      const result = await breakingPointService.recordEffort(request.tenant!.id, params.id);
+      return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Evaluate a benchmark test result
+   * This is the ONLY way to increase progressPercent
+   */
+  app.post<{ Params: BreakingPointIdParam; Body: EvaluateBenchmarkInput }>(
+    '/:id/benchmark',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Evaluate benchmark test result. This is the ONLY way to change progressPercent.',
+        tags: ['breaking-points', 'bp-evidence'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          400: { $ref: 'Error#' },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: BreakingPointIdParam; Body: EvaluateBenchmarkInput }>, reply: FastifyReply) => {
+      const params = validate(breakingPointIdParamSchema, request.params);
+      const input = validate(evaluateBenchmarkSchema, request.body);
+      const result = await breakingPointService.evaluateBenchmarkTest(
+        request.tenant!.id,
+        params.id,
+        input
+      );
+      return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Configure evidence tracking for a breaking point
+   */
+  app.patch<{ Params: BreakingPointIdParam; Body: ConfigureEvidenceInput }>(
+    '/:id/evidence',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Configure evidence tracking (domain, proof metric, success rule)',
+        tags: ['breaking-points', 'bp-evidence'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          400: { $ref: 'Error#' },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: BreakingPointIdParam; Body: ConfigureEvidenceInput }>, reply: FastifyReply) => {
+      const params = validate(breakingPointIdParamSchema, request.params);
+      const input = validate(configureEvidenceSchema, request.body);
+      const result = await breakingPointService.configureEvidence(
+        request.tenant!.id,
+        params.id,
+        input
+      );
+      return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Apply pending status transition
+   */
+  app.post<{ Params: BreakingPointIdParam }>(
+    '/:id/transition',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Apply pending status transition if one exists',
+        tags: ['breaking-points', 'bp-evidence'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: BreakingPointIdParam }>, reply: FastifyReply) => {
+      const params = validate(breakingPointIdParamSchema, request.params);
+      const result = await breakingPointService.applyTransition(request.tenant!.id, params.id);
+      return reply.send({
+        success: true,
+        data: result ? { transitionApplied: true, ...result } : { transitionApplied: false },
+      });
     }
   );
 }
