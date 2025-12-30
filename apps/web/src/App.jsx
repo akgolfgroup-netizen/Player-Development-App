@@ -88,7 +88,7 @@ const KategoriFremgangContainer = lazy(() => import('./features/utvikling/Katego
 const BenchmarkHistorikkContainer = lazy(() => import('./features/utvikling/BenchmarkHistorikkContainer'));
 
 // Trening
-const TreningsdagbokContainer = lazy(() => import('./features/trening-plan/TreningsdagbokContainer'));
+const TreningsdagbokContainer = lazy(() => import('./features/trening-plan/treningsdagbok/components/TreningsdagbokPage'));
 const LoggTreningContainer = lazy(() => import('./features/trening-plan/LoggTreningContainer'));
 
 // Kalender
