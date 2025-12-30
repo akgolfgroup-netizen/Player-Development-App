@@ -43,15 +43,6 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
     handler: async (request, reply) => {
       const { adminKey, cleanFirst } = request.body as { adminKey: string; cleanFirst?: boolean };
 
-      // Verify admin key
-      const expectedKey = process.env.ADMIN_SEED_KEY;
-      if (!expectedKey || adminKey !== expectedKey) {
-        return reply.code(403).send({
-          success: false,
-          error: { code: 'FORBIDDEN', message: 'Invalid admin key' },
-        });
-      }
-
       try {
         const results: string[] = [];
 
@@ -59,6 +50,22 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
         const existingTenant = await prisma.tenant.findUnique({
           where: { id: DEMO_TENANT_ID },
         });
+
+        // Verify admin key (allow bootstrap if no key configured and no demo data exists)
+        const expectedKey = process.env.ADMIN_SEED_KEY;
+        const isBootstrap = !expectedKey && !existingTenant && adminKey === 'bootstrap';
+
+        if (!isBootstrap && (!expectedKey || adminKey !== expectedKey)) {
+          return reply.code(403).send({
+            success: false,
+            error: {
+              code: 'FORBIDDEN',
+              message: !expectedKey
+                ? 'ADMIN_SEED_KEY not configured. Use "bootstrap" as key for first-time seeding when no data exists.'
+                : 'Invalid admin key'
+            },
+          });
+        }
 
         if (existingTenant && !cleanFirst) {
           return reply.send({
