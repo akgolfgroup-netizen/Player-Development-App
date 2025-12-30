@@ -202,6 +202,115 @@ export const adminSeedRoutes: FastifyPluginAsync = async (fastify) => {
     },
   });
 
+  // Add custom player
+  fastify.post('/add-player', {
+    schema: {
+      description: 'Add a new player (requires admin key)',
+      tags: ['Admin'],
+      body: {
+        type: 'object',
+        required: ['adminKey', 'email', 'firstName', 'lastName'],
+        properties: {
+          adminKey: { type: 'string' },
+          email: { type: 'string' },
+          firstName: { type: 'string' },
+          lastName: { type: 'string' },
+          password: { type: 'string', default: 'Demo123456' },
+          handicap: { type: 'number', default: 15.0 },
+          category: { type: 'string', default: 'G' },
+          gender: { type: 'string', default: 'male' },
+          dateOfBirth: { type: 'string' },
+        },
+      },
+    },
+    handler: async (request, reply) => {
+      const {
+        adminKey,
+        email,
+        firstName,
+        lastName,
+        password = 'Demo123456',
+        handicap = 15.0,
+        category = 'G',
+        gender = 'male',
+        dateOfBirth,
+      } = request.body as any;
+
+      // Verify admin key
+      const expectedKey = process.env.ADMIN_SEED_KEY;
+      if (!expectedKey || adminKey !== expectedKey) {
+        return reply.code(403).send({
+          success: false,
+          error: { code: 'FORBIDDEN', message: 'Invalid admin key' },
+        });
+      }
+
+      try {
+        // Check if user already exists
+        const existingUser = await prisma.user.findUnique({
+          where: { email },
+        });
+
+        if (existingUser) {
+          return reply.code(400).send({
+            success: false,
+            error: { code: 'USER_EXISTS', message: `User ${email} already exists` },
+          });
+        }
+
+        const playerId = crypto.randomUUID();
+        const hashedPassword = await hashPassword(password);
+
+        // Create user
+        await prisma.user.create({
+          data: {
+            id: playerId,
+            email,
+            passwordHash: hashedPassword,
+            firstName,
+            lastName,
+            role: 'player',
+            tenantId: DEMO_TENANT_ID,
+            isActive: true,
+          },
+        });
+
+        // Create player profile
+        await prisma.player.create({
+          data: {
+            id: playerId,
+            userId: playerId,
+            tenantId: DEMO_TENANT_ID,
+            firstName,
+            lastName,
+            email,
+            dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date('1990-01-01'),
+            gender,
+            category,
+            handicap,
+            coachId: DEMO_COACH_ID,
+          },
+        });
+
+        return reply.send({
+          success: true,
+          message: `Player ${firstName} ${lastName} created successfully`,
+          data: {
+            playerId,
+            email,
+            password,
+          },
+        });
+      } catch (error: any) {
+        fastify.log.error({ err: error }, 'Failed to add player');
+        return reply.code(500).send({
+          success: false,
+          error: { code: 'CREATE_FAILED', message: error.message },
+        });
+      }
+    },
+  });
+
   // Health check for seeded data
   fastify.get('/seed/status', {
     schema: {
