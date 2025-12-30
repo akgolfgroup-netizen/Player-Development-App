@@ -28,10 +28,6 @@ import {
   PRESSURE_LEVELS,
   POSITIONS,
   POSITION_ORDER,
-  PHYSICAL_FOCUS,
-  TOURNAMENT_TYPES,
-  PLAY_FOCUS,
-  PUTTING_FOCUS,
   CS_LEVELS,
   AREAS_BY_PYRAMID,
   isFullSwingArea,
@@ -139,7 +135,7 @@ export function useDagbokFilters(state: DagbokState): UseDagbokFiltersResult {
 
   // Compute available options based on current state
   const options = useMemo<FilterOptions>(() => {
-    const { pyramid, area, lPhase } = state;
+    const { pyramid, lPhase } = state;
 
     // Pyramid options - always all available
     const pyramidOpts: FilterOption<Pyramid>[] = (Object.keys(PYRAMIDS) as Pyramid[]).map((p) => ({

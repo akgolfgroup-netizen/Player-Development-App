@@ -8,13 +8,9 @@ import {
   Edit2,
   Trash2,
   Send,
-  Plus,
-  AlertCircle
+  Plus
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../ui/primitives/Card';
-import Button from '../../ui/primitives/Button';
-import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { messagesAPI } from '../../services/api';
 
@@ -80,8 +76,11 @@ export const CoachScheduledMessages: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [messages, setMessages] = useState<ScheduledMessage[]>(mockScheduledMessages);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Fetch scheduled messages from API

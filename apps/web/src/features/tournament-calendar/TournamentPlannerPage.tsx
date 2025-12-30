@@ -15,16 +15,12 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   Calendar,
   MapPin,
-  Target,
-  Trophy,
-  ChevronRight,
   Plus,
   Trash2,
   Edit3,
   Check,
   X,
   Download,
-  Share2,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
@@ -32,12 +28,10 @@ import StateCard from '../../ui/composites/StateCard';
 import {
   Tournament,
   TournamentPurpose,
-  PlayerCategory,
   CATEGORY_LABELS,
   PURPOSE_LABELS,
   PURPOSE_DESCRIPTIONS,
 } from './types';
-import { fetchTournaments } from './tournament-service';
 
 // ============================================================================
 // TYPES
@@ -290,6 +284,7 @@ function PlanSummary({ planned }: { planned: PlannedTournament[] }) {
 
 export default function TournamentPlannerPage() {
   const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { user } = useAuth();
   const [plannedTournaments, setPlannedTournaments] = useState<PlannedTournament[]>([]);
 

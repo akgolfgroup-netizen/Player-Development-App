@@ -3,14 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import {
   Target,
   Search,
-  Filter,
   TrendingUp,
   TrendingDown,
   Activity,
-  ChevronRight,
   RefreshCw,
   Calendar,
-  Award,
   CheckCircle,
   Circle
 } from 'lucide-react';

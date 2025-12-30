@@ -113,9 +113,33 @@ export const exercisesAPI = {
 
 // Training Plan API
 export const trainingPlanAPI = {
+  // List and get plans
+  getAll: () => api.get('/training-plan'),
   getPlans: (playerId) => api.get(`/training-plan?playerId=${playerId}`),
+  getForPlayer: (playerId) => api.get(`/training-plan/player/${playerId}`),
+  getFull: (planId, params = {}) => api.get(`/training-plan/${planId}/full`, { params }),
+  getCalendar: (planId, params = {}) => api.get(`/training-plan/${planId}/calendar`, { params }),
+  getToday: (planId) => api.get(`/training-plan/${planId}/today`),
+  getAnalytics: (planId) => api.get(`/training-plan/${planId}/analytics`),
+  getAchievements: (planId) => api.get(`/training-plan/${planId}/achievements`),
+  // CRUD
   createPlan: (data) => api.post('/training-plan', data),
+  generate: (data) => api.post('/training-plan/generate', data),
   updatePlan: (id, data) => api.put(`/training-plan/${id}`, data),
+  deletePlan: (id) => api.delete(`/training-plan/${id}`),
+  // Plan actions
+  acceptPlan: (planId) => api.put(`/training-plan/${planId}/accept`),
+  rejectPlan: (planId, data) => api.put(`/training-plan/${planId}/reject`, data),
+  // Daily assignments
+  updateDaily: (planId, date, data) => api.put(`/training-plan/${planId}/daily/${date}`, data),
+  quickAction: (planId, date, data) => api.put(`/training-plan/${planId}/daily/${date}/quick-action`, data),
+  findSubstitute: (planId, date) => api.post(`/training-plan/${planId}/daily/${date}/substitute`),
+  // Tournaments
+  addTournament: (planId, data) => api.post(`/training-plan/${planId}/tournaments`, data),
+  // Modification requests
+  requestModification: (planId, data) => api.post(`/training-plan/${planId}/modification-request`, data),
+  getModificationRequests: (params = {}) => api.get('/training-plan/modification-requests', { params }),
+  respondToModification: (requestId, data) => api.put(`/training-plan/modification-requests/${requestId}/respond`, data),
 };
 
 // Calendar/Bookings API

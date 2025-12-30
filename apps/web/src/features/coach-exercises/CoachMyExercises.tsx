@@ -108,8 +108,12 @@ export const CoachMyExercises: React.FC = () => {
   const [filterType, setFilterType] = useState<'all' | 'custom' | 'saved'>('all');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [exercises, setExercises] = useState<MyExercise[]>(mockMyExercises);
+  // State variables for loading/error - used by setters in effects
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Fetch exercises from API
