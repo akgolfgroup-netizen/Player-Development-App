@@ -46,8 +46,15 @@ interface UseDayViewStateReturn {
   cancelWorkout: () => void;
 }
 
+// Instrumentation event types
+type InstrumentationEvent =
+  | WorkoutStartEvent
+  | WorkoutRescheduleEvent
+  | WorkoutModifyEvent
+  | WorkoutCompleteEvent;
+
 // Instrumentation helper (non-blocking)
-const logEvent = (eventName: string, data: Record<string, unknown>) => {
+const logEvent = (eventName: string, data: InstrumentationEvent) => {
   // Non-blocking console log for MVP
   // In production, this would send to analytics service
   console.log(`[DayView Analytics] ${eventName}:`, data);

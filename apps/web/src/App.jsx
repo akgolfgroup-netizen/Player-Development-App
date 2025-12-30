@@ -65,6 +65,7 @@ const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage'));
 const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
 const StatsPageV2 = lazy(() => import('./features/stats/StatsPageV2'));
 const CalendarPage = lazy(() => import('./features/calendar/CalendarPage'));
+const DayViewPage = lazy(() => import('./features/calendar/DayViewPage'));
 
 // Player Stats (DataGolf & Test Results)
 const PlayerStatsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.PlayerStatsPage })));
@@ -162,6 +163,7 @@ const CoachPlayerPage = lazy(() => import('./features/coach-player/CoachPlayerPa
 const CoachGroupList = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupList })));
 const CoachGroupDetail = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupDetail })));
 const CoachGroupCreate = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupCreate })));
+const CoachGroupPlan = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupPlan })));
 
 // Coach booking (lazy-loaded)
 const CoachBookingCalendar = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingCalendar })));
@@ -446,6 +448,11 @@ function App() {
           <Route path="/kalender" element={
             <ProtectedRoute>
               <CalendarPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/kalender/dag" element={
+            <ProtectedRoute>
+              <DayViewPage />
             </ProtectedRoute>
           } />
           <Route path="/plan-preview/:planId" element={
@@ -1031,7 +1038,7 @@ function App() {
           <Route path="/coach/groups/:groupId/plan" element={
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
-                <PlaceholderPage title="Gruppeplan" />
+                <CoachGroupPlan />
               </CoachLayout>
             </ProtectedRoute>
           } />
