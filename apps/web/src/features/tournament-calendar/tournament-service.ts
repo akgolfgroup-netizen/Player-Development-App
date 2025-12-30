@@ -15,6 +15,8 @@ import {
   TournamentsResponse,
   TournamentStats,
   TournamentResult,
+  TournamentPurpose,
+  CompetitionLevel,
 } from './types';
 import { applyHierarchyMapping, getTourPrestigeScore } from './hierarchy-config';
 
@@ -203,6 +205,20 @@ function applyFilters(
     // Country filter
     if (filters.countries?.length) {
       if (!filters.countries.includes(t.country)) {
+        return false;
+      }
+    }
+
+    // Purpose filter (RESULTAT, UTVIKLING, TRENING)
+    if (filters.purposes?.length) {
+      if (!t.purpose || !filters.purposes.includes(t.purpose)) {
+        return false;
+      }
+    }
+
+    // Level filter (Internasjonal, Nasjonal, Regional, etc.)
+    if (filters.levels?.length) {
+      if (!t.level || !filters.levels.includes(t.level)) {
         return false;
       }
     }

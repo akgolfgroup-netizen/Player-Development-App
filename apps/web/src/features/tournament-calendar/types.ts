@@ -106,6 +106,56 @@ export const CATEGORY_DESCRIPTIONS: Record<PlayerCategory, string> = {
 };
 
 // ============================================================================
+// TOURNAMENT PURPOSE (from hierarchy document Section 10)
+// ============================================================================
+
+/**
+ * Tournament purpose categories from hierarchy document
+ * Determines how the player should approach the tournament
+ */
+export type TournamentPurpose =
+  | 'RESULTAT'   // High priority - results matter, full performance mode
+  | 'UTVIKLING'  // Medium priority - gain experience, test skills
+  | 'TRENING';   // Low priority - practice under competition conditions
+
+export const PURPOSE_LABELS: Record<TournamentPurpose, string> = {
+  RESULTAT: 'Resultat',
+  UTVIKLING: 'Utvikling',
+  TRENING: 'Trening',
+};
+
+export const PURPOSE_DESCRIPTIONS: Record<TournamentPurpose, string> = {
+  RESULTAT: 'Full prestasjonsmodus - resultatet er viktigst',
+  UTVIKLING: 'Teste ferdigheter - bygge konkurranseerfaring',
+  TRENING: 'Øve under turneringspress - eksperimentere',
+};
+
+// ============================================================================
+// COMPETITION LEVEL (from hierarchy document - Nivå)
+// ============================================================================
+
+/**
+ * Competition level/scope
+ * Determines the geographic scope and prestige of the tournament
+ */
+export type CompetitionLevel =
+  | 'internasjonal'
+  | 'nasjonal'
+  | 'regional'
+  | 'klubb'
+  | 'junior'
+  | 'trenings_turnering';
+
+export const LEVEL_LABELS: Record<CompetitionLevel, string> = {
+  internasjonal: 'Internasjonal',
+  nasjonal: 'Nasjonal',
+  regional: 'Regional',
+  klubb: 'Klubb',
+  junior: 'Junior',
+  trenings_turnering: 'Treningsturnering',
+};
+
+// ============================================================================
 // COUNTRY TYPES
 // ============================================================================
 
@@ -193,6 +243,10 @@ export interface Tournament {
   // Tour/Source
   tour: TourType;
 
+  // Hierarchy classification (from hierarchy document)
+  purpose?: TournamentPurpose;  // RESULTAT, UTVIKLING, TRENING
+  level?: CompetitionLevel;     // Internasjonal, Nasjonal, Regional, etc.
+
   // Status
   status: TournamentStatus;
 
@@ -247,6 +301,10 @@ export interface TournamentFilters {
 
   // Tour filter
   tours?: TourType[];
+
+  // Hierarchy filters (from hierarchy document)
+  purposes?: TournamentPurpose[];   // RESULTAT, UTVIKLING, TRENING
+  levels?: CompetitionLevel[];      // Internasjonal, Nasjonal, Regional, etc.
 
   // Status filter
   statuses?: TournamentStatus[];

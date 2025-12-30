@@ -46,11 +46,16 @@ import {
   TourType,
   TournamentStatus,
   PlayerCategory,
+  TournamentPurpose,
+  CompetitionLevel,
   TOUR_LABELS,
   STATUS_LABELS,
   CATEGORY_LABELS,
   COUNTRY_LABELS,
   COUNTRY_GROUPS,
+  PURPOSE_LABELS,
+  PURPOSE_DESCRIPTIONS,
+  LEVEL_LABELS,
 } from './types';
 import {
   fetchTournaments,
@@ -90,6 +95,8 @@ function useFilterState() {
     tours: searchParams.getAll('tour') as TourType[] || undefined,
     statuses: searchParams.getAll('status') as TournamentStatus[] || undefined,
     recommendedCategories: searchParams.getAll('category') as PlayerCategory[] || undefined,
+    purposes: searchParams.getAll('purpose') as TournamentPurpose[] || undefined,
+    levels: searchParams.getAll('level') as CompetitionLevel[] || undefined,
     dateRange: (searchParams.get('dateRange') as TournamentFilters['dateRange']) || undefined,
     countries: searchParams.getAll('country') || undefined,
   }), [searchParams]);
@@ -101,6 +108,8 @@ function useFilterState() {
     newFilters.tours?.forEach(t => params.append('tour', t));
     newFilters.statuses?.forEach(s => params.append('status', s));
     newFilters.recommendedCategories?.forEach(c => params.append('category', c));
+    newFilters.purposes?.forEach(p => params.append('purpose', p));
+    newFilters.levels?.forEach(l => params.append('level', l));
     if (newFilters.dateRange) params.set('dateRange', newFilters.dateRange);
     newFilters.countries?.forEach(c => params.append('country', c));
 
@@ -508,6 +517,15 @@ function FilterPanel({
   };
 
   const categories: PlayerCategory[] = ['A', 'B', 'C', 'D', 'E'];
+  const purposes: TournamentPurpose[] = ['RESULTAT', 'UTVIKLING', 'TRENING'];
+  const levels: CompetitionLevel[] = [
+    'internasjonal',
+    'nasjonal',
+    'regional',
+    'klubb',
+    'junior',
+    'trenings_turnering',
+  ];
   const tours: TourType[] = [
     'junior_tour_regional',
     'srixon_tour',
@@ -545,9 +563,61 @@ function FilterPanel({
         </div>
 
         <div style={filterPanelStyles.content}>
-          {/* Category Filter */}
+          {/* Tournament Purpose Filter (from hierarchy document) */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Anbefalt nivå</h4>
+            <h4 style={filterPanelStyles.sectionTitle}>Turneringsformål</h4>
+            <p style={filterPanelStyles.sectionDescription}>
+              Hvordan du bør tilnærme deg turneringen
+            </p>
+            <div style={filterPanelStyles.chipGrid}>
+              {purposes.map(purpose => {
+                const isSelected = localFilters.purposes?.includes(purpose);
+                return (
+                  <button
+                    key={purpose}
+                    onClick={() => toggleArrayFilter('purposes', purpose)}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                    title={PURPOSE_DESCRIPTIONS[purpose]}
+                    aria-label={`${PURPOSE_LABELS[purpose]}: ${PURPOSE_DESCRIPTIONS[purpose]}`}
+                  >
+                    {PURPOSE_LABELS[purpose]}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Competition Level Filter (from hierarchy document) */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Konkurransenivå</h4>
+            <div style={filterPanelStyles.chipGrid}>
+              {levels.map(level => {
+                const isSelected = localFilters.levels?.includes(level);
+                return (
+                  <button
+                    key={level}
+                    onClick={() => toggleArrayFilter('levels', level)}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                    aria-label={`Konkurransenivå: ${LEVEL_LABELS[level]}`}
+                  >
+                    {LEVEL_LABELS[level]}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Player Category Filter */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Anbefalt spillernivå</h4>
             <div style={filterPanelStyles.chipGrid}>
               {categories.map(cat => {
                 const isSelected = localFilters.recommendedCategories?.includes(cat);
@@ -559,6 +629,7 @@ function FilterPanel({
                       ...filterPanelStyles.chip,
                       ...(isSelected ? filterPanelStyles.chipSelected : {}),
                     }}
+                    aria-label={`Spillerkategori ${CATEGORY_LABELS[cat]}`}
                   >
                     {CATEGORY_LABELS[cat]}
                     {isSelected && <CheckCircle size={14} />}
@@ -773,6 +844,11 @@ const filterPanelStyles: Record<string, React.CSSProperties> = {
     fontSize: '14px',
     fontWeight: 600,
     color: 'var(--text-primary)',
+    margin: '0 0 var(--spacing-2) 0',
+  },
+  sectionDescription: {
+    fontSize: '12px',
+    color: 'var(--text-secondary)',
     margin: '0 0 var(--spacing-3) 0',
   },
   chipGrid: {
@@ -925,6 +1001,8 @@ export default function TournamentCalendarPage() {
       filters.tours?.length ||
       filters.statuses?.length ||
       filters.recommendedCategories?.length ||
+      filters.purposes?.length ||
+      filters.levels?.length ||
       filters.dateRange ||
       filters.countries?.length
     );

@@ -18,6 +18,8 @@ import {
   PlayerCategory,
   RecommendationConfidence,
   Tournament,
+  TournamentPurpose,
+  CompetitionLevel,
 } from './types';
 
 // ============================================================================
@@ -37,6 +39,9 @@ interface HierarchyRule {
   maxAge?: number;
   description: string;
   confidence: RecommendationConfidence;
+  // Hierarchy document fields
+  defaultPurpose: TournamentPurpose;      // RESULTAT, UTVIKLING, TRENING
+  competitionLevel: CompetitionLevel;     // Internasjonal, Nasjonal, Regional, etc.
 }
 
 /**
@@ -50,12 +55,16 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     primaryCategory: 'A',
     description: 'PGA Tour - Verdens beste spillere',
     confidence: 'high',
+    defaultPurpose: 'RESULTAT',
+    competitionLevel: 'internasjonal',
   },
   {
     tour: 'dp_world_tour',
     primaryCategory: 'A',
     description: 'DP World Tour - Europatouren',
     confidence: 'high',
+    defaultPurpose: 'RESULTAT',
+    competitionLevel: 'internasjonal',
   },
   {
     tour: 'challenge_tour',
@@ -63,6 +72,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['B'],
     description: 'Challenge Tour - Kvalifisering til DP World Tour',
     confidence: 'high',
+    defaultPurpose: 'RESULTAT',
+    competitionLevel: 'internasjonal',
   },
 
   // Advanced / Semi-professional Level
@@ -72,6 +83,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['B'],
     description: 'WAGR-turneringer - Verdensranking for amatører',
     confidence: 'high',
+    defaultPurpose: 'RESULTAT',
+    competitionLevel: 'internasjonal',
   },
   {
     tour: 'ega_turnering',
@@ -79,6 +92,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['A', 'C'],
     description: 'EGA-turneringer - European Golf Association',
     confidence: 'high',
+    defaultPurpose: 'RESULTAT',
+    competitionLevel: 'internasjonal',
   },
   {
     tour: 'nordic_league',
@@ -86,6 +101,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['A', 'C'],
     description: 'Nordic League - Nordisk eliteserie',
     confidence: 'high',
+    defaultPurpose: 'RESULTAT',
+    competitionLevel: 'internasjonal',
   },
   {
     tour: 'college_turneringer',
@@ -93,6 +110,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['A', 'C'],
     description: 'College-turneringer - Amerikanske universiteter',
     confidence: 'medium',
+    defaultPurpose: 'UTVIKLING',
+    competitionLevel: 'internasjonal',
   },
 
   // Intermediate / Competitive Amateur Level
@@ -102,6 +121,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['B', 'D'],
     description: 'Garmin Norges Cup - Nasjonal konkurranseserie',
     confidence: 'high',
+    defaultPurpose: 'UTVIKLING',
+    competitionLevel: 'nasjonal',
   },
   {
     tour: 'srixon_tour',
@@ -109,6 +130,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['B', 'D'],
     description: 'Srixon Tour - Nasjonal konkurranseserie',
     confidence: 'high',
+    defaultPurpose: 'UTVIKLING',
+    competitionLevel: 'nasjonal',
   },
   {
     tour: 'global_junior_tour',
@@ -118,6 +141,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     maxAge: 21,
     description: 'Global Junior Tour - Internasjonal juniorserie',
     confidence: 'high',
+    defaultPurpose: 'UTVIKLING',
+    competitionLevel: 'internasjonal',
   },
 
   // Developing / Club Level
@@ -129,6 +154,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     maxAge: 18,
     description: 'Junior Tour Regional - Regional juniorserie',
     confidence: 'high',
+    defaultPurpose: 'UTVIKLING',
+    competitionLevel: 'regional',
   },
   {
     tour: 'club',
@@ -136,6 +163,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['C', 'E'],
     description: 'Klubbturnering - Lokale klubbturneringer',
     confidence: 'medium',
+    defaultPurpose: 'TRENING',
+    competitionLevel: 'klubb',
   },
 
   // Entry Level
@@ -145,6 +174,8 @@ export const HIERARCHY_RULES: HierarchyRule[] = [
     adjacentCategories: ['D'],
     description: 'Akademiturnering - AK Golf Academy interne turneringer',
     confidence: 'high',
+    defaultPurpose: 'TRENING',
+    competitionLevel: 'trenings_turnering',
   },
 ];
 
@@ -261,8 +292,30 @@ export function getTourPrestigeScore(tour: TourType): number {
 }
 
 /**
+ * Get tournament purpose and level from tour type
+ */
+export function getTournamentPurposeAndLevel(tour: TourType): {
+  purpose: TournamentPurpose;
+  level: CompetitionLevel;
+} {
+  const rule = findHierarchyRule(tour);
+
+  if (!rule) {
+    return {
+      purpose: 'TRENING',
+      level: 'klubb',
+    };
+  }
+
+  return {
+    purpose: rule.defaultPurpose,
+    level: rule.competitionLevel,
+  };
+}
+
+/**
  * Apply hierarchy mapping to a tournament
- * Adds recommendedCategory, recommendedLevelLabel, and confidence
+ * Adds recommendedCategory, recommendedLevelLabel, confidence, purpose, and level
  */
 export function applyHierarchyMapping(
   tournament: Omit<
@@ -271,12 +324,16 @@ export function applyHierarchyMapping(
   >
 ): Tournament {
   const recommendation = getRecommendedCategory(tournament);
+  const purposeAndLevel = getTournamentPurposeAndLevel(tournament.tour);
 
   return {
     ...tournament,
     recommendedCategory: recommendation.category,
     recommendedLevelLabel: recommendation.label,
     recommendationConfidence: recommendation.confidence,
+    // Only set purpose/level if not already defined
+    purpose: tournament.purpose ?? purposeAndLevel.purpose,
+    level: tournament.level ?? purposeAndLevel.level,
   } as Tournament;
 }
 
