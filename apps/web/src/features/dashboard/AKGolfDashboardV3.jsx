@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, Trophy, Target, CheckCircle2,
-  Play, Bell, ChevronRight
+  Play, Bell, ChevronRight, Crosshair
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
+import { useFocus } from '../../hooks/useFocus';
 import Button from '../../ui/primitives/Button';
 
 /**
@@ -41,6 +42,128 @@ const getDaysUntil = (date) => {
 
 // ===== ZONE A COMPONENTS =====
 
+/**
+ * FocusCard - Ukens fokus
+ * Viser spillerens anbefalte fokusområde fra Focus Engine
+ * Designprinsipp: "Én prioritet om gangen"
+ */
+const FocusCard = ({ focus, loading, onStartSession }) => {
+  if (loading) {
+    return (
+      <div style={styles.focusCard}>
+        <div style={styles.focusCardLoading}>
+          <div style={styles.focusCardLoadingPulse} />
+          <div style={{ ...styles.focusCardLoadingPulse, width: '60%' }} />
+        </div>
+      </div>
+    );
+  }
+
+  if (!focus) {
+    // Fallback when no focus data - encourage first session
+    return (
+      <div style={styles.focusCard}>
+        <div style={styles.focusCardHeader}>
+          <Crosshair size={16} style={{ color: 'var(--accent)' }} />
+          <span style={styles.focusCardLabel}>Ukens fokus</span>
+        </div>
+        <h3 style={styles.focusCardTitle}>Start din første økt</h3>
+        <p style={styles.focusCardDescription}>
+          Fullfør noen tester for å få personlig anbefaling
+        </p>
+      </div>
+    );
+  }
+
+  const COMPONENT_COLORS = {
+    OTT: 'var(--info)',
+    APP: 'var(--success)',
+    ARG: 'var(--warning)',
+    PUTT: 'var(--ak-accent-purple, #8B5CF6)',
+  };
+
+  const COMPONENT_LABELS = {
+    OTT: 'Utslag',
+    APP: 'Innspill',
+    ARG: 'Kortspill',
+    PUTT: 'Putting',
+  };
+
+  const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--accent)';
+  const focusLabel = COMPONENT_LABELS[focus.focusComponent] || focus.focusComponent;
+
+  // Calculate sessions completed for this focus (mock - would come from backend)
+  const sessionsCompleted = focus.sessionsCompleted || 0;
+  const sessionsTarget = focus.sessionsTarget || 4;
+  const progressPercent = Math.round((sessionsCompleted / sessionsTarget) * 100);
+
+  return (
+    <div style={{ ...styles.focusCard, borderLeftColor: focusColor }}>
+      <div style={styles.focusCardHeader}>
+        <div style={styles.focusCardHeaderLeft}>
+          <Crosshair size={16} style={{ color: focusColor }} />
+          <span style={styles.focusCardLabel}>Ukens fokus</span>
+        </div>
+        <span style={{
+          ...styles.focusCardBadge,
+          backgroundColor: `${focusColor}15`,
+          color: focusColor,
+        }}>
+          {focusLabel}
+        </span>
+      </div>
+
+      <h3 style={styles.focusCardTitle}>
+        {focus.approachWeakestBucket
+          ? `${focusLabel}: ${focus.approachWeakestBucket.replace('_', '-')} yards`
+          : focusLabel
+        }
+      </h3>
+
+      {focus.reasonCodes?.length > 0 && (
+        <p style={styles.focusCardDescription}>
+          {focus.reasonCodes.includes(`weak_${focus.focusComponent.toLowerCase()}_test_cluster`)
+            ? 'Dine tester viser forbedringspotensial her'
+            : focus.reasonCodes.includes(`high_weight_${focus.focusComponent.toLowerCase()}`)
+            ? 'Dette området har stor påvirkning på scoren din'
+            : 'Anbefalt basert på din spillerprofil'
+          }
+        </p>
+      )}
+
+      {/* Progress indicator */}
+      <div style={styles.focusProgressContainer}>
+        <div style={styles.focusProgressTrack}>
+          <div style={{
+            ...styles.focusProgressFill,
+            width: `${progressPercent}%`,
+            backgroundColor: focusColor,
+          }} />
+        </div>
+        <span style={styles.focusProgressLabel}>
+          {sessionsCompleted} av {sessionsTarget} økter
+        </span>
+      </div>
+
+      {/* Confidence indicator */}
+      {focus.confidence && (
+        <div style={styles.focusConfidence}>
+          <span style={{
+            ...styles.focusConfidenceBadge,
+            backgroundColor: focus.confidence === 'high' ? 'var(--success-muted)' :
+                           focus.confidence === 'med' ? 'var(--warning-muted)' : 'var(--bg-tertiary)',
+            color: focus.confidence === 'high' ? 'var(--success)' :
+                   focus.confidence === 'med' ? 'var(--warning)' : 'var(--text-tertiary)',
+          }}>
+            {focus.confidence === 'high' ? 'Sikker anbefaling' :
+             focus.confidence === 'med' ? 'Moderat sikkerhet' : 'Begrenset data'}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const WelcomeSection = ({ playerName, category }) => (
   <div style={styles.welcomeSection}>
     <p style={styles.greetingText}>{getGreeting()}</p>
@@ -49,27 +172,159 @@ const WelcomeSection = ({ playerName, category }) => (
   </div>
 );
 
-const QuickStats = ({ sessions, hours, streak }) => (
-  <div style={styles.quickStatsRow}>
-    <div style={styles.quickStat}>
-      <span style={styles.quickStatValue}>{sessions.completed}</span>
-      <span style={styles.quickStatLabel}>Økter denne uke</span>
-      <span style={styles.quickStatSub}>av {sessions.total}</span>
+/**
+ * ContextualCTA - Primær handlingsknapp
+ * Designprinsipp: "Én primær CTA (alltid konkret, alltid anbefalt)"
+ *
+ * Logikk:
+ * 1. Hvis kalender har planlagt økt: bruk den
+ * 2. Hvis ikke: bruk ukens fokus og foreslå standardøkt
+ * 3. Fallback: "Start 15 min lavterskel økt"
+ */
+const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
+  const COMPONENT_LABELS = {
+    OTT: 'Utslag',
+    APP: 'Innspill',
+    ARG: 'Kortspill',
+    PUTT: 'Putting',
+  };
+
+  // Priority 1: Scheduled session from calendar
+  if (upcomingSession) {
+    return (
+      <div style={styles.contextualCTA}>
+        <button style={styles.ctaButton} onClick={() => onStart(upcomingSession)}>
+          <div style={styles.ctaContent}>
+            <Play size={20} style={{ flexShrink: 0 }} />
+            <div style={styles.ctaTextContainer}>
+              <span style={styles.ctaTitle}>Start planlagt økt</span>
+              <span style={styles.ctaSubtitle}>
+                {upcomingSession.duration || 45} min · {upcomingSession.title}
+              </span>
+            </div>
+          </div>
+          <ChevronRight size={20} style={styles.ctaArrow} />
+        </button>
+      </div>
+    );
+  }
+
+  // Priority 2: Recommended session based on focus
+  if (focus?.focusComponent) {
+    const focusLabel = COMPONENT_LABELS[focus.focusComponent] || focus.focusComponent;
+    const sessionDuration = focus.recommendedDuration || 30;
+
+    return (
+      <div style={styles.contextualCTA}>
+        <button style={styles.ctaButton} onClick={() => onStart({ type: 'focus', focus })}>
+          <div style={styles.ctaContent}>
+            <Play size={20} style={{ flexShrink: 0 }} />
+            <div style={styles.ctaTextContainer}>
+              <span style={styles.ctaTitle}>Start anbefalt økt</span>
+              <span style={styles.ctaSubtitle}>
+                {sessionDuration} min · {focusLabel} · Del av ukens fokus
+              </span>
+            </div>
+          </div>
+          <ChevronRight size={20} style={styles.ctaArrow} />
+        </button>
+      </div>
+    );
+  }
+
+  // Priority 3: Fallback - low-threshold session
+  return (
+    <div style={styles.contextualCTA}>
+      <button style={styles.ctaButton} onClick={() => onStart({ type: 'quick' })}>
+        <div style={styles.ctaContent}>
+          <Play size={20} style={{ flexShrink: 0 }} />
+          <div style={styles.ctaTextContainer}>
+            <span style={styles.ctaTitle}>Start 15 min økt</span>
+            <span style={styles.ctaSubtitle}>
+              Lavterskel · Kom i gang med trening i dag
+            </span>
+          </div>
+        </div>
+        <ChevronRight size={20} style={styles.ctaArrow} />
+      </button>
     </div>
-    <div style={styles.quickStatDivider} />
-    <div style={styles.quickStat}>
-      <span style={styles.quickStatValue}>{hours.current}t</span>
-      <span style={styles.quickStatLabel}>Treningstid</span>
-      <span style={styles.quickStatSub}>mål: {hours.goal}t</span>
+  );
+};
+
+/**
+ * ProgressStrip - Kompakt progresjon
+ * Designprinsipp: "Statistikk er sekundær (under handling)"
+ * Regel: "Ingen 0-shaming" - vis motiverende tekst i stedet for 0/12
+ */
+const ProgressStrip = ({ sessions, hours, streak }) => {
+  const sessionsPercent = sessions.total > 0
+    ? Math.round((sessions.completed / sessions.total) * 100)
+    : 0;
+  const hoursPercent = hours.goal > 0
+    ? Math.round((hours.current / hours.goal) * 100)
+    : 0;
+
+  // "Ingen 0-shaming" - show encouraging message before first session
+  const showEncouragement = sessions.completed === 0 && hours.current === 0;
+
+  if (showEncouragement) {
+    return (
+      <div style={styles.progressStrip}>
+        <div style={styles.progressStripEncouragement}>
+          <span style={styles.progressStripEncouragementText}>
+            Start uken med din første økt
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={styles.progressStrip}>
+      {/* Sessions progress */}
+      <div style={styles.progressStripItem}>
+        <div style={styles.progressStripHeader}>
+          <span style={styles.progressStripLabel}>Økter</span>
+          <span style={styles.progressStripValue}>
+            {sessions.completed}/{sessions.total}
+          </span>
+        </div>
+        <div style={styles.progressStripBar}>
+          <div style={{
+            ...styles.progressStripFill,
+            width: `${sessionsPercent}%`,
+            backgroundColor: 'var(--accent)',
+          }} />
+        </div>
+      </div>
+
+      {/* Hours progress */}
+      <div style={styles.progressStripItem}>
+        <div style={styles.progressStripHeader}>
+          <span style={styles.progressStripLabel}>Timer</span>
+          <span style={styles.progressStripValue}>
+            {hours.current}/{hours.goal}t
+          </span>
+        </div>
+        <div style={styles.progressStripBar}>
+          <div style={{
+            ...styles.progressStripFill,
+            width: `${Math.min(hoursPercent, 100)}%`,
+            backgroundColor: 'var(--info)',
+          }} />
+        </div>
+      </div>
+
+      {/* Streak - low visual weight */}
+      {streak > 0 && (
+        <div style={styles.progressStripStreak}>
+          <span style={styles.progressStripStreakValue}>{streak}</span>
+          <span style={styles.progressStripStreakLabel}>dager streak</span>
+        </div>
+      )}
     </div>
-    <div style={styles.quickStatDivider} />
-    <div style={styles.quickStat}>
-      <span style={styles.quickStatValue}>{streak}</span>
-      <span style={styles.quickStatLabel}>Streak</span>
-      <span style={styles.quickStatSub}>dager på rad</span>
-    </div>
-  </div>
-);
+  );
+};
 
 const NextMilestone = ({ tournament, test }) => {
   const tournamentDays = getDaysUntil(tournament?.date);
@@ -171,27 +426,35 @@ const HoursProgress = ({ hours, goal }) => {
 
 // ===== ZONE C COMPONENTS =====
 
+/**
+ * TasksList - Dagens oppgaver (ActionList)
+ * Designprinsipp: "Maks 3 oppgaver" - fokuser på det viktigste
+ * Avhuking direkte på hjemskjerm
+ */
 const TasksList = ({ tasks, onToggle, onViewAll }) => {
   const completedCount = tasks.filter(t => t.completed).length;
+  const displayTasks = tasks.slice(0, 3); // Maks 3 oppgaver
 
   return (
     <div style={styles.card}>
       <div style={styles.cardHeader}>
         <div style={styles.cardHeaderLeft}>
           <Target size={16} style={{ color: 'var(--text-secondary)' }} />
-          <span style={styles.cardTitle}>Mine oppgaver</span>
+          <span style={styles.cardTitle}>Dagens oppgaver</span>
         </div>
-        <button style={styles.cardAction} onClick={onViewAll}>
-          Se alle <ChevronRight size={14} />
-        </button>
+        {tasks.length > 3 && (
+          <button style={styles.cardAction} onClick={onViewAll}>
+            +{tasks.length - 3} mer <ChevronRight size={14} />
+          </button>
+        )}
       </div>
       {tasks.length === 0 ? (
         <div style={styles.emptyState}>
-          <p>Ingen oppgaver</p>
+          <p>Ingen oppgaver i dag</p>
         </div>
       ) : (
         <div style={styles.taskList}>
-          {tasks.slice(0, 4).map(task => (
+          {displayTasks.map(task => (
             <div
               key={task.id}
               style={{
@@ -222,26 +485,38 @@ const TasksList = ({ tasks, onToggle, onViewAll }) => {
           ))}
         </div>
       )}
-      <div style={styles.cardFooterMeta}>
-        {completedCount}/{tasks.length} fullført
-      </div>
+      {tasks.length > 0 && (
+        <div style={styles.cardFooterMeta}>
+          {completedCount} av {Math.min(tasks.length, 3)} fullført
+        </div>
+      )}
     </div>
   );
 };
 
-const NotificationsList = ({ notifications, onViewAll }) => (
+/**
+ * NotificationsList - Varslinger
+ * Designprinsipp: "Lav prioritet" - kun topp 2-3
+ * Med handlingslenke når relevant
+ */
+const NotificationsList = ({ notifications, onViewAll }) => {
+  const displayNotifications = notifications.slice(0, 2); // Maks 2 varslinger
+
+  return (
   <div style={styles.card}>
     <div style={styles.cardHeader}>
       <div style={styles.cardHeaderLeft}>
         <Bell size={16} style={{ color: 'var(--text-secondary)' }} />
         <span style={styles.cardTitle}>Varslinger</span>
         {notifications.length > 0 && (
-          <span style={styles.notificationBadge}>{notifications.length} nye</span>
+          <span style={styles.notificationBadge}>{notifications.length}</span>
         )}
       </div>
-      <button style={styles.cardAction} onClick={onViewAll}>
-        Se alle <ChevronRight size={14} />
-      </button>
+      {notifications.length > 2 && (
+        <button style={styles.cardAction} onClick={onViewAll}>
+          Se alle <ChevronRight size={14} />
+        </button>
+      )}
     </div>
     {notifications.length === 0 ? (
       <div style={styles.emptyState}>
@@ -249,7 +524,7 @@ const NotificationsList = ({ notifications, onViewAll }) => (
       </div>
     ) : (
       <div style={styles.notificationList}>
-        {notifications.slice(0, 3).map((notif, idx) => (
+        {displayNotifications.map((notif, idx) => (
           <div key={notif.id || idx} style={styles.notificationItem}>
             <div style={styles.notificationDot} />
             <div style={styles.notificationContent}>
@@ -262,13 +537,15 @@ const NotificationsList = ({ notifications, onViewAll }) => (
       </div>
     )}
   </div>
-);
+  );
+};
 
 // ===== MAIN DASHBOARD =====
 
 const AKGolfDashboardV3 = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading } = useDashboard();
+  const { data: focusData, loading: focusLoading } = useFocus();
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -311,42 +588,36 @@ const AKGolfDashboardV3 = () => {
           category={player.category}
         />
 
-        <QuickStats
+        {/* Ukens fokus - Prioritet #1 i spesifikasjonen */}
+        <FocusCard
+          focus={focusData}
+          loading={focusLoading}
+          onStartSession={() => navigate('/sessions')}
+        />
+
+        {/* Primary CTA - Contextual, always has a recommendation */}
+        <ContextualCTA
+          focus={focusData}
+          upcomingSession={dashboardData?.upcomingSessions?.[0]}
+          onStart={(session) => {
+            if (session?.id) {
+              navigate(`/session/${session.id}/active`);
+            } else if (session?.type === 'focus') {
+              navigate('/session/new', { state: { focus: session.focus } });
+            } else {
+              navigate('/session/new', { state: { quickStart: true, duration: 15 } });
+            }
+          }}
+        />
+      </section>
+
+      {/* ZONE B: Progress & Status - Kompakt, under handling */}
+      <section style={styles.zoneB}>
+        <ProgressStrip
           sessions={{ completed: stats.sessionsCompleted, total: stats.sessionsTotal }}
           hours={{ current: stats.hoursThisWeek, goal: stats.hoursGoal }}
           streak={stats.streak}
         />
-
-        <NextMilestone
-          tournament={nextTournament}
-          test={nextTest}
-        />
-
-        {/* Primary CTA - Single, prominent */}
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={() => navigate('/sessions')}
-          leftIcon={<Play size={18} />}
-          fullWidth
-          style={styles.primaryCTA}
-        >
-          Start treningsøkt
-        </Button>
-      </section>
-
-      {/* ZONE B: Progress & Status */}
-      <section style={styles.zoneB}>
-        <div style={styles.progressRow}>
-          <PlanProgress
-            completed={stats.sessionsCompleted}
-            total={stats.sessionsTotal}
-          />
-          <HoursProgress
-            hours={stats.hoursThisWeek}
-            goal={stats.hoursGoal}
-          />
-        </div>
       </section>
 
       {/* ZONE C: Follow-up & Signals */}
@@ -384,6 +655,211 @@ const styles = {
     padding: '48px',
     color: 'var(--text-tertiary)',
     fontSize: '15px',
+  },
+
+  // FocusCard - Ukens fokus
+  focusCard: {
+    padding: '20px',
+    backgroundColor: 'var(--card)',
+    borderRadius: '16px',
+    border: '1px solid var(--border-subtle)',
+    borderLeft: '4px solid var(--accent)',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  },
+  focusCardLoading: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  focusCardLoadingPulse: {
+    height: '16px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '4px',
+    animation: 'pulse 1.5s ease-in-out infinite',
+  },
+  focusCardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '12px',
+  },
+  focusCardHeaderLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  focusCardLabel: {
+    fontSize: '12px',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+  },
+  focusCardBadge: {
+    fontSize: '11px',
+    fontWeight: 600,
+    padding: '4px 10px',
+    borderRadius: '12px',
+  },
+  focusCardTitle: {
+    fontSize: '20px',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    margin: '0 0 8px 0',
+    letterSpacing: '-0.01em',
+  },
+  focusCardDescription: {
+    fontSize: '14px',
+    color: 'var(--text-secondary)',
+    margin: '0 0 16px 0',
+    lineHeight: 1.5,
+  },
+  focusProgressContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  focusProgressTrack: {
+    flex: 1,
+    height: '6px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '3px',
+    overflow: 'hidden',
+  },
+  focusProgressFill: {
+    height: '100%',
+    borderRadius: '3px',
+    transition: 'width 0.3s ease',
+  },
+  focusProgressLabel: {
+    fontSize: '13px',
+    color: 'var(--text-tertiary)',
+    fontWeight: 500,
+    whiteSpace: 'nowrap',
+  },
+  focusConfidence: {
+    marginTop: '12px',
+  },
+  focusConfidenceBadge: {
+    fontSize: '11px',
+    fontWeight: 500,
+    padding: '4px 8px',
+    borderRadius: '6px',
+  },
+
+  // ContextualCTA - Primær handlingsknapp
+  contextualCTA: {
+    marginTop: '8px',
+  },
+  ctaButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '16px 20px',
+    backgroundColor: 'var(--ak-primary, #2563EB)',
+    color: 'white',
+    border: 'none',
+    borderRadius: '14px',
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+  },
+  ctaContent: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '14px',
+  },
+  ctaTextContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: '2px',
+  },
+  ctaTitle: {
+    fontSize: '16px',
+    fontWeight: 600,
+    letterSpacing: '-0.01em',
+  },
+  ctaSubtitle: {
+    fontSize: '13px',
+    fontWeight: 400,
+    opacity: 0.85,
+  },
+  ctaArrow: {
+    opacity: 0.7,
+    flexShrink: 0,
+  },
+
+  // ProgressStrip - Kompakt progresjon
+  progressStrip: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+    padding: '14px 18px',
+    backgroundColor: 'var(--card)',
+    borderRadius: '12px',
+    border: '1px solid var(--border-subtle)',
+  },
+  progressStripItem: {
+    flex: 1,
+    minWidth: 0,
+  },
+  progressStripHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '6px',
+  },
+  progressStripLabel: {
+    fontSize: '12px',
+    fontWeight: 500,
+    color: 'var(--text-tertiary)',
+  },
+  progressStripValue: {
+    fontSize: '12px',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    fontFeatureSettings: '"tnum"',
+  },
+  progressStripBar: {
+    height: '4px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '2px',
+    overflow: 'hidden',
+  },
+  progressStripFill: {
+    height: '100%',
+    borderRadius: '2px',
+    transition: 'width 0.3s ease',
+  },
+  progressStripStreak: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    paddingLeft: '16px',
+    borderLeft: '1px solid var(--border-subtle)',
+  },
+  progressStripStreakValue: {
+    fontSize: '16px',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    fontFeatureSettings: '"tnum"',
+  },
+  progressStripStreakLabel: {
+    fontSize: '11px',
+    color: 'var(--text-tertiary)',
+    whiteSpace: 'nowrap',
+  },
+  progressStripEncouragement: {
+    flex: 1,
+    textAlign: 'center',
+    padding: '4px 0',
+  },
+  progressStripEncouragementText: {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-secondary)',
   },
 
   // Zone A: Control & Focus

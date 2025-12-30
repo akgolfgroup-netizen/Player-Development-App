@@ -67,14 +67,14 @@ export interface AnnualPlanGenerationResult {
   /** V2: Category constraints analysis */
   categoryConstraints?: {
     currentCategory: string;
-    readinessScore: number;
+    totalGap: number;
     canAdvance: boolean;
     topBindingConstraints: Array<{
-      testNumber: number;
-      testName: string;
       domain: string;
-      gapNormalized: number;
-      severity: 'hard' | 'soft';
+      currentValue: number;
+      requiredValue: number;
+      gapPercent: number;
+      priority: number;
     }>;
   } | null;
 }

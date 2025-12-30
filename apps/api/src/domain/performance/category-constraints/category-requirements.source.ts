@@ -13,7 +13,7 @@ import type {
   ConstraintSeverity,
   ComparisonOperator,
 } from './category-constraints.types';
-import type { TestDomainCode, SgComponent } from '../domain-mapping';
+import type { TestDomainCode } from '../domain-mapping';
 import { TEST_TO_DOMAIN_MAP, getSgComponentForDomain } from '../domain-mapping';
 
 // ============================================================================

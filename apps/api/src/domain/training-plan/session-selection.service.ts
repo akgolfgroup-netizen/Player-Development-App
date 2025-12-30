@@ -17,7 +17,6 @@ import type {
   SelectedSession,
 } from './plan-generation.types';
 import {
-  mapTestDomainToComponent,
   getProofMetricsForDomain,
   type TestDomainCode,
 } from '../performance/domain-mapping';
@@ -327,7 +326,7 @@ export class SessionSelectionService {
     // V2: Constraint relevance (+40)
     if (enhancedContext?.topConstraints.length) {
       const templateDomain = this.getDomainForSession(template);
-      const constraintDomains = enhancedContext.topConstraints.map((c) => c.testDomainCode);
+      const constraintDomains = enhancedContext.topConstraints.map((c) => c.domainCode);
       if (templateDomain && constraintDomains.includes(templateDomain)) {
         breakdown.constraintRelevance = 40;
       }
@@ -430,7 +429,7 @@ export class SessionSelectionService {
    */
   static async buildEnhancedContext(
     playerId: string,
-    tenantId: string
+    _tenantId: string
   ): Promise<EnhancedSelectionContext> {
     // Get active breaking points with their domains
     const breakingPoints = await prisma.breakingPoint.findMany({

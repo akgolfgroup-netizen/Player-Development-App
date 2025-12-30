@@ -1,6 +1,6 @@
 /**
  * Domain Mapping Configuration
- * Hardcoded MVP mapping from test domains to SG components
+ * Hardcoded mappings from test domains to SG components
  */
 
 import type {
@@ -13,207 +13,143 @@ import type {
 // DOMAIN TO COMPONENT MAPPINGS
 // ============================================================================
 
-/**
- * Master mapping from test domains to Strokes Gained components
- * This is the single source of truth for domain → component relationships
- */
 export const DOMAIN_COMPONENT_MAPPINGS: Record<TestDomainCode, DomainToComponentMapping> = {
   TEE: {
-    domainCode: 'TEE',
     sgComponent: 'OTT',
-    description: 'Tee shots - driving distance, accuracy, and ball speed',
-    relatedTestNumbers: [1, 2, 5, 6, 7], // Driver distance, 3-wood, club speed, ball speed, smash factor
+    description: 'Tee shots - driving distance and accuracy',
+    relatedTestNumbers: [1, 2, 5, 6, 7],
   },
-
   INN200: {
-    domainCode: 'INN200',
     sgComponent: 'APP',
-    subBucket: '200_plus',
-    description: 'Approach shots from 200+ meters',
-    relatedTestNumbers: [3], // 5-iron distance (used as proxy for long approach)
+    subBucket: '200+',
+    description: 'Long approach shots (200+ meters)',
+    relatedTestNumbers: [3, 11],
   },
-
   INN150: {
-    domainCode: 'INN150',
     sgComponent: 'APP',
-    subBucket: '150_200',
-    description: 'Approach shots from 150-200 meters',
-    relatedTestNumbers: [3, 11], // 5-iron, 100m approach test
+    subBucket: '150-200',
+    description: 'Medium-long approach shots (150-200 meters)',
+    relatedTestNumbers: [3, 10, 11],
   },
-
   INN100: {
-    domainCode: 'INN100',
     sgComponent: 'APP',
-    subBucket: '100_150',
-    description: 'Approach shots from 100-150 meters',
-    relatedTestNumbers: [4, 10, 11], // PW distance, 75m/100m approach tests
+    subBucket: '100-150',
+    description: 'Medium approach shots (100-150 meters)',
+    relatedTestNumbers: [4, 9, 10],
   },
-
   INN50: {
-    domainCode: 'INN50',
     sgComponent: 'APP',
-    subBucket: '50_100',
-    description: 'Approach shots from 50-100 meters',
-    relatedTestNumbers: [8, 9, 10], // 25m, 50m, 75m approach tests
+    subBucket: '50-100',
+    description: 'Short approach shots (50-100 meters)',
+    relatedTestNumbers: [4, 8, 9],
   },
-
   ARG: {
-    domainCode: 'ARG',
     sgComponent: 'ARG',
-    description: 'Around the green - chipping, pitching, bunker play',
-    relatedTestNumbers: [8, 17, 18], // 25m approach, chipping, bunker
+    description: 'Around the green - chipping, pitching, bunkers',
+    relatedTestNumbers: [17, 18, 19],
   },
-
   PUTT: {
-    domainCode: 'PUTT',
     sgComponent: 'PUTT',
-    description: 'Putting - all distances',
-    relatedTestNumbers: [15, 16], // 3m and 6m putting tests
+    description: 'Putting',
+    relatedTestNumbers: [15, 16, 20],
   },
-
   PHYS: {
-    domainCode: 'PHYS',
-    sgComponent: 'TOTAL', // Physical affects all components
-    description: 'Physical conditioning - strength, endurance, speed',
-    relatedTestNumbers: [12, 13, 14], // Bench press, deadlift, 3000m run
+    sgComponent: 'TOTAL',
+    description: 'Physical fitness and conditioning',
+    relatedTestNumbers: [12, 13, 14],
   },
 };
 
 // ============================================================================
-// BENCHMARK WINDOW CONFIGURATIONS
+// BENCHMARK CONFIGURATIONS
 // ============================================================================
 
-/**
- * Default benchmark window by domain
- * Specifies how far back to look for benchmark/test results
- */
 export const DOMAIN_BENCHMARK_CONFIGS: Record<TestDomainCode, DomainBenchmarkMapping> = {
   TEE: {
-    domainCode: 'TEE',
-    benchmarkTestIds: [1, 5, 6, 7],
+    benchmarkTestIds: [1, 5],
     benchmarkWindowDays: 21,
+    defaultSuccessRule: 'DRIVER_DISTANCE_CARRY:>=:230',
   },
   INN200: {
-    domainCode: 'INN200',
-    benchmarkTestIds: [3],
+    benchmarkTestIds: [3, 11],
     benchmarkWindowDays: 21,
+    defaultSuccessRule: 'improvement:percent:10',
   },
   INN150: {
-    domainCode: 'INN150',
-    benchmarkTestIds: [11],
+    benchmarkTestIds: [3, 10],
     benchmarkWindowDays: 21,
+    defaultSuccessRule: 'improvement:percent:10',
   },
   INN100: {
-    domainCode: 'INN100',
-    benchmarkTestIds: [10, 11],
+    benchmarkTestIds: [4, 9],
     benchmarkWindowDays: 21,
+    defaultSuccessRule: 'PEI_75M:>=:60',
   },
   INN50: {
-    domainCode: 'INN50',
-    benchmarkTestIds: [8, 9],
+    benchmarkTestIds: [4, 8],
     benchmarkWindowDays: 21,
+    defaultSuccessRule: 'PEI_25M:>=:70',
   },
   ARG: {
-    domainCode: 'ARG',
     benchmarkTestIds: [17, 18],
     benchmarkWindowDays: 21,
+    defaultSuccessRule: 'CHIP_PROX_AVG:<=:3.0',
   },
   PUTT: {
-    domainCode: 'PUTT',
     benchmarkTestIds: [15, 16],
     benchmarkWindowDays: 21,
+    defaultSuccessRule: 'PUTT_3M_PCT:>=:85',
   },
   PHYS: {
-    domainCode: 'PHYS',
     benchmarkTestIds: [12, 13, 14],
-    benchmarkWindowDays: 28, // Physical tests need longer window
+    benchmarkWindowDays: 28,
+    defaultSuccessRule: 'improvement:percent:5',
   },
 };
 
 // ============================================================================
-// TEST NUMBER TO DOMAIN REVERSE MAPPING
+// TEST NUMBER TO DOMAIN MAPPING
 // ============================================================================
 
-/**
- * Reverse mapping: test number → primary domain
- * Used when a test result comes in and we need to know which domain it affects
- */
 export const TEST_TO_DOMAIN_MAP: Record<number, TestDomainCode> = {
-  // Distance/Speed tests → TEE
-  1: 'TEE',  // Driver distance
-  2: 'TEE',  // 3-wood distance
-  5: 'TEE',  // Club speed
-  6: 'TEE',  // Ball speed
-  7: 'TEE',  // Smash factor
-
-  // Iron tests → mixed
+  1: 'TEE',    // Driver carry
+  2: 'TEE',    // 3-wood distance
   3: 'INN150', // 5-iron distance
   4: 'INN100', // PW distance
-
-  // Approach tests by distance
-  8: 'INN50',  // 25m approach
-  9: 'INN50',  // 50m approach
-  10: 'INN100', // 75m approach
-  11: 'INN150', // 100m approach
-
-  // Short game
-  17: 'ARG',  // Chipping
-  18: 'ARG',  // Bunker
-
-  // Putting
-  15: 'PUTT', // 3m putting
-  16: 'PUTT', // 6m putting
-
-  // Physical
-  12: 'PHYS', // Bench press
-  13: 'PHYS', // Deadlift
-  14: 'PHYS', // 3000m run
-
-  // On-course (maps to TOTAL/multiple)
-  19: 'TEE',  // 9-hole sim (primary: tee shots)
-  20: 'TEE',  // On-course skills
+  5: 'TEE',    // Club speed driver
+  6: 'TEE',    // Ball speed driver
+  7: 'TEE',    // Smash factor
+  8: 'INN50',  // PEI 25m
+  9: 'INN100', // PEI 50m
+  10: 'INN150', // PEI 75m
+  11: 'INN200', // PEI 100m
+  12: 'PHYS',  // Bench 1RM
+  13: 'PHYS',  // Deadlift 1RM
+  14: 'PHYS',  // 3000m run
+  15: 'PUTT',  // 3m putt %
+  16: 'PUTT',  // 6m putt %
+  17: 'ARG',   // Chip proximity
+  18: 'ARG',   // Bunker proximity
+  19: 'ARG',   // Pitch proximity
+  20: 'PUTT',  // Putt speed control
 };
 
 // ============================================================================
-// DOMAIN PRIORITY ORDER
+// CONSTANTS
 // ============================================================================
 
-/**
- * Priority order for domains when multiple are equally important
- * Based on typical strokes gained impact
- */
-export const DOMAIN_PRIORITY_ORDER: TestDomainCode[] = [
-  'TEE',     // OTT typically highest variance
-  'INN150',  // Long approach most challenging
-  'INN100',  // Mid approach
-  'INN50',   // Short approach
-  'INN200',  // Very long approach
-  'ARG',     // Around green
-  'PUTT',    // Putting
-  'PHYS',    // Physical
-];
-
-// ============================================================================
-// VALID DOMAIN CODES
-// ============================================================================
-
-/**
- * All valid test domain codes
- */
 export const ALL_DOMAIN_CODES: TestDomainCode[] = [
-  'TEE',
-  'INN200',
-  'INN150',
-  'INN100',
-  'INN50',
-  'ARG',
-  'PUTT',
-  'PHYS',
+  'TEE', 'INN200', 'INN150', 'INN100', 'INN50', 'ARG', 'PUTT', 'PHYS'
 ];
 
-/**
- * Check if a string is a valid domain code
- */
+export const DOMAIN_PRIORITY_ORDER: TestDomainCode[] = [
+  'TEE', 'INN100', 'ARG', 'PUTT', 'INN50', 'INN150', 'INN200', 'PHYS'
+];
+
+// ============================================================================
+// VALIDATION
+// ============================================================================
+
 export function isValidDomainCode(code: string): code is TestDomainCode {
   return ALL_DOMAIN_CODES.includes(code as TestDomainCode);
 }

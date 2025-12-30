@@ -27,10 +27,13 @@ import type {
 } from './plan-generation.types';
 import {
   createCategoryConstraintsService,
-  type CategoryConstraintsResult,
+  type GetBindingConstraintsOutput,
   type BindingConstraint,
+  type PlayerDomainPerformance,
+  getNextCategory,
 } from '../performance/category-constraints';
-import { getTestToDomainMapping, type TestDomainCode } from '../performance/domain-mapping';
+import { getTestToDomainMapping, mapTestNumberToDomain } from '../performance/domain-mapping';
+import type { CategoryAK, Gender } from '../performance/domain-mapping';
 
 const prisma = getPrismaClient();
 
@@ -164,18 +167,37 @@ export class PlanGenerationService {
       }
     }
 
-    // Compute category constraints
-    let categoryConstraints: CategoryConstraintsResult | null = null;
+    // Compute category constraints (V2)
+    let categoryConstraints: GetBindingConstraintsOutput | null = null;
     let topConstraints: BindingConstraint[] = [];
 
     try {
-      categoryConstraints = await constraintsService.computeCategoryConstraints({
-        playerId: input.playerId,
-        currentCategory: playerCategory as 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K',
-        gender: 'M', // TODO: Get from player profile
-        latestTestValues: latestValues,
-      });
-      topConstraints = categoryConstraints.bindingConstraints;
+      // Convert latest test values to PlayerDomainPerformance format
+      const performances: PlayerDomainPerformance[] = Object.entries(latestValues)
+        .map(([testNumber, value]) => {
+          const domainCode = mapTestNumberToDomain(Number(testNumber));
+          if (!domainCode) return null;
+          return {
+            domainCode,
+            currentValue: value,
+            testCount: 1,
+          };
+        })
+        .filter((p): p is PlayerDomainPerformance => p !== null);
+
+      const currentCategory = playerCategory as CategoryAK;
+      const targetCategory = getNextCategory(currentCategory);
+
+      if (targetCategory) {
+        categoryConstraints = constraintsService.calculateBindingConstraints({
+          playerId: input.playerId,
+          currentCategory,
+          targetCategory,
+          gender: 'M' as Gender, // TODO: Get from player profile
+          performances,
+        });
+        topConstraints = categoryConstraints.bindingConstraints;
+      }
     } catch (error) {
       // If constraint calculation fails, continue without constraints
       console.warn('Failed to compute category constraints:', error);
@@ -232,14 +254,14 @@ export class PlanGenerationService {
       categoryConstraints: categoryConstraints
         ? {
             currentCategory: playerCategory,
-            readinessScore: categoryConstraints.readinessScore,
-            canAdvance: categoryConstraints.canAdvance,
+            totalGap: categoryConstraints.totalGap,
+            canAdvance: topConstraints.length === 0,
             topBindingConstraints: topConstraints.slice(0, 4).map((c) => ({
-              testNumber: c.testNumber,
-              testName: c.testName,
-              domain: c.testDomainCode,
-              gapNormalized: c.gapNormalized,
-              severity: c.severity,
+              domain: c.domainCode,
+              currentValue: c.currentValue,
+              requiredValue: c.requiredValue,
+              gapPercent: c.gapPercent,
+              priority: c.priority,
             })),
           }
         : null,

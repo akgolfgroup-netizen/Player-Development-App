@@ -3,97 +3,114 @@
  * Types for evidence-based progress tracking
  */
 
-import type { TestDomainCode } from '../domain-mapping';
-
-// ============================================================================
-// STATUS TYPES
-// ============================================================================
-
-/**
- * Breaking point status values
- */
-export type BPStatus =
-  | 'identified'      // Just created, no work done
-  | 'not_started'     // Legacy status (mapped to identified)
-  | 'in_progress'     // Active training in progress
-  | 'awaiting_proof'  // Training done, waiting for benchmark test
-  | 'resolved'        // Benchmark passed, issue resolved
-  | 'stalled';        // No progress for extended period
-
-/**
- * Confidence levels for progress estimation
- */
-export type BPConfidence = 'low' | 'medium' | 'high';
+import type { TestDomainCode, ProofMetric } from '../domain-mapping';
 
 // ============================================================================
 // EVIDENCE TYPES
 // ============================================================================
 
-/**
- * Test result evidence for breaking point evaluation
- */
 export interface TestResultEvidence {
   testResultId: string;
   testNumber: number;
-  testDate: Date;
   value: number;
-  unit: string;
-  source: 'test_result' | 'round_stats' | 'calibration';
+  testDate: Date;
+  meetsThreshold: boolean;
 }
 
-/**
- * Training completion evidence
- */
 export interface TrainingEvidence {
-  totalSessionsPlanned: number;
-  sessionsCompleted: number;
-  totalMinutesPlanned: number;
-  minutesCompleted: number;
-  periodStart: Date;
-  periodEnd: Date;
+  sessionId: string;
+  sessionDate: Date;
+  exerciseCount: number;
+  totalDuration: number;
 }
 
-/**
- * Progress evaluation result
- */
-export interface BPEvaluationResult {
-  bpId: string;
-  playerId: string;
-  testDomainCode: TestDomainCode | null;
-
-  // Effort metrics (training completion)
-  effortPercent: number;  // 0-100
-  sessionsCompleted: number;
-  totalSessionsExpected: number;
-
-  // Progress metrics (actual improvement)
-  progressPercent: number;  // 0-100
-  baselineValue: number | null;
-  currentValue: number | null;
-  targetValue: number | null;
-  gapClosedPercent: number;  // How much of the gap has been closed
-
-  // Status
-  previousStatus: BPStatus;
-  recommendedStatus: BPStatus;
-  shouldTransition: boolean;
-
-  // Metadata
-  confidence: BPConfidence;
-  evaluatedAt: Date;
-  latestTestDate: Date | null;
-  reasonCodes: string[];
+export interface BenchmarkResult {
+  metricId: string;
+  currentValue: number;
+  previousValue: number | null;
+  targetValue: number;
+  improvementPercent: number;
+  meetsTarget: boolean;
+  testDate: Date;
 }
 
 // ============================================================================
-// SUCCESS RULE TYPES
+// BREAKING POINT TYPES
 // ============================================================================
 
-/**
- * Success rule evaluation context
- */
+export interface BreakingPointProgress {
+  breakingPointId: string;
+  domainCode: TestDomainCode;
+  effortPercent: number;
+  progressPercent: number;
+  lastBenchmarkDate: Date | null;
+  benchmarkResult: BenchmarkResult | null;
+  trainingSessionCount: number;
+  isResolved: boolean;
+}
+
+export interface BreakingPointUpdate {
+  effortPercent?: number;
+  progressPercent?: number;
+  lastBenchmarkDate?: Date;
+  isResolved?: boolean;
+}
+
+// ============================================================================
+// SERVICE INPUT/OUTPUT TYPES
+// ============================================================================
+
+export interface RecordTrainingEffortInput {
+  breakingPointId: string;
+  sessionId: string;
+  sessionDate: Date;
+}
+
+export interface RecordTrainingEffortOutput {
+  breakingPointId: string;
+  previousEffort: number;
+  newEffort: number;
+  sessionsCounted: number;
+}
+
+export interface EvaluateBenchmarkInput {
+  breakingPointId: string;
+  testResultId: string;
+  domainCode: TestDomainCode;
+  proofMetric: ProofMetric;
+  testValue: number;
+  testDate: Date;
+  successRule: string;
+}
+
+export interface EvaluateBenchmarkOutput {
+  breakingPointId: string;
+  previousProgress: number;
+  newProgress: number;
+  meetsTarget: boolean;
+  isResolved: boolean;
+  benchmarkResult: BenchmarkResult;
+}
+
+export interface GetBreakingPointStatusInput {
+  breakingPointId: string;
+}
+
+export interface GetBreakingPointStatusOutput {
+  breakingPointId: string;
+  domainCode: TestDomainCode | null;
+  effortPercent: number;
+  progressPercent: number;
+  isResolved: boolean;
+  lastBenchmarkDate: Date | null;
+  createdAt: Date;
+}
+
+// ============================================================================
+// SUCCESS RULE EVALUATION TYPES
+// ============================================================================
+
 export interface SuccessRuleContext {
-  bpId: string;
   playerId: string;
   successRule: string;
   benchmarkTestId: number | null;
@@ -101,9 +118,6 @@ export interface SuccessRuleContext {
   asOfDate: Date;
 }
 
-/**
- * Success rule evaluation result
- */
 export interface SuccessRuleResult {
   passed: boolean;
   rule: string;
@@ -112,78 +126,4 @@ export interface SuccessRuleResult {
   operator: string | null;
   reason: string;
   evidenceDate: Date | null;
-}
-
-// ============================================================================
-// UPDATE TYPES
-// ============================================================================
-
-/**
- * Breaking point update after session completion
- */
-export interface BPEffortUpdate {
-  bpId: string;
-  sessionId: string;
-  sessionDuration: number; // minutes
-  sessionDate: Date;
-  previousEffortPercent: number;
-  newEffortPercent: number;
-}
-
-/**
- * Breaking point update after benchmark test
- */
-export interface BPProgressUpdate {
-  bpId: string;
-  testResultId: string;
-  testNumber: number;
-  testDate: Date;
-  previousProgressPercent: number;
-  newProgressPercent: number;
-  previousStatus: BPStatus;
-  newStatus: BPStatus;
-  successRulePassed: boolean;
-}
-
-// ============================================================================
-// API TYPES
-// ============================================================================
-
-/**
- * Request to evaluate a breaking point
- */
-export interface EvaluateBPRequest {
-  bpId: string;
-  asOfDate?: Date;
-  includeTrainingDetails?: boolean;
-}
-
-/**
- * Response from breaking point evaluation
- */
-export interface EvaluateBPResponse {
-  evaluation: BPEvaluationResult;
-  recentTests: TestResultEvidence[];
-  trainingEvidence: TrainingEvidence | null;
-}
-
-/**
- * Request to update effort after session completion
- */
-export interface UpdateEffortRequest {
-  playerId: string;
-  sessionId: string;
-  sessionDuration: number;
-  sessionDate: Date;
-}
-
-/**
- * Request to update progress after test completion
- */
-export interface UpdateProgressRequest {
-  playerId: string;
-  testResultId: string;
-  testNumber: number;
-  testValue: number;
-  testDate: Date;
 }

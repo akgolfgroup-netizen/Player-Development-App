@@ -66,7 +66,7 @@ describe('Domain Mapping', () => {
 
       expect(mapping[1]).toBe('TEE'); // Driver carry
       expect(mapping[5]).toBe('TEE'); // Club speed
-      expect(mapping[8]).toBe('INN100'); // PEI 25m
+      expect(mapping[8]).toBe('INN50'); // PEI 25m (short approach 50-100m bucket)
       expect(mapping[15]).toBe('PUTT'); // 3m putt
       expect(mapping[17]).toBe('ARG'); // Chip prox
     });

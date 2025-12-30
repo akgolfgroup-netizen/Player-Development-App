@@ -1,44 +1,49 @@
 /**
  * Category Constraints Module
- * Computes binding constraints for A-K category progression
+ * Exports for category advancement constraint analysis
  */
 
-// Types
+export {
+  calculateBindingConstraints,
+  analyzePlayerConstraints,
+  createCategoryConstraintsService,
+  type CategoryConstraintsService,
+} from './category-constraints.service';
+
 export type {
-  CategoryAK,
-  Gender,
-  ComparisonOperator,
-  ConstraintSeverity,
-  ConstraintConfidence,
+  BindingConstraint,
+  CategoryRequirements,
+  ConstraintAnalysis,
+  PlayerDomainPerformance,
+  PlayerPerformanceSnapshot,
+  GetBindingConstraintsInput,
+  GetBindingConstraintsOutput,
   CategoryRequirementDef,
   RequirementWithMetadata,
-  ConstraintEvidence,
-  BindingConstraint,
-  ConstraintCounts,
-  DomainConstraintCounts,
-  CategoryConstraintsResult,
-  ComputeConstraintsInput,
-  PlayerTestData,
-  CategoryConstraintsRequest,
-  CategoryConstraintsResponse,
+  ConstraintSeverity,
+  ComparisonOperator,
+  CategoryAK,
+  Gender,
 } from './category-constraints.types';
 
-// Requirements source
 export {
-  TEST_NAMES,
-  TEST_SEVERITY,
   getRequirementsForCategory,
   getRequirementsForTest,
   getRequirement,
   getRequirementsForCategories,
-  getNextCategory,
-  getPreviousCategory,
+  getNextCategory as getNextCategoryFromDb,
+  getPreviousCategory as getPreviousCategoryFromDb,
   getCategoryDistance,
   clearRequirementsCache,
+  TEST_NAMES,
+  TEST_SEVERITY,
 } from './category-requirements.source';
 
-// Service
 export {
-  CategoryConstraintsService,
-  createCategoryConstraintsService,
-} from './category-constraints.service';
+  CATEGORY_REQUIREMENTS,
+  getCategoryRequirements,
+  getRequirementForDomain,
+  getAllCategories,
+  getNextCategory,
+  getPreviousCategory,
+} from './category-constraints.config';

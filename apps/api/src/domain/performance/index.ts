@@ -1,6 +1,6 @@
 /**
  * Performance Domain Module
- * Exports domain mapping, category constraints, and BP evidence services
+ * Unified exports for performance tracking, domain mapping, and evidence
  */
 
 // Domain Mapping

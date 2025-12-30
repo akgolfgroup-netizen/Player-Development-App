@@ -7,7 +7,7 @@
  */
 
 import { getPrismaClient } from '../../core/db/prisma';
-import { createBPEvidenceService } from '../performance/bp-evidence';
+import { createBpEvidenceService } from '../performance/bp-evidence';
 
 const prisma = getPrismaClient();
 
@@ -326,15 +326,25 @@ export class PlanProgressService {
 
     if (!session) return;
 
-    // Use BP Evidence Service to update effort
-    const bpEvidenceService = createBPEvidenceService(prisma);
-    const sessionDuration = session.duration || 60; // Default 60 min
+    // Use BP Evidence Service to update effort for each relevant breaking point
+    const bpEvidenceService = createBpEvidenceService(prisma);
 
-    await bpEvidenceService.updateEffortAfterSession(
-      playerId,
-      completedSessionId,
-      sessionDuration
-    );
+    // Find active breaking points for this player
+    const activeBreakingPoints = await prisma.breakingPoint.findMany({
+      where: {
+        playerId,
+        status: { in: ['identified', 'in_progress', 'awaiting_proof'] },
+      },
+    });
+
+    // Update effort for each active breaking point
+    for (const bp of activeBreakingPoints) {
+      await bpEvidenceService.recordTrainingEffort({
+        breakingPointId: bp.id,
+        sessionId: completedSessionId,
+        sessionDate: session.sessionDate,
+      });
+    }
   }
 
   /**
@@ -348,16 +358,42 @@ export class PlanProgressService {
     testValue: number,
     testDate: Date
   ): Promise<void> {
-    // Use BP Evidence Service to update progress
-    const bpEvidenceService = createBPEvidenceService(prisma);
+    const { mapTestNumberToDomain, getPrimaryProofMetric } = await import('../performance/domain-mapping');
 
-    await bpEvidenceService.updateProgressAfterTest(
-      playerId,
-      testResultId,
-      testNumber,
-      testValue,
-      testDate
-    );
+    // Find the domain for this test
+    const domainCode = mapTestNumberToDomain(testNumber);
+    if (!domainCode) return;
+
+    // Find active breaking points for this domain
+    const breakingPoints = await prisma.breakingPoint.findMany({
+      where: {
+        playerId,
+        testDomainCode: domainCode,
+        status: { in: ['identified', 'in_progress', 'awaiting_proof'] },
+      },
+    });
+
+    if (breakingPoints.length === 0) return;
+
+    // Get proof metric for domain
+    const proofMetric = getPrimaryProofMetric(domainCode);
+
+    // Use BP Evidence Service to evaluate and update progress
+    const bpEvidenceService = createBpEvidenceService(prisma);
+
+    for (const bp of breakingPoints) {
+      if (!bp.successRule) continue;
+
+      await bpEvidenceService.evaluateBenchmark({
+        breakingPointId: bp.id,
+        testResultId,
+        domainCode,
+        proofMetric,
+        testValue,
+        testDate,
+        successRule: bp.successRule,
+      });
+    }
   }
 
   /**

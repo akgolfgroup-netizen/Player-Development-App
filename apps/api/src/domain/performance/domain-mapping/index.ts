@@ -1,29 +1,47 @@
 /**
  * Domain Mapping Module
- * Single source of truth for test domain → SG component mappings
+ * Single source of truth for test domain to SG component mappings
  */
 
-// Types
+export {
+  mapTestDomainToComponent,
+  mapTestNumberToDomain,
+  getTestNumbersForDomain,
+  getSgComponentForDomain,
+  getSubBucketForDomain,
+  getProofMetricsForDomain,
+  getPrimaryProofMetric,
+  getProofMetricById,
+  getDefaultBenchmarkTestIdsForDomain,
+  getBenchmarkWindowDays,
+  parseSuccessRule,
+  buildSuccessRule,
+  getDomainInfo,
+  getAllDomainsInfo,
+  validateDomainCode,
+  isValidTestDomainCode,
+  isValidSgComponent,
+  getAllDomainCodes,
+  getTestToDomainMapping,
+} from './domain-mapping.service';
+
 export type {
   TestDomainCode,
   SgComponent,
   ApproachSubBucket,
-  DomainToComponentMapping,
-  DomainMappingResult,
   ProofMetric,
-  DomainProofMetrics,
-  DomainBenchmarkMapping,
-  MetricDirection,
-  CategoryTargets,
+  DomainMappingResult,
+  DomainInfoResponse,
   CategoryAK,
   Gender,
-  SuccessRuleFormat,
+  MetricDirection,
+  CategoryTargets,
+  DomainProofMetrics,
   ParsedSuccessRule,
-  DomainInfoResponse,
+  SuccessRuleFormat,
   AllDomainsResponse,
 } from './domain-mapping.types';
 
-// Configuration
 export {
   DOMAIN_COMPONENT_MAPPINGS,
   DOMAIN_BENCHMARK_CONFIGS,
@@ -33,44 +51,9 @@ export {
   isValidDomainCode,
 } from './domain-mapping.config';
 
-// Proof Metrics Configuration
 export {
   DOMAIN_PROOF_METRICS,
   getAllMetricsForDomain,
   getMetricById,
   getAllMetricIds,
 } from './proof-metrics.config';
-
-// Service Functions
-export {
-  // Core mapping
-  mapTestDomainToComponent,
-  mapTestNumberToDomain,
-  getTestNumbersForDomain,
-  getSgComponentForDomain,
-  getSubBucketForDomain,
-
-  // Proof metrics
-  getProofMetricsForDomain,
-  getPrimaryProofMetric,
-  getProofMetricById,
-
-  // Benchmark tests
-  getDefaultBenchmarkTestIdsForDomain,
-  getBenchmarkWindowDays,
-
-  // Success rules
-  parseSuccessRule,
-  buildSuccessRule,
-
-  // API responses
-  getDomainInfo,
-  getAllDomainsInfo,
-
-  // Validation
-  validateDomainCode,
-  getAllDomainCodes,
-  isValidTestDomainCode,
-  isValidSgComponent,
-  getTestToDomainMapping,
-} from './domain-mapping.service';

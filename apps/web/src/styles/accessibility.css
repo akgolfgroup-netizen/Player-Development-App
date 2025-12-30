@@ -1,6 +1,9 @@
 /**
  * AK Golf Academy - Accessibility Styles
  * WCAG 2.1 AA Compliant
+ * Design System v3.0 - Forest Green (Premium Light)
+ *
+ * All colors reference CSS variables from index.css
  */
 
 /* Screen reader only content */
@@ -22,26 +25,26 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: var(--ak-ink, #02060D);
-  color: var(--ak-white, #FFFFFF);
-  padding: 12px 24px;
+  background: var(--ak-ink);
+  color: var(--ak-white);
+  padding: var(--spacing-3) var(--spacing-6);
   text-decoration: none;
   font-weight: 600;
-  font-size: 16px;
+  font-size: var(--font-size-body);
   z-index: 1000;
-  border-radius: 0 0 8px 0;
+  border-radius: 0 0 var(--radius-sm) 0;
   transition: top 0.3s ease;
 }
 
 .skip-link:focus {
   top: 0;
-  outline: 3px solid var(--ak-gold, #C9A227);
+  outline: 3px solid var(--ak-gold);
   outline-offset: 2px;
 }
 
 /* Focus visible styles for keyboard navigation */
 body.using-keyboard *:focus {
-  outline: 3px solid var(--ak-primary, #10456A);
+  outline: 3px solid var(--ak-primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -55,7 +58,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid var(--ak-primary, #10456A);
+  outline: 3px solid var(--ak-primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -93,21 +96,21 @@ body:not(.using-keyboard) *:focus {
 /* Focus indicators for interactive elements */
 button:focus-visible,
 [role="button"]:focus-visible {
-  outline: 3px solid var(--ak-primary, #10456A);
+  outline: 3px solid var(--ak-primary);
   outline-offset: 2px;
 }
 
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid var(--ak-primary, #10456A);
+  outline: 3px solid var(--ak-primary);
   outline-offset: 2px;
-  border-color: var(--ak-primary, #10456A);
+  border-color: var(--ak-primary);
 }
 
 /* Link focus styles */
 a:focus-visible {
-  outline: 3px solid var(--ak-primary, #10456A);
+  outline: 3px solid var(--ak-primary);
   outline-offset: 2px;
   text-decoration: underline;
   text-decoration-thickness: 2px;
@@ -155,7 +158,7 @@ textarea:disabled,
 [aria-current="page"],
 .current-page {
   font-weight: 700;
-  border-bottom: 3px solid var(--ak-primary, #10456A);
+  border-bottom: 3px solid var(--ak-primary);
 }
 
 /* Live region styles */
@@ -169,27 +172,27 @@ textarea:disabled,
 /* Error states with sufficient contrast */
 .error,
 [aria-invalid="true"] {
-  border-color: var(--ak-error, #C45B4E) !important;
-  outline-color: var(--ak-error, #C45B4E) !important;
+  border-color: var(--ak-error) !important;
+  outline-color: var(--ak-error) !important;
 }
 
 .error-message {
-  color: var(--ak-error, #C45B4E);
+  color: var(--ak-error);
   font-weight: 600;
-  margin-top: 8px;
+  margin-top: var(--spacing-2);
 }
 
 /* Success states */
 .success,
 [aria-valid="true"] {
-  border-color: var(--ak-success, #4A7C59) !important;
+  border-color: var(--ak-success) !important;
 }
 
 /* Required field indicator */
 .required::after,
 [aria-required="true"] label::after {
   content: " *";
-  color: var(--ak-error, #C45B4E);
+  color: var(--ak-error);
   font-weight: 700;
 }
 
@@ -218,7 +221,7 @@ th {
 
 /* Caption should be visible by default */
 caption {
-  padding: 12px;
+  padding: var(--spacing-3);
   font-weight: 700;
   text-align: left;
 }
@@ -237,7 +240,7 @@ caption {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay-backdrop);
   z-index: 999;
 }
 
@@ -245,11 +248,11 @@ caption {
 [role="tooltip"] {
   position: absolute;
   z-index: 100;
-  padding: 8px 12px;
-  background: var(--ak-charcoal, #1C1C1E);
-  color: var(--ak-white, #FFFFFF);
-  border-radius: 4px;
-  font-size: 14px;
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--ak-ink);
+  color: var(--ak-white);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-footnote);
   max-width: 250px;
 }
 
@@ -257,8 +260,8 @@ caption {
 [role="progressbar"] {
   position: relative;
   overflow: hidden;
-  background: var(--ak-mist, #E5E5EA);
-  border-radius: 4px;
+  background: var(--gray-300);
+  border-radius: var(--radius-sm);
   height: 8px;
 }
 
@@ -271,37 +274,37 @@ caption {
   position: absolute;
   max-height: 300px;
   overflow-y: auto;
-  background: var(--ak-white, #FFFFFF);
-  border: 1px solid var(--ak-mist, #E5E5EA);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--background-white);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-elevated);
   z-index: 100;
 }
 
 [role="option"] {
-  padding: 12px 16px;
+  padding: var(--spacing-3) var(--spacing-4);
   cursor: pointer;
 }
 
 [role="option"][aria-selected="true"] {
-  background: var(--ak-primary, #10456A);
-  color: var(--ak-white, #FFFFFF);
+  background: var(--ak-primary);
+  color: var(--text-inverse);
 }
 
 /* Accordion accessibility */
 [role="region"][aria-labelledby] {
-  padding: 16px;
+  padding: var(--spacing-4);
 }
 
 /* Tab accessibility */
 [role="tablist"] {
   display: flex;
-  gap: 4px;
-  border-bottom: 2px solid var(--ak-mist, #E5E5EA);
+  gap: var(--spacing-1);
+  border-bottom: 2px solid var(--border-default);
 }
 
 [role="tab"] {
-  padding: 12px 24px;
+  padding: var(--spacing-3) var(--spacing-6);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -310,11 +313,11 @@ caption {
 
 [role="tab"][aria-selected="true"] {
   font-weight: 700;
-  border-bottom: 3px solid var(--ak-primary, #10456A);
+  border-bottom: 3px solid var(--ak-primary);
 }
 
 [role="tabpanel"] {
-  padding: 24px 0;
+  padding: var(--spacing-6) 0;
 }
 
 [role="tabpanel"][hidden] {
@@ -325,27 +328,27 @@ caption {
 [role="menu"],
 [role="menubar"] {
   list-style: none;
-  padding: 8px 0;
+  padding: var(--spacing-2) 0;
   margin: 0;
-  background: var(--ak-white, #FFFFFF);
-  border: 1px solid var(--ak-mist, #E5E5EA);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--background-white);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-elevated);
 }
 
 [role="menuitem"],
 [role="menuitemcheckbox"],
 [role="menuitemradio"] {
-  padding: 12px 16px;
+  padding: var(--spacing-3) var(--spacing-4);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-3);
 }
 
 [role="menuitem"]:hover,
 [role="menuitem"]:focus {
-  background: var(--ak-snow, #EDF0F2);
+  background: var(--background-surface);
 }
 
 /* Breadcrumb accessibility */
@@ -355,27 +358,27 @@ caption {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--spacing-2);
 }
 
 /* Alert/Status messages */
 [role="alert"],
 [role="status"] {
-  padding: 16px;
-  border-radius: 8px;
-  margin: 16px 0;
+  padding: var(--spacing-4);
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-4) 0;
 }
 
 [role="alert"] {
-  background: rgba(196, 91, 78, 0.1);
-  border: 1px solid rgba(196, 91, 78, 0.3);
-  color: var(--ak-error, #C45B4E);
+  background: var(--error-muted);
+  border: 1px solid var(--ak-error);
+  color: var(--ak-error);
 }
 
 [role="status"] {
-  background: rgba(74, 124, 89, 0.1);
-  border: 1px solid rgba(74, 124, 89, 0.3);
-  color: var(--ak-success, #4A7C59);
+  background: var(--success-muted);
+  border: 1px solid var(--ak-success);
+  color: var(--ak-success);
 }
 
 /* Print styles for accessibility */
@@ -394,11 +397,22 @@ caption {
   }
 }
 
-/* Dark mode support with proper contrast */
+/* Dark mode support - inherits from index.css :root.dark */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --ak-background: #1C1C1E;
-    --ak-surface: #2C2C2E;
-    --ak-text: #F2F2F7;
+  /* Dark mode tokens are handled by index.css */
+  /* This section ensures accessibility features work in dark mode */
+
+  .skip-link:focus {
+    outline-color: var(--ak-gold);
+  }
+
+  [role="alert"] {
+    background: var(--error-muted);
+    border-color: var(--ak-error);
+  }
+
+  [role="status"] {
+    background: var(--success-muted);
+    border-color: var(--ak-success);
   }
 }

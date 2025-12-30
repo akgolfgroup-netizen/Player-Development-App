@@ -1,30 +1,45 @@
 /**
  * Breaking Point Evidence Module
- * Evidence-based progress tracking for breaking points
- *
- * KEY PRINCIPLE: Completion affects effort, NOT progress.
- * Progress only changes when benchmark test shows improvement.
+ * Exports for evidence-based progress tracking
  */
 
-// Types
+export {
+  recordTrainingEffort,
+  evaluateBenchmark,
+  getBreakingPointStatus,
+  createBpEvidenceService,
+  type BpEvidenceService,
+} from './bp-evidence.service';
+
 export type {
-  BPStatus,
-  BPConfidence,
-  BPEvaluationResult,
   TestResultEvidence,
   TrainingEvidence,
-  BPEffortUpdate,
-  BPProgressUpdate,
+  BenchmarkResult,
+  BreakingPointProgress,
+  BreakingPointUpdate,
+  RecordTrainingEffortInput,
+  RecordTrainingEffortOutput,
+  EvaluateBenchmarkInput,
+  EvaluateBenchmarkOutput,
+  GetBreakingPointStatusInput,
+  GetBreakingPointStatusOutput,
   SuccessRuleContext,
   SuccessRuleResult,
-  EvaluateBPRequest,
-  EvaluateBPResponse,
-  UpdateEffortRequest,
-  UpdateProgressRequest,
 } from './bp-evidence.types';
 
-// Rules
-export { evaluateSuccessRule, buildDefaultSuccessRule } from './bp-evidence.rules';
+export {
+  evaluateSuccessRule,
+  buildDefaultSuccessRule,
+} from './bp-evidence.rules';
 
-// Service
-export { BPEvidenceService, createBPEvidenceService } from './bp-evidence.service';
+export {
+  SESSIONS_FOR_FULL_EFFORT,
+  MIN_EFFORT_PER_SESSION,
+  MAX_EFFORT_PERCENT,
+  PROGRESS_THRESHOLDS,
+  DEFAULT_BENCHMARK_WINDOW_DAYS,
+  CONFIDENCE_THRESHOLDS,
+  calculateEffortFromSessions,
+  getConfidenceLevel,
+  type ConfidenceLevel,
+} from './bp-evidence.config';

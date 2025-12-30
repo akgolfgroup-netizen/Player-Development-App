@@ -1,42 +1,44 @@
 /**
  * FocusSession Component Styles
  * iOS-specific focus mode integration styling
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Forest Green (Premium Light)
+ *
+ * All colors use CSS variables from index.css
  */
 
 .focus-session-container {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--spacing-5);
 }
 
 /* Session Controls (Idle State) */
 .focus-session-controls {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-4);
   align-items: center;
 }
 
 .btn-start-session {
   width: 100%;
   max-width: 320px;
-  padding: 16px 32px;
-  font-size: 18px;
+  padding: var(--spacing-4) var(--spacing-8);
+  font-size: var(--font-size-headline);
   font-weight: 600;
-  color: #ffffff;
-  background: linear-gradient(135deg, #10456A 0%, #2C5F7F 100%);
+  color: var(--text-inverse);
+  background: linear-gradient(135deg, var(--ak-primary) 0%, var(--ak-primary-light) 100%);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(16, 69, 106, 0.3);
+  box-shadow: 0 4px 12px rgba(27, 77, 62, 0.3);
 }
 
 .btn-start-session:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(16, 69, 106, 0.4);
+  box-shadow: 0 6px 16px rgba(27, 77, 62, 0.4);
 }
 
 .btn-start-session:active {
@@ -46,19 +48,19 @@
 .btn-setup-shortcut {
   width: 100%;
   max-width: 320px;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-size-body);
   font-weight: 500;
-  color: #10456A;
-  background: #E8F1F5;
-  border: 2px solid #10456A;
-  border-radius: 12px;
+  color: var(--ak-primary);
+  background: var(--accent-muted);
+  border: 2px solid var(--ak-primary);
+  border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-setup-shortcut:hover {
-  background: #D1E3EB;
+  background: var(--accent-soft);
 }
 
 /* Active Session */
@@ -67,11 +69,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
-  padding: 32px;
-  background: #EDF0F2;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  gap: var(--spacing-6);
+  padding: var(--spacing-8);
+  background: var(--background-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
 }
 
 .session-timer {
@@ -81,21 +83,21 @@
 .session-timer h2 {
   font-size: 48px;
   font-weight: 700;
-  color: #10456A;
+  color: var(--ak-primary);
   margin: 0;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
 
 .session-timer p {
-  font-size: 16px;
-  color: #535862;
-  margin: 8px 0 0 0;
+  font-size: var(--font-size-body);
+  color: var(--text-secondary);
+  margin: var(--spacing-2) 0 0 0;
 }
 
 .session-actions {
   display: flex;
-  gap: 12px;
+  gap: var(--spacing-3);
   width: 100%;
   max-width: 400px;
 }
@@ -104,81 +106,81 @@
 .btn-resume,
 .btn-complete {
   flex: 1;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-size-body);
   font-weight: 600;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-pause,
 .btn-resume {
-  color: #1C1C1E;
-  background: #E5E5EA;
+  color: var(--text-primary);
+  background: var(--gray-300);
 }
 
 .btn-pause:hover,
 .btn-resume:hover {
-  background: #D5D7DA;
+  background: var(--gray-400);
 }
 
 .btn-complete {
-  color: #ffffff;
-  background: #10456A;
+  color: var(--text-inverse);
+  background: var(--ak-primary);
 }
 
 .btn-complete:hover {
-  background: #2C5F7F;
+  background: var(--ak-primary-light);
 }
 
 /* Paused State */
 .focus-session-paused {
-  background: #fef3c7;
-  border: 2px solid #f59e0b;
+  background: var(--warning-muted);
+  border: 2px solid var(--ak-warning);
 }
 
 .focus-session-paused .session-timer h2 {
-  color: #f59e0b;
+  color: var(--ak-warning);
 }
 
 /* Completed State */
 .focus-session-completed {
   text-align: center;
-  padding: 32px;
-  background: #E8F1F5;
-  border-radius: 16px;
-  border: 2px solid #10456A;
+  padding: var(--spacing-8);
+  background: var(--success-muted);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--ak-success);
 }
 
 .focus-session-completed h3 {
-  font-size: 24px;
+  font-size: var(--font-size-title2);
   font-weight: 700;
-  color: #10456A;
-  margin: 0 0 8px 0;
+  color: var(--ak-success);
+  margin: 0 0 var(--spacing-2) 0;
 }
 
 .focus-session-completed p {
-  font-size: 18px;
-  color: #535862;
-  margin: 0 0 24px 0;
+  font-size: var(--font-size-headline);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-6) 0;
 }
 
 .btn-new-session {
-  padding: 12px 32px;
-  font-size: 16px;
+  padding: var(--spacing-3) var(--spacing-8);
+  font-size: var(--font-size-body);
   font-weight: 600;
-  color: #ffffff;
-  background: #10456A;
+  color: var(--text-inverse);
+  background: var(--ak-primary);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-new-session:hover {
-  background: #2C5F7F;
+  background: var(--ak-primary-light);
 }
 
 /* Modal Overlay */
@@ -188,170 +190,170 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--overlay-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 20px;
+  padding: var(--spacing-5);
   backdrop-filter: blur(4px);
 }
 
 .modal-content {
-  background: #ffffff;
-  border-radius: 16px;
+  background: var(--background-white);
+  border-radius: var(--radius-lg);
   max-width: 560px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  padding: 32px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: var(--spacing-8);
+  box-shadow: var(--shadow-float);
 }
 
 .modal-content h2 {
-  font-size: 24px;
+  font-size: var(--font-size-title2);
   font-weight: 700;
-  color: #1C1C1E;
-  margin: 0 0 24px 0;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-6) 0;
 }
 
 /* Setup Instructions */
 .setup-instructions {
-  color: #414651;
+  color: var(--text-secondary);
 }
 
 .setup-instructions p {
-  margin: 0 0 16px 0;
+  margin: 0 0 var(--spacing-4) 0;
   line-height: 1.6;
 }
 
 .setup-instructions ol {
   list-style: decimal;
-  padding-left: 24px;
-  margin: 0 0 24px 0;
+  padding-left: var(--spacing-6);
+  margin: 0 0 var(--spacing-6) 0;
 }
 
 .setup-instructions ol li {
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-5);
 }
 
 .setup-instructions ol li strong {
   display: block;
-  font-size: 16px;
+  font-size: var(--font-size-body);
   font-weight: 600;
-  color: #1C1C1E;
-  margin-bottom: 8px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-2);
 }
 
 .setup-instructions ol li p {
-  margin: 8px 0;
-  color: #535862;
+  margin: var(--spacing-2) 0;
+  color: var(--text-secondary);
 }
 
 .setup-instructions ul {
   list-style: disc;
-  padding-left: 24px;
-  margin: 8px 0;
+  padding-left: var(--spacing-6);
+  margin: var(--spacing-2) 0;
 }
 
 .setup-instructions ul li {
-  margin: 4px 0;
-  color: #535862;
+  margin: var(--spacing-1) 0;
+  color: var(--text-secondary);
 }
 
 /* Setup Actions */
 .setup-actions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-6);
 }
 
 .btn-install-shortcut {
   display: block;
   width: 100%;
-  padding: 14px 24px;
-  font-size: 16px;
+  padding: 14px var(--spacing-6);
+  font-size: var(--font-size-body);
   font-weight: 600;
-  color: #ffffff;
-  background: linear-gradient(135deg, #10456A 0%, #2C5F7F 100%);
+  color: var(--text-inverse);
+  background: linear-gradient(135deg, var(--ak-primary) 0%, var(--ak-primary-light) 100%);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(16, 69, 106, 0.3);
+  box-shadow: 0 4px 12px rgba(27, 77, 62, 0.3);
 }
 
 .btn-install-shortcut:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(16, 69, 106, 0.4);
+  box-shadow: 0 6px 16px rgba(27, 77, 62, 0.4);
 }
 
 .btn-done {
   width: 100%;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-size-body);
   font-weight: 600;
-  color: #ffffff;
-  background: #10456A;
+  color: var(--text-inverse);
+  background: var(--ak-primary);
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-done:hover {
-  background: #2C5F7F;
+  background: var(--ak-primary-light);
 }
 
 .btn-skip {
   width: 100%;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--font-size-body);
   font-weight: 500;
-  color: #535862;
+  color: var(--text-secondary);
   background: transparent;
-  border: 2px solid #E5E5EA;
-  border-radius: 10px;
+  border: 2px solid var(--border-default);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .btn-skip:hover {
-  background: #F9FAFB;
+  background: var(--background-default);
 }
 
 /* Setup Note */
 .setup-note {
-  margin-top: 24px;
-  padding: 16px;
-  background: #F2F4F7;
-  border-left: 4px solid #10456A;
-  border-radius: 8px;
+  margin-top: var(--spacing-6);
+  padding: var(--spacing-4);
+  background: var(--background-surface);
+  border-left: 4px solid var(--ak-primary);
+  border-radius: var(--radius-sm);
 }
 
 .setup-note p {
   margin: 0;
-  font-size: 14px;
-  color: #535862;
+  font-size: var(--font-size-footnote);
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
 .setup-note strong {
-  color: #1C1C1E;
+  color: var(--text-primary);
 }
 
 /* Debug Info */
 .debug-info {
-  margin-top: 32px;
-  padding: 16px;
-  background: #F9FAFB;
-  border: 1px solid #E5E5EA;
-  border-radius: 8px;
+  margin-top: var(--spacing-8);
+  padding: var(--spacing-4);
+  background: var(--background-default);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
   font-family: 'Monaco', 'Courier New', monospace;
-  font-size: 12px;
+  font-size: var(--font-size-caption1);
 }
 
 .debug-info details {
@@ -360,29 +362,29 @@
 
 .debug-info summary {
   font-weight: 600;
-  color: #535862;
+  color: var(--text-secondary);
   user-select: none;
 }
 
 .debug-info pre {
-  margin: 12px 0 0 0;
-  padding: 12px;
-  background: #ffffff;
-  border: 1px solid #E5E5EA;
+  margin: var(--spacing-3) 0 0 0;
+  padding: var(--spacing-3);
+  background: var(--background-white);
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   overflow-x: auto;
-  color: #414651;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
 /* Responsive Design */
 @media (max-width: 640px) {
   .focus-session-container {
-    padding: 16px;
+    padding: var(--spacing-4);
   }
 
   .modal-content {
-    padding: 24px;
+    padding: var(--spacing-6);
   }
 
   .session-timer h2 {
@@ -391,7 +393,7 @@
 
   .focus-session-active,
   .focus-session-paused {
-    padding: 24px;
+    padding: var(--spacing-6);
   }
 
   .session-actions {
@@ -407,28 +409,26 @@
 
 /* iOS-specific adjustments */
 @supports (-webkit-touch-callout: none) {
-  /* iOS Safari */
   .btn-start-session,
   .btn-install-shortcut {
     -webkit-tap-highlight-color: transparent;
   }
 
   .modal-content {
-    /* iOS Safari has a bouncy scroll, account for safe areas */
-    padding-bottom: env(safe-area-inset-bottom, 32px);
+    padding-bottom: var(--safe-area-inset-bottom, 32px);
   }
 }
 
 /* Fullscreen mode adjustments */
 .focus-session-container:fullscreen {
-  background: #ffffff;
+  background: var(--background-white);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .focus-session-container:-webkit-full-screen {
-  background: #ffffff;
+  background: var(--background-white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -440,16 +440,7 @@
   max-width: 600px;
 }
 
-/* Animation for session start */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
+/* Animation for session start - uses index.css keyframes if available */
 .session-timer h2 {
   animation: pulse 2s ease-in-out infinite;
 }
