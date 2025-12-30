@@ -35,16 +35,17 @@ const DayView = ({
 
   const formatHour = (hour) => `${hour.toString().padStart(2, '0')}:00`;
 
+  // Session colors using semantic tokens (see COLOR_USAGE_RULES.md)
   const getSessionColor = (type) => {
     const colors = {
-      teknikk: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', accent: 'bg-blue-500' },
-      golfslag: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700', accent: 'bg-green-500' },
-      spill: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', accent: 'bg-purple-500' },
-      konkurranse: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', accent: 'bg-amber-500' },
-      fysisk: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', accent: 'bg-red-500' },
-      mental: { bg: 'bg-gray-50', border: 'border-gray-200', text: 'text-gray-700', accent: 'bg-gray-500' },
+      teknikk: { bg: 'bg-ak-session-teknikk-muted', border: 'border-ak-session-teknikk', text: 'text-ak-text-primary', accent: 'bg-ak-session-teknikk' },
+      golfslag: { bg: 'bg-ak-session-golfslag-muted', border: 'border-ak-session-golfslag', text: 'text-ak-text-primary', accent: 'bg-ak-session-golfslag' },
+      spill: { bg: 'bg-ak-session-spill-muted', border: 'border-ak-session-spill', text: 'text-ak-text-primary', accent: 'bg-ak-session-spill' },
+      konkurranse: { bg: 'bg-ak-session-kompetanse-muted', border: 'border-ak-session-kompetanse', text: 'text-ak-text-primary', accent: 'bg-ak-session-kompetanse' },
+      fysisk: { bg: 'bg-ak-session-fysisk-muted', border: 'border-ak-session-fysisk', text: 'text-ak-text-primary', accent: 'bg-ak-session-fysisk' },
+      mental: { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' },
     };
-    return colors[type] || { bg: 'bg-gray-50', border: 'border-gray-200', text: 'text-gray-700', accent: 'bg-gray-400' };
+    return colors[type] || { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' };
   };
 
   const getSessionsForHour = (hour) => {
@@ -181,14 +182,14 @@ const DayView = ({
                 />
               ))}
 
-              {/* Current time indicator */}
+              {/* Current time indicator - uses brand primary for visibility */}
               {isToday && (
                 <div
                   className="absolute left-0 right-0 z-20 flex items-center"
                   style={{ top: getCurrentTimePosition() }}
                 >
-                  <div className="h-3 w-3 rounded-full bg-red-500 -ml-1.5" />
-                  <div className="flex-auto h-0.5 bg-red-500" />
+                  <div className="h-3 w-3 rounded-full bg-ak-brand-primary -ml-1.5" />
+                  <div className="flex-auto h-0.5 bg-ak-brand-primary" />
                 </div>
               )}
 

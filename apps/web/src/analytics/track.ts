@@ -53,7 +53,13 @@ export type AnalyticsEventName =
   | 'plan_confirmed'
   | 'training_log_submitted'
   | 'structured_session_completed'
-  | 'feedback_received';
+  | 'feedback_received'
+  // Calendar events
+  | 'calendar_view_open'
+  | 'calendar_click_today'
+  | 'calendar_click_new_session'
+  | 'calendar_event_open'
+  | 'calendar_event_start_workout';
 
 export interface BasePayload {
   source?: string;
@@ -65,7 +71,9 @@ export interface BasePayload {
 
 // Allowed payload keys (whitelist approach)
 const ALLOWED_KEYS = new Set([
-  'source', 'screen', 'id', 'date', 'type', 'path', 'action'
+  'source', 'screen', 'id', 'date', 'type', 'path', 'action',
+  // Calendar-specific keys
+  'view', 'week_start_date', 'event_id', 'event_type', 'recommended', 'planned'
 ]);
 
 // Keys that should NEVER be sent (blocklist as safety net)

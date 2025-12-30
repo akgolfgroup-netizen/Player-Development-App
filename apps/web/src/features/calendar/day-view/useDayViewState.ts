@@ -223,7 +223,36 @@ export function useDayViewState({
 
   const startWorkout = useCallback(
     (source: 'decision_anchor' | 'timeline' | 'detail_panel') => {
-      if (!recommendedWorkout) return;
+      // Handle S3: Create fallback workout if no recommendation exists
+      if (!recommendedWorkout) {
+        const fallbackWorkout: Workout = {
+          id: `fallback-${Date.now()}`,
+          name: 'Terskeløkt',
+          category: 'fysisk',
+          duration: 15,
+          scheduledTime: undefined,
+          scheduledDate: date.toISOString().split('T')[0],
+          status: 'in_progress',
+          isRecommended: false,
+          isAllDay: false,
+          startedAt: new Date().toISOString(),
+        };
+
+        // Log instrumentation event for fallback workout
+        const eventData: WorkoutStartEvent = {
+          source,
+          recommended: false,
+          planned: false,
+          duration_selected: 15,
+        };
+        logEvent('workout_start', eventData);
+
+        // Add fallback workout to local state
+        setLocalWorkouts((prev) => [...prev, fallbackWorkout]);
+        setWorkoutStartTime(new Date());
+        setElapsedTime(0);
+        return;
+      }
 
       // Log instrumentation event
       const eventData: WorkoutStartEvent = {
@@ -247,7 +276,7 @@ export function useDayViewState({
       setWorkoutStartTime(new Date());
       setElapsedTime(0);
     },
-    [recommendedWorkout]
+    [recommendedWorkout, date]
   );
 
   const rescheduleWorkout = useCallback(

@@ -463,7 +463,9 @@ function App() {
           } />
           <Route path="/kalender/dag" element={
             <ProtectedRoute>
-              <DayViewPage />
+              <DashboardLayout>
+                <DayViewPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan-preview/:planId" element={

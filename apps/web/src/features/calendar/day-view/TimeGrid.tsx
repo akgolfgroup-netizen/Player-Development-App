@@ -259,10 +259,15 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
   };
 
   return (
-    <div style={styles.container} ref={containerRef}>
+    <div
+      style={styles.container}
+      ref={containerRef}
+      role="region"
+      aria-label="Dagskalender tidslinje"
+    >
       {/* All-Day Lane */}
       {allDayEvents.length > 0 && (
-        <div style={styles.allDayLane}>
+        <div style={styles.allDayLane} role="list" aria-label="Heldagshendelser">
           {allDayEvents.map((event) => {
             const isAK = event.type === 'ak_workout';
             const title = isAK ? event.workout?.name : event.external?.title;
@@ -275,6 +280,8 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
                   ...(isAK ? styles.allDayEventAK : styles.allDayEventExternal),
                 }}
                 onClick={() => onEventClick(event)}
+                role="listitem"
+                aria-label={`Heldagshendelse: ${title}`}
               >
                 {title}
               </button>
@@ -318,14 +325,27 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
               }}
+              role="button"
+              tabIndex={0}
+              aria-label={`Legg til hendelse kl ${formatHour(hour)}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onTimeSlotClick?.(hour);
+                }
+              }}
             />
           ))}
 
           {/* Now line */}
           {nowPosition !== null && (
-            <div style={{ ...styles.nowLine, top: `${nowPosition}%` }}>
-              <div style={styles.nowDot} />
-              <div style={styles.nowLineBar} />
+            <div
+              style={{ ...styles.nowLine, top: `${nowPosition}%` }}
+              aria-label="Nåværende tidspunkt"
+              role="presentation"
+            >
+              <div style={styles.nowDot} aria-hidden="true" />
+              <div style={styles.nowLineBar} aria-hidden="true" />
             </div>
           )}
 

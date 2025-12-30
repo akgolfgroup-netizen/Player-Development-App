@@ -80,10 +80,10 @@ const COMPONENT_LABELS = {
 };
 
 const COMPONENT_COLORS = {
-  OTT: 'var(--info)',
-  APP: 'var(--success)',
-  ARG: 'var(--warning)',
-  PUTT: 'var(--ak-accent-purple, #8B5CF6)',
+  OTT: 'var(--ak-status-info)',
+  APP: 'var(--ak-status-success)',
+  ARG: 'var(--ak-status-warning)',
+  PUTT: 'var(--ak-session-teknikk)',
 };
 
 // ===== ZONE A COMPONENTS =====
@@ -125,7 +125,7 @@ const FocusCard = ({ focus, loading }) => {
     return (
       <div style={styles.focusCard}>
         <div style={styles.focusCardHeader}>
-          <Crosshair size={16} style={{ color: 'var(--accent)' }} />
+          <Crosshair size={16} style={{ color: 'var(--ak-brand-primary)' }} />
           <span style={styles.focusCardLabel}>Ukens fokus</span>
         </div>
         <h3 style={styles.focusCardTitle}>Start din første økt</h3>
@@ -136,7 +136,7 @@ const FocusCard = ({ focus, loading }) => {
     );
   }
 
-  const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--accent)';
+  const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--ak-brand-primary)';
   const focusLabel = COMPONENT_LABELS[focus.focusComponent] || focus.focusComponent;
   const sessionsCompleted = focus.sessionsCompleted || 0;
   const sessionsTarget = focus.sessionsTarget || 4;
@@ -195,10 +195,10 @@ const FocusCard = ({ focus, loading }) => {
         <div style={styles.focusConfidence}>
           <span style={{
             ...styles.focusConfidenceBadge,
-            backgroundColor: focus.confidence === 'high' ? 'var(--success-muted)' :
-                           focus.confidence === 'med' ? 'var(--warning-muted)' : 'var(--bg-tertiary)',
-            color: focus.confidence === 'high' ? 'var(--success)' :
-                   focus.confidence === 'med' ? 'var(--warning)' : 'var(--text-tertiary)',
+            backgroundColor: focus.confidence === 'high' ? 'var(--ak-status-successMuted)' :
+                           focus.confidence === 'med' ? 'var(--ak-status-warningMuted)' : 'var(--ak-surface-subtle)',
+            color: focus.confidence === 'high' ? 'var(--ak-status-success)' :
+                   focus.confidence === 'med' ? 'var(--ak-status-warning)' : 'var(--ak-text-tertiary)',
           }}>
             {focus.confidence === 'high' ? 'Sikker anbefaling' :
              focus.confidence === 'med' ? 'Moderat sikkerhet' : 'Begrenset data'}
@@ -285,9 +285,9 @@ const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
  */
 const QuickStartCTA = ({ onStart }) => (
   <button style={styles.quickStartButton} onClick={() => onStart({ type: 'quick', duration: 15 })}>
-    <Zap size={16} style={{ color: 'var(--text-secondary)' }} />
+    <Zap size={16} style={{ color: 'var(--ak-text-secondary)' }} />
     <span>Bare 15 minutter? Start hurtigøkt</span>
-    <ChevronRight size={14} style={{ color: 'var(--text-tertiary)' }} />
+    <ChevronRight size={14} style={{ color: 'var(--ak-text-tertiary)' }} />
   </button>
 );
 
@@ -306,7 +306,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
     <div style={styles.card}>
       <div style={styles.cardHeader}>
         <div style={styles.cardHeaderLeft}>
-          <Target size={16} style={{ color: 'var(--text-secondary)' }} />
+          <Target size={16} style={{ color: 'var(--ak-text-secondary)' }} />
           <span style={styles.cardTitle}>Dagens oppgaver</span>
         </div>
         {tasks.length > 3 && (
@@ -317,7 +317,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
       </div>
       {tasks.length === 0 ? (
         <div style={styles.emptyState}>
-          <Sparkles size={24} style={{ color: 'var(--text-tertiary)', marginBottom: 8 }} />
+          <Sparkles size={24} style={{ color: 'var(--ak-text-tertiary)', marginBottom: 8 }} />
           <p>Ingen oppgaver i dag – nyt friheten!</p>
         </div>
       ) : (
@@ -327,14 +327,14 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
               key={task.id}
               style={{
                 ...styles.taskItem,
-                backgroundColor: task.completed ? 'var(--success-muted)' : 'transparent',
+                backgroundColor: task.completed ? 'var(--ak-status-successMuted)' : 'transparent',
               }}
             >
               <div
                 style={{
                   ...styles.taskCheckbox,
-                  borderColor: task.completed ? 'var(--ak-success)' : 'var(--border-default)',
-                  backgroundColor: task.completed ? 'var(--ak-success)' : 'transparent',
+                  borderColor: task.completed ? 'var(--ak-status-success)' : 'var(--ak-border-default)',
+                  backgroundColor: task.completed ? 'var(--ak-status-success)' : 'transparent',
                 }}
                 onClick={() => onToggle?.(task.id)}
               >
@@ -347,7 +347,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
               <span style={{
                 ...styles.taskTitle,
                 textDecoration: task.completed ? 'line-through' : 'none',
-                color: task.completed ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                color: task.completed ? 'var(--ak-text-tertiary)' : 'var(--ak-text-primary)',
                 flex: 1,
               }}>
                 {task.title}
@@ -367,7 +367,7 @@ const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
       {tasks.length > 0 && (
         <div style={styles.cardFooterMeta}>
           {completedCount === tasks.length ? (
-            <span style={{ color: 'var(--success)' }}>✓ Alle fullført!</span>
+            <span style={{ color: 'var(--ak-status-success)' }}>✓ Alle fullført!</span>
           ) : (
             `${completedCount} av ${Math.min(tasks.length, 3)} fullført`
           )}
@@ -431,7 +431,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
           <div style={{
             ...styles.progressStripFill,
             width: `${sessionsPercent}%`,
-            backgroundColor: sessionsPercent >= 100 ? 'var(--success)' : 'var(--accent)',
+            backgroundColor: sessionsPercent >= 100 ? 'var(--ak-status-success)' : 'var(--ak-brand-primary)',
           }} />
         </div>
       </div>
@@ -448,7 +448,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
           <div style={{
             ...styles.progressStripFill,
             width: `${Math.min(hoursPercent, 100)}%`,
-            backgroundColor: hoursPercent >= 100 ? 'var(--success)' : 'var(--info)',
+            backgroundColor: hoursPercent >= 100 ? 'var(--ak-status-success)' : 'var(--ak-status-info)',
           }} />
         </div>
       </div>
@@ -458,7 +458,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
         <div style={styles.progressStripStreak}>
           <span style={{
             ...styles.progressStripStreakValue,
-            color: streak >= 7 ? 'var(--warning)' : 'var(--text-primary)',
+            color: streak >= 7 ? 'var(--ak-status-warning)' : 'var(--ak-text-primary)',
           }}>
             {streak >= 7 ? '🔥' : ''}{streak}
           </span>
@@ -485,7 +485,7 @@ const NotificationsList = ({ notifications, onViewAll }) => {
     <div style={styles.card}>
       <div style={styles.cardHeader}>
         <div style={styles.cardHeaderLeft}>
-          <Bell size={16} style={{ color: 'var(--text-secondary)' }} />
+          <Bell size={16} style={{ color: 'var(--ak-text-secondary)' }} />
           <span style={styles.cardTitle}>Varslinger</span>
           {notifications.length > 0 && (
             <span style={styles.notificationBadge}>{notifications.length}</span>
@@ -633,7 +633,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '48px',
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
     fontSize: '15px',
   },
 
@@ -649,7 +649,7 @@ const styles = {
   },
   greetingText: {
     fontSize: '12px',
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
     margin: '0 0 4px 0',
@@ -657,13 +657,13 @@ const styles = {
   playerName: {
     fontSize: '32px',
     fontWeight: 700,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
     margin: '0 0 6px 0',
     letterSpacing: '-0.02em',
   },
   motivationalText: {
     fontSize: '15px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     margin: 0,
     fontWeight: 500,
   },
@@ -671,10 +671,10 @@ const styles = {
   // FocusCard
   focusCard: {
     padding: '20px',
-    backgroundColor: 'var(--card)',
+    backgroundColor: 'var(--ak-surface-card)',
     borderRadius: '16px',
-    border: '1px solid var(--border-subtle)',
-    borderLeft: '4px solid var(--accent)',
+    border: '1px solid var(--ak-border-muted)',
+    borderLeft: '4px solid var(--ak-brand-primary)',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
   },
   focusCardLoading: {
@@ -684,7 +684,7 @@ const styles = {
   },
   focusCardLoadingPulse: {
     height: '16px',
-    backgroundColor: 'var(--bg-tertiary)',
+    backgroundColor: 'var(--ak-surface-subtle)',
     borderRadius: '4px',
     animation: 'pulse 1.5s ease-in-out infinite',
   },
@@ -702,7 +702,7 @@ const styles = {
   focusCardLabel: {
     fontSize: '12px',
     fontWeight: 600,
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     textTransform: 'uppercase',
     letterSpacing: '0.03em',
   },
@@ -715,13 +715,13 @@ const styles = {
   focusCardTitle: {
     fontSize: '20px',
     fontWeight: 700,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
     margin: '0 0 8px 0',
     letterSpacing: '-0.01em',
   },
   focusCardDescription: {
     fontSize: '14px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     margin: '0 0 16px 0',
     lineHeight: 1.5,
   },
@@ -733,7 +733,7 @@ const styles = {
   focusProgressTrack: {
     flex: 1,
     height: '6px',
-    backgroundColor: 'var(--bg-tertiary)',
+    backgroundColor: 'var(--ak-surface-subtle)',
     borderRadius: '3px',
     overflow: 'hidden',
   },
@@ -744,7 +744,7 @@ const styles = {
   },
   focusProgressLabel: {
     fontSize: '13px',
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
     fontWeight: 500,
     whiteSpace: 'nowrap',
   },
@@ -811,8 +811,8 @@ const styles = {
     width: '100%',
     padding: '12px 16px',
     backgroundColor: 'transparent',
-    color: 'var(--text-secondary)',
-    border: '1px dashed var(--border-default)',
+    color: 'var(--ak-text-secondary)',
+    border: '1px dashed var(--ak-border-default)',
     borderRadius: '10px',
     cursor: 'pointer',
     fontSize: '14px',
@@ -840,9 +840,9 @@ const styles = {
     alignItems: 'center',
     gap: '20px',
     padding: '14px 18px',
-    backgroundColor: 'var(--card)',
+    backgroundColor: 'var(--ak-surface-card)',
     borderRadius: '12px',
-    border: '1px solid var(--border-subtle)',
+    border: '1px solid var(--ak-border-muted)',
   },
   progressStripItem: {
     flex: 1,
@@ -857,17 +857,17 @@ const styles = {
   progressStripLabel: {
     fontSize: '12px',
     fontWeight: 500,
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
   },
   progressStripValue: {
     fontSize: '12px',
     fontWeight: 600,
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     fontFeatureSettings: '"tnum"',
   },
   progressStripBar: {
     height: '4px',
-    backgroundColor: 'var(--bg-tertiary)',
+    backgroundColor: 'var(--ak-surface-subtle)',
     borderRadius: '2px',
     overflow: 'hidden',
   },
@@ -881,7 +881,7 @@ const styles = {
     alignItems: 'center',
     gap: '4px',
     paddingLeft: '16px',
-    borderLeft: '1px solid var(--border-subtle)',
+    borderLeft: '1px solid var(--ak-border-muted)',
   },
   progressStripStreakValue: {
     fontSize: '16px',
@@ -890,7 +890,7 @@ const styles = {
   },
   progressStripStreakLabel: {
     fontSize: '11px',
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
     whiteSpace: 'nowrap',
   },
   progressStripEncouragement: {
@@ -901,14 +901,14 @@ const styles = {
   progressStripEncouragementText: {
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
   },
 
   // Generic card
   card: {
-    backgroundColor: 'var(--card)',
+    backgroundColor: 'var(--ak-surface-card)',
     borderRadius: '12px',
-    border: '1px solid var(--border-subtle)',
+    border: '1px solid var(--ak-border-muted)',
     overflow: 'hidden',
   },
   cardHeader: {
@@ -916,7 +916,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '12px 16px',
-    borderBottom: '1px solid var(--border-subtle)',
+    borderBottom: '1px solid var(--ak-border-muted)',
   },
   cardHeaderLeft: {
     display: 'flex',

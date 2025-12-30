@@ -10,8 +10,9 @@
  * Uses semantic tokens only (no raw hex values).
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useScreenView } from '../../analytics/useScreenView';
+import { track } from '../../analytics/track';
 import { useCalendarState } from './hooks/useCalendarState';
 import { useCalendarEvents, CalendarEvent } from './hooks/useCalendarEvents';
 import {
@@ -62,6 +63,22 @@ const CalendarPage: React.FC = () => {
     isSeedData,
   } = useCalendarEvents(rangeStart, rangeEnd);
 
+  // Track calendar view opens
+  useEffect(() => {
+    track('calendar_view_open', {
+      view,
+      week_start_date: rangeStart.toISOString().split('T')[0],
+    });
+  }, [view, rangeStart]);
+
+  // Wrapped goToToday with analytics
+  const handleGoToToday = useCallback(() => {
+    track('calendar_click_today', {
+      week_start_date: rangeStart.toISOString().split('T')[0],
+    });
+    goToToday();
+  }, [goToToday, rangeStart]);
+
   // Selected event for detail panel
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [isDetailPanelOpen, setDetailPanelOpen] = useState(false);
@@ -78,6 +95,12 @@ const CalendarPage: React.FC = () => {
 
   // Handlers
   const handleEventClick = useCallback((event: CalendarEvent) => {
+    track('calendar_event_open', {
+      event_id: event.id,
+      event_type: event.category,
+      recommended: event.status === 'recommended',
+      planned: event.status === 'planned',
+    });
     setSelectedEvent(event);
     setDetailPanelOpen(true);
   }, []);
@@ -89,6 +112,9 @@ const CalendarPage: React.FC = () => {
 
   // Open session planner (advanced mode - default)
   const handleNewSession = useCallback(() => {
+    track('calendar_click_new_session', {
+      source: 'calendar_header',
+    });
     setPlannerModalInitialDate(anchorDate);
     setPlannerModalInitialTime(undefined);
     setPlannerModalOpen(true);
@@ -119,6 +145,10 @@ const CalendarPage: React.FC = () => {
   }, [refetch]);
 
   const handleStartSession = useCallback((event: CalendarEvent) => {
+    track('calendar_event_start_workout', {
+      event_id: event.id,
+      source: 'calendar_week',
+    });
     console.log('Start session:', event);
     // TODO: API call to start session
     handleCloseDetailPanel();
@@ -251,7 +281,7 @@ const CalendarPage: React.FC = () => {
         year={year}
         weekNumber={weekNumber}
         onViewChange={setView}
-        onToday={goToToday}
+        onToday={handleGoToToday}
         onPrev={goToPrev}
         onNext={goToNext}
         onNewSession={handleNewSession}

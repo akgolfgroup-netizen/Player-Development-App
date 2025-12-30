@@ -492,8 +492,9 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
             onClick={onComplete}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent-hover)')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent)')}
+            aria-label={`Marker ${workout.name} som fullført`}
           >
-            <Check size={18} />
+            <Check size={18} aria-hidden="true" />
             Marker som fullført
           </button>
         </div>
@@ -510,8 +511,9 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
               // TODO: Open workout content view
               console.log('View workout content');
             }}
+            aria-label="Se innhold i økten"
           >
-            <Eye size={16} />
+            <Eye size={16} aria-hidden="true" />
             Se øktinnhold
           </button>
         </div>
@@ -526,8 +528,9 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
           onClick={onStart}
           onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent-hover)')}
           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent)')}
+          aria-label={`Start ${workout.name}`}
         >
-          <Play size={18} />
+          <Play size={18} aria-hidden="true" />
           Start økt
         </button>
 
@@ -537,10 +540,13 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
             onClick={() => setShowReschedule(!showReschedule)}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--border-brand)')}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-default)')}
+            aria-expanded={showReschedule}
+            aria-haspopup="menu"
+            aria-label="Utsett trening"
           >
-            <Clock size={16} />
+            <Clock size={16} aria-hidden="true" />
             Utsett
-            <ChevronDown size={14} style={{ transform: showReschedule ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+            <ChevronDown size={14} style={{ transform: showReschedule ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} aria-hidden="true" />
           </button>
 
           <button
@@ -548,16 +554,19 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
             onClick={() => setShowShorten(!showShorten)}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--border-brand)')}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-default)')}
+            aria-expanded={showShorten}
+            aria-haspopup="menu"
+            aria-label="Kort ned varighet"
           >
-            <Timer size={16} />
+            <Timer size={16} aria-hidden="true" />
             Kort ned
-            <ChevronDown size={14} style={{ transform: showShorten ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+            <ChevronDown size={14} style={{ transform: showShorten ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} aria-hidden="true" />
           </button>
         </div>
 
         {/* Reschedule options */}
         {showReschedule && (
-          <div style={styles.rescheduleOptions}>
+          <div style={styles.rescheduleOptions} role="menu" aria-label="Utsett trening">
             {rescheduleOptions.map(({ label, option }) => (
               <button
                 key={label}
@@ -568,6 +577,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                role="menuitem"
               >
                 {label}
               </button>
@@ -580,6 +590,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
               }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+              role="menuitem"
             >
               Velg tidspunkt...
             </button>
@@ -588,7 +599,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
 
         {/* Shorten options */}
         {showShorten && (
-          <div style={styles.durationSelector}>
+          <div style={styles.durationSelector} role="radiogroup" aria-label="Velg varighet">
             {shortenOptions.map((duration) => (
               <button
                 key={duration}
@@ -610,6 +621,9 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
                     e.currentTarget.style.borderColor = 'var(--border-default)';
                   }
                 }}
+                role="radio"
+                aria-checked={workout.duration === duration}
+                aria-label={`${duration} minutter`}
               >
                 {duration} min
               </button>
@@ -620,6 +634,8 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
     );
   };
 
+  const panelTitle = isAKWorkout ? workout?.name : external?.title;
+
   return (
     <>
       {/* Overlay */}
@@ -629,12 +645,19 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
           ...(isOpen ? styles.overlayOpen : {}),
         }}
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Panel */}
-      <div style={panelStyle}>
+      <div
+        style={panelStyle}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="event-detail-title"
+        aria-describedby="event-detail-content"
+      >
         {/* Bottom sheet handle (mobile only) */}
-        {isMobile && <div style={styles.bottomSheetHandle} />}
+        {isMobile && <div style={styles.bottomSheetHandle} aria-hidden="true" />}
 
         {/* Header */}
         <div style={styles.header}>
@@ -643,16 +666,17 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
             onClick={onClose}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+            aria-label="Lukk panel"
           >
-            <X size={20} />
+            <X size={20} aria-hidden="true" />
           </button>
-          <div style={styles.title}>
-            {isAKWorkout ? workout?.name : external?.title}
+          <div style={styles.title} id="event-detail-title">
+            {panelTitle}
           </div>
         </div>
 
         {/* Content */}
-        <div style={styles.content}>
+        <div style={styles.content} id="event-detail-content">
           {isAKWorkout ? renderWorkoutContent() : renderExternalContent()}
         </div>
 

@@ -251,8 +251,13 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
               <span>{recommendedWorkout?.name}</span>
             </div>
             <div style={styles.actions}>
-              <div style={styles.timerDisplay}>
-                <Clock size={20} style={{ color: 'var(--text-tertiary)' }} />
+              <div
+                style={styles.timerDisplay}
+                role="timer"
+                aria-live="polite"
+                aria-label={`Treningstid: ${formatElapsedTime(elapsedTime || 0)}`}
+              >
+                <Clock size={20} style={{ color: 'var(--text-tertiary)' }} aria-hidden="true" />
                 {formatElapsedTime(elapsedTime || 0)}
               </div>
               <button
@@ -264,19 +269,20 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.backgroundColor = 'var(--accent)')
                 }
+                aria-label="Fullfør trening"
               >
-                <Check size={18} />
+                <Check size={18} aria-hidden="true" />
                 Fullfør
               </button>
               {onPause && (
-                <button style={styles.ghostButton} onClick={onPause}>
-                  <Pause size={16} />
+                <button style={styles.ghostButton} onClick={onPause} aria-label="Pause trening">
+                  <Pause size={16} aria-hidden="true" />
                   Pause
                 </button>
               )}
               {onCancel && (
-                <button style={styles.ghostButton} onClick={onCancel}>
-                  <X size={16} />
+                <button style={styles.ghostButton} onClick={onCancel} aria-label="Avbryt trening">
+                  <X size={16} aria-hidden="true" />
                   Avbryt
                 </button>
               )}
@@ -345,11 +351,19 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
               Ingen anbefalt økt i dag
             </div>
             <div style={styles.actions}>
-              <button style={styles.primaryButton} onClick={onStartWorkout}>
-                <Zap size={18} />
+              <button
+                style={styles.primaryButton}
+                onClick={onStartWorkout}
+                aria-label="Start en rask 15 minutters terskeløkt"
+              >
+                <Zap size={18} aria-hidden="true" />
                 Start 15 min terskeløkt
               </button>
-              <button style={styles.secondaryButton} onClick={onSelectWorkout}>
+              <button
+                style={styles.secondaryButton}
+                onClick={onSelectWorkout}
+                aria-label="Velg en økt fra biblioteket"
+              >
                 Velg økt
               </button>
             </div>
@@ -377,8 +391,9 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.backgroundColor = 'var(--accent)')
                 }
+                aria-label={`Start ${recommendedWorkout?.name} nå`}
               >
-                <Play size={18} />
+                <Play size={18} aria-hidden="true" />
                 Start nå
               </button>
               <div style={styles.rescheduleDropdown}>
@@ -388,12 +403,15 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                     e.stopPropagation();
                     setShowRescheduleOptions(!showRescheduleOptions);
                   }}
+                  aria-expanded={showRescheduleOptions}
+                  aria-haspopup="menu"
+                  aria-label="Planlegg tidspunkt"
                 >
                   Planlegg
-                  <ChevronDown size={14} />
+                  <ChevronDown size={14} aria-hidden="true" />
                 </button>
                 {showRescheduleOptions && (
-                  <div style={styles.dropdown}>
+                  <div style={styles.dropdown} role="menu" aria-label="Planlegg tidspunkt">
                     {rescheduleOptions.map(({ label, option }) => (
                       <button
                         key={label}
@@ -408,6 +426,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                         onMouseLeave={(e) =>
                           (e.currentTarget.style.backgroundColor = 'transparent')
                         }
+                        role="menuitem"
                       >
                         Om {label}
                       </button>
@@ -442,8 +461,9 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.backgroundColor = 'var(--accent)')
                 }
+                aria-label={`Start ${recommendedWorkout?.name} nå`}
               >
-                <Play size={18} />
+                <Play size={18} aria-hidden="true" />
                 Start nå
               </button>
               <div style={styles.rescheduleDropdown}>
@@ -453,12 +473,15 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                     e.stopPropagation();
                     setShowRescheduleOptions(!showRescheduleOptions);
                   }}
+                  aria-expanded={showRescheduleOptions}
+                  aria-haspopup="menu"
+                  aria-label="Utsett trening"
                 >
                   Utsett
-                  <ChevronDown size={14} />
+                  <ChevronDown size={14} aria-hidden="true" />
                 </button>
                 {showRescheduleOptions && (
-                  <div style={styles.dropdown}>
+                  <div style={styles.dropdown} role="menu" aria-label="Utsett trening">
                     {rescheduleOptions.map(({ label, option }) => (
                       <button
                         key={label}
@@ -473,6 +496,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                         onMouseLeave={(e) =>
                           (e.currentTarget.style.backgroundColor = 'transparent')
                         }
+                        role="menuitem"
                       >
                         {label}
                       </button>
@@ -492,6 +516,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                       onMouseLeave={(e) =>
                         (e.currentTarget.style.backgroundColor = 'transparent')
                       }
+                      role="menuitem"
                     >
                       Velg tidspunkt...
                     </button>
@@ -505,7 +530,11 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
   };
 
   return (
-    <div style={styles.container}>
+    <div
+      style={styles.container}
+      role="region"
+      aria-label="Dagens beslutning"
+    >
       <div style={styles.content}>{renderContent()}</div>
     </div>
   );
