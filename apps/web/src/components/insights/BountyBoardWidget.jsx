@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Target, Award, Clock, Zap, Trophy, ChevronRight, Star, Flame } from 'lucide-react';
+import { Target, Zap, Trophy, Flame } from 'lucide-react';
 import { DashboardCard, WidgetHeader } from '../../ui/widgets';
 import Badge from '../../ui/primitives/Badge.primitive';
 import { Button } from '../../ui/primitives';

@@ -18,6 +18,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LoadingState from './components/ui/LoadingState';
 import Toast from './components/Toast';
 import VideoNotificationManager from './components/VideoNotificationManager';
+import NotificationManager from './components/NotificationManager';
 
 // Lazy-loaded feature components
 const Login = lazy(() => import('./features/auth/Login'));
@@ -288,6 +289,7 @@ function App() {
                 {!isOnline && <OfflineBanner />}
                 <Toast />
                 <VideoNotificationManager />
+                <NotificationManager />
             <Suspense fallback={<LoadingState />}>
               <Routes>
           {/* Public routes */}

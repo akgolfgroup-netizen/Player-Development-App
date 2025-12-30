@@ -3,8 +3,8 @@
  * Displays player's unique skill profile as a radar chart with pro matching
  */
 
-import React, { useMemo } from 'react';
-import { Dna, TrendingUp, TrendingDown, Minus, User, Star } from 'lucide-react';
+import React from 'react';
+import { Dna, Minus, User, Star } from 'lucide-react';
 import { DashboardCard, WidgetHeader } from '../../ui/widgets';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';

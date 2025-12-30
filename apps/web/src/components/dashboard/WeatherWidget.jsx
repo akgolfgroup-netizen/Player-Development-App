@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Cloud, Sun, CloudRain, Wind, Thermometer,
+  Cloud, Sun, CloudRain, Wind,
   Droplets, ArrowUp, MapPin, RefreshCw,
   CloudSnow, CloudLightning, CloudFog
 } from 'lucide-react';

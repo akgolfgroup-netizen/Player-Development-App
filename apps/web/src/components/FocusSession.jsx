@@ -4,8 +4,7 @@ import {
   supportsFocusMode,
   getFocusCapabilities,
   isStandalone,
-  generateShortcutURL,
-  getPlatformInfo
+  generateShortcutURL
 } from '../utils/platform';
 import './FocusSession.css';
 
