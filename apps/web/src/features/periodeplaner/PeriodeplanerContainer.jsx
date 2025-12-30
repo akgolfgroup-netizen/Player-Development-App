@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Calendar, Target, ChevronDown,
   Snowflake, Sun, Leaf, Flower2, CheckCircle, Clock, Play,
   Dumbbell, Brain
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { useAuth } from '../../contexts/AuthContext';
+import apiClient from '../../services/apiClient';
+import LoadingState from '../../components/ui/LoadingState';
+import ErrorState from '../../components/ui/ErrorState';
 
 // ============================================================================
-// MOCK DATA - Will be replaced with API data
+// DEFAULT/FALLBACK DATA
 // ============================================================================
 
-const MOCK_PERIODS = [
+const DEFAULT_PERIODS = [
   {
     id: 'p1',
     name: 'Vintertrening',
@@ -580,16 +584,165 @@ const CurrentWeekPlan = ({ weekPlan }) => {
 };
 
 // ============================================================================
+// TRANSFORM API DATA
+// ============================================================================
+
+/**
+ * Transform API training plan data to period format
+ */
+const transformPlanToPeriods = (plans) => {
+  if (!plans || plans.length === 0) {
+    return DEFAULT_PERIODS;
+  }
+
+  // Get the most recent plan
+  const plan = plans[0];
+
+  // Build periods from plan phases
+  const periods = [];
+  const startDate = new Date(plan.startDate || new Date());
+
+  // Define phase durations and configurations
+  const phases = [
+    {
+      name: 'Vintertrening',
+      phase: 'off-season',
+      durationMonths: 2.5,
+      focus: ['Fysisk grunnlag', 'Tekniske justeringer', 'Mental trening'],
+      weeklyHours: { technical: 6, physical: 4, mental: 2 },
+    },
+    {
+      name: 'Varforberedelse',
+      phase: 'pre-season',
+      durationMonths: 1.5,
+      focus: ['Banespill', 'Konkurranseforberedelse', 'Kortspill-finpuss'],
+      weeklyHours: { technical: 10, physical: 3, mental: 2 },
+    },
+    {
+      name: 'Konkurransesesong',
+      phase: 'competition',
+      durationMonths: 4.5,
+      focus: ['Turneringsprestasjoner', 'Score-fokus', 'Recovery'],
+      weeklyHours: { technical: 8, physical: 2, mental: 3 },
+    },
+    {
+      name: 'Hostperiode',
+      phase: 'transition',
+      durationMonths: 2.5,
+      focus: ['Sesongevaluering', 'Tekniske endringer', 'Planlegging'],
+      weeklyHours: { technical: 6, physical: 3, mental: 1 },
+    },
+  ];
+
+  let currentDate = new Date(startDate);
+  const today = new Date();
+
+  phases.forEach((phaseConfig, idx) => {
+    const phaseStartDate = new Date(currentDate);
+    const phaseEndDate = new Date(currentDate);
+    phaseEndDate.setMonth(phaseEndDate.getMonth() + phaseConfig.durationMonths);
+
+    // Determine status
+    let status = 'upcoming';
+    let progress = 0;
+    if (today >= phaseStartDate && today <= phaseEndDate) {
+      status = 'active';
+      const totalDays = (phaseEndDate - phaseStartDate) / (1000 * 60 * 60 * 24);
+      const elapsedDays = (today - phaseStartDate) / (1000 * 60 * 60 * 24);
+      progress = Math.round((elapsedDays / totalDays) * 100);
+    } else if (today > phaseEndDate) {
+      status = 'completed';
+      progress = 100;
+    }
+
+    periods.push({
+      id: `p${idx + 1}`,
+      name: phaseConfig.name,
+      phase: phaseConfig.phase,
+      startDate: phaseStartDate.toISOString().split('T')[0],
+      endDate: phaseEndDate.toISOString().split('T')[0],
+      status,
+      progress,
+      focus: phaseConfig.focus,
+      goals: plan.targets?.slice(idx * 4, (idx + 1) * 4)?.map((t, i) => ({
+        id: `g${idx * 4 + i}`,
+        text: t.description || t,
+        completed: t.achieved || false,
+      })) || DEFAULT_PERIODS[idx]?.goals || [],
+      weeklyHours: phaseConfig.weeklyHours,
+      keyActivities: DEFAULT_PERIODS[idx]?.keyActivities || [],
+      coach: plan.player?.firstName ? `${plan.player.firstName} ${plan.player.lastName}` : 'Trener',
+      notes: plan.notes || DEFAULT_PERIODS[idx]?.notes || '',
+    });
+
+    currentDate = new Date(phaseEndDate);
+    currentDate.setDate(currentDate.getDate() + 1);
+  });
+
+  return periods;
+};
+
+// ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 
 const PeriodeplanerContainer = () => {
+  const { user } = useAuth();
+  const [state, setState] = useState('loading');
+  const [error, setError] = useState(null);
+  const [periods, setPeriods] = useState(DEFAULT_PERIODS);
+  const [weekPlan, setWeekPlan] = useState(CURRENT_WEEK_PLAN);
   const [expandedPeriod, setExpandedPeriod] = useState('p1');
 
-  const activePeriod = MOCK_PERIODS.find(p => p.status === 'active');
+  const fetchPeriods = useCallback(async () => {
+    try {
+      setState('loading');
+      setError(null);
+
+      // Fetch training plans
+      const response = await apiClient.get('/api/v1/training-plan');
+      const plans = response.data?.data || response.data || [];
+
+      // Transform to period format
+      const transformedPeriods = transformPlanToPeriods(plans);
+      setPeriods(transformedPeriods);
+
+      // Set expanded period to active one
+      const activePeriod = transformedPeriods.find(p => p.status === 'active');
+      if (activePeriod) {
+        setExpandedPeriod(activePeriod.id);
+      }
+
+      setState('idle');
+    } catch (err) {
+      console.error('Error fetching periods:', err);
+      // Use default data on error
+      setPeriods(DEFAULT_PERIODS);
+      setState('idle');
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPeriods();
+  }, [fetchPeriods]);
+
+  const activePeriod = periods.find(p => p.status === 'active');
   const totalWeeklyHours = activePeriod
     ? activePeriod.weeklyHours.technical + activePeriod.weeklyHours.physical + activePeriod.weeklyHours.mental
     : 0;
+
+  if (state === 'loading') {
+    return <LoadingState message="Laster periodeplaner..." />;
+  }
+
+  if (state === 'error') {
+    return (
+      <ErrorState
+        message={error?.message || 'Kunne ikke laste periodeplaner'}
+        onRetry={fetchPeriods}
+      />
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
@@ -646,7 +799,7 @@ const PeriodeplanerContainer = () => {
             textAlign: 'center',
           }}>
             <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
-              {MOCK_PERIODS.length}
+              {periods.length}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Perioder i ar</div>
           </div>
@@ -669,7 +822,7 @@ const PeriodeplanerContainer = () => {
               Arsplan 2025
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {MOCK_PERIODS.map((period) => (
+              {periods.map((period) => (
                 <PeriodCard
                   key={period.id}
                   period={period}
@@ -709,7 +862,7 @@ const PeriodeplanerContainer = () => {
                 Arshjul
               </h3>
               <div style={{ display: 'flex', gap: '4px', height: '24px' }}>
-                {MOCK_PERIODS.map((period) => {
+                {periods.map((period) => {
                   const phaseConfig = getPhaseConfig(period.phase);
                   const startMonth = new Date(period.startDate).getMonth();
                   const endMonth = new Date(period.endDate).getMonth();

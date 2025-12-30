@@ -58,6 +58,7 @@ export default function FocusSessionEnhanced({ sessionData, onSessionComplete })
   }, []);
 
   // Auto-start session if launched from Shortcut (?focus=start)
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- startSession is stable, deps are platform flags
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const focusParam = urlParams.get('focus');

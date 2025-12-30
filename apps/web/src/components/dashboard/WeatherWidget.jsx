@@ -75,7 +75,7 @@ const WindArrow = ({ direction, size = 16 }) => (
   </div>
 );
 
-const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
+const WeatherWidget = ({ courseId, showForecast = true }) => {
   const [weather, setWeather] = useState(null);
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(courseId || null);
@@ -83,6 +83,7 @@ const WeatherWidget = ({ courseId, showForecast = true, compact = false }) => {
   const [error, setError] = useState(null);
 
   // Fetch courses on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Intentionally runs once on mount
   useEffect(() => {
     const fetchCourses = async () => {
       try {

@@ -43,6 +43,7 @@ export default function FocusSession({ sessionData, onSessionComplete }) {
   }, []);
 
   // Auto-start session if launched from Shortcut (?focus=start)
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Intentionally runs once on mount with URL params
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const focusParam = urlParams.get('focus');

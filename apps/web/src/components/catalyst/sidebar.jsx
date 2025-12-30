@@ -74,9 +74,11 @@ export function SidebarSpacer({ className, ...props }) {
   return <div aria-hidden="true" {...props} className={clsx(className, 'mt-8 flex-1')} />
 }
 
-export function SidebarHeading({ className, ...props }) {
+export function SidebarHeading({ className, children, ...props }) {
   return (
-    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-white/60')} />
+    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-white/60')}>
+      {children}
+    </h3>
   )
 }
 
