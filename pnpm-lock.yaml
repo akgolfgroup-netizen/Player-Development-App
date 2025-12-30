@@ -271,9 +271,21 @@ importers:
       '@capacitor/core':
         specifier: ^6.0.0
         version: 6.2.1
+      '@capacitor/haptics':
+        specifier: ^8.0.0
+        version: 8.0.0(@capacitor/core@6.2.1)
       '@capacitor/ios':
         specifier: ^6.0.0
         version: 6.2.1(@capacitor/core@6.2.1)
+      '@capacitor/keyboard':
+        specifier: ^8.0.0
+        version: 8.0.0(@capacitor/core@6.2.1)
+      '@capacitor/splash-screen':
+        specifier: ^8.0.0
+        version: 8.0.0(@capacitor/core@6.2.1)
+      '@capacitor/status-bar':
+        specifier: ^8.0.0
+        version: 8.0.0(@capacitor/core@6.2.1)
       '@headlessui/react':
         specifier: ^2.2.9
         version: 2.2.9(react-dom@18.3.1)(react@18.3.1)
@@ -2646,10 +2658,42 @@ packages:
       tslib: 2.8.1
     dev: false
 
+  /@capacitor/haptics@8.0.0(@capacitor/core@6.2.1):
+    resolution: {integrity: sha512-DY1IUOjke1T4ITl7mFHQIKCaJJyHYAYRYHG9bVApU7PDOZiMVGMp48Yjzdqjya+wv/AHS5mDabSTUmhJ5uDvBA==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+    dependencies:
+      '@capacitor/core': 6.2.1
+    dev: false
+
   /@capacitor/ios@6.2.1(@capacitor/core@6.2.1):
     resolution: {integrity: sha512-tbMlQdQjxe1wyaBvYVU1yTojKJjgluZQsJkALuJxv/6F8QTw5b6vd7X785O/O7cMpIAZfUWo/vtAHzFkRV+kXw==}
     peerDependencies:
       '@capacitor/core': ^6.2.0
+    dependencies:
+      '@capacitor/core': 6.2.1
+    dev: false
+
+  /@capacitor/keyboard@8.0.0(@capacitor/core@6.2.1):
+    resolution: {integrity: sha512-ycPW6iQyFwzDK95jihesj5EGiyyGSfbBqNek11iNp9tBOB7zDeYkUA2S/vPpOETt3dhP6pWr7a9gNVGuEfj11g==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+    dependencies:
+      '@capacitor/core': 6.2.1
+    dev: false
+
+  /@capacitor/splash-screen@8.0.0(@capacitor/core@6.2.1):
+    resolution: {integrity: sha512-zkFdUSd6C6gd3s3bIEgtO3DVjfwpaX5mmWU9er8xYTg47zr2toEkGtfyE6CPhhErG09fl4rCqrK5DfnGrXLh9w==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
+    dependencies:
+      '@capacitor/core': 6.2.1
+    dev: false
+
+  /@capacitor/status-bar@8.0.0(@capacitor/core@6.2.1):
+    resolution: {integrity: sha512-aIj3bc7z8lfPgOen8HlrBrkfnxpFnh21OCx6jCUx4Mvv+B6eEkUQ49b32DOddgVfr+igRHLX2SYi7duqIsNDXg==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
     dependencies:
       '@capacitor/core': 6.2.1
     dev: false
