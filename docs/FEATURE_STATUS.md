@@ -1,6 +1,6 @@
 # AK Golf IUP - Feature Status
 
-Sist oppdatert: 2024-12-30
+Sist oppdatert: 2024-12-31 (Nattarbeid Sprint 1 fullført)
 
 ## Statusforklaring
 
@@ -46,23 +46,28 @@ Sist oppdatert: 2024-12-30
 
 | Feature | Linjer | Filer | Status |
 |---------|--------|-------|--------|
-| innstillinger | 907 | 2 | 🔶 Delvis |
-| notes | 897 | 2 | 🔶 Delvis |
 | samlinger | 883 | 1 | 🔶 Delvis |
 | coaches (trenerteam) | 845 | 2 | 🔶 Delvis |
 | video-progress | 832 | 2 | 🔶 Delvis |
-| periodeplaner | 765 | 1 | 🔶 Delvis |
 | exercises | 743 | 2 | 🔶 Delvis |
 | archive | 589 | 2 | 🔶 Delvis |
 | bevis | 509 | 1 | 🔶 Delvis |
-| progress | 453 | 3 | 🔶 Delvis |
 | calendar-oversikt | 414 | 2 | 🔶 Delvis |
-| notifications | 407 | 1 | 🔶 Delvis |
 | video-analysis | 388 | 1 | 🔶 Delvis |
 | focus-engine | 343 | 2 | 🔶 Delvis |
 | video-comparison | 333 | 1 | 🔶 Delvis |
 | school | 2106 | 3 | ✅ Ferdig |
 | messaging | 1845 | 3 | ✅ Ferdig |
+
+### ✅ Oppgradert i Nattarbeid Sprint (2024-12-31)
+
+| Feature | Linjer | Filer | Status | Endring |
+|---------|--------|-------|--------|---------|
+| notes | 897 | 2 | ✅ Ferdig | Full CRUD med API |
+| innstillinger | 907 | 2 | ✅ Ferdig | Kalibrering med localStorage |
+| periodeplaner | 865 | 1 | ✅ Ferdig | API-tilkobling + periodeutregning |
+| progress | 553 | 3 | ✅ Ferdig | Ekte treningsdata fra API |
+| notifications | 507 | 2 | ✅ Ferdig | SSE real-time + Toast |
 
 ### 🔷 Minimal (100-300 linjer)
 
@@ -162,11 +167,30 @@ Sist oppdatert: 2024-12-30
 
 | Status | Antall features | Prosent |
 |--------|-----------------|---------|
-| ✅ Ferdig (>1000 linjer) | 29 | 42% |
-| 🔶 Delvis (300-1000 linjer) | 27 | 39% |
+| ✅ Ferdig (>1000 linjer) | 34 | 47% |
+| 🔶 Delvis (300-1000 linjer) | 22 | 30% |
 | 🔷 Minimal (<300 linjer) | 10 | 14% |
-| ❌ Placeholder | 9 | 13% |
+| ❌ Placeholder | 9 | 12% |
 | ⬜ Tom | 1 | 1% |
+
+### 🌙 Nattarbeid Sprint 1 (2024-12-31 00:00-05:00)
+
+**5 features oppgradert fra "Delvis" til "Ferdig":**
+
+| Feature | Før | Etter | Commits |
+|---------|-----|-------|---------|
+| Notes | 85% | ✅ 100% | Full CRUD med API-integrasjon |
+| Progress | 40% | ✅ 90% | Ekte treningsdata fra /dashboard og /sessions |
+| Notifications | 35% | ✅ 85% | SSE real-time + NotificationManager |
+| Innstillinger | 60% | ✅ 95% | localStorage persistens for kalibrering |
+| Periodeplaner | 85% | ✅ 95% | API-tilkobling til /training-plan |
+
+**Commits:**
+1. `feat(notes): add full CRUD with API integration`
+2. `feat(progress): connect to real training data`
+3. `feat(notifications): add real-time SSE connection manager`
+4. `feat(settings): add calibration persistence with localStorage`
+5. `feat(periodeplaner): connect to training-plan API`
 
 ### Etter rolle
 
