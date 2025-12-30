@@ -104,13 +104,14 @@ export const navigationConfig = [
 
   // ────────────────────────────────────────────────────────────
   // STATISTIKK
-  // DataGolf, Strokes Gained, testresultater
+  // DataGolf, Strokes Gained, testresultater, status & mål
   // ────────────────────────────────────────────────────────────
   {
     label: 'Statistikk',
     icon: 'BarChart3',
     submenu: [
       { href: '/statistikk', label: 'Oversikt' },
+      { href: '/statistikk/status', label: 'Status & Mål' },
       { href: '/statistikk/strokes-gained', label: 'Strokes Gained' },
       { href: '/statistikk/testresultater', label: 'Alle testresultater' },
     ]
