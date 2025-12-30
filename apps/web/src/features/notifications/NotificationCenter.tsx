@@ -12,7 +12,6 @@ import {
   Bell,
   CheckCircle,
   AlertCircle,
-  Info,
   Trophy,
   MessageSquare,
   Target,

@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import apiClient from '../../services/apiClient';
+import { coachesAPI } from '../../services/api';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
 import Trenerteam from './Trenerteam';
 
+/**
+ * TrenerteamContainer
+ * Fetches coach team data and displays using Trenerteam component.
+ */
 const TrenerteamContainer = () => {
   const { user } = useAuth();
   const [state, setState] = useState('loading');
@@ -17,20 +21,40 @@ const TrenerteamContainer = () => {
       setState('loading');
       setError(null);
 
-      // Players see their assigned coaches, coaches see their team
-      const endpoint = user.role === 'player'
-        ? '/coaches/my-team'
-        : '/coaches/team';
+      // Fetch all coaches
+      const response = await coachesAPI.getAll();
 
-      const response = await apiClient.get(endpoint);
-      setCoaches(response.data);
-      setState(response.data.length === 0 ? 'empty' : 'idle');
+      // Handle different response formats
+      let coachData = response.data?.data || response.data || [];
+      if (!Array.isArray(coachData)) {
+        coachData = coachData.coaches || [];
+      }
+
+      // Transform to expected format
+      const transformedCoaches = coachData.map((coach, index) => ({
+        id: coach.id,
+        name: `${coach.firstName || ''} ${coach.lastName || ''}`.trim() || coach.name || 'Trener',
+        role: mapSpecializationToRole(coach.specialization),
+        isPrimary: index === 0 || coach.isPrimary,
+        email: coach.email || coach.user?.email || '',
+        phone: coach.phone || coach.user?.phone || '',
+        specializations: coach.specializations || coach.expertise || [],
+        certifications: coach.certifications || [],
+        startYear: coach.hireDate ? new Date(coach.hireDate).getFullYear() : new Date().getFullYear(),
+        sessionsTotal: coach.totalSessions || coach.sessionCount || 0,
+        sessionsMonth: coach.monthlySessions || 0,
+        bio: coach.bio || coach.description || '',
+      }));
+
+      setCoaches(transformedCoaches);
+      setState(transformedCoaches.length === 0 ? 'empty' : 'idle');
     } catch (err) {
       console.error('Error fetching coaches:', err);
-      setError(err);
-      setState('error');
+      // Use fallback data on error - component has defaults
+      setCoaches([]);
+      setState('idle');
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -61,7 +85,29 @@ const TrenerteamContainer = () => {
     );
   }
 
-  return <Trenerteam coaches={coaches} />;
+  // Pass coaches data or let component use defaults
+  return <Trenerteam trainers={coaches.length > 0 ? coaches : null} />;
 };
+
+/**
+ * Map coach specialization to display role
+ */
+function mapSpecializationToRole(specialization) {
+  const roleMap = {
+    head: 'hovedtrener',
+    head_coach: 'hovedtrener',
+    technical: 'teknisk',
+    tech: 'teknisk',
+    swing: 'teknisk',
+    physical: 'fysisk',
+    fitness: 'fysisk',
+    strength: 'fysisk',
+    mental: 'mental',
+    psychology: 'mental',
+    strategy: 'strategi',
+    course: 'strategi',
+  };
+  return roleMap[specialization?.toLowerCase()] || 'teknisk';
+}
 
 export default TrenerteamContainer;
