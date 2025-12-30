@@ -38,7 +38,6 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
-import Card from '../../ui/primitives/Card';
 import Modal from '../../ui/composites/Modal.composite';
 
 // Types
@@ -162,6 +161,7 @@ export default function CoachGroupPlan() {
   const [showAddSessionModal, setShowAddSessionModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number>(0);
   const [showExerciseLibrary, setShowExerciseLibrary] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editingSession, setEditingSession] = useState<PlannedSession | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 

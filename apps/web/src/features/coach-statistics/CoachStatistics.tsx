@@ -3,7 +3,7 @@
  * Comprehensive analytics and statistics view for coaches
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   BarChart3, TrendingUp, TrendingDown, Users, Target,
@@ -11,6 +11,7 @@ import {
   Activity, CheckCircle, AlertTriangle
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { analyticsAPI, coachesAPI } from '../../services/api';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
@@ -351,36 +352,50 @@ export default function CoachStatistics() {
   const [players, setPlayers] = useState<PlayerSummary[]>([]);
 
   // Fetch data
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        // Fetch team analytics
-        const analyticsRes = await fetch(`/api/v1/coach-analytics/team/${user?.coachId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        });
-        if (analyticsRes.ok) {
-          const { data } = await analyticsRes.json();
-          setAnalytics(data);
-        }
+  const fetchData = useCallback(async () => {
+    if (!user?.coachId && !user?.id) return;
 
-        // For now, use mock player data
-        setPlayers([
-          { playerId: '1', playerName: 'Anders Hansen', category: 'A', testsCompleted: 18, totalTests: 20, completionRate: 90, lastActivity: '2025-12-20', trend: 'improving' },
-          { playerId: '2', playerName: 'Erik Johansen', category: 'B', testsCompleted: 15, totalTests: 20, completionRate: 75, lastActivity: '2025-12-19', trend: 'stable' },
-          { playerId: '3', playerName: 'Lars Olsen', category: 'A', testsCompleted: 20, totalTests: 20, completionRate: 100, lastActivity: '2025-12-21', trend: 'improving' },
-          { playerId: '4', playerName: 'Mikkel Pedersen', category: 'C', testsCompleted: 12, totalTests: 20, completionRate: 60, lastActivity: '2025-12-18', trend: 'declining' },
-          { playerId: '5', playerName: 'Sofie Andersen', category: 'B', testsCompleted: 16, totalTests: 20, completionRate: 80, lastActivity: '2025-12-20', trend: 'improving' },
-        ]);
-      } catch (error) {
-        console.error('Failed to fetch analytics:', error);
-      } finally {
-        setLoading(false);
+    setLoading(true);
+    try {
+      const coachId = user.coachId || user.id;
+
+      // Fetch team analytics and players in parallel
+      const [analyticsRes, playersRes] = await Promise.all([
+        analyticsAPI.getTeamAnalytics(coachId).catch(() => ({ data: null })),
+        coachesAPI.getAthletes().catch(() => ({ data: null })),
+      ]);
+
+      // Handle analytics response
+      const analyticsData = analyticsRes.data?.data || analyticsRes.data;
+      if (analyticsData) {
+        setAnalytics(analyticsData);
       }
-    };
 
+      // Transform players to summary format
+      const playersData = playersRes.data?.data || playersRes.data || [];
+      if (Array.isArray(playersData) && playersData.length > 0) {
+        const playerSummaries: PlayerSummary[] = playersData.map((p: any) => ({
+          playerId: p.id,
+          playerName: `${p.firstName || ''} ${p.lastName || ''}`.trim() || p.name || 'Spiller',
+          category: p.category || 'C',
+          testsCompleted: p.testsCompleted || p.completedTests || 0,
+          totalTests: p.totalTests || 20,
+          completionRate: p.completionRate || (p.testsCompleted / (p.totalTests || 20)) * 100 || 0,
+          lastActivity: p.lastActivity || p.updatedAt || new Date().toISOString(),
+          trend: p.trend || 'stable',
+        }));
+        setPlayers(playerSummaries);
+      }
+    } catch (error) {
+      console.error('Failed to fetch analytics:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.coachId, user?.id]);
+
+  useEffect(() => {
     fetchData();
-  }, [user?.coachId, timeRange]);
+  }, [fetchData, timeRange]);
 
   // Mock data for when API is not available
   const mockAnalytics: TeamAnalytics = analytics || {

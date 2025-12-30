@@ -27,11 +27,6 @@ import type {
 import type { FilterOptions } from '../hooks/useDagbokFilters';
 
 import {
-  AREAS,
-  L_PHASES,
-  ENVIRONMENTS,
-  PRESSURE_LEVELS,
-  POSITIONS,
   TOURNAMENT_TYPES,
   PHYSICAL_FOCUS,
   PLAY_FOCUS,

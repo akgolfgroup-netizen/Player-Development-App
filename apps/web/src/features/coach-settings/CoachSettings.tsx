@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   User,
   Bell,
@@ -14,9 +14,12 @@ import {
   Check,
   Settings
 } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { coachesAPI, settingsAPI } from '../../services/api';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import StateCard from '../../ui/composites/StateCard';
 
 interface CoachProfile {
   name: string;
@@ -45,16 +48,19 @@ interface DisplaySettings {
 }
 
 export const CoachSettings: React.FC = () => {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'display' | 'privacy'>('profile');
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [profile, setProfile] = useState<CoachProfile>({
-    name: 'Anders Kristiansen',
-    email: 'anders@akgolfacademy.no',
-    phone: '+47 900 00 000',
-    title: 'Hovedtrener',
-    bio: 'PGA-sertifisert trener med over 15 års erfaring. Spesialiserer meg i junior- og eliteutvikling.',
+    name: '',
+    email: '',
+    phone: '',
+    title: '',
+    bio: '',
     avatar: undefined
   });
 
@@ -75,14 +81,95 @@ export const CoachSettings: React.FC = () => {
     showPlayerPhotos: true
   });
 
+  // Fetch coach profile on mount
+  const fetchProfile = useCallback(async () => {
+    if (!user?.coachId && !user?.id) return;
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const coachId = user.coachId || user.id;
+      const response = await coachesAPI.getById(coachId);
+      const data = response.data?.data || response.data;
+
+      if (data) {
+        setProfile({
+          name: `${data.firstName || ''} ${data.lastName || ''}`.trim() || data.name || '',
+          email: data.email || data.user?.email || '',
+          phone: data.phone || data.user?.phone || '',
+          title: data.specialization || data.title || 'Trener',
+          bio: data.bio || data.description || '',
+          avatar: data.avatar || data.profileImage,
+        });
+
+        // Load notification settings if available
+        if (data.notificationSettings) {
+          setNotifications({
+            ...notifications,
+            ...data.notificationSettings,
+          });
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch profile:', err);
+      setError('Kunne ikke laste profil');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.coachId, user?.id]);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
+
   const handleSave = async () => {
+    if (!user?.coachId && !user?.id) return;
+
     setIsSaving(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSaving(false);
-    setSaveSuccess(true);
-    setTimeout(() => setSaveSuccess(false), 2000);
+    setError(null);
+    try {
+      const coachId = user.coachId || user.id;
+
+      // Split name into first and last
+      const nameParts = profile.name.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      // Save profile
+      await coachesAPI.update(coachId, {
+        firstName,
+        lastName,
+        phone: profile.phone,
+        specialization: profile.title,
+        bio: profile.bio,
+      });
+
+      // Save notification settings
+      await settingsAPI.saveNotifications(notifications);
+
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to save settings:', err);
+      setError('Kunne ikke lagre endringer');
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div style={{
+        backgroundColor: 'var(--bg-secondary)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <StateCard variant="loading" title="Laster innstillinger..." />
+      </div>
+    );
+  }
 
   const tabs = [
     { key: 'profile', label: 'Profil', icon: User },

@@ -10,7 +10,7 @@
  * Based on: AK_GOLF_KATEGORI_HIERARKI_v2.0.md
  */
 
-import { useMemo, useCallback } from 'react';
+import { useCallback } from 'react';
 
 // =============================================================================
 // TYPES

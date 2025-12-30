@@ -162,7 +162,7 @@ describe('StatsGridTemplate', () => {
     });
 
     it('applies correct styling to stat values', () => {
-      const { container } = render(<StatsGridTemplate items={simpleStats} />);
+      render(<StatsGridTemplate items={simpleStats} />);
       const value = screen.getByText('12');
 
       expect(value).toHaveStyle({
@@ -172,7 +172,7 @@ describe('StatsGridTemplate', () => {
     });
 
     it('applies correct styling to labels', () => {
-      const { container } = render(<StatsGridTemplate items={simpleStats} />);
+      render(<StatsGridTemplate items={simpleStats} />);
       const label = screen.getByText('Sessions');
 
       expect(label).toHaveStyle({

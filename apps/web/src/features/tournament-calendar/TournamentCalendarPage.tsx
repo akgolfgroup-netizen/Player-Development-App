@@ -17,7 +17,6 @@ import {
   Calendar,
   MapPin,
   Users,
-  Clock,
   Search,
   Medal,
   Flag,
@@ -29,9 +28,7 @@ import {
   Plus,
   X,
   Filter,
-  CalendarPlus,
   CheckCircle,
-  AlertCircle,
   Target,
 } from 'lucide-react';
 // Layout handled by parent route - no AppShell needed
@@ -41,7 +38,6 @@ import StateCard from '../../ui/composites/StateCard';
 import {
   Tournament,
   TournamentFilters,
-  TournamentSort,
   TournamentStats,
   TournamentTab,
   TourType,

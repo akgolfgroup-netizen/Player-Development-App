@@ -11,7 +11,7 @@
  */
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayViewProps, Workout, ExternalEvent, RescheduleOption, ShortenOption } from './types';
 import { useDayViewState } from './useDayViewState';
 import { DecisionAnchor } from './DecisionAnchor';
@@ -148,6 +148,7 @@ const monthNames = ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep
 // Generate mock data for testing (will be replaced with real API data)
 const generateMockData = (date: Date): { workouts: Workout[]; externalEvents: ExternalEvent[]; weeklyFocus: string } => {
   const dateStr = date.toISOString().split('T')[0];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isToday = new Date().toISOString().split('T')[0] === dateStr;
 
   // Sample workouts - simulating different states
@@ -225,12 +226,13 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
   );
 
   // Use the state machine hook
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const {
-    state,
+    state: _state,
     decisionAnchorData,
     selectedEvent,
     allEvents,
-    recommendedWorkout,
+    recommendedWorkout: _recommendedWorkout,
     ghostSlot,
     selectEvent,
     startWorkout,

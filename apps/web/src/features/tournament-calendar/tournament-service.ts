@@ -8,16 +8,11 @@
 import {
   Tournament,
   TourType,
-  TournamentStatus,
   TournamentFilters,
   TournamentSort,
   FetchTournamentsParams,
   TournamentsResponse,
   TournamentStats,
-  TournamentResult,
-  TournamentPurpose,
-  CompetitionLevel,
-  JuniorTourRegion,
   CITY_TO_JUNIOR_REGION,
 } from './types';
 import { applyHierarchyMapping, getTourPrestigeScore } from './hierarchy-config';
