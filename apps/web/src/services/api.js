@@ -74,12 +74,21 @@ export const coachesAPI = {
   getById: (id) => api.get(`/coaches/${id}`),
   create: (data) => api.post('/coaches', data),
   update: (id, data) => api.put(`/coaches/${id}`, data),
-  // Coach dashboard
-  getDashboard: () => api.get('/coaches/dashboard'),
-  getAthletes: () => api.get('/coaches/athletes'),
-  getPendingItems: () => api.get('/coaches/pending'),
-  getTodaySchedule: () => api.get('/coaches/schedule/today'),
-  getWeeklyStats: () => api.get('/coaches/stats/weekly'),
+  delete: (id) => api.delete(`/coaches/${id}`),
+  // Coach dashboard - uses /me endpoints for authenticated coach
+  getAthletes: () => api.get('/coaches/me/players'),
+  getAlerts: (unreadOnly = false) => api.get('/coaches/me/alerts', { params: { unread: unreadOnly } }),
+  dismissAlert: (alertId) => api.put(`/coaches/alerts/${alertId}/dismiss`),
+  // Coach statistics
+  getStatistics: (coachId) => api.get(`/coaches/${coachId}/statistics`),
+  getAvailability: (coachId, startDate, endDate) =>
+    api.get(`/coaches/${coachId}/availability`, { params: { startDate, endDate } }),
+  getPlayers: (coachId) => api.get(`/coaches/${coachId}/players`),
+  // Aliases for backward compatibility
+  getPendingItems: () => api.get('/coaches/me/alerts'),
+  getTodaySchedule: () => api.get('/sessions', { params: { status: 'scheduled', today: true } }),
+  getWeeklyStats: (coachId) => api.get(`/coaches/${coachId}/statistics`),
+  getTeams: () => api.get('/coaches/me/players'), // No separate teams endpoint, use players
 };
 
 // Tests API

@@ -192,23 +192,48 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
       setLoading(true);
       setError(null);
 
-      const [athletesRes, pendingRes, scheduleRes, statsRes, teamsRes] = await Promise.all([
-        coachesAPI.getAthletes().catch(() => ({ data: mockAthletes })),
-        coachesAPI.getPendingItems().catch(() => ({ data: mockPendingItems })),
-        coachesAPI.getTodaySchedule().catch(() => ({ data: [] })),
-        coachesAPI.getWeeklyStats().catch(() => ({ data: null })),
-        coachesAPI.getTeams?.().catch(() => ({ data: [] })) || Promise.resolve({ data: [] }),
+      const coachId = (user as any)?.coachId || user?.id;
+
+      const [athletesRes, alertsRes, statsRes] = await Promise.all([
+        coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
+        coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
+        coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
       ]);
 
-      setAthletes(athletesRes.data?.data || athletesRes.data || mockAthletes);
-      setPendingItems(pendingRes.data?.data || pendingRes.data || mockPendingItems);
-      setTodaySchedule(scheduleRes.data?.data || scheduleRes.data || []);
-      setWeeklyStats(statsRes.data?.data || statsRes.data);
+      // Transform athletes response
+      const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
+      setAthletes(Array.isArray(athleteData) ? athleteData.map((a: any) => ({
+        id: a.id,
+        firstName: a.firstName,
+        lastName: a.lastName,
+        category: a.category || 'B',
+        lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
+      })) : mockAthletes);
 
-      // Set default team for focus heatmap
-      const teams = teamsRes.data?.data || teamsRes.data || [];
-      if (teams.length > 0) {
-        setDefaultTeamId(teams[0].id);
+      // Transform alerts to pending items format
+      const alertsData = alertsRes.data?.data?.alerts || alertsRes.data?.alerts || [];
+      setPendingItems(Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
+        id: alert.id,
+        type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
+        athlete: alert.athleteName,
+        description: alert.message,
+        time: formatTimeAgo(alert.createdAt),
+      })) : mockPendingItems);
+
+      // Get stats from statistics response
+      const statsData = statsRes.data?.data || statsRes.data;
+      if (statsData?.sessions) {
+        setWeeklyStats({
+          activePlayers: statsData.players?.active || 0,
+          sessionsThisWeek: statsData.sessions?.thisWeek || 0,
+          hoursTrained: statsData.sessions?.totalHours || 0,
+          pendingCount: alertsData.length || 0,
+        });
+      }
+
+      // Set default team for focus heatmap (use first athlete's ID as team proxy)
+      if (athleteData.length > 0) {
+        setDefaultTeamId(athleteData[0].id);
       }
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'En ukjent feil oppstod');
@@ -218,6 +243,19 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper to format time ago
+  const formatTimeAgo = (dateStr: string): string => {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays > 0) return `${diffDays} dag${diffDays > 1 ? 'er' : ''} siden`;
+    if (diffHours > 0) return `${diffHours} time${diffHours > 1 ? 'r' : ''} siden`;
+    return 'Akkurat nå';
   };
 
   useEffect(() => {

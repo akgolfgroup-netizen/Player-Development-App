@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import DashboardV2Layout from './DashboardV2Layout';
 import {
   HeroCard,
@@ -68,6 +69,8 @@ const DashboardV2: React.FC<DashboardV2Props> = ({
   playerName,
   playerId,
 }) => {
+  const navigate = useNavigate();
+
   // In real implementation, these would come from React Query hooks
   // Example: const { data: stats, isLoading, error } = usePlayerStats(playerId);
 
@@ -107,11 +110,11 @@ const DashboardV2: React.FC<DashboardV2Props> = ({
             }}
             primaryAction={{
               label: 'Start økt',
-              onClick: () => console.log('Start session'),
+              onClick: () => navigate('/logg-trening'),
             }}
             secondaryAction={{
               label: 'Se plan',
-              onClick: () => console.log('View plan'),
+              onClick: () => navigate('/treningsdagbok'),
             }}
           />
         </AsyncBoundary>
@@ -192,7 +195,7 @@ const DashboardV2: React.FC<DashboardV2Props> = ({
               location: 'Banen',
             },
           ]}
-          onViewAll={() => console.log('View all')}
+          onViewAll={() => navigate('/treningsdagbok')}
         />
       }
       strokesGained={
@@ -206,7 +209,7 @@ const DashboardV2: React.FC<DashboardV2Props> = ({
             { id: 'putting', label: 'Putting', value: -0.34 },
           ]}
           total={0.15}
-          onViewDetails={() => console.log('View SG details')}
+          onViewDetails={() => navigate('/statistikk/strokes-gained')}
         />
       }
       activityFeed={
@@ -237,7 +240,7 @@ const DashboardV2: React.FC<DashboardV2Props> = ({
               isGoldAchievement: false,
             },
           ]}
-          onViewAll={() => console.log('View all activity')}
+          onViewAll={() => navigate('/aktivitet')}
         />
       }
     />
