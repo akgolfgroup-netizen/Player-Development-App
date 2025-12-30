@@ -12,11 +12,9 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { initHls, destroyHls, loadHlsJs, supportsNativeHls, canPlayHls } from '../utils/hlsPlayer';
 
 // Frame rate constant for frame-by-frame navigation (assuming 30fps)
-const FRAME_RATE = 30;
-const FRAME_DURATION = 1 / FRAME_RATE;
+const FRAME_DURATION = 1 / 30;
 
 // Playback speed presets
 export const PLAYBACK_SPEEDS = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2];

@@ -65,35 +65,35 @@ describe('Modal.composite', () => {
 
   describe('Size Variants', () => {
     it('renders small size', () => {
-      const { container } = render(<Modal {...defaultProps} size="sm" />);
+      render(<Modal {...defaultProps} size="sm" />);
       const modal = screen.getByRole('dialog');
 
       expect(modal).toHaveStyle({ maxWidth: '400px' });
     });
 
     it('renders medium size (default)', () => {
-      const { container } = render(<Modal {...defaultProps} />);
+      render(<Modal {...defaultProps} />);
       const modal = screen.getByRole('dialog');
 
       expect(modal).toHaveStyle({ maxWidth: '600px' });
     });
 
     it('renders large size', () => {
-      const { container } = render(<Modal {...defaultProps} size="lg" />);
+      render(<Modal {...defaultProps} size="lg" />);
       const modal = screen.getByRole('dialog');
 
       expect(modal).toHaveStyle({ maxWidth: '800px' });
     });
 
     it('renders xl size', () => {
-      const { container } = render(<Modal {...defaultProps} size="xl" />);
+      render(<Modal {...defaultProps} size="xl" />);
       const modal = screen.getByRole('dialog');
 
       expect(modal).toHaveStyle({ maxWidth: '1000px' });
     });
 
     it('renders full size', () => {
-      const { container } = render(<Modal {...defaultProps} size="full" />);
+      render(<Modal {...defaultProps} size="full" />);
       const modal = screen.getByRole('dialog');
 
       expect(modal).toHaveStyle({ maxWidth: '100%', height: '100%', borderRadius: 0 });

@@ -253,14 +253,14 @@ describe('Tabs.composite', () => {
 
   describe('Variant Styles', () => {
     it('renders default variant', () => {
-      const { container } = render(<Tabs tabs={defaultTabs} variant="default" />);
+      render(<Tabs tabs={defaultTabs} variant="default" />);
       const tabList = screen.getByRole('tablist');
 
       expect(tabList).toBeInTheDocument();
     });
 
     it('renders pills variant', () => {
-      const { container } = render(<Tabs tabs={defaultTabs} variant="pills" />);
+      render(<Tabs tabs={defaultTabs} variant="pills" />);
       const tabList = screen.getByRole('tablist');
 
       expect(tabList).toHaveStyle({
@@ -270,7 +270,7 @@ describe('Tabs.composite', () => {
     });
 
     it('renders underline variant', () => {
-      const { container } = render(<Tabs tabs={defaultTabs} variant="underline" />);
+      render(<Tabs tabs={defaultTabs} variant="underline" />);
       const tabList = screen.getByRole('tablist');
 
       expect(tabList).toHaveStyle({
@@ -336,7 +336,7 @@ describe('Tabs.composite', () => {
 
   describe('Full Width', () => {
     it('applies full width styles', () => {
-      const { container } = render(<Tabs tabs={defaultTabs} fullWidth />);
+      render(<Tabs tabs={defaultTabs} fullWidth />);
       const tabList = screen.getByRole('tablist');
 
       expect(tabList).toHaveStyle({ width: '100%' });

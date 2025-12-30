@@ -4,11 +4,6 @@
  */
 
 describe('API Service Configuration', () => {
-  let api;
-  let authAPI;
-  let dashboardAPI;
-  let playersAPI;
-
   beforeEach(() => {
     // Clear modules and localStorage
     jest.clearAllMocks();

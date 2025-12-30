@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, Calendar, ClipboardList, MessageSquare, Bell,
-  ChevronRight, Search, User, BarChart3, Trophy, AlertCircle
+  ChevronRight, Search, User, BarChart3, Trophy
 } from 'lucide-react';
 import { CoachPlayerAlerts, CoachWeeklyTournaments, CoachInjuryTracker } from './widgets';
 import { coachesAPI } from '../../services/api';

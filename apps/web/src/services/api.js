@@ -101,6 +101,8 @@ export const testsAPI = {
 
 // Exercises API
 export const exercisesAPI = {
+  // List exercises with optional filters
+  list: (params = {}) => api.get('/exercises', { params }),
   getAll: () => api.get('/exercises'),
   getById: (id) => api.get(`/exercises/${id}`),
   create: (data) => api.post('/exercises', data),
