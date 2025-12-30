@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { tokens } from '../design-tokens';
 
 const UtviklingsplanApp = () => {
-  const [activeView, setActiveView] = useState('Ã¥rsplan');
+  const [activeView, setActiveView] = useState('årsplan');
   const [selectedPeriod, setSelectedPeriod] = useState('grunn');
   const [selectedWeek, setSelectedWeek] = useState(45);
   const [selectedDay, setSelectedDay] = useState(null);
 
-  // Spillerdata - B-nivÃ¥ (snittscore 75)
+  // Spillerdata - B-nivå (snittscore 75)
   const player = {
     name: "SPILLERNAVN",
     club: "Golfklubb Norge",
@@ -43,36 +43,36 @@ const UtviklingsplanApp = () => {
     turnering: { weeks: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38], color: colors.turnering, label: 'T', name: 'Turnering' }
   };
 
-  // B-nivÃ¥ prioriteringer per periode
+  // B-nivå prioriteringer per periode
   const priorities = {
     grunn: {
       konkurranse: 1, spill: 2, golfslag: 2, teknikk: 3, fysisk: 3,
       focus: "Teknikk og fysisk utvikling",
-      lÃ¦ringsfase: "L2-L3",
+      læringsfase: "L2-L3",
       clubSpeed: "CS40-CS60",
       setting: "S1-S4"
     },
     spesial: {
       konkurranse: 1, spill: 2, golfslag: 3, teknikk: 2, fysisk: 2,
       focus: "Golfslag og ferdighetsbygging",
-      lÃ¦ringsfase: "L3-L4",
+      læringsfase: "L3-L4",
       clubSpeed: "CS60-CS80",
       setting: "S4-S7"
     },
     turnering: {
       konkurranse: 3, spill: 3, golfslag: 2, teknikk: 1, fysisk: 1,
       focus: "Konkurranse og spill",
-      lÃ¦ringsfase: "L4-L5",
+      læringsfase: "L4-L5",
       clubSpeed: "CS80-CS100",
       setting: "S7-S10"
     }
   };
 
-  // Ukeplan mal for B-nivÃ¥ i grunnperiode
+  // Ukeplan mal for B-nivå i grunnperiode
   const weekPlanGrunn = {
     mandag: [
       { time: '07:00', duration: 30, type: 'Fs', name: 'Styrke morgentrim', phase: 'L1', cs: 'CS0', setting: 'S1' },
-      { time: '16:00', duration: 90, type: 'T', name: 'Teknisk Ã¸kt - Sving', phase: 'L2', cs: 'CS40', setting: 'S2' }
+      { time: '16:00', duration: 90, type: 'T', name: 'Teknisk økt - Sving', phase: 'L2', cs: 'CS40', setting: 'S2' }
     ],
     tirsdag: [
       { time: '07:00', duration: 30, type: 'L1-2', name: 'Hjemmetrening bevegelse', phase: 'L1', cs: 'CS20', setting: 'S1' },
@@ -80,7 +80,7 @@ const UtviklingsplanApp = () => {
     ],
     onsdag: [
       { time: '07:00', duration: 45, type: 'Fu', name: 'Utholdenhet/cardio', phase: 'L1', cs: 'CS0', setting: 'S1' },
-      { time: '16:00', duration: 60, type: 'T', name: 'NÃ¦rspill teknikk', phase: 'L2', cs: 'CS40', setting: 'S2' }
+      { time: '16:00', duration: 60, type: 'T', name: 'Nærspill teknikk', phase: 'L2', cs: 'CS40', setting: 'S2' }
     ],
     torsdag: [
       { time: '07:00', duration: 30, type: 'L1-2', name: 'Hjemmetrening bevegelse', phase: 'L1', cs: 'CS20', setting: 'S1' },
@@ -90,31 +90,31 @@ const UtviklingsplanApp = () => {
       { time: '07:00', duration: 30, type: 'Fs', name: 'Styrke fokus', phase: 'L1', cs: 'CS0', setting: 'S1' },
       { time: '16:00', duration: 60, type: 'T', name: 'Putting teknikk', phase: 'L2', cs: 'CS30', setting: 'S2' }
     ],
-    lÃ¸rdag: [
+    lørdag: [
       { time: '10:00', duration: 120, type: 'S', name: 'Spilltrening 9 hull', phase: 'L4', cs: 'CS80', setting: 'S5' }
     ],
-    sÃ¸ndag: [
+    søndag: [
       { time: '10:00', duration: 60, type: 'Test', name: 'Progresjonstest', phase: 'L3-L5', cs: 'CS40-80', setting: 'S4' }
     ]
   };
 
-  // TreningsÃ¸kt detaljer
+  // Treningsøkt detaljer
   const sessionDetails = {
-    'Teknisk Ã¸kt - Sving': {
+    'Teknisk økt - Sving': {
       type: 'T',
-      mÃ¥l: ['Utvikle svingplane', 'Bedre ballkontakt', 'Ã˜ke konsistens'],
-      Ã¸velser: [
+      mål: ['Utvikle svingplane', 'Bedre ballkontakt', 'Øke konsistens'],
+      øvelser: [
         { nr: 1, navn: 'Oppvarming', beskrivelse: 'Dynamisk strekk + rotasjon', reps: '5 min', pyramide: 'Teknikk' },
         { nr: 2, navn: 'Alignment drill', beskrivelse: 'Stance og siktelinje', reps: '10 slag', pyramide: 'Teknikk' },
-        { nr: 3, navn: 'L2 halvsvinger', beskrivelse: 'Jern 7, fokus pÃ¥ kontakt', reps: '20 slag', pyramide: 'Golfslag' },
-        { nr: 4, navn: 'L3 3/4 svinger', beskrivelse: 'Jern 7, Ã¸kt fart', reps: '20 slag', pyramide: 'Golfslag' },
+        { nr: 3, navn: 'L2 halvsvinger', beskrivelse: 'Jern 7, fokus på kontakt', reps: '20 slag', pyramide: 'Golfslag' },
+        { nr: 4, navn: 'L3 3/4 svinger', beskrivelse: 'Jern 7, økt fart', reps: '20 slag', pyramide: 'Golfslag' },
         { nr: 5, navn: 'Gate drill', beskrivelse: 'Sving mellom pinnene', reps: '15 slag', pyramide: 'Teknikk' },
-        { nr: 6, navn: 'Full swing', beskrivelse: 'Varierende kÃ¸ller', reps: '20 slag', pyramide: 'Golfslag' },
+        { nr: 6, navn: 'Full swing', beskrivelse: 'Varierende køller', reps: '20 slag', pyramide: 'Golfslag' },
         { nr: 7, navn: 'Video analyse', beskrivelse: 'Sammenlign med referanse', reps: '5 min', pyramide: 'Teknikk' },
         { nr: 8, navn: 'Cool down', beskrivelse: 'Lette slag + stretch', reps: '10 min', pyramide: 'Teknikk' }
       ],
       utstyr: ['TrackMan/Garmin', 'Alignment sticks', 'Video/telefon', 'Gatetrener'],
-      suksesskriterier: 'Minst 70% av slag med Ã¸nsket ballflukt pÃ¥ CS60'
+      suksesskriterier: 'Minst 70% av slag med ønsket ballflukt på CS60'
     }
   };
 
@@ -164,13 +164,13 @@ const UtviklingsplanApp = () => {
 
   // ============== HOVEDVISNINGER ==============
 
-  // 1. Ã…RSPLAN OVERSIKT
-  const Ã…rsplanView = () => (
+  // 1. ÅRSPLAN OVERSIKT
+  const ÅrsplanView = () => (
     <div style={{ padding: '24px' }}>
       <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-        ðŸ“… Ã…RSPLAN 2025/2026
+        📅 ÅRSPLAN 2025/2026
       </h2>
-      
+
       {/* Periodeoversikt */}
       <div style={{ marginBottom: '30px' }}>
         <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>PERIODER</h3>
@@ -196,16 +196,16 @@ const UtviklingsplanApp = () => {
 
       {/* Ukekalender */}
       <div style={{ marginBottom: '30px' }}>
-        <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>Ã…RSHJUL (UKE 40 â†’ 39)</h3>
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(26, 1fr)', 
+        <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>ÅRSHJUL (UKE 40 → 39)</h3>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(26, 1fr)',
           gap: '2px',
           background: '#e0e0e0',
           padding: '2px',
           borderRadius: '8px'
         }}>
-          {/* FÃ¸rste halvÃ¥r: uke 40-52 + 1-4 */}
+          {/* Første halvår: uke 40-52 + 1-4 */}
           {[40,41,42,43,44,45,46,47,48,49,50,51,52,1,2,3,4,5,6,7,8,9,10,11,12,13].map(week => {
             const periodColor = Object.values(periods).find(p => p.weeks.includes(week))?.color || '#ccc';
             return (
@@ -225,16 +225,16 @@ const UtviklingsplanApp = () => {
             );
           })}
         </div>
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(26, 1fr)', 
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(26, 1fr)',
           gap: '2px',
           background: '#e0e0e0',
           padding: '2px',
           borderRadius: '8px',
           marginTop: '2px'
         }}>
-          {/* Andre halvÃ¥r: uke 14-39 */}
+          {/* Andre halvår: uke 14-39 */}
           {[14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39].map(week => {
             const periodColor = Object.values(periods).find(p => p.weeks.includes(week))?.color || '#ccc';
             return (
@@ -256,10 +256,10 @@ const UtviklingsplanApp = () => {
         </div>
       </div>
 
-      {/* Prioriteringstabell for B-nivÃ¥ */}
+      {/* Prioriteringstabell for B-nivå */}
       <div style={{ marginBottom: '30px' }}>
         <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>
-          PRIORITERINGER PR PERIODE - B-NIVÃ… (Snitt: {player.avgScore})
+          PRIORITERINGER PR PERIODE - B-NIVÅ (Snitt: {player.avgScore})
         </h3>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
           <thead>
@@ -293,7 +293,7 @@ const UtviklingsplanApp = () => {
         color: 'white'
       }}>
         <h3 style={{ fontSize: '14px', marginBottom: '15px', color: colors.accent }}>
-          ðŸŽ¯ AK GOLF ACADEMY PROGRESJON - B-NIVÃ…
+          🎯 AK GOLF ACADEMY PROGRESJON - B-NIVÅ
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px' }}>
           {Object.entries(priorities).map(([period, data]) => (
@@ -305,9 +305,9 @@ const UtviklingsplanApp = () => {
             }}>
               <div style={{ fontWeight: 'bold', marginBottom: '10px', textTransform: 'capitalize' }}>{period}</div>
               <div style={{ fontSize: '11px', lineHeight: '1.6' }}>
-                <div>ðŸ“š LÃ¦ringsfase: <strong>{data.lÃ¦ringsfase}</strong></div>
-                <div>âš¡ Clubspeed: <strong>{data.clubSpeed}</strong></div>
-                <div>ðŸŽ¯ Setting: <strong>{data.setting}</strong></div>
+                <div>📚 Læringsfase: <strong>{data.læringsfase}</strong></div>
+                <div>⚡ Clubspeed: <strong>{data.clubSpeed}</strong></div>
+                <div>🎯 Setting: <strong>{data.setting}</strong></div>
                 <div style={{ marginTop: '8px', color: colors.accent }}>Fokus: {data.focus}</div>
               </div>
             </div>
@@ -321,13 +321,13 @@ const UtviklingsplanApp = () => {
   const PeriodeplanView = () => {
     const currentPriorities = priorities[selectedPeriod] || priorities.grunn;
     const currentPeriod = periods[selectedPeriod] || periods.grunn;
-    
+
     return (
       <div style={{ padding: '24px' }}>
         <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${currentPeriod.color}`, paddingBottom: '10px' }}>
-          ðŸ“Š PERIODEPLAN: {currentPeriod.name.toUpperCase()}
+          📊 PERIODEPLAN: {currentPeriod.name.toUpperCase()}
         </h2>
-        
+
         {/* Periode header */}
         <div style={{
           background: `linear-gradient(135deg, ${currentPeriod.color} 0%, ${colors.dark} 100%)`,
@@ -362,7 +362,7 @@ const UtviklingsplanApp = () => {
         <div style={{ marginBottom: '25px' }}>
           <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>3-UKERS SYKLUS</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px' }}>
-            {['Uke 1: InnlÃ¦ring', 'Uke 2: Utvikling', 'Uke 3: Testing'].map((week, i) => (
+            {['Uke 1: Innlæring', 'Uke 2: Utvikling', 'Uke 3: Testing'].map((week, i) => (
               <div key={i} style={{
                 background: colors.light,
                 border: `2px solid ${currentPeriod.color}`,
@@ -371,9 +371,9 @@ const UtviklingsplanApp = () => {
               }}>
                 <div style={{ fontWeight: 'bold', color: currentPeriod.color, marginBottom: '8px' }}>{week}</div>
                 <div style={{ fontSize: '11px', color: '#666' }}>
-                  {i === 0 && 'Fokus pÃ¥ teknikk og bevegelse. Lav hastighet, hÃ¸y kvalitet.'}
-                  {i === 1 && 'Ã˜kt hastighet og kompleksitet. Bygge mot bruddpunkt.'}
-                  {i === 2 && 'Progresjonstester. Identifiser neste nivÃ¥.'}
+                  {i === 0 && 'Fokus på teknikk og bevegelse. Lav hastighet, høy kvalitet.'}
+                  {i === 1 && 'Økt hastighet og kompleksitet. Bygge mot bruddpunkt.'}
+                  {i === 2 && 'Progresjonstester. Identifiser neste nivå.'}
                 </div>
               </div>
             ))}
@@ -385,14 +385,14 @@ const UtviklingsplanApp = () => {
           <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>TRENINGSKATEGORIER</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
             {[
-              { key: 'konkurranse', icon: 'ðŸ†', label: 'Konkurranse' },
-              { key: 'spill', icon: 'â›³', label: 'Spill' },
-              { key: 'golfslag', icon: 'ðŸŽ¯', label: 'Golfslag' },
-              { key: 'teknikk', icon: 'ðŸ”§', label: 'Teknikk' },
-              { key: 'fysisk', icon: 'ðŸ’ª', label: 'Fysisk' }
+              { key: 'konkurranse', icon: '🏆', label: 'Konkurranse' },
+              { key: 'spill', icon: '⛳', label: 'Spill' },
+              { key: 'golfslag', icon: '🎯', label: 'Golfslag' },
+              { key: 'teknikk', icon: '🔧', label: 'Teknikk' },
+              { key: 'fysisk', icon: '💪', label: 'Fysisk' }
             ].map(cat => (
               <div key={cat.key} style={{
-                background: currentPriorities[cat.key] === 3 ? colors.success : 
+                background: currentPriorities[cat.key] === 3 ? colors.success :
                            currentPriorities[cat.key] === 2 ? colors.warning : colors.evaluering,
                 color: 'white',
                 padding: '15px',
@@ -402,7 +402,7 @@ const UtviklingsplanApp = () => {
                 <div style={{ fontSize: '24px' }}>{cat.icon}</div>
                 <div style={{ fontWeight: 'bold', fontSize: '12px', marginTop: '5px' }}>{cat.label}</div>
                 <div style={{ fontSize: '10px', marginTop: '5px' }}>
-                  {currentPriorities[cat.key] === 3 ? 'UTVIKLE' : 
+                  {currentPriorities[cat.key] === 3 ? 'UTVIKLE' :
                    currentPriorities[cat.key] === 2 ? 'BEHOLDE' : 'VEDLIKEHOLD'}
                 </div>
               </div>
@@ -426,7 +426,7 @@ const UtviklingsplanApp = () => {
                 <thead>
                   <tr style={{ background: currentPeriod.color, color: 'white' }}>
                     <th style={{ padding: '8px', textAlign: 'left' }}>Type</th>
-                    <th style={{ padding: '8px', textAlign: 'center' }}>Ã˜kter/uke</th>
+                    <th style={{ padding: '8px', textAlign: 'center' }}>Økter/uke</th>
                     <th style={{ padding: '8px', textAlign: 'center' }}>Timer</th>
                   </tr>
                 </thead>
@@ -479,8 +479,8 @@ const UtviklingsplanApp = () => {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '12px' }}>
                 <div style={{ background: '#f0f0f0', padding: '10px', borderRadius: '6px' }}>
-                  <div style={{ fontWeight: 'bold' }}>LÃ¦ringsfase</div>
-                  <div style={{ fontSize: '18px', color: currentPeriod.color }}>{currentPriorities.lÃ¦ringsfase}</div>
+                  <div style={{ fontWeight: 'bold' }}>Læringsfase</div>
+                  <div style={{ fontSize: '18px', color: currentPeriod.color }}>{currentPriorities.læringsfase}</div>
                 </div>
                 <div style={{ background: '#f0f0f0', padding: '10px', borderRadius: '6px' }}>
                   <div style={{ fontWeight: 'bold' }}>Clubspeed</div>
@@ -502,17 +502,17 @@ const UtviklingsplanApp = () => {
     );
   };
 
-  // 3. MÃ…NEDSKALENDER VIEW
-  const MÃ¥nedskalenderView = () => {
+  // 3. MÅNEDSKALENDER VIEW
+  const MånedskalenderView = () => {
     // November 2025 eksempel
     const daysInMonth = 30;
-    const firstDayOfWeek = 5; // LÃ¸rdag
-    const weekDays = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'LÃ¸r', 'SÃ¸n'];
-    
+    const firstDayOfWeek = 5; // Lørdag
+    const weekDays = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+
     const monthEvents = {
       4: [{ type: 'T', name: 'Teknisk' }, { type: 'Fs', name: 'Styrke' }],
       5: [{ type: 'G', name: 'Golfslag' }],
-      6: [{ type: 'T', name: 'NÃ¦rspill' }, { type: 'Fu', name: 'Cardio' }],
+      6: [{ type: 'T', name: 'Nærspill' }, { type: 'Fu', name: 'Cardio' }],
       7: [{ type: 'G', name: 'Wedge' }],
       8: [{ type: 'T', name: 'Putting' }, { type: 'Fs', name: 'Styrke' }],
       9: [{ type: 'S', name: '9 hull spill' }],
@@ -529,10 +529,10 @@ const UtviklingsplanApp = () => {
     return (
       <div style={{ padding: '24px' }}>
         <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-          ðŸ“† MÃ…NEDSKALENDER: NOVEMBER 2025
+          📆 MÅNEDSKALENDER: NOVEMBER 2025
         </h2>
 
-        {/* MÃ¥nedsoversikt */}
+        {/* Månedsoversikt */}
         <div style={{
           background: colors.light,
           borderRadius: '12px',
@@ -548,25 +548,25 @@ const UtviklingsplanApp = () => {
             justifyContent: 'space-between',
             alignItems: 'center'
           }}>
-            <span style={{ fontSize: '14px' }}>â—€ Oktober</span>
+            <span style={{ fontSize: '14px' }}>◀ Oktober</span>
             <span style={{ fontSize: '20px', fontWeight: 'bold' }}>November 2025</span>
-            <span style={{ fontSize: '14px' }}>Desember â–¶</span>
+            <span style={{ fontSize: '14px' }}>Desember ▶</span>
           </div>
 
           {/* Periode info */}
-          <div style={{ 
-            background: colors.grunn, 
-            color: 'white', 
-            padding: '10px 15px', 
+          <div style={{
+            background: colors.grunn,
+            color: 'white',
+            padding: '10px 15px',
             fontSize: '12px',
-            opacity: 0.9 
+            opacity: 0.9
           }}>
             <strong>GRUNNPERIODE</strong> | Uke 44-48 | Fokus: Teknikk & Fysisk utvikling | L2-L3 | CS40-CS60 | S1-S4
           </div>
 
           {/* Ukedager header */}
-          <div style={{ 
-            display: 'grid', 
+          <div style={{
+            display: 'grid',
             gridTemplateColumns: 'repeat(7, 1fr)',
             background: '#e0e0e0'
           }}>
@@ -584,23 +584,23 @@ const UtviklingsplanApp = () => {
           </div>
 
           {/* Kalender grid */}
-          <div style={{ 
-            display: 'grid', 
+          <div style={{
+            display: 'grid',
             gridTemplateColumns: 'repeat(7, 1fr)',
             gap: '1px',
             background: '#e0e0e0'
           }}>
-            {/* Tomme celler fÃ¸r mÃ¥neden starter */}
+            {/* Tomme celler før måneden starter */}
             {Array.from({ length: firstDayOfWeek }).map((_, i) => (
               <div key={`empty-${i}`} style={{ background: '#f5f5f5', minHeight: '100px' }} />
             ))}
-            
-            {/* Dager i mÃ¥neden */}
+
+            {/* Dager i måneden */}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
               const events = monthEvents[day] || [];
               const isSelected = selectedDay === day;
-              
+
               return (
                 <div key={day} style={{
                   background: isSelected ? '#e3f2fd' : 'white',
@@ -609,8 +609,8 @@ const UtviklingsplanApp = () => {
                   cursor: 'pointer',
                   border: isSelected ? `2px solid ${colors.primary}` : 'none'
                 }} onClick={() => setSelectedDay(day)}>
-                  <div style={{ 
-                    fontWeight: 'bold', 
+                  <div style={{
+                    fontWeight: 'bold',
                     fontSize: '14px',
                     color: colors.primary,
                     marginBottom: '5px'
@@ -638,8 +638,8 @@ const UtviklingsplanApp = () => {
           </div>
         </div>
 
-        {/* MÃ¥nedlig oppsummering */}
-        <div style={{ 
+        {/* Månedlig oppsummering */}
+        <div style={{
           marginTop: '20px',
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
@@ -647,19 +647,19 @@ const UtviklingsplanApp = () => {
         }}>
           <div style={{ background: colors.sessionTypes.teknikk, color: 'white', padding: '15px', borderRadius: '8px', textAlign: 'center' }}>
             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>12</div>
-            <div style={{ fontSize: '11px' }}>Teknikk Ã¸kter</div>
+            <div style={{ fontSize: '11px' }}>Teknikk økter</div>
           </div>
           <div style={{ background: colors.sessionTypes.golfslag, color: 'white', padding: '15px', borderRadius: '8px', textAlign: 'center' }}>
             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>8</div>
-            <div style={{ fontSize: '11px' }}>Golfslag Ã¸kter</div>
+            <div style={{ fontSize: '11px' }}>Golfslag økter</div>
           </div>
           <div style={{ background: colors.sessionTypes.fysisk, color: 'white', padding: '15px', borderRadius: '8px', textAlign: 'center' }}>
             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>8</div>
-            <div style={{ fontSize: '11px' }}>Fysiske Ã¸kter</div>
+            <div style={{ fontSize: '11px' }}>Fysiske økter</div>
           </div>
           <div style={{ background: colors.sessionTypes.spill, color: 'white', padding: '15px', borderRadius: '8px', textAlign: 'center' }}>
             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>4</div>
-            <div style={{ fontSize: '11px' }}>Spill Ã¸kter</div>
+            <div style={{ fontSize: '11px' }}>Spill økter</div>
           </div>
         </div>
       </div>
@@ -668,13 +668,13 @@ const UtviklingsplanApp = () => {
 
   // 4. UKEPLAN VIEW
   const UkeplanView = () => {
-    const days = ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lÃ¸rdag', 'sÃ¸ndag'];
-    const dayLabels = ['MAN', 'TIR', 'ONS', 'TOR', 'FRE', 'LÃ˜R', 'SÃ˜N'];
-    
+    const days = ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag', 'søndag'];
+    const dayLabels = ['MAN', 'TIR', 'ONS', 'TOR', 'FRE', 'LØR', 'SØN'];
+
     return (
       <div style={{ padding: '24px' }}>
         <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-          ðŸ“‹ UKEPLAN: UKE {selectedWeek}
+          📋 UKEPLAN: UKE {selectedWeek}
         </h2>
 
         {/* Uke info header */}
@@ -715,7 +715,7 @@ const UtviklingsplanApp = () => {
           {days.map((day, i) => {
             const sessions = weekPlanGrunn[day] || [];
             const totalTime = sessions.reduce((sum, s) => sum + s.duration, 0);
-            
+
             return (
               <div key={day} style={{
                 background: colors.light,
@@ -734,7 +734,7 @@ const UtviklingsplanApp = () => {
                   <div style={{ fontSize: '10px', opacity: 0.7 }}>{totalTime} min</div>
                 </div>
 
-                {/* Ã˜kter */}
+                {/* Økter */}
                 <div style={{ padding: '10px', minHeight: '200px' }}>
                   {sessions.length === 0 ? (
                     <div style={{ color: '#999', fontSize: '11px', textAlign: 'center', paddingTop: '20px' }}>
@@ -812,17 +812,17 @@ const UtviklingsplanApp = () => {
     );
   };
 
-  // 5. TRENINGSÃ˜KT VIEW
-  const TreningsÃ¸ktView = () => {
-    const session = sessionDetails['Teknisk Ã¸kt - Sving'];
-    
+  // 5. TRENINGSØKT VIEW
+  const TreningsøktView = () => {
+    const session = sessionDetails['Teknisk økt - Sving'];
+
     return (
       <div style={{ padding: '24px' }}>
         <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-          ðŸŽ¯ TRENINGSÃ˜KT: TEKNISK Ã˜KT - SVING
+          🎯 TRENINGSØKT: TEKNISK ØKT - SVING
         </h2>
 
-        {/* Ã˜kt header */}
+        {/* Økt header */}
         <div style={{
           background: 'linear-gradient(135deg, #9b59b6 0%, #6c3483 100%)',
           color: 'white',
@@ -832,7 +832,7 @@ const UtviklingsplanApp = () => {
         }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '20px' }}>
             <div>
-              <div style={{ fontSize: '11px', opacity: 0.7 }}>Ã˜KT TYPE</div>
+              <div style={{ fontSize: '11px', opacity: 0.7 }}>ØKT TYPE</div>
               <div style={{ fontSize: '24px', fontWeight: 'bold' }}>T</div>
               <div style={{ fontSize: '12px' }}>Teknikk</div>
             </div>
@@ -860,17 +860,17 @@ const UtviklingsplanApp = () => {
           marginBottom: '20px',
           border: '2px dashed #9b59b6'
         }}>
-          <div style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>Ã˜KTBESKRIVELSE (LÃ¦ringsfase + Clubspeed + Setting + Underlag + OmrÃ¥de)</div>
+          <div style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>ØKTBESKRIVELSE (Læringsfase + Clubspeed + Setting + Underlag + Område)</div>
           <div style={{ fontSize: '18px', fontWeight: 'bold', color: colors.primary, fontFamily: 'monospace' }}>
-            L2-L3 â€“ CS40-60 â€“ S2 â€“ flat matte â€“ Full swing jern
+            L2-L3 — CS40-60 — S2 — flat matte — Full swing jern
           </div>
         </div>
 
-        {/* MÃ¥l */}
+        {/* Mål */}
         <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>ðŸŽ¯ MÃ…L FOR Ã˜KTEN</h3>
+          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>🎯 MÅL FOR ØKTEN</h3>
           <div style={{ display: 'flex', gap: '10px' }}>
-            {session.mÃ¥l.map((mÃ¥l, i) => (
+            {session.mål.map((mål, i) => (
               <div key={i} style={{
                 background: 'white',
                 padding: '10px 15px',
@@ -878,44 +878,44 @@ const UtviklingsplanApp = () => {
                 fontSize: '12px',
                 border: '1px solid #ddd'
               }}>
-                âœ“ {mÃ¥l}
+                ✓ {mål}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Ã˜velser tabell */}
+        {/* Øvelser tabell */}
         <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>ðŸ“‹ Ã˜VELSER</h3>
+          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>📋 ØVELSER</h3>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
             <thead>
               <tr style={{ background: '#9b59b6', color: 'white' }}>
                 <th style={{ padding: '12px', textAlign: 'center', width: '50px' }}>Nr</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Ã˜velse</th>
+                <th style={{ padding: '12px', textAlign: 'left' }}>Øvelse</th>
                 <th style={{ padding: '12px', textAlign: 'left' }}>Beskrivelse</th>
                 <th style={{ padding: '12px', textAlign: 'center' }}>Reps/Tid</th>
                 <th style={{ padding: '12px', textAlign: 'center' }}>Pyramide</th>
               </tr>
             </thead>
             <tbody>
-              {session.Ã¸velser.map((Ã¸velse, i) => (
-                <tr key={i} style={{ 
+              {session.øvelser.map((øvelse, i) => (
+                <tr key={i} style={{
                   background: i % 2 === 0 ? 'white' : colors.light,
                   borderBottom: '1px solid #eee'
                 }}>
-                  <td style={{ padding: '12px', textAlign: 'center', fontWeight: 'bold' }}>{Ã¸velse.nr}</td>
-                  <td style={{ padding: '12px', fontWeight: 'bold' }}>{Ã¸velse.navn}</td>
-                  <td style={{ padding: '12px', color: '#666' }}>{Ã¸velse.beskrivelse}</td>
-                  <td style={{ padding: '12px', textAlign: 'center' }}>{Ã¸velse.reps}</td>
+                  <td style={{ padding: '12px', textAlign: 'center', fontWeight: 'bold' }}>{øvelse.nr}</td>
+                  <td style={{ padding: '12px', fontWeight: 'bold' }}>{øvelse.navn}</td>
+                  <td style={{ padding: '12px', color: '#666' }}>{øvelse.beskrivelse}</td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>{øvelse.reps}</td>
                   <td style={{ padding: '12px', textAlign: 'center' }}>
                     <span style={{
-                      background: Ã¸velse.pyramide === 'Teknikk' ? '#9b59b6' : '#3498db',
+                      background: øvelse.pyramide === 'Teknikk' ? '#9b59b6' : '#3498db',
                       color: 'white',
                       padding: '3px 8px',
                       borderRadius: '4px',
                       fontSize: '10px'
                     }}>
-                      {Ã¸velse.pyramide}
+                      {øvelse.pyramide}
                     </span>
                   </td>
                 </tr>
@@ -931,7 +931,7 @@ const UtviklingsplanApp = () => {
             padding: '15px',
             borderRadius: '8px'
           }}>
-            <h4 style={{ color: colors.primary, fontSize: '12px', marginBottom: '10px' }}>ðŸ› ï¸ UTSTYR</h4>
+            <h4 style={{ color: colors.primary, fontSize: '12px', marginBottom: '10px' }}>🛠️ UTSTYR</h4>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {session.utstyr.map((item, i) => (
                 <span key={i} style={{
@@ -952,7 +952,7 @@ const UtviklingsplanApp = () => {
             padding: '15px',
             borderRadius: '8px'
           }}>
-            <h4 style={{ fontSize: '12px', marginBottom: '10px' }}>âœ… SUKSESSKRITERIUM</h4>
+            <h4 style={{ fontSize: '12px', marginBottom: '10px' }}>✅ SUKSESSKRITERIUM</h4>
             <div style={{ fontSize: '14px' }}>{session.suksesskriterier}</div>
           </div>
         </div>
@@ -965,7 +965,7 @@ const UtviklingsplanApp = () => {
           borderRadius: '12px',
           border: '2px solid #9b59b6'
         }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>ðŸ“ EVALUERING ETTER Ã˜KT</h3>
+          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>📝 EVALUERING ETTER ØKT</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
             {['Fokus', 'Kvalitet', 'Energi', 'Progresjon', 'Total'].map((item, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
@@ -1010,7 +1010,7 @@ const UtviklingsplanApp = () => {
 
   // ============== HOVEDKOMPONENT ==============
   return (
-    <div style={{ 
+    <div style={{
       fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
       background: '#f0f2f5',
       minHeight: '100vh'
@@ -1051,9 +1051,9 @@ const UtviklingsplanApp = () => {
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{player.name}</div>
-            <div style={{ 
-              display: 'flex', 
-              gap: '10px', 
+            <div style={{
+              display: 'flex',
+              gap: '10px',
               marginTop: '10px',
               justifyContent: 'flex-end'
             }}>
@@ -1065,7 +1065,7 @@ const UtviklingsplanApp = () => {
                 fontSize: '12px',
                 fontWeight: 'bold'
               }}>
-                NivÃ¥ {player.level} ({player.levelRange})
+                Nivå {player.level} ({player.levelRange})
               </span>
               <span style={{
                 background: 'rgba(255,255,255,0.2)',
@@ -1097,11 +1097,11 @@ const UtviklingsplanApp = () => {
         gap: '5px'
       }}>
         {[
-          { id: 'Ã¥rsplan', label: 'ðŸ“… Ã…rsplan', desc: 'Helhetsoversikt' },
-          { id: 'periodeplan', label: 'ðŸ“Š Periodeplan', desc: 'Periodespesifikt' },
-          { id: 'mÃ¥nedskalender', label: 'ðŸ“† MÃ¥ned', desc: 'Kalendervisning' },
-          { id: 'ukeplan', label: 'ðŸ“‹ Ukeplan', desc: 'Ukentlig struktur' },
-          { id: 'treningsÃ¸kt', label: 'ðŸŽ¯ TreningsÃ¸kt', desc: 'Ã˜ktdetaljer' }
+          { id: 'årsplan', label: '📅 Årsplan', desc: 'Helhetsoversikt' },
+          { id: 'periodeplan', label: '📊 Periodeplan', desc: 'Periodespesifikt' },
+          { id: 'månedskalender', label: '📆 Måned', desc: 'Kalendervisning' },
+          { id: 'ukeplan', label: '📋 Ukeplan', desc: 'Ukentlig struktur' },
+          { id: 'treningsøkt', label: '🎯 Treningsøkt', desc: 'Øktdetaljer' }
         ].map(item => (
           <button
             key={item.id}
@@ -1126,11 +1126,11 @@ const UtviklingsplanApp = () => {
 
       {/* Main Content */}
       <main style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        {activeView === 'Ã¥rsplan' && <Ã…rsplanView />}
+        {activeView === 'årsplan' && <ÅrsplanView />}
         {activeView === 'periodeplan' && <PeriodeplanView />}
-        {activeView === 'mÃ¥nedskalender' && <MÃ¥nedskalenderView />}
+        {activeView === 'månedskalender' && <MånedskalenderView />}
         {activeView === 'ukeplan' && <UkeplanView />}
-        {activeView === 'treningsÃ¸kt' && <TreningsÃ¸ktView />}
+        {activeView === 'treningsøkt' && <TreningsøktView />}
       </main>
 
       {/* Footer */}
@@ -1144,11 +1144,11 @@ const UtviklingsplanApp = () => {
         justifyContent: 'space-between'
       }}>
         <div>
-          <strong>AK Golf Academy</strong> | Metodikk basert pÃ¥ Team Norway Golf & WANG 6-Ã¥rsplan
+          <strong>AK Golf Academy</strong> | Metodikk basert på Team Norway Golf & WANG 6-årsplan
         </div>
         <div>
-          Ã˜ktformel: <span style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '3px' }}>
-            LÃ¦ringsfase + Clubspeed + Setting + Underlag + OmrÃ¥de
+          Øktformel: <span style={{ fontFamily: 'monospace', background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '3px' }}>
+            Læringsfase + Clubspeed + Setting + Underlag + Område
           </span>
         </div>
       </footer>

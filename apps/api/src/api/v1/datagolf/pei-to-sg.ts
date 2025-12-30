@@ -452,7 +452,7 @@ export function convertPeiToStrokesGained(input: PeiToSgInput): PeiToSgResult {
 
   // Determine category based on start distance
   let category: 'approach' | 'around_green' | 'putting';
-  let effectiveLie = lie;
+  const effectiveLie = lie;
 
   if (lie === 'green') {
     category = 'putting';
@@ -599,8 +599,7 @@ export function convertIupPuttingToSG(
   const expectedPuttsFromStart = getExpectedPutts(startDistance);
   const missedCount = totalAttempts - madeCount;
 
-  // Expected putts for made and missed
-  const expectedPuttsMade = 1.0;
+  // Expected putts for missed (made = 1 stroke)
   const expectedPuttsIfMissed = 1 + getExpectedPutts(avgMissDistance);
 
   // Actual strokes used

@@ -7,7 +7,6 @@ import {
   Bounty,
   BountyBoard,
   BountyDifficulty,
-  BountyStatus,
   BountyCategory,
   BountyHunterRank,
   BountyCompletionResult,

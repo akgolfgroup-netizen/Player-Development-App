@@ -737,8 +737,7 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
             sg = result.strokesGained;
           }
         } else if (testNumber === 15 || testNumber === 16) {
-          // Putting tests - use make percentage
-          const distance = testNumber === 15 ? 3 : 6;
+          // Putting tests - use make percentage (3ft for test 15, 6ft for test 16)
           const makeRate = test.score !== null ? test.score / 100 : 0.5;
           // Expected make rates (approximate tour averages)
           const expectedMakeRate = testNumber === 15 ? 0.75 : 0.55;

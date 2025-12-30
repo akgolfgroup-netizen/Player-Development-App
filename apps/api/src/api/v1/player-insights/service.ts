@@ -9,10 +9,8 @@ import { calculateSkillDNA, SkillDNAInput } from './skill-dna';
 import {
   buildBountyBoard,
   createBountyFromBreakingPoint,
-  completeBounty,
   calculateProgress,
   isBountyComplete,
-  BOUNTY_TEMPLATES,
 } from './bounty-service';
 import {
   PlayerInsightsData,
@@ -23,7 +21,6 @@ import {
 } from './types';
 import {
   convertPeiToStrokesGained,
-  calculateTourPercentile,
 } from '../datagolf/pei-to-sg';
 
 export class PlayerInsightsService {
@@ -64,9 +61,9 @@ export class PlayerInsightsService {
   /**
    * Get SG Journey data for a player
    */
-  async getSGJourney(tenantId: string, playerId: string): Promise<SGJourneyData> {
+  async getSGJourney(_tenantId: string, playerId: string): Promise<SGJourneyData> {
     // Get player info
-    const player = await this.prisma.player.findUnique({
+    const _player = await this.prisma.player.findUnique({
       where: { id: playerId },
       select: { gender: true, category: true, createdAt: true },
     });

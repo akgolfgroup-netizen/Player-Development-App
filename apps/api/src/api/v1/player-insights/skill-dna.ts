@@ -291,11 +291,11 @@ export function generateMatchInsight(
   pro: ProPlayerDNA,
   similarity: number
 ): string {
-  const playerStrengths = Object.entries(playerDNA)
+  const _playerStrengths = Object.entries(playerDNA)
     .filter(([_, score]) => score >= 75)
     .map(([dim]) => dim);
 
-  const playerWeaknesses = Object.entries(playerDNA)
+  const _playerWeaknesses = Object.entries(playerDNA)
     .filter(([_, score]) => score < 60)
     .map(([dim]) => dim);
 

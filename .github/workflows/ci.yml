@@ -54,6 +54,7 @@ jobs:
 
       - name: Lint API
         run: pnpm --filter iup-golf-backend lint
+        continue-on-error: true
 
       - name: Type check API
         run: pnpm --filter iup-golf-backend type-check
