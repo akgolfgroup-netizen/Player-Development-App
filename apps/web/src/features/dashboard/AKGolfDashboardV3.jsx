@@ -2,25 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, Trophy, Target, CheckCircle2,
-  Play, Bell, ChevronRight, Crosshair
+  Play, Bell, ChevronRight, Crosshair, Zap, Sparkles
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { useFocus } from '../../hooks/useFocus';
-import Button from '../../ui/primitives/Button';
 
 /**
- * AKGolfDashboard V3 - Premium Player Dashboard
+ * AKGolfDashboard V3.1 - UX Redesign
  *
- * Redesigned for clarity and focus:
- * - Zone A: Control & Focus (orientation + action)
- * - Zone B: Progress & Status (confirmation without stress)
- * - Zone C: Follow-up & Signals (tasks & notifications)
+ * Forbedringer basert på UX-analyse:
+ * - P1: Redusert KPI-visning, oppgaver flyttet opp
+ * - P2: Kontekstualisert CTA med spesifikk info
+ * - P3: No 0-shaming, progress feedback
+ * - P4: Lavterskel start, adaptiv feedback
  *
- * Design principles:
- * - Answer "What's important now?" in 5 seconds
- * - Single primary CTA
- * - Large numbers, small labels
- * - Premium = controlled absence
+ * Ny struktur:
+ * - Zone A: Welcome + FocusCard + Primary CTA
+ * - Zone B: TasksList (flyttet opp!) + QuickStart
+ * - Zone C: ProgressStrip (kompakt) + Notifications
  */
 
 // ===== HELPER FUNCTIONS =====
@@ -32,6 +31,8 @@ const getGreeting = () => {
   return 'God kveld';
 };
 
+const getDayOfWeek = () => new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
+
 const getDaysUntil = (date) => {
   if (!date) return null;
   const targetDate = new Date(date);
@@ -40,14 +41,75 @@ const getDaysUntil = (date) => {
   return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 };
 
+/**
+ * Adaptiv motivasjonsmelding basert på progresjon og ukedag
+ * P4: Psykologisk friksjonsreduksjon
+ */
+const getMotivationalMessage = (stats, dayOfWeek) => {
+  const { sessionsCompleted, sessionsTotal, streak } = stats;
+  const completionRate = sessionsTotal > 0 ? (sessionsCompleted / sessionsTotal) * 100 : 0;
+
+  // Streak-baserte meldinger
+  if (streak > 7) return 'Imponerende streak! Hold momentumet.';
+  if (streak > 3) return `${streak} dager i rad – du bygger gode vaner!`;
+
+  // Progresjon-baserte meldinger
+  if (completionRate >= 100) return 'Uka fullført! Du er en maskin.';
+  if (completionRate >= 75) return 'Nesten der – sterk innsats!';
+  if (completionRate >= 50) return 'Halvveis – godt på vei!';
+  if (completionRate >= 25) return 'God start på uka!';
+
+  // Ukedag-baserte meldinger (ingen økter ennå)
+  if (sessionsCompleted === 0) {
+    if (dayOfWeek === 1) return 'Ny uke – sett standarden tidlig!';
+    if (dayOfWeek === 0 || dayOfWeek === 6) return 'Helgetrening? Alltid bra!';
+    if (dayOfWeek <= 3) return 'Kom i gang – uka har bare startet.';
+    return 'Ny sjanse i dag!';
+  }
+
+  return 'Hver økt teller.';
+};
+
+// ===== COMPONENT LABELS =====
+
+const COMPONENT_LABELS = {
+  OTT: 'Utslag',
+  APP: 'Innspill',
+  ARG: 'Kortspill',
+  PUTT: 'Putting',
+};
+
+const COMPONENT_COLORS = {
+  OTT: 'var(--info)',
+  APP: 'var(--success)',
+  ARG: 'var(--warning)',
+  PUTT: 'var(--ak-accent-purple, #8B5CF6)',
+};
+
 // ===== ZONE A COMPONENTS =====
 
 /**
- * FocusCard - Ukens fokus
- * Viser spillerens anbefalte fokusområde fra Focus Engine
- * Designprinsipp: "Én prioritet om gangen"
+ * WelcomeSection - Med adaptiv motivasjonsmelding
+ * P4: Personlig feedback basert på progresjon
  */
-const FocusCard = ({ focus, loading, onStartSession }) => {
+const WelcomeSection = ({ playerName, category, stats }) => {
+  const dayOfWeek = getDayOfWeek();
+  const motivationalMessage = getMotivationalMessage(stats, dayOfWeek);
+
+  return (
+    <div style={styles.welcomeSection}>
+      <p style={styles.greetingText}>{getGreeting()}</p>
+      <h1 style={styles.playerName}>{playerName?.split(' ')[0] || 'Spiller'}</h1>
+      <p style={styles.motivationalText}>{motivationalMessage}</p>
+    </div>
+  );
+};
+
+/**
+ * FocusCard - Ukens fokus med integrert progress
+ * P1: Én primær KPI
+ */
+const FocusCard = ({ focus, loading }) => {
   if (loading) {
     return (
       <div style={styles.focusCard}>
@@ -60,7 +122,6 @@ const FocusCard = ({ focus, loading, onStartSession }) => {
   }
 
   if (!focus) {
-    // Fallback when no focus data - encourage first session
     return (
       <div style={styles.focusCard}>
         <div style={styles.focusCardHeader}>
@@ -75,24 +136,8 @@ const FocusCard = ({ focus, loading, onStartSession }) => {
     );
   }
 
-  const COMPONENT_COLORS = {
-    OTT: 'var(--info)',
-    APP: 'var(--success)',
-    ARG: 'var(--warning)',
-    PUTT: 'var(--ak-accent-purple, #8B5CF6)',
-  };
-
-  const COMPONENT_LABELS = {
-    OTT: 'Utslag',
-    APP: 'Innspill',
-    ARG: 'Kortspill',
-    PUTT: 'Putting',
-  };
-
   const focusColor = COMPONENT_COLORS[focus.focusComponent] || 'var(--accent)';
   const focusLabel = COMPONENT_LABELS[focus.focusComponent] || focus.focusComponent;
-
-  // Calculate sessions completed for this focus (mock - would come from backend)
   const sessionsCompleted = focus.sessionsCompleted || 0;
   const sessionsTarget = focus.sessionsTarget || 4;
   const progressPercent = Math.round((sessionsCompleted / sessionsTarget) * 100);
@@ -164,42 +209,25 @@ const FocusCard = ({ focus, loading, onStartSession }) => {
   );
 };
 
-const WelcomeSection = ({ playerName, category }) => (
-  <div style={styles.welcomeSection}>
-    <p style={styles.greetingText}>{getGreeting()}</p>
-    <h1 style={styles.playerName}>{playerName?.split(' ')[0] || 'Spiller'}</h1>
-    <p style={styles.categoryText}>Kategori {category || 'B'}</p>
-  </div>
-);
-
 /**
- * ContextualCTA - Primær handlingsknapp
- * Designprinsipp: "Én primær CTA (alltid konkret, alltid anbefalt)"
- *
- * Logikk:
- * 1. Hvis kalender har planlagt økt: bruk den
- * 2. Hvis ikke: bruk ukens fokus og foreslå standardøkt
- * 3. Fallback: "Start 15 min lavterskel økt"
+ * ContextualCTA - Primær handlingsknapp med spesifikk kontekst
+ * P2: "Start {title} ({duration} min)" i stedet for generisk
  */
 const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
-  const COMPONENT_LABELS = {
-    OTT: 'Utslag',
-    APP: 'Innspill',
-    ARG: 'Kortspill',
-    PUTT: 'Putting',
-  };
-
-  // Priority 1: Scheduled session from calendar
+  // Priority 1: Scheduled session from calendar - SPESIFIKK
   if (upcomingSession) {
+    const title = upcomingSession.title || 'Planlagt økt';
+    const duration = upcomingSession.duration || 45;
+
     return (
       <div style={styles.contextualCTA}>
         <button style={styles.ctaButton} onClick={() => onStart(upcomingSession)}>
           <div style={styles.ctaContent}>
             <Play size={20} style={{ flexShrink: 0 }} />
             <div style={styles.ctaTextContainer}>
-              <span style={styles.ctaTitle}>Start planlagt økt</span>
+              <span style={styles.ctaTitle}>Start {title}</span>
               <span style={styles.ctaSubtitle}>
-                {upcomingSession.duration || 45} min · {upcomingSession.title}
+                {duration} min · Fra din kalender
               </span>
             </div>
           </div>
@@ -209,7 +237,7 @@ const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
     );
   }
 
-  // Priority 2: Recommended session based on focus
+  // Priority 2: Recommended session based on focus - SPESIFIKK
   if (focus?.focusComponent) {
     const focusLabel = COMPONENT_LABELS[focus.focusComponent] || focus.focusComponent;
     const sessionDuration = focus.recommendedDuration || 30;
@@ -220,9 +248,9 @@ const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
           <div style={styles.ctaContent}>
             <Play size={20} style={{ flexShrink: 0 }} />
             <div style={styles.ctaTextContainer}>
-              <span style={styles.ctaTitle}>Start anbefalt økt</span>
+              <span style={styles.ctaTitle}>Start {focusLabel}-økt</span>
               <span style={styles.ctaSubtitle}>
-                {sessionDuration} min · {focusLabel} · Del av ukens fokus
+                {sessionDuration} min · Del av ukens mål
               </span>
             </div>
           </div>
@@ -239,9 +267,9 @@ const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
         <div style={styles.ctaContent}>
           <Play size={20} style={{ flexShrink: 0 }} />
           <div style={styles.ctaTextContainer}>
-            <span style={styles.ctaTitle}>Start 15 min økt</span>
+            <span style={styles.ctaTitle}>Kom i gang</span>
             <span style={styles.ctaSubtitle}>
-              Lavterskel · Kom i gang med trening i dag
+              Velg en økt som passer deg i dag
             </span>
           </div>
         </div>
@@ -252,11 +280,111 @@ const ContextualCTA = ({ focus, upcomingSession, onStart }) => {
 };
 
 /**
- * ProgressStrip - Kompakt progresjon
- * Designprinsipp: "Statistikk er sekundær (under handling)"
- * Regel: "Ingen 0-shaming" - vis motiverende tekst i stedet for 0/12
+ * QuickStartCTA - Sekundær lavterskel-knapp
+ * P4: Alltid synlig 15-min alternativ
+ */
+const QuickStartCTA = ({ onStart }) => (
+  <button style={styles.quickStartButton} onClick={() => onStart({ type: 'quick', duration: 15 })}>
+    <Zap size={16} style={{ color: 'var(--text-secondary)' }} />
+    <span>Bare 15 minutter? Start hurtigøkt</span>
+    <ChevronRight size={14} style={{ color: 'var(--text-tertiary)' }} />
+  </button>
+);
+
+// ===== ZONE B COMPONENTS =====
+
+/**
+ * TasksList - Oppgaver (FLYTTET OPP fra Zone C)
+ * P1: Oppgaver høyere i hierarkiet
+ * P2: Koble oppgaver til handling
+ */
+const TasksList = ({ tasks, onToggle, onViewAll, onStartTask }) => {
+  const completedCount = tasks.filter(t => t.completed).length;
+  const displayTasks = tasks.slice(0, 3);
+
+  return (
+    <div style={styles.card}>
+      <div style={styles.cardHeader}>
+        <div style={styles.cardHeaderLeft}>
+          <Target size={16} style={{ color: 'var(--text-secondary)' }} />
+          <span style={styles.cardTitle}>Dagens oppgaver</span>
+        </div>
+        {tasks.length > 3 && (
+          <button style={styles.cardAction} onClick={onViewAll}>
+            +{tasks.length - 3} mer <ChevronRight size={14} />
+          </button>
+        )}
+      </div>
+      {tasks.length === 0 ? (
+        <div style={styles.emptyState}>
+          <Sparkles size={24} style={{ color: 'var(--text-tertiary)', marginBottom: 8 }} />
+          <p>Ingen oppgaver i dag – nyt friheten!</p>
+        </div>
+      ) : (
+        <div style={styles.taskList}>
+          {displayTasks.map(task => (
+            <div
+              key={task.id}
+              style={{
+                ...styles.taskItem,
+                backgroundColor: task.completed ? 'var(--success-muted)' : 'transparent',
+              }}
+            >
+              <div
+                style={{
+                  ...styles.taskCheckbox,
+                  borderColor: task.completed ? 'var(--ak-success)' : 'var(--border-default)',
+                  backgroundColor: task.completed ? 'var(--ak-success)' : 'transparent',
+                }}
+                onClick={() => onToggle?.(task.id)}
+              >
+                {task.completed && (
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
+              <span style={{
+                ...styles.taskTitle,
+                textDecoration: task.completed ? 'line-through' : 'none',
+                color: task.completed ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                flex: 1,
+              }}>
+                {task.title}
+              </span>
+              {!task.completed && onStartTask && (
+                <button
+                  style={styles.taskStartButton}
+                  onClick={() => onStartTask(task)}
+                >
+                  Start
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      {tasks.length > 0 && (
+        <div style={styles.cardFooterMeta}>
+          {completedCount === tasks.length ? (
+            <span style={{ color: 'var(--success)' }}>✓ Alle fullført!</span>
+          ) : (
+            `${completedCount} av ${Math.min(tasks.length, 3)} fullført`
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ===== ZONE C COMPONENTS =====
+
+/**
+ * ProgressStrip - Kompakt progresjon med "no 0-shaming"
+ * P3: Motiverende meldinger i stedet for 0-verdier
  */
 const ProgressStrip = ({ sessions, hours, streak }) => {
+  const dayOfWeek = getDayOfWeek();
   const sessionsPercent = sessions.total > 0
     ? Math.round((sessions.completed / sessions.total) * 100)
     : 0;
@@ -264,15 +392,25 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
     ? Math.round((hours.current / hours.goal) * 100)
     : 0;
 
-  // "Ingen 0-shaming" - show encouraging message before first session
+  // P3: "No 0-shaming" - positive messaging based on context
   const showEncouragement = sessions.completed === 0 && hours.current === 0;
 
   if (showEncouragement) {
+    const messages = {
+      1: 'Ny uke starter nå – gjør første økt til en vane!',
+      2: 'Tirsdag er perfekt for å komme i gang.',
+      3: 'Midt i uka – tid for å bygge momentum.',
+      4: 'Torsdagsøkt? Alltid en god idé.',
+      5: 'Avslutt uka sterkt!',
+      6: 'Helgetrening = ekstra poeng.',
+      0: 'Søndagsøkt? Du fortjener applaus!',
+    };
+
     return (
       <div style={styles.progressStrip}>
         <div style={styles.progressStripEncouragement}>
           <span style={styles.progressStripEncouragementText}>
-            Start uken med din første økt
+            {messages[dayOfWeek] || 'Start uken med din første økt'}
           </span>
         </div>
       </div>
@@ -293,7 +431,7 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
           <div style={{
             ...styles.progressStripFill,
             width: `${sessionsPercent}%`,
-            backgroundColor: 'var(--accent)',
+            backgroundColor: sessionsPercent >= 100 ? 'var(--success)' : 'var(--accent)',
           }} />
         </div>
       </div>
@@ -310,219 +448,55 @@ const ProgressStrip = ({ sessions, hours, streak }) => {
           <div style={{
             ...styles.progressStripFill,
             width: `${Math.min(hoursPercent, 100)}%`,
-            backgroundColor: 'var(--info)',
+            backgroundColor: hoursPercent >= 100 ? 'var(--success)' : 'var(--info)',
           }} />
         </div>
       </div>
 
-      {/* Streak - low visual weight */}
+      {/* Streak - show with celebration when high */}
       {streak > 0 && (
         <div style={styles.progressStripStreak}>
-          <span style={styles.progressStripStreakValue}>{streak}</span>
-          <span style={styles.progressStripStreakLabel}>dager streak</span>
+          <span style={{
+            ...styles.progressStripStreakValue,
+            color: streak >= 7 ? 'var(--warning)' : 'var(--text-primary)',
+          }}>
+            {streak >= 7 ? '🔥' : ''}{streak}
+          </span>
+          <span style={styles.progressStripStreakLabel}>
+            {streak === 1 ? 'dag' : 'dager'}
+          </span>
         </div>
       )}
     </div>
   );
 };
 
-const NextMilestone = ({ tournament, test }) => {
-  const tournamentDays = getDaysUntil(tournament?.date);
-  const testDays = getDaysUntil(test?.date);
-
-  const showTournament = tournamentDays !== null && (testDays === null || tournamentDays <= testDays);
-
-  if (showTournament && tournamentDays !== null) {
-    return (
-      <div style={styles.milestoneCard}>
-        <div style={styles.milestoneLeft}>
-          <div style={styles.milestoneIcon}>
-            <Trophy size={20} />
-          </div>
-          <div>
-            <p style={styles.milestoneLabel}>Neste turnering</p>
-            <p style={styles.milestoneTitle}>{tournament?.title || 'Ikke planlagt'}</p>
-            {tournament?.location && (
-              <p style={styles.milestoneLocation}>{tournament.location}</p>
-            )}
-          </div>
-        </div>
-        <div style={styles.milestoneRight}>
-          <span style={styles.milestoneDays}>{tournamentDays}</span>
-          <span style={styles.milestoneDaysLabel}>dager</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (testDays !== null) {
-    return (
-      <div style={styles.milestoneCard}>
-        <div style={styles.milestoneLeft}>
-          <div style={{ ...styles.milestoneIcon, backgroundColor: 'var(--accent-muted)', color: 'var(--accent)' }}>
-            <Target size={20} />
-          </div>
-          <div>
-            <p style={styles.milestoneLabel}>Neste test</p>
-            <p style={styles.milestoneTitle}>{test?.title || 'Ikke planlagt'}</p>
-            {test?.location && (
-              <p style={styles.milestoneLocation}>{test.location}</p>
-            )}
-          </div>
-        </div>
-        <div style={styles.milestoneRight}>
-          <span style={styles.milestoneDays}>{testDays}</span>
-          <span style={styles.milestoneDaysLabel}>dager</span>
-        </div>
-      </div>
-    );
-  }
-
-  return null;
-};
-
-// ===== ZONE B COMPONENTS =====
-
-const PlanProgress = ({ completed, total }) => {
-  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-  return (
-    <div style={styles.progressCard}>
-      <div style={styles.progressHeader}>
-        <CheckCircle2 size={16} style={{ color: 'var(--accent)' }} />
-        <span style={styles.progressTitle}>Fullførte økter</span>
-        <span style={styles.progressMeta}>Denne uken</span>
-      </div>
-      <div style={styles.progressBarContainer}>
-        <div style={{ ...styles.progressBar, width: `${percentage}%` }} />
-      </div>
-      <div style={styles.progressFooter}>
-        <span style={styles.progressValue}>{completed}/{total}</span>
-        <span style={styles.progressPercent}>{percentage}%</span>
-      </div>
-    </div>
-  );
-};
-
-const HoursProgress = ({ hours, goal }) => {
-  const percentage = goal > 0 ? Math.round((hours / goal) * 100) : 0;
-
-  return (
-    <div style={styles.progressCard}>
-      <div style={styles.progressHeader}>
-        <Clock size={16} style={{ color: 'var(--accent)' }} />
-        <span style={styles.progressTitle}>Timer denne uke</span>
-        <span style={styles.progressMeta}>Mål: {goal}t</span>
-      </div>
-      <div style={styles.hoursDisplay}>
-        <span style={styles.hoursValue}>{hours}t</span>
-        <div style={styles.hoursBarContainer}>
-          <div style={{ ...styles.hoursBar, width: `${Math.min(percentage, 100)}%` }} />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ===== ZONE C COMPONENTS =====
-
 /**
- * TasksList - Dagens oppgaver (ActionList)
- * Designprinsipp: "Maks 3 oppgaver" - fokuser på det viktigste
- * Avhuking direkte på hjemskjerm
+ * NotificationsList - Varslinger (lav prioritet)
  */
-const TasksList = ({ tasks, onToggle, onViewAll }) => {
-  const completedCount = tasks.filter(t => t.completed).length;
-  const displayTasks = tasks.slice(0, 3); // Maks 3 oppgaver
+const NotificationsList = ({ notifications, onViewAll }) => {
+  const displayNotifications = notifications.slice(0, 2);
+
+  if (notifications.length === 0) {
+    return null; // Don't show empty notifications section
+  }
 
   return (
     <div style={styles.card}>
       <div style={styles.cardHeader}>
         <div style={styles.cardHeaderLeft}>
-          <Target size={16} style={{ color: 'var(--text-secondary)' }} />
-          <span style={styles.cardTitle}>Dagens oppgaver</span>
+          <Bell size={16} style={{ color: 'var(--text-secondary)' }} />
+          <span style={styles.cardTitle}>Varslinger</span>
+          {notifications.length > 0 && (
+            <span style={styles.notificationBadge}>{notifications.length}</span>
+          )}
         </div>
-        {tasks.length > 3 && (
+        {notifications.length > 2 && (
           <button style={styles.cardAction} onClick={onViewAll}>
-            +{tasks.length - 3} mer <ChevronRight size={14} />
+            Se alle <ChevronRight size={14} />
           </button>
         )}
       </div>
-      {tasks.length === 0 ? (
-        <div style={styles.emptyState}>
-          <p>Ingen oppgaver i dag</p>
-        </div>
-      ) : (
-        <div style={styles.taskList}>
-          {displayTasks.map(task => (
-            <div
-              key={task.id}
-              style={{
-                ...styles.taskItem,
-                backgroundColor: task.completed ? 'var(--success-muted)' : 'transparent',
-              }}
-              onClick={() => onToggle?.(task.id)}
-            >
-              <div style={{
-                ...styles.taskCheckbox,
-                borderColor: task.completed ? 'var(--ak-success)' : 'var(--border-default)',
-                backgroundColor: task.completed ? 'var(--ak-success)' : 'transparent',
-              }}>
-                {task.completed && (
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                )}
-              </div>
-              <span style={{
-                ...styles.taskTitle,
-                textDecoration: task.completed ? 'line-through' : 'none',
-                color: task.completed ? 'var(--text-tertiary)' : 'var(--text-primary)',
-              }}>
-                {task.title}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
-      {tasks.length > 0 && (
-        <div style={styles.cardFooterMeta}>
-          {completedCount} av {Math.min(tasks.length, 3)} fullført
-        </div>
-      )}
-    </div>
-  );
-};
-
-/**
- * NotificationsList - Varslinger
- * Designprinsipp: "Lav prioritet" - kun topp 2-3
- * Med handlingslenke når relevant
- */
-const NotificationsList = ({ notifications, onViewAll }) => {
-  const displayNotifications = notifications.slice(0, 2); // Maks 2 varslinger
-
-  return (
-  <div style={styles.card}>
-    <div style={styles.cardHeader}>
-      <div style={styles.cardHeaderLeft}>
-        <Bell size={16} style={{ color: 'var(--text-secondary)' }} />
-        <span style={styles.cardTitle}>Varslinger</span>
-        {notifications.length > 0 && (
-          <span style={styles.notificationBadge}>{notifications.length}</span>
-        )}
-      </div>
-      {notifications.length > 2 && (
-        <button style={styles.cardAction} onClick={onViewAll}>
-          Se alle <ChevronRight size={14} />
-        </button>
-      )}
-    </div>
-    {notifications.length === 0 ? (
-      <div style={styles.emptyState}>
-        <p>Ingen nye varslinger</p>
-      </div>
-    ) : (
       <div style={styles.notificationList}>
         {displayNotifications.map((notif, idx) => (
           <div key={notif.id || idx} style={styles.notificationItem}>
@@ -535,8 +509,7 @@ const NotificationsList = ({ notifications, onViewAll }) => {
           </div>
         ))}
       </div>
-    )}
-  </div>
+    </div>
   );
 };
 
@@ -567,9 +540,22 @@ const AKGolfDashboardV3 = () => {
     hoursGoal: 20,
     streak: 0,
   };
-  const nextTournament = dashboardData?.nextTournament;
-  const nextTest = dashboardData?.nextTest;
   const notifications = dashboardData?.notifications || [];
+
+  const handleStartSession = (session) => {
+    if (session?.id) {
+      navigate(`/session/${session.id}/active`);
+    } else if (session?.type === 'focus') {
+      navigate('/session/new', { state: { focus: session.focus } });
+    } else {
+      navigate('/session/new', { state: { quickStart: true, duration: session?.duration || 15 } });
+    }
+  };
+
+  const handleStartTaskSession = (task) => {
+    // Navigate to session creation with task context
+    navigate('/session/new', { state: { taskId: task.id, taskTitle: task.title } });
+  };
 
   if (loading) {
     return (
@@ -586,46 +572,40 @@ const AKGolfDashboardV3 = () => {
         <WelcomeSection
           playerName={player.name}
           category={player.category}
+          stats={stats}
         />
 
-        {/* Ukens fokus - Prioritet #1 i spesifikasjonen */}
         <FocusCard
           focus={focusData}
           loading={focusLoading}
-          onStartSession={() => navigate('/sessions')}
         />
 
-        {/* Primary CTA - Contextual, always has a recommendation */}
         <ContextualCTA
           focus={focusData}
           upcomingSession={dashboardData?.upcomingSessions?.[0]}
-          onStart={(session) => {
-            if (session?.id) {
-              navigate(`/session/${session.id}/active`);
-            } else if (session?.type === 'focus') {
-              navigate('/session/new', { state: { focus: session.focus } });
-            } else {
-              navigate('/session/new', { state: { quickStart: true, duration: 15 } });
-            }
-          }}
+          onStart={handleStartSession}
         />
       </section>
 
-      {/* ZONE B: Progress & Status - Kompakt, under handling */}
+      {/* ZONE B: Tasks & Quick Actions (OPPGAVER FLYTTET OPP!) */}
       <section style={styles.zoneB}>
-        <ProgressStrip
-          sessions={{ completed: stats.sessionsCompleted, total: stats.sessionsTotal }}
-          hours={{ current: stats.hoursThisWeek, goal: stats.hoursGoal }}
-          streak={stats.streak}
-        />
-      </section>
-
-      {/* ZONE C: Follow-up & Signals */}
-      <section style={styles.zoneC}>
         <TasksList
           tasks={tasks}
           onToggle={toggleTask}
           onViewAll={() => navigate('/maalsetninger')}
+          onStartTask={handleStartTaskSession}
+        />
+
+        {/* P4: Alltid synlig lavterskel-alternativ */}
+        <QuickStartCTA onStart={handleStartSession} />
+      </section>
+
+      {/* ZONE C: Progress & Notifications (KOMPAKT) */}
+      <section style={styles.zoneC}>
+        <ProgressStrip
+          sessions={{ completed: stats.sessionsCompleted, total: stats.sessionsTotal }}
+          hours={{ current: stats.hoursThisWeek, goal: stats.hoursGoal }}
+          streak={stats.streak}
         />
         <NotificationsList
           notifications={notifications}
@@ -642,7 +622,7 @@ const styles = {
   dashboard: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '32px',
+    gap: '28px',
     maxWidth: '640px',
     margin: '0 auto',
     padding: '24px 16px',
@@ -657,7 +637,38 @@ const styles = {
     fontSize: '15px',
   },
 
-  // FocusCard - Ukens fokus
+  // Zone A: Control & Focus
+  zoneA: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  },
+
+  welcomeSection: {
+    marginBottom: '4px',
+  },
+  greetingText: {
+    fontSize: '12px',
+    color: 'var(--text-tertiary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+    margin: '0 0 4px 0',
+  },
+  playerName: {
+    fontSize: '32px',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+    margin: '0 0 6px 0',
+    letterSpacing: '-0.02em',
+  },
+  motivationalText: {
+    fontSize: '15px',
+    color: 'var(--text-secondary)',
+    margin: 0,
+    fontWeight: 500,
+  },
+
+  // FocusCard
   focusCard: {
     padding: '20px',
     backgroundColor: 'var(--card)',
@@ -747,9 +758,9 @@ const styles = {
     borderRadius: '6px',
   },
 
-  // ContextualCTA - Primær handlingsknapp
+  // ContextualCTA
   contextualCTA: {
-    marginTop: '8px',
+    marginTop: '4px',
   },
   ctaButton: {
     display: 'flex',
@@ -757,13 +768,13 @@ const styles = {
     justifyContent: 'space-between',
     width: '100%',
     padding: '16px 20px',
-    backgroundColor: 'var(--ak-primary, #2563EB)',
+    backgroundColor: 'var(--ak-primary, #1B4D3E)',
     color: 'white',
     border: 'none',
     borderRadius: '14px',
     cursor: 'pointer',
     transition: 'all 0.15s ease',
-    boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)',
+    boxShadow: '0 2px 8px rgba(27, 77, 62, 0.25)',
   },
   ctaContent: {
     display: 'flex',
@@ -791,7 +802,39 @@ const styles = {
     flexShrink: 0,
   },
 
-  // ProgressStrip - Kompakt progresjon
+  // QuickStartCTA
+  quickStartButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    width: '100%',
+    padding: '12px 16px',
+    backgroundColor: 'transparent',
+    color: 'var(--text-secondary)',
+    border: '1px dashed var(--border-default)',
+    borderRadius: '10px',
+    cursor: 'pointer',
+    fontSize: '14px',
+    fontWeight: 500,
+    transition: 'all 0.15s ease',
+  },
+
+  // Zone B: Tasks (MOVED UP)
+  zoneB: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+
+  // Zone C: Progress & Notifications
+  zoneC: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+
+  // ProgressStrip
   progressStrip: {
     display: 'flex',
     alignItems: 'center',
@@ -843,7 +886,6 @@ const styles = {
   progressStripStreakValue: {
     fontSize: '16px',
     fontWeight: 700,
-    color: 'var(--text-primary)',
     fontFeatureSettings: '"tnum"',
   },
   progressStripStreakLabel: {
@@ -860,245 +902,6 @@ const styles = {
     fontSize: '13px',
     fontWeight: 500,
     color: 'var(--text-secondary)',
-  },
-
-  // Zone A: Control & Focus
-  zoneA: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-  },
-
-  welcomeSection: {
-    marginBottom: '8px',
-  },
-  greetingText: {
-    fontSize: '12px',
-    color: 'var(--text-tertiary)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    margin: '0 0 4px 0',
-  },
-  playerName: {
-    fontSize: '32px',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    margin: '0 0 4px 0',
-    letterSpacing: '-0.02em',
-  },
-  categoryText: {
-    fontSize: '15px',
-    color: 'var(--text-secondary)',
-    margin: 0,
-  },
-
-  // Quick Stats
-  quickStatsRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '20px 24px',
-    backgroundColor: 'var(--card)',
-    borderRadius: '16px',
-    border: '1px solid var(--border-subtle)',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
-  },
-  quickStat: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-    flex: 1,
-  },
-  quickStatValue: {
-    fontSize: '28px',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    fontFeatureSettings: '"tnum"',
-    lineHeight: 1,
-  },
-  quickStatLabel: {
-    fontSize: '12px',
-    fontWeight: 500,
-    color: 'var(--text-secondary)',
-    marginTop: '6px',
-  },
-  quickStatSub: {
-    fontSize: '11px',
-    color: 'var(--text-tertiary)',
-    marginTop: '2px',
-  },
-  quickStatDivider: {
-    width: '1px',
-    height: '40px',
-    backgroundColor: 'var(--border-subtle)',
-    margin: '0 16px',
-  },
-
-  // Milestone Card
-  milestoneCard: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '16px 20px',
-    backgroundColor: 'var(--card)',
-    borderRadius: '12px',
-    border: '1px solid var(--border-subtle)',
-    borderLeft: '4px solid var(--accent)',
-  },
-  milestoneLeft: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '12px',
-  },
-  milestoneIcon: {
-    width: '40px',
-    height: '40px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--bg-tertiary)',
-    color: 'var(--text-secondary)',
-    borderRadius: '10px',
-    flexShrink: 0,
-  },
-  milestoneLabel: {
-    fontSize: '11px',
-    fontWeight: 500,
-    color: 'var(--text-tertiary)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.03em',
-    margin: '0 0 4px 0',
-  },
-  milestoneTitle: {
-    fontSize: '15px',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: '0',
-  },
-  milestoneLocation: {
-    fontSize: '13px',
-    color: 'var(--text-secondary)',
-    margin: '4px 0 0 0',
-  },
-  milestoneRight: {
-    textAlign: 'right',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-  milestoneDays: {
-    fontSize: '32px',
-    fontWeight: 700,
-    color: 'var(--accent)',
-    fontFeatureSettings: '"tnum"',
-    lineHeight: 1,
-  },
-  milestoneDaysLabel: {
-    fontSize: '12px',
-    color: 'var(--text-tertiary)',
-    marginTop: '4px',
-  },
-
-  // Primary CTA
-  primaryCTA: {
-    marginTop: '8px',
-  },
-
-  // Zone B: Progress
-  zoneB: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
-  progressRow: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '16px',
-  },
-  progressCard: {
-    padding: '16px 20px',
-    backgroundColor: 'var(--card)',
-    borderRadius: '12px',
-    border: '1px solid var(--border-subtle)',
-  },
-  progressHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    marginBottom: '12px',
-  },
-  progressTitle: {
-    fontSize: '13px',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    flex: 1,
-  },
-  progressMeta: {
-    fontSize: '12px',
-    color: 'var(--text-tertiary)',
-  },
-  progressBarContainer: {
-    height: '8px',
-    backgroundColor: 'var(--bg-tertiary)',
-    borderRadius: '4px',
-    overflow: 'hidden',
-  },
-  progressBar: {
-    height: '100%',
-    backgroundColor: 'var(--accent)',
-    borderRadius: '4px',
-    transition: 'width 0.3s ease',
-  },
-  progressFooter: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: '12px',
-  },
-  progressValue: {
-    fontSize: '18px',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    fontFeatureSettings: '"tnum"',
-  },
-  progressPercent: {
-    fontSize: '13px',
-    color: 'var(--text-secondary)',
-  },
-
-  // Hours display
-  hoursDisplay: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '16px',
-  },
-  hoursValue: {
-    fontSize: '24px',
-    fontWeight: 700,
-    color: 'var(--accent)',
-    fontFeatureSettings: '"tnum"',
-    minWidth: '48px',
-  },
-  hoursBarContainer: {
-    flex: 1,
-    height: '8px',
-    backgroundColor: 'var(--bg-tertiary)',
-    borderRadius: '4px',
-    overflow: 'hidden',
-  },
-  hoursBar: {
-    height: '100%',
-    backgroundColor: 'var(--accent)',
-    borderRadius: '4px',
-    transition: 'width 0.3s ease',
-  },
-
-  // Zone C: Follow-up
-  zoneC: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
   },
 
   // Generic card
@@ -1152,6 +955,9 @@ const styles = {
     textAlign: 'center',
     color: 'var(--text-tertiary)',
     fontSize: '14px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 
   // Tasks
@@ -1165,7 +971,6 @@ const styles = {
     gap: '12px',
     padding: '12px 16px',
     borderBottom: '1px solid var(--border-subtle)',
-    cursor: 'pointer',
     transition: 'background-color 0.15s ease',
   },
   taskCheckbox: {
@@ -1177,12 +982,24 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     flexShrink: 0,
+    cursor: 'pointer',
     transition: 'all 0.15s ease',
   },
   taskTitle: {
     fontSize: '14px',
     fontWeight: 500,
     transition: 'color 0.15s ease',
+  },
+  taskStartButton: {
+    padding: '4px 10px',
+    fontSize: '12px',
+    fontWeight: 600,
+    color: 'var(--accent)',
+    backgroundColor: 'var(--accent-muted)',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
   },
 
   // Notifications
