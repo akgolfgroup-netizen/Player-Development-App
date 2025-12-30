@@ -638,13 +638,15 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
       const recentTests = await prisma.testResult.findMany({
         where: {
           playerId,
-          testNumber: { in: [8, 9, 10, 11, 15, 16, 17, 18] },
+          test: {
+            testNumber: { in: [8, 9, 10, 11, 15, 16, 17, 18] },
+          },
         },
         orderBy: { testDate: 'desc' },
         take: 50,
         include: {
-          testType: {
-            select: { name: true },
+          test: {
+            select: { testNumber: true, name: true },
           },
         },
       });
@@ -704,18 +706,20 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
         testName: string;
       }> = [];
 
-      // Process each test
-      for (const test of recentTests) {
-        const testNumber = test.testNumber;
+      // Process each test result
+      for (const testResult of recentTests) {
+        const testNumber = testResult.test.testNumber;
         const category = categoryMap[testNumber];
         if (!category) continue;
 
         let sg = 0;
+        const resultsData = testResult.results as { shots?: Array<{ pei?: number }> } | null;
+        const shots = resultsData?.shots ?? null;
+        const value = testResult.value !== null ? Number(testResult.value) : null;
 
         // For approach tests (8-11), use PEI values
         if (testNumber >= 8 && testNumber <= 11) {
           // Get average PEI from shots array if available
-          const shots = test.shots as Array<{ pei?: number }> | null;
           if (shots && shots.length > 0) {
             const peiValues = shots.map(s => s.pei).filter((p): p is number => p !== undefined);
             if (peiValues.length > 0) {
@@ -727,24 +731,23 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
               });
               sg = result.strokesGained;
             }
-          } else if (test.score !== null) {
-            // Fallback: estimate SG from score
+          } else if (value !== null) {
+            // Fallback: estimate SG from value
             const result = convertPeiToStrokesGained({
               startDistance: distanceMap[testNumber],
-              pei: test.score,
+              pei: value,
               lie: 'fairway',
             });
             sg = result.strokesGained;
           }
         } else if (testNumber === 15 || testNumber === 16) {
           // Putting tests - use make percentage (3ft for test 15, 6ft for test 16)
-          const makeRate = test.score !== null ? test.score / 100 : 0.5;
+          const makeRate = value !== null ? value / 100 : 0.5;
           // Expected make rates (approximate tour averages)
           const expectedMakeRate = testNumber === 15 ? 0.75 : 0.55;
           sg = (makeRate - expectedMakeRate) * 1.0; // Simplified SG calculation for putting
         } else if (testNumber === 17 || testNumber === 18) {
           // Chipping/Bunker tests
-          const shots = test.shots as Array<{ pei?: number }> | null;
           if (shots && shots.length > 0) {
             const peiValues = shots.map(s => s.pei).filter((p): p is number => p !== undefined);
             if (peiValues.length > 0) {
@@ -756,10 +759,10 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
               });
               sg = result.strokesGained;
             }
-          } else if (test.score !== null) {
+          } else if (value !== null) {
             const result = convertPeiToStrokesGained({
               startDistance: distanceMap[testNumber],
-              pei: test.score,
+              pei: value,
               lie: testNumber === 18 ? 'bunker' : 'fairway',
             });
             sg = result.strokesGained;
@@ -770,10 +773,10 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
         sgByCategory[category].testCount++;
 
         processedTests.push({
-          date: test.testDate.toISOString().split('T')[0],
+          date: testResult.testDate.toISOString().split('T')[0],
           category,
           sg: Math.round(sg * 100) / 100,
-          testName: testNames[testNumber] || test.testType?.name || `Test ${testNumber}`,
+          testName: testNames[testNumber] || testResult.test?.name || `Test ${testNumber}`,
         });
       }
 
