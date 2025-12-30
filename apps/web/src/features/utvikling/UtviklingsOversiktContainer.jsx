@@ -317,7 +317,7 @@ const UtviklingsOversiktContainer = () => {
         subtitle="Oversikt over din spillerutvikling"
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Category Progress */}
         <CategoryProgressCard category={CURRENT_CATEGORY} />
 

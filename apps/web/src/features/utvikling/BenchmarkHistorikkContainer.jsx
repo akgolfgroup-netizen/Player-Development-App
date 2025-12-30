@@ -301,7 +301,7 @@ const BenchmarkHistorikkContainer = () => {
         subtitle="Sammenlign dine resultater over tid"
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Summary Stats */}
         <div style={{
           display: 'grid',

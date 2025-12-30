@@ -388,7 +388,7 @@ const TreningsevalueringContainer = () => {
         subtitle="Evaluering av dine treningsokter"
       />
 
-      <div style={{ padding: '16px 24px 24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Stats */}
         <StatsOverview stats={STATS} />
 

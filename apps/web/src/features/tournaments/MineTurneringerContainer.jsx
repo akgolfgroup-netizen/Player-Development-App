@@ -258,7 +258,7 @@ const MineTurneringerContainer = () => {
         }
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {error && (
           <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6">
             {error}

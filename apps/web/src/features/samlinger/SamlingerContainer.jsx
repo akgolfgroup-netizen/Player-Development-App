@@ -752,7 +752,7 @@ const SamlingerContainer = () => {
         subtitle="Treningssamlinger og leirer"
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Stats Row */}
         <div style={{
           display: 'grid',

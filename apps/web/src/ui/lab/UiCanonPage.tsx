@@ -571,7 +571,7 @@ const IconButton: React.FC<{ icon: string; variant?: 'default' | 'danger' | 'gho
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    maxWidth: '1100px',
+    maxWidth: '1536px',
     margin: '0 auto',
     padding: 'var(--spacing-6)',
     backgroundColor: 'var(--background-default)',

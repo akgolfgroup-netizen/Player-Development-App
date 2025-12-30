@@ -458,7 +458,7 @@ const MeldingerContainer = () => {
 
       <div style={{
         padding: '24px',
-        maxWidth: '900px',
+        maxWidth: '1536px',
         margin: '0 auto',
         display: 'grid',
         gridTemplateColumns: '280px 1fr',

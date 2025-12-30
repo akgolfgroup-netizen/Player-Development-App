@@ -364,7 +364,7 @@ const styles: Record<string, React.CSSProperties> = {
     position: 'relative',
   },
   demoFrameWide: {
-    maxWidth: '1200px',
+    maxWidth: '1536px',
     margin: '0 auto',
     borderRadius: 'var(--radius-lg)',
     overflow: 'hidden',

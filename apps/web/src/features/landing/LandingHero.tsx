@@ -391,7 +391,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    maxWidth: '1280px',
+    maxWidth: '1536px',
     margin: '0 auto',
     width: '100%',
   },
@@ -436,7 +436,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 'var(--spacing-8) var(--spacing-6)',
-    maxWidth: '1280px',
+    maxWidth: '1536px',
     margin: '0 auto',
     width: '100%',
     gap: 'var(--spacing-8)',
@@ -527,7 +527,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 'var(--spacing-10) var(--spacing-6)',
   },
   featuresContainer: {
-    maxWidth: '1280px',
+    maxWidth: '1536px',
     margin: '0 auto',
   },
   featuresSectionHeader: {
@@ -594,7 +594,7 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 'var(--spacing-10) var(--spacing-6) var(--spacing-6)',
   },
   footerContainer: {
-    maxWidth: '1280px',
+    maxWidth: '1536px',
     margin: '0 auto',
   },
   footerMain: {

@@ -161,7 +161,7 @@ const styles = {
     backgroundColor: 'var(--background-default)',
   },
   content: {
-    maxWidth: '1200px',
+    maxWidth: '1536px',
     margin: '0 auto',
     padding: 'var(--spacing-6)',
   },

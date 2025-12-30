@@ -875,7 +875,7 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
         gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '12px',
         padding: '0 24px 24px',
-        maxWidth: '900px',
+        maxWidth: '1536px',
         margin: '0 auto',
       }}>
         <div style={{
@@ -911,7 +911,7 @@ const Målsetninger = ({ goals: apiGoals = null }) => {
       </div>
 
       {/* Content */}
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* View mode tabs */}
         <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
           {[

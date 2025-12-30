@@ -343,7 +343,7 @@ const BreakingPointsContainer = () => {
         subtitle="Fokusomrader for forbedring"
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Stats Overview */}
         <div style={{
           display: 'grid',

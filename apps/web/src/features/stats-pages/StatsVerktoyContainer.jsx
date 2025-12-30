@@ -470,7 +470,7 @@ const StatsVerktoyContainer = () => {
         subtitle="Analyser og forbedre spillet ditt"
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Main Content */}
         <div style={{
           display: 'grid',

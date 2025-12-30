@@ -142,7 +142,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 'var(--spacing-4)',
-    maxWidth: '1280px',
+    maxWidth: '1536px',
     margin: '0 auto',
     width: '100%',
   },
@@ -176,7 +176,7 @@ const styles = {
     overflowY: 'auto',
   },
   mainInner: {
-    maxWidth: '1280px',
+    maxWidth: '1536px',
     margin: '0 auto',
     padding: 'var(--spacing-4)',
     width: '100%',

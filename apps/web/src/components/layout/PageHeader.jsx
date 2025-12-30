@@ -23,7 +23,7 @@ export const PageHeader = ({
       }}
     >
       <div style={{
-        maxWidth: '900px',
+        maxWidth: '1536px',
         margin: '0 auto',
         padding: '16px 24px',
         display: 'flex',

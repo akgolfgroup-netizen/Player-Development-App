@@ -537,7 +537,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
       />
 
       {/* Tabs */}
-      <div style={{ padding: '16px 24px 0', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '16px 24px 0', maxWidth: '1536px', margin: '0 auto' }}>
         <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
           {[
             { id: 'team', label: 'Team', icon: '👥' },
@@ -588,7 +588,7 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
       </div>
 
       {/* Content */}
-      <div style={{ padding: '0 24px 24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '0 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/* Team Tab */}
         {activeTab === 'team' && (

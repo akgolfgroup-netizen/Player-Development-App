@@ -610,7 +610,7 @@ const BookTrenerContainer = () => {
 
       <div style={{
         padding: '16px 24px 24px',
-        maxWidth: '1200px',
+        maxWidth: '1536px',
         margin: '0 auto',
         display: 'grid',
         gridTemplateColumns: '1fr 320px',

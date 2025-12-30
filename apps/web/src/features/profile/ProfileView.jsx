@@ -279,7 +279,7 @@ const ProfileField = ({ icon, label, value }) => (
 
 const styles = {
   container: {
-    maxWidth: '900px',
+    maxWidth: '1536px',
     margin: '0 auto',
     padding: 'var(--spacing-6)',
     display: 'flex',

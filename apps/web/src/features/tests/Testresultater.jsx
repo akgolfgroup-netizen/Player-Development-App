@@ -588,7 +588,7 @@ const AKGolfTestresultater = ({ player: apiPlayer = null, testResults: apiTestRe
         }
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Benchmark Timeline */}
         <Card className="mb-6">
           <div className="flex items-center justify-between mb-4">

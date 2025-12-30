@@ -402,7 +402,7 @@ const AKGolfTreningsstatistikk = ({ stats: apiStats = null, player: apiPlayer = 
         }
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Top Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {/* Total Hours */}

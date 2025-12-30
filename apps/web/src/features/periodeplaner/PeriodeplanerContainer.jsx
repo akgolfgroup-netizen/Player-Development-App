@@ -598,7 +598,7 @@ const PeriodeplanerContainer = () => {
         subtitle="Sesongplanlegging og periodisering"
       />
 
-      <div style={{ padding: '16px 24px 24px', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Stats Overview */}
         <div style={{
           display: 'grid',

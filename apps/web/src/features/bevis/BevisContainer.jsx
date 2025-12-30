@@ -335,7 +335,7 @@ const BevisContainer = () => {
         subtitle="Dokumenter din fremgang"
       />
 
-      <div style={{ padding: '16px 24px 24px', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Stats */}
         <div style={{
           display: 'grid',

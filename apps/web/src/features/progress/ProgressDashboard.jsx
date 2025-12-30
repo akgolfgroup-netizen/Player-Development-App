@@ -30,7 +30,7 @@ export default function ProgressDashboard({ data }) {
         subtitle="Oversikt over treningsfremgang"
       />
 
-      <div style={{ padding: '24px', maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {/* Overview Cards */}
         <div style={{
           display: 'grid',
