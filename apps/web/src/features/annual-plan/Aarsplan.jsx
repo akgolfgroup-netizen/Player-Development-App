@@ -90,9 +90,25 @@ const PriorityBar = ({ value, maxValue = 3, color }) => (
 );
 
 // ===== MAIN ÅRSPLAN COMPONENT =====
-const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = null }) => {
+/**
+ * @param {object} player - Player profile data
+ * @param {object} annualPlan - Annual plan data
+ * @param {function} onRefresh - Callback to refresh data
+ * @param {string} initialView - Initial view mode: 'overview' | 'periods' | 'focus' | 'timeline' | 'grid'
+ */
+const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = null, plans = [], onRefresh, initialView = 'overview' }) => {
   const [selectedMonth, setSelectedMonth] = useState(null);
-  const [selectedView, setSelectedView] = useState('timeline'); // 'timeline' | 'grid'
+  // Map initialView to internal view state
+  const mapInitialView = (view) => {
+    switch (view) {
+      case 'periods': return 'timeline'; // Periods view shows timeline with period focus
+      case 'focus': return 'grid';       // Focus view shows grid with focus areas
+      case 'overview':
+      default: return 'timeline';
+    }
+  };
+  const [selectedView, setSelectedView] = useState(mapInitialView(initialView)); // 'timeline' | 'grid'
+  const [pageMode, setPageMode] = useState(initialView); // 'overview' | 'periods' | 'focus'
 
   // Default player profile (fallback if no API data)
   const defaultPlayer = {

@@ -6,7 +6,15 @@ import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
 import Aarsplan from './Aarsplan';
 
-const AarsplanContainer = () => {
+/**
+ * AarsplanContainer
+ *
+ * @param {string} view - Optional view mode: 'overview' | 'periods' | 'focus'
+ *   - overview: Full årsplan (default)
+ *   - periods: Focus on period breakdown and periodization
+ *   - focus: Focus on goals and focus areas per period
+ */
+const AarsplanContainer = ({ view = 'overview' }) => {
   const { user } = useAuth();
   const [state, setState] = useState('loading');
   const [error, setError] = useState(null);
@@ -56,7 +64,7 @@ const AarsplanContainer = () => {
     );
   }
 
-  return <Aarsplan plans={plans} onRefresh={fetchPlans} />;
+  return <Aarsplan plans={plans} onRefresh={fetchPlans} initialView={view} />;
 };
 
 export default AarsplanContainer;
