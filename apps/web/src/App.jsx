@@ -380,7 +380,9 @@ function App() {
           } />
           <Route path="/stats" element={
             <ProtectedRoute>
-              <StatsPageV2 />
+              <DashboardLayout>
+                <StatsPageV2 />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           {/* UI Lab Routes - DEV ONLY */}
@@ -425,12 +427,16 @@ function App() {
           )}
           <Route path="/dashboard-v2" element={
             <ProtectedRoute>
-              <DashboardPage />
+              <DashboardLayout>
+                <DashboardPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/goals" element={
             <ProtectedRoute>
-              <GoalsPage />
+              <DashboardLayout>
+                <GoalsPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/oevelser" element={
@@ -505,7 +511,9 @@ function App() {
           } />
           <Route path="/turneringskalender" element={
             <ProtectedRoute>
-              <TournamentCalendarPage />
+              <DashboardLayout>
+                <TournamentCalendarPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           {/* Legacy route - keep for backwards compatibility */}
@@ -662,17 +670,23 @@ function App() {
           {/* Statistikk - Player Stats with DataGolf & Test Results */}
           <Route path="/statistikk" element={
             <ProtectedRoute>
-              <PlayerStatsPage />
+              <DashboardLayout>
+                <PlayerStatsPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/statistikk/strokes-gained" element={
             <ProtectedRoute>
-              <StrokesGainedPage />
+              <DashboardLayout>
+                <StrokesGainedPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
           <Route path="/statistikk/testresultater" element={
             <ProtectedRoute>
-              <PlayerTestResultsPage />
+              <DashboardLayout>
+                <PlayerTestResultsPage />
+              </DashboardLayout>
             </ProtectedRoute>
           } />
 
