@@ -8,7 +8,11 @@ export {
   evaluateBenchmark,
   getBreakingPointStatus,
   createBpEvidenceService,
+  shouldTransitionStatus,
+  applyStatusTransition,
   type BpEvidenceService,
+  type BpStatus,
+  type StatusTransition,
 } from './bp-evidence.service';
 
 export type {

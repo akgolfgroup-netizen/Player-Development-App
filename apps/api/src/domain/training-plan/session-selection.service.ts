@@ -15,6 +15,7 @@ import type {
   DailyAssignmentContext,
   SessionSelectionCriteria,
   SelectedSession,
+  SelectionReasons,
 } from './plan-generation.types';
 import {
   getProofMetricsForDomain,
@@ -246,6 +247,24 @@ export class SessionSelectionService {
     const best = scored[0];
     if (!best) return null;
 
+    // V2: Build selection reasons from score breakdown
+    const breakdown = best.scoreBreakdown;
+    const selectionReasons: SelectionReasons = {
+      domainMatch: (breakdown?.domainCoverageBonus ?? 0) > 0,
+      constraintMatch: (breakdown?.constraintRelevance ?? 0) > 0,
+      periodizationFit: (breakdown?.periodMatch ?? 0) + (breakdown?.learningPhaseMatch ?? 0),
+      proofCoverage: (breakdown?.proofProgressBonus ?? 0) > 0,
+      scoreBreakdown: breakdown ? {
+        periodMatch: breakdown.periodMatch,
+        learningPhaseMatch: breakdown.learningPhaseMatch,
+        durationMatch: breakdown.durationMatch,
+        domainCoverageBonus: breakdown.domainCoverageBonus,
+        constraintRelevance: breakdown.constraintRelevance,
+        proofProgressBonus: breakdown.proofProgressBonus,
+        recentUsagePenalty: breakdown.recentUsagePenalty,
+      } : undefined,
+    };
+
     return {
       sessionTemplateId: best.template.id,
       sessionType: best.template.sessionType,
@@ -254,6 +273,7 @@ export class SessionSelectionService {
       setting: (best.template.setting as string) || 'S1',
       period: (best.template.periods as string[])[0] || 'E',
       priority: best.score,
+      selectionReasons,
     };
   }
 

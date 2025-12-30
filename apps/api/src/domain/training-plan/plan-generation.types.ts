@@ -121,6 +121,26 @@ export interface SessionSelectionCriteria {
   excludeTemplateIds: string[]; // Recently used templates
 }
 
+/**
+ * V2: Selection reasons explaining WHY a session was chosen
+ * Provides transparency for coach review and debugging
+ */
+export interface SelectionReasons {
+  domainMatch: boolean;       // Template trains a domain with active BP
+  constraintMatch: boolean;   // Template trains a top-2 binding constraint
+  periodizationFit: number;   // 0-100 score for period/phase match
+  proofCoverage: boolean;     // Template includes proof-metric exercise
+  scoreBreakdown?: {
+    periodMatch: number;
+    learningPhaseMatch: number;
+    durationMatch: number;
+    domainCoverageBonus: number;
+    constraintRelevance: number;
+    proofProgressBonus: number;
+    recentUsagePenalty: number;
+  };
+}
+
 export interface SelectedSession {
   sessionTemplateId: string;
   sessionType: string;
@@ -129,6 +149,8 @@ export interface SelectedSession {
   setting: string;
   period: string;
   priority: number; // Higher = more relevant to breaking points
+  /** V2: Explains why this session was selected */
+  selectionReasons?: SelectionReasons;
 }
 
 export interface WeeklyPlan {
