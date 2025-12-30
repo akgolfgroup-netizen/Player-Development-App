@@ -12,14 +12,10 @@ import type { DagbokSession, DagbokSessionListProps } from '../types';
 import { DagbokSessionRow } from './DagbokSessionRow';
 import { SESSION_ROW_HEIGHT, OVERSCAN_COUNT } from '../constants';
 
-// Try to import react-window, fallback to simple list if not available
-let FixedSizeList: any = null;
-try {
-  const rw = require('react-window');
-  FixedSizeList = rw.FixedSizeList;
-} catch {
-  // react-window not installed, will use fallback
-}
+// Virtualization disabled - react-window not installed
+// When/if react-window is added, uncomment the import below:
+// import { FixedSizeList } from 'react-window';
+const FixedSizeList: any = null;
 
 // =============================================================================
 // STYLES
