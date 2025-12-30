@@ -82,6 +82,11 @@ const envSchema = z.object({
 
   // Session reminder settings
   SESSION_REMINDER_MINUTES: z.string().transform(Number).default('30'),
+
+  // Anthropic/Claude AI
+  ANTHROPIC_API_KEY: z.string().optional(),
+  ANTHROPIC_MODEL: z.string().default('claude-sonnet-4-20250514'),
+  ANTHROPIC_MAX_TOKENS: z.string().transform(Number).default('4096'),
 });
 
 // Parse and validate environment variables
@@ -109,7 +114,9 @@ export const config = {
     port: env.REDIS_PORT,
     password: env.REDIS_PASSWORD,
     db: env.REDIS_DB,
-    url: env.REDIS_URL || `redis://${env.REDIS_HOST}:${env.REDIS_PORT}/${env.REDIS_DB}`,
+    url: env.REDIS_URL,
+    // Only enable Redis if REDIS_URL is explicitly set (required for production)
+    enabled: !!env.REDIS_URL,
   },
 
   jwt: {
@@ -191,6 +198,18 @@ export const config = {
 
   session: {
     reminderMinutes: env.SESSION_REMINDER_MINUTES,
+  },
+
+  anthropic: env.ANTHROPIC_API_KEY ? {
+    apiKey: env.ANTHROPIC_API_KEY,
+    model: env.ANTHROPIC_MODEL,
+    maxTokens: env.ANTHROPIC_MAX_TOKENS,
+    enabled: true,
+  } : {
+    apiKey: undefined,
+    model: env.ANTHROPIC_MODEL,
+    maxTokens: env.ANTHROPIC_MAX_TOKENS,
+    enabled: false,
   },
 } as const;
 

@@ -14,7 +14,7 @@
 
 import * as redisBus from './redisNotificationBus';
 import * as memoryBus from './inMemoryNotificationBus';
-import { isRedisAvailable } from '../redis/redisClient';
+import { isRedisAvailable, isRedisConfigured } from '../redis/redisClient';
 import { logger } from '../../utils/logger';
 
 export type { NotificationPayload } from './redisNotificationBus';
@@ -29,6 +29,13 @@ let useRedis = false;
  * Call this on app startup
  */
 export async function initNotificationBus(): Promise<void> {
+  // Skip Redis if not configured (REDIS_URL not set)
+  if (!isRedisConfigured()) {
+    useRedis = false;
+    logger.info('Redis not configured - using in-memory notification bus');
+    return;
+  }
+
   try {
     // Try to connect to Redis
     const { getPublisher } = await import('../redis/redisClient');

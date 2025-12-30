@@ -16,8 +16,14 @@ class CacheService {
    * Connect to Redis
    */
   async connect(): Promise<void> {
+    // Skip if Redis is not configured (REDIS_URL not set)
+    if (!config.redis.enabled || !config.redis.url) {
+      logger.info('Redis not configured (REDIS_URL not set) - caching disabled');
+      return;
+    }
+
     try {
-      this.redis = new Redis(config.redis?.url || 'redis://localhost:6379', {
+      this.redis = new Redis(config.redis.url, {
         maxRetriesPerRequest: 3,
         retryStrategy: (times) => {
           if (times > 3) {

@@ -12,9 +12,20 @@ let subscriber: Redis | null = null;
 let isConnecting = false;
 
 /**
+ * Check if Redis is configured (REDIS_URL is set)
+ */
+export function isRedisConfigured(): boolean {
+  return config.redis.enabled && !!config.redis.url;
+}
+
+/**
  * Create a new Redis connection with retry logic
  */
 function createConnection(name: string): Redis {
+  if (!config.redis.url) {
+    throw new Error('Redis URL not configured');
+  }
+
   const redis = new Redis(config.redis.url, {
     maxRetriesPerRequest: 3,
     retryStrategy: (times) => {
