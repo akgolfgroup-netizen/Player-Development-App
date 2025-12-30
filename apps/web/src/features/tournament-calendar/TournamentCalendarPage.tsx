@@ -11,6 +11,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   Trophy,
   Calendar,
@@ -48,6 +49,8 @@ import {
   TOUR_LABELS,
   STATUS_LABELS,
   CATEGORY_LABELS,
+  COUNTRY_LABELS,
+  COUNTRY_GROUPS,
 } from './types';
 import {
   fetchTournaments,
@@ -636,6 +639,71 @@ function FilterPanel({
               })}
             </div>
           </div>
+
+          {/* Country Filter */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Land</h4>
+            {/* Quick select groups */}
+            <div style={{ ...filterPanelStyles.chipGrid, marginBottom: 'var(--spacing-3)' }}>
+              <button
+                onClick={() => setLocalFilters({
+                  ...localFilters,
+                  countries: COUNTRY_GROUPS.nordic,
+                })}
+                style={{
+                  ...filterPanelStyles.chip,
+                  fontSize: '12px',
+                  padding: '6px 10px',
+                }}
+              >
+                Norden
+              </button>
+              <button
+                onClick={() => setLocalFilters({
+                  ...localFilters,
+                  countries: COUNTRY_GROUPS.europe,
+                })}
+                style={{
+                  ...filterPanelStyles.chip,
+                  fontSize: '12px',
+                  padding: '6px 10px',
+                }}
+              >
+                Europa
+              </button>
+              <button
+                onClick={() => setLocalFilters({
+                  ...localFilters,
+                  countries: undefined,
+                })}
+                style={{
+                  ...filterPanelStyles.chip,
+                  fontSize: '12px',
+                  padding: '6px 10px',
+                }}
+              >
+                Alle land
+              </button>
+            </div>
+            <div style={filterPanelStyles.chipGrid}>
+              {['NO', 'SE', 'DK', 'FI', 'GB', 'US', 'ES', 'DE', 'IE', 'ZA'].map(code => {
+                const isSelected = localFilters.countries?.includes(code);
+                return (
+                  <button
+                    key={code}
+                    onClick={() => toggleArrayFilter('countries', code)}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                  >
+                    {COUNTRY_LABELS[code] || code}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         <div style={filterPanelStyles.footer}>
@@ -780,6 +848,7 @@ function PastTournamentCard({ tournament }: { tournament: Tournament }) {
 
 export default function TournamentCalendarPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { filters, setFilters, clearFilters } = useFilterState();
 
   // State
@@ -791,8 +860,8 @@ export default function TournamentCalendarPage() {
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
   const [showFilterPanel, setShowFilterPanel] = useState(false);
 
-  // Player category (would come from user context in production)
-  const playerCategory: PlayerCategory = 'C';
+  // Get player category from user context (defaults to 'C' for intermediate)
+  const playerCategory: PlayerCategory = (user?.category as PlayerCategory) || 'C';
 
   // Fetch tournaments
   useEffect(() => {
@@ -869,9 +938,40 @@ export default function TournamentCalendarPage() {
   };
 
   const handleAddToCalendar = async (tournament: Tournament) => {
-    // TODO: Integrate with calendar API
-    // For now, show a confirmation
-    alert(`"${tournament.name}" lagt til i kalenderen!`);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/v1/calendar/add-tournament', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          tournamentId: tournament.id,
+          name: tournament.name,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          venue: tournament.venue,
+          city: tournament.city,
+          country: tournament.country,
+          tour: tournament.tour,
+          format: tournament.format,
+          entryFee: tournament.entryFee,
+          registrationUrl: tournament.registrationUrl,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Show success feedback
+        alert(data.message || `"${tournament.name}" lagt til i kalenderen!`);
+      } else {
+        throw new Error('Failed to add to calendar');
+      }
+    } catch (error) {
+      console.error('Failed to add tournament to calendar:', error);
+      alert('Kunne ikke legge til i kalenderen. Prøv igjen.');
+    }
   };
 
   // Render loading state

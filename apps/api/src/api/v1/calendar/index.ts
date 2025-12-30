@@ -53,7 +53,120 @@ const calendarRoutes: FastifyPluginAsync = async (fastify) => {
     },
   });
 
-  // Get tournaments only
+  // ============================================
+  // External Tournament Calendar (for Turneringskalender)
+  // ============================================
+
+  /**
+   * GET /external-tournaments
+   * Get all external tournaments from various tour sources
+   * This endpoint returns tournaments from DP World Tour, Nordic League,
+   * Srixon Tour, etc. for the tournament calendar feature.
+   */
+  fastify.get<{
+    Querystring: {
+      tour?: string | string[];
+      category?: string | string[];
+      country?: string | string[];
+      status?: string | string[];
+      startDate?: string;
+      endDate?: string;
+      search?: string;
+    };
+  }>('/external-tournaments', {
+    onRequest: [fastify.authenticate],
+    handler: async (req, _reply) => {
+      const query = req.query;
+
+      // For now, return a message that frontend should use local data
+      // In production, this would fetch from external APIs or a database
+      // that syncs with tour websites
+
+      // Parse array params
+      const tours = query.tour
+        ? (Array.isArray(query.tour) ? query.tour : [query.tour])
+        : undefined;
+      const categories = query.category
+        ? (Array.isArray(query.category) ? query.category : [query.category])
+        : undefined;
+      const countries = query.country
+        ? (Array.isArray(query.country) ? query.country : [query.country])
+        : undefined;
+
+      return {
+        tournaments: [],
+        total: 0,
+        message: 'External tournament data is served from frontend static data. ' +
+                 'In production, this endpoint would aggregate from tour APIs.',
+        filters: {
+          tours,
+          categories,
+          countries,
+          startDate: query.startDate,
+          endDate: query.endDate,
+          search: query.search,
+        },
+        sources: [
+          { tour: 'dp_world_tour', source: 'DP World Tour API', status: 'static' },
+          { tour: 'challenge_tour', source: 'Challenge Tour API', status: 'static' },
+          { tour: 'nordic_league', source: 'ECCO Tour / Swedish Tour', status: 'static' },
+          { tour: 'garmin_norges_cup', source: 'Golf.no / GolfBox', status: 'static' },
+          { tour: 'srixon_tour', source: 'Golf.no / GolfBox', status: 'static' },
+          { tour: 'junior_tour_regional', source: 'MinGolf.no', status: 'static' },
+          { tour: 'wagr_turnering', source: 'WAGR API', status: 'static' },
+          { tour: 'ega_turnering', source: 'EGA API', status: 'static' },
+          { tour: 'pga_tour', source: 'PGA Tour API', status: 'static' },
+        ],
+      };
+    },
+  });
+
+  /**
+   * POST /sync-tournaments
+   * Trigger a sync of external tournament data (admin only)
+   */
+  fastify.post('/sync-tournaments', {
+    onRequest: [fastify.authenticate],
+    handler: async (req, _reply) => {
+      const user = req.user as { role: string };
+
+      if (user.role !== 'admin') {
+        return {
+          success: false,
+          error: 'Only admins can trigger tournament sync',
+        };
+      }
+
+      // In production, this would:
+      // 1. Call external APIs (GolfBox, DP World Tour, etc.)
+      // 2. Parse and normalize tournament data
+      // 3. Store in database with hierarchy mapping
+      // 4. Return sync status
+
+      return {
+        success: true,
+        message: 'Tournament sync placeholder. Real implementation would fetch from external APIs.',
+        lastSync: new Date().toISOString(),
+        sources: {
+          dp_world_tour: { status: 'static', count: 36 },
+          challenge_tour: { status: 'static', count: 6 },
+          nordic_league: { status: 'static', count: 11 },
+          garmin_norges_cup: { status: 'static', count: 9 },
+          srixon_tour: { status: 'static', count: 9 },
+          junior_tour_regional: { status: 'static', count: 12 },
+          global_junior_tour: { status: 'static', count: 4 },
+          ega_turnering: { status: 'static', count: 4 },
+          wagr_turnering: { status: 'static', count: 4 },
+          college_turneringer: { status: 'static', count: 4 },
+          pga_tour: { status: 'static', count: 5 },
+          academy: { status: 'static', count: 3 },
+        },
+        totalTournaments: 107,
+      };
+    },
+  });
+
+  // Get tournaments only (internal/registered)
   fastify.get('/tournaments', {
     onRequest: [fastify.authenticate],
     handler: async (req, _reply) => {
@@ -194,6 +307,108 @@ const calendarRoutes: FastifyPluginAsync = async (fastify) => {
         ...event,
         isRegistered,
         participantCount: event.participants.length,
+      };
+    },
+  });
+
+  // ============================================
+  // Add External Tournament to Calendar
+  // ============================================
+
+  /**
+   * POST /add-tournament
+   * Add an external tournament to the user's calendar
+   */
+  fastify.post<{
+    Body: {
+      tournamentId: string;
+      name: string;
+      startDate: string;
+      endDate: string;
+      venue: string;
+      city: string;
+      country: string;
+      tour: string;
+      format?: string;
+      entryFee?: number;
+      registrationUrl?: string;
+    };
+  }>('/add-tournament', {
+    onRequest: [fastify.authenticate],
+    handler: async (req, _reply) => {
+      const user = req.user as { id: string; tenantId: string; playerId?: string };
+      const data = req.body;
+
+      // Create calendar event for the tournament
+      const event = await prisma.event.create({
+        data: {
+          title: data.name,
+          description: `${data.tour} turnering på ${data.venue}, ${data.city}, ${data.country}.\n${data.format || ''}\n${data.registrationUrl ? `Påmelding: ${data.registrationUrl}` : ''}`,
+          eventType: 'tournament',
+          startTime: new Date(data.startDate),
+          endTime: new Date(data.endDate),
+          location: `${data.venue}, ${data.city}`,
+          status: 'upcoming',
+          tenantId: user.tenantId,
+          metadata: {
+            externalTournamentId: data.tournamentId,
+            tour: data.tour,
+            country: data.country,
+            entryFee: data.entryFee,
+            registrationUrl: data.registrationUrl,
+          },
+        },
+      });
+
+      // Register player as participant if playerId exists
+      if (user.playerId) {
+        await prisma.eventParticipant.create({
+          data: {
+            eventId: event.id,
+            playerId: user.playerId,
+            status: 'registered',
+          },
+        });
+      }
+
+      // If Google Calendar is connected, sync to Google
+      const integration = await prisma.calendarIntegration.findFirst({
+        where: { userId: user.id, provider: 'google' },
+      });
+
+      let googleEventId: string | null = null;
+      if (integration && googleCalendar) {
+        try {
+          const calEvent: CalendarEvent = {
+            id: event.id,
+            title: data.name,
+            description: event.description || undefined,
+            startTime: event.startTime,
+            endTime: event.endTime,
+            location: event.location || undefined,
+            type: 'tournament',
+          };
+
+          googleEventId = await googleCalendar.createEvent(integration.accessToken, calEvent);
+
+          await prisma.calendarSync.create({
+            data: {
+              localEventId: event.id,
+              localEventType: 'event',
+              integrationId: integration.id,
+              externalEventId: googleEventId,
+            },
+          });
+        } catch (error) {
+          logger.warn({ error }, 'Failed to sync tournament to Google Calendar');
+        }
+      }
+
+      return {
+        success: true,
+        eventId: event.id,
+        googleEventId,
+        message: `"${data.name}" lagt til i kalenderen`,
       };
     },
   });

@@ -1,6 +1,11 @@
 /**
  * Training Plan Generation Service
  * Generates complete 12-month training plans
+ *
+ * V2 Enhancements:
+ * - Integrates Category Constraints for binding constraints
+ * - Uses Domain Mapping for testDomainCode assignment
+ * - Enhanced session selection with constraint awareness
  */
 
 import { Prisma } from '@prisma/client';
@@ -20,6 +25,12 @@ import type {
   PeriodizationWeek,
   DailyAssignmentContext,
 } from './plan-generation.types';
+import {
+  createCategoryConstraintsService,
+  type CategoryConstraintsResult,
+  type BindingConstraint,
+} from '../performance/category-constraints';
+import { getTestToDomainMapping, type TestDomainCode } from '../performance/domain-mapping';
 
 const prisma = getPrismaClient();
 
@@ -100,20 +111,77 @@ export class PlanGenerationService {
       input.baselineDriverSpeed
     );
 
-    // 7. Get player's breaking points
+    // 7. Get player's breaking points with domain mapping
     const breakingPoints = await prisma.breakingPoint.findMany({
       where: {
         playerId: input.playerId,
         status: {
-          in: ['not_started', 'in_progress'],
+          in: ['not_started', 'in_progress', 'identified'],
         },
       },
-      select: { id: true },
+      select: {
+        id: true,
+        testDomainCode: true,
+        benchmarkTestId: true,
+      },
     });
 
-    const breakingPointIds = breakingPoints.map((bp: { id: string }) => bp.id);
+    const breakingPointIds = breakingPoints.map((bp) => bp.id);
 
-    // 8. Generate daily assignments (365 days)
+    // V2: Assign testDomainCode to breaking points that don't have one
+    const testToDomainMap = getTestToDomainMapping();
+    for (const bp of breakingPoints) {
+      if (!bp.testDomainCode && bp.benchmarkTestId) {
+        const domain = testToDomainMap[bp.benchmarkTestId];
+        if (domain) {
+          await prisma.breakingPoint.update({
+            where: { id: bp.id },
+            data: { testDomainCode: domain },
+          });
+        }
+      }
+    }
+
+    // V2: Get category constraints for the player
+    const constraintsService = createCategoryConstraintsService(prisma);
+
+    // Fetch latest test results for constraint calculation
+    const testResults = await prisma.testResult.findMany({
+      where: {
+        playerId: input.playerId,
+        testDate: { gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) }, // Last 90 days
+      },
+      orderBy: { testDate: 'desc' },
+      include: { test: { select: { testNumber: true } } },
+    });
+
+    // Build latest values map (testNumber -> value)
+    const latestValues: Record<number, number> = {};
+    for (const result of testResults) {
+      const testNum = result.test?.testNumber;
+      if (testNum && !latestValues[testNum]) {
+        latestValues[testNum] = Number(result.value);
+      }
+    }
+
+    // Compute category constraints
+    let categoryConstraints: CategoryConstraintsResult | null = null;
+    let topConstraints: BindingConstraint[] = [];
+
+    try {
+      categoryConstraints = await constraintsService.computeCategoryConstraints({
+        playerId: input.playerId,
+        currentCategory: playerCategory as 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K',
+        gender: 'M', // TODO: Get from player profile
+        latestTestValues: latestValues,
+      });
+      topConstraints = categoryConstraints.bindingConstraints;
+    } catch (error) {
+      // If constraint calculation fails, continue without constraints
+      console.warn('Failed to compute category constraints:', error);
+    }
+
+    // 8. Generate daily assignments (365 days) with V2 constraint awareness
     const dailyAssignments = await this.generateDailyAssignments(
       annualPlan.id,
       input.playerId,
@@ -123,7 +191,8 @@ export class PlanGenerationService {
       clubSpeedLevel,
       breakingPointIds,
       input.preferredTrainingDays,
-      input.excludeDates || []
+      input.excludeDates || [],
+      topConstraints // V2: Pass binding constraints for session selection
     );
 
     // 9. Build result
@@ -159,6 +228,21 @@ export class PlanGenerationService {
       breakingPoints: {
         linked: breakingPointIds.length,
       },
+      // V2: Category constraints info
+      categoryConstraints: categoryConstraints
+        ? {
+            currentCategory: playerCategory,
+            readinessScore: categoryConstraints.readinessScore,
+            canAdvance: categoryConstraints.canAdvance,
+            topBindingConstraints: topConstraints.slice(0, 4).map((c) => ({
+              testNumber: c.testNumber,
+              testName: c.testName,
+              domain: c.testDomainCode,
+              gapNormalized: c.gapNormalized,
+              severity: c.severity,
+            })),
+          }
+        : null,
     };
 
     return result;
@@ -413,7 +497,7 @@ export class PlanGenerationService {
 
   /**
    * Generate daily training assignments for 365 days
-   * Optimized to use batch inserts and track hours in memory
+   * V2: Optimized with batch inserts, in-memory hour tracking, and constraint awareness
    */
   private static async generateDailyAssignments(
     annualPlanId: string,
@@ -424,7 +508,8 @@ export class PlanGenerationService {
     clubSpeedLevel: string,
     breakingPointIds: string[],
     preferredTrainingDays?: number[],
-    excludeDates: Date[] = []
+    excludeDates: Date[] = [],
+    topConstraints: BindingConstraint[] = [] // V2: Binding constraints for session selection
   ): Promise<{ created: number; byType: Record<string, number> }> {
     const byType: Record<string, number> = {};
 
@@ -507,8 +592,10 @@ export class PlanGenerationService {
         isToppingWeek: periodWeek.volumeIntensity === 'peak' && periodWeek.periodPhase === 'tournament',
       };
 
-      // Select session
-      const session = await SessionSelectionService.selectSessionForDay(context);
+      // V2: Select session with constraint awareness
+      const session = topConstraints.length > 0
+        ? await SessionSelectionService.selectSessionForDayWithContext(context, topConstraints)
+        : await SessionSelectionService.selectSessionForDay(context);
 
       const estimatedDuration = session?.estimatedDuration || 0;
       const sessionType = session?.sessionType || 'rest';

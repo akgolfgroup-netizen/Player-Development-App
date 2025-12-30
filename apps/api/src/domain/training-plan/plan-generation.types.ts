@@ -64,6 +64,19 @@ export interface AnnualPlanGenerationResult {
   breakingPoints: {
     linked: number;
   };
+  /** V2: Category constraints analysis */
+  categoryConstraints?: {
+    currentCategory: string;
+    readinessScore: number;
+    canAdvance: boolean;
+    topBindingConstraints: Array<{
+      testNumber: number;
+      testName: string;
+      domain: string;
+      gapNormalized: number;
+      severity: 'hard' | 'soft';
+    }>;
+  } | null;
 }
 
 export interface DailyAssignmentContext {

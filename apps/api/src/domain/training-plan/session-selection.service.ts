@@ -101,6 +101,7 @@ export class SessionSelectionService {
 
   /**
    * Select session template for a specific day
+   * V2: Uses enhanced context for domain/constraint-aware selection
    */
   static async selectSessionForDay(
     context: DailyAssignmentContext
@@ -134,8 +135,57 @@ export class SessionSelectionService {
       excludeTemplateIds: recentlyUsedTemplateIds,
     };
 
-    // Select session
-    return await this.selectSession(criteria, context.tenantId);
+    // V2: Build enhanced context for domain/constraint-aware scoring
+    const enhancedContext = await this.buildEnhancedContext(context.playerId, context.tenantId);
+
+    // Select session with enhanced context
+    return await this.selectSession(criteria, context.tenantId, enhancedContext);
+  }
+
+  /**
+   * V2: Select session with pre-built enhanced context
+   * Use this when you already have constraints from CategoryConstraintsService
+   */
+  static async selectSessionForDayWithContext(
+    context: DailyAssignmentContext,
+    topConstraints: BindingConstraint[]
+  ): Promise<SelectedSession | null> {
+    // Rest day - no session
+    if (context.isRestDay) {
+      return null;
+    }
+
+    // Calculate available duration for this session
+    const remainingHours = context.targetHoursThisWeek - context.hoursAllocatedSoFar;
+    const targetDuration = Math.min(remainingHours * 60, 180);
+
+    if (targetDuration < 30) {
+      return null;
+    }
+
+    // Get recently used templates
+    const recentlyUsedTemplateIds = await this.getRecentlyUsedTemplates(context.playerId);
+
+    // Build selection criteria
+    const criteria: SessionSelectionCriteria = {
+      period: context.period,
+      learningPhases: context.learningPhases,
+      clubSpeed: context.clubSpeedLevel,
+      settings: context.settings,
+      breakingPointIds: context.breakingPointIds,
+      targetDuration,
+      intensity: context.intensity,
+      excludeTemplateIds: recentlyUsedTemplateIds,
+    };
+
+    // Build enhanced context with provided constraints
+    const baseContext = await this.buildEnhancedContext(context.playerId, context.tenantId);
+    const enhancedContext: EnhancedSelectionContext = {
+      ...baseContext,
+      topConstraints,
+    };
+
+    return await this.selectSession(criteria, context.tenantId, enhancedContext);
   }
 
   /**

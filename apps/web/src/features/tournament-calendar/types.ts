@@ -105,6 +105,51 @@ export const CATEGORY_DESCRIPTIONS: Record<PlayerCategory, string> = {
   udefinert: 'Kategori ikke definert',
 };
 
+// ============================================================================
+// COUNTRY TYPES
+// ============================================================================
+
+/**
+ * Country labels for filtering
+ * ISO 3166-1 alpha-2 codes
+ */
+export const COUNTRY_LABELS: Record<string, string> = {
+  NO: 'Norge',
+  SE: 'Sverige',
+  DK: 'Danmark',
+  FI: 'Finland',
+  GB: 'Storbritannia',
+  IE: 'Irland',
+  US: 'USA',
+  ES: 'Spania',
+  PT: 'Portugal',
+  FR: 'Frankrike',
+  DE: 'Tyskland',
+  IT: 'Italia',
+  NL: 'Nederland',
+  BE: 'Belgia',
+  CH: 'Sveits',
+  AT: 'Østerrike',
+  CZ: 'Tsjekkia',
+  SK: 'Slovakia',
+  ZA: 'Sør-Afrika',
+  AE: 'De forente arabiske emirater',
+  QA: 'Qatar',
+  BH: 'Bahrain',
+  CN: 'Kina',
+  JP: 'Japan',
+  KE: 'Kenya',
+};
+
+/**
+ * Country groups for quick filtering
+ */
+export const COUNTRY_GROUPS: Record<string, string[]> = {
+  nordic: ['NO', 'SE', 'DK', 'FI'],
+  europe: ['NO', 'SE', 'DK', 'FI', 'GB', 'IE', 'ES', 'PT', 'FR', 'DE', 'IT', 'NL', 'BE', 'CH', 'AT', 'CZ', 'SK'],
+  worldwide: ['US', 'ZA', 'AE', 'QA', 'BH', 'CN', 'JP', 'KE'],
+};
+
 /**
  * Confidence level for category recommendation
  */
