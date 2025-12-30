@@ -1,5 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { useDashboard } from '../useDashboard';
+import apiClient from '../../services/apiClient';
 
 // Mock the API client module
 jest.mock('../../services/apiClient', () => ({
@@ -8,8 +9,6 @@ jest.mock('../../services/apiClient', () => ({
     get: jest.fn(),
   },
 }));
-
-import apiClient from '../../services/apiClient';
 
 describe('useDashboard', () => {
   const mockApiResponse = {

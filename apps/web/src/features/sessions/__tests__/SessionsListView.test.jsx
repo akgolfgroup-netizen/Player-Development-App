@@ -1,5 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import SessionsListView from '../SessionsListView';
 
 // Mock react-router-dom
 const mockNavigate = jest.fn();
@@ -7,9 +9,6 @@ jest.mock('react-router-dom', () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,
   useNavigate: () => mockNavigate,
 }));
-
-import { BrowserRouter } from 'react-router-dom';
-import SessionsListView from '../SessionsListView';
 
 describe('SessionsListView', () => {
   const mockSessions = [

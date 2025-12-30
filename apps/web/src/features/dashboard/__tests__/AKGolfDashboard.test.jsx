@@ -1,5 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import AKGolfDashboard from '../AKGolfDashboard';
+import { useDashboard } from '../../../hooks/useDashboard';
 
 // Mock the useDashboard hook
 jest.mock('../../../hooks/useDashboard');
@@ -14,10 +17,6 @@ jest.mock('react-router-dom', () => ({
   Route: ({ element }) => element,
   Navigate: () => null,
 }));
-
-import { BrowserRouter } from 'react-router-dom';
-import AKGolfDashboard from '../AKGolfDashboard';
-import { useDashboard } from '../../../hooks/useDashboard';
 
 describe('AKGolfDashboard', () => {
   const mockDashboardData = {

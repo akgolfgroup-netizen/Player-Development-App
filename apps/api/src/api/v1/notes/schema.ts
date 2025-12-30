@@ -9,12 +9,14 @@ export const noteSchema = {
     tags: { type: 'array', items: { type: 'string' } },
     isPinned: { type: 'boolean' },
     color: { type: 'string', nullable: true },
+    mood: { type: 'integer', minimum: 1, maximum: 5, nullable: true },
+    sharedWithCoach: { type: 'boolean' },
     linkedEntityType: { type: 'string', nullable: true },
     linkedEntityId: { type: 'string', format: 'uuid', nullable: true },
     createdAt: { type: 'string', format: 'date-time' },
     updatedAt: { type: 'string', format: 'date-time' }
   },
-  required: ['id', 'userId', 'title', 'content', 'tags', 'isPinned', 'createdAt', 'updatedAt']
+  required: ['id', 'userId', 'title', 'content', 'tags', 'isPinned', 'sharedWithCoach', 'createdAt', 'updatedAt']
 };
 
 export const createNoteSchema = {
@@ -27,6 +29,8 @@ export const createNoteSchema = {
       tags: { type: 'array', items: { type: 'string', maxLength: 50 }, maxItems: 10 },
       isPinned: { type: 'boolean' },
       color: { type: 'string', pattern: '^#[0-9A-Fa-f]{6}$' },
+      mood: { type: 'integer', minimum: 1, maximum: 5 },
+      sharedWithCoach: { type: 'boolean' },
       linkedEntityType: { type: 'string', maxLength: 50 },
       linkedEntityId: { type: 'string', format: 'uuid' }
     },
@@ -54,6 +58,8 @@ export const updateNoteSchema = {
       tags: { type: 'array', items: { type: 'string', maxLength: 50 }, maxItems: 10 },
       isPinned: { type: 'boolean' },
       color: { type: 'string', pattern: '^#[0-9A-Fa-f]{6}$' },
+      mood: { type: 'integer', minimum: 1, maximum: 5 },
+      sharedWithCoach: { type: 'boolean' },
       linkedEntityType: { type: 'string', maxLength: 50 },
       linkedEntityId: { type: 'string', format: 'uuid' }
     }

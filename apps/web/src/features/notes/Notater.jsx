@@ -58,13 +58,21 @@ const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
 };
 
 // ===== MAIN COMPONENT =====
-const AKGolfNotater = ({ notes: apiNotes = null }) => {
+const AKGolfNotater = ({
+  notes: apiNotes = [],
+  onCreateNote,
+  onUpdateNote,
+  onDeleteNote,
+  onTogglePin,
+  onToggleShare,
+}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState('all');
   const [selectedNote, setSelectedNote] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showNewNote, setShowNewNote] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Note form state
   const [noteForm, setNoteForm] = useState({
@@ -104,62 +112,8 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
     { id: 'refleksjon', label: 'Refleksjon', color: 'var(--accent)' },
   ];
 
-  // Default notes (fallback if no API data)
-  const defaultNotes = [
-    {
-      id: 1,
-      title: 'Gjennombrudd med driver',
-      content: 'I dag oppdaget jeg at ved å fokusere på venstre skulder i nedsvingen, fikk jeg mye bedre kontakt. Klubbfarten økte fra 106 til 109 mph! \n\nNøkkelpunkter:\n- Hold venstre skulder "nede" lenger\n- Start nedsvingen med hofterotasjon\n- Ikke tenk på armer i det hele tatt\n\nMå fortsette å jobbe med dette på range.',
-      date: '2025-12-14',
-      tags: ['teknikk', 'trening'],
-      pinned: true,
-      mood: 5,
-      sharedWithCoach: true,
-    },
-    {
-      id: 2,
-      title: 'Refleksjon: NM Kvalik',
-      content: 'Spilte NM Kvalik i dag. Resultatet ble 74 (+2), som var under forventning.\n\nHva gikk bra:\n- Putting var solid (28 putts)\n- Mentalt sterkt på back 9\n\nHva kan forbedres:\n- Tapte 3 slag på innspill 80-100m\n- Lot meg stresse av paired-partner på hull 7\n\nLæring: Trenger mer trening på pressure putting og distansekontroll wedger.',
-      date: '2025-12-10',
-      tags: ['turnering', 'refleksjon'],
-      pinned: false,
-      mood: 3,
-      sharedWithCoach: false,
-    },
-    {
-      id: 3,
-      title: 'Mental pre-shot rutine',
-      content: 'Jobbet med Jan i dag på mental rutine:\n\n1. Pust dypt (4 sek inn, 6 sek ut)\n2. Visualiser ball flight\n3. Én swing thought\n4. Commit 100%\n\nMerket stor forskjell i fokus. Skal bruke dette på alle slag fremover.',
-      date: '2025-12-08',
-      tags: ['mental', 'teknikk'],
-      pinned: true,
-      mood: 4,
-      sharedWithCoach: false,
-    },
-    {
-      id: 4,
-      title: 'Ukemål uke 50',
-      content: '- 15 timer trening\n- Fokus på wedge PEI < 0.05\n- 3x styrketrening\n- Minst 200 putts per dag\n\nStatus midtuke: På god vei med alt unntatt styrke (bare 1x så langt).',
-      date: '2025-12-09',
-      tags: ['mål', 'trening'],
-      pinned: false,
-      mood: 4,
-      sharedWithCoach: false,
-    },
-    {
-      id: 5,
-      title: 'Trening med Team Norway',
-      content: 'Samling med Team Norway i dag. Fikk feedback fra landslagstrener:\n\n- Swing path er -2 til -3 (bra!)\n- Face angle ved impact: -1 (kan være mer nøytral)\n- Attack angle: +2 (perfekt for driver)\n\nGot tips om å bruke alignment sticks mer systematisk.',
-      date: '2025-12-05',
-      tags: ['trening', 'teknikk'],
-      pinned: false,
-      mood: 5,
-      sharedWithCoach: false,
-    },
-  ];
-
-  // Use API data if available, otherwise use default
-  const [notes, setNotes] = useState(apiNotes || defaultNotes);
+  // Use API notes directly
+  const notes = apiNotes;
 
   // Mood icon mapping
   const moodIcons = {
@@ -204,65 +158,98 @@ const AKGolfNotater = ({ notes: apiNotes = null }) => {
     return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
   };
 
-  // Toggle pin
-  const togglePin = (id) => {
-    setNotes(notes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n));
-  };
-
-  // Delete note
-  const deleteNote = (id) => {
-    setNotes(notes.filter(n => n.id !== id));
-    if (selectedNote?.id === id) setSelectedNote(null);
-  };
-
-  // Toggle share with coach
-  const toggleShareWithCoach = (id) => {
-    setNotes(notes.map(n => n.id === id ? { ...n, sharedWithCoach: !n.sharedWithCoach } : n));
-    if (selectedNote?.id === id) {
-      setSelectedNote({ ...selectedNote, sharedWithCoach: !selectedNote.sharedWithCoach });
+  // Toggle pin - use API handler
+  const togglePin = async (id) => {
+    if (onTogglePin) {
+      try {
+        await onTogglePin(id);
+      } catch (err) {
+        console.error('Error toggling pin:', err);
+      }
     }
   };
 
-  // Save new note
-  const saveNewNote = () => {
+  // Delete note - use API handler
+  const deleteNote = async (id) => {
+    if (onDeleteNote) {
+      try {
+        await onDeleteNote(id);
+        if (selectedNote?.id === id) setSelectedNote(null);
+      } catch (err) {
+        console.error('Error deleting note:', err);
+      }
+    }
+  };
+
+  // Toggle share with coach - use API handler
+  const toggleShareWithCoach = async (id) => {
+    if (onToggleShare) {
+      try {
+        await onToggleShare(id);
+        if (selectedNote?.id === id) {
+          setSelectedNote({ ...selectedNote, sharedWithCoach: !selectedNote.sharedWithCoach });
+        }
+      } catch (err) {
+        console.error('Error toggling share:', err);
+      }
+    }
+  };
+
+  // Save new note - use API handler
+  const saveNewNote = async () => {
     if (!noteForm.title.trim()) {
       alert('Vennligst skriv en tittel');
       return;
     }
 
-    const newNote = {
-      id: Date.now(),
-      title: noteForm.title,
-      content: noteForm.content,
-      date: new Date().toISOString().split('T')[0],
-      tags: noteForm.tags,
-      pinned: false,
-      mood: noteForm.mood,
-      sharedWithCoach: false,
-    };
-
-    setNotes([newNote, ...notes]);
-    setNoteForm({ title: '', content: '', tags: [], mood: 4 });
-    localStorage.removeItem('ak_golf_note_draft');
-    setShowNewNote(false);
+    if (onCreateNote) {
+      setIsSaving(true);
+      try {
+        await onCreateNote({
+          title: noteForm.title,
+          content: noteForm.content,
+          tags: noteForm.tags,
+          mood: noteForm.mood,
+        });
+        setNoteForm({ title: '', content: '', tags: [], mood: 4 });
+        localStorage.removeItem('ak_golf_note_draft');
+        setShowNewNote(false);
+      } catch (err) {
+        console.error('Error creating note:', err);
+        alert('Kunne ikke lagre notat. Prøv igjen.');
+      } finally {
+        setIsSaving(false);
+      }
+    }
   };
 
-  // Edit note
-  const saveEditNote = () => {
+  // Edit note - use API handler
+  const saveEditNote = async () => {
     if (!noteForm.title.trim()) {
       alert('Vennligst skriv en tittel');
       return;
     }
 
-    setNotes(notes.map(n =>
-      n.id === selectedNote.id
-        ? { ...n, title: noteForm.title, content: noteForm.content, tags: noteForm.tags, mood: noteForm.mood }
-        : n
-    ));
-
-    setSelectedNote({ ...selectedNote, title: noteForm.title, content: noteForm.content, tags: noteForm.tags, mood: noteForm.mood });
-    localStorage.removeItem('ak_golf_note_draft');
-    setIsEditing(false);
+    if (onUpdateNote && selectedNote) {
+      setIsSaving(true);
+      try {
+        const updated = await onUpdateNote(selectedNote.id, {
+          ...selectedNote,
+          title: noteForm.title,
+          content: noteForm.content,
+          tags: noteForm.tags,
+          mood: noteForm.mood,
+        });
+        setSelectedNote(updated);
+        localStorage.removeItem('ak_golf_note_draft');
+        setIsEditing(false);
+      } catch (err) {
+        console.error('Error updating note:', err);
+        alert('Kunne ikke oppdatere notat. Prøv igjen.');
+      } finally {
+        setIsSaving(false);
+      }
+    }
   };
 
   // Open note for editing

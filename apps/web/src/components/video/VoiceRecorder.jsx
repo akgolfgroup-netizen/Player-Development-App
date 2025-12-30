@@ -326,7 +326,7 @@ export function VoiceRecorder({
     formatDuration,
   } = useAudioRecording({
     maxDuration,
-    onRecordingComplete: onComplete,
+    onRecordingComplete: onSave,
   });
 
   // Handle record button click

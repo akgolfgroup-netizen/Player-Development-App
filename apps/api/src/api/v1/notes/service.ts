@@ -10,6 +10,8 @@ export interface CreateNoteInput {
   tags?: string[];
   isPinned?: boolean;
   color?: string;
+  mood?: number;
+  sharedWithCoach?: boolean;
   linkedEntityType?: string;
   linkedEntityId?: string;
 }
@@ -21,6 +23,8 @@ export interface UpdateNoteInput {
   tags?: string[];
   isPinned?: boolean;
   color?: string;
+  mood?: number;
+  sharedWithCoach?: boolean;
   linkedEntityType?: string;
   linkedEntityId?: string;
 }
@@ -62,6 +66,8 @@ export class NotesService {
         tags: input.tags || [],
         isPinned: input.isPinned || false,
         color: input.color,
+        mood: input.mood,
+        sharedWithCoach: input.sharedWithCoach || false,
         linkedEntityType: input.linkedEntityType,
         linkedEntityId: input.linkedEntityId
       }

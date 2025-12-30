@@ -2245,6 +2245,8 @@ model Note {
   tags        String[] @db.VarChar(50)
   isPinned    Boolean  @default(false) @map("is_pinned")
   color       String?  @db.VarChar(7) // hex color for visual organization
+  mood        Int?     @db.SmallInt // 1-5 mood scale
+  sharedWithCoach Boolean @default(false) @map("shared_with_coach")
 
   // Linked entities (optional)
   linkedEntityType String? @map("linked_entity_type") @db.VarChar(50) // player, session, test, goal

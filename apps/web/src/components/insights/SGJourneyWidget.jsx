@@ -43,7 +43,6 @@ const MountainVisualization = ({ position, levels }) => {
   const visualPosition = Math.min(100, (altitudeMeters / maxAltitude) * 100);
 
   return (
-    // eslint-disable-next-line ak-golf/no-raw-colors -- Decorative mountain visualization gradient
     <div style={{
       position: 'relative',
       height: '200px',
