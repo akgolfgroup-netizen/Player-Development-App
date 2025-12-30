@@ -48,6 +48,9 @@ export {
   TEST_TO_DOMAIN_MAP,
   ALL_DOMAIN_CODES,
   DOMAIN_PRIORITY_ORDER,
+  DOMAIN_LABELS_NO,
+  DOMAIN_LABELS_EN,
+  getDomainLabel,
   isValidDomainCode,
 } from './domain-mapping.config';
 

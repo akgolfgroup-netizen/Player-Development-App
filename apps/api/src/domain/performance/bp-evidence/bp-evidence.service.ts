@@ -202,6 +202,154 @@ export async function evaluateBenchmark(
 }
 
 // ============================================================================
+// STATUS TRANSITIONS
+// ============================================================================
+
+/**
+ * BP Status values:
+ * - not_started: Initial state, no work begun
+ * - identified: Coach/system has identified the BP
+ * - in_progress: Player is actively working on it (sessions started)
+ * - awaiting_proof: Within benchmark window, waiting for test
+ * - resolved: Success rule satisfied
+ * - regressed: Was resolved but metric fell below threshold
+ * - paused: Temporarily on hold
+ */
+export type BpStatus =
+  | 'not_started'
+  | 'identified'
+  | 'in_progress'
+  | 'awaiting_proof'
+  | 'resolved'
+  | 'regressed'
+  | 'paused';
+
+export interface StatusTransition {
+  from: BpStatus;
+  to: BpStatus;
+  reason: string;
+}
+
+/**
+ * Determines if a breaking point should transition to a new status
+ */
+export async function shouldTransitionStatus(
+  prisma: PrismaClient,
+  breakingPointId: string
+): Promise<StatusTransition | null> {
+  const bp = await prisma.breakingPoint.findUnique({
+    where: { id: breakingPointId },
+  });
+
+  if (!bp) return null;
+
+  const currentStatus = bp.status as BpStatus;
+  const effortPercent = bp.effortPercent ?? 0;
+  const progressPercent = bp.progressPercent ?? 0;
+  const domainCode = bp.testDomainCode as TestDomainCode | null;
+  const windowDays = domainCode ? getBenchmarkWindowDays(domainCode) : 21;
+
+  // Check if within last 7 days of benchmark window
+  const windowStart = new Date();
+  windowStart.setDate(windowStart.getDate() - windowDays);
+  const proofWindowStart = new Date();
+  proofWindowStart.setDate(proofWindowStart.getDate() - 7);
+
+  // Count recent sessions
+  const recentSessionCount = await prisma.trainingSession.count({
+    where: {
+      playerId: bp.playerId,
+      completedAt: { not: null },
+      sessionDate: { gte: windowStart },
+    },
+  });
+
+  // Transition rules
+  switch (currentStatus) {
+    case 'not_started':
+    case 'identified':
+      // Transition to in_progress when first session is completed
+      if (recentSessionCount > 0 || effortPercent > 0) {
+        return {
+          from: currentStatus,
+          to: 'in_progress',
+          reason: 'First training session completed',
+        };
+      }
+      break;
+
+    case 'in_progress':
+      // Transition to awaiting_proof when effort is high or within proof window
+      if (effortPercent >= 50) {
+        return {
+          from: 'in_progress',
+          to: 'awaiting_proof',
+          reason: 'Sufficient effort invested, awaiting benchmark test',
+        };
+      }
+      break;
+
+    case 'awaiting_proof':
+      // Transition to resolved when progress hits 100%
+      if (progressPercent >= PROGRESS_THRESHOLDS.RESOLVED) {
+        return {
+          from: 'awaiting_proof',
+          to: 'resolved',
+          reason: 'Success criteria met based on benchmark test',
+        };
+      }
+      break;
+
+    case 'resolved':
+      // Transition to regressed if metric falls below threshold
+      // (This would be checked during benchmark evaluation)
+      if (progressPercent < PROGRESS_THRESHOLDS.GOOD) {
+        return {
+          from: 'resolved',
+          to: 'regressed',
+          reason: 'Performance dropped below threshold',
+        };
+      }
+      break;
+
+    case 'regressed':
+      // Can transition back to in_progress with new effort
+      if (effortPercent >= 25) {
+        return {
+          from: 'regressed',
+          to: 'in_progress',
+          reason: 'Resumed training to address regression',
+        };
+      }
+      break;
+  }
+
+  return null;
+}
+
+/**
+ * Applies a status transition if one is warranted
+ */
+export async function applyStatusTransition(
+  prisma: PrismaClient,
+  breakingPointId: string
+): Promise<StatusTransition | null> {
+  const transition = await shouldTransitionStatus(prisma, breakingPointId);
+
+  if (transition) {
+    await prisma.breakingPoint.update({
+      where: { id: breakingPointId },
+      data: {
+        status: transition.to,
+        resolvedDate: transition.to === 'resolved' ? new Date() : undefined,
+      },
+    });
+  }
+
+  return transition;
+}
+
+// ============================================================================
 // STATUS QUERIES
 // ============================================================================
 

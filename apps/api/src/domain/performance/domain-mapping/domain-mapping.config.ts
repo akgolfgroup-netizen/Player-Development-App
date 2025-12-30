@@ -147,6 +147,36 @@ export const DOMAIN_PRIORITY_ORDER: TestDomainCode[] = [
 ];
 
 // ============================================================================
+// UI LABELS (Norwegian)
+// ============================================================================
+
+export const DOMAIN_LABELS_NO: Record<TestDomainCode, string> = {
+  TEE: 'Tee Total',
+  INN200: 'Innspill 200+ m',
+  INN150: 'Innspill 150–200 m',
+  INN100: 'Innspill 100–150 m',
+  INN50: 'Innspill 50–100 m',
+  ARG: 'Rundt green',
+  PUTT: 'Putting',
+  PHYS: 'Fysikk',
+};
+
+export const DOMAIN_LABELS_EN: Record<TestDomainCode, string> = {
+  TEE: 'Tee Total',
+  INN200: 'Approach 200+ m',
+  INN150: 'Approach 150–200 m',
+  INN100: 'Approach 100–150 m',
+  INN50: 'Approach 50–100 m',
+  ARG: 'Around the Green',
+  PUTT: 'Putting',
+  PHYS: 'Physical',
+};
+
+export function getDomainLabel(code: TestDomainCode, locale: 'no' | 'en' = 'no'): string {
+  return locale === 'no' ? DOMAIN_LABELS_NO[code] : DOMAIN_LABELS_EN[code];
+}
+
+// ============================================================================
 // VALIDATION
 // ============================================================================
 

@@ -1,6 +1,6 @@
 /**
  * AK Golf Academy - Coach Group Plan Editor
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Full-screen group training plan editor with:
  * - Weekly view with day columns
@@ -77,15 +77,15 @@ interface GroupInfo {
   avatarInitials: string;
 }
 
-// Category colors
+// Category colors - using semantic session tokens
 const categoryColors: Record<string, { bg: string; text: string; label: string }> = {
-  teknikk: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Teknikk' },
-  putting: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)', label: 'Putting' },
-  kort_spill: { bg: 'rgba(var(--achievement-rgb), 0.15)', text: 'var(--achievement)', label: 'Kort spill' },
-  langt_spill: { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)', label: 'Langt spill' },
-  bane: { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)', label: 'Bane' },
-  mental: { bg: 'rgba(139, 92, 246, 0.15)', text: '#8B5CF6', label: 'Mental' },
-  fysisk: { bg: 'rgba(var(--error-rgb), 0.15)', text: 'var(--error)', label: 'Fysisk' },
+  teknikk: { bg: 'var(--ak-session-teknikkMuted)', text: 'var(--ak-session-teknikk)', label: 'Teknikk' },
+  putting: { bg: 'var(--ak-status-successMuted)', text: 'var(--ak-status-success)', label: 'Putting' },
+  kort_spill: { bg: 'var(--ak-session-golfslagMuted)', text: 'var(--ak-session-golfslag)', label: 'Kort spill' },
+  langt_spill: { bg: 'var(--ak-session-spillMuted)', text: 'var(--ak-session-spill)', label: 'Langt spill' },
+  bane: { bg: 'var(--ak-status-warningMuted)', text: 'var(--ak-status-warning)', label: 'Bane' },
+  mental: { bg: 'var(--ak-session-funksjonellMuted)', text: 'var(--ak-session-funksjonell)', label: 'Mental' },
+  fysisk: { bg: 'var(--ak-session-fysiskMuted)', text: 'var(--ak-session-fysisk)', label: 'Fysisk' },
 };
 
 const dayNames = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'];
@@ -107,7 +107,7 @@ const mockGroup: GroupInfo = {
   id: 'g1',
   name: 'Wang Golf Herrer',
   memberCount: 8,
-  avatarColor: 'var(--accent)',
+  avatarColor: 'var(--ak-brand-primary)',
   avatarInitials: 'WH',
 };
 
@@ -331,12 +331,12 @@ export default function CoachGroupPlan() {
       {/* Week Theme/Focus */}
       <div style={styles.weekInfo}>
         <div style={styles.weekTheme}>
-          <Flag size={16} style={{ color: 'var(--accent)' }} />
+          <Flag size={16} style={{ color: 'var(--ak-brand-primary)' }} />
           <span style={styles.weekThemeLabel}>Tema:</span>
           <span style={styles.weekThemeValue}>{weeklyPlan.theme || 'Ikke satt'}</span>
         </div>
         <div style={styles.weekTheme}>
-          <Target size={16} style={{ color: 'var(--success)' }} />
+          <Target size={16} style={{ color: 'var(--ak-status-success)' }} />
           <span style={styles.weekThemeLabel}>Fokus:</span>
           <span style={styles.weekThemeValue}>{weeklyPlan.focus || 'Ikke satt'}</span>
         </div>
@@ -353,7 +353,7 @@ export default function CoachGroupPlan() {
         </button>
 
         <div style={styles.weekNavCenter}>
-          <Calendar size={20} style={{ color: 'var(--accent)' }} />
+          <Calendar size={20} style={{ color: 'var(--ak-brand-primary)' }} />
           <span style={styles.weekNavTitle}>Uke {currentWeekNumber}</span>
           <span style={styles.weekNavDates}>
             {weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })} -{' '}
@@ -423,8 +423,8 @@ export default function CoachGroupPlan() {
                           key={ex.id}
                           style={{
                             ...styles.exerciseTag,
-                            backgroundColor: categoryColors[ex.category]?.bg || 'var(--bg-tertiary)',
-                            color: categoryColors[ex.category]?.text || 'var(--text-primary)',
+                            backgroundColor: categoryColors[ex.category]?.bg || 'var(--ak-surface-subtle)',
+                            color: categoryColors[ex.category]?.text || 'var(--ak-text-primary)',
                           }}
                         >
                           {ex.name}
@@ -521,11 +521,11 @@ export default function CoachGroupPlan() {
                 <div style={styles.exerciseList}>
                   {newSession.exercises.map((ex) => (
                     <div key={ex.id} style={styles.exerciseItem}>
-                      <GripVertical size={14} style={{ color: 'var(--text-tertiary)' }} />
+                      <GripVertical size={14} style={{ color: 'var(--ak-text-tertiary)' }} />
                       <span
                         style={{
                           ...styles.exerciseCategoryDot,
-                          backgroundColor: categoryColors[ex.category]?.text || 'var(--text-secondary)',
+                          backgroundColor: categoryColors[ex.category]?.text || 'var(--ak-text-secondary)',
                         }}
                       />
                       <span style={styles.exerciseName}>{ex.name}</span>
@@ -597,8 +597,8 @@ export default function CoachGroupPlan() {
                 <span
                   style={{
                     ...styles.libraryCategoryBadge,
-                    backgroundColor: categoryColors[ex.category]?.bg || 'var(--bg-tertiary)',
-                    color: categoryColors[ex.category]?.text || 'var(--text-primary)',
+                    backgroundColor: categoryColors[ex.category]?.bg || 'var(--ak-surface-subtle)',
+                    color: categoryColors[ex.category]?.text || 'var(--ak-text-primary)',
                   }}
                 >
                   {categoryColors[ex.category]?.label || ex.category}
@@ -621,13 +621,13 @@ export default function CoachGroupPlan() {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     minHeight: '100vh',
-    backgroundColor: 'var(--bg-secondary)',
+    backgroundColor: 'var(--ak-surface-base)',
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
   },
   headerWrapper: {
     padding: '24px 24px 0',
-    backgroundColor: 'var(--bg-primary)',
-    borderBottom: '1px solid var(--border-default)',
+    backgroundColor: 'var(--ak-surface-card)',
+    borderBottom: '1px solid var(--ak-border-default)',
   },
   loadingContainer: {
     minHeight: '100vh',
@@ -638,8 +638,8 @@ const styles: Record<string, React.CSSProperties> = {
   spinner: {
     width: 48,
     height: 48,
-    border: '4px solid var(--border-default)',
-    borderTopColor: 'var(--accent)',
+    border: '4px solid var(--ak-border-default)',
+    borderTopColor: 'var(--ak-brand-primary)',
     borderRadius: '50%',
     animation: 'spin 1s linear infinite',
   },
@@ -647,8 +647,8 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     padding: '6px 12px',
-    backgroundColor: 'rgba(var(--warning-rgb), 0.15)',
-    color: 'var(--warning)',
+    backgroundColor: 'var(--ak-status-warningMuted)',
+    color: 'var(--ak-status-warning)',
     fontSize: '13px',
     fontWeight: 500,
     borderRadius: 'var(--radius-md)',
@@ -657,7 +657,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     gap: '24px',
     padding: '16px 24px',
-    backgroundColor: 'var(--bg-primary)',
+    backgroundColor: 'var(--ak-surface-card)',
   },
   weekTheme: {
     display: 'flex',
@@ -666,32 +666,32 @@ const styles: Record<string, React.CSSProperties> = {
   },
   weekThemeLabel: {
     fontSize: '13px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
   },
   weekThemeValue: {
     fontSize: '14px',
     fontWeight: 500,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
   },
   weekNav: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '16px 24px',
-    backgroundColor: 'var(--bg-primary)',
-    borderBottom: '1px solid var(--border-default)',
+    backgroundColor: 'var(--ak-surface-card)',
+    borderBottom: '1px solid var(--ak-border-default)',
   },
   weekNavButton: {
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
     padding: '10px 16px',
-    backgroundColor: 'var(--bg-tertiary)',
+    backgroundColor: 'var(--ak-surface-subtle)',
     border: 'none',
     borderRadius: 'var(--radius-md)',
     fontSize: '14px',
     fontWeight: 500,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
     cursor: 'pointer',
   },
   weekNavCenter: {
@@ -702,48 +702,48 @@ const styles: Record<string, React.CSSProperties> = {
   weekNavTitle: {
     fontSize: '20px',
     fontWeight: 700,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
   },
   weekNavDates: {
     fontSize: '14px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
   },
   weekGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(7, 1fr)',
     gap: '1px',
-    backgroundColor: 'var(--border-default)',
+    backgroundColor: 'var(--ak-border-default)',
     margin: '24px',
     borderRadius: 'var(--radius-lg)',
     overflow: 'hidden',
     boxShadow: 'var(--shadow-card)',
   },
   dayColumn: {
-    backgroundColor: 'var(--bg-primary)',
+    backgroundColor: 'var(--ak-surface-card)',
     minHeight: '400px',
   },
   dayColumnToday: {
-    backgroundColor: 'rgba(var(--accent-rgb), 0.03)',
+    backgroundColor: 'var(--ak-brand-primaryMuted)',
   },
   dayHeader: {
     padding: '12px 16px',
-    borderBottom: '1px solid var(--border-default)',
+    borderBottom: '1px solid var(--ak-border-default)',
     textAlign: 'center',
   },
   dayHeaderToday: {
-    backgroundColor: 'var(--accent)',
+    backgroundColor: 'var(--ak-brand-primary)',
     borderBottom: 'none',
   },
   dayName: {
     display: 'block',
     fontSize: '14px',
     fontWeight: 600,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
   },
   dayDate: {
     display: 'block',
     fontSize: '12px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     marginTop: '2px',
   },
   dayContent: {
@@ -754,9 +754,9 @@ const styles: Record<string, React.CSSProperties> = {
   },
   sessionCard: {
     padding: '12px',
-    backgroundColor: 'var(--bg-secondary)',
+    backgroundColor: 'var(--ak-surface-base)',
     borderRadius: 'var(--radius-md)',
-    border: '1px solid var(--border-default)',
+    border: '1px solid var(--ak-border-default)',
   },
   sessionCardLocked: {
     opacity: 0.6,
@@ -773,7 +773,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '4px',
     fontSize: '12px',
     fontWeight: 500,
-    color: 'var(--accent)',
+    color: 'var(--ak-brand-primary)',
   },
   sessionActions: {
     display: 'flex',
@@ -784,13 +784,13 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: 'transparent',
     border: 'none',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
     cursor: 'pointer',
   },
   sessionTitle: {
     fontSize: '14px',
     fontWeight: 600,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
     margin: '0 0 8px 0',
   },
   sessionExercises: {
@@ -810,21 +810,21 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: '8px',
-    borderTop: '1px solid var(--border-subtle)',
+    borderTop: '1px solid var(--ak-border-muted)',
   },
   sessionDuration: {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
     fontSize: '11px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
   },
   sessionType: {
     display: 'flex',
     alignItems: 'center',
     gap: '4px',
     fontSize: '11px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
   },
   addSessionButton: {
     display: 'flex',
@@ -833,11 +833,11 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '6px',
     padding: '10px',
     backgroundColor: 'transparent',
-    border: '2px dashed var(--border-default)',
+    border: '2px dashed var(--ak-border-default)',
     borderRadius: 'var(--radius-md)',
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     cursor: 'pointer',
   },
   modalContent: {
@@ -853,24 +853,24 @@ const styles: Record<string, React.CSSProperties> = {
   label: {
     fontSize: '14px',
     fontWeight: 500,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
   },
   input: {
     padding: '10px 14px',
-    backgroundColor: 'var(--bg-secondary)',
-    border: '1px solid var(--border-default)',
+    backgroundColor: 'var(--ak-surface-base)',
+    border: '1px solid var(--ak-border-default)',
     borderRadius: 'var(--radius-md)',
     fontSize: '14px',
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
     outline: 'none',
   },
   textarea: {
     padding: '10px 14px',
-    backgroundColor: 'var(--bg-secondary)',
-    border: '1px solid var(--border-default)',
+    backgroundColor: 'var(--ak-surface-base)',
+    border: '1px solid var(--ak-border-default)',
     borderRadius: 'var(--radius-md)',
     fontSize: '14px',
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
     outline: 'none',
     resize: 'vertical',
   },
@@ -881,25 +881,25 @@ const styles: Record<string, React.CSSProperties> = {
   typeButton: {
     flex: 1,
     padding: '10px',
-    backgroundColor: 'var(--bg-tertiary)',
-    border: '1px solid var(--border-default)',
+    backgroundColor: 'var(--ak-surface-subtle)',
+    border: '1px solid var(--ak-border-default)',
     borderRadius: 'var(--radius-md)',
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     cursor: 'pointer',
   },
   typeButtonActive: {
-    backgroundColor: 'var(--accent)',
-    borderColor: 'var(--accent)',
-    color: 'var(--bg-primary)',
+    backgroundColor: 'var(--ak-brand-primary)',
+    borderColor: 'var(--ak-brand-primary)',
+    color: 'var(--ak-surface-card)',
   },
   exerciseList: {
     display: 'flex',
     flexDirection: 'column',
     gap: '8px',
     padding: '12px',
-    backgroundColor: 'var(--bg-tertiary)',
+    backgroundColor: 'var(--ak-surface-subtle)',
     borderRadius: 'var(--radius-md)',
   },
   exerciseItem: {
@@ -907,7 +907,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '10px',
     padding: '8px 0',
-    borderBottom: '1px solid var(--border-subtle)',
+    borderBottom: '1px solid var(--ak-border-muted)',
   },
   exerciseCategoryDot: {
     width: '8px',
@@ -917,23 +917,23 @@ const styles: Record<string, React.CSSProperties> = {
   exerciseName: {
     flex: 1,
     fontSize: '14px',
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
   },
   exerciseDuration: {
     fontSize: '13px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
   },
   exerciseRemoveBtn: {
     padding: '4px',
     backgroundColor: 'transparent',
     border: 'none',
     borderRadius: 'var(--radius-sm)',
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
     cursor: 'pointer',
   },
   noExercises: {
     fontSize: '14px',
-    color: 'var(--text-tertiary)',
+    color: 'var(--ak-text-tertiary)',
     fontStyle: 'italic',
     margin: 0,
   },
@@ -943,12 +943,12 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     gap: '8px',
     padding: '12px',
-    backgroundColor: 'var(--bg-secondary)',
-    border: '1px dashed var(--border-default)',
+    backgroundColor: 'var(--ak-surface-base)',
+    border: '1px dashed var(--ak-border-default)',
     borderRadius: 'var(--radius-md)',
     fontSize: '14px',
     fontWeight: 500,
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     cursor: 'pointer',
   },
   modalActions: {
@@ -956,7 +956,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'flex-end',
     gap: '12px',
     paddingTop: '16px',
-    borderTop: '1px solid var(--border-default)',
+    borderTop: '1px solid var(--ak-border-default)',
   },
   exerciseLibrary: {
     display: 'flex',
@@ -970,7 +970,7 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     gap: '12px',
     padding: '12px',
-    backgroundColor: 'var(--bg-secondary)',
+    backgroundColor: 'var(--ak-surface-base)',
     borderRadius: 'var(--radius-md)',
     cursor: 'pointer',
   },
@@ -987,17 +987,17 @@ const styles: Record<string, React.CSSProperties> = {
   libraryItemName: {
     fontSize: '14px',
     fontWeight: 500,
-    color: 'var(--text-primary)',
+    color: 'var(--ak-text-primary)',
     margin: 0,
   },
   libraryItemDesc: {
     fontSize: '12px',
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
     margin: '2px 0 0 0',
   },
   libraryItemDuration: {
     fontSize: '13px',
     fontWeight: 500,
-    color: 'var(--text-secondary)',
+    color: 'var(--ak-text-secondary)',
   },
 };
