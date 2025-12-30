@@ -4,7 +4,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
-import BottomNav from '../../ui/composites/BottomNav';
+// BottomNav removed per design requirements
 import StateCard from '../../ui/composites/StateCard';
 import { Plus, RefreshCw } from 'lucide-react';
 import { useDashboardData } from '../../data';
@@ -77,7 +77,6 @@ const DashboardPage: React.FC = () => {
       <AppShellTemplate
         title="Dashboard"
         subtitle="Velkommen tilbake"
-        bottomNav={<BottomNav />}
       >
         <section style={styles.section}>
           <StateCard
@@ -98,7 +97,6 @@ const DashboardPage: React.FC = () => {
       title="Dashboard"
       subtitle="Velkommen tilbake"
       actions={headerActions}
-      bottomNav={<BottomNav />}
     >
       {/* Error message */}
       {error && (

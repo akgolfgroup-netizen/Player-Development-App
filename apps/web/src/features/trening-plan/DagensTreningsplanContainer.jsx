@@ -38,16 +38,16 @@ const TODAY_PLAN = {
       name: 'Driver-trening',
       duration: 45,
       status: 'completed',
-      description: 'Fokus pa konsistent kontakt og ballbane',
+      description: 'Fokus på konsistent kontakt og ballbane',
       exercises: [
-        { name: 'Alignment-drill', reps: '10 baller', completed: true, notes: 'Fokus pa skulder-linje' },
+        { name: 'Alignment-drill', reps: '10 baller', completed: true, notes: 'Fokus på skulder-linje' },
         { name: 'Tempo-drill (1-2-3)', reps: '20 baller', completed: true },
-        { name: 'Full sving med mal', reps: '30 baller', completed: true },
+        { name: 'Full sving med mål', reps: '30 baller', completed: true },
       ],
       trackmanData: {
         avgClubSpeed: '108 mph',
         avgBallSpeed: '158 mph',
-        avgCarry: '265 yds',
+        avgCarry: '242 m',
         avgSmash: '1.46',
       },
     },
@@ -60,14 +60,14 @@ const TODAY_PLAN = {
       description: 'Presisjon og avstandskontroll',
       exercises: [
         { name: 'Alignment check', reps: '5 baller', completed: true },
-        { name: '6-jern til mål 160m', reps: '20 baller', completed: false },
-        { name: '5-jern til mål 175m', reps: '15 baller', completed: false },
-        { name: '4-jern til mål 190m', reps: '15 baller', completed: false },
+        { name: '6-jern til mål 147 m', reps: '20 baller', completed: false },
+        { name: '5-jern til mål 160 m', reps: '15 baller', completed: false },
+        { name: '4-jern til mål 175 m', reps: '15 baller', completed: false },
       ],
       targetZones: [
-        { club: '6-jern', distance: '160m', tolerance: '±7m' },
-        { club: '5-jern', distance: '175m', tolerance: '±9m' },
-        { club: '4-jern', distance: '190m', tolerance: '±11m' },
+        { club: '6-jern', distance: '147 m', tolerance: '±7 m' },
+        { club: '5-jern', distance: '160 m', tolerance: '±9 m' },
+        { club: '4-jern', distance: '175 m', tolerance: '±11 m' },
       ],
     },
     {
@@ -79,7 +79,7 @@ const TODAY_PLAN = {
       description: 'Chipping og pitching',
       exercises: [
         { name: 'Chip fra tight lie', reps: '15 baller', completed: false },
-        { name: 'Pitch 27-46 meter', reps: '20 baller', completed: false },
+        { name: 'Pitch 25-42 m', reps: '20 baller', completed: false },
         { name: 'Up-and-down challenge', reps: '10 forsøk', completed: false },
       ],
     },
@@ -92,7 +92,7 @@ const TODAY_PLAN = {
       description: 'Putting og stretching',
       exercises: [
         { name: 'Gate-putting drill', reps: '20 putter', completed: false },
-        { name: 'Avstandskontroll 6-12 meter', reps: '10 putter', completed: false },
+        { name: 'Avstandskontroll 6-12 m', reps: '10 putter', completed: false },
         { name: 'Stretching', reps: '5 min', completed: false },
       ],
     },
@@ -100,7 +100,7 @@ const TODAY_PLAN = {
   coachNote: 'Husk å fokusere på tempo i dag. Vi justerte litt på grip forrige økt - vær bevisst på dette gjennom hele treningen.',
   goals: [
     'Oppnå minimum 65% fairway-treff med driver',
-    'Gjennomsnittlig avvik fra mål under 10m med lange jern',
+    'Gjennomsnittlig avvik fra mål under 10 m med lange jern',
     'Minimum 5/10 up-and-downs',
   ],
 };
@@ -131,9 +131,9 @@ const getSessionTypeConfig = (type) => {
 const getStatusConfig = (status) => {
   switch (status) {
     case 'completed':
-      return { color: 'var(--success)', icon: CheckCircle, label: 'Fullfort' };
+      return { color: 'var(--success)', icon: CheckCircle, label: 'Fullført' };
     case 'in_progress':
-      return { color: 'var(--accent)', icon: Play, label: 'Pagar' };
+      return { color: 'var(--accent)', icon: Play, label: 'Pågår' };
     case 'pending':
       return { color: 'var(--text-secondary)', icon: Clock, label: 'Venter' };
     default:
@@ -213,7 +213,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
             </span>
           </div>
           <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            {session.duration} min - {completedExercises}/{totalExercises} ovelser
+            {session.duration} min - {completedExercises}/{totalExercises} øvelser
           </div>
         </div>
 
@@ -368,7 +368,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
               }}
               style={{ width: '100%', marginTop: '12px', justifyContent: 'center' }}
             >
-              Start okt
+              Start økt
             </Button>
           )}
           {session.status === 'in_progress' && (
@@ -381,7 +381,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
               }}
               style={{ width: '100%', marginTop: '12px', justifyContent: 'center', backgroundColor: 'var(--success)' }}
             >
-              Marker som fullfort
+              Marker som fullført
             </Button>
           )}
         </div>
@@ -432,99 +432,106 @@ const DagensTreningsplanContainer = () => {
       />
 
       <div style={{ padding: '0' }}>
-        {/* Progress Overview */}
+        {/* Two-column layout: Sessions left, Coach note top-right */}
         <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '16px',
-          padding: '20px',
+          display: 'grid',
+          gridTemplateColumns: '1fr 320px',
+          gap: '24px',
           marginBottom: '20px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         }}>
+          {/* Left column: Progress Overview */}
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '16px',
-          }}>
-            <div>
-              <h2 style={{
-                fontSize: '18px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}>
-                Dagens fremgang
-              </h2>
-              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                {completedSessions}/{plan.sessions.length} okter fullfort
-              </div>
-            </div>
-            <div style={{
-              fontSize: '28px',
-              fontWeight: 700,
-              color: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
-            }}>
-              {progressPercent}%
-            </div>
-          </div>
-
-          <div style={{
-            height: '8px',
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: '4px',
-            overflow: 'hidden',
-          }}>
-            <div style={{
-              height: '100%',
-              width: `${progressPercent}%`,
-              backgroundColor: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
-              borderRadius: '4px',
-              transition: 'width 0.5s ease',
-            }} />
-          </div>
-
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '12px',
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-          }}>
-            <span>{plan.completedDuration} min fullfort</span>
-            <span>{plan.totalDuration - plan.completedDuration} min gjenstar</span>
-          </div>
-        </div>
-
-        {/* Coach Note */}
-        {plan.coachNote && (
-          <div style={{
-            backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
-            borderRadius: '12px',
-            padding: '16px',
-            marginBottom: '20px',
-            borderLeft: '4px solid var(--accent)',
+            backgroundColor: 'var(--bg-primary)',
+            borderRadius: '16px',
+            padding: '20px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '8px',
+              justifyContent: 'space-between',
+              marginBottom: '16px',
             }}>
-              <MessageCircle size={16} color={'var(--accent)'} />
-              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
-                Beskjed fra trener
-              </span>
+              <div>
+                <h2 style={{
+                  fontSize: '18px',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  margin: 0,
+                }}>
+                  Dagens fremgang
+                </h2>
+                <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                  {completedSessions}/{plan.sessions.length} økter fullført
+                </div>
+              </div>
+              <div style={{
+                fontSize: '28px',
+                fontWeight: 700,
+                color: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
+              }}>
+                {progressPercent}%
+              </div>
             </div>
-            <p style={{
-              fontSize: '13px',
-              color: 'var(--text-primary)',
-              margin: 0,
-              lineHeight: 1.5,
+
+            <div style={{
+              height: '8px',
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: '4px',
+              overflow: 'hidden',
             }}>
-              {plan.coachNote}
-            </p>
+              <div style={{
+                height: '100%',
+                width: `${progressPercent}%`,
+                backgroundColor: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
+                borderRadius: '4px',
+                transition: 'width 0.5s ease',
+              }} />
+            </div>
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: '12px',
+              fontSize: '12px',
+              color: 'var(--text-secondary)',
+            }}>
+              <span>{plan.completedDuration} min fullført</span>
+              <span>{plan.totalDuration - plan.completedDuration} min gjenstår</span>
+            </div>
           </div>
-        )}
+
+          {/* Right column: Coach Note (top-right position) */}
+          {plan.coachNote && (
+            <div style={{
+              backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
+              borderRadius: '12px',
+              padding: '16px',
+              borderLeft: '4px solid var(--accent)',
+              alignSelf: 'start',
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '8px',
+              }}>
+                <MessageCircle size={16} color={'var(--accent)'} />
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
+                  Beskjed fra trener
+                </span>
+              </div>
+              <p style={{
+                fontSize: '13px',
+                color: 'var(--text-primary)',
+                margin: 0,
+                lineHeight: 1.5,
+              }}>
+                {plan.coachNote}
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Today's Goals */}
         <div style={{
@@ -541,7 +548,7 @@ const DagensTreningsplanContainer = () => {
           }}>
             <Award size={16} color={'var(--achievement)'} />
             <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
-              Dagens mal
+              Dagens mål
             </span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -570,7 +577,7 @@ const DagensTreningsplanContainer = () => {
           color: 'var(--text-primary)',
           margin: '0 0 16px 0',
         }}>
-          Okter
+          Økter
         </h2>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -596,7 +603,7 @@ const DagensTreningsplanContainer = () => {
             backgroundColor: 'transparent',
           }}
         >
-          Legg til egen okt
+          Legg til egen økt
         </Button>
       </div>
     </div>

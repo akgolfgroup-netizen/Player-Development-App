@@ -4,7 +4,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
-import BottomNav from '../../ui/composites/BottomNav';
+// BottomNav removed per design requirements
 import StateCard from '../../ui/composites/StateCard';
 import { RefreshCw, Plus } from 'lucide-react';
 import { useStats } from '../../data';
@@ -59,7 +59,6 @@ const StatsPageV2: React.FC = () => {
       <AppShellTemplate
         title="Statistikk"
         subtitle="Siste 7 dager"
-        bottomNav={<BottomNav />}
       >
         <section style={styles.section}>
           <StateCard
@@ -80,7 +79,6 @@ const StatsPageV2: React.FC = () => {
     <AppShellTemplate
       title="Statistikk"
       subtitle="Siste 7 dager"
-      bottomNav={<BottomNav />}
     >
       {/* Error message */}
       {error && (

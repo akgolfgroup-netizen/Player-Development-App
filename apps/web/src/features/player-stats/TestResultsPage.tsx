@@ -18,7 +18,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
-import BottomNav from '../../ui/composites/BottomNav';
+
 import apiClient from '../../services/apiClient';
 import { useScreenView } from '../../analytics/useScreenView';
 import { useAuth } from '../../contexts/AuthContext';
@@ -218,7 +218,7 @@ const TestResultsPage: React.FC = () => {
       <AppShellTemplate
         title="Testresultater"
         subtitle="Alle dine resultater"
-        bottomNav={<BottomNav />}
+        
       >
         <section style={styles.section}>
           <StateCard
@@ -235,7 +235,7 @@ const TestResultsPage: React.FC = () => {
     <AppShellTemplate
       title="Testresultater"
       subtitle="Fullstendig oversikt"
-      bottomNav={<BottomNav />}
+      
     >
       {/* Stats Overview */}
       <section style={styles.section}>

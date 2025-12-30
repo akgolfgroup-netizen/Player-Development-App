@@ -567,8 +567,8 @@ const AKGolfDashboardV3 = () => {
 
   return (
     <div style={styles.dashboard}>
-      {/* ZONE A: Control & Focus */}
-      <section style={styles.zoneA}>
+      {/* Left Column: Welcome + Focus + CTA */}
+      <section style={styles.leftColumn}>
         <WelcomeSection
           playerName={player.name}
           category={player.category}
@@ -585,10 +585,17 @@ const AKGolfDashboardV3 = () => {
           upcomingSession={dashboardData?.upcomingSessions?.[0]}
           onStart={handleStartSession}
         />
+
+        {/* Progress Strip below CTA */}
+        <ProgressStrip
+          sessions={{ completed: stats.sessionsCompleted, total: stats.sessionsTotal }}
+          hours={{ current: stats.hoursThisWeek, goal: stats.hoursGoal }}
+          streak={stats.streak}
+        />
       </section>
 
-      {/* ZONE B: Tasks & Quick Actions (OPPGAVER FLYTTET OPP!) */}
-      <section style={styles.zoneB}>
+      {/* Right Column: Tasks + Notifications */}
+      <section style={styles.rightColumn}>
         <TasksList
           tasks={tasks}
           onToggle={toggleTask}
@@ -596,17 +603,9 @@ const AKGolfDashboardV3 = () => {
           onStartTask={handleStartTaskSession}
         />
 
-        {/* P4: Alltid synlig lavterskel-alternativ */}
+        {/* Quick start alternativ */}
         <QuickStartCTA onStart={handleStartSession} />
-      </section>
 
-      {/* ZONE C: Progress & Notifications (KOMPAKT) */}
-      <section style={styles.zoneC}>
-        <ProgressStrip
-          sessions={{ completed: stats.sessionsCompleted, total: stats.sessionsTotal }}
-          hours={{ current: stats.hoursThisWeek, goal: stats.hoursGoal }}
-          streak={stats.streak}
-        />
         <NotificationsList
           notifications={notifications}
           onViewAll={() => navigate('/varslinger')}
@@ -620,12 +619,13 @@ const AKGolfDashboardV3 = () => {
 
 const styles = {
   dashboard: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
     gap: '28px',
-    maxWidth: '640px',
+    width: '100%',
+    maxWidth: '1400px',
     margin: '0 auto',
-    padding: '24px 16px',
+    padding: '24px 32px',
   },
 
   loadingState: {
@@ -637,11 +637,18 @@ const styles = {
     fontSize: '15px',
   },
 
-  // Zone A: Control & Focus
-  zoneA: {
+  // Left Column: Control & Focus
+  leftColumn: {
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
+  },
+
+  // Right Column: Tasks & Notifications
+  rightColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
   },
 
   welcomeSection: {
@@ -820,19 +827,6 @@ const styles = {
     transition: 'all 0.15s ease',
   },
 
-  // Zone B: Tasks (MOVED UP)
-  zoneB: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-  },
-
-  // Zone C: Progress & Notifications
-  zoneC: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
 
   // ProgressStrip
   progressStrip: {

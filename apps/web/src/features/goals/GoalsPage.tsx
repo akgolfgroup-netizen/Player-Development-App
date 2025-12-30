@@ -4,7 +4,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
-import BottomNav from '../../ui/composites/BottomNav';
+
 import StateCard from '../../ui/composites/StateCard';
 import { Plus, RefreshCw } from 'lucide-react';
 import { useGoals } from '../../data';
@@ -58,7 +58,7 @@ const GoalsPage: React.FC = () => {
       <AppShellTemplate
         title="Mine mål"
         subtitle="Denne uken"
-        bottomNav={<BottomNav />}
+        
       >
         <section style={styles.section}>
           <StateCard
@@ -81,7 +81,7 @@ const GoalsPage: React.FC = () => {
       title="Mine mål"
       subtitle="Denne uken"
       actions={headerActions}
-      bottomNav={<BottomNav />}
+      
     >
       {/* Error message */}
       {error && (

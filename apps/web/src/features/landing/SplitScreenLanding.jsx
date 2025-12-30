@@ -132,7 +132,7 @@ export function SplitScreenLanding() {
               style={styles.primaryButton}
               onClick={() => {
                 triggerHaptic.tap();
-                navigate('/login');
+                navigate('/login?signup=true');
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = 'var(--accent-dark)';
@@ -143,7 +143,7 @@ export function SplitScreenLanding() {
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              Registrer deg
+              GET STARTED
             </button>
             <button
               style={styles.secondaryButton}
@@ -196,7 +196,7 @@ export function SplitScreenLanding() {
               style={styles.featureButton}
               onClick={() => {
                 triggerHaptic.tap();
-                navigate('/login');
+                navigate('/login?signup=true');
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = 'var(--accent)';
@@ -207,7 +207,7 @@ export function SplitScreenLanding() {
                 e.currentTarget.style.color = 'var(--accent)';
               }}
             >
-              Start din reise i dag →
+              Sign up today →
             </button>
           </div>
         </div>

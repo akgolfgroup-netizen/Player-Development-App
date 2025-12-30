@@ -18,7 +18,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
-import BottomNav from '../../ui/composites/BottomNav';
+
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { useScreenView } from '../../analytics/useScreenView';
 
@@ -127,7 +127,7 @@ const StrokesGainedPage: React.FC = () => {
       <AppShellTemplate
         title="Strokes Gained"
         subtitle="Detaljert analyse"
-        bottomNav={<BottomNav />}
+        
       >
         <section style={styles.section}>
           <StateCard
@@ -145,7 +145,7 @@ const StrokesGainedPage: React.FC = () => {
       <AppShellTemplate
         title="Strokes Gained"
         subtitle="Detaljert analyse"
-        bottomNav={<BottomNav />}
+        
       >
         <section style={styles.section}>
           <StateCard
@@ -167,7 +167,7 @@ const StrokesGainedPage: React.FC = () => {
     <AppShellTemplate
       title="Strokes Gained"
       subtitle="Detaljert analyse og sammenligning"
-      bottomNav={<BottomNav />}
+      
     >
       {/* Info Banner */}
       <section style={styles.section}>
