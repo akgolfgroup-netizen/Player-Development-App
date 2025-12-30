@@ -71,6 +71,7 @@ const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
 const StatsPageV2 = lazy(() => import('./features/stats/StatsPageV2'));
 const CalendarPage = lazy(() => import('./features/calendar/CalendarPage'));
 const DayViewPage = lazy(() => import('./features/calendar/DayViewPage'));
+const CalendarOversiktPage = lazy(() => import('./features/calendar-oversikt').then(m => ({ default: m.CalendarOversiktPage })));
 
 // Player Stats (DataGolf & Test Results)
 const PlayerStatsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.PlayerStatsPage })));
@@ -487,6 +488,13 @@ function App() {
             <ProtectedRoute>
               <DashboardLayout>
                 <DayViewPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/kalender/oversikt" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <CalendarOversiktPage />
               </DashboardLayout>
             </ProtectedRoute>
           } />

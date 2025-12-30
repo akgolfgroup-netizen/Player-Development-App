@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { useFocus } from '../../hooks/useFocus';
+import { CalendarOversiktWidget } from '../calendar-oversikt';
 
 /**
  * AKGolfDashboard V3.1 - UX Redesign
@@ -904,9 +905,14 @@ const AKGolfDashboardV3 = () => {
         </div>
       </section>
 
-      {/* Row 3: Last 7 Days Visualization (12-col) */}
-      <section style={styles.last7Row}>
-        <Last7DaysVisualization calendarEvents={calendarEvents} stats={stats} />
+      {/* Row 3: Calendar Oversikt Widget + Last 7 Days */}
+      <section style={styles.calendarRow}>
+        <div style={styles.calendarWidgetCol}>
+          <CalendarOversiktWidget />
+        </div>
+        <div style={styles.last7Col}>
+          <Last7DaysVisualization calendarEvents={calendarEvents} stats={stats} />
+        </div>
       </section>
 
       {/* Row 4: Main content - Focus + Tasks side by side */}
@@ -991,9 +997,20 @@ const styles = {
     gridColumn: 'span 4',
   },
 
-  // Row 3: Last 7 days (full width)
-  last7Row: {
+  // Row 3: Calendar Row (Calendar Widget + Last 7 Days)
+  calendarRow: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gap: '20px',
     width: '100%',
+  },
+
+  calendarWidgetCol: {
+    gridColumn: 'span 5',
+  },
+
+  last7Col: {
+    gridColumn: 'span 7',
   },
 
   // Row 4: Main content row
