@@ -38,6 +38,34 @@ type SessionTemplateWithCount = Prisma.SessionTemplateGetPayload<{
 interface ScoredTemplate {
   template: SessionTemplateWithCount;
   score: number;
+  scoreBreakdown?: ScoreBreakdown;
+}
+
+/**
+ * V2: Score breakdown for debugging/analysis
+ */
+interface ScoreBreakdown {
+  periodMatch: number;
+  learningPhaseMatch: number;
+  durationMatch: number;
+  clubSpeedMatch: number;
+  settingsMatch: number;
+  breakingPointRelevance: number;
+  domainCoverageBonus: number;
+  constraintRelevance: number;
+  proofProgressBonus: number;
+  recentUsagePenalty: number;
+  intensityMatch: number;
+}
+
+/**
+ * V2: Extended selection context with domain/constraint awareness
+ */
+interface EnhancedSelectionContext {
+  activeBPDomains: TestDomainCode[];
+  topConstraints: BindingConstraint[];
+  proofMetricTestNumbers: number[];
+  templateUsageCounts: Map<string, number>;
 }
 
 export class SessionSelectionService {
@@ -112,10 +140,12 @@ export class SessionSelectionService {
 
   /**
    * Select best session template based on criteria
+   * V2: Uses enhanced context for domain/constraint-aware scoring
    */
   private static async selectSession(
     criteria: SessionSelectionCriteria,
-    tenantId: string
+    tenantId: string,
+    enhancedContext?: EnhancedSelectionContext
   ): Promise<SelectedSession | null> {
     // Query session templates matching criteria
     const templates = await prisma.sessionTemplate.findMany({
@@ -154,10 +184,10 @@ export class SessionSelectionService {
       return null;
     }
 
-    // Score and rank templates
+    // Score and rank templates with V2 enhanced context
     const scored: ScoredTemplate[] = templates.map((template) => {
-      const score = this.scoreTemplate(template, criteria);
-      return { template, score };
+      const { score, breakdown } = this.scoreTemplate(template, criteria, enhancedContext);
+      return { template, score, scoreBreakdown: breakdown };
     });
 
     // Sort by score (descending)
@@ -180,55 +210,237 @@ export class SessionSelectionService {
 
   /**
    * Score a template based on how well it matches criteria
+   * V2: Enhanced with domain/constraint awareness
    */
-  private static scoreTemplate(template: SessionTemplateWithCount, criteria: SessionSelectionCriteria): number {
-    let score = 0;
+  private static scoreTemplate(
+    template: SessionTemplateWithCount,
+    criteria: SessionSelectionCriteria,
+    enhancedContext?: EnhancedSelectionContext
+  ): { score: number; breakdown: ScoreBreakdown } {
+    const breakdown: ScoreBreakdown = {
+      periodMatch: 0,
+      learningPhaseMatch: 0,
+      durationMatch: 0,
+      clubSpeedMatch: 0,
+      settingsMatch: 0,
+      breakingPointRelevance: 0,
+      domainCoverageBonus: 0,
+      constraintRelevance: 0,
+      proofProgressBonus: 0,
+      recentUsagePenalty: 0,
+      intensityMatch: 0,
+    };
 
-    // Exact period match
+    // Exact period match (+100)
     const periods = template.periods as string[];
     if (periods && periods.includes(criteria.period)) {
-      score += 100;
+      breakdown.periodMatch = 100;
     }
 
-    // Learning phase match
+    // Learning phase match (+50)
     if (template.learningPhase && criteria.learningPhases.includes(template.learningPhase)) {
-      score += 50;
+      breakdown.learningPhaseMatch = 50;
     }
 
-    // Duration match (closer = better)
+    // Duration match (closer = better, max +50)
     const durationDiff = Math.abs(template.duration - criteria.targetDuration);
-    score += Math.max(0, 50 - durationDiff);
+    breakdown.durationMatch = Math.max(0, 50 - durationDiff);
 
-    // Club speed match
+    // Club speed match (+30)
     const clubSpeed = template.clubSpeed as string;
     if (clubSpeed === criteria.clubSpeed) {
-      score += 30;
+      breakdown.clubSpeedMatch = 30;
     }
 
-    // Settings match
+    // Settings match (+30)
     const setting = template.setting as string;
     if (setting && criteria.settings.includes(setting)) {
-      score += 30;
+      breakdown.settingsMatch = 30;
     }
 
-    // Breaking point relevance
+    // Breaking point relevance (+20 base)
     if (criteria.breakingPointIds.length > 0) {
-      // Check if template exercises match breaking point exercises
-      score += this.calculateBreakingPointRelevance(template, criteria.breakingPointIds);
+      breakdown.breakingPointRelevance = this.calculateBreakingPointRelevance(
+        template,
+        criteria.breakingPointIds
+      );
     }
 
-    // Prefer less frequently used templates (for variety)
-    const usageCount = template._count?.dailyAssignments || 0;
-    score -= usageCount * 2;
+    // V2: Domain coverage bonus (+50)
+    if (enhancedContext?.activeBPDomains.length) {
+      const templateDomain = this.getDomainForSession(template);
+      if (templateDomain && enhancedContext.activeBPDomains.includes(templateDomain)) {
+        breakdown.domainCoverageBonus = 50;
+      }
+    }
 
-    // Intensity match (use duration as proxy if intensity not available)
-    // Longer sessions typically have higher intensity
+    // V2: Constraint relevance (+40)
+    if (enhancedContext?.topConstraints.length) {
+      const templateDomain = this.getDomainForSession(template);
+      const constraintDomains = enhancedContext.topConstraints.map((c) => c.testDomainCode);
+      if (templateDomain && constraintDomains.includes(templateDomain)) {
+        breakdown.constraintRelevance = 40;
+      }
+    }
+
+    // V2: Proof progress bonus (+30)
+    if (enhancedContext?.proofMetricTestNumbers.length) {
+      const templateTestNumbers = this.getTestNumbersForTemplate(template);
+      const hasProofMetric = templateTestNumbers.some((tn) =>
+        enhancedContext.proofMetricTestNumbers.includes(tn)
+      );
+      if (hasProofMetric) {
+        breakdown.proofProgressBonus = 30;
+      }
+    }
+
+    // V2: Recent usage penalty (-20 per use in last 7 days)
+    if (enhancedContext?.templateUsageCounts) {
+      const usageCount = enhancedContext.templateUsageCounts.get(template.id) || 0;
+      breakdown.recentUsagePenalty = -usageCount * 20;
+    } else {
+      // Fallback: use global count with smaller penalty
+      const usageCount = template._count?.dailyAssignments || 0;
+      breakdown.recentUsagePenalty = -usageCount * 2;
+    }
+
+    // Intensity match (+40)
     const estimatedIntensity = template.duration >= 90 ? 'high' : template.duration >= 60 ? 'medium' : 'low';
     if (estimatedIntensity === criteria.intensity) {
-      score += 40;
+      breakdown.intensityMatch = 40;
     }
 
-    return score;
+    // Calculate total score
+    const score = Object.values(breakdown).reduce((sum, val) => sum + val, 0);
+
+    return { score, breakdown };
+  }
+
+  /**
+   * V2: Get the primary domain for a session template
+   */
+  private static getDomainForSession(template: SessionTemplateWithCount): TestDomainCode | null {
+    // Check template name or type for domain hints
+    const name = (template.name || '').toUpperCase();
+    const type = (template.sessionType || '').toUpperCase();
+    const setting = (template.setting as string || '').toUpperCase();
+
+    // Map common session names/types to domains
+    if (name.includes('DRIVER') || name.includes('TEE') || type.includes('DRIVING')) {
+      return 'TEE';
+    }
+    if (name.includes('APPROACH') || name.includes('INN')) {
+      // Check for distance hints
+      if (name.includes('200') || name.includes('LANG')) return 'INN200';
+      if (name.includes('150')) return 'INN150';
+      if (name.includes('100')) return 'INN100';
+      if (name.includes('50') || name.includes('KORT')) return 'INN50';
+      return 'INN100'; // Default approach
+    }
+    if (name.includes('CHIP') || name.includes('PITCH') || name.includes('ARG') || name.includes('AROUND')) {
+      return 'ARG';
+    }
+    if (name.includes('PUTT') || name.includes('GREEN')) {
+      return 'PUTT';
+    }
+    if (name.includes('FITNESS') || name.includes('STYRKE') || name.includes('PHYSICAL') || type.includes('PHYSICAL')) {
+      return 'PHYS';
+    }
+
+    // Check setting (S1=range, S2=course, etc.)
+    if (setting === 'S1') {
+      // Range - likely driving or approach
+      return 'TEE';
+    }
+    if (setting === 'S3') {
+      // Short game area
+      return 'ARG';
+    }
+    if (setting === 'S4') {
+      // Putting green
+      return 'PUTT';
+    }
+
+    return null;
+  }
+
+  /**
+   * V2: Get test numbers associated with a template's exercises
+   */
+  private static getTestNumbersForTemplate(_template: SessionTemplateWithCount): number[] {
+    // In a full implementation, we'd query the template's exercises
+    // and map them to test numbers via the domain mapping.
+    // For MVP, return empty array - this will be enhanced when
+    // session templates have exercise relations.
+    return [];
+  }
+
+  /**
+   * V2: Build enhanced selection context for a player
+   */
+  static async buildEnhancedContext(
+    playerId: string,
+    tenantId: string
+  ): Promise<EnhancedSelectionContext> {
+    // Get active breaking points with their domains
+    const breakingPoints = await prisma.breakingPoint.findMany({
+      where: {
+        playerId,
+        status: { in: ['identified', 'in_progress', 'awaiting_proof'] },
+      },
+      select: {
+        id: true,
+        testDomainCode: true,
+        benchmarkTestId: true,
+      },
+    });
+
+    const activeBPDomains = breakingPoints
+      .map((bp) => bp.testDomainCode as TestDomainCode)
+      .filter((d): d is TestDomainCode => d !== null);
+
+    // Build proof metric test numbers from active BP domains
+    const proofMetricTestNumbers: number[] = [];
+    for (const domain of activeBPDomains) {
+      const metrics = getProofMetricsForDomain(domain);
+      metrics.forEach((m) => {
+        if (m.testNumber && !proofMetricTestNumbers.includes(m.testNumber)) {
+          proofMetricTestNumbers.push(m.testNumber);
+        }
+      });
+    }
+
+    // Get recent template usage counts
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - this.TEMPLATE_HISTORY_DAYS);
+
+    const recentAssignments = await prisma.dailyTrainingAssignment.findMany({
+      where: {
+        playerId,
+        assignedDate: { gte: cutoffDate },
+        sessionTemplateId: { not: null },
+      },
+      select: { sessionTemplateId: true },
+    });
+
+    const templateUsageCounts = new Map<string, number>();
+    for (const assignment of recentAssignments) {
+      if (assignment.sessionTemplateId) {
+        const count = templateUsageCounts.get(assignment.sessionTemplateId) || 0;
+        templateUsageCounts.set(assignment.sessionTemplateId, count + 1);
+      }
+    }
+
+    // Note: topConstraints should be passed in from CategoryConstraintsService
+    // For now, return empty array - will be wired in Part 5
+    const topConstraints: BindingConstraint[] = [];
+
+    return {
+      activeBPDomains,
+      topConstraints,
+      proofMetricTestNumbers,
+      templateUsageCounts,
+    };
   }
 
   /**
