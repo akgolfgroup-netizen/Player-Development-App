@@ -467,6 +467,279 @@ function TournamentCard({
 }
 
 /**
+ * Filter Panel component
+ */
+function FilterPanel({
+  filters,
+  onFiltersChange,
+  onClose,
+  onClear,
+}: {
+  filters: TournamentFilters;
+  onFiltersChange: (filters: TournamentFilters) => void;
+  onClose: () => void;
+  onClear: () => void;
+}) {
+  const [localFilters, setLocalFilters] = useState<TournamentFilters>(filters);
+
+  const toggleArrayFilter = <T extends string>(
+    key: keyof TournamentFilters,
+    value: T
+  ) => {
+    const current = (localFilters[key] as T[] | undefined) || [];
+    const updated = current.includes(value)
+      ? current.filter(v => v !== value)
+      : [...current, value];
+    setLocalFilters({ ...localFilters, [key]: updated.length ? updated : undefined });
+  };
+
+  const handleApply = () => {
+    onFiltersChange(localFilters);
+    onClose();
+  };
+
+  const handleClear = () => {
+    setLocalFilters({});
+    onClear();
+    onClose();
+  };
+
+  const categories: PlayerCategory[] = ['A', 'B', 'C', 'D', 'E'];
+  const tours: TourType[] = [
+    'junior_tour_regional',
+    'srixon_tour',
+    'garmin_norges_cup',
+    'global_junior_tour',
+    'nordic_league',
+    'ega_turnering',
+    'wagr_turnering',
+    'college_turneringer',
+    'challenge_tour',
+    'dp_world_tour',
+    'pga_tour',
+  ];
+  const statuses: TournamentStatus[] = [
+    'registration_open',
+    'upcoming',
+    'full',
+    'in_progress',
+    'completed',
+  ];
+  const dateRanges: { value: TournamentFilters['dateRange']; label: string }[] = [
+    { value: 'next_30_days', label: 'Neste 30 dager' },
+    { value: 'next_90_days', label: 'Neste 90 dager' },
+    { value: 'this_season', label: 'Denne sesongen' },
+  ];
+
+  return (
+    <div style={filterPanelStyles.overlay} onClick={onClose}>
+      <div style={filterPanelStyles.panel} onClick={e => e.stopPropagation()}>
+        <div style={filterPanelStyles.header}>
+          <h3 style={filterPanelStyles.title}>Filtrer turneringer</h3>
+          <button onClick={onClose} style={filterPanelStyles.closeButton}>
+            <X size={20} />
+          </button>
+        </div>
+
+        <div style={filterPanelStyles.content}>
+          {/* Category Filter */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Anbefalt nivå</h4>
+            <div style={filterPanelStyles.chipGrid}>
+              {categories.map(cat => {
+                const isSelected = localFilters.recommendedCategories?.includes(cat);
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => toggleArrayFilter('recommendedCategories', cat)}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                  >
+                    {CATEGORY_LABELS[cat]}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Tour Filter */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Turneringsserie</h4>
+            <div style={filterPanelStyles.chipGrid}>
+              {tours.map(tour => {
+                const isSelected = localFilters.tours?.includes(tour);
+                return (
+                  <button
+                    key={tour}
+                    onClick={() => toggleArrayFilter('tours', tour)}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                  >
+                    {TOUR_LABELS[tour]}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Status Filter */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Status</h4>
+            <div style={filterPanelStyles.chipGrid}>
+              {statuses.map(status => {
+                const isSelected = localFilters.statuses?.includes(status);
+                return (
+                  <button
+                    key={status}
+                    onClick={() => toggleArrayFilter('statuses', status)}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                  >
+                    {STATUS_LABELS[status]}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Date Range Filter */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Tidsperiode</h4>
+            <div style={filterPanelStyles.chipGrid}>
+              {dateRanges.map(({ value, label }) => {
+                const isSelected = localFilters.dateRange === value;
+                return (
+                  <button
+                    key={value}
+                    onClick={() => setLocalFilters({
+                      ...localFilters,
+                      dateRange: isSelected ? undefined : value,
+                    })}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                  >
+                    {label}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div style={filterPanelStyles.footer}>
+          <Button variant="ghost" onClick={handleClear}>
+            Nullstill
+          </Button>
+          <Button variant="primary" onClick={handleApply}>
+            Bruk filter
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const filterPanelStyles: Record<string, React.CSSProperties> = {
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    zIndex: 1000,
+  },
+  panel: {
+    width: '100%',
+    maxWidth: '400px',
+    height: '100%',
+    backgroundColor: 'var(--background-white)',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    boxShadow: '-4px 0 24px rgba(0, 0, 0, 0.15)',
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 'var(--spacing-4) var(--spacing-5)',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  title: {
+    fontSize: '18px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+    margin: 0,
+  },
+  closeButton: {
+    padding: '8px',
+    border: 'none',
+    backgroundColor: 'transparent',
+    color: 'var(--text-secondary)',
+    cursor: 'pointer',
+    borderRadius: 'var(--radius-sm)',
+  },
+  content: {
+    flex: 1,
+    overflowY: 'auto' as const,
+    padding: 'var(--spacing-5)',
+  },
+  section: {
+    marginBottom: 'var(--spacing-6)',
+  },
+  sectionTitle: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+    margin: '0 0 var(--spacing-3) 0',
+  },
+  chipGrid: {
+    display: 'flex',
+    flexWrap: 'wrap' as const,
+    gap: 'var(--spacing-2)',
+  },
+  chip: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    padding: '8px 12px',
+    borderRadius: 'var(--radius-full)',
+    border: '1px solid var(--border-default)',
+    backgroundColor: 'var(--background-surface)',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-primary)',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+  },
+  chipSelected: {
+    backgroundColor: 'var(--accent)',
+    borderColor: 'var(--accent)',
+    color: 'var(--text-inverse)',
+  },
+  footer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: 'var(--spacing-4) var(--spacing-5)',
+    borderTop: '1px solid var(--border-subtle)',
+  },
+};
+
+/**
  * Past tournament result card
  */
 function PastTournamentCard({ tournament }: { tournament: Tournament }) {
@@ -688,6 +961,16 @@ export default function TournamentCalendarPage() {
           </section>
         )}
       </div>
+
+      {/* Filter Panel */}
+      {showFilterPanel && (
+        <FilterPanel
+          filters={filters}
+          onFiltersChange={setFilters}
+          onClose={() => setShowFilterPanel(false)}
+          onClear={clearFilters}
+        />
+      )}
 
       {/* Details Panel */}
       {selectedTournament && (

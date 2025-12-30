@@ -1,6 +1,12 @@
 /**
  * Session Selection Service
  * Selects appropriate session templates for daily training assignments
+ *
+ * V2 Enhancements:
+ * - domainCoverageBonus: +50 points if template trains a domain with active BP
+ * - constraintRelevance: +40 points if template trains a top-2 constraint
+ * - proofProgress: +30 points if session includes proof-metric exercise
+ * - recentlyCompleted: -20 points per use in last 7 days
  */
 
 import { Prisma } from '@prisma/client';
@@ -10,6 +16,12 @@ import type {
   SessionSelectionCriteria,
   SelectedSession,
 } from './plan-generation.types';
+import {
+  mapTestDomainToComponent,
+  getProofMetricsForDomain,
+  type TestDomainCode,
+} from '../performance/domain-mapping';
+import type { BindingConstraint } from '../performance/category-constraints';
 
 const prisma = getPrismaClient();
 

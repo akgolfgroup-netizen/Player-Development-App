@@ -4,6 +4,7 @@
   "description": "AK Golf IUP - Frontend Application",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^8.0.0",
     "@capacitor/app": "^6.0.0",
     "@capacitor/core": "^6.0.0",
     "@capacitor/haptics": "^8.0.0",

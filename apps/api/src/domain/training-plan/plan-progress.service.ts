@@ -1,9 +1,13 @@
 /**
  * Training Plan Progress Tracking Service
  * Tracks player progress through their 12-month training plan
+ *
+ * KEY PRINCIPLE (V2): Completion affects effort, NOT progress.
+ * Progress only changes when benchmark test shows improvement.
  */
 
 import { getPrismaClient } from '../../core/db/prisma';
+import { createBPEvidenceService } from '../performance/bp-evidence';
 
 const prisma = getPrismaClient();
 
@@ -307,9 +311,11 @@ export class PlanProgressService {
   }
 
   /**
-   * Update breaking point progress based on session completion
+   * Update breaking point EFFORT based on session completion
+   * NOTE: This only updates effort, NOT progress. Progress only changes
+   * when a benchmark test shows improvement.
    */
-  static async updateBreakingPointProgress(
+  static async updateBreakingPointEffort(
     playerId: string,
     completedSessionId: string
   ): Promise<void> {
@@ -320,36 +326,51 @@ export class PlanProgressService {
 
     if (!session) return;
 
-    // Find breaking points for this player
-    const breakingPoints = await prisma.breakingPoint.findMany({
-      where: {
-        playerId,
-        status: {
-          in: ['not_started', 'in_progress'],
-        },
-      },
-    });
+    // Use BP Evidence Service to update effort
+    const bpEvidenceService = createBPEvidenceService(prisma);
+    const sessionDuration = session.duration || 60; // Default 60 min
 
-    // Update progress for each breaking point (batched transaction)
-    const updateOperations = breakingPoints.map((bp) => {
-      const currentProgress = bp.progressPercent || 0;
-      const increment = 2; // 2% per session
-      const newProgress = Math.min(100, currentProgress + increment);
+    await bpEvidenceService.updateEffortAfterSession(
+      playerId,
+      completedSessionId,
+      sessionDuration
+    );
+  }
 
-      return prisma.breakingPoint.update({
-        where: { id: bp.id },
-        data: {
-          progressPercent: newProgress,
-          currentMeasurement: `Progress: ${newProgress}%`,
-          status: newProgress >= 100 ? 'resolved' : newProgress > 0 ? 'in_progress' : 'not_started',
-        },
-      });
-    });
+  /**
+   * Update breaking point PROGRESS based on benchmark test result
+   * This is the ONLY way progress should change - via actual test evidence.
+   */
+  static async updateBreakingPointProgress(
+    playerId: string,
+    testResultId: string,
+    testNumber: number,
+    testValue: number,
+    testDate: Date
+  ): Promise<void> {
+    // Use BP Evidence Service to update progress
+    const bpEvidenceService = createBPEvidenceService(prisma);
 
-    // Execute all updates in a single transaction
-    if (updateOperations.length > 0) {
-      await prisma.$transaction(updateOperations);
-    }
+    await bpEvidenceService.updateProgressAfterTest(
+      playerId,
+      testResultId,
+      testNumber,
+      testValue,
+      testDate
+    );
+  }
+
+  /**
+   * @deprecated Use updateBreakingPointEffort for session completion
+   * and updateBreakingPointProgress for test results
+   */
+  static async updateBreakingPointProgressLegacy(
+    playerId: string,
+    completedSessionId: string
+  ): Promise<void> {
+    // Legacy behavior - kept for backwards compatibility during migration
+    // This will be removed in a future version
+    await this.updateBreakingPointEffort(playerId, completedSessionId);
   }
 
   /**
