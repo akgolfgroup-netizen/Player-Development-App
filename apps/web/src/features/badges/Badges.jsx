@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BadgeGrid } from '../../components/badges';
 import { useAuth } from '../../contexts/AuthContext';
+import { badgesAPI } from '../../services/api';
 import './Badges.css';
 
 /**
@@ -71,7 +72,7 @@ const DEMO_BADGES = [
 ];
 
 const Badges = () => {
-  const { token } = useAuth();
+  const { user } = useAuth();
   const [badges, setBadges] = useState([]);
   const [userStats, setUserStats] = useState({
     unlockedBadges: [],
@@ -104,48 +105,31 @@ const Badges = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      // Fetch badge definitions and progress in parallel
+      // Fetch badge definitions and progress in parallel using proper API client
       const [definitionsRes, progressRes] = await Promise.all([
-        fetch('/api/v1/badges/definitions', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }),
-        fetch('/api/v1/badges/progress', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }),
+        badgesAPI.getDefinitions(true),
+        badgesAPI.getProgress(),
       ]);
 
-      if (definitionsRes.ok && progressRes.ok) {
-        const definitionsData = await definitionsRes.json();
-        const progressData = await progressRes.json();
+      const definitionsData = definitionsRes.data;
+      const progressData = progressRes.data;
 
-        setBadges(definitionsData.badges || []);
-        setUserStats(progressData);
-      } else {
-        console.warn('Badge API returned non-ok status, using demo data');
-        loadDemoData();
-        return;
-      }
+      setBadges(definitionsData.badges || []);
+      setUserStats(progressData);
+      setLoading(false);
     } catch (error) {
       console.warn('Badge API not available, using demo data:', error);
       loadDemoData();
-      return;
     }
-    setLoading(false);
-  }, [token, loadDemoData]);
+  }, [loadDemoData]);
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       fetchData();
     } else {
       loadDemoData();
     }
-  }, [token, fetchData, loadDemoData]);
+  }, [user, fetchData, loadDemoData]);
 
   const handleBadgeClick = (badge) => {
     // Badge click handler - placeholder for future badge details modal

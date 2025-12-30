@@ -232,6 +232,42 @@ export const settingsAPI = {
   saveNotifications: (data) => api.post('/settings/notifications', data),
 };
 
+// Achievements API
+export const achievementsAPI = {
+  // List achievements (with optional category filter)
+  list: (category) => api.get('/achievements', { params: category ? { category } : {} }),
+  // Get new (unviewed) achievements
+  getNew: () => api.get('/achievements/new'),
+  // Get achievement statistics
+  getStats: () => api.get('/achievements/stats'),
+  // Get recent achievements
+  getRecent: (limit = 5) => api.get('/achievements/recent', { params: { limit } }),
+  // Get single achievement
+  getById: (id) => api.get(`/achievements/${id}`),
+  // Mark achievement as viewed
+  markViewed: (id) => api.patch(`/achievements/${id}/viewed`),
+  // Mark all as viewed
+  markAllViewed: () => api.post('/achievements/mark-all-viewed'),
+};
+
+// Badges API
+export const badgesAPI = {
+  // Get all badge definitions
+  getDefinitions: (includeUnavailable = true) =>
+    api.get('/badges/definitions', { params: { includeUnavailable } }),
+  // Get badge definitions by category
+  getByCategory: (category, includeUnavailable = true) =>
+    api.get(`/badges/definitions/${category}`, { params: { includeUnavailable } }),
+  // Get player's badge progress
+  getProgress: () => api.get('/badges/progress'),
+  // Get recently unlocked badges
+  getRecent: (limit = 5) => api.get('/badges/recent', { params: { limit } }),
+  // Get badge leaderboard
+  getLeaderboard: (limit = 10) => api.get('/badges/leaderboard', { params: { limit } }),
+  // Award badge (coach/admin only)
+  award: (badgeId, playerId) => api.post('/badges/award', { badgeId, playerId }),
+};
+
 // Calibration API
 export const calibrationAPI = {
   // Get calibration for a player

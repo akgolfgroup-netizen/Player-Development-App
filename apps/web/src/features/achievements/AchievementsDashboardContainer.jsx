@@ -1,42 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import apiClient from '../../services/apiClient';
+import { achievementsAPI, badgesAPI } from '../../services/api';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
 import AchievementsDashboard from './AchievementsDashboard';
 
+/**
+ * AchievementsDashboardContainer
+ * Fetches achievements and badge progress from API
+ * and passes data to AchievementsDashboard for display
+ */
 const AchievementsDashboardContainer = () => {
   const { user } = useAuth();
   const [state, setState] = useState('loading');
   const [error, setError] = useState(null);
-  const [achievements, setAchievements] = useState([]);
+  const [data, setData] = useState({
+    achievements: [],
+    stats: null,
+    badges: [],
+    badgeProgress: null,
+  });
 
-  useEffect(() => {
-    if (user) {
-      fetchAchievements();
-    }
-  }, [user]);
-
-  const fetchAchievements = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setState('loading');
       setError(null);
-      const response = await apiClient.get('/api/v1/achievements');
-      setAchievements(response.data);
-      setState(response.data.length === 0 ? 'empty' : 'idle');
+
+      // Fetch achievements and badge progress in parallel
+      const [achievementsRes, statsRes, badgesRes, progressRes] = await Promise.all([
+        achievementsAPI.list().catch(() => ({ data: [] })),
+        achievementsAPI.getStats().catch(() => ({ data: null })),
+        badgesAPI.getDefinitions(true).catch(() => ({ data: { badges: [] } })),
+        badgesAPI.getProgress().catch(() => ({ data: { unlockedBadges: [], badgeProgress: {}, stats: {} } })),
+      ]);
+
+      const achievements = Array.isArray(achievementsRes.data)
+        ? achievementsRes.data
+        : achievementsRes.data?.achievements || [];
+      const stats = statsRes.data;
+      const badges = badgesRes.data?.badges || [];
+      const badgeProgress = progressRes.data;
+
+      setData({
+        achievements,
+        stats,
+        badges,
+        badgeProgress,
+      });
+
+      const hasData = achievements.length > 0 || badges.length > 0 || badgeProgress.unlockedBadges?.length > 0;
+      setState(hasData ? 'idle' : 'empty');
     } catch (err) {
       console.error('Error fetching achievements:', err);
-      // If 404, show empty state (endpoint not implemented yet)
-      if (err.response?.status === 404) {
-        setAchievements([]);
-        setState('empty');
-      } else {
-        setError(err);
-        setState('error');
-      }
+      setError(err);
+      setState('error');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [user, fetchData]);
 
   if (state === 'loading') {
     return <LoadingState message="Laster prestasjoner..." />;
@@ -47,7 +73,7 @@ const AchievementsDashboardContainer = () => {
       <ErrorState
         errorType={error?.type}
         message={error?.message || 'Kunne ikke laste prestasjoner'}
-        onRetry={fetchAchievements}
+        onRetry={fetchData}
       />
     );
   }
@@ -56,12 +82,19 @@ const AchievementsDashboardContainer = () => {
     return (
       <EmptyState
         title="Ingen prestasjoner"
-        message="Du har ikke låst opp noen prestasjoner ennå"
+        message="Du har ikke låst opp noen prestasjoner ennå. Fortsett å trene for å opptjene badges!"
       />
     );
   }
 
-  return <AchievementsDashboard achievements={achievements} />;
+  return (
+    <AchievementsDashboard
+      achievements={data.achievements}
+      stats={data.stats}
+      badges={data.badges}
+      badgeProgress={data.badgeProgress}
+    />
+  );
 };
 
 export default AchievementsDashboardContainer;

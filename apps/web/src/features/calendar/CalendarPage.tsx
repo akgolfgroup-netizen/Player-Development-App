@@ -11,8 +11,10 @@
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useScreenView } from '../../analytics/useScreenView';
 import { track } from '../../analytics/track';
+import { sessionsAPI } from '../../services/api';
 import { useCalendarState } from './hooks/useCalendarState';
 import { useCalendarEvents, CalendarEvent } from './hooks/useCalendarEvents';
 import {
@@ -34,6 +36,7 @@ import Button from '../../ui/primitives/Button';
 import { RefreshCw, Info } from 'lucide-react';
 
 const CalendarPage: React.FC = () => {
+  const navigate = useNavigate();
   useScreenView('Kalender');
 
   // Calendar state from URL
@@ -128,20 +131,29 @@ const CalendarPage: React.FC = () => {
   }, []);
 
   // Handle simple session creation (legacy)
-  const handleCreateSession = useCallback((session: NewSession) => {
-    console.log('Create session (simple):', session);
-    // TODO: API call to create session
-    setCreateModalOpen(false);
-    refetch();
+  const handleCreateSession = useCallback(async (session: NewSession) => {
+    try {
+      await sessionsAPI.create(session);
+      setCreateModalOpen(false);
+      refetch();
+    } catch (error) {
+      console.error('Failed to create session:', error);
+    }
   }, [refetch]);
 
   // Handle planned session creation (with AK-formula)
-  const handleCreatePlannedSession = useCallback((session: NewPlannedSession) => {
-    console.log('Create planned session:', session);
-    console.log('Formula:', session.formula);
-    // TODO: API call to create session with formula
-    setPlannerModalOpen(false);
-    refetch();
+  const handleCreatePlannedSession = useCallback(async (session: NewPlannedSession) => {
+    try {
+      await sessionsAPI.create({
+        ...session,
+        // Include formula as metadata
+        formula: session.formula,
+      });
+      setPlannerModalOpen(false);
+      refetch();
+    } catch (error) {
+      console.error('Failed to create planned session:', error);
+    }
   }, [refetch]);
 
   const handleStartSession = useCallback((event: CalendarEvent) => {
@@ -149,33 +161,49 @@ const CalendarPage: React.FC = () => {
       event_id: event.id,
       source: 'calendar_week',
     });
-    console.log('Start session:', event);
-    // TODO: API call to start session
+    // Navigate to session logging/tracking page
+    navigate(`/session/${event.id}/start`);
     handleCloseDetailPanel();
-  }, [handleCloseDetailPanel]);
+  }, [handleCloseDetailPanel, navigate]);
 
-  const handleCompleteSession = useCallback((event: CalendarEvent) => {
-    console.log('Complete session:', event);
-    // TODO: API call to complete session
-    handleCloseDetailPanel();
-  }, [handleCloseDetailPanel]);
+  const handleCompleteSession = useCallback(async (event: CalendarEvent) => {
+    try {
+      await sessionsAPI.complete(event.id, {});
+      handleCloseDetailPanel();
+      refetch();
+    } catch (error) {
+      console.error('Failed to complete session:', error);
+    }
+  }, [handleCloseDetailPanel, refetch]);
 
-  const handlePostponeSession = useCallback((event: CalendarEvent, minutes: number) => {
-    console.log('Postpone session:', event, 'by', minutes, 'minutes');
-    // TODO: API call to postpone session
-  }, []);
+  const handlePostponeSession = useCallback(async (event: CalendarEvent, minutes: number) => {
+    try {
+      const currentStart = new Date(event.startTime);
+      const newStart = new Date(currentStart.getTime() + minutes * 60000);
+      await sessionsAPI.update(event.id, {
+        scheduledDate: newStart.toISOString(),
+      });
+      refetch();
+    } catch (error) {
+      console.error('Failed to postpone session:', error);
+    }
+  }, [refetch]);
 
   const handleEditEvent = useCallback((event: CalendarEvent) => {
-    console.log('Edit event:', event);
-    // TODO: Open edit modal
+    // Navigate to edit page
+    navigate(`/session/${event.id}/edit`);
     handleCloseDetailPanel();
-  }, [handleCloseDetailPanel]);
+  }, [handleCloseDetailPanel, navigate]);
 
-  const handleDeleteEvent = useCallback((event: CalendarEvent) => {
-    console.log('Delete event:', event);
-    // TODO: API call to delete event
-    handleCloseDetailPanel();
-  }, [handleCloseDetailPanel]);
+  const handleDeleteEvent = useCallback(async (event: CalendarEvent) => {
+    try {
+      await sessionsAPI.delete(event.id);
+      handleCloseDetailPanel();
+      refetch();
+    } catch (error) {
+      console.error('Failed to delete event:', error);
+    }
+  }, [handleCloseDetailPanel, refetch]);
 
   const handleDayClick = useCallback((date: Date) => {
     // Navigate to day view

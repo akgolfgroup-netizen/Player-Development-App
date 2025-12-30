@@ -8,43 +8,72 @@
  *
  * Uses design system colors (Blue Palette 01) for consistent styling.
  */
-import React, { useState, useEffect } from 'react';
-import apiClient from '../../services/apiClient';
+import React, { useState, useMemo } from 'react';
+import { BadgeGrid } from '../../components/badges';
 
-export default function AchievementsDashboard({ planId }) {
-  const [data, setData] = useState(null);
+/**
+ * Category labels for display
+ */
+const CATEGORY_LABELS = {
+  all: 'Alle',
+  consistency: 'Konsistens',
+  volume: 'Volum',
+  improvement: 'Forbedring',
+  milestone: 'Milepæler',
+  special: 'Spesial',
+  streak: 'Streak',
+  strength: 'Styrke',
+  speed: 'Hastighet',
+  accuracy: 'Presisjon',
+  putting: 'Putting',
+  short_game: 'Kortspill',
+  mental: 'Mental',
+  phase: 'Periodisering',
+  seasonal: 'Sesong',
+};
+
+export default function AchievementsDashboard({
+  achievements = [],
+  stats = null,
+  badges = [],
+  badgeProgress = { unlockedBadges: [], badgeProgress: {}, stats: {} },
+}) {
   const [filter, setFilter] = useState('all');
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (planId) loadAchievements();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [planId]);
+  // Calculate stats from badge progress if not provided
+  const displayStats = useMemo(() => {
+    if (stats) return stats;
 
-  const loadAchievements = async () => {
-    setLoading(true);
-    try {
-      const { data: response } = await apiClient.get(
-        `/training-plan/${planId}/achievements`
-      );
-      setData(response.data);
-    } catch (err) {
-      console.error('Failed to load achievements:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const bpStats = badgeProgress?.stats || {};
+    return {
+      totalXP: bpStats.totalXP || 0,
+      unlockedCount: bpStats.unlocked || badgeProgress?.unlockedBadges?.length || 0,
+      totalCount: bpStats.total || badges.length || 0,
+      percentComplete: bpStats.percentComplete || 0,
+    };
+  }, [stats, badgeProgress, badges]);
 
-  if (loading) return <div className="p-8">Loading achievements...</div>;
-  if (!data) return null;
+  // Get unique categories from badges
+  const categories = useMemo(() => {
+    const cats = new Set(['all']);
+    badges.forEach((badge) => {
+      if (badge.category) cats.add(badge.category);
+    });
+    achievements.forEach((ach) => {
+      if (ach.category) cats.add(ach.category);
+    });
+    return Array.from(cats);
+  }, [badges, achievements]);
 
-  const { achievements, totalXP, unlockedAchievements, availableAchievements } = data;
+  // Calculate XP from unlocked badges
+  const totalXP = useMemo(() => {
+    if (displayStats.totalXP) return displayStats.totalXP;
 
-  const filteredAchievements = filter === 'all'
-    ? achievements
-    : achievements.filter(a => a.category === filter);
-
-  const categories = ['all', 'consistency', 'volume', 'improvement', 'milestone', 'special'];
+    const unlockedBadgeIds = badgeProgress?.unlockedBadges || [];
+    return badges
+      .filter((b) => unlockedBadgeIds.includes(b.id))
+      .reduce((sum, b) => sum + (b.xp || 0), 0);
+  }, [displayStats.totalXP, badges, badgeProgress]);
 
   return (
     <div className="space-y-6">
@@ -52,9 +81,9 @@ export default function AchievementsDashboard({ planId }) {
       <div className="bg-gradient-to-r from-ak-primary to-ak-primary-light rounded-lg shadow-lg p-6 text-white">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold">Achievements</h1>
+            <h1 className="text-3xl font-bold">Prestasjoner</h1>
             <p className="text-white/80 mt-1">
-              {unlockedAchievements} / {availableAchievements} badges unlocked
+              {displayStats.unlockedCount} / {displayStats.totalCount} badges opptjent
             </p>
           </div>
           <div className="text-right">
@@ -62,109 +91,103 @@ export default function AchievementsDashboard({ planId }) {
             <div className="text-white/80">Total XP</div>
           </div>
         </div>
+
+        {/* Progress bar */}
+        <div className="mt-4">
+          <div className="bg-white/20 rounded-full h-3 overflow-hidden">
+            <div
+              className="bg-ak-gold h-full transition-all duration-500"
+              style={{ width: `${Math.min(displayStats.percentComplete || 0, 100)}%` }}
+            />
+          </div>
+          <div className="text-sm text-white/70 mt-1 text-right">
+            {displayStats.percentComplete || 0}% fullført
+          </div>
+        </div>
       </div>
 
       {/* Category Filters */}
       <div className="flex gap-2 overflow-x-auto pb-2">
-        {categories.map(cat => (
+        {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setFilter(cat)}
-            className={`px-4 py-2 rounded-lg font-medium capitalize whitespace-nowrap ${
+            className={`px-4 py-2 rounded-lg font-medium capitalize whitespace-nowrap transition-colors ${
               filter === cat
                 ? 'bg-ak-primary text-white'
                 : 'bg-ak-surface text-ak-ink hover:bg-ak-surface/80'
             }`}
           >
-            {cat}
+            {CATEGORY_LABELS[cat] || cat}
           </button>
         ))}
       </div>
 
-      {/* Achievement Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredAchievements.map(achievement => (
-          <AchievementCard key={achievement.achievementId} achievement={achievement} />
-        ))}
-      </div>
+      {/* Badge Grid */}
+      {badges.length > 0 && (
+        <BadgeGrid
+          badges={filter === 'all' ? badges : badges.filter((b) => b.category === filter)}
+          userStats={badgeProgress}
+          groupBy="category"
+          showFilters={false}
+          hideUnavailable={false}
+        />
+      )}
+
+      {/* Recent Achievements */}
+      {achievements.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold text-ak-ink mb-4">Nylige Prestasjoner</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {achievements.slice(0, 6).map((achievement) => (
+              <AchievementCard key={achievement.id} achievement={achievement} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
+/**
+ * Achievement Card component
+ */
 function AchievementCard({ achievement }) {
-  const { icon, name, description, currentLevel, currentLevelData, nextLevel, progress, totalXP } = achievement;
-  const isUnlocked = currentLevel > 0;
+  const { icon, name, description, unlockedAt, xp, category } = achievement;
+  const isUnlocked = !!unlockedAt;
 
   return (
     <div
-      className={`rounded-lg shadow p-6 ${
-        isUnlocked ? 'bg-white border-2 border-ak-primary/20' : 'bg-ak-snow opacity-75'
+      className={`rounded-lg shadow p-5 transition-all ${
+        isUnlocked
+          ? 'bg-white border-2 border-ak-primary/20'
+          : 'bg-ak-snow opacity-75'
       }`}
     >
       <div className="flex items-start gap-4">
-        <div className={`text-5xl ${isUnlocked ? '' : 'grayscale opacity-50'}`}>
-          {icon}
+        <div className={`text-4xl ${isUnlocked ? '' : 'grayscale opacity-50'}`}>
+          {icon || '🏆'}
         </div>
         <div className="flex-1">
-          <div className="flex justify-between items-start mb-2">
+          <div className="flex justify-between items-start">
             <div>
-              <h3 className="text-xl font-bold text-ak-ink">{name}</h3>
+              <h3 className="text-lg font-bold text-ak-ink">{name}</h3>
               <p className="text-sm text-ak-steel">{description}</p>
             </div>
-            {totalXP > 0 && (
-              <span className="text-ak-gold font-bold text-lg">{totalXP} XP</span>
+            {xp > 0 && (
+              <span className="text-ak-gold font-bold">+{xp} XP</span>
             )}
           </div>
 
-          {/* Current Level */}
-          {currentLevelData && (
-            <div
-              className="inline-block px-3 py-1 rounded-full text-sm font-bold mb-3"
-              style={{
-                backgroundColor: currentLevelData.color + '20',
-                color: currentLevelData.color,
-              }}
-            >
-              {currentLevelData.title}
+          {category && (
+            <div className="inline-block mt-2 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-mist text-ak-steel capitalize">
+              {CATEGORY_LABELS[category] || category}
             </div>
           )}
 
-          {/* Progress Bar */}
-          {nextLevel && (
-            <div className="mt-3">
-              <div className="flex justify-between text-sm text-ak-steel mb-1">
-                <span>Progress to next level</span>
-                <span>{Math.round(progress)}%</span>
-              </div>
-              <div className="bg-ak-mist rounded-full h-3 overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-ak-primary to-ak-primary-light h-full transition-all"
-                  style={{ width: `${Math.min(progress, 100)}%` }}
-                />
-              </div>
-              <div className="text-xs text-ak-steel mt-1">
-                Next: {nextLevel.title} ({nextLevel.requirement} required)
-              </div>
-            </div>
-          )}
-
-          {/* All Levels */}
-          {isUnlocked && (
-            <div className="mt-3 flex gap-1">
-              {achievement.currentLevelData &&
-                Array.from({ length: 5 }, (_, i) => i + 1).map(level => {
-                  const isEarned = level <= currentLevel;
-                  return (
-                    <div
-                      key={level}
-                      className={`w-8 h-8 rounded flex items-center justify-center text-xs font-bold ${
-                        isEarned ? 'bg-ak-primary text-white' : 'bg-ak-mist text-ak-steel'
-                      }`}
-                    >
-                      {level}
-                    </div>
-                  );
-                })}
+          {isUnlocked && unlockedAt && (
+            <div className="text-xs text-ak-steel mt-2">
+              Opptjent {new Date(unlockedAt).toLocaleDateString('nb-NO')}
             </div>
           )}
         </div>

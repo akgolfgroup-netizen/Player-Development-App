@@ -10,7 +10,8 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { BookOpen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { BookOpen, Plus } from 'lucide-react';
 
 import { useDagbokState } from './hooks/useDagbokState';
 import { useDagbokFilters } from './hooks/useDagbokFilters';
@@ -118,6 +119,7 @@ const mediaStyles = `
 // =============================================================================
 
 export const TreningsdagbokPage: React.FC = () => {
+  const navigate = useNavigate();
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   // State management
@@ -156,9 +158,13 @@ export const TreningsdagbokPage: React.FC = () => {
   }, []);
 
   const handleSessionClick = useCallback((session: DagbokSession) => {
-    // Could navigate to session detail or open modal
-    console.log('Session clicked:', session);
-  }, []);
+    // Navigate to session detail page
+    navigate(`/session/${session.id}`);
+  }, [navigate]);
+
+  const handleNewSession = useCallback(() => {
+    navigate('/logg-trening');
+  }, [navigate]);
 
   return (
     <>
@@ -171,12 +177,31 @@ export const TreningsdagbokPage: React.FC = () => {
           <div style={styles.headerIcon}>
             <BookOpen size={20} style={{ color: 'var(--accent)' }} />
           </div>
-          <div>
+          <div style={{ flex: 1 }}>
             <h1 style={styles.headerTitle}>Treningsdagbok</h1>
             <p style={styles.headerSubtitle}>
               Logg, analyser og folg opp treningen din
             </p>
           </div>
+          <button
+            onClick={handleNewSession}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '8px 16px',
+              backgroundColor: 'var(--accent)',
+              color: 'white',
+              border: 'none',
+              borderRadius: 'var(--radius-md)',
+              fontSize: '14px',
+              fontWeight: 500,
+              cursor: 'pointer',
+            }}
+          >
+            <Plus size={18} />
+            Ny økt
+          </button>
         </div>
 
         {/* Filter bar */}
