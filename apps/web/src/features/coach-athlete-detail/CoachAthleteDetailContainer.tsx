@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import apiClient from '../../services/apiClient';
+import { analyticsAPI, playersAPI } from '../../services/api';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import CoachAthleteDetail from './CoachAthleteDetail';
 
+/**
+ * CoachAthleteDetailContainer
+ * Fetches athlete data and provides navigation context.
+ * The detail component is a neutral navigation hub per the contract.
+ */
 const CoachAthleteDetailContainer: React.FC = () => {
   const { playerId } = useParams<{ playerId: string }>();
   const navigate = useNavigate();
@@ -14,27 +19,38 @@ const CoachAthleteDetailContainer: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
   const [athleteData, setAthleteData] = useState<any>(null);
 
-  useEffect(() => {
-    if (user && playerId) {
-      fetchAthleteDetail();
-    }
-  }, [user, playerId]);
+  const fetchAthleteDetail = useCallback(async () => {
+    if (!playerId) return;
 
-  const fetchAthleteDetail = async () => {
     try {
       setState('loading');
       setError(null);
 
-      const response = await apiClient.get(`/api/v1/coach-analytics/players/${playerId}/overview`);
+      // Try coach analytics first, fallback to players API
+      let data = null;
+      try {
+        const response = await analyticsAPI.getPlayerOverview(playerId);
+        data = response.data?.data || response.data;
+      } catch {
+        // Fallback to players API
+        const response = await playersAPI.getById(playerId);
+        data = response.data?.data || response.data;
+      }
 
-      setAthleteData(response.data?.data || response.data);
+      setAthleteData(data);
       setState('idle');
     } catch (err: any) {
       console.error('Error fetching athlete detail:', err);
       setError(err);
       setState('error');
     }
-  };
+  }, [playerId]);
+
+  useEffect(() => {
+    if (user && playerId) {
+      fetchAthleteDetail();
+    }
+  }, [user, playerId, fetchAthleteDetail]);
 
   const handleBack = () => {
     navigate(-1);
@@ -71,8 +87,8 @@ const CoachAthleteDetailContainer: React.FC = () => {
   }
 
   const athleteName = athleteData
-    ? `${athleteData.firstName || ''} ${athleteData.lastName || ''}`.trim()
-    : undefined;
+    ? `${athleteData.firstName || ''} ${athleteData.lastName || ''}`.trim() || 'Spiller'
+    : 'Spiller';
 
   return (
     <CoachAthleteDetail

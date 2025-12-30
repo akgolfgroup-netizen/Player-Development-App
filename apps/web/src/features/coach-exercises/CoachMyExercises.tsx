@@ -9,12 +9,9 @@ import {
   Target,
   Users,
   Copy,
-  MoreVertical,
-  AlertCircle
+  MoreVertical
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../ui/primitives/Card';
-import Button from '../../ui/primitives/Button';
 import { exercisesAPI } from '../../services/api';
 
 interface MyExercise {

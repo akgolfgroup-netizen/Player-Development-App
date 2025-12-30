@@ -180,7 +180,8 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
   // State for API data
   const [athletes, setAthletes] = useState<typeof mockAthletes>(propAthletes || []);
   const [pendingItems, setPendingItems] = useState<typeof mockPendingItems>(propPendingItems || []);
-  const [todaySchedule, setTodaySchedule] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [todaySchedule, _setTodaySchedule] = useState<any[]>([]);
   const [weeklyStats, setWeeklyStats] = useState<any>(null);
   const [defaultTeamId, setDefaultTeamId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);

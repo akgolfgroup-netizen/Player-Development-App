@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import apiClient from '../../services/apiClient';
+import { coachesAPI } from '../../services/api';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import CoachAthleteList from './CoachAthleteList';
 
+/**
+ * CoachAthleteListContainer
+ * Fetches coach's athletes and provides navigation to detail view.
+ */
 const CoachAthleteListContainer: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -13,21 +17,34 @@ const CoachAthleteListContainer: React.FC = () => {
   const [error, setError] = useState<Error | null>(null);
   const [athletes, setAthletes] = useState<any[]>([]);
 
-  useEffect(() => {
-    if (user) {
-      fetchAthletes();
-    }
-  }, [user]);
-
-  const fetchAthletes = async () => {
+  const fetchAthletes = useCallback(async () => {
     try {
       setState('loading');
       setError(null);
 
-      const coachId = (user as any)?.coachId || user?.id;
-      const response = await apiClient.get(`/api/v1/coaches/${coachId}/players`);
+      // Try /coaches/me/players first (authenticated coach), fallback to /coaches/:id/players
+      let data: any[] = [];
+      try {
+        const response = await coachesAPI.getAthletes();
+        data = response.data?.data || response.data || [];
+      } catch {
+        // Fallback to specific coach ID endpoint
+        const coachId = (user as any)?.coachId || user?.id;
+        if (coachId) {
+          const response = await coachesAPI.getPlayers(coachId);
+          data = response.data?.data || response.data || [];
+        }
+      }
 
-      setAthletes(response.data?.data || response.data || []);
+      // Ensure we have an array
+      const athleteArray = Array.isArray(data) ? data : [];
+
+      if (athleteArray.length === 0) {
+        // Use demo data when no athletes found
+        setAthletes(getDemoAthletes());
+      } else {
+        setAthletes(athleteArray);
+      }
       setState('idle');
     } catch (err: any) {
       console.error('Error fetching athletes:', err);
@@ -35,7 +52,13 @@ const CoachAthleteListContainer: React.FC = () => {
       setAthletes(getDemoAthletes());
       setState('idle');
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      fetchAthletes();
+    }
+  }, [user, fetchAthletes]);
 
   const handleSelectAthlete = (athleteId: string) => {
     navigate(`/coach/athletes/${athleteId}`);
