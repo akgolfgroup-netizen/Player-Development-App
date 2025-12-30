@@ -1,82 +1,176 @@
-import React, { useState, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import NotionWeekView, { CalendarSession } from './components/NotionWeekView';
-import StateCard from '../../ui/composites/StateCard';
-import Button from '../../ui/primitives/Button';
-import { RefreshCw } from 'lucide-react';
-import { useCalendarSessions } from '../../data';
-import { getSimState } from '../../dev/simulateState';
-import { useScreenView } from '../../analytics/useScreenView';
-
 /**
  * CalendarPage
- * Full-screen Notion-style calendar with week view
- * No header, no bottom nav - clean calendar interface
  *
- * DEV: Test states via querystring:
- *   /kalender?state=loading
- *   /kalender?state=error
- *   /kalender?state=empty
+ * Multi-view calendar system with:
+ * - DAG / UKE / MÅNED / ÅR views
+ * - URL-based state management
+ * - Deterministic seed data fallback
+ * - AppShell persistence (renders inside main layout)
+ *
+ * Uses semantic tokens only (no raw hex values).
  */
+
+import React, { useState, useCallback } from 'react';
+import { useScreenView } from '../../analytics/useScreenView';
+import { useCalendarState } from './hooks/useCalendarState';
+import { useCalendarEvents, CalendarEvent } from './hooks/useCalendarEvents';
+import {
+  CalendarHeader,
+  CalendarWeekView,
+  CalendarDayView,
+  CalendarMonthView,
+  CalendarYearView,
+  EventDetailsPanel,
+  CreateSessionModal,
+  NewSession,
+} from './components';
+import StateCard from '../../ui/composites/StateCard';
+import Button from '../../ui/primitives/Button';
+import { RefreshCw, Info } from 'lucide-react';
 
 const CalendarPage: React.FC = () => {
   useScreenView('Kalender');
-  const location = useLocation();
-  const simState = getSimState(location.search);
 
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const hookResult = useCalendarSessions(currentDate);
+  // Calendar state from URL
+  const {
+    view,
+    anchorDate,
+    rangeStart,
+    rangeEnd,
+    weekNumber,
+    weekDates,
+    monthName,
+    year,
+    setView,
+    setDate,
+    goToToday,
+    goToNext,
+    goToPrev,
+    goToMonth,
+  } = useCalendarState();
 
-  // Override data based on simState (DEV only)
-  const { data, isLoading, error, refetch } = simState
-    ? {
-        data: simState === 'empty' ? { sessions: [] } : null,
-        isLoading: simState === 'loading',
-        error: simState === 'error' ? 'Simulert feil (DEV)' : null,
-        refetch: hookResult.refetch,
-      }
-    : hookResult;
+  // Fetch events for current range
+  const {
+    events,
+    isLoading,
+    error,
+    refetch,
+    isSeedData,
+  } = useCalendarEvents(rangeStart, rangeEnd);
 
-  // Sort sessions by start time for stable ordering
-  const sortedSessions = useMemo(() => {
-    const sessions = data?.sessions ?? [];
-    return [...sessions].sort((a, b) => a.start.localeCompare(b.start)) as CalendarSession[];
-  }, [data?.sessions]);
+  // Selected event for detail panel
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
+  const [isDetailPanelOpen, setDetailPanelOpen] = useState(false);
 
-  const handleSessionClick = (session: CalendarSession) => {
-    console.log('Session clicked:', session);
-    // TODO: Open session detail modal
-  };
+  // Create session modal state
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const [createModalInitialDate, setCreateModalInitialDate] = useState<Date | undefined>();
+  const [createModalInitialTime, setCreateModalInitialTime] = useState<string | undefined>();
 
-  const handleAddSession = (date: Date, time: string) => {
-    console.log('Add session:', date, time);
-    // TODO: Open new session modal
-  };
+  // Handlers
+  const handleEventClick = useCallback((event: CalendarEvent) => {
+    setSelectedEvent(event);
+    setDetailPanelOpen(true);
+  }, []);
 
-  // Loading state
-  if (isLoading && !data) {
+  const handleCloseDetailPanel = useCallback(() => {
+    setDetailPanelOpen(false);
+    setSelectedEvent(null);
+  }, []);
+
+  const handleNewSession = useCallback(() => {
+    setCreateModalInitialDate(anchorDate);
+    setCreateModalInitialTime(undefined);
+    setCreateModalOpen(true);
+  }, [anchorDate]);
+
+  const handleAddSessionFromView = useCallback((date: Date, time: string) => {
+    setCreateModalInitialDate(date);
+    setCreateModalInitialTime(time);
+    setCreateModalOpen(true);
+  }, []);
+
+  const handleCreateSession = useCallback((session: NewSession) => {
+    console.log('Create session:', session);
+    // TODO: API call to create session
+    setCreateModalOpen(false);
+    refetch();
+  }, [refetch]);
+
+  const handleStartSession = useCallback((event: CalendarEvent) => {
+    console.log('Start session:', event);
+    // TODO: API call to start session
+    handleCloseDetailPanel();
+  }, [handleCloseDetailPanel]);
+
+  const handleCompleteSession = useCallback((event: CalendarEvent) => {
+    console.log('Complete session:', event);
+    // TODO: API call to complete session
+    handleCloseDetailPanel();
+  }, [handleCloseDetailPanel]);
+
+  const handlePostponeSession = useCallback((event: CalendarEvent, minutes: number) => {
+    console.log('Postpone session:', event, 'by', minutes, 'minutes');
+    // TODO: API call to postpone session
+  }, []);
+
+  const handleEditEvent = useCallback((event: CalendarEvent) => {
+    console.log('Edit event:', event);
+    // TODO: Open edit modal
+    handleCloseDetailPanel();
+  }, [handleCloseDetailPanel]);
+
+  const handleDeleteEvent = useCallback((event: CalendarEvent) => {
+    console.log('Delete event:', event);
+    // TODO: API call to delete event
+    handleCloseDetailPanel();
+  }, [handleCloseDetailPanel]);
+
+  const handleDayClick = useCallback((date: Date) => {
+    // Navigate to day view
+    setDate(date);
+    setView('day');
+  }, [setDate, setView]);
+
+  const handleMonthClick = useCallback((monthIndex: number) => {
+    goToMonth(monthIndex);
+  }, [goToMonth]);
+
+  // Loading state (only show when no cached data)
+  if (isLoading && events.length === 0) {
     return (
-      <div className="h-screen flex items-center justify-center bg-white">
+      <div
+        className="h-[calc(100vh-160px)] flex items-center justify-center"
+        style={{ backgroundColor: 'var(--calendar-surface-base)' }}
+      >
         <StateCard
           variant="loading"
-          title="Laster..."
-          description="Henter dine okter"
+          title="Laster kalender..."
+          description="Henter dine økter"
         />
       </div>
     );
   }
 
-  // Error state (full screen)
-  if (error && !data) {
+  // Error state (only show when no cached data)
+  if (error && events.length === 0) {
     return (
-      <div className="h-screen flex items-center justify-center bg-white">
+      <div
+        className="h-[calc(100vh-160px)] flex items-center justify-center"
+        style={{ backgroundColor: 'var(--calendar-surface-base)' }}
+      >
         <StateCard
           variant="error"
           title="Noe gikk galt"
           description={error}
           action={
-            <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
-              Prov igjen
+            <Button
+              size="sm"
+              variant="ghost"
+              leftIcon={<RefreshCw size={14} />}
+              onClick={refetch}
+            >
+              Prøv igjen
             </Button>
           }
         />
@@ -85,24 +179,127 @@ const CalendarPage: React.FC = () => {
   }
 
   return (
-    <div className="h-[calc(100vh-64px)]">
-      {/* Error banner if stale data */}
-      {error && data && (
-        <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 flex items-center justify-between">
-          <span className="text-sm text-amber-800">Viser tidligere data</span>
-          <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
+    <div
+      className="flex flex-col h-[calc(100vh-160px)]"
+      style={{ backgroundColor: 'var(--calendar-surface-base)' }}
+    >
+      {/* Seed data info banner */}
+      {isSeedData && (
+        <div
+          className="flex items-center gap-2 px-4 py-2 text-sm"
+          style={{
+            backgroundColor: 'var(--info-muted)',
+            color: 'var(--ak-info)',
+          }}
+        >
+          <Info size={16} />
+          Viser demodata. Faktiske økter vil vises når du har lagt dem til.
+        </div>
+      )}
+
+      {/* Error banner (when showing stale data) */}
+      {error && events.length > 0 && (
+        <div
+          className="flex items-center justify-between px-4 py-2"
+          style={{
+            backgroundColor: 'var(--warning-muted)',
+            borderBottom: '1px solid var(--calendar-border)',
+          }}
+        >
+          <span
+            className="text-sm"
+            style={{ color: 'var(--ak-warning)' }}
+          >
+            Viser tidligere data
+          </span>
+          <Button
+            size="sm"
+            variant="ghost"
+            leftIcon={<RefreshCw size={14} />}
+            onClick={refetch}
+          >
             Oppdater
           </Button>
         </div>
       )}
 
-      {/* Notion-style week calendar */}
-      <NotionWeekView
-        currentDate={currentDate}
-        sessions={sortedSessions}
-        onDateChange={setCurrentDate}
-        onSessionClick={handleSessionClick}
-        onAddSession={handleAddSession}
+      {/* Calendar Header */}
+      <CalendarHeader
+        view={view}
+        monthName={monthName}
+        year={year}
+        weekNumber={weekNumber}
+        onViewChange={setView}
+        onToday={goToToday}
+        onPrev={goToPrev}
+        onNext={goToNext}
+        onNewSession={handleNewSession}
+      />
+
+      {/* Calendar Content */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Main calendar view */}
+        <div className="flex-1 overflow-hidden">
+          {view === 'week' && (
+            <CalendarWeekView
+              weekDates={weekDates}
+              events={events}
+              onEventClick={handleEventClick}
+              onAddSession={handleAddSessionFromView}
+            />
+          )}
+
+          {view === 'day' && (
+            <CalendarDayView
+              date={anchorDate}
+              events={events.filter(e => e.date === anchorDate.toISOString().split('T')[0])}
+              onEventClick={handleEventClick}
+              onStartSession={handleStartSession}
+              onCompleteSession={handleCompleteSession}
+              onPostponeSession={handlePostponeSession}
+              onAddSession={handleAddSessionFromView}
+            />
+          )}
+
+          {view === 'month' && (
+            <CalendarMonthView
+              date={anchorDate}
+              events={events}
+              onDayClick={handleDayClick}
+              onEventClick={handleEventClick}
+            />
+          )}
+
+          {view === 'year' && (
+            <CalendarYearView
+              year={year}
+              events={events}
+              onMonthClick={handleMonthClick}
+            />
+          )}
+        </div>
+
+        {/* Event Details Panel (desktop side panel) */}
+        {isDetailPanelOpen && (
+          <EventDetailsPanel
+            event={selectedEvent}
+            isOpen={isDetailPanelOpen}
+            onClose={handleCloseDetailPanel}
+            onStart={handleStartSession}
+            onComplete={handleCompleteSession}
+            onEdit={handleEditEvent}
+            onDelete={handleDeleteEvent}
+          />
+        )}
+      </div>
+
+      {/* Create Session Modal */}
+      <CreateSessionModal
+        isOpen={isCreateModalOpen}
+        initialDate={createModalInitialDate}
+        initialTime={createModalInitialTime}
+        onClose={() => setCreateModalOpen(false)}
+        onSubmit={handleCreateSession}
       />
     </div>
   );

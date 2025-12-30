@@ -314,6 +314,77 @@
   --bg-achievement-subtle: var(--achievement-muted);
 
   /* ─────────────────────────────────────────
+     CALENDAR FEATURE TOKENS
+     Semantic tokens for calendar components
+     ───────────────────────────────────────── */
+  /* Calendar surfaces */
+  --calendar-surface-base: var(--background-white);
+  --calendar-surface-card: var(--background-white);
+  --calendar-surface-elevated: var(--background-elevated);
+  --calendar-surface-weekend: var(--gray-50);
+  --calendar-surface-today: rgba(27, 77, 62, 0.04);
+
+  /* Calendar borders */
+  --calendar-border: var(--border-default);
+  --calendar-border-subtle: var(--border-subtle);
+  --calendar-border-focus: var(--border-brand);
+  --calendar-grid-line: var(--gray-100);
+
+  /* Calendar text */
+  --calendar-text-primary: var(--text-primary);
+  --calendar-text-secondary: var(--text-secondary);
+  --calendar-text-tertiary: var(--text-tertiary);
+  --calendar-text-muted: var(--text-muted);
+  --calendar-text-weekend: var(--text-muted);
+
+  /* Calendar event - Recommended (Anbefalt) */
+  --calendar-event-recommended-bg: rgba(27, 77, 62, 0.08);
+  --calendar-event-recommended-border: var(--ak-primary);
+  --calendar-event-recommended-text: var(--ak-primary);
+
+  /* Calendar event - Planned (Planlagt) */
+  --calendar-event-planned-bg: var(--background-elevated);
+  --calendar-event-planned-border: var(--border-default);
+  --calendar-event-planned-text: var(--text-primary);
+
+  /* Calendar event - In Progress (Pågår) */
+  --calendar-event-inprogress-bg: rgba(27, 77, 62, 0.12);
+  --calendar-event-inprogress-border: var(--ak-primary);
+  --calendar-event-inprogress-text: var(--ak-primary);
+
+  /* Calendar event - Completed (Fullført) */
+  --calendar-event-completed-bg: rgba(5, 150, 105, 0.08);
+  --calendar-event-completed-border: var(--ak-success);
+  --calendar-event-completed-text: var(--ak-success);
+
+  /* Calendar event - Ghost/Suggested (Foreslått) */
+  --calendar-event-ghost-bg: rgba(27, 77, 62, 0.04);
+  --calendar-event-ghost-border: var(--ak-primary);
+  --calendar-event-ghost-text: var(--text-tertiary);
+
+  /* Calendar event - External */
+  --calendar-event-external-bg: var(--background-elevated);
+  --calendar-event-external-border: var(--border-default);
+  --calendar-event-external-text: var(--text-secondary);
+
+  /* Calendar event - Category colors */
+  --calendar-event-mental-bg: rgba(219, 39, 119, 0.08);
+  --calendar-event-mental-border: #DB2777;
+  --calendar-event-testing-bg: rgba(220, 38, 38, 0.08);
+  --calendar-event-testing-border: #DC2626;
+
+  /* Calendar today marker */
+  --calendar-today-marker-bg: var(--ak-primary);
+  --calendar-today-marker-text: var(--text-inverse);
+
+  /* Calendar now line */
+  --calendar-now-line: var(--ak-info);
+
+  /* Calendar interactive */
+  --calendar-hover: rgba(0, 0, 0, 0.02);
+  --calendar-selected: rgba(27, 77, 62, 0.08);
+
+  /* ─────────────────────────────────────────
      VIDEO FEATURE TOKENS
      Dark-themed tokens for video components
      ───────────────────────────────────────── */

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
@@ -6,6 +6,7 @@ import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { tokens } from './design-tokens';
+import { initMobileApp } from './utils/mobile';
 
 // Shared components (NOT lazy - needed immediately)
 import ApplicationLayoutTopNav from './components/layout/ApplicationLayoutTopNav';
@@ -268,6 +269,11 @@ const OfflineBanner = () => (
 
 function App() {
   const isOnline = useOnlineStatus();
+
+  // Initialize mobile app features (Capacitor)
+  useEffect(() => {
+    initMobileApp();
+  }, []);
 
   return (
     <Router>
