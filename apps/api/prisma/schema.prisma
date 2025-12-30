@@ -774,6 +774,15 @@ model BreakingPoint {
   deviationPercent    Decimal? @map("deviation_percent") @db.Decimal(5, 2)
   autoDetected        Boolean  @default(false) @map("auto_detected")
 
+  // Evidence-Based Progress Tracking (V2)
+  testDomainCode      String?  @map("test_domain_code") @db.VarChar(20) // TEE, INN150, etc.
+  proofMetricId       String?  @map("proof_metric_id") @db.VarChar(50) // e.g., DRIVER_DISTANCE_CARRY
+  successRule         String?  @map("success_rule") @db.VarChar(200) // e.g., "DRIVER_DISTANCE_CARRY:>=:250"
+  benchmarkTestId     Int?     @map("benchmark_test_id") // Team Norway test number (1-20)
+  benchmarkWindowDays Int      @default(21) @map("benchmark_window_days")
+  confidence          String   @default("medium") @map("confidence") @db.VarChar(20) // low, medium, high
+  effortPercent       Float    @default(0) @map("effort_percent") // 0-100, based on completed training
+
   createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 

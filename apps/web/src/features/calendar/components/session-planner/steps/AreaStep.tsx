@@ -1,0 +1,133 @@
+/**
+ * AreaStep Component
+ *
+ * Step 2: Select training area
+ * Grouped by category: Full Swing, Kortspill, Putting
+ *
+ * Uses semantic tokens only.
+ */
+
+import React from 'react';
+import { type UseSessionPlannerResult } from '../hooks/useSessionPlanner';
+import { useAKFormula, AREAS, type Area } from '../hooks/useAKFormula';
+
+interface AreaStepProps {
+  planner: UseSessionPlannerResult;
+}
+
+export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
+  const { formState, setArea } = planner;
+  const { getValidAreas } = useAKFormula();
+
+  const validAreas = formState.pyramid ? getValidAreas(formState.pyramid) : [];
+
+  // Group areas by category
+  const fullSwingAreas = validAreas.filter((a) => AREAS[a].category === 'fullSwing');
+  const shortGameAreas = validAreas.filter((a) => AREAS[a].category === 'shortGame');
+  const puttingAreas = validAreas.filter((a) => AREAS[a].category === 'putting');
+
+  const renderAreaButton = (area: Area) => {
+    const areaData = AREAS[area];
+    const isSelected = formState.area === area;
+
+    return (
+      <button
+        key={area}
+        type="button"
+        onClick={() => setArea(area)}
+        className="flex flex-col items-start p-3 rounded-lg transition-all duration-200"
+        style={{
+          backgroundColor: isSelected
+            ? 'var(--calendar-event-recommended-bg)'
+            : 'var(--calendar-surface-elevated)',
+          border: `2px solid ${isSelected ? 'var(--ak-primary)' : 'transparent'}`,
+        }}
+      >
+        <span
+          className="font-medium text-sm"
+          style={{
+            color: isSelected
+              ? 'var(--ak-primary)'
+              : 'var(--calendar-text-primary)',
+          }}
+        >
+          {areaData.label}
+        </span>
+        <span
+          className="text-xs mt-0.5"
+          style={{ color: 'var(--calendar-text-tertiary)' }}
+        >
+          {areaData.description}
+        </span>
+      </button>
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      <h3
+        className="text-sm font-medium"
+        style={{ color: 'var(--calendar-text-secondary)' }}
+      >
+        Velg treningsområde
+      </h3>
+
+      {/* Full Swing */}
+      {fullSwingAreas.length > 0 && (
+        <div>
+          <h4
+            className="text-xs font-medium uppercase tracking-wide mb-2"
+            style={{ color: 'var(--calendar-text-tertiary)' }}
+          >
+            Full Swing
+          </h4>
+          <div className="grid grid-cols-2 gap-2">
+            {fullSwingAreas.map(renderAreaButton)}
+          </div>
+        </div>
+      )}
+
+      {/* Kortspill */}
+      {shortGameAreas.length > 0 && (
+        <div>
+          <h4
+            className="text-xs font-medium uppercase tracking-wide mb-2"
+            style={{ color: 'var(--calendar-text-tertiary)' }}
+          >
+            Kortspill
+          </h4>
+          <div className="grid grid-cols-2 gap-2">
+            {shortGameAreas.map(renderAreaButton)}
+          </div>
+        </div>
+      )}
+
+      {/* Putting */}
+      {puttingAreas.length > 0 && (
+        <div>
+          <h4
+            className="text-xs font-medium uppercase tracking-wide mb-2"
+            style={{ color: 'var(--calendar-text-tertiary)' }}
+          >
+            Putting
+          </h4>
+          <div className="grid grid-cols-2 gap-2">
+            {puttingAreas.map(renderAreaButton)}
+          </div>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {validAreas.length === 0 && (
+        <div
+          className="text-center py-8"
+          style={{ color: 'var(--calendar-text-tertiary)' }}
+        >
+          Ingen områder tilgjengelig for valgt nivå
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AreaStep;

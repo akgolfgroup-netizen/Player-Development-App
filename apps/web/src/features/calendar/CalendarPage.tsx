@@ -24,6 +24,10 @@ import {
   CreateSessionModal,
   NewSession,
 } from './components';
+import {
+  SessionPlannerModal,
+  type NewPlannedSession,
+} from './components/session-planner';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
 import { RefreshCw, Info } from 'lucide-react';
@@ -62,10 +66,15 @@ const CalendarPage: React.FC = () => {
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [isDetailPanelOpen, setDetailPanelOpen] = useState(false);
 
-  // Create session modal state
+  // Create session modal state (simple mode)
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [createModalInitialDate, setCreateModalInitialDate] = useState<Date | undefined>();
   const [createModalInitialTime, setCreateModalInitialTime] = useState<string | undefined>();
+
+  // Session planner modal state (advanced mode with AK-formula)
+  const [isPlannerModalOpen, setPlannerModalOpen] = useState(false);
+  const [plannerModalInitialDate, setPlannerModalInitialDate] = useState<Date | undefined>();
+  const [plannerModalInitialTime, setPlannerModalInitialTime] = useState<string | undefined>();
 
   // Handlers
   const handleEventClick = useCallback((event: CalendarEvent) => {
@@ -78,22 +87,34 @@ const CalendarPage: React.FC = () => {
     setSelectedEvent(null);
   }, []);
 
+  // Open session planner (advanced mode - default)
   const handleNewSession = useCallback(() => {
-    setCreateModalInitialDate(anchorDate);
-    setCreateModalInitialTime(undefined);
-    setCreateModalOpen(true);
+    setPlannerModalInitialDate(anchorDate);
+    setPlannerModalInitialTime(undefined);
+    setPlannerModalOpen(true);
   }, [anchorDate]);
 
+  // Open from calendar view click (advanced mode)
   const handleAddSessionFromView = useCallback((date: Date, time: string) => {
-    setCreateModalInitialDate(date);
-    setCreateModalInitialTime(time);
-    setCreateModalOpen(true);
+    setPlannerModalInitialDate(date);
+    setPlannerModalInitialTime(time);
+    setPlannerModalOpen(true);
   }, []);
 
+  // Handle simple session creation (legacy)
   const handleCreateSession = useCallback((session: NewSession) => {
-    console.log('Create session:', session);
+    console.log('Create session (simple):', session);
     // TODO: API call to create session
     setCreateModalOpen(false);
+    refetch();
+  }, [refetch]);
+
+  // Handle planned session creation (with AK-formula)
+  const handleCreatePlannedSession = useCallback((session: NewPlannedSession) => {
+    console.log('Create planned session:', session);
+    console.log('Formula:', session.formula);
+    // TODO: API call to create session with formula
+    setPlannerModalOpen(false);
     refetch();
   }, [refetch]);
 
@@ -293,13 +314,22 @@ const CalendarPage: React.FC = () => {
         )}
       </div>
 
-      {/* Create Session Modal */}
+      {/* Create Session Modal (simple mode - legacy) */}
       <CreateSessionModal
         isOpen={isCreateModalOpen}
         initialDate={createModalInitialDate}
         initialTime={createModalInitialTime}
         onClose={() => setCreateModalOpen(false)}
         onSubmit={handleCreateSession}
+      />
+
+      {/* Session Planner Modal (advanced mode with AK-formula) */}
+      <SessionPlannerModal
+        isOpen={isPlannerModalOpen}
+        initialDate={plannerModalInitialDate}
+        initialTime={plannerModalInitialTime}
+        onClose={() => setPlannerModalOpen(false)}
+        onSubmit={handleCreatePlannedSession}
       />
     </div>
   );

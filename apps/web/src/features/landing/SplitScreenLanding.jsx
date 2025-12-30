@@ -14,6 +14,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AKLogo } from '../../components/branding/AKLogo';
+import { triggerHaptic } from '../../hooks/useHaptic';
 
 // Feature list icons
 const icons = {
@@ -129,7 +130,10 @@ export function SplitScreenLanding() {
           <div style={styles.ctas} className="split-ctas">
             <button
               style={styles.primaryButton}
-              onClick={() => navigate('/login')}
+              onClick={() => {
+                triggerHaptic.tap();
+                navigate('/login');
+              }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = 'var(--accent-dark)';
                 e.currentTarget.style.transform = 'translateY(-1px)';
@@ -144,6 +148,7 @@ export function SplitScreenLanding() {
             <button
               style={styles.secondaryButton}
               onClick={() => {
+                triggerHaptic.select();
                 const featuresSection = document.getElementById('features');
                 featuresSection?.scrollIntoView({ behavior: 'smooth' });
               }}
@@ -189,7 +194,10 @@ export function SplitScreenLanding() {
           <div style={styles.featuresCta}>
             <button
               style={styles.featureButton}
-              onClick={() => navigate('/login')}
+              onClick={() => {
+                triggerHaptic.tap();
+                navigate('/login');
+              }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = 'var(--accent)';
                 e.currentTarget.style.color = 'var(--text-inverse)';

@@ -1,0 +1,213 @@
+/**
+ * SummaryStep Component
+ *
+ * Final step: Review and confirm session
+ * - Formula preview (human-readable + raw)
+ * - Date, time, duration inputs
+ * - Validation errors
+ *
+ * Uses semantic tokens only.
+ */
+
+import React from 'react';
+import { Calendar, Clock, Timer, AlertCircle, CheckCircle } from 'lucide-react';
+import { type UseSessionPlannerResult } from '../hooks/useSessionPlanner';
+
+interface SummaryStepProps {
+  planner: UseSessionPlannerResult;
+}
+
+const DURATION_OPTIONS = [
+  { value: 15, label: '15 min' },
+  { value: 30, label: '30 min' },
+  { value: 45, label: '45 min' },
+  { value: 60, label: '1 time' },
+  { value: 90, label: '1,5 time' },
+  { value: 120, label: '2 timer' },
+];
+
+export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
+  const { parsedFormula, formState, setDate, setStartTime, setDuration } = planner;
+
+  if (!parsedFormula) {
+    return (
+      <div
+        className="text-center py-8"
+        style={{ color: 'var(--calendar-text-tertiary)' }}
+      >
+        Noe gikk galt. Gå tilbake og prøv igjen.
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Formula preview card */}
+      <div
+        className="rounded-xl overflow-hidden"
+        style={{
+          backgroundColor: 'var(--calendar-surface-elevated)',
+          border: '1px solid var(--calendar-border)',
+        }}
+      >
+        {/* Header with status */}
+        <div
+          className="flex items-center gap-2 px-4 py-3"
+          style={{
+            backgroundColor: parsedFormula.isValid
+              ? 'var(--success-muted)'
+              : 'var(--warning-muted)',
+          }}
+        >
+          {parsedFormula.isValid ? (
+            <CheckCircle size={16} style={{ color: 'var(--ak-success)' }} />
+          ) : (
+            <AlertCircle size={16} style={{ color: 'var(--ak-warning)' }} />
+          )}
+          <span
+            className="text-sm font-medium"
+            style={{
+              color: parsedFormula.isValid
+                ? 'var(--ak-success)'
+                : 'var(--ak-warning)',
+            }}
+          >
+            {parsedFormula.isValid ? 'Klar til å opprettes' : 'Mangler informasjon'}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className="p-4 space-y-3">
+          {/* Title */}
+          <h3
+            className="text-lg font-semibold"
+            style={{ color: 'var(--calendar-text-primary)' }}
+          >
+            {parsedFormula.title}
+          </h3>
+
+          {/* Description */}
+          <p
+            className="text-sm"
+            style={{ color: 'var(--calendar-text-secondary)' }}
+          >
+            {parsedFormula.description}
+          </p>
+
+          {/* Formula */}
+          <div
+            className="p-3 rounded-lg font-mono text-xs break-all"
+            style={{
+              backgroundColor: 'var(--calendar-surface-base)',
+              color: 'var(--calendar-text-tertiary)',
+            }}
+          >
+            {parsedFormula.formula}
+          </div>
+
+          {/* Errors */}
+          {parsedFormula.errors.length > 0 && (
+            <div className="space-y-1">
+              {parsedFormula.errors.map((error, index) => (
+                <div
+                  key={index}
+                  className="flex items-start gap-2 text-xs"
+                  style={{ color: 'var(--ak-warning)' }}
+                >
+                  <AlertCircle size={12} className="mt-0.5 shrink-0" />
+                  {error}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Date/Time/Duration */}
+      <div className="space-y-4">
+        <h3
+          className="text-sm font-medium"
+          style={{ color: 'var(--calendar-text-secondary)' }}
+        >
+          Når?
+        </h3>
+
+        {/* Date */}
+        <div>
+          <label
+            className="flex items-center gap-2 text-xs font-medium mb-1"
+            style={{ color: 'var(--calendar-text-tertiary)' }}
+          >
+            <Calendar size={14} />
+            Dato
+          </label>
+          <input
+            type="date"
+            value={formState.date}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full px-3 py-2 rounded-lg text-sm"
+            style={{
+              backgroundColor: 'var(--calendar-surface-elevated)',
+              border: '1px solid var(--calendar-border)',
+              color: 'var(--calendar-text-primary)',
+            }}
+          />
+        </div>
+
+        {/* Time and Duration row */}
+        <div className="grid grid-cols-2 gap-4">
+          {/* Start time */}
+          <div>
+            <label
+              className="flex items-center gap-2 text-xs font-medium mb-1"
+              style={{ color: 'var(--calendar-text-tertiary)' }}
+            >
+              <Clock size={14} />
+              Starttid
+            </label>
+            <input
+              type="time"
+              value={formState.startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg text-sm"
+              style={{
+                backgroundColor: 'var(--calendar-surface-elevated)',
+                border: '1px solid var(--calendar-border)',
+                color: 'var(--calendar-text-primary)',
+              }}
+            />
+          </div>
+
+          {/* Duration */}
+          <div>
+            <label
+              className="flex items-center gap-2 text-xs font-medium mb-1"
+              style={{ color: 'var(--calendar-text-tertiary)' }}
+            >
+              <Timer size={14} />
+              Varighet
+            </label>
+            <select
+              value={formState.duration}
+              onChange={(e) => setDuration(Number(e.target.value))}
+              className="w-full px-3 py-2 rounded-lg text-sm"
+              style={{
+                backgroundColor: 'var(--calendar-surface-elevated)',
+                border: '1px solid var(--calendar-border)',
+                color: 'var(--calendar-text-primary)',
+              }}
+            >
+              {DURATION_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SummaryStep;

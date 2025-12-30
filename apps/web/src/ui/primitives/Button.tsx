@@ -1,4 +1,5 @@
 import React from 'react';
+import { triggerHaptic } from '../../hooks/useHaptic';
 
 /**
  * Button Primitive
@@ -48,10 +49,24 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   disabled,
   className = '',
   style = {},
+  onClick,
   ...props
 }, ref) => {
   const isLoadingState = isLoading || loading;
   const isDisabled = disabled || isLoadingState;
+
+  // Wrap onClick with haptic feedback
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isDisabled) {
+      // Choose haptic type based on variant
+      if (variant === 'destructive' || variant === 'danger') {
+        triggerHaptic.warning();
+      } else {
+        triggerHaptic.tap();
+      }
+    }
+    onClick?.(e);
+  };
 
   const buttonStyle: React.CSSProperties = {
     ...styles.base,
@@ -79,6 +94,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
       style={buttonStyle}
       disabled={isDisabled}
       className={buttonClasses}
+      onClick={handleClick}
       {...props}
     >
       {isLoadingState ? (
