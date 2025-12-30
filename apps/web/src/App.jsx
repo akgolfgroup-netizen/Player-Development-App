@@ -461,6 +461,11 @@ function App() {
               </DashboardLayout>
             </ProtectedRoute>
           } />
+          <Route path="/kalender/dag" element={
+            <ProtectedRoute>
+              <DayViewPage />
+            </ProtectedRoute>
+          } />
           <Route path="/plan-preview/:planId" element={
             <ProtectedRoute>
               <AuthenticatedLayout title="Planforhåndsvisning" subtitle="Se din plan">
