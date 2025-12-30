@@ -352,6 +352,20 @@ function App() {
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />
+          <Route path="/aarsplan/perioder" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Periodisering" subtitle="Periodeoversikt med fokusområder">
+                <AarsplanContainer view="periods" />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/aarsplan/fokus" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Fokusområder" subtitle="Målsetninger for perioder">
+                <AarsplanContainer view="focus" />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
           <Route path="/testprotokoll" element={
             <ProtectedRoute>
               <AuthenticatedLayout title="Testprotokoll" subtitle="Gjennomfør tester">

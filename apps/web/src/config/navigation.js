@@ -59,16 +59,30 @@ export const navigationConfig = [
 
   // ────────────────────────────────────────────────────────────
   // KALENDER
-  // Treningsplan, månedsoversikt, årsplan, booking
+  // Treningsplan, månedsoversikt, booking
   // ────────────────────────────────────────────────────────────
   {
     label: 'Kalender',
     icon: 'Calendar',
     submenu: [
-      { href: '/kalender?view=week', label: 'Treningsplan' },
+      { href: '/kalender?view=week', label: 'Ukeplan' },
       { href: '/kalender?view=month', label: 'Månedsoversikt' },
-      { href: '/kalender?view=year', label: 'Årsplan' },
       { href: '/kalender/booking', label: 'Book trener' },
+    ]
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // PLANLEGGER
+  // Årsplan med periodisering, turneringsplan, målsetninger
+  // ────────────────────────────────────────────────────────────
+  {
+    label: 'Planlegger',
+    icon: 'Map',
+    submenu: [
+      { href: '/aarsplan', label: 'Årsplan' },
+      { href: '/aarsplan/perioder', label: 'Periodisering' },
+      { href: '/turneringer/planlegger', label: 'Turneringsplan' },
+      { href: '/aarsplan/fokus', label: 'Fokusområder' },
     ]
   },
 
@@ -253,10 +267,10 @@ export const badgeConfig = {
  */
 
 export const sidebarSections = {
-  main: navigationConfig.slice(0, 7),      // Dashboard, Utvikling, Trening, Kalender, Testing, Turneringer, Statistikk
-  communication: navigationConfig.slice(7, 9), // Kommunikasjon, Mål & Fremgang
-  resources: navigationConfig.slice(9, 11),    // Kunnskap, Skole
-  settings: navigationConfig.slice(11),        // Innstillinger
+  main: navigationConfig.slice(0, 8),      // Dashboard, Utvikling, Trening, Kalender, Planlegger, Testing, Turneringer, Statistikk
+  communication: navigationConfig.slice(8, 10), // Kommunikasjon, Mål & Fremgang
+  resources: navigationConfig.slice(10, 12),    // Kunnskap, Skole
+  settings: navigationConfig.slice(12),        // Innstillinger
 };
 
 /**
