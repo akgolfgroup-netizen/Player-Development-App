@@ -32,8 +32,9 @@ import {
   CalendarPlus,
   CheckCircle,
   AlertCircle,
+  Target,
 } from 'lucide-react';
-import AppShell from '../../components/layout/AppShell';
+// Layout handled by parent route - no AppShell needed
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
@@ -48,6 +49,7 @@ import {
   PlayerCategory,
   TournamentPurpose,
   CompetitionLevel,
+  JuniorTourRegion,
   TOUR_LABELS,
   STATUS_LABELS,
   CATEGORY_LABELS,
@@ -56,6 +58,8 @@ import {
   PURPOSE_LABELS,
   PURPOSE_DESCRIPTIONS,
   LEVEL_LABELS,
+  JUNIOR_TOUR_REGION_LABELS,
+  JUNIOR_TOUR_REGION_DESCRIPTIONS,
 } from './types';
 import {
   fetchTournaments,
@@ -97,6 +101,7 @@ function useFilterState() {
     recommendedCategories: searchParams.getAll('category') as PlayerCategory[] || undefined,
     purposes: searchParams.getAll('purpose') as TournamentPurpose[] || undefined,
     levels: searchParams.getAll('level') as CompetitionLevel[] || undefined,
+    juniorTourRegions: searchParams.getAll('region') as JuniorTourRegion[] || undefined,
     dateRange: (searchParams.get('dateRange') as TournamentFilters['dateRange']) || undefined,
     countries: searchParams.getAll('country') || undefined,
   }), [searchParams]);
@@ -110,6 +115,7 @@ function useFilterState() {
     newFilters.recommendedCategories?.forEach(c => params.append('category', c));
     newFilters.purposes?.forEach(p => params.append('purpose', p));
     newFilters.levels?.forEach(l => params.append('level', l));
+    newFilters.juniorTourRegions?.forEach(r => params.append('region', r));
     if (newFilters.dateRange) params.set('dateRange', newFilters.dateRange);
     newFilters.countries?.forEach(c => params.append('country', c));
 
@@ -309,12 +315,14 @@ function TournamentCard({
   onSelect,
   onRegister,
   onAddToCalendar,
+  onPlanTournament,
 }: {
   tournament: Tournament;
   playerCategory?: PlayerCategory;
   onSelect: (t: Tournament) => void;
   onRegister: (t: Tournament) => void;
   onAddToCalendar: (t: Tournament) => void;
+  onPlanTournament: (t: Tournament) => void;
 }) {
   const daysUntil = getDaysUntil(tournament.startDate);
   const statusConfig = getStatusConfig(tournament.status, tournament.isRegistered);
@@ -449,6 +457,18 @@ function TournamentCard({
           </div>
         </div>
         <div style={styles.cardActions}>
+          {/* PLANLEGG action - add to tournament plan */}
+          <button
+            onClick={e => {
+              e.stopPropagation();
+              onPlanTournament(tournament);
+            }}
+            style={styles.planButton}
+            title="Legg til i turneringsplan"
+          >
+            <Target size={14} />
+            Planlegg
+          </button>
           {showRegisterButton && (
             <Button
               variant="primary"
@@ -525,6 +545,14 @@ function FilterPanel({
     'klubb',
     'junior',
     'trenings_turnering',
+  ];
+  const juniorRegions: JuniorTourRegion[] = [
+    'ostlandet_ost',
+    'ostlandet_vest',
+    'sorlandet',
+    'vestlandet',
+    'midt_norge',
+    'nord_norge',
   ];
   const tours: TourType[] = [
     'junior_tour_regional',
@@ -608,6 +636,34 @@ function FilterPanel({
                     aria-label={`Konkurransenivå: ${LEVEL_LABELS[level]}`}
                   >
                     {LEVEL_LABELS[level]}
+                    {isSelected && <CheckCircle size={14} />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Junior Tour Region Filter (Appendix 2) */}
+          <div style={filterPanelStyles.section}>
+            <h4 style={filterPanelStyles.sectionTitle}>Junior Tour Region</h4>
+            <p style={filterPanelStyles.sectionDescription}>
+              Filtrer junior turneringer etter region (kun Junior Tour Regional)
+            </p>
+            <div style={filterPanelStyles.chipGrid}>
+              {juniorRegions.map(region => {
+                const isSelected = localFilters.juniorTourRegions?.includes(region);
+                return (
+                  <button
+                    key={region}
+                    onClick={() => toggleArrayFilter('juniorTourRegions', region)}
+                    style={{
+                      ...filterPanelStyles.chip,
+                      ...(isSelected ? filterPanelStyles.chipSelected : {}),
+                    }}
+                    title={JUNIOR_TOUR_REGION_DESCRIPTIONS[region]}
+                    aria-label={`${JUNIOR_TOUR_REGION_LABELS[region]}: ${JUNIOR_TOUR_REGION_DESCRIPTIONS[region]}`}
+                  >
+                    {JUNIOR_TOUR_REGION_LABELS[region]}
                     {isSelected && <CheckCircle size={14} />}
                   </button>
                 );
@@ -1003,6 +1059,7 @@ export default function TournamentCalendarPage() {
       filters.recommendedCategories?.length ||
       filters.purposes?.length ||
       filters.levels?.length ||
+      filters.juniorTourRegions?.length ||
       filters.dateRange ||
       filters.countries?.length
     );
@@ -1052,39 +1109,73 @@ export default function TournamentCalendarPage() {
     }
   };
 
+  // Handle adding tournament to planner (PLANLEGG)
+  const handlePlanTournament = (tournament: Tournament) => {
+    // Get existing plan from localStorage
+    const LOCAL_STORAGE_KEY = 'ak_golf_tournament_plan';
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+    let existingPlan: Array<{tournament: Tournament; purpose: string; addedAt: string}> = [];
+
+    if (saved) {
+      try {
+        existingPlan = JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse tournament plan:', e);
+      }
+    }
+
+    // Check if already in plan
+    const alreadyPlanned = existingPlan.some(p => p.tournament.id === tournament.id);
+    if (alreadyPlanned) {
+      // Navigate to planner if already added
+      navigate('/turneringer/planlegger');
+      return;
+    }
+
+    // Add to plan with default purpose based on hierarchy
+    const newEntry = {
+      tournament,
+      purpose: tournament.purpose || 'UTVIKLING', // Default to UTVIKLING
+      notes: '',
+      addedAt: new Date().toISOString(),
+    };
+
+    existingPlan.push(newEntry);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existingPlan));
+
+    // Navigate to planner
+    navigate('/turneringer/planlegger');
+  };
+
   // Render loading state
   if (loading) {
     return (
-      <AppShell title="Turneringskalender" subtitle="Laster turneringer..." actions={null}>
-        <div style={styles.loadingContainer}>
-          <StateCard variant="loading" title="Laster turneringer..." />
-        </div>
-      </AppShell>
+      <div style={styles.loadingContainer}>
+        <StateCard variant="loading" title="Laster turneringer..." />
+      </div>
     );
   }
 
   // Render error state
   if (error) {
     return (
-      <AppShell title="Turneringskalender" subtitle="Noe gikk galt" actions={null}>
-        <div style={styles.loadingContainer}>
-          <StateCard
-            variant="error"
-            title="Kunne ikke laste turneringer"
-            description={error}
-            action={
-              <Button variant="primary" onClick={() => window.location.reload()}>
-                Prøv igjen
-              </Button>
-            }
-          />
-        </div>
-      </AppShell>
+      <div style={styles.loadingContainer}>
+        <StateCard
+          variant="error"
+          title="Kunne ikke laste turneringer"
+          description={error}
+          action={
+            <Button variant="primary" onClick={() => window.location.reload()}>
+              Prøv igjen
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
   return (
-    <AppShell title="Turneringskalender" subtitle="Kommende turneringer" actions={null}>
+    <>
       <div style={styles.container}>
         {/* Stats */}
         <StatsRow stats={stats} />
@@ -1121,6 +1212,7 @@ export default function TournamentCalendarPage() {
                   onSelect={setSelectedTournament}
                   onRegister={handleRegister}
                   onAddToCalendar={handleAddToCalendar}
+                  onPlanTournament={handlePlanTournament}
                 />
               ))}
             </div>
@@ -1160,7 +1252,7 @@ export default function TournamentCalendarPage() {
           onAddToCalendar={handleAddToCalendar}
         />
       )}
-    </AppShell>
+    </>
   );
 }
 
@@ -1454,6 +1546,21 @@ const styles: Record<string, React.CSSProperties> = {
     border: 'none',
     cursor: 'pointer',
     padding: 0,
+  },
+
+  planButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    padding: '6px 12px',
+    borderRadius: 'var(--radius-sm)',
+    border: '1px solid var(--border-default)',
+    backgroundColor: 'var(--background-surface)',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-primary)',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
   },
 
   // Past tournaments

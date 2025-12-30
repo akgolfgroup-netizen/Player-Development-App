@@ -11,6 +11,9 @@
 // Main page component
 export { default as TournamentCalendarPage } from './TournamentCalendarPage';
 
+// Tournament Planner (PLANLEGGER)
+export { default as TournamentPlannerPage } from './TournamentPlannerPage';
+
 // Detail panel
 export { default as TournamentDetailsPanel } from './TournamentDetailsPanel';
 

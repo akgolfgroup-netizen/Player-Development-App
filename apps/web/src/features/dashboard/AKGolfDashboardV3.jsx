@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, Trophy, Target, CheckCircle2,
-  Play, Bell, ChevronRight, Crosshair, Zap, Sparkles
+  Play, Bell, ChevronRight, Crosshair, Zap, Sparkles,
+  Award, TrendingUp, Calendar
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { useFocus } from '../../hooks/useFocus';
@@ -291,6 +292,308 @@ const QuickStartCTA = ({ onStart }) => (
   </button>
 );
 
+// ===== NEW MODULES: WEEKLY OVERVIEW =====
+
+/**
+ * WeekAtGlanceCard - "This week at a glance" module
+ * Shows planned sessions, training hours, completed sessions with progress bars
+ */
+const WeekAtGlanceCard = ({ stats, loading }) => {
+  if (loading) {
+    return (
+      <div style={weekStyles.card}>
+        <div style={weekStyles.cardHeader}>
+          <Calendar size={18} style={{ color: 'var(--accent)' }} />
+          <span style={weekStyles.cardTitle}>Denne uken</span>
+        </div>
+        <div style={weekStyles.loadingGrid}>
+          <div style={weekStyles.loadingPulse} />
+          <div style={weekStyles.loadingPulse} />
+          <div style={weekStyles.loadingPulse} />
+        </div>
+      </div>
+    );
+  }
+
+  const sessionsPercent = stats.sessionsTotal > 0
+    ? Math.min(Math.round((stats.sessionsCompleted / stats.sessionsTotal) * 100), 100)
+    : 0;
+  const hoursPercent = stats.hoursGoal > 0
+    ? Math.min(Math.round((stats.hoursThisWeek / stats.hoursGoal) * 100), 100)
+    : 0;
+
+  return (
+    <div style={weekStyles.card}>
+      <div style={weekStyles.cardHeader}>
+        <div style={weekStyles.cardHeaderLeft}>
+          <Calendar size={18} style={{ color: 'var(--accent)' }} />
+          <span style={weekStyles.cardTitle}>Denne uken</span>
+        </div>
+        {stats.streak > 0 && (
+          <div style={weekStyles.streakBadge}>
+            <span style={weekStyles.streakIcon}>🔥</span>
+            <span style={weekStyles.streakValue}>{stats.streak} dager</span>
+          </div>
+        )}
+      </div>
+
+      <div style={weekStyles.metricsGrid}>
+        {/* Planned Sessions */}
+        <div style={weekStyles.metricItem}>
+          <div style={weekStyles.metricHeader}>
+            <span style={weekStyles.metricLabel}>Planlagte økter</span>
+            <span style={weekStyles.metricValue}>
+              {stats.sessionsCompleted} av {stats.sessionsTotal}
+            </span>
+          </div>
+          <div style={weekStyles.progressTrack}>
+            <div
+              style={{
+                ...weekStyles.progressFill,
+                width: `${sessionsPercent}%`,
+                backgroundColor: sessionsPercent >= 100 ? 'var(--success)' : 'var(--accent)',
+              }}
+            />
+          </div>
+          <span style={weekStyles.metricSubtext}>
+            {sessionsPercent >= 100 ? 'Mål nådd!' : `${100 - sessionsPercent}% gjenstår`}
+          </span>
+        </div>
+
+        {/* Training Hours */}
+        <div style={weekStyles.metricItem}>
+          <div style={weekStyles.metricHeader}>
+            <span style={weekStyles.metricLabel}>Treningstimer</span>
+            <span style={weekStyles.metricValue}>
+              {stats.hoursThisWeek}t av {stats.hoursGoal}t
+            </span>
+          </div>
+          <div style={weekStyles.progressTrack}>
+            <div
+              style={{
+                ...weekStyles.progressFill,
+                width: `${hoursPercent}%`,
+                backgroundColor: hoursPercent >= 100 ? 'var(--success)' : 'var(--accent)',
+              }}
+            />
+          </div>
+          <span style={weekStyles.metricSubtext}>
+            {hoursPercent >= 100 ? 'Måltimer nådd!' : `${stats.hoursGoal - stats.hoursThisWeek}t gjenstår`}
+          </span>
+        </div>
+
+        {/* Completed Last 7 Days */}
+        <div style={weekStyles.metricItem}>
+          <div style={weekStyles.metricHeader}>
+            <span style={weekStyles.metricLabel}>Fullført siste 7 dager</span>
+            <span style={weekStyles.metricValue}>{stats.sessionsCompleted} økter</span>
+          </div>
+          <div style={weekStyles.completedIndicator}>
+            <CheckCircle2
+              size={16}
+              style={{
+                color: stats.sessionsCompleted > 0 ? 'var(--success)' : 'var(--text-tertiary)',
+              }}
+            />
+            <span style={weekStyles.completedText}>
+              {stats.sessionsCompleted > 0
+                ? `${Math.round(stats.hoursThisWeek)} timer totalt`
+                : 'Ingen økter ennå'}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * BadgesScoreCard - "Badges & Score" module
+ * Shows rank, XP, level progress, and recent badges
+ */
+const BadgesScoreCard = ({ xp, totalXp, level, nextLevelXp, achievements, loading }) => {
+  if (loading) {
+    return (
+      <div style={badgeStyles.card}>
+        <div style={badgeStyles.cardHeader}>
+          <Award size={18} style={{ color: 'var(--accent)' }} />
+          <span style={badgeStyles.cardTitle}>Badges & Score</span>
+        </div>
+        <div style={badgeStyles.loadingContent}>
+          <div style={weekStyles.loadingPulse} />
+        </div>
+      </div>
+    );
+  }
+
+  // Determine rank based on level
+  const getRankName = (lvl) => {
+    if (lvl >= 20) return 'Mester';
+    if (lvl >= 15) return 'Ekspert';
+    if (lvl >= 10) return 'Avansert';
+    if (lvl >= 5) return 'Ivrig';
+    if (lvl >= 2) return 'Aktiv';
+    return 'Nybegynner';
+  };
+
+  const rankName = getRankName(level || 1);
+  const xpProgress = nextLevelXp > 0 ? Math.min(Math.round((xp / nextLevelXp) * 100), 100) : 0;
+  const badgeCount = achievements?.length || 0;
+
+  return (
+    <div style={badgeStyles.card}>
+      <div style={badgeStyles.cardHeader}>
+        <Award size={18} style={{ color: 'var(--accent)' }} />
+        <span style={badgeStyles.cardTitle}>Badges & Score</span>
+      </div>
+
+      <div style={badgeStyles.content}>
+        {/* Rank Display */}
+        <div style={badgeStyles.rankSection}>
+          <div style={badgeStyles.rankBadge}>
+            <Trophy size={20} style={{ color: 'var(--achievement, var(--accent))' }} />
+          </div>
+          <div style={badgeStyles.rankInfo}>
+            <span style={badgeStyles.rankLabel}>Rank</span>
+            <span style={badgeStyles.rankName}>{rankName}</span>
+          </div>
+        </div>
+
+        {/* XP Progress */}
+        <div style={badgeStyles.xpSection}>
+          <div style={badgeStyles.xpHeader}>
+            <span style={badgeStyles.xpLabel}>Level {level || 1}</span>
+            <span style={badgeStyles.xpValue}>{totalXp || 0} XP</span>
+          </div>
+          <div style={badgeStyles.xpTrack}>
+            <div
+              style={{
+                ...badgeStyles.xpFill,
+                width: `${xpProgress}%`,
+              }}
+            />
+          </div>
+          <span style={badgeStyles.xpSubtext}>
+            {xp || 0} / {nextLevelXp || 100} til neste nivå
+          </span>
+        </div>
+
+        {/* Badges Count */}
+        <div style={badgeStyles.badgesSection}>
+          <div style={badgeStyles.badgesStat}>
+            <span style={badgeStyles.badgesCount}>{badgeCount}</span>
+            <span style={badgeStyles.badgesLabel}>badges opptjent</span>
+          </div>
+          {badgeCount > 0 && achievements?.slice(0, 3).map((badge, idx) => (
+            <span key={badge.id || idx} style={badgeStyles.badgeEmoji}>
+              {badge.iconEmoji || '🏅'}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Last7DaysVisualization - Compact 7-day strip chart
+ * Shows planned vs completed for each day
+ */
+const Last7DaysVisualization = ({ calendarEvents, stats }) => {
+  // Generate last 7 days labels (Mon-Sun)
+  const dayLabels = useMemo(() => {
+    const days = ['Søn', 'Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør'];
+    const today = new Date();
+    const result = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      result.push({
+        label: days[date.getDay()],
+        date: date.toISOString().split('T')[0],
+        isToday: i === 0,
+        dayOfWeek: date.getDay(),
+      });
+    }
+    return result;
+  }, []);
+
+  // Simulate completion data (in real implementation, this would come from API)
+  // For now, we'll show today as having events if calendarEvents exist
+  const getDayStatus = (day, index) => {
+    if (day.isToday && calendarEvents?.length > 0) {
+      return 'has-events';
+    }
+    // Show completed status for past days based on streak
+    if (!day.isToday && index < 6 && stats.streak > (6 - index)) {
+      return 'completed';
+    }
+    // Weekend styling
+    if (day.dayOfWeek === 0 || day.dayOfWeek === 6) {
+      return 'weekend';
+    }
+    return 'empty';
+  };
+
+  return (
+    <div style={last7Styles.container}>
+      <div style={last7Styles.header}>
+        <TrendingUp size={16} style={{ color: 'var(--text-secondary)' }} />
+        <span style={last7Styles.title}>Siste 7 dager</span>
+      </div>
+
+      <div style={last7Styles.stripContainer}>
+        {dayLabels.map((day, index) => {
+          const status = getDayStatus(day, index);
+          return (
+            <div key={day.date} style={last7Styles.dayColumn}>
+              <span style={{
+                ...last7Styles.dayLabel,
+                color: day.isToday ? 'var(--accent)' : 'var(--text-tertiary)',
+                fontWeight: day.isToday ? 600 : 400,
+              }}>
+                {day.label}
+              </span>
+              <div style={{
+                ...last7Styles.dayIndicator,
+                backgroundColor:
+                  status === 'completed' ? 'var(--success)' :
+                  status === 'has-events' ? 'var(--accent)' :
+                  status === 'weekend' ? 'var(--background-elevated)' :
+                  'var(--background-surface)',
+                border: day.isToday ? '2px solid var(--accent)' : '1px solid var(--border-subtle)',
+              }}>
+                {status === 'completed' && (
+                  <CheckCircle2 size={12} style={{ color: 'var(--text-inverse)' }} />
+                )}
+                {status === 'has-events' && (
+                  <span style={last7Styles.eventDot} />
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={last7Styles.legend}>
+        <div style={last7Styles.legendItem}>
+          <div style={{ ...last7Styles.legendDot, backgroundColor: 'var(--success)' }} />
+          <span>Fullført</span>
+        </div>
+        <div style={last7Styles.legendItem}>
+          <div style={{ ...last7Styles.legendDot, backgroundColor: 'var(--accent)' }} />
+          <span>I dag</span>
+        </div>
+        <div style={last7Styles.legendItem}>
+          <div style={{ ...last7Styles.legendDot, backgroundColor: 'var(--background-surface)', border: '1px solid var(--border-subtle)' }} />
+          <span>Ingen data</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ===== ZONE B COMPONENTS =====
 
 /**
@@ -542,6 +845,14 @@ const AKGolfDashboardV3 = () => {
   };
   const notifications = dashboardData?.notifications || [];
 
+  // Gamification data
+  const xp = dashboardData?.xp || 0;
+  const totalXp = dashboardData?.totalXp || 0;
+  const level = dashboardData?.level || 1;
+  const nextLevelXp = dashboardData?.nextLevelXp || 100;
+  const achievements = dashboardData?.achievements || [];
+  const calendarEvents = dashboardData?.calendarEvents || [];
+
   const handleStartSession = (session) => {
     if (session?.id) {
       navigate(`/session/${session.id}/active`);
@@ -567,49 +878,70 @@ const AKGolfDashboardV3 = () => {
 
   return (
     <div style={styles.dashboard}>
-      {/* Left Column: Welcome + Focus + CTA */}
-      <section style={styles.leftColumn}>
+      {/* Row 1: Welcome Header (single, no duplicate) */}
+      <section style={styles.welcomeRow}>
         <WelcomeSection
           playerName={player.name}
           category={player.category}
           stats={stats}
         />
-
-        <FocusCard
-          focus={focusData}
-          loading={focusLoading}
-        />
-
-        <ContextualCTA
-          focus={focusData}
-          upcomingSession={dashboardData?.upcomingSessions?.[0]}
-          onStart={handleStartSession}
-        />
-
-        {/* Progress Strip below CTA */}
-        <ProgressStrip
-          sessions={{ completed: stats.sessionsCompleted, total: stats.sessionsTotal }}
-          hours={{ current: stats.hoursThisWeek, goal: stats.hoursGoal }}
-          streak={stats.streak}
-        />
       </section>
 
-      {/* Right Column: Tasks + Notifications */}
-      <section style={styles.rightColumn}>
-        <TasksList
-          tasks={tasks}
-          onToggle={toggleTask}
-          onViewAll={() => navigate('/maalsetninger')}
-          onStartTask={handleStartTaskSession}
-        />
+      {/* Row 2: Week at a Glance (8-col) + Badges & Score (4-col) */}
+      <section style={styles.topRow}>
+        <div style={styles.weekAtGlanceCol}>
+          <WeekAtGlanceCard stats={stats} loading={loading} />
+        </div>
+        <div style={styles.badgesCol}>
+          <BadgesScoreCard
+            xp={xp}
+            totalXp={totalXp}
+            level={level}
+            nextLevelXp={nextLevelXp}
+            achievements={achievements}
+            loading={loading}
+          />
+        </div>
+      </section>
 
-        {/* Quick start alternativ */}
-        <QuickStartCTA onStart={handleStartSession} />
+      {/* Row 3: Last 7 Days Visualization (12-col) */}
+      <section style={styles.last7Row}>
+        <Last7DaysVisualization calendarEvents={calendarEvents} stats={stats} />
+      </section>
 
-        <NotificationsList
-          notifications={notifications}
-          onViewAll={() => navigate('/varslinger')}
-        />
+      {/* Row 4: Main content - Focus + Tasks side by side */}
+      <section style={styles.mainContentRow}>
+        {/* Left Column: Focus + CTA */}
+        <div style={styles.leftColumn}>
+          <FocusCard
+            focus={focusData}
+            loading={focusLoading}
+          />
+
+          <ContextualCTA
+            focus={focusData}
+            upcomingSession={dashboardData?.upcomingSessions?.[0]}
+            onStart={handleStartSession}
+          />
+
+          {/* Quick start alternativ */}
+          <QuickStartCTA onStart={handleStartSession} />
+        </div>
+
+        {/* Right Column: Tasks + Notifications */}
+        <div style={styles.rightColumn}>
+          <TasksList
+            tasks={tasks}
+            onToggle={toggleTask}
+            onViewAll={() => navigate('/maalsetninger')}
+            onStartTask={handleStartTaskSession}
+          />
+
+          <NotificationsList
+            notifications={notifications}
+            onViewAll={() => navigate('/varslinger')}
+          />
+        </div>
       </section>
     </div>
   );
@@ -619,11 +951,11 @@ const AKGolfDashboardV3 = () => {
 
 const styles = {
   dashboard: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-    gap: '28px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
     width: '100%',
-    maxWidth: '1400px',
+    maxWidth: '1536px', // 7xl equivalent - wider dashboard
     margin: '0 auto',
     padding: '24px 32px',
   },
@@ -633,8 +965,43 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '48px',
-    color: 'var(--ak-text-tertiary)',
+    color: 'var(--text-tertiary)',
     fontSize: '15px',
+    gridColumn: '1 / -1',
+  },
+
+  // Row 1: Welcome header
+  welcomeRow: {
+    width: '100%',
+  },
+
+  // Row 2: Week at a Glance + Badges (8-col + 4-col)
+  topRow: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gap: '20px',
+    width: '100%',
+  },
+
+  weekAtGlanceCol: {
+    gridColumn: 'span 8',
+  },
+
+  badgesCol: {
+    gridColumn: 'span 4',
+  },
+
+  // Row 3: Last 7 days (full width)
+  last7Row: {
+    width: '100%',
+  },
+
+  // Row 4: Main content row
+  mainContentRow: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '24px',
+    width: '100%',
   },
 
   // Left Column: Control & Focus
@@ -1048,5 +1415,324 @@ const styles = {
     flexShrink: 0,
   },
 };
+
+// ===== WEEK AT GLANCE STYLES =====
+const weekStyles = {
+  card: {
+    backgroundColor: 'var(--background-white, var(--ak-surface-card))',
+    borderRadius: '16px',
+    border: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    padding: '20px 24px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+    height: '100%',
+  },
+  cardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: '20px',
+  },
+  cardHeaderLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  cardTitle: {
+    fontSize: '16px',
+    fontWeight: 600,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+  },
+  streakBadge: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    padding: '6px 12px',
+    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    borderRadius: '20px',
+  },
+  streakIcon: {
+    fontSize: '14px',
+  },
+  streakValue: {
+    fontSize: '13px',
+    fontWeight: 600,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+  },
+  metricsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '24px',
+  },
+  metricItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  metricHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+  },
+  metricLabel: {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-secondary, var(--ak-text-secondary))',
+  },
+  metricValue: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+    fontFeatureSettings: '"tnum"',
+  },
+  progressTrack: {
+    height: '8px',
+    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    borderRadius: '4px',
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: '4px',
+    transition: 'width 0.3s ease',
+  },
+  metricSubtext: {
+    fontSize: '12px',
+    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+  },
+  completedIndicator: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    padding: '8px 0',
+  },
+  completedText: {
+    fontSize: '13px',
+    color: 'var(--text-secondary, var(--ak-text-secondary))',
+  },
+  loadingGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '24px',
+  },
+  loadingPulse: {
+    height: '60px',
+    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    borderRadius: '8px',
+    animation: 'pulse 1.5s ease-in-out infinite',
+  },
+};
+
+// ===== BADGES & SCORE STYLES =====
+const badgeStyles = {
+  card: {
+    backgroundColor: 'var(--background-white, var(--ak-surface-card))',
+    borderRadius: '16px',
+    border: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    padding: '20px 24px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginBottom: '16px',
+  },
+  cardTitle: {
+    fontSize: '16px',
+    fontWeight: 600,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    flex: 1,
+  },
+  rankSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  rankBadge: {
+    width: '44px',
+    height: '44px',
+    borderRadius: '12px',
+    backgroundColor: 'var(--background-elevated, var(--ak-surface-subtle))',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  rankInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  rankLabel: {
+    fontSize: '11px',
+    fontWeight: 500,
+    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+  },
+  rankName: {
+    fontSize: '18px',
+    fontWeight: 700,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+  },
+  xpSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+  },
+  xpHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+  },
+  xpLabel: {
+    fontSize: '13px',
+    fontWeight: 600,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+  },
+  xpValue: {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-secondary, var(--ak-text-secondary))',
+    fontFeatureSettings: '"tnum"',
+  },
+  xpTrack: {
+    height: '6px',
+    backgroundColor: 'var(--background-surface, var(--ak-surface-subtle))',
+    borderRadius: '3px',
+    overflow: 'hidden',
+  },
+  xpFill: {
+    height: '100%',
+    backgroundColor: 'var(--accent)',
+    borderRadius: '3px',
+    transition: 'width 0.3s ease',
+  },
+  xpSubtext: {
+    fontSize: '11px',
+    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+  },
+  badgesSection: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    paddingTop: '8px',
+    borderTop: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    marginTop: 'auto',
+  },
+  badgesStat: {
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '6px',
+  },
+  badgesCount: {
+    fontSize: '20px',
+    fontWeight: 700,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+    fontFeatureSettings: '"tnum"',
+  },
+  badgesLabel: {
+    fontSize: '12px',
+    color: 'var(--text-secondary, var(--ak-text-secondary))',
+  },
+  badgeEmoji: {
+    fontSize: '20px',
+  },
+  loadingContent: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+};
+
+// ===== LAST 7 DAYS STYLES =====
+const last7Styles = {
+  container: {
+    backgroundColor: 'var(--background-white, var(--ak-surface-card))',
+    borderRadius: '16px',
+    border: '1px solid var(--border-subtle, var(--ak-border-muted))',
+    padding: '16px 24px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginBottom: '16px',
+  },
+  title: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: 'var(--text-primary, var(--ak-text-primary))',
+  },
+  stripContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '8px',
+  },
+  dayColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '8px',
+    flex: 1,
+  },
+  dayLabel: {
+    fontSize: '12px',
+    fontWeight: 400,
+  },
+  dayIndicator: {
+    width: '100%',
+    maxWidth: '48px',
+    height: '32px',
+    borderRadius: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all 0.2s ease',
+  },
+  eventDot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    backgroundColor: 'var(--text-inverse)',
+  },
+  legend: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '20px',
+    marginTop: '16px',
+    paddingTop: '12px',
+    borderTop: '1px solid var(--border-subtle, var(--ak-border-muted))',
+  },
+  legendItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    fontSize: '11px',
+    color: 'var(--text-tertiary, var(--ak-text-tertiary))',
+  },
+  legendDot: {
+    width: '10px',
+    height: '10px',
+    borderRadius: '4px',
+  },
+};
+
+// ===== RESPONSIVE MEDIA QUERY (CSS-in-JS limitation - add via CSS file for production) =====
+// Note: For full responsive support, consider adding these rules to a CSS file:
+// @media (max-width: 1024px) {
+//   .topRow { grid-template-columns: 1fr; }
+//   .weekAtGlanceCol, .badgesCol { grid-column: span 12; }
+//   .mainContentRow { grid-template-columns: 1fr; }
+//   .metricsGrid { grid-template-columns: 1fr; }
+// }
 
 export default AKGolfDashboardV3;

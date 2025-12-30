@@ -17,6 +17,8 @@ import {
   TournamentResult,
   TournamentPurpose,
   CompetitionLevel,
+  JuniorTourRegion,
+  CITY_TO_JUNIOR_REGION,
 } from './types';
 import { applyHierarchyMapping, getTourPrestigeScore } from './hierarchy-config';
 
@@ -221,6 +223,20 @@ function applyFilters(
       if (!t.level || !filters.levels.includes(t.level)) {
         return false;
       }
+    }
+
+    // Junior Tour Region filter (Appendix 2)
+    if (filters.juniorTourRegions?.length) {
+      // Only apply to junior_tour_regional tournaments
+      if (t.tour === 'junior_tour_regional') {
+        // Determine region from tournament city or assigned region
+        const tournamentRegion = t.juniorTourRegion || CITY_TO_JUNIOR_REGION[t.city];
+        if (!tournamentRegion || !filters.juniorTourRegions.includes(tournamentRegion)) {
+          return false;
+        }
+      }
+      // Non-junior tournaments are excluded when junior region filter is active
+      // unless they also match other criteria (this keeps filter focused on junior)
     }
 
     return true;

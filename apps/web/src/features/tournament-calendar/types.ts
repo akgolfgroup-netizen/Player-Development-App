@@ -156,6 +156,98 @@ export const LEVEL_LABELS: Record<CompetitionLevel, string> = {
 };
 
 // ============================================================================
+// JUNIOR TOUR REGIONS (Appendix 2 - Norwegian Golf Federation)
+// ============================================================================
+
+/**
+ * Junior Tour regions based on NGF regional structure
+ * Used for filtering regional junior tournaments
+ */
+export type JuniorTourRegion =
+  | 'ostlandet_ost'     // Østfold, parts of Akershus
+  | 'ostlandet_vest'    // Oslo, Buskerud, Vestfold, parts of Akershus
+  | 'sorlandet'         // Agder (Aust-Agder, Vest-Agder)
+  | 'vestlandet'        // Rogaland, Hordaland, Sogn og Fjordane
+  | 'midt_norge'        // Trøndelag (Nord-Trøndelag, Sør-Trøndelag)
+  | 'nord_norge';       // Nordland, Troms, Finnmark
+
+export const JUNIOR_TOUR_REGION_LABELS: Record<JuniorTourRegion, string> = {
+  ostlandet_ost: 'Østlandet Øst',
+  ostlandet_vest: 'Østlandet Vest',
+  sorlandet: 'Sørlandet',
+  vestlandet: 'Vestlandet',
+  midt_norge: 'Midt-Norge',
+  nord_norge: 'Nord-Norge',
+};
+
+export const JUNIOR_TOUR_REGION_DESCRIPTIONS: Record<JuniorTourRegion, string> = {
+  ostlandet_ost: 'Østfold, Follo, Romerike Øst',
+  ostlandet_vest: 'Oslo, Buskerud, Vestfold, Asker/Bærum',
+  sorlandet: 'Aust-Agder, Vest-Agder',
+  vestlandet: 'Rogaland, Hordaland, Sogn og Fjordane',
+  midt_norge: 'Sør-Trøndelag, Nord-Trøndelag',
+  nord_norge: 'Nordland, Troms, Finnmark',
+};
+
+/**
+ * Map counties/cities to Junior Tour regions
+ * Used for automatic region assignment based on tournament location
+ */
+export const CITY_TO_JUNIOR_REGION: Record<string, JuniorTourRegion> = {
+  // Østlandet Øst
+  'Fredrikstad': 'ostlandet_ost',
+  'Sarpsborg': 'ostlandet_ost',
+  'Halden': 'ostlandet_ost',
+  'Moss': 'ostlandet_ost',
+  'Askim': 'ostlandet_ost',
+  'Ski': 'ostlandet_ost',
+  'Drøbak': 'ostlandet_ost',
+  'Lillestrøm': 'ostlandet_ost',
+  'Jessheim': 'ostlandet_ost',
+  'Lørenskog': 'ostlandet_ost',
+
+  // Østlandet Vest
+  'Oslo': 'ostlandet_vest',
+  'Drammen': 'ostlandet_vest',
+  'Kongsberg': 'ostlandet_vest',
+  'Hønefoss': 'ostlandet_vest',
+  'Tønsberg': 'ostlandet_vest',
+  'Sandefjord': 'ostlandet_vest',
+  'Larvik': 'ostlandet_vest',
+  'Horten': 'ostlandet_vest',
+  'Asker': 'ostlandet_vest',
+  'Sandvika': 'ostlandet_vest',
+  'Kløfta': 'ostlandet_vest',
+
+  // Sørlandet
+  'Kristiansand': 'sorlandet',
+  'Arendal': 'sorlandet',
+  'Grimstad': 'sorlandet',
+  'Mandal': 'sorlandet',
+  'Flekkefjord': 'sorlandet',
+
+  // Vestlandet
+  'Stavanger': 'vestlandet',
+  'Bergen': 'vestlandet',
+  'Haugesund': 'vestlandet',
+  'Ålesund': 'vestlandet',
+  'Florø': 'vestlandet',
+
+  // Midt-Norge
+  'Trondheim': 'midt_norge',
+  'Steinkjer': 'midt_norge',
+  'Levanger': 'midt_norge',
+  'Namsos': 'midt_norge',
+
+  // Nord-Norge
+  'Bodø': 'nord_norge',
+  'Tromsø': 'nord_norge',
+  'Narvik': 'nord_norge',
+  'Alta': 'nord_norge',
+  'Hammerfest': 'nord_norge',
+};
+
+// ============================================================================
 // COUNTRY TYPES
 // ============================================================================
 
@@ -247,6 +339,9 @@ export interface Tournament {
   purpose?: TournamentPurpose;  // RESULTAT, UTVIKLING, TRENING
   level?: CompetitionLevel;     // Internasjonal, Nasjonal, Regional, etc.
 
+  // Junior Tour region (for regional filtering)
+  juniorTourRegion?: JuniorTourRegion;
+
   // Status
   status: TournamentStatus;
 
@@ -305,6 +400,9 @@ export interface TournamentFilters {
   // Hierarchy filters (from hierarchy document)
   purposes?: TournamentPurpose[];   // RESULTAT, UTVIKLING, TRENING
   levels?: CompetitionLevel[];      // Internasjonal, Nasjonal, Regional, etc.
+
+  // Junior Tour Region filter (Appendix 2)
+  juniorTourRegions?: JuniorTourRegion[];
 
   // Status filter
   statuses?: TournamentStatus[];

@@ -43,6 +43,7 @@ const MineTurneringerContainer = lazy(() => import('./features/tournaments/MineT
 
 // Tournament Calendar (new list-first design)
 const TournamentCalendarPage = lazy(() => import('./features/tournament-calendar').then(m => ({ default: m.TournamentCalendarPage })));
+const TournamentPlannerPage = lazy(() => import('./features/tournament-calendar').then(m => ({ default: m.TournamentPlannerPage })));
 const RessurserContainer = lazy(() => import('./features/knowledge/RessurserContainer'));
 const SkoleplanContainer = lazy(() => import('./features/school/SkoleplanContainer'));
 const PlaceholderPage = lazy(() => import('./features/planning/PlaceholderPage'));
@@ -75,6 +76,7 @@ const DayViewPage = lazy(() => import('./features/calendar/DayViewPage'));
 const PlayerStatsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.PlayerStatsPage })));
 const StrokesGainedPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StrokesGainedPage })));
 const PlayerTestResultsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.TestResultsPage })));
+const StatusProgressPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StatusProgressPage })));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -516,6 +518,13 @@ function App() {
               </DashboardLayout>
             </ProtectedRoute>
           } />
+          <Route path="/turneringer/planlegger" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Turneringsplanlegger" subtitle="Min turneringsplan">
+                <TournamentPlannerPage />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
           {/* Legacy route - keep for backwards compatibility */}
           <Route path="/turneringskalender-old" element={
             <ProtectedRoute>
@@ -672,6 +681,13 @@ function App() {
             <ProtectedRoute>
               <DashboardLayout>
                 <PlayerStatsPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/statistikk/status" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <StatusProgressPage />
               </DashboardLayout>
             </ProtectedRoute>
           } />
