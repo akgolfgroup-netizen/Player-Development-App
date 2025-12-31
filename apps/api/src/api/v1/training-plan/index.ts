@@ -1910,7 +1910,7 @@ export async function trainingPlanRoutes(app: FastifyInstance): Promise<void> {
    * Creates TrainingSession records from DailyTrainingAssignment records.
    * Links them via dailyAssignmentId for bidirectional tracking.
    */
-  fastify.post<{ Params: { planId: string }; Body: { startDate?: string; endDate?: string } }>(
+  app.post<{ Params: { planId: string }; Body: { startDate?: string; endDate?: string } }>(
     '/:planId/sync-to-sessions',
     {
       schema: {
