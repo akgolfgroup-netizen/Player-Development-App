@@ -25,7 +25,7 @@ import {
   Timer,
   Target,
 } from 'lucide-react';
-import { EventDetailPanelProps, RescheduleOption, ShortenOption } from './types';
+import { EventDetailPanelProps, RescheduleOption, ShortenOption, Workout } from './types';
 
 // Semantic styles (NO raw hex values)
 const styles = {
@@ -330,6 +330,8 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
   onReschedule,
   onShorten,
   onComplete,
+  onOpenTimePicker,
+  onViewContent,
 }) => {
   const isMobile = useIsMobile();
   const [showReschedule, setShowReschedule] = useState(false);
@@ -507,10 +509,7 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
         <div style={styles.actionsContainer}>
           <button
             style={styles.secondaryAction}
-            onClick={() => {
-              // TODO: Open workout content view
-              console.log('View workout content');
-            }}
+            onClick={() => onViewContent?.(workout)}
             aria-label="Se innhold i økten"
           >
             <Eye size={16} aria-hidden="true" />
@@ -585,8 +584,8 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
             <button
               style={{ ...styles.rescheduleOption, borderBottom: 'none' }}
               onClick={() => {
-                // TODO: Open time picker
                 setShowReschedule(false);
+                onOpenTimePicker?.();
               }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}

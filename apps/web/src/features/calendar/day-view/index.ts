@@ -30,6 +30,11 @@ export { TimeGrid } from './TimeGrid';
 export { EventCard } from './EventCard';
 export { EventDetailPanel } from './EventDetailPanel';
 
+// Modals
+export { WorkoutSelectorModal } from './WorkoutSelectorModal';
+export { TimePickerModal } from './TimePickerModal';
+export { WorkoutContentViewer } from './WorkoutContentViewer';
+
 // State management
 export { useDayViewState } from './useDayViewState';
 

@@ -119,7 +119,8 @@ export interface DecisionAnchorData {
 
 export type RescheduleOption =
   | { type: 'delay'; minutes: 15 | 30 | 60 }
-  | { type: 'custom'; time: string };
+  | { type: 'custom'; time: string }
+  | { type: 'specific_time'; time: string };
 
 // ─────────────────────────────────────────────────────────────
 // SHORTEN OPTIONS (discrete steps only)
@@ -173,6 +174,7 @@ export interface DecisionAnchorProps {
   onPause?: () => void;
   onCancel?: () => void;
   onSelectWorkout?: () => void;
+  onOpenTimePicker?: () => void;
 }
 
 export interface TimeGridProps {
@@ -198,4 +200,6 @@ export interface EventDetailPanelProps {
   onReschedule: (option: RescheduleOption) => void;
   onShorten: (duration: ShortenOption) => void;
   onComplete: () => void;
+  onOpenTimePicker?: () => void;
+  onViewContent?: (workout: Workout) => void;
 }

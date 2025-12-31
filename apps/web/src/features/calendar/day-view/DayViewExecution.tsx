@@ -17,6 +17,9 @@ import { useDayViewState } from './useDayViewState';
 import { DecisionAnchor } from './DecisionAnchor';
 import { TimeGrid } from './TimeGrid';
 import { EventDetailPanel } from './EventDetailPanel';
+import { WorkoutSelectorModal } from './WorkoutSelectorModal';
+import { TimePickerModal } from './TimePickerModal';
+import { WorkoutContentViewer } from './WorkoutContentViewer';
 
 // Semantic styles (NO raw hex values)
 const styles = {
@@ -219,6 +222,13 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
   const [currentDate, setCurrentDate] = useState(initialDate);
   const [currentView, setCurrentView] = useState<'day' | 'week' | 'month'>('day');
 
+  // Modal states
+  const [showWorkoutSelector, setShowWorkoutSelector] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [showContentViewer, setShowContentViewer] = useState(false);
+  const [timePickerContext, setTimePickerContext] = useState<{ forReschedule: boolean; hour?: number }>({ forReschedule: false });
+  const [selectedWorkoutForContent, setSelectedWorkoutForContent] = useState<Workout | null>(null);
+
   // Get mock data (will be replaced with real API hook)
   const { workouts, externalEvents, weeklyFocus } = useMemo(
     () => generateMockData(currentDate),
@@ -288,6 +298,37 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
     },
     [shortenWorkout]
   );
+
+  // Handle workout selection from modal
+  const handleWorkoutSelect = useCallback((workout: Workout) => {
+    // Add the selected workout to the day
+    console.log('Workout selected:', workout);
+    setShowWorkoutSelector(false);
+  }, []);
+
+  // Handle time selection from picker
+  const handleTimeSelect = useCallback((time: string) => {
+    if (timePickerContext.forReschedule) {
+      // Reschedule to specific time
+      rescheduleWorkout({ type: 'specific_time', time });
+    } else {
+      // Could be used for quick-add at specific time
+      console.log('Time selected for new workout:', time);
+    }
+    setShowTimePicker(false);
+  }, [timePickerContext, rescheduleWorkout]);
+
+  // Open time picker for reschedule
+  const handleOpenTimePicker = useCallback((forReschedule = true) => {
+    setTimePickerContext({ forReschedule });
+    setShowTimePicker(true);
+  }, []);
+
+  // Open content viewer
+  const handleViewContent = useCallback((workout: Workout) => {
+    setSelectedWorkoutForContent(workout);
+    setShowContentViewer(true);
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -403,10 +444,8 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
         onComplete={completeWorkout}
         onPause={pauseWorkout}
         onCancel={cancelWorkout}
-        onSelectWorkout={() => {
-          // TODO: Open workout selector
-          console.log('Open workout selector');
-        }}
+        onSelectWorkout={() => setShowWorkoutSelector(true)}
+        onOpenTimePicker={() => handleOpenTimePicker(true)}
       />
 
       {/* Main Content Area */}
@@ -417,8 +456,9 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
           recommendedSlot={ghostSlot || undefined}
           onEventClick={selectEvent}
           onTimeSlotClick={(hour) => {
-            console.log('Time slot clicked:', hour);
-            // TODO: Could open quick-add or reschedule to this time
+            // Open time picker initialized to this hour
+            setTimePickerContext({ forReschedule: false, hour });
+            setShowTimePicker(true);
           }}
         />
       </div>
@@ -443,6 +483,32 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
           completeWorkout();
           selectEvent(null);
         }}
+        onOpenTimePicker={() => handleOpenTimePicker(true)}
+        onViewContent={(workout) => handleViewContent(workout)}
+      />
+
+      {/* Workout Selector Modal */}
+      <WorkoutSelectorModal
+        isOpen={showWorkoutSelector}
+        onClose={() => setShowWorkoutSelector(false)}
+        onSelect={handleWorkoutSelect}
+        date={currentDate}
+      />
+
+      {/* Time Picker Modal */}
+      <TimePickerModal
+        isOpen={showTimePicker}
+        onClose={() => setShowTimePicker(false)}
+        onSelect={handleTimeSelect}
+        initialTime={timePickerContext.hour ? `${timePickerContext.hour.toString().padStart(2, '0')}:00` : undefined}
+        title={timePickerContext.forReschedule ? 'Velg nytt tidspunkt' : 'Velg tidspunkt'}
+      />
+
+      {/* Workout Content Viewer */}
+      <WorkoutContentViewer
+        isOpen={showContentViewer}
+        onClose={() => setShowContentViewer(false)}
+        workout={selectedWorkoutForContent}
       />
     </div>
   );

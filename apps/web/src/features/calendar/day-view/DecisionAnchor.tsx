@@ -217,6 +217,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
   onPause,
   onCancel,
   onSelectWorkout,
+  onOpenTimePicker,
 }) => {
   const [showRescheduleOptions, setShowRescheduleOptions] = useState(false);
   const { weeklyFocus, recommendedWorkout, state, collision, elapsedTime } = data;
@@ -507,8 +508,8 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                         borderTop: '1px solid var(--border-subtle)',
                       }}
                       onClick={() => {
-                        // TODO: Open time picker
                         setShowRescheduleOptions(false);
+                        onOpenTimePicker?.();
                       }}
                       onMouseEnter={(e) =>
                         (e.currentTarget.style.backgroundColor = 'var(--background-surface)')
