@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Statistics Dashboard
  * Comprehensive analytics and statistics view for coaches

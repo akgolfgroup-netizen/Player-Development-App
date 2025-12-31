@@ -319,4 +319,20 @@ export const calibrationAPI = {
   submitSamples: (sessionId, samples) => api.post('/calibration/submit', { sessionId, samples }),
 };
 
+// Notes API (Coach notes for players)
+export const notesAPI = {
+  // Get notes for a player
+  getForPlayer: (playerId) => api.get(`/notes/player/${playerId}`),
+  // Get all notes (coach view)
+  getAll: (params = {}) => api.get('/notes', { params }),
+  // Get single note
+  getById: (noteId) => api.get(`/notes/${noteId}`),
+  // Create note
+  create: (data) => api.post('/notes', data),
+  // Update note
+  update: (noteId, data) => api.put(`/notes/${noteId}`, data),
+  // Delete note
+  delete: (noteId) => api.delete(`/notes/${noteId}`),
+};
+
 export default api;

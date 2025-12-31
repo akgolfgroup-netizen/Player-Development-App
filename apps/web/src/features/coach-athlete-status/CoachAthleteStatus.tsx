@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 /**
  * AK Golf Academy - Coach Athlete Status
  * Design System v3.0 - Semantic CSS Variables
@@ -8,7 +9,7 @@
  * - Alert notifications
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   Activity,
   AlertTriangle,
@@ -25,6 +26,8 @@ import {
   MessageCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
@@ -177,11 +180,101 @@ const mockPlayerStatuses: PlayerStatus[] = [
 
 export const CoachAthleteStatus: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'green' | 'yellow' | 'red'>('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [playerStatuses, setPlayerStatuses] = useState<PlayerStatus[]>(mockPlayerStatuses);
+
+  // Fetch player data from API
+  const fetchPlayerStatuses = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // Fetch athletes and alerts in parallel
+      const [athletesRes, alertsRes] = await Promise.all([
+        coachesAPI.getAthletes().catch(() => ({ data: null })),
+        coachesAPI.getAlerts(false).catch(() => ({ data: null })),
+      ]);
+
+      const athletesData = athletesRes.data?.data || athletesRes.data || [];
+      const alertsData = alertsRes.data?.data || alertsRes.data || [];
+
+      if (Array.isArray(athletesData) && athletesData.length > 0) {
+        // Transform API data to PlayerStatus format
+        const transformed: PlayerStatus[] = athletesData.map((athlete: any) => {
+          // Find alerts for this player
+          const playerAlerts = alertsData.filter(
+            (a: any) => a.playerId === athlete.id || a.player?.id === athlete.id
+          ).map((a: any) => ({
+            type: a.severity === 'critical' || a.priority === 'high' ? 'critical' as const : 'warning' as const,
+            message: a.message || a.description || 'Ukjent varsel',
+          }));
+
+          // Determine overall status from metrics or alerts
+          let overallStatus: 'green' | 'yellow' | 'red' = 'green';
+          if (playerAlerts.some((a: any) => a.type === 'critical') || athlete.status === 'critical') {
+            overallStatus = 'red';
+          } else if (playerAlerts.length > 0 || athlete.status === 'warning') {
+            overallStatus = 'yellow';
+          }
+
+          return {
+            id: athlete.id,
+            name: `${athlete.firstName || ''} ${athlete.lastName || ''}`.trim() || athlete.name || 'Spiller',
+            category: athlete.category || 'C',
+            hcp: athlete.handicap || athlete.hcp || 54,
+            lastActive: athlete.lastActivity || athlete.updatedAt || new Date().toISOString(),
+            overallStatus,
+            metrics: {
+              training: {
+                value: athlete.trainingProgress || 50,
+                status: (athlete.trainingProgress || 50) >= 70 ? 'good' : (athlete.trainingProgress || 50) >= 40 ? 'warning' : 'critical',
+                label: `${Math.round((athlete.weeklyTrainingMinutes || 0) / 60)}t denne uka`,
+              },
+              sleep: {
+                value: athlete.sleepScore || 70,
+                status: (athlete.sleepScore || 70) >= 70 ? 'good' : (athlete.sleepScore || 70) >= 50 ? 'warning' : 'critical',
+                label: `${athlete.avgSleep || 7}t snitt`,
+              },
+              energy: {
+                value: athlete.energyLevel || 70,
+                status: (athlete.energyLevel || 70) >= 70 ? 'good' : (athlete.energyLevel || 70) >= 40 ? 'warning' : 'critical',
+                label: (athlete.energyLevel || 70) >= 70 ? 'Høy' : (athlete.energyLevel || 70) >= 40 ? 'Middels' : 'Lav',
+              },
+              stress: {
+                value: athlete.stressLevel || 30,
+                status: (athlete.stressLevel || 30) <= 30 ? 'good' : (athlete.stressLevel || 30) <= 60 ? 'warning' : 'critical',
+                label: (athlete.stressLevel || 30) <= 30 ? 'Lav' : (athlete.stressLevel || 30) <= 60 ? 'Middels' : 'Høy',
+              },
+              injury: {
+                value: athlete.hasInjury || false,
+                status: athlete.hasInjury ? 'critical' : 'good',
+                label: athlete.hasInjury ? (athlete.injuryDescription || 'Skade') : 'Ingen skader',
+              },
+            },
+            alerts: playerAlerts,
+            upcomingSession: athlete.nextSession || undefined,
+            weeklyTrainingMinutes: athlete.weeklyTrainingMinutes || 0,
+            weeklyGoal: athlete.weeklyGoal || 300,
+          };
+        });
+
+        setPlayerStatuses(transformed);
+      }
+    } catch (error) {
+      console.error('Failed to fetch player statuses:', error);
+      // Keep mock data on error
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPlayerStatuses();
+  }, [fetchPlayerStatuses]);
 
   const filteredPlayers = useMemo(() => {
-    let players = [...mockPlayerStatuses];
+    let players = [...playerStatuses];
 
     if (searchQuery) {
       players = players.filter(p =>
@@ -200,15 +293,31 @@ export const CoachAthleteStatus: React.FC = () => {
     });
 
     return players;
-  }, [searchQuery, statusFilter]);
+  }, [searchQuery, statusFilter, playerStatuses]);
 
   const stats = useMemo(() => ({
-    total: mockPlayerStatuses.length,
-    green: mockPlayerStatuses.filter(p => p.overallStatus === 'green').length,
-    yellow: mockPlayerStatuses.filter(p => p.overallStatus === 'yellow').length,
-    red: mockPlayerStatuses.filter(p => p.overallStatus === 'red').length,
-    totalAlerts: mockPlayerStatuses.reduce((acc, p) => acc + p.alerts.length, 0)
-  }), []);
+    total: playerStatuses.length,
+    green: playerStatuses.filter(p => p.overallStatus === 'green').length,
+    yellow: playerStatuses.filter(p => p.overallStatus === 'yellow').length,
+    red: playerStatuses.filter(p => p.overallStatus === 'red').length,
+    totalAlerts: playerStatuses.reduce((acc, p) => acc + p.alerts.length, 0)
+  }), [playerStatuses]);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div style={{
+        padding: '24px',
+        backgroundColor: 'var(--bg-secondary)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <StateCard variant="loading" title="Laster spillerstatus..." />
+      </div>
+    );
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {

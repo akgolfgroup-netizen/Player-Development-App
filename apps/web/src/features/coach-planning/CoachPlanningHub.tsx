@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   ClipboardList,
   Search,
@@ -10,6 +10,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { coachesAPI } from '../../services/api';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 
@@ -42,42 +43,40 @@ export const CoachPlanningHub: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Fetch players and groups from API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const headers = { 'Authorization': `Bearer ${token}` };
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      // Fetch coach's players with their plan status
+      const playersRes = await coachesAPI.getAthletes().catch(() => ({ data: null }));
+      const playersData = playersRes.data?.data || playersRes.data || [];
 
-        // Fetch coach's players with their plan status
-        const playersRes = await fetch('/api/v1/coaches/me/players', { headers });
-        if (playersRes.ok) {
-          const playersData = await playersRes.json();
-          const mappedPlayers: Player[] = (playersData.data || []).map((p: any) => ({
-            id: p.id,
-            name: p.name || `${p.firstName} ${p.lastName}`,
-            category: p.category || 'C',
-            hcp: p.handicap ? Number(p.handicap) : 54,
-            hasActivePlan: !!p.hasActivePlan,
-            planUpdated: p.planUpdated,
-            nextSession: p.nextSession,
-            weeksInPlan: p.weeksInPlan,
-          }));
-          setPlayers(mappedPlayers);
-        }
-
-        // Fetch groups (ChatGroups with type 'team' for now)
-        // Groups feature is planned but not yet implemented
-        // Show empty state until groups API is available
-        setGroups([]);
-      } catch (error) {
-        console.error('Error fetching planning data:', error);
-      } finally {
-        setLoading(false);
+      if (Array.isArray(playersData)) {
+        const mappedPlayers: Player[] = playersData.map((p: any) => ({
+          id: p.id,
+          name: p.name || `${p.firstName || ''} ${p.lastName || ''}`.trim() || 'Spiller',
+          category: p.category || 'C',
+          hcp: p.handicap ? Number(p.handicap) : 54,
+          hasActivePlan: !!p.hasActivePlan || !!p.trainingPlan,
+          planUpdated: p.planUpdated || p.trainingPlan?.updatedAt,
+          nextSession: p.nextSession,
+          weeksInPlan: p.weeksInPlan || p.trainingPlan?.weeks || 0,
+        }));
+        setPlayers(mappedPlayers);
       }
-    };
 
-    fetchData();
+      // Groups feature is planned but not yet implemented
+      // Show empty state until groups API is available
+      setGroups([]);
+    } catch (error) {
+      console.error('Error fetching planning data:', error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const filteredPlayers = useMemo(() => {
     let filtered = [...players];
