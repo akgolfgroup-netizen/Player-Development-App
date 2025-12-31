@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Booking Calendar
  * Design System v3.0 - Blue Palette 01

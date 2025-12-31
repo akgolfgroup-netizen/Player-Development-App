@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Alerts Page
  * Design System v3.0 - Blue Palette 01

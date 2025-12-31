@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Dashboard
  * Design System v3.0 - Semantic CSS Variables

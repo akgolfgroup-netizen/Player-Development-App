@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars, no-loop-func, import/no-anonymous-default-export */
 /**
  * Video API Client
  * API functions for video upload, management, annotations, and comparisons

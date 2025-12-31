@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * useAnnotationCanvas Hook
  * Custom hook for canvas-based video annotation

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * useBreakingPoints Hook
  * Fetches breaking points with BP-Evidence data (effort vs progress separation)

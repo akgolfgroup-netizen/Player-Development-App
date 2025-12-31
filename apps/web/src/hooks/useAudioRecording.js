@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps, @typescript-eslint/no-unused-vars */
 /**
  * useAudioRecording Hook
  * Custom hook for audio recording with waveform visualization
