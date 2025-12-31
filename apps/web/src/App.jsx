@@ -72,6 +72,7 @@ const AppShellLab = lazy(() => import('./ui/lab/AppShellLab'));
 const CalendarLab = lazy(() => import('./ui/lab/CalendarLab'));
 const UiCanonPage = lazy(() => import('./ui/lab/UiCanonPage'));
 const DashboardPage = lazy(() => import('./features/dashboard/DashboardPage'));
+const DashboardV5 = lazy(() => import('./features/dashboard/DashboardV5'));
 const GoalsPage = lazy(() => import('./features/goals/GoalsPage'));
 const StatsPageV2 = lazy(() => import('./features/stats/StatsPageV2'));
 const CalendarPage = lazy(() => import('./features/calendar/CalendarPage'));
@@ -323,7 +324,7 @@ function App() {
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <DashboardLayout>
-                <DashboardContainer />
+                <DashboardV5 />
               </DashboardLayout>
             </ProtectedRoute>
           } />
