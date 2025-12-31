@@ -183,16 +183,18 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
  * Start the application server
  */
 export async function startServer(): Promise<AnyFastifyInstance> {
-  const app = await buildApp();
+  let startupPhase = 'buildApp';
 
   try {
-    // Connect to database
+    const app = await buildApp();
+
+    startupPhase = 'connectDatabase';
     await connectDatabase();
 
-    // Initialize notification bus (Redis or in-memory)
+    startupPhase = 'initNotificationBus';
     await initNotificationBus();
 
-    // Start listening
+    startupPhase = 'listen';
     await app.listen({
       port: config.server.port,
       host: config.server.host,
@@ -210,7 +212,15 @@ export async function startServer(): Promise<AnyFastifyInstance> {
 
     return app;
   } catch (error) {
-    app.log.error({ err: error }, 'Failed to start server');
-    throw error;
+    // Re-throw with phase info for better debugging
+    const enhancedError = new Error(
+      `Failed to start server during phase: ${startupPhase}. ` +
+        `Original error: ${error instanceof Error ? error.message : String(error)}`
+    );
+    if (error instanceof Error) {
+      enhancedError.stack = error.stack;
+      (enhancedError as NodeJS.ErrnoException).cause = error;
+    }
+    throw enhancedError;
   }
 }

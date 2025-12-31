@@ -1,133 +1,151 @@
 /**
  * Navigation Data
  *
- * Static navigation structure for the Left Rail + Flyout system.
- * Maps directly to the Information Architecture specification.
+ * 4+1 Navigation Structure (Mobile-first)
  *
- * Structure:
- * - id: Unique identifier for section
- * - label: Display name in rail (short)
- * - icon: Lucide icon name
- * - href: Direct link (if no subsections)
- * - items: Subsection array for flyout
+ * Main Navigation (Bottom Bar):
+ * 1. Hjem - Dashboard
+ * 2. Aktivitet - Trening + Testing (aktive handlinger)
+ * 3. Fremgang - Statistikk + Utvikling + Video (måling)
+ * 4. Plan - Kalender + Turneringer + Mål + Årsplan
+ *
+ * Burger Menu (☰):
+ * - Profil
+ * - Meldinger
+ * - Innstillinger
+ * - Ressurser
  */
 
 export const navigationSections = [
+  // === MAIN NAVIGATION (4 tabs) ===
   {
-    id: 'dashboard',
-    label: 'Dashboard',
+    id: 'hjem',
+    label: 'Hjem',
     icon: 'Home',
     href: '/',
+    isMainNav: true,
   },
   {
-    id: 'utvikling',
-    label: 'Utvikling',
-    icon: 'TrendingUp',
-    items: [
-      { href: '/utvikling', label: 'Oversikt' },
-      { href: '/utvikling/breaking-points', label: 'Breaking Points' },
-      { href: '/utvikling/kategori', label: 'Kategori-fremgang' },
-      { href: '/utvikling/benchmark', label: 'Benchmark-historie' },
-    ],
-  },
-  {
-    id: 'trening',
-    label: 'Trening',
-    icon: 'Activity',
+    id: 'aktivitet',
+    label: 'Aktivitet',
+    icon: 'Zap',
+    isMainNav: true,
     items: [
       { href: '/trening/dagens', label: 'Dagens plan' },
       { href: '/trening/ukens', label: 'Ukens plan' },
-      { href: '/trening/dagbok', label: 'Treningsdagbok' },
       { href: '/trening/logg', label: 'Logg trening' },
-      { href: '/ovelsesbibliotek', label: 'Ovelsesbank' },
-    ],
-  },
-  {
-    id: 'kalender',
-    label: 'Kalender',
-    icon: 'Calendar',
-    items: [
-      { href: '/kalender?view=week', label: 'Treningsplan' },
-      { href: '/kalender?view=month', label: 'Manedsoversikt' },
-      { href: '/kalender?view=year', label: 'Arsplan' },
-      { href: '/kalender/booking', label: 'Book trener' },
-    ],
-  },
-  {
-    id: 'testing',
-    label: 'Testing',
-    icon: 'Target',
-    items: [
+      { href: '/trening/dagbok', label: 'Treningsdagbok' },
       { href: '/testprotokoll', label: 'Testprotokoll' },
-      { href: '/testresultater', label: 'Mine resultater' },
-      { href: '/testing/krav', label: 'Kategori-krav' },
+      { href: '/testresultater', label: 'Testresultater' },
       { href: '/testing/registrer', label: 'Registrer test' },
     ],
   },
   {
-    id: 'turneringer',
-    label: 'Turneringer',
-    icon: 'Trophy',
+    id: 'fremgang',
+    label: 'Fremgang',
+    icon: 'TrendingUp',
+    isMainNav: true,
     items: [
-      { href: '/turneringskalender', label: 'Kalender' },
-      { href: '/mine-turneringer', label: 'Mine turneringer' },
-      { href: '/turneringer/resultater', label: 'Resultater' },
-      { href: '/turneringer/registrer', label: 'Registrer resultat' },
-    ],
-  },
-  {
-    id: 'kommunikasjon',
-    label: 'Meldinger',
-    icon: 'MessageSquare',
-    items: [
-      { href: '/meldinger', label: 'Meldinger' },
-      { href: '/varsler', label: 'Varsler' },
-      { href: '/meldinger/trener', label: 'Fra trener' },
-    ],
-  },
-  {
-    id: 'maal',
-    label: 'Mal',
-    icon: 'Flag',
-    items: [
-      { href: '/maalsetninger', label: 'Mine mal' },
-      { href: '/progress', label: 'Fremgang' },
+      { href: '/stats', label: 'Statistikk' },
+      { href: '/utvikling', label: 'Utvikling' },
+      { href: '/utvikling/breaking-points', label: 'Breaking Points' },
+      { href: '/utvikling/kategori', label: 'Kategori-fremgang' },
+      { href: '/videos', label: 'Videoer' },
+      { href: '/bevis', label: 'Videobevis' },
       { href: '/achievements', label: 'Prestasjoner' },
       { href: '/badges', label: 'Badges' },
+      { href: '/progress', label: 'Fremdrift' },
     ],
   },
   {
-    id: 'kunnskap',
-    label: 'Kunnskap',
-    icon: 'BookMarked',
+    id: 'plan',
+    label: 'Plan',
+    icon: 'CalendarDays',
+    isMainNav: true,
     items: [
-      { href: '/ressurser', label: 'Ressurser' },
-      { href: '/notater', label: 'Notater' },
-      { href: '/bevis', label: 'Videobevis' },
-      { href: '/arkiv', label: 'Arkiv' },
+      { href: '/kalender', label: 'Kalender' },
+      { href: '/kalender?view=week', label: 'Ukesoversikt' },
+      { href: '/kalender?view=month', label: 'Månedsoversikt' },
+      { href: '/turneringskalender', label: 'Turneringskalender' },
+      { href: '/mine-turneringer', label: 'Mine turneringer' },
+      { href: '/maalsetninger', label: 'Mål' },
+      { href: '/aarsplan', label: 'Årsplan' },
+      { href: '/kalender/booking', label: 'Book trener' },
+    ],
+  },
+
+  // === BURGER MENU (☰) ===
+  {
+    id: 'profil',
+    label: 'Profil',
+    icon: 'User',
+    isBurgerMenu: true,
+    items: [
+      { href: '/profil', label: 'Min profil' },
+      { href: '/trenerteam', label: 'Trenerteam' },
+      { href: '/kalibrering', label: 'Kalibrering' },
     ],
   },
   {
-    id: 'skole',
-    label: 'Skole',
-    icon: 'GraduationCap',
+    id: 'meldinger',
+    label: 'Meldinger',
+    icon: 'MessageSquare',
+    isBurgerMenu: true,
     items: [
-      { href: '/skoleplan', label: 'Timeplan' },
-      { href: '/skole/oppgaver', label: 'Oppgaver' },
+      { href: '/meldinger', label: 'Innboks' },
+      { href: '/varsler', label: 'Varsler' },
+      { href: '/meldinger/trener', label: 'Fra trener' },
     ],
   },
   {
     id: 'innstillinger',
     label: 'Innstillinger',
     icon: 'Settings',
+    isBurgerMenu: true,
     items: [
-      { href: '/profil', label: 'Min profil' },
-      { href: '/kalibrering', label: 'Kalibrering' },
-      { href: '/trenerteam', label: 'Trenerteam' },
+      { href: '/innstillinger', label: 'Kontoinnstillinger' },
       { href: '/innstillinger/varsler', label: 'Varselinnstillinger' },
     ],
   },
+  {
+    id: 'ressurser',
+    label: 'Ressurser',
+    icon: 'BookOpen',
+    isBurgerMenu: true,
+    items: [
+      { href: '/ovelsesbibliotek', label: 'Øvelsesbibliotek' },
+      { href: '/ressurser', label: 'Ressurser' },
+      { href: '/notater', label: 'Notater' },
+      { href: '/arkiv', label: 'Arkiv' },
+    ],
+  },
+
+  // === LEGACY/ADDITIONAL SECTIONS ===
+  {
+    id: 'skole',
+    label: 'Skole',
+    icon: 'GraduationCap',
+    isBurgerMenu: true,
+    items: [
+      { href: '/skoleplan', label: 'Timeplan' },
+      { href: '/skole/oppgaver', label: 'Oppgaver' },
+    ],
+  },
 ];
+
+/**
+ * Get main navigation items (4 tabs)
+ */
+export function getMainNavItems() {
+  return navigationSections.filter(section => section.isMainNav);
+}
+
+/**
+ * Get burger menu items
+ */
+export function getBurgerMenuItems() {
+  return navigationSections.filter(section => section.isBurgerMenu);
+}
 
 /**
  * Get section by ID
@@ -147,4 +165,33 @@ export function getSectionByPath(path) {
     }
     return false;
   });
+}
+
+/**
+ * Flat list of all navigation items for search/autocomplete
+ */
+export function getAllNavigationItems() {
+  const items = [];
+  navigationSections.forEach(section => {
+    if (section.href) {
+      items.push({
+        href: section.href,
+        label: section.label,
+        section: section.id,
+        icon: section.icon,
+      });
+    }
+    if (section.items) {
+      section.items.forEach(item => {
+        items.push({
+          href: item.href,
+          label: item.label,
+          section: section.id,
+          sectionLabel: section.label,
+          icon: section.icon,
+        });
+      });
+    }
+  });
+  return items;
 }
