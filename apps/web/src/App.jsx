@@ -149,6 +149,7 @@ const MobileCalibration = lazy(() => import('./mobile/MobileCalibration'));
 
 // Coach feature components (lazy-loaded)
 const CoachDashboard = lazy(() => import('./features/coach-dashboard').then(m => ({ default: m.CoachDashboard })));
+const CoachAthleteHub = lazy(() => import('./features/coach-athletes').then(m => ({ default: m.CoachAthleteHub })));
 const CoachAthleteList = lazy(() => import('./features/coach-athlete-list').then(m => ({ default: m.CoachAthleteList })));
 const CoachAthleteDetail = lazy(() => import('./features/coach-athlete-detail').then(m => ({ default: m.CoachAthleteDetail })));
 const CoachTrainingPlan = lazy(() => import('./features/coach-training-plan').then(m => ({ default: m.CoachTrainingPlan })));
