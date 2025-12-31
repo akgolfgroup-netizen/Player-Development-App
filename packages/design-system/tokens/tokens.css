@@ -184,7 +184,7 @@
   text-transform: uppercase;
 }
 
-/* Color Classes - Blue Palette 01 */
+/* Color Classes - Premium Light (Forest Green) */
 .bg-primary { background-color: var(--ak-primary); }
 .bg-primary-light { background-color: var(--ak-primary-light); }
 .bg-snow { background-color: var(--ak-snow); }

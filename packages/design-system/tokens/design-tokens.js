@@ -1,7 +1,7 @@
 /**
- * AK Golf Academy - Design Tokens v3.0
- * Based on: Blue Palette 01 (Production Ready)
- * Source: Design/ak_golf_figma_kit_blue_palette01.svg
+ * AK Golf Academy - Design Tokens v3.1
+ * Based on: Premium Light Palette (Forest Green)
+ * Synchronized with: apps/web/src/index.css
  * Font: Inter (Open Source, Cross-Platform)
  * Typography Scale: Apple Human Interface Guidelines
  *
@@ -16,45 +16,45 @@
 export const tokens = {
   // ==================== COLORS ====================
   colors: {
-    // Brand Colors - Blue Palette 01
-    ink: '#02060D',
-    primary: '#10456A',
-    primaryLight: '#2C5F7F',
-    snow: '#EDF0F2',
-    surface: '#EBE5DA',
-    gold: '#C9A227',
+    // Brand Colors - Premium Light (Forest Green)
+    ink: '#1a1a1a',
+    primary: '#1B4D3E',
+    primaryLight: '#2A6B55',
+    snow: '#FAFAFA',
+    surface: '#F5F5F0',
+    gold: '#B8860B',
 
     // Legacy aliases (backwards compatible)
-    forest: '#10456A',
-    forestLight: '#2C5F7F',
-    foam: '#EDF0F2',
-    ivory: '#EBE5DA',
+    forest: '#1B4D3E',
+    forestLight: '#2A6B55',
+    foam: '#FAFAFA',
+    ivory: '#F5F5F0',
 
     // Semantic Colors
-    success: '#4A7C59',
-    warning: '#D4A84B',
-    error: '#C45B4E',
+    success: '#22C55E',
+    warning: '#F59E0B',
+    error: '#EF4444',
 
     // Neutrals
-    charcoal: '#1C1C1E',
-    steel: '#8E8E93',
-    mist: '#E5E5EA',
-    cloud: '#F2F2F7',
+    charcoal: '#1a1a1a',
+    steel: '#737373',
+    mist: '#E5E5E5',
+    cloud: '#F5F5F5',
 
     // Common
     white: '#FFFFFF',
     black: '#000000',
 
-    // Session/Training Types (Harmonized with Blue Palette 01)
+    // Session/Training Types (Harmonized with Premium Light)
     sessionTypes: {
-      teknikk: '#8B6E9D',      // T - Purple (technique drills)
-      golfslag: '#2C5F7F',     // G - Blue (golf shots)
-      spill: '#10456A',        // S - Primary Blue (playing sessions)
-      kompetanse: '#C45B4E',   // K - Red (competition/skills)
-      fysisk: '#D97644',       // Fs - Orange (physical/strength)
-      funksjonell: '#5FA696',  // Fu - Turquoise (functional training)
-      hjemme: '#8E8E93',       // L1-2 - Gray (home practice)
-      test: '#C9A227',         // Test - Gold (testing sessions)
+      teknikk: '#8B5CF6',      // T - Purple (technique drills)
+      golfslag: '#3B82F6',     // G - Blue (golf shots)
+      spill: '#1B4D3E',        // S - Primary Forest (playing sessions)
+      kompetanse: '#EF4444',   // K - Red (competition/skills)
+      fysisk: '#F97316',       // Fs - Orange (physical/strength)
+      funksjonell: '#14B8A6',  // Fu - Teal (functional training)
+      hjemme: '#6B7280',       // L1-2 - Gray (home practice)
+      test: '#B8860B',         // Test - Gold (testing sessions)
     },
   },
 
