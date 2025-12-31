@@ -10,6 +10,7 @@ import { initMobileApp } from './utils/mobile';
 // PWA & AI components
 import OfflineIndicator from './components/ui/OfflineIndicator';
 import AIChatWidget from './components/widgets/AIChatWidget';
+import CommandPalette from './features/command-palette';
 
 // Shared components (NOT lazy - needed immediately)
 import ApplicationLayoutTopNav from './components/layout/ApplicationLayoutTopNav';
@@ -291,6 +292,7 @@ function App() {
                 <AuthenticatedAIChat />
                 <Toast />
                 <Toaster />
+                <CommandPalette />
                 <VideoNotificationManager />
                 <NotificationManager />
             <Suspense fallback={<LoadingState />}>
