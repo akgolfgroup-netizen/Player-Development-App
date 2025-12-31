@@ -29,6 +29,7 @@ const BrukerprofilContainer = lazy(() => import('./features/profile/Brukerprofil
 const TrenerteamContainer = lazy(() => import('./features/coaches/TrenerteamContainer'));
 const MaalsetningerContainer = lazy(() => import('./features/goals/MaalsetningerContainer'));
 const AarsplanContainer = lazy(() => import('./features/annual-plan/AarsplanContainer'));
+const AarsplanGenerator = lazy(() => import('./features/annual-plan/AarsplanGenerator'));
 const TestprotokollContainer = lazy(() => import('./features/tests/TestprotokollContainer'));
 const TestresultaterContainer = lazy(() => import('./features/tests/TestresultaterContainer'));
 const TreningsprotokollContainer = lazy(() => import('./features/training/TreningsprotokollContainer'));
@@ -371,6 +372,11 @@ function App() {
               <AuthenticatedLayout title="Fokusområder" subtitle="Målsetninger for perioder">
                 <AarsplanContainer view="focus" />
               </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/aarsplan/ny" element={
+            <ProtectedRoute>
+              <AarsplanGenerator />
             </ProtectedRoute>
           } />
           <Route path="/testprotokoll" element={

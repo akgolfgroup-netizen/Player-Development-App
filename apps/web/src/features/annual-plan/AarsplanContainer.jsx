@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
@@ -16,6 +18,7 @@ import Aarsplan from './Aarsplan';
  */
 const AarsplanContainer = ({ view = 'overview' }) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [state, setState] = useState('loading');
   const [error, setError] = useState(null);
   const [plans, setPlans] = useState([]);
@@ -58,8 +61,11 @@ const AarsplanContainer = ({ view = 'overview' }) => {
   if (state === 'empty') {
     return (
       <EmptyState
+        icon={Calendar}
         title="Ingen årsplaner"
-        message="Du har ingen opprettede treningsplaner ennå."
+        message="Du har ingen opprettede treningsplaner ennå. Opprett en personlig 12-måneders plan for å komme i gang."
+        actionLabel="Opprett årsplan"
+        onAction={() => navigate('/aarsplan/ny')}
       />
     );
   }

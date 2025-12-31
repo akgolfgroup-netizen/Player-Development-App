@@ -80,6 +80,7 @@ export const navigationConfig = [
     icon: 'Map',
     submenu: [
       { href: '/aarsplan', label: 'Årsplan' },
+      { href: '/aarsplan/ny', label: 'Opprett årsplan' },
       { href: '/aarsplan/perioder', label: 'Periodisering' },
       { href: '/turneringer/planlegger', label: 'Turneringsplan' },
       { href: '/aarsplan/fokus', label: 'Fokusområder' },
