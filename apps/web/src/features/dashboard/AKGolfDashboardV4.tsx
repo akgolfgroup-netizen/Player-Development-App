@@ -101,7 +101,10 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
       <div className="flex items-center gap-5">
         {/* Profile Avatar */}
         <div className="relative">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-ak-brand-primary to-ak-brand-primary-active flex items-center justify-center overflow-hidden ring-4 ring-white shadow-ak-elevated">
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white shadow-ak-elevated"
+            style={{ background: 'linear-gradient(135deg, #1B4D3E 0%, #133629 100%)' }}
+          >
             {avatarUrl ? (
               <img
                 src={avatarUrl}
@@ -109,11 +112,11 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-xl font-bold text-ak-text-inverse">{initials}</span>
+              <span className="text-xl font-bold text-white">{initials}</span>
             )}
           </div>
           {streak > 0 && (
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-ak-session-fysisk rounded-full flex items-center justify-center text-xs shadow-ak-sm">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs shadow-ak-sm">
               🔥
             </div>
           )}
@@ -178,13 +181,15 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-headline">
-            <Calendar className="h-5 w-5 text-ak-brand-primary" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
+              <Calendar className="h-5 w-5" style={{ color: '#1B4D3E' }} />
+            </div>
             Denne uken
           </CardTitle>
           {stats.streak > 0 && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-ak-surface-subtle rounded-full">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 rounded-full">
               <span className="text-sm">🔥</span>
-              <span className="text-subhead font-semibold text-ak-text-primary">{stats.streak} dager</span>
+              <span className="text-subhead font-semibold text-orange-600">{stats.streak} dager</span>
             </div>
           )}
         </div>
@@ -297,15 +302,17 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
     <Card className="h-full flex flex-col shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-headline">
-          <Award className="h-5 w-5 text-ak-brand-primary" />
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(184, 134, 11, 0.1)' }}>
+            <Award className="h-5 w-5" style={{ color: '#B8860B' }} />
+          </div>
           Badges & Score
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4 flex-1">
         {/* Rank Display */}
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-ak-md bg-ak-surface-subtle flex items-center justify-center">
-            <Trophy className="h-5 w-5 text-ak-achievement-gold" />
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(184, 134, 11, 0.1)' }}>
+            <Trophy className="h-5 w-5" style={{ color: '#B8860B' }} />
           </div>
           <div>
             <span className="text-stat-label text-ak-text-tertiary">RANK</span>
@@ -379,7 +386,9 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
     <Card className="shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-subhead">
-          <TrendingUp className="h-4 w-4 text-ak-text-secondary" />
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
+            <TrendingUp className="h-4 w-4" style={{ color: '#1B4D3E' }} />
+          </div>
           Siste 7 dager
         </CardTitle>
       </CardHeader>
@@ -438,7 +447,7 @@ interface FocusCardProps {
 const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   if (loading) {
     return (
-      <Card className="border-l-4 border-l-ak-brand-primary shadow-ak-card rounded-ak-lg">
+      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: '#1B4D3E' }}>
         <CardContent className="pt-5">
           <div className="space-y-3 animate-pulse">
             <div className="h-4 bg-ak-surface-subtle rounded-ak-xs w-1/3" />
@@ -451,10 +460,12 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
 
   if (!focus) {
     return (
-      <Card className="border-l-4 border-l-ak-brand-primary shadow-ak-card rounded-ak-lg">
+      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: '#1B4D3E' }}>
         <CardContent className="pt-5">
           <div className="flex items-center gap-2 mb-3">
-            <Crosshair className="h-4 w-4 text-ak-brand-primary" />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
+              <Crosshair className="h-4 w-4" style={{ color: '#1B4D3E' }} />
+            </div>
             <span className="text-stat-label text-ak-text-secondary">
               UKENS FOKUS
             </span>
@@ -474,16 +485,18 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   const progressPercent = Math.round((sessionsCompleted / sessionsTarget) * 100)
 
   return (
-    <Card className="border-l-4 border-l-ak-brand-primary shadow-ak-card rounded-ak-lg">
+    <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: '#1B4D3E' }}>
       <CardContent className="pt-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Crosshair className="h-4 w-4 text-ak-brand-primary" />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
+              <Crosshair className="h-4 w-4" style={{ color: '#1B4D3E' }} />
+            </div>
             <span className="text-stat-label text-ak-text-secondary">
               UKENS FOKUS
             </span>
           </div>
-          <span className="text-caption-1 font-semibold px-2.5 py-1 rounded-full bg-ak-brand-primary-muted text-ak-brand-primary">
+          <span className="text-caption-1 font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)', color: '#1B4D3E' }}>
             {focusLabel}
           </span>
         </div>
@@ -524,25 +537,30 @@ interface ContextualCTAProps {
 }
 
 const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, onStart }) => {
+  const ctaStyle = {
+    backgroundColor: '#1B4D3E',
+    color: '#FFFFFF',
+  }
+
   if (upcomingSession) {
     const title = upcomingSession.title || 'Planlagt økt'
     const duration = upcomingSession.duration || 45
 
     return (
-      <Button
-        size="lg"
-        className="w-full justify-between h-auto py-4 px-5 bg-ak-brand-primary hover:bg-ak-brand-primary-hover active:bg-ak-brand-primary-active rounded-ak-md shadow-ak-sm transition-all duration-ak-base"
+      <button
+        className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-ak-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
+        style={ctaStyle}
         onClick={() => onStart(upcomingSession)}
       >
         <div className="flex items-center gap-3">
-          <Play className="h-5 w-5 text-ak-text-inverse" />
+          <Play className="h-5 w-5 text-white" />
           <div className="text-left">
-            <span className="block text-headline text-ak-text-inverse">Start {title}</span>
-            <span className="block text-caption-1 text-ak-text-inverse/80">{duration} min · Fra din kalender</span>
+            <span className="block text-headline font-semibold text-white">Start {title}</span>
+            <span className="block text-caption-1 text-white/80">{duration} min · Fra din kalender</span>
           </div>
         </div>
-        <ChevronRight className="h-5 w-5 text-ak-text-inverse/70" />
-      </Button>
+        <ChevronRight className="h-5 w-5 text-white/70" />
+      </button>
     )
   }
 
@@ -551,38 +569,38 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
     const sessionDuration = focus.recommendedDuration || 30
 
     return (
-      <Button
-        size="lg"
-        className="w-full justify-between h-auto py-4 px-5 bg-ak-brand-primary hover:bg-ak-brand-primary-hover active:bg-ak-brand-primary-active rounded-ak-md shadow-ak-sm transition-all duration-ak-base"
+      <button
+        className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-ak-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
+        style={ctaStyle}
         onClick={() => onStart({ type: 'focus', focus })}
       >
         <div className="flex items-center gap-3">
-          <Play className="h-5 w-5 text-ak-text-inverse" />
+          <Play className="h-5 w-5 text-white" />
           <div className="text-left">
-            <span className="block text-headline text-ak-text-inverse">Start {focusLabel}-økt</span>
-            <span className="block text-caption-1 text-ak-text-inverse/80">{sessionDuration} min · Del av ukens mål</span>
+            <span className="block text-headline font-semibold text-white">Start {focusLabel}-økt</span>
+            <span className="block text-caption-1 text-white/80">{sessionDuration} min · Del av ukens mål</span>
           </div>
         </div>
-        <ChevronRight className="h-5 w-5 text-ak-text-inverse/70" />
-      </Button>
+        <ChevronRight className="h-5 w-5 text-white/70" />
+      </button>
     )
   }
 
   return (
-    <Button
-      size="lg"
-      className="w-full justify-between h-auto py-4 px-5 bg-ak-brand-primary hover:bg-ak-brand-primary-hover active:bg-ak-brand-primary-active rounded-ak-md shadow-ak-sm transition-all duration-ak-base"
+    <button
+      className="w-full flex items-center justify-between h-auto py-4 px-5 rounded-xl shadow-ak-sm transition-all duration-200 hover:opacity-90 active:opacity-80"
+      style={ctaStyle}
       onClick={() => onStart({ type: 'quick' })}
     >
       <div className="flex items-center gap-3">
-        <Play className="h-5 w-5 text-ak-text-inverse" />
+        <Play className="h-5 w-5 text-white" />
         <div className="text-left">
-          <span className="block text-headline text-ak-text-inverse">Kom i gang</span>
-          <span className="block text-caption-1 text-ak-text-inverse/80">Velg en økt som passer deg i dag</span>
+          <span className="block text-headline font-semibold text-white">Kom i gang</span>
+          <span className="block text-caption-1 text-white/80">Velg en økt som passer deg i dag</span>
         </div>
       </div>
-      <ChevronRight className="h-5 w-5 text-ak-text-inverse/70" />
-    </Button>
+      <ChevronRight className="h-5 w-5 text-white/70" />
+    </button>
   )
 }
 
@@ -618,7 +636,9 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-subhead">
-            <Target className="h-4 w-4 text-ak-text-secondary" />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(5, 150, 105, 0.1)' }}>
+              <Target className="h-4 w-4" style={{ color: '#059669' }} />
+            </div>
             Dagens oppgaver
           </CardTitle>
           {tasks.length > 3 && (
@@ -699,10 +719,12 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-subhead">
-            <Bell className="h-4 w-4 text-ak-text-secondary" />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(2, 132, 199, 0.1)' }}>
+              <Bell className="h-4 w-4" style={{ color: '#0284C7' }} />
+            </div>
             Varslinger
             {notifications.length > 0 && (
-              <span className="text-caption-1 font-semibold px-2 py-0.5 rounded-full bg-ak-brand-primary-muted text-ak-brand-primary">
+              <span className="text-caption-1 font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'rgba(2, 132, 199, 0.1)', color: '#0284C7' }}>
                 {notifications.length}
               </span>
             )}
