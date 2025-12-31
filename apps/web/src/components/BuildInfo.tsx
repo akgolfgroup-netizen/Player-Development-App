@@ -1,13 +1,19 @@
 /**
  * BuildInfo - Production build verification component
  *
- * Displays current build SHA in console and optionally in UI.
- * Used to verify which commit is actually running in production.
+ * FAILSAFE: Always logs build SHA to console and injects hidden DOM marker.
+ * Used to verify which commit is actually running in production vs cache.
  *
- * Environment variables (set at build time):
- * - REACT_APP_BUILD_SHA: Git commit SHA from Railway
- * - REACT_APP_BUILD_BRANCH: Git branch name
+ * Environment variables (set at build time via Dockerfile):
+ * - REACT_APP_BUILD_SHA: Git commit SHA from Railway (RAILWAY_GIT_COMMIT_SHA)
+ * - REACT_APP_BUILD_BRANCH: Git branch name (RAILWAY_GIT_BRANCH)
  * - REACT_APP_BUILD_DATE: Build timestamp
+ *
+ * Verification methods:
+ * 1. Console: Look for "BUILD: <sha>" message
+ * 2. DOM: document.querySelector('[data-build]').dataset.build
+ * 3. Window: window.__BUILD_INFO__
+ * 4. Meta tag: document.querySelector('meta[name="build"]').content
  */
 
 import { useEffect } from 'react';
@@ -26,59 +32,93 @@ export const BUILD_INFO = {
 };
 
 /**
+ * Injects meta tag into document head for build verification
+ */
+function injectBuildMeta() {
+  // Remove existing meta if present (prevents duplicates on HMR)
+  const existing = document.querySelector('meta[name="build"]');
+  if (existing) existing.remove();
+
+  // Create and inject meta tag
+  const meta = document.createElement('meta');
+  meta.name = 'build';
+  meta.content = BUILD_INFO.sha;
+  document.head.appendChild(meta);
+}
+
+/**
  * Logs build info to console on mount.
+ * Injects hidden DOM markers for verification.
  * Optionally renders a small badge in the corner.
  */
 export function BuildInfo({ showBadge = false }: BuildInfoProps) {
   useEffect(() => {
-    // Always log to console for debugging
+    // === FAILSAFE LOG: Always log in specific format for easy grep ===
+    console.log(`BUILD: ${BUILD_INFO.sha}`);
+
+    // Additional styled logging for better visibility
     console.log(
-      '%c🏌️ AK Golf Academy Build Info',
-      'color: #1B4D3E; font-weight: bold; font-size: 14px;'
+      '%c🏌️ AK Golf Academy',
+      'color: #1B4D3E; font-weight: bold; font-size: 12px;'
     );
     console.log(
-      `%c  Commit: %c${BUILD_INFO.sha}`,
+      `%cCommit: %c${BUILD_INFO.sha}`,
       'color: #6B7280;',
       'color: #059669; font-family: monospace;'
     );
     console.log(
-      `%c  Branch: %c${BUILD_INFO.branch}`,
+      `%cBranch: %c${BUILD_INFO.branch}`,
       'color: #6B7280;',
       'color: #2563EB; font-family: monospace;'
     );
     console.log(
-      `%c  Built:  %c${BUILD_INFO.date}`,
+      `%cBuilt:  %c${BUILD_INFO.date}`,
       'color: #6B7280;',
       'color: #D97706; font-family: monospace;'
     );
 
-    // Also set on window for easy access in DevTools
+    // Set on window for easy DevTools access
     (window as any).__BUILD_INFO__ = BUILD_INFO;
+
+    // Inject meta tag into head
+    injectBuildMeta();
   }, []);
 
-  // Don't render anything if badge is disabled
-  if (!showBadge) return null;
-
+  // Always render hidden DOM marker (even if badge is disabled)
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '8px',
-        right: '8px',
-        padding: '4px 8px',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        color: '#10B981',
-        fontFamily: 'monospace',
-        fontSize: '10px',
-        borderRadius: '4px',
-        zIndex: 9999,
-        pointerEvents: 'none',
-        opacity: 0.8,
-      }}
-      title={`Branch: ${BUILD_INFO.branch}\nBuilt: ${BUILD_INFO.date}`}
-    >
-      {BUILD_INFO.shortSha}
-    </div>
+    <>
+      {/* Hidden DOM marker - always present for verification */}
+      <div
+        data-build={BUILD_INFO.sha}
+        data-branch={BUILD_INFO.branch}
+        data-build-date={BUILD_INFO.date}
+        style={{ display: 'none' }}
+        aria-hidden="true"
+      />
+
+      {/* Optional visible badge */}
+      {showBadge && (
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '8px',
+            right: '8px',
+            padding: '4px 8px',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            color: '#10B981',
+            fontFamily: 'monospace',
+            fontSize: '10px',
+            borderRadius: '4px',
+            zIndex: 9999,
+            pointerEvents: 'none',
+            opacity: 0.8,
+          }}
+          title={`Branch: ${BUILD_INFO.branch}\nBuilt: ${BUILD_INFO.date}\nSHA: ${BUILD_INFO.sha}`}
+        >
+          {BUILD_INFO.shortSha}
+        </div>
+      )}
+    </>
   );
 }
 

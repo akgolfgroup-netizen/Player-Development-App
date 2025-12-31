@@ -13,13 +13,14 @@ ENV REACT_APP_API_URL=https://iup-golf-backend-production.up.railway.app/api/v1
 # Disable CI mode to allow build with ESLint warnings
 ENV CI=false
 
-# Build info - Railway provides RAILWAY_GIT_COMMIT_SHA at build time
+# Build info - Railway automatically provides these as build args
+# See: https://docs.railway.app/reference/variables#railway-provided-variables
 ARG RAILWAY_GIT_COMMIT_SHA
 ARG RAILWAY_GIT_BRANCH
-ARG BUILD_DATE
+
+# Map Railway variables to CRA-compatible env vars (REACT_APP_* prefix required)
 ENV REACT_APP_BUILD_SHA=${RAILWAY_GIT_COMMIT_SHA:-local}
 ENV REACT_APP_BUILD_BRANCH=${RAILWAY_GIT_BRANCH:-local}
-ENV REACT_APP_BUILD_DATE=${BUILD_DATE:-unknown}
 
 # Install dependencies
 COPY package*.json ./
@@ -28,8 +29,10 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Log build info for debugging
-RUN echo "=== BUILD INFO ===" && \
+# Set build date at build time (dynamic)
+RUN export REACT_APP_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") && \
+    echo "REACT_APP_BUILD_DATE=$REACT_APP_BUILD_DATE" >> .env.production.local && \
+    echo "=== BUILD INFO ===" && \
     echo "Commit SHA: $REACT_APP_BUILD_SHA" && \
     echo "Branch: $REACT_APP_BUILD_BRANCH" && \
     echo "Build Date: $REACT_APP_BUILD_DATE" && \
