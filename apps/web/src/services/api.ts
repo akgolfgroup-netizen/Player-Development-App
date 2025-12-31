@@ -1101,6 +1101,38 @@ export const tournamentsAPI = {
 };
 
 // =============================================================================
+// useApi Hook
+// =============================================================================
+
+/**
+ * Hook for making API calls with built-in error handling
+ * Returns an object with get and post methods
+ */
+export function useApi() {
+  const get = async <T>(url: string): Promise<T> => {
+    const response = await api.get<T>(url);
+    return response.data;
+  };
+
+  const post = async <T>(url: string, data?: unknown): Promise<T> => {
+    const response = await api.post<T>(url, data);
+    return response.data;
+  };
+
+  const put = async <T>(url: string, data?: unknown): Promise<T> => {
+    const response = await api.put<T>(url, data);
+    return response.data;
+  };
+
+  const del = async <T>(url: string): Promise<T> => {
+    const response = await api.delete<T>(url);
+    return response.data;
+  };
+
+  return { get, post, put, delete: del };
+}
+
+// =============================================================================
 // Export
 // =============================================================================
 

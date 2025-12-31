@@ -10,8 +10,8 @@ import {
   MessageSquare,
   Settings,
   BookOpen,
-  X,
   ChevronRight,
+  ChevronUp,
   Target,
   ClipboardList,
   BarChart3,
@@ -27,13 +27,16 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetClose,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from '../../components/shadcn';
 import { useAuth } from '../../contexts/AuthContext';
 
 /**
  * BottomNav
  * Mobile-first bottom tab navigation with 4+1 burger menu structure
+ * Features dropdown menus for items with sub-navigation
  *
  * Main tabs: Hjem, Aktivitet, Fremgang, Plan
  * Burger menu: Profil, Meldinger, Innstillinger, Ressurser
@@ -144,6 +147,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ className = '' }) => {
   const { user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [openPopover, setOpenPopover] = useState<string | null>(null);
 
   const isActive = (path: string, subItems?: { to: string }[]): boolean => {
     if (location.pathname === path) return true;
@@ -153,12 +157,9 @@ const BottomNav: React.FC<BottomNavProps> = ({ className = '' }) => {
     return false;
   };
 
-  const handleNavClick = (item: NavItem, e: React.MouseEvent) => {
-    if (item.subItems && item.subItems.length > 0) {
-      e.preventDefault();
-      // Navigate to the first sub-item
-      navigate(item.subItems[0].to);
-    }
+  const handleSubItemClick = (to: string) => {
+    navigate(to);
+    setOpenPopover(null);
   };
 
   const handleMenuItemClick = (to: string) => {
@@ -177,44 +178,126 @@ const BottomNav: React.FC<BottomNavProps> = ({ className = '' }) => {
     setExpandedSection(expandedSection === label ? null : label);
   };
 
+  // Render a nav item - either simple link or with dropdown
+  const renderNavItem = (item: NavItem) => {
+    const active = isActive(item.to, item.subItems);
+    const hasSubItems = item.subItems && item.subItems.length > 0;
+
+    // Simple link for items without subitems (like Hjem)
+    if (!hasSubItems) {
+      return (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          aria-current={active ? 'page' : undefined}
+          style={{
+            ...styles.navItem,
+          }}
+        >
+          <span
+            style={{
+              ...styles.icon,
+              color: active ? 'var(--accent)' : 'var(--text-tertiary)',
+            }}
+            aria-hidden="true"
+          >
+            {item.icon}
+          </span>
+          <span
+            style={{
+              ...styles.label,
+              color: active ? 'var(--accent)' : 'var(--text-tertiary)',
+              fontWeight: active ? 600 : 500,
+            }}
+          >
+            {item.label}
+          </span>
+        </NavLink>
+      );
+    }
+
+    // Popover dropdown for items with subitems
+    return (
+      <Popover
+        key={item.to}
+        open={openPopover === item.label}
+        onOpenChange={(open) => setOpenPopover(open ? item.label : null)}
+      >
+        <PopoverTrigger asChild>
+          <button
+            style={styles.navItem}
+            aria-expanded={openPopover === item.label}
+          >
+            <span
+              style={{
+                ...styles.icon,
+                color: active ? 'var(--accent)' : 'var(--text-tertiary)',
+              }}
+              aria-hidden="true"
+            >
+              {item.icon}
+            </span>
+            <span
+              style={{
+                ...styles.label,
+                color: active ? 'var(--accent)' : 'var(--text-tertiary)',
+                fontWeight: active ? 600 : 500,
+              }}
+            >
+              {item.label}
+            </span>
+            <ChevronUp
+              size={12}
+              style={{
+                position: 'absolute',
+                top: '2px',
+                right: '50%',
+                transform: `translateX(50%) ${openPopover === item.label ? 'rotate(0deg)' : 'rotate(180deg)'}`,
+                color: active ? 'var(--accent)' : 'var(--text-tertiary)',
+                opacity: 0.6,
+                transition: 'transform 0.2s ease',
+              }}
+            />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          side="top"
+          align="center"
+          sideOffset={8}
+          style={styles.popoverContent}
+        >
+          <div style={styles.popoverHeader}>
+            <span style={styles.popoverTitle}>{item.label}</span>
+          </div>
+          <div style={styles.popoverItems}>
+            {item.subItems?.map((subItem) => {
+              const subActive = location.pathname === subItem.to ||
+                location.pathname.startsWith(subItem.to.split('?')[0]);
+              return (
+                <button
+                  key={subItem.to}
+                  onClick={() => handleSubItemClick(subItem.to)}
+                  style={{
+                    ...styles.popoverItem,
+                    ...(subActive ? styles.popoverItemActive : {}),
+                  }}
+                >
+                  <span style={styles.popoverItemIcon}>{subItem.icon}</span>
+                  <span style={styles.popoverItemLabel}>{subItem.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  };
+
   return (
     <>
       <nav style={styles.nav} className={className} aria-label="Hovednavigasjon">
         {/* Main 4 navigation items */}
-        {mainNavItems.map((item) => {
-          const active = isActive(item.to, item.subItems);
-          return (
-            <NavLink
-              key={item.to}
-              to={item.subItems ? item.subItems[0].to : item.to}
-              onClick={(e) => handleNavClick(item, e)}
-              aria-current={active ? 'page' : undefined}
-              style={{
-                ...styles.navItem,
-                ...(active ? styles.navItemActive : {}),
-              }}
-            >
-              <span
-                style={{
-                  ...styles.icon,
-                  color: active ? 'var(--accent)' : 'var(--text-tertiary)',
-                }}
-                aria-hidden="true"
-              >
-                {item.icon}
-              </span>
-              <span
-                style={{
-                  ...styles.label,
-                  color: active ? 'var(--accent)' : 'var(--text-tertiary)',
-                  fontWeight: active ? 600 : 500,
-                }}
-              >
-                {item.label}
-              </span>
-            </NavLink>
-          );
-        })}
+        {mainNavItems.map(renderNavItem)}
 
         {/* Burger menu button */}
         <button
@@ -319,6 +402,7 @@ const styles: Record<string, React.CSSProperties> = {
     paddingTop: 'var(--spacing-2)',
     paddingBottom: 'calc(var(--spacing-2) + env(safe-area-inset-bottom, 0px))',
     width: '100%',
+    position: 'relative',
   },
   navItem: {
     display: 'flex',
@@ -327,6 +411,7 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     gap: '2px',
     padding: 'var(--spacing-1)',
+    paddingTop: 'var(--spacing-2)',
     textDecoration: 'none',
     flex: 1,
     minWidth: 0,
@@ -334,9 +419,7 @@ const styles: Record<string, React.CSSProperties> = {
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-  },
-  navItemActive: {
-    // Active styling handled inline
+    position: 'relative',
   },
   icon: {
     display: 'flex',
@@ -347,6 +430,53 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'var(--font-size-caption2)',
     textAlign: 'center',
   },
+  // Popover styles
+  popoverContent: {
+    padding: 0,
+    width: 'auto',
+    minWidth: '160px',
+  },
+  popoverHeader: {
+    padding: 'var(--spacing-2) var(--spacing-3)',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  popoverTitle: {
+    fontSize: 'var(--font-size-caption)',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
+  popoverItems: {
+    padding: 'var(--spacing-1)',
+  },
+  popoverItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-2)',
+    padding: 'var(--spacing-2) var(--spacing-3)',
+    width: '100%',
+    border: 'none',
+    background: 'none',
+    borderRadius: 'var(--radius-sm)',
+    cursor: 'pointer',
+    textAlign: 'left',
+    transition: 'background-color 0.15s ease',
+  },
+  popoverItemActive: {
+    backgroundColor: 'var(--accent-subtle)',
+  },
+  popoverItemIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    color: 'var(--text-secondary)',
+  },
+  popoverItemLabel: {
+    fontSize: 'var(--font-size-body)',
+    fontWeight: 500,
+    color: 'var(--text-primary)',
+  },
+  // Sheet styles
   sheetContent: {
     display: 'flex',
     flexDirection: 'column',

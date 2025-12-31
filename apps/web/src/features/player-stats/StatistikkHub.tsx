@@ -156,6 +156,7 @@ const StatistikkHub: React.FC = () => {
       title="Statistikk"
       subtitle={activeTabConfig?.description || 'Din spillstatistikk'}
       actions={
+        // @ts-expect-error - ExportButton is JSX with default props
         <ExportButton
           targetId="statistikk-export"
           filename={`statistikk-${activeTab}-${new Date().toISOString().split('T')[0]}`}

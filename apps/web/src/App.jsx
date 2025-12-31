@@ -1,12 +1,15 @@
 import React, { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { tokens } from './design-tokens';
 import { initMobileApp } from './utils/mobile';
+
+// PWA & AI components
+import OfflineIndicator from './components/ui/OfflineIndicator';
+import AIChatWidget from './components/widgets/AIChatWidget';
 
 // Shared components (NOT lazy - needed immediately)
 import ApplicationLayoutTopNav from './components/layout/ApplicationLayoutTopNav';
@@ -257,29 +260,19 @@ const AdminLayout = ({ children }) => (
   <AdminAppShell>{children}</AdminAppShell>
 );
 
-// Offline Banner Component
-const OfflineBanner = () => (
-  <div style={{
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: tokens.colors.error,
-    color: 'white',
-    padding: '12px 16px',
-    textAlign: 'center',
-    fontSize: '14px',
-    fontWeight: '500',
-    zIndex: 9999,
-    boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-  }}>
-    ⚠️ Ingen internettforbindelse. Noen funksjoner kan være utilgjengelige.
-  </div>
-);
+// AI Chat wrapper - only shows for authenticated players
+const AuthenticatedAIChat = () => {
+  const { user, isAuthenticated } = useAuth();
+
+  // Only show AI chat for authenticated players (not coaches/admins)
+  if (!isAuthenticated || !user || user.role !== 'player') {
+    return null;
+  }
+
+  return <AIChatWidget position="bottom-right" />;
+};
 
 function App() {
-  const isOnline = useOnlineStatus();
-
   // Initialize mobile app features (Capacitor)
   useEffect(() => {
     initMobileApp();
@@ -293,7 +286,8 @@ function App() {
             <BadgeNotificationProvider>
               <ErrorBoundary>
                 <TooltipProvider>
-                {!isOnline && <OfflineBanner />}
+                <OfflineIndicator position="top" />
+                <AuthenticatedAIChat />
                 <Toast />
                 <Toaster />
                 <VideoNotificationManager />
