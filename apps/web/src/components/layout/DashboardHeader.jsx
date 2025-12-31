@@ -79,6 +79,12 @@ const mainNavigation = [
         href: '/utvikling/benchmark',
         icon: BarChart3,
       },
+      {
+        name: 'Fremgang',
+        description: 'Se din utvikling over tid',
+        href: '/progress',
+        icon: Activity,
+      },
     ],
     callsToAction: [
       { name: 'Se demo', href: '#', icon: PlayCircle },
@@ -106,6 +112,12 @@ const mainNavigation = [
         description: 'Logg og reflekter over treninger',
         href: '/trening/dagbok',
         icon: BookMarked,
+      },
+      {
+        name: 'Alle økter',
+        description: 'Oversikt over dine treningsøkter',
+        href: '/sessions',
+        icon: Activity,
       },
       {
         name: 'Øvelsesbank',
@@ -140,6 +152,12 @@ const mainNavigation = [
         href: '/testing/krav',
         icon: Flag,
       },
+      {
+        name: 'Stats Guide',
+        description: 'Forstå statistikk og testing',
+        href: '/stats/guide',
+        icon: GraduationCap,
+      },
     ],
     callsToAction: [
       { name: 'Registrer test', href: '/testing/registrer', icon: Plus },
@@ -169,11 +187,53 @@ const mainNavigation = [
       },
     ],
   },
+  {
+    name: 'Mer',
+    description: 'Andre funksjoner',
+    items: [
+      {
+        name: 'Meldinger',
+        description: 'Kommuniser med trenere',
+        href: '/meldinger',
+        icon: MessageSquare,
+      },
+      {
+        name: 'Videoer',
+        description: 'Dine sving-videoer',
+        href: '/videos',
+        icon: PlayCircle,
+      },
+      {
+        name: 'Bevis',
+        description: 'Dokumenter din fremgang',
+        href: '/bevis',
+        icon: Trophy,
+      },
+      {
+        name: 'Merker',
+        description: 'Dine oppnådde merker',
+        href: '/badges',
+        icon: Trophy,
+      },
+      {
+        name: 'Prestasjoner',
+        description: 'Dine oppnåelser',
+        href: '/achievements',
+        icon: Trophy,
+      },
+      {
+        name: 'Evaluering',
+        description: 'Vurder din innsats',
+        href: '/evaluering',
+        icon: Target,
+      },
+    ],
+  },
 ];
 
 // Simple navigation items (no flyout)
 const simpleNavigation = [
-  { name: 'Dashboard', href: '/' },
+  { name: 'Dashboard', href: '/dashboard' },
   { name: 'Kalender', href: '/kalender' },
   { name: 'Turneringer', href: '/turneringskalender' },
 ];

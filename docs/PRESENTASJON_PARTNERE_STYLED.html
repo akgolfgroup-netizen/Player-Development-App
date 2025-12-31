@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IUP Golf Academy - Presentasjon for Partnere</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.6;
+      color: #1a1a1a;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #fff;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #10456A;
+      margin-bottom: 0.5rem;
+      border-bottom: 4px solid #10456A;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #10456A;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      color: #2c5282;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    th {
+      background: #10456A;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tr:hover {
+      background: #e8f4f8;
+    }
+
+    ul, ol {
+      margin: 1rem 0;
+      padding-left: 2rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: #1a1a1a;
+      color: #00ff00;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      font-size: 0.85rem;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    hr {
+      border: none;
+      border-top: 2px solid #10456A;
+      margin: 2rem 0;
+    }
+
+    a {
+      color: #10456A;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    strong {
+      color: #10456A;
+    }
+
+    .header-meta {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #10456A 0%, #1a5a8a 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box strong {
+      color: #fff;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 1.5rem 0;
+    }
+
+    .stat-card {
+      background: #f8f9fa;
+      border-left: 4px solid #10456A;
+      padding: 15px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .stat-card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #10456A;
+    }
+
+    .stat-card .label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    @media print {
+      body {
+        padding: 20px;
+      }
+
+      h2 {
+        page-break-after: avoid;
+      }
+
+      table, pre {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>IUP Golf Academy</h1>
+  <h2 style="border: none; margin-top: 0; color: #666; font-size: 1.4rem;">Komplett Digital Treningsplattform for Junior Golf</h2>
+
+  <p class="header-meta"><strong>Presentasjon for Partnere</strong><br>31. desember 2024</p>
+
+  <hr>
+
+  <h2>Hva har vi bygget?</h2>
+  <p>En <strong>enterprise-grade treningsplattform</strong> spesifikt designet for junior golftreningssentre, basert på Team Norways IUP-metodikk (Individuell UtviklingsPlan).</p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="number">40+</div>
+      <div class="label">API Endepunkter</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">75+</div>
+      <div class="label">Database-modeller</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">79</div>
+      <div class="label">Frontend-moduler</div>
+    </div>
+    <div class="stat-card">
+      <div class="number">4</div>
+      <div class="label">Integrasjoner</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>Live URL:</strong> <a href="https://ak-golf-iup-frontend-production.up.railway.app" style="color: #90cdf4;">https://ak-golf-iup-frontend-production.up.railway.app</a>
+  </div>
+
+  <hr>
+
+  <h2>Hovedfunksjoner</h2>
+
+  <h3>1. Spillerutvikling & Testing</h3>
+  <table>
+    <thead>
+      <tr><th>Funksjon</th><th>Beskrivelse</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>20+ Standardiserte Tester</strong></td><td>Driver, approach, short game, putting, fysikk</td></tr>
+      <tr><td><strong>Automatisk Beregning</strong></td><td>Resultater beregnes automatisk mot kategori-krav</td></tr>
+      <tr><td><strong>Peer Comparison</strong></td><td>Sammenlign deg med jevnaldrende i samme kategori</td></tr>
+      <tr><td><strong>Breaking Points</strong></td><td>AI identifiserer prestasjonsgap og forbedringsområder</td></tr>
+      <tr><td><strong>Skill DNA</strong></td><td>Detaljert analyse av spillerens styrker/svakheter</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2. Treningsplanlegging</h3>
+  <table>
+    <thead>
+      <tr><th>Funksjon</th><th>Beskrivelse</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>12-måneders Plan</strong></td><td>Automatisk generert årlig treningsplan</td></tr>
+      <tr><td><strong>Periodisering</strong></td><td>E/G/S/T-faser (Ettertrening, Generell, Spesifikk, Turnering)</td></tr>
+      <tr><td><strong>Ukentlige Oppdrag</strong></td><td>Dag-for-dag treningsoppgaver</td></tr>
+      <tr><td><strong>Øvelsesbibliotek</strong></td><td>Komplett database med øvelser</td></tr>
+      <tr><td><strong>Kalender-sync</strong></td><td>Synkronisering med Google Calendar</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3. Video-analyse</h3>
+  <table>
+    <thead>
+      <tr><th>Funksjon</th><th>Beskrivelse</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Video-opplasting</strong></td><td>Sikker opplasting til AWS S3</td></tr>
+      <tr><td><strong>Annotasjoner</strong></td><td>Markører, tegninger og lydnotater</td></tr>
+      <tr><td><strong>Sammenligning</strong></td><td>Side-by-side sammenligning av svinger</td></tr>
+      <tr><td><strong>Progress Timeline</strong></td><td>Se utviklingen over tid</td></tr>
+      <tr><td><strong>Trener-tilbakemelding</strong></td><td>Direkte kommentarer på video</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4. Gamification & Motivasjon</h3>
+  <table>
+    <thead>
+      <tr><th>Funksjon</th><th>Beskrivelse</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>20+ Badge-typer</strong></td><td>Streak, volum, forbedring, deltakelse</td></tr>
+      <tr><td><strong>XP-system</strong></td><td>Nivåoppgradering basert på aktivitet</td></tr>
+      <tr><td><strong>Achievements</strong></td><td>Milepæler og prestasjoner</td></tr>
+      <tr><td><strong>Anti-Gaming</strong></td><td>Beskyttelse mot juks/manipulering</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5. Trener-verktøy</h3>
+  <table>
+    <thead>
+      <tr><th>Funksjon</th><th>Beskrivelse</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Athlete Dashboard</strong></td><td>Oversikt over alle spillere</td></tr>
+      <tr><td><strong>Team Analytics</strong></td><td>Aggregert teamstatistikk</td></tr>
+      <tr><td><strong>Booking-system</strong></td><td>Time-booking med konfliktdeteksjon</td></tr>
+      <tr><td><strong>Notater & Kommunikasjon</strong></td><td>Meldinger og notater per spiller</td></tr>
+      <tr><td><strong>Trajectory Viewer</strong></td><td>Visualisering av spillerutvikling</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>Integrasjoner</h2>
+
+  <h3>DataGolf (Pro-statistikk)</h3>
+  <ul>
+    <li>Strokes Gained-beregninger (OTT, Approach, Around-the-green, Putting)</li>
+    <li>Sammenligning med tourspillere</li>
+    <li>Skill decomposition</li>
+    <li>Historiske rundedata</li>
+  </ul>
+
+  <h3>MET Norway (Vær)</h3>
+  <ul>
+    <li>Sanntids værmelding for treningsforhold</li>
+    <li>Temperatur, vind, nedbør, UV-indeks</li>
+    <li>Optimal treningsplanlegging</li>
+  </ul>
+
+  <h3>AI Coach (Claude)</h3>
+  <ul>
+    <li>Personlig treningsassistent</li>
+    <li>Automatiske anbefalinger</li>
+    <li>Breaking point-analyse</li>
+    <li>Skreddersydde råd</li>
+  </ul>
+
+  <h3>Google Calendar</h3>
+  <ul>
+    <li>Ekstern kalender-synkronisering</li>
+    <li>Automatiske påminnelser</li>
+    <li>iCal-støtte</li>
+  </ul>
+
+  <hr>
+
+  <h2>Teknisk Arkitektur</h2>
+
+  <pre><code>┌─────────────────────────────────────────────────────────┐
+│                    FRONTEND                              │
+│  React 18 + React Router 7 + Radix UI + Capacitor       │
+│  (Web + iOS + Android)                                   │
+└─────────────────────────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
+│                    BACKEND API                           │
+│  Fastify + JWT Auth + WebSocket + Rate Limiting         │
+│  40+ endepunkter med Swagger dokumentasjon              │
+└─────────────────────────────────────────────────────────┘
+                          │
+          ┌───────────────┼───────────────┐
+          ▼               ▼               ▼
+┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+│ PostgreSQL  │   │    Redis    │   │   AWS S3    │
+│  Database   │   │   Caching   │   │   Storage   │
+│  75+ models │   │ Pub/Sub     │   │   Video     │
+└─────────────┘   └─────────────┘   └─────────────┘</code></pre>
+
+  <h3>Teknologi-stack</h3>
+  <table>
+    <thead>
+      <tr><th>Lag</th><th>Teknologi</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Frontend</td><td>React 18, TypeScript, Radix UI, Tailwind</td></tr>
+      <tr><td>Backend</td><td>Fastify, Node.js 20, TypeScript</td></tr>
+      <tr><td>Database</td><td>PostgreSQL 16, Prisma ORM</td></tr>
+      <tr><td>Caching</td><td>Redis 7</td></tr>
+      <tr><td>Storage</td><td>AWS S3 (video/media)</td></tr>
+      <tr><td>Auth</td><td>JWT + 2FA (TOTP)</td></tr>
+      <tr><td>AI</td><td>Anthropic Claude API</td></tr>
+      <tr><td>Hosting</td><td>Railway (Production)</td></tr>
+      <tr><td>CI/CD</td><td>GitHub Actions</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>Sikkerhet & Compliance</h2>
+  <table>
+    <thead>
+      <tr><th>Funksjon</th><th>Implementert</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>JWT-autentisering</td><td>✅ 15-min access + 7-dagers refresh</td></tr>
+      <tr><td>To-faktor autentisering</td><td>✅ TOTP med backup-koder</td></tr>
+      <tr><td>Argon2 passordhashing</td><td>✅</td></tr>
+      <tr><td>RBAC (Rollebasert tilgang)</td><td>✅ Admin, Trener, Spiller, Forelder</td></tr>
+      <tr><td>Multi-tenant isolasjon</td><td>✅ Sikker data-separasjon</td></tr>
+      <tr><td>Audit logging</td><td>✅ Full aktivitetslogging</td></tr>
+      <tr><td>Rate limiting</td><td>✅ Per endepunkt</td></tr>
+      <tr><td>CORS-beskyttelse</td><td>✅ Whitelist-basert</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>Konkurransefortrinn</h2>
+  <table>
+    <thead>
+      <tr><th>Oss</th><th>Konkurrenter</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Bygget spesifikt for IUP-metodikk</td><td>Generiske treningsapper</td></tr>
+      <tr><td>DataGolf pro-statistikk integrasjon</td><td>Ingen pro-sammenligning</td></tr>
+      <tr><td>AI-drevet breaking point-analyse</td><td>Manuell analyse</td></tr>
+      <tr><td>Norsk kontekst (GolfBox, MET, NGF)</td><td>Internasjonal fokus</td></tr>
+      <tr><td>Full video-analyse plattform</td><td>Begrenset eller ingen</td></tr>
+      <tr><td>Gamification for motivasjon</td><td>Statisk tracking</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>Oppsummering</h2>
+  <p><strong>IUP Golf Academy</strong> er en komplett, produksjonsklar plattform som gir:</p>
+  <ol>
+    <li><strong>Spillere</strong> - Strukturert utvikling med motiverende gamification</li>
+    <li><strong>Trenere</strong> - Kraftige verktøy for analyse og oppfølging</li>
+    <li><strong>Akademier</strong> - Skalerbar løsning for flere lokasjoner</li>
+    <li><strong>Foreldre</strong> - Innsikt i barnets utvikling (kommer)</li>
+  </ol>
+
+  <h3>Neste steg</h3>
+  <ul>
+    <li>Demo av live-systemet</li>
+    <li>Diskutere go-to-market strategi</li>
+    <li>Pilotprosjekt med første akademi</li>
+  </ul>
+
+  <hr>
+
+  <p style="text-align: center; color: #666; margin-top: 2rem;">
+    <em>Bygget med moderne teknologi. Designet for norsk golf.</em><br><br>
+    <strong>Kontakt:</strong> <a href="mailto:anders@akgolf.no">anders@akgolf.no</a>
+  </p>
+</body>
+</html>
