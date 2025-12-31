@@ -22,6 +22,20 @@ export interface AuthResponse {
   };
 }
 
+/**
+ * User data with optional player ID for token generation
+ */
+interface UserWithOptionalPlayerId {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  tenantId: string;
+  playerId?: string;
+  coachId?: string;
+}
+
 export class AuthService {
   constructor(private prisma: PrismaClient) {}
 
