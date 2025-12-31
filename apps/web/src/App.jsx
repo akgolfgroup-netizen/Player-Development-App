@@ -84,6 +84,7 @@ const StrokesGainedPage = lazy(() => import('./features/player-stats').then(m =>
 const PlayerTestResultsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.TestResultsPage })));
 const StatusProgressPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StatusProgressPage })));
 const BenchmarkPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.BenchmarkPage })));
+const StatistikkHub = lazy(() => import('./features/player-stats').then(m => ({ default: m.StatistikkHub })));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -729,39 +730,11 @@ function App() {
             </ProtectedRoute>
           } />
 
-          {/* Statistikk - Player Stats with DataGolf & Test Results */}
+          {/* Statistikk Hub - Unified tab navigation for all statistics */}
           <Route path="/statistikk" element={
             <ProtectedRoute>
               <DashboardLayout>
-                <PlayerStatsPage />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/statistikk/status" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <StatusProgressPage />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/statistikk/strokes-gained" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <StrokesGainedPage />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/statistikk/testresultater" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <PlayerTestResultsPage />
-              </DashboardLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/statistikk/benchmark" element={
-            <ProtectedRoute>
-              <DashboardLayout>
-                <BenchmarkPage />
+                <StatistikkHub />
               </DashboardLayout>
             </ProtectedRoute>
           } />

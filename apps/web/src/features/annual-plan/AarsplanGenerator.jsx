@@ -2,11 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Calendar, Target, Clock, Trophy, ChevronRight, ChevronLeft,
-  Check, Plus, X, Loader2, Sparkles
+  Check, Plus, X, Loader2, Sparkles, CheckCircle, ArrowRight
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
+import { toast } from 'sonner';
 
 // ============================================================================
 // STEP INDICATOR
@@ -659,6 +660,162 @@ const Step4Review = ({ formData }) => {
 };
 
 // ============================================================================
+// SUCCESS SCREEN
+// ============================================================================
+
+const SuccessScreen = ({ result, onViewPlan, onViewCalendar }) => (
+  <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+    <div
+      style={{
+        width: '80px',
+        height: '80px',
+        borderRadius: '50%',
+        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto 24px',
+      }}
+    >
+      <CheckCircle size={40} color="#22c55e" />
+    </div>
+
+    <h2 style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 8px' }}>
+      Årsplan opprettet!
+    </h2>
+    <p style={{ fontSize: '16px', color: 'var(--text-secondary)', margin: '0 0 32px' }}>
+      Din 12-måneders treningsplan er klar
+    </p>
+
+    {/* Stats */}
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '16px',
+        marginBottom: '32px',
+        maxWidth: '500px',
+        margin: '0 auto 32px',
+      }}
+    >
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: '12px',
+          border: '1px solid var(--border-default)',
+        }}
+      >
+        <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--accent)' }}>
+          {result?.dailyAssignments?.created || 365}
+        </div>
+        <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+          Treningsøkter
+        </div>
+      </div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: '12px',
+          border: '1px solid var(--border-default)',
+        }}
+      >
+        <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--accent)' }}>
+          52
+        </div>
+        <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+          Uker planlagt
+        </div>
+      </div>
+      <div
+        style={{
+          padding: '20px',
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: '12px',
+          border: '1px solid var(--border-default)',
+        }}
+      >
+        <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--accent)' }}>
+          {result?.tournaments?.scheduled || 0}
+        </div>
+        <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+          Turneringer
+        </div>
+      </div>
+    </div>
+
+    {/* Info box */}
+    <div
+      style={{
+        padding: '16px 20px',
+        backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
+        borderRadius: '12px',
+        border: '1px solid rgba(var(--accent-rgb), 0.2)',
+        marginBottom: '32px',
+        maxWidth: '500px',
+        margin: '0 auto 32px',
+        textAlign: 'left',
+      }}
+    >
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+        <Calendar size={20} color="var(--accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div>
+          <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 4px' }}>
+            Øktene er nå synkronisert
+          </p>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
+            Alle planlagte treningsøkter er lagt til i kalenderen din. Du kan se dem under "Alle økter" eller i kalendervisningen.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* Action buttons */}
+    <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+      <button
+        onClick={onViewCalendar}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '14px 24px',
+          borderRadius: '10px',
+          border: '1px solid var(--border-default)',
+          backgroundColor: 'var(--bg-primary)',
+          color: 'var(--text-primary)',
+          fontSize: '15px',
+          fontWeight: 500,
+          cursor: 'pointer',
+        }}
+      >
+        <Calendar size={18} />
+        Se kalender
+      </button>
+      <button
+        onClick={onViewPlan}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '14px 24px',
+          borderRadius: '10px',
+          border: 'none',
+          backgroundColor: 'var(--accent)',
+          color: 'white',
+          fontSize: '15px',
+          fontWeight: 500,
+          cursor: 'pointer',
+        }}
+      >
+        Se årsplan
+        <ArrowRight size={18} />
+      </button>
+    </div>
+  </div>
+);
+
+// ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 
@@ -668,6 +825,8 @@ const AarsplanGenerator = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState(null);
+  const [generationResult, setGenerationResult] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     startDate: new Date().toISOString().split('T')[0],
@@ -719,10 +878,19 @@ const AarsplanGenerator = () => {
         preferredTrainingDays: formData.preferredTrainingDays,
       };
 
-      await apiClient.post('/training-plan/generate', payload);
+      const response = await apiClient.post('/training-plan/generate', payload);
 
-      // Navigate to the annual plan page
-      navigate('/aarsplan');
+      // Store the result and show success screen
+      setGenerationResult({
+        dailyAssignments: { created: response.data?.dailyAssignments?.length || 365 },
+        tournaments: { scheduled: formData.tournaments.length },
+      });
+      setShowSuccess(true);
+
+      // Show toast notification
+      toast.success('Årsplan opprettet!', {
+        description: `${response.data?.dailyAssignments?.length || 365} treningsøkter lagt til i kalenderen`,
+      });
     } catch (err) {
       console.error('Error generating plan:', err);
       setError(err.response?.data?.message || 'Kunne ikke generere årsplan. Prøv igjen.');
@@ -732,6 +900,36 @@ const AarsplanGenerator = () => {
   };
 
   const StepComponent = steps[currentStep].component;
+
+  // Show success screen after generation
+  if (showSuccess) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+        <PageHeader
+          title="Årsplan opprettet"
+          subtitle="Din treningsplan er klar"
+          showBackButton
+          onBack={() => navigate('/aarsplan')}
+        />
+        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '24px' }}>
+          <div
+            style={{
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: '16px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+              border: '1px solid var(--border-default)',
+            }}
+          >
+            <SuccessScreen
+              result={generationResult}
+              onViewPlan={() => navigate('/aarsplan')}
+              onViewCalendar={() => navigate('/kalender')}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>

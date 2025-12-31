@@ -122,17 +122,18 @@ export const navigationConfig = [
 
   // ────────────────────────────────────────────────────────────
   // STATISTIKK
-  // DataGolf, Strokes Gained, testresultater, status & mål
+  // Unified hub with tabs: Overview, Strokes Gained, Benchmark, Results, Status
   // ────────────────────────────────────────────────────────────
   {
     label: 'Statistikk',
     icon: 'BarChart3',
     submenu: [
-      { href: '/statistikk', label: 'Oversikt' },
+      { href: '/statistikk', label: 'Statistikk-hub' },
+      { href: '/statistikk?tab=strokes-gained', label: 'Strokes Gained' },
+      { href: '/statistikk?tab=benchmark', label: 'Benchmark' },
+      { href: '/statistikk?tab=testresultater', label: 'Testresultater' },
+      { href: '/statistikk?tab=status', label: 'Status & Mål' },
       { href: '/stats/guide', label: 'Slik fungerer det', icon: 'BookOpen' },
-      { href: '/statistikk/status', label: 'Status & Mål' },
-      { href: '/statistikk/strokes-gained', label: 'Strokes Gained' },
-      { href: '/statistikk/testresultater', label: 'Alle testresultater' },
     ]
   },
 
