@@ -78,9 +78,7 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
   }, []);
 
   const handleLogout = async () => {
-    if (logout) {
-      await logout();
-    }
+    await logout();
   };
 
   return (
@@ -103,7 +101,7 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
       </a>
 
       <CoachSidebar
-        user={user}
+        user={user || undefined}
         unreadAlerts={unreadAlerts}
         onLogout={handleLogout}
       />

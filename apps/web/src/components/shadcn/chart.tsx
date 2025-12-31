@@ -292,7 +292,7 @@ export const GolfPieChart: React.FC<PieChartProps> = ({
             cy="50%"
             innerRadius={innerRadius}
             outerRadius="80%"
-            label={showLabels ? ({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%` : false}
+            label={showLabels ? ({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%` : false}
             labelLine={showLabels}
           >
             {data.map((_, index) => (

@@ -54,14 +54,17 @@ jobs:
 
       - name: Lint API
         run: pnpm --filter iup-golf-backend lint
+        # Lint errors should be addressed but not block deployment initially
         continue-on-error: true
 
       - name: Type check API
         run: pnpm --filter iup-golf-backend type-check
+        # Type errors should be addressed but not block deployment initially
         continue-on-error: true
 
       - name: Lint Web
         run: pnpm --filter iup-golf-web lint
+        # Lint errors should be addressed but not block deployment initially
         continue-on-error: true
 
   # =============================================================================
@@ -240,11 +243,12 @@ jobs:
 
       - name: Run API tests
         run: pnpm --filter iup-golf-backend test --coverage
-        continue-on-error: true
+        # Tests must pass - remove continue-on-error after test stabilization
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/iup_golf_test
           REDIS_URL: redis://localhost:6379
-          JWT_SECRET: test-secret-key-for-ci
+          JWT_ACCESS_SECRET: test-secret-key-for-ci-access-token-min32chars
+          JWT_REFRESH_SECRET: test-secret-key-for-ci-refresh-token-min32chars
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -279,7 +283,7 @@ jobs:
 
       - name: Run unit tests
         run: pnpm --filter iup-golf-web test --coverage --watchAll=false
-        continue-on-error: true
+        # Tests must pass - remove continue-on-error after test stabilization
         env:
           CI: true
 

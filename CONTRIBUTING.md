@@ -12,14 +12,103 @@
 
 ### Getting Started
 
-See the [Development Guide](./docs/guides/development.md) for detailed setup instructions.
+#### 1. Clone and Install
 
 ```bash
-# Quick start
+git clone https://github.com/your-org/iup-golf-academy.git
+cd iup-golf-academy
 pnpm install
-cd apps/api && docker-compose up -d
-npx prisma generate && npx prisma migrate deploy
+```
+
+#### 2. Configure Environment
+
+```bash
+cp .env.example .env
+```
+
+**Required environment variables** (edit `.env`):
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DATABASE_URL` | PostgreSQL connection | `postgresql://user:pass@localhost:5432/iup_golf` |
+| `JWT_ACCESS_SECRET` | Access token secret (min 32 chars) | Use `openssl rand -hex 32` |
+| `JWT_REFRESH_SECRET` | Refresh token secret (min 32 chars) | Use `openssl rand -hex 32` |
+
+#### 3. Start Infrastructure
+
+```bash
+# Start PostgreSQL and Redis containers
+docker-compose up -d db redis
+
+# Verify services are healthy
+docker-compose ps
+```
+
+#### 4. Initialize Database
+
+```bash
+# Generate Prisma client
+pnpm --filter iup-golf-backend prisma:generate
+
+# Run migrations
+pnpm --filter iup-golf-backend prisma:migrate
+
+# (Optional) Seed demo data
+pnpm --filter iup-golf-backend prisma:seed
+```
+
+#### 5. Start Development Servers
+
+```bash
+# Start all apps
 pnpm dev
+
+# Or individually:
+pnpm --filter iup-golf-backend dev    # API → http://localhost:3000
+pnpm --filter iup-golf-web dev        # Web → http://localhost:3001
+```
+
+### Project Structure
+
+```
+.
+├── apps/
+│   ├── api/              # Fastify backend (iup-golf-backend)
+│   │   ├── prisma/       # Database schema and migrations
+│   │   └── src/          # Source code
+│   ├── web/              # React frontend (ak-golf-iup-frontend)
+│   │   └── src/          # Source code
+│   └── golfer/           # React Native app (future)
+├── packages/
+│   ├── database/         # SQL schema reference
+│   └── design-system/    # Shared UI components
+├── docs/                 # Documentation
+└── scripts/              # Utility scripts
+```
+
+### Useful Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start all apps in dev mode |
+| `pnpm build` | Build all apps |
+| `pnpm test` | Run all tests |
+| `pnpm lint` | Lint all code |
+| `pnpm --filter iup-golf-backend prisma:studio` | Open Prisma Studio GUI |
+
+### Troubleshooting
+
+**Port in use:**
+```bash
+lsof -i :3000
+kill -9 <PID>
+```
+
+**Reset database:**
+```bash
+docker-compose down -v
+docker-compose up -d db redis
+pnpm --filter iup-golf-backend prisma:migrate
 ```
 
 ---

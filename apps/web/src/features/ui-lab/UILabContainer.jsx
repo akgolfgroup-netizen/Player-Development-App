@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppShell,
   StatsGrid,
@@ -8,12 +8,15 @@ import {
   CardHeader,
   PageHeader,
 } from '../../ui/raw-blocks';
+import { GolfDashboardExample } from '../../components/shadcn/examples/GolfDashboardExample';
 
 /**
  * UI Lab - Component Showcase
  * Displays all raw UI components in their default state
  */
 const UILabContainer = () => {
+  const [showShadcn, setShowShadcn] = useState(true);
+
   // Sample data for components
   const sampleStats = [
     { id: '1', label: 'Økter', value: '12', change: 5, trend: 'up' },
@@ -52,11 +55,37 @@ const UILabContainer = () => {
     <div style={styles.container}>
       <PageHeader
         title="UI Lab"
-        subtitle="Component Showcase - All Raw Blocks"
+        subtitle="Component Showcase"
         showBackButton={false}
       />
 
-      <div style={styles.content}>
+      {/* Toggle between views */}
+      <div style={styles.toggleContainer}>
+        <button
+          style={{
+            ...styles.toggleButton,
+            ...(showShadcn ? styles.toggleButtonActive : {}),
+          }}
+          onClick={() => setShowShadcn(true)}
+        >
+          shadcn/ui Golf Dashboard
+        </button>
+        <button
+          style={{
+            ...styles.toggleButton,
+            ...(!showShadcn ? styles.toggleButtonActive : {}),
+          }}
+          onClick={() => setShowShadcn(false)}
+        >
+          Raw Blocks
+        </button>
+      </div>
+
+      {/* shadcn Dashboard Example */}
+      {showShadcn && <GolfDashboardExample />}
+
+      {/* Original Raw Blocks */}
+      {!showShadcn && <div style={styles.content}>
         {/* Section: StatsGrid */}
         <section style={styles.section}>
           <h2 style={styles.sectionTitle}>StatsGrid</h2>
@@ -150,7 +179,7 @@ const UILabContainer = () => {
             }}
           />
         </section>
-      </div>
+      </div>}
     </div>
   );
 };
@@ -159,6 +188,29 @@ const styles = {
   container: {
     minHeight: '100vh',
     backgroundColor: 'var(--background-default)',
+  },
+  toggleContainer: {
+    display: 'flex',
+    gap: '8px',
+    padding: '16px 24px',
+    backgroundColor: 'var(--background-white)',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  toggleButton: {
+    padding: '8px 16px',
+    borderRadius: '8px',
+    border: '1px solid var(--border-subtle)',
+    backgroundColor: 'var(--background-default)',
+    color: 'var(--text-secondary)',
+    fontSize: '14px',
+    fontWeight: 500,
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+  },
+  toggleButtonActive: {
+    backgroundColor: 'var(--ak-primary)',
+    color: 'white',
+    borderColor: 'var(--ak-primary)',
   },
   content: {
     maxWidth: '1536px',

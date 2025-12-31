@@ -138,16 +138,15 @@ export {
 } from "./table"
 export { Progress } from "./progress"
 export {
-  ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
   GolfLineChart,
   GolfAreaChart,
   GolfBarChart,
   GolfPieChart,
   GolfRadarChart,
+  chartColors,
+  categoryColorArray,
+  statusColorArray,
 } from "./chart"
 
 // Feedback & Info

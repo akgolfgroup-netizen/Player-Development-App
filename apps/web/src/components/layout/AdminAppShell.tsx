@@ -94,9 +94,7 @@ export default function AdminAppShell({ children }: AdminAppShellProps) {
   }, []);
 
   const handleLogout = async () => {
-    if (logout) {
-      await logout();
-    }
+    await logout();
   };
 
   return (
@@ -119,7 +117,7 @@ export default function AdminAppShell({ children }: AdminAppShellProps) {
       </a>
 
       <AdminSidebar
-        user={user}
+        user={user || undefined}
         systemInfo={systemInfo}
         openTickets={openTickets}
         onLogout={handleLogout}

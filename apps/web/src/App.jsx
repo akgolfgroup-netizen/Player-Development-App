@@ -19,6 +19,7 @@ import LoadingState from './components/ui/LoadingState';
 import Toast from './components/Toast';
 import VideoNotificationManager from './components/VideoNotificationManager';
 import NotificationManager from './components/NotificationManager';
+import { Toaster, TooltipProvider } from './components/shadcn';
 
 // Lazy-loaded feature components
 const Login = lazy(() => import('./features/auth/Login'));
@@ -285,8 +286,10 @@ function App() {
           <NotificationProvider>
             <BadgeNotificationProvider>
               <ErrorBoundary>
+                <TooltipProvider>
                 {!isOnline && <OfflineBanner />}
                 <Toast />
+                <Toaster />
                 <VideoNotificationManager />
                 <NotificationManager />
             <Suspense fallback={<LoadingState />}>
@@ -1371,6 +1374,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
             </Routes>
             </Suspense>
+                </TooltipProvider>
               </ErrorBoundary>
             </BadgeNotificationProvider>
           </NotificationProvider>
