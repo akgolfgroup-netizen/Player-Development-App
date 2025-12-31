@@ -14,6 +14,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
+import { CardTitle } from '../../components/typography';
 
 // Review status options
 export const REVIEW_STATUS = {
@@ -299,7 +300,7 @@ export function PlayerVideoFeed({
             <div className={tw.content}>
               <div className={tw.header}>
                 <div className={tw.titleSection}>
-                  <h3 className={tw.title}>{video.title}</h3>
+                  <CardTitle className={tw.title}>{video.title}</CardTitle>
                   <div className={tw.meta}>
                     <span>{video.category || 'Ukategorisert'}</span>
                     <span className={tw.metaDot} />

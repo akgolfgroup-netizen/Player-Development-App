@@ -13,6 +13,7 @@
 
 import React, { useState } from 'react';
 import { tokens } from '../design-tokens';
+import { SectionTitle, SubSectionTitle } from '../typography';
 
 const colors = {
   forest: tokens.colors.forest,
@@ -121,7 +122,7 @@ export default function App() {
         {/* SIZES TAB */}
         {activeTab === 'sizes' && (
           <div>
-            <h2 style={{ fontSize: 17, fontWeight: 600, color: colors.textPrimary, margin: '0 0 8px' }}>Automatisk Størrelse</h2>
+            <SectionTitle style={{ fontSize: 17, fontWeight: 600, color: colors.textPrimary, margin: '0 0 8px' }}>Automatisk Størrelse</SectionTitle>
             <p style={{ fontSize: 13, color: colors.textSecondary, margin: '0 0 16px' }}>
               Bruk <code style={{ backgroundColor: colors.ivory, padding: '2px 6px', borderRadius: 4 }}>variant</code> prop for automatisk størrelse
             </p>
@@ -151,7 +152,7 @@ export default function App() {
 
             {/* Custom Size */}
             <div style={{ marginTop: 16, backgroundColor: colors.ivory, borderRadius: 16, padding: 16 }}>
-              <h3 style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, margin: '0 0 8px' }}>Egendefinert Størrelse</h3>
+              <SubSectionTitle style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, margin: '0 0 8px' }}>Egendefinert Størrelse</SubSectionTitle>
               <p style={{ fontSize: 12, color: colors.textSecondary, margin: '0 0 12px' }}>
                 Bruk <code style={{ backgroundColor: colors.foam, padding: '2px 6px', borderRadius: 4 }}>size</code> prop for eksakt pikselverdi
               </p>
@@ -166,7 +167,7 @@ export default function App() {
         {/* VARIANTS TAB */}
         {activeTab === 'variants' && (
           <div>
-            <h2 style={{ fontSize: 17, fontWeight: 600, color: colors.textPrimary, margin: '0 0 16px' }}>Logo Varianter</h2>
+            <SectionTitle style={{ fontSize: 17, fontWeight: 600, color: colors.textPrimary, margin: '0 0 16px' }}>Logo Varianter</SectionTitle>
 
             {/* Icon Only */}
             <div style={{ backgroundColor: colors.ivory, borderRadius: 16, padding: 20, marginBottom: 16, textAlign: 'center' }}>
@@ -190,7 +191,7 @@ export default function App() {
             </div>
 
             {/* Badge Variants */}
-            <h3 style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, margin: '20px 0 12px' }}>Badge Varianter</h3>
+            <SubSectionTitle style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, margin: '20px 0 12px' }}>Badge Varianter</SubSectionTitle>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
               <div style={{ textAlign: 'center' }}>
                 <AKGolfLogoBadge size={56} backgroundColor={colors.forest} logoColor={colors.white} borderRadius={12} />
@@ -213,7 +214,7 @@ export default function App() {
             </div>
 
             {/* Color Variants */}
-            <h3 style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, margin: '20px 0 12px' }}>Fargevarianter</h3>
+            <SubSectionTitle style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary, margin: '20px 0 12px' }}>Fargevarianter</SubSectionTitle>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               {[
                 { name: 'Forest', color: colors.forest, bg: colors.ivory },
@@ -233,7 +234,7 @@ export default function App() {
         {/* USAGE TAB */}
         {activeTab === 'usage' && (
           <div>
-            <h2 style={{ fontSize: 17, fontWeight: 600, color: colors.textPrimary, margin: '0 0 16px' }}>Brukseksempler</h2>
+            <SectionTitle style={{ fontSize: 17, fontWeight: 600, color: colors.textPrimary, margin: '0 0 16px' }}>Brukseksempler</SectionTitle>
 
             {/* App Header */}
             <div style={{ marginBottom: 16 }}>

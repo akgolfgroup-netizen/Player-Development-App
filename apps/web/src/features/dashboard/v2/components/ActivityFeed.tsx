@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../../../../ui/primitives/Card';
+import { SubSectionTitle } from '../../../../components/typography';
 
 /**
  * ActivityFeed
@@ -102,7 +103,7 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
     <Card variant="default" padding="none">
       {/* Header */}
       <div style={styles.header}>
-        <h3 style={styles.title}>{title}</h3>
+        <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
         {onViewAll && hasMore && (
           <button style={styles.viewAllButton} onClick={onViewAll}>
             Se alt

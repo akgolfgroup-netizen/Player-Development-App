@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import ThemeSwitcher from '../composites/ThemeSwitcher';
+import { PageTitle } from '../../components/typography';
 
 // DEV-only analytics debug overlay
 const IS_DEV = process.env.NODE_ENV === 'development';
@@ -48,7 +49,7 @@ const AppShellTemplate: React.FC<AppShellTemplateProps> = ({
         <header style={styles.header}>
           <div style={styles.headerContent}>
             <div style={styles.headerTitles}>
-              {title && <h1 style={styles.title}>{title}</h1>}
+              {title && <PageTitle style={styles.title}>{title}</PageTitle>}
               {subtitle && <p style={styles.subtitle}>{subtitle}</p>}
             </div>
             {(actions || showThemeSwitcher) && (

@@ -5,6 +5,7 @@ import {
   Activity, Info
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // MOCK DATA
@@ -139,14 +140,9 @@ const ToolCard = ({ tool, onClick }) => {
           <Icon size={24} color={tool.color} />
         </div>
         <div style={{ flex: 1 }}>
-          <h3 style={{
-            fontSize: '15px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 4px 0',
-          }}>
+          <SubSectionTitle style={{ fontSize: '15px', margin: '0 0 4px 0' }}>
             {tool.name}
-          </h3>
+          </SubSectionTitle>
           <p style={{
             fontSize: '13px',
             color: 'var(--text-secondary)',
@@ -185,14 +181,9 @@ const ClubDistancesWidget = () => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <BarChart2 size={18} color={'var(--accent)'} />
-          <h3 style={{
-            fontSize: '15px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
+          <SubSectionTitle style={{ fontSize: '15px', margin: 0 }}>
             Mine kollelengder
-          </h3>
+          </SubSectionTitle>
         </div>
         <button
           onClick={() => setShowAll(!showAll)}
@@ -269,14 +260,9 @@ const StrokesGainedWidget = () => {
         marginBottom: '16px',
       }}>
         <TrendingUp size={18} color={'var(--success)'} />
-        <h3 style={{
-          fontSize: '15px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          margin: 0,
-        }}>
+        <SubSectionTitle style={{ fontSize: '15px', margin: 0 }}>
           Strokes Gained
-        </h3>
+        </SubSectionTitle>
         <div style={{
           marginLeft: 'auto',
           padding: '4px 10px',
@@ -372,14 +358,9 @@ const QuickStatsWidget = ({ stats }) => {
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
     }}>
-      <h3 style={{
-        fontSize: '15px',
-        fontWeight: 600,
-        color: 'var(--text-primary)',
-        margin: '0 0 16px 0',
-      }}>
+      <SubSectionTitle style={{ fontSize: '15px', margin: '0 0 16px 0' }}>
         Hurtigstatistikk
-      </h3>
+      </SubSectionTitle>
 
       <div style={{
         display: 'grid',
@@ -479,14 +460,9 @@ const StatsVerktoyContainer = () => {
         }}>
           {/* Left: Tools */}
           <div>
-            <h2 style={{
-              fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: '0 0 16px 0',
-            }}>
+            <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
               Verktoy
-            </h2>
+            </SectionTitle>
 
             <div style={{
               display: 'grid',

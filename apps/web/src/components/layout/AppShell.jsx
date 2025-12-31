@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import BackToTop from '../ui/BackToTop';
+import { PageTitle } from '../typography';
 
 /**
  * AppShell - Main application layout
@@ -55,7 +56,7 @@ export default function AppShell({
           <header style={styles.header}>
             <div style={styles.headerContent}>
               <div style={styles.headerTitles}>
-                {title && <h1 style={styles.title}>{title}</h1>}
+                {title && <PageTitle style={styles.title}>{title}</PageTitle>}
                 {subtitle && <p style={styles.subtitle}>{subtitle}</p>}
               </div>
               {actions && <div style={styles.headerActions}>{actions}</div>}

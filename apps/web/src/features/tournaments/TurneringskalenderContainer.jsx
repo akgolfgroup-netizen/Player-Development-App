@@ -5,6 +5,7 @@ import {
   Hotel, FileText, Plus, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import { tournamentsAPI } from '../../services/api';
 
@@ -263,14 +264,9 @@ const TournamentCard = ({ tournament, onSelect }) => {
             <TypeIcon size={22} color={'var(--achievement)'} />
           </div>
           <div>
-            <h3 style={{
-              fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle>
               {tournament.name}
-            </h3>
+            </SubSectionTitle>
             <span style={{
               fontSize: '12px',
               fontWeight: 500,
@@ -610,14 +606,9 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: '0 0 8px 0',
-              }}>
+              <SectionTitle style={{ marginBottom: '8px' }}>
                 {tournament.name}
-              </h2>
+              </SectionTitle>
               <span style={{
                 fontSize: '12px',
                 fontWeight: 500,
@@ -932,14 +923,9 @@ const TurneringskalenderContainer = () => {
 
         {/* Upcoming Tournaments */}
         <div style={{ marginBottom: '32px' }}>
-          <h2 style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 16px 0',
-          }}>
+          <SectionTitle style={{ marginBottom: '16px' }}>
             Kommende turneringer
-          </h2>
+          </SectionTitle>
 
           {filteredTournaments.length > 0 ? (
             <div style={{
@@ -972,14 +958,9 @@ const TurneringskalenderContainer = () => {
 
         {/* Past Tournaments */}
         <div>
-          <h2 style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 16px 0',
-          }}>
+          <SectionTitle style={{ marginBottom: '16px' }}>
             Tidligere resultater
-          </h2>
+          </SectionTitle>
 
           {pastTournaments.length > 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

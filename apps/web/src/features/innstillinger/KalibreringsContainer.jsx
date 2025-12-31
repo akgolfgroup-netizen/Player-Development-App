@@ -4,6 +4,7 @@ import {
   Gauge, Activity, Info, Check
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 import { useAuth } from '../../contexts/AuthContext';
 
 // ============================================================================
@@ -289,14 +290,14 @@ const KalibreringsContainer = () => {
         }}>
           <Info size={20} color={'var(--accent)'} style={{ flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <h4 style={{
+            <CardTitle style={{
               fontSize: '14px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: '0 0 4px 0',
             }}>
               Viktig for presise mål
-            </h4>
+            </CardTitle>
             <p style={{
               fontSize: '13px',
               color: 'var(--text-secondary)',
@@ -369,14 +370,14 @@ const KalibreringsContainer = () => {
             }}>
               <Gauge size={18} color={'var(--accent)'} />
             </div>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '15px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: 0,
             }}>
               Driver-verdier
-            </h3>
+            </SubSectionTitle>
           </div>
 
           <CalibrationInput
@@ -445,14 +446,14 @@ const KalibreringsContainer = () => {
             }}>
               <Target size={18} color={'var(--success)'} />
             </div>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '15px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: 0,
             }}>
               Klubbavstander
-            </h3>
+            </SubSectionTitle>
           </div>
 
           <div style={{
@@ -508,14 +509,14 @@ const KalibreringsContainer = () => {
             }}>
               <Activity size={18} color={'var(--error)'} />
             </div>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '15px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: 0,
             }}>
               Fysiske verdier
-            </h3>
+            </SubSectionTitle>
           </div>
 
           <CalibrationInput

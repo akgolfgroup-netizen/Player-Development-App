@@ -1,4 +1,5 @@
 import React from 'react';
+import { SectionTitle } from '../../components/typography';
 
 /**
  * Modal Composite
@@ -150,9 +151,9 @@ const Modal: React.FC<ModalProps> = ({
         {(title || showCloseButton) && (
           <div style={styles.header}>
             {title && (
-              <h2 id="modal-title" style={styles.title}>
+              <SectionTitle id="modal-title" style={styles.title}>
                 {title}
-              </h2>
+              </SectionTitle>
             )}
             {showCloseButton && (
               <button

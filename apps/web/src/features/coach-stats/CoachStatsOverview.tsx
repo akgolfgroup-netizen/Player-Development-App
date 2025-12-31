@@ -18,6 +18,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 interface PlayerStat {
   id: string;
@@ -297,7 +298,7 @@ export default function CoachStatsOverview() {
 
       {/* Category summary */}
       <div style={{ padding: '24px', borderBottom: `1px solid ${'var(--border-default)'}`, backgroundColor: 'var(--bg-primary)' }}>
-        <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>Kategori-oversikt</h2>
+        <SectionTitle style={{ margin: '0 0 16px' }}>Kategori-oversikt</SectionTitle>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
           {categorySummary.map((cat) => (
             <div
@@ -410,7 +411,7 @@ export default function CoachStatsOverview() {
                       </div>
                     </div>
                     <div>
-                      <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>{player.name}</h3>
+                      <SubSectionTitle style={{ margin: 0 }}>{player.name}</SubSectionTitle>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
                         <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)', backgroundColor: 'rgba(var(--accent-rgb), 0.15)', padding: '2px 8px', borderRadius: '4px' }}>
                           Kategori {player.category}

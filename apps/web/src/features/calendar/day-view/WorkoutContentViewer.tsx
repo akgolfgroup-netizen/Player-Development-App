@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Clock, Target, CheckCircle2, Circle, ChevronDown, ChevronUp, Dumbbell } from 'lucide-react';
 import { Workout } from './types';
+import { SectionTitle } from '../../../components/typography';
 
 interface Exercise {
   id: string;
@@ -325,7 +326,7 @@ export const WorkoutContentViewer: React.FC<WorkoutContentViewerProps> = ({
         {/* Header */}
         <div style={styles.header}>
           <div style={styles.headerInfo}>
-            <h2 style={styles.title}>{workout.name}</h2>
+            <SectionTitle style={styles.title}>{workout.name}</SectionTitle>
             <div style={styles.subtitle}>
               <span style={styles.subtitleItem}>
                 <Clock size={12} />

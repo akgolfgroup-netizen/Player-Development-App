@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { SubSectionTitle } from '../../components/typography';
 
 export interface ListItem {
   id: string;
@@ -121,9 +122,9 @@ export const ListTemplate: React.FC<ListTemplateProps> = ({
     <div key={section.id} className={sectionIndex > 0 ? 'mt-6' : ''}>
       {/* Section Header */}
       {section.header && (
-        <h3 className="text-[13px] font-semibold text-ak-steel uppercase tracking-wide mb-3 px-1">
+        <SubSectionTitle className="text-[13px] font-semibold text-ak-steel uppercase tracking-wide mb-3 px-1">
           {section.header}
-        </h3>
+        </SubSectionTitle>
       )}
 
       {/* Section Items */}
@@ -149,9 +150,9 @@ export const ListTemplate: React.FC<ListTemplateProps> = ({
             {emptyState.icon}
           </div>
         )}
-        <h3 className="text-[16px] font-semibold text-ak-charcoal mb-2">
+        <SubSectionTitle className="text-[16px] font-semibold text-ak-charcoal mb-2">
           {emptyState.title}
-        </h3>
+        </SubSectionTitle>
         {emptyState.description && (
           <p className="text-[14px] text-ak-steel mb-4">
             {emptyState.description}

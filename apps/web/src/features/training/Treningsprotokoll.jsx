@@ -7,6 +7,7 @@ import {
 } from '../../components/icons';
 import { tokens } from '../../design-tokens';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 // Session type colors (Blue Palette 01) - use CSS custom properties
 const sessionColors = {
@@ -428,7 +429,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Session Library */}
           <div className="lg:col-span-1">
-            <h2 className="text-[17px] font-semibold text-ak-charcoal mb-4">Øktbibliotek</h2>
+            <SectionTitle className="mb-4">Øktbibliotek</SectionTitle>
 
             {/* Category Filter */}
             <div className="flex flex-wrap gap-2 mb-4">
@@ -470,7 +471,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                       {session.icon && <session.icon size={24} color={getSessionColor(session.category)} />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-[14px] font-semibold text-ak-charcoal line-clamp-1">{session.name}</h3>
+                      <SubSectionTitle className="text-[14px] line-clamp-1">{session.name}</SubSectionTitle>
                       <div className="flex items-center gap-2 mt-1 text-[11px] text-ak-steel">
                         <Icons.Clock />
                         <span>{session.duration} min</span>
@@ -499,7 +500,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         {selectedSession.icon && <selectedSession.icon size={28} color={getSessionColor(selectedSession.category)} />}
-                        <h2 className="text-[20px] font-bold">{selectedSession.name}</h2>
+                        <SectionTitle className="text-[20px] text-white">{selectedSession.name}</SectionTitle>
                       </div>
                       <p className="text-white/70 text-[13px] mb-3">{selectedSession.description}</p>
                       <div className="flex flex-wrap gap-2">
@@ -596,7 +597,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                 </Card>
 
                 {/* Exercise List */}
-                <h3 className="text-[15px] font-semibold text-ak-charcoal mb-3">Øvelser</h3>
+                <SubSectionTitle className="text-[15px] mb-3">Øvelser</SubSectionTitle>
                 <div className="space-y-2">
                   {selectedSession.exercises.map((exercise, idx) => {
                     const isActive = idx === activeExercise;
@@ -627,9 +628,9 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
 
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
-                              <h4 className={`text-[14px] font-medium ${isCompleted ? 'line-through text-ak-steel' : 'text-ak-charcoal'}`}>
+                              <CardTitle className={`text-[14px] ${isCompleted ? 'line-through text-ak-steel' : ''}`}>
                                 {exercise.name}
-                              </h4>
+                              </CardTitle>
                               <div className="flex items-center gap-2 text-[11px] text-ak-steel">
                                 <Icons.Clock />
                                 {exercise.duration} min

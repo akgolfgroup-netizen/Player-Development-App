@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -283,7 +284,7 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
 
       {/* Content */}
       <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <h3 style={{
+        <SubSectionTitle style={{
           fontSize: '15px',
           fontWeight: 600,
           color: 'var(--text-primary)',
@@ -291,7 +292,7 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
           lineHeight: 1.3,
         }}>
           {resource.title}
-        </h3>
+        </SubSectionTitle>
 
         <p style={{
           fontSize: '13px',
@@ -429,13 +430,13 @@ const FeaturedResource = ({ resource, onOpen }) => {
         }}>
           ANBEFALT
         </div>
-        <h2 style={{
+        <SectionTitle style={{
           fontSize: '20px',
           fontWeight: 700,
           margin: '0 0 8px 0',
         }}>
           {resource.title}
-        </h2>
+        </SectionTitle>
         <p style={{
           fontSize: '14px',
           opacity: 0.85,
@@ -660,14 +661,14 @@ const ResourceDetailModal = ({ resource, onClose }) => {
             )}
           </div>
 
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '22px',
             fontWeight: 700,
             color: 'var(--text-primary)',
             margin: '0 0 12px 0',
           }}>
             {resource.title}
-          </h2>
+          </SectionTitle>
 
           <p style={{
             fontSize: '15px',
@@ -888,7 +889,7 @@ const RessurserContainer = () => {
         {/* Saved Resources Section */}
         {savedResources.length > 0 && category === 'all' && !searchQuery && (
           <div style={{ marginBottom: '32px' }}>
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '18px',
               fontWeight: 600,
               color: 'var(--text-primary)',
@@ -899,7 +900,7 @@ const RessurserContainer = () => {
             }}>
               <BookmarkCheck size={20} color={'var(--accent)'} />
               Lagrede ressurser
-            </h2>
+            </SectionTitle>
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
@@ -919,7 +920,7 @@ const RessurserContainer = () => {
 
         {/* All Resources */}
         <div>
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '18px',
             fontWeight: 600,
             color: 'var(--text-primary)',
@@ -934,7 +935,7 @@ const RessurserContainer = () => {
             }}>
               ({filteredResources.length})
             </span>
-          </h2>
+          </SectionTitle>
 
           {filteredResources.length > 0 ? (
             <div style={{

@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../../../../ui/primitives/Card';
+import { SubSectionTitle } from '../../../../components/typography';
 
 /**
  * CountdownCard
@@ -115,7 +116,7 @@ const CountdownCard: React.FC<CountdownCardProps> = ({
           </span>
 
           {/* Title */}
-          <h3 style={styles.title}>{title}</h3>
+          <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
 
           {/* Subtitle or location */}
           {(subtitle || location) && (

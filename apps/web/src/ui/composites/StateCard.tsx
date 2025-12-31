@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '../primitives/Card';
 import { LucideIcon } from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography';
 
 /**
  * StateCard
@@ -54,7 +55,7 @@ const StateCard: React.FC<StateCardProps> = ({
         <div style={{ ...styles.icon, ...variantConfig.icon }}>
           {renderIcon()}
         </div>
-        <h3 style={{ ...styles.title, ...variantConfig.title }}>{title}</h3>
+        <SubSectionTitle style={{ ...styles.title, ...variantConfig.title }}>{title}</SubSectionTitle>
         {description && <p style={styles.description}>{description}</p>}
         {action && <div style={styles.action}>{action}</div>}
       </div>

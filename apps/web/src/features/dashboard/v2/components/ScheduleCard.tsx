@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../../../../ui/primitives/Card';
+import { SubSectionTitle } from '../../../../components/typography';
 
 /**
  * ScheduleCard
@@ -109,7 +110,7 @@ const ScheduleCard: React.FC<ScheduleCardProps> = ({
       <div style={styles.header}>
         <div>
           <span style={styles.headerLabel}>Dagens plan</span>
-          <h3 style={styles.headerDate}>{dateLabel}</h3>
+          <SubSectionTitle style={styles.headerDate}>{dateLabel}</SubSectionTitle>
         </div>
         {onViewAll && (
           <button

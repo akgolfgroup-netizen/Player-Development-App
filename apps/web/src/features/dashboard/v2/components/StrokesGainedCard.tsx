@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../../../../ui/primitives/Card';
+import { SubSectionTitle } from '../../../../components/typography';
 
 /**
  * StrokesGainedCard
@@ -60,7 +61,7 @@ const StrokesGainedCard: React.FC<StrokesGainedCardProps> = ({
       {/* Header */}
       <div style={styles.header}>
         <div>
-          <h3 style={styles.title}>{title}</h3>
+          <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
           {subtitle && <p style={styles.subtitle}>{subtitle}</p>}
         </div>
         {onViewDetails && (

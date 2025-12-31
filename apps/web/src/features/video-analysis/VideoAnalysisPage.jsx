@@ -30,6 +30,7 @@ import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // TAILWIND CLASSES
@@ -333,9 +334,9 @@ export function VideoAnalysisPage({ showComments = true }) {
         {showComments && (
           <div className={tw.sidebar}>
             <div className={tw.sidebarHeader}>
-              <h3 className={tw.sidebarTitle}>
+              <SubSectionTitle className={tw.sidebarTitle}>
                 Kommentarer ({comments.length})
-              </h3>
+              </SubSectionTitle>
             </div>
 
             <div className={tw.commentsList}>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import AppShellTemplate from '../templates/AppShellTemplate';
 import CalendarTemplate, { CalendarSession } from '../templates/CalendarTemplate';
 import WeekView from '../../features/calendar/views/WeekView';
+import { SubSectionTitle } from '../../components/typography';
 
 /**
  * CalendarLab - Demo page for CalendarTemplate
@@ -290,7 +291,7 @@ const CalendarLab: React.FC = () => {
 
       {/* Info Panel */}
       <div style={styles.infoPanel}>
-        <h3 style={styles.infoTitle}>CalendarTemplate Props</h3>
+        <SubSectionTitle style={styles.infoTitle}>CalendarTemplate Props</SubSectionTitle>
         <ul style={styles.propsList}>
           <li>
             <code>selectedDate: Date</code> - Valgt dato
@@ -309,9 +310,9 @@ const CalendarLab: React.FC = () => {
           </li>
         </ul>
 
-        <h3 style={{ ...styles.infoTitle, marginTop: 'var(--spacing-4)' }}>
+        <SubSectionTitle style={{ ...styles.infoTitle, marginTop: 'var(--spacing-4)' }}>
           CalendarSession Interface
-        </h3>
+        </SubSectionTitle>
         <pre style={styles.codeBlock}>
 {`{
   id: string

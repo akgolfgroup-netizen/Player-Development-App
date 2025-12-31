@@ -13,6 +13,7 @@ import {
   AsyncBoundary,
   useAsyncState,
 } from './components';
+import { PageTitle } from '../../../components/typography';
 
 /**
  * DashboardV2
@@ -263,7 +264,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     <div style={headerStyles.container}>
       <div style={headerStyles.greeting}>
         <span style={headerStyles.date}>{dateLabel}</span>
-        <h1 style={headerStyles.name}>Hei, {playerName}</h1>
+        <PageTitle style={headerStyles.name}>Hei, {playerName}</PageTitle>
       </div>
     </div>
   );

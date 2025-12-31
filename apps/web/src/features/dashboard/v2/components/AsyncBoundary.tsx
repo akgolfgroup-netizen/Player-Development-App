@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '../../../../ui/primitives/Card';
 import Alert from '../../../../ui/primitives/Alert.primitive';
+import { CardTitle } from '../../../../components/typography';
 
 /**
  * AsyncBoundary
@@ -244,7 +245,7 @@ const EmptyPanel: React.FC<EmptyPanelProps> = ({
         </div>
 
         {/* Title */}
-        <h4 style={emptyStyles.title}>{title}</h4>
+        <CardTitle style={emptyStyles.title}>{title}</CardTitle>
 
         {/* Description */}
         {description && (

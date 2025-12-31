@@ -14,6 +14,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 // Styles
 const styles = {
@@ -299,7 +300,7 @@ export function SwingTimeline({
     return (
       <div className={className} style={{ ...styles.container, ...style }}>
         <div style={styles.header}>
-          <h3 style={styles.title}>{title}</h3>
+          <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
         </div>
         <div style={styles.emptyState}>
           <VideoIcon size={32} />
@@ -315,7 +316,7 @@ export function SwingTimeline({
     <div className={className} style={{ ...styles.container, ...style }}>
       {/* Header */}
       <div style={styles.header}>
-        <h3 style={styles.title}>{title}</h3>
+        <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
         {selectable && (
           <Button
             variant="primary"

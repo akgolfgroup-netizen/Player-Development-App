@@ -16,6 +16,7 @@
  */
 
 import React from "react";
+import { SectionTitle } from "../typography";
 
 //////////////////////////////
 // 1. TYPES
@@ -179,7 +180,7 @@ export default function Proof({
     <article style={styles.container} aria-label="Proof of change">
       {/* Header */}
       <header style={styles.header}>
-        <h1 style={styles.testName}>{data.testName}</h1>
+        <SectionTitle style={styles.testName}>{data.testName}</SectionTitle>
         <p style={styles.testDate}>{formatDate(data.testDate)}</p>
       </header>
 

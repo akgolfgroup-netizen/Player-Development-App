@@ -11,6 +11,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LucideIcon } from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography';
 
 function classNames(...classes: (string | boolean | undefined)[]) {
   return classes.filter(Boolean).join(' ');
@@ -103,7 +104,7 @@ export default function ActionsGrid({
               )}
             </div>
             <div className="mt-6">
-              <h3 className="text-base font-semibold text-ak-charcoal">
+              <SubSectionTitle className="text-base font-semibold text-ak-charcoal">
                 {action.disabled ? (
                   <span>{action.title}</span>
                 ) : (
@@ -113,7 +114,7 @@ export default function ActionsGrid({
                     {action.title}
                   </Link>
                 )}
-              </h3>
+              </SubSectionTitle>
               {action.description && (
                 <p className="mt-2 text-sm text-ak-steel line-clamp-2">
                   {action.description}

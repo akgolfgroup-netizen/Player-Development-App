@@ -26,6 +26,7 @@ import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 interface PlayerParticipant {
   id: string;
@@ -371,9 +372,9 @@ export default function CoachTournamentCalendar() {
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div>
-            <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+            <PageTitle style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
               Turneringskalender
-            </h1>
+            </PageTitle>
             <p style={{ fontSize: '15px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
               Oversikt over turneringer og spillerdeltakelse
             </p>
@@ -582,9 +583,9 @@ export default function CoachTournamentCalendar() {
                           <TypeIcon size={24} color="var(--warning)" />
                         </div>
                         <div>
-                          <h3 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                          <SubSectionTitle style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                             {tournament.name}
-                          </h3>
+                          </SubSectionTitle>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
                             <Badge variant={categoryConfig.variant} size="sm">{categoryConfig.label}</Badge>
                             <Badge variant={statusConfig.variant} size="sm">{statusConfig.label}</Badge>
@@ -773,9 +774,9 @@ export default function CoachTournamentCalendar() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <SectionTitle style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 {selectedTournament.name}
-              </h2>
+              </SectionTitle>
               <button
                 onClick={() => setSelectedTournament(null)}
                 style={{
@@ -818,9 +819,9 @@ export default function CoachTournamentCalendar() {
 
             {selectedTournament.myPlayers.length > 0 && (
               <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
+                <CardTitle style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
                   Påmeldte spillere
-                </h4>
+                </CardTitle>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {selectedTournament.myPlayers.map((player) => (
                     <div

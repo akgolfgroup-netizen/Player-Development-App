@@ -4,6 +4,7 @@
  */
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography';
 import {
   Target, Trophy, Dumbbell, Brain, TrendingUp,
   Plus, Pencil, Trash2, Check, Users, X, Lightbulb, Calendar
@@ -182,12 +183,12 @@ const GoalCard: React.FC<GoalCardProps> = ({
               <CategoryIcon className="w-5 h-5 text-ak-primary" />
             </div>
             <div>
-              <h3 className={cn(
+              <SubSectionTitle className={cn(
                 "font-semibold text-text-primary",
                 isCompleted && "line-through"
               )}>
                 {goal.title}
-              </h3>
+              </SubSectionTitle>
               <div className="flex items-center gap-2 mt-1 flex-wrap">
                 <Badge variant={
                   goal.timeframe === 'short' ? 'secondary' :
@@ -753,9 +754,9 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
             <Card className="text-center py-12">
               <CardContent>
                 <Target className="h-12 w-12 mx-auto mb-4 text-text-tertiary" />
-                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                <SubSectionTitle className="text-lg font-semibold text-text-primary mb-2">
                   Ingen mål funnet
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-text-secondary mb-4">
                   {viewMode === 'completed'
                     ? 'Du har ingen fullførte mål ennå.'
@@ -776,9 +777,9 @@ const Maalsetninger: React.FC<MaalsetningerProps> = ({ goals: apiGoals }) => {
               <div className="flex items-start gap-3">
                 <Lightbulb className="h-6 w-6 text-ak-warning flex-shrink-0" />
                 <div>
-                  <h4 className="font-semibold text-text-primary mb-1">
+                  <CardTitle className="font-semibold text-text-primary mb-1">
                     Tips for gode mål
-                  </h4>
+                  </CardTitle>
                   <p className="text-sm text-text-secondary">
                     Bruk SMART-metoden: Spesifikke, Målbare, Oppnåelige, Relevante og
                     Tidsbestemte mål gir best resultater.

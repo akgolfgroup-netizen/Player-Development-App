@@ -20,6 +20,7 @@ import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../components/typography';
 
 interface Message {
   id: string;
@@ -332,7 +333,7 @@ export const CoachMessageList: React.FC = () => {
                 {/* Center - Content */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <h3 style={{
+                    <SubSectionTitle style={{
                       fontSize: '14px',
                       fontWeight: 600,
                       color: 'var(--text-primary)',
@@ -342,7 +343,7 @@ export const CoachMessageList: React.FC = () => {
                       whiteSpace: 'nowrap',
                     }}>
                       {message.subject}
-                    </h3>
+                    </SubSectionTitle>
                     <Badge variant={categoryConfig.variant} size="sm">{categoryConfig.label}</Badge>
                   </div>
                   <p style={{

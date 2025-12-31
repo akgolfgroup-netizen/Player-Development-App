@@ -26,6 +26,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../components/typography';
 
 interface GroupMember {
   id: string;
@@ -497,15 +498,9 @@ export default function CoachGroupList() {
                           marginBottom: '4px',
                         }}
                       >
-                        <h3
-                          style={{
-                            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                            color: 'var(--text-primary)',
-                            margin: 0,
-                          }}
-                        >
+                        <SubSectionTitle style={{ margin: 0 }}>
                           {group.name}
-                        </h3>
+                        </SubSectionTitle>
                         <span
                           style={{
                             padding: '2px 8px',

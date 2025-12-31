@@ -11,6 +11,7 @@ import { useDashboardData } from '../../data';
 import type { DashboardSession } from '../../data';
 import { getSimState } from '../../dev/simulateState';
 import { useScreenView } from '../../analytics/useScreenView';
+import { SectionTitle } from '../../components/typography';
 
 // Pure functions - moved outside component to avoid recreation
 const getStatusText = (status: DashboardSession['status']) => {
@@ -121,7 +122,7 @@ const DashboardPage: React.FC = () => {
 
       {/* Today's Sessions */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Dine økter i dag</h2>
+        <SectionTitle style={styles.sectionTitle}>Dine økter i dag</SectionTitle>
         <div style={styles.sessionsList}>
           {sessions.length === 0 ? (
             <StateCard

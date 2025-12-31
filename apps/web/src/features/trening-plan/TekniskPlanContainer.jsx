@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -145,14 +146,11 @@ const AreaCard = ({ area }) => {
 
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
             }}>
               {area.name}
-            </h3>
+            </SubSectionTitle>
             <span style={{
               fontSize: '11px',
               fontWeight: 500,
@@ -390,14 +388,11 @@ const MetricsCard = ({ metrics }) => {
         marginBottom: '16px',
       }}>
         <TrendingUp size={16} color={'var(--achievement)'} />
-        <h3 style={{
+        <SubSectionTitle style={{
           fontSize: '14px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          margin: 0,
         }}>
           Nokkeltall
-        </h3>
+        </SubSectionTitle>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -462,14 +457,11 @@ const RecentVideosCard = ({ videos }) => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Camera size={16} color={'var(--accent)'} />
-          <h3 style={{
+          <SubSectionTitle style={{
             fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
           }}>
             Siste videoer
-          </h3>
+          </SubSectionTitle>
         </div>
         <Button variant="ghost" size="sm">
           Se alle
@@ -548,14 +540,11 @@ const TekniskPlanContainer = () => {
             marginBottom: '16px',
           }}>
             <div>
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '18px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
               }}>
                 Teknisk utviklingsplan
-              </h2>
+              </SectionTitle>
               <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
                 Trener: {plan.coach} - Maldat: {new Date(plan.targetDate).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })}
               </div>
@@ -608,14 +597,12 @@ const TekniskPlanContainer = () => {
         }}>
           {/* Areas */}
           <div>
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Utviklingsomrader
-            </h2>
+            </SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {plan.areas.map((area) => (
                 <AreaCard key={area.id} area={area} />
@@ -642,14 +629,11 @@ const TekniskPlanContainer = () => {
                 marginBottom: '12px',
               }}>
                 <BookOpen size={16} color={'var(--success)'} />
-                <h3 style={{
+                <SubSectionTitle style={{
                   fontSize: '14px',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: 0,
                 }}>
                   Ressurser
-                </h3>
+                </SubSectionTitle>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <Button

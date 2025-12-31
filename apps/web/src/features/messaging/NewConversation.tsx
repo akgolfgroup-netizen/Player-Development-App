@@ -15,6 +15,7 @@ import {
   X,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography';
 
 interface Contact {
   id: string;
@@ -154,7 +155,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
         >
           <ArrowLeft size={20} color={'var(--text-primary)'} />
         </button>
-        <h1
+        <SectionTitle
           style={{
             fontSize: '22px', lineHeight: '28px', fontWeight: 700,
             color: 'var(--text-primary)',
@@ -162,7 +163,7 @@ export default function NewConversation({ userId }: NewConversationProps) {
           }}
         >
           Ny melding
-        </h1>
+        </SectionTitle>
       </div>
 
       {/* Contact selection or message composer */}

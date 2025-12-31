@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 export default function QuickActionsWidget({ planId }) {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ export default function QuickActionsWidget({ planId }) {
   if (!assignment) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-xl font-bold mb-2">Today's Training</h3>
+        <SubSectionTitle className="mb-2">Today's Training</SubSectionTitle>
         <p className="text-gray-600 mb-4">No session scheduled for today</p>
         <Button
           variant="primary"
@@ -86,7 +87,7 @@ export default function QuickActionsWidget({ planId }) {
   if (assignment.isRestDay) {
     return (
       <div className="bg-blue-50 rounded-lg shadow p-6 border-2 border-blue-200">
-        <h3 className="text-xl font-bold mb-2">Rest Day 😴</h3>
+        <SubSectionTitle className="mb-2">Rest Day</SubSectionTitle>
         <p className="text-gray-700">Recovery is important! Enjoy your rest day.</p>
       </div>
     );
@@ -103,7 +104,7 @@ export default function QuickActionsWidget({ planId }) {
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h3 className="text-xl font-bold">Today's Training</h3>
+          <SubSectionTitle>Today's Training</SubSectionTitle>
           <span className={`inline-block px-2 py-1 rounded text-sm font-medium mt-1 ${statusColors[assignment.status]}`}>
             {assignment.status.replace('_', ' ').toUpperCase()}
           </span>
@@ -112,7 +113,7 @@ export default function QuickActionsWidget({ planId }) {
       </div>
 
       <div className="mb-4">
-        <h4 className="font-bold text-lg text-gray-900">{assignment.type}</h4>
+        <CardTitle>{assignment.type}</CardTitle>
         <p className="text-gray-600 text-sm">Duration: {assignment.duration} minutes</p>
         {assignment.sessionTemplate?.description && (
           <p className="text-gray-600 text-sm mt-2">{assignment.sessionTemplate.description}</p>
@@ -126,7 +127,7 @@ export default function QuickActionsWidget({ planId }) {
 
       {showSubstitute ? (
         <div className="border-t pt-4">
-          <h4 className="font-bold mb-3">Alternative Sessions:</h4>
+          <CardTitle className="mb-3">Alternative Sessions:</CardTitle>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {alternatives.map(alt => (
               <div key={alt.id} className="p-3 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">

@@ -23,6 +23,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SectionTitle } from '../../components/typography';
 
 // Semantic color mappings
 const colors = {
@@ -478,9 +479,9 @@ export function CoachSessionEvaluations() {
 
       {/* Sessions list */}
       <div style={{ padding: '0 16px 16px' }}>
-        <h2 style={{ ...typography.title3, color: colors.charcoal, marginBottom: '12px' }}>
+        <SectionTitle style={{ ...typography.title3, color: colors.charcoal, marginBottom: '12px' }}>
           Siste evalueringer
-        </h2>
+        </SectionTitle>
 
         {isLoading ? (
           <StateCard variant="loading" title="Laster evalueringer..." />

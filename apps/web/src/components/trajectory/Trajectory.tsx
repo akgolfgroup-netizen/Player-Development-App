@@ -16,6 +16,7 @@
  */
 
 import React, { useState } from "react";
+import { SectionTitle } from "../typography";
 
 //////////////////////////////
 // 1. TYPES
@@ -196,7 +197,7 @@ export default function Trajectory({
     <div style={styles.container}>
       {/* Header - No interpretation text */}
       <header style={styles.header}>
-        <h1 style={styles.title}>Historikk</h1>
+        <SectionTitle style={styles.title}>Historikk</SectionTitle>
       </header>
 
       {/* Filter Chips - Neutral charcoal for selected */}

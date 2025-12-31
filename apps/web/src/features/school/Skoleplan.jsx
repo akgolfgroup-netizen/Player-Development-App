@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import {
   GraduationCap,
   Plus,
@@ -111,9 +112,9 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           padding: '20px 24px',
           borderBottom: '1px solid var(--border-default)'
         }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+          <SectionTitle style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             {title}
-          </h2>
+          </SectionTitle>
           <button
             onClick={onClose}
             style={{
@@ -744,9 +745,9 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Clock size={20} color={'var(--accent)'} />
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+          <SubSectionTitle style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             Timeplan
-          </h3>
+          </SubSectionTitle>
         </div>
         <Button
           variant="secondary"
@@ -882,9 +883,9 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <BookOpen size={20} color={'var(--accent)'} />
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+          <SubSectionTitle style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             Oppgaver
-          </h3>
+          </SubSectionTitle>
           {pendingCount > 0 && (
             <span style={{
               padding: '2px 8px',
@@ -1118,9 +1119,9 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <GraduationCap size={20} color={'var(--accent)'} />
-          <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+          <SubSectionTitle style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             Fag
-          </h3>
+          </SubSectionTitle>
           <span style={{
             padding: '2px 8px',
             backgroundColor: 'var(--bg-secondary)',

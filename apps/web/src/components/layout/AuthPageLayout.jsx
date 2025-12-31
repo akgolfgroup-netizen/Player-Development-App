@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { PageTitle } from '../typography';
 
 export default function AuthPageLayout({ children, title, subtitle }) {
   return (
@@ -35,9 +36,9 @@ export default function AuthPageLayout({ children, title, subtitle }) {
             {/* Title */}
             {title && (
               <div className="mb-6 text-center">
-                <h1 className="text-2xl font-bold text-ak-text-primary dark:text-ak-text-inverse">
+                <PageTitle className="text-2xl font-bold text-ak-text-primary dark:text-ak-text-inverse">
                   {title}
-                </h1>
+                </PageTitle>
                 {subtitle && (
                   <p className="mt-2 text-sm text-ak-text-muted">
                     {subtitle}

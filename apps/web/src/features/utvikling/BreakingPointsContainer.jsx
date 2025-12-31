@@ -3,7 +3,7 @@ import {
   Target, ChevronRight, Plus, CheckCircle, Clock,
   AlertTriangle, Calendar, Video
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 
@@ -189,14 +189,9 @@ const BreakingPointCard = ({ point, onClick }) => {
                 {statusConfig.label}
               </span>
             </div>
-            <h3 style={{
-              fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle>
               {point.title}
-            </h3>
+            </SubSectionTitle>
           </div>
           <ChevronRight size={18} style={{ color: 'var(--text-secondary)' }} />
         </div>
@@ -337,13 +332,7 @@ const BreakingPointsContainer = () => {
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Breaking Points"
-        subtitle="Fokusomrader for forbedring"
-      />
-
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
         {/* Stats Overview */}
         <div style={{
           display: 'grid',
@@ -419,21 +408,15 @@ const BreakingPointsContainer = () => {
 
         {/* Resolved Section */}
         <div>
-          <h3 style={{
-            fontSize: '15px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            marginBottom: '12px',
-          }}>
+          <SubSectionTitle style={{ marginBottom: '12px' }}>
             Loste Breaking Points
-          </h3>
+          </SubSectionTitle>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {RESOLVED_POINTS.map((point) => (
               <ResolvedCard key={point.id} point={point} />
             ))}
           </div>
         </div>
-      </div>
     </div>
   );
 };

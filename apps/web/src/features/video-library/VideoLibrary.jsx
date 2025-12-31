@@ -23,6 +23,7 @@ import Modal from '../../ui/composites/Modal.composite';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { Upload, RefreshCw } from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography';
 
 // Styles
 const styles = {
@@ -512,7 +513,7 @@ export function VideoLibrary({
             )}
           </div>
           <div style={styles.listContent}>
-            <h3 style={styles.listTitle}>{video.title}</h3>
+            <SubSectionTitle style={styles.listTitle}>{video.title}</SubSectionTitle>
             <div style={styles.listMeta}>
               {video.category && <span>{video.category}</span>}
               {video.viewAngle && <span>{video.viewAngle}</span>}

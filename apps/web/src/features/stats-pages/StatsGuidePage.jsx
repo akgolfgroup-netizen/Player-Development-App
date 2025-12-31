@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
   Target, TrendingUp, Trophy, Dumbbell, Zap, Ruler, Circle,
-  ChevronRight, ChevronDown, Info, CheckCircle, XCircle, ArrowRight,
+  ChevronRight, ChevronDown, Info, CheckCircle, ArrowRight,
   BookOpen, HelpCircle, Award, BarChart2, Calendar
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
 import { useNavigate } from 'react-router-dom';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // DATA - De 20 Offisielle Testene
@@ -195,11 +195,11 @@ const IconBadge = ({ icon: Icon, color, size = 40 }) => (
   </div>
 );
 
-const SectionTitle = ({ children, subtitle }) => (
+const GuideSectionTitle = ({ children, subtitle }) => (
   <div style={{ marginBottom: '24px' }}>
-    <h2 style={{ fontSize: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+    <SectionTitle>
       {children}
-    </h2>
+    </SectionTitle>
     {subtitle && (
       <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '6px 0 0 0' }}>
         {subtitle}
@@ -217,9 +217,9 @@ const IntroSection = () => {
 
   return (
     <div>
-      <SectionTitle subtitle="Forstå hvordan vi måler og utvikler ditt golfspill">
+      <GuideSectionTitle subtitle="Forstå hvordan vi måler og utvikler ditt golfspill">
         Din golfutvikling - målt og analysert
-      </SectionTitle>
+      </GuideSectionTitle>
 
       <Card style={{ marginBottom: '24px', backgroundColor: 'var(--accent-soft)', border: '1px solid var(--accent)20' }}>
         <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.6 }}>
@@ -234,9 +234,9 @@ const IntroSection = () => {
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
             <IconBadge icon={Target} color="var(--accent)" />
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 6px 0' }}>
+              <SubSectionTitle style={{ margin: '0 0 6px 0' }}>
                 20 Standardiserte Tester
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
                 Dekker alt fra driving til putting - alle aspekter av spillet ditt måles objektivt.
               </p>
@@ -248,9 +248,9 @@ const IntroSection = () => {
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
             <IconBadge icon={Award} color="var(--success)" />
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 6px 0' }}>
+              <SubSectionTitle style={{ margin: '0 0 6px 0' }}>
                 Personlig Kategori (A-K)
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
                 Din spillernivå basert på 18-hulls gjennomsnitt, fra Elite (A) til Starter (K).
               </p>
@@ -262,9 +262,9 @@ const IntroSection = () => {
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
             <IconBadge icon={TrendingUp} color="var(--warning)" />
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 6px 0' }}>
+              <SubSectionTitle style={{ margin: '0 0 6px 0' }}>
                 Automatisk Tilpasning
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
                 Treningsplanen justeres etter testresultatene - fokus på det som gir størst forbedring.
               </p>
@@ -336,9 +336,9 @@ const TestCategoryCard = ({ category, isExpanded, onToggle }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <IconBadge icon={Icon} color={category.color} size={44} />
           <div>
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+            <SubSectionTitle style={{ margin: 0 }}>
               {category.name}
-            </h3>
+            </SubSectionTitle>
             <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0 0' }}>
               {category.tests.length} tester
             </p>
@@ -401,9 +401,9 @@ const TestsSection = () => {
 
   return (
     <div>
-      <SectionTitle subtitle="Vi måler 20 ulike ferdigheter - fra driver-distanse til putting-presisjon">
+      <GuideSectionTitle subtitle="Vi måler 20 ulike ferdigheter - fra driver-distanse til putting-presisjon">
         De 20 Offisielle Testene
-      </SectionTitle>
+      </GuideSectionTitle>
 
       <Card style={{ marginBottom: '24px', backgroundColor: 'var(--bg-secondary)' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
@@ -438,9 +438,9 @@ const CategoriesSection = () => {
 
   return (
     <div>
-      <SectionTitle subtitle="Basert på ditt 18-hulls gjennomsnitt plasseres du i en kategori fra A (Elite) til K (Starter)">
+      <GuideSectionTitle subtitle="Basert på ditt 18-hulls gjennomsnitt plasseres du i en kategori fra A (Elite) til K (Starter)">
         Din Spillerkategori
-      </SectionTitle>
+      </GuideSectionTitle>
 
       <Card style={{ marginBottom: '24px' }}>
         <div style={{ overflowX: 'auto' }}>
@@ -537,17 +537,17 @@ const CategoriesSection = () => {
 const StrokesGainedSection = () => {
   return (
     <div>
-      <SectionTitle subtitle="En moderne måte å analysere golfspillet på">
+      <GuideSectionTitle subtitle="En moderne måte å analysere golfspillet på">
         Strokes Gained Forklaring
-      </SectionTitle>
+      </GuideSectionTitle>
 
       <Card style={{ marginBottom: '24px', backgroundColor: 'var(--accent-soft)', border: '1px solid var(--accent)20' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
           <BarChart2 size={24} color="var(--accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 8px 0' }}>
+            <SubSectionTitle style={{ margin: '0 0 8px 0' }}>
               Enkelt forklart
-            </h3>
+            </SubSectionTitle>
             <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.6 }}>
               Strokes Gained viser hvor mange slag du <strong>sparer</strong> (eller taper) sammenlignet med
               tour-gjennomsnittet. <strong>+1.0</strong> betyr du er 1 slag bedre per runde i den kategorien.
@@ -556,9 +556,9 @@ const StrokesGainedSection = () => {
         </div>
       </Card>
 
-      <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px 0' }}>
+      <SubSectionTitle style={{ margin: '0 0 16px 0' }}>
         De 4 komponentene
-      </h3>
+      </SubSectionTitle>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px', marginBottom: '24px' }}>
         {SG_COMPONENTS.map((comp) => {
@@ -568,9 +568,9 @@ const StrokesGainedSection = () => {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
                 <IconBadge icon={Icon} color={comp.color} />
                 <div>
-                  <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
+                  <CardTitle style={{ margin: '0 0 4px 0' }}>
                     {comp.name}
-                  </h4>
+                  </CardTitle>
                   <p style={{ fontSize: '12px', color: comp.color, margin: '0 0 8px 0', fontWeight: 500 }}>
                     {comp.description}
                   </p>
@@ -584,9 +584,9 @@ const StrokesGainedSection = () => {
         })}
       </div>
 
-      <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px 0' }}>
+      <SubSectionTitle style={{ margin: '0 0 16px 0' }}>
         Hvordan tolke tallene
-      </h3>
+      </SubSectionTitle>
 
       <Card>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -664,9 +664,9 @@ const HowItWorksSection = () => {
 
   return (
     <div>
-      <SectionTitle subtitle="Slik bruker vi testene til å forbedre spillet ditt">
+      <GuideSectionTitle subtitle="Slik bruker vi testene til å forbedre spillet ditt">
         Slik Fungerer Det
-      </SectionTitle>
+      </GuideSectionTitle>
 
       {/* Flow diagram */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0', marginBottom: '32px' }}>
@@ -701,9 +701,9 @@ const HowItWorksSection = () => {
                         Steg {step.id}
                       </span>
                     </div>
-                    <h4 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 4px 0' }}>
+                    <CardTitle style={{ fontSize: '16px', margin: '0 0 4px 0' }}>
                       {step.title}
-                    </h4>
+                    </CardTitle>
                     <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
                       {step.description}
                     </p>
@@ -721,9 +721,9 @@ const HowItWorksSection = () => {
       </div>
 
       {/* Key points */}
-      <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px 0' }}>
+      <SubSectionTitle style={{ margin: '0 0 16px 0' }}>
         Nøkkelpunkter
-      </h3>
+      </SubSectionTitle>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
         {[
@@ -809,11 +809,6 @@ const StatsGuidePage = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Statistikk & Testing"
-        subtitle="Forstå hvordan vi måler og utvikler ditt golfspill"
-      />
-
       <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Tab Navigation */}
         <div style={{

@@ -8,6 +8,7 @@
 import React, { useState } from 'react';
 import { Bell, BellOff, Smartphone, MessageCircle, Trophy, Calendar, Target, CheckCircle } from 'lucide-react';
 import { useNotification } from '../../contexts/NotificationContext';
+import { SectionTitle } from '../typography';
 
 const NotificationSettings = () => {
   const {
@@ -89,7 +90,7 @@ const NotificationSettings = () => {
             <Bell size={20} className="text-ak-primary" />
           </div>
           <div>
-            <h2 className="text-[17px] font-semibold text-ak-charcoal">Varsler</h2>
+            <SectionTitle className="text-[17px] font-semibold text-ak-charcoal">Varsler</SectionTitle>
             <p className="text-[13px] text-ak-steel">Administrer varslings-innstillinger</p>
           </div>
         </div>

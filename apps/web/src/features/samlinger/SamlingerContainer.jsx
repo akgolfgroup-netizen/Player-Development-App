@@ -5,6 +5,7 @@ import {
   BookOpen, Utensils, Car
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 
 // ============================================================================
@@ -241,14 +242,14 @@ const CampCard = ({ camp, onSelect }) => {
             <TypeIcon size={22} color={typeConfig.color} />
           </div>
           <div>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '16px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: 0,
             }}>
               {camp.name}
-            </h3>
+            </SubSectionTitle>
             <span style={{
               fontSize: '12px',
               fontWeight: 500,
@@ -522,14 +523,14 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '20px',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
                 margin: '0 0 8px 0',
               }}>
                 {camp.name}
-              </h2>
+              </SectionTitle>
               <span style={{
                 fontSize: '12px',
                 fontWeight: 500,
@@ -813,14 +814,14 @@ const SamlingerContainer = () => {
 
         {/* Upcoming Camps */}
         <div style={{ marginBottom: '32px' }}>
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '18px',
             fontWeight: 600,
             color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Kommende samlinger
-          </h2>
+          </SectionTitle>
 
           {filteredCamps.length > 0 ? (
             <div style={{
@@ -853,14 +854,14 @@ const SamlingerContainer = () => {
 
         {/* Past Camps */}
         <div>
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '18px',
             fontWeight: 600,
             color: 'var(--text-primary)',
             margin: '0 0 16px 0',
           }}>
             Tidligere samlinger
-          </h2>
+          </SectionTitle>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {PAST_CAMPS.map((camp) => (

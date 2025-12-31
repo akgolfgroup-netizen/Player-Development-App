@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import StartTestModal from './StartTestModal';
 import apiClient from '../../services/apiClient';
@@ -623,22 +623,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Testprotokoll"
-        subtitle="IUP Tester og benchmarks"
-        actions={
-          <Button
-            variant="primary"
-            onClick={() => filteredTests[0] && handleStartTest(filteredTests[0])}
-          >
-            <Icons.Play />
-            Start test
-          </Button>
-        }
-      />
-
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
         {/* Player & Stats Summary */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
           {/* Player Card */}
@@ -646,7 +631,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
             <div className="flex items-center gap-3 mb-4">
               <Avatar name={player.name} size={48} />
               <div>
-                <h2 className="text-[15px] font-semibold text-ak-charcoal">{player.name}</h2>
+                <SectionTitle className="text-[15px] font-semibold text-ak-charcoal">{player.name}</SectionTitle>
                 <p className="text-[12px] text-ak-steel">Kategori {player.category} · {player.age} år</p>
               </div>
             </div>
@@ -712,7 +697,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                       {test.icon}
                     </div>
                     <div>
-                      <h3 className="text-[15px] font-semibold text-ak-charcoal">{test.name}</h3>
+                      <SubSectionTitle className="text-[15px] font-semibold text-ak-charcoal">{test.name}</SubSectionTitle>
                       <p className="text-[11px] text-ak-steel">Test {test.id}</p>
                     </div>
                   </div>
@@ -829,7 +814,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
           <div className="flex items-start gap-3">
             <Icons.Info />
             <div>
-              <h4 className="text-[14px] font-semibold text-ak-charcoal mb-1">Om testprotokollen</h4>
+              <CardTitle className="text-[14px] font-semibold text-ak-charcoal mb-1">Om testprotokollen</CardTitle>
               <p className="text-[13px] text-ak-charcoal">
                 Testprotokollen inneholder 20 offisielle tester basert på Team Norway standarder.
                 14 teknisk/fysiske tester pluss 6 mental/strategiske tester. Benchmark gjennomføres hver 3. uke
@@ -839,7 +824,6 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
             </div>
           </div>
         </Card>
-      </div>
 
       {/* Bottom Navigation (Mobile) */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-ak-mist z-50 lg:hidden">

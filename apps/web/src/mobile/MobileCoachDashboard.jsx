@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, TrendingUp, Calendar, Activity } from 'lucide-react';
+import { PageTitle, SectionTitle } from '../components/typography';
 import { SkeletonCard, SkeletonLine } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
 import { coachesAPI } from '../services/api';
@@ -95,13 +96,13 @@ const MobileCoachDashboard = () => {
         backgroundColor: 'var(--accent)',
         color: 'var(--bg-primary)',
       }}>
-        <h1 style={{
+        <PageTitle style={{
           fontSize: '22px', lineHeight: '28px', fontWeight: 700,
           margin: 0,
           marginBottom: '8px',
         }}>
           Trener Dashboard
-        </h1>
+        </PageTitle>
         <p style={{
           fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           margin: 0,
@@ -153,14 +154,14 @@ const MobileCoachDashboard = () => {
           marginBottom: '24px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
         }}>
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '17px', lineHeight: '22px', fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
             marginBottom: '16px',
           }}>
             Nylig aktivitet
-          </h2>
+          </SectionTitle>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {stats.activeAthletes.map((athlete) => (
@@ -210,14 +211,14 @@ const MobileCoachDashboard = () => {
           padding: '24px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
         }}>
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '17px', lineHeight: '22px', fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
             marginBottom: '16px',
           }}>
             Dagens øktplan
-          </h2>
+          </SectionTitle>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {stats.upcomingSchedule.map((session) => (

@@ -23,6 +23,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle } from '../../components/typography';
 
 import { useBreakingPoints, BreakingPoint, BpStatus } from '../../hooks/useBreakingPoints';
 import { useStrokesGained } from '../../hooks/useStrokesGained';
@@ -357,7 +358,7 @@ const StatusProgressPage: React.FC = () => {
       {/* Breaking Points Status */}
       <section style={styles.section}>
         <div style={styles.sectionHeader}>
-          <h2 style={styles.sectionTitle}>Breaking Points</h2>
+          <SectionTitle>Breaking Points</SectionTitle>
           <Button
             variant="ghost"
             size="sm"
@@ -394,7 +395,7 @@ const StatusProgressPage: React.FC = () => {
       {sgData && (
         <section style={styles.section}>
           <div style={styles.sectionHeader}>
-            <h2 style={styles.sectionTitle}>Strokes Gained Oversikt</h2>
+            <SectionTitle>Strokes Gained Oversikt</SectionTitle>
             <Button
               variant="ghost"
               size="sm"
@@ -441,7 +442,7 @@ const StatusProgressPage: React.FC = () => {
 
       {/* Quick Links */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Utforsk mer</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Utforsk mer</SectionTitle>
         <div style={styles.quickLinks}>
           <Card>
             <div style={styles.quickLink} onClick={() => navigate('/maalsetninger')}>
@@ -480,12 +481,6 @@ const StatusProgressPage: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   section: {
     marginBottom: 'var(--spacing-6)',
-  },
-  sectionTitle: {
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: 0,
   },
   sectionHeader: {
     display: 'flex',

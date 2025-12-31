@@ -4,6 +4,7 @@ import {
   Calendar, MapPin, Award, BarChart2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA
@@ -307,14 +308,9 @@ const CategoryStatsCard = ({ title, stats, fields }) => (
     borderRadius: '12px',
     padding: '16px',
   }}>
-    <h3 style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      color: 'var(--text-primary)',
-      margin: '0 0 12px 0',
-    }}>
+    <SubSectionTitle style={{ fontSize: '14px', margin: '0 0 12px 0' }}>
       {title}
-    </h3>
+    </SubSectionTitle>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       {fields.map((field, idx) => (
         <div
@@ -447,14 +443,9 @@ const TurneringsstatistikkContainer = () => {
         }}>
           {/* Left: Tournament List */}
           <div>
-            <h2 style={{
-              fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: '0 0 16px 0',
-            }}>
+            <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
               Turneringshistorikk
-            </h2>
+            </SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {stats.tournaments.map((tournament) => (
                 <TournamentRow key={tournament.id} tournament={tournament} />
@@ -466,14 +457,9 @@ const TurneringsstatistikkContainer = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Trends */}
             <div>
-              <h3 style={{
-                fontSize: '14px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: '0 0 12px 0',
-              }}>
+              <SubSectionTitle style={{ fontSize: '14px', margin: '0 0 12px 0' }}>
                 Utvikling fra forrige sesong
-              </h3>
+              </SubSectionTitle>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <TrendIndicator
                   label="Gj.sn. score"

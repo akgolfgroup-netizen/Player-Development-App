@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import { messagesAPI } from '../../services/api';
+import { SubSectionTitle } from '../../components/typography';
 
 interface ScheduledMessage {
   id: string;
@@ -337,14 +338,14 @@ export const CoachScheduledMessages: React.FC = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <h3 style={{
+                      <SubSectionTitle style={{
                         fontSize: '15px',
                         fontWeight: '600',
                         color: 'var(--text-primary)',
                         margin: 0
                       }}>
                         {message.subject}
-                      </h3>
+                      </SubSectionTitle>
                       <span style={{
                         fontSize: '10px',
                         fontWeight: '500',

@@ -484,23 +484,23 @@ function App() {
           } />
           <Route path="/kalender" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <AuthenticatedLayout title="Kalender" subtitle="Planlegg og se dine aktiviteter">
                 <CalendarPage />
-              </DashboardLayout>
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/kalender/dag" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <AuthenticatedLayout title="Dagsoversikt" subtitle="Dagens aktiviteter">
                 <DayViewPage />
-              </DashboardLayout>
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/kalender/oversikt" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <AuthenticatedLayout title="Kalenderoversikt" subtitle="Se hele planen din">
                 <CalendarOversiktPage />
-              </DashboardLayout>
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/plan-preview/:planId" element={
@@ -540,9 +540,9 @@ function App() {
           } />
           <Route path="/turneringskalender" element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <AuthenticatedLayout title="Turneringskalender" subtitle="Finn og planlegg turneringer">
                 <TournamentCalendarPage />
-              </DashboardLayout>
+              </AuthenticatedLayout>
             </ProtectedRoute>
           } />
           <Route path="/turneringer/planlegger" element={

@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { SubSectionTitle } from '../../components/typography';
 
 export interface CardItem {
   id: string;
@@ -143,9 +144,9 @@ export const CardGridTemplate: React.FC<CardGridTemplateProps> = ({
         <div className="p-4">
           {/* Title and Badge (if no image/icon) */}
           <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="text-[16px] font-semibold text-ak-charcoal line-clamp-2">
+            <SubSectionTitle className="text-[16px] font-semibold text-ak-charcoal line-clamp-2">
               {card.title}
-            </h3>
+            </SubSectionTitle>
             {card.badge && !card.image && !card.icon && (
               <span
                 className={`px-2 py-0.5 text-[11px] font-medium rounded border flex-shrink-0 ${
@@ -210,9 +211,9 @@ export const CardGridTemplate: React.FC<CardGridTemplateProps> = ({
             {emptyState.icon}
           </div>
         )}
-        <h3 className="text-[16px] font-semibold text-ak-charcoal mb-2">
+        <SubSectionTitle className="text-[16px] font-semibold text-ak-charcoal mb-2">
           {emptyState.title}
-        </h3>
+        </SubSectionTitle>
         {emptyState.description && (
           <p className="text-[14px] text-ak-steel mb-4">
             {emptyState.description}

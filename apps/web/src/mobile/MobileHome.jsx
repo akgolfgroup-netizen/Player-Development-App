@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { tokens, typographyStyle } from '../design-tokens';
+import { PageTitle, SectionTitle } from '../components/typography';
 import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
 import ErrorState from '../components/ui/ErrorState';
@@ -35,18 +36,18 @@ export default function MobileHome() {
 
   return (
     <div style={{ padding: tokens.spacing.md }}>
-      <h1 style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>
+      <PageTitle style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>
         Hei, {data.user.firstName}!
-      </h1>
+      </PageTitle>
       <div style={{
         backgroundColor: tokens.colors.white,
         padding: tokens.spacing.lg,
         borderRadius: tokens.borderRadius.md,
         boxShadow: tokens.shadows.card,
       }}>
-        <h2 style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal, margin: `0 0 ${tokens.spacing.sm}` }}>
+        <SectionTitle style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal, margin: `0 0 ${tokens.spacing.sm}` }}>
           Dagens fokus
-        </h2>
+        </SectionTitle>
         <p style={{ ...typographyStyle('body'), color: tokens.colors.steel, margin: 0 }}>
           {data.dashboard?.focus || 'Ingen planlagt aktivitet i dag'}
         </p>

@@ -9,6 +9,7 @@ import {
   PageHeader,
 } from '../../ui/raw-blocks';
 import { GolfDashboardExample } from '../../components/shadcn/examples/GolfDashboardExample';
+import { SectionTitle } from '../../components/typography';
 
 /**
  * UI Lab - Component Showcase
@@ -88,19 +89,19 @@ const UILabContainer = () => {
       {!showShadcn && <div style={styles.content}>
         {/* Section: StatsGrid */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>StatsGrid</h2>
+          <SectionTitle style={styles.sectionTitle}>StatsGrid</SectionTitle>
           <StatsGrid stats={sampleStats} showTrend={true} />
         </section>
 
         {/* Section: StatsGrid Compact */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>StatsGrid (Compact)</h2>
+          <SectionTitle style={styles.sectionTitle}>StatsGrid (Compact)</SectionTitle>
           <StatsGrid stats={sampleStats} compact={true} columns={4} />
         </section>
 
         {/* Section: StatsTrend */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>StatsTrend</h2>
+          <SectionTitle style={styles.sectionTitle}>StatsTrend</SectionTitle>
           <StatsTrend
             title="Utviklingskurve"
             data={sampleTrendData}
@@ -110,7 +111,7 @@ const UILabContainer = () => {
 
         {/* Section: CalendarWeek */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>CalendarWeek</h2>
+          <SectionTitle style={styles.sectionTitle}>CalendarWeek</SectionTitle>
           <CalendarWeek
             weekNumber={1}
             year={2025}
@@ -120,7 +121,7 @@ const UILabContainer = () => {
 
         {/* Section: CardSimple */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>CardSimple</h2>
+          <SectionTitle style={styles.sectionTitle}>CardSimple</SectionTitle>
           <div style={styles.cardGrid}>
             <CardSimple
               title="Enkel Card"
@@ -140,7 +141,7 @@ const UILabContainer = () => {
 
         {/* Section: CardHeader */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>CardHeader</h2>
+          <SectionTitle style={styles.sectionTitle}>CardHeader</SectionTitle>
           <div style={styles.card}>
             <CardHeader
               title="Card med Header"
@@ -158,7 +159,7 @@ const UILabContainer = () => {
 
         {/* Section: PageHeader */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>PageHeader</h2>
+          <SectionTitle style={styles.sectionTitle}>PageHeader</SectionTitle>
           <PageHeader
             title="Side Tittel"
             subtitle="Med undertittel og tilbake-knapp"
@@ -169,7 +170,7 @@ const UILabContainer = () => {
 
         {/* Section: PageHeader with Action */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>PageHeader (Med Action)</h2>
+          <SectionTitle style={styles.sectionTitle}>PageHeader (Med Action)</SectionTitle>
           <PageHeader
             title="Side med Handling"
             action={{

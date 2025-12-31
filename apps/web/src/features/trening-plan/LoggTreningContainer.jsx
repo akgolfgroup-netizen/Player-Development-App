@@ -5,9 +5,9 @@ import {
   Star, Save, CheckCircle, AlertCircle
 } from 'lucide-react';
 // UiCanon: Using CSS variables
-import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
 import { sessionsAPI } from '../../services/api';
+import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA
@@ -131,14 +131,12 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
       padding: '16px',
       marginBottom: '20px',
     }}>
-      <h3 style={{
+      <SubSectionTitle style={{
         fontSize: '14px',
-        fontWeight: 600,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
       }}>
         Hurtiglogg
-      </h3>
+      </SubSectionTitle>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
         {filtered.map((exercise) => (
           <button
@@ -208,14 +206,12 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
       padding: '20px',
       marginBottom: '20px',
     }}>
-      <h3 style={{
+      <SubSectionTitle style={{
         fontSize: '15px',
-        fontWeight: 600,
-        color: 'var(--text-primary)',
         marginBottom: '16px',
       }}>
         Logg okt
-      </h3>
+      </SubSectionTitle>
 
       {/* Session Name */}
       <div style={{ marginBottom: '16px' }}>
@@ -448,14 +444,12 @@ const RecentLogs = ({ logs }) => (
     borderRadius: '14px',
     padding: '16px',
   }}>
-    <h3 style={{
+    <SubSectionTitle style={{
       fontSize: '14px',
-      fontWeight: 600,
-      color: 'var(--text-primary)',
       marginBottom: '12px',
     }}>
       Siste loggforinger
-    </h3>
+    </SubSectionTitle>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {logs.map((log) => {
         const typeConfig = SESSION_TYPES.find((t) => t.id === log.type);
@@ -571,27 +565,19 @@ const LoggTreningContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Logg trening"
-        subtitle="Registrer din treningsokt"
-      />
-
-      <div style={{ padding: '0' }}>
-        {/* Session Type Selector */}
+      {/* Session Type Selector */}
         <div style={{
           backgroundColor: 'var(--bg-primary)',
           borderRadius: '14px',
           padding: '16px',
           marginBottom: '20px',
         }}>
-          <h3 style={{
+          <SubSectionTitle style={{
             fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
             marginBottom: '12px',
           }}>
             Velg type okt
-          </h3>
+          </SubSectionTitle>
           <SessionTypeSelector selected={selectedType} onSelect={setSelectedType} />
         </div>
 
@@ -638,7 +624,6 @@ const LoggTreningContainer = () => {
 
         {/* Recent Logs */}
         <RecentLogs logs={RECENT_LOGS} />
-      </div>
     </div>
   );
 };

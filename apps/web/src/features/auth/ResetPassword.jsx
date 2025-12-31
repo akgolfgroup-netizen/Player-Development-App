@@ -5,6 +5,7 @@ import { Lock, Eye, EyeOff, CheckCircle, AlertCircle } from 'lucide-react';
 import { AKLogo } from '../../components/branding/AKLogo';
 import Button from '../../ui/primitives/Button';
 import { authAPI } from '../../services/api';
+import { SectionTitle } from '../../components/typography';
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -82,9 +83,9 @@ const ResetPassword = () => {
             }}
           >
             <AlertCircle size={48} color={'var(--error)'} style={{ margin: '0 auto 16px' }} />
-            <h2 style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '12px' }}>
+            <SectionTitle style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, marginBottom: '12px' }}>
               Ugyldig forespørsel
-            </h2>
+            </SectionTitle>
             <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
               Tilbakestillingslenken er ugyldig eller mangler informasjon.
             </p>
@@ -124,14 +125,13 @@ const ResetPassword = () => {
         {/* Logo and Title */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <AKLogo size={60} color={'var(--accent)'} />
-          <h1 style={{
+          <SectionTitle style={{
             fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-            color: 'var(--text-primary)',
             marginTop: '16px',
             marginBottom: '4px',
           }}>
             Opprett nytt passord
-          </h1>
+          </SectionTitle>
           <p style={{
             fontSize: '15px', lineHeight: '20px',
             color: 'var(--text-secondary)',
@@ -167,13 +167,12 @@ const ResetPassword = () => {
                 <CheckCircle size={40} color={'var(--success)'} />
               </div>
 
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-                color: 'var(--text-primary)',
                 marginBottom: '12px',
               }}>
                 Passord oppdatert!
-              </h2>
+              </SectionTitle>
 
               <p style={{
                 fontSize: '15px', lineHeight: '20px',

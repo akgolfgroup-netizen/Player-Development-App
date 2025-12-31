@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PageTitle } from '../../components/typography';
 
 export function PlayerOverviewPage() {
   const [players, setPlayers] = useState([]);
@@ -37,7 +38,7 @@ export function PlayerOverviewPage() {
 
   return (
     <div style={{ padding: '24px' }}>
-      <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '16px' }}>Mine spillere</h1>
+      <PageTitle style={{ fontSize: '24px', fontWeight: 700, marginBottom: '16px' }}>Mine spillere</PageTitle>
 
       {players.length === 0 ? (
         <p style={{ color: 'var(--text-secondary)' }}>Ingen spillere tildelt ennå.</p>

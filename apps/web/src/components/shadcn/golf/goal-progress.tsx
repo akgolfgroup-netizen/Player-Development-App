@@ -3,6 +3,7 @@ import { Target, CheckCircle2, Clock } from "lucide-react"
 import { cn } from "lib/utils"
 import { Card, CardContent } from "../card"
 import { Progress } from "../progress"
+import { CardTitle } from "../../typography"
 
 interface GoalProgressProps {
   title: string
@@ -83,7 +84,7 @@ export const GoalProgress: React.FC<GoalProgressProps> = ({
     <div className="space-y-3">
       <div className="flex items-start justify-between">
         <div className="space-y-1">
-          <h4 className={cn("text-text-primary", sizes.title)}>{title}</h4>
+          <CardTitle className={cn("text-text-primary", sizes.title)}>{title}</CardTitle>
           {description && (
             <p className="text-sm text-text-secondary">{description}</p>
           )}

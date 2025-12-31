@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { ListTemplate, ListItem, ListSection } from '../templates/ListTemplate';
 import { CardGridTemplate, CardItem } from '../templates/CardGridTemplate';
 import {
+  PageTitle,
+  SectionTitle,
+  SubSectionTitle,
+} from '../../components/typography';
+import {
   CheckCircle,
   TrendingUp,
   Calendar,
@@ -174,9 +179,9 @@ export const TemplatesLab: React.FC = () => {
     <div className="min-h-screen bg-ak-snow p-6">
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8">
-        <h1 className="text-[32px] font-bold text-ak-charcoal mb-2">
+        <PageTitle className="text-[32px] font-bold text-ak-charcoal mb-2">
           UI Templates Lab
-        </h1>
+        </PageTitle>
         <p className="text-[16px] text-ak-steel">
           Demo og testing av gjenbrukbare UI-maler
         </p>
@@ -214,9 +219,9 @@ export const TemplatesLab: React.FC = () => {
           <div className="space-y-8">
             {/* Sectioned List */}
             <div>
-              <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+              <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
                 Sectioned List with Icons & Badges
-              </h2>
+              </SectionTitle>
               <div className="bg-white rounded-xl border border-ak-mist p-6">
                 <ListTemplate sections={listSections} showDividers />
               </div>
@@ -224,9 +229,9 @@ export const TemplatesLab: React.FC = () => {
 
             {/* Flat List */}
             <div>
-              <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+              <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
                 Flat List with Metadata
-              </h2>
+              </SectionTitle>
               <div className="bg-white rounded-xl border border-ak-mist p-6">
                 <ListTemplate items={flatListItems} showDividers />
               </div>
@@ -234,9 +239,9 @@ export const TemplatesLab: React.FC = () => {
 
             {/* Empty State */}
             <div>
-              <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+              <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
                 Empty State Example
-              </h2>
+              </SectionTitle>
               <div className="bg-white rounded-xl border border-ak-mist p-6">
                 <ListTemplate
                   items={[]}
@@ -260,17 +265,17 @@ export const TemplatesLab: React.FC = () => {
           <div className="space-y-8">
             {/* 3 Column Grid */}
             <div>
-              <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+              <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
                 3 Column Grid with Images & Actions
-              </h2>
+              </SectionTitle>
               <CardGridTemplate cards={cardItems} columns={3} gap="md" />
             </div>
 
             {/* 2 Column Grid */}
             <div>
-              <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+              <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
                 2 Column Grid
-              </h2>
+              </SectionTitle>
               <CardGridTemplate
                 cards={cardItems.slice(0, 4)}
                 columns={2}
@@ -280,9 +285,9 @@ export const TemplatesLab: React.FC = () => {
 
             {/* 4 Column Grid */}
             <div>
-              <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+              <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
                 4 Column Grid (Small Cards)
-              </h2>
+              </SectionTitle>
               <CardGridTemplate
                 cards={cardItems.slice(0, 4)}
                 columns={4}
@@ -292,9 +297,9 @@ export const TemplatesLab: React.FC = () => {
 
             {/* Empty State */}
             <div>
-              <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+              <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
                 Empty State Example
-              </h2>
+              </SectionTitle>
               <CardGridTemplate
                 cards={[]}
                 columns={3}
@@ -315,16 +320,16 @@ export const TemplatesLab: React.FC = () => {
 
       {/* Implementation Examples */}
       <div className="max-w-7xl mx-auto mt-12 p-6 bg-white rounded-xl border border-ak-mist">
-        <h2 className="text-[20px] font-semibold text-ak-charcoal mb-4">
+        <SectionTitle className="text-[20px] font-semibold text-ak-charcoal mb-4">
           Implementation Examples
-        </h2>
+        </SectionTitle>
 
         <div className="space-y-6">
           {/* List Template Code */}
           <div>
-            <h3 className="text-[16px] font-medium text-ak-charcoal mb-2">
+            <SubSectionTitle className="text-[16px] font-medium text-ak-charcoal mb-2">
               List Template Usage
-            </h3>
+            </SubSectionTitle>
             <pre className="bg-ak-snow p-4 rounded-lg text-[13px] text-ak-charcoal overflow-x-auto">
               {`import { ListTemplate } from '@/ui/templates/ListTemplate';
 
@@ -347,9 +352,9 @@ const items = [
 
           {/* Card Grid Template Code */}
           <div>
-            <h3 className="text-[16px] font-medium text-ak-charcoal mb-2">
+            <SubSectionTitle className="text-[16px] font-medium text-ak-charcoal mb-2">
               Card Grid Template Usage
-            </h3>
+            </SubSectionTitle>
             <pre className="bg-ak-snow p-4 rounded-lg text-[13px] text-ak-charcoal overflow-x-auto">
               {`import { CardGridTemplate } from '@/ui/templates/CardGridTemplate';
 

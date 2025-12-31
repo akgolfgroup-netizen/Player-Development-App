@@ -22,6 +22,7 @@ import { ArrowLeft, ClipboardList, Calendar, Clock, CheckCircle, Edit } from "lu
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
+import { PageTitle, SectionTitle } from '../../components/typography';
 
 //////////////////////////////
 // 1. TYPES
@@ -149,9 +150,9 @@ export default function CoachTrainingPlan({
               <ClipboardList size={24} color="var(--accent)" />
             </div>
             <div>
-              <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+              <PageTitle style={{ margin: 0 }}>
                 Treningsplan
-              </h1>
+              </PageTitle>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
                 {athleteName}
               </p>
@@ -176,9 +177,9 @@ export default function CoachTrainingPlan({
                 Neste økt
               </span>
             </div>
-            <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', margin: 0, marginBottom: '8px' }}>
+            <SectionTitle style={{ margin: '0 0 8px' }}>
               {nextSession.name}
-            </h2>
+            </SectionTitle>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <span style={{ fontSize: '15px', color: 'var(--text-primary)' }}>
                 {formatDate(nextSession.date)}
@@ -201,9 +202,9 @@ export default function CoachTrainingPlan({
         {/* Upcoming Sessions */}
         <Card variant="default" padding="none" style={{ marginBottom: '24px', overflow: 'hidden' }}>
           <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
-            <h2 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+            <SectionTitle style={{ margin: 0 }}>
               Kommende økter
-            </h2>
+            </SectionTitle>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
               {upcomingBlocks.length} planlagte
             </p>
@@ -271,9 +272,9 @@ export default function CoachTrainingPlan({
         {completedBlocks.length > 0 && (
           <Card variant="default" padding="none" style={{ overflow: 'hidden' }}>
             <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
-              <h2 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <SectionTitle style={{ margin: 0 }}>
                 Fullførte økter
-              </h2>
+              </SectionTitle>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
                 {completedBlocks.length} gjennomført
               </p>

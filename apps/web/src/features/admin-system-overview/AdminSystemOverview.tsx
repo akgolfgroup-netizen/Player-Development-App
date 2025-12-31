@@ -19,6 +19,7 @@ import { Shield, Activity, CheckCircle, XCircle, Clock, Loader2 } from "lucide-r
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
+import { SectionTitle } from '../../components/typography';
 
 //////////////////////////////
 // 1. TYPES
@@ -236,9 +237,9 @@ export default function AdminSystemOverview({
           }}
         >
           <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}` }}>
-            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
               Feature Flags
-            </h2>
+            </SectionTitle>
             <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
               Aktive systemfunksjoner
             </p>

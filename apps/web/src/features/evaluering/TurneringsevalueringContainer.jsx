@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA
@@ -224,14 +225,14 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
             marginBottom: '8px',
           }}>
             <div>
-              <h3 style={{
+              <SubSectionTitle style={{
                 fontSize: '16px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 {evaluation.tournamentName}
-              </h3>
+              </SubSectionTitle>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',

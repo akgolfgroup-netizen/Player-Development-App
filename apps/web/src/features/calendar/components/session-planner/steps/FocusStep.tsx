@@ -22,6 +22,7 @@ import {
   type PuttingFocus,
   type PlayFocus,
 } from '../hooks/useAKFormula';
+import { SubSectionTitle } from '../../../../../components/typography';
 
 interface FocusStepProps {
   planner: UseSessionPlannerResult;
@@ -78,12 +79,12 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
     return (
       <div>
-        <h3
+        <SubSectionTitle
           className="text-sm font-medium mb-2"
           style={{ color: 'var(--calendar-text-secondary)' }}
         >
           Fokusposisjon(er)
-        </h3>
+        </SubSectionTitle>
         <p
           className="text-xs mb-4"
           style={{ color: 'var(--calendar-text-tertiary)' }}
@@ -197,12 +198,12 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
       <div className="space-y-6">
         {/* Focus area */}
         <div>
-          <h3
+          <SubSectionTitle
             className="text-sm font-medium mb-3"
             style={{ color: 'var(--calendar-text-secondary)' }}
           >
             Putting-fokus
-          </h3>
+          </SubSectionTitle>
 
           <div className="grid grid-cols-2 gap-2">
             {focusEntries.map(([key, value]) => {
@@ -245,12 +246,12 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
         {/* Phases */}
         <div>
-          <h3
+          <SubSectionTitle
             className="text-sm font-medium mb-3"
             style={{ color: 'var(--calendar-text-secondary)' }}
           >
             Faser
-          </h3>
+          </SubSectionTitle>
 
           <div className="flex flex-wrap gap-2">
             {PUTTING_PHASE_COMBOS.map((combo) => {
@@ -288,12 +289,12 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
     return (
       <div>
-        <h3
+        <SubSectionTitle
           className="text-sm font-medium mb-3"
           style={{ color: 'var(--calendar-text-secondary)' }}
         >
           Spillfokus
-        </h3>
+        </SubSectionTitle>
 
         <div className="space-y-2">
           {focusEntries.map(([key, value]) => {

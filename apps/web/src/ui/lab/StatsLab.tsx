@@ -1,5 +1,6 @@
 import React from 'react';
 import StatsGridTemplate, { StatsItem } from '../templates/StatsGridTemplate';
+import { PageTitle, SectionTitle } from '../../components/typography';
 
 /**
  * StatsLab - Demo page for StatsGridTemplate
@@ -78,7 +79,7 @@ const StatsLab: React.FC = () => {
       <div style={styles.content}>
         {/* Header */}
         <div style={styles.header}>
-          <h1 style={styles.title}>StatsGridTemplate Demo</h1>
+          <PageTitle style={styles.title}>StatsGridTemplate Demo</PageTitle>
           <p style={styles.subtitle}>
             Unified template supporting both simple cards and cards with change indicators
           </p>
@@ -86,9 +87,9 @@ const StatsLab: React.FC = () => {
 
         {/* Section 1: Simple Stats */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>
+          <SectionTitle style={styles.sectionTitle}>
             Eksempel 1: Simple Stats (uten endringsindikatorer)
-          </h2>
+          </SectionTitle>
           <p style={styles.sectionDescription}>
             Grunnleggende statskort uten piler eller prosentendring
           </p>
@@ -97,9 +98,9 @@ const StatsLab: React.FC = () => {
 
         {/* Section 2: Stats with Change */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>
+          <SectionTitle style={styles.sectionTitle}>
             Eksempel 2: Stats med endringsindikatorer
-          </h2>
+          </SectionTitle>
           <p style={styles.sectionDescription}>
             Statskort med piler og prosentendring (opp/ned/nøytral)
           </p>
@@ -108,7 +109,7 @@ const StatsLab: React.FC = () => {
 
         {/* Section 3: Custom Columns */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>Eksempel 3: Med 2 kolonner</h2>
+          <SectionTitle style={styles.sectionTitle}>Eksempel 3: Med 2 kolonner</SectionTitle>
           <p style={styles.sectionDescription}>
             Grid med fast antall kolonner (2)
           </p>
@@ -117,7 +118,7 @@ const StatsLab: React.FC = () => {
 
         {/* Section 4: Custom Columns */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>Eksempel 4: Med 4 kolonner</h2>
+          <SectionTitle style={styles.sectionTitle}>Eksempel 4: Med 4 kolonner</SectionTitle>
           <p style={styles.sectionDescription}>
             Grid med fast antall kolonner (4)
           </p>

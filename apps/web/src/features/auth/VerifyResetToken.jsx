@@ -4,6 +4,7 @@ import { Loader, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
 import { authAPI } from '../../services/api';
+import { SectionTitle } from '../../components/typography';
 
 const VerifyResetToken = () => {
   const [searchParams] = useSearchParams();
@@ -77,13 +78,12 @@ const VerifyResetToken = () => {
               />
             </div>
 
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Verifiserer lenke...
-            </h2>
+            </SectionTitle>
 
             <p style={{
               fontSize: '15px', lineHeight: '20px',
@@ -121,13 +121,12 @@ const VerifyResetToken = () => {
               <CheckCircle size={40} color={'var(--success)'} />
             </div>
 
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Lenke bekreftet!
-            </h2>
+            </SectionTitle>
 
             <p style={{
               fontSize: '15px', lineHeight: '20px',
@@ -156,13 +155,12 @@ const VerifyResetToken = () => {
               <AlertCircle size={40} color={'var(--warning)'} />
             </div>
 
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Lenken har utløpt
-            </h2>
+            </SectionTitle>
 
             <p style={{
               fontSize: '15px', lineHeight: '20px',
@@ -227,13 +225,12 @@ const VerifyResetToken = () => {
               <XCircle size={40} color={'var(--error)'} />
             </div>
 
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-              color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Ugyldig lenke
-            </h2>
+            </SectionTitle>
 
             <p style={{
               fontSize: '15px', lineHeight: '20px',

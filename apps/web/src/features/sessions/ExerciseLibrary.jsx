@@ -8,9 +8,9 @@
 import React, { useState } from 'react';
 import { Heart, Plus, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 // UiCanon: Using CSS variables instead of tokens
-import { PageHeader } from '../../components/layout/PageHeader';
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================
 // AK GOLF KATEGORI HIERARKI v2.0 - Komplett filter-system
@@ -325,15 +325,9 @@ function ExerciseCard({ exercise, onSelect, onToggleFavorite, onAddToPlan, isFav
       <div style={{ padding: '16px' }}>
         {/* Header row */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-          <h3 style={{
-            margin: 0,
-            fontSize: '15px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            lineHeight: 1.3,
-          }}>
+          <SubSectionTitle style={{ fontSize: '15px', lineHeight: 1.3 }}>
             {exercise.name}
-          </h3>
+          </SubSectionTitle>
           <Button
             variant="ghost"
             size="sm"
@@ -707,35 +701,6 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
 
   return (
     <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
-      {/* PageHeader */}
-      <PageHeader
-        title="Øvelsesbibliotek"
-        subtitle={`${exercises.length} øvelser`}
-        actions={
-          <Button
-            variant={showOnlyFavorites ? 'primary' : 'secondary'}
-            size="sm"
-            leftIcon={<Heart size={16} fill={showOnlyFavorites ? 'currentColor' : 'none'} />}
-            onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-            style={showOnlyFavorites ? { backgroundColor: 'var(--error)' } : undefined}
-          >
-            Favoritter
-            {favorites.length > 0 && (
-              <span style={{
-                backgroundColor: showOnlyFavorites ? 'rgba(255,255,255,0.3)' : 'var(--text-secondary)',
-                color: 'white',
-                borderRadius: '10px',
-                padding: '1px 6px',
-                fontSize: '11px',
-                marginLeft: '4px',
-              }}>
-                {favorites.length}
-              </span>
-            )}
-          </Button>
-        }
-      />
-
       {/* Compact filters */}
       <div style={{
         backgroundColor: 'var(--bg-primary)',
@@ -835,6 +800,29 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
             )}
             {showAdvancedFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
+
+          {/* Favorites filter button */}
+          <Button
+            variant={showOnlyFavorites ? 'primary' : 'secondary'}
+            size="sm"
+            leftIcon={<Heart size={16} fill={showOnlyFavorites ? 'currentColor' : 'none'} />}
+            onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
+            style={showOnlyFavorites ? { backgroundColor: 'var(--error)' } : undefined}
+          >
+            Favoritter
+            {favorites.length > 0 && (
+              <span style={{
+                backgroundColor: showOnlyFavorites ? 'rgba(255,255,255,0.3)' : 'var(--text-secondary)',
+                color: 'white',
+                borderRadius: '10px',
+                padding: '1px 6px',
+                fontSize: '11px',
+                marginLeft: '4px',
+              }}>
+                {favorites.length}
+              </span>
+            )}
+          </Button>
         </div>
 
         {/* Advanced filters section */}

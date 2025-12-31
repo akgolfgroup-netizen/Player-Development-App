@@ -22,6 +22,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 interface CoachProfile {
   name: string;
@@ -255,14 +256,14 @@ export const CoachSettings: React.FC = () => {
             {/* Profile Tab */}
             {activeTab === 'profile' && (
               <div>
-                <h2 style={{
+                <SectionTitle style={{
                   fontSize: '18px',
                   fontWeight: '600',
                   color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Profilinformasjon
-                </h2>
+                </SectionTitle>
 
                 {/* Avatar */}
                 <div style={{ marginBottom: '24px' }}>
@@ -430,17 +431,17 @@ export const CoachSettings: React.FC = () => {
             {/* Notifications Tab */}
             {activeTab === 'notifications' && (
               <div>
-                <h2 style={{
+                <SectionTitle style={{
                   fontSize: '18px',
                   fontWeight: '600',
                   color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Varslingsinnstillinger
-                </h2>
+                </SectionTitle>
 
                 <div style={{ marginBottom: '24px' }}>
-                  <h3 style={{
+                  <SubSectionTitle style={{
                     fontSize: '14px',
                     fontWeight: '600',
                     color: 'var(--text-secondary)',
@@ -449,7 +450,7 @@ export const CoachSettings: React.FC = () => {
                     letterSpacing: '0.5px'
                   }}>
                     Aktivitetsvarsler
-                  </h3>
+                  </SubSectionTitle>
                   {[
                     { key: 'newBooking', label: 'Nye bookingforespørsler', desc: 'Når en spiller ber om en økt' },
                     { key: 'bookingReminder', label: 'Bookingpåminnelser', desc: '24 timer før planlagte økter' },
@@ -507,7 +508,7 @@ export const CoachSettings: React.FC = () => {
                 </div>
 
                 <div>
-                  <h3 style={{
+                  <SubSectionTitle style={{
                     fontSize: '14px',
                     fontWeight: '600',
                     color: 'var(--text-secondary)',
@@ -516,7 +517,7 @@ export const CoachSettings: React.FC = () => {
                     letterSpacing: '0.5px'
                   }}>
                     Leveringsmetode
-                  </h3>
+                  </SubSectionTitle>
                   {[
                     { key: 'emailNotifications', label: 'E-postvarsler', icon: Mail },
                     { key: 'pushNotifications', label: 'Push-varsler', icon: Bell }
@@ -573,14 +574,14 @@ export const CoachSettings: React.FC = () => {
             {/* Display Tab */}
             {activeTab === 'display' && (
               <div>
-                <h2 style={{
+                <SectionTitle style={{
                   fontSize: '18px',
                   fontWeight: '600',
                   color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Visningsinnstillinger
-                </h2>
+                </SectionTitle>
 
                 <div style={{ marginBottom: '24px' }}>
                   <label style={{
@@ -667,7 +668,7 @@ export const CoachSettings: React.FC = () => {
                 </div>
 
                 <div>
-                  <h3 style={{
+                  <SubSectionTitle style={{
                     fontSize: '14px',
                     fontWeight: '600',
                     color: 'var(--text-secondary)',
@@ -676,7 +677,7 @@ export const CoachSettings: React.FC = () => {
                     letterSpacing: '0.5px'
                   }}>
                     Visningsalternativer
-                  </h3>
+                  </SubSectionTitle>
                   {[
                     { key: 'compactView', label: 'Kompakt visning', desc: 'Vis mer innhold med mindre mellomrom' },
                     { key: 'showPlayerPhotos', label: 'Vis spillerbilder', desc: 'Vis profilbilder i lister' }
@@ -735,14 +736,14 @@ export const CoachSettings: React.FC = () => {
             {/* Privacy Tab */}
             {activeTab === 'privacy' && (
               <div>
-                <h2 style={{
+                <SectionTitle style={{
                   fontSize: '18px',
                   fontWeight: '600',
                   color: 'var(--text-primary)',
                   margin: '0 0 20px 0'
                 }}>
                   Personvern og sikkerhet
-                </h2>
+                </SectionTitle>
 
                 <div style={{
                   padding: '16px',

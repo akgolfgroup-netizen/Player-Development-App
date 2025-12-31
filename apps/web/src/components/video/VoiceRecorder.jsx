@@ -13,6 +13,7 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { useAudioRecording, RECORDING_STATES } from '../../hooks/useAudioRecording';
+import { SubSectionTitle } from '../typography';
 
 // Styles
 const styles = {
@@ -436,11 +437,11 @@ export function VoiceRecorder({
     <div className={className} style={{ ...styles.container, ...style }}>
       {/* Header */}
       <div style={styles.header}>
-        <h3 style={styles.title}>
+        <SubSectionTitle style={styles.title}>
           <MicIcon size={18} />
           Stemmekommentar
           {isRecording && <span style={styles.statusIndicator} />}
-        </h3>
+        </SubSectionTitle>
         <div
           style={{
             ...styles.timer,

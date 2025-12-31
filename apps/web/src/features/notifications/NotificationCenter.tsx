@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { useNotifications } from '../../hooks/useNotifications';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 interface NotificationCenterProps {
   userId?: string;
@@ -145,7 +146,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
         }}
       >
         <div>
-          <h1
+          <SectionTitle
             style={{
               fontSize: '28px', lineHeight: '34px', fontWeight: 700,
               color: 'var(--text-primary)',
@@ -153,7 +154,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
             }}
           >
             Varsler
-          </h1>
+          </SectionTitle>
           {unreadCount > 0 && (
             <p
               style={{
@@ -311,7 +312,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                       marginBottom: '4px',
                     }}
                   >
-                    <h3
+                    <SubSectionTitle
                       style={{
                         fontSize: '17px', lineHeight: '22px',
                         color: 'var(--text-primary)',
@@ -320,7 +321,7 @@ export default function NotificationCenter({ userId }: NotificationCenterProps) 
                       }}
                     >
                       {notification.title}
-                    </h3>
+                    </SubSectionTitle>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span
                         style={{

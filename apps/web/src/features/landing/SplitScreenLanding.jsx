@@ -14,6 +14,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AKLogo } from '../../components/branding/AKLogo';
+import { PageTitle, SectionTitle } from '../../components/typography';
 import { triggerHaptic } from '../../hooks/useHaptic';
 
 // Feature list icons
@@ -116,9 +117,9 @@ export function SplitScreenLanding() {
           </div>
 
           {/* Headline */}
-          <h1 style={styles.headline} className="split-headline">
+          <PageTitle style={styles.headline} className="split-headline">
             Utvikle ditt <span style={styles.headlineAccent}>golfspill</span> systematisk
-          </h1>
+          </PageTitle>
 
           {/* Description */}
           <p style={styles.description} className="split-description">
@@ -168,7 +169,7 @@ export function SplitScreenLanding() {
       <div style={styles.rightPanel} id="features" className="split-screen-right">
         <div style={styles.rightContent}>
           <div style={styles.rightHeader}>
-            <h2 style={styles.rightTitle}>Alt du trenger</h2>
+            <SectionTitle style={styles.rightTitle}>Alt du trenger</SectionTitle>
             <p style={styles.rightSubtitle}>
               Verktøy og funksjoner for systematisk golfutvikling
             </p>

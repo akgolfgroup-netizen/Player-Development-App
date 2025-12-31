@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Clock, MapPin } from 'lucide-react';
+import { SectionTitle } from '../../../components/typography';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -94,11 +95,11 @@ const WeekView = ({
       {/* Header */}
       <header className="flex flex-none items-center justify-between border-b border-border-default px-6 py-4">
         <div>
-          <h1 className="text-base font-semibold leading-6 text-ak-charcoal">
+          <SectionTitle className="text-base font-semibold leading-6 text-ak-charcoal">
             <time dateTime={weekDates[0].toISOString().split('T')[0]}>
               Uke {getWeekNumber(currentDate)} · {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
             </time>
-          </h1>
+          </SectionTitle>
           <p className="mt-1 text-sm text-ak-steel">
             {weekDates[0].getDate()}. - {weekDates[6].getDate()}. {monthNames[weekDates[6].getMonth()]}
           </p>

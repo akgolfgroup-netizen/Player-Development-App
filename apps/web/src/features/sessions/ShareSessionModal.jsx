@@ -14,6 +14,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography';
 
 const colors = {
   // Brand Colors
@@ -381,16 +382,9 @@ const ShareSessionModal = ({
             justifyContent: 'space-between',
           }}
         >
-          <h2
-            style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: colors.charcoal,
-              margin: 0,
-            }}
-          >
+          <SectionTitle>
             Del økt
-          </h2>
+          </SectionTitle>
           <button
             onClick={onClose}
             style={{
@@ -693,16 +687,9 @@ export const ReceivedSessionModal = ({
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
             <span style={{ fontSize: '20px' }}>📩</span>
-            <h2
-              style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: colors.charcoal,
-                margin: 0,
-              }}
-            >
+            <SectionTitle>
               Ny delt økt
-            </h2>
+            </SectionTitle>
           </div>
           <div style={{ fontSize: '14px', color: colors.steel }}>
             Fra: <span style={{ fontWeight: '500', color: colors.charcoal }}>{demoSharedSession.sender.name}</span>

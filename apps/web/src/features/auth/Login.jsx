@@ -5,6 +5,7 @@ import { LogIn, AlertCircle } from 'lucide-react';
 // UiCanon: Using CSS variables
 import { AKLogo } from '../../components/branding/AKLogo';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -81,15 +82,14 @@ const Login = () => {
         {/* Logo and Title */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <AKLogo size={60} color={'var(--accent)'} />
-          <h1 style={{
+          <SectionTitle style={{
             fontSize: '20px',
             fontWeight: '700',
-            color: 'var(--text-primary)',
             marginTop: '16px',
             marginBottom: '4px',
           }}>
             AK Golf Academy
-          </h1>
+          </SectionTitle>
           <div style={{
             fontSize: '14px',
             color: 'var(--text-secondary)',
@@ -105,15 +105,14 @@ const Login = () => {
           padding: '32px',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
         }}>
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '22px',
             fontWeight: '700',
-            color: 'var(--text-primary)',
             marginBottom: '24px',
             textAlign: 'center',
           }}>
             Logg Inn
-          </h2>
+          </SectionTitle>
 
           {error && (
             <div
@@ -311,14 +310,13 @@ const Login = () => {
                 ×
               </button>
 
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '20px',
                 fontWeight: '700',
-                color: 'var(--text-primary)',
                 marginBottom: '16px'
               }}>
                 Tilbakestill passord
-              </h2>
+              </SectionTitle>
 
               {resetSuccess ? (
                 <div style={{

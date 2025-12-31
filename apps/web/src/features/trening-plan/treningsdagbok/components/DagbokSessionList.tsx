@@ -8,6 +8,7 @@
 
 import React, { useCallback, useRef, useMemo } from 'react';
 import { BookOpen, Loader2 } from 'lucide-react';
+import { SubSectionTitle } from '../../../../components/typography';
 
 import type { DagbokSession, DagbokSessionListProps } from '../types';
 import { DagbokSessionRow } from './DagbokSessionRow';
@@ -251,7 +252,7 @@ export const DagbokSessionList: React.FC<DagbokSessionListProps> = ({
           <div style={styles.emptyIcon}>
             <BookOpen size={24} style={{ color: 'var(--text-tertiary)' }} />
           </div>
-          <h3 style={styles.emptyTitle}>Ingen okter</h3>
+          <SubSectionTitle style={styles.emptyTitle}>Ingen okter</SubSectionTitle>
           <p style={styles.emptyMessage}>{emptyMessage}</p>
         </div>
       </div>

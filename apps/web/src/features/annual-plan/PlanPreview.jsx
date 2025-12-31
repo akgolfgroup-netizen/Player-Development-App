@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
 
 /**
  * Plan Preview Component
@@ -175,7 +176,7 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-red-500 text-5xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Plan ikke funnet</h1>
+          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Plan ikke funnet</PageTitle>
           <p className="text-gray-600 mb-6">{error?.message}</p>
           <Button
             variant="primary"
@@ -193,7 +194,7 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-orange-500 text-5xl mb-4">🔧</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Systemfeil</h1>
+          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Systemfeil</PageTitle>
           <p className="text-gray-600 mb-6">{error?.message}</p>
           <div className="flex gap-3 justify-center">
             <Button
@@ -232,7 +233,7 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-green-500 text-5xl mb-4">✅</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Plan Activated!</h1>
+          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Plan Activated!</PageTitle>
           <p className="text-gray-600 mb-6">
             Your training plan is now active. Redirecting to dashboard...
           </p>
@@ -253,7 +254,7 @@ export default function PlanPreview() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-blue-500 text-5xl mb-4">📝</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Request Submitted</h1>
+          <PageTitle className="text-2xl font-bold text-gray-900 mb-2">Request Submitted</PageTitle>
           <p className="text-gray-600 mb-6">
             Your coach will review your request within 24-48 hours.
           </p>
@@ -274,9 +275,9 @@ export default function PlanPreview() {
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <PageTitle className="text-3xl font-bold text-gray-900">
             {planData?.annualPlan.planName || '12-Month Training Plan'}
-          </h1>
+          </PageTitle>
           <p className="text-gray-600 mt-1">
             {new Date(planData?.annualPlan.startDate).toLocaleDateString()} - {new Date(planData?.annualPlan.endDate).toLocaleDateString()}
           </p>
@@ -342,7 +343,7 @@ export default function PlanPreview() {
       {/* Modification Request Modal */}
       {showModificationModal && (
         <Modal onClose={() => setShowModificationModal(false)}>
-          <h2 className="text-2xl font-bold mb-4">Request Modifications</h2>
+          <SectionTitle className="text-2xl font-bold mb-4">Request Modifications</SectionTitle>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -420,7 +421,7 @@ export default function PlanPreview() {
       {/* Reject Plan Modal */}
       {showRejectModal && (
         <Modal onClose={() => setShowRejectModal(false)}>
-          <h2 className="text-2xl font-bold mb-4 text-red-600">Reject Training Plan</h2>
+          <SectionTitle className="text-2xl font-bold mb-4 text-red-600">Reject Training Plan</SectionTitle>
           <p className="text-gray-600 mb-4">
             Are you sure? This will archive this plan and you'll need to create a new intake form.
           </p>
@@ -479,7 +480,7 @@ function OverviewView({ data }) {
     <div className="space-y-6">
       {/* Plan Summary */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Plan Summary</h2>
+        <SectionTitle className="text-xl font-bold mb-4">Plan Summary</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatCard label="Total Rest Days" value={statistics.totalRestDays} />
           <StatCard label="Avg Session (min)" value={Math.round(statistics.averageSessionDuration)} />
@@ -489,7 +490,7 @@ function OverviewView({ data }) {
 
       {/* Period Breakdown */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Training Periods</h2>
+        <SectionTitle className="text-xl font-bold mb-4">Training Periods</SectionTitle>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <PeriodCard label="Base (E)" count={statistics.periodBreakdown.E || 0} color="bg-blue-100 text-blue-800" />
           <PeriodCard label="General (G)" count={statistics.periodBreakdown.G || 0} color="bg-green-100 text-green-800" />
@@ -500,7 +501,7 @@ function OverviewView({ data }) {
 
       {/* Tournaments */}
       <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Scheduled Tournaments ({tournaments.length})</h2>
+        <SectionTitle className="text-xl font-bold mb-4">Scheduled Tournaments ({tournaments.length})</SectionTitle>
         <div className="space-y-2">
           {tournaments.map(t => (
             <div key={t.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
@@ -552,7 +553,7 @@ function CalendarView({ data }) {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-bold mb-4">365-Day Calendar</h2>
+      <SectionTitle className="text-xl font-bold mb-4">365-Day Calendar</SectionTitle>
       <p className="text-sm text-gray-500 mb-4">
         Total assignments: {data.dailyAssignments.length}
       </p>
@@ -565,7 +566,7 @@ function CalendarView({ data }) {
 
           return (
             <div key={monthKey} className="border border-gray-200 rounded-lg p-4">
-              <h3 className="font-semibold text-lg mb-3 capitalize">{monthName}</h3>
+              <SubSectionTitle className="font-semibold text-lg mb-3 capitalize">{monthName}</SubSectionTitle>
               <div className="grid grid-cols-7 gap-1">
                 {['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'].map(day => (
                   <div key={day} className="text-center text-xs font-medium text-gray-500 py-1">
@@ -672,7 +673,7 @@ function WeeklyView({ data }) {
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-bold mb-4">Week-by-Week View</h2>
+      <SectionTitle className="text-xl font-bold mb-4">Week-by-Week View</SectionTitle>
       <p className="text-sm text-gray-500 mb-4">
         {weeks.length} uker planlagt
       </p>
@@ -741,7 +742,7 @@ function getWeekNumber(date) {
 function PeriodizationView({ data }) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-bold mb-4">Periodization Timeline</h2>
+      <SectionTitle className="text-xl font-bold mb-4">Periodization Timeline</SectionTitle>
       <div className="space-y-2">
         {data?.periodizations.map(period => (
           <div key={period.id} className="flex items-center gap-4 p-3 bg-gray-50 rounded">
@@ -767,12 +768,12 @@ function PeriodizationView({ data }) {
 function TournamentsView({ data }) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-bold mb-4">Tournament Schedule & Preparation</h2>
+      <SectionTitle className="text-xl font-bold mb-4">Tournament Schedule & Preparation</SectionTitle>
       <div className="space-y-4">
         {data?.tournaments.map(t => (
           <div key={t.id} className="border border-gray-200 rounded-lg p-4">
             <div className="flex justify-between items-start mb-3">
-              <h3 className="font-bold text-lg">{t.name}</h3>
+              <SubSectionTitle className="font-bold text-lg">{t.name}</SubSectionTitle>
               <span className={`px-3 py-1 rounded font-medium ${
                 t.importance === 'A' ? 'bg-red-100 text-red-800' :
                 t.importance === 'B' ? 'bg-orange-100 text-orange-800' :

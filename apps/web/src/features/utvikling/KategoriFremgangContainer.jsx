@@ -3,7 +3,7 @@ import {
   TrendingUp, Target,
   ArrowUp, ArrowDown, Minus, CheckCircle
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography';
 import Card from '../../ui/primitives/Card';
 
 // ============================================================================
@@ -115,14 +115,9 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
   return (
     <Card variant="default" padding="none">
       <div style={{ padding: '16px' }}>
-        <h3 style={{
-          fontSize: '14px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          marginBottom: '12px',
-        }}>
+        <SubSectionTitle style={{ fontSize: '14px', marginBottom: '12px' }}>
           Kategoristige
-        </h3>
+        </SubSectionTitle>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {reversedCategories.map((cat) => {
             const isCurrent = cat.level === currentCategory;
@@ -197,14 +192,9 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
 const RequirementsChecklist = ({ requirements, targetCategory }) => (
   <Card variant="default" padding="none">
     <div style={{ padding: '16px' }}>
-      <h3 style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        color: 'var(--text-primary)',
-        marginBottom: '4px',
-      }}>
+      <SubSectionTitle style={{ fontSize: '14px', marginBottom: '4px' }}>
         Krav for Kategori {targetCategory}
-      </h3>
+      </SubSectionTitle>
       <p style={{
         fontSize: '12px',
         color: 'var(--text-secondary)',
@@ -280,14 +270,9 @@ const RequirementsChecklist = ({ requirements, targetCategory }) => (
 const ProgressHistory = ({ history }) => (
   <Card variant="default" padding="none">
     <div style={{ padding: '16px' }}>
-      <h3 style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        color: 'var(--text-primary)',
-        marginBottom: '12px',
-      }}>
+      <SubSectionTitle style={{ fontSize: '14px', marginBottom: '12px' }}>
         Poenghistorikk
-      </h3>
+      </SubSectionTitle>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
         {history.map((entry, idx) => (
           <div
@@ -351,13 +336,7 @@ const KategoriFremgangContainer = () => {
                             CATEGORIES.findIndex((c) => c.level === CURRENT_STATUS.startOfSeasonCategory);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Kategori-fremgang"
-        subtitle="Din reise gjennom kategoriene"
-      />
-
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
         {/* Season Summary */}
         <div style={{
           display: 'grid',
@@ -449,7 +428,6 @@ const KategoriFremgangContainer = () => {
             <ProgressHistory history={HISTORY} />
           </div>
         </div>
-      </div>
     </div>
   );
 };

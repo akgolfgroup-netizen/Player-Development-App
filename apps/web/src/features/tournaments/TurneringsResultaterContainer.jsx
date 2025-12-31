@@ -5,6 +5,7 @@ import {
   Target, MapPin, AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import { calendarAPI } from '../../services/api';
 
@@ -182,14 +183,9 @@ const ResultCard = ({ result, onClick }) => {
               {new Date(result.date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' })}
             </span>
           </div>
-          <h3 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
+          <SubSectionTitle>
             {result.name}
-          </h3>
+          </SubSectionTitle>
           <div style={{
             display: 'flex',
             alignItems: 'center',

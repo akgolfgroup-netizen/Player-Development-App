@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 // ============================================================================
 // MOCK DATA
@@ -97,14 +98,9 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
           <Icon size={20} color={category.color} />
         </div>
         <div style={{ flex: 1 }}>
-          <h3 style={{
-            fontSize: '15px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
+          <SubSectionTitle style={{ fontSize: '15px', margin: 0 }}>
             {category.name}
-          </h3>
+          </SubSectionTitle>
           <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
             {category.fields.length} felt
           </div>
@@ -305,14 +301,9 @@ const StatsOppdateringContainer = () => {
           marginBottom: '20px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 16px 0',
-          }}>
+          <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
             Okt-informasjon
-          </h2>
+          </SectionTitle>
 
           <div style={{
             display: 'grid',
@@ -421,14 +412,9 @@ const StatsOppdateringContainer = () => {
         </div>
 
         {/* Stat Categories */}
-        <h2 style={{
-          fontSize: '16px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          margin: '0 0 16px 0',
-        }}>
+        <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
           Statistikk
-        </h2>
+        </SectionTitle>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
           {STAT_CATEGORIES.map((category) => (
@@ -492,14 +478,9 @@ const StatsOppdateringContainer = () => {
 
         {/* Recent Entries */}
         <div style={{ marginTop: '32px' }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 16px 0',
-          }}>
+          <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
             Siste registreringer
-          </h2>
+          </SectionTitle>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {RECENT_ENTRIES.map((entry) => (

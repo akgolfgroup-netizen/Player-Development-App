@@ -10,6 +10,7 @@
 import React from 'react';
 // UiCanon: CSS variables
 import { TrendingUp, TrendingDown, Target, Battery, BarChart2, Calendar } from 'lucide-react';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // SUB-COMPONENTS
@@ -197,15 +198,9 @@ function Section({ title, children }) {
         boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
       }}
     >
-      <h3
-        style={{
-          fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-          color: 'var(--text-primary)',
-          marginBottom: '16px',
-        }}
-      >
+      <SubSectionTitle style={{ marginBottom: '16px' }}>
         {title}
-      </h3>
+      </SubSectionTitle>
       {children}
     </div>
   );
@@ -252,9 +247,9 @@ export default function EvaluationStatsDashboard({ stats, isLoading }) {
     >
       {/* Header */}
       <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)' }}>
+        <SectionTitle>
           Evalueringsstatistikk
-        </h1>
+        </SectionTitle>
         <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
           Oversikt over dine treningsevalueringer
         </p>

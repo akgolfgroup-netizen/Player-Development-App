@@ -20,6 +20,7 @@ import {
   User,
   Info,
 } from 'lucide-react';
+import { SectionTitle } from '../../components/typography';
 
 interface Message {
   id: string;
@@ -358,7 +359,7 @@ export default function ConversationView() {
         </div>
 
         <div style={{ flex: 1 }}>
-          <h2
+          <SectionTitle
             style={{
               fontSize: '17px', lineHeight: '22px', fontWeight: 600,
               color: 'var(--text-primary)',
@@ -366,7 +367,7 @@ export default function ConversationView() {
             }}
           >
             {conversation.name}
-          </h2>
+          </SectionTitle>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             {conversation.groupType === 'team' ? (
               <Users size={12} color={'var(--text-secondary)'} />

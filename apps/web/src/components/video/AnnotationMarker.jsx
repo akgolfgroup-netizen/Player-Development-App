@@ -12,6 +12,7 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import ConfirmDialog from '../ui/ConfirmDialog';
+import { CardTitle } from '../typography';
 
 // Annotation type icons and colors using semantic tokens
 export const ANNOTATION_TYPE_CONFIG = {
@@ -385,7 +386,7 @@ export function AnnotationMarker({
               {getTypeIcon(annotation.type)}
             </div>
             <div>
-              <h4 style={styles.tooltipTitle}>{config.label}</h4>
+              <CardTitle style={styles.tooltipTitle}>{config.label}</CardTitle>
               <span style={styles.tooltipTimestamp}>
                 {formatTimestamp(annotation.timestamp)}
               </span>

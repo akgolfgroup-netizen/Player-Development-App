@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight, Trophy, MapPin, Calendar, Users } from 'lucide-react';
 import { tokens } from '../../../design-tokens';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 
 const TournamentView = ({
   currentYear,
@@ -148,7 +149,7 @@ const TournamentView = ({
         <div className="text-center">
           <div className="flex items-center justify-center gap-2">
             <Trophy size={24} />
-            <h2 className="text-xl font-bold">Turneringer {currentYear}</h2>
+            <SectionTitle className="text-xl font-bold">Turneringer {currentYear}</SectionTitle>
           </div>
         </div>
         <button
@@ -190,9 +191,9 @@ const TournamentView = ({
                   className="w-1 h-6 rounded-full"
                   style={{ backgroundColor: tokens.colors.gold }}
                 />
-                <h3 className="text-base font-semibold text-ak-charcoal">
+                <SubSectionTitle className="text-base font-semibold text-ak-charcoal">
                   {monthNames[parseInt(monthIndex)]}
-                </h3>
+                </SubSectionTitle>
                 <span className="text-xs text-ak-steel bg-ak-snow px-2 py-0.5 rounded-full">
                   {monthTournaments.length} {monthTournaments.length === 1 ? 'turnering' : 'turneringer'}
                 </span>
@@ -233,7 +234,7 @@ const TournamentView = ({
                                 </span>
                               )}
                             </div>
-                            <h4 className="font-semibold text-ak-charcoal">{tournament.name}</h4>
+                            <CardTitle className="font-semibold text-ak-charcoal">{tournament.name}</CardTitle>
                           </div>
                           <Trophy
                             size={20}

@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Target, Zap, Brain, Battery, Play, CheckCircle } from 'lucide-react';
 import { sessionsAPI } from '../../services/api';
+import { SubSectionTitle } from '../../components/typography';
 
 // Status config
 const STATUS_CONFIG = {
@@ -128,7 +129,7 @@ export default function SessionEvaluationWidget() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Target size={18} className="text-ak-primary" />
-          <h3 className="text-[15px] font-semibold text-ak-charcoal">Oktevaluering</h3>
+          <SubSectionTitle style={{ fontSize: '15px' }}>Oktevaluering</SubSectionTitle>
         </div>
         <button
           onClick={handleViewStats}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
+import { SubSectionTitle } from '../../components/typography';
 
 /**
  * WidgetHeader
@@ -27,7 +28,7 @@ const WidgetHeader: React.FC<WidgetHeaderProps> = ({
     <div style={styles.container}>
       <div style={styles.titleContainer}>
         {Icon && <Icon size={18} className="text-ak-primary" />}
-        <h3 style={styles.title}>{title}</h3>
+        <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
       </div>
       {action && (
         <button onClick={action} style={styles.actionButton}>

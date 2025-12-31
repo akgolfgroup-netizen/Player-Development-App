@@ -4,8 +4,8 @@ import {
   Dumbbell, Brain, Flag, RotateCcw, Flame
 } from 'lucide-react';
 // UiCanon: Using CSS variables
-import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -317,14 +317,12 @@ const StatsOverview = ({ stats, totalPlanned, completed }) => {
       padding: '20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
     }}>
-      <h3 style={{
+      <SubSectionTitle style={{
         fontSize: '14px',
-        fontWeight: 600,
-        color: 'var(--text-primary)',
         margin: '0 0 16px 0',
       }}>
         Ukeoversikt
-      </h3>
+      </SubSectionTitle>
 
       {/* Progress */}
       <div style={{ marginBottom: '20px' }}>
@@ -434,14 +432,11 @@ const WeeklyGoals = ({ goals }) => {
         marginBottom: '16px',
       }}>
         <Target size={16} color={'var(--achievement)'} />
-        <h3 style={{
+        <SubSectionTitle style={{
           fontSize: '14px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          margin: 0,
         }}>
           Ukens mal
-        </h3>
+        </SubSectionTitle>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -497,13 +492,16 @@ const UkensTreningsplanContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Ukens treningsplan"
-        subtitle={`Uke ${WEEK_DATA.weekNumber} - ${WEEK_DATA.theme}`}
-      />
+      {/* Context info - week and theme */}
+      <div style={{
+        fontSize: '13px',
+        color: 'var(--text-secondary)',
+        marginBottom: '16px',
+      }}>
+        Uke {WEEK_DATA.weekNumber} - {WEEK_DATA.theme}
+      </div>
 
-      <div style={{ padding: '0' }}>
-        {/* Week Navigation */}
+      {/* Week Navigation */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -590,7 +588,6 @@ const UkensTreningsplanContainer = () => {
             <WeeklyGoals goals={WEEK_DATA.weeklyGoals} />
           </div>
         </div>
-      </div>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { useDashboard } from '../../hooks/useDashboard';
 import { DashboardWidget, KPIValue, KPIMeta } from './components';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 /**
  * AKGolfDashboard - Premium Player Dashboard
@@ -46,7 +47,7 @@ const WelcomeHeader = ({ player, greeting }) => (
   <div style={styles.welcomeHeader}>
     <div>
       <p style={styles.greetingLabel}>{greeting}</p>
-      <h1 style={styles.playerName}>{player.name?.split(' ')[0] || 'Spiller'}</h1>
+      <PageTitle style={styles.playerName}>{player.name?.split(' ')[0] || 'Spiller'}</PageTitle>
       <p style={styles.categoryLabel}>Kategori {player.category || 'B'}</p>
     </div>
   </div>
@@ -102,7 +103,7 @@ const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile 
 
           {/* Player Info */}
           <div style={styles.profileInfo}>
-            <h2 style={styles.profileName}>{player.name || 'Spiller'}</h2>
+            <SectionTitle style={styles.profileName}>{player.name || 'Spiller'}</SectionTitle>
             <p style={styles.profileClub}>{player.club || 'Klubb ikke satt'}</p>
             <div style={styles.profileMeta}>
               <Badge variant="accent" size="sm">Kategori {player.category || 'B'}</Badge>

@@ -8,6 +8,7 @@ import {
 import { tokens } from '../../design-tokens';
 import { playersAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 // ============================================================
 // AK GOLF ACADEMY - SPILLERPROFIL ONBOARDING
@@ -465,9 +466,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <User size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Personlig informasjon
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, marginLeft: '32px', margin: 0 }}>
                 Grunnleggende informasjon om deg som spiller
@@ -572,9 +573,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <Mail size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Kontaktinformasjon
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 Hvordan vi kan nå deg
@@ -654,10 +655,10 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             </div>
 
             <div style={{ marginTop: spacing.lg, paddingTop: spacing.lg, borderTop: `1px solid ${colors.mist}` }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', color: colors.textPrimary, marginBottom: spacing.md, display: 'flex', alignItems: 'center', gap: spacing.sm }}>
+              <SubSectionTitle style={{ fontSize: '16px', fontWeight: '600', color: colors.textPrimary, marginBottom: spacing.md, display: 'flex', alignItems: 'center', gap: spacing.sm }}>
                 <AlertCircle size={20} color={colors.forest} strokeWidth={1.5} />
                 Nødkontakt
-              </h3>
+              </SubSectionTitle>
 
               <div style={{ marginBottom: spacing.md }}>
                 <label style={labelStyle}>
@@ -720,9 +721,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <Users size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Foresatte
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 {needsGuardianConsent() 
@@ -755,9 +756,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
               borderRadius: '12px',
               marginBottom: spacing.lg
             }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', color: colors.forest, marginTop: 0, marginBottom: spacing.md }}>
+              <SubSectionTitle style={{ fontSize: '16px', fontWeight: '600', color: colors.forest, marginTop: 0, marginBottom: spacing.md }}>
                 Foresatt 1 {needsGuardianConsent() && <span style={{ color: colors.error }}>*</span>}
-              </h3>
+              </SubSectionTitle>
               
               <div style={{ marginBottom: spacing.md }}>
                 <label style={labelStyle}>Fullt navn {needsGuardianConsent() && <span style={{ color: colors.error }}>*</span>}</label>
@@ -820,9 +821,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
               border: `1px dashed ${colors.borderMedium}`,
               borderRadius: '12px'
             }}>
-              <h3 style={{ fontSize: '16px', fontWeight: '600', color: colors.textSecondary, marginTop: 0, marginBottom: spacing.md }}>
+              <SubSectionTitle style={{ fontSize: '16px', fontWeight: '600', color: colors.textSecondary, marginTop: 0, marginBottom: spacing.md }}>
                 Foresatt 2 (valgfritt)
-              </h3>
+              </SubSectionTitle>
               
               <div style={{ marginBottom: spacing.md }}>
                 <label style={labelStyle}>Fullt navn</label>
@@ -869,9 +870,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <Flag size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Golfprofil
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 Din golfhistorikk og nåværende nivå
@@ -1006,9 +1007,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <School size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Skole og livssituasjon
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 For å tilpasse trening til din hverdag
@@ -1139,9 +1140,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <Heart size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Fysisk profil
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 For fysisk tilpassing og belastningsstyring
@@ -1232,9 +1233,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <Target size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Utstyr og treningstilgang
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 For å planlegge riktig type økter
@@ -1318,9 +1319,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <Trophy size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Mål og ambisjoner
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 Hva ønsker du å oppnå?
@@ -1392,9 +1393,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <div style={{ marginBottom: spacing.lg }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
                 <Shield size={24} color={colors.forest} strokeWidth={1.5} />
-                <h2 style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
+                <SectionTitle style={{ fontSize: '20px', fontWeight: '600', color: colors.textPrimary, margin: 0 }}>
                   Samtykke og personvern
-                </h2>
+                </SectionTitle>
               </div>
               <p style={{ fontSize: '14px', color: colors.textSecondary, margin: 0 }}>
                 Les nøye og bekreft hva vi kan bruke dataene til
@@ -1407,10 +1408,10 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
               borderRadius: '12px',
               marginBottom: spacing.lg
             }}>
-              <h3 style={{ 
-                fontSize: '16px', 
-                fontWeight: '600', 
-                color: colors.forest, 
+              <SubSectionTitle style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                color: colors.forest,
                 marginTop: 0,
                 marginBottom: spacing.md,
                 display: 'flex',
@@ -1419,7 +1420,7 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
               }}>
                 <Lock size={18} strokeWidth={1.5} />
                 Om dine rettigheter (GDPR)
-              </h3>
+              </SubSectionTitle>
               <ul style={{ 
                 margin: 0, 
                 paddingLeft: '20px', 
@@ -1496,9 +1497,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
                 borderRadius: '12px',
                 marginTop: spacing.lg
               }}>
-                <h3 style={{ fontSize: '16px', fontWeight: '600', color: colors.textPrimary, marginTop: 0, marginBottom: spacing.md }}>
+                <SubSectionTitle style={{ fontSize: '16px', fontWeight: '600', color: colors.textPrimary, marginTop: 0, marginBottom: spacing.md }}>
                   Foresattes samtykke (påkrevd under 16)
-                </h3>
+                </SubSectionTitle>
                 
                 <div 
                   onClick={() => handleChange('guardianConsent', !formData.guardianConsent)}
@@ -1622,9 +1623,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
             <Check size={40} color={colors.white} strokeWidth={2.5} />
           </div>
           
-          <h2 style={{ fontSize: '24px', fontWeight: '600', color: colors.textPrimary, marginBottom: spacing.sm }}>
+          <SectionTitle style={{ fontSize: '24px', fontWeight: '600', color: colors.textPrimary, marginBottom: spacing.sm }}>
             Registrering fullført!
-          </h2>
+          </SectionTitle>
           
           <p style={{ fontSize: '16px', color: colors.textSecondary, maxWidth: '400px', margin: '0 auto' }}>
             Din spillerprofil er nå opprettet. Du vil snart motta en e-post med bekreftelse.
@@ -1655,9 +1656,9 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
           padding: spacing.lg
         }}>
           <div style={{ textAlign: 'center', marginBottom: spacing.md }}>
-            <h1 style={{ color: colors.white, fontSize: '20px', fontWeight: '600', margin: 0 }}>
+            <PageTitle style={{ color: colors.white, fontSize: '20px', fontWeight: '600', margin: 0 }}>
               AK GOLF ACADEMY
-            </h1>
+            </PageTitle>
             <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '13px', margin: 0, marginTop: spacing.xs }}>
               Spillerregistrering
             </p>

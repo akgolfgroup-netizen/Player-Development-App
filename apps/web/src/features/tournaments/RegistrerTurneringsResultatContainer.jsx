@@ -5,6 +5,7 @@ import {
   Users, Award, CheckCircle, AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography';
 import { calendarAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 
@@ -245,14 +246,9 @@ const RegistrerTurneringsResultatContainer = () => {
           padding: '16px',
           marginBottom: '20px',
         }}>
-          <h3 style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            marginBottom: '12px',
-          }}>
+          <SubSectionTitle style={{ marginBottom: '12px' }}>
             Type turnering
-          </h3>
+          </SubSectionTitle>
           <TypeSelector
             selected={formData.type}
             onChange={(type) => setFormData({ ...formData, type })}
@@ -266,14 +262,9 @@ const RegistrerTurneringsResultatContainer = () => {
           padding: '16px',
           marginBottom: '20px',
         }}>
-          <h3 style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            marginBottom: '12px',
-          }}>
+          <SubSectionTitle style={{ marginBottom: '12px' }}>
             Turneringsdetaljer
-          </h3>
+          </SubSectionTitle>
 
           {/* Name */}
           <div style={{ marginBottom: '16px' }}>
@@ -413,14 +404,9 @@ const RegistrerTurneringsResultatContainer = () => {
             justifyContent: 'space-between',
             marginBottom: '12px',
           }}>
-            <h3 style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle>
               Scorer
-            </h3>
+            </SubSectionTitle>
             {formData.rounds.length < 4 && (
               <Button
                 variant="ghost"
@@ -491,14 +477,9 @@ const RegistrerTurneringsResultatContainer = () => {
           padding: '16px',
           marginBottom: '20px',
         }}>
-          <h3 style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            marginBottom: '12px',
-          }}>
+          <SubSectionTitle style={{ marginBottom: '12px' }}>
             Plassering
-          </h3>
+          </SubSectionTitle>
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',

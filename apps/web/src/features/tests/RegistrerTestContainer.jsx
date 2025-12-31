@@ -4,8 +4,7 @@ import {
   Plus, Trash2
 } from 'lucide-react';
 import { tokens } from '../../design-tokens';
-import { PageHeader } from '../../components/layout/PageHeader';
-import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 import apiClient from '../../services/apiClient';
 
 // ============================================================================
@@ -223,14 +222,14 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
       padding: '16px',
       marginBottom: '20px',
     }}>
-      <h3 style={{
+      <SubSectionTitle style={{
         fontSize: '14px',
         fontWeight: 600,
         color: tokens.colors.charcoal,
         marginBottom: '12px',
       }}>
         Velg tester - {category.name}
-      </h3>
+      </SubSectionTitle>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
         {category.tests.map((test) => {
           const isSelected = selectedTests.some((t) => t.id === test.id);
@@ -275,14 +274,14 @@ const RecentTests = ({ tests }) => (
     borderRadius: '14px',
     padding: '16px',
   }}>
-    <h3 style={{
+    <SubSectionTitle style={{
       fontSize: '14px',
       fontWeight: 600,
       color: tokens.colors.charcoal,
       marginBottom: '12px',
     }}>
       Siste registreringer
-    </h3>
+    </SubSectionTitle>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {tests.map((test) => (
         <div
@@ -390,13 +389,7 @@ const RegistrerTestContainer = () => {
     selectedTests.every((test) => testValues[test.id] !== undefined && testValues[test.id] !== '');
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
-      <PageHeader
-        title="Registrer test"
-        subtitle="Legg inn nye testresultater"
-      />
-
-      <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
         {/* Category Selection */}
         <div style={{
           backgroundColor: tokens.colors.white,
@@ -404,14 +397,14 @@ const RegistrerTestContainer = () => {
           padding: '16px',
           marginBottom: '20px',
         }}>
-          <h3 style={{
+          <SubSectionTitle style={{
             fontSize: '14px',
             fontWeight: 600,
             color: tokens.colors.charcoal,
             marginBottom: '12px',
           }}>
             Velg testkategori
-          </h3>
+          </SubSectionTitle>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
@@ -438,14 +431,14 @@ const RegistrerTestContainer = () => {
         {/* Selected Tests with Inputs */}
         {selectedTests.length > 0 && (
           <div style={{ marginBottom: '20px' }}>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '14px',
               fontWeight: 600,
               color: tokens.colors.charcoal,
               marginBottom: '12px',
             }}>
               Registrer verdier
-            </h3>
+            </SubSectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {selectedTests.map((test) => (
                 <TestInput
@@ -525,7 +518,6 @@ const RegistrerTestContainer = () => {
 
         {/* Recent Tests */}
         <RecentTests tests={RECENT_TESTS} />
-      </div>
     </div>
   );
 };

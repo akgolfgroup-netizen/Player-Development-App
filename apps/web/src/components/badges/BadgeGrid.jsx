@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import clsx from 'clsx';
+import { SubSectionTitle } from '../typography';
 import {
   Award,
   Clock,
@@ -402,14 +403,14 @@ export const BadgeGrid = ({
       {Object.entries(groupedBadges).map(([groupKey, groupBadges]) => (
         <div key={groupKey} className="mb-8">
           {groupBy !== 'none' && (
-            <h3 className="text-base font-semibold mb-4 text-ak-text-primary flex items-center gap-2">
+            <SubSectionTitle className="text-base font-semibold mb-4 text-ak-text-primary flex items-center gap-2">
               {groupBy === 'category' && CATEGORY_LABELS[groupKey]}
               {groupBy === 'tier' && tierLabels[groupKey]}
               {groupBy === 'none' && 'Alle badges'}
               <span className="text-xs font-normal text-ak-text-muted">
                 ({groupBadges.length})
               </span>
-            </h3>
+            </SubSectionTitle>
           )}
 
           <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-4">

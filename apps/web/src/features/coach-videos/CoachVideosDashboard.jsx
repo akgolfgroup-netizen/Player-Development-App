@@ -28,6 +28,7 @@ import { coachesAPI } from '../../services/api';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // Tailwind classes
 const tw = {
@@ -523,9 +524,9 @@ export function CoachVideosDashboard({
       {/* Video feed */}
       <div className={tw.section}>
         <div className={tw.sectionHeader}>
-          <h2 className={tw.sectionTitle}>
+          <SectionTitle className={tw.sectionTitle}>
             Alle videoer ({filteredVideos.length})
-          </h2>
+          </SectionTitle>
         </div>
         <PlayerVideoFeed
           videos={filteredVideos}
@@ -548,7 +549,7 @@ export function CoachVideosDashboard({
         >
           <div className={tw.modal}>
             <div className={tw.modalHeader}>
-              <h3 className={tw.modalTitle}>Be om video</h3>
+              <SubSectionTitle className={tw.modalTitle}>Be om video</SubSectionTitle>
               <button
                 className={tw.modalClose}
                 onClick={() => setShowRequestModal(false)}

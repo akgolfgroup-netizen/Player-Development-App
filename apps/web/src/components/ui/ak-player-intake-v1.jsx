@@ -3,6 +3,7 @@ import { ClipboardList, Calendar, Target, TrendingUp, Clock, CheckCircle2, Alert
 import { tokens } from '../design-tokens';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 // Week 43 Test Results (would come from benchmark system)
 const sampleTestResults = {
@@ -156,7 +157,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
       case 0: // Season Review
         return (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Sesongoppsummering 2025</h3>
+            <SubSectionTitle className="text-lg font-semibold text-gray-900 mb-4">Sesongoppsummering 2025</SubSectionTitle>
             <p className="text-gray-600 mb-6">La oss gjennomgå sesongen som var. Denne informasjonen hjelper oss å planlegge neste sesong.</p>
             
             <div className="grid md:grid-cols-2 gap-4">
@@ -221,7 +222,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
       case 1: // Training Hours
         return (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Treningstimer Sesong 2025</h3>
+            <SubSectionTitle className="text-lg font-semibold text-gray-900 mb-4">Treningstimer Sesong 2025</SubSectionTitle>
             <p className="text-gray-600 mb-6">Loggfør dine treningstimer fra sesongen. Vær så nøyaktig som mulig.</p>
             
             <div className="bg-ak-primary/5 rounded-xl p-4 mb-6">
@@ -236,7 +237,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
               />
             </div>
 
-            <h4 className="font-medium text-gray-800 mb-3">Fordeling per kategori</h4>
+            <CardTitle className="font-medium text-gray-800 mb-3">Fordeling per kategori</CardTitle>
             <div className="grid md:grid-cols-2 gap-4">
               <InputField 
                 label="Teknisk trening (full swing)" 
@@ -301,12 +302,12 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
       case 2: // Test Reflection
         return (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Uke 43 Testresultater - Refleksjon</h3>
+            <SubSectionTitle className="text-lg font-semibold text-gray-900 mb-4">Uke 43 Testresultater - Refleksjon</SubSectionTitle>
             <p className="text-gray-600 mb-6">Dine testresultater fra Team Norway protokollen. La oss reflektere over hva de forteller oss.</p>
             
             {/* Display test results */}
             <div className="bg-gray-50 rounded-xl p-4 mb-6">
-              <h4 className="font-medium text-gray-800 mb-3">Dine resultater</h4>
+              <CardTitle className="font-medium text-gray-800 mb-3">Dine resultater</CardTitle>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                 <div className="bg-white rounded-lg p-3 border border-gray-200">
                   <div className="flex justify-between items-center mb-2">
@@ -408,7 +409,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
       case 3: // Goals
         return (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Mål for Sesong 2026</h3>
+            <SubSectionTitle className="text-lg font-semibold text-gray-900 mb-4">Mål for Sesong 2026</SubSectionTitle>
             <p className="text-gray-600 mb-6">Sett konkrete og målbare mål for neste sesong.</p>
             
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
@@ -479,11 +480,11 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
       case 4: // Planning
         return (
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Grunnperiode Plan (Uke 45+)</h3>
+            <SubSectionTitle className="text-lg font-semibold text-gray-900 mb-4">Grunnperiode Plan (Uke 45+)</SubSectionTitle>
             <p className="text-gray-600 mb-6">Planlegg strukturen for grunnperioden. Dette blir fundamentet for sesongen.</p>
             
             <div className="bg-ak-primary/5 rounded-xl p-4 mb-6">
-              <h4 className="font-medium text-ak-primary mb-2">Grunnperioden starter uke 45</h4>
+              <CardTitle className="font-medium text-ak-primary mb-2">Grunnperioden starter uke 45</CardTitle>
               <p className="text-sm text-ak-primary">
                 Fokus i grunnperioden er å bygge et solid fundament gjennom teknisk arbeid, fysisk trening og mental forberedelse. 
                 Konkurransespill er nedprioritert.
@@ -500,7 +501,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
               helpText="Realistisk timetall gitt skole/jobb og andre forpliktelser"
             />
 
-            <h4 className="font-medium text-gray-800 mb-3 mt-6">Prioriterte fokusområder</h4>
+            <CardTitle className="font-medium text-gray-800 mb-3 mt-6">Prioriterte fokusområder</CardTitle>
             <p className="text-sm text-gray-500 mb-3">Basert på dine testresultater og mål, velg tre hovedfokus for grunnperioden:</p>
             
             <div className="grid md:grid-cols-3 gap-4">
@@ -598,7 +599,7 @@ const IntakeForm = ({ onComplete, isSubmitting = false }) => {
       {/* Progress header */}
       <div className="bg-gray-50 px-6 py-4 border-b border-gray-100">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="font-semibold text-gray-900">Uke 44 - Sesongplanlegging</h2>
+          <SectionTitle className="font-semibold text-gray-900">Uke 44 - Sesongplanlegging</SectionTitle>
           <span className="text-sm text-gray-500">Steg {currentSection + 1} av {intakeSections.length}</span>
         </div>
         <div className="flex gap-1">
@@ -732,7 +733,7 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
             <MessageSquare className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="font-semibold text-white">Ukentlig Oppfølging</h2>
+            <SectionTitle className="font-semibold text-white">Ukentlig Oppfølging</SectionTitle>
             <p className="text-ak-primary-light text-sm">Uke {weekNumber} • Grunnperioden</p>
           </div>
         </div>
@@ -741,10 +742,10 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
       <div className="p-6 space-y-6">
         {/* Training Hours Check */}
         <div className="bg-ak-primary/5 rounded-xl p-4">
-          <h3 className="font-medium text-ak-primary mb-3 flex items-center gap-2">
+          <SubSectionTitle className="font-medium text-ak-primary mb-3 flex items-center gap-2">
             <Clock className="w-5 h-5" />
             Treningstimer denne uken
-          </h3>
+          </SubSectionTitle>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-ak-primary mb-1">
@@ -773,10 +774,10 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
 
         {/* Session Completion */}
         <div>
-          <h3 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
+          <SubSectionTitle className="font-medium text-gray-900 mb-3 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-ak-primary" />
-            Gjennomførte du de planlagte øktene?
-          </h3>
+            Gjennomforte du de planlagte oktene?
+          </SubSectionTitle>
           <div className="flex gap-3 mb-3">
             {['Ja, alle', 'De fleste', 'Noen', 'Nei'].map(option => (
               <button
@@ -815,10 +816,10 @@ const FollowUpCheckIn = ({ playerData, weekNumber }) => {
 
         {/* Test-based questions */}
         <div className="bg-amber-50 rounded-xl p-4">
-          <h3 className="font-medium text-amber-900 mb-3 flex items-center gap-2">
+          <SubSectionTitle className="font-medium text-amber-900 mb-3 flex items-center gap-2">
             <Target className="w-5 h-5" />
-            Basert på dine testresultater
-          </h3>
+            Basert pa dine testresultater
+          </SubSectionTitle>
           <div className="space-y-4">
             {testBasedQuestions.map((q, idx) => (
               <div key={idx} className="bg-white rounded-lg p-3 border border-amber-200">
@@ -1045,7 +1046,7 @@ export default function PlayerIntakeSystem() {
               <ClipboardList className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">AK Golf Academy</h1>
+              <PageTitle className="text-2xl font-bold text-gray-900">AK Golf Academy</PageTitle>
               <p className="text-gray-500">Player Intake & Follow-up System</p>
             </div>
           </div>
@@ -1082,7 +1083,7 @@ export default function PlayerIntakeSystem() {
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-medium text-red-800">Feil ved innsending</h3>
+              <SubSectionTitle className="font-medium text-red-800">Feil ved innsending</SubSectionTitle>
               <p className="text-sm text-red-600">{submitError}</p>
             </div>
           </div>
@@ -1095,7 +1096,7 @@ export default function PlayerIntakeSystem() {
               <div className="w-16 h-16 bg-ak-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 className="w-8 h-8 text-ak-primary" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Intake fullført!</h2>
+              <SectionTitle className="text-xl font-semibold text-gray-900 mb-2">Intake fullført!</SectionTitle>
               <p className="text-gray-600 mb-4">
                 Takk for at du fylte ut sesongplanleggingen. Din trener vil gjennomgå svarene og ta kontakt.
               </p>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { SectionTitle } from '../../../components/typography';
 
 const YearView = ({
   currentYear,
@@ -130,7 +131,7 @@ const YearView = ({
         >
           <ChevronLeft size={20} />
         </button>
-        <h2 className="text-xl font-bold text-ak-charcoal">{currentYear}</h2>
+        <SectionTitle className="text-xl font-bold text-ak-charcoal">{currentYear}</SectionTitle>
         <button
           onClick={() => onNavigate?.(1)}
           className="p-2 hover:bg-ak-snow rounded-lg transition-colors"

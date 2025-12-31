@@ -21,6 +21,7 @@ import StateCard from '../../ui/composites/StateCard';
 
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { useScreenView } from '../../analytics/useScreenView';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 interface CategoryData {
   value: number;
@@ -213,7 +214,7 @@ const StrokesGainedPage: React.FC = () => {
                 <BarChart3 size={24} color="white" />
               </div>
               <div>
-                <h2 style={styles.totalTitle}>Strokes Gained Total</h2>
+                <CardTitle style={styles.totalTitle}>Strokes Gained Total</CardTitle>
                 <p style={styles.totalSubtitle}>
                   Basert på {sgData?.byCategory ?
                     Object.values(sgData.byCategory).reduce((sum, cat) => sum + cat.testCount, 0) : 0} tester
@@ -248,7 +249,7 @@ const StrokesGainedPage: React.FC = () => {
 
       {/* Category Breakdown */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Kategori-analyse</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Kategori-analyse</SectionTitle>
         <div style={styles.categoryList}>
           {sgData?.byCategory && Object.entries(sgData.byCategory).map(([key, cat]) => {
             const Icon = getCategoryIcon(key);
@@ -268,7 +269,7 @@ const StrokesGainedPage: React.FC = () => {
                         <Icon size={20} color="var(--accent)" />
                       </div>
                       <div>
-                        <h3 style={styles.categoryTitle}>{info.label}</h3>
+                        <SubSectionTitle style={styles.categoryTitle}>{info.label}</SubSectionTitle>
                         <p style={styles.categoryDesc}>{info.description}</p>
                       </div>
                     </div>
@@ -332,7 +333,7 @@ const StrokesGainedPage: React.FC = () => {
 
                       {/* Tips */}
                       <div style={styles.tipsSection}>
-                        <h4 style={styles.tipsTitle}>Tips for forbedring</h4>
+                        <CardTitle style={styles.tipsTitle}>Tips for forbedring</CardTitle>
                         <ul style={styles.tipsList}>
                           {info.tips.map((tip, i) => (
                             <li key={i} style={styles.tipItem}>{tip}</li>
@@ -356,7 +357,7 @@ const StrokesGainedPage: React.FC = () => {
 
       {/* Weekly Trend */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Ukentlig utvikling</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Ukentlig utvikling</SectionTitle>
         <Card>
           <div style={styles.trendChart}>
             {sgData?.weeklyTrend?.map((week, index) => (
@@ -396,12 +397,6 @@ const StrokesGainedPage: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   section: {
     marginBottom: 'var(--spacing-6)',
-  },
-  sectionTitle: {
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    marginBottom: 'var(--spacing-3)',
   },
   infoBanner: {
     display: 'flex',
@@ -555,9 +550,6 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
   },
   categoryTitle: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
     margin: 0,
   },
   categoryDesc: {
@@ -641,7 +633,6 @@ const styles: Record<string, React.CSSProperties> = {
   },
   tipsTitle: {
     fontSize: 'var(--font-size-footnote)',
-    fontWeight: 600,
     color: 'var(--text-secondary)',
     margin: '0 0 var(--spacing-2) 0',
   },

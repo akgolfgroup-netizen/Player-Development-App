@@ -3,8 +3,8 @@ import {
   ClipboardCheck, Star, ChevronRight,
   Trophy, Dumbbell, Search, Plus
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA
@@ -171,14 +171,14 @@ const EvaluationCard = ({ evaluation, onClick }) => {
             justifyContent: 'space-between',
             marginBottom: '4px',
           }}>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '14px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: 0,
             }}>
               {evaluation.title}
-            </h3>
+            </SubSectionTitle>
             <RatingStars rating={evaluation.rating} />
           </div>
 
@@ -346,11 +346,6 @@ const EvalueringContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Evalueringer"
-        subtitle="Oversikt over alle dine evalueringer"
-      />
-
       <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
         {/* Stats Overview */}
         <StatsOverview stats={STATS} />

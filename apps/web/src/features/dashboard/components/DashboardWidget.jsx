@@ -1,4 +1,5 @@
 import React from 'react';
+import { SubSectionTitle } from '../../../components/typography';
 
 /**
  * DashboardWidget - Card Shell
@@ -78,7 +79,7 @@ const DashboardWidget = ({
           <div style={styles.header}>
             <div style={styles.headerLeft}>
               {Icon && <Icon size={18} style={{ color: 'var(--text-secondary)' }} />}
-              <h3 style={styles.title}>{title}</h3>
+              <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
             </div>
           </div>
         )}
@@ -106,7 +107,7 @@ const DashboardWidget = ({
             <div style={styles.headerLeft}>
               {Icon && <Icon size={18} style={{ color: 'var(--text-secondary)' }} />}
               <div>
-                <h3 style={styles.title}>{title}</h3>
+                <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
                 {subtitle && <p style={styles.subtitle}>{subtitle}</p>}
               </div>
             </div>
@@ -146,7 +147,7 @@ const DashboardWidget = ({
           <div style={styles.headerLeft}>
             {Icon && <Icon size={18} style={{ color: 'var(--text-secondary)' }} />}
             <div>
-              <h3 style={styles.title}>{title}</h3>
+              <SubSectionTitle style={styles.title}>{title}</SubSectionTitle>
               {subtitle && <p style={styles.subtitle}>{subtitle}</p>}
             </div>
           </div>

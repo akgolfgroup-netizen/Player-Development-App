@@ -1,7 +1,7 @@
 import React from 'react';
 // UiCanon: Using CSS variables
-import { PageHeader } from '../../components/layout/PageHeader';
 import StateCard from '../../ui/composites/StateCard';
+import { SubSectionTitle } from '../../components/typography';
 
 // Design tokens
 const colors = {
@@ -24,13 +24,7 @@ export default function ProgressDashboard({ data }) {
   const { overview, weeklyTrend, periodBreakdown, upcomingSessions } = data;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: colors.snow }}>
-      <PageHeader
-        title="Min Fremgang"
-        subtitle="Oversikt over treningsfremgang"
-      />
-
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {/* Overview Cards */}
         <div style={{
           display: 'grid',
@@ -70,15 +64,9 @@ export default function ProgressDashboard({ data }) {
           boxShadow: 'var(--shadow-card)',
           padding: '24px'
         }}>
-          <h3 style={{
-            fontSize: '18px',
-            fontWeight: 700,
-            color: colors.charcoal,
-            margin: 0,
-            marginBottom: '16px'
-          }}>
+          <SubSectionTitle style={{ marginBottom: '16px' }}>
             12-ukers trend
-          </h3>
+          </SubSectionTitle>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {weeklyTrend.map((week, i) => (
               <div key={i} style={{
@@ -147,15 +135,9 @@ export default function ProgressDashboard({ data }) {
           boxShadow: 'var(--shadow-card)',
           padding: '24px'
         }}>
-          <h3 style={{
-            fontSize: '18px',
-            fontWeight: 700,
-            color: colors.charcoal,
-            margin: 0,
-            marginBottom: '16px'
-          }}>
+          <SubSectionTitle style={{ marginBottom: '16px' }}>
             Periodeoversikt
-          </h3>
+          </SubSectionTitle>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
@@ -208,15 +190,9 @@ export default function ProgressDashboard({ data }) {
           boxShadow: 'var(--shadow-card)',
           padding: '24px'
         }}>
-          <h3 style={{
-            fontSize: '18px',
-            fontWeight: 700,
-            color: colors.charcoal,
-            margin: 0,
-            marginBottom: '16px'
-          }}>
+          <SubSectionTitle style={{ marginBottom: '16px' }}>
             Neste 7 dager
-          </h3>
+          </SubSectionTitle>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {upcomingSessions.map((session, i) => (
               <div
@@ -254,7 +230,6 @@ export default function ProgressDashboard({ data }) {
             ))}
           </div>
         </div>
-      </div>
     </div>
   );
 }

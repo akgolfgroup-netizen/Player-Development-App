@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Search, Clock, Target, Play, Dumbbell } from 'lucide-react';
 import { Workout, WorkoutCategory } from './types';
+import { SectionTitle } from '../../../components/typography';
 
 interface WorkoutSelectorModalProps {
   isOpen: boolean;
@@ -329,7 +330,7 @@ export const WorkoutSelectorModal: React.FC<WorkoutSelectorModalProps> = ({
       <div style={{ ...styles.modal, ...(isOpen ? styles.modalOpen : {}) }}>
         {/* Header */}
         <div style={styles.header}>
-          <h2 style={styles.title}>Velg okt</h2>
+          <SectionTitle style={styles.title}>Velg okt</SectionTitle>
           <button
             style={styles.closeButton}
             onClick={onClose}

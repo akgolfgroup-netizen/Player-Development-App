@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
+import { SubSectionTitle } from '../../components/typography';
 
 const COMPONENT_LABELS = {
   OTT: 'Off the Tee',
@@ -83,7 +84,7 @@ export function TeamFocusHeatmap({ coachId, teamId, className = '' }) {
   return (
     <div className={`bg-white rounded-xl p-6 shadow-sm ${className}`}>
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Team Focus Heatmap</h3>
+        <SubSectionTitle className="text-lg font-semibold text-gray-900">Team Focus Heatmap</SubSectionTitle>
         <span className="text-sm text-gray-500">{teamFocus.playerCount} spillere</span>
       </div>
 

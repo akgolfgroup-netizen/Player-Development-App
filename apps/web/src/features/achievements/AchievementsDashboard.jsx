@@ -10,6 +10,7 @@
  */
 import React, { useState, useMemo } from 'react';
 import { BadgeGrid } from '../../components/badges';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 /**
  * Category labels for display
@@ -40,19 +41,6 @@ export default function AchievementsDashboard({
 }) {
   const [filter, setFilter] = useState('all');
 
-  // Calculate stats from badge progress if not provided
-  const displayStats = useMemo(() => {
-    if (stats) return stats;
-
-    const bpStats = badgeProgress?.stats || {};
-    return {
-      totalXP: bpStats.totalXP || 0,
-      unlockedCount: bpStats.unlocked || badgeProgress?.unlockedBadges?.length || 0,
-      totalCount: bpStats.total || badges.length || 0,
-      percentComplete: bpStats.percentComplete || 0,
-    };
-  }, [stats, badgeProgress, badges]);
-
   // Get unique categories from badges
   const categories = useMemo(() => {
     const cats = new Set(['all']);
@@ -65,47 +53,8 @@ export default function AchievementsDashboard({
     return Array.from(cats);
   }, [badges, achievements]);
 
-  // Calculate XP from unlocked badges
-  const totalXP = useMemo(() => {
-    if (displayStats.totalXP) return displayStats.totalXP;
-
-    const unlockedBadgeIds = badgeProgress?.unlockedBadges || [];
-    return badges
-      .filter((b) => unlockedBadgeIds.includes(b.id))
-      .reduce((sum, b) => sum + (b.xp || 0), 0);
-  }, [displayStats.totalXP, badges, badgeProgress]);
-
   return (
     <div className="space-y-6">
-      {/* XP Header - using AK Golf Academy brand colors */}
-      <div className="bg-gradient-to-r from-ak-primary to-ak-primary-light rounded-lg shadow-lg p-6 text-white">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold">Prestasjoner</h1>
-            <p className="text-white/80 mt-1">
-              {displayStats.unlockedCount} / {displayStats.totalCount} badges opptjent
-            </p>
-          </div>
-          <div className="text-right">
-            <div className="text-4xl font-bold">{totalXP}</div>
-            <div className="text-white/80">Total XP</div>
-          </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-4">
-          <div className="bg-white/20 rounded-full h-3 overflow-hidden">
-            <div
-              className="bg-ak-gold h-full transition-all duration-500"
-              style={{ width: `${Math.min(displayStats.percentComplete || 0, 100)}%` }}
-            />
-          </div>
-          <div className="text-sm text-white/70 mt-1 text-right">
-            {displayStats.percentComplete || 0}% fullført
-          </div>
-        </div>
-      </div>
-
       {/* Category Filters */}
       <div className="flex gap-2 overflow-x-auto pb-2">
         {categories.map((cat) => (
@@ -137,7 +86,7 @@ export default function AchievementsDashboard({
       {/* Recent Achievements */}
       {achievements.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-xl font-bold text-ak-ink mb-4">Nylige Prestasjoner</h2>
+          <SectionTitle className="text-xl font-bold text-ak-ink mb-4">Nylige Prestasjoner</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {achievements.slice(0, 6).map((achievement) => (
               <AchievementCard key={achievement.id} achievement={achievement} />
@@ -171,7 +120,7 @@ function AchievementCard({ achievement }) {
         <div className="flex-1">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="text-lg font-bold text-ak-ink">{name}</h3>
+              <SubSectionTitle className="text-lg font-bold text-ak-ink">{name}</SubSectionTitle>
               <p className="text-sm text-ak-steel">{description}</p>
             </div>
             {xp > 0 && (

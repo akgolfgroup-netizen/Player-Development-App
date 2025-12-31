@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { coachesAPI } from '../../services/api';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 interface Player {
   id: string;
@@ -391,14 +392,14 @@ export const CoachPlanningHub: React.FC = () => {
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <h3 style={{
+                    <SubSectionTitle style={{
                       fontSize: '15px',
                       fontWeight: '600',
                       color: 'var(--text-primary)',
                       margin: 0
                     }}>
                       {player.name}
-                    </h3>
+                    </SubSectionTitle>
                     <span style={{
                       fontSize: '10px',
                       fontWeight: '600',
@@ -481,14 +482,14 @@ export const CoachPlanningHub: React.FC = () => {
                 <Users size={20} color={group.hasGroupPlan ? 'var(--success)' : 'var(--warning)'} />
               </div>
               <div style={{ flex: 1 }}>
-                <h3 style={{
+                <SubSectionTitle style={{
                   fontSize: '15px',
                   fontWeight: '600',
                   color: 'var(--text-primary)',
                   margin: '0 0 4px 0'
                 }}>
                   {group.name}
-                </h3>
+                </SubSectionTitle>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
                     {group.memberCount} medlemmer

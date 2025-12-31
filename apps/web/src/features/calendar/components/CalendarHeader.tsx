@@ -15,6 +15,7 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import type { CalendarView } from '../hooks/useCalendarState';
+import { SectionTitle } from '../../../components/typography';
 
 interface CalendarHeaderProps {
   view: CalendarView;
@@ -109,12 +110,12 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
         </div>
 
         {/* Title */}
-        <h2
+        <SectionTitle
           className="text-lg font-semibold capitalize"
           style={{ color: 'var(--calendar-text-primary)' }}
         >
           {getViewLabel()}
-        </h2>
+        </SectionTitle>
 
         {/* Week number badge (only for week view) */}
         {view === 'week' && (

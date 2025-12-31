@@ -1,4 +1,5 @@
 import React from 'react';
+import { PageTitle } from '../../components/typography';
 
 /**
  * PageHeader Raw Block
@@ -105,7 +106,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 
           {/* Title and Subtitle */}
           <div style={styles.titleWrapper}>
-            <h1 style={styles.title}>{title}</h1>
+            <PageTitle style={styles.title}>{title}</PageTitle>
             {subtitle && (
               <p style={styles.subtitle}>{subtitle}</p>
             )}

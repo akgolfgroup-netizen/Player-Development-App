@@ -13,6 +13,7 @@
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import apiClient from '../../services/apiClient';
+import { SectionTitle, SubSectionTitle } from '../typography';
 
 // Visibility options
 export const VISIBILITY_OPTIONS = {
@@ -535,10 +536,10 @@ export function ShareDialog({
       <div ref={dialogRef} className={className} style={{ ...styles.dialog, ...style }}>
         {/* Header */}
         <div style={styles.header}>
-          <h2 id="share-dialog-title" style={styles.title}>
+          <SectionTitle id="share-dialog-title" style={styles.title}>
             <ShareIcon />
             Del video
-          </h2>
+          </SectionTitle>
           <button
             style={styles.closeButton}
             onClick={onClose}
@@ -567,7 +568,7 @@ export function ShareDialog({
 
           {/* Visibility options */}
           <div style={styles.section}>
-            <h3 style={styles.sectionTitle}>Synlighet</h3>
+            <SubSectionTitle style={styles.sectionTitle}>Synlighet</SubSectionTitle>
             <div style={styles.visibilityOptions}>
               {VISIBILITY_CONFIGS.map((option) => {
                 const Icon = option.icon;
@@ -609,7 +610,7 @@ export function ShareDialog({
           {/* Link section (when sharing is enabled) */}
           {showLinkSection && (
             <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Delingslenke</h3>
+              <SubSectionTitle style={styles.sectionTitle}>Delingslenke</SubSectionTitle>
               <div style={styles.linkSection}>
                 <div style={styles.linkInputContainer}>
                   <input

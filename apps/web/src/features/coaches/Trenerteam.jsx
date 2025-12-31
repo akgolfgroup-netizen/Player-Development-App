@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 // =====================================================
 // AK GOLF - TRENERTEAM SKJERM
@@ -133,9 +134,9 @@ const TrainerCard = ({ trainer, isSelected, onSelect }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div>
-              <h3 className="font-semibold text-base" style={{ color: 'var(--text-primary)' }}>
+              <SubSectionTitle className="font-semibold text-base" style={{ color: 'var(--text-primary)' }}>
                 {trainer.name}
-              </h3>
+              </SubSectionTitle>
               <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                 {roleLabels[trainer.role]}
               </p>
@@ -192,9 +193,9 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           <Avatar name={trainer.name} size="xl" role={trainer.role} />
 
-          <h2 className="font-bold text-xl mt-4" style={{ color: 'var(--text-primary)' }}>
+          <SectionTitle className="font-bold text-xl mt-4" style={{ color: 'var(--text-primary)' }}>
             {trainer.name}
-          </h2>
+          </SectionTitle>
           <p style={{ color: 'var(--text-secondary)' }}>{roleLabels[trainer.role]}</p>
 
           {trainer.isPrimary && (
@@ -206,9 +207,9 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
         <div className="p-6 space-y-6">
           {/* Kontakt */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
+            <CardTitle className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Kontaktinfo
-            </h4>
+            </CardTitle>
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-sm">
                 <span>📧</span>
@@ -227,9 +228,9 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Spesialiseringer */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
+            <CardTitle className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Spesialiseringer
-            </h4>
+            </CardTitle>
             <div className="flex flex-wrap gap-2">
               {trainer.specializations.map((spec, idx) => (
                 <Badge key={idx} variant="accent">{spec}</Badge>
@@ -239,9 +240,9 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Sertifiseringer */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
+            <CardTitle className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Sertifiseringer
-            </h4>
+            </CardTitle>
             <div className="space-y-2">
               {trainer.certifications.map((cert, idx) => (
                 <div key={idx} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
@@ -254,9 +255,9 @@ const TrainerDetail = ({ trainer, onClose, onMessage, onSchedule }) => {
 
           {/* Bio */}
           <div>
-            <h4 className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
+            <CardTitle className="font-medium text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
               Om treneren
-            </h4>
+            </CardTitle>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               {trainer.bio}
             </p>
@@ -320,9 +321,9 @@ const UpcomingSession = ({ session }) => {
 
       <div className="flex-1">
         <div className="flex items-center justify-between">
-          <h4 className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>
+          <CardTitle className="font-medium text-sm" style={{ color: 'var(--text-primary)' }}>
             {session.title}
-          </h4>
+          </CardTitle>
           <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>
             {session.duration} min
           </span>
@@ -351,9 +352,9 @@ const MessagePreview = ({ message, onView }) => (
 
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between">
-        <h4 className="font-medium text-sm truncate" style={{ color: 'var(--text-primary)' }}>
+        <CardTitle className="font-medium text-sm truncate" style={{ color: 'var(--text-primary)' }}>
           {message.from}
-        </h4>
+        </CardTitle>
         <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>
           {message.time}
         </span>
@@ -608,9 +609,9 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
                   role={trainers[0].role}
                 />
                 <div className="flex-1">
-                  <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>
+                  <SubSectionTitle className="font-semibold" style={{ color: 'var(--text-primary)' }}>
                     {trainers[0].name}
-                  </h3>
+                  </SubSectionTitle>
                   <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                     Hovedtrener • {trainers[0].sessionsTotal} økter sammen
                   </p>
@@ -627,9 +628,9 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
             {/* Alle trenere */}
             <div>
-              <h3 className="font-semibold text-sm mb-3 px-1" style={{ color: 'var(--text-primary)' }}>
+              <SubSectionTitle className="font-semibold text-sm mb-3 px-1" style={{ color: 'var(--text-primary)' }}>
                 Hele teamet
-              </h3>
+              </SubSectionTitle>
               <div className="space-y-3">
                 {trainers.map(trainer => (
                   <TrainerCard
@@ -644,9 +645,9 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
             {/* Team statistikk */}
             <Card className="p-4">
-              <h3 className="font-semibold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>
+              <SubSectionTitle className="font-semibold text-sm mb-4" style={{ color: 'var(--text-primary)' }}>
                 Team-statistikk
-              </h3>
+              </SubSectionTitle>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>
@@ -681,9 +682,9 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
         {activeTab === 'schedule' && (
           <>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
+              <SubSectionTitle className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
                 Kommende økter med trenere
-              </h3>
+              </SubSectionTitle>
               <Button variant="ghost" size="sm">Se alle</Button>
             </div>
 
@@ -695,9 +696,9 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
 
             {/* Book ny økt */}
             <Card className="p-4 mt-4">
-              <h3 className="font-semibold text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
+              <SubSectionTitle className="font-semibold text-sm mb-3" style={{ color: 'var(--text-primary)' }}>
                 Book ny økt
-              </h3>
+              </SubSectionTitle>
               <div className="grid grid-cols-2 gap-3">
                 {trainers.map(trainer => (
                   <button
@@ -725,9 +726,9 @@ const Trenerteam = ({ trainers: apiTrainers = null, sessions: apiSessions = null
         {activeTab === 'messages' && (
           <>
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
+              <SubSectionTitle className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
                 Meldinger
-              </h3>
+              </SubSectionTitle>
               <Button variant="primary" size="sm" icon="✏️">
                 Ny melding
               </Button>

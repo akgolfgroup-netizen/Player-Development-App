@@ -13,6 +13,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { SectionTitle } from '../../../components/typography';
 
 interface CreateSessionModalProps {
   isOpen: boolean;
@@ -119,12 +120,12 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
             className="flex items-center justify-between p-4 border-b"
             style={{ borderColor: 'var(--calendar-border)' }}
           >
-            <h2
+            <SectionTitle
               className="text-lg font-semibold"
               style={{ color: 'var(--calendar-text-primary)' }}
             >
               Ny økt
-            </h2>
+            </SectionTitle>
             <button
               onClick={onClose}
               className="p-1 rounded-lg transition-colors"

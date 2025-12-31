@@ -1,4 +1,5 @@
 import React from 'react';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 /**
  * LandingHero
@@ -180,7 +181,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           )}
 
           {/* Headline */}
-          <h1 style={styles.headline}>
+          <PageTitle style={styles.headline}>
             {headlineHighlight ? (
               <>
                 {headline.split(headlineHighlight)[0]}
@@ -190,7 +191,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             ) : (
               headline
             )}
-          </h1>
+          </PageTitle>
 
           {/* Description */}
           {description && (
@@ -239,7 +240,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             {(features.title || features.subtitle) && (
               <div style={styles.featuresSectionHeader}>
                 {features.title && (
-                  <h2 style={styles.featuresTitle}>{features.title}</h2>
+                  <SectionTitle style={styles.featuresTitle}>{features.title}</SectionTitle>
                 )}
                 {features.subtitle && (
                   <p style={styles.featuresSubtitle}>{features.subtitle}</p>
@@ -258,7 +259,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                     </div>
                   )}
                   {/* Content */}
-                  <h3 style={styles.featureCardTitle}>{feature.title}</h3>
+                  <SubSectionTitle style={styles.featureCardTitle}>{feature.title}</SubSectionTitle>
                   <p style={styles.featureCardDescription}>{feature.description}</p>
                 </div>
               ))}
@@ -303,7 +304,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                 <div style={styles.footerSections}>
                   {footer.sections.map((section, index) => (
                     <div key={index} style={styles.footerSection}>
-                      <h4 style={styles.footerSectionTitle}>{section.title}</h4>
+                      <CardTitle style={styles.footerSectionTitle}>{section.title}</CardTitle>
                       <ul style={styles.footerLinks}>
                         {section.links.map((link, linkIndex) => (
                           <li key={linkIndex}>
@@ -330,7 +331,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
               {/* Contact column */}
               {footer.contact && (
                 <div style={styles.footerContact}>
-                  <h4 style={styles.footerSectionTitle}>Kontakt</h4>
+                  <CardTitle style={styles.footerSectionTitle}>Kontakt</CardTitle>
                   <div style={styles.contactInfo}>
                     {footer.contact.email && (
                       <a href={`mailto:${footer.contact.email}`} style={styles.contactItem}>

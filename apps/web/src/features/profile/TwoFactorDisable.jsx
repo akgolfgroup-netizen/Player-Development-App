@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShieldOff, Lock, AlertTriangle, CheckCircle } from 'lucide-react';
 import { authAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 const TwoFactorDisable = ({ onConfirm, onCancel }) => {
   const [step, setStep] = useState(1); // 1: Warning, 2: Confirm with password, 3: Success
@@ -56,14 +57,13 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         <AlertTriangle size={40} color={'var(--warning)'} />
       </div>
 
-      <h2 style={{
+      <SectionTitle style={{
         fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
         Deaktiver tofaktorautentisering?
-      </h2>
+      </SectionTitle>
 
       <p style={{
         fontSize: '15px', lineHeight: '20px', fontWeight: 600,
@@ -82,9 +82,8 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
-        <h3 style={{
-          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-          color: 'var(--text-primary)',
+        <SubSectionTitle style={{
+          fontSize: '17px', lineHeight: '22px',
           marginBottom: '12px',
           display: 'flex',
           alignItems: 'center',
@@ -92,7 +91,7 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         }}>
           <ShieldOff size={20} color={'var(--error)'} />
           Sikkerhetsrisiko
-        </h3>
+        </SubSectionTitle>
         <ul style={{
           margin: 0,
           paddingLeft: '20px',
@@ -156,14 +155,13 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         <Lock size={40} color={'var(--accent)'} />
       </div>
 
-      <h2 style={{
+      <SectionTitle style={{
         fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
         Bekreft med passord
-      </h2>
+      </SectionTitle>
 
       <p style={{
         fontSize: '15px', lineHeight: '20px', fontWeight: 600,
@@ -292,13 +290,12 @@ const TwoFactorDisable = ({ onConfirm, onCancel }) => {
         <CheckCircle size={40} color={'var(--success)'} />
       </div>
 
-      <h2 style={{
+      <SectionTitle style={{
         fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
       }}>
         2FA deaktivert
-      </h2>
+      </SectionTitle>
 
       <p style={{
         fontSize: '15px', lineHeight: '20px', fontWeight: 600,

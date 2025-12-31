@@ -31,6 +31,7 @@ import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 interface PlayerStatus {
   id: string;
@@ -377,14 +378,14 @@ export const CoachAthleteStatus: React.FC = () => {
             <Activity size={24} color="white" />
           </div>
           <div>
-            <h1 style={{
+            <PageTitle style={{
               fontSize: '28px',
               fontWeight: '700',
               color: 'var(--text-primary)',
               margin: 0
             }}>
               Spillerstatus
-            </h1>
+            </PageTitle>
             <p style={{
               fontSize: '14px',
               color: 'var(--text-secondary)',
@@ -561,14 +562,14 @@ export const CoachAthleteStatus: React.FC = () => {
                     </div>
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                        <h3 style={{
+                        <SubSectionTitle style={{
                           fontSize: '16px',
                           fontWeight: '600',
                           color: 'var(--text-primary)',
                           margin: 0
                         }}>
                           {player.name}
-                        </h3>
+                        </SubSectionTitle>
                         <span style={{
                           fontSize: '10px',
                           fontWeight: '600',

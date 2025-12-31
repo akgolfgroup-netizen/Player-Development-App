@@ -22,6 +22,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // Video categories for golf
 const VIDEO_CATEGORIES = [
@@ -946,7 +947,7 @@ export function ReferenceLibrary({
       {/* Header */}
       <div style={styles.header}>
         <div style={styles.titleSection}>
-          <h2 style={styles.title}>Referansebibliotek</h2>
+          <SectionTitle style={styles.title}>Referansebibliotek</SectionTitle>
           <span style={styles.videoCount}>{videos.length} videoer</span>
         </div>
         <Button
@@ -1013,7 +1014,7 @@ export function ReferenceLibrary({
       ) : (
         <div style={styles.emptyState}>
           <FolderVideoIcon style={styles.emptyIcon} />
-          <h3 style={styles.emptyTitle}>Ingen videoer funnet</h3>
+          <SubSectionTitle style={styles.emptyTitle}>Ingen videoer funnet</SubSectionTitle>
           <p style={styles.emptyText}>
             {searchQuery || categoryFilter || typeFilter
               ? 'Prøv å justere søket eller filtrene dine.'
@@ -1036,7 +1037,7 @@ export function ReferenceLibrary({
         <div style={styles.modalOverlay} onClick={() => setShowUploadModal(false)}>
           <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div style={styles.modalHeader}>
-              <h3 style={styles.modalTitle}>Last opp referansevideo</h3>
+              <SubSectionTitle style={styles.modalTitle}>Last opp referansevideo</SubSectionTitle>
               <button
                 style={styles.closeButton}
                 onClick={() => setShowUploadModal(false)}
@@ -1171,7 +1172,7 @@ export function ReferenceLibrary({
         <div style={styles.modalOverlay} onClick={() => setShowShareModal(false)}>
           <div style={{ ...styles.modal, ...styles.shareModal }} onClick={(e) => e.stopPropagation()}>
             <div style={styles.modalHeader}>
-              <h3 style={styles.modalTitle}>Del med spillere</h3>
+              <SubSectionTitle style={styles.modalTitle}>Del med spillere</SubSectionTitle>
               <button
                 style={styles.closeButton}
                 onClick={() => setShowShareModal(false)}
@@ -1237,7 +1238,7 @@ export function ReferenceLibrary({
         <div style={styles.modalOverlay} onClick={() => setVideoToDelete(null)}>
           <div style={{ ...styles.modal, ...styles.shareModal }} onClick={(e) => e.stopPropagation()}>
             <div style={styles.modalHeader}>
-              <h3 style={styles.modalTitle}>Slett video</h3>
+              <SubSectionTitle style={styles.modalTitle}>Slett video</SubSectionTitle>
               <button
                 style={styles.closeButton}
                 onClick={() => setVideoToDelete(null)}

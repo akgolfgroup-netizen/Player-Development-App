@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { REVIEW_STATUS } from './PlayerVideoFeed';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 // Styles
 const styles = {
@@ -339,10 +340,10 @@ export function PendingReviewQueue({
     return (
       <div className={className} style={{ ...styles.container, ...style }}>
         <div style={styles.header}>
-          <h3 style={styles.title}>
+          <SubSectionTitle style={styles.title}>
             <ClockIcon />
             Venter på gjennomgang
-          </h3>
+          </SubSectionTitle>
         </div>
         <div style={styles.emptyState}>
           <CheckCircleIcon />
@@ -358,11 +359,11 @@ export function PendingReviewQueue({
     <div className={className} style={{ ...styles.container, ...style }}>
       {/* Header */}
       <div style={styles.header}>
-        <h3 style={styles.title}>
+        <SubSectionTitle style={styles.title}>
           <ClockIcon />
           Venter på gjennomgang
           <span style={styles.badge}>{pendingVideos.length}</span>
-        </h3>
+        </SubSectionTitle>
         {pendingVideos.length > maxVisible && (
           <Button variant="ghost" size="sm" onClick={onViewAll}>
             Se alle

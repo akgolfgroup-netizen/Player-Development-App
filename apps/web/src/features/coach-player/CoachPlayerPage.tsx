@@ -12,6 +12,7 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import StateCard from '../../ui/composites/StateCard';
+import { PageTitle, SectionTitle } from '../../components/typography';
 
 // ═══════════════════════════════════════════
 // STYLES
@@ -251,7 +252,7 @@ export function CoachPlayerPage() {
           ← Tilbake
         </Button>
         <div style={styles.playerInfo}>
-          <h1 style={styles.playerName}>{player.name}</h1>
+          <PageTitle style={styles.playerName}>{player.name}</PageTitle>
           {player.tier && (
             <p style={styles.playerMeta}>{player.tier}</p>
           )}
@@ -260,13 +261,13 @@ export function CoachPlayerPage() {
 
       {/* KPI Stats */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Nøkkeltall</h2>
+        <SectionTitle style={styles.sectionTitle}>Nøkkeltall</SectionTitle>
         <StatsGridTemplate items={stats} columns={2} />
       </section>
 
       {/* Recent Videos */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Siste videoer</h2>
+        <SectionTitle style={styles.sectionTitle}>Siste videoer</SectionTitle>
         <Card>
           {videos.length === 0 ? (
             <StateCard variant="empty" title="Ingen videoer" compact />
@@ -307,7 +308,7 @@ export function CoachPlayerPage() {
 
       {/* Recent Sessions */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Siste økter</h2>
+        <SectionTitle style={styles.sectionTitle}>Siste økter</SectionTitle>
         <Card>
           {sessions.length === 0 ? (
             <StateCard variant="empty" title="Ingen økter" compact />
@@ -334,7 +335,7 @@ export function CoachPlayerPage() {
 
       {/* Goals Summary */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Aktive mål</h2>
+        <SectionTitle style={styles.sectionTitle}>Aktive mål</SectionTitle>
         <Card>
           {goals.length === 0 ? (
             <StateCard variant="empty" title="Ingen aktive mål" compact />

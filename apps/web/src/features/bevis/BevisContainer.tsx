@@ -6,8 +6,8 @@ import {
   CheckCircle, AlertCircle, X, ChevronLeft, ChevronRight,
   MessageSquare, Clock, Tag
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
 import { listVideos } from '../../services/videoApi';
+import { CardTitle } from '../../components/typography';
 import {
   Card,
   CardContent,
@@ -256,9 +256,9 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onClick }) => (
         )}
       </div>
 
-      <h4 className="text-sm font-semibold text-text-primary truncate mb-1">
+      <CardTitle className="text-sm font-semibold text-text-primary truncate mb-1">
         {video.title}
-      </h4>
+      </CardTitle>
 
       <div className="flex items-center gap-1 text-[11px] text-text-secondary">
         <Calendar className="w-3 h-3" />
@@ -529,7 +529,6 @@ const BevisContainer: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background-default">
-        <PageHeader title="Videobevis" subtitle="Dokumenter din fremgang" />
         <div className="px-6 pb-6 max-w-7xl mx-auto">
           {/* Skeleton stats */}
           <div className="grid grid-cols-3 gap-3 mb-6">
@@ -555,8 +554,6 @@ const BevisContainer: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background-default">
-      <PageHeader title="Videobevis" subtitle="Dokumenter din fremgang" />
-
       <div className="px-6 pb-6 max-w-7xl mx-auto space-y-5">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">

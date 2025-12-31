@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 // Types
 interface TournamentEntry {
@@ -690,9 +691,9 @@ export default function CoachAthleteTournaments() {
               }}
             >
               <Users size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 Ingen spillere funnet
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginTop: '8px' }}>
                 Prøv å endre søk eller filter
               </p>
@@ -727,7 +728,7 @@ export default function CoachAthleteTournaments() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                       <Avatar name={fullName} color={athlete.avatarColor} />
                       <div>
-                        <h3
+                        <SubSectionTitle
                           style={{
                             fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                             color: 'var(--text-primary)',
@@ -735,7 +736,7 @@ export default function CoachAthleteTournaments() {
                           }}
                         >
                           {athlete.lastName}, {athlete.firstName}
-                        </h3>
+                        </SubSectionTitle>
                         <div
                           style={{
                             display: 'flex',
@@ -819,7 +820,7 @@ export default function CoachAthleteTournaments() {
                       {/* Upcoming tournaments */}
                       {athlete.upcomingTournaments.length > 0 && (
                         <div style={{ marginBottom: '20px' }}>
-                          <h4
+                          <CardTitle
                             style={{
                               fontSize: '13px', lineHeight: '18px',
                               color: 'var(--text-secondary)',
@@ -829,7 +830,7 @@ export default function CoachAthleteTournaments() {
                             }}
                           >
                             Kommende turneringer
-                          </h4>
+                          </CardTitle>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             {athlete.upcomingTournaments.map((entry) => {
                               const statusConfig = getStatusConfig(entry.status);
@@ -910,7 +911,7 @@ export default function CoachAthleteTournaments() {
                       {/* Completed tournaments (last 3) */}
                       {athlete.completedTournaments.length > 0 && (
                         <div style={{ marginBottom: '16px' }}>
-                          <h4
+                          <CardTitle
                             style={{
                               fontSize: '13px', lineHeight: '18px',
                               color: 'var(--text-secondary)',
@@ -920,7 +921,7 @@ export default function CoachAthleteTournaments() {
                             }}
                           >
                             Siste resultater
-                          </h4>
+                          </CardTitle>
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             {athlete.completedTournaments.slice(0, 3).map((entry) => (
                               <div

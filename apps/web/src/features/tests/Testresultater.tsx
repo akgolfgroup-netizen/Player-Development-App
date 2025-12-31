@@ -4,6 +4,7 @@
  */
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography';
 import {
   TrendingUp, TrendingDown, Minus, Calendar, ChevronDown,
   ChevronRight, Info, Download, Target
@@ -183,7 +184,7 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
                   {test.icon}
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-text-primary">{test.name}</h3>
+                  <SubSectionTitle className="text-sm font-semibold text-text-primary">{test.name}</SubSectionTitle>
                   <p className="text-xs text-text-secondary">
                     Krav: {test.lowerIsBetter ? '≤' : '≥'}{test.requirement}{test.unit}
                   </p>
@@ -232,9 +233,9 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
 
         <CollapsibleContent>
           <div className="border-t border-border-subtle p-4 bg-background-default">
-            <h4 className="text-sm font-medium text-text-primary mb-3">
+            <CardTitle className="text-sm font-medium text-text-primary mb-3">
               Historikk ({test.history.length} målinger)
-            </h4>
+            </CardTitle>
             <MiniLineChart
               data={test.history}
               requirement={test.requirement}
@@ -527,9 +528,9 @@ const Testresultater: React.FC<TestresultaterProps> = ({
                 <div className="flex items-start gap-3">
                   <Info className="h-5 w-5 text-ak-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-sm font-semibold text-text-primary mb-2">
+                    <CardTitle className="text-sm font-semibold text-text-primary mb-2">
                       Slik leser du grafene
-                    </h4>
+                    </CardTitle>
                     <ul className="text-xs text-text-secondary space-y-1.5">
                       <li className="flex items-center gap-2">
                         <span className="w-4 h-0.5 bg-ak-primary rounded" />
@@ -577,9 +578,9 @@ const Testresultater: React.FC<TestresultaterProps> = ({
                   <Card className="text-center py-12">
                     <CardContent>
                       <Target className="h-12 w-12 mx-auto mb-4 text-text-tertiary" />
-                      <h3 className="text-lg font-semibold text-text-primary mb-2">
+                      <SubSectionTitle className="text-lg font-semibold text-text-primary mb-2">
                         Ingen tester funnet
-                      </h3>
+                      </SubSectionTitle>
                       <p className="text-sm text-text-secondary">
                         Ingen testresultater i denne kategorien.
                       </p>

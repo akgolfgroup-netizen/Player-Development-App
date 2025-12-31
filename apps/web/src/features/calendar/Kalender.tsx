@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus, Clock, MapPin, Play } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import {
   Card,
   CardContent,
@@ -627,9 +628,9 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
               <ChevronLeft className="h-4 w-4" />
             </Button>
 
-            <h2 className="text-lg font-semibold text-text-primary min-w-[200px] text-center">
+            <SectionTitle className="text-lg font-semibold text-text-primary min-w-[200px] text-center">
               {getNavigationTitle()}
-            </h2>
+            </SectionTitle>
 
             <Button variant="outline" size="icon" onClick={() => navigateCalendar(1)}>
               <ChevronRight className="h-4 w-4" />
@@ -700,9 +701,9 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
         {(viewMode === VIEW_MODES.WEEK || viewMode === VIEW_MODES.MONTH) &&
           sessions[selectedDate.getDate()] && (
           <div className="mt-6">
-            <h3 className="text-base font-semibold text-text-primary mb-3">
+            <SubSectionTitle className="text-base font-semibold text-text-primary mb-3">
               {selectedDate.getDate()}. {monthNames[selectedDate.getMonth()]} - Økter
-            </h3>
+            </SubSectionTitle>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {sessions[selectedDate.getDate()].map((session: any) => (
                 <Card
@@ -715,7 +716,7 @@ const AKGolfKalender: React.FC<KalenderProps> = ({ events = [] }) => {
                       <p className="text-xs text-text-secondary mb-1">
                         {session.time} · {session.duration} min
                       </p>
-                      <h4 className="font-semibold text-text-primary">{session.name}</h4>
+                      <CardTitle className="font-semibold text-text-primary">{session.name}</CardTitle>
                       {session.location && (
                         <p className="text-xs text-text-secondary mt-1 flex items-center gap-1">
                           <MapPin className="h-3 w-3" />

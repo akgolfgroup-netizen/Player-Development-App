@@ -11,6 +11,7 @@ import {
 } from '../../components/icons';
 import Modal from '../../ui/composites/Modal.composite';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // Icons wrapper for backwards compatibility
 const Icons = {
@@ -311,7 +312,7 @@ const AKGolfNotater = ({
             {/* Tags */}
             <Card padding={false}>
               <div className="p-4 border-b border-ak-mist">
-                <h3 className="text-[13px] font-semibold text-ak-charcoal">Tagger</h3>
+                <SubSectionTitle className="text-[13px] font-semibold text-ak-charcoal">Tagger</SubSectionTitle>
               </div>
               <div className="py-2">
                 {tags.map(tag => (
@@ -341,7 +342,7 @@ const AKGolfNotater = ({
 
             {/* Quick Stats */}
             <Card>
-              <h3 className="text-[13px] font-semibold text-ak-charcoal mb-3">Statistikk</h3>
+              <SubSectionTitle className="text-[13px] font-semibold text-ak-charcoal mb-3">Statistikk</SubSectionTitle>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-[12px] text-ak-steel">Totalt notater</span>
@@ -426,9 +427,9 @@ const AKGolfNotater = ({
                       {note.sharedWithCoach && (
                         <span className="text-ak-primary" title="Delt med trener"><TeamIcon size={14} /></span>
                       )}
-                      <h3 className="text-[14px] font-semibold text-ak-charcoal line-clamp-1">
+                      <SubSectionTitle className="text-[14px] font-semibold text-ak-charcoal line-clamp-1">
                         {note.title}
-                      </h3>
+                      </SubSectionTitle>
                     </div>
                     <span className="text-ak-gold">{renderMoodIcon(note.mood, 20)}</span>
                   </div>
@@ -488,7 +489,7 @@ const AKGolfNotater = ({
               <div className="flex items-center gap-3">
                 <span className="text-ak-gold">{renderMoodIcon(selectedNote.mood, 28)}</span>
                 <div>
-                  <h2 className="text-[17px] font-bold text-ak-charcoal">{selectedNote.title}</h2>
+                  <SectionTitle className="text-[17px] font-bold text-ak-charcoal">{selectedNote.title}</SectionTitle>
                   <div className="flex items-center gap-2 text-[12px] text-ak-steel">
                     <Icons.Calendar />
                     <span>{formatDate(selectedNote.date)}</span>
@@ -574,7 +575,7 @@ const AKGolfNotater = ({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-2xl" padding={false}>
             <div className="p-4 border-b border-ak-mist flex items-center justify-between">
-              <h2 className="text-[17px] font-bold text-ak-charcoal">Rediger notat</h2>
+              <SectionTitle className="text-[17px] font-bold text-ak-charcoal">Rediger notat</SectionTitle>
               <button
                 onClick={() => setIsEditing(false)}
                 className="p-2 rounded-lg hover:bg-ak-snow text-ak-steel"
@@ -680,7 +681,7 @@ const AKGolfNotater = ({
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-2xl" padding={false}>
             <div className="p-4 border-b border-ak-mist flex items-center justify-between">
-              <h2 className="text-[17px] font-bold text-ak-charcoal">Nytt notat</h2>
+              <SectionTitle className="text-[17px] font-bold text-ak-charcoal">Nytt notat</SectionTitle>
               <button
                 onClick={() => setShowNewNote(false)}
                 className="p-2 rounded-lg hover:bg-ak-snow text-ak-steel"

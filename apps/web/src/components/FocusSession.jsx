@@ -6,6 +6,7 @@ import {
   isStandalone,
   generateShortcutURL
 } from '../utils/platform';
+import { SectionTitle, SubSectionTitle } from './typography';
 import './FocusSession.css';
 
 /**
@@ -238,7 +239,7 @@ export default function FocusSession({ sessionData, onSessionComplete }) {
       return (
         <div className="focus-session-active">
           <div className="session-timer">
-            <h2>{formatTime(elapsedTime)}</h2>
+            <SectionTitle>{formatTime(elapsedTime)}</SectionTitle>
             <p>Session in progress</p>
           </div>
 
@@ -258,7 +259,7 @@ export default function FocusSession({ sessionData, onSessionComplete }) {
       return (
         <div className="focus-session-paused">
           <div className="session-timer">
-            <h2>{formatTime(elapsedTime)}</h2>
+            <SectionTitle>{formatTime(elapsedTime)}</SectionTitle>
             <p>Session paused</p>
           </div>
 
@@ -277,7 +278,7 @@ export default function FocusSession({ sessionData, onSessionComplete }) {
     if (sessionState === 'completed') {
       return (
         <div className="focus-session-completed">
-          <h3>Session Completed!</h3>
+          <SubSectionTitle>Session Completed!</SubSectionTitle>
           <p>Duration: {formatTime(elapsedTime)}</p>
           <button
             className="btn-new-session"
@@ -310,7 +311,7 @@ export default function FocusSession({ sessionData, onSessionComplete }) {
     return (
       <div className="modal-overlay" onClick={() => setShowSetupModal(false)}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <h2>Setup iOS Focus Mode</h2>
+          <SectionTitle>Setup iOS Focus Mode</SectionTitle>
 
           <div className="setup-instructions">
             <p>

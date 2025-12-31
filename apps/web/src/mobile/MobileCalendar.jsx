@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { tokens, typographyStyle } from '../design-tokens';
+import { PageTitle, SubSectionTitle } from '../components/typography';
 import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
 import ErrorState from '../components/ui/ErrorState';
@@ -29,10 +30,10 @@ export default function MobileCalendar() {
 
   return (
     <div style={{ padding: tokens.spacing.md }}>
-      <h1 style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>Kalender</h1>
+      <PageTitle style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>Kalender</PageTitle>
       {events.map(evt => (
         <div key={evt.id} style={{ backgroundColor: tokens.colors.white, padding: tokens.spacing.md, marginBottom: tokens.spacing.sm, borderRadius: tokens.borderRadius.sm, boxShadow: tokens.shadows.card }}>
-          <h3 style={{ ...typographyStyle('title3'), margin: `0 0 ${tokens.spacing.xs}` }}>{evt.title}</h3>
+          <SubSectionTitle style={{ ...typographyStyle('title3'), margin: `0 0 ${tokens.spacing.xs}` }}>{evt.title}</SubSectionTitle>
           <p style={{ ...typographyStyle('callout'), color: tokens.colors.steel, margin: 0 }}>{new Date(evt.date).toLocaleDateString('no')} • {evt.duration} min</p>
         </div>
       ))}

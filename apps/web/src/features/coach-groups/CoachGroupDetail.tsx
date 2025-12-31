@@ -34,6 +34,7 @@ import Modal from '../../ui/composites/Modal.composite';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import MembersList, { Member } from '../../ui/composites/MembersList.composite';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 interface GroupMember {
   id: string;
@@ -594,9 +595,9 @@ export default function CoachGroupDetail() {
                 marginBottom: '16px',
               }}
             >
-              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 Gruppemedlemmer ({group.members.length})
-              </h2>
+              </SectionTitle>
               <button
                 onClick={() => navigate(`/coach/groups/${groupId}/members/add`)}
                 style={{
@@ -743,9 +744,9 @@ export default function CoachGroupDetail() {
           <div>
             {/* Upcoming sessions */}
             <div style={{ marginBottom: '32px' }}>
-              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
+              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
                 Kommende økter
-              </h2>
+              </SectionTitle>
               {group.upcomingSessions.length === 0 ? (
                 <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
                   Ingen planlagte økter
@@ -806,9 +807,9 @@ export default function CoachGroupDetail() {
 
             {/* Recent sessions */}
             <div>
-              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
+              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
                 Tidligere økter
-              </h2>
+              </SectionTitle>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {group.recentSessions.map((session) => (
                   <div
@@ -875,9 +876,9 @@ export default function CoachGroupDetail() {
               }}
             >
               <div>
-                <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   {group.trainingPlan?.name || 'Treningsplan'}
-                </h2>
+                </SectionTitle>
                 {group.trainingPlan && (
                   <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
                     Aktiv plan: {new Date(group.trainingPlan.startDate).toLocaleDateString('nb-NO')} - {new Date(group.trainingPlan.endDate).toLocaleDateString('nb-NO')}
@@ -1211,9 +1212,9 @@ export default function CoachGroupDetail() {
                           }}
                         >
                           <div>
-                            <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--bg-primary)', margin: 0 }}>
+                            <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--bg-primary)', margin: 0 }}>
                               {session.title}
-                            </h3>
+                            </SubSectionTitle>
                             <p style={{ fontSize: '13px', lineHeight: '18px', color: 'rgba(255,255,255,0.8)', margin: '2px 0 0' }}>
                               {dayNames[session.dayOfWeek]} kl. {session.time}
                             </p>
@@ -1237,7 +1238,7 @@ export default function CoachGroupDetail() {
                         </div>
 
                         <div style={{ padding: '20px' }}>
-                          <h4
+                          <CardTitle
                             style={{
                               fontSize: '13px', lineHeight: '18px',
                               color: 'var(--text-secondary)',
@@ -1247,7 +1248,7 @@ export default function CoachGroupDetail() {
                             }}
                           >
                             Øvelser ({session.exercises.length})
-                          </h4>
+                          </CardTitle>
 
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             {session.exercises
@@ -1414,9 +1415,9 @@ export default function CoachGroupDetail() {
                 }}
               >
                 <ClipboardList size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
-                <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   Ingen treningsplan
-                </h3>
+                </SubSectionTitle>
                 <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: '8px 0 20px' }}>
                   Opprett en treningsplan for å strukturere gruppens økter
                 </p>
@@ -1447,9 +1448,9 @@ export default function CoachGroupDetail() {
         {/* Stats tab */}
         {activeTab === 'stats' && (
           <div>
-            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
+            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
               Gruppestatistikk
-            </h2>
+            </SectionTitle>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
               <div

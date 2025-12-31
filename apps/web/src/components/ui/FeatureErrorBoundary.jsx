@@ -1,6 +1,7 @@
 import React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { captureException } from '../../utils/errorReporter';
+import { SectionTitle } from '../typography';
 
 /**
  * Feature-level Error Boundary
@@ -163,7 +164,7 @@ class FeatureErrorBoundary extends React.Component {
               <AlertTriangle size={40} color={'var(--error)'} />
             </div>
 
-            <h2
+            <SectionTitle
               style={{
                 fontSize: '22px', lineHeight: '28px', fontWeight: 700,
                 color: 'var(--text-primary)',
@@ -171,7 +172,7 @@ class FeatureErrorBoundary extends React.Component {
               }}
             >
               Noe gikk galt
-            </h2>
+            </SectionTitle>
 
             <p
               style={{

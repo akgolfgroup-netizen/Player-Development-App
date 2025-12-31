@@ -8,6 +8,7 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import {
   GolfScorecard, ChartIcon, TrophyIcon, GolfTarget, DocumentIcon, FolderIcon
 } from '../../components/icons';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 // Icons wrapper for backwards compatibility
 const Icons = {
@@ -301,7 +302,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
             {/* Year Selector */}
             <Card padding={false}>
               <div className="p-4 border-b border-ak-mist">
-                <h3 className="text-[13px] font-semibold text-ak-charcoal">Velg år</h3>
+                <SubSectionTitle className="text-[13px] font-semibold text-ak-charcoal">Velg år</SubSectionTitle>
               </div>
               <div className="py-2">
                 {years.map(year => (
@@ -325,7 +326,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
 
             {/* Quick Info */}
             <Card className="bg-ak-primary/5 border-ak-primary/10">
-              <h4 className="text-[12px] font-semibold text-ak-primary mb-2">Progresjonssammendrag</h4>
+              <CardTitle className="text-[12px] font-semibold text-ak-primary mb-2">Progresjonssammendrag</CardTitle>
               <div className="space-y-2 text-[12px]">
                 <div className="flex justify-between">
                   <span className="text-ak-steel">Benchmark 2023:</span>
@@ -367,7 +368,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
 
             {/* Year Title */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[20px] font-bold text-ak-charcoal">Arkiv {selectedYear}</h2>
+              <SectionTitle className="text-[20px] font-bold text-ak-charcoal">Arkiv {selectedYear}</SectionTitle>
               <Badge variant={selectedYear === '2025' ? 'success' : 'neutral'} size="md">
                 {selectedYear === '2025' ? 'Aktivt år' : 'Historisk'}
               </Badge>
@@ -394,7 +395,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                           {isExpanded ? <Icons.FolderOpen /> : <Icons.Folder />}
                         </div>
                         <div className="text-left">
-                          <h3 className="text-[14px] font-semibold text-ak-charcoal">{folder.label}</h3>
+                          <SubSectionTitle className="text-[14px] font-semibold text-ak-charcoal">{folder.label}</SubSectionTitle>
                           <p className="text-[12px] text-ak-steel">{folder.documents.length} dokumenter</p>
                         </div>
                       </div>
@@ -417,7 +418,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
                             <div className="flex items-center gap-3">
                               <span className="text-ak-primary">{getDocumentIcon(doc.type)}</span>
                               <div>
-                                <h4 className="text-[13px] font-medium text-ak-charcoal">{doc.name}</h4>
+                                <CardTitle className="text-[13px] font-medium text-ak-charcoal">{doc.name}</CardTitle>
                                 <div className="flex items-center gap-2 text-[11px] text-ak-steel">
                                   <Icons.Clock />
                                   <span>{formatDate(doc.date)}</span>
@@ -480,7 +481,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
 
             {/* Timeline View */}
             <Card className="mt-6">
-              <h3 className="text-[15px] font-semibold text-ak-charcoal mb-4">Tidslinje {selectedYear}</h3>
+              <SubSectionTitle className="text-[15px] font-semibold text-ak-charcoal mb-4">Tidslinje {selectedYear}</SubSectionTitle>
               <div className="relative">
                 {/* Timeline line */}
                 <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-ak-mist" />

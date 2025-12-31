@@ -18,6 +18,7 @@ import {
   VIDEO_CATEGORIES,
   VIEW_ANGLES,
 } from '../../hooks/useVideoUpload';
+import { SubSectionTitle } from '../typography';
 
 // Icons
 const UploadIcon = () => (
@@ -421,9 +422,9 @@ export function VideoUploader({
       <div style={styles.uploadIcon}>
         <UploadIcon />
       </div>
-      <h3 style={styles.dropZoneTitle}>
+      <SubSectionTitle style={styles.dropZoneTitle}>
         Dra og slipp video her
-      </h3>
+      </SubSectionTitle>
       <p style={styles.dropZoneText}>
         eller velg fra enhet
       </p>
@@ -619,7 +620,7 @@ export function VideoUploader({
       <div style={{ ...styles.statusIcon, ...styles.statusIconSuccess }}>
         <CheckIcon />
       </div>
-      <h3 style={styles.statusTitle}>Opplasting fullført!</h3>
+      <SubSectionTitle style={styles.statusTitle}>Opplasting fullført!</SubSectionTitle>
       <p style={styles.statusText}>
         Videoen er klar for analyse.
       </p>
@@ -648,7 +649,7 @@ export function VideoUploader({
       <div style={{ ...styles.statusIcon, ...styles.statusIconError }}>
         <ErrorIcon />
       </div>
-      <h3 style={styles.statusTitle}>Opplasting feilet</h3>
+      <SubSectionTitle style={styles.statusTitle}>Opplasting feilet</SubSectionTitle>
       <p style={styles.statusText}>{error}</p>
       <div style={styles.actionButtons}>
         <button

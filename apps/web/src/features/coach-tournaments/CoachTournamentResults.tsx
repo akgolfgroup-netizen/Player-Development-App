@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../components/typography';
 
 interface TournamentResult {
   id: string;
@@ -583,9 +584,9 @@ export default function CoachTournamentResults() {
               }}
             >
               <Trophy size={48} color={'var(--text-secondary)'} style={{ marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 8px' }}>
+              <SubSectionTitle style={{ margin: '0 0 8px' }}>
                 Ingen resultater funnet
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
                 Prøv å endre filter eller søkekriterier
               </p>
@@ -631,9 +632,9 @@ export default function CoachTournamentResults() {
                           </div>
 
                           <div>
-                            <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                            <SubSectionTitle style={{ margin: 0 }}>
                               {result.tournamentName}
-                            </h3>
+                            </SubSectionTitle>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
                               <Calendar size={14} color={'var(--text-secondary)'} />
                               <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -782,9 +783,9 @@ export default function CoachTournamentResults() {
                       {player.initials}
                     </div>
                     <div>
-                      <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                      <SubSectionTitle style={{ margin: 0 }}>
                         {player.name}
-                      </h3>
+                      </SubSectionTitle>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
                         <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                           {player.tournamentsPlayed} turneringer

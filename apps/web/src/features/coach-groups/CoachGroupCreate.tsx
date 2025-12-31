@@ -18,6 +18,7 @@ import {
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SectionTitle } from '../../components/typography';
 
 interface AvailablePlayer {
   id: string;
@@ -213,15 +214,9 @@ export default function CoachGroupCreate() {
               boxShadow: 'var(--shadow-card)',
             }}
           >
-            <h2
-              style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: '0 0 16px',
-              }}
-            >
+            <SectionTitle style={{ margin: '0 0 16px' }}>
               Grunnleggende informasjon
-            </h2>
+            </SectionTitle>
 
             {/* Name */}
             <div style={{ marginBottom: '16px' }}>
@@ -393,15 +388,9 @@ export default function CoachGroupCreate() {
               boxShadow: 'var(--shadow-card)',
             }}
           >
-            <h2
-              style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: '0 0 16px',
-              }}
-            >
+            <SectionTitle style={{ margin: '0 0 16px' }}>
               Forhåndsvisning
-            </h2>
+            </SectionTitle>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
               <div
@@ -461,15 +450,9 @@ export default function CoachGroupCreate() {
                 marginBottom: '16px',
               }}
             >
-              <h2
-                style={{
-                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                }}
-              >
+              <SectionTitle style={{ margin: 0 }}>
                 Velg medlemmer *
-              </h2>
+              </SectionTitle>
               <span
                 style={{
                   fontSize: '15px', lineHeight: '20px',

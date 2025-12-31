@@ -24,6 +24,7 @@ import React, { useState } from "react";
 import { ArrowLeft, ClipboardList, Plus, Trash2, Calendar, Clock, CheckCircle, Lock } from "lucide-react";
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SectionTitle } from '../../components/typography';
 
 //////////////////////////////
 // 1. TYPES
@@ -187,9 +188,9 @@ export default function CoachTrainingPlanEditor({
               <ClipboardList size={24} color={'var(--accent)'} />
             </div>
             <div>
-              <h1 style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+              <PageTitle style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                 Treningsplan
-              </h1>
+              </PageTitle>
               <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
                 {athleteName} • {futureBlocks.length} kommende økter
               </p>
@@ -232,9 +233,9 @@ export default function CoachTrainingPlanEditor({
               border: `2px solid ${'var(--accent)'}`,
             }}
           >
-            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0, marginBottom: '20px' }}>
+            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0, marginBottom: '20px' }}>
               Legg til ny økt
-            </h2>
+            </SectionTitle>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
@@ -377,9 +378,9 @@ export default function CoachTrainingPlanEditor({
           }}
         >
           <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}` }}>
-            <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
               Kommende økter
-            </h2>
+            </SectionTitle>
           </div>
 
           {futureBlocks.length === 0 ? (
@@ -476,9 +477,9 @@ export default function CoachTrainingPlanEditor({
           >
             <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}`, display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Lock size={16} color={'var(--text-secondary)'} />
-              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-secondary)', margin: 0 }}>
+              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-secondary)', margin: 0 }}>
                 Fullførte økter
-              </h2>
+              </SectionTitle>
             </div>
 
             <div>

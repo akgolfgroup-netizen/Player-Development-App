@@ -11,7 +11,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 import { useDagbokState } from './hooks/useDagbokState';
 import { useDagbokFilters } from './hooks/useDagbokFilters';
@@ -39,33 +39,11 @@ const styles = {
     minHeight: '100vh',
     backgroundColor: 'var(--bg-primary)',
   },
-  header: {
+  topBar: {
     display: 'flex',
     alignItems: 'center',
-    gap: '12px',
-    padding: '16px',
-    backgroundColor: 'var(--card-background)',
-    borderBottom: '1px solid var(--border-default)',
-  },
-  headerIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '40px',
-    height: '40px',
-    borderRadius: 'var(--radius-md)',
-    backgroundColor: 'color-mix(in srgb, var(--accent) 15%, transparent)',
-  },
-  headerTitle: {
-    fontSize: '18px',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    margin: 0,
-  },
-  headerSubtitle: {
-    fontSize: '13px',
-    color: 'var(--text-secondary)',
-    margin: 0,
+    justifyContent: 'flex-end',
+    padding: '0 0 16px 0',
   },
   content: {
     display: 'flex',
@@ -172,17 +150,8 @@ export const TreningsdagbokPage: React.FC = () => {
       <style>{mediaStyles}</style>
 
       <div style={styles.page}>
-        {/* Page header */}
-        <div style={styles.header}>
-          <div style={styles.headerIcon}>
-            <BookOpen size={20} style={{ color: 'var(--accent)' }} />
-          </div>
-          <div style={{ flex: 1 }}>
-            <h1 style={styles.headerTitle}>Treningsdagbok</h1>
-            <p style={styles.headerSubtitle}>
-              Logg, analyser og folg opp treningen din
-            </p>
-          </div>
+        {/* Top bar with action button */}
+        <div style={styles.topBar}>
           <button
             onClick={handleNewSession}
             style={{
@@ -200,7 +169,7 @@ export const TreningsdagbokPage: React.FC = () => {
             }}
           >
             <Plus size={18} />
-            Ny økt
+            Ny okt
           </button>
         </div>
 

@@ -4,6 +4,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography';
 
 import StateCard from '../../ui/composites/StateCard';
 import { Plus, RefreshCw } from 'lucide-react';
@@ -106,7 +107,7 @@ const GoalsPage: React.FC = () => {
 
       {/* Active Goals */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Aktive mål</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Aktive mål</SectionTitle>
         <div style={styles.goalsList}>
           {activeGoals.length === 0 ? (
             <StateCard
@@ -157,7 +158,7 @@ const GoalsPage: React.FC = () => {
 
       {/* Long-term Goals */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Langsiktige mål</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Langsiktige mål</SectionTitle>
         <div style={styles.goalsList}>
           {longTermGoals.length === 0 ? (
             <StateCard
@@ -194,12 +195,6 @@ const GoalsPage: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   section: {
     marginBottom: 'var(--spacing-6)',
-  },
-  sectionTitle: {
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    marginBottom: 'var(--spacing-3)',
   },
   goalsList: {
     display: 'flex',

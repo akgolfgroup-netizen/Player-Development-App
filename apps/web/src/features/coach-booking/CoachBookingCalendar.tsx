@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
 
 interface BookingSlot {
   id: string;
@@ -278,15 +279,9 @@ export default function CoachBookingCalendar() {
           }}
         >
           <div>
-            <h1
-              style={{
-                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
+            <PageTitle style={{ margin: 0 }}>
               Booking-kalender
-            </h1>
+            </PageTitle>
             <p
               style={{
                 fontSize: '15px', lineHeight: '20px',
@@ -469,16 +464,10 @@ export default function CoachBookingCalendar() {
           >
             <ChevronRight size={20} color={'var(--text-primary)'} />
           </button>
-          <h2
-            style={{
-              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}
-          >
+          <SectionTitle style={{ margin: 0 }}>
             {weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })} -{' '}
             {weekDates[6].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </h2>
+          </SectionTitle>
         </div>
 
         <button
@@ -729,15 +718,9 @@ export default function CoachBookingCalendar() {
                 marginBottom: '20px',
               }}
             >
-              <h3
-                style={{
-                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                }}
-              >
+              <SubSectionTitle style={{ margin: 0 }}>
                 Booking-detaljer
-              </h3>
+              </SubSectionTitle>
               <button
                 onClick={() => setSelectedSlot(null)}
                 style={{

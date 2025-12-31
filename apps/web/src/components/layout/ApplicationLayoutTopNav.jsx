@@ -10,6 +10,7 @@
 import React from 'react';
 import DashboardHeader from './DashboardHeader';
 import BackToTop from '../ui/BackToTop';
+import { PageTitle } from '../typography';
 
 export default function ApplicationLayoutTopNav({ children, title, subtitle, actions }) {
   return (
@@ -32,9 +33,9 @@ export default function ApplicationLayoutTopNav({ children, title, subtitle, act
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
                 {title && (
-                  <h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+                  <PageTitle className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
                     {title}
-                  </h1>
+                  </PageTitle>
                 )}
                 {subtitle && (
                   <p className="mt-1 text-sm text-[var(--text-secondary)]">

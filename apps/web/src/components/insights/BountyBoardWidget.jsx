@@ -9,6 +9,7 @@ import { DashboardCard, WidgetHeader } from '../../ui/widgets';
 import Badge from '../../ui/primitives/Badge.primitive';
 import { Button } from '../../ui/primitives';
 import StateCard from '../../ui/composites/StateCard';
+import { CardTitle } from '../typography';
 
 // Difficulty colors and labels
 const DIFFICULTY_CONFIG = {
@@ -148,14 +149,14 @@ const BountyCard = ({ bounty, onActivate, onViewDetails, isActive }) => {
               </Badge>
             )}
           </div>
-          <h4 style={{
+          <CardTitle style={{
             fontSize: '15px',
             fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
           }}>
             {bounty.titleNo || bounty.title}
-          </h4>
+          </CardTitle>
           <p style={{
             fontSize: '12px',
             color: 'var(--text-secondary)',

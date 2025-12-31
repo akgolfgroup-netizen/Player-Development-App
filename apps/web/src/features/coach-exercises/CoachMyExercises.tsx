@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { exercisesAPI } from '../../services/api';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 interface MyExercise {
   id: string;
@@ -244,14 +245,14 @@ export const CoachMyExercises: React.FC = () => {
               <Star size={24} color="white" />
             </div>
             <div>
-              <h1 style={{
+              <PageTitle style={{
                 fontSize: '28px',
                 fontWeight: '700',
                 color: 'var(--text-primary)',
                 margin: 0
               }}>
                 Mine øvelser
-              </h1>
+              </PageTitle>
               <p style={{
                 fontSize: '14px',
                 color: 'var(--text-secondary)',
@@ -392,14 +393,14 @@ export const CoachMyExercises: React.FC = () => {
               {/* Content */}
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                  <h3 style={{
+                  <SubSectionTitle style={{
                     fontSize: '15px',
                     fontWeight: '600',
                     color: 'var(--text-primary)',
                     margin: 0
                   }}>
                     {exercise.name}
-                  </h3>
+                  </SubSectionTitle>
                   <span style={{
                     fontSize: '10px',
                     fontWeight: '600',

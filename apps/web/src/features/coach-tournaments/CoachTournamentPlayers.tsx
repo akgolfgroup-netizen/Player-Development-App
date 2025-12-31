@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle, SectionTitle } from '../../components/typography';
 
 interface TournamentEntry {
   id: string;
@@ -453,9 +454,9 @@ export default function CoachTournamentPlayers() {
                     {player.initials}
                   </div>
                   <div>
-                    <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                    <SubSectionTitle style={{ margin: 0 }}>
                       {player.name}
-                    </h3>
+                    </SubSectionTitle>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
                       <span
                         style={{
@@ -598,9 +599,9 @@ export default function CoachTournamentPlayers() {
               zIndex: 101,
             }}
           >
-            <h2 style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 20px' }}>
+            <SectionTitle style={{ margin: '0 0 20px' }}>
               Meld på spiller
-            </h2>
+            </SectionTitle>
 
             {/* Tournament selection */}
             <div style={{ marginBottom: '20px' }}>

@@ -5,6 +5,7 @@ import {
   Dumbbell, Brain
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
@@ -239,14 +240,14 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h3 style={{
+              <SubSectionTitle style={{
                 fontSize: '16px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
                 margin: 0,
               }}>
                 {period.name}
-              </h3>
+              </SubSectionTitle>
               <span style={{
                 fontSize: '11px',
                 fontWeight: 500,
@@ -496,14 +497,14 @@ const CurrentWeekPlan = ({ weekPlan }) => {
         marginBottom: '16px',
       }}>
         <div>
-          <h3 style={{
+          <SubSectionTitle style={{
             fontSize: '16px',
             fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
           }}>
             Denne uken (Uke {weekPlan.week})
-          </h3>
+          </SubSectionTitle>
           <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
             Tema: {weekPlan.theme}
           </div>
@@ -813,14 +814,14 @@ const PeriodeplanerContainer = () => {
         }}>
           {/* Left: Period Cards */}
           <div>
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '18px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Arsplan 2025
-            </h2>
+            </SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {periods.map((period) => (
                 <PeriodCard
@@ -835,14 +836,14 @@ const PeriodeplanerContainer = () => {
 
           {/* Right: Current Week */}
           <div>
-            <h2 style={{
+            <SectionTitle style={{
               fontSize: '18px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               margin: '0 0 16px 0',
             }}>
               Ukeoversikt
-            </h2>
+            </SectionTitle>
             <CurrentWeekPlan weekPlan={CURRENT_WEEK_PLAN} />
 
             {/* Period Timeline Visual */}
@@ -853,14 +854,14 @@ const PeriodeplanerContainer = () => {
               padding: '20px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
             }}>
-              <h3 style={{
+              <SubSectionTitle style={{
                 fontSize: '14px',
                 fontWeight: 600,
                 color: 'var(--text-primary)',
                 margin: '0 0 16px 0',
               }}>
                 Arshjul
-              </h3>
+              </SubSectionTitle>
               <div style={{ display: 'flex', gap: '4px', height: '24px' }}>
                 {periods.map((period) => {
                   const phaseConfig = getPhaseConfig(period.phase);

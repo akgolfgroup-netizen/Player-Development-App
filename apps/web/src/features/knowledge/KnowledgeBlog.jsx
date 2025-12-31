@@ -7,6 +7,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 // Sample knowledge base articles
 const ARTICLES = [
@@ -105,7 +106,7 @@ export function KnowledgeBlog() {
     <div style={styles.container}>
       <div style={styles.content}>
         <div style={styles.header}>
-          <h1 style={styles.title}>Kunnskapsbase</h1>
+          <PageTitle style={styles.title}>Kunnskapsbase</PageTitle>
           <p style={styles.subtitle}>
             Lær deg nye teknikker, mentale strategier og analysemetoder.
           </p>
@@ -153,7 +154,7 @@ export function KnowledgeBlog() {
               </div>
 
               <div style={styles.articleContent}>
-                <h3 style={styles.articleTitle}>
+                <SubSectionTitle style={styles.articleTitle}>
                   <a
                     href={`/ressurser/${article.id}`}
                     onClick={(e) => { e.preventDefault(); navigate(`/ressurser/${article.id}`); }}
@@ -161,7 +162,7 @@ export function KnowledgeBlog() {
                   >
                     {article.title}
                   </a>
-                </h3>
+                </SubSectionTitle>
                 <p style={styles.articleDescription}>{article.description}</p>
                 <p style={styles.readTime}>{article.readTime} lesetid</p>
               </div>

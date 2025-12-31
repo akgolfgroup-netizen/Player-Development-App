@@ -7,6 +7,7 @@ import {
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA
@@ -109,14 +110,14 @@ const CoachCard = ({ coach, selected, onSelect }) => (
         {coach.name.split(' ').map((n) => n[0]).join('')}
       </div>
       <div style={{ flex: 1 }}>
-        <h4 style={{
+        <CardTitle style={{
           fontSize: '14px',
           fontWeight: 600,
           color: 'var(--text-primary)',
           margin: 0,
         }}>
           {coach.name}
-        </h4>
+        </CardTitle>
         <p style={{
           fontSize: '12px',
           color: 'var(--text-secondary)',
@@ -223,14 +224,14 @@ const DateSelector = ({ selectedDate, onSelectDate }) => {
         >
           <ChevronLeft size={18} color={'var(--text-primary)'} />
         </button>
-        <h3 style={{
+        <SubSectionTitle style={{
           fontSize: '14px',
           fontWeight: 600,
           color: 'var(--text-primary)',
           margin: 0,
         }}>
           {weekDates[0].toLocaleDateString('nb-NO', { month: 'long', year: 'numeric' })}
-        </h3>
+        </SubSectionTitle>
         <button
           onClick={() => setWeekOffset(weekOffset + 1)}
           style={{
@@ -336,14 +337,14 @@ const TimeSlots = ({ date, selectedSlot, onSelectSlot }) => {
       padding: '16px',
       marginBottom: '20px',
     }}>
-      <h3 style={{
+      <SubSectionTitle style={{
         fontSize: '14px',
         fontWeight: 600,
         color: 'var(--text-primary)',
         marginBottom: '12px',
       }}>
         Tilgjengelige tider - {new Date(date).toLocaleDateString('nb-NO', { weekday: 'long', day: 'numeric', month: 'long' })}
-      </h3>
+      </SubSectionTitle>
 
       {slots.length > 0 ? (
         <div style={{
@@ -395,14 +396,14 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
     padding: '16px',
     marginBottom: '20px',
   }}>
-    <h3 style={{
+    <SubSectionTitle style={{
       fontSize: '14px',
       fontWeight: 600,
       color: 'var(--text-primary)',
       marginBottom: '12px',
     }}>
       Type okt
-    </h3>
+    </SubSectionTitle>
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {SESSION_TYPES.map((type) => (
         <button
@@ -468,14 +469,14 @@ const BookingSummary = ({ coach, date, slot, sessionType, onConfirm }) => {
       position: 'sticky',
       top: '20px',
     }}>
-      <h3 style={{
+      <SubSectionTitle style={{
         fontSize: '15px',
         fontWeight: 600,
         color: 'var(--text-primary)',
         marginBottom: '16px',
       }}>
         Bookingoppsummering
-      </h3>
+      </SubSectionTitle>
 
       {coach && (
         <div style={{
@@ -619,14 +620,14 @@ const BookTrenerContainer = () => {
         <div>
           {/* Coach Selection */}
           <div style={{ marginBottom: '24px' }}>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '14px',
               fontWeight: 600,
               color: 'var(--text-primary)',
               marginBottom: '12px',
             }}>
               Velg trener
-            </h3>
+            </SubSectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {COACHES.map((coach) => (
                 <CoachCard

@@ -18,6 +18,7 @@ import {
   type PhysicalFocus,
   type TournamentType,
 } from '../hooks/useAKFormula';
+import { SubSectionTitle } from '../../../../../components/typography';
 
 interface PyramidStepProps {
   planner: UseSessionPlannerResult;
@@ -32,12 +33,12 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
     <div className="space-y-6">
       {/* Pyramid selection */}
       <div>
-        <h3
+        <SubSectionTitle
           className="text-sm font-medium mb-3"
           style={{ color: 'var(--calendar-text-secondary)' }}
         >
           Hva vil du trene?
-        </h3>
+        </SubSectionTitle>
 
         <div className="grid grid-cols-2 gap-3">
           {pyramidEntries.map(([key, value]) => {
@@ -86,12 +87,12 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
       {/* FYS: Physical focus selection */}
       {formState.pyramid === 'FYS' && (
         <div>
-          <h3
+          <SubSectionTitle
             className="text-sm font-medium mb-3"
             style={{ color: 'var(--calendar-text-secondary)' }}
           >
             Fokusområde
-          </h3>
+          </SubSectionTitle>
 
           <div className="grid grid-cols-2 gap-2">
             {(Object.entries(PHYSICAL_FOCUS) as [PhysicalFocus, typeof PHYSICAL_FOCUS[PhysicalFocus]][]).map(
@@ -140,12 +141,12 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
       {/* TURN: Tournament type selection */}
       {formState.pyramid === 'TURN' && (
         <div>
-          <h3
+          <SubSectionTitle
             className="text-sm font-medium mb-3"
             style={{ color: 'var(--calendar-text-secondary)' }}
           >
             Turneringstype
-          </h3>
+          </SubSectionTitle>
 
           <div className="space-y-2">
             {(Object.entries(TOURNAMENT_TYPES) as [TournamentType, typeof TOURNAMENT_TYPES[TournamentType]][]).map(

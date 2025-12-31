@@ -8,6 +8,7 @@ import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import apiClient from '../../services/apiClient';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA
@@ -201,14 +202,11 @@ const DiaryEntryCard = ({ entry, onClick }) => {
             marginBottom: '6px',
           }}>
             <div>
-              <h3 style={{
+              <SubSectionTitle style={{
                 fontSize: '15px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
               }}>
                 {entry.title}
-              </h3>
+              </SubSectionTitle>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',

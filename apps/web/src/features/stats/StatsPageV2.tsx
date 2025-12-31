@@ -11,6 +11,7 @@ import { useStats } from '../../data';
 import type { StatsOverviewItem } from '../../data';
 import { getSimState } from '../../dev/simulateState';
 import { useScreenView } from '../../analytics/useScreenView';
+import { SectionTitle } from '../../components/typography/Headings';
 
 // Pure function - moved outside component to avoid recreation
 const getTrendColor = (trend?: 'positive' | 'negative' | 'neutral') => {
@@ -103,7 +104,7 @@ const StatsPageV2: React.FC = () => {
 
       {/* Overview Card */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Oversikt</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Oversikt</SectionTitle>
         <Card>
           <div style={styles.overviewList}>
             {overview.map((item) => (
@@ -125,7 +126,7 @@ const StatsPageV2: React.FC = () => {
 
       {/* Recent Sessions Card */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Siste økter</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Siste økter</SectionTitle>
         {recentSessions.length === 0 ? (
           <StateCard
             variant="empty"
@@ -158,7 +159,7 @@ const StatsPageV2: React.FC = () => {
 
       {/* Trend Chart Placeholder */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Trend</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Trend</SectionTitle>
         <Card>
           <div style={styles.chartPlaceholder}>
             <div style={styles.chartIcon}>📈</div>
@@ -176,12 +177,6 @@ const StatsPageV2: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   section: {
     marginBottom: 'var(--spacing-6)',
-  },
-  sectionTitle: {
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    marginBottom: 'var(--spacing-3)',
   },
   overviewList: {
     display: 'flex',

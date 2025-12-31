@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { tokens, typographyStyle } from '../design-tokens';
+import { PageTitle } from '../components/typography';
 import LoadingState from '../components/ui/LoadingState';
 import ErrorState from '../components/ui/ErrorState';
 import EmptyState from '../components/ui/EmptyState';
@@ -30,9 +31,9 @@ export default function MobilePlan() {
 
   return (
     <div style={{ padding: tokens.spacing.md }}>
-      <h1 style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>
+      <PageTitle style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>
         {plan.name}
-      </h1>
+      </PageTitle>
       <div style={{ backgroundColor: tokens.colors.white, padding: tokens.spacing.lg, borderRadius: tokens.borderRadius.md, boxShadow: tokens.shadows.card }}>
         <p style={{ ...typographyStyle('body'), color: tokens.colors.steel, margin: 0 }}>
           Uke {plan.currentWeek} av {plan.totalWeeks} • {plan.focus}

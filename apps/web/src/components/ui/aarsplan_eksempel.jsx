@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { tokens } from '../design-tokens';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../typography';
 
 const AarsplanGolf = () => {
   const [activeMonth, setActiveMonth] = useState(null);
@@ -324,7 +325,7 @@ const AarsplanGolf = () => {
                   <span className="text-white text-xl">â›³</span>
                 </div>
                 <div>
-                  <h1 className="font-display text-3xl font-bold text-slate-800">Ã…rsplan Golf</h1>
+                  <PageTitle className="font-display text-3xl font-bold text-slate-800">Ã…rsplan Golf</PageTitle>
                   <p className="font-body text-slate-500 text-sm">Individuell Utviklingsplan 2026</p>
                 </div>
               </div>
@@ -337,7 +338,7 @@ const AarsplanGolf = () => {
                   <span className="text-2xl">ðŸ‘¤</span>
                 </div>
                 <div>
-                  <h3 className="font-body font-semibold text-lg">{playerProfile.name}</h3>
+                  <SubSectionTitle className="font-body font-semibold text-lg">{playerProfile.name}</SubSectionTitle>
                   <div className="flex gap-4 text-sm text-slate-300">
                     <span className="flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -404,7 +405,7 @@ const AarsplanGolf = () => {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-display text-xl font-semibold text-slate-800">{month.month}</h3>
+                    <SubSectionTitle className="font-display text-xl font-semibold text-slate-800">{month.month}</SubSectionTitle>
                     <p className="font-body text-xs text-slate-500">Uke {month.weeks[0]}-{month.weeks[month.weeks.length-1]}</p>
                   </div>
                   <div 
@@ -488,9 +489,9 @@ const AarsplanGolf = () => {
       {/* Five Process Summary */}
       <div className="max-w-7xl mx-auto mt-8">
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200 p-6">
-          <h2 className="font-display text-2xl font-bold text-slate-800 mb-6 text-center">
+          <SectionTitle className="font-display text-2xl font-bold text-slate-800 mb-6 text-center">
             Fem-prosess Ã…rsoversikt
-          </h2>
+          </SectionTitle>
           
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
@@ -510,7 +511,7 @@ const AarsplanGolf = () => {
                 >
                   {process.icon}
                 </div>
-                <h3 className="font-body font-semibold text-slate-800">{process.name}</h3>
+                <SubSectionTitle className="font-body font-semibold text-slate-800">{process.name}</SubSectionTitle>
                 <p className="font-body text-xs text-slate-500 mt-1">{process.desc}</p>
               </div>
             ))}

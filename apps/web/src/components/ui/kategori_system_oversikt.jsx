@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { tokens } from '../design-tokens';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 // Session type colors (Blue Palette 01)
 const sessionTypeColors = {
@@ -151,9 +152,9 @@ const KategoriSystemOversikt = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 opacity-90"></div>
         <div className="relative px-6 py-12">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-5xl font-bold text-white mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
+            <PageTitle className="text-5xl font-bold text-white mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
               AK Golf Academy & Team Norway Golf
-            </h1>
+            </PageTitle>
             <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
               Integrert kategori system for systematisk golfutvikling
             </p>
@@ -185,9 +186,9 @@ const KategoriSystemOversikt = () => {
         {activeSection === 'overview' && (
           <div className="space-y-12">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
+              <SectionTitle className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
                 Hovedintegrasjonspunkter
-              </h2>
+              </SectionTitle>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Seks kjernekompoenenter som kobler AK Golf Academy sitt vitenskapelige system med Team Norway Golf sitt nasjonale rammeverk
               </p>
@@ -204,9 +205,9 @@ const KategoriSystemOversikt = () => {
                     className="w-4 h-20 rounded-full mb-4"
                     style={{backgroundColor: component.color}}
                   ></div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-3" style={{fontFamily: 'Outfit, sans-serif'}}>
+                  <SubSectionTitle className="text-xl font-bold text-gray-800 mb-3" style={{fontFamily: 'Outfit, sans-serif'}}>
                     {component.name}
-                  </h3>
+                  </SubSectionTitle>
                   <div className="space-y-3">
                     <div className="p-3 bg-blue-50 rounded-lg">
                       <p className="text-sm font-medium text-blue-700 mb-1">AK Golf Academy</p>
@@ -223,9 +224,9 @@ const KategoriSystemOversikt = () => {
 
             {/* Integration Benefits */}
             <div className="bg-gradient-to-r from-green-500 to-blue-600 rounded-3xl p-8 text-white">
-              <h3 className="text-2xl font-bold mb-6" style={{fontFamily: 'Outfit, sans-serif'}}>
+              <SubSectionTitle className="text-2xl font-bold mb-6" style={{fontFamily: 'Outfit, sans-serif'}}>
                 Hovedgevinster av Integrert System
-              </h3>
+              </SubSectionTitle>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
@@ -264,9 +265,9 @@ const KategoriSystemOversikt = () => {
         {activeSection === 'learning' && (
           <div className="space-y-12">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
+              <SectionTitle className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
                 LÃ¦ringsfaser (L1-L5)
-              </h2>
+              </SectionTitle>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Strukturert progresjon fra grunnleggende kroppsbevegelser til automatisert prestasjon under press
               </p>
@@ -284,9 +285,9 @@ const KategoriSystemOversikt = () => {
                         <span className="text-white font-bold">{phase.phase}</span>
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-gray-800" style={{fontFamily: 'Outfit, sans-serif'}}>
+                        <SubSectionTitle className="text-xl font-bold text-gray-800" style={{fontFamily: 'Outfit, sans-serif'}}>
                           {phase.name}
-                        </h3>
+                        </SubSectionTitle>
                         <p className="text-gray-600">{phase.description}</p>
                       </div>
                     </div>
@@ -323,9 +324,9 @@ const KategoriSystemOversikt = () => {
         {activeSection === 'areas' && (
           <div className="space-y-12">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
+              <SectionTitle className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
                 Golf OmrÃ¥der Kategorisering
-              </h2>
+              </SectionTitle>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 17 spesifikke omrÃ¥der som mapper direkte til Team Norway Golf sine golfslag kategorier
               </p>
@@ -344,9 +345,9 @@ const KategoriSystemOversikt = () => {
                   onMouseLeave={() => setHoveredArea(null)}
                 >
                   <div className="mb-4">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2" style={{fontFamily: 'Outfit, sans-serif'}}>
+                    <SubSectionTitle className="text-lg font-bold text-gray-800 mb-2" style={{fontFamily: 'Outfit, sans-serif'}}>
                       {area.name}
-                    </h3>
+                    </SubSectionTitle>
                     <p className="text-sm text-gray-600">{area.distance}</p>
                   </div>
                   
@@ -378,9 +379,9 @@ const KategoriSystemOversikt = () => {
         {activeSection === 'settings' && (
           <div className="space-y-12">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
+              <SectionTitle className="text-3xl font-bold text-gray-800 mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
                 Setting NivÃ¥er (S1-S10)
-              </h2>
+              </SectionTitle>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Systematisk progresjon fra kontrollerte innendÃ¸rs miljÃ¸er til hÃ¸ypresset turneringsspill
               </p>
@@ -405,7 +406,7 @@ const KategoriSystemOversikt = () => {
                         {setting.level}
                       </div>
                       <div>
-                        <h3 className="font-bold text-gray-800">{setting.environment}</h3>
+                        <SubSectionTitle className="font-bold text-gray-800">{setting.environment}</SubSectionTitle>
                         <p className="text-sm text-gray-600">{setting.usage}</p>
                       </div>
                     </div>
@@ -421,23 +422,23 @@ const KategoriSystemOversikt = () => {
             </div>
 
             <div className="bg-gradient-to-r from-blue-500 to-green-500 rounded-3xl p-8 text-white">
-              <h3 className="text-2xl font-bold mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
+              <SubSectionTitle className="text-2xl font-bold mb-4" style={{fontFamily: 'Outfit, sans-serif'}}>
                 Setting Progresjonsprinsipp
-              </h3>
+              </SubSectionTitle>
               <p className="text-lg mb-4">
                 Ny teknikk bygges fÃ¸rst i S1-S4, flyttes til S6-S8, og testes i S9-S10.
               </p>
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="p-4 bg-white bg-opacity-20 rounded-lg">
-                  <h4 className="font-bold mb-2">Bygging (S1-S4)</h4>
+                  <CardTitle className="font-bold mb-2">Bygging (S1-S4)</CardTitle>
                   <p className="text-sm">Teknisk lÃ¦ring i kontrollerte miljÃ¸er</p>
                 </div>
                 <div className="p-4 bg-white bg-opacity-20 rounded-lg">
-                  <h4 className="font-bold mb-2">OverfÃ¸ring (S6-S8)</h4>
+                  <CardTitle className="font-bold mb-2">OverfÃ¸ring (S6-S8)</CardTitle>
                   <p className="text-sm">Anvendelse i realistiske situasjoner</p>
                 </div>
                 <div className="p-4 bg-white bg-opacity-20 rounded-lg">
-                  <h4 className="font-bold mb-2">Testing (S9-S10)</h4>
+                  <CardTitle className="font-bold mb-2">Testing (S9-S10)</CardTitle>
                   <p className="text-sm">Validering under konkurransepress</p>
                 </div>
               </div>

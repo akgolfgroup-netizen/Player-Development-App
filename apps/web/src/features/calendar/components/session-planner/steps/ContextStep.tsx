@@ -18,6 +18,7 @@ import {
   type Pressure,
   type CSLevel,
 } from '../hooks/useAKFormula';
+import { SubSectionTitle } from '../../../../../components/typography';
 
 interface ContextStepProps {
   planner: UseSessionPlannerResult;
@@ -38,12 +39,12 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
     <div className="space-y-6">
       {/* Environment */}
       <div>
-        <h3
+        <SubSectionTitle
           className="text-sm font-medium mb-3"
           style={{ color: 'var(--calendar-text-secondary)' }}
         >
           Treningsmiljø
-        </h3>
+        </SubSectionTitle>
 
         <div className="grid grid-cols-2 gap-2">
           {environments.map(([key, value]) => {
@@ -88,12 +89,12 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
       {showCSSlider && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h3
+            <SubSectionTitle
               className="text-sm font-medium"
               style={{ color: 'var(--calendar-text-secondary)' }}
             >
               Klubbhastighet
-            </h3>
+            </SubSectionTitle>
             <span
               className="text-lg font-bold"
               style={{ color: 'var(--ak-primary)' }}
@@ -147,12 +148,12 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
 
       {/* Pressure */}
       <div>
-        <h3
+        <SubSectionTitle
           className="text-sm font-medium mb-3"
           style={{ color: 'var(--calendar-text-secondary)' }}
         >
           Pressnivå
-        </h3>
+        </SubSectionTitle>
 
         <div className="space-y-2">
           {pressureLevels.map(([key, value]) => {

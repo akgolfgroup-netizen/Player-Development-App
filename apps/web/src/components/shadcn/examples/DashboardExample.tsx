@@ -22,6 +22,7 @@ import { Input } from '../input'
 import { Separator } from '../separator'
 import { Skeleton } from '../skeleton'
 import { Play, TrendingUp, Calendar, Trophy } from 'lucide-react'
+import { PageTitle, SubSectionTitle } from '../../typography'
 
 // Example: Player Profile Card (v0-style)
 interface PlayerProfileCardProps {
@@ -209,12 +210,9 @@ export const ContactFormCard = () => (
 const DashboardExample = () => {
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold text-text-primary">
+      <PageTitle className="text-2xl font-bold text-text-primary" subtitle="Disse komponentene bruker AK Golf design tokens og kan brukes direkte i appen.">
         shadcn/ui Integrasjonseksempler
-      </h1>
-      <p className="text-text-secondary">
-        Disse komponentene bruker AK Golf design tokens og kan brukes direkte i appen.
-      </p>
+      </PageTitle>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <PlayerProfileCard />
@@ -226,7 +224,7 @@ const DashboardExample = () => {
       <div className="grid gap-6 lg:grid-cols-2">
         <ContactFormCard />
         <div className="space-y-4">
-          <h3 className="font-semibold text-text-primary">Loading States</h3>
+          <SubSectionTitle className="font-semibold text-text-primary">Loading States</SubSectionTitle>
           <LoadingCard />
         </div>
       </div>

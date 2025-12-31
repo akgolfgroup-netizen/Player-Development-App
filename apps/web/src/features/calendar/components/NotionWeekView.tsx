@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { SectionTitle } from '../../../components/typography';
 
 /**
  * NotionWeekView - Notion Calendar-inspired week view
@@ -158,9 +159,9 @@ const NotionWeekView: React.FC<NotionWeekViewProps> = ({
             </button>
           </div>
 
-          <h2 className="text-lg font-semibold text-ak-text-primary capitalize">
+          <SectionTitle className="text-lg font-semibold text-ak-text-primary capitalize">
             {monthYear}
-          </h2>
+          </SectionTitle>
 
           <span className="text-sm text-ak-text-muted bg-ak-surface-elevated px-2 py-1 rounded">
             Uke {weekNumber}

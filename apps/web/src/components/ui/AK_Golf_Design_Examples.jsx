@@ -6,6 +6,7 @@ import {
   Activity, Award, BookOpen, Dumbbell, Brain
 } from 'lucide-react';
 import { tokens } from '../design-tokens';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../typography';
 
 // Session type colors (Blue Palette 01)
 const sessionTypeColors = {
@@ -165,9 +166,9 @@ const HomeScreenLight = () => {
             God morgen,
           </p>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h1 style={{ color: theme.colors.gray900, fontSize: '28px', fontWeight: '700', margin: 0 }}>
+            <PageTitle style={{ color: theme.colors.gray900, fontSize: '28px', fontWeight: '700', margin: 0 }}>
               {player.name}
-            </h1>
+            </PageTitle>
             <div style={{ display: 'flex', gap: '12px' }}>
               <Bell size={24} color={theme.colors.gray500} strokeWidth={1.5} />
               <Settings size={24} color={theme.colors.gray500} strokeWidth={1.5} />
@@ -311,9 +312,9 @@ const HomeScreenLight = () => {
         {/* Dagens økter */}
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <h2 style={{ color: theme.colors.gray900, fontSize: '18px', fontWeight: '600', margin: 0 }}>
+            <SectionTitle style={{ color: theme.colors.gray900, fontSize: '18px', fontWeight: '600', margin: 0 }}>
               Dagens økter
-            </h2>
+            </SectionTitle>
             <span style={{ color: theme.colors.primary, fontSize: '14px', fontWeight: '500' }}>
               Se alle
             </span>
@@ -484,15 +485,15 @@ const ComponentsShowcase = () => {
       padding: '60px 24px 40px',
       border: `8px solid ${theme.colors.gray200}`,
     }}>
-      <h1 style={{ color: theme.colors.gray900, fontSize: '24px', fontWeight: '700', marginBottom: '32px' }}>
+      <PageTitle style={{ color: theme.colors.gray900, fontSize: '24px', fontWeight: '700', marginBottom: '32px' }}>
         Komponenter
-      </h1>
+      </PageTitle>
 
       {/* Knapper */}
       <section style={{ marginBottom: '32px' }}>
-        <h2 style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
+        <SectionTitle style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
           KNAPPER
-        </h2>
+        </SectionTitle>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <button style={{
             background: theme.colors.primary,
@@ -552,9 +553,9 @@ const ComponentsShowcase = () => {
 
       {/* Input */}
       <section style={{ marginBottom: '32px' }}>
-        <h2 style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
+        <SectionTitle style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
           INPUT-FELT
-        </h2>
+        </SectionTitle>
         
         <div style={{ marginBottom: '16px' }}>
           <label style={{ 
@@ -643,9 +644,9 @@ const ComponentsShowcase = () => {
 
       {/* Badges */}
       <section style={{ marginBottom: '32px' }}>
-        <h2 style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
+        <SectionTitle style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
           KATEGORI-BADGES
-        </h2>
+        </SectionTitle>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {Object.entries(theme.colors.categories).map(([letter, color]) => (
             <span key={letter} style={{
@@ -664,9 +665,9 @@ const ComponentsShowcase = () => {
 
       {/* Periode-badges */}
       <section style={{ marginBottom: '32px' }}>
-        <h2 style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
+        <SectionTitle style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
           PERIODE-BADGES
-        </h2>
+        </SectionTitle>
         <div style={{ display: 'flex', gap: '8px' }}>
           {[
             { letter: 'E', name: 'Evaluering', color: theme.colors.periodE },
@@ -690,9 +691,9 @@ const ComponentsShowcase = () => {
 
       {/* L-fase badges */}
       <section style={{ marginBottom: '32px' }}>
-        <h2 style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
+        <SectionTitle style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
           L-FASE BADGES
-        </h2>
+        </SectionTitle>
         <div style={{ display: 'flex', gap: '8px' }}>
           {[
             { name: 'L1', color: theme.colors.l1 },
@@ -717,9 +718,9 @@ const ComponentsShowcase = () => {
 
       {/* CS badges */}
       <section style={{ marginBottom: '32px' }}>
-        <h2 style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
+        <SectionTitle style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
           CS-BADGES (CLUBSPEED)
-        </h2>
+        </SectionTitle>
         <div style={{ display: 'flex', gap: '8px' }}>
           {['CS20', 'CS40', 'CS60', 'CS80', 'CS100'].map((cs) => (
             <span key={cs} style={{
@@ -739,9 +740,9 @@ const ComponentsShowcase = () => {
 
       {/* Økt-type indikatorer */}
       <section>
-        <h2 style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
+        <SectionTitle style={{ color: theme.colors.gray700, fontSize: '13px', fontWeight: '600', marginBottom: '12px', letterSpacing: '0.5px' }}>
           ØKT-TYPER
-        </h2>
+        </SectionTitle>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {[
             { icon: BookOpen, name: 'Teknikk', color: theme.colors.sessions.teknikk },
@@ -802,9 +803,9 @@ const TrainingCard = () => {
           <p style={{ color: theme.colors.gray500, fontSize: '12px', margin: '0 0 2px', fontWeight: '500' }}>
             09:00 – 10:30
           </p>
-          <h3 style={{ color: theme.colors.gray900, fontSize: '16px', fontWeight: '600', margin: 0 }}>
+          <SubSectionTitle style={{ color: theme.colors.gray900, fontSize: '16px', fontWeight: '600', margin: 0 }}>
             Driver Teknikk
-          </h3>
+          </SubSectionTitle>
         </div>
         <div style={{ display: 'flex', gap: '6px' }}>
           <span style={{
@@ -935,9 +936,9 @@ const PlayerProfileCard = () => {
           JH
         </div>
         <div style={{ flex: 1 }}>
-          <h2 style={{ color: theme.colors.gray900, fontSize: '20px', fontWeight: '700', margin: '0 0 4px' }}>
+          <SectionTitle style={{ color: theme.colors.gray900, fontSize: '20px', fontWeight: '700', margin: '0 0 4px' }}>
             Jakob Holm
-          </h2>
+          </SectionTitle>
           <p style={{ color: theme.colors.gray500, fontSize: '14px', margin: '0 0 8px' }}>
             GFGK • 16 år
           </p>
@@ -1030,28 +1031,28 @@ const DesignExamples = () => {
       minHeight: '100vh',
     }}>
       <div>
-        <h3 style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
           STARTMENY / HJEM
-        </h3>
+        </SubSectionTitle>
         <HomeScreenLight />
       </div>
       
       <div>
-        <h3 style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
           KOMPONENTER
-        </h3>
+        </SubSectionTitle>
         <ComponentsShowcase />
       </div>
       
       <div>
-        <h3 style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
           TRENINGSKORT
-        </h3>
+        </SubSectionTitle>
         <TrainingCard />
         
-        <h3 style={{ marginTop: '32px', marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginTop: '32px', marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
           SPILLERPROFIL
-        </h3>
+        </SubSectionTitle>
         <PlayerProfileCard />
       </div>
     </div>

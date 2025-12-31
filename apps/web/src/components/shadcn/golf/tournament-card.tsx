@@ -4,6 +4,7 @@ import { cn } from "lib/utils"
 import { Card, CardContent } from "../card"
 import { Badge } from "../badge"
 import { Button } from "../button"
+import { SubSectionTitle } from "../../typography"
 
 type TournamentStatus = "upcoming" | "ongoing" | "completed" | "registered"
 
@@ -76,7 +77,7 @@ export const TournamentCard: React.FC<TournamentCardProps> = ({
         <div className="space-y-3">
           {/* Title */}
           <div>
-            <h3 className="font-semibold text-text-primary text-lg">{name}</h3>
+            <SubSectionTitle className="font-semibold text-text-primary text-lg">{name}</SubSectionTitle>
             {format && (
               <p className="text-sm text-text-secondary">{format}</p>
             )}

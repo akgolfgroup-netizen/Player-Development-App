@@ -15,6 +15,7 @@ import { LayoutGroup, motion } from 'motion/react'
 import React, { forwardRef, useId } from 'react'
 import { TouchTarget } from './button'
 import { Link } from './link'
+import { SubSectionTitle } from '../typography'
 
 export function Sidebar({ className, ...props }) {
   return <nav {...props} className={clsx(className, 'flex h-full min-h-0 flex-col bg-ak-primary')} />
@@ -76,9 +77,9 @@ export function SidebarSpacer({ className, ...props }) {
 
 export function SidebarHeading({ className, children, ...props }) {
   return (
-    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-white/60')}>
+    <SubSectionTitle {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-white/60')}>
       {children}
-    </h3>
+    </SubSectionTitle>
   )
 }
 

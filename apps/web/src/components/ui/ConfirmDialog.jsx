@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { AlertTriangle, X, AlertCircle, Info } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
+import { SectionTitle } from '../typography';
 
 /**
  * Confirm dialog component - UI Canon compliant
@@ -118,7 +119,7 @@ export default function ConfirmDialog({
             <IconComponent size={24} style={{ color: config.iconColor }} />
           </div>
           <div style={{ flex: 1 }}>
-            <h2
+            <SectionTitle
               id="dialog-title"
               style={{
                 fontSize: '18px',
@@ -129,7 +130,7 @@ export default function ConfirmDialog({
               }}
             >
               {title}
-            </h2>
+            </SectionTitle>
             <p
               id="dialog-description"
               style={{

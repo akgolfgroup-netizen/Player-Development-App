@@ -21,6 +21,7 @@ import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../components/typography';
 
 // Tailwind classes
 const tw = {
@@ -242,7 +243,7 @@ export function VideoComparisonPage() {
     <div className={tw.modal} onClick={() => setShowSelector(false)}>
       <div className={tw.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={tw.modalHeader}>
-          <h3 className={tw.modalTitle}>Velg video {selectedSlot}</h3>
+          <SubSectionTitle className={tw.modalTitle}>Velg video {selectedSlot}</SubSectionTitle>
           <button className={tw.closeButton} onClick={() => setShowSelector(false)}>
             &times;
           </button>

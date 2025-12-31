@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Minus, BarChart3, Users } from 'lucide-react';
+import { PageTitle, SubSectionTitle } from '../components/typography';
 import { SkeletonCard } from '../components/ui/LoadingSkeleton';
 import ErrorState from '../components/ui/ErrorState';
 import { testsAPI, coachesAPI } from '../services/api';
@@ -110,13 +111,13 @@ const MobileCoachTestResults = () => {
         color: 'var(--bg-primary)',
         padding: '24px',
       }}>
-        <h1 style={{
+        <PageTitle style={{
           fontSize: '22px', lineHeight: '28px', fontWeight: 700,
           margin: 0,
           marginBottom: '8px',
         }}>
           Testresultater
-        </h1>
+        </PageTitle>
         <p style={{
           fontSize: '15px', lineHeight: '20px', fontWeight: 600,
           margin: 0,
@@ -371,14 +372,14 @@ const TestResultCard = ({ result }) => {
               {result.athlete}
             </span>
           </div>
-          <h3 style={{
+          <SubSectionTitle style={{
             fontSize: '17px', lineHeight: '22px', fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
             marginBottom: '8px',
           }}>
             {result.testName}
-          </h3>
+          </SubSectionTitle>
           <div style={{
             display: 'inline-block',
             padding: '4px 12px',

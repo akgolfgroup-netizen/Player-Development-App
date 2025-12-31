@@ -26,6 +26,7 @@ import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // Mock data for athletes
 const mockAthletes = [
@@ -68,14 +69,9 @@ const WidgetHeader: React.FC<{
   }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
       {Icon && <Icon size={18} style={{ color: 'var(--accent)' }} />}
-      <h3 style={{
-        fontSize: '17px',
-        fontWeight: 600,
-        color: 'var(--text-primary)',
-        margin: 0,
-      }}>
+      <SubSectionTitle>
         {title}
-      </h3>
+      </SubSectionTitle>
     </div>
     {action && (
       <Button variant="ghost" size="sm" onClick={action.onClick}>
@@ -300,14 +296,9 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     >
       {/* Header */}
       <div style={{ padding: '24px', paddingBottom: '16px' }}>
-        <h1 style={{
-          fontSize: '28px',
-          fontWeight: 700,
-          color: 'var(--text-primary)',
-          margin: 0,
-        }}>
+        <PageTitle>
           {getGreeting()}, Trener
-        </h1>
+        </PageTitle>
         <p style={{
           fontSize: '15px',
           color: 'var(--text-secondary)',

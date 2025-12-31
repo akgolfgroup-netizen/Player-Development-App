@@ -18,6 +18,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 interface TrainingTemplate {
   id: string;
@@ -227,14 +228,14 @@ export const CoachExerciseTemplates: React.FC = () => {
               <BookOpen size={24} color="white" />
             </div>
             <div>
-              <h1 style={{
+              <PageTitle style={{
                 fontSize: '28px',
                 fontWeight: '700',
                 color: 'var(--text-primary)',
                 margin: 0
               }}>
                 Treningsplaner
-              </h1>
+              </PageTitle>
               <p style={{
                 fontSize: '14px',
                 color: 'var(--text-secondary)',
@@ -373,14 +374,14 @@ export const CoachExerciseTemplates: React.FC = () => {
                 {/* Content */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                    <h3 style={{
+                    <SubSectionTitle style={{
                       fontSize: '17px',
                       fontWeight: '600',
                       color: 'var(--text-primary)',
                       margin: 0
                     }}>
                       {template.name}
-                    </h3>
+                    </SubSectionTitle>
                     <span style={{
                       fontSize: '10px',
                       fontWeight: '600',
@@ -601,7 +602,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                   marginTop: '-4px',
                   paddingTop: '16px'
                 }}>
-                  <h4 style={{
+                  <CardTitle style={{
                     fontSize: '13px',
                     fontWeight: '600',
                     color: 'var(--text-secondary)',
@@ -610,7 +611,7 @@ export const CoachExerciseTemplates: React.FC = () => {
                     letterSpacing: '0.5px'
                   }}>
                     Øvelser i denne planen
-                  </h4>
+                  </CardTitle>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {template.exercises.map((exercise, idx) => (
                       <div

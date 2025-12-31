@@ -1,4 +1,5 @@
 import React from 'react';
+import { SubSectionTitle } from '../../components/typography';
 
 /**
  * CardHeader Raw Block
@@ -78,14 +79,14 @@ const CardHeader: React.FC<CardHeaderProps> = ({
         )}
 
         <div style={styles.textContent}>
-          <h3
+          <SubSectionTitle
             style={{
               ...styles.title,
               fontSize: getTitleSize(),
             }}
           >
             {title}
-          </h3>
+          </SubSectionTitle>
           {subtitle && (
             <p
               style={{

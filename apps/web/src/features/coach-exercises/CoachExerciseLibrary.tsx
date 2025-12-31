@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../components/typography';
 
 interface Exercise {
   id: string;
@@ -412,14 +413,14 @@ export const CoachExerciseLibrary: React.FC = () => {
               </div>
 
               {/* Title */}
-              <h3 style={{
+              <SubSectionTitle style={{
                 fontSize: '16px',
                 fontWeight: '600',
                 color: 'var(--text-primary)',
                 margin: '0 0 8px 0'
               }}>
                 {exercise.name}
-              </h3>
+              </SubSectionTitle>
 
               {/* Description */}
               <p style={{

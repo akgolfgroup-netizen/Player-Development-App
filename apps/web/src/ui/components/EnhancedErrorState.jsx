@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, RefreshCw, WifiOff, Server, Lock } from 'lucide-react';
 import Button from '../primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 /**
  * Enhanced error state component with specific error messages and retry logic
@@ -129,7 +130,7 @@ export const EnhancedErrorState = ({ error, onRetry, showPartialData = false }) 
       </div>
 
       {/* Title */}
-      <h3 style={{
+      <SubSectionTitle style={{
         fontSize: '16px',
         fontWeight: 600,
         color: 'var(--text-primary)',
@@ -137,7 +138,7 @@ export const EnhancedErrorState = ({ error, onRetry, showPartialData = false }) 
         margin: '0 0 8px 0',
       }}>
         {config.title}
-      </h3>
+      </SubSectionTitle>
 
       {/* Message */}
       <p style={{

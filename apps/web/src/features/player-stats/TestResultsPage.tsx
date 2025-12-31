@@ -16,6 +16,7 @@ import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
 
 import apiClient from '../../services/apiClient';
 import { useScreenView } from '../../analytics/useScreenView';
@@ -321,10 +322,10 @@ const TestResultsPage: React.FC = () => {
       ) : (
         Object.entries(groupedResults).map(([category, tests]) => (
           <section key={category} style={styles.section}>
-            <h2 style={styles.categoryTitle}>
-              <span>{category}</span>
+            <div style={styles.categoryHeader}>
+              <SectionTitle>{category}</SectionTitle>
               <span style={styles.categoryCount}>{tests.length} tester</span>
-            </h2>
+            </div>
             <div style={styles.testList}>
               {tests.map((test) => (
                 <Card key={test.id}>
@@ -333,7 +334,7 @@ const TestResultsPage: React.FC = () => {
                       <div style={styles.testInfo}>
                         <div style={styles.testNameRow}>
                           <span style={styles.testNumber}>#{test.testNumber}</span>
-                          <h3 style={styles.testName}>{test.testName}</h3>
+                          <SubSectionTitle style={styles.testName}>{test.testName}</SubSectionTitle>
                         </div>
                         <div style={styles.testMeta}>
                           <Calendar size={12} color="var(--text-tertiary)" />
@@ -559,13 +560,10 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-primary)',
     cursor: 'pointer',
   },
-  categoryTitle: {
+  categoryHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
     marginBottom: 'var(--spacing-3)',
   },
   categoryCount: {
@@ -602,9 +600,6 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 500,
   },
   testName: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
     margin: 0,
   },
   testMeta: {

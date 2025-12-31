@@ -153,30 +153,6 @@ const Badges = () => {
 
   return (
     <div className="badges-page">
-      <div className="badges-page__hero">
-        <div className="badges-page__hero-content">
-          <h1 className="badges-page__title">Dine Prestasjoner</h1>
-          <p className="badges-page__description">
-            Opptjen badges ved å fullføre utfordringer, nå milepæler, og demonstrere dedikasjon til din treningsreise.
-          </p>
-        </div>
-
-        <div className="badges-page__stats">
-          <div className="badges-page__stat">
-            <div className="badges-page__stat-value">{unlockedCount}</div>
-            <div className="badges-page__stat-label">Opptjent</div>
-          </div>
-          <div className="badges-page__stat">
-            <div className="badges-page__stat-value">{totalBadges - unlockedCount}</div>
-            <div className="badges-page__stat-label">Gjenstående</div>
-          </div>
-          <div className="badges-page__stat">
-            <div className="badges-page__stat-value">{percentComplete}%</div>
-            <div className="badges-page__stat-label">Fullført</div>
-          </div>
-        </div>
-      </div>
-
       <BadgeGrid
         badges={badges}
         userStats={userStats}

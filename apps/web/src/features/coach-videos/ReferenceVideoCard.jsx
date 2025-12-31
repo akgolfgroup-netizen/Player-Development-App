@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import { CardTitle } from '../../components/typography';
 
 // Reference video types
 export const REFERENCE_TYPES = {
@@ -280,7 +281,7 @@ export function ReferenceVideoCard({
 
       {/* Content */}
       <div className={tw.content}>
-        <h3 className={tw.title}>{video.title}</h3>
+        <CardTitle className={tw.title}>{video.title}</CardTitle>
 
         {video.description && (
           <p className={tw.description}>{video.description}</p>

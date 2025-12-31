@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { tokens, typographyStyle } from '../design-tokens';
+import { PageTitle } from '../components/typography';
 import LoadingState from '../components/ui/LoadingState';
 import SuccessState from '../components/ui/SuccessState';
 import ErrorState from '../components/ui/ErrorState';
@@ -42,7 +43,7 @@ export default function MobileCalibration() {
 
   return (
     <div style={{ padding: tokens.spacing.md }}>
-      <h1 style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>Kalibrering</h1>
+      <PageTitle style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>Kalibrering</PageTitle>
       {!sessionId ? (
         <button onClick={startSession} style={{ ...typographyStyle('label'), padding: tokens.spacing.md, backgroundColor: tokens.colors.primary, color: tokens.colors.white, border: 'none', borderRadius: tokens.borderRadius.sm, cursor: 'pointer' }}>
           Start Kalibrering

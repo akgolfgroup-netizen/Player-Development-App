@@ -10,7 +10,6 @@ import {
   Calendar, Clock, Target, Filter, Plus, ChevronRight,
   CheckCircle, AlertCircle, XCircle, Play, Search, X
 } from 'lucide-react';
-import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import {
   Card,
   CardContent,
@@ -35,6 +34,7 @@ import {
 } from '../../components/shadcn';
 import { TrainingCategoryBadge } from '../../components/shadcn/golf';
 import { cn } from 'lib/utils';
+import { SubSectionTitle } from '../../components/typography';
 
 // Session type labels
 const SESSION_TYPE_LABELS: Record<string, string> = {
@@ -364,9 +364,9 @@ function EmptyState({ onCreateNew }: EmptyStateProps) {
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-ak-primary/10 flex items-center justify-center">
           <Calendar className="h-8 w-8 text-ak-primary" />
         </div>
-        <h3 className="text-lg font-semibold text-text-primary mb-2">
+        <SubSectionTitle className="mb-2">
           Ingen økter funnet
-        </h3>
+        </SubSectionTitle>
         <p className="text-sm text-text-secondary mb-6 max-w-sm mx-auto">
           Du har ingen treningsøkter som matcher filtrene dine. Opprett en ny økt for å komme i gang.
         </p>
@@ -476,21 +476,7 @@ export default function SessionsListView({
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-background-default">
-      {/* Header */}
-      <PageHeader
-        title="Mine treningsøkter"
-        subtitle={`${pagination.total} økter totalt`}
-        actions={
-          <Button onClick={handleCreateNew} className="gap-2">
-            <Plus className="h-4 w-4" />
-            Ny økt
-          </Button>
-        }
-      />
-
-      {/* Content */}
-      <div className="p-6 max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto">
         {/* Filters */}
         <FilterBar
           filters={filters}
@@ -527,11 +513,10 @@ export default function SessionsListView({
           </>
         )}
 
-        {/* Empty state */}
-        {!isLoading && sessions.length === 0 && (
-          <EmptyState onCreateNew={handleCreateNew} />
-        )}
-      </div>
+      {/* Empty state */}
+      {!isLoading && sessions.length === 0 && (
+        <EmptyState onCreateNew={handleCreateNew} />
+      )}
     </div>
   );
 }

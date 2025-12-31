@@ -15,6 +15,7 @@ import {
 import StateCard from '../../ui/composites/StateCard';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { SubSectionTitle } from '../../components/typography';
 
 interface PlayerRegression {
   id: string;
@@ -372,14 +373,9 @@ export const CoachStatsRegression: React.FC = () => {
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <h3 style={{
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        color: 'var(--text-primary)',
-                        margin: 0
-                      }}>
+                      <SubSectionTitle style={{ margin: 0 }}>
                         {player.name}
-                      </h3>
+                      </SubSectionTitle>
                       <span style={{
                         fontSize: '11px',
                         fontWeight: '500',

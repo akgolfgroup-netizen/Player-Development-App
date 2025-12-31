@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Play, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { tokens } from '../../design-tokens';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 
 const StartTestModal = ({ test, player, onClose, onSubmit }) => {
@@ -114,9 +115,9 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ fontSize: '24px' }}>{test.icon}</span>
             <div>
-              <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+              <SectionTitle style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
                 {test.name}
-              </h2>
+              </SectionTitle>
               <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>
                 Test {test.testNumber || test.id}
               </p>
@@ -140,9 +141,9 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
         <div style={{ flex: 1, overflow: 'auto', padding: '20px' }}>
           {step === 'instructions' && (
             <div>
-              <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px', color: tokens.colors.charcoal }}>
+              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px', color: tokens.colors.charcoal }}>
                 Instruksjoner
-              </h3>
+              </SubSectionTitle>
               <p style={{ fontSize: '14px', color: tokens.colors.charcoal, marginBottom: '16px', lineHeight: 1.5 }}>
                 {test.description}
               </p>
@@ -200,9 +201,9 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
           {step === 'recording' && (
             <div>
-              <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: tokens.colors.charcoal }}>
+              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: tokens.colors.charcoal }}>
                 Registrer forsøk ({attempts.length}/{requiredAttempts})
-              </h3>
+              </SubSectionTitle>
 
               {/* Input for new attempt */}
               <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
@@ -310,9 +311,9 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
           {step === 'review' && (
             <div>
-              <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: tokens.colors.charcoal }}>
+              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: tokens.colors.charcoal }}>
                 Gjennomgang
-              </h3>
+              </SubSectionTitle>
 
               {/* Result summary */}
               <div style={{

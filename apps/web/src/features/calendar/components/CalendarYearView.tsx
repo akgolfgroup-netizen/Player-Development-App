@@ -11,6 +11,7 @@
 
 import React, { useMemo } from 'react';
 import type { CalendarEvent } from '../hooks/useCalendarEvents';
+import { SectionTitle } from '../../../components/typography';
 
 interface CalendarYearViewProps {
   year: number;
@@ -237,12 +238,12 @@ export const CalendarYearView: React.FC<CalendarYearViewProps> = ({
         className="text-center py-4 border-b"
         style={{ borderColor: 'var(--calendar-border)' }}
       >
-        <h2
+        <SectionTitle
           className="text-2xl font-bold"
           style={{ color: 'var(--calendar-text-primary)' }}
         >
           {year}
-        </h2>
+        </SectionTitle>
       </div>
 
       {/* Months grid */}

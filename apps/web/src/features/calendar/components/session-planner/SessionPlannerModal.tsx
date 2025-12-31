@@ -19,6 +19,7 @@ import {
   FocusStep,
   SummaryStep,
 } from './steps';
+import { SectionTitle } from '../../../../components/typography';
 
 export interface NewPlannedSession {
   formula: string;
@@ -124,12 +125,12 @@ export const SessionPlannerModal: React.FC<SessionPlannerModalProps> = ({
             className="flex items-center justify-between p-4 border-b shrink-0"
             style={{ borderColor: 'var(--calendar-border)' }}
           >
-            <h2
+            <SectionTitle
               className="text-lg font-semibold"
               style={{ color: 'var(--calendar-text-primary)' }}
             >
               Planlegg økt
-            </h2>
+            </SectionTitle>
             <button
               onClick={handleClose}
               className="p-1 rounded-lg transition-colors"

@@ -11,6 +11,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
+import { CardTitle } from '../../components/typography';
 
 // Video categories with labels
 const CATEGORY_LABELS = {
@@ -239,9 +240,9 @@ export function VideoCard({
 
       {/* Content */}
       <div className={tw.content}>
-        <h3 className={tw.title} title={video.title}>
+        <CardTitle className={tw.title} title={video.title}>
           {video.title}
-        </h3>
+        </CardTitle>
         <div className={tw.meta}>
           {video.viewAngle && (
             <>

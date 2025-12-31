@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { CardTitle } from '../../components/typography';
 import { notificationsAPI } from '../../services/api';
 
 // ============================================================================
@@ -171,14 +172,14 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
           justifyContent: 'space-between',
           marginBottom: '4px',
         }}>
-          <h4 style={{
+          <CardTitle style={{
             fontSize: '14px',
             fontWeight: notification.read ? 500 : 600,
             color: 'var(--text-primary)',
             margin: 0,
           }}>
             {notification.title}
-          </h4>
+          </CardTitle>
           <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
             {formatTimestamp(notification.timestamp)}
           </span>

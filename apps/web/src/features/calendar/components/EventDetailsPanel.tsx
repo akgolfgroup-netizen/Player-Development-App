@@ -21,6 +21,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import type { CalendarEvent } from '../hooks/useCalendarEvents';
+import { SubSectionTitle } from '../../../components/typography';
 
 interface EventDetailsPanelProps {
   event: CalendarEvent | null;
@@ -217,12 +218,12 @@ const PanelContent: React.FC<PanelContentProps> = ({
           </span>
 
           {/* Title */}
-          <h3
+          <SubSectionTitle
             className="text-lg font-semibold mt-2"
             style={{ color: 'var(--calendar-text-primary)' }}
           >
             {event.title}
-          </h3>
+          </SubSectionTitle>
 
           {/* Category */}
           {categoryLabel && (

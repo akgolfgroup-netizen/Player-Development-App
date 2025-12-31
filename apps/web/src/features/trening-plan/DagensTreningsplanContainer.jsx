@@ -4,8 +4,8 @@ import {
   ChevronRight, RotateCcw, Flame, Dumbbell, Brain, Flag,
   Video, MessageCircle, Plus, Award
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -192,15 +192,12 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '15px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
               textDecoration: session.status === 'completed' ? 'line-through' : 'none',
             }}>
               {session.name}
-            </h3>
+            </SubSectionTitle>
             <span style={{
               fontSize: '11px',
               fontWeight: 500,
@@ -426,13 +423,16 @@ const DagensTreningsplanContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Dagens treningsplan"
-        subtitle={`${plan.dayName.charAt(0).toUpperCase() + plan.dayName.slice(1)} - ${plan.theme}`}
-      />
+      {/* Context info - theme and day */}
+      <div style={{
+        fontSize: '13px',
+        color: 'var(--text-secondary)',
+        marginBottom: '16px',
+      }}>
+        {plan.dayName.charAt(0).toUpperCase() + plan.dayName.slice(1)} - {plan.theme}
+      </div>
 
-      <div style={{ padding: '0' }}>
-        {/* Two-column layout: Sessions left, Coach note top-right */}
+      {/* Two-column layout: Sessions left, Coach note top-right */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 320px',
@@ -453,14 +453,11 @@ const DagensTreningsplanContainer = () => {
               marginBottom: '16px',
             }}>
               <div>
-                <h2 style={{
+                <SectionTitle style={{
                   fontSize: '18px',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: 0,
                 }}>
                   Dagens fremgang
-                </h2>
+                </SectionTitle>
                 <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
                   {completedSessions}/{plan.sessions.length} økter fullført
                 </div>
@@ -571,14 +568,12 @@ const DagensTreningsplanContainer = () => {
         </div>
 
         {/* Sessions */}
-        <h2 style={{
+        <SectionTitle style={{
           fontSize: '16px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
           margin: '0 0 16px 0',
         }}>
           Økter
-        </h2>
+        </SectionTitle>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {plan.sessions.map((session) => (
@@ -603,9 +598,8 @@ const DagensTreningsplanContainer = () => {
             backgroundColor: 'transparent',
           }}
         >
-          Legg til egen økt
+          Legg til egen okt
         </Button>
-      </div>
     </div>
   );
 };

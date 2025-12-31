@@ -5,6 +5,7 @@ import {
   Medal, CheckCircle, XCircle, AlertCircle, FileText, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -79,7 +80,7 @@ const UpcomingTournamentCard = ({ tournament, onViewDetails }) => {
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-ak-charcoal">{tournament.name}</h3>
+          <SubSectionTitle>{tournament.name}</SubSectionTitle>
           <div className="flex items-center gap-2 mt-1">
             <span
               className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium"
@@ -169,7 +170,7 @@ const PastResultCard = ({ result }) => {
 
       {/* Info */}
       <div className="flex-1">
-        <h4 className="font-semibold text-ak-charcoal">{result.name}</h4>
+        <CardTitle>{result.name}</CardTitle>
         <p className="text-sm text-ak-steel">
           {formatDate(result.date)} · {result.location}
         </p>
@@ -319,9 +320,9 @@ const MineTurneringerContainer = () => {
             ) : (
               <div className="bg-white rounded-2xl p-8 text-center">
                 <Trophy size={48} className="mx-auto mb-4 text-ak-mist" />
-                <h3 className="text-lg font-semibold text-ak-charcoal mb-2">
+                <SubSectionTitle style={{ marginBottom: '8px' }}>
                   Ingen påmeldinger ennå
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-ak-steel mb-4">
                   Finn din neste turnering i turneringskalenderen
                 </p>
@@ -343,9 +344,9 @@ const MineTurneringerContainer = () => {
             ) : (
               <div className="bg-white rounded-2xl p-8 text-center">
                 <FileText size={48} className="mx-auto mb-4 text-ak-mist" />
-                <h3 className="text-lg font-semibold text-ak-charcoal mb-2">
+                <SubSectionTitle style={{ marginBottom: '8px' }}>
                   Ingen resultater ennå
-                </h3>
+                </SubSectionTitle>
                 <p className="text-sm text-ak-steel">
                   Dine turneringsresultater vil vises her
                 </p>

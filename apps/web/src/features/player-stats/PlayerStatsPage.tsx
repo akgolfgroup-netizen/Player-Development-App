@@ -21,6 +21,7 @@ import StateCard from '../../ui/composites/StateCard';
 
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { useScreenView } from '../../analytics/useScreenView';
+import { SectionTitle, CardTitle } from '../../components/typography';
 
 interface StrokesGainedData {
   hasData: boolean;
@@ -148,7 +149,7 @@ const PlayerStatsPage: React.FC = () => {
                 <BarChart3 size={24} color="white" />
               </div>
               <div>
-                <h2 style={styles.totalSGLabel}>Strokes Gained Total</h2>
+                <CardTitle style={styles.totalSGLabel}>Strokes Gained Total</CardTitle>
                 <p style={styles.totalSGSubtext}>Estimert basert på testresultater</p>
               </div>
             </div>
@@ -179,7 +180,7 @@ const PlayerStatsPage: React.FC = () => {
 
       {/* SG Breakdown */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Strokes Gained Breakdown</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Strokes Gained Breakdown</SectionTitle>
         <div style={styles.sgGrid}>
           {sgData?.byCategory && Object.entries(sgData.byCategory).map(([key, cat]) => {
             const Icon = getCategoryIcon(key);
@@ -229,7 +230,7 @@ const PlayerStatsPage: React.FC = () => {
       {/* Recent Tests */}
       <section style={styles.section}>
         <div style={styles.sectionHeader}>
-          <h2 style={styles.sectionTitle}>Siste tester</h2>
+          <SectionTitle>Siste tester</SectionTitle>
           <Button
             variant="ghost"
             size="sm"
@@ -274,7 +275,7 @@ const PlayerStatsPage: React.FC = () => {
 
       {/* Quick Links */}
       <section style={styles.section}>
-        <h2 style={styles.sectionTitle}>Utforsk mer</h2>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Utforsk mer</SectionTitle>
         <div style={styles.quickLinks}>
           <Card>
             <div
@@ -315,12 +316,6 @@ const PlayerStatsPage: React.FC = () => {
 const styles: Record<string, React.CSSProperties> = {
   section: {
     marginBottom: 'var(--spacing-6)',
-  },
-  sectionTitle: {
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    marginBottom: 'var(--spacing-3)',
   },
   sectionHeader: {
     display: 'flex',

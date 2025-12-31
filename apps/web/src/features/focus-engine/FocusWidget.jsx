@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle } from '../../components/typography';
 
 const COMPONENT_LABELS = {
   OTT: 'Off the Tee',
@@ -83,7 +84,7 @@ export function FocusWidget({ className = '' }) {
   return (
     <div className={`bg-white rounded-xl p-6 shadow-sm ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">Fokus denne uken</h3>
+        <SubSectionTitle className="text-lg font-semibold text-gray-900">Fokus denne uken</SubSectionTitle>
         <span
           className={`px-2 py-1 text-xs font-medium rounded ${
             focus.confidence === 'high'

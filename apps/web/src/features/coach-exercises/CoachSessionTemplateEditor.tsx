@@ -22,6 +22,7 @@ import {
   Dumbbell,
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 // Types
 interface Exercise {
   id: string;
@@ -260,9 +261,9 @@ export default function CoachSessionTemplateEditor() {
               <ArrowLeft size={20} color={'var(--text-primary)'} />
             </button>
             <div>
-              <h1 style={{ fontSize: '24px', lineHeight: '32px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+              <PageTitle style={{ fontSize: '24px', lineHeight: '32px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                 {isEditing ? 'Rediger mal' : 'Ny treningsmal'}
-              </h1>
+              </PageTitle>
               <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
                 Dra og slipp for a omorganisere ovelser
               </p>
@@ -434,9 +435,9 @@ export default function CoachSessionTemplateEditor() {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <h2 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                 Ovelser ({template.exercises.length})
-              </h2>
+              </SectionTitle>
               <div
                 style={{
                   display: 'flex',
@@ -476,9 +477,9 @@ export default function CoachSessionTemplateEditor() {
                 }}
               >
                 <Dumbbell size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
-                <h3 style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   Ingen ovelser lagt til
-                </h3>
+                </SubSectionTitle>
                 <p
                   style={{
                     fontSize: '15px', lineHeight: '20px',
@@ -751,7 +752,7 @@ export default function CoachSessionTemplateEditor() {
               top: 100,
             }}
           >
-            <h3
+            <SubSectionTitle
               style={{
                 fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                 color: 'var(--text-primary)',
@@ -759,7 +760,7 @@ export default function CoachSessionTemplateEditor() {
               }}
             >
               Forhandsvisning
-            </h3>
+            </SubSectionTitle>
 
             <div
               style={{
@@ -768,7 +769,7 @@ export default function CoachSessionTemplateEditor() {
                 borderRadius: 'var(--radius-md)',
               }}
             >
-              <h4
+              <CardTitle
                 style={{
                   fontSize: '15px', lineHeight: '20px',
                   fontWeight: 600,
@@ -777,7 +778,7 @@ export default function CoachSessionTemplateEditor() {
                 }}
               >
                 {template.name || 'Uten navn'}
-              </h4>
+              </CardTitle>
               {template.description && (
                 <p
                   style={{
@@ -816,7 +817,7 @@ export default function CoachSessionTemplateEditor() {
 
             {template.exercises.length > 0 && (
               <div style={{ marginTop: '16px' }}>
-                <h4
+                <CardTitle
                   style={{
                     fontSize: '13px', lineHeight: '18px',
                     color: 'var(--text-secondary)',
@@ -826,7 +827,7 @@ export default function CoachSessionTemplateEditor() {
                   }}
                 >
                   Ovelsesrekkef olge
-                </h4>
+                </CardTitle>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {template.exercises.map((ex, idx) => (
                     <div
@@ -922,9 +923,9 @@ export default function CoachSessionTemplateEditor() {
                 justifyContent: 'space-between',
               }}
             >
-              <h2 style={{ fontSize: '20px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+              <SectionTitle style={{ fontSize: '20px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                 Velg ovelse
-              </h2>
+              </SectionTitle>
               <button
                 onClick={() => setShowExerciseLibrary(false)}
                 style={{

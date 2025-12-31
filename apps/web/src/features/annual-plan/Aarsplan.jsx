@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import { tokens } from '../../design-tokens';
 
 // Period colors (Blue Palette 01)
@@ -352,7 +353,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
             <div className="flex items-center gap-4">
               <Avatar name={player.name} size={56} />
               <div>
-                <h2 className="text-[20px] font-bold">{player.name}</h2>
+                <SectionTitle className="text-[20px] font-bold">{player.name}</SectionTitle>
                 <p className="text-white/70 text-[13px]">{player.club}</p>
               </div>
             </div>
@@ -488,7 +489,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                         {/* Expanded Content */}
                         {isExpanded && (
                           <div className="mt-4 pt-4 border-t border-ak-mist">
-                            <h4 className="text-[12px] text-ak-steel uppercase tracking-wide mb-2">Aktiviteter</h4>
+                            <CardTitle className="text-[12px] text-ak-steel uppercase tracking-wide mb-2">Aktiviteter</CardTitle>
                             <div className="grid grid-cols-2 gap-2">
                               {month.activities.map((activity, i) => (
                                 <div key={i} className="flex items-center gap-2">
@@ -528,7 +529,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <h3 className="text-[17px] font-semibold text-ak-charcoal">{month.month}</h3>
+                        <SubSectionTitle className="text-[17px] font-semibold text-ak-charcoal">{month.month}</SubSectionTitle>
                         <p className="text-[11px] text-ak-steel">Uke {month.weeks[0]}-{month.weeks[month.weeks.length - 1]}</p>
                       </div>
                       <Badge color={period.color} bg={period.bg}>
@@ -583,7 +584,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
 
         {/* Five Process Summary */}
         <Card className="mt-8">
-          <h2 className="text-[18px] font-bold text-ak-charcoal mb-6 text-center">Fem-prosess Årsoversikt</h2>
+          <SectionTitle className="text-[18px] font-bold text-ak-charcoal mb-6 text-center">Fem-prosess Arsoversikt</SectionTitle>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
@@ -603,7 +604,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
                 >
                   {process.icon}
                 </div>
-                <h3 className="font-semibold text-ak-charcoal">{process.name}</h3>
+                <SubSectionTitle className="font-semibold text-ak-charcoal">{process.name}</SubSectionTitle>
                 <p className="text-[11px] text-ak-steel mt-1">{process.desc}</p>
               </div>
             ))}

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { tokens } from "../../design-tokens";
+import { SectionTitle } from '../../components/typography';
 
 /**
  * StatsPage.jsx
@@ -271,7 +272,7 @@ export default function StatsPage() {
 
   return (
     <div style={{ padding: 20, maxWidth: 1100, margin: "0 auto", fontFamily: "system-ui, -apple-system, Segoe UI, Roboto" }}>
-      <h1 style={{ margin: "6px 0 14px" }}>Statistikk</h1>
+      <SectionTitle style={{ margin: "6px 0 14px" }}>Statistikk</SectionTitle>
 
       <div
         style={{

@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X, Clock, Check } from 'lucide-react';
+import { SectionTitle } from '../../../components/typography';
 
 interface TimePickerModalProps {
   isOpen: boolean;
@@ -273,7 +274,7 @@ export const TimePickerModal: React.FC<TimePickerModalProps> = ({
       <div style={{ ...styles.modal, ...(isOpen ? styles.modalOpen : {}) }}>
         {/* Header */}
         <div style={styles.header}>
-          <h2 style={styles.title}>{title}</h2>
+          <SectionTitle style={styles.title}>{title}</SectionTitle>
           <button
             style={styles.closeButton}
             onClick={onClose}

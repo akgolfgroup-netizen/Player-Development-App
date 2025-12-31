@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AppShellTemplate from '../templates/AppShellTemplate';
 import StatsGridTemplate, { StatsItem } from '../templates/StatsGridTemplate';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 /**
  * AppShellLab - Demo page for AppShellTemplate
@@ -85,12 +86,12 @@ const AppShellLab: React.FC = () => {
             bottomNav={bottomNavContent}
           >
             <div style={styles.contentSection}>
-              <h2 style={styles.sectionTitle}>Din statistikk</h2>
+              <SectionTitle style={styles.sectionTitle}>Din statistikk</SectionTitle>
               <StatsGridTemplate items={sampleStats} />
             </div>
 
             <div style={styles.contentSection}>
-              <h2 style={styles.sectionTitle}>Siste aktivitet</h2>
+              <SectionTitle style={styles.sectionTitle}>Siste aktivitet</SectionTitle>
               <div style={styles.placeholder}>
                 Placeholder for aktivitetsliste
               </div>
@@ -102,14 +103,14 @@ const AppShellLab: React.FC = () => {
             bottomNav={bottomNavContent}
           >
             <div style={styles.contentSection}>
-              <h2 style={styles.sectionTitle}>Kontoinnstillinger</h2>
+              <SectionTitle style={styles.sectionTitle}>Kontoinnstillinger</SectionTitle>
               <div style={styles.placeholder}>
                 Placeholder for innstillingsform
               </div>
             </div>
 
             <div style={styles.contentSection}>
-              <h2 style={styles.sectionTitle}>Varslinger</h2>
+              <SectionTitle style={styles.sectionTitle}>Varslinger</SectionTitle>
               <div style={styles.placeholder}>
                 Placeholder for varslingsinnstillinger
               </div>
@@ -120,7 +121,7 @@ const AppShellLab: React.FC = () => {
 
       {/* Info Panel */}
       <div style={styles.infoPanel}>
-        <h3 style={styles.infoTitle}>AppShellTemplate Props</h3>
+        <SubSectionTitle style={styles.infoTitle}>AppShellTemplate Props</SubSectionTitle>
         <ul style={styles.propsList}>
           <li><code>title?: string</code> - Sidetittel i header</li>
           <li><code>subtitle?: string</code> - Undertittel (valgfri)</li>

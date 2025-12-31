@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, MapPin, Play, Check, Clock, MoreVertical } from 'lucide-react';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../../components/typography';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -79,9 +80,9 @@ const DayView = ({
       {/* Header */}
       <header className="flex flex-none items-center justify-between border-b border-border-default px-6 py-4">
         <div>
-          <h1 className="text-base font-semibold leading-6 text-ak-charcoal">
+          <SectionTitle className="text-base font-semibold leading-6 text-ak-charcoal">
             {dayNames[date.getDay()]}
-          </h1>
+          </SectionTitle>
           <p className="mt-1 text-sm text-ak-steel">
             <time dateTime={date.toISOString().split('T')[0]}>
               {date.getDate()}. {monthNames[date.getMonth()]} {date.getFullYear()}
@@ -230,9 +231,9 @@ const DayView = ({
                             </span>
                           )}
                         </div>
-                        <h4 className={classNames('text-sm font-semibold truncate', colors.text)}>
+                        <CardTitle className={classNames('text-sm font-semibold truncate', colors.text)}>
                           {session.name}
-                        </h4>
+                        </CardTitle>
                         {session.location && (
                           <div className="flex items-center gap-1 mt-1">
                             <MapPin className={classNames('h-3 w-3', colors.text)} />
@@ -282,9 +283,9 @@ const DayView = ({
       {/* Session Summary (Mobile) */}
       {sessions.length > 0 && (
         <div className="flex-none border-t border-border-default p-4 sm:hidden">
-          <h3 className="text-sm font-semibold text-ak-charcoal mb-3">
+          <SubSectionTitle className="text-sm font-semibold text-ak-charcoal mb-3">
             {sessions.length} {sessions.length === 1 ? 'hendelse' : 'hendelser'} i dag
-          </h3>
+          </SubSectionTitle>
           <div className="space-y-2">
             {sessions.slice(0, 3).map((session) => {
               const colors = getSessionColor(session.type);
@@ -326,9 +327,9 @@ const DayView = ({
       {sessions.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
           <Clock className="h-12 w-12 text-ak-mist mb-4" />
-          <h3 className="text-lg font-semibold text-ak-charcoal mb-2">
+          <SubSectionTitle className="text-lg font-semibold text-ak-charcoal mb-2">
             Ingen hendelser
-          </h3>
+          </SubSectionTitle>
           <p className="text-sm text-ak-steel mb-4">
             Du har ingen planlagte hendelser denne dagen.
           </p>

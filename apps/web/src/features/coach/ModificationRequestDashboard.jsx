@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { tokens } from '../../design-tokens';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 export default function ModificationRequestDashboard() {
   const [requests, setRequests] = useState([]);
@@ -61,7 +62,7 @@ export default function ModificationRequestDashboard() {
   return (
     <div className="p-8">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Modification Requests</h1>
+        <PageTitle className="mb-2">Modification Requests</PageTitle>
         <p className="text-gray-600">Review and respond to player modification requests</p>
       </div>
 
@@ -93,7 +94,7 @@ export default function ModificationRequestDashboard() {
             <div key={req.id} className="bg-white rounded-lg shadow p-6">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900">{req.playerName}</h3>
+                  <SubSectionTitle>{req.playerName}</SubSectionTitle>
                   <p className="text-gray-600">{req.planName}</p>
                   <p className="text-sm text-gray-500">{req.playerEmail}</p>
                 </div>
@@ -117,7 +118,7 @@ export default function ModificationRequestDashboard() {
               </div>
 
               <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-4">
-                <h4 className="font-bold text-amber-900 mb-2">Concerns:</h4>
+                <CardTitle className="text-amber-900 mb-2">Concerns:</CardTitle>
                 <ul className="list-disc list-inside space-y-1">
                   {req.concerns.map((concern, i) => (
                     <li key={i} className="text-amber-800">{concern}</li>

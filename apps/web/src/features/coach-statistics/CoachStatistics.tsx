@@ -17,6 +17,7 @@ import { analyticsAPI, coachesAPI } from '../../services/api';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { PageTitle, SectionTitle } from '../../components/typography';
 
 // Types
 interface TeamAnalytics {
@@ -449,7 +450,7 @@ export default function CoachStatistics() {
       <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', borderBottom: '1px solid var(--border-default)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 style={{
+            <PageTitle style={{
               fontSize: '34px',
               lineHeight: '41px',
               fontWeight: 700,
@@ -458,7 +459,7 @@ export default function CoachStatistics() {
               margin: 0,
             }}>
               Statistikk
-            </h1>
+            </PageTitle>
             <p style={{
               fontSize: '15px',
               lineHeight: '22px',
@@ -535,7 +536,7 @@ export default function CoachStatistics() {
             {/* Test Performance */}
             <Card variant="default" padding="lg">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h2 style={{
+                <SectionTitle style={{
                   fontSize: '22px',
                   lineHeight: '28px',
                   fontWeight: 700,
@@ -543,7 +544,7 @@ export default function CoachStatistics() {
                   margin: 0,
                 }}>
                   Testprestasjoner
-                </h2>
+                </SectionTitle>
                 <BarChart3 size={20} style={{ color: 'var(--text-secondary)' }} />
               </div>
               <TestPerformanceTable data={data.testStatistics} />
@@ -552,7 +553,7 @@ export default function CoachStatistics() {
             {/* Player Progress */}
             <Card variant="default" padding="lg">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h2 style={{
+                <SectionTitle style={{
                   fontSize: '22px',
                   lineHeight: '28px',
                   fontWeight: 700,
@@ -560,7 +561,7 @@ export default function CoachStatistics() {
                   margin: 0,
                 }}>
                   Spillerfremdrift
-                </h2>
+                </SectionTitle>
                 <Button variant="ghost" size="sm" onClick={() => navigate('/coach/athletes')}>
                   Se alle
                 </Button>
@@ -576,7 +577,7 @@ export default function CoachStatistics() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* Category Distribution */}
             <Card variant="default" padding="lg">
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '22px',
                 lineHeight: '28px',
                 fontWeight: 700,
@@ -585,13 +586,13 @@ export default function CoachStatistics() {
                 marginBottom: '20px',
               }}>
                 Kategorifordeling
-              </h2>
+              </SectionTitle>
               <CategoryChart data={data.playersByCategory} />
             </Card>
 
             {/* Quick Insights */}
             <Card variant="default" padding="lg">
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '22px',
                 lineHeight: '28px',
                 fontWeight: 700,
@@ -600,7 +601,7 @@ export default function CoachStatistics() {
                 marginBottom: '20px',
               }}>
                 Innsikt
-              </h2>
+              </SectionTitle>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div style={{
                   display: 'flex',
@@ -661,7 +662,7 @@ export default function CoachStatistics() {
 
             {/* Export Options */}
             <Card variant="default" padding="lg">
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '22px',
                 lineHeight: '28px',
                 fontWeight: 700,
@@ -670,7 +671,7 @@ export default function CoachStatistics() {
                 marginBottom: '16px',
               }}>
                 Eksporter data
-              </h2>
+              </SectionTitle>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <button
                   onClick={() => window.open('/api/v1/export/test-results', '_blank')}

@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
+import { SectionTitle } from '../../components/typography';
 import {
   Tournament,
   PlayerCategory,
@@ -153,7 +154,7 @@ export default function TournamentDetailsPanel({
         {/* Header */}
         <div style={styles.header}>
           <div style={styles.headerContent}>
-            <h2 style={styles.title}>{tournament.name}</h2>
+            <SectionTitle>{tournament.name}</SectionTitle>
             {isRecommended && (
               <Badge variant="accent" size="sm">
                 Anbefalt for deg

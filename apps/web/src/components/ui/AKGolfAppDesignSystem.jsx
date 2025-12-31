@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 // ============================================================================
 // AK GOLF ACADEMY - COMPLETE APP DESIGN SYSTEM & INTERACTIVE PROTOTYPES
@@ -389,7 +390,7 @@ const AKGolfAppDesignSystem = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <p style={{ color: textMuted, fontSize: '14px', margin: 0 }}>God morgen</p>
-              <h1 style={{ color: text, fontSize: '28px', fontWeight: 700, margin: '4px 0' }}>Jakob</h1>
+              <PageTitle style={{ color: text, fontSize: '28px', fontWeight: 700, margin: '4px 0' }}>Jakob</PageTitle>
             </div>
             <div style={{
               width: '44px',
@@ -476,7 +477,7 @@ const AKGolfAppDesignSystem = () => {
         {/* Today's sessions */}
         <div style={{ padding: '0 24px', flex: 1, overflow: 'auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h2 style={{ color: text, fontSize: '18px', fontWeight: 600, margin: 0 }}>I dag</h2>
+            <SectionTitle style={{ color: text, fontSize: '18px', fontWeight: 600, margin: 0 }}>I dag</SectionTitle>
             <span style={{ color: textMuted, fontSize: '14px' }}>Torsdag 12. des</span>
           </div>
 
@@ -513,7 +514,7 @@ const AKGolfAppDesignSystem = () => {
                       fontFamily: designSystem.typography.fontFamily.mono,
                     }}>{session.phase}</span>
                   </div>
-                  <h3 style={{ color: text, fontSize: '16px', fontWeight: 600, margin: '0 0 4px' }}>{session.name}</h3>
+                  <SubSectionTitle style={{ color: text, fontSize: '16px', fontWeight: 600, margin: '0 0 4px' }}>{session.name}</SubSectionTitle>
                   <p style={{ color: textMuted, fontSize: '13px', margin: 0 }}>{session.duration} min • {session.cs}</p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
@@ -556,7 +557,7 @@ const AKGolfAppDesignSystem = () => {
 
           {/* Quick actions */}
           <div style={{ marginTop: '24px', marginBottom: '100px' }}>
-            <h3 style={{ color: text, fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>Hurtigvalg</h3>
+            <SubSectionTitle style={{ color: text, fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>Hurtigvalg</SubSectionTitle>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
               {[
                 { icon: <Icons.Moon />, label: 'Søvn', color: colors.primary[600] },
@@ -788,7 +789,7 @@ const AKGolfAppDesignSystem = () => {
             {/* Mini calendar */}
             <div style={{ marginBottom: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <h3 style={{ color: text, fontSize: '16px', fontWeight: 600, margin: 0 }}>Desember 2025</h3>
+                <SubSectionTitle style={{ color: text, fontSize: '16px', fontWeight: 600, margin: 0 }}>Desember 2025</SubSectionTitle>
                 <div style={{ display: 'flex', gap: '4px' }}>
                   <button style={{ padding: '4px 8px', background: 'transparent', border: 'none', color: textMuted, cursor: 'pointer' }}>←</button>
                   <button style={{ padding: '4px 8px', background: 'transparent', border: 'none', color: textMuted, cursor: 'pointer' }}>→</button>
@@ -851,7 +852,7 @@ const AKGolfAppDesignSystem = () => {
 
             {/* Legend */}
             <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ color: textMuted, fontSize: '12px', fontWeight: 600, marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Økttyper</h4>
+              <CardTitle style={{ color: textMuted, fontSize: '12px', fontWeight: 600, marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Okttyper</CardTitle>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {Object.entries({
                   'teknikk': 'Teknikk',
@@ -979,10 +980,10 @@ const AKGolfAppDesignSystem = () => {
             padding: '24px',
             overflowY: 'auto',
           }}>
-            <h3 style={{ color: text, fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>
+            <SubSectionTitle style={{ color: text, fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>
               {selectedDate}. desember
-            </h3>
-            
+            </SubSectionTitle>
+
             {sessions[selectedDate]?.map((session, idx) => (
               <div key={idx} style={{
                 background: bgElevated,
@@ -994,7 +995,7 @@ const AKGolfAppDesignSystem = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                   <div>
                     <p style={{ color: textMuted, fontSize: '13px', margin: '0 0 4px' }}>{session.time}</p>
-                    <h4 style={{ color: text, fontSize: '15px', fontWeight: 600, margin: 0 }}>{session.name}</h4>
+                    <CardTitle style={{ color: text, fontSize: '15px', fontWeight: 600, margin: 0 }}>{session.name}</CardTitle>
                   </div>
                   <span style={{
                     background: colors.sessions[session.type],
@@ -1208,7 +1209,7 @@ const AKGolfAppDesignSystem = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <div>
                     <p style={{ color: textMuted, fontSize: '14px', margin: '0 0 4px' }}>{stat.label}</p>
-                    <h2 style={{ color: text, fontSize: '32px', fontWeight: 700, margin: 0 }}>{stat.value}</h2>
+                    <SectionTitle style={{ color: text, fontSize: '32px', fontWeight: 700, margin: 0 }}>{stat.value}</SectionTitle>
                   </div>
                   <div style={{
                     width: '48px',
@@ -1243,7 +1244,7 @@ const AKGolfAppDesignSystem = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-                <h3 style={{ color: text, fontSize: '18px', fontWeight: 600, margin: 0 }}>Mine spillere</h3>
+                <SubSectionTitle style={{ color: text, fontSize: '18px', fontWeight: 600, margin: 0 }}>Mine spillere</SubSectionTitle>
                 <button style={{
                   padding: '8px 16px',
                   borderRadius: '8px',
@@ -1300,7 +1301,7 @@ const AKGolfAppDesignSystem = () => {
                       
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                          <h4 style={{ color: text, fontSize: '15px', fontWeight: 600, margin: 0 }}>{player.name}</h4>
+                          <CardTitle style={{ color: text, fontSize: '15px', fontWeight: 600, margin: 0 }}>{player.name}</CardTitle>
                           <span style={{
                             background: colors.accent[500],
                             color: colors.primary[900],
@@ -1374,7 +1375,7 @@ const AKGolfAppDesignSystem = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-                <h3 style={{ color: text, fontSize: '18px', fontWeight: 600, margin: 0 }}>Varsler</h3>
+                <SubSectionTitle style={{ color: text, fontSize: '18px', fontWeight: 600, margin: 0 }}>Varsler</SubSectionTitle>
                 <span style={{
                   background: colors.danger[500],
                   color: 'white',
@@ -1494,12 +1495,12 @@ const AKGolfAppDesignSystem = () => {
             ))}
           </div>
           
-          <h1 style={{ color: 'white', fontSize: '28px', fontWeight: 700, margin: '0 0 8px' }}>
+          <PageTitle style={{ color: 'white', fontSize: '28px', fontWeight: 700, margin: '0 0 8px' }}>
             {step === 1 && 'Velkommen!'}
             {step === 2 && 'Din golfprofil'}
             {step === 3 && 'Dine mål'}
             {step === 4 && 'Treningsnivå'}
-          </h1>
+          </PageTitle>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px', margin: 0 }}>
             {step === 1 && 'La oss komme i gang med din utviklingsplan'}
             {step === 2 && 'Fortell oss litt om spillet ditt'}
@@ -1904,16 +1905,16 @@ const AKGolfAppDesignSystem = () => {
         padding: '32px',
         border: `1px solid ${colors.neutral[800]}`,
       }}>
-        <h2 style={{ color: 'white', fontSize: '24px', fontWeight: 700, marginBottom: '24px' }}>
-          🎨 Design System Overview
-        </h2>
+        <SectionTitle style={{ color: 'white', fontSize: '24px', fontWeight: 700, marginBottom: '24px' }}>
+          Design System Overview
+        </SectionTitle>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px' }}>
           {/* Colors */}
           <div>
-            <h3 style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <SubSectionTitle style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Brand Colors
-            </h3>
+            </SubSectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
                 { name: 'Primary', color: colors.primary[700] },
@@ -1931,9 +1932,9 @@ const AKGolfAppDesignSystem = () => {
           
           {/* Typography */}
           <div>
-            <h3 style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <SubSectionTitle style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Typography
-            </h3>
+            </SubSectionTitle>
             <div style={{ color: colors.neutral[300] }}>
               <p style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 8px' }}>DM Sans</p>
               <p style={{ fontSize: '16px', fontWeight: 400, margin: '0 0 8px' }}>Inter</p>
@@ -1943,9 +1944,9 @@ const AKGolfAppDesignSystem = () => {
           
           {/* Session Types */}
           <div>
-            <h3 style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <SubSectionTitle style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Session Types
-            </h3>
+            </SubSectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {Object.entries(colors.sessions).map(([key, color]) => (
                 <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -1958,9 +1959,9 @@ const AKGolfAppDesignSystem = () => {
           
           {/* Periods */}
           <div>
-            <h3 style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <SubSectionTitle style={{ color: colors.neutral[400], fontSize: '14px', fontWeight: 600, marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Training Periods
-            </h3>
+            </SubSectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {Object.entries(colors.periods).map(([key, color]) => (
                 <div key={key} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

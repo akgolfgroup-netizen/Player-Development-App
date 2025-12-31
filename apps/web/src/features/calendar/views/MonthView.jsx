@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight, Clock, MoreHorizontal } from 'lucide-react';
+import { SectionTitle } from '../../../components/typography';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -107,11 +108,11 @@ const MonthView = ({
     <div className="lg:flex lg:h-full lg:flex-col">
       {/* Header */}
       <header className="flex items-center justify-between border-b border-border-default bg-white px-6 py-4 lg:flex-none">
-        <h1 className="text-base font-semibold text-ak-charcoal">
+        <SectionTitle className="text-base font-semibold text-ak-charcoal">
           <time dateTime={`${year}-${String(month + 1).padStart(2, '0')}`}>
             {monthNames[month]} {year}
           </time>
-        </h1>
+        </SectionTitle>
         <div className="flex items-center">
           <div className="relative flex items-center rounded-ak-md bg-white shadow-sm ring-1 ring-border-default md:items-stretch">
             <button

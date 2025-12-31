@@ -4,6 +4,7 @@ import {
   CheckCheck, Clock, Send, Paperclip, User, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 import { conversationsAPI } from '../../services/api';
 
 // ============================================================================
@@ -163,14 +164,14 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
           justifyContent: 'space-between',
           marginBottom: '2px',
         }}>
-          <h4 style={{
+          <CardTitle style={{
             fontSize: '14px',
             fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
           }}>
             {contact.name}
-          </h4>
+          </CardTitle>
           <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
             {timeStr}
           </span>
@@ -344,14 +345,14 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
           {conversation.contact.name.split(' ').map((n) => n[0]).join('')}
         </div>
         <div>
-          <h3 style={{
+          <SubSectionTitle style={{
             fontSize: '15px',
             fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
           }}>
             {conversation.contact.name}
-          </h3>
+          </SubSectionTitle>
           <p style={{
             fontSize: '12px',
             color: conversation.isOnline ? 'var(--success)' : 'var(--text-secondary)',

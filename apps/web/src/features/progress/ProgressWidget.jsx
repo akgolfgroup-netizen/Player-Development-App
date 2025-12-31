@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
+import { SubSectionTitle } from '../../components/typography';
 
 export default function ProgressWidget({ planId }) {
   const [data, setData] = useState(null);
@@ -28,7 +29,7 @@ export default function ProgressWidget({ planId }) {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold">Your Progress</h3>
+        <SubSectionTitle>Your Progress</SubSectionTitle>
         <button
           onClick={() => navigate('/progress')}
           className="text-sm text-blue-600 hover:text-blue-700 font-medium"

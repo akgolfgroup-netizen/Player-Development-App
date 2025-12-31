@@ -10,6 +10,7 @@
 import React from 'react';
 import { type UseSessionPlannerResult } from '../hooks/useSessionPlanner';
 import { useAKFormula, AREAS, type Area } from '../hooks/useAKFormula';
+import { SubSectionTitle, CardTitle } from '../../../../../components/typography';
 
 interface AreaStepProps {
   planner: UseSessionPlannerResult;
@@ -65,22 +66,22 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
 
   return (
     <div className="space-y-6">
-      <h3
+      <SubSectionTitle
         className="text-sm font-medium"
         style={{ color: 'var(--calendar-text-secondary)' }}
       >
         Velg treningsområde
-      </h3>
+      </SubSectionTitle>
 
       {/* Full Swing */}
       {fullSwingAreas.length > 0 && (
         <div>
-          <h4
+          <CardTitle
             className="text-xs font-medium uppercase tracking-wide mb-2"
             style={{ color: 'var(--calendar-text-tertiary)' }}
           >
             Full Swing
-          </h4>
+          </CardTitle>
           <div className="grid grid-cols-2 gap-2">
             {fullSwingAreas.map(renderAreaButton)}
           </div>
@@ -90,12 +91,12 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
       {/* Kortspill */}
       {shortGameAreas.length > 0 && (
         <div>
-          <h4
+          <CardTitle
             className="text-xs font-medium uppercase tracking-wide mb-2"
             style={{ color: 'var(--calendar-text-tertiary)' }}
           >
             Kortspill
-          </h4>
+          </CardTitle>
           <div className="grid grid-cols-2 gap-2">
             {shortGameAreas.map(renderAreaButton)}
           </div>
@@ -105,12 +106,12 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
       {/* Putting */}
       {puttingAreas.length > 0 && (
         <div>
-          <h4
+          <CardTitle
             className="text-xs font-medium uppercase tracking-wide mb-2"
             style={{ color: 'var(--calendar-text-tertiary)' }}
           >
             Putting
-          </h4>
+          </CardTitle>
           <div className="grid grid-cols-2 gap-2">
             {puttingAreas.map(renderAreaButton)}
           </div>

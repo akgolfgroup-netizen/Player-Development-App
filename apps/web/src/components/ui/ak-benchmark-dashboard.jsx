@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, BarChart, Bar, Cell } from 'recharts';
 import { Target, TrendingUp, Calendar, Award, ChevronRight, Users, Zap, Clock } from 'lucide-react';
 import { tokens } from '../design-tokens';
+import { PageTitle, SectionTitle, SubSectionTitle } from '../typography';
 
 // Session type colors (Blue Palette 01)
 const sessionTypeColors = {
@@ -245,7 +246,7 @@ export default function BenchmarkDashboard() {
               <Target className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">AK Golf Group</h1>
+              <PageTitle className="text-2xl font-bold text-gray-900">AK Golf Group</PageTitle>
               <p className="text-gray-500">Benchmark Evaluation Engine</p>
             </div>
           </div>
@@ -255,10 +256,10 @@ export default function BenchmarkDashboard() {
         {/* Timeline & Next Test Alert */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+            <SectionTitle className="font-semibold text-gray-900 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-forest-600" />
               Benchmark Cycles 2025
-            </h2>
+            </SectionTitle>
             <div className="flex items-center gap-2 bg-amber-50 px-3 py-1.5 rounded-full">
               <Clock className="w-4 h-4 text-amber-600" />
               <span className="text-sm font-medium text-amber-700">Next test in {daysUntilNext} days</span>
@@ -269,10 +270,10 @@ export default function BenchmarkDashboard() {
 
         {/* Player Selection */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
-          <h2 className="font-semibold text-gray-900 flex items-center gap-2 mb-4">
+          <SectionTitle className="font-semibold text-gray-900 flex items-center gap-2 mb-4">
             <Users className="w-5 h-5 text-forest-600" />
             Select Player
-          </h2>
+          </SectionTitle>
           <div className="flex gap-3">
             {players.map((player) => (
               <button
@@ -327,7 +328,7 @@ export default function BenchmarkDashboard() {
         <div className="grid md:grid-cols-2 gap-6 mb-6">
           {/* Performance Radar */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <h3 className="font-semibold text-gray-900 mb-4">Performance Profile</h3>
+            <SubSectionTitle className="font-semibold text-gray-900 mb-4">Performance Profile</SubSectionTitle>
             <RadarChartComponent data={currentRadar} />
             <div className="grid grid-cols-5 gap-2 mt-4">
               {Object.entries(currentRadar).filter(([k]) => k !== 'cycle').map(([key, value]) => (
@@ -341,7 +342,7 @@ export default function BenchmarkDashboard() {
 
           {/* Scoring Trend */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <h3 className="font-semibold text-gray-900 mb-4">Scoring Progression</h3>
+            <SubSectionTitle className="font-semibold text-gray-900 mb-4">Scoring Progression</SubSectionTitle>
             <ProgressChart 
               data={playerData.scores} 
               dataKey="scoring" 
@@ -362,7 +363,7 @@ export default function BenchmarkDashboard() {
 
         {/* Driver Metrics */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Trackman Driver Analysis</h3>
+          <SubSectionTitle className="font-semibold text-gray-900 mb-4">Trackman Driver Analysis</SubSectionTitle>
           <div className="grid md:grid-cols-2 gap-6">
             <ProgressChart 
               data={playerData.driver} 
@@ -393,7 +394,7 @@ export default function BenchmarkDashboard() {
 
         {/* Team Comparison */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h3 className="font-semibold text-gray-900 mb-4">Team Comparison (Cycle 3)</h3>
+          <SubSectionTitle className="font-semibold text-gray-900 mb-4">Team Comparison (Cycle 3)</SubSectionTitle>
           <ComparisonBar data={playerBenchmarks} players={players} />
           <div className="mt-4 text-sm text-gray-500 text-center">
             Combined performance score across all 5 benchmark categories (max 500)

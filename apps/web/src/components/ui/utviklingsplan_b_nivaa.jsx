@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { tokens } from '../design-tokens';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 const UtviklingsplanApp = () => {
   const [activeView, setActiveView] = useState('årsplan');
@@ -167,13 +168,13 @@ const UtviklingsplanApp = () => {
   // 1. ÅRSPLAN OVERSIKT
   const ÅrsplanView = () => (
     <div style={{ padding: '24px' }}>
-      <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-        📅 ÅRSPLAN 2025/2026
-      </h2>
+      <SectionTitle style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
+        ARSPLAN 2025/2026
+      </SectionTitle>
 
       {/* Periodeoversikt */}
       <div style={{ marginBottom: '30px' }}>
-        <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>PERIODER</h3>
+        <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>PERIODER</SubSectionTitle>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           {Object.entries(periods).map(([key, period]) => (
             <div key={key} style={{
@@ -196,7 +197,7 @@ const UtviklingsplanApp = () => {
 
       {/* Ukekalender */}
       <div style={{ marginBottom: '30px' }}>
-        <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>ÅRSHJUL (UKE 40 → 39)</h3>
+        <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>ARSHJUL (UKE 40 - 39)</SubSectionTitle>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(26, 1fr)',
@@ -258,9 +259,9 @@ const UtviklingsplanApp = () => {
 
       {/* Prioriteringstabell for B-nivå */}
       <div style={{ marginBottom: '30px' }}>
-        <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>
-          PRIORITERINGER PR PERIODE - B-NIVÅ (Snitt: {player.avgScore})
-        </h3>
+        <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>
+          PRIORITERINGER PR PERIODE - B-NIVA (Snitt: {player.avgScore})
+        </SubSectionTitle>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
           <thead>
             <tr style={{ background: colors.primary, color: 'white' }}>
@@ -292,9 +293,9 @@ const UtviklingsplanApp = () => {
         borderRadius: '12px',
         color: 'white'
       }}>
-        <h3 style={{ fontSize: '14px', marginBottom: '15px', color: colors.accent }}>
-          🎯 AK GOLF ACADEMY PROGRESJON - B-NIVÅ
-        </h3>
+        <SubSectionTitle style={{ fontSize: '14px', marginBottom: '15px', color: colors.accent }}>
+          AK GOLF ACADEMY PROGRESJON - B-NIVA
+        </SubSectionTitle>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px' }}>
           {Object.entries(priorities).map(([period, data]) => (
             <div key={period} style={{
@@ -324,9 +325,9 @@ const UtviklingsplanApp = () => {
 
     return (
       <div style={{ padding: '24px' }}>
-        <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${currentPeriod.color}`, paddingBottom: '10px' }}>
-          📊 PERIODEPLAN: {currentPeriod.name.toUpperCase()}
-        </h2>
+        <SectionTitle style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${currentPeriod.color}`, paddingBottom: '10px' }}>
+          PERIODEPLAN: {currentPeriod.name.toUpperCase()}
+        </SectionTitle>
 
         {/* Periode header */}
         <div style={{
@@ -360,7 +361,7 @@ const UtviklingsplanApp = () => {
 
         {/* 3-ukers syklus */}
         <div style={{ marginBottom: '25px' }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>3-UKERS SYKLUS</h3>
+          <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>3-UKERS SYKLUS</SubSectionTitle>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px' }}>
             {['Uke 1: Innlæring', 'Uke 2: Utvikling', 'Uke 3: Testing'].map((week, i) => (
               <div key={i} style={{
@@ -382,7 +383,7 @@ const UtviklingsplanApp = () => {
 
         {/* Treningskategorier */}
         <div style={{ marginBottom: '25px' }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>TRENINGSKATEGORIER</h3>
+          <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '12px' }}>TRENINGSKATEGORIER</SubSectionTitle>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
             {[
               { key: 'konkurranse', icon: '🏆', label: 'Konkurranse' },
@@ -417,9 +418,9 @@ const UtviklingsplanApp = () => {
           borderRadius: '12px',
           border: `1px solid ${currentPeriod.color}`
         }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>
+          <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>
             ANBEFALT UKENTLIG FORDELING - {selectedPeriod.toUpperCase()}
-          </h3>
+          </SubSectionTitle>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px', alignItems: 'start' }}>
             <div>
               <table style={{ width: '100%', fontSize: '12px', borderCollapse: 'collapse' }}>
@@ -528,9 +529,9 @@ const UtviklingsplanApp = () => {
 
     return (
       <div style={{ padding: '24px' }}>
-        <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-          📆 MÅNEDSKALENDER: NOVEMBER 2025
-        </h2>
+        <SectionTitle style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
+          MANEDSKALENDER: NOVEMBER 2025
+        </SectionTitle>
 
         {/* Månedsoversikt */}
         <div style={{
@@ -673,9 +674,9 @@ const UtviklingsplanApp = () => {
 
     return (
       <div style={{ padding: '24px' }}>
-        <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-          📋 UKEPLAN: UKE {selectedWeek}
-        </h2>
+        <SectionTitle style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
+          UKEPLAN: UKE {selectedWeek}
+        </SectionTitle>
 
         {/* Uke info header */}
         <div style={{
@@ -784,7 +785,7 @@ const UtviklingsplanApp = () => {
           borderRadius: '12px',
           border: '1px solid #ddd'
         }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>UKENS OPPSUMMERING</h3>
+          <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>UKENS OPPSUMMERING</SubSectionTitle>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '10px' }}>
             {[
               { label: 'Teknikk', count: 3, time: '4.5t', color: colors.sessionTypes.teknikk },
@@ -818,9 +819,9 @@ const UtviklingsplanApp = () => {
 
     return (
       <div style={{ padding: '24px' }}>
-        <h2 style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
-          🎯 TRENINGSØKT: TEKNISK ØKT - SVING
-        </h2>
+        <SectionTitle style={{ color: colors.primary, marginBottom: '20px', borderBottom: `3px solid ${colors.secondary}`, paddingBottom: '10px' }}>
+          TRENINGSOKT: TEKNISK OKT - SVING
+        </SectionTitle>
 
         {/* Økt header */}
         <div style={{
@@ -868,7 +869,7 @@ const UtviklingsplanApp = () => {
 
         {/* Mål */}
         <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>🎯 MÅL FOR ØKTEN</h3>
+          <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>MAL FOR OKTEN</SubSectionTitle>
           <div style={{ display: 'flex', gap: '10px' }}>
             {session.mål.map((mål, i) => (
               <div key={i} style={{
@@ -886,7 +887,7 @@ const UtviklingsplanApp = () => {
 
         {/* Øvelser tabell */}
         <div style={{ marginBottom: '20px' }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>📋 ØVELSER</h3>
+          <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '10px' }}>OVELSER</SubSectionTitle>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
             <thead>
               <tr style={{ background: '#9b59b6', color: 'white' }}>
@@ -931,7 +932,7 @@ const UtviklingsplanApp = () => {
             padding: '15px',
             borderRadius: '8px'
           }}>
-            <h4 style={{ color: colors.primary, fontSize: '12px', marginBottom: '10px' }}>🛠️ UTSTYR</h4>
+            <CardTitle style={{ color: colors.primary, fontSize: '12px', marginBottom: '10px' }}>UTSTYR</CardTitle>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {session.utstyr.map((item, i) => (
                 <span key={i} style={{
@@ -952,7 +953,7 @@ const UtviklingsplanApp = () => {
             padding: '15px',
             borderRadius: '8px'
           }}>
-            <h4 style={{ fontSize: '12px', marginBottom: '10px' }}>✅ SUKSESSKRITERIUM</h4>
+            <CardTitle style={{ fontSize: '12px', marginBottom: '10px' }}>SUKSESSKRITERIUM</CardTitle>
             <div style={{ fontSize: '14px' }}>{session.suksesskriterier}</div>
           </div>
         </div>
@@ -965,7 +966,7 @@ const UtviklingsplanApp = () => {
           borderRadius: '12px',
           border: '2px solid #9b59b6'
         }}>
-          <h3 style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>📝 EVALUERING ETTER ØKT</h3>
+          <SubSectionTitle style={{ color: colors.primary, fontSize: '14px', marginBottom: '15px' }}>EVALUERING ETTER OKT</SubSectionTitle>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px' }}>
             {['Fokus', 'Kvalitet', 'Energi', 'Progresjon', 'Total'].map((item, i) => (
               <div key={i} style={{ textAlign: 'center' }}>
@@ -1042,9 +1043,9 @@ const UtviklingsplanApp = () => {
                 AK GOLF ACADEMY
               </div>
             </div>
-            <h1 style={{ margin: '15px 0 5px', fontSize: '28px' }}>
+            <PageTitle style={{ margin: '15px 0 5px', fontSize: '28px' }}>
               INDIVIDUELL UTVIKLINGSPLAN (IUP)
-            </h1>
+            </PageTitle>
             <div style={{ fontSize: '14px', opacity: 0.8 }}>
               Sesong {player.season}
             </div>

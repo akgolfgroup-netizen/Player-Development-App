@@ -3,7 +3,7 @@ import {
   TrendingUp, ChevronRight,
   ArrowUp, ArrowDown, Minus, BarChart2
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
+import { SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 
@@ -172,14 +172,9 @@ const BenchmarkCard = ({ test, onClick }) => {
             }}>
               {test.category}
             </span>
-            <h3 style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: '6px 0 0 0',
-            }}>
+            <SubSectionTitle style={{ fontSize: '15px', marginTop: '6px' }}>
               {test.name}
-            </h3>
+            </SubSectionTitle>
           </div>
           <ChevronRight size={18} style={{ color: 'var(--text-secondary)' }} />
         </div>
@@ -295,13 +290,7 @@ const BenchmarkHistorikkContainer = () => {
   );
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <PageHeader
-        title="Benchmark-historie"
-        subtitle="Sammenlign dine resultater over tid"
-      />
-
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
         {/* Summary Stats */}
         <div style={{
           display: 'grid',
@@ -389,7 +378,6 @@ const BenchmarkHistorikkContainer = () => {
             </div>
           </Card>
         )}
-      </div>
     </div>
   );
 };

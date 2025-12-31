@@ -12,6 +12,7 @@
 import React from 'react';
 import { Calendar, Clock, Timer, AlertCircle, CheckCircle } from 'lucide-react';
 import { type UseSessionPlannerResult } from '../hooks/useSessionPlanner';
+import { SubSectionTitle } from '../../../../../components/typography';
 
 interface SummaryStepProps {
   planner: UseSessionPlannerResult;
@@ -79,12 +80,12 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
         {/* Content */}
         <div className="p-4 space-y-3">
           {/* Title */}
-          <h3
+          <SubSectionTitle
             className="text-lg font-semibold"
             style={{ color: 'var(--calendar-text-primary)' }}
           >
             {parsedFormula.title}
-          </h3>
+          </SubSectionTitle>
 
           {/* Description */}
           <p
@@ -125,12 +126,12 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
 
       {/* Date/Time/Duration */}
       <div className="space-y-4">
-        <h3
+        <SubSectionTitle
           className="text-sm font-medium"
           style={{ color: 'var(--calendar-text-secondary)' }}
         >
           Når?
-        </h3>
+        </SubSectionTitle>
 
         {/* Date */}
         <div>

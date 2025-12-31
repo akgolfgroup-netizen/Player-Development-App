@@ -17,6 +17,7 @@ import {
   Button,
   Separator,
 } from '../../components/shadcn';
+import { SectionTitle } from '../../components/typography';
 import { HandicapDisplay } from '../../components/shadcn/golf';
 import { cn } from 'lib/utils';
 
@@ -187,9 +188,9 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
                 </AvatarFallback>
               </Avatar>
               <div>
-                <h1 className="text-2xl font-bold text-text-primary">
+                <SectionTitle className="text-2xl font-bold">
                   {profile.firstName} {profile.lastName}
-                </h1>
+                </SectionTitle>
                 <p className="text-sm text-text-secondary">
                   {profile.club || 'Ingen klubb registrert'}
                   {profile.category && ` • Kategori ${profile.category}`}

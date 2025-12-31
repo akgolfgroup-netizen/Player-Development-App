@@ -4,7 +4,7 @@ import {
   TrendingUp, Target, Award, ChevronRight, Star,
   Zap, ArrowUp, ArrowDown, Minus
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 
@@ -311,13 +311,7 @@ const UtviklingsOversiktContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
-      <PageHeader
-        title="Min utvikling"
-        subtitle="Oversikt over din spillerutvikling"
-      />
-
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
         {/* Category Progress */}
         <CategoryProgressCard category={CURRENT_CATEGORY} />
 
@@ -353,14 +347,9 @@ const UtviklingsOversiktContainer = () => {
 
         {/* Development Areas */}
         <div style={{ marginBottom: '24px' }}>
-          <h2 style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            marginBottom: '12px',
-          }}>
+          <SectionTitle style={{ marginBottom: '12px' }}>
             Utviklingsområder
-          </h2>
+          </SectionTitle>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -384,14 +373,9 @@ const UtviklingsOversiktContainer = () => {
             justifyContent: 'space-between',
             marginBottom: '12px',
           }}>
-            <h3 style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle>
               Siste prestasjoner
-            </h3>
+            </SubSectionTitle>
             <a href="/achievements" style={{
               fontSize: '13px',
               color: 'var(--accent)',
@@ -436,7 +420,6 @@ const UtviklingsOversiktContainer = () => {
             ))}
           </div>
         </Card>
-      </div>
     </div>
   );
 };

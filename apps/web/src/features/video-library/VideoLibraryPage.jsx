@@ -20,6 +20,7 @@ import * as videoApi from '../../services/videoApi';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
 import Input from '../../ui/primitives/Input';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 // Tailwind classes
 const tw = {
@@ -296,9 +297,9 @@ export function VideoLibraryPage() {
             <VideoRequestIcon />
           </div>
           <div className={tw.requestContent}>
-            <h3 className={tw.requestTitle}>
+            <SubSectionTitle className={tw.requestTitle}>
               Treneren din har bedt om {videoRequests.length === 1 ? 'en video' : `${videoRequests.length} videoer`}
-            </h3>
+            </SubSectionTitle>
             <p className={tw.requestDescription}>
               {videoRequests[0]?.drillType
                 ? `${videoRequests[0].drillType}${videoRequests[0].instructions ? ` - ${videoRequests[0].instructions}` : ''}`
@@ -344,7 +345,7 @@ export function VideoLibraryPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className={tw.uploadHeader}>
-              <h2 className={tw.uploadTitle}>Last opp video</h2>
+              <SectionTitle className={tw.uploadTitle}>Last opp video</SectionTitle>
               <button
                 className={tw.closeButton}
                 onClick={handleCloseUpload}

@@ -5,6 +5,11 @@ import Badge from '../primitives/Badge.primitive';
 import Input from '../primitives/Input';
 import Tabs from '../composites/Tabs.composite';
 import StateCard from '../composites/StateCard';
+import {
+  PageTitle,
+  SectionTitle,
+  SubSectionTitle,
+} from '../../components/typography';
 
 /**
  * UI Canon Page — Single Source of Truth
@@ -27,7 +32,7 @@ const UiCanonPage: React.FC = () => {
       {/* Page Header */}
       <header style={styles.pageHeader}>
         <div style={styles.headerContent}>
-          <h1 style={styles.pageTitle}>UI Canon</h1>
+          <PageTitle style={styles.pageTitle}>UI Canon</PageTitle>
           <p style={styles.pageSubtitle}>Single source of truth for AK Golf visual style</p>
         </div>
         <Badge variant="accent" pill>v1.3</Badge>
@@ -47,13 +52,13 @@ const UiCanonPage: React.FC = () => {
         <Card padding="spacious">
           <div style={styles.typeStack}>
             <TypeRow label="H1 / Large Title" token="--font-size-large-title">
-              <h1 style={{ ...styles.h1, margin: 0 }}>Velkommen til AK Golf</h1>
+              <PageTitle style={{ ...styles.h1, margin: 0 }}>Velkommen til AK Golf</PageTitle>
             </TypeRow>
             <TypeRow label="H2 / Title 1" token="--font-size-title1">
-              <h2 style={{ ...styles.h2, margin: 0 }}>Dagens treningsplan</h2>
+              <SectionTitle style={{ ...styles.h2, margin: 0 }}>Dagens treningsplan</SectionTitle>
             </TypeRow>
             <TypeRow label="H3 / Title 2" token="--font-size-title2">
-              <h3 style={{ ...styles.h3, margin: 0 }}>Øvelser denne uken</h3>
+              <SubSectionTitle style={{ ...styles.h3, margin: 0 }}>Øvelser denne uken</SubSectionTitle>
             </TypeRow>
             <TypeRow label="Headline" token="--font-size-headline">
               <span style={styles.headline}>Teknikk-fokus</span>
@@ -78,7 +83,7 @@ const UiCanonPage: React.FC = () => {
           <Card>
             <div style={styles.pageHeaderDemo}>
               <div>
-                <h2 style={{ ...styles.h2, margin: 0 }}>Treningsplan</h2>
+                <SectionTitle style={{ ...styles.h2, margin: 0 }}>Treningsplan</SectionTitle>
                 <p style={{ ...styles.footnote, margin: '4px 0 0 0' }}>Uke 52 · 23-29 desember 2025</p>
               </div>
               <div style={styles.row}>
@@ -472,7 +477,7 @@ const UiCanonPage: React.FC = () => {
 
 const Section: React.FC<{ id: string; title: string; description: string; children: React.ReactNode }> = ({ id, title, description, children }) => (
   <section id={id} style={styles.section}>
-    <h2 style={styles.sectionTitle}>{title}</h2>
+    <SectionTitle style={styles.sectionTitle}>{title}</SectionTitle>
     <p style={styles.sectionDescription}>{description}</p>
     {children}
   </section>
@@ -480,7 +485,7 @@ const Section: React.FC<{ id: string; title: string; description: string; childr
 
 const SubSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div style={styles.subSection}>
-    <h3 style={styles.subSectionTitle}>{title}</h3>
+    <SubSectionTitle style={styles.subSectionTitle}>{title}</SubSectionTitle>
     {children}
   </div>
 );

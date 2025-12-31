@@ -15,6 +15,7 @@ import { NavigationProvider } from '../navigation/NavigationContext'
 import SideNavigationDesktop from '../navigation/SideNavigationDesktop'
 import SideNavigationMobile from '../navigation/SideNavigationMobile'
 import BackToTop from '../ui/BackToTop'
+import { PageTitle } from '../typography'
 import './ApplicationLayoutV2.css'
 
 export default function ApplicationLayoutV2({ children, title, subtitle, actions }) {
@@ -39,7 +40,7 @@ export default function ApplicationLayoutV2({ children, title, subtitle, actions
             <header className="app-layout-v2__header">
               <div className="app-layout-v2__header-content">
                 <div className="app-layout-v2__header-titles">
-                  {title && <h1 className="app-layout-v2__title">{title}</h1>}
+                  {title && <PageTitle className="app-layout-v2__title">{title}</PageTitle>}
                   {subtitle && <p className="app-layout-v2__subtitle">{subtitle}</p>}
                 </div>
                 {actions && (

@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { CardTitle } from '../../components/typography';
 
 // ============================================================================
 // MOCK DATA
@@ -195,15 +196,12 @@ const AssignmentCard = ({ assignment, onClick }) => {
               {assignment.type}
             </span>
           </div>
-          <h4 style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
+          <CardTitle style={{
             margin: 0,
             textDecoration: assignment.status === 'completed' ? 'line-through' : 'none',
           }}>
             {assignment.title}
-          </h4>
+          </CardTitle>
         </div>
 
         <div style={{
@@ -444,9 +442,9 @@ const SkoleoppgaverContainer = () => {
                   marginTop: '-5px',
                   borderTop: `3px solid ${getSubjectColor(assignment.subject)}`,
                 }}>
-                  <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '12px' }}>
+                  <CardTitle style={{ marginBottom: '12px' }}>
                     {assignment.title}
-                  </h4>
+                  </CardTitle>
                   <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
                     {assignment.description}
                   </p>

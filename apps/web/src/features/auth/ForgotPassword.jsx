@@ -5,6 +5,7 @@ import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { AKLogo } from '../../components/branding/AKLogo';
 import Button from '../../ui/primitives/Button';
 import { authAPI } from '../../services/api';
+import { SectionTitle } from '../../components/typography';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -43,14 +44,13 @@ const ForgotPassword = () => {
         {/* Logo and Title */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <AKLogo size={60} color={'var(--accent)'} />
-          <h1 style={{
+          <SectionTitle style={{
             fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-            color: 'var(--text-primary)',
             marginTop: '16px',
             marginBottom: '4px',
           }}>
             Tilbakestill passord
-          </h1>
+          </SectionTitle>
           <p style={{
             fontSize: '15px', lineHeight: '20px',
             color: 'var(--text-secondary)',
@@ -86,13 +86,12 @@ const ForgotPassword = () => {
                 <CheckCircle size={32} color={'var(--success)'} />
               </div>
 
-              <h2 style={{
+              <SectionTitle style={{
                 fontSize: '20px', lineHeight: '25px', fontWeight: 600,
-                color: 'var(--text-primary)',
                 marginBottom: '12px',
               }}>
                 Sjekk e-posten din
-              </h2>
+              </SectionTitle>
 
               <p style={{
                 fontSize: '15px', lineHeight: '20px',

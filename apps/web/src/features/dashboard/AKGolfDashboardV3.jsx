@@ -8,6 +8,7 @@ import {
 import { useDashboard } from '../../hooks/useDashboard';
 import { useFocus } from '../../hooks/useFocus';
 import { CalendarOversiktWidget } from '../calendar-oversikt';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 /**
  * AKGolfDashboard V3.1 - UX Redesign
@@ -101,7 +102,7 @@ const WelcomeSection = ({ playerName, category, stats }) => {
   return (
     <div style={styles.welcomeSection}>
       <p style={styles.greetingText}>{getGreeting()}</p>
-      <h1 style={styles.playerName}>{playerName?.split(' ')[0] || 'Spiller'}</h1>
+      <PageTitle style={styles.playerName}>{playerName?.split(' ')[0] || 'Spiller'}</PageTitle>
       <p style={styles.motivationalText}>{motivationalMessage}</p>
     </div>
   );
@@ -130,7 +131,7 @@ const FocusCard = ({ focus, loading }) => {
           <Crosshair size={16} style={{ color: 'var(--ak-brand-primary)' }} />
           <span style={styles.focusCardLabel}>Ukens fokus</span>
         </div>
-        <h3 style={styles.focusCardTitle}>Start din første økt</h3>
+        <SubSectionTitle style={styles.focusCardTitle}>Start din første økt</SubSectionTitle>
         <p style={styles.focusCardDescription}>
           Fullfør noen tester for å få personlig anbefaling
         </p>
@@ -160,12 +161,12 @@ const FocusCard = ({ focus, loading }) => {
         </span>
       </div>
 
-      <h3 style={styles.focusCardTitle}>
+      <SubSectionTitle style={styles.focusCardTitle}>
         {focus.approachWeakestBucket
           ? `${focusLabel}: ${focus.approachWeakestBucket.replace('_', '-')} yards`
           : focusLabel
         }
-      </h3>
+      </SubSectionTitle>
 
       {focus.reasonCodes?.length > 0 && (
         <p style={styles.focusCardDescription}>

@@ -3,7 +3,7 @@ import {
   Award, CheckCircle, Circle,
   Info
 } from 'lucide-react';
-import { PageHeader } from '../../components/layout/PageHeader';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
@@ -180,14 +180,14 @@ const RequirementCard = ({ test }) => {
               <Circle size={14} color="var(--text-tertiary)" />
             )}
           </div>
-          <h4 style={{
+          <CardTitle style={{
             fontSize: '14px',
             fontWeight: 600,
             color: 'var(--text-primary)',
             margin: 0,
           }}>
             {test.name}
-          </h4>
+          </CardTitle>
           <p style={{
             fontSize: '11px',
             color: 'var(--text-secondary)',
@@ -259,14 +259,14 @@ const RequirementCard = ({ test }) => {
 
 const CategorySelector = ({ selected, onChange }) => (
   <Card variant="default" padding="md" style={{ marginBottom: '20px' }}>
-    <h3 style={{
+    <SubSectionTitle style={{
       fontSize: '14px',
       fontWeight: 600,
       color: 'var(--text-primary)',
       marginBottom: '12px',
     }}>
       Velg kategori
-    </h3>
+    </SubSectionTitle>
     <div style={{
       display: 'flex',
       gap: '8px',
@@ -328,14 +328,14 @@ const SummaryCard = ({ requirements, targetCategory }) => {
           <Award size={24} color="var(--warning)" />
         </div>
         <div>
-          <h2 style={{
+          <SectionTitle style={{
             fontSize: '18px',
             fontWeight: 700,
             color: 'var(--text-primary)',
             margin: 0,
           }}>
             Krav for Kategori {targetCategory}
-          </h2>
+          </SectionTitle>
           <p style={{
             fontSize: '13px',
             color: 'var(--text-secondary)',
@@ -429,13 +429,7 @@ const KategoriKravContainer = () => {
   }, {}) || {};
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
-      <PageHeader
-        title="Kategori-krav"
-        subtitle="Se kravene for hver kategori"
-      />
-
-      <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
         {/* Category Selector */}
         <CategorySelector
           selected={selectedCategory}
@@ -453,7 +447,7 @@ const KategoriKravContainer = () => {
         {/* Requirements by Category */}
         {Object.entries(groupedTests).map(([category, tests]) => (
           <div key={category} style={{ marginBottom: '24px' }}>
-            <h3 style={{
+            <SubSectionTitle style={{
               fontSize: '15px',
               fontWeight: 600,
               color: 'var(--text-primary)',
@@ -470,7 +464,7 @@ const KategoriKravContainer = () => {
               }}>
                 ({tests.filter((t) => t.met).length}/{tests.length} oppfylt)
               </span>
-            </h3>
+            </SubSectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {tests.map((test) => (
                 <RequirementCard key={test.id} test={test} />
@@ -486,7 +480,6 @@ const KategoriKravContainer = () => {
             title="Ingen krav definert for denne kategorien"
           />
         )}
-      </div>
     </div>
   );
 };

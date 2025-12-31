@@ -14,6 +14,7 @@ import { LogOut, Settings, User } from 'lucide-react';
 import { useNavigation } from './NavigationContext';
 import { getSectionById } from './navigationData';
 import { useAuth } from '../../contexts/AuthContext';
+import { SectionTitle } from '../typography';
 import './NavFlyout.css';
 
 export default function NavFlyout() {
@@ -74,7 +75,7 @@ export default function NavFlyout() {
     >
       {/* Section Header */}
       <div className="nav-flyout__header">
-        <h2 className="nav-flyout__title">{section.label}</h2>
+        <SectionTitle className="nav-flyout__title">{section.label}</SectionTitle>
       </div>
 
       {/* Section Items */}

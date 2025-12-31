@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Clock, MapPin, Play, Check, Edit2, Trash2, User } from 'lucide-react';
 import { tokens } from '../../../design-tokens';
 import { getSessionIcon } from '../../../components/icons';
+import { SubSectionTitle } from '../../../components/typography';
 
 const SessionPreviewModal = ({
   session,
@@ -78,9 +79,9 @@ const SessionPreviewModal = ({
               {getSessionTypeIcon(session.type)}
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-ak-charcoal">
+              <SubSectionTitle className="text-lg font-semibold text-ak-charcoal">
                 {session.name}
-              </h3>
+              </SubSectionTitle>
               <p className="text-sm text-ak-steel capitalize">
                 {session.type}
               </p>

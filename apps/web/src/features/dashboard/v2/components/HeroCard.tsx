@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../../../../ui/primitives/Card';
+import { PageTitle, SectionTitle } from '../../../../components/typography';
 
 /**
  * HeroCard
@@ -53,9 +54,9 @@ const HeroCard: React.FC<HeroCardProps> = ({
       </p>
 
       {/* Greeting */}
-      <h1 style={styles.greeting}>
+      <PageTitle style={styles.greeting}>
         God morgen, {playerName}
-      </h1>
+      </PageTitle>
 
       {/* Today's Focus Section */}
       <div style={styles.focusSection}>
@@ -68,9 +69,9 @@ const HeroCard: React.FC<HeroCardProps> = ({
           )}
         </div>
 
-        <h2 style={styles.focusTitle}>
+        <SectionTitle style={styles.focusTitle}>
           {todaysFocus.title}
-        </h2>
+        </SectionTitle>
 
         <p style={styles.focusDescription}>
           {todaysFocus.description}

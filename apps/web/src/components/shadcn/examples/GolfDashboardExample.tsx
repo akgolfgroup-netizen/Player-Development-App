@@ -38,6 +38,7 @@ import {
   CategoryProgressRing,
   TrainingCategoryBadge,
 } from "../golf"
+import { PageTitle } from "../../typography"
 
 // Mock data
 const skillData = [
@@ -63,8 +64,7 @@ export const GolfDashboardExample: React.FC = () => {
       {/* Header with streak */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">God morgen, Anders!</h1>
-          <p className="text-text-secondary">Her er din treningsoversikt</p>
+          <PageTitle className="text-2xl font-bold text-text-primary" subtitle="Her er din treningsoversikt">God morgen, Anders!</PageTitle>
         </div>
         <StreakBadge count={14} size="lg" />
       </div>

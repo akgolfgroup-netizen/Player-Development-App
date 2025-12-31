@@ -6,6 +6,7 @@ import {
 import {
   GolfslagIcon, GolfTarget, GolfFlag, GolfPutter, FysiskIcon, MentalIcon, GolfBunker
 } from '../../components/icons';
+import { SubSectionTitle } from '../../components/typography';
 import {
   Card,
   CardContent,
@@ -363,7 +364,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-sm font-semibold text-text-primary truncate">{exercise.name}</h3>
+                <SubSectionTitle className="text-sm font-semibold text-text-primary truncate">{exercise.name}</SubSectionTitle>
                 <LevelTag level={exercise.level} />
               </div>
               <p className="text-xs text-text-secondary line-clamp-1">{exercise.description}</p>
@@ -428,7 +429,7 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({
       {/* Content */}
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-2">
-          <h3 className="text-sm font-semibold text-text-primary line-clamp-1">{exercise.name}</h3>
+          <SubSectionTitle className="text-sm font-semibold text-text-primary line-clamp-1">{exercise.name}</SubSectionTitle>
           <LevelTag level={exercise.level} />
         </div>
         <p className="text-xs text-text-secondary line-clamp-2 mb-3">{exercise.description}</p>
@@ -521,7 +522,7 @@ const ExerciseDialog: React.FC<ExerciseDialogProps> = ({
 
             {/* Instructions */}
             <div>
-              <h3 className="text-sm font-semibold text-text-primary mb-3">Instruksjoner</h3>
+              <SubSectionTitle className="text-sm font-semibold text-text-primary mb-3">Instruksjoner</SubSectionTitle>
               <ol className="space-y-3">
                 {exercise.instructions.map((step, idx) => (
                   <li key={idx} className="flex items-start gap-3">
@@ -538,7 +539,7 @@ const ExerciseDialog: React.FC<ExerciseDialogProps> = ({
 
             {/* Equipment */}
             <div>
-              <h3 className="text-sm font-semibold text-text-primary mb-3">Utstyr</h3>
+              <SubSectionTitle className="text-sm font-semibold text-text-primary mb-3">Utstyr</SubSectionTitle>
               <div className="flex flex-wrap gap-2">
                 {exercise.equipment.map((item, idx) => (
                   <Badge key={idx} variant="outline">{item}</Badge>

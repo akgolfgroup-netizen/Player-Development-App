@@ -1,9 +1,13 @@
 import React from 'react';
 import { tokens } from '../../design-tokens';
+import { PageTitle } from '../typography';
 
 /**
  * PageHeader Component
  * Standardized header for feature pages with title, subtitle, and actions
+ *
+ * REGEL: Denne komponenten renderer sidens <h1> via PageTitle.
+ * Bruk ikke <h1> andre steder på siden.
  */
 export const PageHeader = ({
   title,
@@ -30,25 +34,14 @@ export const PageHeader = ({
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <div>
-          <h1 style={{
-            fontSize: '20px',
-            fontWeight: 600,
-            color: tokens.colors.charcoal,
-            margin: 0,
-          }}>
-            {title}
-          </h1>
-          {subtitle && (
-            <p style={{
-              fontSize: '13px',
-              color: tokens.colors.steel,
-              margin: '4px 0 0 0',
-            }}>
-              {subtitle}
-            </p>
-          )}
-        </div>
+        <PageTitle
+          subtitle={subtitle}
+          style={{
+            // Override default PageTitle styles for header context
+          }}
+        >
+          {title}
+        </PageTitle>
         {actions && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {actions}

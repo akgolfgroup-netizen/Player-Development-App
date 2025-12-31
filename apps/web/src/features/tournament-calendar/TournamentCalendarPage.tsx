@@ -36,6 +36,7 @@ import {
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import {
   Tournament,
   TournamentFilters,
@@ -355,7 +356,7 @@ function TournamentCard({
             <TourIcon size={22} color="var(--text-secondary)" />
           </div>
           <div>
-            <h3 style={styles.cardTitle}>{tournament.name}</h3>
+            <SubSectionTitle style={styles.cardTitle}>{tournament.name}</SubSectionTitle>
             <div style={styles.badgeRow}>
               <span
                 style={{
@@ -581,7 +582,7 @@ function FilterPanel({
     <div style={filterPanelStyles.overlay} onClick={onClose}>
       <div style={filterPanelStyles.panel} onClick={e => e.stopPropagation()}>
         <div style={filterPanelStyles.header}>
-          <h3 style={filterPanelStyles.title}>Filtrer turneringer</h3>
+          <SubSectionTitle style={filterPanelStyles.title}>Filtrer turneringer</SubSectionTitle>
           <button onClick={onClose} style={filterPanelStyles.closeButton}>
             <X size={20} />
           </button>
@@ -590,7 +591,7 @@ function FilterPanel({
         <div style={filterPanelStyles.content}>
           {/* Tournament Purpose Filter (from hierarchy document) */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Turneringsformål</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Turneringsformål</CardTitle>
             <p style={filterPanelStyles.sectionDescription}>
               Hvordan du bør tilnærme deg turneringen
             </p>
@@ -618,7 +619,7 @@ function FilterPanel({
 
           {/* Competition Level Filter (from hierarchy document) */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Konkurransenivå</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Konkurransenivå</CardTitle>
             <div style={filterPanelStyles.chipGrid}>
               {levels.map(level => {
                 const isSelected = localFilters.levels?.includes(level);
@@ -642,7 +643,7 @@ function FilterPanel({
 
           {/* Junior Tour Region Filter (Appendix 2) */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Junior Tour Region</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Junior Tour Region</CardTitle>
             <p style={filterPanelStyles.sectionDescription}>
               Filtrer junior turneringer etter region (kun Junior Tour Regional)
             </p>
@@ -670,7 +671,7 @@ function FilterPanel({
 
           {/* Player Category Filter */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Anbefalt spillernivå</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Anbefalt spillernivå</CardTitle>
             <div style={filterPanelStyles.chipGrid}>
               {categories.map(cat => {
                 const isSelected = localFilters.recommendedCategories?.includes(cat);
@@ -694,7 +695,7 @@ function FilterPanel({
 
           {/* Tour Filter */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Turneringsserie</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Turneringsserie</CardTitle>
             <div style={filterPanelStyles.chipGrid}>
               {tours.map(tour => {
                 const isSelected = localFilters.tours?.includes(tour);
@@ -717,7 +718,7 @@ function FilterPanel({
 
           {/* Status Filter */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Status</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Status</CardTitle>
             <div style={filterPanelStyles.chipGrid}>
               {statuses.map(status => {
                 const isSelected = localFilters.statuses?.includes(status);
@@ -740,7 +741,7 @@ function FilterPanel({
 
           {/* Date Range Filter */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Tidsperiode</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Tidsperiode</CardTitle>
             <div style={filterPanelStyles.chipGrid}>
               {dateRanges.map(({ value, label }) => {
                 const isSelected = localFilters.dateRange === value;
@@ -766,7 +767,7 @@ function FilterPanel({
 
           {/* Country Filter */}
           <div style={filterPanelStyles.section}>
-            <h4 style={filterPanelStyles.sectionTitle}>Land</h4>
+            <CardTitle style={filterPanelStyles.sectionTitle}>Land</CardTitle>
             {/* Quick select groups */}
             <div style={{ ...filterPanelStyles.chipGrid, marginBottom: 'var(--spacing-3)' }}>
               <button
@@ -1190,7 +1191,7 @@ export default function TournamentCalendarPage() {
 
         {/* Upcoming Tournaments */}
         <section style={styles.section}>
-          <h2 style={styles.sectionTitle}>Kommende turneringer</h2>
+          <SectionTitle style={styles.sectionTitle}>Kommende turneringer</SectionTitle>
 
           {upcoming.length === 0 ? (
             <StateCard
@@ -1219,7 +1220,7 @@ export default function TournamentCalendarPage() {
         {/* Past Tournaments */}
         {past.length > 0 && (
           <section style={styles.section}>
-            <h2 style={styles.sectionTitle}>Tidligere resultater</h2>
+            <SectionTitle style={styles.sectionTitle}>Tidligere resultater</SectionTitle>
             <div style={styles.pastList}>
               {past.map(tournament => (
                 <PastTournamentCard key={tournament.id} tournament={tournament} />

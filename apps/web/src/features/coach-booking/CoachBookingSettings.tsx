@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle } from '../../components/typography';
 
 interface TimeSlot {
   start: string;
@@ -362,15 +363,9 @@ export default function CoachBookingSettings() {
             }}
           >
             <Clock size={20} color={'var(--accent)'} />
-            <h2
-              style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
+            <SectionTitle style={{ margin: 0 }}>
               Ukentlig tilgjengelighet
-            </h2>
+            </SectionTitle>
           </div>
 
           <div>
@@ -593,15 +588,9 @@ export default function CoachBookingSettings() {
             }}
           >
             <Calendar size={20} color={'var(--accent)'} />
-            <h2
-              style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
+            <SectionTitle style={{ margin: 0 }}>
               Økttyper
-            </h2>
+            </SectionTitle>
           </div>
 
           <div style={{ padding: '16px 20px' }}>
@@ -718,15 +707,9 @@ export default function CoachBookingSettings() {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Lock size={20} color={'var(--accent)'} />
-              <h2
-                style={{
-                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                }}
-              >
+              <SectionTitle style={{ margin: 0 }}>
                 Blokkerte datoer
-              </h2>
+              </SectionTitle>
             </div>
             <Button
               variant="primary"
@@ -890,15 +873,9 @@ export default function CoachBookingSettings() {
             }}
           >
             <Settings size={20} color={'var(--accent)'} />
-            <h2
-              style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
+            <SectionTitle style={{ margin: 0 }}>
               Bookinginnstillinger
-            </h2>
+            </SectionTitle>
           </div>
 
           <div style={{ padding: '20px' }}>

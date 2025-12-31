@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Smartphone, Copy, CheckCircle, AlertCircle } from 'lucide-react';
 import { authAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 
 const TwoFactorSetup = ({ onComplete, onCancel }) => {
   const [step, setStep] = useState(1); // 1: Intro, 2: QR Code, 3: Verify
@@ -83,14 +84,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         <Shield size={40} color={'var(--accent)'} />
       </div>
 
-      <h2 style={{
+      <SectionTitle style={{
         fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
         Aktiver tofaktorautentisering
-      </h2>
+      </SectionTitle>
 
       <p style={{
         fontSize: '15px', lineHeight: '20px', fontWeight: 600,
@@ -108,13 +108,12 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         borderRadius: 'var(--radius-md)',
         marginBottom: '24px',
       }}>
-        <h3 style={{
-          fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-          color: 'var(--text-primary)',
+        <SubSectionTitle style={{
+          fontSize: '17px', lineHeight: '22px',
           marginBottom: '16px',
         }}>
           Slik fungerer det:
-        </h3>
+        </SubSectionTitle>
         <ol style={{
           margin: 0,
           paddingLeft: '20px',
@@ -151,14 +150,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
 
   const renderStep2 = () => (
     <div>
-      <h2 style={{
+      <SectionTitle style={{
         fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
         Skann QR-koden
-      </h2>
+      </SectionTitle>
 
       <p style={{
         fontSize: '15px', lineHeight: '20px', fontWeight: 600,
@@ -290,14 +288,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         <Smartphone size={40} color={'var(--accent)'} />
       </div>
 
-      <h2 style={{
+      <SectionTitle style={{
         fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
         Verifiser koden
-      </h2>
+      </SectionTitle>
 
       <p style={{
         fontSize: '15px', lineHeight: '20px', fontWeight: 600,
@@ -400,14 +397,13 @@ const TwoFactorSetup = ({ onComplete, onCancel }) => {
         <CheckCircle size={40} color={'var(--success)'} />
       </div>
 
-      <h2 style={{
+      <SectionTitle style={{
         fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-        color: 'var(--text-primary)',
         marginBottom: '12px',
         textAlign: 'center',
       }}>
         2FA aktivert!
-      </h2>
+      </SectionTitle>
 
       <p style={{
         fontSize: '15px', lineHeight: '20px', fontWeight: 600,

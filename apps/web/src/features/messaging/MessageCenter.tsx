@@ -12,16 +12,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   MessageSquare,
   Search,
-  Plus,
   Users,
   User,
   Check,
   CheckCheck,
-  X,
   ChevronDown,
   ChevronUp,
 } from 'lucide-react';
 import MembersList, { Member } from '../../ui/composites/MembersList.composite';
+import { SubSectionTitle } from '../../components/typography';
 
 interface ChatGroup {
   id: string;
@@ -259,9 +258,6 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
     }
   };
 
-  // Total unread count
-  const totalUnread = conversations.reduce((sum, c) => sum + c.unreadCount, 0);
-
   if (loading) {
     return (
       <div style={{ padding: '24px', textAlign: 'center' }}>
@@ -283,59 +279,6 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '24px',
-        }}
-      >
-        <div>
-          <h1
-            style={{
-              fontSize: '28px', lineHeight: '34px', fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}
-          >
-            Meldinger
-          </h1>
-          {totalUnread > 0 && (
-            <p
-              style={{
-                fontSize: '13px', lineHeight: '18px',
-                color: 'var(--text-secondary)',
-                margin: '4px 0 0',
-              }}
-            >
-              {totalUnread} uleste {totalUnread === 1 ? 'melding' : 'meldinger'}
-            </p>
-          )}
-        </div>
-
-        <button
-          onClick={() => navigate('/meldinger/ny')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 16px',
-            backgroundColor: 'var(--accent)',
-            color: 'var(--bg-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '14px',
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
-        >
-          <Plus size={18} />
-          Ny melding
-        </button>
-      </div>
-
       {/* Search and filters */}
       <div
         style={{
@@ -645,7 +588,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               <Users size={20} color="white" />
             </div>
             <div>
-              <h3
+              <SubSectionTitle
                 style={{
                   fontSize: '17px', lineHeight: '22px', fontWeight: 600,
                   color: 'var(--text-primary)',
@@ -653,7 +596,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 }}
               >
                 Kontakter
-              </h3>
+              </SubSectionTitle>
               <p
                 style={{
                   fontSize: '13px', lineHeight: '18px',

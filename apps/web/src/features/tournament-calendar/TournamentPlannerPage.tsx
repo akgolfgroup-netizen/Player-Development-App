@@ -25,6 +25,7 @@ import {
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import {
   Tournament,
   TournamentPurpose,
@@ -131,7 +132,7 @@ function PlannedTournamentCard({
     <div style={styles.plannedCard}>
       <div style={styles.plannedCardHeader}>
         <div style={styles.plannedCardInfo}>
-          <h3 style={styles.plannedCardTitle}>{tournament.name}</h3>
+          <SubSectionTitle>{tournament.name}</SubSectionTitle>
           <div style={styles.plannedCardMeta}>
             <span style={styles.metaItem}>
               <Calendar size={14} />
@@ -381,7 +382,7 @@ export default function TournamentPlannerPage() {
       <div style={styles.container}>
         <div style={styles.header}>
           <div>
-            <h1 style={styles.title}>Min turneringsplan</h1>
+            <SectionTitle>Min turneringsplan</SectionTitle>
             <p style={styles.subtitle}>
               Planlegg din turnerings-sesong med formål for hver turnering
             </p>
@@ -396,7 +397,7 @@ export default function TournamentPlannerPage() {
     <div style={styles.container}>
       <div style={styles.header}>
         <div>
-          <h1 style={styles.title}>Min turneringsplan</h1>
+          <SectionTitle>Min turneringsplan</SectionTitle>
           <p style={styles.subtitle}>
             Planlegg din turnerings-sesong med formål for hver turnering
           </p>
@@ -425,7 +426,7 @@ export default function TournamentPlannerPage() {
 
       {Object.entries(groupedByMonth).map(([month, tournaments]) => (
         <section key={month} style={styles.monthSection}>
-          <h2 style={styles.monthTitle}>{month}</h2>
+          <SectionTitle style={styles.monthTitle}>{month}</SectionTitle>
           <div style={styles.tournamentList}>
             {tournaments.map(planned => (
               <PlannedTournamentCard

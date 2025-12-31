@@ -10,6 +10,7 @@
 import React from 'react';
 import { type UseSessionPlannerResult } from '../hooks/useSessionPlanner';
 import { L_PHASES, type LPhase } from '../hooks/useAKFormula';
+import { SubSectionTitle } from '../../../../../components/typography';
 
 interface LPhaseStepProps {
   planner: UseSessionPlannerResult;
@@ -31,12 +32,12 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
   return (
     <div className="space-y-4">
       <div>
-        <h3
+        <SubSectionTitle
           className="text-sm font-medium mb-1"
           style={{ color: 'var(--calendar-text-secondary)' }}
         >
           Læringsfase
-        </h3>
+        </SubSectionTitle>
         <p
           className="text-xs"
           style={{ color: 'var(--calendar-text-tertiary)' }}

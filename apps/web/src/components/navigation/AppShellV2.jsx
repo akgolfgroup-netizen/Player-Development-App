@@ -19,6 +19,7 @@ import { NavigationProvider } from './NavigationContext';
 import SideNavigationDesktop from './SideNavigationDesktop';
 import SideNavigationMobile from './SideNavigationMobile';
 import BackToTop from '../ui/BackToTop';
+import { SectionTitle } from '../typography';
 import './AppShellV2.css';
 
 export default function AppShellV2({
@@ -56,7 +57,7 @@ export default function AppShellV2({
             <header className="app-shell-v2__header">
               <div className="app-shell-v2__header-content">
                 <div className="app-shell-v2__header-titles">
-                  {title && <h1 className="app-shell-v2__title">{title}</h1>}
+                  {title && <SectionTitle className="app-shell-v2__title">{title}</SectionTitle>}
                   {subtitle && <p className="app-shell-v2__subtitle">{subtitle}</p>}
                 </div>
                 {actions && (

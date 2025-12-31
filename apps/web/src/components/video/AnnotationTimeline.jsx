@@ -14,6 +14,7 @@
 
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { AnnotationMarker, ANNOTATION_TYPE_CONFIG } from './AnnotationMarker';
+import { SubSectionTitle } from '../typography';
 
 // Styles
 const styles = {
@@ -344,10 +345,10 @@ export function AnnotationTimeline({
     return (
       <div className={className} style={{ ...styles.container, ...style }}>
         <div style={styles.header}>
-          <h3 style={styles.title}>
+          <SubSectionTitle style={styles.title}>
             <AnnotationIcon />
             Annotasjoner
-          </h3>
+          </SubSectionTitle>
         </div>
         <div style={styles.emptyState}>
           <EmptyIcon />
@@ -363,11 +364,11 @@ export function AnnotationTimeline({
     <div className={className} style={{ ...styles.container, ...style }}>
       {/* Header */}
       <div style={styles.header}>
-        <h3 style={styles.title}>
+        <SubSectionTitle style={styles.title}>
           <AnnotationIcon />
           Annotasjoner
           <span style={styles.count}>{filteredAnnotations.length}</span>
-        </h3>
+        </SubSectionTitle>
 
         {/* Type filters */}
         {annotationTypes.length > 1 && (

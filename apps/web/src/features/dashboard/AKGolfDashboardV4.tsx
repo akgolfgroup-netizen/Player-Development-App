@@ -8,6 +8,7 @@ import {
 import { useDashboard } from '../../hooks/useDashboard'
 import { useFocus } from '../../hooks/useFocus'
 import { CalendarOversiktWidget } from '../calendar-oversikt'
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography'
 
 // shadcn/ui components
 import {
@@ -123,9 +124,9 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
           <p className="text-xs text-text-tertiary uppercase tracking-wider font-medium">
             {getGreeting()}
           </p>
-          <h1 className="text-3xl font-bold text-text-primary tracking-tight">
+          <PageTitle className="text-3xl font-bold text-text-primary tracking-tight">
             {firstName}
-          </h1>
+          </PageTitle>
           <p className="text-sm text-text-secondary font-medium">
             {motivationalMessage}
           </p>
@@ -458,7 +459,7 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
               Ukens fokus
             </span>
           </div>
-          <h3 className="text-xl font-bold text-text-primary mb-2">Start din første økt</h3>
+          <SubSectionTitle className="text-xl font-bold text-text-primary mb-2">Start din første økt</SubSectionTitle>
           <p className="text-sm text-text-secondary">
             Fullfør noen tester for å få personlig anbefaling
           </p>
@@ -487,11 +488,11 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
           </span>
         </div>
 
-        <h3 className="text-xl font-bold text-text-primary mb-2">
+        <SubSectionTitle className="text-xl font-bold text-text-primary mb-2">
           {focus.approachWeakestBucket
             ? `${focusLabel}: ${focus.approachWeakestBucket.replace('_', '-')} yards`
             : focusLabel}
-        </h3>
+        </SubSectionTitle>
 
         {focus.reasonCodes?.length > 0 && (
           <p className="text-sm text-text-secondary mb-4">

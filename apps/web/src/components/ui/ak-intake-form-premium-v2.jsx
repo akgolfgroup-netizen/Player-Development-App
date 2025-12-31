@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronRight, ChevronLeft, Check, User, Trophy, Activity, AlertTriangle, Calendar, Clock, Target, Database, Settings, Upload, Plus, Minus, X } from 'lucide-react';
 import { tokens } from '../design-tokens';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 // ============================================
 // AK GOLF ACADEMY - PREMIUM INTAKE FORM V2
@@ -270,12 +271,12 @@ const WelcomeSection = ({ onNext }) => (
       <AKLogo size={80} color={colors.primary} className="mx-auto" />
     </div>
     
-    <h1 
+    <PageTitle
       className="text-4xl md:text-5xl mb-4 tracking-tight"
       style={{ color: colors.ink, fontFamily: 'Shippori Mincho, serif', fontWeight: 400 }}
     >
       Velkommen
-    </h1>
+    </PageTitle>
     
     <p 
       className="text-lg mb-3 max-w-md mx-auto"
@@ -537,9 +538,9 @@ const SportsInjurySection = ({ data, setData }) => {
       <div className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-medium text-base" style={{ color: colors.ink, fontFamily: 'DM Sans, sans-serif' }}>
+            <SubSectionTitle className="font-medium text-base" style={{ color: colors.ink, fontFamily: 'DM Sans, sans-serif' }}>
               Andre idretter
-            </h3>
+            </SubSectionTitle>
             <p className="text-xs mt-1" style={{ color: colors.textMuted }}>
               Tidligere eller nåværende idrettserfaring
             </p>
@@ -622,9 +623,9 @@ const SportsInjurySection = ({ data, setData }) => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="font-medium text-base" style={{ color: colors.ink, fontFamily: 'DM Sans, sans-serif' }}>
+            <SubSectionTitle className="font-medium text-base" style={{ color: colors.ink, fontFamily: 'DM Sans, sans-serif' }}>
               Skadehistorikk
-            </h3>
+            </SubSectionTitle>
             <p className="text-xs mt-1" style={{ color: colors.textMuted }}>
               Skader som kan påvirke trening
             </p>
@@ -877,7 +878,7 @@ const TrainingHistorySection = ({ data, setData }) => {
           </p>
           {['Langspill', 'Mellomspill', 'Kortspill', 'Putting'].map(category => (
             <div key={category} className="mb-4">
-              <h4 className="text-sm font-medium mb-2" style={{ color: colors.ink }}>{category}</h4>
+              <CardTitle className="text-sm font-medium mb-2" style={{ color: colors.ink }}>{category}</CardTitle>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {omrader.filter(o => o.category === category).map(area => (
                   <div key={area.id}>
@@ -952,12 +953,12 @@ const AssessmentSection = ({ data, setData }) => {
 
       {skillGroups.map((group, idx) => (
         <div key={group.title} className="mb-8">
-          <h3 
+          <SubSectionTitle
             className="text-lg mb-5 pb-3 border-b"
             style={{ color: colors.ink, borderColor: colors.borderLight, fontFamily: 'Shippori Mincho, serif' }}
           >
             {group.title}
-          </h3>
+          </SubSectionTitle>
           {group.skills.map(skill => (
             <RatingSlider
               key={skill.id}
@@ -1252,12 +1253,12 @@ const CompleteSection = ({ data }) => (
       <Check className="w-10 h-10 text-white" />
     </div>
     
-    <h2 
+    <SectionTitle
       className="text-3xl md:text-4xl mb-4"
       style={{ color: colors.ink, fontFamily: 'Shippori Mincho, serif' }}
     >
       Din plan er klar!
-    </h2>
+    </SectionTitle>
     
     <p className="text-lg mb-10 max-w-md mx-auto" style={{ color: colors.textMuted }}>
       Vi har laget en personlig utviklingsplan basert på dine svar.
@@ -1269,7 +1270,7 @@ const CompleteSection = ({ data }) => (
     >
       <div className="flex items-center gap-3 mb-4">
         <AKLogo size={24} color={colors.primary} />
-        <h3 className="font-medium" style={{ color: colors.ink }}>Din plan inkluderer:</h3>
+        <SubSectionTitle className="font-medium" style={{ color: colors.ink }}>Din plan inkluderer:</SubSectionTitle>
       </div>
       <ul className="space-y-3">
         <li className="flex items-center gap-3" style={{ color: colors.ink }}>
@@ -1459,12 +1460,12 @@ export default function AKIntakeFormV2() {
           {/* Section Header - Hidden on welcome and complete */}
           {!isWelcome && !isComplete && (
             <div className="mb-8">
-              <h1 
+              <PageTitle
                 className="text-2xl md:text-3xl mb-2"
                 style={{ color: colors.ink, fontFamily: 'Shippori Mincho, serif', fontWeight: 400 }}
               >
                 {sections[currentStep].title}
-              </h1>
+              </PageTitle>
               <p className="text-base" style={{ color: colors.textMuted }}>
                 {sections[currentStep].subtitle}
               </p>

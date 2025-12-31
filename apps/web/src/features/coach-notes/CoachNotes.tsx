@@ -23,6 +23,7 @@ import React, { useState } from "react";
 import { ArrowLeft, StickyNote, Send, CheckCircle } from "lucide-react";
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
+import { PageTitle, SectionTitle } from '../../components/typography';
 
 //////////////////////////////
 // 1. TYPES
@@ -140,15 +141,9 @@ export default function CoachNotes({
             <StickyNote size={24} style={{ color: 'var(--accent)' }} />
           </div>
           <div>
-            <h1 style={{
-              fontSize: '28px',
-              lineHeight: '34px',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <PageTitle style={{ margin: 0 }}>
               Notater
-            </h1>
+            </PageTitle>
             <p style={{
               fontSize: '13px',
               lineHeight: '18px',
@@ -165,16 +160,9 @@ export default function CoachNotes({
       {/* New Note Input */}
       <div style={{ padding: '24px' }}>
         <Card variant="default" padding="lg" style={{ marginBottom: '24px' }}>
-          <h2 style={{
-            fontSize: '17px',
-            lineHeight: '22px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-            marginBottom: '16px',
-          }}>
+          <SectionTitle style={{ margin: 0, marginBottom: '16px' }}>
             Nytt notat
-          </h2>
+          </SectionTitle>
 
           <textarea
             value={newNote}
@@ -221,15 +209,9 @@ export default function CoachNotes({
         {/* Note History */}
         <Card variant="default" padding="none">
           <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
-            <h2 style={{
-              fontSize: '17px',
-              lineHeight: '22px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SectionTitle style={{ margin: 0 }}>
               Tidligere notater
-            </h2>
+            </SectionTitle>
           </div>
 
           {sortedNotes.length === 0 ? (

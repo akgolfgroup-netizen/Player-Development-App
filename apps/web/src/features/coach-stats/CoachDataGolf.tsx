@@ -19,6 +19,7 @@ import { dataGolfAPI } from '../../services/api';
 import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
+import { SubSectionTitle, CardTitle } from '../../components/typography';
 
 interface PlayerStats {
   sgTotal: number | null;
@@ -463,14 +464,9 @@ export const CoachDataGolf: React.FC = () => {
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <h3 style={{
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      color: 'var(--text-primary)',
-                      margin: 0
-                    }}>
+                    <SubSectionTitle style={{ margin: 0 }}>
                       {player.playerName}
-                    </h3>
+                    </SubSectionTitle>
                     <span style={{
                       fontSize: '11px',
                       fontWeight: '500',
@@ -587,16 +583,9 @@ export const CoachDataGolf: React.FC = () => {
               }}>
                 {/* SG Breakdown */}
                 <div style={{ marginBottom: '20px' }}>
-                  <h4 style={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 12px 0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
+                  <CardTitle style={{ margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Strokes Gained Breakdown (estimert)
-                  </h4>
+                  </CardTitle>
                   <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(4, 1fr)',
@@ -643,16 +632,9 @@ export const CoachDataGolf: React.FC = () => {
                 {/* Tour Comparison */}
                 {player.tourComparison && (
                   <div style={{ marginBottom: '20px' }}>
-                    <h4 style={{
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      color: 'var(--text-secondary)',
-                      margin: '0 0 12px 0',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}>
+                    <CardTitle style={{ margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       Sammenligning med {player.tourComparison.tour} Tour
-                    </h4>
+                    </CardTitle>
                     <div style={{
                       backgroundColor: 'var(--bg-tertiary)',
                       borderRadius: '10px',
@@ -693,16 +675,9 @@ export const CoachDataGolf: React.FC = () => {
 
                 {/* Traditional Stats */}
                 <div>
-                  <h4 style={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 12px 0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
+                  <CardTitle style={{ margin: '0 0 12px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Testbasert Statistikk
-                  </h4>
+                  </CardTitle>
                   <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(5, 1fr)',

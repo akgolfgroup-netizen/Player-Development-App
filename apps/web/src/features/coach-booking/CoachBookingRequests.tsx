@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
+import { PageTitle, SubSectionTitle } from '../../components/typography';
 
 interface BookingRequest {
   id: string;
@@ -299,15 +300,9 @@ export default function CoachBookingRequests() {
             <ArrowLeft size={20} color={'var(--text-primary)'} />
           </button>
           <div>
-            <h1
-              style={{
-                fontSize: '28px', lineHeight: '34px', fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}
-            >
+            <PageTitle style={{ margin: 0 }}>
               Bookingforespørsler
-            </h1>
+            </PageTitle>
             <p
               style={{
                 fontSize: '15px', lineHeight: '20px',
@@ -422,15 +417,9 @@ export default function CoachBookingRequests() {
             >
               <Calendar size={28} color={'var(--text-secondary)'} />
             </div>
-            <h3
-              style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: '0 0 8px',
-              }}
-            >
+            <SubSectionTitle style={{ margin: '0 0 8px' }}>
               Ingen forespørsler
-            </h3>
+            </SubSectionTitle>
             <p
               style={{
                 fontSize: '15px', lineHeight: '20px',
