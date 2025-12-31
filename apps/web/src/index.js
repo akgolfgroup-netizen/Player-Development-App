@@ -25,16 +25,18 @@ root.render(
 );
 
 // Register service worker for PWA support
+// Auto-update without user prompt to ensure latest deploy is always shown
 serviceWorkerRegistration.register({
   onSuccess: () => {
     console.log('[App] PWA ready for offline use');
   },
   onUpdate: (registration) => {
-    console.log('[App] New version available');
-    // Optionally show update notification to user
-    if (window.confirm('Ny versjon tilgjengelig! Last inn på nytt?')) {
-      serviceWorkerRegistration.skipWaiting();
-      window.location.reload();
+    console.log('[App] New version detected - auto-updating...');
+    // Force immediate activation of new service worker
+    if (registration.waiting) {
+      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
     }
+    // Reload to get new assets
+    window.location.reload();
   },
 });

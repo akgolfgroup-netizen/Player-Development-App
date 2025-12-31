@@ -1,33 +1,48 @@
 /**
  * AK Golf Academy - Service Worker
  * Handles push notifications, caching, and offline support
+ *
+ * IMPORTANT: This SW prioritizes fresh content over caching.
+ * Each deploy clears old caches to prevent stale UI.
  */
 
-const CACHE_NAME = 'ak-golf-cache-v1';
-const API_CACHE = 'ak-golf-api-cache-v1';
+// Cache version - increment manually or use build system to inject BUILD_SHA
+const CACHE_VERSION = 'v2';
+const CACHE_NAME = `ak-golf-cache-${CACHE_VERSION}`;
+const API_CACHE = `ak-golf-api-cache-${CACHE_VERSION}`;
 
-// Files to cache for offline access
+// Minimal cache - only essential offline assets
 const STATIC_CACHE_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
   '/logo192.png',
   '/logo512.png',
 ];
 
 // =============================================================================
-// INSTALL EVENT - Cache static assets
+// INSTALL EVENT - Clear old caches and cache minimal assets
 // =============================================================================
 
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker...');
+  console.log('[SW] Installing service worker...', CACHE_VERSION);
+
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Caching static assets');
-      return cache.addAll(STATIC_CACHE_URLS);
+    // First, delete ALL existing caches to ensure fresh content
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((name) => {
+          console.log('[SW] Clearing old cache:', name);
+          return caches.delete(name);
+        })
+      );
+    }).then(() => {
+      // Then cache only essential assets
+      return caches.open(CACHE_NAME).then((cache) => {
+        console.log('[SW] Caching minimal assets');
+        return cache.addAll(STATIC_CACHE_URLS);
+      });
     })
   );
-  // Activate immediately
+
+  // Activate immediately - don't wait for old SW to finish
   self.skipWaiting();
 });
 
@@ -83,14 +98,20 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets: cache first, network fallback
+  // HTML/Navigation: ALWAYS network first (critical for deploy updates)
+  if (request.mode === 'navigate' || request.destination === 'document' || url.pathname.endsWith('.html')) {
+    event.respondWith(
+      fetch(request)
+        .catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
+  // Static assets (JS, CSS, images): network first with cache fallback
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(request).then((response) => {
-        // Cache successful responses
+    fetch(request)
+      .then((response) => {
+        // Cache successful responses for offline fallback
         if (response.status === 200) {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -98,8 +119,8 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return response;
-      });
-    })
+      })
+      .catch(() => caches.match(request))
   );
 });
 
