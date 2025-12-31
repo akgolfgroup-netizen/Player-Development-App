@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Trophy, Calendar, MapPin, Users, Clock, ChevronRight,
   Star, Medal, Flag, CheckCircle, AlertCircle, ExternalLink,
-  Hotel, FileText, Plus
+  Hotel, FileText, Plus, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { tournamentsAPI } from '../../services/api';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -749,7 +750,91 @@ const TournamentDetailModal = ({ tournament, onClose, onRegister }) => {
 const TurneringskalenderContainer = () => {
   const [filter, setFilter] = useState('all');
   const [selectedTournament, setSelectedTournament] = useState(null);
-  const [tournaments, setTournaments] = useState(MOCK_TOURNAMENTS);
+  const [tournaments, setTournaments] = useState([]);
+  const [pastTournaments, setPastTournaments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch tournaments from API
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Fetch all tournaments and my tournaments in parallel
+        const [allResponse, myResponse] = await Promise.all([
+          tournamentsAPI.getAll().catch(() => null),
+          tournamentsAPI.getMy().catch(() => null),
+        ]);
+
+        // Process API data if available
+        if (allResponse?.data && Array.isArray(allResponse.data)) {
+          // Get my registered tournament IDs
+          const myTournamentIds = new Set(
+            myResponse?.data?.registered?.map(t => t.id) || []
+          );
+
+          // Transform API data to match component format
+          const apiTournaments = allResponse.data.map(t => ({
+            id: t.id,
+            name: t.name,
+            type: t.tournamentType || 'club',
+            category: mapLevelToCategory(t.level),
+            startDate: t.startDate,
+            endDate: t.endDate,
+            location: t.location || t.courseName || '',
+            city: t.city || '',
+            registrationDeadline: t.registrationDeadline || t.startDate,
+            maxParticipants: t.maxParticipants || 100,
+            currentParticipants: t.currentParticipants || 0,
+            status: t.status || 'registration_open',
+            isRegistered: myTournamentIds.has(t.id),
+            description: t.description || '',
+            format: t.format || '',
+            fee: t.entryFee || 0,
+          }));
+
+          setTournaments(apiTournaments.length > 0 ? apiTournaments : MOCK_TOURNAMENTS);
+
+          // Set past tournaments from my-tournaments response
+          if (myResponse?.data?.pastResults && Array.isArray(myResponse.data.pastResults)) {
+            const pastResults = myResponse.data.pastResults.map(r => ({
+              id: r.id,
+              name: r.name,
+              date: r.date,
+              location: r.location,
+              result: r.result || { position: 0, score: 0, field: 0 },
+            }));
+            setPastTournaments(pastResults.length > 0 ? pastResults : PAST_TOURNAMENTS);
+          } else {
+            setPastTournaments(PAST_TOURNAMENTS);
+          }
+        } else {
+          // Use mock data as fallback
+          setTournaments(MOCK_TOURNAMENTS);
+          setPastTournaments(PAST_TOURNAMENTS);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch tournaments, using mock data:', err);
+        setTournaments(MOCK_TOURNAMENTS);
+        setPastTournaments(PAST_TOURNAMENTS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTournaments();
+  }, []);
+
+  // Map tournament level to category
+  const mapLevelToCategory = (level) => {
+    if (!level) return 'open';
+    const l = level.toLowerCase();
+    if (l.includes('junior') || l.includes('u18') || l.includes('u16')) return 'junior';
+    if (l.includes('elite') || l.includes('pro')) return 'elite';
+    return 'open';
+  };
 
   const filteredTournaments = tournaments.filter((t) => {
     if (filter === 'all') return true;
@@ -765,6 +850,24 @@ const TurneringskalenderContainer = () => {
     );
     setSelectedTournament(null);
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: 'var(--bg-secondary)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <Loader2 size={32} color="var(--accent)" style={{ animation: 'spin 1s linear infinite' }} />
+          <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Laster turneringer...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
@@ -805,7 +908,7 @@ const TurneringskalenderContainer = () => {
             textAlign: 'center',
           }}>
             <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
-              {PAST_TOURNAMENTS.filter(t => t.result.position <= 3).length}
+              {pastTournaments.filter(t => t.result?.position <= 3).length}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Pallplasser</div>
           </div>
@@ -816,7 +919,7 @@ const TurneringskalenderContainer = () => {
             textAlign: 'center',
           }}>
             <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
-              {PAST_TOURNAMENTS.length}
+              {pastTournaments.length}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Spilt i år</div>
           </div>
@@ -878,11 +981,24 @@ const TurneringskalenderContainer = () => {
             Tidligere resultater
           </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {PAST_TOURNAMENTS.map((tournament) => (
-              <PastTournamentCard key={tournament.id} tournament={tournament} />
-            ))}
-          </div>
+          {pastTournaments.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {pastTournaments.map((tournament) => (
+                <PastTournamentCard key={tournament.id} tournament={tournament} />
+              ))}
+            </div>
+          ) : (
+            <div style={{
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: '12px',
+              padding: '24px',
+              textAlign: 'center',
+            }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
+                Ingen tidligere turneringsresultater
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

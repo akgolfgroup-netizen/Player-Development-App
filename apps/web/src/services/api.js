@@ -153,6 +153,20 @@ export const calendarAPI = {
   getTournamentResults: (playerId) => api.get(`/calendar/tournament-results?playerId=${playerId}`),
 };
 
+// Tournaments API
+export const tournamentsAPI = {
+  // Get all tournaments
+  getAll: () => api.get('/calendar/tournaments'),
+  // Get my registered tournaments and results
+  getMy: () => api.get('/calendar/my-tournaments'),
+  // Get external tournaments (from tours)
+  getExternal: () => api.get('/calendar/external-tournaments'),
+  // Add tournament to calendar
+  addToCalendar: (tournamentId, data) => api.post('/calendar/add-tournament', { tournamentId, ...data }),
+  // Record tournament result
+  recordResult: (data) => api.post('/calendar/tournament-result', data),
+};
+
 // Coach Analytics API
 export const analyticsAPI = {
   getPlayerOverview: (playerId) => api.get(`/coach-analytics/players/${playerId}/overview`),

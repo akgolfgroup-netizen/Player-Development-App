@@ -179,7 +179,10 @@ const CalendarPage: React.FC = () => {
 
   const handlePostponeSession = useCallback(async (event: CalendarEvent, minutes: number) => {
     try {
-      const currentStart = new Date(event.startTime);
+      // Construct datetime from date and start time
+      const [hours, mins] = event.start.split(':').map(Number);
+      const currentStart = new Date(event.date);
+      currentStart.setHours(hours, mins, 0, 0);
       const newStart = new Date(currentStart.getTime() + minutes * 60000);
       await sessionsAPI.update(event.id, {
         scheduledDate: newStart.toISOString(),

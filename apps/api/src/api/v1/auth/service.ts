@@ -284,7 +284,7 @@ export class AuthService {
   /**
    * Generate auth response with tokens
    */
-  private async generateAuthResponse(user: any): Promise<AuthResponse> {
+  private async generateAuthResponse(user: UserWithOptionalPlayerId): Promise<AuthResponse> {
     // Generate access token
     const accessToken = generateAccessToken({
       id: user.id,           // Primary user ID

@@ -17,6 +17,13 @@ interface SkillData {
   fullMark?: number
 }
 
+interface MergedSkillData {
+  category: string
+  value: number
+  compareValue?: number
+  fullMark?: number
+}
+
 interface SkillRadarProps {
   data: SkillData[]
   title?: string
@@ -42,9 +49,19 @@ export const SkillRadar: React.FC<SkillRadarProps> = ({
   compareLabel,
   className,
 }) => {
+  // Merge data for comparison if compareData is provided
+  const chartData: MergedSkillData[] = React.useMemo(() => {
+    if (!compareData) return data
+
+    return data.map((item, index) => ({
+      ...item,
+      compareValue: compareData[index]?.value ?? 0,
+    }))
+  }, [data, compareData])
+
   const chartContent = (
     <ResponsiveContainer width="100%" height={height}>
-      <RadarChart data={data}>
+      <RadarChart data={chartData}>
         <PolarGrid stroke="var(--ak-mist)" />
         <PolarAngleAxis
           dataKey="category"
@@ -66,8 +83,7 @@ export const SkillRadar: React.FC<SkillRadarProps> = ({
         {compareData && (
           <Radar
             name={compareLabel || "Sammenligning"}
-            dataKey="value"
-            data={compareData}
+            dataKey="compareValue"
             stroke={compareColor}
             fill={compareColor}
             fillOpacity={0.1}
