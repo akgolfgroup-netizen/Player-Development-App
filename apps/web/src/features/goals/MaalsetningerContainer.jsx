@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import StateCard from '../../ui/composites/StateCard';
-import Maalsetninger from './Målsetninger';
+import Maalsetninger from './Maalsetninger';
 
 const MaalsetningerContainer = () => {
   const { user } = useAuth();

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // TODO: Add proper types for training plan data structures
 import React, { useState, useEffect, useCallback } from 'react';

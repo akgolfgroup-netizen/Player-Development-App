@@ -160,6 +160,16 @@ export { Alert, AlertTitle, AlertDescription } from "./alert"
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./accordion"
 export { ScrollArea, ScrollBar } from "./scroll-area"
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsible"
+export {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./pagination"
+export { AspectRatio } from "./aspect-ratio"
 
 // Golf-specific Premium Components
 export * from "./golf"

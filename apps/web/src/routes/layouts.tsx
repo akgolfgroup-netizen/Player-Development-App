@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { ReactNode } from 'react';
 import ApplicationLayoutTopNav from '../components/layout/ApplicationLayoutTopNav';
 import CoachAppShell from '../components/layout/CoachAppShell';

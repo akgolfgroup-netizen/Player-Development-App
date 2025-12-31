@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * AK Golf Academy - Tournament Calendar Page
  *

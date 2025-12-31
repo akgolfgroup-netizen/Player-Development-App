@@ -28,7 +28,8 @@ const CoachAthleteDetailContainer: React.FC = () => {
       setError(null);
 
       // Try coach analytics first, fallback to players API
-      let data = null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let data: any = null;
       try {
         const response = await analyticsAPI.getPlayerOverview(playerId);
         data = response.data?.data || response.data;

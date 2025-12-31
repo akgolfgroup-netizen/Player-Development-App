@@ -176,8 +176,8 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
   const renderDecisionAnchor = () => {
     let line1 = `I dag: ${weeklyFocus}`;
     let line2 = '';
-    let primaryCta = null;
-    let secondaryCta = null;
+    let primaryCta: React.ReactNode = null;
+    let secondaryCta: React.ReactNode = null;
 
     switch (dayState) {
       case 'in_progress':

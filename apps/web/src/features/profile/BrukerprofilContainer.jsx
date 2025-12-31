@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import ProfileView from './ProfileView';
+import ProfileView from './ProfileView.tsx';
 import OnboardingForm from './ak_golf_brukerprofil_onboarding';
 
 /**

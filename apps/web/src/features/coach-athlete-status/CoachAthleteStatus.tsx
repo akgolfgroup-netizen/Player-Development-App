@@ -197,7 +197,7 @@ export const CoachAthleteStatus: React.FC = () => {
       ]);
 
       const athletesData = athletesRes.data?.data || athletesRes.data || [];
-      const alertsData = alertsRes.data?.data || alertsRes.data || [];
+      const alertsData: any[] = Array.isArray(alertsRes.data?.data) ? alertsRes.data.data : (Array.isArray(alertsRes.data) ? alertsRes.data : []);
 
       if (Array.isArray(athletesData) && athletesData.length > 0) {
         // Transform API data to PlayerStatus format

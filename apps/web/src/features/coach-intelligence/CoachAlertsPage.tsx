@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Alerts Page

@@ -145,11 +145,8 @@ const CalendarPage: React.FC = () => {
   // Handle planned session creation (with AK-formula)
   const handleCreatePlannedSession = useCallback(async (session: NewPlannedSession) => {
     try {
-      await sessionsAPI.create({
-        ...session,
-        // Include formula as metadata
-        formula: session.formula,
-      });
+      // Formula is already included in session object
+      await sessionsAPI.create(session as Parameters<typeof sessionsAPI.create>[0]);
       setPlannerModalOpen(false);
       refetch();
     } catch (error) {
@@ -185,7 +182,7 @@ const CalendarPage: React.FC = () => {
       currentStart.setHours(hours, mins, 0, 0);
       const newStart = new Date(currentStart.getTime() + minutes * 60000);
       await sessionsAPI.update(event.id, {
-        scheduledDate: newStart.toISOString(),
+        sessionDate: newStart.toISOString(),
       });
       refetch();
     } catch (error) {

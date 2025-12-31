@@ -4,7 +4,7 @@ import { exercisesAPI } from '../../services/api';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import EmptyState from '../../components/ui/EmptyState';
-import Oevelser from './Øvelser';
+import Oevelser from './Oevelser';
 import {
   GolfslagIcon,
   GolfTarget,

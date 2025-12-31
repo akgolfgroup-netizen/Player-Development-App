@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
-import Treningsstatistikk from './Treningsstatistikk';
+import Treningsstatistikk from './Treningsstatistikk.tsx';
 
 // Demo stats for when API is not available
 const demoStats = {

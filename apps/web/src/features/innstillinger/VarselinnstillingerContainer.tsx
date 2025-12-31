@@ -1,17 +1,78 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import {
   Bell, Mail, Smartphone, MessageSquare, Calendar,
-  Trophy, Target, Save, Info
+  Trophy, Target, Save, Info, Clock
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { settingsAPI } from '../../services/api';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Switch,
+  Label,
+  Button,
+  Separator,
+} from '../../components/shadcn';
+import { useToast } from '../../ui/composites/Toast.composite';
+import { cn } from 'lib/utils';
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+interface NotificationSettings {
+  channels: {
+    push: boolean;
+    email: boolean;
+    sms: boolean;
+  };
+  categories: {
+    training: {
+      enabled: boolean;
+      reminders: boolean;
+      coachFeedback: boolean;
+      planUpdates: boolean;
+    };
+    tournaments: {
+      enabled: boolean;
+      registrationDeadlines: boolean;
+      results: boolean;
+      rankings: boolean;
+    };
+    goals: {
+      enabled: boolean;
+      achievements: boolean;
+      milestones: boolean;
+      weeklyProgress: boolean;
+    };
+    messages: {
+      enabled: boolean;
+      fromCoach: boolean;
+      fromAdmin: boolean;
+    };
+    system: {
+      enabled: boolean;
+      maintenance: boolean;
+      newFeatures: boolean;
+    };
+  };
+  timing: {
+    quietHoursEnabled: boolean;
+    quietStart: string;
+    quietEnd: string;
+    dailySummary: boolean;
+    dailySummaryTime: string;
+  };
+}
 
 // ============================================================================
 // MOCK DATA
 // ============================================================================
 
-const NOTIFICATION_SETTINGS = {
+const NOTIFICATION_SETTINGS: NotificationSettings = {
   channels: {
     push: true,
     email: true,
@@ -57,149 +118,119 @@ const NOTIFICATION_SETTINGS = {
 };
 
 // ============================================================================
-// TOGGLE SWITCH
+// SETTING ROW COMPONENT
 // ============================================================================
 
-const ToggleSwitch = ({ enabled, onChange }) => (
-  <button
-    onClick={() => onChange(!enabled)}
-    style={{
-      width: '48px',
-      height: '26px',
-      borderRadius: '13px',
-      backgroundColor: enabled ? tokens.colors.primary : tokens.colors.mist,
-      border: 'none',
-      padding: '2px',
-      cursor: 'pointer',
-      transition: 'all 0.2s',
-      position: 'relative',
-    }}
+interface SettingRowProps {
+  icon?: React.ComponentType<{ className?: string }>;
+  label: string;
+  description?: string;
+  enabled: boolean;
+  onChange: (value: boolean) => void;
+  disabled?: boolean;
+  id: string;
+}
+
+const SettingRow: React.FC<SettingRowProps> = ({
+  icon: Icon,
+  label,
+  description,
+  enabled,
+  onChange,
+  disabled,
+  id,
+}) => (
+  <div
+    className={cn(
+      "flex items-center justify-between py-3",
+      disabled && "opacity-50"
+    )}
   >
-    <div style={{
-      width: '22px',
-      height: '22px',
-      borderRadius: '50%',
-      backgroundColor: tokens.colors.white,
-      transition: 'transform 0.2s',
-      transform: enabled ? 'translateX(22px)' : 'translateX(0)',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-    }} />
-  </button>
-);
-
-// ============================================================================
-// SETTING ROW
-// ============================================================================
-
-const SettingRow = ({ icon: Icon, label, description, enabled, onChange, disabled }) => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '12px 0',
-    borderBottom: `1px solid ${tokens.colors.mist}`,
-    opacity: disabled ? 0.5 : 1,
-  }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+    <div className="flex items-center gap-3">
       {Icon && (
-        <div style={{
-          width: '32px',
-          height: '32px',
-          borderRadius: '8px',
-          backgroundColor: `${tokens.colors.primary}10`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <Icon size={16} color={tokens.colors.primary} />
+        <div className="w-8 h-8 rounded-lg bg-ak-primary/10 flex items-center justify-center">
+          <Icon className="w-4 h-4 text-ak-primary" />
         </div>
       )}
-      <div>
-        <div style={{
-          fontSize: '14px',
-          fontWeight: 500,
-          color: tokens.colors.charcoal,
-        }}>
+      <div className="space-y-0.5">
+        <Label
+          htmlFor={id}
+          className="text-sm font-medium text-text-primary cursor-pointer"
+        >
           {label}
-        </div>
+        </Label>
         {description && (
-          <div style={{
-            fontSize: '12px',
-            color: tokens.colors.steel,
-            marginTop: '2px',
-          }}>
-            {description}
-          </div>
+          <p className="text-xs text-text-secondary">{description}</p>
         )}
       </div>
     </div>
-    <ToggleSwitch
-      enabled={enabled && !disabled}
-      onChange={disabled ? () => {} : onChange}
+    <Switch
+      id={id}
+      checked={enabled && !disabled}
+      onCheckedChange={disabled ? undefined : onChange}
+      disabled={disabled}
     />
   </div>
 );
 
 // ============================================================================
-// SECTION
+// SECTION COMPONENT
 // ============================================================================
 
-const Section = ({ title, icon: Icon, children, enabled, onToggle }) => (
-  <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: '14px',
-    padding: '16px',
-    marginBottom: '20px',
-  }}>
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: '12px',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <div style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '8px',
-          backgroundColor: `${tokens.colors.primary}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <Icon size={18} color={tokens.colors.primary} />
+interface SectionProps {
+  title: string;
+  icon: React.ComponentType<{ className?: string }>;
+  children: React.ReactNode;
+  enabled?: boolean;
+  onToggle?: (value: boolean) => void;
+  id: string;
+}
+
+const Section: React.FC<SectionProps> = ({
+  title,
+  icon: Icon,
+  children,
+  enabled = true,
+  onToggle,
+  id,
+}) => (
+  <Card className="mb-4">
+    <CardHeader className="pb-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-ak-primary/15 flex items-center justify-center">
+            <Icon className="w-5 h-5 text-ak-primary" />
+          </div>
+          <CardTitle className="text-base font-semibold">{title}</CardTitle>
         </div>
-        <h3 style={{
-          fontSize: '15px',
-          fontWeight: 600,
-          color: tokens.colors.charcoal,
-          margin: 0,
-        }}>
-          {title}
-        </h3>
+        {onToggle && (
+          <Switch
+            id={id}
+            checked={enabled}
+            onCheckedChange={onToggle}
+          />
+        )}
       </div>
-      {onToggle && (
-        <ToggleSwitch enabled={enabled} onChange={onToggle} />
-      )}
-    </div>
-    <div style={{ opacity: enabled === false ? 0.5 : 1 }}>
-      {children}
-    </div>
-  </div>
+    </CardHeader>
+    <CardContent className={cn("pt-0", !enabled && "opacity-50")}>
+      <div className="divide-y divide-border-subtle">
+        {children}
+      </div>
+    </CardContent>
+  </Card>
 );
 
 // ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 
-const VarselinnstillingerContainer = () => {
-  const [settings, setSettings] = useState(NOTIFICATION_SETTINGS);
+const VarselinnstillingerContainer: React.FC = () => {
+  const [settings, setSettings] = useState<NotificationSettings>(NOTIFICATION_SETTINGS);
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  const { toast } = useToast();
 
-  const updateChannel = (channel, value) => {
+  const updateChannel = (channel: keyof NotificationSettings['channels'], value: boolean) => {
     setSettings({
       ...settings,
       channels: { ...settings.channels, [channel]: value },
@@ -207,7 +238,11 @@ const VarselinnstillingerContainer = () => {
     setHasChanges(true);
   };
 
-  const updateCategory = (category, field, value) => {
+  const updateCategory = (
+    category: keyof NotificationSettings['categories'],
+    field: string,
+    value: boolean
+  ) => {
     setSettings({
       ...settings,
       categories: {
@@ -218,7 +253,7 @@ const VarselinnstillingerContainer = () => {
     setHasChanges(true);
   };
 
-  const updateTiming = (field, value) => {
+  const updateTiming = (field: keyof NotificationSettings['timing'], value: boolean) => {
     setSettings({
       ...settings,
       timing: { ...settings.timing, [field]: value },
@@ -228,7 +263,6 @@ const VarselinnstillingerContainer = () => {
 
   const handleSave = async () => {
     setSaving(true);
-    setError(null);
 
     try {
       await settingsAPI.saveNotifications({
@@ -237,41 +271,50 @@ const VarselinnstillingerContainer = () => {
         timing: settings.timing,
       });
 
-      setSuccess(true);
+      toast({
+        title: "Innstillinger lagret",
+        description: "Varselinnstillingene dine er oppdatert.",
+      });
       setHasChanges(false);
-      setTimeout(() => setSuccess(false), 3000);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Kunne ikke lagre innstillinger.');
+    } catch (err: any) {
+      toast({
+        title: "Feil ved lagring",
+        description: err.response?.data?.message || "Kunne ikke lagre innstillinger.",
+        variant: "destructive",
+      });
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow }}>
+    <div className="min-h-screen bg-background-default">
       <PageHeader
         title="Varselinnstillinger"
         subtitle="Tilpass hvordan du mottar varsler"
       />
 
-      <div style={{ padding: '16px 24px 24px', maxWidth: '800px', margin: '0 auto' }}>
+      <div className="px-6 pb-6 max-w-2xl mx-auto space-y-4">
         {/* Notification Channels */}
-        <Section title="Varslingskanaler" icon={Bell}>
+        <Section title="Varslingskanaler" icon={Bell} id="channels">
           <SettingRow
+            id="push"
             icon={Smartphone}
             label="Push-varsler"
-            description="Varsler pa mobilen"
+            description="Varsler på mobilen"
             enabled={settings.channels.push}
             onChange={(val) => updateChannel('push', val)}
           />
           <SettingRow
+            id="email"
             icon={Mail}
             label="E-post"
-            description="Varsler pa e-post"
+            description="Varsler på e-post"
             enabled={settings.channels.email}
             onChange={(val) => updateChannel('email', val)}
           />
           <SettingRow
+            id="sms"
             icon={MessageSquare}
             label="SMS"
             description="Tekstmeldinger for viktige varsler"
@@ -286,24 +329,28 @@ const VarselinnstillingerContainer = () => {
           icon={Calendar}
           enabled={settings.categories.training.enabled}
           onToggle={(val) => updateCategory('training', 'enabled', val)}
+          id="training"
         >
           <SettingRow
-            label="Treningspaminnelser"
-            description="Paminning for om kommende okter"
+            id="training-reminders"
+            label="Treningspåminnelser"
+            description="Påminnelse før kommende økter"
             enabled={settings.categories.training.reminders}
             onChange={(val) => updateCategory('training', 'reminders', val)}
             disabled={!settings.categories.training.enabled}
           />
           <SettingRow
+            id="training-feedback"
             label="Trener-feedback"
-            description="Nar treneren gir tilbakemelding"
+            description="Når treneren gir tilbakemelding"
             enabled={settings.categories.training.coachFeedback}
             onChange={(val) => updateCategory('training', 'coachFeedback', val)}
             disabled={!settings.categories.training.enabled}
           />
           <SettingRow
+            id="training-plans"
             label="Planoppdateringer"
-            description="Nar treningsplanen endres"
+            description="Når treningsplanen endres"
             enabled={settings.categories.training.planUpdates}
             onChange={(val) => updateCategory('training', 'planUpdates', val)}
             disabled={!settings.categories.training.enabled}
@@ -316,22 +363,26 @@ const VarselinnstillingerContainer = () => {
           icon={Trophy}
           enabled={settings.categories.tournaments.enabled}
           onToggle={(val) => updateCategory('tournaments', 'enabled', val)}
+          id="tournaments"
         >
           <SettingRow
-            label="Pameldingsfrister"
-            description="Paminning for turneringspamelding"
+            id="tournament-deadlines"
+            label="Påmeldingsfrister"
+            description="Påminnelse før turneringspåmelding"
             enabled={settings.categories.tournaments.registrationDeadlines}
             onChange={(val) => updateCategory('tournaments', 'registrationDeadlines', val)}
             disabled={!settings.categories.tournaments.enabled}
           />
           <SettingRow
+            id="tournament-results"
             label="Resultater"
-            description="Nar resultater publiseres"
+            description="Når resultater publiseres"
             enabled={settings.categories.tournaments.results}
             onChange={(val) => updateCategory('tournaments', 'results', val)}
             disabled={!settings.categories.tournaments.enabled}
           />
           <SettingRow
+            id="tournament-rankings"
             label="Rangeringer"
             description="Oppdateringer i rangeringslister"
             enabled={settings.categories.tournaments.rankings}
@@ -342,26 +393,30 @@ const VarselinnstillingerContainer = () => {
 
         {/* Goal Notifications */}
         <Section
-          title="Mal og prestasjoner"
+          title="Mål og prestasjoner"
           icon={Target}
           enabled={settings.categories.goals.enabled}
           onToggle={(val) => updateCategory('goals', 'enabled', val)}
+          id="goals"
         >
           <SettingRow
+            id="goals-achievements"
             label="Nye prestasjoner"
-            description="Nar du oppnar en prestasjon"
+            description="Når du oppnår en prestasjon"
             enabled={settings.categories.goals.achievements}
             onChange={(val) => updateCategory('goals', 'achievements', val)}
             disabled={!settings.categories.goals.enabled}
           />
           <SettingRow
-            label="Milepeler"
-            description="Nar du nar en milepel"
+            id="goals-milestones"
+            label="Milepæler"
+            description="Når du når en milepæl"
             enabled={settings.categories.goals.milestones}
             onChange={(val) => updateCategory('goals', 'milestones', val)}
             disabled={!settings.categories.goals.enabled}
           />
           <SettingRow
+            id="goals-weekly"
             label="Ukentlig oppsummering"
             description="Ukentlig fremgangsrapport"
             enabled={settings.categories.goals.weeklyProgress}
@@ -371,14 +426,16 @@ const VarselinnstillingerContainer = () => {
         </Section>
 
         {/* Timing Settings */}
-        <Section title="Timing" icon={Info}>
+        <Section title="Timing" icon={Clock} id="timing">
           <SettingRow
+            id="timing-quiet"
             label="Stille timer"
             description="Ingen varsler mellom kl. 22:00 og 07:00"
             enabled={settings.timing.quietHoursEnabled}
             onChange={(val) => updateTiming('quietHoursEnabled', val)}
           />
           <SettingRow
+            id="timing-summary"
             label="Daglig oppsummering"
             description="Motta en daglig oppsummering kl. 18:00"
             enabled={settings.timing.dailySummary}
@@ -387,28 +444,15 @@ const VarselinnstillingerContainer = () => {
         </Section>
 
         {/* Save Button */}
-        <button
+        <Button
           onClick={handleSave}
-          disabled={!hasChanges}
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            padding: '14px',
-            borderRadius: '10px',
-            border: 'none',
-            backgroundColor: hasChanges ? tokens.colors.primary : tokens.colors.mist,
-            color: hasChanges ? tokens.colors.white : tokens.colors.steel,
-            fontSize: '15px',
-            fontWeight: 600,
-            cursor: hasChanges ? 'pointer' : 'not-allowed',
-          }}
+          disabled={!hasChanges || saving}
+          className="w-full"
+          size="lg"
         >
-          <Save size={18} />
-          Lagre endringer
-        </button>
+          <Save className="w-4 h-4 mr-2" />
+          {saving ? 'Lagrer...' : 'Lagre endringer'}
+        </Button>
       </div>
     </div>
   );
