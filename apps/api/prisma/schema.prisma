@@ -107,6 +107,7 @@ model User {
   sharedVideos                  VideoShare[]
   videoRequests                 VideoRequest[]
   auditEvents                   AuditEvent[]
+  collections                   Collection[]
 
   @@index([tenantId])
   @@index([email])
@@ -2893,6 +2894,78 @@ model VideoRequest {
   @@index([tenantId, playerId])
   @@index([tenantId, status])
   @@map("video_requests")
+}
+
+// ============================================================================
+// COLLECTIONS (User-created collections of items)
+// ============================================================================
+
+model Collection {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId              String   @map("user_id") @db.Uuid
+  tenantId            String   @map("tenant_id") @db.Uuid
+
+  name                String   @db.VarChar(255)
+  description         String?  @db.Text
+  type                String   @default("general") @db.VarChar(50)
+  items               Json     @default("[]") @db.JsonB
+  isPublic            Boolean  @default(false) @map("is_public")
+  color               String?  @db.VarChar(20)
+  icon                String?  @db.VarChar(50)
+
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([tenantId])
+  @@map("collections")
+}
+
+// ============================================================================
+// SUPPORT CASES (Admin support ticket system)
+// ============================================================================
+
+model SupportCase {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId            String?  @map("tenant_id") @db.Uuid
+
+  title               String   @db.VarChar(255)
+  description         String?  @db.Text
+  status              String   @default("open") @db.VarChar(20)
+  priority            String   @default("normal") @db.VarChar(20)
+  category            String?  @db.VarChar(50)
+  reportedById        String?  @map("reported_by_id") @db.Uuid
+
+  resolution          String?  @db.Text
+
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  closedAt            DateTime? @map("closed_at") @db.Timestamptz(6)
+
+  @@index([status])
+  @@map("support_cases")
+}
+
+// ============================================================================
+// FEATURE FLAGS (System-wide feature toggles)
+// ============================================================================
+
+model FeatureFlag {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  key                 String   @unique @db.VarChar(100)
+  name                String   @db.VarChar(255)
+  description         String?  @db.Text
+  enabled             Boolean  @default(false)
+  rolloutPercentage   Int      @default(100) @map("rollout_percentage")
+
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("feature_flags")
 }
 
 // ============================================================================

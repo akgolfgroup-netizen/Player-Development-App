@@ -153,7 +153,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(true);
 
       const response = await authAPI.register(userData);
-      const { accessToken, user: newUser } = response.data as AuthResponse;
+      // API returns { success: true, data: { accessToken, user, ... } }
+      const { accessToken, user: newUser } = response.data.data as AuthResponse;
 
       // Store token and user data
       localStorage.setItem('accessToken', accessToken);

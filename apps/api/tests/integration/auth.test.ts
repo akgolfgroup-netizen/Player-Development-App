@@ -528,6 +528,212 @@ describe('Auth API Integration Tests', () => {
     });
   });
 
+  describe('POST /api/v1/auth/forgot-password', () => {
+    it('should accept forgot password request for existing user', async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/forgot-password',
+        payload: {
+          email: testUser.email,
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      const body = JSON.parse(response.body);
+      expect(body.success).toBe(true);
+      expect(body.message).toContain('sent');
+
+      // Verify reset token was created
+      const user = await prisma.user.findUnique({
+        where: { email: testUser.email },
+      });
+      expect(user?.passwordResetToken).toBeTruthy();
+      expect(user?.passwordResetExpiresAt).toBeTruthy();
+    });
+
+    it('should return success for non-existent email (security)', async () => {
+      // Should not leak whether email exists
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/forgot-password',
+        payload: {
+          email: 'nonexistent@example.com',
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      const body = JSON.parse(response.body);
+      expect(body.success).toBe(true);
+    });
+
+    it('should validate email format', async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/forgot-password',
+        payload: {
+          email: 'invalid-email',
+        },
+      });
+
+      expect(response.statusCode).toBe(400);
+    });
+  });
+
+  describe('POST /api/v1/auth/reset-password', () => {
+    let resetToken: string;
+
+    beforeAll(async () => {
+      // Request a password reset to get a valid token
+      await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/forgot-password',
+        payload: {
+          email: testUser.email,
+        },
+      });
+
+      // Get the reset token from the database
+      const user = await prisma.user.findUnique({
+        where: { email: testUser.email },
+      });
+      resetToken = user?.passwordResetToken || '';
+    });
+
+    it('should reset password with valid token', async () => {
+      const newPassword = 'ResetPassword123!';
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/reset-password',
+        payload: {
+          token: resetToken,
+          email: testUser.email,
+          newPassword: newPassword,
+        },
+      });
+
+      expect(response.statusCode).toBe(200);
+
+      const body = JSON.parse(response.body);
+      expect(body.success).toBe(true);
+
+      // Verify can login with new password
+      const loginResponse = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/login',
+        payload: {
+          email: testUser.email,
+          password: newPassword,
+        },
+      });
+      expect(loginResponse.statusCode).toBe(200);
+
+      // Reset password back to original for other tests
+      const loginBody = JSON.parse(loginResponse.body);
+      accessToken = loginBody.data.accessToken;
+
+      await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/change-password',
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+        },
+        payload: {
+          currentPassword: newPassword,
+          newPassword: testUser.password,
+        },
+      });
+
+      // Get fresh tokens
+      const finalLoginResponse = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/login',
+        payload: {
+          email: testUser.email,
+          password: testUser.password,
+        },
+      });
+      const finalLoginBody = JSON.parse(finalLoginResponse.body);
+      accessToken = finalLoginBody.data.accessToken;
+      refreshToken = finalLoginBody.data.refreshToken;
+    });
+
+    it('should reject reset with invalid token', async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/reset-password',
+        payload: {
+          token: 'invalid-token',
+          email: testUser.email,
+          newPassword: 'NewPassword123!',
+        },
+      });
+
+      expect(response.statusCode).toBe(401);
+
+      const body = JSON.parse(response.body);
+      expect(body.success).toBe(false);
+    });
+
+    it('should reject reset with mismatched email', async () => {
+      // Request new reset token
+      await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/forgot-password',
+        payload: {
+          email: testUser.email,
+        },
+      });
+
+      const user = await prisma.user.findUnique({
+        where: { email: testUser.email },
+      });
+      const newResetToken = user?.passwordResetToken || '';
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/reset-password',
+        payload: {
+          token: newResetToken,
+          email: 'different@example.com',
+          newPassword: 'NewPassword123!',
+        },
+      });
+
+      expect(response.statusCode).toBe(401);
+    });
+
+    it('should reject weak passwords', async () => {
+      // Request new reset token
+      await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/forgot-password',
+        payload: {
+          email: testUser.email,
+        },
+      });
+
+      const user = await prisma.user.findUnique({
+        where: { email: testUser.email },
+      });
+      const newResetToken = user?.passwordResetToken || '';
+
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/auth/reset-password',
+        payload: {
+          token: newResetToken,
+          email: testUser.email,
+          newPassword: 'weak',
+        },
+      });
+
+      expect(response.statusCode).toBe(400);
+    });
+  });
+
   describe('Multi-tenant isolation', () => {
     it('should isolate users by tenant', async () => {
       // Register second user/tenant

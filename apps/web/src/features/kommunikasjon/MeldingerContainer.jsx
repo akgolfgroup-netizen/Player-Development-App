@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MessageSquare, Search, Plus, ChevronRight, Check,
-  CheckCheck, Clock, Send, Paperclip, User
+  CheckCheck, Clock, Send, Paperclip, User, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
-import apiClient from '../../services/apiClient';
+import { conversationsAPI } from '../../services/api';
 
 // ============================================================================
 // MOCK DATA
@@ -273,7 +273,7 @@ const MessageBubble = ({ message, isOwn }) => {
 // CHAT VIEW
 // ============================================================================
 
-const ChatView = ({ conversation, messages, onMessageSent }) => {
+const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
   const [newMessage, setNewMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
 
@@ -282,11 +282,7 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
 
     setIsSending(true);
     try {
-      await apiClient.post('/messages', {
-        conversationId: conversation.id,
-        recipientId: conversation.contact.id,
-        text: newMessage.trim(),
-      });
+      await conversationsAPI.sendMessage(conversation.id, newMessage.trim());
       setNewMessage('');
       if (onMessageSent) onMessageSent();
     } catch (err) {
@@ -372,13 +368,19 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
         padding: '16px',
         overflowY: 'auto',
       }}>
-        {messages.map((message) => (
-          <MessageBubble
-            key={message.id}
-            message={message}
-            isOwn={message.sender === 'player'}
-          />
-        ))}
+        {isLoading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
+            <Loader2 size={24} color="var(--accent)" style={{ animation: 'spin 1s linear infinite' }} />
+          </div>
+        ) : (
+          messages.map((message) => (
+            <MessageBubble
+              key={message.id}
+              message={message}
+              isOwn={message.sender === 'player'}
+            />
+          ))
+        )}
       </div>
 
       {/* Input */}
@@ -440,13 +442,101 @@ const ChatView = ({ conversation, messages, onMessageSent }) => {
 const MeldingerContainer = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [conversations, setConversations] = useState([]);
+  const [messages, setMessages] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
 
-  const filteredConversations = CONVERSATIONS.filter((c) =>
+  // Fetch conversations from API
+  useEffect(() => {
+    const fetchConversations = async () => {
+      setLoading(true);
+      try {
+        const response = await conversationsAPI.getAll();
+        if (response?.data?.conversations && Array.isArray(response.data.conversations)) {
+          // Transform API data to match component format
+          const apiConversations = response.data.conversations.map(conv => ({
+            id: conv.id,
+            contact: {
+              id: conv.participants.find(p => p.id !== localStorage.getItem('userId'))?.id,
+              name: conv.name || 'Unknown',
+              role: conv.participants[0]?.role || 'coach',
+              avatar: conv.participants[0]?.avatar,
+            },
+            lastMessage: conv.lastMessage?.content || '',
+            timestamp: conv.lastMessage?.sentAt || conv.updatedAt,
+            unread: conv.unreadCount || 0,
+            isOnline: false, // WebSocket status would update this
+          }));
+          setConversations(apiConversations.length > 0 ? apiConversations : CONVERSATIONS);
+        } else {
+          setConversations(CONVERSATIONS);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch conversations, using mock data:', err);
+        setConversations(CONVERSATIONS);
+        setMessages(MESSAGES);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConversations();
+  }, []);
+
+  // Fetch messages when conversation is selected
+  useEffect(() => {
+    if (!selectedConversation) return;
+
+    const fetchMessages = async () => {
+      // Check if we already have messages for this conversation
+      if (messages[selectedConversation.id]) return;
+
+      setLoadingMessages(true);
+      try {
+        const response = await conversationsAPI.getById(selectedConversation.id);
+        if (response?.data?.messages && Array.isArray(response.data.messages)) {
+          const userId = localStorage.getItem('userId');
+          const apiMessages = response.data.messages.map(msg => ({
+            id: msg.id,
+            sender: msg.senderId === userId ? 'player' : 'coach',
+            text: msg.content,
+            timestamp: msg.createdAt,
+            read: msg.readBy?.some(r => r.userId !== msg.senderId),
+          }));
+          setMessages(prev => ({
+            ...prev,
+            [selectedConversation.id]: apiMessages,
+          }));
+        } else if (!messages[selectedConversation.id]) {
+          // Use mock data as fallback
+          setMessages(prev => ({
+            ...prev,
+            [selectedConversation.id]: MESSAGES[selectedConversation.id] || [],
+          }));
+        }
+      } catch (err) {
+        console.warn('Failed to fetch messages, using mock data:', err);
+        if (!messages[selectedConversation.id]) {
+          setMessages(prev => ({
+            ...prev,
+            [selectedConversation.id]: MESSAGES[selectedConversation.id] || [],
+          }));
+        }
+      } finally {
+        setLoadingMessages(false);
+      }
+    };
+
+    fetchMessages();
+  }, [selectedConversation, messages]);
+
+  const filteredConversations = conversations.filter((c) =>
     c.contact.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const currentMessages = selectedConversation
-    ? MESSAGES[selectedConversation.id] || []
+    ? messages[selectedConversation.id] || []
     : [];
 
   return (
@@ -519,8 +609,38 @@ const MeldingerContainer = () => {
         <ChatView
           conversation={selectedConversation}
           messages={currentMessages}
+          isLoading={loadingMessages}
+          onMessageSent={() => {
+            // Refresh messages after sending
+            setMessages(prev => ({ ...prev }));
+          }}
         />
       </div>
+
+      {/* Loading overlay for initial load */}
+      {loading && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: 'rgba(0,0,0,0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 100,
+        }}>
+          <div style={{
+            backgroundColor: 'var(--bg-primary)',
+            padding: '24px 32px',
+            borderRadius: '12px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+          }}>
+            <Loader2 size={24} color="var(--accent)" style={{ animation: 'spin 1s linear infinite' }} />
+            <span>Laster samtaler...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

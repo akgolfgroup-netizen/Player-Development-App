@@ -78,27 +78,59 @@ const COMPONENT_LABELS: Record<string, string> = {
 
 interface WelcomeSectionProps {
   playerName: string
+  avatarUrl?: string
   stats: any
   streak: number
 }
 
-const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, stats, streak }) => {
+const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, stats, streak }) => {
   const dayOfWeek = getDayOfWeek()
   const motivationalMessage = getMotivationalMessage(stats, dayOfWeek)
+  const firstName = playerName?.split(' ')[0] || 'Spiller'
+  const initials = playerName
+    ?.split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2) || 'SP'
 
   return (
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-xs text-text-tertiary uppercase tracking-wider mb-1">
-          {getGreeting()}
-        </p>
-        <h1 className="text-3xl font-bold text-text-primary tracking-tight">
-          {playerName?.split(' ')[0] || 'Spiller'}
-        </h1>
-        <p className="text-sm text-text-secondary font-medium mt-1">
-          {motivationalMessage}
-        </p>
+    <div className="flex items-center justify-between py-2">
+      <div className="flex items-center gap-5">
+        {/* Profile Avatar */}
+        <div className="relative">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-ak-primary to-ak-primary-dark flex items-center justify-center overflow-hidden ring-4 ring-white shadow-lg">
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={firstName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-xl font-bold text-white">{initials}</span>
+            )}
+          </div>
+          {streak > 0 && (
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs shadow-md">
+              🔥
+            </div>
+          )}
+        </div>
+
+        {/* Text Content */}
+        <div className="space-y-1">
+          <p className="text-xs text-text-tertiary uppercase tracking-wider font-medium">
+            {getGreeting()}
+          </p>
+          <h1 className="text-3xl font-bold text-text-primary tracking-tight">
+            {firstName}
+          </h1>
+          <p className="text-sm text-text-secondary font-medium">
+            {motivationalMessage}
+          </p>
+        </div>
       </div>
+
       {streak > 0 && <StreakBadge count={streak} size="lg" />}
     </div>
   )
@@ -717,7 +749,7 @@ const AKGolfDashboardV4: React.FC = () => {
   }
 
   // Extract data with fallbacks
-  const player = dashboardData?.player || { name: 'Spiller', category: 'B' }
+  const player = dashboardData?.player || { name: 'Spiller', category: 'B', avatarUrl: null }
   const stats = dashboardData?.stats || {
     sessionsCompleted: 0,
     sessionsTotal: 12,
@@ -760,6 +792,7 @@ const AKGolfDashboardV4: React.FC = () => {
       {/* Row 1: Welcome Header */}
       <WelcomeSection
         playerName={player.name}
+        avatarUrl={player.avatarUrl}
         stats={stats}
         streak={stats.streak}
       />

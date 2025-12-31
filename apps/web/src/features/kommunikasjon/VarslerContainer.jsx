@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Bell, Check, ChevronRight, Calendar, Trophy, Target,
-  MessageSquare, Award, AlertCircle, Clock, Filter, Trash2
+  MessageSquare, Award, AlertCircle, Clock, Filter, Trash2, Loader2
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
+import { notificationsAPI } from '../../services/api';
 
 // ============================================================================
 // MOCK DATA
@@ -237,8 +238,69 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
 // ============================================================================
 
 const VarslerContainer = () => {
-  const [notifications, setNotifications] = useState(NOTIFICATIONS);
+  const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
+
+  // Fetch notifications from API
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      setLoading(true);
+      try {
+        const response = await notificationsAPI.getAll();
+        if (response?.data?.data?.notifications && Array.isArray(response.data.data.notifications)) {
+          // Transform API data to match component format
+          const apiNotifications = response.data.data.notifications.map(n => ({
+            id: n.id,
+            type: mapNotificationType(n.notificationType),
+            title: n.title,
+            message: n.message,
+            timestamp: n.createdAt,
+            read: n.readAt !== null,
+            actionUrl: n.metadata?.actionUrl || getDefaultActionUrl(n.notificationType),
+          }));
+          setNotifications(apiNotifications.length > 0 ? apiNotifications : NOTIFICATIONS);
+        } else {
+          setNotifications(NOTIFICATIONS);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch notifications, using mock data:', err);
+        setNotifications(NOTIFICATIONS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  // Map API notification type to component type
+  const mapNotificationType = (type) => {
+    const typeMap = {
+      'training_plan': 'training',
+      'session_reminder': 'reminder',
+      'tournament': 'tournament',
+      'achievement': 'achievement',
+      'message': 'message',
+      'test_result': 'test',
+      'breaking_point': 'alert',
+    };
+    return typeMap[type] || 'reminder';
+  };
+
+  // Get default action URL based on notification type
+  const getDefaultActionUrl = (type) => {
+    const urlMap = {
+      'training_plan': '/trening/ukens',
+      'session_reminder': '/kalender',
+      'tournament': '/turneringskalender',
+      'achievement': '/achievements',
+      'message': '/meldinger',
+      'test_result': '/testresultater',
+      'breaking_point': '/utvikling/breaking-points',
+    };
+    return urlMap[type] || '/';
+  };
 
   const filters = [
     { key: 'all', label: 'Alle' },
@@ -256,19 +318,61 @@ const VarslerContainer = () => {
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const handleRead = (id) => {
+  const handleRead = async (id) => {
+    // Optimistic update
     setNotifications(notifications.map((n) =>
       n.id === id ? { ...n, read: true } : n
     ));
+
+    // Call API
+    try {
+      await notificationsAPI.markRead(id);
+    } catch (err) {
+      console.warn('Failed to mark notification as read:', err);
+      // Revert on failure
+      setNotifications(notifications.map((n) =>
+        n.id === id ? { ...n, read: false } : n
+      ));
+    }
   };
 
   const handleDelete = (id) => {
+    // Note: API doesn't support delete, so just remove locally
     setNotifications(notifications.filter((n) => n.id !== id));
   };
 
-  const handleMarkAllRead = () => {
+  const handleMarkAllRead = async () => {
+    // Optimistic update
+    const previousState = [...notifications];
     setNotifications(notifications.map((n) => ({ ...n, read: true })));
+
+    // Call API
+    try {
+      await notificationsAPI.markAllRead();
+    } catch (err) {
+      console.warn('Failed to mark all notifications as read:', err);
+      // Revert on failure
+      setNotifications(previousState);
+    }
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: 'var(--bg-secondary)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <Loader2 size={32} color="var(--accent)" style={{ animation: 'spin 1s linear infinite' }} />
+          <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Laster varsler...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>

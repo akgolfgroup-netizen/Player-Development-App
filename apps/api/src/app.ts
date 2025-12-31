@@ -101,7 +101,9 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   const { focusEngineRoutes } = await import('./api/v1/focus-engine');
   const { playerInsightsRoutes } = await import('./api/v1/player-insights');
   const adminSeedRoutes = (await import('./api/v1/admin/seed')).default;
+  const adminRoutes = (await import('./api/v1/admin')).default;
   const aiRoutes = (await import('./api/v1/ai')).default;
+  const collectionsRoutes = (await import('./api/v1/collections')).default;
 
   await app.register(authRoutes, { prefix: `/api/${config.server.apiVersion}/auth` });
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
@@ -145,7 +147,9 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   await app.register(focusEngineRoutes, { prefix: `/api/${config.server.apiVersion}/focus-engine` });
   await app.register(playerInsightsRoutes, { prefix: `/api/${config.server.apiVersion}/player-insights` });
   await app.register(adminSeedRoutes, { prefix: `/api/${config.server.apiVersion}/admin` });
+  await app.register(adminRoutes, { prefix: `/api/${config.server.apiVersion}/admin` });
   await app.register(aiRoutes, { prefix: `/api/${config.server.apiVersion}/ai` });
+  await app.register(collectionsRoutes, { prefix: `/api/${config.server.apiVersion}/collections` });
 
   // ✅ All IUP Golf Academy APIs registered!
   // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points

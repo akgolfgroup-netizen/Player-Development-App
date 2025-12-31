@@ -6,14 +6,23 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
   transform: {
-    '^.+\\.(js|jsx)$': ['babel-jest', { presets: ['@babel/preset-env', '@babel/preset-react'] }],
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', {
+      presets: [
+        '@babel/preset-env',
+        '@babel/preset-react',
+        '@babel/preset-typescript'
+      ]
+    }],
   },
   collectCoverageFrom: [
-    'src/**/*.{js,jsx}',
-    '!src/**/*.spec.{js,jsx}',
-    '!src/**/*.test.{js,jsx}',
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.spec.{js,jsx,ts,tsx}',
+    '!src/**/*.test.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts',
     '!src/index.js',
+    '!src/index.tsx',
     '!src/reportWebVitals.js',
+    '!src/reportWebVitals.ts',
   ],
   coverageThreshold: {
     global: {
@@ -24,7 +33,8 @@ module.exports = {
     },
   },
   testMatch: [
-    '<rootDir>/src/**/__tests__/**/*.{js,jsx}',
-    '<rootDir>/src/**/*.{spec,test}.{js,jsx}',
+    '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
   ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 };

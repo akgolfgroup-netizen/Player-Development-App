@@ -29,7 +29,7 @@ export interface RegisterData {
   firstName: string;
   lastName: string;
   organizationName: string;
-  role: 'admin' | 'coach' | 'player';
+  role: 'admin' | 'coach' | 'player' | 'parent';
 }
 
 export interface AuthTokens {
@@ -251,6 +251,58 @@ const api: AxiosInstance = axios.create({
   },
 });
 
+// =============================================================================
+// Token Refresh Logic
+// =============================================================================
+
+interface QueuedRequest {
+  resolve: (value: string | null) => void;
+  reject: (error: unknown) => void;
+}
+
+let isRefreshing = false;
+let failedQueue: QueuedRequest[] = [];
+
+const processQueue = (error: unknown, token: string | null = null): void => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+const refreshAccessToken = async (): Promise<string | null> => {
+  const refreshToken = localStorage.getItem('refreshToken');
+  if (!refreshToken) {
+    return null;
+  }
+
+  try {
+    const response = await axios.post<{ data: { accessToken: string; refreshToken?: string } }>(
+      `${API_BASE_URL}/auth/refresh`,
+      { refreshToken },
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+
+    const { accessToken, refreshToken: newRefreshToken } = response.data.data;
+    localStorage.setItem('accessToken', accessToken);
+    if (newRefreshToken) {
+      localStorage.setItem('refreshToken', newRefreshToken);
+    }
+    return accessToken;
+  } catch {
+    // Refresh failed, clear tokens
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    return null;
+  }
+};
+
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
@@ -263,15 +315,66 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle errors
+// Response interceptor with token refresh
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
-  (error) => {
-    if (error.response?.status === 401) {
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Skip refresh logic for auth endpoints to avoid loops
+    const isAuthEndpoint = originalRequest?.url?.includes('/auth/');
+
+    // Only attempt refresh on 401 and if we haven't already tried
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint) {
+      originalRequest._retry = true;
+
+      if (isRefreshing) {
+        // If already refreshing, queue this request
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            if (token) {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              return api(originalRequest);
+            }
+            return Promise.reject(error);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      isRefreshing = true;
+
+      try {
+        const newToken = await refreshAccessToken();
+
+        if (newToken) {
+          processQueue(null, newToken);
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return api(originalRequest);
+        } else {
+          processQueue(new Error('Token refresh failed'), null);
+          // Redirect to login only if refresh fails
+          window.location.href = '/login';
+          return Promise.reject(error);
+        }
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
+
+    // For 401 on auth endpoints or other errors, just reject
+    if (error.response?.status === 401 && isAuthEndpoint) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      window.location.href = '/login';
     }
+
     return Promise.reject(error);
   }
 );
@@ -844,6 +947,157 @@ export const notesAPI = {
 
   delete: (noteId: string): Promise<AxiosResponse<void>> =>
     api.delete(`/notes/${noteId}`),
+};
+
+// =============================================================================
+// Notifications API
+// =============================================================================
+
+export interface Notification {
+  id: string;
+  notificationType: string;
+  title: string;
+  message: string;
+  metadata?: Record<string, unknown>;
+  readAt: string | null;
+  createdAt: string;
+}
+
+export interface NotificationsResponse {
+  notifications: Notification[];
+  unreadCount: number;
+  nextCursor: string | null;
+}
+
+export const notificationsAPI = {
+  getAll: (params: { unreadOnly?: string; limit?: string; cursor?: string } = {}): Promise<AxiosResponse<ApiResponse<NotificationsResponse>>> =>
+    api.get('/notifications', { params }),
+
+  getUnread: (): Promise<AxiosResponse<ApiResponse<NotificationsResponse>>> =>
+    api.get('/notifications', { params: { unreadOnly: '1' } }),
+
+  markRead: (id: string): Promise<AxiosResponse<ApiResponse<void>>> =>
+    api.patch(`/notifications/${id}/read`),
+
+  markAllRead: (): Promise<AxiosResponse<ApiResponse<{ count: number }>>> =>
+    api.post('/notifications/read-all'),
+
+  getStreamStatus: (): Promise<AxiosResponse<ApiResponse<{ mode: string; activeSubscriptions: number; redisAvailable: boolean }>>> =>
+    api.get('/notifications/stream/status'),
+};
+
+// =============================================================================
+// Conversations/Messages API
+// =============================================================================
+
+export interface Conversation {
+  id: string;
+  type: 'direct' | 'group' | 'coach_player';
+  name?: string;
+  participants: Array<{
+    id: string;
+    name: string;
+    avatar?: string;
+    role: string;
+  }>;
+  lastMessage?: {
+    id: string;
+    content: string;
+    senderName: string;
+    sentAt: string;
+    isRead: boolean;
+  };
+  unreadCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ConversationMessage {
+  id: string;
+  content: string;
+  senderId: string;
+  senderName: string;
+  senderAvatar?: string;
+  createdAt: string;
+  readBy: Array<{ userId: string; readAt: string }>;
+}
+
+export const conversationsAPI = {
+  getAll: (): Promise<AxiosResponse<ApiResponse<{ conversations: Conversation[]; total: number }>>> =>
+    api.get('/messages/conversations'),
+
+  getById: (id: string, params: { limit?: number; before?: string } = {}): Promise<AxiosResponse<ApiResponse<{ conversation: Conversation; messages: ConversationMessage[]; hasMore: boolean }>>> =>
+    api.get(`/messages/conversations/${id}`, { params }),
+
+  create: (data: { type: string; name?: string; participantIds: string[] }): Promise<AxiosResponse<ApiResponse<{ conversation: Conversation; existing: boolean }>>> =>
+    api.post('/messages/conversations', data),
+
+  markRead: (id: string): Promise<AxiosResponse<ApiResponse<{ markedAsRead: number }>>> =>
+    api.post(`/messages/conversations/${id}/read`),
+
+  sendMessage: (conversationId: string, content: string, attachments?: Array<{ type: string; url: string; name: string }>): Promise<AxiosResponse<ApiResponse<{ message: ConversationMessage }>>> =>
+    api.post(`/messages/conversations/${conversationId}/messages`, { content, attachments }),
+
+  editMessage: (messageId: string, content: string): Promise<AxiosResponse<ApiResponse<{ message: ConversationMessage }>>> =>
+    api.patch(`/messages/messages/${messageId}`, { content }),
+
+  deleteMessage: (messageId: string): Promise<AxiosResponse<ApiResponse<void>>> =>
+    api.delete(`/messages/messages/${messageId}`),
+
+  getUnreadCount: (): Promise<AxiosResponse<ApiResponse<{ unreadCount: number }>>> =>
+    api.get('/messages/unread-count'),
+};
+
+// =============================================================================
+// Tournaments API
+// =============================================================================
+
+export interface Tournament {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  location?: string;
+  courseName?: string;
+  city?: string;
+  tournamentType?: string;
+  level?: string;
+  format?: string;
+  entryFee?: number;
+  maxParticipants?: number;
+  currentParticipants?: number;
+  registrationDeadline?: string;
+  status?: string;
+  description?: string;
+}
+
+export interface TournamentResult {
+  id: string;
+  name: string;
+  date: string;
+  location: string;
+  result: {
+    position: number;
+    score: number;
+    field: number;
+  };
+}
+
+export const tournamentsAPI = {
+  getAll: (): Promise<AxiosResponse<ApiResponse<Tournament[]>>> =>
+    api.get('/calendar/tournaments'),
+
+  getMy: (): Promise<AxiosResponse<ApiResponse<{ registered: Tournament[]; pastResults: TournamentResult[] }>>> =>
+    api.get('/calendar/my-tournaments'),
+
+  getExternal: (): Promise<AxiosResponse<ApiResponse<{ tournaments: Tournament[] }>>> =>
+    api.get('/calendar/external-tournaments'),
+
+  addToCalendar: (tournamentId: string, data?: Record<string, unknown>): Promise<AxiosResponse<ApiResponse<void>>> =>
+    api.post('/calendar/add-tournament', { tournamentId, ...data }),
+
+  recordResult: (data: { tournamentId: string; playerId: string; position: number; score: number; totalField: number }): Promise<AxiosResponse<ApiResponse<TournamentResult>>> =>
+    api.post('/calendar/tournament-result', data),
 };
 
 // =============================================================================
