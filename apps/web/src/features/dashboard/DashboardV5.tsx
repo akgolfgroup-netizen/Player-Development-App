@@ -395,12 +395,12 @@ export default function DashboardV5() {
     },
   ] : [];
 
-  // Quick actions
+  // Quick actions - aligned with 4+1 navigation structure
   const quickActions: QuickAction[] = [
-    { id: 'training', label: 'Start trening', icon: <Play size={20} color="white" />, href: '/logg-trening', color: 'var(--success)' },
-    { id: 'calendar', label: 'Kalender', icon: <Calendar size={20} color="white" />, href: '/kalender', color: 'var(--accent)' },
-    { id: 'goals', label: 'Mål', icon: <Target size={20} color="white" />, href: '/goals', color: 'var(--text-brand)' },
-    { id: 'achievements', label: 'Merker', icon: <Trophy size={20} color="white" />, href: '/badges', color: 'var(--warning)' },
+    { id: 'log-training', label: 'Logg trening', icon: <Play size={20} color="white" />, href: '/trening/logg', color: 'var(--success)' },
+    { id: 'take-test', label: 'Ta test', icon: <Target size={20} color="white" />, href: '/testprotokoll', color: 'var(--accent)' },
+    { id: 'view-stats', label: 'Statistikk', icon: <TrendingUp size={20} color="white" />, href: '/stats', color: 'var(--text-brand)' },
+    { id: 'calendar', label: 'Kalender', icon: <Calendar size={20} color="white" />, href: '/kalender', color: 'var(--warning)' },
   ];
 
   // Loading state
