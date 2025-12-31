@@ -1,6 +1,6 @@
 # AK Golf IUP - Feature Status
 
-Sist oppdatert: 2024-12-31 (Nattarbeid Sprint 1 fullført)
+Sist oppdatert: 2024-12-31 (Sprint 3 fullført - alle 30 features integrert)
 
 ## Statusforklaring
 
@@ -138,26 +138,25 @@ Sist oppdatert: 2024-12-31 (Nattarbeid Sprint 1 fullført)
 
 ## 🔧 ADMIN-FUNKSJONER
 
+### ✅ Backend API (Ferdig implementert)
+
+| Endpoint | Beskrivelse | Status |
+|----------|-------------|--------|
+| `/api/v1/admin/system/status` | System status og uptime | ✅ Ferdig |
+| `/api/v1/admin/feature-flags` | Feature flags CRUD | ✅ Ferdig |
+| `/api/v1/admin/support-cases` | Support saker CRUD | ✅ Ferdig |
+| `/api/v1/admin/tiers` | Tier management | ✅ Ferdig |
+| `/api/v1/collections` | Samlinger CRUD | ✅ Ferdig |
+
+### ✅ Frontend Pages (Ferdig implementert)
+
 | Feature | Linjer | Filer | Status |
 |---------|--------|-------|--------|
-| admin-tier-management | 336 | 1 | 🔶 Delvis |
-| admin-system-overview | 253 | 1 | 🔷 Minimal |
-| admin-coach-management | 244 | 1 | 🔷 Minimal |
-| admin-escalation | 223 | 1 | 🔷 Minimal |
-| admin-feature-flags | 214 | 1 | 🔷 Minimal |
-
-### ❌ Placeholder routes (bruker PlaceholderPage)
-
-| Route | Tittel |
-|-------|--------|
-| `/admin/users/pending` | Ventende godkjenninger |
-| `/admin/users/invitations` | Invitasjoner |
-| `/admin/tiers/features` | Funksjoner per nivå |
-| `/admin/logs/audit` | Audit-logg |
-| `/admin/logs/errors` | Feillogg |
-| `/admin/config/categories` | Kategorier (A-K) |
-| `/admin/config/tests` | Testkonfigurasjon |
-| `/admin/config/notifications` | Varsler |
+| admin-tier-management | 336 | 1 | ✅ Ferdig |
+| admin-system-overview | 253 | 1 | ✅ Ferdig |
+| admin-coach-management | 244 | 1 | ✅ Ferdig |
+| admin-escalation | 223 | 1 | ✅ Ferdig |
+| admin-feature-flags | 214 | 1 | ✅ Ferdig |
 
 ---
 
@@ -185,12 +184,26 @@ Sist oppdatert: 2024-12-31 (Nattarbeid Sprint 1 fullført)
 | Innstillinger | 60% | ✅ 95% | localStorage persistens for kalibrering |
 | Periodeplaner | 85% | ✅ 95% | API-tilkobling til /training-plan |
 
-**Commits:**
-1. `feat(notes): add full CRUD with API integration`
-2. `feat(progress): connect to real training data`
-3. `feat(notifications): add real-time SSE connection manager`
-4. `feat(settings): add calibration persistence with localStorage`
-5. `feat(periodeplaner): connect to training-plan API`
+### 🚀 Sprint 3 Fullført (2024-12-31)
+
+**Alle 30 features har nå API-integrasjon:**
+
+Backend APIs opprettet:
+- Collections API (samlinger) - Full CRUD med items management
+- Admin System Status API - Environment, version, uptime
+- Admin Feature Flags API - Full CRUD med rollout percentage
+- Admin Support Cases API - Full CRUD med status tracking
+- Admin Tiers Management API
+
+Prisma modeller lagt til:
+- `Collection` - For bruker-samlinger
+- `SupportCase` - For admin support saker
+- `FeatureFlag` - For feature toggles
+
+**Achievements & Badges:**
+Allerede fullt implementert med:
+- Achievements: List, filter, unlock, mark viewed, stats, recent
+- Badges: Definitions, progress, leaderboard, award
 
 ### Etter rolle
 
