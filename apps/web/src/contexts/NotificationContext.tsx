@@ -121,6 +121,10 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const eventSourceRef = useRef<EventSource | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const reconnectAttemptsRef = useRef<number>(0);
+  const MAX_RECONNECT_ATTEMPTS = 5;
+  const BASE_RECONNECT_DELAY = 1000; // 1 second
+  const MAX_RECONNECT_DELAY = 30000; // 30 seconds
 
   // Check push notification permission on mount
   useEffect(() => {
@@ -316,6 +320,16 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     }
   }, [showNotification]);
 
+  /**
+   * Calculate exponential backoff delay with jitter
+   */
+  const getReconnectDelay = useCallback((attempt: number): number => {
+    const delay = Math.min(BASE_RECONNECT_DELAY * Math.pow(2, attempt), MAX_RECONNECT_DELAY);
+    // Add jitter (±20%)
+    const jitter = delay * 0.2 * (Math.random() - 0.5);
+    return Math.floor(delay + jitter);
+  }, []);
+
   // Real-time updates with Server-Sent Events
   const connectRealtime = useCallback((userId: string, token: string): void => {
     if (eventSourceRef.current) {
@@ -324,6 +338,12 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
     if (!userId || !token) {
       console.warn('Cannot connect to realtime: missing userId or token');
+      return;
+    }
+
+    // Check if max attempts reached
+    if (reconnectAttemptsRef.current >= MAX_RECONNECT_ATTEMPTS) {
+      console.warn('Max reconnect attempts reached for realtime. Giving up.');
       return;
     }
 
@@ -338,6 +358,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       eventSource.onopen = (): void => {
         console.log('Realtime connection established');
         setRealtimeConnected(true);
+        // Reset reconnect attempts on successful connection
+        reconnectAttemptsRef.current = 0;
         if (reconnectTimeoutRef.current) {
           clearTimeout(reconnectTimeoutRef.current);
           reconnectTimeoutRef.current = null;
@@ -354,32 +376,50 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       };
 
       eventSource.onerror = (): void => {
-        console.warn('Realtime connection error, attempting reconnect...');
+        // Only log once, don't spam console
+        if (reconnectAttemptsRef.current === 0) {
+          console.warn('Realtime connection error');
+        }
         setRealtimeConnected(false);
         eventSource.close();
 
-        // Attempt to reconnect after 5 seconds
-        reconnectTimeoutRef.current = setTimeout(() => {
-          if (isOnline) {
-            connectRealtime(userId, token);
+        // Check if we should retry
+        if (reconnectAttemptsRef.current < MAX_RECONNECT_ATTEMPTS && isOnline) {
+          const delay = getReconnectDelay(reconnectAttemptsRef.current);
+          reconnectAttemptsRef.current++;
+          console.log(`Realtime reconnecting in ${delay}ms... Attempt ${reconnectAttemptsRef.current}/${MAX_RECONNECT_ATTEMPTS}`);
+
+          // Clear any existing timeout
+          if (reconnectTimeoutRef.current) {
+            clearTimeout(reconnectTimeoutRef.current);
           }
-        }, 5000);
+          reconnectTimeoutRef.current = setTimeout(() => {
+            if (isOnline) {
+              connectRealtime(userId, token);
+            }
+          }, delay);
+        } else if (reconnectAttemptsRef.current >= MAX_RECONNECT_ATTEMPTS) {
+          console.warn('Max reconnect attempts reached for realtime. Giving up.');
+        }
       };
 
       eventSourceRef.current = eventSource;
     } catch (error) {
       console.error('Failed to connect to realtime:', error);
     }
-  }, [isOnline, handleRealtimeMessage]);
+  }, [isOnline, handleRealtimeMessage, getReconnectDelay]);
 
   const disconnectRealtime = useCallback((): void => {
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close();
-      eventSourceRef.current = null;
-    }
+    // Stop any pending reconnect attempts
+    reconnectAttemptsRef.current = MAX_RECONNECT_ATTEMPTS;
+
     if (reconnectTimeoutRef.current) {
       clearTimeout(reconnectTimeoutRef.current);
       reconnectTimeoutRef.current = null;
+    }
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+      eventSourceRef.current = null;
     }
     setRealtimeConnected(false);
   }, []);

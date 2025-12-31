@@ -58,7 +58,8 @@ export function useRealtimeUpdates(options = {}) {
   const {
     autoConnect = true,
     reconnectAttempts = 5,
-    reconnectDelay = 3000,
+    baseReconnectDelay = 1000,
+    maxReconnectDelay = 30000,
     pingInterval = 30000,
     onConnect,
     onDisconnect,
@@ -67,13 +68,26 @@ export function useRealtimeUpdates(options = {}) {
 
   const wsRef = useRef(null);
   const reconnectAttemptsRef = useRef(0);
+  const reconnectTimeoutRef = useRef(null);
   const pingIntervalRef = useRef(null);
   const listenersRef = useRef(new Map());
 
+  // Use refs for connection state to avoid re-renders on connection errors
   const [isConnected, setIsConnected] = useState(false);
   const [connectionState, setConnectionState] = useState(WS_STATE.CLOSED);
   const [lastMessage, setLastMessage] = useState(null);
+  const errorRef = useRef(null);
   const [error, setError] = useState(null);
+
+  /**
+   * Calculate exponential backoff delay
+   */
+  const getReconnectDelay = useCallback((attempt) => {
+    const delay = Math.min(baseReconnectDelay * Math.pow(2, attempt), maxReconnectDelay);
+    // Add jitter (±20%)
+    const jitter = delay * 0.2 * (Math.random() - 0.5);
+    return Math.floor(delay + jitter);
+  }, [baseReconnectDelay, maxReconnectDelay]);
 
   /**
    * Get WebSocket URL with auth token
@@ -152,34 +166,55 @@ export function useRealtimeUpdates(options = {}) {
 
         onDisconnect?.();
 
-        // Attempt reconnection
+        // Attempt reconnection with exponential backoff
         if (
           event.code !== 1000 &&
           reconnectAttemptsRef.current < reconnectAttempts
         ) {
+          const delay = getReconnectDelay(reconnectAttemptsRef.current);
           reconnectAttemptsRef.current++;
           console.log(
-            `[WS] Reconnecting... Attempt ${reconnectAttemptsRef.current}/${reconnectAttempts}`
+            `[WS] Reconnecting in ${delay}ms... Attempt ${reconnectAttemptsRef.current}/${reconnectAttempts}`
           );
-          setTimeout(connect, reconnectDelay);
+          // Clear any existing timeout
+          if (reconnectTimeoutRef.current) {
+            clearTimeout(reconnectTimeoutRef.current);
+          }
+          reconnectTimeoutRef.current = setTimeout(connect, delay);
+        } else if (reconnectAttemptsRef.current >= reconnectAttempts) {
+          console.warn('[WS] Max reconnect attempts reached. Giving up.');
         }
       };
 
       wsRef.current.onerror = (event) => {
+        // Only log error, don't update state to avoid re-renders
         console.error('[WS] Error:', event);
-        setError(new Error('WebSocket error'));
+        errorRef.current = new Error('WebSocket error');
+        // Only set error state once, not on every retry
+        if (!error) {
+          setError(errorRef.current);
+        }
         onError?.(event);
       };
     } catch (err) {
       console.error('[WS] Failed to connect:', err);
       setError(err);
     }
-  }, [getWsUrl, onConnect, onDisconnect, onError, pingInterval, reconnectAttempts, reconnectDelay]);
+  }, [getWsUrl, onConnect, onDisconnect, onError, pingInterval, reconnectAttempts, getReconnectDelay, error]);
 
   /**
    * Disconnect from WebSocket server
    */
   const disconnect = useCallback(() => {
+    // Prevent auto-reconnect first
+    reconnectAttemptsRef.current = reconnectAttempts;
+
+    // Clear any pending reconnect timeout
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
+    }
+
     if (wsRef.current) {
       setConnectionState(WS_STATE.CLOSING);
       wsRef.current.close(1000, 'Client disconnect');
@@ -187,8 +222,8 @@ export function useRealtimeUpdates(options = {}) {
     }
     if (pingIntervalRef.current) {
       clearInterval(pingIntervalRef.current);
+      pingIntervalRef.current = null;
     }
-    reconnectAttemptsRef.current = reconnectAttempts; // Prevent auto-reconnect
   }, [reconnectAttempts]);
 
   /**
