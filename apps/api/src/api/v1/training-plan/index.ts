@@ -1898,4 +1898,189 @@ export async function trainingPlanRoutes(app: FastifyInstance): Promise<void> {
       });
     }
   );
+
+  // ============================================================================
+  // SYNC TO SESSIONS - P1 Implementation
+  // ============================================================================
+
+  /**
+   * Sync annual plan daily assignments to TrainingSession records
+   * POST /training-plan/:planId/sync-to-sessions
+   *
+   * Creates TrainingSession records from DailyTrainingAssignment records.
+   * Links them via dailyAssignmentId for bidirectional tracking.
+   */
+  fastify.post<{ Params: { planId: string }; Body: { startDate?: string; endDate?: string } }>(
+    '/:planId/sync-to-sessions',
+    {
+      schema: {
+        description: 'Sync annual plan daily assignments to training sessions',
+        tags: ['training-plan'],
+        params: {
+          type: 'object',
+          properties: {
+            planId: { type: 'string', format: 'uuid' },
+          },
+          required: ['planId'],
+        },
+        body: {
+          type: 'object',
+          properties: {
+            startDate: { type: 'string', format: 'date', description: 'Start date for sync (YYYY-MM-DD)' },
+            endDate: { type: 'string', format: 'date', description: 'End date for sync (YYYY-MM-DD)' },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              data: {
+                type: 'object',
+                properties: {
+                  syncedCount: { type: 'number' },
+                  skippedCount: { type: 'number' },
+                  sessions: { type: 'array' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const { planId } = request.params;
+      const { startDate, endDate } = request.body || {};
+
+      // Verify the plan exists and belongs to the tenant
+      const plan = await prisma.annualTrainingPlan.findUnique({
+        where: { id: planId },
+        include: { player: true },
+      });
+
+      if (!plan || plan.tenantId !== request.tenant!.id) {
+        return reply.code(404).send({
+          success: false,
+          error: { code: 'PLAN_NOT_FOUND', message: 'Training plan not found' },
+        });
+      }
+
+      // Authorization: only the player themselves, their coach, or admin
+      const user = request.user!;
+      if (user.role === 'player' && user.playerId !== plan.playerId) {
+        return reply.code(403).send({
+          success: false,
+          error: { code: 'ACCESS_DENIED', message: 'You can only sync your own training plan' },
+        });
+      }
+
+      // Build date filter
+      const dateFilter: { gte?: Date; lte?: Date } = {};
+      if (startDate) {
+        dateFilter.gte = new Date(startDate);
+      } else {
+        // Default: start from today
+        dateFilter.gte = new Date();
+        dateFilter.gte.setHours(0, 0, 0, 0);
+      }
+      if (endDate) {
+        dateFilter.lte = new Date(endDate);
+      } else {
+        // Default: 4 weeks ahead
+        const fourWeeksAhead = new Date();
+        fourWeeksAhead.setDate(fourWeeksAhead.getDate() + 28);
+        dateFilter.lte = fourWeeksAhead;
+      }
+
+      // Get daily assignments that haven't been synced yet
+      const assignments = await prisma.dailyTrainingAssignment.findMany({
+        where: {
+          annualPlanId: planId,
+          assignedDate: dateFilter,
+          isRestDay: false,
+          status: { not: 'skipped' },
+          completedSessionId: null, // Not yet linked to a session
+        },
+        orderBy: { assignedDate: 'asc' },
+      });
+
+      // Check for existing sessions to avoid duplicates
+      const existingSessionLinks = await prisma.trainingSession.findMany({
+        where: {
+          dailyAssignmentId: { in: assignments.map(a => a.id) },
+        },
+        select: { dailyAssignmentId: true },
+      });
+      const linkedAssignmentIds = new Set(existingSessionLinks.map(s => s.dailyAssignmentId));
+
+      const sessionsToCreate = [];
+      let skippedCount = 0;
+
+      for (const assignment of assignments) {
+        // Skip if already linked
+        if (linkedAssignmentIds.has(assignment.id)) {
+          skippedCount++;
+          continue;
+        }
+
+        // Create session data
+        const sessionDate = new Date(assignment.assignedDate);
+        sessionDate.setHours(9, 0, 0, 0); // Default to 9 AM
+
+        sessionsToCreate.push({
+          playerId: plan.playerId,
+          sessionType: assignment.sessionType,
+          sessionDate: sessionDate,
+          duration: assignment.estimatedDuration,
+          period: assignment.period,
+          learningPhase: assignment.learningPhase,
+          clubSpeed: assignment.clubSpeed,
+          intensity: assignment.intensity,
+          focusArea: assignment.sessionType,
+          dailyAssignmentId: assignment.id,
+          notes: `Synkronisert fra årsplan: ${plan.title || 'Årsplan'}`,
+        });
+      }
+
+      // Batch create sessions
+      const createdSessions = [];
+      for (const sessionData of sessionsToCreate) {
+        try {
+          const session = await prisma.trainingSession.create({
+            data: sessionData,
+          });
+          createdSessions.push(session);
+
+          // Update assignment with link to the session
+          await prisma.dailyTrainingAssignment.update({
+            where: { id: sessionData.dailyAssignmentId! },
+            data: { completedSessionId: session.id },
+          });
+        } catch (error) {
+          request.log.warn({ error, sessionData }, 'Failed to create session');
+        }
+      }
+
+      request.log.info({
+        planId,
+        syncedCount: createdSessions.length,
+        skippedCount,
+        dateRange: { start: dateFilter.gte, end: dateFilter.lte },
+      }, 'Synced training plan to sessions');
+
+      return reply.send({
+        success: true,
+        data: {
+          syncedCount: createdSessions.length,
+          skippedCount,
+          sessions: createdSessions.map(s => ({
+            id: s.id,
+            sessionType: s.sessionType,
+            sessionDate: s.sessionDate,
+            duration: s.duration,
+          })),
+        },
+      });
+    }
+  );
 }

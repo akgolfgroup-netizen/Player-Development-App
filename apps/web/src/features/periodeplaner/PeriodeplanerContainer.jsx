@@ -118,6 +118,93 @@ const CURRENT_WEEK_PLAN = {
 // HELPER FUNCTIONS
 // ============================================================================
 
+// Get start of current week (Monday)
+const getWeekStart = () => {
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const diff = now.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+  const monday = new Date(now);
+  monday.setDate(diff);
+  monday.setHours(0, 0, 0, 0);
+  return monday;
+};
+
+// Get end of current week (Sunday)
+const getWeekEnd = () => {
+  const weekStart = getWeekStart();
+  const sunday = new Date(weekStart);
+  sunday.setDate(sunday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+  return sunday;
+};
+
+// Get current week number
+const getWeekNumber = () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const diff = now - start;
+  const oneWeek = 1000 * 60 * 60 * 24 * 7;
+  return Math.ceil(diff / oneWeek);
+};
+
+// Day names mapping
+const DAY_NAMES = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
+
+// Transform sessions from API to week plan format
+const transformSessionsToWeekPlan = (sessions) => {
+  // Group sessions by day
+  const sessionsByDay = {};
+  const weekStart = getWeekStart();
+
+  // Initialize all days
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(weekStart);
+    date.setDate(date.getDate() + i);
+    const dayName = DAY_NAMES[date.getDay()];
+    sessionsByDay[dayName] = {
+      day: dayName,
+      type: 'Hvile',
+      duration: 0,
+      focus: 'Hvile',
+      completed: false,
+    };
+  }
+
+  // Map sessions to days
+  sessions.forEach(session => {
+    const sessionDate = new Date(session.sessionDate);
+    const dayName = DAY_NAMES[sessionDate.getDay()];
+
+    // Determine session type label
+    const typeLabels = {
+      'teknikk': 'Teknikk',
+      'fysisk': 'Styrke',
+      'mental': 'Mental',
+      'spill': 'Banespill',
+      'hvile': 'Hvile',
+    };
+
+    sessionsByDay[dayName] = {
+      day: dayName,
+      type: typeLabels[session.sessionType] || session.sessionType,
+      duration: session.duration || session.plannedDuration || 60,
+      focus: session.focusArea || session.notes || session.sessionType,
+      completed: session.status === 'completed',
+    };
+  });
+
+  // Convert to array in weekday order
+  const orderedDays = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'];
+  const weekSessions = orderedDays.map(day => sessionsByDay[day]);
+
+  return {
+    week: getWeekNumber(),
+    periodId: sessions[0]?.dailyAssignmentId || 'current',
+    theme: 'Denne ukens plan',
+    sessions: weekSessions,
+  };
+};
+
 const formatDateRange = (start, end) => {
   const startDate = new Date(start);
   const endDate = new Date(end);
@@ -713,7 +800,7 @@ const PeriodeplanerContainer = () => {
       setError(null);
 
       // Fetch training plans
-      const response = await apiClient.get('/api/v1/training-plan');
+      const response = await apiClient.get('/training-plan');
       const plans = response.data?.data || response.data || [];
 
       // Transform to period format
@@ -724,6 +811,25 @@ const PeriodeplanerContainer = () => {
       const activePeriod = transformedPeriods.find(p => p.status === 'active');
       if (activePeriod) {
         setExpandedPeriod(activePeriod.id);
+      }
+
+      // Fetch current week's sessions
+      try {
+        const sessionsResponse = await apiClient.get('/sessions/my', {
+          params: {
+            startDate: getWeekStart().toISOString(),
+            endDate: getWeekEnd().toISOString(),
+          },
+        });
+        const sessions = sessionsResponse.data?.data || sessionsResponse.data || [];
+
+        if (sessions.length > 0) {
+          // Transform sessions to week plan format
+          const weekSessions = transformSessionsToWeekPlan(sessions);
+          setWeekPlan(weekSessions);
+        }
+      } catch (sessionsErr) {
+        console.warn('Could not fetch sessions, using default week plan:', sessionsErr);
       }
 
       setState('idle');

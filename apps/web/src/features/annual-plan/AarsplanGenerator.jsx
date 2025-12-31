@@ -663,7 +663,24 @@ const Step4Review = ({ formData }) => {
 // SUCCESS SCREEN
 // ============================================================================
 
-const SuccessScreen = ({ result, onViewPlan, onViewCalendar }) => (
+const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSessions }) => {
+  const [isSyncing, setIsSyncing] = React.useState(false);
+  const [syncResult, setSyncResult] = React.useState(null);
+
+  const handleSync = async () => {
+    if (!planId || isSyncing) return;
+    setIsSyncing(true);
+    try {
+      const synced = await onSyncToSessions(planId);
+      setSyncResult(synced);
+    } catch (err) {
+      console.error('Sync failed:', err);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  return (
   <div style={{ textAlign: 'center', padding: '40px 20px' }}>
     <div
       style={{
@@ -749,9 +766,9 @@ const SuccessScreen = ({ result, onViewPlan, onViewCalendar }) => (
     <div
       style={{
         padding: '16px 20px',
-        backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
+        backgroundColor: syncResult ? 'rgba(34, 197, 94, 0.05)' : 'rgba(var(--accent-rgb), 0.05)',
         borderRadius: '12px',
-        border: '1px solid rgba(var(--accent-rgb), 0.2)',
+        border: `1px solid ${syncResult ? 'rgba(34, 197, 94, 0.2)' : 'rgba(var(--accent-rgb), 0.2)'}`,
         marginBottom: '32px',
         maxWidth: '500px',
         margin: '0 auto 32px',
@@ -759,17 +776,58 @@ const SuccessScreen = ({ result, onViewPlan, onViewCalendar }) => (
       }}
     >
       <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-        <Calendar size={20} color="var(--accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
+        <Calendar size={20} color={syncResult ? '#22c55e' : 'var(--accent)'} style={{ flexShrink: 0, marginTop: '2px' }} />
         <div>
           <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: '0 0 4px' }}>
-            Øktene er nå synkronisert
+            {syncResult ? `${syncResult.syncedCount} økter synkronisert!` : 'Klar til synkronisering'}
           </p>
           <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
-            Alle planlagte treningsøkter er lagt til i kalenderen din. Du kan se dem under "Alle økter" eller i kalendervisningen.
+            {syncResult
+              ? 'Alle planlagte treningsøkter er lagt til i økt-oversikten. Du kan se dem under "Alle økter".'
+              : 'Trykk "Synkroniser" for å legge til de neste 4 ukenes økter i økt-oversikten.'
+            }
           </p>
         </div>
       </div>
     </div>
+
+    {/* Sync button */}
+    {!syncResult && (
+      <div style={{ marginBottom: '24px' }}>
+        <button
+          onClick={handleSync}
+          disabled={isSyncing}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            padding: '14px 32px',
+            borderRadius: '10px',
+            border: 'none',
+            backgroundColor: 'var(--accent)',
+            color: 'white',
+            fontSize: '15px',
+            fontWeight: 500,
+            cursor: isSyncing ? 'not-allowed' : 'pointer',
+            opacity: isSyncing ? 0.7 : 1,
+            margin: '0 auto',
+          }}
+        >
+          {isSyncing ? (
+            <>
+              <Loader2 size={18} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
+              Synkroniserer...
+            </>
+          ) : (
+            <>
+              <Sparkles size={18} />
+              Synkroniser til økter
+            </>
+          )}
+        </button>
+      </div>
+    )}
 
     {/* Action buttons */}
     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
@@ -813,7 +871,8 @@ const SuccessScreen = ({ result, onViewPlan, onViewCalendar }) => (
       </button>
     </div>
   </div>
-);
+  );
+};
 
 // ============================================================================
 // MAIN COMPONENT
@@ -827,6 +886,7 @@ const AarsplanGenerator = () => {
   const [error, setError] = useState(null);
   const [generationResult, setGenerationResult] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [createdPlanId, setCreatedPlanId] = useState(null);
 
   const [formData, setFormData] = useState({
     startDate: new Date().toISOString().split('T')[0],
@@ -880,6 +940,10 @@ const AarsplanGenerator = () => {
 
       const response = await apiClient.post('/training-plan/generate', payload);
 
+      // Store the plan ID for syncing
+      const planId = response.data?.plan?.id || response.data?.id;
+      setCreatedPlanId(planId);
+
       // Store the result and show success screen
       setGenerationResult({
         dailyAssignments: { created: response.data?.dailyAssignments?.length || 365 },
@@ -898,6 +962,26 @@ const AarsplanGenerator = () => {
       setIsGenerating(false);
     }
   };
+
+  // Sync plan to sessions
+  const handleSyncToSessions = useCallback(async (planId) => {
+    try {
+      const response = await apiClient.post(`/training-plan/${planId}/sync-to-sessions`);
+      const { syncedCount, skippedCount } = response.data || {};
+
+      toast.success(`${syncedCount} økter synkronisert!`, {
+        description: skippedCount > 0 ? `${skippedCount} økter var allerede synkronisert` : undefined,
+      });
+
+      return response.data;
+    } catch (err) {
+      console.error('Error syncing plan:', err);
+      toast.error('Kunne ikke synkronisere økter', {
+        description: err.response?.data?.message || 'Prøv igjen senere',
+      });
+      throw err;
+    }
+  }, []);
 
   const StepComponent = steps[currentStep].component;
 
@@ -922,8 +1006,10 @@ const AarsplanGenerator = () => {
           >
             <SuccessScreen
               result={generationResult}
+              planId={createdPlanId}
               onViewPlan={() => navigate('/aarsplan')}
               onViewCalendar={() => navigate('/kalender')}
+              onSyncToSessions={handleSyncToSessions}
             />
           </div>
         </div>
