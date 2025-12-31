@@ -108,6 +108,7 @@ model User {
   videoRequests                 VideoRequest[]
   auditEvents                   AuditEvent[]
   collections                   Collection[]
+  pushSubscriptions             PushSubscription[]
 
   @@index([tenantId])
   @@index([email])
@@ -2534,6 +2535,37 @@ model Oppgave {
   @@index([status])
   @@index([frist])
   @@map("oppgaver")
+}
+
+// ============================================================================
+// PUSH SUBSCRIPTIONS
+// ============================================================================
+
+model PushSubscription {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+
+  // Web Push subscription data
+  endpoint        String   @db.Text
+  p256dh          String   @db.Text // public key
+  auth            String   @db.VarChar(100) // auth secret
+
+  // Device info
+  userAgent       String?  @map("user_agent") @db.Text
+  deviceType      String?  @map("device_type") @db.VarChar(50) // web, ios, android
+
+  // Status
+  isActive        Boolean  @default(true) @map("is_active")
+  lastUsedAt      DateTime? @map("last_used_at") @db.Timestamptz(6)
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, endpoint])
+  @@index([userId])
+  @@map("push_subscriptions")
 }
 
 // ============================================================================

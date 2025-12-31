@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from 'react';
+import { subscribeToPush } from '../serviceWorkerRegistration';
 
 // =============================================================================
 // Types
@@ -52,6 +53,7 @@ export interface NotificationContextValue {
   pushPermission: PushPermission;
   requestPushPermission: () => Promise<boolean>;
   showPushNotification: (title: string, options?: PushNotificationOptions) => Notification | null;
+  subscribeToPushNotifications: (token: string) => Promise<boolean>;
   isPushSupported: boolean;
   isPushEnabled: boolean;
 
@@ -192,6 +194,60 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     } catch (error) {
       console.error('Failed to show push notification:', error);
       return null;
+    }
+  }, [pushPermission]);
+
+  // Subscribe to push notifications and register with backend
+  const subscribeToPushNotifications = useCallback(async (token: string): Promise<boolean> => {
+    if (pushPermission !== PUSH_PERMISSION.GRANTED) {
+      console.warn('Push notifications not permitted');
+      return false;
+    }
+
+    try {
+      // Get push subscription from service worker
+      const subscription = await subscribeToPush();
+      if (!subscription) {
+        console.error('Failed to get push subscription');
+        return false;
+      }
+
+      // Extract keys from subscription
+      const subscriptionJson = subscription.toJSON();
+      const keys = subscriptionJson.keys;
+      if (!keys || !keys.p256dh || !keys.auth) {
+        console.error('Push subscription missing keys');
+        return false;
+      }
+
+      // Send subscription to backend
+      const apiUrl = process.env.REACT_APP_API_URL || '/api/v1';
+      const response = await fetch(`${apiUrl}/notifications/push-subscription`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          endpoint: subscription.endpoint,
+          keys: {
+            p256dh: keys.p256dh,
+            auth: keys.auth,
+          },
+          deviceType: 'web',
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to register push subscription with backend');
+        return false;
+      }
+
+      console.log('Push subscription registered with backend');
+      return true;
+    } catch (error) {
+      console.error('Failed to subscribe to push notifications:', error);
+      return false;
     }
   }, [pushPermission]);
 
@@ -451,6 +507,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     pushPermission,
     requestPushPermission,
     showPushNotification,
+    subscribeToPushNotifications,
     isPushSupported: 'Notification' in window,
     isPushEnabled: pushPermission === PUSH_PERMISSION.GRANTED,
 

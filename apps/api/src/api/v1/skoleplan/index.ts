@@ -1,229 +1,376 @@
-import { FastifyInstance } from 'fastify';
-import {
-  FagService,
-  SkoletimeService,
-  OppgaveService,
-  SkoleplanService
-} from './service';
-import {
-  getSkoleplanSchema,
-  // Fag
-  createFagSchema,
-  updateFagSchema,
-  listFagSchema,
-  getFagSchema,
-  deleteFagSchema,
-  // Timer
-  createSkoletimeSchema,
-  updateSkoletimeSchema,
-  listTimerSchema,
-  deleteSkoletimeSchema,
-  // Oppgaver
-  createOppgaveSchema,
-  updateOppgaveSchema,
-  listOppgaverSchema,
-  updateOppgaveStatusSchema,
-  deleteOppgaveSchema
-} from './schema';
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { getPrismaClient } from '../../../core/db/prisma';
 import { authenticateUser } from '../../../middleware/auth';
 
-const fagService = new FagService();
-const skoletimeService = new SkoletimeService();
-const oppgaveService = new OppgaveService();
-const skoleplanService = new SkoleplanService();
+const prisma = getPrismaClient();
+
+// ============================================================================
+// SKOLEPLAN API - Full CRUD for Fag, Skoletimer, and Oppgaver
+// ============================================================================
 
 export default async function skoleplanRoutes(fastify: FastifyInstance) {
   // Apply authentication to all routes
   fastify.addHook('preHandler', authenticateUser);
 
   // ============================================================================
-  // FULL SKOLEPLAN
+  // GET ALL DATA - Combined endpoint for initial load
   // ============================================================================
 
-  // Get everything (fag, timer, oppgaver)
+  /**
+   * Get all skoleplan data for current user
+   * GET /skoleplan
+   */
   fastify.get(
     '/',
-    { schema: getSkoleplanSchema },
-    async (request, reply) => {
-      const userId = request.user!.id;
-      const skoleplan = await skoleplanService.getFullSkoleplan(userId);
-      return reply.code(200).send(skoleplan);
+    {
+      schema: {
+        description: 'Get all skoleplan data (fag, timer, oppgaver)',
+        tags: ['skoleplan'],
+        response: {
+          200: { type: 'object', additionalProperties: true },
+        },
+      },
+    },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const userId = request.user!.userId;
+
+      const [fag, timer, oppgaver] = await Promise.all([
+        prisma.fag.findMany({
+          where: { userId },
+          orderBy: { navn: 'asc' },
+        }),
+        prisma.skoletime.findMany({
+          where: { fag: { userId } },
+          include: { fag: true },
+          orderBy: [{ ukedag: 'asc' }, { startTid: 'asc' }],
+        }),
+        prisma.oppgave.findMany({
+          where: { fag: { userId } },
+          include: { fag: true },
+          orderBy: { frist: 'asc' },
+        }),
+      ]);
+
+      return reply.send({ fag, timer, oppgaver });
     }
   );
 
   // ============================================================================
-  // FAG ROUTES
+  // FAG (Subjects) CRUD
   // ============================================================================
 
-  // List all fag
-  fastify.get(
+  fastify.post<{ Body: { navn: string; larer?: string; rom?: string; farge?: string } }>(
     '/fag',
-    { schema: listFagSchema },
+    {
+      schema: {
+        description: 'Create a new subject (fag)',
+        tags: ['skoleplan'],
+        body: {
+          type: 'object',
+          required: ['navn'],
+          properties: {
+            navn: { type: 'string', minLength: 1, maxLength: 100 },
+            larer: { type: 'string', maxLength: 100 },
+            rom: { type: 'string', maxLength: 50 },
+            farge: { type: 'string', maxLength: 20 },
+          },
+        },
+      },
+    },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const fag = await fagService.listFag(userId);
-      return reply.code(200).send(fag);
-    }
-  );
+      const userId = request.user!.userId;
+      const { navn, larer, rom, farge } = request.body;
 
-  // Get single fag
-  fastify.get(
-    '/fag/:id',
-    { schema: getFagSchema },
-    async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const fag = await fagService.getFagById(id, userId);
-      return reply.code(200).send(fag);
-    }
-  );
+      const fag = await prisma.fag.create({
+        data: { userId, navn, larer, rom, farge },
+      });
 
-  // Create fag
-  fastify.post(
-    '/fag',
-    { schema: createFagSchema },
-    async (request, reply) => {
-      const userId = request.user!.id;
-      const fag = await fagService.createFag(userId, request.body as any);
       return reply.code(201).send(fag);
     }
   );
 
-  // Update fag
-  fastify.put(
+  fastify.put<{
+    Params: { id: string };
+    Body: { navn?: string; larer?: string; rom?: string; farge?: string };
+  }>(
     '/fag/:id',
-    { schema: updateFagSchema },
+    { schema: { description: 'Update a subject', tags: ['skoleplan'] } },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const fag = await fagService.updateFag(id, userId, request.body as any);
-      return reply.code(200).send(fag);
+      const userId = request.user!.userId;
+      const { id } = request.params;
+      const { navn, larer, rom, farge } = request.body;
+
+      const existing = await prisma.fag.findFirst({ where: { id, userId } });
+      if (!existing) {
+        return reply.code(404).send({ error: 'Fag not found' });
+      }
+
+      const fag = await prisma.fag.update({
+        where: { id },
+        data: { navn, larer, rom, farge },
+      });
+
+      return reply.send(fag);
     }
   );
 
-  // Delete fag
-  fastify.delete(
+  fastify.delete<{ Params: { id: string } }>(
     '/fag/:id',
-    { schema: deleteFagSchema },
+    { schema: { description: 'Delete a subject', tags: ['skoleplan'] } },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const result = await fagService.deleteFag(id, userId);
-      return reply.code(200).send(result);
+      const userId = request.user!.userId;
+      const { id } = request.params;
+
+      const existing = await prisma.fag.findFirst({ where: { id, userId } });
+      if (!existing) {
+        return reply.code(404).send({ error: 'Fag not found' });
+      }
+
+      await prisma.fag.delete({ where: { id } });
+      return reply.code(204).send();
     }
   );
 
   // ============================================================================
-  // TIMER (SKOLETIME) ROUTES
+  // TIMER (Class periods) CRUD
   // ============================================================================
 
-  // List all timer
-  fastify.get(
+  fastify.post<{
+    Body: { fagId: string; ukedag: string; startTid: string; sluttTid: string };
+  }>(
     '/timer',
-    { schema: listTimerSchema },
+    {
+      schema: {
+        description: 'Create a new class period',
+        tags: ['skoleplan'],
+        body: {
+          type: 'object',
+          required: ['fagId', 'ukedag', 'startTid', 'sluttTid'],
+          properties: {
+            fagId: { type: 'string', format: 'uuid' },
+            ukedag: { type: 'string', enum: ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag'] },
+            startTid: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$' },
+            sluttTid: { type: 'string', pattern: '^[0-2][0-9]:[0-5][0-9]$' },
+          },
+        },
+      },
+    },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const timer = await skoletimeService.listTimer(userId);
-      return reply.code(200).send(timer);
+      const userId = request.user!.userId;
+      const { fagId, ukedag, startTid, sluttTid } = request.body;
+
+      const fag = await prisma.fag.findFirst({ where: { id: fagId, userId } });
+      if (!fag) {
+        return reply.code(404).send({ error: 'Fag not found' });
+      }
+
+      const timer = await prisma.skoletime.create({
+        data: { fagId, ukedag, startTid, sluttTid },
+        include: { fag: true },
+      });
+
+      return reply.code(201).send(timer);
     }
   );
 
-  // Create skoletime
-  fastify.post(
-    '/timer',
-    { schema: createSkoletimeSchema },
-    async (request, reply) => {
-      const userId = request.user!.id;
-      const time = await skoletimeService.createSkoletime(userId, request.body as any);
-      return reply.code(201).send(time);
-    }
-  );
-
-  // Update skoletime
-  fastify.put(
+  fastify.put<{
+    Params: { id: string };
+    Body: { fagId?: string; ukedag?: string; startTid?: string; sluttTid?: string };
+  }>(
     '/timer/:id',
-    { schema: updateSkoletimeSchema },
+    { schema: { description: 'Update a class period', tags: ['skoleplan'] } },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const time = await skoletimeService.updateSkoletime(id, userId, request.body as any);
-      return reply.code(200).send(time);
+      const userId = request.user!.userId;
+      const { id } = request.params;
+      const { fagId, ukedag, startTid, sluttTid } = request.body;
+
+      const existing = await prisma.skoletime.findFirst({
+        where: { id, fag: { userId } },
+      });
+      if (!existing) {
+        return reply.code(404).send({ error: 'Timer not found' });
+      }
+
+      if (fagId && fagId !== existing.fagId) {
+        const newFag = await prisma.fag.findFirst({ where: { id: fagId, userId } });
+        if (!newFag) {
+          return reply.code(404).send({ error: 'Fag not found' });
+        }
+      }
+
+      const timer = await prisma.skoletime.update({
+        where: { id },
+        data: { fagId, ukedag, startTid, sluttTid },
+        include: { fag: true },
+      });
+
+      return reply.send(timer);
     }
   );
 
-  // Delete skoletime
-  fastify.delete(
+  fastify.delete<{ Params: { id: string } }>(
     '/timer/:id',
-    { schema: deleteSkoletimeSchema },
+    { schema: { description: 'Delete a class period', tags: ['skoleplan'] } },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const result = await skoletimeService.deleteSkoletime(id, userId);
-      return reply.code(200).send(result);
+      const userId = request.user!.userId;
+      const { id } = request.params;
+
+      const existing = await prisma.skoletime.findFirst({
+        where: { id, fag: { userId } },
+      });
+      if (!existing) {
+        return reply.code(404).send({ error: 'Timer not found' });
+      }
+
+      await prisma.skoletime.delete({ where: { id } });
+      return reply.code(204).send();
     }
   );
 
   // ============================================================================
-  // OPPGAVER ROUTES
+  // OPPGAVER (Assignments) CRUD
   // ============================================================================
 
-  // List oppgaver (with optional filtering)
-  fastify.get(
+  fastify.post<{
+    Body: { fagId: string; tittel: string; beskrivelse?: string; frist: string; prioritet?: string };
+  }>(
     '/oppgaver',
-    { schema: listOppgaverSchema },
+    {
+      schema: {
+        description: 'Create a new assignment',
+        tags: ['skoleplan'],
+        body: {
+          type: 'object',
+          required: ['fagId', 'tittel', 'frist'],
+          properties: {
+            fagId: { type: 'string', format: 'uuid' },
+            tittel: { type: 'string', minLength: 1, maxLength: 255 },
+            beskrivelse: { type: 'string' },
+            frist: { type: 'string', format: 'date' },
+            prioritet: { type: 'string', enum: ['low', 'medium', 'high'] },
+          },
+        },
+      },
+    },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { fagId, status } = request.query as { fagId?: string; status?: string };
-      const oppgaver = await oppgaveService.listOppgaver(userId, { fagId, status });
-      return reply.code(200).send(oppgaver);
-    }
-  );
+      const userId = request.user!.userId;
+      const { fagId, tittel, beskrivelse, frist, prioritet } = request.body;
 
-  // Create oppgave
-  fastify.post(
-    '/oppgaver',
-    { schema: createOppgaveSchema },
-    async (request, reply) => {
-      const userId = request.user!.id;
-      const oppgave = await oppgaveService.createOppgave(userId, request.body as any);
+      const fag = await prisma.fag.findFirst({ where: { id: fagId, userId } });
+      if (!fag) {
+        return reply.code(404).send({ error: 'Fag not found' });
+      }
+
+      const oppgave = await prisma.oppgave.create({
+        data: {
+          fagId,
+          tittel,
+          beskrivelse,
+          frist: new Date(frist),
+          prioritet: prioritet || 'medium',
+        },
+        include: { fag: true },
+      });
+
       return reply.code(201).send(oppgave);
     }
   );
 
-  // Update oppgave
-  fastify.put(
+  fastify.put<{
+    Params: { id: string };
+    Body: { fagId?: string; tittel?: string; beskrivelse?: string; frist?: string; prioritet?: string; status?: string };
+  }>(
     '/oppgaver/:id',
-    { schema: updateOppgaveSchema },
+    { schema: { description: 'Update an assignment', tags: ['skoleplan'] } },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const oppgave = await oppgaveService.updateOppgave(id, userId, request.body as any);
-      return reply.code(200).send(oppgave);
+      const userId = request.user!.userId;
+      const { id } = request.params;
+      const { fagId, tittel, beskrivelse, frist, prioritet, status } = request.body;
+
+      const existing = await prisma.oppgave.findFirst({
+        where: { id, fag: { userId } },
+      });
+      if (!existing) {
+        return reply.code(404).send({ error: 'Oppgave not found' });
+      }
+
+      if (fagId && fagId !== existing.fagId) {
+        const newFag = await prisma.fag.findFirst({ where: { id: fagId, userId } });
+        if (!newFag) {
+          return reply.code(404).send({ error: 'Fag not found' });
+        }
+      }
+
+      const oppgave = await prisma.oppgave.update({
+        where: { id },
+        data: {
+          fagId,
+          tittel,
+          beskrivelse,
+          frist: frist ? new Date(frist) : undefined,
+          prioritet,
+          status,
+        },
+        include: { fag: true },
+      });
+
+      return reply.send(oppgave);
     }
   );
 
-  // Update oppgave status (toggle completed)
-  fastify.patch(
+  fastify.patch<{ Params: { id: string }; Body: { status: string } }>(
     '/oppgaver/:id/status',
-    { schema: updateOppgaveStatusSchema },
+    {
+      schema: {
+        description: 'Toggle assignment status',
+        tags: ['skoleplan'],
+        body: {
+          type: 'object',
+          required: ['status'],
+          properties: {
+            status: { type: 'string', enum: ['pending', 'completed'] },
+          },
+        },
+      },
+    },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const { status } = request.body as { status: string };
-      const oppgave = await oppgaveService.updateOppgaveStatus(id, userId, status);
-      return reply.code(200).send(oppgave);
+      const userId = request.user!.userId;
+      const { id } = request.params;
+      const { status } = request.body;
+
+      const existing = await prisma.oppgave.findFirst({
+        where: { id, fag: { userId } },
+      });
+      if (!existing) {
+        return reply.code(404).send({ error: 'Oppgave not found' });
+      }
+
+      const oppgave = await prisma.oppgave.update({
+        where: { id },
+        data: { status },
+        include: { fag: true },
+      });
+
+      return reply.send(oppgave);
     }
   );
 
-  // Delete oppgave
-  fastify.delete(
+  fastify.delete<{ Params: { id: string } }>(
     '/oppgaver/:id',
-    { schema: deleteOppgaveSchema },
+    { schema: { description: 'Delete an assignment', tags: ['skoleplan'] } },
     async (request, reply) => {
-      const userId = request.user!.id;
-      const { id } = request.params as { id: string };
-      const result = await oppgaveService.deleteOppgave(id, userId);
-      return reply.code(200).send(result);
+      const userId = request.user!.userId;
+      const { id } = request.params;
+
+      const existing = await prisma.oppgave.findFirst({
+        where: { id, fag: { userId } },
+      });
+      if (!existing) {
+        return reply.code(404).send({ error: 'Oppgave not found' });
+      }
+
+      await prisma.oppgave.delete({ where: { id } });
+      return reply.code(204).send();
     }
   );
 }

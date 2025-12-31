@@ -1,0 +1,163 @@
+/*
+ * ProSwing Golf App - CSS Variables
+ * Import til Figma via "CSS to Figma" plugin
+ * Eller bruk som referanse for manuell oppsett
+ */
+
+:root {
+  /* ================================
+     PRIMARY COLORS - Forest Green
+     ================================ */
+  --color-primary-50: #f0fdf4;
+  --color-primary-100: #dcfce7;
+  --color-primary-200: #bbf7d0;
+  --color-primary-300: #86efac;
+  --color-primary-400: #4ade80;
+  --color-primary-500: #40916c;
+  --color-primary-600: #2d6a4f;
+  --color-primary-700: #1b4332;
+  --color-primary-800: #14532d;
+  --color-primary-900: #0f3d22;
+
+  /* ================================
+     GOLD / PREMIUM COLORS
+     ================================ */
+  --color-gold-300: #e8d5a3;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #c9a227;
+  --color-gold-600: #b8860b;
+
+  /* ================================
+     SURFACE COLORS (Dark Mode)
+     ================================ */
+  --color-surface-black: #0a0a0a;
+  --color-surface-dark: #141414;
+  --color-surface-card: #1e1e1e;
+  --color-surface-elevated: #2a2a2a;
+  --color-surface-border: #3a3a3a;
+
+  /* ================================
+     TEXT COLORS
+     ================================ */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b3b3b3;
+  --color-text-muted: #737373;
+
+  /* ================================
+     SEMANTIC COLORS
+     ================================ */
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* ================================
+     SPACING (8px base)
+     ================================ */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ================================
+     BORDER RADIUS
+     ================================ */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
+
+  /* ================================
+     TYPOGRAPHY
+     ================================ */
+  --font-family-display: 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  --font-family-body: 'SF Pro Text', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+  /* Font Sizes */
+  --font-size-display-lg: 48px;
+  --font-size-display-md: 36px;
+  --font-size-headline: 28px;
+  --font-size-title-lg: 22px;
+  --font-size-title-md: 18px;
+  --font-size-body-lg: 16px;
+  --font-size-body-md: 14px;
+  --font-size-label: 12px;
+  --font-size-caption: 11px;
+
+  /* Line Heights */
+  --line-height-display-lg: 56px;
+  --line-height-display-md: 44px;
+  --line-height-headline: 36px;
+  --line-height-title-lg: 28px;
+  --line-height-title-md: 24px;
+  --line-height-body-lg: 24px;
+  --line-height-body-md: 20px;
+  --line-height-label: 16px;
+  --line-height-caption: 14px;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ================================
+     SHADOWS
+     ================================ */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-gold-glow: 0 0 20px rgba(212, 175, 55, 0.3);
+  --shadow-green-glow: 0 0 20px rgba(45, 106, 79, 0.3);
+
+  /* ================================
+     ANIMATION
+     ================================ */
+  --duration-micro: 100ms;
+  --duration-short: 200ms;
+  --duration-medium: 300ms;
+  --duration-long: 400ms;
+
+  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-enter: cubic-bezier(0, 0, 0.2, 1);
+  --easing-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* ================================
+     SIZING
+     ================================ */
+  --size-icon-sm: 16px;
+  --size-icon-md: 20px;
+  --size-icon-lg: 24px;
+  --size-icon-xl: 32px;
+
+  --size-avatar-sm: 32px;
+  --size-avatar-md: 40px;
+  --size-avatar-lg: 64px;
+  --size-avatar-xl: 96px;
+
+  --size-button-sm: 32px;
+  --size-button-md: 40px;
+  --size-button-lg: 48px;
+
+  --size-input-sm: 36px;
+  --size-input-md: 44px;
+  --size-input-lg: 52px;
+
+  --size-touch-target: 44px;
+  --size-bottom-nav: 80px;
+  --size-sidebar: 240px;
+  --size-header: 64px;
+}

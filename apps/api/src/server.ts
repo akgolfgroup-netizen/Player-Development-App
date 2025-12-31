@@ -29,6 +29,12 @@ async function main(): Promise<void> {
 ╚═══════════════════════════════════════════════════════╝
     `);
   } catch (error) {
+    // Log the full error details for debugging
+    console.error('❌ Fatal error during startup:', error);
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
     logger.error({ err: error }, '❌ Fatal error during startup');
     process.exit(1);
   }

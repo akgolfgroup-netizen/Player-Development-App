@@ -13,6 +13,8 @@ import { setNoStore } from '../../../middleware/cacheHeaders';
  * - GET /notifications - List user notifications (latest 50, sorted desc)
  * - PATCH /notifications/:id/read - Mark single notification as read
  * - POST /notifications/read-all - Mark all user notifications as read
+ * - POST /push-subscription - Register a push subscription
+ * - DELETE /push-subscription - Unregister a push subscription
  */
 export async function notificationRoutes(app: FastifyInstance): Promise<void> {
   const prisma = getPrismaClient();
@@ -269,6 +271,149 @@ export async function notificationRoutes(app: FastifyInstance): Promise<void> {
         success: true,
         message: 'All notifications marked as read',
         count: result.count,
+      });
+    }
+  );
+
+  // ============================================================================
+  // PUSH SUBSCRIPTION ENDPOINTS
+  // ============================================================================
+
+  /**
+   * POST /push-subscription
+   * Register a push notification subscription
+   */
+  app.post<{
+    Body: {
+      endpoint: string;
+      keys: { p256dh: string; auth: string };
+      deviceType?: string;
+    };
+  }>(
+    '/push-subscription',
+    {
+      preHandler: authenticateUser,
+      schema: {
+        description: 'Register a push notification subscription',
+        tags: ['notifications'],
+        security: [{ bearerAuth: [] }],
+        body: {
+          type: 'object',
+          required: ['endpoint', 'keys'],
+          properties: {
+            endpoint: { type: 'string', format: 'uri' },
+            keys: {
+              type: 'object',
+              required: ['p256dh', 'auth'],
+              properties: {
+                p256dh: { type: 'string' },
+                auth: { type: 'string' },
+              },
+            },
+            deviceType: { type: 'string', enum: ['web', 'mobile', 'desktop'] },
+          },
+        },
+        response: {
+          201: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              message: { type: 'string' },
+              subscriptionId: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const userId = request.user!.id;
+      const { endpoint, keys, deviceType } = request.body;
+      const userAgent = request.headers['user-agent'] || null;
+
+      // Upsert subscription (update if same endpoint exists)
+      const subscription = await prisma.pushSubscription.upsert({
+        where: {
+          userId_endpoint: { userId, endpoint },
+        },
+        update: {
+          p256dh: keys.p256dh,
+          auth: keys.auth,
+          userAgent,
+          deviceType: deviceType || 'web',
+          isActive: true,
+          lastUsedAt: new Date(),
+        },
+        create: {
+          userId,
+          endpoint,
+          p256dh: keys.p256dh,
+          auth: keys.auth,
+          userAgent,
+          deviceType: deviceType || 'web',
+        },
+      });
+
+      logger.info({ userId, subscriptionId: subscription.id }, 'Push subscription registered');
+
+      return reply.status(201).send({
+        success: true,
+        message: 'Push subscription registered',
+        subscriptionId: subscription.id,
+      });
+    }
+  );
+
+  /**
+   * DELETE /push-subscription
+   * Unregister a push notification subscription
+   */
+  app.delete<{ Body: { endpoint: string } }>(
+    '/push-subscription',
+    {
+      preHandler: authenticateUser,
+      schema: {
+        description: 'Unregister a push notification subscription',
+        tags: ['notifications'],
+        security: [{ bearerAuth: [] }],
+        body: {
+          type: 'object',
+          required: ['endpoint'],
+          properties: {
+            endpoint: { type: 'string', format: 'uri' },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              message: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const userId = request.user!.id;
+      const { endpoint } = request.body;
+
+      // Delete the subscription
+      const deleted = await prisma.pushSubscription.deleteMany({
+        where: { userId, endpoint },
+      });
+
+      if (deleted.count === 0) {
+        return reply.status(404).send({
+          success: false,
+          error: 'Subscription not found',
+        });
+      }
+
+      logger.info({ userId, endpoint }, 'Push subscription removed');
+
+      return reply.status(200).send({
+        success: true,
+        message: 'Push subscription removed',
       });
     }
   );
