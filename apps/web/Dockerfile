@@ -13,6 +13,14 @@ ENV REACT_APP_API_URL=https://iup-golf-backend-production.up.railway.app/api/v1
 # Disable CI mode to allow build with ESLint warnings
 ENV CI=false
 
+# Build info - Railway provides RAILWAY_GIT_COMMIT_SHA at build time
+ARG RAILWAY_GIT_COMMIT_SHA
+ARG RAILWAY_GIT_BRANCH
+ARG BUILD_DATE
+ENV REACT_APP_BUILD_SHA=${RAILWAY_GIT_COMMIT_SHA:-local}
+ENV REACT_APP_BUILD_BRANCH=${RAILWAY_GIT_BRANCH:-local}
+ENV REACT_APP_BUILD_DATE=${BUILD_DATE:-unknown}
+
 # Install dependencies
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
@@ -20,9 +28,12 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Cache bust to force rebuild (update date to invalidate)
-ARG BUILD_DATE=2025-12-31T21:45:00
-RUN echo "Build date: $BUILD_DATE"
+# Log build info for debugging
+RUN echo "=== BUILD INFO ===" && \
+    echo "Commit SHA: $REACT_APP_BUILD_SHA" && \
+    echo "Branch: $REACT_APP_BUILD_BRANCH" && \
+    echo "Build Date: $REACT_APP_BUILD_DATE" && \
+    echo "=================="
 
 # Build the application
 RUN npm run build

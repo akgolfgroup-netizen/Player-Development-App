@@ -11,6 +11,7 @@ import React from 'react';
 import DashboardHeader from './DashboardHeader';
 import BackToTop from '../ui/BackToTop';
 import { PageTitle } from '../typography';
+import BottomNav from '../../ui/composites/BottomNav';
 
 export default function ApplicationLayoutTopNav({ children, title, subtitle, actions }) {
   return (
@@ -55,19 +56,25 @@ export default function ApplicationLayoutTopNav({ children, title, subtitle, act
 
       {/* Main Content */}
       <main id="main-content" className="flex-1" tabIndex="-1">
-        <div className="px-4 py-6 sm:px-6 lg:px-12 xl:px-16">
+        {/* Extra bottom padding on mobile to account for BottomNav */}
+        <div className="px-4 py-6 sm:px-6 lg:px-12 xl:px-16 pb-24 md:pb-6">
           {children}
         </div>
       </main>
 
-      {/* Footer (optional - can be extended) */}
-      <footer className="bg-[var(--background-white)] border-t border-[var(--border-subtle)]">
+      {/* Footer - hidden on mobile where BottomNav is shown */}
+      <footer className="hidden md:block bg-[var(--background-white)] border-t border-[var(--border-subtle)]">
         <div className="px-4 py-4 sm:px-6 lg:px-12 xl:px-16">
           <p className="text-center text-sm text-[var(--text-tertiary)]">
             AK Golf IUP
           </p>
         </div>
       </footer>
+
+      {/* Bottom Navigation - 4+1 burger menu (mobile only) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50">
+        <BottomNav />
+      </div>
 
       <BackToTop />
     </div>

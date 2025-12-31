@@ -171,6 +171,12 @@ const mainNavigation = [
         href: '/aarsplan/fokus',
         icon: Target,
       },
+      {
+        name: 'Skoleplan',
+        description: 'Timeplan og oppgaver',
+        href: '/skoleplan',
+        icon: GraduationCap,
+      },
     ],
     callsToAction: [
       { name: 'Opprett årsplan', href: '/aarsplan/ny', icon: Plus },
@@ -341,24 +347,6 @@ const mainNavigation = [
         description: 'Historiske data',
         href: '/arkiv',
         icon: Archive,
-      },
-    ],
-  },
-  {
-    name: 'Skole',
-    description: 'Balanse skole og golf',
-    items: [
-      {
-        name: 'Timeplan',
-        description: 'Din skoleplan',
-        href: '/skoleplan',
-        icon: Calendar,
-      },
-      {
-        name: 'Oppgaver',
-        description: 'Skoleoppgaver og frister',
-        href: '/skole/oppgaver',
-        icon: ClipboardList,
       },
     ],
   },

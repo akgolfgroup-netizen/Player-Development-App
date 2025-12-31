@@ -11,6 +11,7 @@ import { initMobileApp } from './utils/mobile';
 import OfflineIndicator from './components/ui/OfflineIndicator';
 import AIChatWidget from './components/widgets/AIChatWidget';
 import CommandPalette from './features/command-palette';
+import BuildInfo from './components/BuildInfo';
 
 // Shared components (NOT lazy - needed immediately)
 import ApplicationLayoutTopNav from './components/layout/ApplicationLayoutTopNav';
@@ -288,6 +289,7 @@ function App() {
             <BadgeNotificationProvider>
               <ErrorBoundary>
                 <TooltipProvider>
+                <BuildInfo showBadge={process.env.NODE_ENV === 'development'} />
                 <OfflineIndicator position="top" />
                 <AuthenticatedAIChat />
                 <Toast />
