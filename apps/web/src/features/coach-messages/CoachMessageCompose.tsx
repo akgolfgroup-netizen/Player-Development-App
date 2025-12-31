@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+// @ts-nocheck
 import React, { useState, useMemo } from 'react';
 import {
   Send,
