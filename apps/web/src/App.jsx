@@ -964,24 +964,11 @@ function App() {
               </CoachLayout>
             </ProtectedRoute>
           } />
+          {/* CoachAthleteHub - Consolidated athlete management with tabs */}
           <Route path="/coach/athletes" element={
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
-                <CoachAthleteList />
-              </CoachLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/coach/athletes/status" element={
-            <ProtectedRoute requiredRole="coach">
-              <CoachLayout>
-                <CoachAthleteStatus />
-              </CoachLayout>
-            </ProtectedRoute>
-          } />
-          <Route path="/coach/athletes/tournaments" element={
-            <ProtectedRoute requiredRole="coach">
-              <CoachLayout>
-                <CoachAthleteTournaments />
+                <CoachAthleteHub />
               </CoachLayout>
             </ProtectedRoute>
           } />
