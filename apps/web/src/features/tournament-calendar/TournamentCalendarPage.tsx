@@ -20,7 +20,7 @@ import StateCard from '../../ui/composites/StateCard';
 import {
   Tournament,
   TournamentFilters,
-  TournamentTab,
+  QuickFilter,
   PlayerCategory,
 } from './types';
 import {
@@ -97,7 +97,7 @@ export default function TournamentCalendarPage() {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<TournamentTab>('alle');
+  const [activeTab, setActiveTab] = useState<QuickFilter>('alle');
   const [searchQuery, setSearchQuery] = useState(filters.searchQuery || '');
   const [selectedTournament, setSelectedTournament] = useState<Tournament | null>(null);
   const [showFilterPanel, setShowFilterPanel] = useState(false);
@@ -138,13 +138,13 @@ export default function TournamentCalendarPage() {
   const filteredByTab = useMemo(() => {
     return tournaments.filter(t => {
       switch (activeTab) {
-        case 'mine_turneringer':
-          return t.isRegistered || t.status === 'registered';
+        case 'mine':
+          return t.isRegistered || t.status === 'open';
         case 'junior':
           return ['junior_tour_regional', 'global_junior_tour'].includes(t.tour);
         case 'elite':
           return ['pga_tour', 'dp_world_tour', 'challenge_tour', 'wagr_turnering', 'ega_turnering', 'nordic_league'].includes(t.tour);
-        case 'open':
+        case 'åpen':
           return ['club', 'academy', 'srixon_tour', 'garmin_norges_cup'].includes(t.tour);
         default:
           return true;

@@ -87,12 +87,12 @@ export default function FilterDrawer({
     'trenings_turnering',
   ];
   const juniorRegions: JuniorTourRegion[] = [
-    'ostlandet_ost',
-    'ostlandet_vest',
-    'sorlandet',
+    'østlandet-øst',
+    'østlandet-vest',
+    'sørlandet',
     'vestlandet',
-    'midt_norge',
-    'nord_norge',
+    'midt-norge',
+    'nord-norge',
   ];
   const tours: TourType[] = [
     'junior_tour_regional',
@@ -108,11 +108,11 @@ export default function FilterDrawer({
     'pga_tour',
   ];
   const statuses: TournamentStatus[] = [
-    'registration_open',
+    'open',
     'upcoming',
     'full',
-    'in_progress',
-    'completed',
+    'ongoing',
+    'finished',
   ];
   const dateRanges: { value: TournamentFilters['dateRange']; label: string }[] = [
     { value: 'next_30_days', label: 'Neste 30 dager' },

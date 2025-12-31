@@ -92,17 +92,15 @@ function getStatusConfig(status: TournamentStatus, isRegistered?: boolean): {
   }
 
   switch (status) {
-    case 'registration_open':
+    case 'open':
       return { label: 'Åpen for påmelding', variant: 'accent' };
     case 'full':
       return { label: 'Fullt', variant: 'error' };
-    case 'registered':
-      return { label: 'Påmeldt', variant: 'success' };
     case 'upcoming':
       return { label: 'Kommer snart', variant: 'neutral' };
-    case 'in_progress':
+    case 'ongoing':
       return { label: 'Pågår', variant: 'warning' };
-    case 'completed':
+    case 'finished':
       return { label: 'Avsluttet', variant: 'neutral' };
     default:
       return { label: STATUS_LABELS[status] || status, variant: 'neutral' };
@@ -142,7 +140,7 @@ export default function TournamentCard({
   );
 
   const showRegisterButton =
-    tournament.status === 'registration_open' && !tournament.isRegistered;
+    tournament.status === 'open' && !tournament.isRegistered;
   const showQuickActions = tournament.isRegistered;
 
   return (

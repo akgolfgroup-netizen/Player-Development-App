@@ -129,9 +129,9 @@ export default function TournamentDetailsPanel({
   const daysUntil = getDaysUntil(tournament.startDate);
   const isUpcoming = daysUntil >= 0;
   const showRegisterButton =
-    tournament.status === 'registration_open' && !tournament.isRegistered && !isMarkedRegistered;
+    tournament.status === 'open' && !tournament.isRegistered && !isMarkedRegistered;
   const isRegistered = tournament.isRegistered || isMarkedRegistered;
-  const hasResult = tournament.result && tournament.status === 'completed';
+  const hasResult = tournament.result && tournament.status === 'finished';
 
   const handleMarkRegistered = () => {
     setIsMarkedRegistered(true);
@@ -321,7 +321,7 @@ export default function TournamentDetailsPanel({
               </div>
             )}
 
-            {!isRegistered && tournament.status !== 'registration_open' && isUpcoming && (
+            {!isRegistered && tournament.status !== 'open' && isUpcoming && (
               <Button
                 variant="ghost"
                 onClick={handleMarkRegistered}

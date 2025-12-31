@@ -7,14 +7,33 @@
  */
 
 // ============================================================================
+// QUICK FILTER TYPES
+// ============================================================================
+
+/**
+ * Quick filter tab options
+ */
+export type QuickFilter = 'alle' | 'mine' | 'junior' | 'elite' | 'åpen';
+
+export const QUICK_FILTER_LABELS: Record<QuickFilter, string> = {
+  alle: 'Alle',
+  mine: 'Mine turneringer',
+  junior: 'Junior',
+  elite: 'Elite',
+  åpen: 'Åpen',
+};
+
+// Legacy alias for backward compatibility
+export type TournamentTab = QuickFilter;
+
+// ============================================================================
 // TOUR/SERIES TYPES
 // ============================================================================
 
 /**
- * Supported tournament tour/series types
- * As defined in the spec requirements
+ * Tournament series/tour types
  */
-export type TourType =
+export type TournamentSeries =
   | 'junior_tour_regional'
   | 'srixon_tour'
   | 'garmin_norges_cup'
@@ -26,10 +45,13 @@ export type TourType =
   | 'challenge_tour'
   | 'dp_world_tour'
   | 'pga_tour'
-  | 'club'      // Local club tournaments
-  | 'academy';  // AK Golf Academy internal
+  | 'club'
+  | 'academy';
 
-export const TOUR_LABELS: Record<TourType, string> = {
+// Legacy alias
+export type TourType = TournamentSeries;
+
+export const SERIES_LABELS: Record<TournamentSeries, string> = {
   junior_tour_regional: 'Junior Tour Regional',
   srixon_tour: 'Srixon Tour',
   garmin_norges_cup: 'Garmin Norges Cup',
@@ -45,30 +67,34 @@ export const TOUR_LABELS: Record<TourType, string> = {
   academy: 'Akademiturnering',
 };
 
+// Legacy alias
+export const TOUR_LABELS = SERIES_LABELS;
+
 // ============================================================================
 // STATUS TYPES
 // ============================================================================
 
 /**
- * Tournament registration/completion status
+ * Tournament status - simplified
  */
-export type TournamentStatus =
-  | 'upcoming'           // Not yet open for registration
-  | 'registration_open'  // Open for registration
-  | 'registered'         // User is registered
-  | 'registration_closed'// Registration closed, not full
-  | 'full'               // Registration full
-  | 'in_progress'        // Tournament is ongoing
-  | 'completed';         // Tournament finished, results available
+export type TournamentStatus = 'open' | 'upcoming' | 'full' | 'ongoing' | 'finished';
 
 export const STATUS_LABELS: Record<TournamentStatus, string> = {
+  open: 'Åpen for påmelding',
   upcoming: 'Kommer snart',
-  registration_open: 'Åpen for påmelding',
-  registered: 'Påmeldt',
-  registration_closed: 'Påmelding stengt',
   full: 'Fullt',
+  ongoing: 'Pågår',
+  finished: 'Avsluttet',
+};
+
+// Legacy aliases for backward compatibility
+export const STATUS_LABELS_LEGACY: Record<string, string> = {
+  registration_open: 'Åpen for påmelding',
+  registration_closed: 'Påmelding stengt',
+  registered: 'Påmeldt',
   in_progress: 'Pågår',
   completed: 'Avsluttet',
+  ...STATUS_LABELS,
 };
 
 // ============================================================================
@@ -160,71 +186,79 @@ export const LEVEL_LABELS: Record<CompetitionLevel, string> = {
 // ============================================================================
 
 /**
- * Junior Tour regions based on NGF regional structure
- * Used for filtering regional junior tournaments
+ * Junior Tour regions - Norwegian character version
  */
-export type JuniorTourRegion =
-  | 'ostlandet_ost'     // Østfold, parts of Akershus
-  | 'ostlandet_vest'    // Oslo, Buskerud, Vestfold, parts of Akershus
-  | 'sorlandet'         // Agder (Aust-Agder, Vest-Agder)
-  | 'vestlandet'        // Rogaland, Hordaland, Sogn og Fjordane
-  | 'midt_norge'        // Trøndelag (Nord-Trøndelag, Sør-Trøndelag)
-  | 'nord_norge';       // Nordland, Troms, Finnmark
+export type JuniorRegion =
+  | 'østlandet-øst'
+  | 'østlandet-vest'
+  | 'sørlandet'
+  | 'vestlandet'
+  | 'midt-norge'
+  | 'nord-norge';
 
-export const JUNIOR_TOUR_REGION_LABELS: Record<JuniorTourRegion, string> = {
-  ostlandet_ost: 'Østlandet Øst',
-  ostlandet_vest: 'Østlandet Vest',
-  sorlandet: 'Sørlandet',
-  vestlandet: 'Vestlandet',
-  midt_norge: 'Midt-Norge',
-  nord_norge: 'Nord-Norge',
+// Legacy alias
+export type JuniorTourRegion = JuniorRegion;
+
+export const JUNIOR_REGION_LABELS: Record<JuniorRegion, string> = {
+  'østlandet-øst': 'Østlandet Øst',
+  'østlandet-vest': 'Østlandet Vest',
+  'sørlandet': 'Sørlandet',
+  'vestlandet': 'Vestlandet',
+  'midt-norge': 'Midt-Norge',
+  'nord-norge': 'Nord-Norge',
 };
 
-export const JUNIOR_TOUR_REGION_DESCRIPTIONS: Record<JuniorTourRegion, string> = {
-  ostlandet_ost: 'Østfold, Follo, Romerike Øst',
-  ostlandet_vest: 'Oslo, Buskerud, Vestfold, Asker/Bærum',
-  sorlandet: 'Aust-Agder, Vest-Agder',
-  vestlandet: 'Rogaland, Hordaland, Sogn og Fjordane',
-  midt_norge: 'Sør-Trøndelag, Nord-Trøndelag',
-  nord_norge: 'Nordland, Troms, Finnmark',
+// Legacy alias
+export const JUNIOR_TOUR_REGION_LABELS = JUNIOR_REGION_LABELS as Record<string, string>;
+
+export const JUNIOR_REGION_DESCRIPTIONS: Record<JuniorRegion, string> = {
+  'østlandet-øst': 'Østfold, Follo, Romerike Øst',
+  'østlandet-vest': 'Oslo, Buskerud, Vestfold, Asker/Bærum',
+  'sørlandet': 'Aust-Agder, Vest-Agder',
+  'vestlandet': 'Rogaland, Hordaland, Sogn og Fjordane',
+  'midt-norge': 'Sør-Trøndelag, Nord-Trøndelag',
+  'nord-norge': 'Nordland, Troms, Finnmark',
 };
+
+// Legacy alias
+export const JUNIOR_TOUR_REGION_DESCRIPTIONS = JUNIOR_REGION_DESCRIPTIONS as Record<string, string>;
 
 /**
  * Map counties/cities to Junior Tour regions
  * Used for automatic region assignment based on tournament location
  */
-export const CITY_TO_JUNIOR_REGION: Record<string, JuniorTourRegion> = {
+export const CITY_TO_JUNIOR_REGION: Record<string, JuniorRegion> = {
   // Østlandet Øst
-  'Fredrikstad': 'ostlandet_ost',
-  'Sarpsborg': 'ostlandet_ost',
-  'Halden': 'ostlandet_ost',
-  'Moss': 'ostlandet_ost',
-  'Askim': 'ostlandet_ost',
-  'Ski': 'ostlandet_ost',
-  'Drøbak': 'ostlandet_ost',
-  'Lillestrøm': 'ostlandet_ost',
-  'Jessheim': 'ostlandet_ost',
-  'Lørenskog': 'ostlandet_ost',
+  'Fredrikstad': 'østlandet-øst',
+  'Sarpsborg': 'østlandet-øst',
+  'Halden': 'østlandet-øst',
+  'Moss': 'østlandet-øst',
+  'Askim': 'østlandet-øst',
+  'Ski': 'østlandet-øst',
+  'Drøbak': 'østlandet-øst',
+  'Lillestrøm': 'østlandet-øst',
+  'Jessheim': 'østlandet-øst',
+  'Lørenskog': 'østlandet-øst',
 
   // Østlandet Vest
-  'Oslo': 'ostlandet_vest',
-  'Drammen': 'ostlandet_vest',
-  'Kongsberg': 'ostlandet_vest',
-  'Hønefoss': 'ostlandet_vest',
-  'Tønsberg': 'ostlandet_vest',
-  'Sandefjord': 'ostlandet_vest',
-  'Larvik': 'ostlandet_vest',
-  'Horten': 'ostlandet_vest',
-  'Asker': 'ostlandet_vest',
-  'Sandvika': 'ostlandet_vest',
-  'Kløfta': 'ostlandet_vest',
+  'Oslo': 'østlandet-vest',
+  'Drammen': 'østlandet-vest',
+  'Kongsberg': 'østlandet-vest',
+  'Hønefoss': 'østlandet-vest',
+  'Tønsberg': 'østlandet-vest',
+  'Sandefjord': 'østlandet-vest',
+  'Larvik': 'østlandet-vest',
+  'Horten': 'østlandet-vest',
+  'Asker': 'østlandet-vest',
+  'Sandvika': 'østlandet-vest',
+  'Kløfta': 'østlandet-vest',
 
   // Sørlandet
-  'Kristiansand': 'sorlandet',
-  'Arendal': 'sorlandet',
-  'Grimstad': 'sorlandet',
-  'Mandal': 'sorlandet',
-  'Flekkefjord': 'sorlandet',
+  'Kristiansand': 'sørlandet',
+  'Arendal': 'sørlandet',
+  'Grimstad': 'sørlandet',
+  'Mandal': 'sørlandet',
+  'Flekkefjord': 'sørlandet',
 
   // Vestlandet
   'Stavanger': 'vestlandet',
@@ -234,17 +268,17 @@ export const CITY_TO_JUNIOR_REGION: Record<string, JuniorTourRegion> = {
   'Florø': 'vestlandet',
 
   // Midt-Norge
-  'Trondheim': 'midt_norge',
-  'Steinkjer': 'midt_norge',
-  'Levanger': 'midt_norge',
-  'Namsos': 'midt_norge',
+  'Trondheim': 'midt-norge',
+  'Steinkjer': 'midt-norge',
+  'Levanger': 'midt-norge',
+  'Namsos': 'midt-norge',
 
   // Nord-Norge
-  'Bodø': 'nord_norge',
-  'Tromsø': 'nord_norge',
-  'Narvik': 'nord_norge',
-  'Alta': 'nord_norge',
-  'Hammerfest': 'nord_norge',
+  'Bodø': 'nord-norge',
+  'Tromsø': 'nord-norge',
+  'Narvik': 'nord-norge',
+  'Alta': 'nord-norge',
+  'Hammerfest': 'nord-norge',
 };
 
 // ============================================================================
@@ -433,20 +467,6 @@ export interface TournamentSort {
   key: TournamentSortKey;
   direction: 'asc' | 'desc';
 }
-
-// ============================================================================
-// TAB TYPES
-// ============================================================================
-
-/**
- * Tab filter types for quick filtering
- */
-export type TournamentTab =
-  | 'alle'
-  | 'mine_turneringer'
-  | 'junior'
-  | 'elite'
-  | 'open';
 
 // ============================================================================
 // API TYPES

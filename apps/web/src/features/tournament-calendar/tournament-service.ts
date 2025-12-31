@@ -89,17 +89,17 @@ export function calculateStats(tournaments: Tournament[]): TournamentStats {
 
   const upcoming = tournaments.filter(t => {
     const startDate = new Date(t.startDate);
-    return startDate >= now && t.status !== 'completed';
+    return startDate >= now && t.status !== 'finished';
   }).length;
 
   const registered = tournaments.filter(t =>
-    t.isRegistered || t.status === 'registered'
+    t.isRegistered
   ).length;
 
   const completedThisYear = tournaments.filter(t => {
     const startDate = new Date(t.startDate);
     return (
-      t.status === 'completed' &&
+      t.status === 'finished' &&
       startDate >= yearStart &&
       startDate <= now
     );
@@ -151,11 +151,7 @@ function applyFilters(
 
     // Status filter
     if (filters.statuses?.length) {
-      // Map internal status to filter status
-      let effectiveStatus = t.status;
-      if (t.isRegistered) effectiveStatus = 'registered';
-
-      if (!filters.statuses.includes(effectiveStatus)) {
+      if (!filters.statuses.includes(t.status)) {
         return false;
       }
     }
@@ -547,11 +543,11 @@ export function groupTournamentsByPeriod(tournaments: Tournament[]): {
   return {
     upcoming: tournaments.filter(t => {
       const startDate = new Date(t.startDate);
-      return startDate >= now || t.status === 'in_progress';
+      return startDate >= now || t.status === 'ongoing';
     }),
     past: tournaments.filter(t => {
       const startDate = new Date(t.startDate);
-      return startDate < now && t.status === 'completed';
+      return startDate < now && t.status === 'finished';
     }),
   };
 }

@@ -8,34 +8,28 @@
  */
 
 import React from 'react';
-import { TournamentTab } from '../types';
+import { QuickFilter, QUICK_FILTER_LABELS } from '../types';
 
 interface QuickFilterTabsProps {
-  activeTab: TournamentTab;
-  onTabChange: (tab: TournamentTab) => void;
+  activeTab: QuickFilter;
+  onTabChange: (tab: QuickFilter) => void;
 }
 
-const TABS: { key: TournamentTab; label: string }[] = [
-  { key: 'alle', label: 'Alle' },
-  { key: 'mine_turneringer', label: 'Mine turneringer' },
-  { key: 'junior', label: 'Junior' },
-  { key: 'elite', label: 'Elite' },
-  { key: 'open', label: 'Åpen' },
-];
+const TABS: QuickFilter[] = ['alle', 'mine', 'junior', 'elite', 'åpen'];
 
 export default function QuickFilterTabs({ activeTab, onTabChange }: QuickFilterTabsProps) {
   return (
     <div style={styles.tabBar}>
       {TABS.map(tab => (
         <button
-          key={tab.key}
-          onClick={() => onTabChange(tab.key)}
+          key={tab}
+          onClick={() => onTabChange(tab)}
           style={{
             ...styles.tabButton,
-            ...(activeTab === tab.key ? styles.tabButtonActive : {}),
+            ...(activeTab === tab ? styles.tabButtonActive : {}),
           }}
         >
-          {tab.label}
+          {QUICK_FILTER_LABELS[tab]}
         </button>
       ))}
     </div>
