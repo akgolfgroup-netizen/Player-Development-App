@@ -21,7 +21,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 # Cache bust to force rebuild (update date to invalidate)
-ARG BUILD_DATE=2025-12-31T09:00:00
+ARG BUILD_DATE=2025-12-31T21:45:00
 RUN echo "Build date: $BUILD_DATE"
 
 # Build the application
