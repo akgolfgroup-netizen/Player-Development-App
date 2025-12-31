@@ -2374,3 +2374,35 @@ html {
     width: 100%;
   }
 }
+
+/* ═══════════════════════════════════════════
+   GLOBAL LAYOUT - Content Width Override
+   Removes narrow 600px constraints for full-width layout
+   ═══════════════════════════════════════════ */
+
+/* Main content container - responsive widths */
+main > div > div,
+.app-shell-v2__content,
+.app-layout-v2__content {
+  max-width: 1400px; /* Desktop default */
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1920px) {
+  main > div > div,
+  .app-shell-v2__content,
+  .app-layout-v2__content {
+    max-width: 1600px; /* Large screens */
+  }
+}
+
+@media (max-width: 768px) {
+  main > div > div,
+  .app-shell-v2__content,
+  .app-layout-v2__content {
+    max-width: 100%; /* Mobile - full width */
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
