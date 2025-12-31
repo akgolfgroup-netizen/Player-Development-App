@@ -18,6 +18,8 @@ import StateCard from '../../ui/composites/StateCard';
 import { useProBenchmark, ApproachSkillData } from '../../hooks/useProBenchmark';
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { useAuth } from '../../contexts/AuthContext';
+import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
 
 /**
  * BenchmarkContent - Compare with PGA & WAGR
@@ -26,6 +28,7 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography';
 const BenchmarkContent: React.FC = () => {
   const { eliteBenchmarks, topPlayers, approachSkills, wagrRankings, loading, error } = useProBenchmark();
   const { data: sgData } = useStrokesGained();
+  const { user } = useAuth();
 
   const formatSG = (value: number | null | undefined) => {
     if (value === null || value === undefined) return '-';
@@ -170,6 +173,20 @@ const BenchmarkContent: React.FC = () => {
           </div>
         </Card>
       </section>
+
+      {/* Peer Comparison */}
+      {user?.playerId && (
+        <section style={styles.section}>
+          <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
+            Peer Sammenligning
+          </SectionTitle>
+          <PeerComparisonWidget
+            playerId={user.playerId}
+            testNumber={1}
+            showMultiLevel={true}
+          />
+        </section>
+      )}
 
       {/* Category Comparison */}
       <section style={styles.section}>

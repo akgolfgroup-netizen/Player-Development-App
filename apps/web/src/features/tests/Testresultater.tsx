@@ -7,8 +7,9 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography';
 import {
   TrendingUp, TrendingDown, Minus, Calendar, ChevronDown,
-  ChevronRight, Info, Download, Target
+  ChevronRight, Info, Target
 } from 'lucide-react';
+import ExportButton from '../../components/ui/ExportButton';
 import {
   Card,
   CardContent,
@@ -451,15 +452,18 @@ const Testresultater: React.FC<TestresultaterProps> = ({
     });
 
   return (
-    <div className="min-h-screen bg-background-default">
+    <div id="testresultater-export" className="min-h-screen bg-background-default">
       <PageHeader
         title="Testresultater"
         subtitle="Historikk og fremgang"
         actions={
-          <Button variant="outline" className="gap-2">
-            <Download className="h-4 w-4" />
-            Eksporter
-          </Button>
+          <ExportButton
+            targetId="testresultater-export"
+            filename={`testresultater-${player?.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
+            title={`Testresultater - ${player?.name || 'Spiller'}`}
+            label="Eksporter PDF"
+            size="sm"
+          />
         }
       />
 

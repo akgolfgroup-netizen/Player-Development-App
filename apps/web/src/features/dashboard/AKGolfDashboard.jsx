@@ -9,6 +9,9 @@ import { DashboardWidget, KPIValue, KPIMeta } from './components';
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+import ExportButton from '../../components/ui/ExportButton';
+import { useAuth } from '../../contexts/AuthContext';
+import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
 
 /**
  * AKGolfDashboard - Premium Player Dashboard
@@ -415,6 +418,7 @@ const SessionsWidget = ({ sessions, onViewAll, onSessionClick, loading, error })
 const AKGolfDashboard = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading, error, refetch } = useDashboard();
+  const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -443,7 +447,18 @@ const AKGolfDashboard = () => {
   const upcomingSessions = dashboardData?.upcomingSessions || [];
 
   return (
-    <div style={styles.dashboard}>
+    <div id="dashboard-export" style={styles.dashboard}>
+      {/* Export Button */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
+        <ExportButton
+          targetId="dashboard-export"
+          filename={`dashboard-${player.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
+          title={`Dashboard - ${player.name || 'Spiller'}`}
+          variant="icon"
+          size="sm"
+        />
+      </div>
+
       {/* Stale data banner */}
       {error && dashboardData && (
         <div style={styles.staleBanner}>
@@ -526,6 +541,17 @@ const AKGolfDashboard = () => {
           />
         </div>
       </section>
+
+      {/* Peer Comparison */}
+      {user?.playerId && (
+        <section style={styles.peerSection}>
+          <PeerComparisonWidget
+            playerId={user.playerId}
+            testNumber={1}
+            compact={true}
+          />
+        </section>
+      )}
 
       {/* ZONE C: Bottom Section */}
       <section style={styles.zoneC}>
@@ -929,6 +955,11 @@ const styles = {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+  },
+
+  // Peer Section
+  peerSection: {
+    marginTop: '8px',
   },
 
   // Zone C

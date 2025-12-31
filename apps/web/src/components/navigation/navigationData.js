@@ -1,19 +1,19 @@
 /**
  * Navigation Data
  *
- * 4+1 Navigation Structure (Mobile-first)
+ * 4+1 Navigation Structure (Mobile-first) - CONSOLIDATED
  *
  * Main Navigation (Bottom Bar):
  * 1. Hjem - Dashboard
- * 2. Aktivitet - Trening + Testing (aktive handlinger)
- * 3. Fremgang - Statistikk + Utvikling + Video (måling)
- * 4. Plan - Kalender + Turneringer + Mål + Årsplan
+ * 2. Aktivitet - Treningsplan | Treningslogg | Testing
+ * 3. Fremgang - Statistikk | Video | Prestasjoner
+ * 4. Plan - Kalender | Turneringer | Mål & Plan
  *
  * Burger Menu (☰):
- * - Profil
- * - Meldinger
- * - Innstillinger
- * - Ressurser
+ * - Profil (Min profil, Trenerteam)
+ * - Meldinger (Innboks, Varsler)
+ * - Innstillinger (Konto, Varsler, Kalibrering)
+ * - Ressurser (Bibliotek, Notater & Arkiv)
  */
 
 export const navigationSections = [
@@ -31,13 +31,19 @@ export const navigationSections = [
     icon: 'Zap',
     isMainNav: true,
     items: [
-      { href: '/trening/dagens', label: 'Dagens plan' },
-      { href: '/trening/ukens', label: 'Ukens plan' },
-      { href: '/trening/logg', label: 'Logg trening' },
-      { href: '/trening/dagbok', label: 'Treningsdagbok' },
-      { href: '/testprotokoll', label: 'Testprotokoll' },
-      { href: '/testresultater', label: 'Testresultater' },
-      { href: '/testing/registrer', label: 'Registrer test' },
+      { href: '/trening/dagens', label: 'Treningsplan' },
+      { href: '/trening/logg', label: 'Treningslogg' },
+      { href: '/testprotokoll', label: 'Testing' },
+    ],
+    // Detailed routes (for path matching)
+    allRoutes: [
+      '/trening/dagens',
+      '/trening/ukens',
+      '/trening/logg',
+      '/trening/dagbok',
+      '/testprotokoll',
+      '/testresultater',
+      '/testing/registrer',
     ],
   },
   {
@@ -47,14 +53,20 @@ export const navigationSections = [
     isMainNav: true,
     items: [
       { href: '/stats', label: 'Statistikk' },
-      { href: '/utvikling', label: 'Utvikling' },
-      { href: '/utvikling/breaking-points', label: 'Breaking Points' },
-      { href: '/utvikling/kategori', label: 'Kategori-fremgang' },
-      { href: '/videos', label: 'Videoer' },
-      { href: '/bevis', label: 'Videobevis' },
+      { href: '/videos', label: 'Video' },
       { href: '/achievements', label: 'Prestasjoner' },
-      { href: '/badges', label: 'Badges' },
-      { href: '/progress', label: 'Fremdrift' },
+    ],
+    // Detailed routes (for path matching)
+    allRoutes: [
+      '/stats',
+      '/utvikling',
+      '/utvikling/breaking-points',
+      '/utvikling/kategori',
+      '/videos',
+      '/bevis',
+      '/achievements',
+      '/badges',
+      '/progress',
     ],
   },
   {
@@ -64,13 +76,17 @@ export const navigationSections = [
     isMainNav: true,
     items: [
       { href: '/kalender', label: 'Kalender' },
-      { href: '/kalender?view=week', label: 'Ukesoversikt' },
-      { href: '/kalender?view=month', label: 'Månedsoversikt' },
-      { href: '/turneringskalender', label: 'Turneringskalender' },
-      { href: '/mine-turneringer', label: 'Mine turneringer' },
-      { href: '/maalsetninger', label: 'Mål' },
-      { href: '/aarsplan', label: 'Årsplan' },
-      { href: '/kalender/booking', label: 'Book trener' },
+      { href: '/turneringskalender', label: 'Turneringer' },
+      { href: '/maalsetninger', label: 'Mål & Plan' },
+    ],
+    // Detailed routes (for path matching)
+    allRoutes: [
+      '/kalender',
+      '/kalender/booking',
+      '/turneringskalender',
+      '/mine-turneringer',
+      '/maalsetninger',
+      '/aarsplan',
     ],
   },
 
@@ -83,7 +99,6 @@ export const navigationSections = [
     items: [
       { href: '/profil', label: 'Min profil' },
       { href: '/trenerteam', label: 'Trenerteam' },
-      { href: '/kalibrering', label: 'Kalibrering' },
     ],
   },
   {
@@ -94,7 +109,6 @@ export const navigationSections = [
     items: [
       { href: '/meldinger', label: 'Innboks' },
       { href: '/varsler', label: 'Varsler' },
-      { href: '/meldinger/trener', label: 'Fra trener' },
     ],
   },
   {
@@ -103,8 +117,9 @@ export const navigationSections = [
     icon: 'Settings',
     isBurgerMenu: true,
     items: [
-      { href: '/innstillinger', label: 'Kontoinnstillinger' },
-      { href: '/innstillinger/varsler', label: 'Varselinnstillinger' },
+      { href: '/innstillinger', label: 'Konto' },
+      { href: '/innstillinger/varsler', label: 'Varsler' },
+      { href: '/kalibrering', label: 'Kalibrering' },
     ],
   },
   {
@@ -113,22 +128,15 @@ export const navigationSections = [
     icon: 'BookOpen',
     isBurgerMenu: true,
     items: [
-      { href: '/ovelsesbibliotek', label: 'Øvelsesbibliotek' },
-      { href: '/ressurser', label: 'Ressurser' },
-      { href: '/notater', label: 'Notater' },
-      { href: '/arkiv', label: 'Arkiv' },
+      { href: '/ovelsesbibliotek', label: 'Bibliotek' },
+      { href: '/notater', label: 'Notater & Arkiv' },
     ],
-  },
-
-  // === LEGACY/ADDITIONAL SECTIONS ===
-  {
-    id: 'skole',
-    label: 'Skole',
-    icon: 'GraduationCap',
-    isBurgerMenu: true,
-    items: [
-      { href: '/skoleplan', label: 'Timeplan' },
-      { href: '/skole/oppgaver', label: 'Oppgaver' },
+    // Detailed routes (for path matching)
+    allRoutes: [
+      '/ovelsesbibliotek',
+      '/ressurser',
+      '/notater',
+      '/arkiv',
     ],
   },
 ];
@@ -160,6 +168,11 @@ export function getSectionById(id) {
 export function getSectionByPath(path) {
   return navigationSections.find(section => {
     if (section.href === path) return true;
+    // Check allRoutes first (more comprehensive)
+    if (section.allRoutes) {
+      return section.allRoutes.some(route => path.startsWith(route.split('?')[0]));
+    }
+    // Fallback to items
     if (section.items) {
       return section.items.some(item => path.startsWith(item.href.split('?')[0]));
     }

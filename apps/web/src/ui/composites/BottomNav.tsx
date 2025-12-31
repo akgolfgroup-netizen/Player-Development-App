@@ -58,7 +58,7 @@ interface BottomNavProps {
   className?: string;
 }
 
-// Main navigation items (4 tabs)
+// Main navigation items (4 tabs) - Consolidated structure
 const mainNavItems: NavItem[] = [
   {
     label: 'Hjem',
@@ -70,9 +70,9 @@ const mainNavItems: NavItem[] = [
     to: '/aktivitet',
     icon: <Zap size={20} />,
     subItems: [
-      { label: 'Trening', to: '/trening/dagens', icon: <Target size={18} /> },
+      { label: 'Treningsplan', to: '/trening/dagens', icon: <Target size={18} /> },
+      { label: 'Treningslogg', to: '/trening/logg', icon: <Zap size={18} /> },
       { label: 'Testing', to: '/testprotokoll', icon: <ClipboardList size={18} /> },
-      { label: 'Logg trening', to: '/trening/logg', icon: <Zap size={18} /> },
     ],
   },
   {
@@ -81,8 +81,7 @@ const mainNavItems: NavItem[] = [
     icon: <TrendingUp size={20} />,
     subItems: [
       { label: 'Statistikk', to: '/stats', icon: <BarChart3 size={18} /> },
-      { label: 'Utvikling', to: '/utvikling', icon: <TrendingUp size={18} /> },
-      { label: 'Videoer', to: '/videos', icon: <Video size={18} /> },
+      { label: 'Video', to: '/videos', icon: <Video size={18} /> },
       { label: 'Prestasjoner', to: '/achievements', icon: <Award size={18} /> },
     ],
   },
@@ -93,13 +92,12 @@ const mainNavItems: NavItem[] = [
     subItems: [
       { label: 'Kalender', to: '/kalender', icon: <Calendar size={18} /> },
       { label: 'Turneringer', to: '/turneringskalender', icon: <Trophy size={18} /> },
-      { label: 'Mål', to: '/maalsetninger', icon: <Flag size={18} /> },
-      { label: 'Årsplan', to: '/aarsplan', icon: <CalendarDays size={18} /> },
+      { label: 'Mål & Plan', to: '/maalsetninger', icon: <Flag size={18} /> },
     ],
   },
 ];
 
-// Burger menu items
+// Burger menu items - Consolidated structure
 const burgerMenuItems: BurgerMenuItem[] = [
   {
     label: 'Profil',
@@ -108,7 +106,6 @@ const burgerMenuItems: BurgerMenuItem[] = [
     subItems: [
       { label: 'Min profil', to: '/profil' },
       { label: 'Trenerteam', to: '/trenerteam' },
-      { label: 'Kalibrering', to: '/kalibrering' },
     ],
   },
   {
@@ -125,8 +122,9 @@ const burgerMenuItems: BurgerMenuItem[] = [
     to: '/innstillinger',
     icon: <Settings size={20} />,
     subItems: [
-      { label: 'Varselinnstillinger', to: '/innstillinger/varsler' },
-      { label: 'Kontoinnstillinger', to: '/innstillinger' },
+      { label: 'Konto', to: '/innstillinger' },
+      { label: 'Varsler', to: '/innstillinger/varsler' },
+      { label: 'Kalibrering', to: '/kalibrering' },
     ],
   },
   {
@@ -134,9 +132,8 @@ const burgerMenuItems: BurgerMenuItem[] = [
     to: '/ressurser',
     icon: <BookOpen size={20} />,
     subItems: [
-      { label: 'Øvelsesbibliotek', to: '/ovelsesbibliotek' },
-      { label: 'Notater', to: '/notater' },
-      { label: 'Arkiv', to: '/arkiv' },
+      { label: 'Bibliotek', to: '/ovelsesbibliotek' },
+      { label: 'Notater & Arkiv', to: '/notater' },
     ],
   },
 ];

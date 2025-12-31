@@ -11,6 +11,7 @@ import {
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StateCard from '../../ui/composites/StateCard';
 import { useScreenView } from '../../analytics/useScreenView';
+import ExportButton from '../../components/ui/ExportButton';
 
 // Lazy load the content components for better performance
 const PlayerStatsContent = lazy(() => import('./PlayerStatsContent'));
@@ -154,52 +155,63 @@ const StatistikkHub: React.FC = () => {
     <AppShellTemplate
       title="Statistikk"
       subtitle={activeTabConfig?.description || 'Din spillstatistikk'}
+      actions={
+        <ExportButton
+          targetId="statistikk-export"
+          filename={`statistikk-${activeTab}-${new Date().toISOString().split('T')[0]}`}
+          title={`Statistikk - ${activeTabConfig?.label || 'Oversikt'}`}
+          variant="icon"
+          size="sm"
+        />
+      }
     >
-      {/* Tab Navigation */}
-      <div style={styles.tabContainer}>
-        <div style={styles.tabList} role="tablist" aria-label="Statistikk-kategorier">
-          {TABS.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = tab.id === activeTab;
+      <div id="statistikk-export">
+        {/* Tab Navigation */}
+        <div style={styles.tabContainer}>
+          <div style={styles.tabList} role="tablist" aria-label="Statistikk-kategorier">
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = tab.id === activeTab;
 
-            return (
-              <button
-                key={tab.id}
-                role="tab"
-                aria-selected={isActive}
-                aria-controls={`panel-${tab.id}`}
-                onClick={() => handleTabChange(tab.id)}
-                style={{
-                  ...styles.tab,
-                  ...(isActive ? styles.tabActive : {}),
-                }}
-              >
-                <Icon
-                  size={18}
+              return (
+                <button
+                  key={tab.id}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`panel-${tab.id}`}
+                  onClick={() => handleTabChange(tab.id)}
                   style={{
-                    color: isActive ? 'var(--accent)' : 'var(--text-tertiary)',
-                    transition: 'color 0.15s ease',
+                    ...styles.tab,
+                    ...(isActive ? styles.tabActive : {}),
                   }}
-                />
-                <span style={styles.tabLabel}>{tab.label}</span>
-                {isActive && <div style={styles.tabIndicator} />}
-              </button>
-            );
-          })}
+                >
+                  <Icon
+                    size={18}
+                    style={{
+                      color: isActive ? 'var(--accent)' : 'var(--text-tertiary)',
+                      transition: 'color 0.15s ease',
+                    }}
+                  />
+                  <span style={styles.tabLabel}>{tab.label}</span>
+                  {isActive && <div style={styles.tabIndicator} />}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mobile scroll hint */}
+          <div style={styles.scrollHint} />
         </div>
 
-        {/* Mobile scroll hint */}
-        <div style={styles.scrollHint} />
-      </div>
-
-      {/* Tab Content */}
-      <div
-        id={`panel-${activeTab}`}
-        role="tabpanel"
-        aria-labelledby={`tab-${activeTab}`}
-        style={styles.tabPanel}
-      >
-        {renderTabContent()}
+        {/* Tab Content */}
+        <div
+          id={`panel-${activeTab}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${activeTab}`}
+          style={styles.tabPanel}
+        >
+          {renderTabContent()}
+        </div>
       </div>
     </AppShellTemplate>
   );

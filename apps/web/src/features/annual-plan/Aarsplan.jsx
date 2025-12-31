@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import { tokens } from '../../design-tokens';
+import ExportButton from '../../components/ui/ExportButton';
 
 // Period colors (Blue Palette 01)
 const periodColors = {
@@ -303,14 +304,22 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
   const currentMonthIndex = 2; // December
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
+    <div id="aarsplan-export" style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
       {/* Header */}
       <PageHeader
         title="Årsplan 2026"
         subtitle="Team Norway"
         actions={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px', padding: '4px' }}>
-            <button
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <ExportButton
+              targetId="aarsplan-export"
+              filename={`aarsplan-${player.name?.replace(/\s+/g, '-') || 'spiller'}-2026`}
+              title={`Årsplan 2026 - ${player.name || 'Spiller'}`}
+              variant="icon"
+              size="sm"
+            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px', padding: '4px' }}>
+              <button
               style={{
                 padding: '6px 12px',
                 borderRadius: '6px',
@@ -342,6 +351,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
             >
               Rutenett
             </button>
+            </div>
           </div>
         }
       />
