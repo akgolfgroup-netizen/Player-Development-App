@@ -91,13 +91,19 @@ export function useRealtimeUpdates(options = {}) {
 
   /**
    * Get WebSocket URL with auth token
+   * Note: WebSocket endpoint is at /ws on the server root, not under /api/v1
    */
   const getWsUrl = useCallback(() => {
     const token = localStorage.getItem('accessToken');
     if (!token) return null;
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = process.env.REACT_APP_API_URL?.replace(/^https?:\/\//, '') || 'localhost:4000';
+
+    // Extract just the host from API URL, removing protocol and path (e.g., /api/v1)
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+    const url = new URL(apiUrl);
+    const host = url.host; // Just host:port, no path
+
     return `${protocol}//${host}/ws?token=${token}`;
   }, []);
 
