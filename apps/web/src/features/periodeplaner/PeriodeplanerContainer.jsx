@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   Calendar, Target, ChevronDown,
   Snowflake, Sun, Leaf, Flower2, CheckCircle, Clock, Play,
-  Dumbbell, Brain
+  Dumbbell, Brain, RefreshCw
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
@@ -10,6 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
+import { useSessionSync } from '../../hooks/useSessionSync';
 
 // ============================================================================
 // DEFAULT/FALLBACK DATA
@@ -695,6 +696,17 @@ const PeriodeplanerContainer = () => {
   const [weekPlan, setWeekPlan] = useState(CURRENT_WEEK_PLAN);
   const [expandedPeriod, setExpandedPeriod] = useState('p1');
 
+  // Session sync hook
+  const { syncPeriodSessions, isSyncing } = useSessionSync({
+    onSyncComplete: (count) => {
+      console.log(`Synkroniserte ${count} økter fra periodeplan`);
+    },
+  });
+
+  const handleSyncSessions = async () => {
+    await syncPeriodSessions(periods, weekPlan);
+  };
+
   const fetchPeriods = useCallback(async () => {
     try {
       setState('loading');
@@ -750,6 +762,34 @@ const PeriodeplanerContainer = () => {
       <PageHeader
         title="Periodeplaner"
         subtitle="Sesongplanlegging og periodisering"
+        actions={
+          <button
+            onClick={handleSyncSessions}
+            disabled={isSyncing}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 16px',
+              backgroundColor: isSyncing ? 'var(--bg-secondary)' : 'var(--accent)',
+              color: isSyncing ? 'var(--text-secondary)' : 'var(--bg-primary)',
+              border: 'none',
+              borderRadius: '10px',
+              fontSize: '14px',
+              fontWeight: 500,
+              cursor: isSyncing ? 'not-allowed' : 'pointer',
+              transition: 'all 0.2s',
+            }}
+          >
+            <RefreshCw
+              size={16}
+              style={{
+                animation: isSyncing ? 'spin 1s linear infinite' : 'none'
+              }}
+            />
+            {isSyncing ? 'Synkroniserer...' : 'Synkroniser til økter'}
+          </button>
+        }
       />
 
       <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>

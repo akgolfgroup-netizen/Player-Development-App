@@ -83,6 +83,7 @@ const PlayerStatsPage = lazy(() => import('./features/player-stats').then(m => (
 const StrokesGainedPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StrokesGainedPage })));
 const PlayerTestResultsPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.TestResultsPage })));
 const StatusProgressPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.StatusProgressPage })));
+const BenchmarkPage = lazy(() => import('./features/player-stats').then(m => ({ default: m.BenchmarkPage })));
 const TreningsevalueringContainer = lazy(() => import('./features/evaluering/TreningsevalueringContainer'));
 const TurneringsevalueringContainer = lazy(() => import('./features/evaluering/TurneringsevalueringContainer'));
 
@@ -754,6 +755,13 @@ function App() {
             <ProtectedRoute>
               <DashboardLayout>
                 <PlayerTestResultsPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/statistikk/benchmark" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <BenchmarkPage />
               </DashboardLayout>
             </ProtectedRoute>
           } />

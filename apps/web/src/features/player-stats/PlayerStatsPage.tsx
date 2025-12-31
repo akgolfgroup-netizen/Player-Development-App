@@ -9,7 +9,8 @@ import {
   ChevronRight,
   RefreshCw,
   Info,
-  ArrowRight
+  ArrowRight,
+  Trophy
 } from 'lucide-react';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import Card from '../../ui/primitives/Card';
@@ -294,6 +295,21 @@ const PlayerStatsPage: React.FC = () => {
               <div style={styles.quickLinkText}>
                 <span style={styles.quickLinkTitle}>Alle testresultater</span>
                 <span style={styles.quickLinkDesc}>Fullstendig historikk</span>
+              </div>
+              <ChevronRight size={20} color="var(--text-tertiary)" />
+            </div>
+          </Card>
+          <Card variant="elevated">
+            <div
+              style={styles.quickLink}
+              onClick={() => navigate('/statistikk/benchmark')}
+            >
+              <div style={{ ...styles.quickLinkIcon, background: 'linear-gradient(135deg, var(--accent), var(--success))' }}>
+                <Trophy size={20} color="white" />
+              </div>
+              <div style={styles.quickLinkText}>
+                <span style={styles.quickLinkTitle}>Benchmark vs. Elite</span>
+                <span style={styles.quickLinkDesc}>Sammenlign med PGA & WAGR</span>
               </div>
               <ChevronRight size={20} color="var(--text-tertiary)" />
             </div>
