@@ -27,7 +27,7 @@ export const coachNavigationConfig = [
   },
 
   // ────────────────────────────────────────────────────────────
-  // MINE SPILLERE
+  // MINE SPILLERE (CoachAthleteHub med tabs)
   // Oversikt over alle spillere, status, turneringsdeltakelse
   // ────────────────────────────────────────────────────────────
   {
@@ -35,8 +35,8 @@ export const coachNavigationConfig = [
     icon: 'Users',
     submenu: [
       { href: '/coach/athletes', label: 'Alle spillere' },
-      { href: '/coach/athletes/status', label: 'Status & varsler' },
-      { href: '/coach/athletes/tournaments', label: 'Turneringsdeltakelse' },
+      { href: '/coach/athletes?tab=status', label: 'Status & varsler' },
+      { href: '/coach/athletes?tab=turneringer', label: 'Turneringsdeltakelse' },
       { href: '/coach/videos', label: 'Spillervideoer' },
       { href: '/coach/reference-videos', label: 'Referansebibliotek', badge: 'NY' },
     ]
