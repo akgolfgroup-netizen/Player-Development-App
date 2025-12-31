@@ -9,8 +9,10 @@
  * - View evaluation details and trends
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { sessionsAPI, coachesAPI } from '../../services/api';
 import {
   Calendar, Clock, Target, Zap, Brain, Battery,
   ChevronRight, Filter, User
@@ -280,13 +282,78 @@ const SessionCard: React.FC<SessionCardProps> = ({ evaluation, onClick }) => {
 // Main component
 export function CoachSessionEvaluations() {
   const navigate = useNavigate();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [evaluations, setEvaluations] = useState<SessionEvaluation[]>(mockEvaluations);
-  const [athletes] = useState<Athlete[]>(mockAthletes);
+  const { user } = useAuth();
+  const [evaluations, setEvaluations] = useState<SessionEvaluation[]>([]);
+  const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [selectedAthlete, setSelectedAthlete] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+
+      // Fetch athletes and sessions in parallel
+      const [athletesRes, sessionsRes] = await Promise.all([
+        coachesAPI.getAthletes().catch(() => ({ data: null })),
+        sessionsAPI.list({ includeEvaluations: true }).catch(() => ({ data: null })),
+      ]);
+
+      // Process athletes
+      const athletesData = athletesRes.data?.data || athletesRes.data || [];
+      if (Array.isArray(athletesData) && athletesData.length > 0) {
+        setAthletes(athletesData.map((a: any) => ({
+          id: a.id,
+          firstName: a.firstName || a.first_name || '',
+          lastName: a.lastName || a.last_name || '',
+          category: a.category || a.playerCategory || 'B',
+        })));
+      } else {
+        setAthletes(mockAthletes);
+      }
+
+      // Process sessions with evaluations
+      const sessionsData = sessionsRes.data?.data || sessionsRes.data || [];
+      if (Array.isArray(sessionsData) && sessionsData.length > 0) {
+        const transformedEvaluations: SessionEvaluation[] = sessionsData
+          .filter((s: any) => s.completionStatus === 'completed' || s.status === 'completed')
+          .map((s: any) => ({
+            id: s.id,
+            sessionType: s.sessionType || s.type || 'driving_range',
+            sessionDate: s.sessionDate || s.scheduledDate || s.createdAt,
+            duration: s.duration || s.durationMinutes || 60,
+            evaluationFocus: s.evaluationFocus ?? s.evaluation?.focus ?? null,
+            evaluationTechnical: s.evaluationTechnical ?? s.evaluation?.technical ?? null,
+            evaluationEnergy: s.evaluationEnergy ?? s.evaluation?.energy ?? null,
+            evaluationMental: s.evaluationMental ?? s.evaluation?.mental ?? null,
+            focusArea: s.focusArea || s.evaluation?.focusArea || null,
+            notes: s.notes || s.evaluation?.notes || null,
+            completionStatus: s.completionStatus || s.status || 'completed',
+            player: s.player || {
+              id: s.playerId,
+              firstName: s.playerFirstName || '',
+              lastName: s.playerLastName || '',
+              category: s.playerCategory || 'B',
+            },
+          }));
+        setEvaluations(transformedEvaluations);
+      } else {
+        setEvaluations(mockEvaluations);
+      }
+    } catch (err) {
+      console.error('Error fetching evaluations:', err);
+      setAthletes(mockAthletes);
+      setEvaluations(mockEvaluations);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [user, fetchData]);
 
   // Filter evaluations
   const filteredEvaluations = selectedAthlete

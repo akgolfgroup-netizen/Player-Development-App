@@ -14,9 +14,11 @@
  * - No athlete data, coach performance, or metrics below system health
  */
 
-import React from "react";
-import { Shield, Activity, CheckCircle, XCircle, Clock } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Shield, Activity, CheckCircle, XCircle, Clock, Loader2 } from "lucide-react";
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { useAuth } from '../../contexts/AuthContext';
+import apiClient from '../../services/apiClient';
 
 //////////////////////////////
 // 1. TYPES
@@ -60,11 +62,61 @@ interface AdminSystemOverviewProps {
 }
 
 export default function AdminSystemOverview({
-  systemStatus: apiSystemStatus,
-  featureFlags: apiFeatureFlags
+  systemStatus: propSystemStatus,
+  featureFlags: propFeatureFlags
 }: AdminSystemOverviewProps = {}) {
-  const systemStatus = apiSystemStatus || SYSTEM_STATUS;
-  const featureFlags = apiFeatureFlags || FEATURE_FLAGS;
+  const { user } = useAuth();
+  const [systemStatus, setSystemStatus] = useState<SystemStatus>(propSystemStatus || SYSTEM_STATUS);
+  const [featureFlags, setFeatureFlags] = useState<FeatureFlag[]>(propFeatureFlags || FEATURE_FLAGS);
+  const [loading, setLoading] = useState(!propSystemStatus && !propFeatureFlags);
+
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const [statusRes, flagsRes] = await Promise.all([
+        apiClient.get('/admin/system/status').catch(() => ({ data: null })),
+        apiClient.get('/admin/feature-flags').catch(() => ({ data: null })),
+      ]);
+
+      // Process system status
+      const statusData = statusRes.data?.data || statusRes.data;
+      if (statusData) {
+        setSystemStatus({
+          environment: statusData.environment || 'production',
+          version: statusData.version || '1.0.0',
+          uptimeHours: statusData.uptimeHours || statusData.uptime || 0,
+        });
+      }
+
+      // Process feature flags
+      const flagsData = flagsRes.data?.data || flagsRes.data;
+      if (Array.isArray(flagsData) && flagsData.length > 0) {
+        setFeatureFlags(flagsData.map((f: { key?: string; name?: string; enabled?: boolean; active?: boolean }) => ({
+          key: f.key || f.name || '',
+          enabled: f.enabled ?? f.active ?? false,
+        })));
+      }
+    } catch (err) {
+      console.error('Error fetching system data:', err);
+      // Keep default values on error
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!propSystemStatus && !propFeatureFlags && user) {
+      fetchData();
+    }
+  }, [propSystemStatus, propFeatureFlags, user, fetchData]);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <Loader2 size={32} className="animate-spin" color="var(--accent)" />
+      </div>
+    );
+  }
   const formatUptime = (hours: number) => {
     const days = Math.floor(hours / 24);
     const remainingHours = hours % 24;

@@ -15,9 +15,11 @@
  * - No links to athletes, coaches, or sessions
  */
 
-import React, { useState } from "react";
-import { AlertCircle, Clock, CheckCircle } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { AlertCircle, Clock, CheckCircle, Loader2 } from "lucide-react";
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { useAuth } from '../../contexts/AuthContext';
+import apiClient from '../../services/apiClient';
 
 //////////////////////////////
 // 1. TYPES
@@ -48,15 +50,60 @@ interface AdminEscalationSupportProps {
   cases?: SupportCase[];
 }
 
-export default function AdminEscalationSupport({ cases: apiCases }: AdminEscalationSupportProps = {}) {
-  const initialCases = apiCases || MOCK_CASES;
-  const [cases, setCases] = useState<SupportCase[]>(initialCases);
+export default function AdminEscalationSupport({ cases: propCases }: AdminEscalationSupportProps = {}) {
+  const { user } = useAuth();
+  const [cases, setCases] = useState<SupportCase[]>(propCases || []);
+  const [loading, setLoading] = useState(!propCases);
 
-  const updateStatus = (id: string, status: SupportCase["status"]) => {
+  const fetchCases = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await apiClient.get('/admin/support-cases');
+      const casesData = response.data?.data?.cases || response.data?.data || response.data || [];
+
+      if (Array.isArray(casesData) && casesData.length > 0) {
+        setCases(casesData.map((c: { id: string; title?: string; subject?: string; status?: string; createdAt?: string; created_at?: string }) => ({
+          id: c.id,
+          title: c.title || c.subject || 'Ukjent sak',
+          status: (c.status as SupportCase['status']) || 'open',
+          createdAt: c.createdAt || c.created_at,
+        })));
+      } else {
+        setCases(MOCK_CASES);
+      }
+    } catch (err) {
+      console.error('Error fetching support cases:', err);
+      setCases(MOCK_CASES);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!propCases && user) {
+      fetchCases();
+    }
+  }, [propCases, user, fetchCases]);
+
+  const updateStatus = async (id: string, status: SupportCase["status"]) => {
+    try {
+      await apiClient.patch(`/admin/support-cases/${id}`, { status });
+    } catch (err) {
+      console.error('Error updating case status:', err);
+      // Continue with optimistic update even if API fails
+    }
     setCases((prev) =>
       prev.map((c) => (c.id === id ? { ...c, status } : c))
     );
   };
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <Loader2 size={32} className="animate-spin" color="var(--accent)" />
+      </div>
+    );
+  }
 
   const getStatusConfig = (status: SupportCase["status"]) => {
     switch (status) {

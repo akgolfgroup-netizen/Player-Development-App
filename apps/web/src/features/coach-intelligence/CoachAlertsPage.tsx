@@ -17,11 +17,13 @@
  * - Alphabetical by athlete name only
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Bell, CheckCircle, Clock, AlertCircle, ChevronRight, Filter } from "lucide-react";
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import { useAuth } from '../../contexts/AuthContext';
+import { coachesAPI } from '../../services/api';
 
 // Typography
 const typography = {
@@ -134,37 +136,46 @@ interface CoachAlertsPageProps {
 }
 
 export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: CoachAlertsPageProps = {}) {
-  const [alerts, setAlerts] = useState<Alert[]>(apiAlerts || MOCK_ALERTS);
+  const { user } = useAuth();
+  const [alerts, setAlerts] = useState<Alert[]>(apiAlerts || []);
   const [filter, setFilter] = useState<AlertFilter>("all");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(!apiAlerts);
+
+  const fetchAlerts = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await coachesAPI.getAlerts();
+      const alertsData = response.data?.data?.alerts || response.data?.data || response.data || [];
+
+      if (Array.isArray(alertsData) && alertsData.length > 0) {
+        const transformedAlerts: Alert[] = alertsData.map((a: any) => ({
+          id: a.id,
+          athleteId: a.athleteId || a.playerId || a.player?.id,
+          athleteName: a.athleteName || a.playerName ||
+            (a.player ? `${a.player.firstName || ''} ${a.player.lastName || ''}`.trim() : 'Ukjent'),
+          type: a.type || 'milestone',
+          message: a.message || a.text || a.description || '',
+          createdAt: a.createdAt || a.created_at || new Date().toISOString(),
+          read: a.read ?? a.isRead ?? false,
+        }));
+        setAlerts(transformedAlerts);
+      } else {
+        setAlerts(MOCK_ALERTS);
+      }
+    } catch (err) {
+      console.error('Error fetching alerts:', err);
+      setAlerts(MOCK_ALERTS);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   // Fetch alerts if not provided via props
   useEffect(() => {
-    if (!apiAlerts) {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-      fetch("/api/v1/coaches/me/alerts", {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-        .then((r) => {
-          if (r.status === 403) {
-            throw new Error("UPGRADE_REQUIRED");
-          }
-          return r.json();
-        })
-        .then((data) => {
-          if (data.data?.alerts) {
-            setAlerts(data.data.alerts);
-          }
-        })
-        .catch(() => {
-          // Keep mock data on error
-        })
-        .finally(() => setLoading(false));
+    if (!apiAlerts && user) {
+      fetchAlerts();
     }
-  }, [apiAlerts]);
+  }, [apiAlerts, user, fetchAlerts]);
 
   const filteredAlerts = sortAlphabetically(
     filter === "unread" ? alerts.filter((a) => !a.read) : alerts
