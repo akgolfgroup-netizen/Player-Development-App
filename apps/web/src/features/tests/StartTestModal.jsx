@@ -222,22 +222,14 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && handleAddAttempt()}
                 />
-                <button
+                <Button
+                  variant="primary"
+                  size="sm"
                   onClick={handleAddAttempt}
                   disabled={!currentAttempt}
-                  style={{
-                    padding: '12px 20px',
-                    backgroundColor: currentAttempt ? tokens.colors.primary : tokens.colors.mist,
-                    color: currentAttempt ? tokens.colors.white : tokens.colors.steel,
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: currentAttempt ? 'pointer' : 'not-allowed',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                  }}
                 >
                   Legg til
-                </button>
+                </Button>
               </div>
 
               {/* List of attempts */}
@@ -317,8 +309,8 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
               {/* Result summary */}
               <div style={{
-                backgroundColor: meetsRequirement ? `${tokens.colors.success}15` : `${tokens.colors.warning}15`,
-                border: `1px solid ${meetsRequirement ? tokens.colors.success : tokens.colors.warning}`,
+                backgroundColor: meetsRequirement ? `${tokens.colors.success}15` : `${tokens.colors.error}15`,
+                border: `1px solid ${meetsRequirement ? tokens.colors.success : tokens.colors.error}`,
                 borderRadius: '12px',
                 padding: '20px',
                 textAlign: 'center',
@@ -330,7 +322,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                 <p style={{
                   fontSize: '32px',
                   fontWeight: 700,
-                  color: meetsRequirement ? tokens.colors.success : tokens.colors.warning,
+                  color: meetsRequirement ? tokens.colors.success : tokens.colors.error,
                   marginBottom: '8px',
                 }}>
                   {result?.toFixed(test.unit === '' ? 2 : 0)}{test.unit}
@@ -338,9 +330,9 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                 <p style={{
                   fontSize: '14px',
                   fontWeight: 500,
-                  color: meetsRequirement ? tokens.colors.success : tokens.colors.warning,
+                  color: meetsRequirement ? tokens.colors.success : tokens.colors.error,
                 }}>
-                  {meetsRequirement ? '✓ Bestått!' : `Under krav (${test.lowerIsBetter ? '≤' : '≥'}${requirement}${test.unit})`}
+                  {meetsRequirement ? 'Oppfylt' : `Under krav (${test.lowerIsBetter ? '≤' : '≥'}${requirement}${test.unit})`}
                 </p>
               </div>
 
@@ -389,119 +381,56 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
           gap: '12px',
         }}>
           {step === 'instructions' && (
-            <button
+            <Button
+              variant="primary"
               onClick={() => setStep('recording')}
-              style={{
-                flex: 1,
-                padding: '14px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: 600,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-              }}
+              leftIcon={<Play size={18} />}
+              fullWidth
             >
-              <Play size={18} />
               Start test
-            </button>
+            </Button>
           )}
 
           {step === 'recording' && (
             <>
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setStep('instructions')}
-                style={{
-                  padding: '14px 20px',
-                  backgroundColor: tokens.colors.snow,
-                  color: tokens.colors.charcoal,
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                }}
+                leftIcon={<ChevronLeft size={18} />}
               >
-                <ChevronLeft size={18} />
                 Tilbake
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={() => setStep('review')}
                 disabled={attempts.length === 0}
-                style={{
-                  flex: 1,
-                  padding: '14px',
-                  backgroundColor: attempts.length > 0 ? tokens.colors.primary : tokens.colors.mist,
-                  color: attempts.length > 0 ? tokens.colors.white : tokens.colors.steel,
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: attempts.length > 0 ? 'pointer' : 'not-allowed',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px',
-                }}
+                rightIcon={<ChevronRight size={18} />}
+                style={{ flex: 1 }}
               >
                 Se resultat
-                <ChevronRight size={18} />
-              </button>
+              </Button>
             </>
           )}
 
           {step === 'review' && (
             <>
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setStep('recording')}
-                style={{
-                  padding: '14px 20px',
-                  backgroundColor: tokens.colors.snow,
-                  color: tokens.colors.charcoal,
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                }}
+                leftIcon={<ChevronLeft size={18} />}
               >
-                <ChevronLeft size={18} />
                 Rediger
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="primary"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                style={{
-                  flex: 1,
-                  padding: '14px',
-                  backgroundColor: tokens.colors.success,
-                  color: tokens.colors.white,
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  opacity: isSubmitting ? 0.7 : 1,
-                }}
+                loading={isSubmitting}
+                leftIcon={<Check size={18} />}
+                style={{ flex: 1, backgroundColor: 'var(--success)' }}
               >
-                <Check size={18} />
                 {isSubmitting ? 'Lagrer...' : 'Lagre resultat'}
-              </button>
+              </Button>
             </>
           )}
         </div>

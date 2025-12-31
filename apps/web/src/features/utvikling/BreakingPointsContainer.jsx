@@ -135,7 +135,7 @@ const BreakingPointCard = ({ point, onClick }) => {
       <div
         onClick={() => onClick(point)}
         style={{
-          padding: '16px',
+          padding: 'var(--spacing-4)',
           cursor: 'pointer',
           transition: 'all 0.2s',
           borderLeft: `4px solid ${priorityConfig.color}`,
@@ -152,14 +152,14 @@ const BreakingPointCard = ({ point, onClick }) => {
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
-          marginBottom: '12px',
+          marginBottom: 'var(--spacing-3)',
         }}>
           <div>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '4px',
+              gap: 'var(--spacing-2)',
+              marginBottom: 'var(--spacing-1)',
             }}>
               <span style={{
                 fontSize: '11px',
@@ -183,7 +183,7 @@ const BreakingPointCard = ({ point, onClick }) => {
                 color: statusConfig.color,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px',
+                gap: 'var(--spacing-1)',
               }}>
                 <StatusIcon size={10} />
                 {statusConfig.label}
@@ -199,20 +199,20 @@ const BreakingPointCard = ({ point, onClick }) => {
         <p style={{
           fontSize: '13px',
           color: 'var(--text-secondary)',
-          margin: '0 0 12px 0',
+          margin: '0 0 var(--spacing-3) 0',
           lineHeight: 1.4,
         }}>
           {point.description}
         </p>
 
         {/* Progress Bar */}
-        <div style={{ marginBottom: '12px' }}>
+        <div style={{ marginBottom: 'var(--spacing-3)' }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             fontSize: '11px',
             color: 'var(--text-secondary)',
-            marginBottom: '4px',
+            marginBottom: 'var(--spacing-1)',
           }}>
             <span>Fremgang</span>
             <span>{point.progress}%</span>
@@ -236,14 +236,14 @@ const BreakingPointCard = ({ point, onClick }) => {
         {/* Stats */}
         <div style={{
           display: 'flex',
-          gap: '16px',
-          paddingTop: '12px',
+          gap: 'var(--spacing-4)',
+          paddingTop: 'var(--spacing-3)',
           borderTop: '1px solid var(--border-default)',
         }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
+            gap: 'var(--spacing-1)',
             fontSize: '12px',
             color: 'var(--text-secondary)',
           }}>
@@ -253,7 +253,7 @@ const BreakingPointCard = ({ point, onClick }) => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
+            gap: 'var(--spacing-1)',
             fontSize: '12px',
             color: 'var(--text-secondary)',
           }}>
@@ -263,7 +263,7 @@ const BreakingPointCard = ({ point, onClick }) => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
+            gap: 'var(--spacing-1)',
             fontSize: '12px',
             color: 'var(--text-secondary)',
           }}>
@@ -285,8 +285,8 @@ const ResolvedCard = ({ point }) => (
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: '12px',
-      padding: '12px 14px',
+      gap: 'var(--spacing-3)',
+      padding: 'var(--spacing-3) var(--spacing-3)',
     }}>
       <div style={{
         width: '32px',
@@ -337,31 +337,31 @@ const BreakingPointsContainer = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          gap: '10px',
-          marginBottom: '24px',
+          gap: 'var(--spacing-2)',
+          marginBottom: 'var(--spacing-6)',
         }}>
           <Card variant="default" padding="none">
-            <div style={{ padding: '14px', textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+            <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--accent)' }}>
                 {BREAKING_POINTS.length}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Aktive</div>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Aktive</div>
             </div>
           </Card>
           <Card variant="default" padding="none">
-            <div style={{ padding: '14px', textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--error)' }}>
+            <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--error)' }}>
                 {BREAKING_POINTS.filter((p) => p.priority === 'high').length}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Hoy prioritet</div>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Hoy prioritet</div>
             </div>
           </Card>
           <Card variant="default" padding="none">
-            <div style={{ padding: '14px', textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
+            <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--success)' }}>
                 {RESOLVED_POINTS.length}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Lost</div>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Lost</div>
             </div>
           </Card>
         </div>
@@ -371,9 +371,9 @@ const BreakingPointsContainer = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '16px',
+          marginBottom: 'var(--spacing-4)',
         }}>
-          <div style={{ display: 'flex', gap: '6px' }}>
+          <div style={{ display: 'flex', gap: 'var(--spacing-1)' }}>
             {filters.map((f) => (
               <Button
                 key={f.key}
@@ -396,7 +396,7 @@ const BreakingPointsContainer = () => {
         </div>
 
         {/* Breaking Points List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', marginBottom: 'var(--spacing-8)' }}>
           {filteredPoints.map((point) => (
             <BreakingPointCard
               key={point.id}
@@ -408,10 +408,10 @@ const BreakingPointsContainer = () => {
 
         {/* Resolved Section */}
         <div>
-          <SubSectionTitle style={{ marginBottom: '12px' }}>
+          <SubSectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>
             Loste Breaking Points
           </SubSectionTitle>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
             {RESOLVED_POINTS.map((point) => (
               <ResolvedCard key={point.id} point={point} />
             ))}

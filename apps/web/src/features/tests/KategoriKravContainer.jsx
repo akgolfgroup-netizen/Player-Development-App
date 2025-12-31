@@ -164,14 +164,14 @@ const RequirementCard = ({ test }) => {
         display: 'flex',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        marginBottom: '10px',
+        marginBottom: 'var(--spacing-2)',
       }}>
         <div style={{ flex: 1 }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            marginBottom: '4px',
+            gap: 'var(--spacing-2)',
+            marginBottom: 'var(--spacing-1)',
           }}>
             <Badge variant="accent" size="sm">{test.category}</Badge>
             {test.met ? (
@@ -199,7 +199,7 @@ const RequirementCard = ({ test }) => {
       </div>
 
       {/* Progress */}
-      <div style={{ marginBottom: '8px' }}>
+      <div style={{ marginBottom: 'var(--spacing-2)' }}>
         <div style={{
           height: '6px',
           backgroundColor: 'var(--bg-neutral-subtle)',
@@ -258,20 +258,20 @@ const RequirementCard = ({ test }) => {
 // ============================================================================
 
 const CategorySelector = ({ selected, onChange }) => (
-  <Card variant="default" padding="md" style={{ marginBottom: '20px' }}>
+  <Card variant="default" padding="md" style={{ marginBottom: 'var(--spacing-5)' }}>
     <SubSectionTitle style={{
       fontSize: '14px',
       fontWeight: 600,
       color: 'var(--text-primary)',
-      marginBottom: '12px',
+      marginBottom: 'var(--spacing-3)',
     }}>
       Velg kategori
     </SubSectionTitle>
     <div style={{
       display: 'flex',
-      gap: '8px',
+      gap: 'var(--spacing-2)',
       overflowX: 'auto',
-      paddingBottom: '4px',
+      paddingBottom: 'var(--spacing-1)',
     }}>
       {CATEGORIES.slice().reverse().map((cat) => {
         const isCurrent = cat.level === CURRENT_CATEGORY;
@@ -309,12 +309,12 @@ const SummaryCard = ({ requirements, targetCategory }) => {
   const rounds = requirements?.rounds;
 
   return (
-    <Card variant="default" padding="md" style={{ marginBottom: '20px' }}>
+    <Card variant="default" padding="md" style={{ marginBottom: 'var(--spacing-5)' }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '12px',
-        marginBottom: '16px',
+        gap: 'var(--spacing-3)',
+        marginBottom: 'var(--spacing-4)',
       }}>
         <div style={{
           width: '48px',
@@ -350,10 +350,10 @@ const SummaryCard = ({ requirements, targetCategory }) => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '12px',
+        gap: 'var(--spacing-3)',
       }}>
         <div style={{
-          padding: '12px',
+          padding: 'var(--spacing-3)',
           backgroundColor: 'var(--bg-secondary)',
           borderRadius: 'var(--radius-sm)',
           textAlign: 'center',
@@ -373,7 +373,7 @@ const SummaryCard = ({ requirements, targetCategory }) => {
         {rounds && (
           <>
             <div style={{
-              padding: '12px',
+              padding: 'var(--spacing-3)',
               backgroundColor: 'var(--bg-secondary)',
               borderRadius: 'var(--radius-sm)',
               textAlign: 'center',
@@ -391,7 +391,7 @@ const SummaryCard = ({ requirements, targetCategory }) => {
             </div>
 
             <div style={{
-              padding: '12px',
+              padding: 'var(--spacing-3)',
               backgroundColor: 'var(--bg-secondary)',
               borderRadius: 'var(--radius-sm)',
               textAlign: 'center',
@@ -446,15 +446,15 @@ const KategoriKravContainer = () => {
 
         {/* Requirements by Category */}
         {Object.entries(groupedTests).map(([category, tests]) => (
-          <div key={category} style={{ marginBottom: '24px' }}>
+          <div key={category} style={{ marginBottom: 'var(--spacing-6)' }}>
             <SubSectionTitle style={{
               fontSize: '15px',
               fontWeight: 600,
               color: 'var(--text-primary)',
-              marginBottom: '12px',
+              marginBottom: 'var(--spacing-3)',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
+              gap: 'var(--spacing-2)',
             }}>
               {category}
               <span style={{
@@ -465,7 +465,7 @@ const KategoriKravContainer = () => {
                 ({tests.filter((t) => t.met).length}/{tests.length} oppfylt)
               </span>
             </SubSectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
               {tests.map((test) => (
                 <RequirementCard key={test.id} test={test} />
               ))}

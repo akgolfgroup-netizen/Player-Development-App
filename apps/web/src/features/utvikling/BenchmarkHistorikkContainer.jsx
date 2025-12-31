@@ -144,7 +144,7 @@ const BenchmarkCard = ({ test, onClick }) => {
       <div
         onClick={() => onClick(test)}
         style={{
-          padding: '16px',
+          padding: 'var(--spacing-4)',
           cursor: 'pointer',
           transition: 'all 0.2s',
         }}
@@ -159,7 +159,7 @@ const BenchmarkCard = ({ test, onClick }) => {
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
-          marginBottom: '12px',
+          marginBottom: 'var(--spacing-3)',
         }}>
           <div>
             <span style={{
@@ -172,7 +172,7 @@ const BenchmarkCard = ({ test, onClick }) => {
             }}>
               {test.category}
             </span>
-            <SubSectionTitle style={{ fontSize: '15px', marginTop: '6px' }}>
+            <SubSectionTitle style={{ fontSize: '15px', marginTop: 'var(--spacing-1)' }}>
               {test.name}
             </SubSectionTitle>
           </div>
@@ -183,11 +183,11 @@ const BenchmarkCard = ({ test, onClick }) => {
         <div style={{
           display: 'flex',
           alignItems: 'baseline',
-          gap: '8px',
-          marginBottom: '12px',
+          gap: 'var(--spacing-2)',
+          marginBottom: 'var(--spacing-3)',
         }}>
           <span style={{
-            fontSize: '28px',
+            fontSize: '32px',
             fontWeight: 700,
             color: 'var(--text-primary)',
           }}>
@@ -199,8 +199,8 @@ const BenchmarkCard = ({ test, onClick }) => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
-            marginLeft: '8px',
+            gap: 'var(--spacing-1)',
+            marginLeft: 'var(--spacing-2)',
           }}>
             <TrendIcon trend={trend} />
             <span style={{
@@ -215,13 +215,13 @@ const BenchmarkCard = ({ test, onClick }) => {
         </div>
 
         {/* Progress to Target */}
-        <div style={{ marginBottom: '12px' }}>
+        <div style={{ marginBottom: 'var(--spacing-3)' }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             fontSize: '11px',
             color: 'var(--text-secondary)',
-            marginBottom: '4px',
+            marginBottom: 'var(--spacing-1)',
           }}>
             <span>Mal: {test.target}{test.unit}</span>
             <span>{Math.round(progressToTarget)}%</span>
@@ -245,8 +245,8 @@ const BenchmarkCard = ({ test, onClick }) => {
         {/* Stats Row */}
         <div style={{
           display: 'flex',
-          gap: '16px',
-          paddingTop: '12px',
+          gap: 'var(--spacing-4)',
+          paddingTop: 'var(--spacing-3)',
           borderTop: '1px solid var(--border-default)',
         }}>
           <div>
@@ -295,40 +295,40 @@ const BenchmarkHistorikkContainer = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          gap: '10px',
-          marginBottom: '24px',
+          gap: 'var(--spacing-2)',
+          marginBottom: 'var(--spacing-6)',
         }}>
           <Card variant="default" padding="none">
-            <div style={{ padding: '14px', textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+            <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--accent)' }}>
                 {BENCHMARK_TESTS.length}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Benchmarks</div>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Benchmarks</div>
             </div>
           </Card>
           <Card variant="default" padding="none">
-            <div style={{ padding: '14px', textAlign: 'center' }}>
+            <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
               <div style={{
-                fontSize: '24px',
+                fontSize: '32px',
                 fontWeight: 700,
                 color: 'var(--success)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '4px',
+                gap: 'var(--spacing-1)',
               }}>
                 <TrendingUp size={18} />
                 {BENCHMARK_TESTS.filter((t) => getTrend(t.history, t.lowerIsBetter) === 'up').length}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Forbedret</div>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Forbedret</div>
             </div>
           </Card>
           <Card variant="default" padding="none">
-            <div style={{ padding: '14px', textAlign: 'center' }}>
-              <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--warning)' }}>
+            <div style={{ padding: 'var(--spacing-3)', textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--warning)' }}>
                 {Math.round(BENCHMARK_TESTS.reduce((sum, t) => sum + t.history[0].percentile, 0) / BENCHMARK_TESTS.length)}%
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Snitt persentil</div>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Snitt persentil</div>
             </div>
           </Card>
         </div>
@@ -336,10 +336,10 @@ const BenchmarkHistorikkContainer = () => {
         {/* Category Filter */}
         <div style={{
           display: 'flex',
-          gap: '6px',
-          marginBottom: '20px',
+          gap: 'var(--spacing-1)',
+          marginBottom: 'var(--spacing-5)',
           overflowX: 'auto',
-          paddingBottom: '4px',
+          paddingBottom: 'var(--spacing-1)',
         }}>
           {CATEGORIES.map((cat) => (
             <Button
@@ -357,7 +357,7 @@ const BenchmarkHistorikkContainer = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '12px',
+          gap: 'var(--spacing-3)',
         }}>
           {filteredTests.map((test) => (
             <BenchmarkCard
@@ -371,7 +371,7 @@ const BenchmarkHistorikkContainer = () => {
         {filteredTests.length === 0 && (
           <Card variant="default" padding="none">
             <div style={{ padding: '40px', textAlign: 'center' }}>
-              <BarChart2 size={40} style={{ color: 'var(--text-secondary)', marginBottom: '12px' }} />
+              <BarChart2 size={40} style={{ color: 'var(--text-secondary)', marginBottom: 'var(--spacing-3)' }} />
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
                 Ingen benchmarks funnet i denne kategorien
               </p>

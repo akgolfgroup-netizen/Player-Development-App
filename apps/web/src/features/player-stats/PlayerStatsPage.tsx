@@ -5,9 +5,6 @@ import {
   TrendingUp,
   TrendingDown,
   Target,
-  Crosshair,
-  CircleDot,
-  Flag,
   Activity,
   ChevronRight,
   RefreshCw,
@@ -22,6 +19,7 @@ import StateCard from '../../ui/composites/StateCard';
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { useScreenView } from '../../analytics/useScreenView';
 import { SectionTitle, CardTitle } from '../../components/typography';
+import { getStrokesGainedIcon } from '../../constants/icons';
 
 interface StrokesGainedData {
   hasData: boolean;
@@ -66,12 +64,7 @@ const PlayerStatsPage: React.FC = () => {
   };
 
   const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'approach': return Crosshair;
-      case 'around_green': return Flag;
-      case 'putting': return CircleDot;
-      default: return Target;
-    }
+    return getStrokesGainedIcon(category);
   };
 
   const getCategoryLabel = (category: string) => {
@@ -132,12 +125,10 @@ const PlayerStatsPage: React.FC = () => {
     >
       {/* Demo banner */}
       {sgData?.isDemo && (
-        <section style={styles.section}>
-          <div style={styles.demoBanner}>
-            <Info size={16} color="var(--datagolf-accent)" />
-            <span>Viser demodata. Fullfør tester for å se dine egne resultater.</span>
-          </div>
-        </section>
+        <div style={styles.demoBanner}>
+          <Info size={16} color="var(--info)" />
+          <span>Viser demodata. Fullfør tester for å se dine egne resultater.</span>
+        </div>
       )}
 
       {/* Total SG Card */}
@@ -327,10 +318,11 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+    padding: 'var(--spacing-3) var(--spacing-4)',
+    backgroundColor: 'var(--info-muted)',
+    border: '1px solid rgba(2, 132, 199, 0.2)',
     borderRadius: 'var(--radius-md)',
-    border: '1px solid rgba(99, 102, 241, 0.2)',
+    marginBottom: 'var(--spacing-4)',
     fontSize: 'var(--font-size-footnote)',
     color: 'var(--text-secondary)',
   },

@@ -67,8 +67,8 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
   <div style={{
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-    gap: '10px',
-    marginBottom: '24px',
+    gap: 'var(--spacing-2)',
+    marginBottom: 'var(--spacing-6)',
   }}>
     {SESSION_TYPES.map((type) => {
       const Icon = type.icon;
@@ -82,8 +82,8 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '8px',
-            padding: '16px 12px',
+            gap: 'var(--spacing-2)',
+            padding: 'var(--spacing-4) var(--spacing-3)',
             borderRadius: '12px',
             border: isSelected ? `2px solid ${type.color}` : '2px solid transparent',
             backgroundColor: isSelected ? `${type.color}15` : 'var(--bg-primary)',
@@ -128,22 +128,22 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
     <div style={{
       backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
-      padding: '16px',
-      marginBottom: '20px',
+      padding: 'var(--spacing-4)',
+      marginBottom: 'var(--spacing-5)',
     }}>
       <SubSectionTitle style={{
         fontSize: '14px',
-        marginBottom: '12px',
+        marginBottom: 'var(--spacing-3)',
       }}>
         Hurtiglogg
       </SubSectionTitle>
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 'var(--spacing-2)', flexWrap: 'wrap' }}>
         {filtered.map((exercise) => (
           <button
             key={exercise.id}
             onClick={() => onQuickLog(exercise)}
             style={{
-              padding: '10px 14px',
+              padding: 'var(--spacing-2) var(--spacing-3)',
               borderRadius: '8px',
               border: '1px solid var(--border-default)',
               backgroundColor: 'var(--bg-secondary)',
@@ -153,7 +153,7 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
+              gap: 'var(--spacing-1)',
               transition: 'all 0.2s',
             }}
             onMouseEnter={(e) => {
@@ -203,24 +203,24 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
     <form onSubmit={handleSubmit} style={{
       backgroundColor: 'var(--bg-primary)',
       borderRadius: '14px',
-      padding: '20px',
-      marginBottom: '20px',
+      padding: 'var(--spacing-5)',
+      marginBottom: 'var(--spacing-5)',
     }}>
       <SubSectionTitle style={{
         fontSize: '15px',
-        marginBottom: '16px',
+        marginBottom: 'var(--spacing-4)',
       }}>
         Logg okt
       </SubSectionTitle>
 
       {/* Session Name */}
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: 'var(--spacing-4)' }}>
         <label style={{
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
           color: 'var(--text-primary)',
-          marginBottom: '6px',
+          marginBottom: 'var(--spacing-1)',
         }}>
           Navn pa okten
         </label>
@@ -231,7 +231,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           placeholder="F.eks. Driver-trening pa range"
           style={{
             width: '100%',
-            padding: '12px 14px',
+            padding: 'var(--spacing-3) var(--spacing-3)',
             borderRadius: '8px',
             border: '1px solid var(--border-default)',
             fontSize: '14px',
@@ -244,8 +244,8 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '16px',
-        marginBottom: '16px',
+        gap: 'var(--spacing-4)',
+        marginBottom: 'var(--spacing-4)',
       }}>
         <div>
           <label style={{
@@ -253,11 +253,11 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
             fontSize: '13px',
             fontWeight: 500,
             color: 'var(--text-primary)',
-            marginBottom: '6px',
+            marginBottom: 'var(--spacing-1)',
           }}>
             Varighet (minutter)
           </label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
             <Clock size={18} color={'var(--text-secondary)'} />
             <input
               type="number"
@@ -267,7 +267,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
               max="300"
               style={{
                 flex: 1,
-                padding: '12px 14px',
+                padding: 'var(--spacing-3) var(--spacing-3)',
                 borderRadius: '8px',
                 border: '1px solid var(--border-default)',
                 fontSize: '14px',
@@ -283,18 +283,18 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
             fontSize: '13px',
             fontWeight: 500,
             color: 'var(--text-primary)',
-            marginBottom: '6px',
+            marginBottom: 'var(--spacing-1)',
           }}>
             Rating
           </label>
-          <div style={{ display: 'flex', gap: '4px' }}>
+          <div style={{ display: 'flex', gap: 'var(--spacing-1)' }}>
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
                 type="button"
                 onClick={() => setFormData({ ...formData, rating: star })}
                 style={{
-                  padding: '8px',
+                  padding: 'var(--spacing-2)',
                   borderRadius: '6px',
                   border: 'none',
                   backgroundColor: 'transparent',
@@ -313,17 +313,17 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
       </div>
 
       {/* Energy Level */}
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: 'var(--spacing-4)' }}>
         <label style={{
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
           color: 'var(--text-primary)',
-          marginBottom: '6px',
+          marginBottom: 'var(--spacing-1)',
         }}>
           Energiniva
         </label>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
           {[1, 2, 3, 4, 5].map((level) => (
             <button
               key={level}
@@ -331,7 +331,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
               onClick={() => setFormData({ ...formData, energyLevel: level })}
               style={{
                 flex: 1,
-                padding: '10px',
+                padding: 'var(--spacing-2)',
                 borderRadius: '8px',
                 border: formData.energyLevel === level
                   ? '2px solid var(--accent)'
@@ -356,7 +356,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           justifyContent: 'space-between',
           fontSize: '11px',
           color: 'var(--text-secondary)',
-          marginTop: '4px',
+          marginTop: 'var(--spacing-1)',
         }}>
           <span>Lav</span>
           <span>Hoy</span>
@@ -364,13 +364,13 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
       </div>
 
       {/* Notes */}
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: 'var(--spacing-4)' }}>
         <label style={{
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
           color: 'var(--text-primary)',
-          marginBottom: '6px',
+          marginBottom: 'var(--spacing-1)',
         }}>
           Notater
         </label>
@@ -381,7 +381,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           rows={3}
           style={{
             width: '100%',
-            padding: '12px 14px',
+            padding: 'var(--spacing-3) var(--spacing-3)',
             borderRadius: '8px',
             border: '1px solid var(--border-default)',
             fontSize: '14px',
@@ -393,13 +393,13 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
       </div>
 
       {/* Achievements */}
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: 'var(--spacing-4)' }}>
         <label style={{
           display: 'block',
           fontSize: '13px',
           fontWeight: 500,
           color: 'var(--text-primary)',
-          marginBottom: '6px',
+          marginBottom: 'var(--spacing-1)',
         }}>
           Prestasjoner (valgfritt)
         </label>
@@ -410,7 +410,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           placeholder="F.eks. Ny toppfart, PR i ovelse"
           style={{
             width: '100%',
-            padding: '12px 14px',
+            padding: 'var(--spacing-3) var(--spacing-3)',
             borderRadius: '8px',
             border: '1px solid var(--border-default)',
             fontSize: '14px',
@@ -442,15 +442,15 @@ const RecentLogs = ({ logs }) => (
   <div style={{
     backgroundColor: 'var(--bg-primary)',
     borderRadius: '14px',
-    padding: '16px',
+    padding: 'var(--spacing-4)',
   }}>
     <SubSectionTitle style={{
       fontSize: '14px',
-      marginBottom: '12px',
+      marginBottom: 'var(--spacing-3)',
     }}>
       Siste loggforinger
     </SubSectionTitle>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
       {logs.map((log) => {
         const typeConfig = SESSION_TYPES.find((t) => t.id === log.type);
         const Icon = typeConfig?.icon || Target;
@@ -461,8 +461,8 @@ const RecentLogs = ({ logs }) => (
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
-              padding: '10px',
+              gap: 'var(--spacing-3)',
+              padding: 'var(--spacing-2)',
               borderRadius: '8px',
               backgroundColor: 'var(--bg-secondary)',
             }}
@@ -487,14 +487,14 @@ const RecentLogs = ({ logs }) => (
                 color: 'var(--text-secondary)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: 'var(--spacing-2)',
               }}>
                 <span>{new Date(log.date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}</span>
                 <span>•</span>
                 <span>{log.duration} min</span>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: '2px' }}>
+            <div style={{ display: 'flex', gap: 'var(--spacing-0)' }}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
@@ -569,12 +569,12 @@ const LoggTreningContainer = () => {
         <div style={{
           backgroundColor: 'var(--bg-primary)',
           borderRadius: '14px',
-          padding: '16px',
-          marginBottom: '20px',
+          padding: 'var(--spacing-4)',
+          marginBottom: 'var(--spacing-5)',
         }}>
           <SubSectionTitle style={{
             fontSize: '14px',
-            marginBottom: '12px',
+            marginBottom: 'var(--spacing-3)',
           }}>
             Velg type okt
           </SubSectionTitle>
@@ -589,11 +589,11 @@ const LoggTreningContainer = () => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
-            padding: '14px 16px',
+            gap: 'var(--spacing-2)',
+            padding: 'var(--spacing-3) var(--spacing-4)',
             borderRadius: '10px',
             backgroundColor: 'rgba(34, 197, 94, 0.15)',
-            marginBottom: '20px',
+            marginBottom: 'var(--spacing-5)',
           }}>
             <CheckCircle size={20} color="var(--success)" />
             <span style={{ fontSize: '14px', color: 'var(--success)', fontWeight: 500 }}>
@@ -606,11 +606,11 @@ const LoggTreningContainer = () => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
-            padding: '14px 16px',
+            gap: 'var(--spacing-2)',
+            padding: 'var(--spacing-3) var(--spacing-4)',
             borderRadius: '10px',
             backgroundColor: 'rgba(239, 68, 68, 0.15)',
-            marginBottom: '20px',
+            marginBottom: 'var(--spacing-5)',
           }}>
             <AlertCircle size={20} color="var(--error)" />
             <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>

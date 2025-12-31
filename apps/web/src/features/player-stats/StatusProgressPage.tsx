@@ -85,13 +85,13 @@ function getSeverityColor(severity: string): string {
     case 'critical':
       return 'var(--error)';
     case 'high':
-      return '#f97316'; // orange
-    case 'medium':
       return 'var(--warning)';
+    case 'medium':
+      return 'var(--text-secondary)';
     case 'low':
       return 'var(--success)';
     default:
-      return 'var(--text-secondary)';
+      return 'var(--text-tertiary)';
   }
 }
 
@@ -516,7 +516,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: '2px',
   },
   statValue: {
-    fontSize: '24px',
+    fontSize: '32px',
     fontWeight: 700,
     color: 'var(--text-primary)',
     lineHeight: 1,
@@ -664,7 +664,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-secondary)',
   },
   sgTotalValue: {
-    fontSize: '28px',
+    fontSize: '32px',
     fontWeight: 700,
   },
   sgCategories: {

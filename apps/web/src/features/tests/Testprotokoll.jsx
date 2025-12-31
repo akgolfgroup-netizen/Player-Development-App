@@ -62,12 +62,27 @@ const Card = ({ children, className = '', padding = true }) => (
 );
 
 const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
-  const variants = {
-    neutral: 'bg-gray-100 text-gray-600',
-    accent: 'bg-blue-50 text-blue-700',
-    success: 'bg-green-50 text-green-700',
-    warning: 'bg-amber-50 text-amber-700',
-    error: 'bg-red-50 text-red-700',
+  const variantStyles = {
+    neutral: {
+      backgroundColor: 'var(--bg-neutral-subtle)',
+      color: 'var(--text-tertiary)',
+    },
+    accent: {
+      backgroundColor: 'var(--bg-accent-subtle)',
+      color: 'var(--accent)',
+    },
+    success: {
+      backgroundColor: 'var(--success-muted)',
+      color: 'var(--success)',
+    },
+    warning: {
+      backgroundColor: 'var(--warning-muted)',
+      color: 'var(--warning)',
+    },
+    error: {
+      backgroundColor: 'var(--error-muted)',
+      color: 'var(--error)',
+    },
   };
 
   const sizes = {
@@ -75,8 +90,13 @@ const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
     md: 'px-2.5 py-1 text-[13px]',
   };
 
+  const style = variantStyles[variant] || variantStyles.neutral;
+
   return (
-    <span className={`inline-flex items-center rounded-full font-medium ${variants[variant]} ${sizes[size]}`}>
+    <span
+      className={`inline-flex items-center rounded-full font-medium ${sizes[size]}`}
+      style={style}
+    >
       {children}
     </span>
   );
@@ -656,7 +676,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
 
           <Card className="text-center">
             <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Fokusområder</p>
-            <p className="text-[32px] font-bold text-ak-warning">{stats.total - stats.passed}</p>
+            <p className="text-[32px] font-bold text-ak-error">{stats.total - stats.passed}</p>
             <p className="text-[12px] text-ak-steel">under krav</p>
           </Card>
         </div>
@@ -664,17 +684,18 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
         {/* Category Filter */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
           {testCategories.map(cat => (
-            <button
+            <Button
               key={cat.id}
+              variant={selectedCategory === cat.id ? 'primary' : 'secondary'}
+              size="sm"
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-lg text-[13px] font-medium whitespace-nowrap transition-colors ${
-                selectedCategory === cat.id
-                  ? 'bg-ak-primary text-white'
-                  : 'bg-white text-ak-charcoal border border-ak-mist hover:bg-ak-snow'
-              }`}
+              style={{
+                borderRadius: 'var(--radius-full)',
+                whiteSpace: 'nowrap',
+              }}
             >
               {cat.label} ({cat.count})
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -706,9 +727,9 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                     {status.noData ? (
                       <Badge variant="neutral">Ikke testet</Badge>
                     ) : status.meetsReq ? (
-                      <Badge variant="success">Bestått</Badge>
+                      <Badge variant="success">Oppfylt</Badge>
                     ) : (
-                      <Badge variant="warning">Under krav</Badge>
+                      <Badge variant="error">Under krav</Badge>
                     )}
                   </div>
                 </div>
@@ -717,7 +738,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                 <div className="grid grid-cols-3 gap-3 mb-3">
                   <div className="bg-ak-snow rounded-lg p-2 text-center">
                     <p className="text-[10px] text-ak-steel uppercase">Nåværende</p>
-                    <p className={`text-[16px] font-bold ${status.noData ? 'text-ak-steel' : status.meetsReq ? 'text-ak-success' : 'text-ak-warning'}`}>
+                    <p className={`text-[16px] font-bold ${status.noData ? 'text-ak-steel' : status.meetsReq ? 'text-ak-success' : 'text-ak-error'}`}>
                       {status.noData ? '–' : `${test.currentResult}${test.unit}`}
                     </p>
                   </div>
@@ -785,7 +806,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                         <ProgressBar
                           value={test.currentResult}
                           max={test.requirement[player.category] || test.requirement.B}
-                          color={status.meetsReq ? 'var(--success)' : 'var(--warning)'}
+                          color={status.meetsReq ? 'var(--success)' : 'var(--error)'}
                         />
                       </div>
                     )}

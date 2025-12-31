@@ -114,11 +114,11 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
 
   return (
     <Card variant="default" padding="none">
-      <div style={{ padding: '16px' }}>
-        <SubSectionTitle style={{ fontSize: '14px', marginBottom: '12px' }}>
+      <div style={{ padding: 'var(--spacing-4)' }}>
+        <SubSectionTitle style={{ fontSize: '14px', marginBottom: 'var(--spacing-3)' }}>
           Kategoristige
         </SubSectionTitle>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-1)' }}>
           {reversedCategories.map((cat) => {
             const isCurrent = cat.level === currentCategory;
             const isPast = CATEGORIES.findIndex((c) => c.level === cat.level) <
@@ -130,8 +130,8 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
-                  padding: '8px 10px',
+                  gap: 'var(--spacing-2)',
+                  padding: 'var(--spacing-2) var(--spacing-2)',
                   borderRadius: 'var(--radius-md)',
                   backgroundColor: isCurrent ? 'rgba(var(--accent-rgb), 0.1)' :
                                  isPast ? 'rgba(var(--success-rgb), 0.08)' : 'transparent',
@@ -191,27 +191,27 @@ const CategoryLadder = ({ currentCategory, currentPoints }) => {
 
 const RequirementsChecklist = ({ requirements, targetCategory }) => (
   <Card variant="default" padding="none">
-    <div style={{ padding: '16px' }}>
-      <SubSectionTitle style={{ fontSize: '14px', marginBottom: '4px' }}>
+    <div style={{ padding: 'var(--spacing-4)' }}>
+      <SubSectionTitle style={{ fontSize: '14px', marginBottom: 'var(--spacing-1)' }}>
         Krav for Kategori {targetCategory}
       </SubSectionTitle>
       <p style={{
         fontSize: '12px',
         color: 'var(--text-secondary)',
-        margin: '0 0 12px 0',
+        margin: '0 0 var(--spacing-3) 0',
       }}>
         {requirements.filter((r) => r.met).length} av {requirements.length} oppfylt
       </p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
         {requirements.map((req) => (
           <div
             key={req.id}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              padding: '10px 12px',
+              gap: 'var(--spacing-2)',
+              padding: 'var(--spacing-2) var(--spacing-3)',
               borderRadius: 'var(--radius-md)',
               backgroundColor: req.met ? 'rgba(var(--success-rgb), 0.08)' : 'rgba(var(--error-rgb), 0.08)',
             }}
@@ -246,7 +246,7 @@ const RequirementsChecklist = ({ requirements, targetCategory }) => (
                 Krav: {req.requiredScore} | Din: {req.currentScore}
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-1)' }}>
               <TrendIcon trend={req.trend} />
               <span style={{
                 fontSize: '14px',
@@ -269,19 +269,19 @@ const RequirementsChecklist = ({ requirements, targetCategory }) => (
 
 const ProgressHistory = ({ history }) => (
   <Card variant="default" padding="none">
-    <div style={{ padding: '16px' }}>
-      <SubSectionTitle style={{ fontSize: '14px', marginBottom: '12px' }}>
+    <div style={{ padding: 'var(--spacing-4)' }}>
+      <SubSectionTitle style={{ fontSize: '14px', marginBottom: 'var(--spacing-3)' }}>
         Poenghistorikk
       </SubSectionTitle>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-1)' }}>
         {history.map((entry, idx) => (
           <div
             key={idx}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
+              gap: 'var(--spacing-3)',
+              padding: 'var(--spacing-2) var(--spacing-3)',
               borderRadius: 'var(--radius-md)',
               backgroundColor: idx === 0 ? 'rgba(var(--accent-rgb), 0.08)' : 'var(--bg-secondary)',
             }}
@@ -341,66 +341,66 @@ const KategoriFremgangContainer = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-          gap: '10px',
-          marginBottom: '24px',
+          gap: 'var(--spacing-2)',
+          marginBottom: 'var(--spacing-6)',
         }}>
           <Card variant="default" padding="none">
-            <div style={{ padding: '16px', textAlign: 'center' }}>
+            <div style={{ padding: 'var(--spacing-4)', textAlign: 'center' }}>
               <div style={{
-                fontSize: '32px',
+                fontSize: '36px',
                 fontWeight: 700,
                 color: 'var(--accent)',
               }}>
                 {CURRENT_STATUS.currentCategory}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>
                 Navaerende
               </div>
             </div>
           </Card>
           <Card variant="default" padding="none">
-            <div style={{ padding: '16px', textAlign: 'center' }}>
+            <div style={{ padding: 'var(--spacing-4)', textAlign: 'center' }}>
               <div style={{
-                fontSize: '24px',
+                fontSize: '32px',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
               }}>
                 {CURRENT_STATUS.currentPoints}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>
                 Poeng
               </div>
             </div>
           </Card>
           <Card variant="default" padding="none">
-            <div style={{ padding: '16px', textAlign: 'center' }}>
+            <div style={{ padding: 'var(--spacing-4)', textAlign: 'center' }}>
               <div style={{
-                fontSize: '24px',
+                fontSize: '32px',
                 fontWeight: 700,
                 color: 'var(--success)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '4px',
+                gap: 'var(--spacing-1)',
               }}>
                 <TrendingUp size={20} />
                 +{pointsGained}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>
                 Denne sesongen
               </div>
             </div>
           </Card>
           <Card variant="default" padding="none">
-            <div style={{ padding: '16px', textAlign: 'center' }}>
+            <div style={{ padding: 'var(--spacing-4)', textAlign: 'center' }}>
               <div style={{
-                fontSize: '24px',
+                fontSize: '32px',
                 fontWeight: 700,
                 color: 'var(--warning)',
               }}>
                 {categoriesAdvanced > 0 ? `+${categoriesAdvanced}` : categoriesAdvanced}
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>
                 Kategorier opp
               </div>
             </div>
@@ -411,7 +411,7 @@ const KategoriFremgangContainer = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'minmax(200px, 280px) 1fr',
-          gap: '20px',
+          gap: 'var(--spacing-5)',
         }}>
           {/* Left: Category Ladder */}
           <CategoryLadder
@@ -420,7 +420,7 @@ const KategoriFremgangContainer = () => {
           />
 
           {/* Right: Requirements and History */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-5)' }}>
             <RequirementsChecklist
               requirements={CATEGORY_REQUIREMENTS}
               targetCategory="B"

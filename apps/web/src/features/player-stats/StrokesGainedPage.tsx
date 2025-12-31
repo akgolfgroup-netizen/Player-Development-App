@@ -383,12 +383,10 @@ const StrokesGainedPage: React.FC = () => {
 
       {/* Demo notice */}
       {sgData?.isDemo && (
-        <section style={styles.section}>
-          <div style={styles.demoNotice}>
-            <Info size={16} color="var(--warning)" />
-            <span>Dette er demodata. Fullfør flere tester for å se dine egne resultater.</span>
-          </div>
-        </section>
+        <div style={styles.demoNotice}>
+          <Info size={16} color="var(--info)" />
+          <span>Viser demodata. Fullfør flere tester for å se dine egne resultater.</span>
+        </div>
       )}
     </AppShellTemplate>
   );
@@ -480,7 +478,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 'var(--spacing-1)',
   },
   totalNumber: {
-    fontSize: '40px',
+    fontSize: '36px',
     fontWeight: 700,
   },
   totalTrend: {
@@ -506,7 +504,7 @@ const styles: Record<string, React.CSSProperties> = {
     paddingTop: '20px',
   },
   percentileValue: {
-    fontSize: '28px',
+    fontSize: '32px',
     fontWeight: 700,
     color: 'var(--text-primary)',
   },
@@ -563,7 +561,7 @@ const styles: Record<string, React.CSSProperties> = {
     gap: 'var(--spacing-3)',
   },
   categoryValue: {
-    fontSize: '20px',
+    fontSize: '24px',
     fontWeight: 700,
   },
   categoryExpanded: {
@@ -693,9 +691,11 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'rgba(var(--warning-rgb), 0.1)',
+    padding: 'var(--spacing-3) var(--spacing-4)',
+    backgroundColor: 'var(--info-muted)',
+    border: '1px solid rgba(2, 132, 199, 0.2)',
     borderRadius: 'var(--radius-md)',
+    marginBottom: 'var(--spacing-4)',
     fontSize: 'var(--font-size-footnote)',
     color: 'var(--text-secondary)',
   },

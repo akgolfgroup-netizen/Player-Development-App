@@ -8,7 +8,6 @@
 
 import React, { useCallback, useRef, useMemo } from 'react';
 import { BookOpen, Loader2 } from 'lucide-react';
-import { SubSectionTitle } from '../../../../components/typography';
 
 import type { DagbokSession, DagbokSessionListProps } from '../types';
 import { DagbokSessionRow } from './DagbokSessionRow';
@@ -51,30 +50,28 @@ const styles = {
     flexDirection: 'column' as const,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '48px 24px',
-    gap: '12px',
+    padding: 'var(--spacing-12) var(--spacing-4)',
     textAlign: 'center' as const,
   },
   emptyIcon: {
     width: '48px',
     height: '48px',
-    borderRadius: 'var(--radius-md)',
-    backgroundColor: 'var(--bg-secondary)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    color: 'var(--text-muted)',
+    marginBottom: 'var(--spacing-4)',
   },
   emptyTitle: {
-    fontSize: '16px',
+    fontSize: 'var(--font-size-headline)',
     fontWeight: 600,
     color: 'var(--text-primary)',
     margin: 0,
+    marginBottom: 'var(--spacing-2)',
   },
   emptyMessage: {
-    fontSize: '14px',
-    color: 'var(--text-secondary)',
+    fontSize: 'var(--font-size-footnote)',
+    color: 'var(--text-tertiary)',
     margin: 0,
-    maxWidth: '300px',
+    marginBottom: 'var(--spacing-4)',
+    maxWidth: '320px',
   },
   skeletonRow: {
     display: 'flex',
@@ -249,10 +246,8 @@ export const DagbokSessionList: React.FC<DagbokSessionListProps> = ({
     return (
       <div className={className} style={styles.container}>
         <div style={styles.emptyContainer}>
-          <div style={styles.emptyIcon}>
-            <BookOpen size={24} style={{ color: 'var(--text-tertiary)' }} />
-          </div>
-          <SubSectionTitle style={styles.emptyTitle}>Ingen okter</SubSectionTitle>
+          <BookOpen style={styles.emptyIcon} />
+          <h3 style={styles.emptyTitle}>Ingen økter</h3>
           <p style={styles.emptyMessage}>{emptyMessage}</p>
         </div>
       </div>

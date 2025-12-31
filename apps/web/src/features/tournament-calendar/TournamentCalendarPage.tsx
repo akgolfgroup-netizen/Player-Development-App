@@ -1309,23 +1309,22 @@ const styles: Record<string, React.CSSProperties> = {
   },
 
   tabButton: {
-    padding: '8px 16px',
-    borderRadius: 'var(--radius-full)',
-    border: 'none',
     backgroundColor: 'var(--background-white)',
-    color: 'var(--text-primary)',
-    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    padding: 'var(--spacing-2) var(--spacing-4)',
+    borderRadius: 'var(--radius-full)',
+    fontSize: 'var(--font-size-footnote)',
     fontWeight: 500,
+    border: '1px solid var(--border-default)',
     cursor: 'pointer',
     whiteSpace: 'nowrap' as const,
-    boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
     transition: 'all 0.2s ease',
   },
 
   tabButtonActive: {
     backgroundColor: 'var(--accent)',
     color: 'var(--text-inverse)',
-    boxShadow: 'none',
+    border: 'none',
   },
 
   // Filter bar

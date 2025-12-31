@@ -728,22 +728,17 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
           {/* Pyramide level chips */}
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             {pyramideLevels.map((level) => (
-              <button
+              <Button
                 key={level.id}
+                variant={selectedPyramide === level.id ? 'primary' : 'secondary'}
+                size="sm"
                 onClick={() => setSelectedPyramide(level.id)}
                 style={{
-                  padding: '6px 12px',
-                  backgroundColor: selectedPyramide === level.id ? 'var(--accent)' : 'transparent',
-                  color: selectedPyramide === level.id ? 'white' : 'var(--text-primary)',
-                  border: selectedPyramide === level.id ? 'none' : '1px solid var(--border-default)',
-                  borderRadius: '16px',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                  fontWeight: 500,
+                  borderRadius: 'var(--radius-full)',
                 }}
               >
                 {level.label}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -753,40 +748,28 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
           {/* Golf area chips (using grouped areas for compact display) */}
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
             {areaGroups.map((area) => (
-              <button
+              <Button
                 key={area.id}
+                variant={selectedArea === area.id ? 'primary' : 'secondary'}
+                size="sm"
                 onClick={() => setSelectedArea(area.id)}
                 style={{
-                  padding: '6px 12px',
-                  backgroundColor: selectedArea === area.id ? 'var(--accent)' : 'transparent',
-                  color: selectedArea === area.id ? 'white' : 'var(--text-secondary)',
-                  border: selectedArea === area.id ? 'none' : '1px solid var(--border-default)',
-                  borderRadius: '16px',
-                  cursor: 'pointer',
-                  fontSize: '12px',
-                  fontWeight: 500,
+                  borderRadius: 'var(--radius-full)',
                 }}
               >
                 {area.label}
-              </button>
+              </Button>
             ))}
           </div>
 
           {/* Advanced filters toggle */}
-          <button
+          <Button
+            variant={showAdvancedFilters || hasActiveAdvancedFilters ? 'primary' : 'secondary'}
+            size="sm"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+            rightIcon={showAdvancedFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              backgroundColor: showAdvancedFilters || hasActiveAdvancedFilters ? 'rgba(var(--accent-rgb), 0.1)' : 'transparent',
-              border: `1px solid ${showAdvancedFilters || hasActiveAdvancedFilters ? 'var(--accent)' : 'var(--border-default)'}`,
-              borderRadius: '16px',
-              cursor: 'pointer',
-              fontSize: '12px',
-              fontWeight: 500,
-              color: showAdvancedFilters || hasActiveAdvancedFilters ? 'var(--accent)' : 'var(--text-secondary)',
+              borderRadius: 'var(--radius-full)',
             }}
           >
             Avansert
@@ -795,11 +778,10 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--accent)',
+                backgroundColor: showAdvancedFilters || hasActiveAdvancedFilters ? 'var(--text-inverse)' : 'var(--accent)',
               }} />
             )}
-            {showAdvancedFilters ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-          </button>
+          </Button>
 
           {/* Favorites filter button */}
           <Button
@@ -842,22 +824,17 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
               </span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {lFaser.map((fase) => (
-                  <button
+                  <Button
                     key={fase.id}
+                    variant={selectedLFase === fase.id ? 'primary' : 'secondary'}
+                    size="sm"
                     onClick={() => setSelectedLFase(fase.id)}
                     style={{
-                      padding: '5px 10px',
-                      backgroundColor: selectedLFase === fase.id ? 'var(--filter-lfase)' : 'transparent',
-                      color: selectedLFase === fase.id ? 'white' : 'var(--text-secondary)',
-                      border: selectedLFase === fase.id ? 'none' : '1px solid var(--border-default)',
-                      borderRadius: '14px',
-                      cursor: 'pointer',
-                      fontSize: '11px',
-                      fontWeight: 500,
+                      borderRadius: 'var(--radius-full)',
                     }}
                   >
                     {fase.label}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -869,22 +846,17 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
               </span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {miljoLevels.map((miljo) => (
-                  <button
+                  <Button
                     key={miljo.id}
+                    variant={selectedMiljo === miljo.id ? 'primary' : 'secondary'}
+                    size="sm"
                     onClick={() => setSelectedMiljo(miljo.id)}
                     style={{
-                      padding: '5px 10px',
-                      backgroundColor: selectedMiljo === miljo.id ? 'var(--filter-miljo)' : 'transparent',
-                      color: selectedMiljo === miljo.id ? 'white' : 'var(--text-secondary)',
-                      border: selectedMiljo === miljo.id ? 'none' : '1px solid var(--border-default)',
-                      borderRadius: '14px',
-                      cursor: 'pointer',
-                      fontSize: '11px',
-                      fontWeight: 500,
+                      borderRadius: 'var(--radius-full)',
                     }}
                   >
                     {miljo.label}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -896,22 +868,17 @@ export default function ExerciseLibrary({ onSelectExercise, onClose }) {
               </span>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 {pressLevels.map((press) => (
-                  <button
+                  <Button
                     key={press.id}
+                    variant={selectedPress === press.id ? 'primary' : 'secondary'}
+                    size="sm"
                     onClick={() => setSelectedPress(press.id)}
                     style={{
-                      padding: '5px 10px',
-                      backgroundColor: selectedPress === press.id ? 'var(--filter-press)' : 'transparent',
-                      color: selectedPress === press.id ? 'white' : 'var(--text-secondary)',
-                      border: selectedPress === press.id ? 'none' : '1px solid var(--border-default)',
-                      borderRadius: '14px',
-                      cursor: 'pointer',
-                      fontSize: '11px',
-                      fontWeight: 500,
+                      borderRadius: 'var(--radius-full)',
                     }}
                   >
                     {press.label}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>

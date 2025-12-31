@@ -1,7 +1,6 @@
 import React from 'react';
 import Card from '../primitives/Card';
 import { LucideIcon } from 'lucide-react';
-import { SubSectionTitle } from '../../components/typography';
 
 /**
  * StateCard
@@ -40,11 +39,8 @@ const StateCard: React.FC<StateCardProps> = ({
 
   const renderIcon = () => {
     if (IconComponent) {
-      return <IconComponent size={20} />;
+      return <IconComponent size={48} />;
     }
-    if (variant === 'error') return '!';
-    if (variant === 'empty') return '○';
-    if (variant === 'info') return 'ℹ';
     if (variant === 'loading') return <span style={styles.spinner} />;
     return null;
   };
@@ -52,10 +48,12 @@ const StateCard: React.FC<StateCardProps> = ({
   return (
     <Card padding={compact ? 'compact' : 'default'}>
       <div style={styles.container}>
-        <div style={{ ...styles.icon, ...variantConfig.icon }}>
-          {renderIcon()}
-        </div>
-        <SubSectionTitle style={{ ...styles.title, ...variantConfig.title }}>{title}</SubSectionTitle>
+        {renderIcon() && (
+          <div style={{ ...styles.icon, ...variantConfig.icon }}>
+            {renderIcon()}
+          </div>
+        )}
+        <h3 style={{ ...styles.title, ...variantConfig.title }}>{title}</h3>
         {description && <p style={styles.description}>{description}</p>}
         {action && <div style={styles.action}>{action}</div>}
       </div>
@@ -69,40 +67,37 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 'var(--spacing-4)',
+    padding: 'var(--spacing-12) var(--spacing-4)',
     textAlign: 'center',
-    minHeight: '120px',
   },
   icon: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
+    width: '48px',
+    height: '48px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 'var(--font-size-title2)',
-    fontWeight: 600,
-    marginBottom: 'var(--spacing-3)',
+    marginBottom: 'var(--spacing-4)',
   },
   title: {
-    fontSize: 'var(--font-size-body)',
+    fontSize: 'var(--font-size-headline)',
     fontWeight: 600,
     margin: 0,
-    marginBottom: 'var(--spacing-1)',
+    marginBottom: 'var(--spacing-2)',
   },
   description: {
     fontSize: 'var(--font-size-footnote)',
-    color: 'var(--color-text-muted)',
+    color: 'var(--text-tertiary)',
     margin: 0,
-    marginBottom: 'var(--spacing-3)',
+    marginBottom: 'var(--spacing-4)',
+    maxWidth: '320px',
     lineHeight: 1.4,
   },
   action: {
-    marginTop: 'var(--spacing-2)',
+    marginTop: 0,
   },
   spinner: {
-    width: '20px',
-    height: '20px',
+    width: '24px',
+    height: '24px',
     border: '2px solid var(--color-border)',
     borderTopColor: 'var(--color-primary)',
     borderRadius: '50%',
@@ -113,38 +108,34 @@ const styles: Record<string, React.CSSProperties> = {
 const variantStyles: Record<string, { icon: React.CSSProperties; title: React.CSSProperties }> = {
   info: {
     icon: {
-      backgroundColor: 'var(--accent-muted)',
-      color: 'var(--color-primary)',
+      color: 'var(--text-muted)',
     },
     title: {
-      color: 'var(--color-text)',
+      color: 'var(--text-primary)',
     },
   },
   error: {
     icon: {
-      backgroundColor: 'var(--error-muted)',
       color: 'var(--color-danger)',
     },
     title: {
-      color: 'var(--color-danger)',
+      color: 'var(--text-primary)',
     },
   },
   empty: {
     icon: {
-      backgroundColor: 'var(--color-surface-2)',
-      color: 'var(--color-text-muted)',
+      color: 'var(--text-muted)',
     },
     title: {
-      color: 'var(--color-text-muted)',
+      color: 'var(--text-primary)',
     },
   },
   loading: {
     icon: {
-      backgroundColor: 'var(--accent-muted)',
-      color: 'var(--color-primary)',
+      color: 'var(--text-muted)',
     },
     title: {
-      color: 'var(--color-text)',
+      color: 'var(--text-primary)',
     },
   },
 };

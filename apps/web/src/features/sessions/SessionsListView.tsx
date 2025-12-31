@@ -7,7 +7,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Calendar, Clock, Target, Filter, Plus, ChevronRight,
+  Calendar, Clock, Target, Filter, ChevronRight,
   CheckCircle, AlertCircle, XCircle, Play, Search, X
 } from 'lucide-react';
 import {
@@ -34,7 +34,6 @@ import {
 } from '../../components/shadcn';
 import { TrainingCategoryBadge } from '../../components/shadcn/golf';
 import { cn } from 'lib/utils';
-import { SubSectionTitle } from '../../components/typography';
 
 // Session type labels
 const SESSION_TYPE_LABELS: Record<string, string> = {
@@ -359,23 +358,25 @@ interface EmptyStateProps {
 
 function EmptyState({ onCreateNew }: EmptyStateProps) {
   return (
-    <Card className="text-center py-12 px-6">
-      <CardContent>
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-ak-primary/10 flex items-center justify-center">
-          <Calendar className="h-8 w-8 text-ak-primary" />
-        </div>
-        <SubSectionTitle className="mb-2">
-          Ingen økter funnet
-        </SubSectionTitle>
-        <p className="text-sm text-text-secondary mb-6 max-w-sm mx-auto">
-          Du har ingen treningsøkter som matcher filtrene dine. Opprett en ny økt for å komme i gang.
-        </p>
-        <Button onClick={onCreateNew} className="gap-2">
-          <Plus className="h-4 w-4" />
-          Opprett ny økt
-        </Button>
-      </CardContent>
-    </Card>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 'var(--spacing-12) var(--spacing-4)',
+      textAlign: 'center'
+    }}>
+      <Calendar style={{ width: '48px', height: '48px', color: 'var(--text-muted)', marginBottom: 'var(--spacing-4)' }} />
+      <h3 style={{ fontSize: 'var(--font-size-headline)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 'var(--spacing-2)' }}>
+        Ingen økter funnet
+      </h3>
+      <p style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-tertiary)', marginBottom: 'var(--spacing-4)', maxWidth: '320px' }}>
+        Du har ingen treningsøkter som matcher filtrene dine. Opprett en ny økt for å komme i gang.
+      </p>
+      <Button variant="primary" onClick={onCreateNew}>
+        Opprett ny økt
+      </Button>
+    </div>
   );
 }
 
@@ -477,41 +478,41 @@ export default function SessionsListView({
 
   return (
     <div className="max-w-4xl mx-auto">
-        {/* Filters */}
-        <FilterBar
-          filters={filters}
-          onFilterChange={onFilterChange}
-          onSearch={onSearch}
-        />
+      {/* Filters */}
+      <FilterBar
+        filters={filters}
+        onFilterChange={onFilterChange}
+        onSearch={onSearch}
+      />
 
-        {/* Loading state */}
-        {isLoading && (
+      {/* Loading state */}
+      {isLoading && (
+        <div className="space-y-3">
+          {[...Array(5)].map((_, i) => (
+            <SessionCardSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
+      {/* Sessions list */}
+      {!isLoading && sessions.length > 0 && (
+        <>
           <div className="space-y-3">
-            {[...Array(5)].map((_, i) => (
-              <SessionCardSkeleton key={i} />
+            {sessions.map((session) => (
+              <SessionCard
+                key={session.id}
+                session={session}
+                onClick={() => handleSessionClick(session)}
+              />
             ))}
           </div>
-        )}
-
-        {/* Sessions list */}
-        {!isLoading && sessions.length > 0 && (
-          <>
-            <div className="space-y-3">
-              {sessions.map((session) => (
-                <SessionCard
-                  key={session.id}
-                  session={session}
-                  onClick={() => handleSessionClick(session)}
-                />
-              ))}
-            </div>
-            <SessionPagination
-              page={pagination.page}
-              totalPages={pagination.totalPages}
-              onPageChange={onPageChange}
-            />
-          </>
-        )}
+          <SessionPagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            onPageChange={onPageChange}
+          />
+        </>
+      )}
 
       {/* Empty state */}
       {!isLoading && sessions.length === 0 && (

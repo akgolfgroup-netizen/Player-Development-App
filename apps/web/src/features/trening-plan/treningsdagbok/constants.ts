@@ -29,6 +29,8 @@ import type {
   HeatmapIntensity,
 } from './types';
 
+import { PYRAMID_ICONS } from '../../../constants/icons';
+
 // Re-export for convenience
 export {
   PYRAMIDS,
@@ -43,6 +45,7 @@ export {
   TOURNAMENT_TYPES,
   PHYSICAL_FOCUS,
   PLAY_FOCUS,
+  PYRAMID_ICONS,
 };
 
 // =============================================================================

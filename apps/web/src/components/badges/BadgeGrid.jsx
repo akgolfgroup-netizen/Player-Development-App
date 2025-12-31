@@ -360,12 +360,16 @@ export const BadgeGrid = ({
         <div className="flex gap-2 mb-6 flex-wrap pb-5 border-b border-ak-neutral-divider items-center">
           <button
             onClick={() => setFilter('all')}
-            className={clsx(
-              'px-4 py-2 rounded-full font-medium text-[13px] cursor-pointer transition-all duration-200',
-              filter === 'all'
-                ? 'bg-ak-status-info-light text-ak-text-inverse border-none'
-                : 'bg-ak-surface-card text-ak-text-tertiary border border-ak-border'
-            )}
+            style={{
+              backgroundColor: filter === 'all' ? 'var(--accent)' : 'var(--background-white)',
+              color: filter === 'all' ? 'var(--text-inverse)' : 'var(--text-secondary)',
+              padding: 'var(--spacing-2) var(--spacing-4)',
+              borderRadius: 'var(--radius-full)',
+              fontSize: 'var(--font-size-footnote)',
+              fontWeight: 500,
+              border: filter === 'all' ? 'none' : '1px solid var(--border-default)',
+              cursor: 'pointer',
+            }}
           >
             Alle ({badges.length})
           </button>
@@ -375,12 +379,16 @@ export const BadgeGrid = ({
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={clsx(
-                  'px-4 py-2 rounded-full font-medium text-[13px] cursor-pointer transition-all duration-200',
-                  filter === cat
-                    ? 'bg-ak-status-info-light text-ak-text-inverse border-none'
-                    : 'bg-ak-surface-card text-ak-text-tertiary border border-ak-border'
-                )}
+                style={{
+                  backgroundColor: filter === cat ? 'var(--accent)' : 'var(--background-white)',
+                  color: filter === cat ? 'var(--text-inverse)' : 'var(--text-secondary)',
+                  padding: 'var(--spacing-2) var(--spacing-4)',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: 'var(--font-size-footnote)',
+                  fontWeight: 500,
+                  border: filter === cat ? 'none' : '1px solid var(--border-default)',
+                  cursor: 'pointer',
+                }}
               >
                 {CATEGORY_LABELS[cat] || cat} ({count})
               </button>

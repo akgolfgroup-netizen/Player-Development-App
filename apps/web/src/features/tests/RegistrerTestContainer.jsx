@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Target, Save, CheckCircle,
+  Save, CheckCircle,
   Plus, Trash2
 } from 'lucide-react';
 import { tokens } from '../../design-tokens';
 import { SubSectionTitle } from '../../components/typography';
+import Button from '../../ui/primitives/Button';
 import apiClient from '../../services/apiClient';
+import { getTestCategoryIcon } from '../../constants/icons';
 
 // ============================================================================
 // MOCK DATA
@@ -81,51 +83,55 @@ const RECENT_TESTS = [
 // TEST CATEGORY CARD
 // ============================================================================
 
-const TestCategoryCard = ({ category, selected, onSelect }) => (
-  <button
-    onClick={() => onSelect(category)}
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '8px',
-      padding: '16px 12px',
-      borderRadius: '12px',
-      border: selected?.id === category.id
-        ? `2px solid ${category.color}`
-        : '2px solid transparent',
-      backgroundColor: selected?.id === category.id
-        ? `${category.color}15`
-        : tokens.colors.white,
-      cursor: 'pointer',
-      transition: 'all 0.2s',
-    }}
-  >
-    <div style={{
-      width: '40px',
-      height: '40px',
-      borderRadius: '10px',
-      backgroundColor: selected?.id === category.id
-        ? category.color
-        : `${category.color}20`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      <Target
-        size={20}
-        color={selected?.id === category.id ? tokens.colors.white : category.color}
-      />
-    </div>
-    <span style={{
-      fontSize: '12px',
-      fontWeight: 500,
-      color: selected?.id === category.id ? category.color : tokens.colors.charcoal,
-    }}>
-      {category.name}
-    </span>
-  </button>
-);
+const TestCategoryCard = ({ category, selected, onSelect }) => {
+  const CategoryIcon = getTestCategoryIcon(category.id);
+
+  return (
+    <button
+      onClick={() => onSelect(category)}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 'var(--spacing-2)',
+        padding: 'var(--spacing-4) var(--spacing-3)',
+        borderRadius: '12px',
+        border: selected?.id === category.id
+          ? `2px solid ${category.color}`
+          : '2px solid transparent',
+        backgroundColor: selected?.id === category.id
+          ? `${category.color}15`
+          : tokens.colors.white,
+        cursor: 'pointer',
+        transition: 'all 0.2s',
+      }}
+    >
+      <div style={{
+        width: '40px',
+        height: '40px',
+        borderRadius: '10px',
+        backgroundColor: selected?.id === category.id
+          ? category.color
+          : `${category.color}20`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <CategoryIcon
+          size={20}
+          color={selected?.id === category.id ? tokens.colors.white : category.color}
+        />
+      </div>
+      <span style={{
+        fontSize: '12px',
+        fontWeight: 500,
+        color: selected?.id === category.id ? category.color : tokens.colors.charcoal,
+      }}>
+        {category.name}
+      </span>
+    </button>
+  );
+};
 
 // ============================================================================
 // TEST INPUT
@@ -148,8 +154,8 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: '12px',
-      padding: '12px 14px',
+      gap: 'var(--spacing-3)',
+      padding: 'var(--spacing-3) var(--spacing-3)',
       backgroundColor: tokens.colors.white,
       borderRadius: '10px',
       boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
@@ -160,11 +166,11 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
           fontSize: '13px',
           fontWeight: 500,
           color: tokens.colors.charcoal,
-          marginBottom: '6px',
+          marginBottom: 'var(--spacing-1)',
         }}>
           {test.name}
         </label>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
           <input
             type="number"
             value={value || ''}
@@ -173,7 +179,7 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
             step={test.type === 'decimal' ? '0.1' : '1'}
             style={{
               flex: 1,
-              padding: '10px 12px',
+              padding: 'var(--spacing-2) var(--spacing-3)',
               borderRadius: '8px',
               border: `1px solid ${tokens.colors.mist}`,
               fontSize: '16px',
@@ -195,7 +201,7 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
       <button
         onClick={onRemove}
         style={{
-          padding: '8px',
+          padding: 'var(--spacing-2)',
           borderRadius: '8px',
           border: 'none',
           backgroundColor: `${tokens.colors.error}10`,
@@ -219,18 +225,18 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
     <div style={{
       backgroundColor: tokens.colors.white,
       borderRadius: '14px',
-      padding: '16px',
-      marginBottom: '20px',
+      padding: 'var(--spacing-4)',
+      marginBottom: 'var(--spacing-5)',
     }}>
       <SubSectionTitle style={{
         fontSize: '14px',
         fontWeight: 600,
         color: tokens.colors.charcoal,
-        marginBottom: '12px',
+        marginBottom: 'var(--spacing-3)',
       }}>
         Velg tester - {category.name}
       </SubSectionTitle>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-2)' }}>
         {category.tests.map((test) => {
           const isSelected = selectedTests.some((t) => t.id === test.id);
 
@@ -239,7 +245,7 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
               key={test.id}
               onClick={() => onToggle(test)}
               style={{
-                padding: '8px 14px',
+                padding: 'var(--spacing-2) var(--spacing-3)',
                 borderRadius: '8px',
                 border: isSelected
                   ? `2px solid ${category.color}`
@@ -251,7 +257,7 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: 'var(--spacing-1)',
               }}
             >
               {isSelected ? <CheckCircle size={14} /> : <Plus size={14} />}
@@ -272,17 +278,17 @@ const RecentTests = ({ tests }) => (
   <div style={{
     backgroundColor: tokens.colors.white,
     borderRadius: '14px',
-    padding: '16px',
+    padding: 'var(--spacing-4)',
   }}>
     <SubSectionTitle style={{
       fontSize: '14px',
       fontWeight: 600,
       color: tokens.colors.charcoal,
-      marginBottom: '12px',
+      marginBottom: 'var(--spacing-3)',
     }}>
       Siste registreringer
     </SubSectionTitle>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
       {tests.map((test) => (
         <div
           key={test.id}
@@ -290,7 +296,7 @@ const RecentTests = ({ tests }) => (
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '10px 12px',
+            padding: 'var(--spacing-2) var(--spacing-3)',
             backgroundColor: tokens.colors.snow,
             borderRadius: '8px',
           }}
@@ -394,21 +400,21 @@ const RegistrerTestContainer = () => {
         <div style={{
           backgroundColor: tokens.colors.white,
           borderRadius: '14px',
-          padding: '16px',
-          marginBottom: '20px',
+          padding: 'var(--spacing-4)',
+          marginBottom: 'var(--spacing-5)',
         }}>
           <SubSectionTitle style={{
             fontSize: '14px',
             fontWeight: 600,
             color: tokens.colors.charcoal,
-            marginBottom: '12px',
+            marginBottom: 'var(--spacing-3)',
           }}>
             Velg testkategori
           </SubSectionTitle>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-            gap: '10px',
+            gap: 'var(--spacing-2)',
           }}>
             {TEST_CATEGORIES.map((category) => (
               <TestCategoryCard
@@ -430,16 +436,16 @@ const RegistrerTestContainer = () => {
 
         {/* Selected Tests with Inputs */}
         {selectedTests.length > 0 && (
-          <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: 'var(--spacing-5)' }}>
             <SubSectionTitle style={{
               fontSize: '14px',
               fontWeight: 600,
               color: tokens.colors.charcoal,
-              marginBottom: '12px',
+              marginBottom: 'var(--spacing-3)',
             }}>
               Registrer verdier
             </SubSectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
               {selectedTests.map((test) => (
                 <TestInput
                   key={test.id}
@@ -458,15 +464,15 @@ const RegistrerTestContainer = () => {
           <div style={{
             backgroundColor: tokens.colors.white,
             borderRadius: '14px',
-            padding: '16px',
-            marginBottom: '20px',
+            padding: 'var(--spacing-4)',
+            marginBottom: 'var(--spacing-5)',
           }}>
             <label style={{
               display: 'block',
               fontSize: '14px',
               fontWeight: 600,
               color: tokens.colors.charcoal,
-              marginBottom: '8px',
+              marginBottom: 'var(--spacing-2)',
             }}>
               Notater (valgfritt)
             </label>
@@ -477,7 +483,7 @@ const RegistrerTestContainer = () => {
               rows={3}
               style={{
                 width: '100%',
-                padding: '12px 14px',
+                padding: 'var(--spacing-3) var(--spacing-3)',
                 borderRadius: '8px',
                 border: `1px solid ${tokens.colors.mist}`,
                 fontSize: '14px',
@@ -491,29 +497,16 @@ const RegistrerTestContainer = () => {
 
         {/* Submit Button */}
         {selectedTests.length > 0 && (
-          <button
+          <Button
+            variant="primary"
             onClick={handleSubmit}
             disabled={!canSubmit}
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px',
-              borderRadius: '10px',
-              border: 'none',
-              backgroundColor: canSubmit ? tokens.colors.primary : tokens.colors.mist,
-              color: canSubmit ? tokens.colors.white : tokens.colors.steel,
-              fontSize: '15px',
-              fontWeight: 600,
-              cursor: canSubmit ? 'pointer' : 'not-allowed',
-              marginBottom: '24px',
-            }}
+            leftIcon={<Save size={18} />}
+            fullWidth
+            style={{ marginBottom: 'var(--spacing-6)' }}
           >
-            <Save size={18} />
             Lagre testresultater
-          </button>
+          </Button>
         )}
 
         {/* Recent Tests */}

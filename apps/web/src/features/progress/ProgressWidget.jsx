@@ -3,6 +3,69 @@ import { useNavigate } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
 import { SubSectionTitle } from '../../components/typography';
 
+// UiCanon: Using CSS variables for consistent color theming
+const styles = {
+  container: {
+    backgroundColor: 'var(--bg-primary)',
+    borderRadius: 'var(--radius-lg)',
+    boxShadow: 'var(--shadow-card)',
+    padding: 'var(--spacing-6)',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 'var(--spacing-4)',
+  },
+  viewDetailsButton: {
+    fontSize: '14px',
+    color: 'var(--accent)',
+    fontWeight: 500,
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+  },
+  statsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: 'var(--spacing-4)',
+    marginBottom: 'var(--spacing-4)',
+  },
+  completionCard: {
+    textAlign: 'center',
+    padding: 'var(--spacing-3)',
+    backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+    borderRadius: 'var(--radius-lg)',
+  },
+  completionValue: {
+    fontSize: '32px',
+    fontWeight: 700,
+    color: 'var(--accent)',
+  },
+  streakCard: {
+    textAlign: 'center',
+    padding: 'var(--spacing-3)',
+    backgroundColor: 'rgba(var(--warning-rgb), 0.1)',
+    borderRadius: 'var(--radius-lg)',
+  },
+  streakValue: {
+    fontSize: '32px',
+    fontWeight: 700,
+    color: 'var(--warning)',
+  },
+  label: {
+    fontSize: '14px',
+    color: 'var(--text-secondary)',
+    marginTop: 'var(--spacing-1)',
+  },
+  footer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    fontSize: '14px',
+    color: 'var(--text-secondary)',
+  },
+};
+
 export default function ProgressWidget({ planId }) {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
@@ -27,33 +90,33 @@ export default function ProgressWidget({ planId }) {
   const { overview } = data;
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex justify-between items-center mb-4">
+    <div style={styles.container}>
+      <div style={styles.header}>
         <SubSectionTitle>Your Progress</SubSectionTitle>
         <button
           onClick={() => navigate('/progress')}
-          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          style={styles.viewDetailsButton}
         >
-          View Details →
+          View Details
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="text-center p-3 bg-blue-50 rounded-lg">
-          <div className="text-3xl font-bold text-blue-600">
+      <div style={styles.statsGrid}>
+        <div style={styles.completionCard}>
+          <div style={styles.completionValue}>
             {overview.completionRate}%
           </div>
-          <div className="text-sm text-gray-600 mt-1">Completion</div>
+          <div style={styles.label}>Completion</div>
         </div>
-        <div className="text-center p-3 bg-orange-50 rounded-lg">
-          <div className="text-3xl font-bold text-orange-600">
+        <div style={styles.streakCard}>
+          <div style={styles.streakValue}>
             {overview.currentStreak}
           </div>
-          <div className="text-sm text-gray-600 mt-1">Day Streak 🔥</div>
+          <div style={styles.label}>Day Streak</div>
         </div>
       </div>
 
-      <div className="flex justify-between text-sm text-gray-600">
+      <div style={styles.footer}>
         <span>{overview.totalSessionsCompleted} sessions completed</span>
         <span>{overview.totalHoursCompleted}h trained</span>
       </div>

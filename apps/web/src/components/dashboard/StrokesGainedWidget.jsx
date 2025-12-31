@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, TrendingDown, Target, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown, Target, Minus, Info } from 'lucide-react';
 import Badge from '../../ui/primitives/Badge.primitive';
 
 /**
@@ -213,8 +213,8 @@ const StrokesGainedWidget = ({ data, loading, error, onViewDetails }) => {
         {/* Demo data indicator */}
         {data.isDemo && (
           <div style={styles.demoIndicator}>
-            <Target size={14} />
-            <span>Eksempeldata – fullfør tester for å se dine resultater</span>
+            <Info size={16} color="var(--info)" />
+            <span>Viser demodata. Fullfør tester for å se dine resultater.</span>
           </div>
         )}
 
@@ -344,12 +344,14 @@ const styles = {
   demoIndicator: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
-    padding: '10px 14px',
-    backgroundColor: 'var(--accent-muted)',
-    borderRadius: '8px',
-    fontSize: '12px',
-    color: 'var(--text-brand)',
+    gap: 'var(--spacing-2)',
+    padding: 'var(--spacing-3) var(--spacing-4)',
+    backgroundColor: 'var(--info-muted)',
+    border: '1px solid rgba(2, 132, 199, 0.2)',
+    borderRadius: 'var(--radius-md)',
+    marginBottom: 'var(--spacing-4)',
+    fontSize: 'var(--font-size-footnote)',
+    color: 'var(--text-secondary)',
   },
 
   // Summary Card

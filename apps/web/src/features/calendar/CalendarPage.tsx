@@ -266,14 +266,21 @@ const CalendarPage: React.FC = () => {
       {/* Seed data info banner */}
       {isSeedData && (
         <div
-          className="flex items-center gap-2 px-4 py-2 text-sm"
           style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--spacing-2)',
+            padding: 'var(--spacing-3) var(--spacing-4)',
             backgroundColor: 'var(--info-muted)',
-            color: 'var(--ak-info)',
+            border: '1px solid rgba(2, 132, 199, 0.2)',
+            borderRadius: 'var(--radius-md)',
+            marginBottom: 'var(--spacing-4)',
+            fontSize: 'var(--font-size-footnote)',
+            color: 'var(--text-secondary)',
           }}
         >
-          <Info size={16} />
-          Viser demodata. Faktiske økter vil vises når du har lagt dem til.
+          <Info size={16} color="var(--info)" />
+          <span>Viser demodata. Faktiske økter vil vises når du har lagt dem til.</span>
         </div>
       )}
 

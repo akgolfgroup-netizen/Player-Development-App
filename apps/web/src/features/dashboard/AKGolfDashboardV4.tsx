@@ -101,7 +101,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
       <div className="flex items-center gap-5">
         {/* Profile Avatar */}
         <div className="relative">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-ak-primary to-ak-primary-dark flex items-center justify-center overflow-hidden ring-4 ring-white shadow-lg">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-ak-brand-primary to-ak-brand-primary-active flex items-center justify-center overflow-hidden ring-4 ring-white shadow-ak-elevated">
             {avatarUrl ? (
               <img
                 src={avatarUrl}
@@ -109,11 +109,11 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-xl font-bold text-white">{initials}</span>
+              <span className="text-xl font-bold text-ak-text-inverse">{initials}</span>
             )}
           </div>
           {streak > 0 && (
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs shadow-md">
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-ak-session-fysisk rounded-full flex items-center justify-center text-xs shadow-ak-sm">
               🔥
             </div>
           )}
@@ -121,13 +121,13 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
 
         {/* Text Content */}
         <div className="space-y-1">
-          <p className="text-xs text-text-tertiary uppercase tracking-wider font-medium">
+          <p className="text-caption-2 text-ak-text-tertiary uppercase tracking-wider font-medium">
             {getGreeting()}
           </p>
-          <PageTitle className="text-3xl font-bold text-text-primary tracking-tight">
+          <PageTitle className="text-title-1 text-ak-text-primary tracking-tight">
             {firstName}
           </PageTitle>
-          <p className="text-sm text-text-secondary font-medium">
+          <p className="text-subhead text-ak-text-secondary font-medium">
             {motivationalMessage}
           </p>
         </div>
@@ -148,18 +148,18 @@ interface WeekAtGlanceCardProps {
 const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) => {
   if (loading) {
     return (
-      <Card className="h-full">
+      <Card className="h-full shadow-ak-card rounded-ak-lg">
         <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Calendar className="h-5 w-5 text-ak-primary" />
+          <CardTitle className="flex items-center gap-2 text-headline">
+            <Calendar className="h-5 w-5 text-ak-brand-primary" />
             Denne uken
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-6 animate-pulse">
-            <div className="h-16 bg-surface-subtle rounded-lg" />
-            <div className="h-16 bg-surface-subtle rounded-lg" />
-            <div className="h-16 bg-surface-subtle rounded-lg" />
+            <div className="h-16 bg-ak-surface-subtle rounded-ak-sm" />
+            <div className="h-16 bg-ak-surface-subtle rounded-ak-sm" />
+            <div className="h-16 bg-ak-surface-subtle rounded-ak-sm" />
           </div>
         </CardContent>
       </Card>
@@ -174,17 +174,17 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
     : 0
 
   return (
-    <Card className="h-full">
+    <Card className="h-full shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Calendar className="h-5 w-5 text-ak-primary" />
+          <CardTitle className="flex items-center gap-2 text-headline">
+            <Calendar className="h-5 w-5 text-ak-brand-primary" />
             Denne uken
           </CardTitle>
           {stats.streak > 0 && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-subtle rounded-full">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-ak-surface-subtle rounded-full">
               <span className="text-sm">🔥</span>
-              <span className="text-sm font-semibold text-text-primary">{stats.streak} dager</span>
+              <span className="text-subhead font-semibold text-ak-text-primary">{stats.streak} dager</span>
             </div>
           )}
         </div>
@@ -194,17 +194,17 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
           {/* Planned Sessions */}
           <div className="space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-sm text-text-secondary">Planlagte økter</span>
-              <span className="text-sm font-semibold tabular-nums">
+              <span className="text-subhead text-ak-text-secondary">Planlagte økter</span>
+              <span className="text-subhead font-semibold tabular-nums text-ak-text-primary">
                 {stats.sessionsCompleted} av {stats.sessionsTotal}
               </span>
             </div>
             <Progress
               value={sessionsPercent}
-              className="h-2"
-              indicatorClassName={sessionsPercent >= 100 ? 'bg-ak-success' : 'bg-ak-primary'}
+              className="h-2 bg-ak-component-progress-bg"
+              indicatorClassName={sessionsPercent >= 100 ? 'bg-ak-component-progress-success' : 'bg-ak-component-progress-fill'}
             />
-            <span className="text-xs text-text-tertiary">
+            <span className="text-caption-1 text-ak-text-tertiary">
               {sessionsPercent >= 100 ? 'Mål nådd!' : `${100 - sessionsPercent}% gjenstår`}
             </span>
           </div>
@@ -212,17 +212,17 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
           {/* Training Hours */}
           <div className="space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-sm text-text-secondary">Treningstimer</span>
-              <span className="text-sm font-semibold tabular-nums">
+              <span className="text-subhead text-ak-text-secondary">Treningstimer</span>
+              <span className="text-subhead font-semibold tabular-nums text-ak-text-primary">
                 {stats.hoursThisWeek}t av {stats.hoursGoal}t
               </span>
             </div>
             <Progress
               value={hoursPercent}
-              className="h-2"
-              indicatorClassName={hoursPercent >= 100 ? 'bg-ak-success' : 'bg-ak-primary'}
+              className="h-2 bg-ak-component-progress-bg"
+              indicatorClassName={hoursPercent >= 100 ? 'bg-ak-component-progress-success' : 'bg-ak-component-progress-fill'}
             />
-            <span className="text-xs text-text-tertiary">
+            <span className="text-caption-1 text-ak-text-tertiary">
               {hoursPercent >= 100 ? 'Måltimer nådd!' : `${stats.hoursGoal - stats.hoursThisWeek}t gjenstår`}
             </span>
           </div>
@@ -230,14 +230,14 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
           {/* Completed Last 7 Days */}
           <div className="space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-sm text-text-secondary">Fullført siste 7 dager</span>
-              <span className="text-sm font-semibold tabular-nums">{stats.sessionsCompleted} økter</span>
+              <span className="text-subhead text-ak-text-secondary">Fullført siste 7 dager</span>
+              <span className="text-subhead font-semibold tabular-nums text-ak-text-primary">{stats.sessionsCompleted} økter</span>
             </div>
             <div className="flex items-center gap-2 py-2">
               <CheckCircle2
-                className={`h-4 w-4 ${stats.sessionsCompleted > 0 ? 'text-ak-success' : 'text-text-tertiary'}`}
+                className={`h-4 w-4 ${stats.sessionsCompleted > 0 ? 'text-ak-status-success' : 'text-ak-text-tertiary'}`}
               />
-              <span className="text-sm text-text-secondary">
+              <span className="text-subhead text-ak-text-secondary">
                 {stats.sessionsCompleted > 0
                   ? `${Math.round(stats.hoursThisWeek)} timer totalt`
                   : 'Ingen økter ennå'}
@@ -275,15 +275,15 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
 
   if (loading) {
     return (
-      <Card className="h-full">
+      <Card className="h-full shadow-ak-card rounded-ak-lg">
         <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-2 text-base">
-            <Award className="h-5 w-5 text-ak-primary" />
+          <CardTitle className="flex items-center gap-2 text-headline">
+            <Award className="h-5 w-5 text-ak-brand-primary" />
             Badges & Score
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-32 bg-surface-subtle rounded-lg animate-pulse" />
+          <div className="h-32 bg-ak-surface-subtle rounded-ak-sm animate-pulse" />
         </CardContent>
       </Card>
     )
@@ -294,42 +294,42 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
   const badgeCount = achievements?.length || 0
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Award className="h-5 w-5 text-ak-primary" />
+        <CardTitle className="flex items-center gap-2 text-headline">
+          <Award className="h-5 w-5 text-ak-brand-primary" />
           Badges & Score
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4 flex-1">
         {/* Rank Display */}
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-surface-subtle flex items-center justify-center">
-            <Trophy className="h-5 w-5 text-medal-gold" />
+          <div className="w-11 h-11 rounded-ak-md bg-ak-surface-subtle flex items-center justify-center">
+            <Trophy className="h-5 w-5 text-ak-achievement-gold" />
           </div>
           <div>
-            <span className="text-xs text-text-tertiary uppercase tracking-wider">Rank</span>
-            <p className="text-lg font-bold text-text-primary">{rankName}</p>
+            <span className="text-stat-label text-ak-text-tertiary">RANK</span>
+            <p className="text-title-3 text-ak-text-primary">{rankName}</p>
           </div>
         </div>
 
         {/* XP Progress */}
         <div className="space-y-1.5">
           <div className="flex justify-between items-baseline">
-            <span className="text-sm font-semibold">Level {level || 1}</span>
-            <span className="text-sm text-text-secondary tabular-nums">{totalXp || 0} XP</span>
+            <span className="text-subhead font-semibold text-ak-text-primary">Level {level || 1}</span>
+            <span className="text-subhead text-ak-text-secondary tabular-nums">{totalXp || 0} XP</span>
           </div>
-          <Progress value={xpProgress} className="h-1.5" />
-          <span className="text-xs text-text-tertiary">
+          <Progress value={xpProgress} className="h-1.5 bg-ak-component-progress-bg" indicatorClassName="bg-ak-component-progress-fill" />
+          <span className="text-caption-1 text-ak-text-tertiary">
             {xp || 0} / {nextLevelXp || 100} til neste nivå
           </span>
         </div>
 
         {/* Badges Count */}
-        <div className="flex items-center gap-3 pt-3 border-t border-border-subtle mt-auto">
+        <div className="flex items-center gap-3 pt-3 border-t border-ak-border-muted mt-auto">
           <div className="flex items-baseline gap-1.5">
-            <span className="text-xl font-bold tabular-nums">{badgeCount}</span>
-            <span className="text-sm text-text-secondary">badges opptjent</span>
+            <span className="text-title-2 tabular-nums text-ak-text-primary">{badgeCount}</span>
+            <span className="text-subhead text-ak-text-secondary">badges opptjent</span>
           </div>
           {badgeCount > 0 && achievements?.slice(0, 3).map((badge, idx) => (
             <span key={badge.id || idx} className="text-xl">
@@ -376,10 +376,10 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
   }
 
   return (
-    <Card>
+    <Card className="shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-sm">
-          <TrendingUp className="h-4 w-4 text-text-secondary" />
+        <CardTitle className="flex items-center gap-2 text-subhead">
+          <TrendingUp className="h-4 w-4 text-ak-text-secondary" />
           Siste 7 dager
         </CardTitle>
       </CardHeader>
@@ -389,19 +389,19 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
             const status = getDayStatus(day, index)
             return (
               <div key={day.date} className="flex flex-col items-center gap-2 flex-1">
-                <span className={`text-xs ${day.isToday ? 'text-ak-primary font-semibold' : 'text-text-tertiary'}`}>
+                <span className={`text-caption-1 ${day.isToday ? 'text-ak-brand-primary font-semibold' : 'text-ak-text-tertiary'}`}>
                   {day.label}
                 </span>
                 <div className={`
-                  w-full max-w-12 h-8 rounded-lg flex items-center justify-center transition-all
-                  ${status === 'completed' ? 'bg-ak-success' : ''}
-                  ${status === 'has-events' ? 'bg-ak-primary' : ''}
-                  ${status === 'weekend' ? 'bg-surface-elevated' : ''}
-                  ${status === 'empty' ? 'bg-surface-subtle' : ''}
-                  ${day.isToday ? 'ring-2 ring-ak-primary' : 'border border-border-subtle'}
+                  w-full max-w-12 h-8 rounded-ak-sm flex items-center justify-center transition-all duration-ak-base
+                  ${status === 'completed' ? 'bg-ak-status-success' : ''}
+                  ${status === 'has-events' ? 'bg-ak-brand-primary' : ''}
+                  ${status === 'weekend' ? 'bg-ak-surface-elevated' : ''}
+                  ${status === 'empty' ? 'bg-ak-surface-subtle' : ''}
+                  ${day.isToday ? 'ring-2 ring-ak-brand-primary' : 'border border-ak-border-muted'}
                 `}>
-                  {status === 'completed' && <CheckCircle2 className="h-3 w-3 text-white" />}
-                  {status === 'has-events' && <div className="w-2 h-2 rounded-full bg-white" />}
+                  {status === 'completed' && <CheckCircle2 className="h-3 w-3 text-ak-text-inverse" />}
+                  {status === 'has-events' && <div className="w-2 h-2 rounded-full bg-ak-surface-card" />}
                 </div>
               </div>
             )
@@ -409,17 +409,17 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
         </div>
 
         {/* Legend */}
-        <div className="flex justify-center gap-5 mt-4 pt-3 border-t border-border-subtle">
-          <div className="flex items-center gap-1.5 text-xs text-text-tertiary">
-            <div className="w-2.5 h-2.5 rounded bg-ak-success" />
+        <div className="flex justify-center gap-5 mt-4 pt-3 border-t border-ak-border-muted">
+          <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
+            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-status-success" />
             <span>Fullført</span>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-text-tertiary">
-            <div className="w-2.5 h-2.5 rounded bg-ak-primary" />
+          <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
+            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-brand-primary" />
             <span>I dag</span>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-text-tertiary">
-            <div className="w-2.5 h-2.5 rounded bg-surface-subtle border border-border-subtle" />
+          <div className="flex items-center gap-1.5 text-caption-1 text-ak-text-tertiary">
+            <div className="w-2.5 h-2.5 rounded-ak-xs bg-ak-surface-subtle border border-ak-border-muted" />
             <span>Ingen data</span>
           </div>
         </div>
@@ -438,11 +438,11 @@ interface FocusCardProps {
 const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   if (loading) {
     return (
-      <Card className="border-l-4 border-l-ak-primary">
+      <Card className="border-l-4 border-l-ak-brand-primary shadow-ak-card rounded-ak-lg">
         <CardContent className="pt-5">
           <div className="space-y-3 animate-pulse">
-            <div className="h-4 bg-surface-subtle rounded w-1/3" />
-            <div className="h-6 bg-surface-subtle rounded w-2/3" />
+            <div className="h-4 bg-ak-surface-subtle rounded-ak-xs w-1/3" />
+            <div className="h-6 bg-ak-surface-subtle rounded-ak-xs w-2/3" />
           </div>
         </CardContent>
       </Card>
@@ -451,16 +451,16 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
 
   if (!focus) {
     return (
-      <Card className="border-l-4 border-l-ak-primary">
+      <Card className="border-l-4 border-l-ak-brand-primary shadow-ak-card rounded-ak-lg">
         <CardContent className="pt-5">
           <div className="flex items-center gap-2 mb-3">
-            <Crosshair className="h-4 w-4 text-ak-primary" />
-            <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
-              Ukens fokus
+            <Crosshair className="h-4 w-4 text-ak-brand-primary" />
+            <span className="text-stat-label text-ak-text-secondary">
+              UKENS FOKUS
             </span>
           </div>
-          <SubSectionTitle className="text-xl font-bold text-text-primary mb-2">Start din første økt</SubSectionTitle>
-          <p className="text-sm text-text-secondary">
+          <SubSectionTitle className="text-title-3 text-ak-text-primary mb-2">Start din første økt</SubSectionTitle>
+          <p className="text-subhead text-ak-text-secondary">
             Fullfør noen tester for å få personlig anbefaling
           </p>
         </CardContent>
@@ -474,28 +474,28 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   const progressPercent = Math.round((sessionsCompleted / sessionsTarget) * 100)
 
   return (
-    <Card className="border-l-4 border-l-ak-primary">
+    <Card className="border-l-4 border-l-ak-brand-primary shadow-ak-card rounded-ak-lg">
       <CardContent className="pt-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Crosshair className="h-4 w-4 text-ak-primary" />
-            <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
-              Ukens fokus
+            <Crosshair className="h-4 w-4 text-ak-brand-primary" />
+            <span className="text-stat-label text-ak-text-secondary">
+              UKENS FOKUS
             </span>
           </div>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-ak-primary/10 text-ak-primary">
+          <span className="text-caption-1 font-semibold px-2.5 py-1 rounded-full bg-ak-brand-primary-muted text-ak-brand-primary">
             {focusLabel}
           </span>
         </div>
 
-        <SubSectionTitle className="text-xl font-bold text-text-primary mb-2">
+        <SubSectionTitle className="text-title-3 text-ak-text-primary mb-2">
           {focus.approachWeakestBucket
             ? `${focusLabel}: ${focus.approachWeakestBucket.replace('_', '-')} yards`
             : focusLabel}
         </SubSectionTitle>
 
         {focus.reasonCodes?.length > 0 && (
-          <p className="text-sm text-text-secondary mb-4">
+          <p className="text-subhead text-ak-text-secondary mb-4">
             {focus.reasonCodes.includes(`weak_${focus.focusComponent.toLowerCase()}_test_cluster`)
               ? 'Dine tester viser forbedringspotensial her'
               : focus.reasonCodes.includes(`high_weight_${focus.focusComponent.toLowerCase()}`)
@@ -505,8 +505,8 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
         )}
 
         <div className="flex items-center gap-3">
-          <Progress value={progressPercent} className="flex-1 h-1.5" />
-          <span className="text-sm text-text-tertiary font-medium whitespace-nowrap">
+          <Progress value={progressPercent} className="flex-1 h-1.5 bg-ak-component-progress-bg" indicatorClassName="bg-ak-component-progress-fill" />
+          <span className="text-caption-1 text-ak-text-tertiary font-medium whitespace-nowrap">
             {sessionsCompleted} av {sessionsTarget} økter
           </span>
         </div>
@@ -531,17 +531,17 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
     return (
       <Button
         size="lg"
-        className="w-full justify-between h-auto py-4 px-5"
+        className="w-full justify-between h-auto py-4 px-5 bg-ak-brand-primary hover:bg-ak-brand-primary-hover active:bg-ak-brand-primary-active rounded-ak-md shadow-ak-sm transition-all duration-ak-base"
         onClick={() => onStart(upcomingSession)}
       >
         <div className="flex items-center gap-3">
-          <Play className="h-5 w-5" />
+          <Play className="h-5 w-5 text-ak-text-inverse" />
           <div className="text-left">
-            <span className="block font-semibold">Start {title}</span>
-            <span className="block text-sm opacity-80">{duration} min · Fra din kalender</span>
+            <span className="block text-headline text-ak-text-inverse">Start {title}</span>
+            <span className="block text-caption-1 text-ak-text-inverse/80">{duration} min · Fra din kalender</span>
           </div>
         </div>
-        <ChevronRight className="h-5 w-5 opacity-70" />
+        <ChevronRight className="h-5 w-5 text-ak-text-inverse/70" />
       </Button>
     )
   }
@@ -553,17 +553,17 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
     return (
       <Button
         size="lg"
-        className="w-full justify-between h-auto py-4 px-5"
+        className="w-full justify-between h-auto py-4 px-5 bg-ak-brand-primary hover:bg-ak-brand-primary-hover active:bg-ak-brand-primary-active rounded-ak-md shadow-ak-sm transition-all duration-ak-base"
         onClick={() => onStart({ type: 'focus', focus })}
       >
         <div className="flex items-center gap-3">
-          <Play className="h-5 w-5" />
+          <Play className="h-5 w-5 text-ak-text-inverse" />
           <div className="text-left">
-            <span className="block font-semibold">Start {focusLabel}-økt</span>
-            <span className="block text-sm opacity-80">{sessionDuration} min · Del av ukens mål</span>
+            <span className="block text-headline text-ak-text-inverse">Start {focusLabel}-økt</span>
+            <span className="block text-caption-1 text-ak-text-inverse/80">{sessionDuration} min · Del av ukens mål</span>
           </div>
         </div>
-        <ChevronRight className="h-5 w-5 opacity-70" />
+        <ChevronRight className="h-5 w-5 text-ak-text-inverse/70" />
       </Button>
     )
   }
@@ -571,17 +571,17 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
   return (
     <Button
       size="lg"
-      className="w-full justify-between h-auto py-4 px-5"
+      className="w-full justify-between h-auto py-4 px-5 bg-ak-brand-primary hover:bg-ak-brand-primary-hover active:bg-ak-brand-primary-active rounded-ak-md shadow-ak-sm transition-all duration-ak-base"
       onClick={() => onStart({ type: 'quick' })}
     >
       <div className="flex items-center gap-3">
-        <Play className="h-5 w-5" />
+        <Play className="h-5 w-5 text-ak-text-inverse" />
         <div className="text-left">
-          <span className="block font-semibold">Kom i gang</span>
-          <span className="block text-sm opacity-80">Velg en økt som passer deg i dag</span>
+          <span className="block text-headline text-ak-text-inverse">Kom i gang</span>
+          <span className="block text-caption-1 text-ak-text-inverse/80">Velg en økt som passer deg i dag</span>
         </div>
       </div>
-      <ChevronRight className="h-5 w-5 opacity-70" />
+      <ChevronRight className="h-5 w-5 text-ak-text-inverse/70" />
     </Button>
   )
 }
@@ -591,12 +591,12 @@ const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, o
 const QuickStartCTA: React.FC<{ onStart: (session: any) => void }> = ({ onStart }) => (
   <Button
     variant="outline"
-    className="w-full justify-center gap-2 border-dashed"
+    className="w-full justify-center gap-2 border-dashed border-ak-border bg-ak-surface-card hover:bg-ak-surface-subtle rounded-ak-md transition-all duration-ak-base"
     onClick={() => onStart({ type: 'quick', duration: 15 })}
   >
-    <Zap className="h-4 w-4 text-text-secondary" />
-    <span>Bare 15 minutter? Start hurtigøkt</span>
-    <ChevronRight className="h-3.5 w-3.5 text-text-tertiary" />
+    <Zap className="h-4 w-4 text-ak-text-secondary" />
+    <span className="text-subhead text-ak-text-secondary">Bare 15 minutter? Start hurtigøkt</span>
+    <ChevronRight className="h-3.5 w-3.5 text-ak-text-tertiary" />
   </Button>
 )
 
@@ -614,15 +614,15 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
   const displayTasks = tasks.slice(0, 3)
 
   return (
-    <Card>
+    <Card className="shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm">
-            <Target className="h-4 w-4 text-text-secondary" />
+          <CardTitle className="flex items-center gap-2 text-subhead">
+            <Target className="h-4 w-4 text-ak-text-secondary" />
             Dagens oppgaver
           </CardTitle>
           {tasks.length > 3 && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-xs h-7">
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-brand-primary hover:text-ak-brand-primary-hover">
               +{tasks.length - 3} mer <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
           )}
@@ -631,16 +631,16 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
       <CardContent className="pt-0">
         {tasks.length === 0 ? (
           <div className="py-6 text-center">
-            <Sparkles className="h-6 w-6 text-text-tertiary mx-auto mb-2" />
-            <p className="text-sm text-text-tertiary">Ingen oppgaver i dag – nyt friheten!</p>
+            <Sparkles className="h-6 w-6 text-ak-text-tertiary mx-auto mb-2" />
+            <p className="text-subhead text-ak-text-tertiary">Ingen oppgaver i dag – nyt friheten!</p>
           </div>
         ) : (
           <div className="space-y-1">
             {displayTasks.map(task => (
               <div
                 key={task.id}
-                className={`flex items-center gap-3 py-3 px-3 -mx-3 rounded-lg transition-colors ${
-                  task.completed ? 'bg-ak-success/10' : 'hover:bg-surface-subtle'
+                className={`flex items-center gap-3 py-3 px-3 -mx-3 rounded-ak-sm transition-colors duration-ak-fast ${
+                  task.completed ? 'bg-ak-status-success-muted' : 'hover:bg-ak-surface-subtle'
                 }`}
               >
                 <Checkbox
@@ -648,8 +648,8 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
                   onCheckedChange={() => onToggle(task.id)}
                   className="h-4.5 w-4.5"
                 />
-                <span className={`flex-1 text-sm font-medium ${
-                  task.completed ? 'line-through text-text-tertiary' : 'text-text-primary'
+                <span className={`flex-1 text-subhead font-medium ${
+                  task.completed ? 'line-through text-ak-text-tertiary' : 'text-ak-text-primary'
                 }`}>
                   {task.title}
                 </span>
@@ -657,7 +657,7 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-xs h-7 text-ak-primary hover:text-ak-primary"
+                    className="text-caption-1 h-7 text-ak-brand-primary hover:text-ak-brand-primary-hover hover:bg-ak-brand-primary-muted"
                     onClick={() => onStartTask(task)}
                   >
                     Start
@@ -669,9 +669,9 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
         )}
 
         {tasks.length > 0 && (
-          <div className="pt-3 mt-3 border-t border-border-subtle text-xs text-text-tertiary">
+          <div className="pt-3 mt-3 border-t border-ak-border-muted text-caption-1 text-ak-text-tertiary">
             {completedCount === tasks.length ? (
-              <span className="text-ak-success">✓ Alle fullført!</span>
+              <span className="text-ak-status-success">✓ Alle fullført!</span>
             ) : (
               `${completedCount} av ${Math.min(tasks.length, 3)} fullført`
             )}
@@ -695,20 +695,20 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
   if (notifications.length === 0) return null
 
   return (
-    <Card>
+    <Card className="shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm">
-            <Bell className="h-4 w-4 text-text-secondary" />
+          <CardTitle className="flex items-center gap-2 text-subhead">
+            <Bell className="h-4 w-4 text-ak-text-secondary" />
             Varslinger
             {notifications.length > 0 && (
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-ak-primary/10 text-ak-primary">
+              <span className="text-caption-1 font-semibold px-2 py-0.5 rounded-full bg-ak-brand-primary-muted text-ak-brand-primary">
                 {notifications.length}
               </span>
             )}
           </CardTitle>
           {notifications.length > 2 && (
-            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-xs h-7">
+            <Button variant="ghost" size="sm" onClick={onViewAll} className="text-caption-1 h-7 text-ak-brand-primary hover:text-ak-brand-primary-hover">
               Se alle <ChevronRight className="h-3 w-3 ml-1" />
             </Button>
           )}
@@ -718,12 +718,12 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
         <div className="space-y-1">
           {displayNotifications.map((notif, idx) => (
             <div key={notif.id || idx} className="flex items-start gap-3 py-3">
-              <div className="w-2 h-2 rounded-full bg-ak-primary mt-2 flex-shrink-0" />
+              <div className="w-2 h-2 rounded-full bg-ak-brand-primary mt-2 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-text-primary">{notif.title}</p>
-                <p className="text-sm text-text-secondary truncate">{notif.message}</p>
+                <p className="text-subhead font-medium text-ak-text-primary">{notif.title}</p>
+                <p className="text-subhead text-ak-text-secondary truncate">{notif.message}</p>
               </div>
-              <span className="text-xs text-text-tertiary flex-shrink-0">{notif.time || 'Nylig'}</span>
+              <span className="text-caption-1 text-ak-text-tertiary flex-shrink-0">{notif.time || 'Nylig'}</span>
             </div>
           ))}
         </div>
@@ -784,13 +784,13 @@ const AKGolfDashboardV4: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <div className="text-text-tertiary">Laster dashboard...</div>
+        <div className="text-subhead text-ak-text-tertiary">Laster dashboard...</div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-6 space-y-6">
+    <div className="max-w-7xl mx-auto px-6 py-6 space-y-6 bg-ak-surface-base min-h-screen">
       {/* Row 1: Welcome Header */}
       <WelcomeSection
         playerName={player.name}
@@ -827,7 +827,7 @@ const AKGolfDashboardV4: React.FC = () => {
       </div>
 
       {/* Row 4: Main content - Focus + Tasks side by side */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Left Column: Focus + CTA */}
         <div className="space-y-4">
           <FocusCard focus={focusData} loading={focusLoading} />

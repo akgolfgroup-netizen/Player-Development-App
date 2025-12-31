@@ -126,9 +126,9 @@ const CategoryProgressCard = ({ category }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: '16px',
+      marginBottom: 'var(--spacing-4)',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
         <div style={{
           width: '48px',
           height: '48px',
@@ -141,27 +141,27 @@ const CategoryProgressCard = ({ category }) => (
           <Award size={24} style={{ color: 'var(--accent)' }} />
         </div>
         <div>
-          <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Nåværende kategori</div>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>
+          <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>Nåværende kategori</div>
+          <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-primary)' }}>
             Kategori {category.level}
           </div>
         </div>
       </div>
       <div style={{ textAlign: 'right' }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+        <div style={{ fontSize: '32px', fontWeight: 700, color: 'var(--accent)' }}>
           {category.points}
         </div>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>poeng</div>
+        <div style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-secondary)' }}>poeng</div>
       </div>
     </div>
 
-    <div style={{ marginBottom: '8px' }}>
+    <div style={{ marginBottom: 'var(--spacing-2)' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         fontSize: '12px',
         color: 'var(--text-secondary)',
-        marginBottom: '6px',
+        marginBottom: 'var(--spacing-1)',
       }}>
         <span>Fremgang mot Kategori {category.nextLevel}</span>
         <span>{category.pointsNeeded} poeng igjen</span>
@@ -200,7 +200,7 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
       alignItems: 'center',
       justifyContent: 'space-between',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
         <div style={{
           width: '40px',
           height: '40px',
@@ -238,7 +238,7 @@ const DevelopmentAreaCard = ({ area, onClick }) => (
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
         <div style={{
           fontSize: '24px',
           fontWeight: 700,
@@ -262,7 +262,7 @@ const QuickLinkCard = ({ icon: Icon, title, description, href, color }) => (
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '14px',
+        gap: 'var(--spacing-3)',
       }}>
         <div style={{
           width: '44px',
@@ -319,8 +319,8 @@ const UtviklingsOversiktContainer = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '12px',
-          margin: '24px 0',
+          gap: 'var(--spacing-3)',
+          margin: 'var(--spacing-6) 0',
         }}>
           <QuickLinkCard
             icon={Zap}
@@ -346,14 +346,14 @@ const UtviklingsOversiktContainer = () => {
         </div>
 
         {/* Development Areas */}
-        <div style={{ marginBottom: '24px' }}>
-          <SectionTitle style={{ marginBottom: '12px' }}>
+        <div style={{ marginBottom: 'var(--spacing-6)' }}>
+          <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>
             Utviklingsområder
           </SectionTitle>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '10px',
+            gap: 'var(--spacing-2)',
           }}>
             {DEVELOPMENT_AREAS.map((area) => (
               <DevelopmentAreaCard
@@ -371,7 +371,7 @@ const UtviklingsOversiktContainer = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: '12px',
+            marginBottom: 'var(--spacing-3)',
           }}>
             <SubSectionTitle>
               Siste prestasjoner
@@ -391,8 +391,8 @@ const UtviklingsOversiktContainer = () => {
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px',
-                  padding: '10px',
+                  gap: 'var(--spacing-3)',
+                  padding: 'var(--spacing-2)',
                   backgroundColor: 'var(--bg-secondary)',
                   borderRadius: 'var(--radius-sm)',
                 }}

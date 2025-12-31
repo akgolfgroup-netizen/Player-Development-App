@@ -191,8 +191,14 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant={meetsReq ? 'default' : 'secondary'}>
-                  {meetsReq ? 'Bestått' : 'Under krav'}
+                <Badge
+                  variant={meetsReq ? 'default' : 'destructive'}
+                  style={meetsReq
+                    ? { backgroundColor: 'var(--success-muted)', color: 'var(--success)', border: '1px solid var(--success)' }
+                    : { backgroundColor: 'var(--error-muted)', color: 'var(--error)', border: '1px solid var(--error)' }
+                  }
+                >
+                  {meetsReq ? 'Oppfylt' : 'Under krav'}
                 </Badge>
                 {isExpanded ? (
                   <ChevronDown className="h-4 w-4 text-text-secondary" />
@@ -207,7 +213,7 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
               <div className="flex items-baseline gap-2">
                 <span className={cn(
                   "text-2xl font-bold",
-                  meetsReq ? "text-ak-success" : "text-ak-warning"
+                  meetsReq ? "text-ak-success" : "text-ak-error"
                 )}>
                   {currentValue}{test.unit}
                 </span>
@@ -262,10 +268,10 @@ const TestCard: React.FC<TestCardProps> = ({ test, isExpanded, onToggle }) => {
                 <p className="text-[10px] text-text-secondary uppercase">Til krav</p>
                 <p className={cn(
                   "text-sm font-semibold",
-                  meetsReq ? "text-ak-success" : "text-ak-warning"
+                  meetsReq ? "text-ak-success" : "text-ak-error"
                 )}>
                   {meetsReq
-                    ? 'Oppnådd ✓'
+                    ? 'Oppfylt'
                     : `${Math.abs(currentValue - test.requirement).toFixed(test.unit === '' ? 3 : 0)}${test.unit} igjen`}
                 </p>
               </div>
@@ -575,17 +581,22 @@ const Testresultater: React.FC<TestresultaterProps> = ({
                 ))}
 
                 {filteredTests.length === 0 && (
-                  <Card className="text-center py-12">
-                    <CardContent>
-                      <Target className="h-12 w-12 mx-auto mb-4 text-text-tertiary" />
-                      <SubSectionTitle className="text-lg font-semibold text-text-primary mb-2">
-                        Ingen tester funnet
-                      </SubSectionTitle>
-                      <p className="text-sm text-text-secondary">
-                        Ingen testresultater i denne kategorien.
-                      </p>
-                    </CardContent>
-                  </Card>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 'var(--spacing-12) var(--spacing-4)',
+                    textAlign: 'center'
+                  }}>
+                    <Target style={{ width: '48px', height: '48px', color: 'var(--text-muted)', marginBottom: 'var(--spacing-4)' }} />
+                    <h3 style={{ fontSize: 'var(--font-size-headline)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 'var(--spacing-2)' }}>
+                      Ingen testresultater
+                    </h3>
+                    <p style={{ fontSize: 'var(--font-size-footnote)', color: 'var(--text-tertiary)', marginBottom: 'var(--spacing-4)', maxWidth: '320px' }}>
+                      Ingen testresultater i denne kategorien enda. Testresultater vises her etter at de er registrert.
+                    </p>
+                  </div>
                 )}
               </div>
             </ScrollArea>

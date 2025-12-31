@@ -32,6 +32,7 @@ import {
   PLAN_TYPE_OPTIONS,
   PYRAMIDS,
   SEARCH_DEBOUNCE_MS,
+  PYRAMID_ICONS,
 } from '../constants';
 
 // =============================================================================
@@ -56,18 +57,16 @@ const styles = {
   },
   pyramidSegment: {
     display: 'flex',
-    borderRadius: 'var(--radius-md)',
-    overflow: 'hidden',
-    border: '1px solid var(--border-default)',
-    backgroundColor: 'var(--bg-secondary)',
+    gap: '6px',
   },
   pyramidButton: (isActive: boolean) => ({
-    padding: '6px 12px',
-    fontSize: '13px',
-    fontWeight: isActive ? 600 : 500,
-    color: isActive ? 'var(--text-inverted)' : 'var(--text-secondary)',
-    backgroundColor: isActive ? 'var(--accent)' : 'transparent',
-    border: 'none',
+    backgroundColor: isActive ? 'var(--accent)' : 'var(--background-white)',
+    color: isActive ? 'var(--text-inverse)' : 'var(--text-secondary)',
+    padding: 'var(--spacing-2) var(--spacing-4)',
+    borderRadius: 'var(--radius-full)',
+    fontSize: 'var(--font-size-footnote)',
+    fontWeight: 500,
+    border: isActive ? 'none' : '1px solid var(--border-default)',
     cursor: 'pointer',
     transition: 'all 150ms ease',
     whiteSpace: 'nowrap' as const,
@@ -272,18 +271,21 @@ export const DagbokFilterBar: React.FC<DagbokFilterBarProps> = ({
       <div style={styles.topRow}>
         {/* Pyramid segmented control */}
         <div style={styles.pyramidSegment}>
-          {PYRAMID_OPTIONS.map((opt) => (
-            <button
-              key={opt.value}
-              onClick={() => actions.setPyramid(opt.value === 'all' ? null : opt.value as Pyramid)}
-              style={styles.pyramidButton(
-                opt.value === 'all' ? state.pyramid === null : state.pyramid === opt.value
-              )}
-            >
-              {opt.icon && <span style={{ marginRight: '4px' }}>{opt.icon}</span>}
-              {opt.label}
-            </button>
-          ))}
+          {PYRAMID_OPTIONS.map((opt) => {
+            const PyramidIcon = opt.value !== 'all' ? PYRAMID_ICONS[opt.value as keyof typeof PYRAMID_ICONS] : null;
+            return (
+              <button
+                key={opt.value}
+                onClick={() => actions.setPyramid(opt.value === 'all' ? null : opt.value as Pyramid)}
+                style={styles.pyramidButton(
+                  opt.value === 'all' ? state.pyramid === null : state.pyramid === opt.value
+                )}
+              >
+                {PyramidIcon && <PyramidIcon size={14} style={{ marginRight: '4px' }} />}
+                {opt.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Period navigation */}

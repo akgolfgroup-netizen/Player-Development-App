@@ -153,7 +153,7 @@ const formatDate = (dateStr) => {
 // ============================================================================
 
 const RatingStars = ({ rating, size = 14 }) => (
-  <div style={{ display: 'flex', gap: '2px' }}>
+  <div style={{ display: 'flex', gap: 'var(--spacing-0)' }}>
     {[1, 2, 3, 4, 5].map((star) => (
       <Star
         key={star}
@@ -180,7 +180,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
       onClick={() => onClick(entry)}
       style={{ cursor: 'pointer' }}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-3)' }}>
         <div style={{
           width: '44px',
           height: '44px',
@@ -199,7 +199,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: '6px',
+            marginBottom: 'var(--spacing-1)',
           }}>
             <div>
               <SubSectionTitle style={{
@@ -210,8 +210,8 @@ const DiaryEntryCard = ({ entry, onClick }) => {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
-                marginTop: '4px',
+                gap: 'var(--spacing-2)',
+                marginTop: 'var(--spacing-1)',
               }}>
                 <Badge variant={typeConfig.variant} size="sm">{typeConfig.label}</Badge>
                 <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
@@ -222,7 +222,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
                   color: 'var(--text-secondary)',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '4px',
+                  gap: 'var(--spacing-1)',
                 }}>
                   <Clock size={12} />
                   {entry.duration} min
@@ -238,7 +238,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
           <p style={{
             fontSize: '13px',
             color: 'var(--text-primary)',
-            margin: '8px 0',
+            margin: 'var(--spacing-2) 0',
             lineHeight: 1.4,
             display: '-webkit-box',
             WebkitLineClamp: 2,
@@ -249,7 +249,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
           </p>
 
           {entry.achievements.length > 0 && (
-            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 'var(--spacing-1)', flexWrap: 'wrap' }}>
               {entry.achievements.slice(0, 2).map((achievement, idx) => (
                 <Badge key={idx} variant="success" size="sm">✓ {achievement}</Badge>
               ))}
@@ -271,8 +271,8 @@ const StatsOverview = ({ stats }) => (
   <div style={{
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-    gap: '10px',
-    marginBottom: '24px',
+    gap: 'var(--spacing-2)',
+    marginBottom: 'var(--spacing-6)',
   }}>
     <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
       <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
@@ -287,7 +287,7 @@ const StatsOverview = ({ stats }) => (
       <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Denne mnd</div>
     </Card>
     <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--spacing-0)' }}>
         <span style={{ fontSize: '22px', fontWeight: 700, color: 'var(--warning)' }}>
           {stats.avgRating}
         </span>
@@ -309,7 +309,7 @@ const StatsOverview = ({ stats }) => (
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '4px',
+        gap: 'var(--spacing-1)',
       }}>
         🔥 {stats.streak}
       </div>
@@ -376,7 +376,7 @@ const TreningsdagbokContainer = () => {
       <div style={{ padding: '0' }}>
         {/* Stats */}
         {error && (
-          <div style={{ padding: '12px', backgroundColor: 'color-mix(in srgb, var(--error) 15%, transparent)', borderRadius: 'var(--radius-sm)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ padding: 'var(--spacing-3)', backgroundColor: 'color-mix(in srgb, var(--error) 15%, transparent)', borderRadius: 'var(--radius-sm)', marginBottom: 'var(--spacing-4)', display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
             <AlertCircle size={16} color="var(--error)" />
             <span style={{ fontSize: '13px', color: 'var(--error)' }}>{error} (viser demo-data)</span>
           </div>
@@ -384,9 +384,9 @@ const TreningsdagbokContainer = () => {
         <StatsOverview stats={{ ...STATS, totalEntries: entries.length }} />
 
         {/* Search and Filters */}
-        <div style={{ marginBottom: '20px' }}>
-          <Card variant="default" padding="sm" style={{ marginBottom: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ marginBottom: 'var(--spacing-5)' }}>
+          <Card variant="default" padding="sm" style={{ marginBottom: 'var(--spacing-3)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
               <Search size={18} color="var(--text-tertiary)" />
               <input
                 type="text"
@@ -410,9 +410,9 @@ const TreningsdagbokContainer = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '12px',
+            gap: 'var(--spacing-3)',
           }}>
-            <div style={{ display: 'flex', gap: '6px', overflowX: 'auto' }}>
+            <div style={{ display: 'flex', gap: 'var(--spacing-1)', overflowX: 'auto' }}>
               {filters.map((f) => (
                 <Button
                   key={f.key}
@@ -432,7 +432,7 @@ const TreningsdagbokContainer = () => {
         </div>
 
         {/* Entries List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
           {filteredEntries.length > 0 ? (
             filteredEntries.map((entry) => (
               <DiaryEntryCard

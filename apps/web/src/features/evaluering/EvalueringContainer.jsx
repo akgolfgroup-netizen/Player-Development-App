@@ -364,13 +364,13 @@ const EvalueringContainer = () => {
                 key={f.key}
                 onClick={() => setFilter(f.key)}
                 style={{
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
-                  color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
-                  fontSize: '13px',
+                  backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--background-white)',
+                  color: filter === f.key ? 'var(--text-inverse)' : 'var(--text-secondary)',
+                  padding: 'var(--spacing-2) var(--spacing-4)',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: 'var(--font-size-footnote)',
                   fontWeight: 500,
+                  border: filter === f.key ? 'none' : '1px solid var(--border-default)',
                   cursor: 'pointer',
                 }}
               >

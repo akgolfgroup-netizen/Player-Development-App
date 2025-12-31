@@ -84,33 +84,19 @@ export const CalendarOversiktWidget: React.FC<CalendarOversiktWidgetProps> = ({
 
   return (
     <div
-      className={`rounded-xl p-4 ${className}`}
-      style={{
-        backgroundColor: 'var(--card-background)',
-        border: '1px solid var(--card-border)',
-      }}
+      className={`rounded-ak-lg p-4 bg-ak-surface-card border border-ak-border shadow-ak-card ${className}`}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Calendar size={18} style={{ color: 'var(--text-secondary)' }} />
-          <h3
-            className="text-sm font-semibold"
-            style={{ color: 'var(--text-primary)' }}
-          >
+          <Calendar size={18} className="text-ak-text-secondary" />
+          <h3 className="text-headline text-ak-text-primary">
             Kalender Oversikt
           </h3>
         </div>
         <button
           onClick={handleViewAll}
-          className="flex items-center gap-1 text-xs font-medium transition-colors"
-          style={{ color: 'var(--text-tertiary)' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'var(--text-secondary)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'var(--text-tertiary)';
-          }}
+          className="flex items-center gap-1 text-caption-1 font-medium text-ak-text-tertiary hover:text-ak-text-secondary transition-colors duration-ak-fast"
         >
           Se alt
           <ChevronRight size={14} />
@@ -124,8 +110,7 @@ export const CalendarOversiktWidget: React.FC<CalendarOversiktWidgetProps> = ({
           Array.from({ length: 7 }).map((_, idx) => (
             <div
               key={idx}
-              className="flex-1 h-16 rounded-lg animate-pulse"
-              style={{ backgroundColor: 'var(--skeleton-bg)' }}
+              className="flex-1 h-16 rounded-ak-sm animate-pulse bg-ak-surface-subtle"
             />
           ))
         ) : (
@@ -144,46 +129,24 @@ export const CalendarOversiktWidget: React.FC<CalendarOversiktWidgetProps> = ({
               <button
                 key={dateKey}
                 onClick={() => handleDayClick(date)}
-                className="flex-1 flex flex-col items-center py-2 px-1 rounded-lg transition-colors"
-                style={{
-                  backgroundColor: isToday
-                    ? 'var(--calendar-surface-today)'
-                    : 'transparent',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isToday) {
-                    e.currentTarget.style.backgroundColor = 'var(--hover-bg)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isToday) {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }
-                }}
+                className={`flex-1 flex flex-col items-center py-2 px-1 rounded-ak-sm transition-colors duration-ak-fast ${
+                  isToday
+                    ? 'bg-ak-brand-primary-muted'
+                    : 'bg-transparent hover:bg-ak-surface-subtle'
+                }`}
               >
                 {/* Day name */}
-                <span
-                  className="text-[10px] font-medium mb-1"
-                  style={{ color: 'var(--text-tertiary)' }}
-                >
+                <span className="text-caption-2 font-medium mb-1 text-ak-text-tertiary">
                   {DAY_NAMES_SHORT[dayOfWeek]}
                 </span>
 
                 {/* Day number */}
                 <span
-                  className={`text-sm font-semibold ${
+                  className={`text-subhead font-semibold ${
                     isToday
-                      ? 'w-6 h-6 flex items-center justify-center rounded-full'
-                      : ''
+                      ? 'w-6 h-6 flex items-center justify-center rounded-full bg-ak-brand-primary text-ak-text-inverse'
+                      : 'text-ak-text-primary'
                   }`}
-                  style={{
-                    backgroundColor: isToday
-                      ? 'var(--calendar-today-marker-bg)'
-                      : 'transparent',
-                    color: isToday
-                      ? 'var(--calendar-today-marker-text)'
-                      : 'var(--text-primary)',
-                  }}
                 >
                   {date.getDate()}
                 </span>
@@ -202,10 +165,7 @@ export const CalendarOversiktWidget: React.FC<CalendarOversiktWidgetProps> = ({
                     );
                   })}
                   {sourcesForDay.length > 4 && (
-                    <span
-                      className="text-[8px]"
-                      style={{ color: 'var(--text-muted)' }}
-                    >
+                    <span className="text-caption-2 text-ak-text-muted">
                       +{sourcesForDay.length - 4}
                     </span>
                   )}

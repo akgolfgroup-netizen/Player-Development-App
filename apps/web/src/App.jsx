@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
@@ -19,7 +19,8 @@ import LoadingState from './components/ui/LoadingState';
 import Toast from './components/Toast';
 import VideoNotificationManager from './components/VideoNotificationManager';
 import NotificationManager from './components/NotificationManager';
-import { Toaster, TooltipProvider } from './components/shadcn';
+import { Toaster, TooltipProvider, Button } from './components/shadcn';
+import { Plus } from 'lucide-react';
 
 // Lazy-loaded feature components
 const Login = lazy(() => import('./features/auth/Login'));
@@ -627,7 +628,18 @@ function App() {
           } />
           <Route path="/sessions" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Alle økter" subtitle="Oversikt over dine treningsøkter">
+              <AuthenticatedLayout
+                title="Alle økter"
+                subtitle="Oversikt over dine treningsøkter"
+                actions={
+                  <Link to="/session/new">
+                    <Button className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Ny økt
+                    </Button>
+                  </Link>
+                }
+              >
                 <SessionsListContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>

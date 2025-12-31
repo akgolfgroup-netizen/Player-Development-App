@@ -370,28 +370,33 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
         {filteredConversations.length === 0 ? (
           <div
             style={{
-              padding: '48px 24px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 'var(--spacing-12) var(--spacing-4)',
               textAlign: 'center',
             }}
           >
             <MessageSquare
-              size={48}
-              style={{ color: 'var(--border-default)', marginBottom: '16px' }}
+              style={{ width: '48px', height: '48px', color: 'var(--text-muted)', marginBottom: 'var(--spacing-4)' }}
             />
-            <p
+            <h3
               style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
+                fontSize: 'var(--font-size-headline)',
+                fontWeight: 600,
                 color: 'var(--text-primary)',
-                margin: '0 0 8px',
+                marginBottom: 'var(--spacing-2)',
               }}
             >
-              Ingen samtaler
-            </p>
+              Ingen meldinger
+            </h3>
             <p
               style={{
-                fontSize: '13px', lineHeight: '18px',
-                color: 'var(--text-secondary)',
-                margin: 0,
+                fontSize: 'var(--font-size-footnote)',
+                color: 'var(--text-tertiary)',
+                marginBottom: 'var(--spacing-4)',
+                maxWidth: '320px',
               }}
             >
               {searchQuery
