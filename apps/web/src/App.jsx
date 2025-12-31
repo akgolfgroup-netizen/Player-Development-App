@@ -59,6 +59,7 @@ const TekniskPlanContainer = lazy(() => import('./features/trening-plan/TekniskP
 const StatsOppdateringContainer = lazy(() => import('./features/stats-pages/StatsOppdateringContainer'));
 const TurneringsstatistikkContainer = lazy(() => import('./features/stats-pages/TurneringsstatistikkContainer'));
 const StatsVerktoyContainer = lazy(() => import('./features/stats-pages/StatsVerktoyContainer'));
+const StatsGuidePage = lazy(() => import('./features/stats-pages/StatsGuidePage'));
 const EvalueringContainer = lazy(() => import('./features/evaluering/EvalueringContainer'));
 
 // UI Lab (DEV-only)
@@ -698,6 +699,13 @@ function App() {
             <ProtectedRoute>
               <AuthenticatedLayout title="Statistikkverktøy" subtitle="Analyseverktøy">
                 <StatsVerktoyContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/stats/guide" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Statistikk & Testing" subtitle="Slik fungerer det">
+                <StatsGuidePage />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />

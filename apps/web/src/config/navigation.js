@@ -125,6 +125,7 @@ export const navigationConfig = [
     icon: 'BarChart3',
     submenu: [
       { href: '/statistikk', label: 'Oversikt' },
+      { href: '/stats/guide', label: 'Slik fungerer det', icon: 'BookOpen' },
       { href: '/statistikk/status', label: 'Status & Mål' },
       { href: '/statistikk/strokes-gained', label: 'Strokes Gained' },
       { href: '/statistikk/testresultater', label: 'Alle testresultater' },
