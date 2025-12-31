@@ -1,4 +1,17 @@
-import React, { useState } from 'react';
+/**
+ * TestResultsContent - Comprehensive test results view
+ * Used within StatistikkHub as tab content
+ *
+ * Features:
+ * - Test history list with filtering
+ * - Category progression visualization
+ * - Test comparison tools
+ * - Improvement velocity tracking
+ * - Coach notes integration
+ */
+
+import React, { useState, lazy, Suspense } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ClipboardList,
   TrendingUp,
@@ -6,72 +19,73 @@ import {
   Filter,
   Calendar,
   Target,
-  Activity
+  Activity,
+  GitCompare,
+  Zap,
+  MessageSquare,
+  Award,
+  ChevronRight,
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
+import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
-import { useStrokesGained } from '../../hooks/useStrokesGained';
-import { SectionTitle } from '../../components/typography';
-import { getStrokesGainedIcon } from '../../constants/icons';
+import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import useTestResults from '../../hooks/useTestResults';
 
-/**
- * TestResultsContent - All test results
- * Used within StatistikkHub as tab content
- */
+// Lazy load sub-widgets for performance
+const CategoryProgressionWidget = lazy(() => import('./CategoryProgressionWidget'));
+const TestComparisonWidget = lazy(() => import('./TestComparisonWidget'));
+const ImprovementVelocityWidget = lazy(() => import('./ImprovementVelocityWidget'));
+const CoachNotesPanel = lazy(() => import('./CoachNotesPanel'));
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+type SubView = 'list' | 'progression' | 'compare' | 'velocity' | 'notes';
+
+const SUB_VIEWS: { id: SubView; label: string; icon: React.ReactNode }[] = [
+  { id: 'list', label: 'Oversikt', icon: <ClipboardList size={16} /> },
+  { id: 'progression', label: 'Progresjon', icon: <Award size={16} /> },
+  { id: 'compare', label: 'Sammenlign', icon: <GitCompare size={16} /> },
+  { id: 'velocity', label: 'Hastighet', icon: <Zap size={16} /> },
+  { id: 'notes', label: 'Notater', icon: <MessageSquare size={16} /> },
+];
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
 const TestResultsContent: React.FC = () => {
-  const { data, loading, error } = useStrokesGained();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const subView = (searchParams.get('subview') as SubView) || 'list';
   const [filterCategory, setFilterCategory] = useState<string>('all');
 
-  const formatSG = (value: number | null | undefined) => {
-    if (value === null || value === undefined) return '-';
-    if (value > 0) return `+${value.toFixed(2)}`;
-    return value.toFixed(2);
+  const {
+    tests,
+    testsByCategory,
+    categories,
+    totalTests,
+    passedTests,
+    improvingTests,
+    loading,
+    error,
+  } = useTestResults();
+
+  const setSubView = (view: SubView) => {
+    searchParams.set('subview', view);
+    setSearchParams(searchParams);
   };
 
-  const getSGColor = (value: number | null | undefined) => {
-    if (value === null || value === undefined) return 'var(--text-tertiary)';
-    if (value > 0) return 'var(--success)';
-    if (value < 0) return 'var(--error)';
-    return 'var(--text-secondary)';
+  const handleViewTestDetails = (testId: string) => {
+    navigate(`/statistikk?tab=testresultater&testId=${testId}`);
   };
 
-  const getCategoryLabel = (category: string) => {
-    switch (category) {
-      case 'approach': return 'Approach';
-      case 'around_green': return 'Rundt green';
-      case 'putting': return 'Putting';
-      default: return category;
-    }
-  };
-
-  const getCategoryIcon = (category: string) => {
-    return getStrokesGainedIcon(category);
-  };
-
-  // Generate demo test data
-  const demoTests = [
-    { date: '2025-12-30', category: 'approach', sg: 0.22, testName: 'Approach 150m', distance: '150m' },
-    { date: '2025-12-29', category: 'putting', sg: 0.15, testName: 'Putting 3m', distance: '3m' },
-    { date: '2025-12-28', category: 'approach', sg: 0.18, testName: 'Approach 100m', distance: '100m' },
-    { date: '2025-12-27', category: 'around_green', sg: -0.05, testName: 'Chipping 20m', distance: '20m' },
-    { date: '2025-12-26', category: 'putting', sg: 0.08, testName: 'Putting 5m', distance: '5m' },
-    { date: '2025-12-25', category: 'approach', sg: 0.12, testName: 'Approach 175m', distance: '175m' },
-    { date: '2025-12-24', category: 'around_green', sg: 0.10, testName: 'Bunkerslag', distance: '15m' },
-    { date: '2025-12-23', category: 'putting', sg: 0.25, testName: 'Putting 2m', distance: '2m' },
-    { date: '2025-12-22', category: 'approach', sg: -0.08, testName: 'Approach 200m', distance: '200m' },
-    { date: '2025-12-21', category: 'around_green', sg: 0.05, testName: 'Pitch 30m', distance: '30m' },
-  ];
-
-  const tests = data?.recentTests || demoTests;
   const filteredTests = filterCategory === 'all'
     ? tests
     : tests.filter(t => t.category === filterCategory);
-
-  // Calculate stats
-  const totalTests = tests.length;
-  const avgSG = tests.reduce((sum, t) => sum + t.sg, 0) / (tests.length || 1);
-  const positiveTests = tests.filter(t => t.sg > 0).length;
 
   if (loading) {
     return (
@@ -83,7 +97,7 @@ const TestResultsContent: React.FC = () => {
     );
   }
 
-  if (error && !data) {
+  if (error && tests.length === 0) {
     return (
       <StateCard
         variant="error"
@@ -95,7 +109,7 @@ const TestResultsContent: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      {/* Stats Summary */}
+      {/* Quick Stats */}
       <section style={styles.section}>
         <div style={styles.statsGrid}>
           <Card padding="md">
@@ -112,153 +126,193 @@ const TestResultsContent: React.FC = () => {
 
           <Card padding="md">
             <div style={styles.statCard}>
-              <div style={styles.statIcon}>
-                <Activity size={20} color="var(--accent)" />
+              <div style={{ ...styles.statIcon, backgroundColor: 'rgba(34, 197, 94, 0.1)' }}>
+                <Target size={20} color="var(--success)" />
               </div>
               <div style={styles.statContent}>
-                <span style={{ ...styles.statValue, color: getSGColor(avgSG) }}>
-                  {formatSG(avgSG)}
+                <span style={{ ...styles.statValue, color: 'var(--success)' }}>
+                  {passedTests}/{totalTests}
                 </span>
-                <span style={styles.statLabel}>Snitt SG</span>
+                <span style={styles.statLabel}>Oppfylt</span>
               </div>
             </div>
           </Card>
 
           <Card padding="md">
             <div style={styles.statCard}>
-              <div style={styles.statIcon}>
-                <TrendingUp size={20} color="var(--success)" />
+              <div style={{ ...styles.statIcon, backgroundColor: 'rgba(99, 102, 241, 0.1)' }}>
+                <TrendingUp size={20} color="var(--accent)" />
               </div>
               <div style={styles.statContent}>
-                <span style={styles.statValue}>
-                  {Math.round((positiveTests / (totalTests || 1)) * 100)}%
-                </span>
-                <span style={styles.statLabel}>Positive tester</span>
+                <span style={styles.statValue}>{improvingTests}</span>
+                <span style={styles.statLabel}>Forbedrer seg</span>
               </div>
             </div>
           </Card>
         </div>
       </section>
 
-      {/* Filter */}
+      {/* Sub-navigation */}
       <section style={styles.section}>
-        <div style={styles.filterBar}>
-          <Filter size={18} color="var(--text-secondary)" />
-          <div style={styles.filterButtons}>
-            {[
-              { id: 'all', label: 'Alle' },
-              { id: 'approach', label: 'Approach' },
-              { id: 'around_green', label: 'Kortspill' },
-              { id: 'putting', label: 'Putting' },
-            ].map(filter => (
-              <button
-                key={filter.id}
-                onClick={() => setFilterCategory(filter.id)}
-                style={{
-                  ...styles.filterButton,
-                  ...(filterCategory === filter.id ? styles.filterButtonActive : {}),
-                }}
-              >
-                {filter.label}
-              </button>
-            ))}
-          </div>
+        <div style={styles.subNav}>
+          {SUB_VIEWS.map(view => (
+            <button
+              key={view.id}
+              onClick={() => setSubView(view.id)}
+              style={{
+                ...styles.subNavButton,
+                ...(subView === view.id ? styles.subNavButtonActive : {}),
+              }}
+            >
+              {view.icon}
+              {view.label}
+            </button>
+          ))}
         </div>
       </section>
 
-      {/* Test List */}
-      <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>
-          Testhistorikk ({filteredTests.length})
-        </SectionTitle>
+      {/* Content based on sub-view */}
+      <Suspense fallback={<StateCard variant="loading" title="Laster..." />}>
+        {subView === 'list' && (
+          <>
+            {/* Filter */}
+            <section style={styles.section}>
+              <div style={styles.filterBar}>
+                <Filter size={18} color="var(--text-secondary)" />
+                <div style={styles.filterButtons}>
+                  <button
+                    onClick={() => setFilterCategory('all')}
+                    style={{
+                      ...styles.filterButton,
+                      ...(filterCategory === 'all' ? styles.filterButtonActive : {}),
+                    }}
+                  >
+                    Alle ({tests.length})
+                  </button>
+                  {categories.map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setFilterCategory(cat)}
+                      style={{
+                        ...styles.filterButton,
+                        ...(filterCategory === cat ? styles.filterButtonActive : {}),
+                      }}
+                    >
+                      {cat} ({testsByCategory[cat]?.length || 0})
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
 
-        <Card padding="none">
-          <div style={styles.testList}>
-            {filteredTests.map((test, index) => {
-              const Icon = getCategoryIcon(test.category);
-              return (
-                <div key={index} style={styles.testRow}>
-                  <div style={styles.testLeft}>
-                    <div style={styles.testIconWrapper}>
-                      <Icon size={18} color="var(--accent)" />
-                    </div>
-                    <div style={styles.testInfo}>
-                      <span style={styles.testName}>{test.testName}</span>
-                      <div style={styles.testMeta}>
-                        <Calendar size={12} color="var(--text-tertiary)" />
-                        <span>{test.date}</span>
-                        <Badge variant="default" size="sm">
-                          {getCategoryLabel(test.category)}
-                        </Badge>
+            {/* Test List */}
+            <section style={styles.section}>
+              <SectionTitle style={styles.sectionTitle}>
+                Testresultater ({filteredTests.length})
+              </SectionTitle>
+
+              <div style={styles.testList}>
+                {filteredTests.map(test => (
+                  <Card
+                    key={test.id}
+                    padding="md"
+                    style={styles.testCard}
+                    onClick={() => handleViewTestDetails(test.id)}
+                  >
+                    <div style={styles.testRow}>
+                      <div style={styles.testLeft}>
+                        <span style={styles.testIcon}>{test.icon}</span>
+                        <div style={styles.testInfo}>
+                          <span style={styles.testName}>{test.name}</span>
+                          <div style={styles.testMeta}>
+                            <Badge variant="accent" size="sm">{test.category}</Badge>
+                            <span style={styles.testDate}>
+                              Sist: {test.lastTestDate
+                                ? new Date(test.lastTestDate).toLocaleDateString('no-NO', {
+                                  day: 'numeric',
+                                  month: 'short',
+                                })
+                                : '-'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={styles.testRight}>
+                        <div style={styles.testValue}>
+                          <span style={{
+                            ...styles.currentValue,
+                            color: test.meetsCurrent ? 'var(--success)' : 'var(--warning)',
+                          }}>
+                            {test.currentValue}{test.unit}
+                          </span>
+                          <span style={styles.requirement}>
+                            Krav: {test.lowerIsBetter ? '≤' : '≥'}{test.requirement}{test.unit}
+                          </span>
+                        </div>
+
+                        <div style={styles.testTrend}>
+                          {test.trend === 'improving' ? (
+                            <TrendingUp size={16} color="var(--success)" />
+                          ) : test.trend === 'declining' ? (
+                            <TrendingDown size={16} color="var(--error)" />
+                          ) : null}
+                          <ChevronRight size={16} color="var(--text-tertiary)" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div style={styles.testRight}>
-                    <span style={{ ...styles.testSG, color: getSGColor(test.sg) }}>
-                      {formatSG(test.sg)}
-                    </span>
-                    {test.sg > 0 ? (
-                      <TrendingUp size={14} color="var(--success)" />
-                    ) : test.sg < 0 ? (
-                      <TrendingDown size={14} color="var(--error)" />
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })}
 
-            {filteredTests.length === 0 && (
-              <div style={styles.emptyState}>
-                <Target size={32} color="var(--text-tertiary)" />
-                <p>Ingen tester i denne kategorien</p>
+                    {/* Mini progress bar */}
+                    <div style={styles.progressBar}>
+                      <div
+                        style={{
+                          ...styles.progressFill,
+                          width: `${Math.min(100, test.lowerIsBetter
+                            ? (test.requirement / test.currentValue) * 100
+                            : (test.currentValue / test.requirement) * 100)}%`,
+                          backgroundColor: test.meetsCurrent ? 'var(--success)' : 'var(--accent)',
+                        }}
+                      />
+                    </div>
+                  </Card>
+                ))}
+
+                {filteredTests.length === 0 && (
+                  <StateCard
+                    variant="empty"
+                    icon={Target}
+                    title="Ingen tester funnet"
+                    description="Ingen tester matcher filteret"
+                  />
+                )}
               </div>
-            )}
-          </div>
-        </Card>
-      </section>
+            </section>
+          </>
+        )}
 
-      {/* Category Breakdown */}
-      <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>
-          Per kategori
-        </SectionTitle>
+        {subView === 'progression' && (
+          <CategoryProgressionWidget onViewTestDetails={handleViewTestDetails} />
+        )}
 
-        <div style={styles.categoryBreakdown}>
-          {['approach', 'around_green', 'putting'].map(cat => {
-            const catTests = tests.filter(t => t.category === cat);
-            const catAvg = catTests.reduce((sum, t) => sum + t.sg, 0) / (catTests.length || 1);
-            const Icon = getCategoryIcon(cat);
+        {subView === 'compare' && (
+          <TestComparisonWidget />
+        )}
 
-            return (
-              <Card key={cat} padding="md">
-                <div style={styles.categoryCard}>
-                  <div style={styles.categoryHeader}>
-                    <div style={styles.categoryIcon}>
-                      <Icon size={18} color="var(--accent)" />
-                    </div>
-                    <span style={styles.categoryLabel}>{getCategoryLabel(cat)}</span>
-                  </div>
-                  <div style={styles.categoryStats}>
-                    <div style={styles.categoryStat}>
-                      <span style={styles.categoryStatValue}>{catTests.length}</span>
-                      <span style={styles.categoryStatLabel}>Tester</span>
-                    </div>
-                    <div style={styles.categoryStat}>
-                      <span style={{ ...styles.categoryStatValue, color: getSGColor(catAvg) }}>
-                        {formatSG(catAvg)}
-                      </span>
-                      <span style={styles.categoryStatLabel}>Snitt SG</span>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
+        {subView === 'velocity' && (
+          <ImprovementVelocityWidget onViewTestDetails={handleViewTestDetails} />
+        )}
+
+        {subView === 'notes' && (
+          <CoachNotesPanel onViewTestDetails={handleViewTestDetails} />
+        )}
+      </Suspense>
     </div>
   );
 };
+
+// ============================================================================
+// STYLES
+// ============================================================================
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
@@ -267,6 +321,10 @@ const styles: Record<string, React.CSSProperties> = {
   },
   section: {
     marginBottom: 'var(--spacing-5)',
+  },
+  sectionTitle: {
+    margin: 0,
+    marginBottom: 'var(--spacing-3)',
   },
   statsGrid: {
     display: 'grid',
@@ -301,6 +359,34 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'var(--font-size-caption1)',
     color: 'var(--text-tertiary)',
   },
+  subNav: {
+    display: 'flex',
+    gap: 'var(--spacing-2)',
+    padding: 'var(--spacing-1)',
+    backgroundColor: 'var(--background-surface)',
+    borderRadius: 'var(--radius-md)',
+    overflowX: 'auto',
+  },
+  subNavButton: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-2)',
+    padding: 'var(--spacing-2) var(--spacing-3)',
+    borderRadius: 'var(--radius-sm)',
+    border: 'none',
+    backgroundColor: 'transparent',
+    fontSize: 'var(--font-size-footnote)',
+    fontWeight: 500,
+    color: 'var(--text-secondary)',
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
+    transition: 'all 0.15s ease',
+  },
+  subNavButtonActive: {
+    backgroundColor: 'var(--background-white)',
+    color: 'var(--accent)',
+    boxShadow: 'var(--shadow-sm)',
+  },
   filterBar: {
     display: 'flex',
     alignItems: 'center',
@@ -315,15 +401,15 @@ const styles: Record<string, React.CSSProperties> = {
     flexWrap: 'wrap',
   },
   filterButton: {
-    padding: 'var(--spacing-2) var(--spacing-3)',
+    padding: 'var(--spacing-1) var(--spacing-2)',
     borderRadius: 'var(--radius-sm)',
     border: 'none',
     backgroundColor: 'transparent',
-    fontSize: 'var(--font-size-footnote)',
+    fontSize: 'var(--font-size-caption1)',
     fontWeight: 500,
     color: 'var(--text-secondary)',
     cursor: 'pointer',
-    transition: 'all 0.15s ease',
+    textTransform: 'capitalize',
   },
   filterButtonActive: {
     backgroundColor: 'var(--accent)',
@@ -332,14 +418,18 @@ const styles: Record<string, React.CSSProperties> = {
   testList: {
     display: 'flex',
     flexDirection: 'column',
+    gap: 'var(--spacing-3)',
+  },
+  testCard: {
+    cursor: 'pointer',
+    transition: 'box-shadow 0.15s ease',
   },
   testRow: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    borderBottom: '1px solid var(--border-subtle)',
     gap: 'var(--spacing-3)',
+    marginBottom: 'var(--spacing-2)',
   },
   testLeft: {
     display: 'flex',
@@ -348,15 +438,8 @@ const styles: Record<string, React.CSSProperties> = {
     flex: 1,
     minWidth: 0,
   },
-  testIconWrapper: {
-    width: '36px',
-    height: '36px',
-    borderRadius: 'var(--radius-sm)',
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
+  testIcon: {
+    fontSize: '24px',
   },
   testInfo: {
     display: 'flex',
@@ -366,7 +449,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   testName: {
     fontSize: 'var(--font-size-body)',
-    fontWeight: 500,
+    fontWeight: 600,
     color: 'var(--text-primary)',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -376,76 +459,46 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: 'var(--spacing-2)',
+  },
+  testDate: {
     fontSize: 'var(--font-size-caption1)',
     color: 'var(--text-tertiary)',
   },
   testRight: {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--spacing-2)',
+    gap: 'var(--spacing-3)',
     flexShrink: 0,
   },
-  testSG: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 700,
-    fontVariantNumeric: 'tabular-nums',
-  },
-  emptyState: {
+  testValue: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-8)',
-    color: 'var(--text-tertiary)',
-    textAlign: 'center',
+    alignItems: 'flex-end',
   },
-  categoryBreakdown: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-    gap: 'var(--spacing-3)',
-  },
-  categoryCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3)',
-  },
-  categoryHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-  },
-  categoryIcon: {
-    width: '32px',
-    height: '32px',
-    borderRadius: 'var(--radius-sm)',
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  categoryLabel: {
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-  },
-  categoryStats: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  categoryStat: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  categoryStatValue: {
+  currentValue: {
     fontSize: 'var(--font-size-title3)',
     fontWeight: 700,
-    color: 'var(--text-primary)',
     fontVariantNumeric: 'tabular-nums',
   },
-  categoryStatLabel: {
-    fontSize: 'var(--font-size-caption2)',
+  requirement: {
+    fontSize: 'var(--font-size-caption1)',
     color: 'var(--text-tertiary)',
+  },
+  testTrend: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-1)',
+  },
+  progressBar: {
+    height: 4,
+    backgroundColor: 'var(--background-elevated)',
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: 2,
+    transition: 'width 0.3s ease',
   },
 };
 
