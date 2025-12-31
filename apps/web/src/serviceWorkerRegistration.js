@@ -1,7 +1,18 @@
 /**
  * Service Worker Registration
- * Handles PWA installation and updates
+ *
+ * PRODUCTION SAFETY: Service Worker is DISABLED by default in production.
+ * This prevents stale UI issues caused by aggressive caching.
+ *
+ * To enable PWA features (offline support, push notifications), set:
+ *   REACT_APP_ENABLE_PWA=true
+ *
+ * When enabled, the service worker uses BUILD_SHA-scoped caches
+ * to ensure each deploy gets fresh assets.
  */
+
+// Check if PWA is explicitly enabled
+const isPWAEnabled = process.env.REACT_APP_ENABLE_PWA === 'true';
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -10,6 +21,14 @@ const isLocalhost = Boolean(
 );
 
 export function register(config) {
+  // CRITICAL: Only register if PWA is explicitly enabled
+  if (!isPWAEnabled) {
+    console.log('[PWA] Service worker DISABLED (set REACT_APP_ENABLE_PWA=true to enable)');
+    // Unregister any existing service workers to clear stale caches
+    unregisterAll();
+    return;
+  }
+
   if ('serviceWorker' in navigator) {
     const publicUrl = new URL(process.env.PUBLIC_URL || '', window.location.href);
 
@@ -105,6 +124,36 @@ export function unregister() {
   }
 }
 
+/**
+ * Unregister ALL service workers and clear ALL caches
+ * This ensures no stale content remains after disabling PWA
+ */
+export async function unregisterAll() {
+  if ('serviceWorker' in navigator) {
+    try {
+      // Get all registrations and unregister them
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const registration of registrations) {
+        await registration.unregister();
+        console.log('[PWA] Unregistered service worker:', registration.scope);
+      }
+
+      // Clear all caches
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        for (const cacheName of cacheNames) {
+          await caches.delete(cacheName);
+          console.log('[PWA] Deleted cache:', cacheName);
+        }
+      }
+
+      console.log('[PWA] All service workers and caches cleared');
+    } catch (error) {
+      console.error('[PWA] Error during cleanup:', error);
+    }
+  }
+}
+
 // Helper to request notification permission
 export async function requestNotificationPermission() {
   if (!('Notification' in window)) {
@@ -126,6 +175,11 @@ export async function requestNotificationPermission() {
 
 // Helper to subscribe to push notifications
 export async function subscribeToPush() {
+  if (!isPWAEnabled) {
+    console.warn('[PWA] Push notifications require REACT_APP_ENABLE_PWA=true');
+    return null;
+  }
+
   try {
     const registration = await navigator.serviceWorker.ready;
 
@@ -159,6 +213,7 @@ function urlBase64ToUint8Array(base64String) {
 
 // Helper to send message to service worker
 export function sendMessageToSW(message) {
+  if (!isPWAEnabled) return;
   if (navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage(message);
   }

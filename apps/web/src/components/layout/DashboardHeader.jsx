@@ -53,6 +53,7 @@ import {
   Sliders,
   Video,
   ClipboardList,
+  Menu,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -382,12 +383,64 @@ const mainNavigation = [
   },
 ];
 
-// Simple navigation items (no flyout)
-const simpleNavigation = [
+// Primary navigation (4 items always visible)
+const primaryNavigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Kalender', href: '/kalender' },
   { name: 'Turneringer', href: '/turneringskalender' },
 ];
+
+// Trening category (shown as primary with dropdown)
+const treningCategory = {
+  name: 'Trening',
+  description: 'Planlegg og logg trening',
+  items: [
+    {
+      name: 'Dagens plan',
+      description: 'Se hva som er planlagt i dag',
+      href: '/trening/dagens',
+      icon: Calendar,
+    },
+    {
+      name: 'Ukens plan',
+      description: 'Oversikt over uken',
+      href: '/trening/ukens',
+      icon: Activity,
+    },
+    {
+      name: 'Treningsdagbok',
+      description: 'Logg og reflekter over treninger',
+      href: '/trening/dagbok',
+      icon: BookMarked,
+    },
+    {
+      name: 'Alle økter',
+      description: 'Oversikt over dine treningsøkter',
+      href: '/sessions',
+      icon: ClipboardList,
+    },
+    {
+      name: 'Øvelsesbank',
+      description: 'Utforsk øvelser for alle områder',
+      href: '/ovelsesbibliotek',
+      icon: Target,
+    },
+    {
+      name: 'Evaluering',
+      description: 'Vurder din innsats',
+      href: '/evaluering',
+      icon: FileText,
+    },
+  ],
+  callsToAction: [
+    { name: 'Logg trening', href: '/trening/logg', icon: Plus },
+  ],
+};
+
+// Burger menu categories (remaining navigation)
+const burgerMenuCategories = mainNavigation.filter(
+  cat => cat.name !== 'Trening'
+);
 
 // User menu items
 const userNavigation = [
@@ -412,6 +465,7 @@ function getInitials(name) {
 
 export function DashboardHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [burgerMenuOpen, setBurgerMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
@@ -455,10 +509,10 @@ export function DashboardHeader() {
           </button>
         </div>
 
-        {/* Desktop navigation */}
-        <PopoverGroup className="hidden lg:flex lg:gap-x-8">
-          {/* Simple links */}
-          {simpleNavigation.map((item) => (
+        {/* Desktop navigation - 4+1 pattern */}
+        <PopoverGroup className="hidden lg:flex lg:items-center lg:gap-x-6">
+          {/* 3 simple links */}
+          {primaryNavigation.map((item) => (
             <Link
               key={item.name}
               to={item.href}
@@ -468,70 +522,114 @@ export function DashboardHeader() {
             </Link>
           ))}
 
-          {/* Flyout menus */}
-          {mainNavigation.map((category) => (
-            <Popover key={category.name} className="relative">
-              <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 hover:text-[var(--accent)] dark:text-white dark:hover:text-[var(--accent)] outline-none transition-colors">
-                {category.name}
-                <ChevronDownIcon
-                  aria-hidden="true"
-                  className="size-4 flex-none text-gray-400"
-                />
-              </PopoverButton>
+          {/* Trening dropdown (4th primary item) */}
+          <Popover className="relative">
+            <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900 hover:text-[var(--accent)] dark:text-white dark:hover:text-[var(--accent)] outline-none transition-colors">
+              {treningCategory.name}
+              <ChevronDownIcon
+                aria-hidden="true"
+                className="size-4 flex-none text-gray-400"
+              />
+            </PopoverButton>
 
-              <PopoverPanel
-                transition
-                className="absolute -left-8 top-full z-50 mt-3 w-screen max-w-md overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-gray-800 dark:ring-white/10"
-              >
-                <div className="p-4">
-                  {category.items.map((item) => (
-                    <div
-                      key={item.name}
-                      className="group relative flex items-center gap-x-4 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-                    >
-                      <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white dark:bg-gray-700 dark:group-hover:bg-gray-600">
-                        <item.icon
-                          aria-hidden="true"
-                          className="size-5 text-gray-600 group-hover:text-[var(--accent)] dark:text-gray-400 dark:group-hover:text-white transition-colors"
-                        />
-                      </div>
-                      <div className="flex-auto">
-                        <Link
-                          to={item.href}
-                          className="block font-semibold text-gray-900 dark:text-white"
-                        >
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </Link>
-                        <p className="mt-1 text-gray-600 dark:text-gray-400">
-                          {item.description}
-                        </p>
-                      </div>
+            <PopoverPanel
+              transition
+              className="absolute -left-8 top-full z-50 mt-3 w-screen max-w-md overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-gray-800 dark:ring-white/10"
+            >
+              <div className="p-4">
+                {treningCategory.items.map((item) => (
+                  <div
+                    key={item.name}
+                    className="group relative flex items-center gap-x-4 rounded-lg p-3 text-sm/6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                  >
+                    <div className="flex size-10 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white dark:bg-gray-700 dark:group-hover:bg-gray-600">
+                      <item.icon
+                        aria-hidden="true"
+                        className="size-5 text-gray-600 group-hover:text-[var(--accent)] dark:text-gray-400 dark:group-hover:text-white transition-colors"
+                      />
                     </div>
+                    <div className="flex-auto">
+                      <Link
+                        to={item.href}
+                        className="block font-semibold text-gray-900 dark:text-white"
+                      >
+                        {item.name}
+                        <span className="absolute inset-0" />
+                      </Link>
+                      <p className="mt-1 text-gray-600 dark:text-gray-400">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {treningCategory.callsToAction && (
+                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 dark:divide-white/10 dark:bg-gray-700/50">
+                  {treningCategory.callsToAction.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600 transition-colors"
+                    >
+                      <item.icon
+                        aria-hidden="true"
+                        className="size-5 flex-none text-gray-400"
+                      />
+                      {item.name}
+                    </Link>
                   ))}
                 </div>
+              )}
+            </PopoverPanel>
+          </Popover>
 
-                {/* Calls to action */}
-                {category.callsToAction && category.callsToAction.length > 0 && (
-                  <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50 dark:divide-white/10 dark:bg-gray-700/50">
-                    {category.callsToAction.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600 transition-colors"
-                      >
-                        <item.icon
-                          aria-hidden="true"
-                          className="size-5 flex-none text-gray-400"
-                        />
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </PopoverPanel>
-            </Popover>
-          ))}
+          {/* Burger menu button (+1) */}
+          <Popover className="relative">
+            <PopoverButton className="flex items-center gap-x-2 px-3 py-2 text-sm/6 font-semibold text-gray-900 hover:text-[var(--accent)] border border-gray-200 rounded-lg hover:bg-gray-50 dark:text-white dark:border-gray-700 dark:hover:bg-gray-800 outline-none transition-colors">
+              <Menu className="size-5" />
+              <span>Mer</span>
+            </PopoverButton>
+
+            <PopoverPanel
+              transition
+              className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in dark:bg-gray-800 dark:ring-white/10"
+            >
+              <div className="py-2">
+                {burgerMenuCategories.map((category) => (
+                  <Disclosure key={category.name} as="div">
+                    <DisclosureButton className="group flex w-full items-center justify-between px-4 py-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700/50 transition-colors">
+                      {category.name}
+                      <ChevronDownIcon
+                        aria-hidden="true"
+                        className="size-4 flex-none text-gray-400 group-data-open:rotate-180 transition-transform"
+                      />
+                    </DisclosureButton>
+                    <DisclosurePanel className="bg-gray-50 dark:bg-gray-700/30">
+                      {category.items.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className="block px-6 py-2 text-sm text-gray-700 hover:text-[var(--accent)] hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                      {category.callsToAction?.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className="flex items-center gap-2 px-6 py-2 text-sm font-medium text-[var(--accent)] hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                        >
+                          <item.icon className="size-4" />
+                          {item.name}
+                        </Link>
+                      ))}
+                    </DisclosurePanel>
+                  </Disclosure>
+                ))}
+              </div>
+            </PopoverPanel>
+          </Popover>
         </PopoverGroup>
 
         {/* Desktop right section */}
@@ -626,8 +724,8 @@ export function DashboardHeader() {
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
               <div className="space-y-2 py-6">
-                {/* Simple links */}
-                {simpleNavigation.map((item) => (
+                {/* Primary links (4 items) */}
+                {primaryNavigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
@@ -638,8 +736,45 @@ export function DashboardHeader() {
                   </Link>
                 ))}
 
-                {/* Flyout categories as disclosures */}
-                {mainNavigation.map((category) => (
+                {/* Trening as disclosure */}
+                <Disclosure as="div" className="-mx-3">
+                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
+                    {treningCategory.name}
+                    <ChevronDownIcon
+                      aria-hidden="true"
+                      className="size-5 flex-none group-data-open:rotate-180 transition-transform"
+                    />
+                  </DisclosureButton>
+                  <DisclosurePanel className="mt-2 space-y-2">
+                    {treningCategory.items.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                    {treningCategory.callsToAction?.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2 rounded-lg py-2 pl-6 pr-3 text-sm/7 font-semibold text-[var(--accent)] hover:bg-gray-50 dark:hover:bg-white/5"
+                      >
+                        <item.icon className="size-4" />
+                        {item.name}
+                      </Link>
+                    ))}
+                  </DisclosurePanel>
+                </Disclosure>
+
+                {/* Divider */}
+                <div className="border-t border-gray-200 dark:border-gray-700 my-4" />
+
+                {/* Burger menu categories */}
+                {burgerMenuCategories.map((category) => (
                   <Disclosure key={category.name} as="div" className="-mx-3">
                     <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5">
                       {category.name}

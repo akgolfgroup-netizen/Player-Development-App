@@ -1,6 +1,9 @@
 # =============================================================================
 # IUP Golf Academy Web - Production Dockerfile
 # Multi-stage build with Nginx for serving
+#
+# IMPORTANT: Service Worker caching is DISABLED by default.
+# To enable PWA, set REACT_APP_ENABLE_PWA=true in Railway.
 # =============================================================================
 
 # Stage 1: Build the React application
@@ -22,6 +25,11 @@ ARG RAILWAY_GIT_BRANCH
 ENV REACT_APP_BUILD_SHA=${RAILWAY_GIT_COMMIT_SHA:-local}
 ENV REACT_APP_BUILD_BRANCH=${RAILWAY_GIT_BRANCH:-local}
 
+# PWA is DISABLED by default to prevent stale UI issues
+# Set REACT_APP_ENABLE_PWA=true in Railway to enable offline support
+ARG REACT_APP_ENABLE_PWA=false
+ENV REACT_APP_ENABLE_PWA=${REACT_APP_ENABLE_PWA}
+
 # Install dependencies
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
@@ -36,10 +44,22 @@ RUN export REACT_APP_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") && \
     echo "Commit SHA: $REACT_APP_BUILD_SHA" && \
     echo "Branch: $REACT_APP_BUILD_BRANCH" && \
     echo "Build Date: $REACT_APP_BUILD_DATE" && \
+    echo "PWA Enabled: $REACT_APP_ENABLE_PWA" && \
     echo "=================="
 
 # Build the application
 RUN npm run build
+
+# =============================================================================
+# CRITICAL: Inject BUILD_SHA into service worker for cache busting
+# This ensures each deploy gets a unique cache name
+# =============================================================================
+RUN if [ -f /app/build/service-worker.js ]; then \
+      echo "Injecting BUILD_SHA into service-worker.js..." && \
+      sed -i "s/__BUILD_SHA__/${REACT_APP_BUILD_SHA}/g" /app/build/service-worker.js && \
+      echo "Service worker updated with SHA: ${REACT_APP_BUILD_SHA}" && \
+      head -20 /app/build/service-worker.js; \
+    fi
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine AS runner
@@ -49,6 +69,12 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built assets from builder
 COPY --from=builder /app/build /usr/share/nginx/html
+
+# =============================================================================
+# CACHE CONTROL: Ensure browsers always get fresh HTML
+# This is critical for service worker updates
+# =============================================================================
+RUN echo 'location = /index.html { add_header Cache-Control "no-cache, no-store, must-revalidate"; }' > /tmp/cache-headers.conf
 
 # Add non-root user
 RUN chown -R nginx:nginx /usr/share/nginx/html && \

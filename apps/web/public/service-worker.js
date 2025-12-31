@@ -2,42 +2,78 @@
  * AK Golf Academy - Service Worker
  * Handles push notifications, caching, and offline support
  *
- * IMPORTANT: This SW prioritizes fresh content over caching.
- * Each deploy clears old caches to prevent stale UI.
+ * IMPORTANT: This service worker uses BUILD_SHA-scoped caches.
+ * Each deploy gets a unique cache, and old caches are automatically deleted.
+ *
+ * The __BUILD_SHA__ placeholder is replaced at build time with the actual commit SHA.
  */
 
-// Cache version - increment manually or use build system to inject BUILD_SHA
-const CACHE_VERSION = 'v2';
-const CACHE_NAME = `ak-golf-cache-${CACHE_VERSION}`;
-const API_CACHE = `ak-golf-api-cache-${CACHE_VERSION}`;
+// BUILD_SHA is injected at build time (see Dockerfile)
+// Falls back to timestamp if not replaced (dev mode)
+const BUILD_SHA = '__BUILD_SHA__'.startsWith('__') ? `dev-${Date.now()}` : '__BUILD_SHA__';
+const CACHE_NAME = `ak-golf-cache-${BUILD_SHA}`;
 
-// Minimal cache - only essential offline assets
+// Log build info for debugging
+console.log('[SW] Service Worker Build:', BUILD_SHA);
+console.log('[SW] Cache Name:', CACHE_NAME);
+
+// Minimal cache - only essential offline assets that are KNOWN to exist
 const STATIC_CACHE_URLS = [
-  '/logo192.png',
-  '/logo512.png',
+  '/logo192.webp',
+  '/logo512.webp',
+  '/favicon.svg',
 ];
 
 // =============================================================================
-// INSTALL EVENT - Clear old caches and cache minimal assets
+// HELPER: Guarded cache - skip failures instead of failing entire install
+// =============================================================================
+
+async function cacheWithFallback(cache, urls) {
+  const results = await Promise.allSettled(
+    urls.map(async (url) => {
+      try {
+        const response = await fetch(url, { cache: 'no-store' });
+        if (response.ok) {
+          await cache.put(url, response);
+          console.log('[SW] Cached:', url);
+          return { url, status: 'cached' };
+        } else {
+          console.warn('[SW] Skip cache (not ok):', url, response.status);
+          return { url, status: 'skipped', reason: response.status };
+        }
+      } catch (error) {
+        console.warn('[SW] Skip cache (error):', url, error.message);
+        return { url, status: 'error', reason: error.message };
+      }
+    })
+  );
+
+  const cached = results.filter(r => r.status === 'fulfilled' && r.value.status === 'cached').length;
+  const skipped = results.length - cached;
+  console.log(`[SW] Caching complete: ${cached} cached, ${skipped} skipped`);
+}
+
+// =============================================================================
+// INSTALL EVENT - Clear ALL old caches and cache minimal assets
 // =============================================================================
 
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker...', CACHE_VERSION);
+  console.log('[SW] Installing service worker...', BUILD_SHA);
 
   event.waitUntil(
-    // First, delete ALL existing caches to ensure fresh content
+    // First, delete ALL existing caches (different BUILD_SHA = new cache)
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((name) => {
-          console.log('[SW] Clearing old cache:', name);
+          console.log('[SW] Deleting old cache:', name);
           return caches.delete(name);
         })
       );
     }).then(() => {
-      // Then cache only essential assets
+      // Then cache essential assets with error handling (won't fail install)
       return caches.open(CACHE_NAME).then((cache) => {
-        console.log('[SW] Caching minimal assets');
-        return cache.addAll(STATIC_CACHE_URLS);
+        console.log('[SW] Caching minimal assets for build:', BUILD_SHA);
+        return cacheWithFallback(cache, STATIC_CACHE_URLS);
       });
     })
   );
@@ -47,26 +83,34 @@ self.addEventListener('install', (event) => {
 });
 
 // =============================================================================
-// ACTIVATE EVENT - Clean up old caches
+// ACTIVATE EVENT - Clean up and claim clients
 // =============================================================================
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker...');
+  console.log('[SW] Activating service worker...', BUILD_SHA);
+
   event.waitUntil(
+    // Delete any caches that don't match current BUILD_SHA
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME && name !== API_CACHE)
-          .map((name) => caches.delete(name))
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => {
+            console.log('[SW] Purging stale cache:', name);
+            return caches.delete(name);
+          })
       );
+    }).then(() => {
+      console.log('[SW] Service worker activated for build:', BUILD_SHA);
     })
   );
-  // Claim all clients immediately
+
+  // Claim all clients immediately - critical for getting new content
   self.clients.claim();
 });
 
 // =============================================================================
-// FETCH EVENT - Network first, cache fallback
+// FETCH EVENT - Network first, cache fallback (for offline only)
 // =============================================================================
 
 self.addEventListener('fetch', (event) => {
@@ -83,12 +127,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // API requests: network first, no cache fallback
+  // API requests: network only, no caching
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
       fetch(request)
         .catch(() => {
-          // For GET API requests, we could cache if needed
           return new Response(
             JSON.stringify({ error: 'Offline', message: 'Ingen internettforbindelse' }),
             { headers: { 'Content-Type': 'application/json' } }
@@ -107,12 +150,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets (JS, CSS, images): network first with cache fallback
+  // Static assets (JS, CSS, images): network first with cache fallback for offline
   event.respondWith(
     fetch(request)
       .then((response) => {
-        // Cache successful responses for offline fallback
-        if (response.status === 200) {
+        // Only cache successful responses
+        if (response.ok) {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
             cache.put(request, responseClone);
@@ -134,8 +177,8 @@ self.addEventListener('push', (event) => {
   let data = {
     title: 'AK Golf Academy',
     body: 'Du har en ny varsling',
-    icon: '/logo192.png',
-    badge: '/badge-icon.png',
+    icon: '/logo192.webp',
+    badge: '/icons/icon-72.webp',
     tag: 'default',
   };
 
@@ -150,8 +193,8 @@ self.addEventListener('push', (event) => {
 
   const options = {
     body: data.body,
-    icon: data.icon || '/logo192.png',
-    badge: data.badge || '/badge-icon.png',
+    icon: data.icon || '/logo192.webp',
+    badge: data.badge || '/icons/icon-72.webp',
     tag: data.tag || 'default',
     vibrate: data.vibrate || [200, 100, 200],
     requireInteraction: data.requireInteraction || false,
@@ -178,22 +221,18 @@ self.addEventListener('notificationclick', (event) => {
 
   const urlToOpen = event.notification.data?.url || '/';
 
-  // Handle action buttons
   if (event.action) {
     console.log('[SW] Action clicked:', event.action);
-    // Handle specific actions here
   }
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // Check if app is already open
       for (const client of clientList) {
         if (client.url.includes(self.registration.scope) && 'focus' in client) {
           client.navigate(urlToOpen);
           return client.focus();
         }
       }
-      // Open new window
       return clients.openWindow(urlToOpen);
     })
   );
@@ -204,7 +243,7 @@ self.addEventListener('notificationclick', (event) => {
 // =============================================================================
 
 self.addEventListener('message', (event) => {
-  const { type, payload } = event.data || {};
+  const { type } = event.data || {};
 
   switch (type) {
     case 'SKIP_WAITING':
@@ -220,7 +259,7 @@ self.addEventListener('message', (event) => {
       break;
 
     case 'GET_VERSION':
-      event.ports[0].postMessage({ version: CACHE_NAME });
+      event.ports[0].postMessage({ version: CACHE_NAME, buildSha: BUILD_SHA });
       break;
 
     default:
@@ -228,4 +267,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log('[SW] Service worker loaded');
+console.log('[SW] Service worker script loaded, build:', BUILD_SHA);
