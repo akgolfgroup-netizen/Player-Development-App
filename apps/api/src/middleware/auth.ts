@@ -116,3 +116,11 @@ export const requireCoach = authorize('admin', 'coach');
  * Require player role (or admin/coach)
  */
 export const requirePlayer = authorize('admin', 'coach', 'player');
+
+/**
+ * Alias for authorize - require specific roles
+ * Usage: requireRole(['admin', 'coach'])
+ */
+export function requireRole(roles: string[]) {
+  return authorize(...roles);
+}
