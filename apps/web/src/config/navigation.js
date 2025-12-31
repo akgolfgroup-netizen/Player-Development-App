@@ -51,8 +51,10 @@ export const navigationConfig = [
     submenu: [
       { href: '/trening/dagens', label: 'Dagens plan' },
       { href: '/trening/ukens', label: 'Ukens plan' },
+      { href: '/sessions', label: 'Alle økter' },
       { href: '/trening/dagbok', label: 'Treningsdagbok' },
       { href: '/trening/logg', label: 'Logg trening' },
+      { href: '/evaluering', label: 'Evalueringer' },
       { href: '/ovelsesbibliotek', label: 'Øvelsesbank' },
     ]
   },
@@ -82,6 +84,7 @@ export const navigationConfig = [
       { href: '/aarsplan', label: 'Årsplan' },
       { href: '/aarsplan/ny', label: 'Opprett årsplan' },
       { href: '/aarsplan/perioder', label: 'Periodisering' },
+      { href: '/periodeplaner', label: 'Periodeplaner' },
       { href: '/turneringer/planlegger', label: 'Turneringsplan' },
       { href: '/aarsplan/fokus', label: 'Fokusområder' },
     ]
@@ -172,8 +175,10 @@ export const navigationConfig = [
     icon: 'BookMarked',
     submenu: [
       { href: '/ressurser', label: 'Ressurser' },
+      { href: '/videos', label: 'Videoer' },
       { href: '/notater', label: 'Notater' },
       { href: '/bevis', label: 'Videobevis' },
+      { href: '/samlinger', label: 'Samlinger' },
       { href: '/arkiv', label: 'Arkiv' },
     ]
   },
