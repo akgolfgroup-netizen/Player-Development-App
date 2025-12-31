@@ -1,6 +1,8 @@
 import { FastifyInstance } from 'fastify';
-import { prisma } from '../../../db';
+import { getPrismaClient } from '../../../core/db/prisma';
 import { authenticateUser, requireRole } from '../../../middleware/auth';
+
+const prisma = getPrismaClient();
 
 export default async function adminRoutes(fastify: FastifyInstance) {
   // All admin routes require authentication and admin role
