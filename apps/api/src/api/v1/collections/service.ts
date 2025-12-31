@@ -1,4 +1,6 @@
-import { prisma } from '../../../db';
+import { getPrismaClient } from '../../../core/db/prisma';
+
+const prisma = getPrismaClient();
 
 export class CollectionsService {
   async listCollections(userId: string) {
