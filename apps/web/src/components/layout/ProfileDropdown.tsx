@@ -102,12 +102,12 @@ export default function ProfileDropdown({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      color: tokens.colors.text.primary,
+      color: tokens.colors.ink,
       fontWeight: 700,
       fontSize: '14px',
     },
     name: {
-      color: isDark ? tokens.colors.white : tokens.colors.text.primary,
+      color: isDark ? tokens.colors.white : tokens.colors.ink,
       fontWeight: 500,
       fontSize: '14px',
     },
@@ -124,7 +124,7 @@ export default function ProfileDropdown({
       backgroundColor: tokens.colors.white,
       borderRadius: '12px',
       boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)',
-      border: `1px solid ${tokens.colors.border.default}`,
+      border: `1px solid ${tokens.colors.gray300}`,
       overflow: 'hidden',
       zIndex: 1000,
       opacity: isOpen ? 1 : 0,
@@ -134,17 +134,17 @@ export default function ProfileDropdown({
     },
     header: {
       padding: '16px',
-      borderBottom: `1px solid ${tokens.colors.border.subtle}`,
+      borderBottom: `1px solid ${tokens.colors.gray200}`,
     },
     headerName: {
       fontSize: '15px',
       fontWeight: 600,
-      color: tokens.colors.text.primary,
+      color: tokens.colors.ink,
       marginBottom: '2px',
     },
     headerEmail: {
       fontSize: '13px',
-      color: tokens.colors.text.secondary,
+      color: tokens.colors.gray600,
     },
     menuList: {
       padding: '8px',
@@ -156,7 +156,7 @@ export default function ProfileDropdown({
       padding: '10px 12px',
       borderRadius: '8px',
       textDecoration: 'none',
-      color: tokens.colors.text.primary,
+      color: tokens.colors.ink,
       fontSize: '14px',
       fontWeight: 500,
       transition: 'background-color 0.15s',
@@ -167,11 +167,11 @@ export default function ProfileDropdown({
       textAlign: 'left' as const,
     },
     menuItemIcon: {
-      color: tokens.colors.text.secondary,
+      color: tokens.colors.gray600,
     },
     divider: {
       height: '1px',
-      backgroundColor: tokens.colors.border.subtle,
+      backgroundColor: tokens.colors.gray200,
       margin: '8px 0',
     },
     logoutButton: {

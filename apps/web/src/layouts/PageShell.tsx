@@ -149,15 +149,15 @@ const EmptyState = ({ title, description, cta }: EmptyStateProps) => (
         marginBottom: 24,
       }}
     >
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.text.tertiary} strokeWidth="1.5">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.gray600} strokeWidth="1.5">
         <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </div>
-    <h3 style={{ fontSize: 18, fontWeight: 600, color: tokens.colors.text.primary, margin: 0 }}>
+    <h3 style={{ fontSize: 18, fontWeight: 600, color: tokens.colors.ink, margin: 0 }}>
       {title}
     </h3>
     {description && (
-      <p style={{ fontSize: 14, color: tokens.colors.text.secondary, marginTop: 8, maxWidth: 400 }}>
+      <p style={{ fontSize: 14, color: tokens.colors.gray700, marginTop: 8, maxWidth: 400 }}>
         {description}
       </p>
     )}
@@ -218,10 +218,10 @@ const ErrorState = ({ message = 'Noe gikk galt', onRetry }: ErrorStateProps) => 
         <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
       </svg>
     </div>
-    <h3 style={{ fontSize: 18, fontWeight: 600, color: tokens.colors.text.primary, margin: 0 }}>
+    <h3 style={{ fontSize: 18, fontWeight: 600, color: tokens.colors.ink, margin: 0 }}>
       Feil oppstod
     </h3>
-    <p style={{ fontSize: 14, color: tokens.colors.text.secondary, marginTop: 8, maxWidth: 400 }}>
+    <p style={{ fontSize: 14, color: tokens.colors.gray700, marginTop: 8, maxWidth: 400 }}>
       {message}
     </p>
     {onRetry && (
@@ -231,9 +231,9 @@ const ErrorState = ({ message = 'Noe gikk galt', onRetry }: ErrorStateProps) => 
           marginTop: 24,
           padding: '12px 24px',
           borderRadius: 12,
-          border: `1px solid ${tokens.colors.border.default}`,
+          border: `1px solid ${tokens.colors.gray300}`,
           backgroundColor: 'transparent',
-          color: tokens.colors.text.primary,
+          color: tokens.colors.ink,
           fontSize: 14,
           fontWeight: 600,
           cursor: 'pointer',
@@ -365,7 +365,7 @@ export default function PageShell({
               style={{
                 fontSize: isMobile ? 24 : 28,
                 fontWeight: 700,
-                color: tokens.colors.text.primary,
+                color: tokens.colors.ink,
                 margin: 0,
                 lineHeight: 1.2,
               }}
@@ -376,7 +376,7 @@ export default function PageShell({
               <p
                 style={{
                   fontSize: 14,
-                  color: tokens.colors.text.secondary,
+                  color: tokens.colors.gray700,
                   margin: '4px 0 0 0',
                 }}
               >
@@ -393,7 +393,7 @@ export default function PageShell({
                   backgroundColor: tokens.colors.gray200,
                   fontSize: 12,
                   fontWeight: 500,
-                  color: tokens.colors.text.secondary,
+                  color: tokens.colors.gray700,
                 }}
               >
                 {context}

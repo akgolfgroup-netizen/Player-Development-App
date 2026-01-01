@@ -1,0 +1,1069 @@
+# UI Audit Bundle Manifest
+
+Total files: 1063
+
+## Files Included
+
+- `.eslintrc.json` — keywords: tokens?
+- `CHANGELOG.md` — keywords: tokens?
+- `CONTRIBUTING.md` — keywords: tokens?
+- `README.md` — keywords: tokens?
+- `apps/api/INSTALLATION_STATUS.md` — keywords: tokens?
+- `apps/api/PERFORMANCE_OPTIMIZATION_REPORT.md` — keywords: tokens?
+- `apps/api/QUICK_START.md` — keywords: tokens?
+- `apps/api/README.md` — keywords: tokens?
+- `apps/api/SECURITY_AUDIT_REPORT.md` — keywords: tokens?
+- `apps/api/SETUP_AND_TEST_GUIDE.md` — keywords: tokens?
+- `apps/api/TRAINING_PLAN_ENDPOINTS_COMPLETION.md` — keywords: tokens?
+- `apps/api/docs/AI_ENHANCEMENT_ROADMAP.md` — keywords: tokens?
+- `apps/api/docs/API_TRAINING_PLAN.md` — keywords: tokens?
+- `apps/api/docs/FOCUS_ENGINE.md` — keywords: tokens?
+- `apps/api/docs/INTAKE_FORM_COMPLETION_SUMMARY.md` — keywords: tokens?
+- `apps/api/docs/INTAKE_FORM_IMPLEMENTATION.md` — keywords: tokens?
+- `apps/api/docs/frontend/API_EXAMPLES.md` — keywords: tokens?
+- `apps/api/docs/frontend/CALIBRATION_API.md` — keywords: tokens?
+- `apps/api/docs/frontend/calibration-api-service.ts` — keywords: tokens?
+- `apps/api/package.json` — keywords: tokens?
+- `apps/api/prisma/seeds/exercises.ts` — keywords: shadow
+- `apps/api/scripts/openapi-to-postman.ts` — keywords: tokens?
+- `apps/api/src/api/v1/ai/routes.ts` — keywords: tokens?
+- `apps/api/src/api/v1/annotations/index.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/annotations/schema.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/annotations/service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/auth/index.ts` — keywords: tokens?
+- `apps/api/src/api/v1/auth/schema.ts` — keywords: tokens?
+- `apps/api/src/api/v1/auth/security.service.ts` — keywords: tokens?
+- `apps/api/src/api/v1/auth/service.ts` — keywords: tokens?
+- `apps/api/src/api/v1/badges/index.ts` — keywords: tokens?
+- `apps/api/src/api/v1/calendar/index.ts` — keywords: tokens?
+- `apps/api/src/api/v1/coaches/schema.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/coaches/service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/collections/service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/dashboard/index.ts` — keywords: tokens?
+- `apps/api/src/api/v1/emails/index.ts` — keywords: tokens?
+- `apps/api/src/api/v1/goals/schema.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/goals/service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/golf-courses/service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/notes/schema.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/notes/service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/notifications/index.ts` — keywords: tokens?
+- `apps/api/src/api/v1/player-insights/bounty-service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/player-insights/sg-journey.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/player-insights/types.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/api/v1/sessions/index.ts` — keywords: tokens?
+- `apps/api/src/api/v1/skoleplan/service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/config/index.ts` — keywords: tokens?
+- `apps/api/src/core/db/prisma.ts` — keywords: tokens?
+- `apps/api/src/domain/achievements/achievement-definitions.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/domain/gamification/badge-calculator.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/domain/notifications/email-templates.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/domain/notifications/notification.service.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/integrations/golfcourse/client.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/middleware/auth.ts` — keywords: tokens?
+- `apps/api/src/middleware/tenant.ts` — keywords: tokens?
+- `apps/api/src/plugins/csrf.ts` — keywords: tokens?
+- `apps/api/src/plugins/sentry.ts` — keywords: tokens?
+- `apps/api/src/plugins/swagger.ts` — keywords: tokens?
+- `apps/api/src/plugins/websocket.ts` — keywords: tokens?
+- `apps/api/src/services/ai/ai-coach.service.ts` — keywords: tokens?
+- `apps/api/src/services/ai/claude-client.service.ts` — keywords: tokens?
+- `apps/api/src/services/calendar-integration.ts` — keywords: tokens?
+- `apps/api/src/services/email.service.ts` — keywords: tokens?
+- `apps/api/src/services/export.ts` — keywords: \bcolor[s]?\b
+- `apps/api/src/services/storage.service.ts` — keywords: tokens?
+- `apps/api/src/types/fastify.d.ts` — keywords: tokens?
+- `apps/api/src/utils/crypto.ts` — keywords: tokens?
+- `apps/api/src/utils/jwt.ts` — keywords: tokens?
+- `apps/api/src/utils/logger.ts` — keywords: tokens?
+- `apps/api/src/utils/request-helpers.ts` — keywords: tokens?
+- `apps/api/tests/helpers/testFixtures.ts` — keywords: tokens?
+- `apps/api/tests/helpers/testUtils.ts` — keywords: tokens?
+- `apps/api/tests/integration/auth.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/breaking-points.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/calibration.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/coaches.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/dashboard.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/exercises.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/goals.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/messages.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/notes.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/notifications.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/players.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/sessions.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/tests.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/training-plan.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/videos.test.ts` — keywords: tokens?
+- `apps/api/tests/integration/weather.test.ts` — keywords: tokens?
+- `apps/api/tests/load/k6-load-test.js` — keywords: tokens?
+- `apps/api/tests/security/rbac.test.ts` — keywords: tokens?
+- `apps/api/tests/security/sql-injection.test.ts` — keywords: tokens?
+- `apps/api/tests/security/xss.test.ts` — keywords: tokens?
+- `apps/api/tests/unit/video/annotation-service.test.ts` — keywords: \bcolor[s]?\b
+- `apps/golfer/README.md` — keywords: tokens?
+- `apps/golfer/package.json` — keywords: design[\s-]?system
+- `apps/golfer/screens/BASELINE.tsx` — keywords: tokens?
+- `apps/golfer/screens/HOME.tsx` — keywords: tokens?
+- `apps/golfer/screens/PROOF.tsx` — keywords: tokens?
+- `apps/golfer/screens/REFLECTION.tsx` — keywords: tokens?
+- `apps/golfer/screens/TRAJECTORY.tsx` — keywords: tokens?
+- `apps/golfer/tsconfig.json` — keywords: design[\s-]?system
+- `apps/web/.eslintrc.json` — keywords: typography
+- `apps/web/COMPONENT_USAGE_GUIDE.md` — keywords: tokens?
+- `apps/web/FRONTEND_QUICK_WINS_REPORT.md` — keywords: tokens?
+- `apps/web/IOS_FOCUS_MODE_COMPLETION.md` — keywords: \bcolor[s]?\b
+- `apps/web/README.md` — keywords: tailwind, tokens?
+- `apps/web/components.json` — keywords: tailwind
+- `apps/web/docs/UI_RULES.md` — keywords: tokens?
+- `apps/web/docs/accessibility-checklist.md` — keywords: tokens?
+- `apps/web/docs/analytics-qa.md` — keywords: tokens?
+- `apps/web/docs/pre-deploy-checklist.md` — keywords: tokens?
+- `apps/web/docs/screen-inventory.md` — keywords: tailwind
+- `apps/web/docs/security-privacy.md` — keywords: tokens?
+- `apps/web/docs/ui-canon.md` — keywords: tokens?
+- `apps/web/docs/ui-rules.md` — keywords: tailwind
+- `apps/web/package.json` — keywords: tailwind
+- `apps/web/postcss.config.js` — path pattern: postcss\.config\. + keywords: tailwind, autoprefixer
+- `apps/web/public/DESIGN_DECISION_PLAN.md` — keywords: tailwind
+- `apps/web/src/App.jsx` — keywords: shadcn, tokens?
+- `apps/web/src/analytics/AnalyticsDebug.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/analytics/track.ts` — keywords: tokens?
+- `apps/web/src/components/BuildInfo.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/ErrorBoundary.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/FocusSession.css` — path pattern: \.css$ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/FocusSession.jsx` — path pattern: /components/ + keywords: typography
+- `apps/web/src/components/FocusSessionEnhanced.jsx` — path pattern: /components/ + keywords: typography
+- `apps/web/src/components/LoadingSpinner.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b, border[-\s]?radius
+- `apps/web/src/components/NotificationManager.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/Toast.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b, border[-\s]?radius
+- `apps/web/src/components/VideoNotificationManager.jsx` — path pattern: /components/
+- `apps/web/src/components/badges/BadgeGrid.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/badges/index.js` — path pattern: /components/
+- `apps/web/src/components/branding/AKLogo.tsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/branding/LogoBadge.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/branding/__tests__/AKLogo.test.js` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/branding/__tests__/LogoBadge.test.js` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/catalyst/alert.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/auth-layout.jsx` — path pattern: /components/ + keywords: shadow
+- `apps/web/src/components/catalyst/avatar.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/badge.jsx` — path pattern: /components/ + keywords: tailwind, clsx
+- `apps/web/src/components/catalyst/button.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/checkbox.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/combobox.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/description-list.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/dialog.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/divider.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/dropdown.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/fieldset.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/heading.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/index.js` — path pattern: /components/ + keywords: tailwind, \bcolor[s]?\b
+- `apps/web/src/components/catalyst/input.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/link.jsx` — path pattern: /components/
+- `apps/web/src/components/catalyst/listbox.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/navbar.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/pagination.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/radio.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/select.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/sidebar-layout.jsx` — path pattern: /components/ + keywords: tailwind, tokens?
+- `apps/web/src/components/catalyst/sidebar.jsx` — path pattern: /components/ + keywords: tailwind, clsx
+- `apps/web/src/components/catalyst/stacked-layout.jsx` — path pattern: /components/ + keywords: shadow
+- `apps/web/src/components/catalyst/switch.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/table.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/text.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/catalyst/textarea.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/dashboard/DagensPlan.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/dashboard/StrokesGainedWidget.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/dashboard/WeatherWidget.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/dashboard/WeatherWidgetCompact.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/dashboard/index.js` — path pattern: /components/
+- `apps/web/src/components/guards/ProtectedRoute.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/guards/PublicRoute.jsx` — path pattern: /components/
+- `apps/web/src/components/icons/index.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/insights/BountyBoardWidget.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/insights/SGJourneyWidget.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/insights/SkillDNAWidget.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/insights/index.js` — path pattern: /components/
+- `apps/web/src/components/layout/AdminAppShell.tsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/AdminSidebar.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/layout/AppLayout.jsx` — path pattern: /components/ + keywords: brand
+- `apps/web/src/components/layout/AppShell.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/layout/ApplicationLayout.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/layout/ApplicationLayoutTopNav.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b, typography
+- `apps/web/src/components/layout/ApplicationLayoutV2.css` — path pattern: \.css$ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/layout/ApplicationLayoutV2.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b, typography
+- `apps/web/src/components/layout/AuthPageLayout.jsx` — path pattern: /components/ + keywords: tokens?, brand
+- `apps/web/src/components/layout/CoachAppShell.tsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/CoachSidebar.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/layout/DashboardHeader.jsx` — path pattern: /components/ + keywords: classnames, dark[\s-]?mode
+- `apps/web/src/components/layout/MobileShell.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/Navigation.tsx` — path pattern: /components/ + keywords: cn\s*\(, shadcn
+- `apps/web/src/components/layout/PageHeader.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/PlayerAppShell.tsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/PlayerSidebar.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/layout/PlayerSidebarV2.tsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/ProfileDropdown.tsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/Sidebar.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/layout/TopNavbar.jsx` — path pattern: /components/ + keywords: classnames
+- `apps/web/src/components/layout/__tests__/PageHeader.test.js` — path pattern: /components/
+- `apps/web/src/components/navigation/AppShellV2.css` — path pattern: \.css$ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/navigation/AppShellV2.jsx` — path pattern: /components/ + keywords: tokens?, dark[\s-]?mode
+- `apps/web/src/components/navigation/NavFlyout.css` — path pattern: \.css$ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/navigation/NavFlyout.jsx` — path pattern: /components/ + keywords: typography
+- `apps/web/src/components/navigation/NavRail.css` — path pattern: \.css$ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/navigation/NavRail.jsx` — path pattern: /components/ + keywords: brand
+- `apps/web/src/components/navigation/NavigationContext.jsx` — path pattern: /components/
+- `apps/web/src/components/navigation/SideNavigationDesktop.css` — path pattern: \.css$
+- `apps/web/src/components/navigation/SideNavigationDesktop.jsx` — path pattern: /components/
+- `apps/web/src/components/navigation/SideNavigationMobile.css` — path pattern: \.css$ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/navigation/SideNavigationMobile.jsx` — path pattern: /components/ + keywords: brand
+- `apps/web/src/components/navigation/index.js` — path pattern: /components/
+- `apps/web/src/components/navigation/navigationData.js` — path pattern: /components/
+- `apps/web/src/components/notifications/BadgeUnlockToast.jsx` — path pattern: /components/ + keywords: clsx
+- `apps/web/src/components/notifications/NotificationSettings.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/notifications/index.js` — path pattern: /components/
+- `apps/web/src/components/primitives/Badge.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/primitives/Button.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/primitives/Card.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/primitives/Input.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/primitives/Select.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/primitives/Textarea.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/primitives/index.js` — path pattern: /components/ + keywords: tokens?, design[\s-]?system
+- `apps/web/src/components/proof/Proof.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/proof/index.ts` — path pattern: /components/
+- `apps/web/src/components/shadcn/accordion.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/alert-dialog.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/alert.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/aspect-ratio.tsx` — path pattern: /components/ + keywords: radix
+- `apps/web/src/components/shadcn/avatar.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/badge.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcva\b
+- `apps/web/src/components/shadcn/button.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcva\b
+- `apps/web/src/components/shadcn/calendar.tsx` — path pattern: /components/ + keywords: classnames
+- `apps/web/src/components/shadcn/card.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/chart.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/shadcn/checkbox.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/collapsible.tsx` — path pattern: /components/ + keywords: radix
+- `apps/web/src/components/shadcn/command.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/dialog.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/drawer.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/dropdown-menu.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/examples/DashboardExample.tsx` — path pattern: /components/ + keywords: shadcn
+- `apps/web/src/components/shadcn/examples/GolfDashboardExample.tsx` — path pattern: /components/ + keywords: shadcn, typography
+- `apps/web/src/components/shadcn/golf/category-progress-ring.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/goal-progress.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/index.ts` — path pattern: /components/
+- `apps/web/src/components/shadcn/golf/leaderboard-row.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/player-stat-card.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/score-input.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/session-timer.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/skill-radar.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcolor[s]?\b
+- `apps/web/src/components/shadcn/golf/streak-badge.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/tournament-card.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/golf/training-category-badge.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcolor[s]?\b
+- `apps/web/src/components/shadcn/hover-card.tsx` — path pattern: /components/ + keywords: cn\s*\(, radix
+- `apps/web/src/components/shadcn/index.ts` — path pattern: /components/ + keywords: tailwind, shadcn
+- `apps/web/src/components/shadcn/input.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/label.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcva\b
+- `apps/web/src/components/shadcn/pagination.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/popover.tsx` — path pattern: /components/ + keywords: cn\s*\(, radix
+- `apps/web/src/components/shadcn/progress.tsx` — path pattern: /components/ + keywords: cn\s*\(, radix
+- `apps/web/src/components/shadcn/radio-group.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/scroll-area.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/select.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/separator.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/sheet.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/skeleton.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/slider.tsx` — path pattern: /components/ + keywords: cn\s*\(, radix
+- `apps/web/src/components/shadcn/sonner.tsx` — path pattern: /components/ + keywords: classnames, shadow
+- `apps/web/src/components/shadcn/switch.tsx` — path pattern: /components/ + keywords: cn\s*\(, radix
+- `apps/web/src/components/shadcn/table.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/tabs.tsx` — path pattern: /components/ + keywords: cn\s*\(, radix
+- `apps/web/src/components/shadcn/textarea.tsx` — path pattern: /components/ + keywords: cn\s*\(, shadow
+- `apps/web/src/components/shadcn/toggle-group.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/shadcn/toggle.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcva\b
+- `apps/web/src/components/shadcn/tooltip.tsx` — path pattern: /components/ + keywords: cn\s*\(, radix
+- `apps/web/src/components/shadcn/use-toast.ts` — path pattern: /components/
+- `apps/web/src/components/trajectory/Trajectory.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/trajectory/index.ts` — path pattern: /components/
+- `apps/web/src/components/typography/Headings.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/typography/index.ts` — path pattern: /components/ + keywords: typography
+- `apps/web/src/components/ui/AKGolfAppDesignSystem.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/AKGolfLogo_Showcase.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/AK_Golf_Design_Examples.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/AnimatedCard.jsx` — path pattern: /components/
+- `apps/web/src/components/ui/BackToTop.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/Breadcrumbs.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/ConfirmDialog.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/ui/EmptyState.jsx` — path pattern: /components/
+- `apps/web/src/components/ui/ErrorState.jsx` — path pattern: /components/
+- `apps/web/src/components/ui/ExportButton.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/ui/FeatureErrorBoundary.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/ui/KPICard.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/ui/ListSkeleton.jsx` — path pattern: /components/ + keywords: border[-\s]?radius
+- `apps/web/src/components/ui/LoadingSkeleton.jsx` — path pattern: /components/ + keywords: border[-\s]?radius
+- `apps/web/src/components/ui/LoadingState.jsx` — path pattern: /components/
+- `apps/web/src/components/ui/OfflineIndicator.jsx` — path pattern: /components/
+- `apps/web/src/components/ui/OfflineIndicator.tsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/ProgressBar.tsx` — path pattern: /components/ + keywords: cn\s*\(
+- `apps/web/src/components/ui/Sparkline.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcolor[s]?\b
+- `apps/web/src/components/ui/SuccessState.jsx` — path pattern: /components/
+- `apps/web/src/components/ui/ThemeToggle.jsx` — path pattern: /components/ + keywords: dark[\s-]?mode, \bcolor[s]?\b
+- `apps/web/src/components/ui/TrendIndicator.tsx` — path pattern: /components/ + keywords: cn\s*\(, \bcva\b
+- `apps/web/src/components/ui/__tests__/EmptyState.test.js` — path pattern: /components/
+- `apps/web/src/components/ui/__tests__/ErrorState.test.js` — path pattern: /components/
+- `apps/web/src/components/ui/__tests__/LoadingState.test.js` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/__tests__/SuccessState.test.js` — path pattern: /components/
+- `apps/web/src/components/ui/aarsplan_eksempel.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/ui/ak-benchmark-dashboard.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/ak-intake-form-premium-v2.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/ak-player-intake-v1.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/ui/index.js` — path pattern: /components/ + keywords: design[\s-]?system
+- `apps/web/src/components/ui/kategori_system_oversikt.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/ui/utviklingsplan_b_nivaa.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/video/AnnotationCanvas.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b, palette
+- `apps/web/src/components/video/AnnotationMarker.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/components/video/AnnotationTimeline.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/ShareDialog.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/components/video/ToolPalette.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/VideoAnalyzer.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/VideoComparison.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/VideoControls.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/VideoPlayer.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/VideoUploader.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/VoiceRecorder.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/video/index.js` — path pattern: /components/ + keywords: palette
+- `apps/web/src/components/widgets/AIChatWidget.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/components/widgets/PeerComparisonWidget.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/config/coach-navigation.js` — keywords: \bcolor[s]?\b
+- `apps/web/src/config/navigation.js` — keywords: \bcolor[s]?\b
+- `apps/web/src/config/player-navigation-v2.ts` — keywords: \bcolor[s]?\b
+- `apps/web/src/contexts/AuthContext.jsx` — keywords: tokens?
+- `apps/web/src/contexts/AuthContext.tsx` — keywords: tokens?
+- `apps/web/src/contexts/NotificationContext.jsx` — keywords: tokens?
+- `apps/web/src/contexts/NotificationContext.tsx` — keywords: tokens?
+- `apps/web/src/contexts/ThemeContext.jsx` — keywords: dark[\s-]?mode, \bcolor[s]?\b
+- `apps/web/src/contexts/ThemeContext.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/design-tokens.js` — keywords: tailwind, tokens?
+- `apps/web/src/features/__tests__/contract-enforcement.test.ts` — keywords: tailwind
+- `apps/web/src/features/achievements/AchievementsDashboard.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/admin-coach-management/AdminCoachManagement.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/admin-escalation/AdminEscalationSupport.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/admin-feature-flags/AdminFeatureFlagsEditor.tsx` — keywords: tokens?
+- `apps/web/src/features/admin-system-overview/AdminSystemOverview.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/admin-tier-management/AdminTierManagement.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/annual-plan/Aarsplan.jsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/annual-plan/AarsplanGenerator.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/annual-plan/PlanPreview.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/archive/Arkiv.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/auth/ForgotPassword.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/auth/Login.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/auth/ResetPassword.jsx` — keywords: tokens?
+- `apps/web/src/features/auth/VerifyResetToken.jsx` — keywords: tokens?
+- `apps/web/src/features/auth/__tests__/ResetPassword.test.jsx` — keywords: tokens?
+- `apps/web/src/features/badges/Badges.css` — path pattern: \.css$ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/bevis/BevisContainer.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/calendar-oversikt/CalendarOversiktPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar-oversikt/CalendarOversiktWidget.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar-oversikt/components/EventLegend.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar-oversikt/components/OversiktDayView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar-oversikt/components/OversiktHeader.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar-oversikt/components/OversiktMonthView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar-oversikt/components/OversiktWeekView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar-oversikt/components/index.ts` — path pattern: /components/
+- `apps/web/src/features/calendar-oversikt/types.ts` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/BookTrenerContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar/CalendarPage.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/Kalender.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/calendar/components/CalendarDayView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/CalendarHeader.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/CalendarMonthView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/CalendarWeekView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/CalendarYearView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/CreateSessionModal.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/EventDetailsPanel.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/NotionWeekView.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/SessionPreviewModal.jsx` — path pattern: /components/ + keywords: tokens?
+- `apps/web/src/features/calendar/components/index.ts` — path pattern: /components/
+- `apps/web/src/features/calendar/components/session-planner/SessionPlannerModal.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/hooks/index.ts` — path pattern: /components/
+- `apps/web/src/features/calendar/components/session-planner/hooks/useAKFormula.ts` — path pattern: /components/
+- `apps/web/src/features/calendar/components/session-planner/hooks/useSessionPlanner.ts` — path pattern: /components/
+- `apps/web/src/features/calendar/components/session-planner/index.ts` — path pattern: /components/
+- `apps/web/src/features/calendar/components/session-planner/shared/StepIndicator.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/shared/index.ts` — path pattern: /components/
+- `apps/web/src/features/calendar/components/session-planner/steps/AreaStep.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/steps/ContextStep.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/steps/FocusStep.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/steps/LPhaseStep.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/steps/PyramidStep.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/steps/SummaryStep.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/components/session-planner/steps/index.ts` — path pattern: /components/
+- `apps/web/src/features/calendar/day-view/DayViewExecution.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar/day-view/DecisionAnchor.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/day-view/EventCard.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/day-view/EventDetailPanel.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar/day-view/README.md` — keywords: tokens?
+- `apps/web/src/features/calendar/day-view/TimeGrid.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/calendar/day-view/TimePickerModal.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar/day-view/WorkoutContentViewer.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar/day-view/WorkoutSelectorModal.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/calendar/views/DayView.jsx` — keywords: classnames
+- `apps/web/src/features/calendar/views/MonthView.jsx` — keywords: classnames
+- `apps/web/src/features/calendar/views/TournamentView.jsx` — keywords: tokens?
+- `apps/web/src/features/calendar/views/WeekView.jsx` — keywords: classnames
+- `apps/web/src/features/calendar/views/YearView.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-athlete-detail/CoachAthleteDetail.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-athlete-list/CoachAthleteList.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-athlete-status/CoachAthleteStatus.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-athlete-tournaments/CoachAthleteTournaments.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-athletes/CoachAthleteHub.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-booking/CoachBookingCalendar.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-booking/CoachBookingRequests.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-booking/CoachBookingSettings.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-booking/index.ts` — keywords: palette, design[\s-]?system
+- `apps/web/src/features/coach-dashboard/CoachDashboard.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-dashboard/widgets/CoachInjuryTracker.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-dashboard/widgets/CoachPlayerAlerts.tsx` — keywords: tokens?
+- `apps/web/src/features/coach-dashboard/widgets/CoachWeeklyTournaments.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-exercises/CoachExerciseLibrary.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-exercises/CoachExerciseTemplates.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-exercises/CoachMyExercises.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-exercises/CoachSessionTemplateEditor.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-groups/CoachGroupCreate.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-groups/CoachGroupDetail.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-groups/CoachGroupList.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-groups/CoachGroupPlan.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/coach-intelligence/CoachAlertsPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-messages/CoachMessageCompose.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-messages/CoachMessageList.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-messages/CoachScheduledMessages.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-notes/CoachNotes.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-planning/CoachPlanningHub.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-player/CoachPlayerPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-session-evaluations/CoachSessionEvaluations.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-settings/CoachSettings.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-statistics/CoachStatistics.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-stats/CoachDataGolf.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-stats/CoachStatsOverview.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-stats/CoachStatsProgress.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-stats/CoachStatsRegression.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-tournaments/CoachTournamentCalendar.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-tournaments/CoachTournamentPlayers.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-tournaments/CoachTournamentResults.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-tournaments/index.ts` — keywords: palette, design[\s-]?system
+- `apps/web/src/features/coach-training-plan-editor/CoachTrainingPlanEditor.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-training-plan/CoachTrainingPlan.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-videos/CoachVideosDashboard.jsx` — keywords: tailwind, tokens?
+- `apps/web/src/features/coach-videos/PendingReviewQueue.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-videos/PlayerVideoFeed.jsx` — keywords: tailwind, \bcolor[s]?\b
+- `apps/web/src/features/coach-videos/ReferenceLibrary.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/coach-videos/ReferenceVideoCard.jsx` — keywords: tailwind, \bcolor[s]?\b
+- `apps/web/src/features/coach/ModificationRequestDashboard.jsx` — keywords: tokens?
+- `apps/web/src/features/coaches/Trenerteam.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/command-palette/CommandPalette.tsx` — keywords: shadcn, palette
+- `apps/web/src/features/command-palette/index.ts` — keywords: palette
+- `apps/web/src/features/dashboard/AKGolfDashboard.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/AKGolfDashboardV3.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/AKGolfDashboardV4.tsx` — keywords: tailwind, shadcn
+- `apps/web/src/features/dashboard/DashboardPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/DashboardV5.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/dashboard/OnboardingChecklist.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/components/DashboardWidget.jsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/dashboard/components/index.js` — path pattern: /components/
+- `apps/web/src/features/dashboard/dashboard-responsive.css` — path pattern: \.css$ + keywords: spacing
+- `apps/web/src/features/dashboard/v2/DASHBOARD_V2_SPEC.md` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/DashboardV2.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/DashboardV2Layout.tsx` — keywords: spacing
+- `apps/web/src/features/dashboard/v2/components/ActivityFeed.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/components/AsyncBoundary.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/components/CountdownCard.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/components/HeroCard.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/components/ScheduleCard.tsx` — path pattern: /components/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/components/StatsCard.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/components/StrokesGainedCard.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/dashboard/v2/components/index.ts` — path pattern: /components/ + keywords: tokens?, design[\s-]?system
+- `apps/web/src/features/dashboard/v2/index.ts` — keywords: design[\s-]?system
+- `apps/web/src/features/evaluering/EvalueringContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/evaluering/TreningsevalueringContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/evaluering/TurneringsevalueringContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/exercises/Oevelser.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/focus-engine/FocusWidget.jsx` — keywords: \bcolor[s]?\b, typography
+- `apps/web/src/features/focus-engine/TeamFocusHeatmap.jsx` — keywords: \bcolor[s]?\b, typography
+- `apps/web/src/features/goals/GoalsPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/goals/Maalsetninger.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/innstillinger/KalibreringsContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/innstillinger/VarselinnstillingerContainer.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/knowledge/KnowledgeBlog.jsx` — keywords: tailwind, \bcolor[s]?\b
+- `apps/web/src/features/knowledge/RessurserContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/kommunikasjon/FraTrenerContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/kommunikasjon/MeldingerContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/kommunikasjon/VarslerContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/landing/LandingHero.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/landing/SplitScreenLanding.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/landing/index.ts` — keywords: design[\s-]?system
+- `apps/web/src/features/messaging/ConversationView.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/messaging/MessageCenter.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/messaging/NewConversation.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/not-found/NotFoundPage.tsx` — keywords: \bcolor[s]?\b, design[\s-]?system
+- `apps/web/src/features/notes/Notater.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/notifications/NotificationCenter.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/periodeplaner/PeriodeplanerContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/planning/PlaceholderPage.jsx` — keywords: typography
+- `apps/web/src/features/player-overview/PlayerOverviewPage.tsx` — keywords: tokens?
+- `apps/web/src/features/player-stats/BenchmarkContent.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/BenchmarkPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/CategoryProgressionWidget.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/CoachNotesPanel.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/ImprovementVelocityWidget.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/PlayerStatsContent.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/PlayerStatsPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/StatistikkHub.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/StatusProgressContent.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/StatusProgressPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/StrokesGainedContent.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/StrokesGainedPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/TestComparisonWidget.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/TestDetailPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/TestResultsContent.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/player-stats/TestResultsPage.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/profile/ProfileView.tsx` — keywords: cn\s*\(, shadcn
+- `apps/web/src/features/profile/TwoFactorDisable.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/profile/TwoFactorSetup.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/profile/ak_golf_brukerprofil_onboarding.jsx` — keywords: tokens?
+- `apps/web/src/features/progress/ProgressDashboard.jsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/progress/ProgressWidget.jsx` — keywords: theming?, \bcolor[s]?\b
+- `apps/web/src/features/samlinger/SamlingerContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/school/SkoleoppgaverContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/school/Skoleplan.jsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/sessions/ActiveSessionView.jsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/sessions/BlockRatingModal.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/EvaluationStatsDashboard.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/ExerciseLibrary.jsx` — keywords: tokens?
+- `apps/web/src/features/sessions/QuickActionsWidget.jsx` — keywords: \bcolor[s]?\b, typography
+- `apps/web/src/features/sessions/SessionCreateForm.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/SessionDetailView.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/SessionEvaluationForm.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/SessionEvaluationWidget.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/SessionReflectionForm.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/SessionsListView.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/sessions/ShareSessionModal.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/sessions/index.js` — keywords: design[\s-]?system
+- `apps/web/src/features/stats-pages/StatsGuidePage.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/stats-pages/StatsOppdateringContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/stats-pages/StatsVerktoyContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/stats-pages/TurneringsstatistikkContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/stats/StatsPage.jsx` — keywords: tokens?
+- `apps/web/src/features/stats/StatsPage.tsx` — keywords: tokens?
+- `apps/web/src/features/stats/StatsPageV2.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/tests/KategoriKravContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/tests/PEIBaneTestForm.jsx` — keywords: tokens?
+- `apps/web/src/features/tests/PEIBaneTestPage.jsx` — keywords: tokens?
+- `apps/web/src/features/tests/RegistrerTestContainer.jsx` — keywords: tokens?
+- `apps/web/src/features/tests/StartTestModal.jsx` — keywords: tokens?
+- `apps/web/src/features/tests/Testprotokoll.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/tests/Testresultater.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/tests/config/testDefinitions.ts` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/tests/pages/TestDetailPage.tsx` — keywords: tokens?
+- `apps/web/src/features/tests/templates/PercentageForm.tsx` — keywords: tokens?
+- `apps/web/src/features/tests/templates/RoundScoringForm.tsx` — keywords: tokens?
+- `apps/web/src/features/tests/templates/SimpleAttemptsForm.tsx` — keywords: tokens?
+- `apps/web/src/features/tests/templates/TableDataForm.tsx` — keywords: tokens?
+- `apps/web/src/features/tests/templates/TestOverviewPage.tsx` — keywords: tokens?
+- `apps/web/src/features/tournament-calendar/README.md` — keywords: tailwind, tokens?
+- `apps/web/src/features/tournament-calendar/TournamentCalendarPage.tsx` — keywords: tokens?
+- `apps/web/src/features/tournament-calendar/TournamentDetailsPanel.tsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/TournamentPlannerPage.tsx` — keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/components/CalendarHeader.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/components/FilterDrawer.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/components/QuickFilterTabs.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/components/SearchBar.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/components/TournamentCard.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/components/TournamentList.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournament-calendar/components/index.ts` — path pattern: /components/
+- `apps/web/src/features/tournament-calendar/hierarchy-config.ts` — keywords: tokens?, brand
+- `apps/web/src/features/tournament-calendar/tournament-service.ts` — keywords: tokens?
+- `apps/web/src/features/tournaments/MineTurneringerContainer.jsx` — keywords: tokens?
+- `apps/web/src/features/tournaments/RegistrerTurneringsResultatContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournaments/TurneringsResultaterContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/tournaments/TurneringskalenderContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/training/Treningsprotokoll.jsx` — keywords: tokens?
+- `apps/web/src/features/training/Treningsstatistikk.tsx` — keywords: cn\s*\(
+- `apps/web/src/features/trening-plan/DagensTreningsplanContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/LoggTreningContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/TekniskPlanContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/TreningsdagbokContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/UkensTreningsplanContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/TreningsdagbokPage.tsx` — keywords: \bcolor[s]?\b, border[-\s]?radius
+- `apps/web/src/features/trening-plan/treningsdagbok/components/DagbokComplianceBand.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/components/DagbokFilterBar.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/components/DagbokHierarchyFilters.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/components/DagbokSessionList.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/components/DagbokSessionRow.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/components/DagbokSummarySection.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/components/DagbokWeeklyHeatmap.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/features/trening-plan/treningsdagbok/components/index.ts` — path pattern: /components/
+- `apps/web/src/features/trening-plan/treningsdagbok/constants.ts` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/ui-lab/UILabContainer.jsx` — keywords: cn\s*\(
+- `apps/web/src/features/utvikling/BenchmarkHistorikkContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/utvikling/BreakingPointsContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/utvikling/KategoriFremgangContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/utvikling/UtviklingsOversiktContainer.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/video-analysis/VideoAnalysisPage.jsx` — keywords: tailwind, \bcolor[s]?\b
+- `apps/web/src/features/video-comparison/VideoComparisonPage.jsx` — keywords: tailwind, typography
+- `apps/web/src/features/video-library/VideoCard.jsx` — keywords: tailwind, typography
+- `apps/web/src/features/video-library/VideoFilters.jsx` — keywords: tailwind, \bcolor[s]?\b
+- `apps/web/src/features/video-library/VideoLibrary.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/video-library/VideoLibraryPage.jsx` — keywords: tailwind, typography
+- `apps/web/src/features/video-progress/SwingTimeline.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/features/video-progress/VideoProgressView.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/hooks/useAnnotationCanvas.js` — keywords: \bcolor[s]?\b
+- `apps/web/src/hooks/useRealtimeUpdates.js` — keywords: tokens?
+- `apps/web/src/index.css` — path pattern: \.css$ + keywords: tailwind
+- `apps/web/src/layouts/PageShell.tsx` — keywords: tokens?
+- `apps/web/src/layouts/index.ts` — keywords: spacing
+- `apps/web/src/lib/utils.ts` — path pattern: /lib/ + keywords: tailwind
+- `apps/web/src/mobile/MobileCalendar.jsx` — keywords: tokens?
+- `apps/web/src/mobile/MobileCalibration.jsx` — keywords: tokens?
+- `apps/web/src/mobile/MobileCoachAthleteDetail.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/mobile/MobileCoachDashboard.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/mobile/MobileCoachSessionsView.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/mobile/MobileCoachTestResults.jsx` — keywords: \bcolor[s]?\b
+- `apps/web/src/mobile/MobileHome.jsx` — keywords: tokens?
+- `apps/web/src/mobile/MobilePlan.jsx` — keywords: tokens?
+- `apps/web/src/mobile/MobileQuickLog.jsx` — keywords: tokens?
+- `apps/web/src/routes/layouts.tsx` — keywords: tokens?
+- `apps/web/src/services/__tests__/api-simple.test.js` — keywords: tokens?
+- `apps/web/src/services/__tests__/api.test.js` — keywords: tokens?
+- `apps/web/src/services/aiService.ts` — keywords: tokens?
+- `apps/web/src/services/api.ts` — keywords: tokens?
+- `apps/web/src/services/apiClient.js` — keywords: tokens?
+- `apps/web/src/styles/accessibility.css` — path pattern: /styles?/ + keywords: tokens?, dark[\s-]?mode
+- `apps/web/src/theme/theme.ts` — path pattern: /theme/ + keywords: \bcolor[s]?\b
+- `apps/web/src/types/dashboard.ts` — keywords: \bcolor[s]?\b
+- `apps/web/src/ui/COMPONENT_LIBRARY.md` — path pattern: /ui/ + keywords: tokens?
+- `apps/web/src/ui/README.md` — path pattern: /ui/ + keywords: tokens?
+- `apps/web/src/ui/SUMMARY.md` — path pattern: /ui/ + keywords: tokens?, theming?
+- `apps/web/src/ui/components/EnhancedErrorState.jsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/components/typography.tsx` — path pattern: /components/ + keywords: typography
+- `apps/web/src/ui/composites/Accordion.composite.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/composites/ActionsGrid.composite.tsx` — path pattern: /ui/ + keywords: tailwind, classnames
+- `apps/web/src/ui/composites/BottomNav.tsx` — path pattern: /ui/ + keywords: shadcn, \bcolor[s]?\b
+- `apps/web/src/ui/composites/DataTable.composite.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/composites/Dropdown.composite.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/composites/MembersList.composite.tsx` — path pattern: /ui/ + keywords: tailwind, classnames
+- `apps/web/src/ui/composites/Modal.composite.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/composites/Pagination.composite.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/composites/README.md` — path pattern: /ui/
+- `apps/web/src/ui/composites/StateCard.tsx` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/ui/composites/Tabs.composite.tsx` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/ui/composites/ThemeSwitcher.tsx` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/ui/composites/Toast.composite.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/composites/__tests__/Modal.composite.test.js` — path pattern: /ui/ + keywords: border[-\s]?radius
+- `apps/web/src/ui/composites/__tests__/Tabs.composite.test.js` — path pattern: /ui/ + keywords: spacing, border[-\s]?radius
+- `apps/web/src/ui/composites/index.ts` — path pattern: /ui/
+- `apps/web/src/ui/lab/AppShellLab.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/lab/CalendarLab.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/lab/StatsLab.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/lab/TemplatesLab.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b, typography
+- `apps/web/src/ui/lab/UiCanonPage.tsx` — path pattern: /ui/ + keywords: tokens?
+- `apps/web/src/ui/primitives/Alert.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Avatar.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Badge.primitive.tsx` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Button.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Button.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Card.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Checkbox.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Divider.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Input.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Input.tsx` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/ui/primitives/ProgressBar.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/README.md` — path pattern: /ui/ + keywords: tokens?
+- `apps/web/src/ui/primitives/Spinner.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Switch.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/Text.primitive.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/primitives/index.ts` — path pattern: /ui/
+- `apps/web/src/ui/raw-blocks/AppShell.raw.tsx` — path pattern: /ui/ + keywords: spacing
+- `apps/web/src/ui/raw-blocks/CalendarWeek.raw.tsx` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/ui/raw-blocks/CardHeader.raw.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/raw-blocks/CardSimple.raw.tsx` — path pattern: /ui/ + keywords: spacing
+- `apps/web/src/ui/raw-blocks/PageHeader.raw.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/raw-blocks/StatsGrid.raw.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/raw-blocks/StatsTrend.raw.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/raw-blocks/index.ts` — path pattern: /ui/ + keywords: design[\s-]?system
+- `apps/web/src/ui/skeletons/DashboardSkeleton.jsx` — path pattern: /ui/ + keywords: css[\s-]?variables?
+- `apps/web/src/ui/skeletons/SkeletonBase.jsx` — path pattern: /ui/ + keywords: border[-\s]?radius
+- `apps/web/src/ui/skeletons/StatsCardSkeleton.jsx` — path pattern: /ui/ + keywords: border[-\s]?radius, css[\s-]?variables?
+- `apps/web/src/ui/skeletons/WidgetSkeleton.jsx` — path pattern: /ui/ + keywords: border[-\s]?radius
+- `apps/web/src/ui/skeletons/index.js` — path pattern: /ui/
+- `apps/web/src/ui/templates/AppShellTemplate.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/CalendarTemplate.tsx` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `apps/web/src/ui/templates/CardGridTemplate.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/DashboardTemplate.template.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/DetailTemplate.template.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/FormTemplate.template.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/ListTemplate.template.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b, spacing
+- `apps/web/src/ui/templates/ListTemplate.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/ProfileTemplate.template.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/SettingsTemplate.template.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b, spacing
+- `apps/web/src/ui/templates/StatsGridTemplate.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/templates/__tests__/DashboardTemplate.test.js` — path pattern: /ui/
+- `apps/web/src/ui/templates/__tests__/StatsGridTemplate.test.js` — path pattern: /ui/
+- `apps/web/src/ui/templates/__tests__/StatsGridTemplate.test.tsx` — path pattern: /ui/
+- `apps/web/src/ui/templates/index.ts` — path pattern: /ui/
+- `apps/web/src/ui/widgets/DashboardCard.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b, spacing
+- `apps/web/src/ui/widgets/SkeletonLoader.tsx` — path pattern: /ui/ + keywords: spacing
+- `apps/web/src/ui/widgets/WidgetHeader.tsx` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `apps/web/src/ui/widgets/index.ts` — path pattern: /ui/
+- `apps/web/src/utils/accessibility.js` — keywords: \bcolor[s]?\b
+- `apps/web/src/utils/formatting.ts` — keywords: tailwind, \bcolor[s]?\b
+- `apps/web/src/utils/mobile.ts` — keywords: \bcolor[s]?\b
+- `apps/web/tailwind.config.js` — path pattern: tailwind\.config\. + keywords: tailwind
+- `apps/web/tests/coach-portal.spec.js` — keywords: tokens?
+- `apps/web/tests/core-flows.spec.js` — keywords: tokens?
+- `apps/web/tests/dom-injection.spec.js` — keywords: brand
+- `apps/web/tests/e2e/auth-flows.spec.js` — keywords: tokens?
+- `apps/web/tests/mobile.spec.js` — keywords: tokens?
+- `apps/web/tests/notifications.spec.js` — keywords: tokens?
+- `docs/00_MASTER_PROSJEKTDOKUMENT.md` — keywords: tailwind, tokens?
+- `docs/01_STATUS_DASHBOARD.md` — keywords: design[\s-]?system
+- `docs/02_UTVIKLINGSPLAN_KOMPLETT.md` — keywords: palette, design[\s-]?system
+- `docs/03_TEKNISK_DOKUMENTASJON.md` — keywords: tokens?
+- `docs/DEVELOPMENT_ROADMAP.md` — keywords: tokens?, brand
+- `docs/FEATURE_OVERVIEW.md` — keywords: design[\s-]?system
+- `docs/FEATURE_OVERVIEW_2025.md` — keywords: tailwind, shadcn
+- `docs/INDEX.md` — keywords: tailwind, tokens?, design[\s-]?system
+- `docs/NATT_SPRINT_PLAN.md` — keywords: tokens?
+- `docs/PLAN_STATISTIKK_STATUS_FANE.md` — keywords: tokens?
+- `docs/PRESENTASJON_PARTNERE.md` — keywords: tailwind, radix
+- `docs/README.md` — keywords: tokens?
+- `docs/TOTAL_OVERSIKT_DATA_TURNERINGER_TESTER.md` — keywords: design[\s-]?system
+- `docs/UI_CANON.md` — keywords: tailwind
+- `docs/api/API_DOCUMENTATION.md` — keywords: tokens?
+- `docs/api/API_README.md` — keywords: tokens?
+- `docs/api/BOOKING_CALENDAR_API_DOCUMENTATION.md` — keywords: tokens?
+- `docs/api/ERROR_CODES.md` — keywords: tokens?
+- `docs/api/README.md` — keywords: tokens?
+- `docs/api/api-reference.md` — keywords: tokens?
+- `docs/api/booking.md` — keywords: tokens?
+- `docs/api/coach.md` — keywords: tokens?
+- `docs/architecture/04_ARCHITECTURE.md` — keywords: tokens?
+- `docs/architecture/ARCHITECTURE.md` — keywords: tailwind, tokens?
+- `docs/architecture/DESIGN_SOURCE_OF_TRUTH.md` — keywords: tailwind
+- `docs/architecture/PROJECT_STRUCTURE.md` — keywords: tokens?
+- `docs/architecture/decisions/001-design-system-color-architecture.md` — keywords: tailwind
+- `docs/architecture/decisions/004-jwt-auth.md` — keywords: tokens?
+- `docs/architecture/overview.md` — keywords: tailwind, tokens?
+- `docs/archive/2025-12-14/BUILD_COMPLETE.md` — keywords: tokens?
+- `docs/archive/2025-12-14/OPPRYDDINGSPLAN.md` — keywords: tailwind
+- `docs/archive/2025-12-14/OVERNIGHT_BUILD_SUMMARY.md` — keywords: tokens?
+- `docs/archive/2025-12-14/README_OLD.md` — keywords: tokens?
+- `docs/archive/2025-12-14/UTVIKLINGSPLAN_OLD.md` — keywords: tailwind
+- `docs/archive/API_ENDPOINT_INVENTORY_COMPLETE.md` — keywords: tokens?
+- `docs/archive/APP_FUNCTIONALITY.md` — keywords: design[\s-]?system
+- `docs/archive/DASHBOARD_IMPLEMENTATION.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/archive/DASHBOARD_SPEC.md` — keywords: tailwind, tokens?
+- `docs/archive/DATAMODELL_KOMPLETT_KARTLEGGING.md` — keywords: tokens?
+- `docs/archive/DATA_STRATEGY_ANALYSIS.md` — keywords: tokens?
+- `docs/archive/FRONTEND_ORGANIZATION_PROPOSAL.md` — keywords: tokens?, design[\s-]?system
+- `docs/archive/FUNKSJONSMATRISE_KOMPLETT.md` — keywords: tokens?
+- `docs/archive/GAP_ANALYSE_VIDEOANALYSE.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/archive/IMPLEMENTATION_ROADMAP_8H_PARALLEL.md` — keywords: tokens?
+- `docs/archive/IMPLEMENTATION_STATUS.md` — keywords: tokens?
+- `docs/archive/OPTION_A_DESKTOP_INTEGRATION.md` — keywords: tokens?
+- `docs/archive/OPTION_B_BACKEND_ENHANCEMENT.md` — keywords: tokens?
+- `docs/archive/OPTION_C_UX_POLISH.md` — keywords: tokens?
+- `docs/archive/OPTION_D_TESTING_QUALITY.md` — keywords: tokens?
+- `docs/archive/STATS_QUICKSTART.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/archive/STATUS_CHECK.md` — keywords: typography
+- `docs/archive/SUBSCRIPTION_SYSTEM_OPPSUMMERING.md` — keywords: tokens?
+- `docs/archive/UI_UX_ANALYSE_RAPPORT.md` — keywords: tailwind
+- `docs/archive/api-reference.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/ARCHITECTURE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/AUTOMATISERING_GUIDE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/BUILD_COMPLETE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/DESIGN_SYSTEM_SETUP.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/OPPRYDDINGSPLAN.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/OPPRYDDINGSPLAN_DOKUMENTASJON.md` — keywords: tailwind, design[\s-]?system
+- `docs/archive/backup-20251215-141405/OPPSUMMERING_AUTOMATISERING.md` — keywords: design[\s-]?system
+- `docs/archive/backup-20251215-141405/OVERNIGHT_BUILD_SUMMARY.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/QUICKSTART.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/README.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/STATUS_DASHBOARD.md` — keywords: design[\s-]?system
+- `docs/archive/backup-20251215-141405/UTVIKLINGSPLAN.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/UTVIKLINGSPLAN_KOMPLETT.md` — keywords: design[\s-]?system
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/ARCHITECTURE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/AUTOMATISERING_GUIDE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/DESIGN_SYSTEM_SETUP.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/OPPRYDDINGSPLAN_DOKUMENTASJON.md` — keywords: tailwind, design[\s-]?system
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/OPPSUMMERING_AUTOMATISERING.md` — keywords: design[\s-]?system
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/STATUS_DASHBOARD.md` — keywords: design[\s-]?system
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/UTVIKLINGSPLAN.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/archive/backup-20251215-141405/UTVIKLINGSPLAN_KOMPLETT.md` — keywords: design[\s-]?system
+- `docs/archive/backup-20251215-141405/reference/APP_IMPLEMENTERING_PLAN.md` — keywords: \bcolor[s]?\b
+- `docs/archive/backup-20251215-141405/reference/APP_STATUS.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/reference/ARBEIDSFLYT_GUIDE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/reference/BACKEND_SETUP_GUIDE.md` — keywords: \bcolor[s]?\b
+- `docs/archive/backup-20251215-141405/reference/CLAUDE_PROJECT_OPPDATERING_GUIDE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/reference/CLAUDE_PROJECT_SJEKKLISTE.md` — keywords: tokens?
+- `docs/archive/backup-20251215-141405/reference/DESIGN_MIGRATION_GUIDE.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/reference/DESIGN_SYSTEM_COMPLETE.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/reference/DESIGN_SYSTEM_GUIDE.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/reference/DESIGN_SYSTEM_OPPDATERING.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/reference/IUP_SKJERM_OVERSIKT.md` — keywords: tailwind
+- `docs/archive/backup-20251215-141405/reference/MASTER_PROSJEKTDOKUMENT.md` — keywords: tailwind, tokens?
+- `docs/archive/backup-20251215-141405/reference/QA_RAPPORT_KATEGORI_SYSTEM.md` — keywords: design[\s-]?system
+- `docs/archive/backup-20251215-141405/reference/REACT_NATIVE_CONVERSION_GUIDE.md` — keywords: tailwind, \bcolor[s]?\b
+- `docs/archive/completed-sessions/100_PERCENT_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/AUTHENTICATION_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/COMPLETE_PLATFORM_AUDIT_2025-12-16.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/archive/completed-sessions/FOLDER_ORGANIZATION_COMPLETE.md` — keywords: tailwind, tokens?
+- `docs/archive/completed-sessions/GOALS_API_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/IMPLEMENTATION_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/INTEGRATION_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/NOTES_API_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/OPTIONS_A_D_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/PHASE2_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/SEASON_ONBOARDING_AI_COMPLETE.md` — keywords: tokens?
+- `docs/archive/completed-sessions/SESSION_SUMMARY_GOALS_API.md` — keywords: tokens?
+- `docs/archive/completed-sessions/SESSION_SUMMARY_NOTES_API.md` — keywords: tokens?
+- `docs/archive/completed-sessions/TASK_2_COMPLETE_SUMMARY.md` — keywords: tokens?
+- `docs/archive/implementation-history/BETA_TEST_RAPPORT.md` — keywords: tokens?
+- `docs/archive/implementation-history/FEATURE_AUDIT_INVENTORY.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/archive/implementation-history/PRO_GAP_ANALYSIS_MVP_COMPLETE.md` — keywords: \bcolor[s]?\b
+- `docs/archive/implementation-history/QUALITY_CONTROL_CHECKLIST.md` — keywords: tokens?
+- `docs/archive/norwegian-legacy/00_MASTER_PROSJEKTDOKUMENT.md` — keywords: tailwind, tokens?
+- `docs/archive/norwegian-legacy/01_STATUS_DASHBOARD.md` — keywords: design[\s-]?system
+- `docs/archive/norwegian-legacy/02_UTVIKLINGSPLAN_KOMPLETT.md` — keywords: palette, design[\s-]?system
+- `docs/archive/norwegian-legacy/PLATFORM_FUNKSJONER.md` — keywords: tokens?
+- `docs/archive/session-logs/FASE_1_FERDIG.md` — keywords: tailwind, \bcolor[s]?\b
+- `docs/archive/session-logs/FASE_1_IMPLEMENTERING.md` — keywords: tokens?, \bcolor[s]?\b, shadow
+- `docs/archive/session-logs/WEEK1_MVP_COMPLETE.md` — keywords: tokens?
+- `docs/archive/session-logs/WEEK2_FRONTEND_COMPLETE.md` — keywords: tokens?
+- `docs/archive/session-logs/WEEK2_PROGRESS.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/backend/backend-notifications.md` — keywords: tokens?
+- `docs/completed-sessions/100_PERCENT_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/ARCHIVE_API_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/AUTHENTICATION_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/COMPLETE_PLATFORM_AUDIT_2025-12-16.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/completed-sessions/FOLDER_ORGANIZATION_COMPLETE.md` — keywords: tailwind, tokens?
+- `docs/completed-sessions/GOALS_API_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/IMPLEMENTATION_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/INTEGRATION_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/NOTES_API_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/OPTIONS_A_D_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/PHASE2_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/SEASON_ONBOARDING_AI_COMPLETE.md` — keywords: tokens?
+- `docs/completed-sessions/SESSION_2025-12-16_SUMMARY.md` — keywords: tokens?
+- `docs/completed-sessions/SESSION_SUMMARY_GOALS_API.md` — keywords: tokens?
+- `docs/completed-sessions/SESSION_SUMMARY_NOTES_API.md` — keywords: tokens?
+- `docs/completed-sessions/TASK_2_COMPLETE_SUMMARY.md` — keywords: tokens?
+- `docs/contracts/COACH_ADMIN_AUTHORITY_CONTRACT.md` — keywords: \bcolor[s]?\b
+- `docs/contracts/COACH_ADMIN_IMPLEMENTATION_CONTRACT.md` — keywords: \bcolor[s]?\b
+- `docs/contracts/COACH_ADMIN_SCREEN_CONTRACT.md` — keywords: \bcolor[s]?\b
+- `docs/contracts/CONTRACT_COMPLETION_SUMMARY.md` — keywords: tokens?
+- `docs/contracts/CONTRACT_ENFORCEMENT_SUMMARY.md` — keywords: tokens?
+- `docs/contracts/IMPLEMENTATION_CONTRACT.md` — keywords: \bcolor[s]?\b
+- `docs/contracts/JURIDISK_VEILEDNING_DATABEHANDLING.md` — keywords: tokens?
+- `docs/contracts/README.md` — keywords: border[-\s]?radius, design[\s-]?system
+- `docs/contracts/SCHEDULE_B_DATA_PROCESSING.md` — keywords: tokens?
+- `docs/contracts/SCHEDULE_C_COMMERCIAL_TERMS.md` — keywords: brand
+- `docs/contracts/SCHEDULE_DOKUMENTER_OVERSIKT.md` — keywords: tokens?
+- `docs/contracts/TECHNICAL_APPENDIX.md` — keywords: tokens?
+- `docs/contracts/VALIDATION_CHECKLIST.md` — keywords: \bcolor[s]?\b
+- `docs/contracts/ui/intake-form.contract.ts` — path pattern: /ui/ + keywords: tokens?
+- `docs/contracts/ui/plan-generation.contract.ts` — path pattern: /ui/ + keywords: \bcolor[s]?\b
+- `docs/demo/FAQ.md` — keywords: tailwind, tokens?
+- `docs/demo/LOCAL_TEST_RESULTS.md` — keywords: tokens?
+- `docs/demo/PRESENTATION_COMPLETE.md` — keywords: \bcolor[s]?\b
+- `docs/demo/PRESENTATION_GUIDE.md` — keywords: \bcolor[s]?\b
+- `docs/demo/SCREENSHOTS.md` — keywords: spacing, shadow
+- `docs/demo/SCREENSHOT_GUIDE.md` — keywords: \bcolor[s]?\b
+- `docs/demo/SCREENSHOT_SETUP_COMPLETE.md` — keywords: \bcolor[s]?\b
+- `docs/demo/SLIDES_CHECKLIST.md` — keywords: tailwind, \bcolor[s]?\b
+- `docs/demo/demo-script.md` — keywords: tailwind, tokens?
+- `docs/deployment/ENV_VARIABLES.md` — keywords: tokens?
+- `docs/deployment/RAILWAY.md` — keywords: tokens?
+- `docs/deployment/START_DEMO.md` — keywords: tokens?
+- `docs/deployment/release-smoke-test.md` — keywords: dark[\s-]?mode
+- `docs/deployment/staging-deploy.md` — keywords: tailwind, tokens?
+- `docs/design/05_DESIGN_SYSTEM_SETUP.md` — keywords: tailwind
+- `docs/design/AK_GOLF_DESIGN_SYSTEM_COMPLETE.md` — keywords: tailwind
+- `docs/design/BLUE_PALETTE_COMPLETE.md` — keywords: tokens?
+- `docs/design/DESIGN_IMPLEMENTATION_PLAN.md` — keywords: tailwind
+- `docs/design/DESIGN_MIGRATION_SUMMARY.md` — keywords: tokens?
+- `docs/design/DESIGN_SYSTEM.md` — keywords: tokens?
+- `docs/design/DESIGN_SYSTEM_V3_CHANGELOG.md` — keywords: tailwind
+- `docs/design/TAILWIND_INTEGRATION_PLAN.md` — keywords: tailwind
+- `docs/design/TEMPLATE_MAPPING.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/design/UI_DESIGN_README.md` — keywords: tailwind, tokens?
+- `docs/design/UI_DESIGN_SYSTEM_KOMPLETT.md` — keywords: tokens?
+- `docs/design/UI_SCREENS_MOBILE.md` — keywords: dark[\s-]?mode, \bcolor[s]?\b, border[-\s]?radius
+- `docs/design/UI_SCREENS_TABLET.md` — keywords: \bcolor[s]?\b, border[-\s]?radius
+- `docs/design/UI_UX_ANALYSE_RAPPORT.md` — keywords: tailwind
+- `docs/design/design-system.md` — keywords: tailwind
+- `docs/features/AUTHENTICATION_FLOWS.md` — keywords: tokens?
+- `docs/features/COACH_ADMIN_JOURNEYS.md` — keywords: \bcolor[s]?\b
+- `docs/features/EMAIL_TEMPLATES.md` — keywords: tokens?
+- `docs/features/OAUTH_COMPLETE.md` — keywords: tokens?
+- `docs/features/OAUTH_IMPLEMENTATION.md` — keywords: tokens?
+- `docs/features/SUBSCRIPTION_SYSTEM_OPPSUMMERING.md` — keywords: tokens?
+- `docs/features/SUBSCRIPTION_TIERS_IMPLEMENTATION.md` — keywords: tokens?
+- `docs/features/VIDEO_ANALYSIS_PLATFORM_FULL_WORKPLAN.md` — keywords: tokens?
+- `docs/features/VIDEO_ANALYSIS_PLATFORM_PLAN.md` — keywords: \bcolor[s]?\b, palette
+- `docs/features/datagolf/DATAGOLF_DATA_INVENTORY.md` — keywords: tailwind, tokens?, \bcolor[s]?\b
+- `docs/features/datagolf/DATAGOLF_STATS_FORSLAG.md` — keywords: \bcolor[s]?\b, design[\s-]?system
+- `docs/features/design/05_DESIGN_SYSTEM_SETUP.md` — keywords: tailwind
+- `docs/features/design/AK_GOLF_DESIGN_SYSTEM_COMPLETE.md` — keywords: tailwind
+- `docs/features/design/BLUE_PALETTE_COMPLETE.md` — keywords: tokens?
+- `docs/features/design/DESIGN_MIGRATION_SUMMARY.md` — keywords: tokens?
+- `docs/features/design/DESIGN_SYSTEM.md` — keywords: tokens?
+- `docs/features/design/DESIGN_SYSTEM_V3_CHANGELOG.md` — keywords: tailwind
+- `docs/features/design/TAILWIND_INTEGRATION_PLAN.md` — keywords: tailwind
+- `docs/features/design/UI_DESIGN_README.md` — keywords: tailwind, tokens?
+- `docs/features/design/UI_DESIGN_SYSTEM_KOMPLETT.md` — keywords: tokens?
+- `docs/features/design/UI_SCREENS_MOBILE.md` — keywords: dark[\s-]?mode, \bcolor[s]?\b, border[-\s]?radius
+- `docs/features/design/UI_SCREENS_TABLET.md` — keywords: \bcolor[s]?\b, border[-\s]?radius
+- `docs/features/design/UI_UX_ANALYSE_RAPPORT.md` — keywords: tailwind
+- `docs/features/design/design-system.md` — keywords: tailwind
+- `docs/features/feature-modules.md` — keywords: tokens?, palette
+- `docs/features/oauth/OAUTH_IMPLEMENTATION.md` — keywords: tokens?
+- `docs/features/subscription/SUBSCRIPTION_TIERS_IMPLEMENTATION.md` — keywords: tokens?
+- `docs/features/user-journeys.md` — keywords: tokens?
+- `docs/guides/AUTOMATISERING_GUIDE.md` — keywords: tokens?
+- `docs/guides/BOOKING_CALENDAR_USER_GUIDE.md` — keywords: \bcolor[s]?\b
+- `docs/guides/BOOKING_SYSTEM_TESTING_GUIDE.md` — keywords: \bcolor[s]?\b
+- `docs/guides/CLAUDE_CODE_IMPLEMENTATION_PACK 2.md` — keywords: tailwind, tokens?
+- `docs/guides/CLAUDE_CODE_IMPLEMENTATION_PACK.md` — keywords: tailwind, tokens?
+- `docs/guides/CLEANUP_GUIDE.md` — keywords: tokens?, design[\s-]?system
+- `docs/guides/COACH_ADMIN_JOURNEYS.md` — keywords: \bcolor[s]?\b
+- `docs/guides/DEPLOYMENT_AND_TESTING_GUIDE.md` — keywords: tokens?
+- `docs/guides/DEPLOYMENT_GUIDE.md` — keywords: tokens?
+- `docs/guides/DESIGN_PACKAGE_FOR_CHATGPT.md` — keywords: tailwind, tokens?
+- `docs/guides/ONBOARDING.md` — keywords: tokens?
+- `docs/guides/STATS_QUICKSTART.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/guides/TESTING_GUIDE.md` — keywords: tokens?
+- `docs/guides/contributing.md` — keywords: shadow
+- `docs/guides/development.md` — keywords: design[\s-]?system
+- `docs/guides/testing.md` — keywords: tokens?
+- `docs/guides/ui/HOME_SCREEN.md` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `docs/guides/ui/PROOF_SCREEN.md` — path pattern: /ui/ + keywords: tokens?, \bcolor[s]?\b
+- `docs/guides/ui/README.md` — path pattern: /ui/ + keywords: tailwind, tokens?
+- `docs/guides/ui/SCREEN_RESPONSIBILITIES.md` — path pattern: /ui/
+- `docs/guides/ui/ui-rules.md` — path pattern: /ui/ + keywords: tailwind
+- `docs/guides/user-journeys.md` — keywords: tokens?
+- `docs/integrations/DATAGOLF_DATABASE_OVERSIKT.md` — keywords: tokens?
+- `docs/integrations/DATAGOLF_DATA_INVENTORY.md` — keywords: tailwind, tokens?, \bcolor[s]?\b
+- `docs/integrations/DATAGOLF_LIVE_INTEGRATION_COMPLETE.md` — keywords: \bcolor[s]?\b
+- `docs/integrations/DATAGOLF_STATS_FORSLAG.md` — keywords: \bcolor[s]?\b, design[\s-]?system
+- `docs/integrations/DATAGOLF_SUMMARY_FOR_CHATGPT.md` — keywords: \bcolor[s]?\b
+- `docs/internal/CLAUDE-SKILL-AK-Golf-Category-System.md` — keywords: \bcolor[s]?\b
+- `docs/internal/DEVELOPER_REVIEW_GUIDE.md` — keywords: tailwind, tokens?
+- `docs/internal/IMPLEMENTATION_SUMMARY.md` — keywords: tailwind
+- `docs/internal/OPPRYDDINGSPLAN_DOKUMENTASJON.md` — keywords: tailwind, palette, design[\s-]?system
+- `docs/internal/OPPSUMMERING_AUTOMATISERING.md` — keywords: design[\s-]?system
+- `docs/internal/TODO videreutvikling 27 des 2025.md` — keywords: tokens?
+- `docs/internal/ak-golf-merged-tokens.md` — keywords: tokens?
+- `docs/internal/work-artifacts/AGENT1_COMPLETION_REPORT.md` — keywords: tokens?
+- `docs/internal/work-artifacts/AGENT3_DELIVERABLES_SUMMARY.md` — keywords: tokens?
+- `docs/internal/work-artifacts/CHATGPT_UPLOAD_INSTRUCTIONS.md` — keywords: design[\s-]?system
+- `docs/internal/work-artifacts/GAMIFICATION_RESEARCH_PACKAGE.md` — keywords: \bcolor[s]?\b
+- `docs/maler/MOCKUP_WEB_UI.md` — keywords: tokens?
+- `docs/operations/BETA_TEST_RAPPORT.md` — keywords: tokens?
+- `docs/operations/QUALITY_CONTROL_CHECKLIST.md` — keywords: tokens?
+- `docs/operations/SECURITY_AUDIT_REPORT.md` — keywords: tokens?
+- `docs/operations/caching-policy.md` — keywords: tokens?
+- `docs/operations/cleanup-jobs.md` — keywords: tokens?
+- `docs/operations/database-migration.md` — keywords: tokens?, shadow
+- `docs/operations/incident-response.md` — keywords: tokens?
+- `docs/operations/monitoring.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/plans/PRIORITY_IMPLEMENTATION_PLAN.md` — keywords: tokens?
+- `docs/plans/REPOSITORY_ORGANIZATION_PLAN.md` — keywords: design[\s-]?system
+- `docs/plans/STATS_GUIDE_PAGE_PLAN.md` — keywords: tailwind, design[\s-]?system
+- `docs/reference/AK_ICON_BADGE_SYSTEM_SPEC.md` — keywords: tokens?
+- `docs/reference/Archive/APP_IMPLEMENTERING_PLAN.md` — keywords: \bcolor[s]?\b
+- `docs/reference/Archive/APP_STATUS.md` — keywords: tailwind
+- `docs/reference/Archive/ARBEIDSFLYT_GUIDE.md` — keywords: tokens?
+- `docs/reference/Archive/CLAUDE_PROJECT_OPPDATERING_GUIDE.md` — keywords: tokens?
+- `docs/reference/Archive/CLAUDE_PROJECT_SJEKKLISTE.md` — keywords: tokens?
+- `docs/reference/Archive/DESIGN_MIGRATION_GUIDE.md` — keywords: tailwind
+- `docs/reference/Archive/DESIGN_SYSTEM_COMPLETE.md` — keywords: tailwind
+- `docs/reference/Archive/DESIGN_SYSTEM_GUIDE.md` — keywords: tailwind
+- `docs/reference/Archive/DESIGN_SYSTEM_OPPDATERING.md` — keywords: tailwind
+- `docs/reference/Archive/REACT_NATIVE_CONVERSION_GUIDE.md` — keywords: tailwind, \bcolor[s]?\b
+- `docs/reference/IUP_GENERERING_KOMPLETT_FLYT.md` — keywords: tokens?
+- `docs/reference/STRATEGI_AARSPLAN_OG_DATA.md` — keywords: shadow
+- `docs/reference/api/BACKEND_SETUP.md` — keywords: \bcolor[s]?\b
+- `docs/reference/design/IUP_SKJERM_OVERSIKT 2.md` — keywords: tailwind
+- `docs/reference/design/IUP_SKJERM_OVERSIKT.md` — keywords: tailwind
+- `docs/reference/kategori/QA_RAPPORT_KATEGORI_SYSTEM.md` — keywords: design[\s-]?system
+- `docs/specs/AK_ICON_BADGE_SYSTEM_SPEC.md` — keywords: tokens?
+- `docs/specs/APP_FUNCTIONALITY.md` — keywords: design[\s-]?system
+- `docs/specs/BASELINE_SCREEN.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/specs/BESLUTNINGSMOTOR_SPEC.md` — keywords: shadow, css[\s-]?variables?
+- `docs/specs/DASHBOARD_IMPLEMENTATION.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/specs/DASHBOARD_SPEC.md` — keywords: tailwind, tokens?
+- `docs/specs/DESIGN_SYSTEM.md` — keywords: tailwind
+- `docs/specs/FEATURE_AUDIT_INVENTORY.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/specs/HOME_SCREEN.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/specs/PROOF_SCREEN.md` — keywords: tokens?, \bcolor[s]?\b
+- `docs/specs/PRO_GAP_ANALYSIS_MVP_COMPLETE.md` — keywords: \bcolor[s]?\b
+- `docs/specs/REFLECTION_SCREEN.md` — keywords: \bcolor[s]?\b
+- `docs/specs/SAMMENLIGNING_OG_ANALYTICS.md` — keywords: \bcolor[s]?\b
+- `docs/specs/SESSION_SCREEN.md` — keywords: --ak-
+- `docs/specs/TRAJECTORY_SCREEN.md` — keywords: tokens?, \bcolor[s]?\b
+- `golf-app-design-examples/components-ui-kit.md` — keywords: dark[\s-]?mode, \bcolor[s]?\b
+- `golf-app-design-examples/cra-setup/README.md` — keywords: tokens?, dark[\s-]?mode
+- `golf-app-design-examples/cra-setup/src/components/ui/BottomNav.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `golf-app-design-examples/cra-setup/src/components/ui/Button.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `golf-app-design-examples/cra-setup/src/components/ui/Card.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `golf-app-design-examples/cra-setup/src/components/ui/Input.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `golf-app-design-examples/cra-setup/src/components/ui/ProgressBar.tsx` — path pattern: /components/ + keywords: \bcolor[s]?\b
+- `golf-app-design-examples/cra-setup/src/components/ui/index.ts` — path pattern: /components/
+- `golf-app-design-examples/cra-setup/src/styles/globals.css` — path pattern: /styles?/ + keywords: dark[\s-]?mode, \bcolor[s]?\b
+- `golf-app-design-examples/cra-setup/src/styles/theme.ts` — path pattern: /styles?/ + keywords: tokens?, dark[\s-]?mode
+- `golf-app-design-examples/design-system.md` — keywords: dark[\s-]?mode, \bcolor[s]?\b
+- `golf-app-design-examples/figma-import/README-FIGMA-SETUP.md` — keywords: tailwind, tokens?
+- `golf-app-design-examples/figma-import/styles.css` — path pattern: \.css$ + keywords: dark[\s-]?mode, \bcolor[s]?\b
+- `golf-app-design-examples/figma-import/tokens-studio-import.json` — keywords: tokens?
+- `golf-app-design-examples/figma-specifications.md` — keywords: dark[\s-]?mode, \bcolor[s]?\b
+- `golf-app-design-examples/figma-variables.json` — keywords: tokens?, \bcolor[s]?\b
+- `golf-app-design-examples/icon-library.md` — keywords: tailwind, \bcolor[s]?\b
+- `golf-app-design-examples/react-components-examples.tsx` — keywords: tailwind, \bcolor[s]?\b
+- `golf-app-design-examples/tailwind-config.js` — keywords: tailwind
+- `golf-app-design-examples/web-dashboard.md` — keywords: \bcolor[s]?\b
+- `package.json` — keywords: design[\s-]?system
+- `packages/design-system/.claude/settings.local.json` — path pattern: /design-system/
+- `packages/design-system/AK_Golf_Design_Variants/00-DESIGN-OVERSIKT.md` — path pattern: /design-system/ + keywords: tailwind
+- `packages/design-system/AK_Golf_Design_Variants/AK_ICON_BADGE_SYSTEM_SPEC.md` — path pattern: /design-system/ + keywords: tokens?
+- `packages/design-system/AK_Golf_Design_Variants/CONFIG_KATEGORI_KRAV.md` — path pattern: /design-system/
+- `packages/design-system/AK_Golf_Design_Variants/GAMIFICATION_METRICS_SPEC.md` — path pattern: /design-system/
+- `packages/design-system/AK_Golf_Design_Variants/GAMIFICATION_RESEARCH_PACKAGE.md` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/AK_Golf_Design_Variants/icons.jsx` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/AK_Golf_Design_Variants/index.css` — path pattern: /design-system/ + keywords: tailwind
+- `packages/design-system/COLOR_USAGE_RULES.md` — path pattern: /design-system/ + keywords: tailwind
+- `packages/design-system/components/Avatar.tsx` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/components/Badge.tsx` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/components/Button.tsx` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/components/Card.tsx` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/components/Input.tsx` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/components/Progress.tsx` — path pattern: /design-system/ + keywords: \bcolor[s]?\b
+- `packages/design-system/components/index.ts` — path pattern: /design-system/ + keywords: tokens?
+- `packages/design-system/docs/Color-Icon-Contract-v1.md` — path pattern: /design-system/ + keywords: tailwind, tokens?
+- `packages/design-system/docs/Component-Token-Audit.md` — path pattern: /design-system/ + keywords: tokens?
+- `packages/design-system/docs/Lint-Violations-Report.md` — path pattern: /design-system/ + keywords: tokens?
+- `packages/design-system/docs/Token-Usage-Matrix.md` — path pattern: /design-system/ + keywords: tokens?
+- `packages/design-system/docs/design-inventory.md` — path pattern: /design-system/ + keywords: tailwind
+- `packages/design-system/examples/README.md` — path pattern: /design-system/ + keywords: tokens?
+- `packages/design-system/package.json` — path pattern: /design-system/ + keywords: tailwind, tokens?
+- `packages/design-system/scripts/lint-colors.js` — path pattern: /design-system/ + keywords: tailwind
+- `packages/design-system/src/tokens/colors.ts` — path pattern: /tokens/ + keywords: tailwind
+- `packages/design-system/tokens/design-tokens.js` — path pattern: /tokens/ + keywords: tokens?
+- `packages/design-system/tokens/tailwind.config.js` — path pattern: tailwind\.config\. + keywords: tailwind
+- `packages/design-system/tokens/tokens.css` — path pattern: /tokens/ + keywords: tokens?
+- `scripts/README.md` — keywords: \bcolor[s]?\b
+- `scripts/contract-check.ts` — keywords: tailwind
+- `scripts/design-system-gate/DESIGN_SYSTEM_GATE.md` — keywords: tokens?
+- `scripts/design-system-gate/contrast-checker.js` — keywords: tokens?
+- `scripts/design-system-gate/eslint-plugin-component-boundary.js` — keywords: design[\s-]?system
+- `scripts/design-system-gate/eslint-plugin-design-tokens.js` — keywords: tokens?
+- `scripts/design-system-gate/run-gate.js` — keywords: tokens?
+- `scripts/design-system-gate/stylelint.config.js` — keywords: tokens?
+- `scripts/update-status.js` — keywords: design[\s-]?system

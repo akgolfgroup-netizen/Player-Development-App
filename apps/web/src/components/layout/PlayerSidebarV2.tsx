@@ -277,7 +277,7 @@ export default function PlayerSidebarV2({
             borderRadius: '10px',
             textDecoration: 'none',
             backgroundColor: action.variant === 'primary' ? tokens.colors.gold : 'rgba(255, 255, 255, 0.1)',
-            color: action.variant === 'primary' ? tokens.colors.text.primary : 'rgba(255, 255, 255, 0.9)',
+            color: action.variant === 'primary' ? tokens.colors.ink : 'rgba(255, 255, 255, 0.9)',
             fontSize: '13px',
             fontWeight: 600,
             transition: 'all 0.2s',
@@ -311,7 +311,7 @@ export default function PlayerSidebarV2({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: tokens.colors.text.primary,
+              color: tokens.colors.ink,
               fontWeight: 700,
               fontSize: '16px',
             }}
