@@ -37,7 +37,6 @@ jobs:
 
       - name: Run Design System Gate
         run: node scripts/design-system-gate/run-gate.js
-        continue-on-error: true  # Non-fatal until contrast issues are fixed
 
       - name: Upload violation report (on failure)
         if: failure()
@@ -47,6 +46,66 @@ jobs:
           path: |
             scripts/design-system-gate/*.log
           retention-days: 7
+
+  purity-check:
+    name: Purity Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for hardcoded hex colors
+        run: |
+          echo "Checking for hardcoded hex colors in JSX/TSX files..."
+          # Find hex colors excluding comments, test files, and design system definitions
+          VIOLATIONS=$(grep -rn --include="*.jsx" --include="*.tsx" \
+            -E '#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}[^0-9A-Fa-f]' \
+            apps/web/src/features apps/web/src/components 2>/dev/null \
+            | grep -v "// " \
+            | grep -v "\.test\." \
+            | grep -v "\.spec\." \
+            | head -20 || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::Found hardcoded hex colors. Use design tokens instead:"
+            echo "$VIOLATIONS"
+            exit 1
+          fi
+          echo "No hardcoded hex colors found."
+
+      - name: Check for inline style objects
+        run: |
+          echo "Checking for inline style={{ }} patterns..."
+          VIOLATIONS=$(grep -rn --include="*.jsx" --include="*.tsx" \
+            'style={{' \
+            apps/web/src/features apps/web/src/components 2>/dev/null \
+            | grep -v "\.test\." \
+            | grep -v "\.spec\." \
+            | head -20 || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::warning::Found inline styles. Consider using CSS classes or styled components:"
+            echo "$VIOLATIONS"
+            # Warning only - not blocking for now
+          fi
+          echo "Inline style check complete."
+
+      - name: Check for legacy token usage
+        run: |
+          echo "Checking for legacy --ak-* token patterns..."
+          # Check for old token format that should be migrated
+          VIOLATIONS=$(grep -rn --include="*.jsx" --include="*.tsx" --include="*.css" \
+            'var(--ak-[a-z]*-[0-9])' \
+            apps/web/src 2>/dev/null \
+            | grep -v "\.test\." \
+            | head -20 || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::warning::Found legacy token format. Consider migrating to semantic tokens:"
+            echo "$VIOLATIONS"
+          fi
+          echo "Legacy token check complete."
 
   contrast-check:
     name: WCAG Contrast Validation
