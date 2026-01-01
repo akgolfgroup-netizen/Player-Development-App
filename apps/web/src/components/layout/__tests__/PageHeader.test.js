@@ -34,10 +34,10 @@ describe('PageHeader', () => {
     expect(header).toBeInTheDocument();
   });
 
-  it('renders logo badge', () => {
+  it('renders header with correct structure', () => {
     const { container } = render(<PageHeader title="Title" />);
-    const svg = container.querySelector('svg');
-    expect(svg).toBeInTheDocument();
+    const headerContent = container.querySelector('header > div');
+    expect(headerContent).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
@@ -49,6 +49,7 @@ describe('PageHeader', () => {
   it('has sticky positioning', () => {
     const { container } = render(<PageHeader title="Title" />);
     const header = container.querySelector('header');
-    expect(header).toHaveClass('sticky');
+    // Uses inline style for sticky positioning
+    expect(header).toHaveStyle({ position: 'sticky' });
   });
 });

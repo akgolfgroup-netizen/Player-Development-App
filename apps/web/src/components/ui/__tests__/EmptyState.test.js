@@ -9,31 +9,31 @@ describe('EmptyState', () => {
     expect(screen.getByText('Nothing to show')).toBeInTheDocument();
   });
 
-  it('renders CTA button when provided', () => {
+  it('renders action button when provided', () => {
     render(
       <EmptyState
         title="No Data"
         message="Nothing to show"
-        ctaText="Add Item"
-        onCtaClick={() => {}}
+        actionLabel="Add Item"
+        onAction={() => {}}
       />
     );
     expect(screen.getByRole('button', { name: 'Add Item' })).toBeInTheDocument();
   });
 
-  it('does not render CTA button when not provided', () => {
+  it('does not render action button when not provided', () => {
     render(<EmptyState title="No Data" message="Nothing to show" />);
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
-  it('calls onCtaClick when CTA button clicked', () => {
+  it('calls onAction when action button clicked', () => {
     const handleClick = jest.fn();
     render(
       <EmptyState
         title="No Data"
         message="Nothing to show"
-        ctaText="Add Item"
-        onCtaClick={handleClick}
+        actionLabel="Add Item"
+        onAction={handleClick}
       />
     );
 
