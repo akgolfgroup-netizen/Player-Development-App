@@ -18,33 +18,25 @@ const StepIndicator = ({ currentStep, totalSteps, steps }) => (
     {steps.map((step, index) => {
       const isActive = index === currentStep;
       const isCompleted = index < currentStep;
+      const isHighlighted = isCompleted || isActive;
 
       return (
         <div key={index} className="flex items-center gap-2">
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all"
-            style={{
-              backgroundColor: isCompleted || isActive ? 'var(--accent)' : 'var(--bg-secondary)',
-              color: isCompleted || isActive ? 'white' : 'var(--text-secondary)',
-            }}
+            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all ${
+              isHighlighted ? 'bg-accent text-white' : 'bg-bg-secondary text-text-secondary'
+            }`}
           >
             {isCompleted ? <Check size={16} /> : index + 1}
           </div>
           <span
-            className="text-sm"
-            style={{
-              fontWeight: isActive ? 600 : 400,
-              color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
-            }}
+            className={`text-sm ${isActive ? 'font-semibold text-text-primary' : 'font-normal text-text-secondary'}`}
           >
             {step.label}
           </span>
           {index < totalSteps - 1 && (
             <div
-              className="w-10 h-0.5 ml-2"
-              style={{
-                backgroundColor: isCompleted ? 'var(--accent)' : 'var(--border-default)',
-              }}
+              className={`w-10 h-0.5 ml-2 ${isCompleted ? 'bg-accent' : 'bg-border-default'}`}
             />
           )}
         </div>
@@ -68,7 +60,7 @@ const FormCard = ({ children, title, subtitle, icon: Icon }) => (
           </h3>
         </div>
         {subtitle && (
-          <p className="text-sm m-0 text-text-secondary" style={{ marginLeft: Icon ? '36px' : 0 }}>
+          <p className={`text-sm m-0 text-text-secondary ${Icon ? 'ml-9' : ''}`}>
             {subtitle}
           </p>
         )}
@@ -129,13 +121,11 @@ const DaySelector = ({ selectedDays, onChange }) => {
             key={day.value}
             type="button"
             onClick={() => toggleDay(day.value)}
-            className="py-3 px-4 rounded-lg text-sm cursor-pointer transition-all min-w-[52px]"
-            style={{
-              border: isSelected ? '2px solid var(--accent)' : '1px solid var(--border-default)',
-              backgroundColor: isSelected ? 'rgba(var(--accent-rgb), 0.1)' : 'var(--bg-primary)',
-              color: isSelected ? 'var(--accent)' : 'var(--text-primary)',
-              fontWeight: isSelected ? 600 : 400,
-            }}
+            className={`py-3 px-4 rounded-lg text-sm cursor-pointer transition-all min-w-[52px] ${
+              isSelected
+                ? 'border-2 border-accent bg-accent-muted text-accent font-semibold'
+                : 'border border-default bg-bg-primary text-text-primary font-normal'
+            }`}
           >
             {day.label}
           </button>
@@ -169,10 +159,11 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
     }
   };
 
-  const importanceColors = {
-    A: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)', label: 'A - Hovedmål' },
-    B: { bg: 'rgba(234, 179, 8, 0.1)', text: 'var(--warning)', label: 'B - Viktig' },
-    C: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)', label: 'C - Forberedelse' },
+  // Map importance to semantic class strings
+  const importanceStyles = {
+    A: { classes: 'bg-danger-muted text-danger', iconColor: 'var(--error)', label: 'A - Hovedmål' },
+    B: { classes: 'bg-warning-muted text-warning', iconColor: 'var(--warning)', label: 'B - Viktig' },
+    C: { classes: 'bg-success-muted text-success', iconColor: 'var(--success)', label: 'C - Forberedelse' },
   };
 
   return (
@@ -186,7 +177,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
               className="flex items-center justify-between py-3 px-4 rounded-lg bg-bg-secondary border border-default"
             >
               <div className="flex items-center gap-3">
-                <Trophy size={18} color={importanceColors[t.importance].text} />
+                <Trophy size={18} color={importanceStyles[t.importance].iconColor} />
                 <div>
                   <div className="text-sm font-medium text-text-primary">
                     {t.name}
@@ -199,11 +190,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
               </div>
               <div className="flex items-center gap-2">
                 <span
-                  className="py-1 px-2 rounded-md text-xs font-semibold"
-                  style={{
-                    backgroundColor: importanceColors[t.importance].bg,
-                    color: importanceColors[t.importance].text,
-                  }}
+                  className={`py-1 px-2 rounded-md text-xs font-semibold ${importanceStyles[t.importance].classes}`}
                 >
                   {t.importance}
                 </span>
@@ -266,11 +253,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
               type="button"
               onClick={handleAdd}
               disabled={!newTournament.name || !newTournament.startDate}
-              className="flex-1 py-2.5 px-4 rounded-lg border-none text-sm font-medium cursor-pointer text-white"
-              style={{
-                backgroundColor: 'var(--accent)',
-                opacity: (!newTournament.name || !newTournament.startDate) ? 0.5 : 1,
-              }}
+              className="flex-1 py-2.5 px-4 rounded-lg border-none text-sm font-medium cursor-pointer text-white bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Legg til
             </button>
@@ -421,13 +404,7 @@ const Step3Tournaments = ({ formData, setFormData }) => (
       />
     </FormCard>
 
-    <div
-      className="p-4 rounded-xl"
-      style={{
-        backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
-        border: '1px solid rgba(var(--accent-rgb), 0.2)',
-      }}
-    >
+    <div className="p-4 rounded-xl bg-accent-muted border border-accent">
       <div className="flex items-start gap-3">
         <Sparkles size={20} color="var(--accent)" className="shrink-0 mt-0.5" />
         <div>
@@ -604,11 +581,9 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
 
     {/* Info box */}
     <div
-      className="py-4 px-5 rounded-xl max-w-lg mx-auto mb-8 text-left"
-      style={{
-        backgroundColor: syncResult ? 'rgba(34, 197, 94, 0.05)' : 'rgba(var(--accent-rgb), 0.05)',
-        border: `1px solid ${syncResult ? 'rgba(34, 197, 94, 0.2)' : 'rgba(var(--accent-rgb), 0.2)'}`,
-      }}
+      className={`py-4 px-5 rounded-xl max-w-lg mx-auto mb-8 text-left ${
+        syncResult ? 'bg-success-muted border border-success-muted' : 'bg-accent-muted border border-accent'
+      }`}
     >
       <div className="flex gap-3 items-start">
         <Calendar size={20} color={syncResult ? 'var(--success)' : 'var(--accent)'} className="shrink-0 mt-0.5" />
@@ -632,12 +607,7 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
         <button
           onClick={handleSync}
           disabled={isSyncing}
-          className="flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg border-none text-base font-medium mx-auto text-white"
-          style={{
-            backgroundColor: 'var(--accent)',
-            cursor: isSyncing ? 'not-allowed' : 'pointer',
-            opacity: isSyncing ? 0.7 : 1,
-          }}
+          className="flex items-center justify-center gap-2 py-3.5 px-8 rounded-lg border-none text-base font-medium mx-auto text-white bg-accent disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {isSyncing ? (
             <>
@@ -844,14 +814,7 @@ const AarsplanGenerator = () => {
             type="button"
             onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
             disabled={currentStep === 0}
-            className="flex items-center gap-2 py-3 px-5 rounded-lg text-base font-medium"
-            style={{
-              border: '1px solid var(--border-default)',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              cursor: currentStep === 0 ? 'not-allowed' : 'pointer',
-              opacity: currentStep === 0 ? 0.5 : 1,
-            }}
+            className="flex items-center gap-2 py-3 px-5 rounded-lg text-base font-medium border border-default bg-bg-primary text-text-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ChevronLeft size={18} />
             Tilbake
@@ -862,12 +825,11 @@ const AarsplanGenerator = () => {
               type="button"
               onClick={() => setCurrentStep(currentStep + 1)}
               disabled={!canProceed()}
-              className="flex items-center gap-2 py-3 px-6 rounded-lg border-none text-base font-medium"
-              style={{
-                backgroundColor: canProceed() ? 'var(--accent)' : 'var(--bg-secondary)',
-                color: canProceed() ? 'white' : 'var(--text-secondary)',
-                cursor: canProceed() ? 'pointer' : 'not-allowed',
-              }}
+              className={`flex items-center gap-2 py-3 px-6 rounded-lg border-none text-base font-medium ${
+                canProceed()
+                  ? 'bg-accent text-white cursor-pointer'
+                  : 'bg-bg-secondary text-text-secondary cursor-not-allowed'
+              }`}
             >
               Neste
               <ChevronRight size={18} />
@@ -877,12 +839,7 @@ const AarsplanGenerator = () => {
               type="button"
               onClick={handleGenerate}
               disabled={isGenerating || !canProceed()}
-              className="flex items-center gap-2 py-3 px-7 rounded-lg border-none text-base font-semibold text-white"
-              style={{
-                backgroundColor: 'var(--success)',
-                cursor: isGenerating ? 'wait' : 'pointer',
-                opacity: isGenerating ? 0.8 : 1,
-              }}
+              className="flex items-center gap-2 py-3 px-7 rounded-lg border-none text-base font-semibold text-white bg-success disabled:opacity-80 disabled:cursor-wait"
             >
               {isGenerating ? (
                 <>
