@@ -3,14 +3,15 @@
  * Design System v3.0 - Forest Green (Premium Light)
  *
  * Layout wrapper for player portal routes.
- * Uses PlayerSidebar for navigation.
+ * V2: Uses PlayerSidebarV2 with 5-mode navigation.
  */
 
 import React, { useState, useEffect } from 'react';
-import PlayerSidebar from './PlayerSidebar';
+import PlayerSidebarV2 from './PlayerSidebarV2';
 import BackToTop from '../ui/BackToTop';
 import { tokens } from '../../design-tokens';
 import { useAuth } from '../../contexts/AuthContext';
+import { eventClient } from '../../analytics/eventClient';
 
 // Skip to content link styles
 const skipLinkStyles: React.CSSProperties = {
@@ -78,8 +79,20 @@ export default function PlayerAppShell({ children }: PlayerAppShellProps) {
   }, []);
 
   const handleLogout = async () => {
+    eventClient.reset();
     await logout();
   };
+
+  // Initialize eventClient when user is available
+  useEffect(() => {
+    if (user?.id) {
+      eventClient.init(
+        user.id,
+        (user as { tenantId?: string }).tenantId || 'unknown',
+        'player'
+      );
+    }
+  }, [user]);
 
   return (
     <div
@@ -100,9 +113,10 @@ export default function PlayerAppShell({ children }: PlayerAppShellProps) {
         Hopp til hovedinnhold
       </a>
 
-      <PlayerSidebar
+      <PlayerSidebarV2
         user={user || undefined}
         unreadMessages={unreadMessages}
+        hasSchoolAccess={false}
         onLogout={handleLogout}
       />
 

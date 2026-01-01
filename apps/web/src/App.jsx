@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
@@ -320,6 +320,195 @@ function App() {
             <Route path="calendar" element={<MobileCalendar />} />
             <Route path="calibration" element={<MobileCalibration />} />
           </Route>
+
+          {/* ════════════════════════════════════════════════════════════════
+              V2 PLAYER ROUTES - Ny 5-modus navigasjon
+              Hjem, Tren, Planlegg, Analyser, Samhandle
+              ════════════════════════════════════════════════════════════════ */}
+
+          {/* Hjem */}
+          <Route path="/hjem" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <DashboardV5 />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Tren */}
+          <Route path="/tren" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Trening" subtitle="Din treningsoversikt">
+                <SessionsListContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tren/logg" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Logg trening" subtitle="Registrer ny økt">
+                <LoggTreningContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tren/okter" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Mine økter" subtitle="Oversikt over dine treningsøkter">
+                <SessionsListContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tren/ovelser" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Øvelsesbank" subtitle="Finn og velg øvelser">
+                <ExerciseLibraryContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tren/testing" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Testing" subtitle="Testprotokoll og resultater">
+                <TestprotokollContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tren/testing/registrer" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Registrer test" subtitle="Logg testresultat">
+                <RegistrerTestContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tren/testing/resultater" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Testresultater" subtitle="Se dine resultater">
+                <TestresultaterContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/tren/testing/krav" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Kategorikrav" subtitle="Krav for hver kategori">
+                <KategoriKravContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Planlegg */}
+          <Route path="/planlegg" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Planlegging" subtitle="Din ukeplan og kalender">
+                <CalendarPage />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/planlegg/ukeplan" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Ukeplan" subtitle="Din plan for denne uken">
+                <UkensTreningsplanContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/planlegg/kalender" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Kalender" subtitle="Planlegg og se dine aktiviteter">
+                <CalendarPage />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/planlegg/turneringer/kalender" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Turneringskalender" subtitle="Finn og planlegg turneringer">
+                <TournamentCalendarPage />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/planlegg/turneringer/mine" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Mine turneringer" subtitle="Dine påmeldte turneringer">
+                <MineTurneringerContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Analyser */}
+          <Route path="/analyser" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Analyse" subtitle="Følg din fremgang">
+                <UtviklingsOversiktContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/analyser/utvikling" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Min utvikling" subtitle="Følg din fremgang">
+                <UtviklingsOversiktContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/analyser/statistikk" element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <StatistikkHub />
+              </DashboardLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/analyser/mal" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Målsetninger" subtitle="Sett og følg opp dine mål">
+                <MaalsetningerContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/analyser/historikk" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Historikk" subtitle="Se din utvikling over tid">
+                <ProgressDashboardContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Samhandle */}
+          <Route path="/samhandle" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Samhandling" subtitle="Kommuniser med trenere">
+                <MessageCenter />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/samhandle/meldinger" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Meldinger" subtitle="Kommuniser med trenere">
+                <MessageCenter />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/samhandle/feedback" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Trenerfeedback" subtitle="Meldinger fra trenere">
+                <MessageCenter filterType="coach" />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/samhandle/kunnskap" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Ressurser" subtitle="Læringsmateriell og videoer">
+                <RessurserContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/samhandle/skole" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="Skole" subtitle="Balanse mellom skole og golf">
+                <SkoleplanContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* ════════════════════════════════════════════════════════════════
+              REDIRECTS - Gammel → Ny URL-struktur
+              ════════════════════════════════════════════════════════════════ */}
+          <Route path="/" element={<Navigate to="/hjem" replace />} />
+          <Route path="/dashboard" element={<Navigate to="/hjem" replace />} />
 
           {/* Desktop protected routes */}
           <Route path="/dashboard" element={

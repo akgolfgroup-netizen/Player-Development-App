@@ -5,6 +5,13 @@
  * The actual routing is still handled in App.jsx, but this module makes it easier
  * to migrate to a more modular routing structure in the future.
  *
+ * V2: Ny rutestruktur med 5 toppnivå for spillerportal:
+ * - /hjem
+ * - /tren/*
+ * - /planlegg/*
+ * - /analyser/*
+ * - /samhandle/*
+ *
  * Usage:
  *   import { layouts, lazyImports } from './routes';
  *   // or
@@ -17,21 +24,70 @@ export * from './lazyImports';
 // Re-export all layouts
 export * from './layouts';
 
-// Route path constants for type-safe navigation
+// ============================================================
+// V2 Route Constants - Ny 5-modus struktur
+// ============================================================
+export const ROUTES_V2 = {
+  // ── Hjem ──────────────────────────────────────────────────
+  HJEM: '/hjem',
+
+  // ── Tren ──────────────────────────────────────────────────
+  TREN: {
+    ROOT: '/tren',
+    LOGG: '/tren/logg',
+    OKTER: '/tren/okter',
+    OVELSER: '/tren/ovelser',
+    TESTING: '/tren/testing',
+    TESTING_REGISTRER: '/tren/testing/registrer',
+    TESTING_RESULTATER: '/tren/testing/resultater',
+    TESTING_KRAV: '/tren/testing/krav',
+  },
+
+  // ── Planlegg ──────────────────────────────────────────────
+  PLANLEGG: {
+    ROOT: '/planlegg',
+    UKEPLAN: '/planlegg/ukeplan',
+    KALENDER: '/planlegg/kalender',
+    TURNERINGER_KALENDER: '/planlegg/turneringer/kalender',
+    TURNERINGER_MINE: '/planlegg/turneringer/mine',
+  },
+
+  // ── Analyser ──────────────────────────────────────────────
+  ANALYSER: {
+    ROOT: '/analyser',
+    UTVIKLING: '/analyser/utvikling',
+    STATISTIKK: '/analyser/statistikk',
+    MAL: '/analyser/mal',
+    HISTORIKK: '/analyser/historikk',
+  },
+
+  // ── Samhandle ─────────────────────────────────────────────
+  SAMHANDLE: {
+    ROOT: '/samhandle',
+    MELDINGER: '/samhandle/meldinger',
+    FEEDBACK: '/samhandle/feedback',
+    KUNNSKAP: '/samhandle/kunnskap',
+    SKOLE: '/samhandle/skole',
+  },
+} as const;
+
+// ============================================================
+// Legacy Route Constants (for backward compatibility)
+// ============================================================
 export const ROUTES = {
   // Public
   ROOT: '/',
   LOGIN: '/login',
   WELCOME: '/welcome',
 
-  // Dashboard
+  // Dashboard (redirect to /hjem)
   DASHBOARD: '/dashboard',
 
   // Profile
   PROFILE: '/profil',
   PROFILE_UPDATE: '/profil/oppdater',
 
-  // Player features
+  // Player features (legacy - use ROUTES_V2 for new code)
   GOALS: '/maalsetninger',
   ANNUAL_PLAN: '/aarsplan',
   TRAINING: '/trening',

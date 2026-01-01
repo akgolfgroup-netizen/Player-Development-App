@@ -4,11 +4,19 @@ import { tokens } from '../../design-tokens';
 /**
  * AK Golf Logo Component
  * Single source of truth for the AK Golf logo
- *
- * @param {number} size - Height of the logo in pixels (default: 44px)
- * @param {string} color - Fill color of the logo (default: white)
  */
-export const AKLogo = ({ size = 44, color = tokens.colors.white }) => {
+
+interface AKLogoProps {
+  /** Height of the logo in pixels */
+  size?: number;
+  /** Fill color of the logo */
+  color?: string;
+}
+
+export const AKLogo: React.FC<AKLogoProps> = ({
+  size = 44,
+  color = tokens.colors.white
+}) => {
   const aspectRatio = 196.41 / 204.13;
 
   return (
