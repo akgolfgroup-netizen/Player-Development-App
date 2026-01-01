@@ -31,7 +31,7 @@ interface TestOverviewPageProps {
 // ============================================================================
 
 interface InfoCardProps {
-  icon: React.ComponentType<{ size?: number; color?: string }>;
+  icon: React.ComponentType<{ size?: number | string; color?: string }>;
   title: string;
   children: React.ReactNode;
   color?: string;
