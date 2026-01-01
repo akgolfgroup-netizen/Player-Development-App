@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, memo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, MapPin, Trophy, Target, CheckCircle2, Zap, Lightbulb,
@@ -14,6 +14,7 @@ import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../compo
 import ExportButton from '../../components/ui/ExportButton';
 import { useAuth } from '../../contexts/AuthContext';
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
+import OnboardingChecklist from './OnboardingChecklist';
 
 // Responsive layout styles
 import './dashboard-responsive.css';
@@ -125,7 +126,10 @@ const generateActionRecommendation = (stats, todaySessions) => {
   return null;
 };
 
-const HeroSection = ({ player, greeting, stats, nextTest, todaySessions }) => {
+/**
+ * HeroSection - Memoized for performance
+ */
+const HeroSection = memo(({ player, greeting, stats, nextTest, todaySessions }) => {
   const insight = generateSmartInsight(stats, nextTest, []);
   const recommendation = generateActionRecommendation(stats, todaySessions);
 
@@ -157,11 +161,16 @@ const HeroSection = ({ player, greeting, stats, nextTest, todaySessions }) => {
       </div>
     </div>
   );
-};
+});
+
+HeroSection.displayName = 'HeroSection';
 
 // ===== 2. TODAY'S ACTION CARD =====
 
-const TodayActionCard = ({ sessions, onStartSession, onViewCalendar }) => {
+/**
+ * TodayActionCard - Memoized for performance
+ */
+const TodayActionCard = memo(({ sessions, onStartSession, onViewCalendar }) => {
   if (!sessions || sessions.length === 0) return null;
 
   const nextSession = sessions[0];
@@ -202,7 +211,9 @@ const TodayActionCard = ({ sessions, onStartSession, onViewCalendar }) => {
       </div>
     </div>
   );
-};
+});
+
+TodayActionCard.displayName = 'TodayActionCard';
 
 // ===== 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) =====
 
@@ -353,13 +364,17 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
 
 // ===== 4. QUICK ACTIONS (Hurtigvalg) =====
 
-const QuickActions = ({ onAction }) => {
-  const handleKeyDown = (action) => (e) => {
+/**
+ * QuickActions - Memoized for performance
+ */
+const QuickActions = memo(({ onAction }) => {
+  // Memoized keyboard handler factory
+  const handleKeyDown = useCallback((action) => (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       onAction(action);
     }
-  };
+  }, [onAction]);
 
   return (
     <div style={styles.quickActionsSection}>
@@ -404,7 +419,9 @@ const QuickActions = ({ onAction }) => {
       </div>
     </div>
   );
-};
+});
+
+QuickActions.displayName = 'QuickActions';
 
 // ===== 5. WEEKLY GOALS (Ukens Mål) - EXPANDED =====
 
@@ -464,7 +481,10 @@ const GoalStatusBadge = ({ goal }) => {
   return null;
 };
 
-const WeeklyGoalsWidget = ({ goals, onToggle, onAddGoal, onViewAll, loading, error }) => {
+/**
+ * WeeklyGoalsWidget - Memoized for performance
+ */
+const WeeklyGoalsWidget = memo(({ goals, onToggle, onAddGoal, onViewAll, loading, error }) => {
   const completedCount = goals.filter(g => g.completed).length;
   const progressPercent = goals.length > 0 ? Math.round((completedCount / goals.length) * 100) : 0;
 
@@ -593,7 +613,9 @@ const WeeklyGoalsWidget = ({ goals, onToggle, onAddGoal, onViewAll, loading, err
       </button>
     </DashboardWidget>
   );
-};
+});
+
+WeeklyGoalsWidget.displayName = 'WeeklyGoalsWidget';
 
 const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile }) => {
   // Get initials for avatar fallback
@@ -867,7 +889,10 @@ const NextTestCard = ({ title, date, location, preparation, onViewDetails, onPre
 
 // ===== 9. NEXT TOURNAMENT (Neste Turnering) - Minimized if >30 days =====
 
-const NextTournamentCard = ({ title, date, location, onViewDetails }) => {
+/**
+ * NextTournamentCard - Memoized for performance
+ */
+const NextTournamentCard = memo(({ title, date, location, onViewDetails }) => {
   const targetDate = new Date(date);
   const today = new Date();
   const diffTime = targetDate - today;
@@ -927,7 +952,9 @@ const NextTournamentCard = ({ title, date, location, onViewDetails }) => {
       </div>
     </div>
   );
-};
+});
+
+NextTournamentCard.displayName = 'NextTournamentCard';
 
 // ===== ZONE B: MIDDLE SECTION =====
 
@@ -1020,7 +1047,10 @@ const MessagePriorityBadge = ({ priority, requiresResponse }) => {
   return null;
 };
 
-const MessagesWidget = ({ messages, onViewAll, onMessageClick, onQuickReply, loading, error }) => {
+/**
+ * MessagesWidget - Memoized for performance
+ */
+const MessagesWidget = memo(({ messages, onViewAll, onMessageClick, onQuickReply, loading, error }) => {
   // Sort by priority: unread first, then by priority level
   const sortedMessages = [...messages].sort((a, b) => {
     if (a.unread !== b.unread) return a.unread ? -1 : 1;
@@ -1111,7 +1141,9 @@ const MessagesWidget = ({ messages, onViewAll, onMessageClick, onQuickReply, loa
       </div>
     </DashboardWidget>
   );
-};
+});
+
+MessagesWidget.displayName = 'MessagesWidget';
 
 // ===== ZONE C: BOTTOM SECTION =====
 
@@ -1234,60 +1266,126 @@ const SessionsWidget = ({ sessions, onViewAll, onSessionClick, loading, error })
 
 // ===== MAIN DASHBOARD =====
 
+// Quick action routes - defined outside component to avoid recreation
+const QUICK_ACTION_ROUTES = {
+  session: '/sessions/new',
+  goal: '/maalsetninger/new',
+  progress: '/progress',
+  calendar: '/kalender',
+};
+
+// Default player fallback
+const DEFAULT_PLAYER = { name: 'Andreas Holm', category: 'B', club: 'Slice Country Club', memberSince: '2023' };
+
+// Default stats fallback
+const DEFAULT_STATS = {
+  sessionsCompleted: 8,
+  sessionsTotal: 12,
+  hoursThisWeek: 14.5,
+  hoursGoal: 20,
+  streak: 7,
+  scoringAverage: 74.2,
+  strokesGained: 1.3,
+  totalSessions: 47,
+  sessionsTrend: 2,
+  hoursTrend: 3.5,
+  streakTrend: 2,
+  scoringTrend: -0.5,
+};
+
+// LocalStorage key for onboarding dismissal
+const ONBOARDING_DISMISSED_KEY = 'ak-golf-onboarding-dismissed';
+
 const AKGolfDashboard = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading, error, refetch } = useDashboard();
   const { user } = useAuth();
   const [goals, setGoals] = useState([]);
 
+  // Onboarding state - check localStorage for dismissal
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    try {
+      return localStorage.getItem(ONBOARDING_DISMISSED_KEY) !== 'true';
+    } catch {
+      return true; // Show by default if localStorage unavailable
+    }
+  });
+
+  // Sync goals with dashboard data
   useEffect(() => {
     if (dashboardData?.tasks) {
       setGoals(dashboardData.tasks);
     }
   }, [dashboardData]);
 
-  const toggleGoal = (id) => {
-    setGoals(prev => prev.map(g => g.id === id ? { ...g, completed: !g.completed } : g));
-  };
+  // Dismiss onboarding handler
+  const handleDismissOnboarding = useCallback(() => {
+    setShowOnboarding(false);
+    try {
+      localStorage.setItem(ONBOARDING_DISMISSED_KEY, 'true');
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, []);
 
-  const getGreeting = () => {
+  // Memoized toggle handler
+  const toggleGoal = useCallback((id) => {
+    setGoals(prev => prev.map(g => g.id === id ? { ...g, completed: !g.completed } : g));
+  }, []);
+
+  // Memoized greeting - only recalculate when needed
+  const greeting = useMemo(() => {
     const hour = new Date().getHours();
     if (hour < 12) return 'God morgen';
     if (hour < 18) return 'God dag';
     return 'God kveld';
-  };
+  }, []); // Static for the component lifetime
 
-  const handleQuickAction = (action) => {
-    const routes = {
-      session: '/sessions/new',
-      goal: '/maalsetninger/new',
-      progress: '/progress',
-      calendar: '/kalender',
-    };
-    navigate(routes[action] || '/');
-  };
+  // Memoized quick action handler
+  const handleQuickAction = useCallback((action) => {
+    navigate(QUICK_ACTION_ROUTES[action] || '/');
+  }, [navigate]);
 
-  // Extract data with fallbacks
-  const player = dashboardData?.player || { name: 'Andreas Holm', category: 'B', club: 'Slice Country Club', memberSince: '2023' };
-  const stats = dashboardData?.stats || {
-    sessionsCompleted: 8,
-    sessionsTotal: 12,
-    hoursThisWeek: 14.5,
-    hoursGoal: 20,
-    streak: 7,
-    scoringAverage: 74.2,
-    strokesGained: 1.3,
-    totalSessions: 47,
-    // Trend data (week over week)
-    sessionsTrend: 2,
-    hoursTrend: 3.5,
-    streakTrend: 2,
-    scoringTrend: -0.5,
-  };
+  // Memoized data extraction with fallbacks
+  const player = useMemo(() =>
+    dashboardData?.player || DEFAULT_PLAYER,
+    [dashboardData?.player]
+  );
+
+  const stats = useMemo(() =>
+    dashboardData?.stats || DEFAULT_STATS,
+    [dashboardData?.stats]
+  );
+
   const nextTournament = dashboardData?.nextTournament;
   const nextTest = dashboardData?.nextTest;
-  const messages = dashboardData?.notifications || [];
-  const todaySessions = dashboardData?.upcomingSessions || [];
+
+  const messages = useMemo(() =>
+    dashboardData?.notifications || [],
+    [dashboardData?.notifications]
+  );
+
+  const todaySessions = useMemo(() =>
+    dashboardData?.upcomingSessions || [],
+    [dashboardData?.upcomingSessions]
+  );
+
+  // Onboarding completion status - derived from dashboard data
+  const onboardingStatus = useMemo(() => ({
+    // Profile is complete if user has name, verified email, and club
+    profileComplete: !!(player.name && user?.email && player.club),
+    hasGoals: goals.length > 0 || (dashboardData?.tasks?.length > 0),
+    hasScheduledSession: todaySessions.length > 0 || stats.sessionsCompleted > 0,
+    hasUpcomingTournament: !!nextTournament,
+  }), [player, user?.email, goals, dashboardData?.tasks, todaySessions, stats.sessionsCompleted, nextTournament]);
+
+  // Determine if user is new (show onboarding only for new users)
+  const isNewUser = useMemo(() => {
+    const requiredComplete = onboardingStatus.profileComplete &&
+                            onboardingStatus.hasGoals &&
+                            onboardingStatus.hasScheduledSession;
+    return !requiredComplete;
+  }, [onboardingStatus]);
 
   return (
     <div id="dashboard-export" className="dashboard-layout" style={styles.dashboard}>
@@ -1312,11 +1410,21 @@ const AKGolfDashboard = () => {
         </div>
       )}
 
+      {/* Onboarding Checklist - Show for new users who haven't dismissed */}
+      {showOnboarding && isNewUser && (
+        <div className="dashboard-full-width">
+          <OnboardingChecklist
+            completionStatus={onboardingStatus}
+            onDismiss={handleDismissOnboarding}
+          />
+        </div>
+      )}
+
       {/* 1. HERO SECTION: Greeting + Smart Insight - Full Width */}
       <div className="dashboard-hero dashboard-full-width">
         <HeroSection
           player={player}
-          greeting={getGreeting()}
+          greeting={greeting}
           stats={stats}
           nextTest={nextTest}
           todaySessions={todaySessions}
