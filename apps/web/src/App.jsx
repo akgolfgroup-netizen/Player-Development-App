@@ -14,7 +14,7 @@ import CommandPalette from './features/command-palette';
 import BuildInfo from './components/BuildInfo';
 
 // Shared components (NOT lazy - needed immediately)
-import ApplicationLayoutTopNav from './components/layout/ApplicationLayoutTopNav';
+import PlayerAppShell from './components/layout/PlayerAppShell';
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
 import ProtectedRoute from './components/guards/ProtectedRoute';
@@ -243,16 +243,16 @@ const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then
 // Landing page (lazy-loaded)
 const SplitScreenLanding = lazy(() => import('./features/landing/SplitScreenLanding'));
 
-// Layout component for authenticated pages using Top Navigation (Player)
-const AuthenticatedLayout = ({ children, title, subtitle, actions }) => (
-  <ApplicationLayoutTopNav title={title} subtitle={subtitle} actions={actions}>
+// Layout component for authenticated pages using Sidebar (Player)
+const AuthenticatedLayout = ({ children }) => (
+  <PlayerAppShell>
     {children}
-  </ApplicationLayoutTopNav>
+  </PlayerAppShell>
 );
 
-// Dashboard layout - uses Top Navigation
+// Dashboard layout - uses Sidebar
 const DashboardLayout = ({ children }) => (
-  <ApplicationLayoutTopNav>{children}</ApplicationLayoutTopNav>
+  <PlayerAppShell>{children}</PlayerAppShell>
 );
 
 // Layout component for coach pages using CoachAppShell
