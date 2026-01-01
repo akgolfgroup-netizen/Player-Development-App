@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, memo, lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Clock, MapPin, Trophy, Target, CheckCircle2, Zap, Lightbulb,
@@ -206,7 +206,18 @@ const TodayActionCard = ({ sessions, onStartSession, onViewCalendar }) => {
 
 // ===== 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) =====
 
-const KPICard = ({
+// Status configuration - defined outside component to avoid recreation
+const STATUS_CONFIG = {
+  'on-track': { label: '✓ På målet', color: 'var(--ak-success)', bg: 'var(--success-muted)' },
+  'behind': { label: '⚠ Henger etter', color: 'var(--ak-warning)', bg: 'var(--warning-muted)' },
+  'ahead': { label: '🚀 Foran skjema', color: 'var(--ak-info)', bg: 'var(--info-muted)' },
+};
+
+/**
+ * KPICard - Memoized for performance
+ * Only re-renders when props change
+ */
+const KPICard = memo(({
   icon: Icon,
   value,
   label,
@@ -218,13 +229,7 @@ const KPICard = ({
   status,        // 'on-track' | 'behind' | 'ahead'
 }) => {
   const progressPercent = progress ? Math.round((progress.current / progress.max) * 100) : null;
-
-  const statusConfig = {
-    'on-track': { label: '✓ På målet', color: 'var(--ak-success)', bg: 'var(--success-muted)' },
-    'behind': { label: '⚠ Henger etter', color: 'var(--ak-warning)', bg: 'var(--warning-muted)' },
-    'ahead': { label: '🚀 Foran skjema', color: 'var(--ak-info)', bg: 'var(--info-muted)' },
-  };
-  const statusInfo = status ? statusConfig[status] : null;
+  const statusInfo = status ? STATUS_CONFIG[status] : null;
 
   return (
     <div style={styles.kpiCard}>
@@ -251,7 +256,7 @@ const KPICard = ({
           ...styles.trendRow,
           color: trend >= 0 ? 'var(--ak-success)' : 'var(--ak-error)',
         }}>
-          <TrendingUp size={12} style={{ transform: trend < 0 ? 'rotate(180deg)' : 'none' }} />
+          <TrendingUp size={12} style={{ transform: trend < 0 ? 'rotate(180deg)' : 'none' }} aria-hidden="true" />
           <span>{trend >= 0 ? '+' : ''}{trend} {trendLabel || ''}</span>
         </div>
       )}
@@ -278,7 +283,9 @@ const KPICard = ({
       )}
     </div>
   );
-};
+});
+
+KPICard.displayName = 'KPICard';
 
 const WeeklyPerformanceSummary = ({ stats, loading }) => {
   // Calculate statuses
