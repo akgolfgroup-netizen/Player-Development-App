@@ -7,6 +7,7 @@ import apiClient from '../../services/apiClient';
 import {
   HomeIcon, CalendarIcon, GolfScorecard, ChartIcon, ProfileIcon
 } from '../../components/icons';
+import { testDefinitions } from './config/testDefinitions';
 
 // ===== ICONS =====
 const Icons = {
@@ -682,36 +683,68 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
           </Card>
         </div>
 
-        {/* Special Tests - PEI Bane */}
-        <Link to="/testing/pei-bane" style={{ textDecoration: 'none' }}>
-          <Card className="mb-6 cursor-pointer transition-all hover:shadow-md hover:border-ak-primary"
-                style={{ background: 'linear-gradient(135deg, #fff 0%, rgba(0,82,147,0.05) 100%)' }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
-                     style={{ backgroundColor: 'rgba(0,82,147,0.1)' }}>
-                  🎯
-                </div>
-                <div>
-                  <SubSectionTitle className="text-[17px] font-semibold text-ak-charcoal mb-1">
-                    PEI Test - Bane (Slag Test)
-                  </SubSectionTitle>
-                  <p className="text-[13px] text-ak-steel">
-                    Test din presisjon med 18 slag fra ulike posisjoner på banen
-                  </p>
+        {/* All Tests Section */}
+        <div className="mb-6">
+          <SectionTitle className="text-[17px] font-semibold text-ak-charcoal mb-4">
+            Alle 20 Tester
+          </SectionTitle>
+
+          {/* Group tests by category */}
+          {['speed', 'distance', 'accuracy', 'short_game', 'putting', 'physical', 'scoring', 'mental'].map(category => {
+            const categoryTests = testDefinitions.filter(t => t.category === category);
+            if (categoryTests.length === 0) return null;
+
+            const categoryLabels = {
+              speed: '⚡ Hastighet',
+              distance: '📏 Avstand',
+              accuracy: '🎯 Presisjon',
+              short_game: '⛳ Kortspill',
+              putting: '🕳️ Putting',
+              physical: '💪 Fysisk',
+              scoring: '📊 Scoring',
+              mental: '🧠 Mental',
+            };
+
+            return (
+              <div key={category} className="mb-4">
+                <SubSectionTitle className="text-[14px] font-medium text-ak-steel mb-2">
+                  {categoryLabels[category]}
+                </SubSectionTitle>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {categoryTests.map(test => (
+                    <Link
+                      key={test.id}
+                      to={`/testing/${test.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <Card className="cursor-pointer transition-all hover:shadow-md hover:border-ak-primary">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
+                               style={{ backgroundColor: 'rgba(0,82,147,0.08)' }}>
+                            {test.icon}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <SubSectionTitle className="text-[14px] font-semibold text-ak-charcoal truncate">
+                              {test.shortName}
+                            </SubSectionTitle>
+                            <p className="text-[11px] text-ak-steel">
+                              Test {test.testNumber} · {test.duration}
+                            </p>
+                          </div>
+                          <div className="w-6 h-6 rounded-full bg-ak-snow flex items-center justify-center">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-ak-steel">
+                              <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Badge variant="accent">Ny</Badge>
-                <div className="w-8 h-8 rounded-full bg-ak-primary flex items-center justify-center">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <path d="M9 18l6-6-6-6"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </Link>
+            );
+          })}
+        </div>
 
         {/* Category Filter */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
