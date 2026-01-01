@@ -1,72 +1,111 @@
-# apps/golfer
+# AK Golf - Mobile App (Golfer)
 
-## Status: Early Development (Prototype Phase)
+## Status: Active Development
 
-This is the dedicated mobile app for golfers/players. It's designed as a focused, distraction-free experience optimized for use on the course and during practice sessions.
+Dedicated mobile app for golfers/players with offline-first architecture.
 
-## Architecture
+## Tech Stack
 
-- **Framework**: React Native with React Native Web
-- **Native Bridge**: Capacitor 6.0.0 (for iOS and Android)
-- **Design System**: Uses `@iup/design-system` shared tokens
-- **Navigation**: React Router DOM 7.x
+- **Framework**: React Native 0.73
+- **Native Bridge**: Capacitor 6.0
+- **Navigation**: React Navigation 6.x
+- **State**: React Context + AsyncStorage
+- **API**: Axios with offline queue
 
-## Current Screens
+## Project Structure
 
 ```
-screens/
-├── HOME.tsx          # Next session orientation (no progress/gamification)
-├── SESSION.tsx       # Active session execution
-├── REFLECTION.tsx    # Post-session reflection capture
-├── BASELINE.tsx      # Initial calibration tests
-├── TRAJECTORY.tsx    # Progress visualization
-├── PROOF.tsx         # Video/image proof capture
-└── index.ts          # Screen exports
+apps/golfer/
+├── src/
+│   ├── App.tsx                    # Main entry point
+│   ├── contexts/
+│   │   ├── AuthContext.tsx        # Authentication state
+│   │   └── SyncContext.tsx        # Offline sync queue
+│   ├── hooks/
+│   │   └── useNativeFeatures.ts   # Camera, haptics, notifications
+│   ├── navigation/
+│   │   └── types.ts               # Navigation type definitions
+│   ├── screens/
+│   │   └── LoginScreen.tsx        # Login UI
+│   └── services/
+│       └── api.ts                 # Backend API client
+├── screens/                        # Main app screens
+│   ├── HOME.tsx                   # Dashboard / next session
+│   ├── SESSION.tsx                # Active training session
+│   ├── REFLECTION.tsx             # Post-session reflection
+│   ├── BASELINE.tsx               # Calibration tests
+│   ├── TRAJECTORY.tsx             # Progress visualization
+│   └── PROOF.tsx                  # Video/photo capture
+├── capacitor.config.ts            # Native app configuration
+├── package.json
+└── tsconfig.json
 ```
 
-## Design Philosophy
+## Features
 
-This app follows strict design contracts (see `docs/IMPLEMENTATION_CONTRACT.md`):
+### Implemented
+- [x] App entry point with navigation
+- [x] Authentication with secure token storage
+- [x] Offline-first sync queue
+- [x] Camera integration (photo/video)
+- [x] Haptic feedback hooks
+- [x] Push notification setup
+- [x] File system access
+- [x] 6 main screens (prototype)
 
-- **MUST**: Show next action, time context, effort accumulation
-- **MUST NOT**: Show progress during practice, goals, encouragement, gamification
-- Focus on "what to do next" rather than "how well you're doing"
-- Minimize distractions during practice
+### Pending
+- [ ] Connect screens to backend API
+- [ ] Full screen implementations
+- [ ] iOS/Android native builds
+- [ ] App Store / Play Store setup
 
 ## Development
 
 ```bash
-# Type-check only (no build output)
-pnpm --filter ak-golf-golfer-app build
+# Install dependencies
+pnpm install
 
-# For full iOS/Android development:
-# 1. Open in Xcode (iOS) or Android Studio (Android)
-# 2. Or use Capacitor CLI after proper setup
+# Type check
+pnpm typecheck
+
+# iOS development
+pnpm ios
+
+# Android development
+pnpm android
+
+# Sync Capacitor plugins
+pnpm cap:sync
+
+# Open in Xcode
+pnpm cap:open:ios
+
+# Open in Android Studio
+pnpm cap:open:android
 ```
 
-## Dependencies on Design System
+## Native Capabilities
 
-This app imports tokens from `@iup/design-system`:
-```typescript
-import { tokens } from '@iup/design-system';
-// tokens.colors.snow, tokens.colors.charcoal, etc.
-```
+| Feature | Plugin | Status |
+|---------|--------|--------|
+| Camera | @capacitor/camera | ✅ Ready |
+| Haptics | @capacitor/haptics | ✅ Ready |
+| Push | @capacitor/push-notifications | ✅ Ready |
+| Files | @capacitor/filesystem | ✅ Ready |
+| Network | @react-native-community/netinfo | ✅ Ready |
+| Storage | @react-native-async-storage | ✅ Ready |
 
-Ensure the design system is built before running this app:
-```bash
-pnpm --filter @iup/design-system build
-```
+## Design Philosophy
 
-## Future Development
+This app follows strict design contracts:
 
-Planned features:
-- [ ] Session timer with haptic feedback
-- [ ] Offline-first data sync
-- [ ] Video recording for swing capture
-- [ ] Integration with main web app backend
+- **MUST**: Show next action, time context, effort accumulation
+- **MUST NOT**: Show progress during practice, goals, encouragement
+- Focus on execution, not evaluation
+- Minimize distractions during training
 
 ## Related
 
 - [Web App](../web/) - Full-featured web application
-- [Design System](../../packages/design-system/) - Shared design tokens
 - [API](../api/) - Backend services
+- [Design System](../../packages/design-system/) - Shared tokens

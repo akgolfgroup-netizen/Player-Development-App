@@ -22,9 +22,11 @@
     "baseUrl": ".",
     "paths": {
       "@iup/design-system": ["../../packages/design-system/components/index.ts"],
-      "@iup/design-system/*": ["../../packages/design-system/*"]
+      "@iup/design-system/*": ["../../packages/design-system/*"],
+      "@/*": ["src/*"],
+      "@screens/*": ["screens/*"]
     }
   },
-  "include": ["screens/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "screens/**/*"],
+  "exclude": ["node_modules", "ios", "android"]
 }
