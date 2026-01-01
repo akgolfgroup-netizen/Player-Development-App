@@ -218,6 +218,20 @@ export default function TournamentCalendarPage() {
     }
   };
 
+  // Handle school absence request
+  const handleAbsenceRequest = (tournament: Tournament) => {
+    navigate('/skoleplan', {
+      state: {
+        tournamentAbsence: {
+          name: tournament.name,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          venue: tournament.venue,
+        },
+      },
+    });
+  };
+
   // Handle adding tournament to planner (PLANLEGG)
   const handlePlanTournament = (tournament: Tournament) => {
     const LOCAL_STORAGE_KEY = 'ak_golf_tournament_plan';
@@ -305,6 +319,7 @@ export default function TournamentCalendarPage() {
           onRegister={handleRegister}
           onAddToCalendar={handleAddToCalendar}
           onPlanTournament={handlePlanTournament}
+          onAbsenceRequest={handleAbsenceRequest}
         />
       </div>
 

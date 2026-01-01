@@ -76,6 +76,7 @@ interface TournamentListProps {
   onRegister: (t: Tournament) => void;
   onAddToCalendar: (t: Tournament) => void;
   onPlanTournament: (t: Tournament) => void;
+  onAbsenceRequest?: (t: Tournament) => void;
 }
 
 export default function TournamentList({
@@ -86,6 +87,7 @@ export default function TournamentList({
   onRegister,
   onAddToCalendar,
   onPlanTournament,
+  onAbsenceRequest,
 }: TournamentListProps) {
   return (
     <>
@@ -111,6 +113,7 @@ export default function TournamentList({
                 onRegister={onRegister}
                 onAddToCalendar={onAddToCalendar}
                 onPlanTournament={onPlanTournament}
+                onAbsenceRequest={onAbsenceRequest}
               />
             ))}
           </div>

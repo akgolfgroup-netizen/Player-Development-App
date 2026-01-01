@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { tokens } from '../../../design-tokens';
@@ -6,6 +6,8 @@ import { SectionTitle } from '../../../components/typography';
 import Button from '../../../ui/primitives/Button';
 import { testDefinitions, TestDefinition } from '../config/testDefinitions';
 import TestOverviewPage from '../templates/TestOverviewPage';
+import { testsAPI } from '../../../services/api';
+import { useAuth } from '../../../contexts/AuthContext';
 
 // ============================================================================
 // TEST DETAIL PAGE
@@ -21,6 +23,9 @@ import TestOverviewPage from '../templates/TestOverviewPage';
 const TestDetailPage: React.FC = () => {
   const { testId } = useParams<{ testId: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Find the test definition
   const test = testDefinitions.find(t => t.id === testId);
@@ -73,14 +78,43 @@ const TestDetailPage: React.FC = () => {
 
   // Handle form submission
   const handleSubmit = async (data: any) => {
-    console.log('Test result submitted:', data);
-    // TODO: Send to API
-    // await api.submitTestResult(data);
+    if (!user?.playerId) {
+      setSubmitError('Kunne ikke finne spiller-ID. Vennligst logg inn på nytt.');
+      return;
+    }
 
-    // Show success message or navigate
-    navigate('/testprotokoll', {
-      state: { message: `${test.name} resultat lagret!` }
-    });
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // Build the API payload
+      const payload = {
+        playerId: user.playerId,
+        testNumber: test.testNumber,
+        testDate: data.testDate || new Date(),
+        testTime: data.testTime,
+        location: data.location || 'Ukjent',
+        facility: data.facility || 'Ukjent',
+        environment: data.environment || 'outdoor',
+        conditions: data.conditions,
+        testData: data.testData || data,
+      };
+
+      await testsAPI.createResult(payload);
+
+      // Show success message or navigate
+      navigate('/testprotokoll', {
+        state: { message: `${test.name} resultat lagret!` }
+      });
+    } catch (error: any) {
+      console.error('Failed to submit test result:', error);
+      setSubmitError(
+        error.response?.data?.message ||
+        'Kunne ikke lagre testresultatet. Vennligst prøv igjen.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Handle close/back

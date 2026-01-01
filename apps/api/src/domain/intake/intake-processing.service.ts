@@ -379,7 +379,7 @@ export class IntakeProcessingService {
   }
 
   /**
-   * Get baseline metrics (placeholder - should fetch from DB)
+   * Get baseline metrics from player profile and calibration data
    */
   private static async getBaselineMetrics(playerId: string): Promise<{
     averageScore: number;

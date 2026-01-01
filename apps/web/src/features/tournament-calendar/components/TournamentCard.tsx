@@ -118,6 +118,7 @@ interface TournamentCardProps {
   onRegister: (t: Tournament) => void;
   onAddToCalendar: (t: Tournament) => void;
   onPlanTournament: (t: Tournament) => void;
+  onAbsenceRequest?: (t: Tournament) => void;
 }
 
 export default function TournamentCard({
@@ -127,6 +128,7 @@ export default function TournamentCard({
   onRegister,
   onAddToCalendar,
   onPlanTournament,
+  onAbsenceRequest,
 }: TournamentCardProps) {
   const daysUntil = getDaysUntil(tournament.startDate);
   const statusConfig = getStatusConfig(tournament.status, tournament.isRegistered);
@@ -232,7 +234,7 @@ export default function TournamentCard({
           <button
             onClick={e => {
               e.stopPropagation();
-              // TODO: Integrate with school absence system
+              onAbsenceRequest?.(tournament);
             }}
             style={styles.quickActionButton}
           >

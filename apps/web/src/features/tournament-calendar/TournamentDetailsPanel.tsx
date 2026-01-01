@@ -7,6 +7,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   X,
   Calendar,
@@ -24,6 +25,7 @@ import {
 import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import { SectionTitle } from '../../components/typography';
+import { tournamentsAPI } from '../../services/api';
 import {
   Tournament,
   PlayerCategory,
@@ -92,8 +94,10 @@ export default function TournamentDetailsPanel({
   onAddToCalendar,
 }: TournamentDetailsPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
   const [isMarkedRegistered, setIsMarkedRegistered] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   // Check if mobile
   useEffect(() => {
@@ -133,9 +137,32 @@ export default function TournamentDetailsPanel({
   const isRegistered = tournament.isRegistered || isMarkedRegistered;
   const hasResult = tournament.result && tournament.status === 'finished';
 
-  const handleMarkRegistered = () => {
-    setIsMarkedRegistered(true);
-    // TODO: Call API to mark as registered
+  const handleMarkRegistered = async () => {
+    if (isRegistering) return;
+
+    setIsRegistering(true);
+    try {
+      await tournamentsAPI.addToCalendar(tournament.id, { isRegistered: true });
+      setIsMarkedRegistered(true);
+    } catch (error) {
+      console.error('Failed to mark tournament as registered:', error);
+    } finally {
+      setIsRegistering(false);
+    }
+  };
+
+  const handleAbsenceApplication = () => {
+    // Navigate to school plan with tournament context for absence application
+    navigate('/skoleplan', {
+      state: {
+        tournamentAbsence: {
+          name: tournament.name,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          venue: tournament.venue,
+        },
+      },
+    });
   };
 
   return (
@@ -354,9 +381,7 @@ export default function TournamentDetailsPanel({
             )}
 
             <button
-              onClick={() => {
-                // TODO: Navigate to absence application
-              }}
+              onClick={handleAbsenceApplication}
               style={styles.secondaryButton}
             >
               <FileText size={16} />

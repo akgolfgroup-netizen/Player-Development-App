@@ -148,6 +148,13 @@ export class PlanGenerationService {
     // V2: Get category constraints for the player
     const constraintsService = createCategoryConstraintsService(prisma);
 
+    // Fetch player profile for gender
+    const playerProfile = await prisma.player.findUnique({
+      where: { id: input.playerId },
+      select: { gender: true },
+    });
+    const playerGender = (playerProfile?.gender === 'F' ? 'F' : 'M') as Gender;
+
     // Fetch latest test results for constraint calculation
     const testResults = await prisma.testResult.findMany({
       where: {
@@ -193,7 +200,7 @@ export class PlanGenerationService {
           playerId: input.playerId,
           currentCategory,
           targetCategory,
-          gender: 'M' as Gender, // TODO: Get from player profile
+          gender: playerGender,
           performances,
         });
         topConstraints = categoryConstraints.bindingConstraints;
