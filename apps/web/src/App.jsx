@@ -110,6 +110,7 @@ const BookTrenerContainer = lazy(() => import('./features/calendar/BookTrenerCon
 // Testing
 const KategoriKravContainer = lazy(() => import('./features/tests/KategoriKravContainer'));
 const RegistrerTestContainer = lazy(() => import('./features/tests/RegistrerTestContainer'));
+const PEIBaneTestPage = lazy(() => import('./features/tests/PEIBaneTestPage'));
 
 // Turneringer
 const TurneringsResultaterContainer = lazy(() => import('./features/tournaments/TurneringsResultaterContainer'));
@@ -829,6 +830,13 @@ function App() {
             <ProtectedRoute>
               <AuthenticatedLayout title="Registrer test" subtitle="Logg testresultat">
                 <RegistrerTestContainer />
+              </AuthenticatedLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/testing/pei-bane" element={
+            <ProtectedRoute>
+              <AuthenticatedLayout title="PEI Test - Bane" subtitle="Test din presisjon på banen">
+                <PEIBaneTestPage />
               </AuthenticatedLayout>
             </ProtectedRoute>
           } />

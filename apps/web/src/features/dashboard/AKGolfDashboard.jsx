@@ -15,6 +15,9 @@ import ExportButton from '../../components/ui/ExportButton';
 import { useAuth } from '../../contexts/AuthContext';
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
 
+// Responsive layout styles
+import './dashboard-responsive.css';
+
 /**
  * AKGolfDashboard - Premium Player Dashboard
  *
@@ -165,16 +168,16 @@ const TodayActionCard = ({ sessions, onStartSession, onViewCalendar }) => {
   const sessionTime = nextSession.time || '—';
 
   return (
-    <div style={styles.actionCard}>
+    <div style={styles.actionCard} role="region" aria-label="Neste planlagte økt">
       <div style={styles.actionCardHeader}>
-        <div style={styles.actionCardIcon}>
+        <div style={styles.actionCardIcon} aria-hidden="true">
           <Zap size={20} />
         </div>
         <div style={styles.actionCardInfo}>
           <span style={styles.actionCardLabel}>Din neste økt</span>
           <span style={styles.actionCardTitle}>{nextSession.title}</span>
           <span style={styles.actionCardMeta}>
-            <Clock size={12} /> {sessionTime} • {nextSession.duration || 60} min
+            <Clock size={12} aria-hidden="true" /> {sessionTime} • {nextSession.duration || 60} min
           </span>
         </div>
       </div>
@@ -183,7 +186,8 @@ const TodayActionCard = ({ sessions, onStartSession, onViewCalendar }) => {
           variant="primary"
           size="md"
           onClick={() => onStartSession?.(nextSession)}
-          leftIcon={<Play size={16} />}
+          leftIcon={<Play size={16} aria-hidden="true" />}
+          aria-label={`Start ${nextSession.title} nå`}
         >
           Start nå
         </Button>
@@ -191,6 +195,7 @@ const TodayActionCard = ({ sessions, onStartSession, onViewCalendar }) => {
           variant="ghost"
           size="md"
           onClick={onViewCalendar}
+          aria-label={sessions.length > 1 ? `Se alle ${sessions.length} økter` : 'Se detaljer for økten'}
         >
           Se {sessions.length > 1 ? `alle ${sessions.length}` : 'detaljer'}
         </Button>
@@ -296,7 +301,7 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
   const remainingHours = Math.max(0, stats.hoursGoal - stats.hoursThisWeek);
 
   return (
-    <div style={styles.kpiGrid}>
+    <div className="dashboard-kpi-grid" style={styles.kpiGrid}>
       <KPICard
         icon={CheckCircle2}
         value={`${stats.sessionsCompleted}/${stats.sessionsTotal}`}
@@ -341,29 +346,58 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
 
 // ===== 4. QUICK ACTIONS (Hurtigvalg) =====
 
-const QuickActions = ({ onAction }) => (
-  <div style={styles.quickActionsSection}>
-    <SectionTitle style={styles.sectionTitle}>Hurtigvalg</SectionTitle>
-    <div style={styles.quickActionsGrid}>
-      <button style={styles.quickActionBtn} onClick={() => onAction('session')}>
-        <Play size={20} />
-        <span>Ny økt</span>
-      </button>
-      <button style={styles.quickActionBtn} onClick={() => onAction('goal')}>
-        <Target size={20} />
-        <span>Nytt mål</span>
-      </button>
-      <button style={styles.quickActionBtn} onClick={() => onAction('progress')}>
-        <BarChart3 size={20} />
-        <span>Fremgang</span>
-      </button>
-      <button style={styles.quickActionBtn} onClick={() => onAction('calendar')}>
-        <Calendar size={20} />
-        <span>Kalender</span>
-      </button>
+const QuickActions = ({ onAction }) => {
+  const handleKeyDown = (action) => (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onAction(action);
+    }
+  };
+
+  return (
+    <div style={styles.quickActionsSection}>
+      <SectionTitle style={styles.sectionTitle}>Hurtigvalg</SectionTitle>
+      <div className="dashboard-quick-actions" style={styles.quickActionsGrid} role="group" aria-label="Hurtigvalg">
+        <button
+          style={styles.quickActionBtn}
+          onClick={() => onAction('session')}
+          onKeyDown={handleKeyDown('session')}
+          aria-label="Start ny treningsøkt"
+        >
+          <Play size={20} aria-hidden="true" />
+          <span>Ny økt</span>
+        </button>
+        <button
+          style={styles.quickActionBtn}
+          onClick={() => onAction('goal')}
+          onKeyDown={handleKeyDown('goal')}
+          aria-label="Opprett nytt mål"
+        >
+          <Target size={20} aria-hidden="true" />
+          <span>Nytt mål</span>
+        </button>
+        <button
+          style={styles.quickActionBtn}
+          onClick={() => onAction('progress')}
+          onKeyDown={handleKeyDown('progress')}
+          aria-label="Se din fremgang"
+        >
+          <BarChart3 size={20} aria-hidden="true" />
+          <span>Fremgang</span>
+        </button>
+        <button
+          style={styles.quickActionBtn}
+          onClick={() => onAction('calendar')}
+          onKeyDown={handleKeyDown('calendar')}
+          aria-label="Åpne kalender"
+        >
+          <Calendar size={20} aria-hidden="true" />
+          <span>Kalender</span>
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // ===== 5. WEEKLY GOALS (Ukens Mål) - EXPANDED =====
 
@@ -472,6 +506,16 @@ const WeeklyGoalsWidget = ({ goals, onToggle, onAddGoal, onViewAll, loading, err
                                 status === 'at-risk' ? 'var(--error-muted)' : 'transparent',
               }}
               onClick={() => onToggle?.(goal.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onToggle?.(goal.id);
+                }
+              }}
+              role="checkbox"
+              aria-checked={status === 'completed'}
+              aria-label={`${goal.title}${status === 'completed' ? ' - fullført' : status === 'at-risk' ? ' - i fare' : ''}`}
+              tabIndex={0}
             >
               {/* Checkbox */}
               <div style={{
@@ -532,8 +576,12 @@ const WeeklyGoalsWidget = ({ goals, onToggle, onAddGoal, onViewAll, loading, err
       </div>
 
       {/* Add goal button */}
-      <button style={styles.addGoalBtn} onClick={onAddGoal}>
-        <Plus size={16} />
+      <button
+        style={styles.addGoalBtn}
+        onClick={onAddGoal}
+        aria-label="Legg til nytt mål for uken"
+      >
+        <Plus size={16} aria-hidden="true" />
         <span>Legg til mål</span>
       </button>
     </DashboardWidget>
@@ -632,14 +680,15 @@ const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile 
       </div>
 
       {/* Bottom Action Row */}
-      <div style={styles.profileActions}>
+      <div style={styles.profileActions} role="group" aria-label="Profilhandlinger">
         <button
           style={styles.profileActionButton}
           onClick={onViewProgress}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          aria-label="Se din fremgang og statistikk"
         >
-          <TrendingUp size={14} />
+          <TrendingUp size={14} aria-hidden="true" />
           <span>Se fremgang</span>
         </button>
         <button
@@ -647,8 +696,9 @@ const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile 
           onClick={onViewPlan}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          aria-label="Åpne din treningsplan"
         >
-          <Calendar size={14} />
+          <Calendar size={14} aria-hidden="true" />
           <span>Treningsplan</span>
         </button>
         <button
@@ -656,8 +706,9 @@ const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile 
           onClick={onViewProfile}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-secondary)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          aria-label="Se full profil"
         >
-          <ChevronRight size={14} />
+          <ChevronRight size={14} aria-hidden="true" />
           <span>Full profil</span>
         </button>
       </div>
@@ -718,14 +769,18 @@ const NextTestCard = ({ title, date, location, preparation, onViewDetails, onPre
   // Minimized version for >30 days
   if (!isProminent) {
     return (
-      <div style={styles.testMinimized}>
+      <div style={styles.testMinimized} role="region" aria-label="Neste test">
         <div style={styles.testMinimizedLeft}>
-          <Target size={16} style={{ color: 'var(--text-tertiary)' }} />
+          <Target size={16} style={{ color: 'var(--text-tertiary)' }} aria-hidden="true" />
           <span style={styles.testMinimizedText}>
             Neste test: {title || 'Ikke planlagt'} • {diffDays} dager
           </span>
         </div>
-        <button style={styles.testMinimizedBtn} onClick={onViewDetails}>
+        <button
+          style={styles.testMinimizedBtn}
+          onClick={onViewDetails}
+          aria-label={`Se detaljer for ${title || 'neste test'}`}
+        >
           Detaljer
         </button>
       </div>
@@ -816,9 +871,9 @@ const NextTournamentCard = ({ title, date, location, onViewDetails }) => {
   if (isMinimized) {
     // Minimized version - single row
     return (
-      <div style={styles.tournamentMinimized}>
+      <div style={styles.tournamentMinimized} role="region" aria-label="Neste turnering">
         <div style={styles.tournamentMinimizedLeft}>
-          <Trophy size={16} style={{ color: 'var(--text-tertiary)' }} />
+          <Trophy size={16} style={{ color: 'var(--text-tertiary)' }} aria-hidden="true" />
           <span style={styles.tournamentMinimizedText}>
             {title || 'Neste turnering'} • {diffDays} dager
           </span>
@@ -826,6 +881,7 @@ const NextTournamentCard = ({ title, date, location, onViewDetails }) => {
         <button
           style={styles.tournamentMinimizedBtn}
           onClick={onViewDetails}
+          aria-label={`Se detaljer for ${title || 'neste turnering'}`}
         >
           Detaljer
         </button>
@@ -1000,6 +1056,15 @@ const MessagesWidget = ({ messages, onViewAll, onMessageClick, onQuickReply, loa
                               msg.requiresResponse ? 'var(--warning-muted)' : 'transparent',
             }}
             onClick={() => onMessageClick?.(msg)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onMessageClick?.(msg);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label={`Melding fra ${msg.from || msg.sender}${msg.unread ? ' - ulest' : ''}${msg.requiresResponse ? ' - krever svar' : ''}`}
           >
             {/* Avatar */}
             <MessageAvatar src={msg.avatar} name={msg.from || msg.sender} />
@@ -1070,6 +1135,16 @@ const TasksWidget = ({ tasks, onToggle, onViewAll, loading, error }) => {
               backgroundColor: task.completed ? 'var(--success-muted)' : 'transparent',
             }}
             onClick={() => onToggle?.(task.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onToggle?.(task.id);
+              }
+            }}
+            role="checkbox"
+            aria-checked={task.completed}
+            tabIndex={0}
+            aria-label={`${task.title}${task.completed ? ' - fullført' : ''}${task.priority === 'high' ? ' - viktig' : ''}`}
           >
             <div style={{
               ...styles.taskCheckbox,
@@ -1122,6 +1197,15 @@ const SessionsWidget = ({ sessions, onViewAll, onSessionClick, loading, error })
           key={session.id}
           style={styles.sessionItem}
           onClick={() => onSessionClick?.(session)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onSessionClick?.(session);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={`${session.title} kl ${session.time}, ${session.duration} minutter ved ${session.location}`}
         >
           <div style={styles.sessionIcon}>
             <Play size={16} />
@@ -1199,9 +1283,9 @@ const AKGolfDashboard = () => {
   const todaySessions = dashboardData?.upcomingSessions || [];
 
   return (
-    <div id="dashboard-export" style={styles.dashboard}>
-      {/* Export Button */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
+    <div id="dashboard-export" className="dashboard-layout" style={styles.dashboard}>
+      {/* Export Button - Full Width */}
+      <div className="dashboard-full-width" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
         <ExportButton
           targetId="dashboard-export"
           filename={`dashboard-${player.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
@@ -1211,9 +1295,9 @@ const AKGolfDashboard = () => {
         />
       </div>
 
-      {/* Stale data banner */}
+      {/* Stale data banner - Full Width */}
       {error && dashboardData && (
-        <div style={styles.staleBanner}>
+        <div className="dashboard-full-width" style={styles.staleBanner}>
           <span>Viser tidligere data. Noe kan være utdatert.</span>
           <button style={styles.staleRetry} onClick={refetch}>
             <RefreshCw size={14} /> Oppdater
@@ -1221,79 +1305,99 @@ const AKGolfDashboard = () => {
         </div>
       )}
 
-      {/* 1. HERO SECTION: Greeting + Smart Insight */}
-      <HeroSection
-        player={player}
-        greeting={getGreeting()}
-        stats={stats}
-        nextTest={nextTest}
-        todaySessions={todaySessions}
-      />
-
-      {/* 2. TODAY'S ACTION CARD (if sessions exist) */}
-      <TodayActionCard
-        sessions={todaySessions}
-        onStartSession={(s) => navigate(`/session/${s.id}/start`)}
-        onViewCalendar={() => navigate('/kalender')}
-      />
-
-      {/* 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) */}
-      <WeeklyPerformanceSummary stats={stats} loading={loading} />
-
-      {/* 4. QUICK ACTIONS (Hurtigvalg) */}
-      <QuickActions onAction={handleQuickAction} />
-
-      {/* 5. WEEKLY GOALS (Ukens Mål) - EXPANDED */}
-      <WeeklyGoalsWidget
-        goals={goals}
-        onToggle={toggleGoal}
-        onAddGoal={() => navigate('/maalsetninger/new')}
-        onViewAll={() => navigate('/maalsetninger')}
-        loading={loading}
-      />
-
-      {/* 6. TODAY'S SESSIONS (Dagens Økter) */}
-      <SessionsWidget
-        sessions={todaySessions}
-        onViewAll={() => navigate('/kalender')}
-        onSessionClick={(s) => navigate(`/session/${s.id}`)}
-        loading={loading}
-      />
-
-      {/* 7. NEXT TEST (Neste Test) */}
-      {nextTest && (
-        <NextTestCard
-          title={nextTest.title}
-          date={nextTest.date || '2026-03-15'}
-          location={nextTest.location}
-          preparation={nextTest.preparation || {
-            reviewedMaterial: false,
-            practicedWeakAreas: false,
-            takenPracticeTest: false,
-          }}
-          onViewDetails={() => navigate('/tests')}
-          onPrepare={() => navigate('/tests/prepare')}
+      {/* 1. HERO SECTION: Greeting + Smart Insight - Full Width */}
+      <div className="dashboard-hero dashboard-full-width">
+        <HeroSection
+          player={player}
+          greeting={getGreeting()}
+          stats={stats}
+          nextTest={nextTest}
+          todaySessions={todaySessions}
         />
-      )}
+      </div>
 
-      {/* 8. MESSAGES (Meldinger) - Prioritized */}
-      <MessagesWidget
-        messages={messages}
-        onViewAll={() => navigate('/meldinger')}
-        onMessageClick={(m) => navigate(`/meldinger/${m.id}`)}
-        onQuickReply={(m) => navigate(`/meldinger/${m.id}/reply`)}
-        loading={loading}
-      />
-
-      {/* 9. NEXT TOURNAMENT (Neste Turnering) - Minimized if >30 days */}
-      {nextTournament && (
-        <NextTournamentCard
-          title={nextTournament.title}
-          date={nextTournament.date || '2026-06-15'}
-          location={nextTournament.location}
-          onViewDetails={() => navigate('/tournaments')}
+      {/* 2. TODAY'S ACTION CARD (if sessions exist) - Full Width */}
+      <div className="dashboard-action-card dashboard-full-width">
+        <TodayActionCard
+          sessions={todaySessions}
+          onStartSession={(s) => navigate(`/session/${s.id}/start`)}
+          onViewCalendar={() => navigate('/kalender')}
         />
-      )}
+      </div>
+
+      {/* 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) - Full Width */}
+      <div className="dashboard-kpi-section dashboard-full-width">
+        <WeeklyPerformanceSummary stats={stats} loading={loading} />
+      </div>
+
+      {/* 4. QUICK ACTIONS (Hurtigvalg) - Full Width */}
+      <div className="dashboard-quick-actions-section dashboard-full-width">
+        <QuickActions onAction={handleQuickAction} />
+      </div>
+
+      {/* ===== MAIN CONTENT AREA ===== */}
+      <div className="dashboard-main">
+        {/* 5. WEEKLY GOALS (Ukens Mål) - EXPANDED */}
+        <div className="dashboard-main-full">
+          <WeeklyGoalsWidget
+            goals={goals}
+            onToggle={toggleGoal}
+            onAddGoal={() => navigate('/maalsetninger/new')}
+            onViewAll={() => navigate('/maalsetninger')}
+            loading={loading}
+          />
+        </div>
+
+        {/* 6. TODAY'S SESSIONS (Dagens Økter) */}
+        <div className="dashboard-main-full">
+          <SessionsWidget
+            sessions={todaySessions}
+            onViewAll={() => navigate('/kalender')}
+            onSessionClick={(s) => navigate(`/session/${s.id}`)}
+            loading={loading}
+          />
+        </div>
+
+        {/* 7. NEXT TEST (Neste Test) */}
+        {nextTest && (
+          <div className="dashboard-main-full">
+            <NextTestCard
+              title={nextTest.title}
+              date={nextTest.date || '2026-03-15'}
+              location={nextTest.location}
+              preparation={nextTest.preparation || {
+                reviewedMaterial: false,
+                practicedWeakAreas: false,
+                takenPracticeTest: false,
+              }}
+              onViewDetails={() => navigate('/tests')}
+              onPrepare={() => navigate('/tests/prepare')}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* ===== SIDEBAR AREA ===== */}
+      <div className="dashboard-sidebar">
+        {/* 8. MESSAGES (Meldinger) - Prioritized */}
+        <MessagesWidget
+          messages={messages}
+          onViewAll={() => navigate('/meldinger')}
+          onMessageClick={(m) => navigate(`/meldinger/${m.id}`)}
+          onQuickReply={(m) => navigate(`/meldinger/${m.id}/reply`)}
+          loading={loading}
+        />
+
+        {/* 9. NEXT TOURNAMENT (Neste Turnering) - Minimized if >30 days */}
+        {nextTournament && (
+          <NextTournamentCard
+            title={nextTournament.title}
+            date={nextTournament.date || '2026-06-15'}
+            location={nextTournament.location}
+            onViewDetails={() => navigate('/tournaments')}
+          />
+        )}
+      </div>
     </div>
   );
 };
@@ -1539,6 +1643,8 @@ const styles = {
     justifyContent: 'center',
     gap: '6px',
     padding: '16px 12px',
+    minHeight: '44px', // WCAG AA touch target
+    minWidth: '44px',  // WCAG AA touch target
     backgroundColor: 'var(--card)',
     border: '1px solid var(--border-subtle)',
     borderRadius: '12px',
@@ -1588,9 +1694,11 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '14px 24px',
+    minHeight: '44px', // WCAG AA touch target
     borderBottom: '1px solid var(--border-subtle)',
     cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
+    transition: 'background-color 0.15s ease, outline 0.15s ease',
+    outline: 'none',
   },
   goalCheckbox: {
     width: '22px',
@@ -1677,6 +1785,7 @@ const styles = {
     justifyContent: 'center',
     gap: '6px',
     padding: '14px 24px',
+    minHeight: '44px', // WCAG AA touch target
     backgroundColor: 'transparent',
     border: 'none',
     borderTop: '1px dashed var(--border-default)',
@@ -1714,6 +1823,9 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'underline',
+    minHeight: '44px', // WCAG AA touch target
+    minWidth: '44px',
+    padding: '8px 12px',
   },
   testHeader: {
     display: 'flex',
@@ -1813,9 +1925,11 @@ const styles = {
     alignItems: 'flex-start',
     gap: '12px',
     padding: '14px 24px',
+    minHeight: '44px', // WCAG AA touch target
     borderBottom: '1px solid var(--border-subtle)',
     cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
+    transition: 'background-color 0.15s ease, outline 0.15s ease',
+    outline: 'none',
   },
   msgAvatar: {
     width: '40px',
@@ -2061,6 +2175,7 @@ const styles = {
     justifyContent: 'center',
     gap: '6px',
     padding: '12px 16px',
+    minHeight: '44px', // WCAG AA touch target
     fontSize: '13px',
     fontWeight: 500,
     color: 'var(--text-secondary)',
@@ -2268,9 +2383,11 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '12px 24px',
+    minHeight: '44px', // WCAG AA touch target
     borderBottom: '1px solid var(--border-subtle)',
     cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
+    transition: 'background-color 0.15s ease, outline 0.15s ease',
+    outline: 'none',
   },
   taskCheckbox: {
     width: '20px',
@@ -2304,9 +2421,11 @@ const styles = {
     alignItems: 'center',
     gap: '12px',
     padding: '12px 24px',
+    minHeight: '44px', // WCAG AA touch target
     borderBottom: '1px solid var(--border-subtle)',
     cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
+    transition: 'background-color 0.15s ease, outline 0.15s ease',
+    outline: 'none',
   },
   sessionIcon: {
     width: '36px',

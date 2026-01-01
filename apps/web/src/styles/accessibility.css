@@ -397,6 +397,57 @@ caption {
   }
 }
 
+/* ========================================
+   Dashboard-specific accessibility styles
+   ======================================== */
+
+/* Dashboard interactive items with role="checkbox" or role="button" */
+[role="checkbox"]:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid var(--ak-primary);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Ensure focus is visible on items with tabIndex */
+[tabindex="0"]:focus-visible {
+  outline: 3px solid var(--ak-primary);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Card-like interactive elements */
+.goalItem:focus-visible,
+.messageItem:focus-visible,
+.sessionItem:focus-visible,
+.taskItem:focus-visible {
+  outline: 3px solid var(--ak-primary);
+  outline-offset: -2px;
+  border-radius: 8px;
+  background-color: var(--accent-muted);
+}
+
+/* Quick action buttons */
+.quickActionBtn:focus-visible {
+  outline: 3px solid var(--ak-primary);
+  outline-offset: 2px;
+  transform: scale(1.02);
+}
+
+/* Profile action buttons */
+.profileActionButton:focus-visible {
+  outline: 3px solid var(--ak-primary);
+  outline-offset: -2px;
+  background-color: var(--bg-secondary);
+}
+
+/* KPI cards when interactive */
+[role="region"]:focus-visible {
+  outline: 3px solid var(--ak-primary);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
 /* Dark mode support - inherits from index.css :root.dark */
 @media (prefers-color-scheme: dark) {
   /* Dark mode tokens are handled by index.css */

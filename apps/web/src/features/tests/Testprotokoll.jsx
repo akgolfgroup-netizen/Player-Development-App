@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import StartTestModal from './StartTestModal';
@@ -680,6 +681,37 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
             <p className="text-[12px] text-ak-steel">under krav</p>
           </Card>
         </div>
+
+        {/* Special Tests - PEI Bane */}
+        <Link to="/testing/pei-bane" style={{ textDecoration: 'none' }}>
+          <Card className="mb-6 cursor-pointer transition-all hover:shadow-md hover:border-ak-primary"
+                style={{ background: 'linear-gradient(135deg, #fff 0%, rgba(0,82,147,0.05) 100%)' }}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl"
+                     style={{ backgroundColor: 'rgba(0,82,147,0.1)' }}>
+                  🎯
+                </div>
+                <div>
+                  <SubSectionTitle className="text-[17px] font-semibold text-ak-charcoal mb-1">
+                    PEI Test - Bane (Slag Test)
+                  </SubSectionTitle>
+                  <p className="text-[13px] text-ak-steel">
+                    Test din presisjon med 18 slag fra ulike posisjoner på banen
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Badge variant="accent">Ny</Badge>
+                <div className="w-8 h-8 rounded-full bg-ak-primary flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M9 18l6-6-6-6"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </Link>
 
         {/* Category Filter */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">

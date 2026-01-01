@@ -78,6 +78,7 @@ const navigationItems: NavigationItem[] = [
   { id: 'training-today', label: 'Treningsplan', href: '/trening/dagens', icon: Target, section: 'Aktivitet', keywords: ['trening', 'plan', 'dagens'] },
   { id: 'training-log', label: 'Treningslogg', href: '/trening/logg', icon: Zap, section: 'Aktivitet', keywords: ['logg', 'registrer'] },
   { id: 'testing', label: 'Testing', href: '/testprotokoll', icon: ClipboardList, section: 'Aktivitet', keywords: ['test', 'protokoll'] },
+  { id: 'pei-bane', label: 'PEI Test - Bane', href: '/testing/pei-bane', icon: Target, section: 'Aktivitet', keywords: ['pei', 'presisjon', 'bane', 'slag', 'test'] },
 
   // Fremgang
   { id: 'stats', label: 'Statistikk', href: '/stats', icon: BarChart3, section: 'Fremgang', keywords: ['statistikk', 'data', 'analyse'] },
