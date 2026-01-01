@@ -27,8 +27,25 @@
  */
 
 // ============================================================================
-// CANONICAL TYPES (from @iup/shared-types)
-// Defined locally to avoid CRA webpack issues with workspace TypeScript packages
+// CANONICAL TYPES - LOCAL MIRROR OF @iup/shared-types
+// ============================================================================
+//
+// TECHNICAL DEBT: These types are intentionally duplicated from @iup/shared-types.
+//
+// WHY: Create React App's webpack configuration cannot transpile raw TypeScript
+// files from pnpm workspace packages. CRA expects pre-compiled JavaScript, but
+// @iup/shared-types only provides .ts source files.
+//
+// RISK: Type drift if shared-types changes without updating this file.
+// MITIGATION: Types verified accurate as of 2026-01-02. Run type comparison
+// when updating shared-types: compare packages/shared-types/src/*.ts with these.
+//
+// EXIT PATH (choose one):
+// 1. Migrate from CRA to Vite/Next.js (supports workspace TS transpilation)
+// 2. Add build step to shared-types that emits .js + .d.ts files
+// 3. Use tsup/unbuild to pre-compile shared-types before web build
+//
+// See: apps/web/tsconfig.json, packages/shared-types/
 // ============================================================================
 
 /**

@@ -22,7 +22,7 @@ export const tokens = {
     primaryLight: '#2A6B55',
     snow: '#FAFAFA',
     surface: '#F5F5F0',
-    gold: '#B8860B',
+    gold: '#996F09',
 
     // Legacy aliases (backwards compatible)
     forest: '#1B4D3E',
@@ -30,10 +30,10 @@ export const tokens = {
     foam: '#FAFAFA',
     ivory: '#F5F5F0',
 
-    // Semantic Colors
-    success: '#22C55E',
-    warning: '#F59E0B',
-    error: '#EF4444',
+    // Semantic Colors (WCAG AA compliant)
+    success: '#05875F',
+    warning: '#B16105',
+    error: '#DC2626',
 
     // Neutrals
     charcoal: '#1a1a1a',

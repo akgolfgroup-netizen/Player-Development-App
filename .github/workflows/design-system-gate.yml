@@ -37,9 +37,7 @@ jobs:
 
       - name: Run Design System Gate
         run: node scripts/design-system-gate/run-gate.js
-        # TODO: Remove continue-on-error after fixing contrast issues in design tokens
-        # Current failures: 6 WCAG contrast check failures
-        continue-on-error: true
+        # WCAG AA compliance enforced - all contrast checks pass
 
       - name: Upload violation report (on failure)
         if: failure()
@@ -132,11 +130,7 @@ jobs:
 
       - name: Run Contrast Checker
         run: node scripts/design-system-gate/contrast-checker.js --ci --verbose
-        # TODO: Remove continue-on-error after fixing 6 WCAG contrast failures:
-        # - Warning text on white (2.21:1, requires 4.5:1)
-        # - Error text on white (4.24:1, requires 4.5:1)
-        # - Gold accent on white (2.42:1, requires 4.5:1)
-        continue-on-error: true
+        # WCAG AA compliance enforced - all tokens now pass 4.5:1 contrast ratio
 
   lint-design-tokens:
     name: Design Token Lint (ESLint)
