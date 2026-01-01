@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Clock, MapPin, Trophy, Target, CheckCircle2,
-  Play, Bell, RefreshCw, Flame, Calendar, TrendingUp, ChevronRight
+  Clock, MapPin, Trophy, Target, CheckCircle2, Zap, Lightbulb,
+  Play, Bell, RefreshCw, Flame, Calendar, TrendingUp, ChevronRight,
+  BarChart3, Award, MessageCircle, Plus, ClipboardList,
+  Video, Circle, Apple, Dumbbell, Flag, BookOpen, ListChecks
 } from 'lucide-react';
 import { useDashboard } from '../../hooks/useDashboard';
 import { DashboardWidget, KPIValue, KPIMeta } from './components';
@@ -16,16 +18,16 @@ import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget'
 /**
  * AKGolfDashboard - Premium Player Dashboard
  *
- * Card Shell Contract applied to all modules:
- * - Consistent surface, borders, shadows
- * - Unified header row pattern
- * - Standard KPI typography
- * - Single vertical rhythm
- *
- * Layout:
- * Zone A (Top): Welcome + Quick Stats + Countdowns
- * Zone B (Mid): Plan completion + Hours + Notifications
- * Zone C (Bottom): Tasks + Sessions
+ * NEW HIERARCHY (2026):
+ * 1. Personalized Greeting + Smart Insight (Hero Section)
+ * 2. Today's Action Card (if scheduled sessions exist)
+ * 3. Weekly Performance Summary (4 KPIs)
+ * 4. Hurtigvalg (Quick Actions)
+ * 5. Ukens Mål (Weekly Goals) - EXPANDED VIEW
+ * 6. Dagens Økter (Today's Sessions)
+ * 7. Neste Test (Next Test)
+ * 8. Meldinger (Messages) - Prioritized
+ * 9. Neste Turnering (Next Tournament) - Minimized if >30 days
  */
 
 // ===== CARD SHELL STYLES =====
@@ -44,17 +46,499 @@ const cardShell = {
   },
 };
 
-// ===== ZONE A: TOP SECTION =====
+// ===== 1. HERO SECTION: Greeting + Smart Insight =====
 
-const WelcomeHeader = ({ player, greeting }) => (
-  <div style={styles.welcomeHeader}>
-    <div>
-      <p style={styles.greetingLabel}>{greeting}</p>
-      <PageTitle style={styles.playerName}>{player.name?.split(' ')[0] || 'Spiller'}</PageTitle>
-      <p style={styles.categoryLabel}>Kategori {player.category || 'B'}</p>
+const generateSmartInsight = (stats, nextTest, goals) => {
+  const insights = [];
+
+  // Check goal progress
+  const remainingSessions = stats.sessionsTotal - stats.sessionsCompleted;
+  if (remainingSessions > 0 && remainingSessions <= 3) {
+    insights.push({
+      priority: 'high',
+      icon: '🎯',
+      message: `Du er på god vei! Kun ${remainingSessions} økter unna ukens mål`,
+    });
+  }
+
+  // Check upcoming test
+  if (nextTest?.date) {
+    const daysUntilTest = Math.ceil((new Date(nextTest.date) - new Date()) / (1000 * 60 * 60 * 24));
+    if (daysUntilTest <= 21 && daysUntilTest > 0) {
+      insights.push({
+        priority: 'warning',
+        icon: '⚠️',
+        message: `Kategoritest om ${daysUntilTest} dager - har du forberedt deg?`,
+      });
+    }
+  }
+
+  // Check streak
+  if (stats.streak >= 7) {
+    insights.push({
+      priority: 'success',
+      icon: '🔥',
+      message: `Imponerende! ${stats.streak} dager på rad med trening`,
+    });
+  }
+
+  // Goal almost complete
+  if (stats.hoursThisWeek >= stats.hoursGoal * 0.9) {
+    insights.push({
+      priority: 'success',
+      icon: '📈',
+      message: 'Strålende! Du er nesten i mål med ukens treningstimer',
+    });
+  }
+
+  return insights[0] || null;
+};
+
+const generateActionRecommendation = (stats, todaySessions) => {
+  // Rest day recommendation
+  if (stats.streak >= 6) {
+    return {
+      icon: '😴',
+      message: 'Vurder en hviledag - du har trent 6+ dager på rad',
+    };
+  }
+
+  // Focus area recommendation
+  if (stats.weakestArea) {
+    return {
+      icon: '🎯',
+      message: `Anbefalt: Fokus på ${stats.weakestArea} (under krav på test)`,
+    };
+  }
+
+  // Start session recommendation
+  if (todaySessions?.length > 0) {
+    return {
+      icon: '💪',
+      message: `Klar for ${todaySessions[0].title}?`,
+    };
+  }
+
+  return null;
+};
+
+const HeroSection = ({ player, greeting, stats, nextTest, todaySessions }) => {
+  const insight = generateSmartInsight(stats, nextTest, []);
+  const recommendation = generateActionRecommendation(stats, todaySessions);
+
+  return (
+    <div style={styles.heroSection}>
+      <div style={styles.heroContent}>
+        <p style={styles.greetingLabel}>{greeting}</p>
+        <PageTitle style={styles.playerName}>{player.name?.split(' ')[0] || 'Spiller'}</PageTitle>
+
+        {/* Smart Insight */}
+        {insight && (
+          <div style={{
+            ...styles.smartInsight,
+            backgroundColor: insight.priority === 'warning' ? 'var(--warning-muted)' :
+                            insight.priority === 'success' ? 'var(--success-muted)' : 'var(--accent-muted)',
+          }}>
+            <span style={styles.insightIcon}>{insight.icon}</span>
+            <span style={styles.insightMessage}>{insight.message}</span>
+          </div>
+        )}
+
+        {/* Action Recommendation */}
+        {recommendation && (
+          <div style={styles.actionRecommendation}>
+            <span>{recommendation.icon}</span>
+            <span>{recommendation.message}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ===== 2. TODAY'S ACTION CARD =====
+
+const TodayActionCard = ({ sessions, onStartSession, onViewCalendar }) => {
+  if (!sessions || sessions.length === 0) return null;
+
+  const nextSession = sessions[0];
+  const sessionTime = nextSession.time || '—';
+
+  return (
+    <div style={styles.actionCard}>
+      <div style={styles.actionCardHeader}>
+        <div style={styles.actionCardIcon}>
+          <Zap size={20} />
+        </div>
+        <div style={styles.actionCardInfo}>
+          <span style={styles.actionCardLabel}>Din neste økt</span>
+          <span style={styles.actionCardTitle}>{nextSession.title}</span>
+          <span style={styles.actionCardMeta}>
+            <Clock size={12} /> {sessionTime} • {nextSession.duration || 60} min
+          </span>
+        </div>
+      </div>
+      <div style={styles.actionCardButtons}>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => onStartSession?.(nextSession)}
+          leftIcon={<Play size={16} />}
+        >
+          Start nå
+        </Button>
+        <Button
+          variant="ghost"
+          size="md"
+          onClick={onViewCalendar}
+        >
+          Se {sessions.length > 1 ? `alle ${sessions.length}` : 'detaljer'}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+// ===== 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) =====
+
+const KPICard = ({
+  icon: Icon,
+  value,
+  label,
+  trend,
+  trendLabel,
+  context,
+  iconColor,
+  progress,      // { current, max, color }
+  status,        // 'on-track' | 'behind' | 'ahead'
+}) => {
+  const progressPercent = progress ? Math.round((progress.current / progress.max) * 100) : null;
+
+  const statusConfig = {
+    'on-track': { label: '✓ På målet', color: 'var(--ak-success)', bg: 'var(--success-muted)' },
+    'behind': { label: '⚠ Henger etter', color: 'var(--ak-warning)', bg: 'var(--warning-muted)' },
+    'ahead': { label: '🚀 Foran skjema', color: 'var(--ak-info)', bg: 'var(--info-muted)' },
+  };
+  const statusInfo = status ? statusConfig[status] : null;
+
+  return (
+    <div style={styles.kpiCard}>
+      <div style={styles.kpiIconRow}>
+        <div style={{ ...styles.kpiIcon, backgroundColor: iconColor ? `${iconColor}15` : 'var(--accent-muted)' }}>
+          <Icon size={18} style={{ color: iconColor || 'var(--text-brand)' }} />
+        </div>
+        {statusInfo && (
+          <div style={{
+            ...styles.statusBadge,
+            color: statusInfo.color,
+            backgroundColor: statusInfo.bg,
+          }}>
+            {statusInfo.label}
+          </div>
+        )}
+      </div>
+      <KPIValue style={styles.kpiValue}>{value}</KPIValue>
+      <KPIMeta style={styles.kpiLabel}>{label}</KPIMeta>
+
+      {/* Trend comparison */}
+      {trend !== undefined && (
+        <div style={{
+          ...styles.trendRow,
+          color: trend >= 0 ? 'var(--ak-success)' : 'var(--ak-error)',
+        }}>
+          <TrendingUp size={12} style={{ transform: trend < 0 ? 'rotate(180deg)' : 'none' }} />
+          <span>{trend >= 0 ? '+' : ''}{trend} {trendLabel || ''}</span>
+        </div>
+      )}
+
+      {/* Progress bar (thick 8px) */}
+      {progress && (
+        <div style={styles.kpiProgressWrapper}>
+          <div style={styles.kpiProgressBar}>
+            <div style={{
+              ...styles.kpiProgressFill,
+              width: `${Math.min(progressPercent, 100)}%`,
+              backgroundColor: progress.color || 'var(--ak-success)',
+            }} />
+          </div>
+          <span style={styles.kpiProgressLabel}>
+            {progressPercent}% av mål ({progress.max})
+          </span>
+        </div>
+      )}
+
+      {/* Context message */}
+      {context && (
+        <p style={styles.kpiContext}>{context}</p>
+      )}
+    </div>
+  );
+};
+
+const WeeklyPerformanceSummary = ({ stats, loading }) => {
+  // Calculate statuses
+  const sessionsPercent = stats.sessionsTotal > 0 ? (stats.sessionsCompleted / stats.sessionsTotal) : 0;
+  const hoursPercent = stats.hoursGoal > 0 ? (stats.hoursThisWeek / stats.hoursGoal) : 0;
+
+  const getSessionStatus = () => {
+    if (sessionsPercent >= 1) return 'ahead';
+    if (sessionsPercent >= 0.6) return 'on-track';
+    return 'behind';
+  };
+
+  const getHoursStatus = () => {
+    if (hoursPercent >= 1) return 'ahead';
+    if (hoursPercent >= 0.6) return 'on-track';
+    return 'behind';
+  };
+
+  const remainingSessions = Math.max(0, stats.sessionsTotal - stats.sessionsCompleted);
+  const remainingHours = Math.max(0, stats.hoursGoal - stats.hoursThisWeek);
+
+  return (
+    <div style={styles.kpiGrid}>
+      <KPICard
+        icon={CheckCircle2}
+        value={`${stats.sessionsCompleted}/${stats.sessionsTotal}`}
+        label="Økter denne uka"
+        status={getSessionStatus()}
+        progress={{ current: stats.sessionsCompleted, max: stats.sessionsTotal, color: 'var(--ak-success)' }}
+        context={remainingSessions > 0 ? `${remainingSessions} økter igjen til målet` : null}
+        iconColor="var(--ak-success)"
+      />
+      <KPICard
+        icon={Clock}
+        value={`${stats.hoursThisWeek}t`}
+        label="Timer denne uka"
+        trend={stats.hoursTrend}
+        trendLabel="vs. forrige uke"
+        status={getHoursStatus()}
+        progress={{ current: stats.hoursThisWeek, max: stats.hoursGoal, color: 'var(--text-brand)' }}
+        context={remainingHours > 0 ? `${remainingHours.toFixed(1)}t igjen til målet` : null}
+        iconColor="var(--text-brand)"
+      />
+      <KPICard
+        icon={Flame}
+        value={stats.streak}
+        label="Dagers streak"
+        trend={stats.streakTrend}
+        trendLabel="vs. forrige uke"
+        context={stats.streak >= 7 ? '🔥 Lengste denne måneden!' : stats.streak >= 3 ? '💪 Godt jobbet!' : null}
+        iconColor="#f97316"
+      />
+      <KPICard
+        icon={TrendingUp}
+        value={stats.scoringAverage?.toFixed(1) || '—'}
+        label="Scoring snitt"
+        trend={stats.scoringTrend}
+        trendLabel="slag"
+        context={stats.scoringTrend < 0 ? '📉 Forbedring!' : null}
+        iconColor="var(--ak-info)"
+      />
+    </div>
+  );
+};
+
+// ===== 4. QUICK ACTIONS (Hurtigvalg) =====
+
+const QuickActions = ({ onAction }) => (
+  <div style={styles.quickActionsSection}>
+    <SectionTitle style={styles.sectionTitle}>Hurtigvalg</SectionTitle>
+    <div style={styles.quickActionsGrid}>
+      <button style={styles.quickActionBtn} onClick={() => onAction('session')}>
+        <Play size={20} />
+        <span>Ny økt</span>
+      </button>
+      <button style={styles.quickActionBtn} onClick={() => onAction('goal')}>
+        <Target size={20} />
+        <span>Nytt mål</span>
+      </button>
+      <button style={styles.quickActionBtn} onClick={() => onAction('progress')}>
+        <BarChart3 size={20} />
+        <span>Fremgang</span>
+      </button>
+      <button style={styles.quickActionBtn} onClick={() => onAction('calendar')}>
+        <Calendar size={20} />
+        <span>Kalender</span>
+      </button>
     </div>
   </div>
 );
+
+// ===== 5. WEEKLY GOALS (Ukens Mål) - EXPANDED =====
+
+const goalTypeIcons = {
+  video: Video,
+  putting: Circle,
+  nutrition: Apple,
+  fitness: Dumbbell,
+  default: Flag,
+};
+
+const getGoalStatus = (goal) => {
+  if (goal.completed) return 'completed';
+  if (!goal.progress && !goal.current) return 'not-started';
+
+  // Calculate if at risk (less than 50% progress with less than 30% time remaining)
+  const progressPercent = goal.max ? (goal.current || 0) / goal.max : goal.progress / 100;
+  const daysRemaining = goal.daysRemaining ?? 7;
+
+  if (daysRemaining <= 2 && progressPercent < 0.5) return 'at-risk';
+  if (progressPercent > 0) return 'in-progress';
+  return 'not-started';
+};
+
+const GoalStatusBadge = ({ goal }) => {
+  const status = getGoalStatus(goal);
+
+  if (status === 'completed') {
+    return (
+      <span style={styles.goalCompletedBadge}>
+        ✓ Fullført
+      </span>
+    );
+  }
+
+  if (status === 'at-risk') {
+    return (
+      <span style={styles.goalAtRiskBadge}>
+        ⚠️ {goal.daysRemaining || 2} dager igjen, {goal.current || 0}/{goal.max || '?'}
+      </span>
+    );
+  }
+
+  if (goal.max !== undefined && goal.current !== undefined) {
+    const isWarning = goal.current === 0;
+    return (
+      <span style={{
+        ...styles.goalProgressBadge,
+        backgroundColor: isWarning ? 'var(--warning-muted)' : 'var(--bg-tertiary)',
+        color: isWarning ? 'var(--ak-warning)' : 'var(--text-secondary)',
+      }}>
+        {goal.current}/{goal.max} {goal.unit || ''}
+      </span>
+    );
+  }
+
+  return null;
+};
+
+const WeeklyGoalsWidget = ({ goals, onToggle, onAddGoal, onViewAll, loading, error }) => {
+  const completedCount = goals.filter(g => g.completed).length;
+  const progressPercent = goals.length > 0 ? Math.round((completedCount / goals.length) * 100) : 0;
+
+  return (
+    <DashboardWidget
+      title="Ukens mål"
+      icon={Target}
+      action={onViewAll}
+      actionLabel="Se alle →"
+      loading={loading}
+      error={error}
+      empty={goals.length === 0}
+      emptyMessage="Ingen mål satt for denne uken"
+      emptyAction={onAddGoal}
+      emptyActionLabel="Legg til mål"
+      noPadding
+      headerRight={
+        <Badge variant="default" size="sm" style={styles.goalCompletionBadge}>
+          {completedCount}/{goals.length} fullført
+        </Badge>
+      }
+    >
+      {/* Overall progress bar - thick 12px */}
+      <div style={styles.goalsOverallProgress}>
+        <div style={styles.goalsProgressBarThick}>
+          <div style={{
+            ...styles.goalsProgressFillThick,
+            width: `${progressPercent}%`,
+          }} />
+        </div>
+        <span style={styles.goalsProgressPercent}>{progressPercent}%</span>
+      </div>
+
+      {/* Goals list - expanded view with rich items */}
+      <div style={styles.goalsList}>
+        {goals.map(goal => {
+          const status = getGoalStatus(goal);
+          const IconComponent = goalTypeIcons[goal.type] || goalTypeIcons.default;
+
+          return (
+            <div
+              key={goal.id}
+              style={{
+                ...styles.goalItem,
+                backgroundColor: status === 'completed' ? 'var(--success-muted)' :
+                                status === 'at-risk' ? 'var(--error-muted)' : 'transparent',
+              }}
+              onClick={() => onToggle?.(goal.id)}
+            >
+              {/* Checkbox */}
+              <div style={{
+                ...styles.goalCheckbox,
+                borderColor: status === 'completed' ? 'var(--ak-success)' :
+                            status === 'at-risk' ? 'var(--ak-error)' : 'var(--border-default)',
+                backgroundColor: status === 'completed' ? 'var(--ak-success)' : 'transparent',
+              }}>
+                {status === 'completed' && (
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                )}
+              </div>
+
+              {/* Goal type icon */}
+              <div style={{
+                ...styles.goalTypeIcon,
+                backgroundColor: status === 'completed' ? 'var(--success-muted)' :
+                                status === 'at-risk' ? 'var(--error-muted)' : 'var(--bg-tertiary)',
+                color: status === 'completed' ? 'var(--ak-success)' :
+                       status === 'at-risk' ? 'var(--ak-error)' : 'var(--text-secondary)',
+              }}>
+                <IconComponent size={14} />
+              </div>
+
+              {/* Goal content */}
+              <div style={styles.goalContent}>
+                <p style={{
+                  ...styles.goalTitle,
+                  textDecoration: status === 'completed' ? 'line-through' : 'none',
+                  color: status === 'completed' ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                }}>
+                  {goal.title}
+                </p>
+
+                {/* Mini progress bar for in-progress goals */}
+                {status === 'in-progress' && goal.max && (
+                  <div style={styles.goalMiniProgressWrapper}>
+                    <div style={styles.goalMiniProgress}>
+                      <div style={{
+                        ...styles.goalMiniProgressFill,
+                        width: `${((goal.current || 0) / goal.max) * 100}%`,
+                      }} />
+                    </div>
+                    <span style={styles.goalMiniProgressText}>
+                      {goal.current || 0}/{goal.max}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Status badge */}
+              <GoalStatusBadge goal={goal} />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Add goal button */}
+      <button style={styles.addGoalBtn} onClick={onAddGoal}>
+        <Plus size={16} />
+        <span>Legg til mål</span>
+      </button>
+    </DashboardWidget>
+  );
+};
 
 const ProfileCard = ({ player, stats, onViewProgress, onViewPlan, onViewProfile }) => {
   // Get initials for avatar fallback
@@ -196,29 +680,174 @@ const StatCard = ({ icon: Icon, label, value, subValue }) => (
   </div>
 );
 
-const CountdownCard = ({ title, date, type, location }) => {
+// ===== 7. NEXT TEST (Neste Test) =====
+
+const TestPreparationItem = ({ completed, children }) => (
+  <div style={styles.prepChecklistItem}>
+    <div style={{
+      ...styles.prepCheckbox,
+      backgroundColor: completed ? 'var(--ak-success)' : 'transparent',
+      borderColor: completed ? 'var(--ak-success)' : 'var(--border-default)',
+    }}>
+      {completed && (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      )}
+    </div>
+    <span style={{
+      ...styles.prepChecklistText,
+      color: completed ? 'var(--text-tertiary)' : 'var(--text-primary)',
+      textDecoration: completed ? 'line-through' : 'none',
+    }}>
+      {children}
+    </span>
+  </div>
+);
+
+const NextTestCard = ({ title, date, location, preparation, onViewDetails, onPrepare }) => {
   const targetDate = new Date(date);
   const today = new Date();
   const diffTime = targetDate - today;
   const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
-  const typeConfig = {
-    tournament: { label: 'Neste turnering', icon: Trophy },
-    test: { label: 'Neste test', icon: Target },
-  };
-  const config = typeConfig[type] || typeConfig.test;
-  const Icon = config.icon;
+  const isProminent = diffDays <= 30;
+  const isUrgent = diffDays <= 14;
+  const isWarning = diffDays <= 21 && diffDays > 14;
 
+  // Minimized version for >30 days
+  if (!isProminent) {
+    return (
+      <div style={styles.testMinimized}>
+        <div style={styles.testMinimizedLeft}>
+          <Target size={16} style={{ color: 'var(--text-tertiary)' }} />
+          <span style={styles.testMinimizedText}>
+            Neste test: {title || 'Ikke planlagt'} • {diffDays} dager
+          </span>
+        </div>
+        <button style={styles.testMinimizedBtn} onClick={onViewDetails}>
+          Detaljer
+        </button>
+      </div>
+    );
+  }
+
+  // Prominent version with preparation checklist
+  return (
+    <div style={{
+      ...cardShell.base,
+      padding: 0,
+      borderLeft: isUrgent ? '4px solid var(--ak-error)' :
+                  isWarning ? '4px solid var(--ak-warning)' : '4px solid var(--text-brand)',
+    }}>
+      {/* Header */}
+      <div style={styles.testHeader}>
+        <div style={styles.testHeaderLeft}>
+          <div style={{
+            ...styles.testIcon,
+            backgroundColor: isUrgent ? 'var(--error-muted)' :
+                            isWarning ? 'var(--warning-muted)' : 'var(--accent-muted)',
+            color: isUrgent ? 'var(--ak-error)' :
+                   isWarning ? 'var(--ak-warning)' : 'var(--text-brand)',
+          }}>
+            <Target size={18} />
+          </div>
+          <div>
+            <p style={styles.testTitle}>{title || 'Kategoritest'}</p>
+            {location && (
+              <p style={styles.testLocation}>
+                <MapPin size={12} /> {location}
+              </p>
+            )}
+          </div>
+        </div>
+        <div style={{
+          ...styles.testDaysBadge,
+          backgroundColor: isUrgent ? 'var(--ak-error)' :
+                          isWarning ? 'var(--ak-warning)' : 'var(--text-brand)',
+        }}>
+          Om {diffDays} dager
+        </div>
+      </div>
+
+      {/* Preparation checklist */}
+      <div style={styles.prepChecklist}>
+        <p style={styles.prepChecklistTitle}>
+          <ListChecks size={14} />
+          Forberedelser
+        </p>
+        <TestPreparationItem completed={preparation?.reviewedMaterial}>
+          Gjennomgå testmateriale
+        </TestPreparationItem>
+        <TestPreparationItem completed={preparation?.practicedWeakAreas}>
+          Øv på svake områder
+        </TestPreparationItem>
+        <TestPreparationItem completed={preparation?.takenPracticeTest}>
+          Ta en prøvetest
+        </TestPreparationItem>
+      </div>
+
+      {/* CTA */}
+      <div style={styles.testCTA}>
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={onPrepare}
+          leftIcon={<BookOpen size={14} />}
+          fullWidth
+        >
+          Forbered deg til testen
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+// ===== 9. NEXT TOURNAMENT (Neste Turnering) - Minimized if >30 days =====
+
+const NextTournamentCard = ({ title, date, location, onViewDetails }) => {
+  const targetDate = new Date(date);
+  const today = new Date();
+  const diffTime = targetDate - today;
+  const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+
+  const isMinimized = diffDays > 30;
+
+  if (isMinimized) {
+    // Minimized version - single row
+    return (
+      <div style={styles.tournamentMinimized}>
+        <div style={styles.tournamentMinimizedLeft}>
+          <Trophy size={16} style={{ color: 'var(--text-tertiary)' }} />
+          <span style={styles.tournamentMinimizedText}>
+            {title || 'Neste turnering'} • {diffDays} dager
+          </span>
+        </div>
+        <button
+          style={styles.tournamentMinimizedBtn}
+          onClick={onViewDetails}
+        >
+          Detaljer
+        </button>
+      </div>
+    );
+  }
+
+  // Full version when <= 30 days
   return (
     <div style={{ ...cardShell.base, padding: cardShell.padding.compact }}>
       <div style={styles.countdownContent}>
         <div style={styles.countdownLeft}>
-          <div style={styles.countdownIcon}>
-            <Icon size={18} />
+          <div style={{
+            ...styles.countdownIcon,
+            backgroundColor: 'var(--accent-muted)',
+            color: 'var(--text-brand)',
+          }}>
+            <Trophy size={18} />
           </div>
           <div>
             <KPIMeta style={{ textTransform: 'uppercase', letterSpacing: '0.03em', fontWeight: 500 }}>
-              {config.label}
+              Neste turnering
             </KPIMeta>
             <p style={styles.countdownTitle}>{title || 'Ikke planlagt'}</p>
             {location && (
@@ -286,32 +915,131 @@ const HoursWidget = ({ hours, goal, loading, error }) => {
   );
 };
 
-const NotificationsWidget = ({ notifications, onViewAll, loading, error }) => (
-  <DashboardWidget
-    title="Varslinger"
-    icon={Bell}
-    action={onViewAll}
-    actionLabel={notifications.length > 0 ? `${notifications.length} nye` : 'Se alle'}
-    loading={loading}
-    error={error}
-    empty={notifications.length === 0}
-    emptyMessage="Ingen nye varslinger"
-    noPadding
-  >
-    <div style={styles.notificationsList}>
-      {notifications.slice(0, 3).map((notif, idx) => (
-        <div key={notif.id || idx} style={styles.notificationItem}>
-          <div style={styles.notificationDot} />
-          <div style={styles.notificationContent}>
-            <p style={styles.notificationTitle}>{notif.title}</p>
-            <p style={styles.notificationMessage}>{notif.message}</p>
-          </div>
-          <KPIMeta>{notif.time || 'Nylig'}</KPIMeta>
-        </div>
-      ))}
+// ===== 8. MESSAGES (Meldinger) - Prioritized =====
+
+const MessageAvatar = ({ src, name }) => {
+  const getInitials = (name) => {
+    if (!name) return '?';
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
+  if (src) {
+    return <img src={src} alt={name} style={styles.msgAvatar} />;
+  }
+
+  return (
+    <div style={styles.msgAvatarFallback}>
+      {getInitials(name)}
     </div>
-  </DashboardWidget>
-);
+  );
+};
+
+const MessagePriorityBadge = ({ priority, requiresResponse }) => {
+  if (requiresResponse) {
+    return (
+      <span style={styles.msgBadgeUrgent}>Krever svar</span>
+    );
+  }
+  if (priority === 'high') {
+    return (
+      <span style={styles.msgBadgeHigh}>Viktig</span>
+    );
+  }
+  if (priority === 'info') {
+    return (
+      <span style={styles.msgBadgeInfo}>FYI</span>
+    );
+  }
+  return null;
+};
+
+const MessagesWidget = ({ messages, onViewAll, onMessageClick, onQuickReply, loading, error }) => {
+  // Sort by priority: unread first, then by priority level
+  const sortedMessages = [...messages].sort((a, b) => {
+    if (a.unread !== b.unread) return a.unread ? -1 : 1;
+    if (a.requiresResponse !== b.requiresResponse) return a.requiresResponse ? -1 : 1;
+    if (a.priority !== b.priority) {
+      const priorityOrder = { high: 0, medium: 1, low: 2, info: 3 };
+      return (priorityOrder[a.priority] || 2) - (priorityOrder[b.priority] || 2);
+    }
+    return 0;
+  });
+
+  const unreadCount = messages.filter(m => m.unread).length;
+
+  return (
+    <DashboardWidget
+      title="Meldinger"
+      icon={MessageCircle}
+      action={onViewAll}
+      actionLabel="Se alle →"
+      loading={loading}
+      error={error}
+      empty={messages.length === 0}
+      emptyMessage="Ingen nye meldinger"
+      noPadding
+      headerRight={
+        unreadCount > 0 && (
+          <Badge variant="accent" size="sm" style={styles.msgUnreadBadge}>
+            {unreadCount}
+          </Badge>
+        )
+      }
+    >
+      <div style={styles.messagesList}>
+        {sortedMessages.slice(0, 4).map((msg, idx) => (
+          <div
+            key={msg.id || idx}
+            style={{
+              ...styles.messageItem,
+              backgroundColor: msg.unread ? 'var(--accent-muted)' :
+                              msg.requiresResponse ? 'var(--warning-muted)' : 'transparent',
+            }}
+            onClick={() => onMessageClick?.(msg)}
+          >
+            {/* Avatar */}
+            <MessageAvatar src={msg.avatar} name={msg.from || msg.sender} />
+
+            {/* Content */}
+            <div style={styles.messageContent}>
+              <div style={styles.messageHeader}>
+                <p style={{
+                  ...styles.messageSender,
+                  fontWeight: msg.unread ? 600 : 500,
+                }}>
+                  {msg.from || msg.sender}
+                </p>
+                <MessagePriorityBadge
+                  priority={msg.priority}
+                  requiresResponse={msg.requiresResponse}
+                />
+              </div>
+              <p style={styles.messagePreview}>{msg.message || msg.preview}</p>
+              <div style={styles.messageMeta}>
+                <span style={styles.messageTime}>{msg.time || 'Nylig'}</span>
+                {msg.requiresResponse && onQuickReply && (
+                  <button
+                    style={styles.msgQuickReplyBtn}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onQuickReply(msg);
+                    }}
+                  >
+                    Svar raskt →
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </DashboardWidget>
+  );
+};
 
 // ===== ZONE C: BOTTOM SECTION =====
 
@@ -419,16 +1147,16 @@ const AKGolfDashboard = () => {
   const navigate = useNavigate();
   const { data: dashboardData, loading, error, refetch } = useDashboard();
   const { user } = useAuth();
-  const [tasks, setTasks] = useState([]);
+  const [goals, setGoals] = useState([]);
 
   useEffect(() => {
     if (dashboardData?.tasks) {
-      setTasks(dashboardData.tasks);
+      setGoals(dashboardData.tasks);
     }
   }, [dashboardData]);
 
-  const toggleTask = (id) => {
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+  const toggleGoal = (id) => {
+    setGoals(prev => prev.map(g => g.id === id ? { ...g, completed: !g.completed } : g));
   };
 
   const getGreeting = () => {
@@ -438,13 +1166,37 @@ const AKGolfDashboard = () => {
     return 'God kveld';
   };
 
+  const handleQuickAction = (action) => {
+    const routes = {
+      session: '/sessions/new',
+      goal: '/maalsetninger/new',
+      progress: '/progress',
+      calendar: '/kalender',
+    };
+    navigate(routes[action] || '/');
+  };
+
   // Extract data with fallbacks
   const player = dashboardData?.player || { name: 'Andreas Holm', category: 'B', club: 'Slice Country Club', memberSince: '2023' };
-  const stats = dashboardData?.stats || { sessionsCompleted: 0, sessionsTotal: 12, hoursThisWeek: 0, hoursGoal: 20, streak: 0, scoringAverage: 74.2, strokesGained: 1.3, totalSessions: 47 };
+  const stats = dashboardData?.stats || {
+    sessionsCompleted: 8,
+    sessionsTotal: 12,
+    hoursThisWeek: 14.5,
+    hoursGoal: 20,
+    streak: 7,
+    scoringAverage: 74.2,
+    strokesGained: 1.3,
+    totalSessions: 47,
+    // Trend data (week over week)
+    sessionsTrend: 2,
+    hoursTrend: 3.5,
+    streakTrend: 2,
+    scoringTrend: -0.5,
+  };
   const nextTournament = dashboardData?.nextTournament;
   const nextTest = dashboardData?.nextTest;
-  const notifications = dashboardData?.notifications || [];
-  const upcomingSessions = dashboardData?.upcomingSessions || [];
+  const messages = dashboardData?.notifications || [];
+  const todaySessions = dashboardData?.upcomingSessions || [];
 
   return (
     <div id="dashboard-export" style={styles.dashboard}>
@@ -469,120 +1221,79 @@ const AKGolfDashboard = () => {
         </div>
       )}
 
-      {/* ZONE A: Top Section */}
-      <section style={styles.zoneA}>
-        <WelcomeHeader player={player} greeting={getGreeting()} />
+      {/* 1. HERO SECTION: Greeting + Smart Insight */}
+      <HeroSection
+        player={player}
+        greeting={getGreeting()}
+        stats={stats}
+        nextTest={nextTest}
+        todaySessions={todaySessions}
+      />
 
-        {/* Profile Card with Avatar and Stats */}
-        <ProfileCard
-          player={player}
-          stats={stats}
-          onViewProgress={() => navigate('/progress')}
-          onViewPlan={() => navigate('/kalender?view=week')}
-          onViewProfile={() => navigate('/profil')}
+      {/* 2. TODAY'S ACTION CARD (if sessions exist) */}
+      <TodayActionCard
+        sessions={todaySessions}
+        onStartSession={(s) => navigate(`/session/${s.id}/start`)}
+        onViewCalendar={() => navigate('/kalender')}
+      />
+
+      {/* 3. WEEKLY PERFORMANCE SUMMARY (4 KPIs) */}
+      <WeeklyPerformanceSummary stats={stats} loading={loading} />
+
+      {/* 4. QUICK ACTIONS (Hurtigvalg) */}
+      <QuickActions onAction={handleQuickAction} />
+
+      {/* 5. WEEKLY GOALS (Ukens Mål) - EXPANDED */}
+      <WeeklyGoalsWidget
+        goals={goals}
+        onToggle={toggleGoal}
+        onAddGoal={() => navigate('/maalsetninger/new')}
+        onViewAll={() => navigate('/maalsetninger')}
+        loading={loading}
+      />
+
+      {/* 6. TODAY'S SESSIONS (Dagens Økter) */}
+      <SessionsWidget
+        sessions={todaySessions}
+        onViewAll={() => navigate('/kalender')}
+        onSessionClick={(s) => navigate(`/session/${s.id}`)}
+        loading={loading}
+      />
+
+      {/* 7. NEXT TEST (Neste Test) */}
+      {nextTest && (
+        <NextTestCard
+          title={nextTest.title}
+          date={nextTest.date || '2026-03-15'}
+          location={nextTest.location}
+          preparation={nextTest.preparation || {
+            reviewedMaterial: false,
+            practicedWeakAreas: false,
+            takenPracticeTest: false,
+          }}
+          onViewDetails={() => navigate('/tests')}
+          onPrepare={() => navigate('/tests/prepare')}
         />
-
-        {/* Quick Stats Row */}
-        <div style={styles.statsRow}>
-          <StatCard
-            icon={CheckCircle2}
-            label="Økter denne uke"
-            value={stats.sessionsCompleted}
-            subValue={`av ${stats.sessionsTotal}`}
-          />
-          <StatCard
-            icon={Clock}
-            label="Treningstid"
-            value={`${stats.hoursThisWeek}t`}
-            subValue={`mål: ${stats.hoursGoal}t`}
-          />
-          <StatCard
-            icon={Flame}
-            label="Streak"
-            value={stats.streak}
-            subValue="dager på rad"
-          />
-        </div>
-
-        {/* Countdown Cards */}
-        <div style={styles.countdownRow}>
-          <CountdownCard
-            title={nextTournament?.title}
-            date={nextTournament?.date || '2026-12-31'}
-            type="tournament"
-            location={nextTournament?.location}
-          />
-          <CountdownCard
-            title={nextTest?.title}
-            date={nextTest?.date || '2026-12-31'}
-            type="test"
-            location={nextTest?.location}
-          />
-        </div>
-      </section>
-
-      {/* ZONE B: Middle Section */}
-      <section style={styles.zoneB}>
-        <div style={styles.zoneBGrid}>
-          <PlanProgressWidget
-            completed={stats.sessionsCompleted}
-            total={stats.sessionsTotal}
-            loading={loading}
-          />
-          <HoursWidget
-            hours={stats.hoursThisWeek}
-            goal={stats.hoursGoal}
-            loading={loading}
-          />
-          <NotificationsWidget
-            notifications={notifications}
-            onViewAll={() => navigate('/varslinger')}
-            loading={loading}
-          />
-        </div>
-      </section>
-
-      {/* Peer Comparison */}
-      {user?.playerId && (
-        <section style={styles.peerSection}>
-          <PeerComparisonWidget
-            playerId={user.playerId}
-            testNumber={1}
-            compact={true}
-          />
-        </section>
       )}
 
-      {/* ZONE C: Bottom Section */}
-      <section style={styles.zoneC}>
-        <div style={styles.zoneCGrid}>
-          <TasksWidget
-            tasks={tasks}
-            onToggle={toggleTask}
-            onViewAll={() => navigate('/maalsetninger')}
-            loading={loading}
-          />
-          <SessionsWidget
-            sessions={upcomingSessions}
-            onViewAll={() => navigate('/kalender')}
-            onSessionClick={(s) => navigate(`/session/${s.id}`)}
-            loading={loading}
-          />
-        </div>
-      </section>
+      {/* 8. MESSAGES (Meldinger) - Prioritized */}
+      <MessagesWidget
+        messages={messages}
+        onViewAll={() => navigate('/meldinger')}
+        onMessageClick={(m) => navigate(`/meldinger/${m.id}`)}
+        onQuickReply={(m) => navigate(`/meldinger/${m.id}/reply`)}
+        loading={loading}
+      />
 
-      {/* Primary CTA - Single button */}
-      <div style={styles.primaryCTA}>
-        <Button
-          variant="primary"
-          size="lg"
-          onClick={() => navigate('/sessions')}
-          leftIcon={<Play size={18} />}
-          fullWidth
-        >
-          Start treningsøkt
-        </Button>
-      </div>
+      {/* 9. NEXT TOURNAMENT (Neste Turnering) - Minimized if >30 days */}
+      {nextTournament && (
+        <NextTournamentCard
+          title={nextTournament.title}
+          date={nextTournament.date || '2026-06-15'}
+          location={nextTournament.location}
+          onViewDetails={() => navigate('/tournaments')}
+        />
+      )}
     </div>
   );
 };
@@ -624,33 +1335,606 @@ const styles = {
     textDecoration: 'underline',
   },
 
-  // Zone A
-  zoneA: {
+  // 1. Hero Section
+  heroSection: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '20px',
+    gap: '8px',
   },
-  welcomeHeader: {
-    paddingBottom: '8px',
+  heroContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
   },
   greetingLabel: {
     fontSize: '12px',
     color: 'var(--text-tertiary)',
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
-    margin: '0 0 4px 0',
+    margin: 0,
   },
   playerName: {
     fontSize: '28px',
     fontWeight: 700,
     color: 'var(--text-primary)',
-    margin: '0 0 4px 0',
+    margin: 0,
     letterSpacing: '-0.01em',
   },
-  categoryLabel: {
+  smartInsight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '12px 16px',
+    borderRadius: '12px',
+    marginTop: '8px',
+  },
+  insightIcon: {
+    fontSize: '16px',
+  },
+  insightMessage: {
     fontSize: '14px',
+    fontWeight: 500,
+    color: 'var(--text-primary)',
+  },
+  actionRecommendation: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    marginTop: '4px',
+  },
+
+  // 2. Today's Action Card
+  actionCard: {
+    backgroundColor: 'var(--accent-muted)',
+    borderRadius: '16px',
+    padding: '20px',
+    border: '2px solid var(--text-brand)',
+  },
+  actionCardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    marginBottom: '16px',
+  },
+  actionCardIcon: {
+    width: '48px',
+    height: '48px',
+    borderRadius: '12px',
+    backgroundColor: 'var(--text-brand)',
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionCardInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
+  },
+  actionCardLabel: {
+    fontSize: '12px',
+    color: 'var(--text-tertiary)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+  },
+  actionCardTitle: {
+    fontSize: '18px',
+    fontWeight: 700,
+    color: 'var(--text-primary)',
+  },
+  actionCardMeta: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  },
+  actionCardButtons: {
+    display: 'flex',
+    gap: '12px',
+  },
+
+  // 3. KPI Grid
+  kpiGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '12px',
+  },
+  kpiCard: {
+    backgroundColor: 'var(--card)',
+    borderRadius: '16px',
+    padding: '16px 20px',
+    border: '1px solid var(--border-subtle)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+  },
+  kpiIconRow: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  kpiIcon: {
+    width: '36px',
+    height: '36px',
+    borderRadius: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusBadge: {
+    padding: '4px 10px',
+    borderRadius: '20px',
+    fontSize: '11px',
+    fontWeight: 600,
+  },
+  trendRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    fontSize: '12px',
+    fontWeight: 500,
+  },
+  kpiValue: {
+    fontSize: '24px',
+    fontWeight: 700,
+    fontFeatureSettings: '"tnum"',
+    color: 'var(--text-primary)',
+  },
+  kpiLabel: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+  },
+  kpiProgressWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    marginTop: '4px',
+  },
+  kpiProgressBar: {
+    height: '8px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '4px',
+    overflow: 'hidden',
+  },
+  kpiProgressFill: {
+    height: '100%',
+    borderRadius: '4px',
+    transition: 'width 0.3s ease',
+  },
+  kpiProgressLabel: {
+    fontSize: '11px',
+    color: 'var(--text-tertiary)',
+  },
+  kpiContext: {
+    fontSize: '12px',
     color: 'var(--text-secondary)',
     margin: 0,
+    marginTop: '2px',
+  },
+
+  // 4. Quick Actions
+  quickActionsSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+  },
+  sectionTitle: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    margin: 0,
+  },
+  quickActionsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '8px',
+  },
+  quickActionBtn: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    padding: '16px 12px',
+    backgroundColor: 'var(--card)',
+    border: '1px solid var(--border-subtle)',
+    borderRadius: '12px',
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    color: 'var(--text-secondary)',
+    fontSize: '12px',
+    fontWeight: 500,
+  },
+
+  // 5. Weekly Goals - Enhanced
+  goalCompletionBadge: {
+    backgroundColor: 'var(--bg-tertiary)',
+    color: 'var(--text-secondary)',
+  },
+  goalsOverallProgress: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '12px 24px 16px',
+  },
+  goalsProgressBarThick: {
+    flex: 1,
+    height: '12px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '6px',
+    overflow: 'hidden',
+  },
+  goalsProgressFillThick: {
+    height: '100%',
+    backgroundColor: 'var(--ak-success)',
+    borderRadius: '6px',
+    transition: 'width 0.3s ease',
+  },
+  goalsProgressPercent: {
+    fontSize: '14px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+    minWidth: '36px',
+  },
+  goalsList: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  goalItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '14px 24px',
+    borderBottom: '1px solid var(--border-subtle)',
+    cursor: 'pointer',
+    transition: 'background-color 0.15s ease',
+  },
+  goalCheckbox: {
+    width: '22px',
+    height: '22px',
+    borderRadius: '50%',
+    border: '2px solid',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+    transition: 'all 0.15s ease',
+  },
+  goalTypeIcon: {
+    width: '32px',
+    height: '32px',
+    borderRadius: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+  goalContent: {
+    flex: 1,
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+  },
+  goalTitle: {
+    fontSize: '14px',
+    fontWeight: 500,
+    margin: 0,
+    transition: 'color 0.15s ease',
+  },
+  goalMiniProgressWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    marginTop: '4px',
+  },
+  goalMiniProgress: {
+    flex: 1,
+    height: '6px',
+    backgroundColor: 'var(--bg-tertiary)',
+    borderRadius: '3px',
+    overflow: 'hidden',
+    maxWidth: '100px',
+  },
+  goalMiniProgressFill: {
+    height: '100%',
+    backgroundColor: 'var(--text-brand)',
+    borderRadius: '3px',
+  },
+  goalMiniProgressText: {
+    fontSize: '12px',
+    fontWeight: 500,
+    color: 'var(--text-secondary)',
+  },
+  goalCompletedBadge: {
+    padding: '4px 10px',
+    borderRadius: '12px',
+    fontSize: '11px',
+    fontWeight: 600,
+    backgroundColor: 'var(--success-muted)',
+    color: 'var(--ak-success)',
+  },
+  goalAtRiskBadge: {
+    padding: '4px 10px',
+    borderRadius: '12px',
+    fontSize: '11px',
+    fontWeight: 600,
+    backgroundColor: 'var(--error-muted)',
+    color: 'var(--ak-error)',
+  },
+  goalProgressBadge: {
+    padding: '4px 10px',
+    borderRadius: '12px',
+    fontSize: '11px',
+    fontWeight: 600,
+  },
+  addGoalBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+    padding: '14px 24px',
+    backgroundColor: 'transparent',
+    border: 'none',
+    borderTop: '1px dashed var(--border-default)',
+    color: 'var(--text-brand)',
+    fontSize: '13px',
+    fontWeight: 500,
+    cursor: 'pointer',
+    transition: 'background-color 0.15s ease',
+  },
+
+  // 7. Next Test - Enhanced
+  testMinimized: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '14px 20px',
+    backgroundColor: 'var(--bg-secondary)',
+    borderRadius: '12px',
+    border: '1px solid var(--border-subtle)',
+  },
+  testMinimizedLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  testMinimizedText: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+  },
+  testMinimizedBtn: {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-brand)',
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  },
+  testHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '16px 20px',
+    borderBottom: '1px solid var(--border-subtle)',
+  },
+  testHeaderLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  testIcon: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  testTitle: {
+    fontSize: '16px',
+    fontWeight: 600,
+    color: 'var(--text-primary)',
+    margin: 0,
+  },
+  testLocation: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    margin: '4px 0 0 0',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  },
+  testDaysBadge: {
+    padding: '6px 12px',
+    borderRadius: '20px',
+    fontSize: '12px',
+    fontWeight: 600,
+    color: 'white',
+  },
+  prepChecklist: {
+    padding: '16px 20px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  prepChecklistTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    fontSize: '13px',
+    fontWeight: 600,
+    color: 'var(--text-secondary)',
+    margin: '0 0 4px 0',
+  },
+  prepChecklistItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  prepCheckbox: {
+    width: '18px',
+    height: '18px',
+    borderRadius: '4px',
+    border: '2px solid',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+  prepChecklistText: {
+    fontSize: '14px',
+  },
+  testCTA: {
+    padding: '0 20px 16px',
+  },
+
+  // 8. Messages - Enhanced with avatars
+  msgUnreadBadge: {
+    minWidth: '20px',
+    height: '20px',
+    borderRadius: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '11px',
+    fontWeight: 700,
+  },
+  messagesList: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  messageItem: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '12px',
+    padding: '14px 24px',
+    borderBottom: '1px solid var(--border-subtle)',
+    cursor: 'pointer',
+    transition: 'background-color 0.15s ease',
+  },
+  msgAvatar: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    flexShrink: 0,
+  },
+  msgAvatarFallback: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    backgroundColor: 'var(--accent-muted)',
+    color: 'var(--text-brand)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '14px',
+    fontWeight: 600,
+    flexShrink: 0,
+  },
+  messageContent: {
+    flex: 1,
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+  },
+  messageHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    flexWrap: 'wrap',
+  },
+  messageSender: {
+    fontSize: '14px',
+    color: 'var(--text-primary)',
+    margin: 0,
+  },
+  msgBadgeUrgent: {
+    padding: '2px 8px',
+    borderRadius: '10px',
+    fontSize: '10px',
+    fontWeight: 600,
+    backgroundColor: 'var(--ak-error)',
+    color: 'white',
+  },
+  msgBadgeHigh: {
+    padding: '2px 8px',
+    borderRadius: '10px',
+    fontSize: '10px',
+    fontWeight: 600,
+    backgroundColor: 'var(--warning-muted)',
+    color: 'var(--ak-warning)',
+  },
+  msgBadgeInfo: {
+    padding: '2px 8px',
+    borderRadius: '10px',
+    fontSize: '10px',
+    fontWeight: 600,
+    backgroundColor: 'var(--info-muted)',
+    color: 'var(--ak-info)',
+  },
+  messagePreview: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    margin: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  messageMeta: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginTop: '4px',
+  },
+  messageTime: {
+    fontSize: '12px',
+    color: 'var(--text-tertiary)',
+  },
+  msgQuickReplyBtn: {
+    fontSize: '12px',
+    fontWeight: 500,
+    color: 'var(--text-brand)',
+    backgroundColor: 'transparent',
+    border: 'none',
+    padding: 0,
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  },
+
+  // 9. Tournament minimized
+  tournamentMinimized: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '14px 20px',
+    backgroundColor: 'var(--bg-secondary)',
+    borderRadius: '12px',
+    border: '1px solid var(--border-subtle)',
+  },
+  tournamentMinimizedLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+  },
+  tournamentMinimizedText: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+  },
+  tournamentMinimizedBtn: {
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'var(--text-brand)',
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'underline',
   },
 
   // Profile Card
