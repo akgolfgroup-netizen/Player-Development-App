@@ -21,22 +21,14 @@ import { SectionTitle, SubSectionTitle } from '../../components/typography/Headi
 import apiClient from '../../services/apiClient';
 import { useScreenView } from '../../analytics/useScreenView';
 import { useAuth } from '../../contexts/AuthContext';
+import {
+  mapRawResultsToListPage,
+  type ListPageTestResult,
+  type RawApiTestResultWithTest,
+} from '../../domain/tests';
 
-interface TestResult {
-  id: string;
-  testId: string;
-  testName: string;
-  testNumber: number;
-  category: string;
-  value: number;
-  unit: string;
-  requirement: number;
-  lowerIsBetter: boolean;
-  testDate: string;
-  passed: boolean;
-  trend?: 'up' | 'down' | 'stable';
-  previousValue?: number;
-}
+// Use centralized type from domain/tests
+type TestResult = ListPageTestResult;
 
 interface GroupedTests {
   [category: string]: TestResult[];
@@ -73,8 +65,9 @@ const TestResultsPage: React.FC = () => {
       });
 
       if (response.data?.success) {
-        // Process and enrich results
-        const enrichedResults = processResults(response.data.data || []);
+        // Process and enrich results using centralized mapper
+        const rawResults = (response.data.data || []) as RawApiTestResultWithTest[];
+        const enrichedResults = mapRawResultsToListPage(rawResults);
         setResults(enrichedResults);
       } else {
         setResults([]);
@@ -89,57 +82,8 @@ const TestResultsPage: React.FC = () => {
     }
   };
 
-  const processResults = (rawResults: any[]): TestResult[] => {
-    // Group by test to calculate trends
-    const byTest: { [key: string]: any[] } = {};
-    rawResults.forEach(r => {
-      const key = r.testId || r.test?.id;
-      if (!byTest[key]) byTest[key] = [];
-      byTest[key].push(r);
-    });
-
-    return rawResults.map(r => {
-      const testId = r.testId || r.test?.id;
-      const testResults = byTest[testId] || [];
-      const sortedResults = testResults.sort((a, b) =>
-        new Date(b.testDate || b.createdAt).getTime() - new Date(a.testDate || a.createdAt).getTime()
-      );
-
-      const currentIndex = sortedResults.findIndex(tr => tr.id === r.id);
-      const previousResult = sortedResults[currentIndex + 1];
-
-      let trend: 'up' | 'down' | 'stable' = 'stable';
-      if (previousResult) {
-        const diff = r.value - previousResult.value;
-        const lowerIsBetter = r.test?.lowerIsBetter || r.lowerIsBetter;
-        if (lowerIsBetter) {
-          trend = diff < 0 ? 'up' : diff > 0 ? 'down' : 'stable';
-        } else {
-          trend = diff > 0 ? 'up' : diff < 0 ? 'down' : 'stable';
-        }
-      }
-
-      const requirement = r.test?.requirement || r.requirement || 0;
-      const lowerIsBetter = r.test?.lowerIsBetter || r.lowerIsBetter || false;
-      const passed = lowerIsBetter ? r.value <= requirement : r.value >= requirement;
-
-      return {
-        id: r.id,
-        testId: testId,
-        testName: r.test?.name || r.testName || 'Ukjent test',
-        testNumber: r.test?.testNumber || r.testNumber || 0,
-        category: r.test?.category || r.category || 'Annet',
-        value: r.value,
-        unit: r.test?.unit || r.unit || '',
-        requirement,
-        lowerIsBetter,
-        testDate: r.testDate || r.createdAt,
-        passed,
-        trend,
-        previousValue: previousResult?.value,
-      };
-    });
-  };
+  // NOTE: processResults logic has been moved to domain/tests/mappers.ts
+  // as mapRawResultsToListPage() for centralized conversion.
 
   const categories = useMemo(() => {
     const cats = new Set(results.map(r => r.category));
