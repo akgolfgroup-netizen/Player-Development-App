@@ -181,9 +181,9 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
   };
 
   const importanceColors = {
-    A: { bg: 'rgba(239, 68, 68, 0.1)', text: '#ef4444', label: 'A - Hovedmål' },
-    B: { bg: 'rgba(234, 179, 8, 0.1)', text: '#eab308', label: 'B - Viktig' },
-    C: { bg: 'rgba(34, 197, 94, 0.1)', text: '#22c55e', label: 'C - Forberedelse' },
+    A: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)', label: 'A - Hovedmål' },
+    B: { bg: 'rgba(234, 179, 8, 0.1)', text: 'var(--warning)', label: 'B - Viktig' },
+    C: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)', label: 'C - Forberedelse' },
   };
 
   return (
@@ -570,7 +570,7 @@ const Step4Review = ({ formData }) => {
           border: '1px solid rgba(34, 197, 94, 0.2)',
         }}
       >
-        <Sparkles size={32} color="#22c55e" className="mb-3" />
+        <Sparkles size={32} color="var(--success)" className="mb-3" />
         <h3 className="text-lg font-semibold mb-2 m-0" style={{ color: 'var(--text-primary)' }}>
           Klar til å generere!
         </h3>
@@ -609,7 +609,7 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
       className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
       style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)' }}
     >
-      <CheckCircle size={40} color="#22c55e" />
+      <CheckCircle size={40} color="var(--success)" />
     </div>
 
     <h2 className="text-2xl font-semibold mb-2 m-0" style={{ color: 'var(--text-primary)' }}>
@@ -674,7 +674,7 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
       }}
     >
       <div className="flex gap-3 items-start">
-        <Calendar size={20} color={syncResult ? '#22c55e' : 'var(--accent)'} className="shrink-0 mt-0.5" />
+        <Calendar size={20} color={syncResult ? 'var(--success)' : 'var(--accent)'} className="shrink-0 mt-0.5" />
         <div>
           <p className="text-sm font-medium mb-1 m-0" style={{ color: 'var(--text-primary)' }}>
             {syncResult ? `${syncResult.syncedCount} økter synkronisert!` : 'Klar til synkronisering'}
@@ -913,7 +913,7 @@ const AarsplanGenerator = () => {
             style={{
               backgroundColor: 'rgba(239, 68, 68, 0.1)',
               border: '1px solid rgba(239, 68, 68, 0.2)',
-              color: '#ef4444',
+              color: 'var(--error)',
             }}
           >
             {error}
@@ -964,7 +964,7 @@ const AarsplanGenerator = () => {
               disabled={isGenerating || !canProceed()}
               className="flex items-center gap-2 py-3 px-7 rounded-lg border-none text-base font-semibold text-white"
               style={{
-                backgroundColor: '#22c55e',
+                backgroundColor: 'var(--success)',
                 cursor: isGenerating ? 'wait' : 'pointer',
                 opacity: isGenerating ? 0.8 : 1,
               }}
