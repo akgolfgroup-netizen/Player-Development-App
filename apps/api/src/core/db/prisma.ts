@@ -181,17 +181,69 @@ function hasTenantIdField(modelName: string): boolean {
 }
 
 /**
- * Connect to database
+ * Sleep helper for retry logic
+ */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Connect to database with retry logic for production environments
+ * Uses exponential backoff: 1s, 2s, 4s, 8s, 16s, 32s... up to maxDelay
  */
 export async function connectDatabase(): Promise<void> {
   const prisma = getPrismaClient();
-  try {
-    await prisma.$connect();
-    logger.info('Database connected successfully');
-  } catch (error) {
-    logger.error({ err: error }, 'Failed to connect to database');
-    throw error;
+
+  const maxRetries = parseInt(process.env.DB_CONNECT_RETRIES || '10', 10);
+  const initialDelay = parseInt(process.env.DB_CONNECT_INITIAL_DELAY || '1000', 10);
+  const maxDelay = parseInt(process.env.DB_CONNECT_MAX_DELAY || '30000', 10);
+
+  let attempt = 0;
+  let lastError: Error | null = null;
+
+  while (attempt < maxRetries) {
+    attempt++;
+    try {
+      await prisma.$connect();
+      if (attempt > 1) {
+        logger.info({ attempts: attempt }, 'Database connected successfully after retries');
+      } else {
+        logger.info('Database connected successfully');
+      }
+      return;
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+
+      // Check if this is a connection error (P1001 = can't reach database)
+      const isConnectionError =
+        lastError.message.includes('P1001') ||
+        lastError.message.includes("Can't reach database") ||
+        lastError.message.includes('ECONNREFUSED') ||
+        lastError.message.includes('ENOTFOUND') ||
+        lastError.message.includes('ETIMEDOUT');
+
+      if (!isConnectionError || attempt >= maxRetries) {
+        logger.error(
+          { err: lastError, attempt, maxRetries },
+          'Failed to connect to database'
+        );
+        throw lastError;
+      }
+
+      // Calculate delay with exponential backoff
+      const delay = Math.min(initialDelay * Math.pow(2, attempt - 1), maxDelay);
+
+      logger.warn(
+        { attempt, maxRetries, delayMs: delay, error: lastError.message },
+        `Database connection failed, retrying in ${delay}ms...`
+      );
+
+      await sleep(delay);
+    }
   }
+
+  // Should not reach here, but just in case
+  throw lastError || new Error('Failed to connect to database after max retries');
 }
 
 /**
