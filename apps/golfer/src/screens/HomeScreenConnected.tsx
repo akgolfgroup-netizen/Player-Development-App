@@ -64,7 +64,7 @@ export function HomeScreenConnected() {
 
   return (
     <HomeScreen
-      userName={user?.name || user?.email?.split('@')[0] || 'Spiller'}
+      userName={user?.firstName || user?.email?.split('@')[0] || 'Spiller'}
       nextSession={data.nextSession}
       timeContext={data.timeContext}
       effort={data.effort}
