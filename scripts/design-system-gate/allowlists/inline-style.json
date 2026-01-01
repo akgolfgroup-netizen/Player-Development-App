@@ -1,5 +1,6 @@
 {
   "files": {
+    "apps/golfer/src/screens/ProofScreenConnected.tsx": 1,
     "apps/web/src/analytics/AnalyticsDebug.tsx": 12,
     "apps/web/src/components/BuildInfo.tsx": 2,
     "apps/web/src/components/ErrorBoundary.jsx": 6,
@@ -339,6 +340,9 @@
     "apps/web/src/ui/composites/Tabs.composite.tsx": 6,
     "apps/web/src/ui/composites/ThemeSwitcher.tsx": 2,
     "apps/web/src/ui/composites/Toast.composite.tsx": 7,
+    "apps/web/src/ui/lab/AppShellLab.tsx": 2,
+    "apps/web/src/ui/lab/CalendarLab.tsx": 8,
+    "apps/web/src/ui/lab/UiCanonPage.tsx": 12,
     "apps/web/src/ui/primitives/Alert.primitive.tsx": 7,
     "apps/web/src/ui/primitives/Avatar.primitive.tsx": 6,
     "apps/web/src/ui/primitives/Badge.primitive.tsx": 2,
