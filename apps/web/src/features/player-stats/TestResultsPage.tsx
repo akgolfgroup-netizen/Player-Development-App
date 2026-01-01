@@ -67,7 +67,7 @@ const TestResultsPage: React.FC = () => {
       if (response.data?.success) {
         // Process and enrich results using centralized mapper
         const rawResults = (response.data.data || []) as RawApiTestResultWithTest[];
-        const enrichedResults = mapRawResultsToListPage(rawResults);
+        const enrichedResults = mapRawResultsToListPage(rawResults, new Date().toISOString());
         setResults(enrichedResults);
       } else {
         setResults([]);
