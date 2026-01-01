@@ -53,6 +53,40 @@ module.exports = {
         },
 
         // ═══════════════════════════════════════════
+        // GOLD/BRONZE SCALE - Achievements & Premium
+        // ═══════════════════════════════════════════
+        gold: {
+          DEFAULT: 'var(--gold-600)',
+          50: 'var(--gold-50)',
+          100: 'var(--gold-100)',
+          200: 'var(--gold-200)',
+          300: 'var(--gold-300)',
+          400: 'var(--gold-400)',
+          500: 'var(--gold-500)',
+          600: 'var(--gold-600)',
+          700: 'var(--gold-700)',
+          800: 'var(--gold-800)',
+        },
+
+        // ═══════════════════════════════════════════
+        // WARM GRAY SCALE - Premium Cream Aesthetic
+        // ═══════════════════════════════════════════
+        warm: {
+          DEFAULT: 'var(--warm-50)',
+          50: 'var(--warm-50)',
+          100: 'var(--warm-100)',
+          200: 'var(--warm-200)',
+          300: 'var(--warm-300)',
+          400: 'var(--warm-400)',
+          500: 'var(--warm-500)',
+          600: 'var(--warm-600)',
+          700: 'var(--warm-700)',
+          800: 'var(--warm-800)',
+          900: 'var(--warm-900)',
+          950: 'var(--warm-950)',
+        },
+
+        // ═══════════════════════════════════════════
         // STANDARDIZED TOKEN CLASSES (Primary usage)
         // ═══════════════════════════════════════════
         primary: {
@@ -62,7 +96,8 @@ module.exports = {
         surface: {
           DEFAULT: 'var(--color-surface)',
           '2': 'var(--color-surface-2)',
-          warm: 'var(--warm-gray-100)',
+          warm: 'var(--warm-50)',
+          cream: 'var(--warm-50)',
         },
         border: 'var(--color-border)',
         text: {
@@ -133,9 +168,11 @@ module.exports = {
         'gray-900': 'var(--gray-900)',
         'gray-950': 'var(--gray-950)',
 
-        // Warm grays
-        'warm-gray-100': 'var(--warm-gray-100)',
-        'warm-gray-200': 'var(--warm-gray-200)',
+        // Brand named colors (for semantic usage)
+        'brand-forest': 'var(--brand-forest)',
+        'brand-pine': 'var(--brand-pine)',
+        'brand-sage': 'var(--brand-sage)',
+        'brand-cream': 'var(--brand-cream)',
 
         // Legacy neutral aliases
         'ak-charcoal': 'var(--ak-charcoal)',

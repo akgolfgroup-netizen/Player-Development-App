@@ -1,6 +1,6 @@
 # AK Golf Academy - UI Canon
 
-> **Version:** 2.0
+> **Version:** 3.0
 > **Last Updated:** 2026-01-01
 > **Source of Truth:** This document + `src/index.css` + `tailwind.config.js`
 
@@ -10,10 +10,15 @@ This document defines the official design specifications for all UI components i
 
 ## Table of Contents
 
-1. [Color System](#color-system)
-2. [Typography](#typography)
-3. [Spacing](#spacing)
-4. [Components](#components)
+1. [Brand Identity](#brand-identity)
+2. [Color System](#color-system)
+   - [Primary Brand Palette](#primary-brand-palette)
+   - [Gold/Bronze Scale](#goldbronze-scale)
+   - [Warm Gray Scale](#warm-gray-scale)
+   - [Status Colors](#status-colors)
+3. [Typography](#typography)
+4. [Spacing](#spacing)
+5. [Components](#components)
    - [Button](#button)
    - [Card](#card)
    - [Badge](#badge)
@@ -21,29 +26,74 @@ This document defines the official design specifications for all UI components i
    - [TrendIndicator](#trendindicator)
    - [Sparkline](#sparkline)
    - [KPICard](#kpicard)
-5. [Accessibility](#accessibility)
+6. [Accessibility](#accessibility)
+
+---
+
+## Brand Identity
+
+### Primary Brand Colors
+
+| Name | Hex | CSS Variable | Tailwind | Usage | Contrast |
+|------|-----|--------------|----------|-------|----------|
+| **Brand Forest** | `#1B4D3E` | `--brand-forest` | `bg-brand-forest` | Primary buttons, logo circle, main CTAs | 8.2:1 ✓ WCAG AA |
+| **Brand Pine** | `#0F3329` | `--brand-pine` | `bg-brand-pine` | Logo text, headings, premium features | 13.1:1 ✓ WCAG AAA |
+| **Brand Sage** | `#059669` | `--brand-sage` | `bg-brand-sage` | Accents, hover states, success indicators | 4.7:1 (UI only) |
+| **Brand Cream** | `#FAF9F5` | `--brand-cream` | `bg-brand-cream` | Card backgrounds, premium surfaces | - |
+
+### Color Psychology
+
+- **Forest Green**: Golf course, nature, growth, stability
+- **Pine Green**: Exclusivity, depth, sophistication
+- **Sage Green**: Fresh, active, positive growth
+- **Cream**: Sophistication, warmth, premium paper quality
 
 ---
 
 ## Color System
 
-### Green Scale - Primary Brand Hierarchy
+### Primary Brand Palette
+
+#### Green Scale
 
 The complete green scale for the AK Golf brand identity.
 
 | Token | Hex | CSS Variable | Tailwind | Usage |
 |-------|-----|--------------|----------|-------|
-| green-950 | `#052e16` | `--green-950` | `bg-green-950` | Darkest, rarely used |
-| green-900 | `#0F3329` | `--green-900` | `bg-green-900` | Text on light bg |
-| green-800 | `#144033` | `--green-800` | `bg-green-800` | Hover states |
-| **green-700** | `#1B4D3E` | `--green-700` | `bg-green-700` | **Primary brand** |
-| **green-600** | `#059669` | `--green-600` | `bg-green-600` | **Accent/Success** |
-| green-500 | `#10B981` | `--green-500` | `bg-green-500` | Bright highlights |
-| green-400 | `#34D399` | `--green-400` | `bg-green-400` | Light accents |
-| green-300 | `#6EE7B7` | `--green-300` | `bg-green-300` | Backgrounds |
-| green-200 | `#A7F3D0` | `--green-200` | `bg-green-200` | Subtle highlights |
-| green-100 | `#D1FAE5` | `--green-100` | `bg-green-100` | Light backgrounds |
+| green-950 | `#0A231C` | `--green-950` | `bg-green-950` | Darkest - almost black with green tint |
+| **green-900** | `#0F3329` | `--green-900` | `bg-green-900` | **Brand Pine** (logo text) |
+| green-800 | `#144033` | `--green-800` | `bg-green-800` | Dark hover state |
+| **green-700** | `#1B4D3E` | `--green-700` | `bg-green-700` | **Brand Forest** (primary) |
+| **green-600** | `#059669` | `--green-600` | `bg-green-600` | **Brand Sage** (accent) |
+| green-500 | `#10B981` | `--green-500` | `bg-green-500` | Bright green |
+| green-400 | `#34D399` | `--green-400` | `bg-green-400` | Light accent |
+| green-300 | `#6EE7B7` | `--green-300` | `bg-green-300` | Subtle highlights |
+| green-200 | `#A7F3D0` | `--green-200` | `bg-green-200` | Background tints |
+| green-100 | `#D1FAE5` | `--green-100` | `bg-green-100` | Lightest backgrounds |
 | green-50 | `#ECFDF5` | `--green-50` | `bg-green-50` | Nearly white |
+
+### Gold/Bronze Scale
+
+For achievements, premium features, and special occasions.
+
+| Token | Hex | CSS Variable | Tailwind | Usage |
+|-------|-----|--------------|----------|-------|
+| **gold-800** | `#92400E` | `--gold-800` | `bg-gold-800` | **Rich bronze** - dark premium |
+| gold-700 | `#B45309` | `--gold-700` | `bg-gold-700` | Deep gold |
+| **gold-600** | `#D97706` | `--gold-600` | `bg-gold` | **Warm gold** - primary gold |
+| gold-500 | `#F59E0B` | `--gold-500` | `bg-gold-500` | Bright gold |
+| **gold-400** | `#FBBF24` | `--gold-400` | `bg-gold-400` | **Light gold** - highlights |
+| gold-300 | `#FCD34D` | `--gold-300` | `bg-gold-300` | Pale gold |
+| gold-200 | `#FDE68A` | `--gold-200` | `bg-gold-200` | Very light gold |
+| gold-100 | `#FEF3C7` | `--gold-100` | `bg-gold-100` | Gold background |
+| gold-50 | `#FFFBEB` | `--gold-50` | `bg-gold-50` | Near-white gold |
+
+**Use cases:**
+- Streak indicators (🔥)
+- Achievement badges
+- Premium/VIP features
+- Tournament highlights
+- Calendar events
 
 ### Teal Scale - Statistics & Analytics
 
@@ -94,35 +144,41 @@ Each status color has a full palette for different use cases.
 | info-bg | `#EFF6FF` | `bg-info-bg` | Badge backgrounds |
 | info-border | `#93C5FD` | `border-info-border` | Borders |
 
-### Gray Scale - Neutrals
+### Warm Gray Scale
+
+Premium cream aesthetic for sophisticated surfaces. Use warm grays for card backgrounds and neutral UI elements.
+
+| Token | Hex | CSS Variable | Tailwind | Usage |
+|-------|-----|--------------|----------|-------|
+| warm-950 | `#1C1917` | `--warm-950` | `bg-warm-950` | Near black with warmth |
+| warm-900 | `#292524` | `--warm-900` | `bg-warm-900` | Deep charcoal |
+| warm-800 | `#44403C` | `--warm-800` | `bg-warm-800` | Dark gray |
+| warm-700 | `#57534E` | `--warm-700` | `text-warm-700` | Medium-dark gray (KPI labels) |
+| warm-600 | `#78716C` | `--warm-600` | `text-warm-600` | Medium gray |
+| warm-500 | `#A8A29E` | `--warm-500` | `text-warm-500` | Mid-tone gray |
+| warm-400 | `#D6D3D1` | `--warm-400` | `border-warm-400` | Light gray borders |
+| warm-300 | `#E7E5E4` | `--warm-300` | `border-warm-300` | Card borders |
+| warm-200 | `#F5F5F4` | `--warm-200` | `bg-warm-200` | Nearly white gray |
+| warm-100 | `#FAFAF9` | `--warm-100` | `bg-warm-100` | Off-white |
+| **warm-50** | `#FAF9F5` | `--warm-50` | `bg-warm` | **Brand Cream** - premium surfaces |
+
+### Cool Gray Scale
+
+For digital screens and contrast.
 
 | Token | Hex | Tailwind | Usage |
 |-------|-----|----------|-------|
-| gray-950 | `#080C10` | `bg-gray-950` | Almost black |
+| gray-950 | `#030712` | `bg-gray-950` | Deepest black |
 | gray-900 | `#111827` | `text-gray-900` | **Primary text** |
 | gray-800 | `#1F2937` | `text-gray-800` | Bold text |
 | gray-700 | `#374151` | `text-gray-700` | Medium emphasis |
 | gray-600 | `#4B5563` | `text-gray-600` | Body text alt |
 | gray-500 | `#6B7280` | `text-gray-500` | Secondary text |
-| gray-400 | `#9CA3AF` | `text-gray-400` | Tertiary text |
+| gray-400 | `#9CA3AF` | `text-gray-400` | **Tertiary text** |
 | gray-300 | `#D1D5DB` | `border-gray-300` | Borders |
 | gray-200 | `#E5E7EB` | `border-gray-200` | Dividers |
 | gray-100 | `#F3F4F6` | `bg-gray-100` | Backgrounds |
 | gray-50 | `#F9FAFB` | `bg-gray-50` | Light backgrounds |
-
-### Warm Grays
-
-| Token | Hex | Tailwind | Usage |
-|-------|-----|----------|-------|
-| warm-gray-100 | `#FAF9F5` | `bg-warm-gray-100` | Warm neutral |
-| warm-gray-200 | `#F5F3ED` | `bg-warm-gray-200` | Surface warm |
-
-### Accent Colors
-
-| Token | Hex | CSS Variable | Usage |
-|-------|-----|--------------|-------|
-| Gold | `#B8860B` | `--ak-gold` | Achievements, streaks |
-| Orange | `#FB923C` | `--ak-warning-light` | Calendar, highlights |
 
 ---
 
