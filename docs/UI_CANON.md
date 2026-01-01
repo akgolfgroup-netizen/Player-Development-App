@@ -1,6 +1,6 @@
 # AK Golf Academy - UI Canon
 
-> **Version:** 1.0
+> **Version:** 2.0
 > **Last Updated:** 2026-01-01
 > **Source of Truth:** This document + `src/index.css` + `tailwind.config.js`
 
@@ -21,46 +21,108 @@ This document defines the official design specifications for all UI components i
    - [TrendIndicator](#trendindicator)
    - [Sparkline](#sparkline)
    - [KPICard](#kpicard)
+5. [Accessibility](#accessibility)
 
 ---
 
 ## Color System
 
-### Status Colors
-Used for indicating state, feedback, and alerts.
+### Green Scale - Primary Brand Hierarchy
 
-| Token | Hex | Tailwind Class | Usage |
-|-------|-----|----------------|-------|
-| Success | `#10B981` / `#059669` | `text-ak-success`, `bg-ak-success` | On track, completed |
-| Warning | `#F59E0B` / `#D97706` | `text-ak-warning`, `bg-ak-warning` | Attention needed |
-| Danger | `#EF4444` / `#DC2626` | `text-ak-error`, `bg-ak-error` | Behind, urgent |
-| Info | `#3B82F6` / `#0284C7` | `text-ak-info`, `bg-ak-info` | Informational |
+The complete green scale for the AK Golf brand identity.
 
-### Primary Brand Colors
-Forest Green - the core AK Golf identity.
+| Token | Hex | CSS Variable | Tailwind | Usage |
+|-------|-----|--------------|----------|-------|
+| green-950 | `#052e16` | `--green-950` | `bg-green-950` | Darkest, rarely used |
+| green-900 | `#0F3329` | `--green-900` | `bg-green-900` | Text on light bg |
+| green-800 | `#144033` | `--green-800` | `bg-green-800` | Hover states |
+| **green-700** | `#1B4D3E` | `--green-700` | `bg-green-700` | **Primary brand** |
+| **green-600** | `#059669` | `--green-600` | `bg-green-600` | **Accent/Success** |
+| green-500 | `#10B981` | `--green-500` | `bg-green-500` | Bright highlights |
+| green-400 | `#34D399` | `--green-400` | `bg-green-400` | Light accents |
+| green-300 | `#6EE7B7` | `--green-300` | `bg-green-300` | Backgrounds |
+| green-200 | `#A7F3D0` | `--green-200` | `bg-green-200` | Subtle highlights |
+| green-100 | `#D1FAE5` | `--green-100` | `bg-green-100` | Light backgrounds |
+| green-50 | `#ECFDF5` | `--green-50` | `bg-green-50` | Nearly white |
 
-| Token | Hex | Tailwind Class | Usage |
-|-------|-----|----------------|-------|
-| Primary | `#1B4D3E` | `bg-ak-primary`, `text-ak-primary` | Primary actions, brand |
-| Primary Light | `#2A6B55` | `bg-ak-primary-light` | Hover states |
-| Primary Dark | `#133629` | - | Active states |
+### Teal Scale - Statistics & Analytics
 
-### Neutral Palette
+| Token | Hex | Tailwind | Usage |
+|-------|-----|----------|-------|
+| teal-700 | `#0F766E` | `bg-teal-700` | Dark teal |
+| **teal-500** | `#14B8A6` | `bg-teal` | **Primary teal** |
+| teal-200 | `#99F6E4` | `bg-teal-200` | Light backgrounds |
+| teal-50 | `#F0FDFA` | `bg-teal-50` | Subtle backgrounds |
 
-| Token | Hex | Tailwind Class | Usage |
-|-------|-----|----------------|-------|
-| Gray 50 | `#FAFBFC` | `bg-gray-50` | Page backgrounds |
-| Gray 100 | `#F5F7F9` | `bg-gray-100` | Surface backgrounds |
-| Gray 500 | `#6B7280` | `text-gray-500` | Secondary text |
-| Gray 900 | `#111827` | `text-gray-900` | Primary text |
+### Status Colors - Complete Semantic System
+
+Each status color has a full palette for different use cases.
+
+#### Success (Green)
+| Variant | Hex | Tailwind | Usage |
+|---------|-----|----------|-------|
+| success-dark | `#144033` | `text-success-dark` | Text on light bg |
+| **success** | `#059669` | `bg-success` | **Primary success** |
+| success-light | `#10B981` | `bg-success-light` | Highlights |
+| success-bg | `#ECFDF5` | `bg-success-bg` | Badge backgrounds |
+| success-border | `#A7F3D0` | `border-success-border` | Borders |
+
+#### Warning (Orange)
+| Variant | Hex | Tailwind | Usage |
+|---------|-----|----------|-------|
+| warning-dark | `#B45309` | `text-warning-dark` | Text on light bg |
+| **warning** | `#D97706` | `bg-warning` | **Primary warning** |
+| warning-light | `#FB923C` | `bg-warning-light` | Highlights |
+| warning-bg | `#FFFBEB` | `bg-warning-bg` | Badge backgrounds |
+| warning-border | `#FDBA74` | `border-warning-border` | Borders |
+
+#### Danger (Red)
+| Variant | Hex | Tailwind | Usage |
+|---------|-----|----------|-------|
+| danger-dark | `#B91C1C` | `text-danger-dark` | Text on light bg |
+| **danger** | `#EF4444` | `bg-danger` | **Primary danger** |
+| danger-light | `#F87171` | `bg-danger-light` | Highlights |
+| danger-bg | `#FEF2F2` | `bg-danger-bg` | Badge backgrounds |
+| danger-border | `#FCA5A5` | `border-danger-border` | Borders |
+
+#### Info (Blue)
+| Variant | Hex | Tailwind | Usage |
+|---------|-----|----------|-------|
+| info-dark | `#1D4ED8` | `text-info-dark` | Text on light bg |
+| **info** | `#3B82F6` | `bg-info` | **Primary info** |
+| info-light | `#60A5FA` | `bg-info-light` | Highlights |
+| info-bg | `#EFF6FF` | `bg-info-bg` | Badge backgrounds |
+| info-border | `#93C5FD` | `border-info-border` | Borders |
+
+### Gray Scale - Neutrals
+
+| Token | Hex | Tailwind | Usage |
+|-------|-----|----------|-------|
+| gray-950 | `#080C10` | `bg-gray-950` | Almost black |
+| gray-900 | `#111827` | `text-gray-900` | **Primary text** |
+| gray-800 | `#1F2937` | `text-gray-800` | Bold text |
+| gray-700 | `#374151` | `text-gray-700` | Medium emphasis |
+| gray-600 | `#4B5563` | `text-gray-600` | Body text alt |
+| gray-500 | `#6B7280` | `text-gray-500` | Secondary text |
+| gray-400 | `#9CA3AF` | `text-gray-400` | Tertiary text |
+| gray-300 | `#D1D5DB` | `border-gray-300` | Borders |
+| gray-200 | `#E5E7EB` | `border-gray-200` | Dividers |
+| gray-100 | `#F3F4F6` | `bg-gray-100` | Backgrounds |
+| gray-50 | `#F9FAFB` | `bg-gray-50` | Light backgrounds |
+
+### Warm Grays
+
+| Token | Hex | Tailwind | Usage |
+|-------|-----|----------|-------|
+| warm-gray-100 | `#FAF9F5` | `bg-warm-gray-100` | Warm neutral |
+| warm-gray-200 | `#F5F3ED` | `bg-warm-gray-200` | Surface warm |
 
 ### Accent Colors
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| Gold | `#B8860B` | Achievements, highlights |
-| Teal | `#14B8A6` | Statistics, data viz |
-| Orange | `#FB923C` | Calendar, highlights |
+| Token | Hex | CSS Variable | Usage |
+|-------|-----|--------------|-------|
+| Gold | `#B8860B` | `--ak-gold` | Achievements, streaks |
+| Orange | `#FB923C` | `--ak-warning-light` | Calendar, highlights |
 
 ---
 
@@ -372,6 +434,55 @@ src/components/
 
 ---
 
+## Accessibility
+
+### Color Contrast Guidelines (WCAG AA - 4.5:1 minimum)
+
+#### Safe Pairings (Use freely)
+
+| Foreground | Background | Ratio | Status |
+|------------|------------|-------|--------|
+| `green-700` | white | 8.2:1 | Excellent |
+| `green-800` | white | 10.5:1 | Excellent |
+| `green-900` | white | 13.1:1 | Excellent |
+| white | `green-700` | 8.2:1 | Excellent |
+| `gray-900` | white | 16.1:1 | Excellent |
+| `gray-700` | white | 9.2:1 | Excellent |
+
+#### Use With Caution
+
+| Foreground | Background | Ratio | Notes |
+|------------|------------|-------|-------|
+| `green-600` | white | 4.7:1 | Borderline - OK for large text |
+| `teal-500` | white | 3.9:1 | Fails AA for text - use for icons/UI only |
+| `warning` | white | 2.8:1 | Fails - use for large UI elements only |
+
+#### Never Use for Text
+
+| Foreground | Background | Ratio | Status |
+|------------|------------|-------|--------|
+| `gray-400` | white | 2.9:1 | Fails |
+| `green-400` | white | 1.9:1 | Fails badly |
+| `green-300` | white | 1.5:1 | Fails badly |
+
+### Badge Accessibility Pattern
+
+For status badges, always use the dark variant for text:
+
+```tsx
+// Correct - high contrast
+<Badge className="bg-success-bg text-success-dark border border-success-border">
+  Completed
+</Badge>
+
+// Wrong - poor contrast
+<Badge className="bg-success-bg text-success">
+  Completed
+</Badge>
+```
+
+---
+
 ## Migration Notes
 
 When updating existing components:
@@ -380,6 +491,7 @@ When updating existing components:
 2. Replace arbitrary spacing with spacing tokens
 3. Use the defined Button/Card/Badge variants
 4. Wrap KPI displays in KPICard components
+5. Verify color contrast meets WCAG AA (4.5:1 for text)
 
 ---
 

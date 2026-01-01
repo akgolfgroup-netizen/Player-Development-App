@@ -19,6 +19,40 @@ module.exports = {
       // ═══════════════════════════════════════════
       colors: {
         // ═══════════════════════════════════════════
+        // GREEN SCALE - Primary Brand Hierarchy
+        // ═══════════════════════════════════════════
+        green: {
+          50: 'var(--green-50)',
+          100: 'var(--green-100)',
+          200: 'var(--green-200)',
+          300: 'var(--green-300)',
+          400: 'var(--green-400)',
+          500: 'var(--green-500)',
+          600: 'var(--green-600)',
+          700: 'var(--green-700)',
+          800: 'var(--green-800)',
+          900: 'var(--green-900)',
+          950: 'var(--green-950)',
+        },
+
+        // ═══════════════════════════════════════════
+        // TEAL SCALE - Statistics & Analytics
+        // ═══════════════════════════════════════════
+        teal: {
+          DEFAULT: 'var(--teal-500)',
+          50: 'var(--teal-50)',
+          100: 'var(--teal-100)',
+          200: 'var(--teal-200)',
+          300: 'var(--teal-300)',
+          400: 'var(--teal-400)',
+          500: 'var(--teal-500)',
+          600: 'var(--teal-600)',
+          700: 'var(--teal-700)',
+          800: 'var(--teal-800)',
+          900: 'var(--teal-900)',
+        },
+
+        // ═══════════════════════════════════════════
         // STANDARDIZED TOKEN CLASSES (Primary usage)
         // ═══════════════════════════════════════════
         primary: {
@@ -28,15 +62,45 @@ module.exports = {
         surface: {
           DEFAULT: 'var(--color-surface)',
           '2': 'var(--color-surface-2)',
+          warm: 'var(--warm-gray-100)',
         },
         border: 'var(--color-border)',
         text: {
           DEFAULT: 'var(--color-text)',
           muted: 'var(--color-text-muted)',
         },
-        success: 'var(--color-success)',
-        warning: 'var(--color-warning)',
-        danger: 'var(--color-danger)',
+
+        // ═══════════════════════════════════════════
+        // STATUS COLORS - Complete Semantic System
+        // ═══════════════════════════════════════════
+        success: {
+          DEFAULT: 'var(--ak-success)',
+          light: 'var(--ak-success-light)',
+          dark: 'var(--ak-success-dark)',
+          bg: 'var(--ak-success-bg)',
+          border: 'var(--ak-success-border)',
+        },
+        warning: {
+          DEFAULT: 'var(--ak-warning)',
+          light: 'var(--ak-warning-light)',
+          dark: 'var(--ak-warning-dark)',
+          bg: 'var(--ak-warning-bg)',
+          border: 'var(--ak-warning-border)',
+        },
+        danger: {
+          DEFAULT: 'var(--ak-error)',
+          light: 'var(--ak-error-light)',
+          dark: 'var(--ak-error-dark)',
+          bg: 'var(--ak-error-bg)',
+          border: 'var(--ak-error-border)',
+        },
+        info: {
+          DEFAULT: 'var(--ak-info)',
+          light: 'var(--ak-info-light)',
+          dark: 'var(--ak-info-dark)',
+          bg: 'var(--ak-info-bg)',
+          border: 'var(--ak-info-border)',
+        },
 
         // ═══════════════════════════════════════════
         // BRAND COLORS (Detailed palette)
@@ -48,6 +112,7 @@ module.exports = {
         'ak-surface': 'var(--ak-surface)',
         'ak-gold': 'var(--ak-gold)',
         'ak-white': 'var(--ak-white)',
+        'ak-teal': 'var(--ak-teal)',
 
         // Legacy aliases
         'ak-forest': 'var(--ak-forest)',
@@ -55,14 +120,22 @@ module.exports = {
         'ak-foam': 'var(--ak-foam)',
         'ak-ivory': 'var(--ak-ivory)',
 
-        // Gray scale
+        // Gray scale (complete)
         'gray-50': 'var(--gray-50)',
         'gray-100': 'var(--gray-100)',
+        'gray-200': 'var(--gray-200)',
         'gray-300': 'var(--gray-300)',
+        'gray-400': 'var(--gray-400)',
         'gray-500': 'var(--gray-500)',
         'gray-600': 'var(--gray-600)',
         'gray-700': 'var(--gray-700)',
+        'gray-800': 'var(--gray-800)',
         'gray-900': 'var(--gray-900)',
+        'gray-950': 'var(--gray-950)',
+
+        // Warm grays
+        'warm-gray-100': 'var(--warm-gray-100)',
+        'warm-gray-200': 'var(--warm-gray-200)',
 
         // Legacy neutral aliases
         'ak-charcoal': 'var(--ak-charcoal)',
@@ -70,10 +143,11 @@ module.exports = {
         'ak-mist': 'var(--ak-mist)',
         'ak-cloud': 'var(--ak-cloud)',
 
-        // Status colors (detailed)
+        // Status colors (legacy - use success/warning/danger instead)
         'ak-success': 'var(--ak-success)',
         'ak-warning': 'var(--ak-warning)',
         'ak-error': 'var(--ak-error)',
+        'ak-info': 'var(--ak-info)',
 
         // Semantic - Background
         'bg-default': 'var(--background-default)',
