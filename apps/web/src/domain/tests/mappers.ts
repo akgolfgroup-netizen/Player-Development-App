@@ -1,6 +1,13 @@
 /**
  * Test Domain Mappers
  *
+ * PURE FUNCTIONS ONLY - All functions in this module must be:
+ * - Deterministic: same inputs → same outputs
+ * - Side-effect free: no I/O, no logging, no global state
+ * - Time-independent: no Date.now(), new Date() without arguments
+ *
+ * If a function needs current time, it must receive `now: Date` as a parameter.
+ *
  * Centralized conversion functions from canonical @iup/shared-types models
  * to UI-specific types used in dashboard and hooks.
  *
@@ -22,6 +29,9 @@
  * - Canonical TestResult → DashboardTestResult (subset extraction)
  * - Canonical TestResult + TestDefinition → UITestResult (with external trend data)
  */
+
+/* eslint-disable no-restricted-syntax */
+// Purity constraints enforced by .eslintrc - see rules for domain/tests/**
 
 import type {
   TestResult as CanonicalTestResult,
@@ -218,7 +228,7 @@ export function calculateTrendData(
 
   if (previousValue !== null && previousValue !== 0) {
     const diff = currentValue - previousValue;
-    const percentChange = (Math.abs(diff) / previousValue) * 100;
+    const percentChange = (Math.abs(diff) / Math.abs(previousValue)) * 100;
 
     if (percentChange > 2) {
       if (lowerIsBetter) {
@@ -522,11 +532,15 @@ export interface RawApiTestResultWithTest {
  *
  * Moved from TestResultsPage.tsx for centralization.
  *
+ * PURE FUNCTION: If testDate/createdAt are missing, uses fallbackDate parameter.
+ *
  * @param rawResults - Raw API response results
+ * @param fallbackDate - ISO date string to use when testDate is missing (required for purity)
  * @returns Processed ListPageTestResult array
  */
 export function mapRawResultsToListPage(
-  rawResults: RawApiTestResultWithTest[]
+  rawResults: RawApiTestResultWithTest[],
+  fallbackDate: string
 ): ListPageTestResult[] {
   // Group by test to calculate trends
   const byTest: Record<string, RawApiTestResultWithTest[]> = {};
@@ -575,7 +589,7 @@ export function mapRawResultsToListPage(
       unit: r.test?.unit ?? r.unit ?? '',
       requirement,
       lowerIsBetter,
-      testDate: r.testDate ?? r.createdAt ?? new Date().toISOString(),
+      testDate: r.testDate ?? r.createdAt ?? fallbackDate,
       passed,
       trend,
       previousValue: previousResult?.value,

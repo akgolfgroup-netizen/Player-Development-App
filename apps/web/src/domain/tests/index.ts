@@ -6,7 +6,32 @@
  * - Category mappings with semantic gap handling
  * - Trend calculations
  * - Semantic gap documentation
+ *
+ * NAMING CONVENTION: See docs/naming.md
+ * - All exports use English names
+ * - Canonical types re-exported from @iup/shared-types
  */
+
+// ============================================================================
+// CANONICAL TYPES (Re-exported from @iup/shared-types)
+// ============================================================================
+
+export type {
+  TestResult,
+  TestDefinition,
+  TestCategory,
+  TestEnvironment,
+  TestResultWithDefinition,
+} from '@iup/shared-types';
+
+export {
+  TEST_CATEGORIES,
+  TEST_ENVIRONMENTS,
+} from '@iup/shared-types';
+
+// ============================================================================
+// UI TYPES & MAPPERS
+// ============================================================================
 
 export {
   // Canonical → Dashboard mappers
