@@ -1296,7 +1296,7 @@ const Skoleplan = ({
         subtitle="Administrer timeplan, fag og oppgaver"
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
 
       {/* Fag section */}
       <div style={{ marginBottom: '24px' }}>

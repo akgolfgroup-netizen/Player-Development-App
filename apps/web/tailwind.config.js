@@ -13,6 +13,28 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    // ═══════════════════════════════════════════
+    // FULL-WIDTH CONTAINER (No max-width constraints)
+    // ═══════════════════════════════════════════
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: '1rem',    // 16px - Mobile
+        sm: '1.5rem',       // 24px - Small tablet
+        md: '1.5rem',       // 24px - Tablet
+        lg: '2rem',         // 32px - Desktop
+        xl: '2rem',         // 32px - Large desktop
+        '2xl': '2rem',      // 32px - Extra large
+      },
+      // Remove all max-width constraints for full-width
+      screens: {
+        sm: '100%',
+        md: '100%',
+        lg: '100%',
+        xl: '100%',
+        '2xl': '100%',
+      },
+    },
     extend: {
       // ═══════════════════════════════════════════
       // COLORS (CSS Variable References)

@@ -395,7 +395,7 @@ const RegistrerTestContainer = () => {
     selectedTests.every((test) => testValues[test.id] !== undefined && testValues[test.id] !== '');
 
   return (
-    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
         {/* Category Selection */}
         <div style={{
           backgroundColor: tokens.colors.white,

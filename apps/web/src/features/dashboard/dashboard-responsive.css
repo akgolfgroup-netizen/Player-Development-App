@@ -14,8 +14,6 @@
   display: grid;
   gap: var(--spacing-lg, 24px);
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
   padding: var(--spacing-md, 16px);
 }
 
@@ -183,7 +181,7 @@
 
 @media (min-width: 1440px) {
   .dashboard-layout {
-    padding: var(--spacing-xl, 32px) calc((100vw - 1440px) / 2 + var(--spacing-xl, 32px));
+    padding: var(--spacing-xl, 32px);
   }
 }
 

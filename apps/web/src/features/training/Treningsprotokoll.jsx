@@ -425,7 +425,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
         subtitle="Planlagte og gjennomførte økter"
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Session Library */}
           <div className="lg:col-span-1">

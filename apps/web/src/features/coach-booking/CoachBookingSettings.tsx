@@ -342,7 +342,7 @@ export default function CoachBookingSettings() {
         }
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         {/* Weekly Schedule */}
         <div
           style={{

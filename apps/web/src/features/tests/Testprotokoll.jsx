@@ -645,7 +645,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
   };
 
   return (
-    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
         {/* Player & Stats Summary */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
           {/* Player Card */}

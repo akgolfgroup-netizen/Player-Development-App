@@ -140,9 +140,8 @@ export default function AdminAppShell({ children }: AdminAppShellProps) {
         >
           <div
             style={{
-              maxWidth: '1400px',
-              margin: '0 auto',
-              padding: isMobile ? '16px' : '24px',
+              width: '100%',
+              padding: isMobile ? '16px' : '24px 32px',
             }}
           >
             {children}

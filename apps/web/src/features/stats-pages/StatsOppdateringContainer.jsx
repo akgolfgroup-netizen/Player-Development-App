@@ -292,7 +292,7 @@ const StatsOppdateringContainer = () => {
         subtitle="Registrer nye prestasjonsdata"
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         {/* Session Info */}
         <div style={{
           backgroundColor: 'var(--bg-primary)',

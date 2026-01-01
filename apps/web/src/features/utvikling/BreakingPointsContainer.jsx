@@ -332,7 +332,7 @@ const BreakingPointsContainer = () => {
   );
 
   return (
-    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
         {/* Stats Overview */}
         <div style={{
           display: 'grid',

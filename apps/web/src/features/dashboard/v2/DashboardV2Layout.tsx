@@ -163,13 +163,12 @@ export const dashboardV2CSS = `
   }
 }
 
-/* Desktop Large (1280px+) - Increased padding and max-width */
+/* Desktop Large (1280px+) - Full width layout */
 @media (min-width: 1280px) {
   .dashboard-row-1,
   .dashboard-row-2,
   .dashboard-row-3 {
-    max-width: 1440px;
-    margin: 0 auto;
+    width: 100%;
   }
 }
 `;

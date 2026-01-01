@@ -123,9 +123,8 @@ export default function CoachAppShell({ children }: CoachAppShellProps) {
         >
           <div
             style={{
-              maxWidth: '1400px',
-              margin: '0 auto',
-              padding: isMobile ? '16px' : '24px',
+              width: '100%',
+              padding: isMobile ? '16px' : '24px 32px',
             }}
           >
             {children}

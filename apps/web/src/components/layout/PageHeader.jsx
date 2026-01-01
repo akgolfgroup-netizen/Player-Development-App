@@ -27,8 +27,7 @@ export const PageHeader = ({
       }}
     >
       <div style={{
-        maxWidth: '1536px',
-        margin: '0 auto',
+        width: '100%',
         padding: '16px 24px',
         display: 'flex',
         alignItems: 'center',

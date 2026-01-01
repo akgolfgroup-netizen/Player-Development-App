@@ -382,7 +382,7 @@ const VarslerContainer = () => {
         subtitle={`${unreadCount} uleste varsler`}
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         {/* Header Actions */}
         <div style={{
           display: 'flex',

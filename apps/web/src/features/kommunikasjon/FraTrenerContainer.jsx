@@ -312,7 +312,7 @@ const FraTrenerContainer = () => {
         subtitle={`${unreadCount} uleste meldinger`}
       />
 
-      <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '16px 24px 24px', width: '100%' }}>
         {/* Stats */}
         <div style={{
           display: 'grid',

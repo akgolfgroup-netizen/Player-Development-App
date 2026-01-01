@@ -346,7 +346,7 @@ const EvalueringContainer = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <div style={{ padding: '16px 24px 24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '16px 24px 24px', width: '100%' }}>
         {/* Stats Overview */}
         <StatsOverview stats={STATS} />
 

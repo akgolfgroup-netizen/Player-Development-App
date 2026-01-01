@@ -291,7 +291,7 @@ const AKGolfNotater = ({
         }
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         <div className="flex gap-6">
           {/* Sidebar */}
           <div className="hidden lg:block w-56 flex-shrink-0 space-y-4">

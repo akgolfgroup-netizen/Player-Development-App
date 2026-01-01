@@ -1189,13 +1189,13 @@ select:focus-visible {
 
 @media (min-width: 640px) {
   .container {
-    max-width: 640px;
+    width: 100%;
   }
 }
 
 @media (min-width: 768px) {
   .container {
-    max-width: 768px;
+    width: 100%;
     padding-left: var(--spacing-6);
     padding-right: var(--spacing-6);
   }
@@ -1203,13 +1203,13 @@ select:focus-visible {
 
 @media (min-width: 1024px) {
   .container {
-    max-width: 1024px;
+    width: 100%;
   }
 }
 
 @media (min-width: 1280px) {
   .container {
-    max-width: 1280px;
+    width: 100%;
   }
 }
 
@@ -2467,33 +2467,221 @@ html {
 }
 
 /* ═══════════════════════════════════════════
-   GLOBAL LAYOUT - Content Width Override
-   Removes narrow 600px constraints for full-width layout
+   FULL-WIDTH LAYOUT SYSTEM
+   100% viewport width with responsive padding
+   No max-width constraints
    ═══════════════════════════════════════════ */
 
-/* Main content container - responsive widths */
-main > div > div,
-.app-shell-v2__content,
-.app-layout-v2__content {
-  max-width: 1400px; /* Desktop default */
-  width: 100%;
-  margin: 0 auto;
+/* ─────────────────────────────────────────
+   Base Layout Variables
+   ───────────────────────────────────────── */
+:root {
+  --layout-padding-mobile: 1rem;      /* 16px */
+  --layout-padding-tablet: 1.5rem;    /* 24px */
+  --layout-padding-desktop: 2rem;     /* 32px */
+  --layout-gap: 1.5rem;               /* 24px */
+  --layout-gap-lg: 2rem;              /* 32px */
 }
 
-@media (min-width: 1920px) {
-  main > div > div,
-  .app-shell-v2__content,
-  .app-layout-v2__content {
-    max-width: 1600px; /* Large screens */
+/* ─────────────────────────────────────────
+   Full-Width Page Container
+   Use: .page-full or className="page-full"
+   ───────────────────────────────────────── */
+.page-full {
+  width: 100%;
+  max-width: 100%;
+  padding-left: var(--layout-padding-mobile);
+  padding-right: var(--layout-padding-mobile);
+}
+
+@media (min-width: 640px) {
+  .page-full {
+    padding-left: var(--layout-padding-tablet);
+    padding-right: var(--layout-padding-tablet);
   }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
+  .page-full {
+    padding-left: var(--layout-padding-desktop);
+    padding-right: var(--layout-padding-desktop);
+  }
+}
+
+/* ─────────────────────────────────────────
+   Main Content Container Override
+   Removes narrow constraints for full-width
+   ───────────────────────────────────────── */
+main > div > div,
+.app-shell-v2__content,
+.app-layout-v2__content,
+[data-layout="full-width"] {
+  width: 100%;
+  max-width: none;
+  padding-left: var(--layout-padding-desktop);
+  padding-right: var(--layout-padding-desktop);
+}
+
+@media (max-width: 1023px) {
   main > div > div,
   .app-shell-v2__content,
-  .app-layout-v2__content {
-    max-width: 100%; /* Mobile - full width */
-    padding-left: 16px;
-    padding-right: 16px;
+  .app-layout-v2__content,
+  [data-layout="full-width"] {
+    padding-left: var(--layout-padding-tablet);
+    padding-right: var(--layout-padding-tablet);
+  }
+}
+
+@media (max-width: 639px) {
+  main > div > div,
+  .app-shell-v2__content,
+  .app-layout-v2__content,
+  [data-layout="full-width"] {
+    padding-left: var(--layout-padding-mobile);
+    padding-right: var(--layout-padding-mobile);
+  }
+}
+
+/* ─────────────────────────────────────────
+   Responsive Card Grid
+   Auto-fit cards with minimum 300px width
+   ───────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--layout-gap);
+  width: 100%;
+}
+
+.card-grid-sm {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.card-grid-lg {
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+}
+
+/* Fixed column grids */
+.card-grid-2 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.card-grid-3 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.card-grid-4 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 640px) {
+  .card-grid-2,
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .card-grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .card-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ─────────────────────────────────────────
+   Page Typography Scale
+   Proportional heading sizes
+   ───────────────────────────────────────── */
+.page-title {
+  font-size: 2.25rem;   /* 36px - text-4xl */
+  line-height: 2.5rem;  /* 40px */
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.section-title {
+  font-size: 1.5rem;    /* 24px - text-2xl */
+  line-height: 2rem;    /* 32px */
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-title {
+  font-size: 1.25rem;   /* 20px - text-xl */
+  line-height: 1.75rem; /* 28px */
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.subsection-title {
+  font-size: 1.125rem;  /* 18px - text-lg */
+  line-height: 1.75rem; /* 28px */
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Responsive typography scaling */
+@media (min-width: 1024px) {
+  .page-title {
+    font-size: 3rem;      /* 48px */
+    line-height: 3.5rem;  /* 56px */
+  }
+
+  .section-title {
+    font-size: 1.875rem;  /* 30px */
+    line-height: 2.25rem; /* 36px */
+  }
+}
+
+/* ─────────────────────────────────────────
+   Section Spacing
+   Consistent vertical rhythm
+   ───────────────────────────────────────── */
+.section-spacing {
+  margin-bottom: var(--layout-gap-lg);
+}
+
+.section-spacing-sm {
+  margin-bottom: var(--layout-gap);
+}
+
+/* ─────────────────────────────────────────
+   Remove Max-Width Utility
+   Use: max-w-none or .no-max-width
+   ───────────────────────────────────────── */
+.no-max-width,
+.max-w-none {
+  max-width: none !important;
+}
+
+/* Override any container max-width */
+.container-full {
+  max-width: 100% !important;
+  width: 100%;
+  padding-left: var(--layout-padding-mobile);
+  padding-right: var(--layout-padding-mobile);
+}
+
+@media (min-width: 640px) {
+  .container-full {
+    padding-left: var(--layout-padding-tablet);
+    padding-right: var(--layout-padding-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-full {
+    padding-left: var(--layout-padding-desktop);
+    padding-right: var(--layout-padding-desktop);
   }
 }

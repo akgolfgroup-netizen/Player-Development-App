@@ -143,8 +143,6 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 'var(--spacing-4)',
-    maxWidth: '1536px',
-    margin: '0 auto',
     width: '100%',
   },
   headerTitles: {
@@ -177,8 +175,6 @@ const styles = {
     overflowY: 'auto',
   },
   mainInner: {
-    maxWidth: '1536px',
-    margin: '0 auto',
     padding: 'var(--spacing-4)',
     width: '100%',
   },

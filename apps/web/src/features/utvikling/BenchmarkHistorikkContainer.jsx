@@ -290,7 +290,7 @@ const BenchmarkHistorikkContainer = () => {
   );
 
   return (
-    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
         {/* Summary Stats */}
         <div style={{
           display: 'grid',

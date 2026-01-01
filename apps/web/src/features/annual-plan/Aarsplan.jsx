@@ -356,7 +356,7 @@ const AKGolfAarsplan = ({ player: apiPlayer = null, annualPlan: apiAnnualPlan = 
         }
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         {/* Player Summary Card */}
         <Card className="mb-6 bg-gradient-to-r from-ak-primary to-ak-primary-light text-white border-0">
           <div className="flex items-center justify-between">

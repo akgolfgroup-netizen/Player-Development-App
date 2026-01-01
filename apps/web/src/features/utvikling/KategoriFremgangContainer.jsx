@@ -336,7 +336,7 @@ const KategoriFremgangContainer = () => {
                             CATEGORIES.findIndex((c) => c.level === CURRENT_STATUS.startOfSeasonCategory);
 
   return (
-    <div style={{ maxWidth: '1536px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
         {/* Season Summary */}
         <div style={{
           display: 'grid',

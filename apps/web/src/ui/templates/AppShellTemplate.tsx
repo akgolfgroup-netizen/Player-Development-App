@@ -110,8 +110,6 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 'var(--spacing-4)',
-    maxWidth: '1536px',
-    margin: '0 auto',
     width: '100%',
   },
   headerTitles: {
@@ -142,8 +140,6 @@ const styles: Record<string, React.CSSProperties> = {
   main: {
     flex: 1,
     width: '100%',
-    maxWidth: '1536px',
-    margin: '0 auto',
     padding: 'var(--spacing-4)',
   },
   mainWithNav: {

@@ -810,7 +810,7 @@ const RessurserContainer = () => {
         subtitle="Videoer, artikler og læringsmateriale"
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         {/* Stats Row */}
         <div style={{
           display: 'grid',

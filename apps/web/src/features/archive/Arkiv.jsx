@@ -265,7 +265,7 @@ const AKGolfArkiv = ({ player: apiPlayer = null, archiveData: apiArchiveData = n
         subtitle="Historiske dokumenter"
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         {/* Stats Cards */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           <Card className="text-center">

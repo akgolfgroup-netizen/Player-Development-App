@@ -243,8 +243,6 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     gap: 'var(--spacing-6)',
-    maxWidth: '1536px',
-    margin: '0 auto',
     width: '100%',
   },
   coverImage: {

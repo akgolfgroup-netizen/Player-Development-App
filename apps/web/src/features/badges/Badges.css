@@ -17,7 +17,7 @@
 }
 
 .badges-page__hero-content {
-  max-width: 600px;
+  width: 100%;
   margin-bottom: var(--spacing-5);
 }
 
@@ -63,8 +63,7 @@
 
 .badges-page__content {
   padding: var(--spacing-6);
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .badges-page__loading {

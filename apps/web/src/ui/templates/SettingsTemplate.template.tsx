@@ -197,8 +197,6 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     gap: 'var(--spacing-6)',
-    maxWidth: '1536px',
-    margin: '0 auto',
     width: '100%',
     paddingBottom: '100px', // Space for sticky footer
   },
@@ -223,8 +221,7 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: 'var(--shadow-sm)',
   },
   footerContent: {
-    maxWidth: '1536px',
-    margin: '0 auto',
+    width: '100%',
     padding: '0 var(--spacing-4)',
     display: 'flex',
     flexDirection: 'column',

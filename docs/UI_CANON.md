@@ -16,9 +16,13 @@ This document defines the official design specifications for all UI components i
    - [Gold/Bronze Scale](#goldbronze-scale)
    - [Warm Gray Scale](#warm-gray-scale)
    - [Status Colors](#status-colors)
-3. [Typography](#typography)
-4. [Spacing](#spacing)
-5. [Components](#components)
+3. [Layout System](#layout-system)
+   - [Full-Width Design](#full-width-design)
+   - [Card Grid System](#card-grid-system)
+   - [Page Typography Classes](#page-typography-classes)
+4. [Typography](#typography)
+5. [Spacing](#spacing)
+6. [Components](#components)
    - [Button](#button)
    - [Card](#card)
    - [Badge](#badge)
@@ -26,7 +30,7 @@ This document defines the official design specifications for all UI components i
    - [TrendIndicator](#trendindicator)
    - [Sparkline](#sparkline)
    - [KPICard](#kpicard)
-6. [Accessibility](#accessibility)
+7. [Accessibility](#accessibility)
 
 ---
 
@@ -179,6 +183,78 @@ For digital screens and contrast.
 | gray-200 | `#E5E7EB` | `border-gray-200` | Dividers |
 | gray-100 | `#F3F4F6` | `bg-gray-100` | Backgrounds |
 | gray-50 | `#F9FAFB` | `bg-gray-50` | Light backgrounds |
+
+---
+
+## Layout System
+
+### Full-Width Design
+
+All pages use **100% viewport width** with no max-width constraints. Padding scales responsively.
+
+| Breakpoint | Width | Padding | CSS Variable |
+|------------|-------|---------|--------------|
+| Mobile (<640px) | 100% | 16px | `--layout-padding-mobile` |
+| Tablet (640-1023px) | 100% | 24px | `--layout-padding-tablet` |
+| Desktop (≥1024px) | 100% | 32px | `--layout-padding-desktop` |
+
+### Layout Classes
+
+```tsx
+// Full-width page container
+<div className="page-full">...</div>
+
+// Or use Tailwind container (configured for 100% width)
+<div className="container">...</div>
+
+// Remove any max-width constraints
+<div className="max-w-none">...</div>
+```
+
+### Card Grid System
+
+Responsive grids that adapt to viewport width.
+
+```tsx
+// Auto-fit grid (cards minimum 300px)
+<div className="card-grid">
+  <Card>...</Card>
+  <Card>...</Card>
+</div>
+
+// Fixed column grids (responsive)
+<div className="card-grid-2">...</div>  // 1 → 2 cols
+<div className="card-grid-3">...</div>  // 1 → 2 → 3 cols
+<div className="card-grid-4">...</div>  // 1 → 2 → 3 → 4 cols
+
+// Tailwind equivalent
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+```
+
+### Page Typography Classes
+
+| Class | Mobile | Desktop | Weight | Usage |
+|-------|--------|---------|--------|-------|
+| `.page-title` | 36px | 48px | 700 | Main page headings |
+| `.section-title` | 24px | 30px | 600 | Section headings |
+| `.card-title` | 20px | 20px | 600 | Card headings |
+| `.subsection-title` | 18px | 18px | 500 | Subsection headings |
+
+```tsx
+<h1 className="page-title">Dashboard</h1>
+<h2 className="section-title">Recent Activity</h2>
+<h3 className="card-title">Training Summary</h3>
+```
+
+### Section Spacing
+
+```tsx
+// Standard section spacing (32px)
+<section className="section-spacing">...</section>
+
+// Smaller spacing (24px)
+<section className="section-spacing-sm">...</section>
+```
 
 ---
 

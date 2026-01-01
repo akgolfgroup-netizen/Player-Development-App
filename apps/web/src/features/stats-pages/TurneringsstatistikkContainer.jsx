@@ -362,7 +362,7 @@ const TurneringsstatistikkContainer = () => {
         subtitle={`Sesong ${selectedSeason}`}
       />
 
-      <div style={{ padding: '24px', maxWidth: '1536px', margin: '0 auto' }}>
+      <div style={{ padding: '24px', width: '100%' }}>
         {/* Season Selector */}
         <div style={{
           display: 'flex',
