@@ -1,0 +1,6 @@
+[
+  "apps/web/src/features/calendar/views/DayView.jsx",
+  "apps/web/src/features/dashboard/AKGolfDashboardV4.tsx",
+  "apps/web/src/features/dashboard/AKGolfDashboardV3.jsx",
+  "apps/web/src/features/player-stats/TestComparisonWidget.tsx"
+]
