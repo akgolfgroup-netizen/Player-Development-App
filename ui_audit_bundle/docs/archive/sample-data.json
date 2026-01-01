@@ -1,0 +1,198 @@
+{
+  "player": {
+    "id": "ak001",
+    "name": "Anders Kristiansen",
+    "birthdate": "2008-06-15",
+    "club": "Oslo Golfklubb",
+    "handicap": 3.4,
+    "category": "Utvalgt B",
+    "phase": "Grunnlag",
+    "weeklyHours": "12-15",
+    "coach": "Ola Nordmann"
+  },
+  "sessions": [
+    {
+      "id": "s001",
+      "date": "2024-12-14",
+      "type": "Teknikk",
+      "focus": "Driver - Bane",
+      "duration": 90,
+      "intensity": 8,
+      "notes": "Jobbet med innsvingsbane. Bedre kontakt.",
+      "completed": true
+    },
+    {
+      "id": "s002",
+      "date": "2024-12-13",
+      "type": "Golfslag",
+      "focus": "Jern 7-PW",
+      "duration": 120,
+      "intensity": 7,
+      "notes": "Presisjonsøvelser. God fremgang.",
+      "completed": true
+    },
+    {
+      "id": "s003",
+      "date": "2024-12-12",
+      "type": "Spill",
+      "focus": "18 hull - Score",
+      "duration": 240,
+      "intensity": 6,
+      "notes": "Scoret 73. Bra putting.",
+      "completed": true
+    }
+  ],
+  "tests": [
+    {
+      "id": "t001",
+      "date": "2024-12-10",
+      "type": "Driver Distance",
+      "club": "Driver",
+      "results": {
+        "avgDistance": 275,
+        "maxDistance": 290,
+        "clubheadSpeed": 112,
+        "ballSpeed": 165,
+        "spinRate": 2450
+      },
+      "notes": "Forbedret speed med 3 mph siden forrige test"
+    },
+    {
+      "id": "t002",
+      "date": "2024-12-05",
+      "type": "Iron Precision",
+      "club": "7-iron",
+      "results": {
+        "distance": 165,
+        "accuracy": 78,
+        "consistency": 7,
+        "girPercentage": 68
+      },
+      "notes": "78% i 8m sirkel. Meget bra."
+    }
+  ],
+  "goals": [
+    {
+      "id": "g001",
+      "period": "Sesong 2025",
+      "type": "Handicap",
+      "target": 2.0,
+      "current": 3.4,
+      "progress": 70,
+      "deadline": "2025-12-31"
+    },
+    {
+      "id": "g002",
+      "period": "Sesong 2025",
+      "type": "Gjennomsnittsscore",
+      "target": 71.0,
+      "current": 72.4,
+      "progress": 60,
+      "deadline": "2025-12-31"
+    },
+    {
+      "id": "g003",
+      "period": "Januar 2025",
+      "type": "Handicap månedlig",
+      "target": 3.0,
+      "current": 3.4,
+      "progress": 80,
+      "deadline": "2025-01-31"
+    }
+  ],
+  "notes": [
+    {
+      "id": "n001",
+      "date": "2024-12-14",
+      "title": "Driver teknikk - Nye erkjennelser",
+      "category": "Teknikk",
+      "content": "Jobbet med innsvingsbane i dag. Fokuserte på å holde høyre albue inn mot kroppen gjennom nedsvingen. Resulterte i mer konsistent kontakt og bedre retningskontroll."
+    },
+    {
+      "id": "n002",
+      "date": "2024-12-10",
+      "title": "Mental trening - Turnering",
+      "category": "Kompetanse",
+      "content": "Gjennomført mental forberedelse før siste turnering. Fokus på pustekontroll og positiv selvprat. Merkbar forbedring i roet på greenen."
+    }
+  ],
+  "coaches": [
+    {
+      "id": "c001",
+      "name": "Ola Nordmann",
+      "role": "Hovedtrener",
+      "specialties": ["Golf-teknikk", "Spilletrening"],
+      "email": "ola@example.com",
+      "phone": "+47 123 45 678"
+    },
+    {
+      "id": "c002",
+      "name": "Kari Hansen",
+      "role": "Fysisk Trener",
+      "specialties": ["Styrke", "Mobilitet", "Utholdenhet"],
+      "email": "kari@example.com",
+      "phone": "+47 234 56 789"
+    },
+    {
+      "id": "c003",
+      "name": "Per Jensen",
+      "role": "Mental Trener",
+      "specialties": ["Konkurranseforberedelse", "Fokus"],
+      "email": "per@example.com",
+      "phone": "+47 345 67 890"
+    }
+  ],
+  "statistics": {
+    "year": 2024,
+    "totalHours": 412,
+    "totalSessions": 247,
+    "avgWeeklyHours": 8.2,
+    "longestStreak": 21,
+    "breakdown": {
+      "Teknikk": { "hours": 142, "percentage": 34, "trend": 5 },
+      "Golfslag": { "hours": 118, "percentage": 29, "trend": 3 },
+      "Spill": { "hours": 95, "percentage": 23, "trend": 0 },
+      "Fysisk": { "hours": 42, "percentage": 10, "trend": 2 },
+      "Kompetanse": { "hours": 15, "percentage": 4, "trend": -1 }
+    }
+  },
+  "yearPlan": {
+    "phases": [
+      {
+        "name": "Evaluering",
+        "months": ["Januar", "Februar"],
+        "hoursPerWeek": "10-12",
+        "sessionsPerWeek": "5-6",
+        "focus": "Testing & Analyse"
+      },
+      {
+        "name": "Grunnlag",
+        "months": ["Mars", "April", "Mai"],
+        "hoursPerWeek": "14-16",
+        "sessionsPerWeek": "6-7",
+        "focus": "Teknikk & Fysisk"
+      },
+      {
+        "name": "Spesialisering",
+        "months": ["Juni", "Juli", "August"],
+        "hoursPerWeek": "16-18",
+        "sessionsPerWeek": "7-8",
+        "focus": "Spesialisering"
+      },
+      {
+        "name": "Turnering",
+        "months": ["September", "Oktober", "November"],
+        "hoursPerWeek": "12-14",
+        "sessionsPerWeek": "5-6",
+        "focus": "Prestasjon"
+      },
+      {
+        "name": "Restitusjon",
+        "months": ["Desember"],
+        "hoursPerWeek": "6-8",
+        "sessionsPerWeek": "3-4",
+        "focus": "Hvile & Planlegging"
+      }
+    ]
+  }
+}

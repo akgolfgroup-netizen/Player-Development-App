@@ -1,0 +1,303 @@
+{
+  "database_name": "REFERANSER",
+  "description": "Reference library - Articles, videos, research, and resources for training methodology",
+  "properties": {
+    "Tittel": {
+      "type": "title",
+      "description": "Reference title or name"
+    },
+    "Type": {
+      "type": "select",
+      "options": [
+        "Artikkel",
+        "Video",
+        "PDF",
+        "Bok",
+        "Forskningsartikkel",
+        "Podcast",
+        "Nettside",
+        "Kurs",
+        "Webinar",
+        "Intern dokument"
+      ],
+      "description": "Type of reference material"
+    },
+    "Kategori": {
+      "type": "multi_select",
+      "options": [
+        "Teknisk",
+        "Fysisk",
+        "Mental",
+        "Strategisk",
+        "Sosial",
+        "Periodisering",
+        "Testing",
+        "Ernæring",
+        "Skadeforkbygging",
+        "Coaching metodikk"
+      ],
+      "description": "Subject category (5-prosess + additional)"
+    },
+    "Emne": {
+      "type": "multi_select",
+      "options": [
+        "Swing mekanikk",
+        "Putting",
+        "Short game",
+        "Styrketrening",
+        "Mobilitet",
+        "Speed training",
+        "Mental toughness",
+        "Pre-shot routine",
+        "Course management",
+        "Talent development",
+        "Junior golf",
+        "Benchmarking",
+        "Strokes Gained",
+        "Periodization theory",
+        "Motor learning"
+      ],
+      "description": "Specific topic areas"
+    },
+    "URL_eller_fil": {
+      "type": "url",
+      "description": "Link to online resource or file location"
+    },
+    "Forfatter": {
+      "type": "text",
+      "description": "Author or creator"
+    },
+    "Kilde": {
+      "type": "text",
+      "description": "Source/publication (journal, website, publisher)"
+    },
+    "Publisert_dato": {
+      "type": "date",
+      "description": "Publication date"
+    },
+    "Lagt_til_dato": {
+      "type": "created_time",
+      "description": "When added to library"
+    },
+    "Sammendrag": {
+      "type": "text",
+      "description": "Brief summary of content and key takeaways"
+    },
+    "Nøkkelpunkter": {
+      "type": "text",
+      "description": "Bullet points of main insights"
+    },
+    "Relevans_for_IUP": {
+      "type": "text",
+      "description": "How this applies to IUP system"
+    },
+    "Brukt_i_økter": {
+      "type": "relation",
+      "related_database": "TRENINGSØKTER",
+      "description": "Training sessions that reference this"
+    },
+    "Brukt_i_øvelser": {
+      "type": "relation",
+      "related_database": "ØVELSER",
+      "description": "Exercises that reference this"
+    },
+    "Spillerkategorier": {
+      "type": "multi_select",
+      "options": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "Alle"],
+      "description": "Which player categories this is most relevant for"
+    },
+    "Kvalitet_rating": {
+      "type": "select",
+      "options": ["5 - Kritisk ressurs", "4 - Svært nyttig", "3 - Nyttig", "2 - Noe nyttig", "1 - Begrenset verdi"],
+      "description": "Assessment of resource quality/usefulness"
+    },
+    "Evidensgrad": {
+      "type": "select",
+      "options": [
+        "Peer-reviewed forskning",
+        "Ekspertmening",
+        "Praktisk erfaring",
+        "Anekdotisk",
+        "Teoretisk"
+      ],
+      "description": "Level of evidence/reliability"
+    },
+    "Nøkkelord": {
+      "type": "multi_select",
+      "options": [
+        "Viktor Hovland",
+        "Team Norway",
+        "LTAD",
+        "Strokes Gained",
+        "TrackMan",
+        "PEI",
+        "Benchmarking",
+        "Bruddpunkt",
+        "L-faser",
+        "Periodisering",
+        "RUT-system",
+        "Multi-sport",
+        "Spesialisering",
+        "Utbrenthet"
+      ],
+      "description": "Searchable keywords"
+    },
+    "Språk": {
+      "type": "select",
+      "options": ["Norsk", "Engelsk", "Svensk", "Dansk", "Annet"],
+      "description": "Language"
+    },
+    "Tilgjengelighet": {
+      "type": "select",
+      "options": ["Gratis", "Betalt", "Abonnement", "Begrenset tilgang", "Intern"],
+      "description": "Access requirements"
+    },
+    "Kostnad": {
+      "type": "number",
+      "description": "Cost in NOK (if paid resource)"
+    },
+    "Anbefalt_for_spillere": {
+      "type": "checkbox",
+      "description": "Should players read/watch this?"
+    },
+    "Anbefalt_for_foreldre": {
+      "type": "checkbox",
+      "description": "Should parents read/watch this?"
+    },
+    "Notater": {
+      "type": "text",
+      "description": "Additional notes and context"
+    },
+    "Sitater": {
+      "type": "text",
+      "description": "Key quotes or excerpts"
+    },
+    "Implementert": {
+      "type": "checkbox",
+      "description": "Has this been integrated into IUP system?"
+    },
+    "Implementerings_notater": {
+      "type": "text",
+      "description": "How this was implemented in training"
+    },
+    "Trener_som_la_til": {
+      "type": "people",
+      "description": "Coach who added this resource"
+    },
+    "Popularitet": {
+      "type": "number",
+      "description": "Number of times referenced or used"
+    },
+    "Tags": {
+      "type": "multi_select",
+      "options": [
+        "Grunnleggende",
+        "Avansert",
+        "Must-read",
+        "Video-tutorial",
+        "Case study",
+        "Data-drevet",
+        "Forskningsbasert",
+        "Praktisk guide",
+        "Inspirerende"
+      ],
+      "description": "Content tags"
+    }
+  },
+  "views": [
+    {
+      "name": "Alle referanser",
+      "type": "table",
+      "sort": [{"property": "Kvalitet_rating", "direction": "ascending"}]
+    },
+    {
+      "name": "Per kategori",
+      "type": "board",
+      "group_by": "Kategori"
+    },
+    {
+      "name": "Per type",
+      "type": "board",
+      "group_by": "Type"
+    },
+    {
+      "name": "Kritiske ressurser (5-rating)",
+      "type": "table",
+      "filter": {"property": "Kvalitet_rating", "select": {"equals": "5 - Kritisk ressurs"}}
+    },
+    {
+      "name": "Forskningsbasert",
+      "type": "table",
+      "filter": {"property": "Evidensgrad", "select": {"equals": "Peer-reviewed forskning"}}
+    },
+    {
+      "name": "Videoer",
+      "type": "gallery",
+      "filter": {"property": "Type", "select": {"equals": "Video"}},
+      "cover_property": "URL_eller_fil"
+    },
+    {
+      "name": "For spillere",
+      "type": "table",
+      "filter": {"property": "Anbefalt_for_spillere", "checkbox": {"equals": true}}
+    },
+    {
+      "name": "For foreldre",
+      "type": "table",
+      "filter": {"property": "Anbefalt_for_foreldre", "checkbox": {"equals": true}}
+    },
+    {
+      "name": "Nylig lagt til",
+      "type": "table",
+      "sort": [{"property": "Lagt_til_dato", "direction": "descending"}],
+      "limit": 20
+    },
+    {
+      "name": "Mest populære",
+      "type": "table",
+      "sort": [{"property": "Popularitet", "direction": "descending"}]
+    }
+  ],
+  "starter_references": {
+    "essential_reading": [
+      {
+        "title": "Team Norway Golf - IUP Metodikk 2026",
+        "type": "PDF",
+        "category": "Periodisering, Testing",
+        "rating": "5 - Kritisk ressurs"
+      },
+      {
+        "title": "Strokes Gained: A New Approach to Golf Analytics",
+        "type": "Bok",
+        "author": "Mark Broadie",
+        "category": "Strategisk",
+        "rating": "5 - Kritisk ressurs"
+      },
+      {
+        "title": "Every Shot Counts",
+        "type": "Bok",
+        "author": "Mark Broadie",
+        "category": "Strategisk",
+        "rating": "4 - Svært nyttig"
+      },
+      {
+        "title": "Viktor Hovland - Junior Development Path",
+        "type": "Case study",
+        "category": "Talent development",
+        "rating": "5 - Kritisk ressurs"
+      }
+    ],
+    "research_papers": [
+      {
+        "title": "Early Sport Specialization and Burnout Risk",
+        "evidence": "Peer-reviewed forskning",
+        "finding": "3.76x higher burnout before age 12"
+      },
+      {
+        "title": "Junior Golf Rankings and Professional Success Correlation",
+        "evidence": "Peer-reviewed forskning",
+        "finding": "Poor predictive value (0.006% reach pro level)"
+      }
+    ]
+  }
+}

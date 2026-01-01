@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IUP Golf Academy - Demo Presentation</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reset.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/white.css">
+
+    <!-- Custom styling -->
+    <style>
+        :root {
+            --iup-blue: #1E40AF;
+            --iup-green: #10B981;
+            --iup-dark: #1F2937;
+            --iup-light-blue: #DBEAFE;
+        }
+
+        .reveal {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: var(--iup-blue);
+            font-weight: 700;
+            text-transform: none;
+        }
+
+        .reveal h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+        }
+
+        .reveal h2 {
+            font-size: 2.2em;
+            margin-bottom: 0.5em;
+        }
+
+        .reveal h3 {
+            font-size: 1.5em;
+            color: var(--iup-green);
+        }
+
+        .reveal p, .reveal li {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .reveal ul {
+            list-style-type: none;
+        }
+
+        .reveal li:before {
+            content: "✓ ";
+            color: var(--iup-green);
+            font-weight: bold;
+            margin-right: 0.5em;
+        }
+
+        .reveal .problem li:before {
+            content: "⚠️ ";
+        }
+
+        .reveal strong {
+            color: var(--iup-blue);
+            font-weight: 600;
+        }
+
+        .reveal .subtitle {
+            font-size: 1.5em;
+            color: var(--iup-dark);
+            margin-top: 0.5em;
+        }
+
+        .reveal .highlight {
+            background: var(--iup-light-blue);
+            padding: 0.2em 0.5em;
+            border-radius: 5px;
+        }
+
+        .reveal .stat {
+            font-size: 2em;
+            color: var(--iup-green);
+            font-weight: bold;
+        }
+
+        .reveal section img {
+            border: 2px solid var(--iup-light-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-height: 500px;
+        }
+
+        .reveal .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2em;
+            align-items: center;
+        }
+
+        .reveal .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5em;
+            align-items: start;
+        }
+
+        .reveal .feature-box {
+            background: var(--iup-light-blue);
+            padding: 1.5em;
+            border-radius: 10px;
+            border-left: 5px solid var(--iup-blue);
+        }
+
+        .reveal .tech-stack {
+            background: #f8f9fa;
+            padding: 1em 2em;
+            border-radius: 10px;
+            font-family: 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        .reveal .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.7em;
+            color: #999;
+        }
+
+        .reveal .center-text {
+            text-align: center;
+        }
+
+        .emoji {
+            font-style: normal;
+        }
+
+        .reveal table {
+            font-size: 0.9em;
+        }
+
+        .reveal table th {
+            background: var(--iup-blue);
+            color: white;
+        }
+
+        .reveal table td {
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section data-background-gradient="linear-gradient(135deg, #1E40AF 0%, #10B981 100%)">
+                <h1 style="color: white;">IUP GOLF ACADEMY</h1>
+                <p class="subtitle" style="color: #DBEAFE;">All-in-one treningsplattform for moderne golf-coaching</p>
+                <p style="color: white; margin-top: 2em;">Anders Kristiansen</p>
+                <p style="color: #DBEAFE; font-size: 0.9em;">25. desember 2025</p>
+            </section>
+
+            <!-- Slide 2: Problemet -->
+            <section>
+                <h2>Utfordringen i moderne golf-coaching</h2>
+                <div class="grid-2">
+                    <div>
+                        <h3 style="margin-top: 1em;">📊 Dagens situasjon:</h3>
+                        <ul class="problem">
+                            <li>Excel-ark og papir</li>
+                            <li>Fragmentert kommunikasjon (SMS, e-post, WhatsApp)</li>
+                            <li>Ingen tydelig fremgang</li>
+                            <li>Ingen strukturert målsetting</li>
+                        </ul>
+
+                        <h3 style="margin-top: 1.5em;">🕒 Konsekvenser:</h3>
+                        <ul class="problem">
+                            <li>5-10 timer/uke på administrasjon</li>
+                            <li>Spillere mister motivasjon</li>
+                            <li>Vanskelig å måle fremgang</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="feature-box">
+                            <p style="font-size: 1.5em; margin: 0;"><em>"Det må finnes en bedre måte..."</em></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Løsningen -->
+            <section data-background-color="#DBEAFE">
+                <h2>Jeg har bygget en løsning</h2>
+                <h1 style="color: var(--iup-green); margin: 0.5em 0;">IUP GOLF ACADEMY</h1>
+                <ul style="font-size: 1.3em;">
+                    <li>Full-stack web-applikasjon (desktop + mobil)</li>
+                    <li>Automatisert treningsplanlegging med periodisering</li>
+                    <li>Video-analyse med AI-støtte</li>
+                    <li>Gamification gjennom badge-system</li>
+                    <li><strong>Bygget fra bunnen av - klar for lansering</strong></li>
+                </ul>
+                <p class="highlight" style="margin-top: 1em; font-size: 1.2em;">
+                    <strong>Production-ready v1.0</strong>
+                </p>
+            </section>
+
+            <!-- Slide 4: Live Demo Pause - Dashboard -->
+            <section>
+                <h2>Spillerperspektiv: Dashboard</h2>
+                <div class="center-text">
+                    <p><em>Screenshot: Player Dashboard (Andreas Holm)</em></p>
+                    <p style="font-size: 0.9em; color: #666;">
+                        [01-player-dashboard-andreas.png vil vises her]
+                    </p>
+                </div>
+                <div class="grid-3" style="margin-top: 2em;">
+                    <div class="feature-box">
+                        <p class="stat">141</p>
+                        <p>Økter fullført</p>
+                    </div>
+                    <div class="feature-box">
+                        <p class="stat">3.9</p>
+                        <p>Handicap (6.2 → 3.9)</p>
+                    </div>
+                    <div class="feature-box">
+                        <p class="stat">24</p>
+                        <p>Badges opptjent</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: Treningsplan -->
+            <section>
+                <h2>Automatisk treningsplanlegging</h2>
+                <div class="center-text">
+                    <p><em>Screenshot: Training Plan Week View</em></p>
+                    <p style="font-size: 0.9em; color: #666;">
+                        [04-training-plan-week-view.png vil vises her]
+                    </p>
+                </div>
+                <div class="grid-2" style="margin-top: 2em;">
+                    <ul>
+                        <li>Automatisk periodisering</li>
+                        <li>Fargekodet etter treningstype</li>
+                        <li>Detaljerte øvelser per økt</li>
+                        <li>Læringsfase og intensitet</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <p><strong>Treningstyper:</strong></p>
+                        <p>🔵 Teknikk</p>
+                        <p>🔴 Fysisk</p>
+                        <p>🟢 Golfslag</p>
+                        <p>🟡 Mental trening</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Badge System -->
+            <section>
+                <h2>Gamification som motiverer</h2>
+                <div class="center-text">
+                    <p><em>Screenshot: Badges Grid</em></p>
+                    <p style="font-size: 0.9em; color: #666;">
+                        [02-badges-grid.png vil vises her]
+                    </p>
+                </div>
+                <div class="grid-3" style="margin-top: 2em;">
+                    <div class="feature-box">
+                        <p style="font-size: 1.8em; margin: 0;">🏅</p>
+                        <p><strong>Putting Master</strong></p>
+                        <p style="font-size: 0.9em;">Sølv</p>
+                    </div>
+                    <div class="feature-box">
+                        <p style="font-size: 1.8em; margin: 0;">👑</p>
+                        <p><strong>Driver King</strong></p>
+                        <p style="font-size: 0.9em;">Bronse</p>
+                    </div>
+                    <div class="feature-box">
+                        <p style="font-size: 1.8em; margin: 0;">✨</p>
+                        <p><strong>Short Game Wizard</strong></p>
+                        <p style="font-size: 0.9em;">Gull</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; text-align: center;">
+                    <span class="stat">24</span> badges opptjent av <strong>85+</strong> tilgjengelige
+                </p>
+            </section>
+
+            <!-- Slide 7: Tester & Progressjon -->
+            <section>
+                <h2>Målbar fremgang over tid</h2>
+                <div class="center-text">
+                    <p><em>Screenshot: Test Progression Graph</em></p>
+                    <p style="font-size: 0.9em; color: #666;">
+                        [03-test-progression-graph.png vil vises her]
+                    </p>
+                </div>
+                <div class="grid-2" style="margin-top: 2em;">
+                    <div class="feature-box">
+                        <h3>Driver Distance</h3>
+                        <p class="stat">210m → 242m</p>
+                        <p><strong>+32m forbedring (+15%)</strong></p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Putting Accuracy</h3>
+                        <p class="stat">65% → 82%</p>
+                        <p><strong>+17% forbedring</strong></p>
+                    </div>
+                </div>
+                <p style="margin-top: 1.5em; text-align: center;">
+                    <strong>36 tester</strong> gjennomført over 6 måneder
+                </p>
+            </section>
+
+            <!-- Slide 8: Trenerperspektiv -->
+            <section>
+                <h2>Trener Dashboard - Full oversikt</h2>
+                <div class="center-text">
+                    <p><em>Screenshot: Coach Dashboard</em></p>
+                    <p style="font-size: 0.9em; color: #666;">
+                        [06-coach-dashboard-overview.png vil vises her]
+                    </p>
+                </div>
+                <ul style="margin-top: 2em;">
+                    <li>15+ aktive spillere</li>
+                    <li>Real-time compliance tracking</li>
+                    <li>Instant messaging</li>
+                    <li>Detaljert fremgangssporing</li>
+                </ul>
+            </section>
+
+            <!-- Slide 9: Responsiveness -->
+            <section>
+                <h2>Fungerer på alle enheter</h2>
+                <div class="center-text">
+                    <p><em>Screenshot: Mobile View</em></p>
+                    <p style="font-size: 0.9em; color: #666;">
+                        [08-mobile-dashboard.png vil vises her]
+                    </p>
+                </div>
+                <h3 style="margin-top: 2em; text-align: center;">
+                    Én app - Desktop, Tablet, Mobil
+                </h3>
+                <p style="text-align: center; font-size: 1.1em; margin-top: 1em;">
+                    Responsive design bygget med <strong>React</strong> og <strong>TailwindCSS</strong>
+                </p>
+            </section>
+
+            <!-- Slide 10: Teknisk Arkitektur -->
+            <section>
+                <h2>Bygget for skala og sikkerhet</h2>
+                <div class="grid-2">
+                    <div>
+                        <div class="tech-stack">
+                            <p><strong>Frontend</strong></p>
+                            <p>React 18, TypeScript</p>
+                            <p>TailwindCSS</p>
+                            <p>&nbsp;</p>
+                            <p><strong>Backend</strong></p>
+                            <p>Node.js, Fastify</p>
+                            <p>PostgreSQL, Redis</p>
+                            <p>&nbsp;</p>
+                            <p><strong>Security</strong></p>
+                            <p>2FA, JWT, 149 tests ✅</p>
+                            <p>&nbsp;</p>
+                            <p><strong>Deploy</strong></p>
+                            <p>Docker, Multi-tenant</p>
+                            <p>K8s-ready</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="feature-box">
+                            <h3 style="text-align: center; margin-bottom: 1em;">Arkitektur</h3>
+                            <div style="font-family: monospace; font-size: 0.9em; line-height: 2;">
+                                <p>┌─────────────────┐</p>
+                                <p>│ React 18 Web App │</p>
+                                <p>└────────┬────────┘</p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                                <p>┌────────────────────┐</p>
+                                <p>│ Fastify API (Node) │</p>
+                                <p>└────────┬───────────┘</p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</p>
+                                <p>┌──────────────────────┐</p>
+                                <p>│ PostgreSQL + Redis   │</p>
+                                <p>└──────────────────────┘</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 11: Hva er ferdig? -->
+            <section data-background-color="#10B981">
+                <h2 style="color: white;">Status: Production-Ready v1.0</h2>
+                <div class="grid-2">
+                    <ul style="color: white;">
+                        <li>50,000+ linjer produksjonsklar kode</li>
+                        <li>85+ badges implementert</li>
+                        <li>300+ treningsøvelser i bibliotek</li>
+                        <li>20+ testprotokoller (IUP standard)</li>
+                    </ul>
+                    <ul style="color: white;">
+                        <li>Video-analyse med annotasjoner (beta)</li>
+                        <li>Mobil-app klar (iOS/Android)</li>
+                        <li>Komplett RESTful API (40+ endpoints)</li>
+                        <li>Deployment-klar med Docker</li>
+                    </ul>
+                </div>
+                <p style="color: white; font-size: 1.5em; margin-top: 1em; text-align: center;">
+                    <strong>Klar for lansering i dag! 🚀</strong>
+                </p>
+            </section>
+
+            <!-- Slide 12: Markedspotensial -->
+            <section>
+                <h2>Markedet er stort</h2>
+                <table style="width: 100%; margin-top: 2em;">
+                    <thead>
+                        <tr>
+                            <th>Land</th>
+                            <th>Golfere</th>
+                            <th>Klubber</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🇳🇴 Norge</td>
+                            <td>140,000</td>
+                            <td>180+</td>
+                        </tr>
+                        <tr>
+                            <td>🇸🇪 Sverige</td>
+                            <td>450,000</td>
+                            <td>400+</td>
+                        </tr>
+                        <tr>
+                            <td>🇩🇰 Danmark</td>
+                            <td>150,000</td>
+                            <td>150+</td>
+                        </tr>
+                        <tr>
+                            <td>🌍 Europa</td>
+                            <td>5,000,000+</td>
+                            <td>7,000+</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="feature-box" style="margin-top: 2em;">
+                    <p style="font-size: 1.5em; margin: 0; text-align: center;">
+                        <strong>Golf coaching marked: $500M årlig (Europa)</strong>
+                    </p>
+                </div>
+                <div class="grid-3" style="margin-top: 2em;">
+                    <div>
+                        <p><strong>Klubb-lisens</strong></p>
+                        <p class="stat">5.000 kr/mnd</p>
+                    </div>
+                    <div>
+                        <p><strong>Per spiller</strong></p>
+                        <p class="stat">199 kr/mnd</p>
+                    </div>
+                    <div>
+                        <p><strong>Trener</strong></p>
+                        <p class="stat">799 kr/mnd</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 13: Konkurrenter -->
+            <section>
+                <h2>Konkurransesituasjon</h2>
+                <table style="width: 100%; margin-top: 2em;">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>ClubV1</th>
+                            <th>GolfGenius</th>
+                            <th style="background: var(--iup-green);">IUP Golf</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pris</td>
+                            <td>£12/mnd</td>
+                            <td>$$$</td>
+                            <td><strong>199 kr/mnd</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Junior-fokus</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td><strong>✅</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Gamification</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td><strong>✅</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Video-analyse</td>
+                            <td>⚠️</td>
+                            <td>❌</td>
+                            <td><strong>✅</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Norsk</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td><strong>✅</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Komplett</td>
+                            <td>❌</td>
+                            <td>⚠️</td>
+                            <td><strong>✅</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="feature-box" style="margin-top: 2em;">
+                    <p><strong>Vårt fortrinn:</strong> Norsk lokalisering • Junior-fokusert (IUP) • Komplett løsning • Moderne UX</p>
+                </div>
+            </section>
+
+            <!-- Slide 14: Veien videre -->
+            <section>
+                <h2>Roadmap & Neste Steg</h2>
+                <div class="grid-2">
+                    <div>
+                        <h3>Timeline</h3>
+                        <div style="font-size: 1.1em; line-height: 2;">
+                            <p><strong>Q1 2026:</strong> Pilot (1-2 klubber)</p>
+                            <p><strong>Q2 2026:</strong> Lansering Norge</p>
+                            <p><strong>Q3 2026:</strong> Sverige/Danmark</p>
+                            <p><strong>Q4 2026:</strong> Enterprise features</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Call to Action</h3>
+                        <ul>
+                            <li>Diskuter pilot-klubber</li>
+                            <li>Avklar eierskap og investment</li>
+                            <li>Plan for Q1 2026 kickoff</li>
+                        </ul>
+                        <div class="feature-box" style="margin-top: 1.5em;">
+                            <p><strong>Test selv:</strong></p>
+                            <p style="font-size: 0.9em; margin: 0.5em 0;">
+                                iupgolf-demo.up.railway.app
+                            </p>
+                            <p style="font-size: 0.9em; margin: 0;">
+                                Login: player@demo.com / player123
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 15: Q&A -->
+            <section data-background-gradient="linear-gradient(135deg, #1E40AF 0%, #10B981 100%)">
+                <h1 style="color: white;">Spørsmål?</h1>
+                <div style="margin-top: 3em; color: white;">
+                    <p style="font-size: 1.3em;"><strong>Anders Kristiansen</strong></p>
+                    <p style="font-size: 1.1em; margin-top: 1em;">
+                        📧 anders@iupgolf.no<br>
+                        🌐 iupgolf.no<br>
+                        💻 Demo: iupgolf-demo.up.railway.app
+                    </p>
+                </div>
+                <p style="color: #DBEAFE; margin-top: 3em; font-size: 1.2em;">
+                    <strong>Takk for oppmerksomheten! 🏌️</strong>
+                </p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        IUP Golf Academy - Demo Presentation - 25. desember 2025
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            slideNumber: true,
+            controls: true,
+            progress: true,
+            center: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            navigationMode: 'default',
+            shuffle: false,
+            fragments: true,
+            fragmentInURL: false,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoPlayMedia: null,
+            preloadIframes: null,
+            autoSlide: 0,
+            autoSlideStoppable: true,
+            mouseWheel: false,
+            hideInactiveCursor: true,
+            hideCursorTime: 5000,
+            previewLinks: false,
+            viewDistance: 3,
+            mobileViewDistance: 2,
+            display: 'block',
+            hideAddressBar: true,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0,
+        });
+    </script>
+</body>
+</html>

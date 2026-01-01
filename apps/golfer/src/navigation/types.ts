@@ -2,6 +2,13 @@
  * Navigation Types for AK Golf Mobile App
  */
 
+// Session summary for reflection screen
+export interface SessionSummary {
+  trainingArea: string;
+  blockCount: number;
+  durationMinutes: number;
+}
+
 export type RootStackParamList = {
   // Auth screens
   Login: undefined;
@@ -14,12 +21,14 @@ export type RootStackParamList = {
   };
   Reflection: {
     sessionId: string;
+    sessionSummary: SessionSummary;
   };
   Baseline: {
     testType?: string;
   };
   Trajectory: undefined;
   Proof: {
+    testId?: string;
     sessionId?: string;
     breakingPointId?: string;
   };

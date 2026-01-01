@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Golf Academy - iPhone Mockups</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #F5F7F6 0%, #E5E5EA 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1A3D2E;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #8E8E93;
+        }
+
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+
+        /* iPhone Device Frame */
+        .iphone {
+            background: #1C1C1E;
+            border-radius: 48px;
+            padding: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            width: 100%;
+            max-width: 375px;
+            margin: 0 auto;
+        }
+
+        .iphone::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 28px;
+            background: #1C1C1E;
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        .screen {
+            background: white;
+            border-radius: 36px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 9 / 19.5;
+        }
+
+        .screen-content {
+            height: 100%;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 52px 24px 12px;
+            background: #1A3D2E;
+            color: white;
+            font-size: 14px;
+        }
+
+        .time {
+            font-weight: 600;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: white;
+            border-bottom: 1px solid #E5E5EA;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-bar h2 {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1A3D2E;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            color: #1A3D2E;
+        }
+
+        /* Screen Specific Styles */
+
+        /* Login Screen */
+        .login-screen {
+            background: linear-gradient(180deg, #1A3D2E 0%, #2D5A45 100%);
+            padding: 60px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 48px;
+            text-align: center;
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 17px;
+            backdrop-filter: blur(10px);
+        }
+
+        .input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: #C9A227;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            margin-top: 24px;
+            cursor: pointer;
+        }
+
+        /* Dashboard Screen */
+        .dashboard-hero {
+            background: linear-gradient(180deg, #1A3D2E 0%, #2D5A45 100%);
+            padding: 32px 24px;
+            color: white;
+        }
+
+        .welcome {
+            font-size: 15px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .player-name {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 16px 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .content-section {
+            padding: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 19px;
+            font-weight: 600;
+            color: #1A3D2E;
+        }
+
+        .see-all {
+            font-size: 15px;
+            color: #C9A227;
+            font-weight: 500;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1A3D2E;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #E8F5E9;
+            color: #4A7C59;
+        }
+
+        .badge-warning {
+            background: #FFF9E6;
+            color: #D4A84B;
+        }
+
+        .card-meta {
+            font-size: 14px;
+            color: #8E8E93;
+        }
+
+        /* Test Results Screen */
+        .test-category {
+            background: #F5F7F6;
+            padding: 12px 16px;
+            margin: 0 -24px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1A3D2E;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .test-result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .test-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1A3D2E;
+            margin-bottom: 12px;
+        }
+
+        .test-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .test-stat {
+            text-align: center;
+        }
+
+        .test-stat-value {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1A3D2E;
+        }
+
+        .test-stat-label {
+            font-size: 12px;
+            color: #8E8E93;
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #E5E5EA;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4A7C59 0%, #C9A227 100%);
+            border-radius: 4px;
+        }
+
+        /* Profile Screen */
+        .profile-header {
+            background: linear-gradient(180deg, #1A3D2E 0%, #2D5A45 100%);
+            padding: 32px 24px 80px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .profile-name {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-role {
+            font-size: 15px;
+            opacity: 0.8;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #F2F2F7;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 15px;
+            color: #8E8E93;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1A3D2E;
+        }
+
+        /* Training Plan Screen */
+        .plan-timeline {
+            padding: 24px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            bottom: -24px;
+            width: 2px;
+            background: #E5E5EA;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #C9A227;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #C9A227;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8E8E93;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .exercise-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1A3D2E;
+            margin-bottom: 8px;
+        }
+
+        .exercise-meta {
+            font-size: 14px;
+            color: #8E8E93;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-top: 1px solid #E5E5EA;
+            padding: 8px 24px 24px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #8E8E93;
+            font-size: 12px;
+        }
+
+        .nav-item.active {
+            color: #1A3D2E;
+        }
+
+        .nav-item-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-label {
+            text-align: center;
+            margin-top: 60px;
+            margin-bottom: 24px;
+        }
+
+        .section-label h3 {
+            font-size: 21px;
+            font-weight: 700;
+            color: #1A3D2E;
+            margin-bottom: 8px;
+        }
+
+        .section-label p {
+            font-size: 15px;
+            color: #8E8E93;
+        }
+
+        /* Booking Screen */
+        .calendar {
+            padding: 24px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .calendar-month {
+            font-size: 19px;
+            font-weight: 600;
+            color: #1A3D2E;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .calendar-day-header {
+            color: #8E8E93;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .calendar-day.selected {
+            background: #1A3D2E;
+            color: white;
+        }
+
+        .calendar-day.has-booking {
+            background: #FFF9E6;
+            color: #D4A84B;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .time-slot {
+            padding: 16px;
+            border: 2px solid #E5E5EA;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1A3D2E;
+        }
+
+        .time-slot.available {
+            border-color: #C9A227;
+            background: #FFF9E6;
+            color: #C9A227;
+        }
+
+        .scrollable {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AK Golf Academy App</h1>
+            <p>iPhone Mockups - Individuelle Utviklingsplaner for Juniorgolfere</p>
+        </div>
+
+        <!-- Row 1: Login & Dashboard -->
+        <div class="mockup-grid">
+            <!-- Login Screen -->
+            <div>
+                <div class="section-label">
+                    <h3>1. Innlogging</h3>
+                    <p>Sikker autentisering med JWT</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="login-screen">
+                            <div class="logo">AK</div>
+                            <h1 class="login-title">Velkommen til<br>AK Golf Academy</h1>
+                            <p class="login-subtitle">Din personlige utviklingsplan</p>
+                            <div class="input-group">
+                                <input type="email" class="input" placeholder="E-post" value="player@demo.com">
+                            </div>
+                            <div class="input-group">
+                                <input type="password" class="input" placeholder="Passord" value="•••••••••">
+                            </div>
+                            <button class="btn-primary">Logg inn</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Screen -->
+            <div>
+                <div class="section-label">
+                    <h3>2. Dashboard</h3>
+                    <p>Oversikt over fremgang og statistikk</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content scrollable">
+                            <div class="status-bar">
+                                <span class="time">9:41</span>
+                                <div class="status-icons">
+                                    <span>◉</span>
+                                    <span>📶</span>
+                                    <span>🔋</span>
+                                </div>
+                            </div>
+                            <div class="dashboard-hero">
+                                <p class="welcome">God morgen,</p>
+                                <h1 class="player-name">Magnus Olsen</h1>
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <div class="stat-value">B</div>
+                                        <div class="stat-label">Kategori</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value">8.2</div>
+                                        <div class="stat-label">Handicap</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value">23</div>
+                                        <div class="stat-label">Tester</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-section">
+                                <div class="section-header">
+                                    <h2 class="section-title">Dagens Plan</h2>
+                                    <span class="see-all">Se alle →</span>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Putting økt</h3>
+                                        <span class="badge badge-success">I dag</span>
+                                    </div>
+                                    <p class="card-meta">13:00 - 14:30 • Bane 1</p>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Driver test</h3>
+                                        <span class="badge badge-warning">I morgen</span>
+                                    </div>
+                                    <p class="card-meta">10:00 - 11:00 • Range</p>
+                                </div>
+                            </div>
+                            <div class="bottom-nav">
+                                <div class="nav-item active">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                                    </svg>
+                                    <span>Hjem</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                                    </svg>
+                                    <span>Kalender</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                    </svg>
+                                    <span>Tester</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <span>Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Results Screen -->
+            <div>
+                <div class="section-label">
+                    <h3>3. Testresultater</h3>
+                    <p>20+ testprotokoller med analyse</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content scrollable">
+                            <div class="status-bar">
+                                <span class="time">9:41</span>
+                                <div class="status-icons">
+                                    <span>◉</span>
+                                    <span>📶</span>
+                                    <span>🔋</span>
+                                </div>
+                            </div>
+                            <div class="nav-bar">
+                                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                                </svg>
+                                <h2>Mine Tester</h2>
+                                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                                </svg>
+                            </div>
+                            <div class="content-section">
+                                <div class="test-category">Driver Tester</div>
+                                <div class="test-result-card">
+                                    <h3 class="test-name">Driver Distance & Accuracy</h3>
+                                    <div class="test-stats">
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">245m</div>
+                                            <div class="test-stat-label">Avstand</div>
+                                        </div>
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">68%</div>
+                                            <div class="test-stat-label">Fairway</div>
+                                        </div>
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">82</div>
+                                            <div class="test-stat-label">Percentil</div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 82%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="test-category">Approach Tester</div>
+                                <div class="test-result-card">
+                                    <h3 class="test-name">100m Approach</h3>
+                                    <div class="test-stats">
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">3.2m</div>
+                                            <div class="test-stat-label">Avg Avstand</div>
+                                        </div>
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">8/10</div>
+                                            <div class="test-stat-label">På Green</div>
+                                        </div>
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">76</div>
+                                            <div class="test-stat-label">Percentil</div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 76%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="test-category">Putting Tester</div>
+                                <div class="test-result-card">
+                                    <h3 class="test-name">2m Putting</h3>
+                                    <div class="test-stats">
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">9/10</div>
+                                            <div class="test-stat-label">Treff</div>
+                                        </div>
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">90%</div>
+                                            <div class="test-stat-label">Prosent</div>
+                                        </div>
+                                        <div class="test-stat">
+                                            <div class="test-stat-value">88</div>
+                                            <div class="test-stat-label">Percentil</div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bottom-nav">
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                                    </svg>
+                                    <span>Hjem</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                                    </svg>
+                                    <span>Kalender</span>
+                                </div>
+                                <div class="nav-item active">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                    </svg>
+                                    <span>Tester</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <span>Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Profile, Training Plan, Booking -->
+        <div class="mockup-grid">
+            <!-- Profile Screen -->
+            <div>
+                <div class="section-label">
+                    <h3>4. Spillerprofil</h3>
+                    <p>Kategori A-K og målsetning</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content scrollable">
+                            <div class="status-bar">
+                                <span class="time">9:41</span>
+                                <div class="status-icons">
+                                    <span>◉</span>
+                                    <span>📶</span>
+                                    <span>🔋</span>
+                                </div>
+                            </div>
+                            <div class="profile-header">
+                                <div class="avatar">MO</div>
+                                <h2 class="profile-name">Magnus Olsen</h2>
+                                <p class="profile-role">Junior Spiller • 16 år</p>
+                            </div>
+                            <div class="content-section" style="margin-top: -60px;">
+                                <div class="info-card">
+                                    <div class="info-row">
+                                        <span class="info-label">Kategori</span>
+                                        <span class="info-value">B</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">Handicap</span>
+                                        <span class="info-value">8.2</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">Målsetning</span>
+                                        <span class="info-value">A-kategori 2026</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">Trener</span>
+                                        <span class="info-value">Anders Kristiansen</span>
+                                    </div>
+                                </div>
+
+                                <div class="section-header">
+                                    <h2 class="section-title">Kategori Fremgang</h2>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Teknisk</h3>
+                                        <span class="badge badge-success">85%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Taktisk</h3>
+                                        <span class="badge badge-warning">72%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 72%"></div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Fysisk</h3>
+                                        <span class="badge badge-success">78%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 78%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bottom-nav">
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                                    </svg>
+                                    <span>Hjem</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                                    </svg>
+                                    <span>Kalender</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                    </svg>
+                                    <span>Tester</span>
+                                </div>
+                                <div class="nav-item active">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <span>Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Plan Screen -->
+            <div>
+                <div class="section-label">
+                    <h3>5. Treningsplan</h3>
+                    <p>Periodisert årsplan med økter</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content scrollable">
+                            <div class="status-bar">
+                                <span class="time">9:41</span>
+                                <div class="status-icons">
+                                    <span>◉</span>
+                                    <span>📶</span>
+                                    <span>🔋</span>
+                                </div>
+                            </div>
+                            <div class="nav-bar">
+                                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                                </svg>
+                                <h2>Treningsplan</h2>
+                                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 15H5V5h2v3h10V5h2v13z"/>
+                                </svg>
+                            </div>
+                            <div class="plan-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-date">I dag • Mandag</div>
+                                    <div class="exercise-card">
+                                        <h3 class="exercise-title">Putting økt - Presisjon</h3>
+                                        <p class="exercise-meta">13:00 - 14:30 • 90 min</p>
+                                        <p class="exercise-meta" style="margin-top: 8px;">
+                                            2m putting: 3x10 slag<br>
+                                            4m putting: 3x10 slag<br>
+                                            Lag putting: 2x10 slag
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <div class="timeline-dot" style="background: #E5E5EA; box-shadow: 0 0 0 2px #E5E5EA;"></div>
+                                    <div class="timeline-date">I morgen • Tirsdag</div>
+                                    <div class="exercise-card">
+                                        <h3 class="exercise-title">Driver test & analyse</h3>
+                                        <p class="exercise-meta">10:00 - 11:00 • 60 min</p>
+                                        <p class="exercise-meta" style="margin-top: 8px;">
+                                            Oppvarming: 15 min<br>
+                                            Test: 10 slag<br>
+                                            Analyse med trener
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <div class="timeline-dot" style="background: #E5E5EA; box-shadow: 0 0 0 2px #E5E5EA;"></div>
+                                    <div class="timeline-date">Onsdag</div>
+                                    <div class="exercise-card">
+                                        <h3 class="exercise-title">Kort spill - Bunker</h3>
+                                        <p class="exercise-meta">14:00 - 15:30 • 90 min</p>
+                                        <p class="exercise-meta" style="margin-top: 8px;">
+                                            Bunker shots: 50 slag<br>
+                                            Ulike ligger og avstander<br>
+                                            Bunker test
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <div class="timeline-dot" style="background: #E5E5EA; box-shadow: 0 0 0 2px #E5E5EA;"></div>
+                                    <div class="timeline-date">Torsdag</div>
+                                    <div class="exercise-card">
+                                        <h3 class="exercise-title">Fysisk trening</h3>
+                                        <p class="exercise-meta">16:00 - 17:00 • 60 min</p>
+                                        <p class="exercise-meta" style="margin-top: 8px;">
+                                            Styrketrening<br>
+                                            Mobilitet<br>
+                                            Kondisjon
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bottom-nav">
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                                    </svg>
+                                    <span>Hjem</span>
+                                </div>
+                                <div class="nav-item active">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                                    </svg>
+                                    <span>Kalender</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                    </svg>
+                                    <span>Tester</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <span>Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Screen -->
+            <div>
+                <div class="section-label">
+                    <h3>6. Booking</h3>
+                    <p>Book treneravtaler og økter</p>
+                </div>
+                <div class="iphone">
+                    <div class="screen">
+                        <div class="screen-content scrollable">
+                            <div class="status-bar">
+                                <span class="time">9:41</span>
+                                <div class="status-icons">
+                                    <span>◉</span>
+                                    <span>📶</span>
+                                    <span>🔋</span>
+                                </div>
+                            </div>
+                            <div class="nav-bar">
+                                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                                </svg>
+                                <h2>Book Økt</h2>
+                                <svg class="nav-icon" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                                </svg>
+                            </div>
+                            <div class="calendar">
+                                <div class="calendar-header">
+                                    <svg width="24" height="24" fill="#1A3D2E" viewBox="0 0 24 24">
+                                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                                    </svg>
+                                    <span class="calendar-month">Desember 2025</span>
+                                    <svg width="24" height="24" fill="#1A3D2E" viewBox="0 0 24 24">
+                                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                                    </svg>
+                                </div>
+
+                                <div class="calendar-grid">
+                                    <div class="calendar-day calendar-day-header">M</div>
+                                    <div class="calendar-day calendar-day-header">T</div>
+                                    <div class="calendar-day calendar-day-header">O</div>
+                                    <div class="calendar-day calendar-day-header">T</div>
+                                    <div class="calendar-day calendar-day-header">F</div>
+                                    <div class="calendar-day calendar-day-header">L</div>
+                                    <div class="calendar-day calendar-day-header">S</div>
+
+                                    <div class="calendar-day" style="color: #C8C8D0;">28</div>
+                                    <div class="calendar-day" style="color: #C8C8D0;">29</div>
+                                    <div class="calendar-day" style="color: #C8C8D0;">30</div>
+                                    <div class="calendar-day" style="color: #C8C8D0;">31</div>
+                                    <div class="calendar-day">1</div>
+                                    <div class="calendar-day">2</div>
+                                    <div class="calendar-day">3</div>
+
+                                    <div class="calendar-day">4</div>
+                                    <div class="calendar-day">5</div>
+                                    <div class="calendar-day">6</div>
+                                    <div class="calendar-day">7</div>
+                                    <div class="calendar-day">8</div>
+                                    <div class="calendar-day">9</div>
+                                    <div class="calendar-day">10</div>
+
+                                    <div class="calendar-day">11</div>
+                                    <div class="calendar-day">12</div>
+                                    <div class="calendar-day">13</div>
+                                    <div class="calendar-day">14</div>
+                                    <div class="calendar-day has-booking">15</div>
+                                    <div class="calendar-day">16</div>
+                                    <div class="calendar-day selected">17</div>
+
+                                    <div class="calendar-day has-booking">18</div>
+                                    <div class="calendar-day">19</div>
+                                    <div class="calendar-day">20</div>
+                                    <div class="calendar-day">21</div>
+                                    <div class="calendar-day">22</div>
+                                    <div class="calendar-day">23</div>
+                                    <div class="calendar-day">24</div>
+                                </div>
+
+                                <div class="section-header" style="margin-top: 24px;">
+                                    <h2 class="section-title">Tilgjengelige tider</h2>
+                                </div>
+
+                                <div class="time-slots">
+                                    <div class="time-slot">09:00</div>
+                                    <div class="time-slot available">10:00</div>
+                                    <div class="time-slot">11:00</div>
+                                    <div class="time-slot available">13:00</div>
+                                    <div class="time-slot available">14:00</div>
+                                    <div class="time-slot">15:00</div>
+                                    <div class="time-slot available">16:00</div>
+                                    <div class="time-slot">17:00</div>
+                                </div>
+
+                                <button class="btn-primary" style="margin-top: 24px;">Book økt kl 13:00</button>
+                            </div>
+                            <div class="bottom-nav">
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                                    </svg>
+                                    <span>Hjem</span>
+                                </div>
+                                <div class="nav-item active">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                                    </svg>
+                                    <span>Booking</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                    </svg>
+                                    <span>Tester</span>
+                                </div>
+                                <div class="nav-item">
+                                    <svg class="nav-item-icon" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <span>Profil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 80px; padding: 40px; background: white; border-radius: 16px;">
+            <h2 style="font-size: 26px; font-weight: 700; color: #1A3D2E; margin-bottom: 16px;">
+                AK Golf Academy - IUP Platform
+            </h2>
+            <p style="font-size: 17px; color: #8E8E93; margin-bottom: 24px;">
+                Komplett plattform for individuelle utviklingsplaner for juniorgolfere
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; max-width: 800px; margin: 0 auto;">
+                <div>
+                    <div style="font-size: 32px; font-weight: 700; color: #1A3D2E;">20+</div>
+                    <div style="font-size: 14px; color: #8E8E93;">Testprotokoller</div>
+                </div>
+                <div>
+                    <div style="font-size: 32px; font-weight: 700; color: #1A3D2E;">11</div>
+                    <div style="font-size: 14px; color: #8E8E93;">Kategorier (A-K)</div>
+                </div>
+                <div>
+                    <div style="font-size: 32px; font-weight: 700; color: #1A3D2E;">150+</div>
+                    <div style="font-size: 14px; color: #8E8E93;">Øvelser</div>
+                </div>
+                <div>
+                    <div style="font-size: 32px; font-weight: 700; color: #1A3D2E;">40+</div>
+                    <div style="font-size: 14px; color: #8E8E93;">API Endpoints</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

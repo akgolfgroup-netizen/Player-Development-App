@@ -16,14 +16,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { SyncProvider } from './contexts/SyncContext';
 
-// Screens
+// Screens - Connected versions with API integration
 import LoginScreen from './screens/LoginScreen';
-import HomeScreen from '../screens/HOME';
-import SessionScreen from '../screens/SESSION';
-import ReflectionScreen from '../screens/REFLECTION';
-import BaselineScreen from '../screens/BASELINE';
-import TrajectoryScreen from '../screens/TRAJECTORY';
-import ProofScreen from '../screens/PROOF';
+import HomeScreenConnected from './screens/HomeScreenConnected';
+import SessionScreenConnected from './screens/SessionScreenConnected';
+import ReflectionScreenConnected from './screens/ReflectionScreenConnected';
+import BaselineScreenConnected from './screens/BaselineScreenConnected';
+import TrajectoryScreenConnected from './screens/TrajectoryScreenConnected';
+import ProofScreenConnected from './screens/ProofScreenConnected';
 
 // Types
 import { RootStackParamList } from './navigation/types';
@@ -54,12 +54,12 @@ function MainNavigator() {
         animation: 'slide_from_right',
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Session" component={SessionScreen} />
-      <Stack.Screen name="Reflection" component={ReflectionScreen} />
-      <Stack.Screen name="Baseline" component={BaselineScreen} />
-      <Stack.Screen name="Trajectory" component={TrajectoryScreen} />
-      <Stack.Screen name="Proof" component={ProofScreen} />
+      <Stack.Screen name="Home" component={HomeScreenConnected} />
+      <Stack.Screen name="Session" component={SessionScreenConnected} />
+      <Stack.Screen name="Reflection" component={ReflectionScreenConnected} />
+      <Stack.Screen name="Baseline" component={BaselineScreenConnected} />
+      <Stack.Screen name="Trajectory" component={TrajectoryScreenConnected} />
+      <Stack.Screen name="Proof" component={ProofScreenConnected} />
     </Stack.Navigator>
   );
 }
