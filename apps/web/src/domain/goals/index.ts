@@ -13,32 +13,28 @@
  */
 
 // ============================================================================
-// CANONICAL TYPES (Re-exported from @iup/shared-types)
+// CANONICAL TYPES (Defined locally to avoid CRA webpack issues)
 // ============================================================================
 
+// Re-export canonical types from mappers (defined locally there)
 export type {
-  Goal,
-  GoalMilestone,
-  GoalCreateInput,
-  GoalUpdateInput,
-  GoalFilters,
+  CanonicalGoal as Goal,
   GoalSummary,
-  GoalProgress,
-  GoalActivity,
   GoalType,
   GoalTimeframe,
   GoalStatus,
-  GoalProgressTrend,
-  GoalActivityType,
-} from '@iup/shared-types';
+} from './mappers';
 
-export {
-  GOAL_TYPES,
-  GOAL_TIMEFRAMES,
-  GOAL_STATUSES,
-  GOAL_PROGRESS_TRENDS,
-  GOAL_ACTIVITY_TYPES,
-} from '@iup/shared-types';
+// Constants for canonical types
+export const GOAL_TYPES = ['score', 'technique', 'physical', 'mental', 'competition'] as const;
+export const GOAL_TIMEFRAMES = ['short', 'medium', 'long'] as const;
+export const GOAL_STATUSES = ['active', 'completed', 'paused', 'cancelled'] as const;
+export const GOAL_PROGRESS_TRENDS = ['on_track', 'ahead', 'behind', 'at_risk'] as const;
+export const GOAL_ACTIVITY_TYPES = ['created', 'updated', 'milestone_completed', 'value_changed', 'status_changed', 'completed'] as const;
+
+// Additional types (not currently used by mappers but may be needed)
+export type GoalProgressTrend = 'on_track' | 'ahead' | 'behind' | 'at_risk';
+export type GoalActivityType = 'created' | 'updated' | 'milestone_completed' | 'value_changed' | 'status_changed' | 'completed';
 
 // ============================================================================
 // UI TYPES & MAPPERS

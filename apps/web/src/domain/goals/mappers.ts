@@ -26,13 +26,64 @@
  * - API Response → UIGoal (via mapApiGoalToUI)
  */
 
-import type {
-  Goal as CanonicalGoal,
-  GoalTimeframe,
-  GoalStatus,
-  GoalType,
-  GoalSummary,
-} from '@iup/shared-types';
+// ============================================================================
+// CANONICAL TYPES (from @iup/shared-types)
+// Defined locally to avoid CRA webpack issues with workspace TypeScript packages
+// ============================================================================
+
+/**
+ * Canonical goal types.
+ */
+export type GoalType = 'score' | 'technique' | 'physical' | 'mental' | 'competition';
+
+/**
+ * Canonical goal timeframe.
+ */
+export type GoalTimeframe = 'short' | 'medium' | 'long';
+
+/**
+ * Canonical goal status.
+ */
+export type GoalStatus = 'active' | 'completed' | 'paused' | 'cancelled';
+
+/**
+ * Canonical goal from @iup/shared-types.
+ */
+export interface CanonicalGoal {
+  id: string;
+  userId: string;
+  title: string;
+  goalType: GoalType;
+  timeframe: GoalTimeframe;
+  startDate: string;
+  targetDate: string;
+  status: GoalStatus;
+  description?: string;
+  targetValue?: number;
+  currentValue?: number;
+  startValue?: number;
+  unit?: string;
+  progressPercent: number;
+  completedDate?: string;
+  icon?: string;
+  color?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Goal summary from @iup/shared-types.
+ */
+export interface GoalSummary {
+  id: string;
+  title: string;
+  goalType: GoalType;
+  timeframe: GoalTimeframe;
+  status: GoalStatus;
+  progressPercent: number;
+  targetDate: string;
+}
 
 // ============================================================================
 // UI TYPES (View Models)

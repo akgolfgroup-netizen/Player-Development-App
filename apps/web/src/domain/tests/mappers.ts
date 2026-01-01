@@ -33,13 +33,89 @@
 /* eslint-disable no-restricted-syntax */
 // Purity constraints enforced by .eslintrc - see rules for domain/tests/**
 
-import type {
-  TestResult as CanonicalTestResult,
-  TestDefinition as CanonicalTestDefinition,
-  TestCategory as CanonicalTestCategory,
-  PlayerCategory as CanonicalPlayerCategory,
-  TestResultWithDefinition,
-} from '@iup/shared-types';
+// ============================================================================
+// CANONICAL TYPES (from @iup/shared-types)
+// Defined locally to avoid CRA webpack issues with workspace TypeScript packages
+// ============================================================================
+
+/**
+ * Canonical test categories from Team Norway test protocols.
+ * Different from UI skill areas (UISkillArea).
+ */
+export type CanonicalTestCategory =
+  | 'putting'
+  | 'chipping'
+  | 'pitching'
+  | 'bunker'
+  | 'iron'
+  | 'driver'
+  | 'physical'
+  | 'mental';
+
+/**
+ * Canonical player categories (Team Norway tier codes A1-D2).
+ * Different from UI skill levels (UISkillLevel = K-A).
+ */
+export type CanonicalPlayerCategory =
+  | 'A1' | 'A2'
+  | 'B1' | 'B2'
+  | 'C1' | 'C2'
+  | 'D1' | 'D2';
+
+/**
+ * Canonical test definition from @iup/shared-types.
+ */
+export interface CanonicalTestDefinition {
+  id: string;
+  tenantId: string;
+  testNumber: number;
+  name: string;
+  category: CanonicalTestCategory;
+  protocolName: string;
+  description: string;
+  targetCategory?: CanonicalPlayerCategory;
+  testDetails?: Record<string, unknown>;
+  benchmarkWeek: boolean;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Canonical test result from @iup/shared-types.
+ */
+export interface CanonicalTestResult {
+  id: string;
+  testId: string;
+  playerId: string;
+  testDate: string;
+  testTime?: string;
+  location?: string;
+  environment?: 'indoor' | 'outdoor';
+  results: Record<string, unknown>;
+  value: number;
+  pei?: number;
+  passed: boolean;
+  categoryRequirement?: number;
+  percentOfRequirement?: number;
+  improvementFromLast?: number;
+  coachFeedback?: string;
+  playerFeedback?: string;
+  videoUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Canonical test result with joined definition.
+ */
+export interface TestResultWithDefinition extends CanonicalTestResult {
+  test: CanonicalTestDefinition;
+}
+
+// ============================================================================
+// UI TYPE IMPORTS
+// ============================================================================
 
 import type {
   UITestResult,

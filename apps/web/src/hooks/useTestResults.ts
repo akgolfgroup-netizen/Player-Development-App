@@ -117,6 +117,18 @@ export interface CategoryProgress {
   };
 }
 
+// ============================================================================
+// TYPE ALIASES FOR MAPPERS COMPATIBILITY
+// ============================================================================
+
+/**
+ * Type aliases for domain/tests/mappers.ts compatibility.
+ * These provide semantic clarity when distinguishing UI types from canonical types.
+ */
+export type UITestResult = TestResult;
+export type UISkillArea = TestCategory;
+export type UISkillLevel = PlayerCategory;
+
 export interface UseTestResultsReturn {
   // Data
   tests: TestResult[];

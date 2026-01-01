@@ -13,21 +13,23 @@
  */
 
 // ============================================================================
-// CANONICAL TYPES (Re-exported from @iup/shared-types)
+// CANONICAL TYPES (Defined locally to avoid CRA webpack issues)
 // ============================================================================
 
+// Re-export canonical types from mappers (defined locally there)
 export type {
-  TestResult,
-  TestDefinition,
-  TestCategory,
-  TestEnvironment,
+  CanonicalTestResult as TestResult,
+  CanonicalTestDefinition as TestDefinition,
+  CanonicalTestCategory as TestCategory,
   TestResultWithDefinition,
-} from '@iup/shared-types';
+} from './mappers';
 
-export {
-  TEST_CATEGORIES,
-  TEST_ENVIRONMENTS,
-} from '@iup/shared-types';
+// Test environment type
+export type TestEnvironment = 'indoor' | 'outdoor';
+
+// Constants for canonical types
+export const TEST_CATEGORIES = ['putting', 'chipping', 'pitching', 'bunker', 'iron', 'driver', 'physical', 'mental'] as const;
+export const TEST_ENVIRONMENTS = ['indoor', 'outdoor'] as const;
 
 // ============================================================================
 // UI TYPES & MAPPERS

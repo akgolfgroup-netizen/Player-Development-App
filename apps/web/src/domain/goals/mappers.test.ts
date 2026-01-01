@@ -24,7 +24,7 @@ import {
   type ApiGoalsListResponse,
 } from './mappers';
 
-import type { Goal as CanonicalGoal, GoalTimeframe, GoalStatus } from '@iup/shared-types';
+import type { CanonicalGoal, GoalTimeframe, GoalStatus } from './mappers';
 
 // ============================================================================
 // mapGoalTimeframeToUIType Tests
