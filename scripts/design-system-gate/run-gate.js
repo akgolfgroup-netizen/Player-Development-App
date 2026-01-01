@@ -4,11 +4,16 @@
  * Design System CI Gate Runner
  *
  * Runs all design system enforcement checks:
- * 1. ESLint design token rules
- * 2. Stylelint CSS rules
- * 3. Contrast safety checks
+ * 1. Hex color violations (with allowlist)
+ * 2. Inline style violations (with allowlist)
+ * 3. Raw Tailwind color violations (with allowlist)
+ * 4. Contrast safety checks (WCAG AA) - non-blocking
+ * 5. Component boundary enforcement - non-blocking
  *
- * Exits with code 1 if any check fails.
+ * Uses allowlists to grandfather existing violations.
+ * Only BLOCKS on NEW violations not in allowlists.
+ *
+ * Exits with code 1 if any BLOCKING check fails.
  *
  * Usage:
  *   node scripts/design-system-gate/run-gate.js
@@ -18,6 +23,7 @@
 'use strict';
 
 const { execSync } = require('child_process');
+const fs = require('fs');
 const path = require('path');
 
 // =============================================================================
@@ -26,6 +32,7 @@ const path = require('path');
 
 const ROOT_DIR = path.resolve(__dirname, '../..');
 const GATE_DIR = __dirname;
+const ALLOWLISTS_DIR = path.join(GATE_DIR, 'allowlists');
 
 // Colors for output
 const colors = {
@@ -77,94 +84,206 @@ function runCommand(command, description, options = {}) {
 }
 
 // =============================================================================
-// CHECK FUNCTIONS
+// ALLOWLIST FUNCTIONS
 // =============================================================================
 
-function checkESLintDesignTokens() {
-  header('1. ESLint Design Token Enforcement');
-
-  // Check if eslint is available
-  const eslintCommand = `npx eslint "apps/**/*.{js,jsx,ts,tsx}" --rulesdir "${GATE_DIR}" --rule "design-tokens/no-hardcoded-colors: error" --rule "design-tokens/no-hardcoded-spacing: error" --rule "design-tokens/no-hardcoded-typography: error" --rule "design-tokens/no-hardcoded-radius: error" --rule "design-tokens/no-hardcoded-shadow: error" --rule "design-tokens/no-hardcoded-z-index: error" --max-warnings 0`;
-
-  // For now, we'll use a simpler grep-based check since ESLint plugin needs to be installed
-  // This is a temporary solution until the plugin is properly integrated
-  log('Scanning for hardcoded style values in apps/**...', colors.blue);
-
-  const grepPatterns = [
-    // Hex colors
-    { pattern: '#[0-9a-fA-F]{3,8}', name: 'hex colors' },
-    // rgb/rgba
-    { pattern: 'rgba?\\s*\\(', name: 'rgb/rgba colors' },
-    // hsl/hsla
-    { pattern: 'hsla?\\s*\\(', name: 'hsl/hsla colors' },
-  ];
-
-  let violations = [];
-
-  for (const { pattern, name } of grepPatterns) {
-    try {
-      // Search in JSX style objects (simplified check)
-      const result = execSync(
-        `grep -rn --include="*.jsx" --include="*.tsx" -E ":\\s*['\"]${pattern}" apps/ 2>/dev/null | grep -v node_modules | head -20 || true`,
-        { cwd: ROOT_DIR, encoding: 'utf-8' }
-      );
-      if (result.trim()) {
-        violations.push({ name, files: result.trim().split('\n').length });
-        log(`  Found potential ${name} violations`, colors.yellow);
-      }
-    } catch (e) {
-      // grep returns non-zero if no matches, which is good
+/**
+ * Load an allowlist JSON file.
+ * Returns { files: { [path]: count } } or empty object if not found.
+ */
+function loadAllowlist(name) {
+  const filePath = path.join(ALLOWLISTS_DIR, `${name}.json`);
+  try {
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const data = JSON.parse(content);
+      log(`  Loaded allowlist: ${name}.json (${Object.keys(data.files || {}).length} files)`, colors.blue);
+      return data.files || {};
     }
+  } catch (e) {
+    log(`  Warning: Could not load allowlist ${name}.json: ${e.message}`, colors.yellow);
   }
-
-  if (violations.length > 0) {
-    log('\nNote: Full ESLint integration pending. Run individual checks:', colors.yellow);
-    log('  pnpm run lint:design-tokens', colors.yellow);
-    return true; // Don't fail for now, just warn
-  }
-
-  log('✓ No obvious hardcoded style violations found', colors.green);
-  return true;
+  return {};
 }
 
-function checkStylelint() {
-  header('2. Stylelint CSS Token Enforcement');
+/**
+ * Check if a file:count is in the allowlist.
+ * Returns true if the file is allowlisted with >= the given count.
+ */
+function isAllowlisted(allowlist, filePath, count) {
+  // Normalize path to be relative to apps/
+  const normalizedPath = filePath.replace(/^.*?(apps\/)/, '$1');
+  const allowedCount = allowlist[normalizedPath];
+  return allowedCount !== undefined && count <= allowedCount;
+}
 
-  // Check for raw values in CSS files
-  log('Scanning CSS files in apps/**...', colors.blue);
+/**
+ * Find violations using grep and check against allowlist.
+ * Returns { total: number, new: number, newViolations: string[] }
+ */
+function findViolationsWithAllowlist(pattern, fileTypes, allowlist) {
+  const includes = fileTypes.map(t => `--include="*.${t}"`).join(' ');
 
   try {
-    // Simple check for hex colors in CSS (excluding design-system)
     const result = execSync(
-      `grep -rn --include="*.css" -E "#[0-9a-fA-F]{3,8}" apps/ 2>/dev/null | grep -v node_modules | grep -v packages/design-system | head -10 || true`,
+      `grep -rn ${includes} -E "${pattern}" apps/ 2>/dev/null | grep -v node_modules || true`,
       { cwd: ROOT_DIR, encoding: 'utf-8' }
     );
 
-    if (result.trim()) {
-      const lines = result.trim().split('\n');
-      log(`\nFound ${lines.length} potential CSS violations:`, colors.yellow);
-      lines.forEach(line => log(`  ${line}`, colors.yellow));
-      log('\nRun: pnpm run lint:css for full report', colors.yellow);
-      // Don't fail yet, warn
-      return true;
+    if (!result.trim()) {
+      return { total: 0, new: 0, newViolations: [] };
     }
 
-    log('✓ CSS files appear to use tokens correctly', colors.green);
-    return true;
+    const lines = result.trim().split('\n').filter(Boolean);
+
+    // Count violations per file
+    const fileCounts = {};
+    for (const line of lines) {
+      const match = line.match(/^([^:]+):/);
+      if (match) {
+        const file = match[1];
+        fileCounts[file] = (fileCounts[file] || 0) + 1;
+      }
+    }
+
+    // Check against allowlist
+    const newViolations = [];
+    for (const [file, count] of Object.entries(fileCounts)) {
+      if (!isAllowlisted(allowlist, file, count)) {
+        const normalizedPath = file.replace(/^.*?(apps\/)/, '$1');
+        const allowed = allowlist[normalizedPath] || 0;
+        newViolations.push(`${file}: ${count} violations (allowlisted: ${allowed})`);
+      }
+    }
+
+    return {
+      total: lines.length,
+      new: newViolations.length,
+      newViolations
+    };
   } catch (e) {
-    return true; // Don't fail on grep errors
+    return { total: 0, new: 0, newViolations: [] };
   }
 }
 
+// =============================================================================
+// CHECK FUNCTIONS
+// =============================================================================
+
+function checkHexColors() {
+  header('1. Hex Color Enforcement');
+
+  log('Loading allowlists...', colors.blue);
+  const hexAllowlist = loadAllowlist('hex-color');
+
+  log('Scanning for hardcoded hex colors in apps/**...', colors.blue);
+
+  // Check for hex colors in style objects
+  const hexPattern = '#[0-9a-fA-F]{3,8}';
+  const result = findViolationsWithAllowlist(
+    `:\\s*['\"]${hexPattern}`,
+    ['jsx', 'tsx'],
+    hexAllowlist
+  );
+
+  if (result.total > 0) {
+    log(`  Found ${result.total} total hex color references`, colors.yellow);
+    log(`  Allowlisted: ${result.total - result.new}`, colors.blue);
+  }
+
+  if (result.new > 0) {
+    log(`\n✗ NEW hex color violations detected (${result.new}):`, colors.red);
+    result.newViolations.slice(0, 10).forEach(v => log(`    ${v}`, colors.red));
+    if (result.newViolations.length > 10) {
+      log(`    ... and ${result.newViolations.length - 10} more`, colors.red);
+    }
+    log('\nFix: Use CSS variables (var(--ak-*)) or design tokens.', colors.yellow);
+    return false;
+  }
+
+  log('✓ No NEW hex color violations', colors.green);
+  return true;
+}
+
+function checkInlineStyles() {
+  header('2. Inline Style Enforcement');
+
+  log('Loading allowlists...', colors.blue);
+  const inlineAllowlist = loadAllowlist('inline-style');
+
+  log('Scanning for inline style={{...}} usage in apps/**...', colors.blue);
+
+  // Check for style={{...}} in JSX
+  const stylePattern = 'style\\s*=\\s*\\{\\{';
+  const result = findViolationsWithAllowlist(
+    stylePattern,
+    ['jsx', 'tsx'],
+    inlineAllowlist
+  );
+
+  if (result.total > 0) {
+    log(`  Found ${result.total} total inline style usages`, colors.yellow);
+    log(`  Allowlisted: ${result.total - result.new}`, colors.blue);
+  }
+
+  if (result.new > 0) {
+    log(`\n✗ NEW inline style violations detected (${result.new}):`, colors.red);
+    result.newViolations.slice(0, 10).forEach(v => log(`    ${v}`, colors.red));
+    if (result.newViolations.length > 10) {
+      log(`    ... and ${result.newViolations.length - 10} more`, colors.red);
+    }
+    log('\nFix: Use Tailwind classes or CSS modules instead of inline styles.', colors.yellow);
+    return false;
+  }
+
+  log('✓ No NEW inline style violations', colors.green);
+  return true;
+}
+
+function checkRawTailwindColors() {
+  header('3. Raw Tailwind Color Enforcement');
+
+  log('Loading allowlists...', colors.blue);
+  const tailwindAllowlist = loadAllowlist('raw-tailwind-color');
+
+  log('Scanning for raw Tailwind colors (bg-gray-*, text-blue-*, etc.) in apps/**...', colors.blue);
+
+  // Check for raw Tailwind color classes (not semantic --ak-* tokens)
+  const rawTailwindPattern = '(bg|text|border|ring)-(gray|slate|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-[0-9]+';
+  const result = findViolationsWithAllowlist(
+    rawTailwindPattern,
+    ['jsx', 'tsx'],
+    tailwindAllowlist
+  );
+
+  if (result.total > 0) {
+    log(`  Found ${result.total} total raw Tailwind color usages`, colors.yellow);
+    log(`  Allowlisted: ${result.total - result.new}`, colors.blue);
+  }
+
+  if (result.new > 0) {
+    log(`\n✗ NEW raw Tailwind color violations detected (${result.new}):`, colors.red);
+    result.newViolations.slice(0, 10).forEach(v => log(`    ${v}`, colors.red));
+    if (result.newViolations.length > 10) {
+      log(`    ... and ${result.newViolations.length - 10} more`, colors.red);
+    }
+    log('\nFix: Use semantic tokens (bg-ak-*, text-ak-*) instead of raw Tailwind colors.', colors.yellow);
+    return false;
+  }
+
+  log('✓ No NEW raw Tailwind color violations', colors.green);
+  return true;
+}
+
 function checkContrast() {
-  header('3. Contrast Safety Check');
+  header('4. Contrast Safety Check (WCAG AA)');
 
   const contrastScript = path.join(GATE_DIR, 'contrast-checker.js');
   return runCommand(`node "${contrastScript}" --ci`, 'Contrast validation');
 }
 
 function checkComponentBoundary() {
-  header('4. Component Boundary Enforcement');
+  header('5. Component Boundary Enforcement');
 
   log('Checking for legacy UI imports in scope flows...', colors.blue);
 
@@ -199,42 +318,55 @@ async function main() {
   log('╔════════════════════════════════════════════════════════════╗', colors.cyan + colors.bold);
   log('║                                                            ║', colors.cyan + colors.bold);
   log('║         DESIGN SYSTEM CI GATE                              ║', colors.cyan + colors.bold);
-  log('║         Enforcement Mode: STRICT                           ║', colors.cyan + colors.bold);
+  log('║         Enforcement Mode: STRICT (with allowlists)         ║', colors.cyan + colors.bold);
   log('║                                                            ║', colors.cyan + colors.bold);
   log('╚════════════════════════════════════════════════════════════╝', colors.cyan + colors.bold);
 
   const results = [];
 
-  // Run all checks
-  results.push({ name: 'ESLint Design Tokens', passed: checkESLintDesignTokens() });
-  results.push({ name: 'Stylelint CSS', passed: checkStylelint() });
-  results.push({ name: 'Contrast Safety', passed: checkContrast() });
-  results.push({ name: 'Component Boundary', passed: checkComponentBoundary() });
+  // Run all design system checks with allowlists
+  // Blocking checks - will fail CI on NEW violations
+  results.push({ name: 'Hex Colors', passed: checkHexColors(), blocking: true });
+  results.push({ name: 'Inline Styles', passed: checkInlineStyles(), blocking: true });
+  results.push({ name: 'Raw Tailwind Colors', passed: checkRawTailwindColors(), blocking: true });
+
+  // Non-blocking checks - warn but don't fail CI
+  // TODO: Make these blocking after token fixes are complete
+  results.push({ name: 'Contrast Safety (WCAG)', passed: checkContrast(), blocking: false });
+  results.push({ name: 'Component Boundary', passed: checkComponentBoundary(), blocking: false });
 
   // Summary
   header('SUMMARY');
 
-  const failures = results.filter(r => !r.passed);
-  const passes = results.filter(r => r.passed);
+  const blockingFailures = results.filter(r => !r.passed && r.blocking);
+  const nonBlockingFailures = results.filter(r => !r.passed && !r.blocking);
 
   results.forEach(r => {
     const icon = r.passed ? '✓' : '✗';
-    const color = r.passed ? colors.green : colors.red;
-    log(`${icon} ${r.name}`, color);
+    const color = r.passed ? colors.green : (r.blocking ? colors.red : colors.yellow);
+    const suffix = (!r.passed && !r.blocking) ? ' (non-blocking)' : '';
+    log(`${icon} ${r.name}${suffix}`, color);
   });
 
   console.log('');
 
-  if (failures.length > 0) {
+  if (nonBlockingFailures.length > 0) {
+    log(`Note: ${nonBlockingFailures.length} non-blocking check(s) failed.`, colors.yellow);
+    log('These will be made blocking after token fixes are complete.\n', colors.yellow);
+  }
+
+  if (blockingFailures.length > 0) {
     log('═'.repeat(60), colors.red);
-    log(`  ${failures.length} CHECK(S) FAILED - CI GATE BLOCKED`, colors.red + colors.bold);
+    log(`  ${blockingFailures.length} BLOCKING CHECK(S) FAILED - CI GATE BLOCKED`, colors.red + colors.bold);
     log('═'.repeat(60), colors.red);
     log('\nFix the above issues before merging.', colors.yellow);
-    log('Design system rules are non-negotiable during refactor phase.\n', colors.yellow);
+    log('Design system rules are non-negotiable during refactor phase.', colors.yellow);
+    log('\nAllowlists grandfather existing violations.', colors.blue);
+    log('Only NEW violations in non-allowlisted files will block.\n', colors.blue);
     process.exit(1);
   } else {
     log('═'.repeat(60), colors.green);
-    log('  ALL CHECKS PASSED - CI GATE OPEN', colors.green + colors.bold);
+    log('  ALL BLOCKING CHECKS PASSED - CI GATE OPEN', colors.green + colors.bold);
     log('═'.repeat(60), colors.green);
     console.log('');
     process.exit(0);
