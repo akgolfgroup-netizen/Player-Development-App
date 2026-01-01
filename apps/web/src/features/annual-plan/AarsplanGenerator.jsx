@@ -58,23 +58,17 @@ const StepIndicator = ({ currentStep, totalSteps, steps }) => (
 // ============================================================================
 
 const FormCard = ({ children, title, subtitle, icon: Icon }) => (
-  <div
-    className="rounded-2xl p-6 shadow-sm"
-    style={{
-      backgroundColor: 'var(--bg-primary)',
-      border: '1px solid var(--border-default)',
-    }}
-  >
+  <div className="rounded-2xl p-6 shadow-sm bg-bg-primary border border-default">
     {title && (
       <div className="mb-5">
         <div className="flex items-center gap-3 mb-1">
           {Icon && <Icon size={24} color="var(--accent)" />}
-          <h3 className="text-lg font-semibold m-0" style={{ color: 'var(--text-primary)' }}>
+          <h3 className="text-lg font-semibold m-0 text-text-primary">
             {title}
           </h3>
         </div>
         {subtitle && (
-          <p className="text-sm m-0" style={{ color: 'var(--text-secondary)', marginLeft: Icon ? '36px' : 0 }}>
+          <p className="text-sm m-0 text-text-secondary" style={{ marginLeft: Icon ? '36px' : 0 }}>
             {subtitle}
           </p>
         )}
@@ -90,8 +84,8 @@ const FormCard = ({ children, title, subtitle, icon: Icon }) => (
 
 const InputField = ({ label, type = 'text', value, onChange, placeholder, min, max, step, required }) => (
   <div className="mb-4">
-    <label className="block text-sm font-medium mb-1.5" style={{ color: 'var(--text-primary)' }}>
-      {label} {required && <span style={{ color: 'var(--error)' }}>*</span>}
+    <label className="block text-sm font-medium mb-1.5 text-text-primary">
+      {label} {required && <span className="text-danger">*</span>}
     </label>
     <input
       type={type}
@@ -102,12 +96,7 @@ const InputField = ({ label, type = 'text', value, onChange, placeholder, min, m
       max={max}
       step={step}
       required={required}
-      className="w-full py-3 px-3.5 rounded-lg text-base outline-none transition-colors"
-      style={{
-        border: '1px solid var(--border-default)',
-        backgroundColor: 'var(--bg-primary)',
-        color: 'var(--text-primary)',
-      }}
+      className="w-full py-3 px-3.5 rounded-lg text-base outline-none transition-colors border border-default bg-bg-primary text-text-primary"
     />
   </div>
 );
@@ -194,19 +183,15 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
           {tournaments.map((t, index) => (
             <div
               key={index}
-              className="flex items-center justify-between py-3 px-4 rounded-lg"
-              style={{
-                backgroundColor: 'var(--bg-secondary)',
-                border: '1px solid var(--border-default)',
-              }}
+              className="flex items-center justify-between py-3 px-4 rounded-lg bg-bg-secondary border border-default"
             >
               <div className="flex items-center gap-3">
                 <Trophy size={18} color={importanceColors[t.importance].text} />
                 <div>
-                  <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                  <div className="text-sm font-medium text-text-primary">
                     {t.name}
                   </div>
-                  <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                  <div className="text-xs text-text-secondary">
                     {new Date(t.startDate).toLocaleDateString('nb-NO')}
                     {t.endDate !== t.startDate && ` - ${new Date(t.endDate).toLocaleDateString('nb-NO')}`}
                   </div>
@@ -225,8 +210,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
                 <button
                   type="button"
                   onClick={() => onRemove(index)}
-                  className="p-1.5 rounded-md border-none bg-transparent cursor-pointer"
-                  style={{ color: 'var(--text-secondary)' }}
+                  className="p-1.5 rounded-md border-none bg-transparent cursor-pointer text-text-secondary"
                 >
                   <X size={16} />
                 </button>
@@ -238,13 +222,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
 
       {/* Add tournament form */}
       {showForm ? (
-        <div
-          className="p-4 rounded-xl"
-          style={{
-            backgroundColor: 'var(--bg-secondary)',
-            border: '1px solid var(--border-default)',
-          }}
-        >
+        <div className="p-4 rounded-xl bg-bg-secondary border border-default">
           <div className="grid grid-cols-2 gap-3 mb-3">
             <InputField
               label="Turneringsnavn"
@@ -260,11 +238,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
               <select
                 value={newTournament.importance}
                 onChange={(e) => setNewTournament({ ...newTournament, importance: e.target.value })}
-                className="w-full py-3 px-3.5 rounded-lg text-base"
-                style={{
-                  border: '1px solid var(--border-default)',
-                  backgroundColor: 'var(--bg-primary)',
-                }}
+                className="w-full py-3 px-3.5 rounded-lg text-base border border-default bg-bg-primary"
               >
                 <option value="A">A - Hovedmål</option>
                 <option value="B">B - Viktig</option>
@@ -303,12 +277,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
             <button
               type="button"
               onClick={() => setShowForm(false)}
-              className="py-2.5 px-4 rounded-lg text-sm cursor-pointer"
-              style={{
-                border: '1px solid var(--border-default)',
-                backgroundColor: 'var(--bg-primary)',
-                color: 'var(--text-primary)',
-              }}
+              className="py-2.5 px-4 rounded-lg text-sm cursor-pointer border border-default bg-bg-primary text-text-primary"
             >
               Avbryt
             </button>
@@ -318,11 +287,7 @@ const TournamentList = ({ tournaments, onAdd, onRemove }) => {
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="flex items-center justify-center gap-2 w-full py-3.5 rounded-lg bg-transparent text-sm cursor-pointer transition-all"
-          style={{
-            border: '2px dashed var(--border-default)',
-            color: 'var(--text-secondary)',
-          }}
+          className="flex items-center justify-center gap-2 w-full py-3.5 rounded-lg bg-transparent text-sm cursor-pointer transition-all border-2 border-dashed border-default text-text-secondary"
         >
           <Plus size={18} />
           Legg til turnering
@@ -417,7 +382,7 @@ const Step2Schedule = ({ formData, setFormData }) => (
           min={5}
           max={30}
         />
-        <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-sm mt-2 text-text-secondary">
           Anbefalt: 10-15 timer for seriøse spillere
         </p>
       </div>
@@ -432,7 +397,7 @@ const Step2Schedule = ({ formData, setFormData }) => (
         selectedDays={formData.preferredTrainingDays}
         onChange={(days) => setFormData({ ...formData, preferredTrainingDays: days })}
       />
-      <p className="text-sm mt-3" style={{ color: 'var(--text-secondary)' }}>
+      <p className="text-sm mt-3 text-text-secondary">
         Valgt: {formData.preferredTrainingDays.length} dager per uke
       </p>
     </FormCard>
@@ -466,10 +431,10 @@ const Step3Tournaments = ({ formData, setFormData }) => (
       <div className="flex items-start gap-3">
         <Sparkles size={20} color="var(--accent)" className="shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-medium mb-1 m-0" style={{ color: 'var(--text-primary)' }}>
+          <p className="text-sm font-medium mb-1 m-0 text-text-primary">
             Tips: A, B, C-prioritering
           </p>
-          <p className="text-sm m-0" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm m-0 text-text-secondary">
             <strong>A-turneringer</strong> er hovedmål (1-2 per år). Planen vil bygge opp mot disse med optimal periodisering.
             <strong> B-turneringer</strong> er viktige konkurranser. <strong>C-turneringer</strong> er forberedelse og erfaring.
           </p>
@@ -488,26 +453,26 @@ const Step4Review = ({ formData }) => {
         <div className="grid gap-5">
           {/* Basics */}
           <div>
-            <h4 className="text-sm font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>
+            <h4 className="text-sm font-semibold mb-2 text-text-secondary">
               GRUNNLEGGENDE
             </h4>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
-              <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Startdato</div>
+              <div className="p-3 rounded-lg bg-bg-secondary">
+                <div className="text-xs text-text-secondary">Startdato</div>
                 <div className="text-base font-medium">
                   {formData.startDate ? new Date(formData.startDate).toLocaleDateString('nb-NO') : '-'}
                 </div>
               </div>
-              <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Score</div>
+              <div className="p-3 rounded-lg bg-bg-secondary">
+                <div className="text-xs text-text-secondary">Score</div>
                 <div className="text-base font-medium">{formData.baselineAverageScore || '-'}</div>
               </div>
-              <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Handicap</div>
+              <div className="p-3 rounded-lg bg-bg-secondary">
+                <div className="text-xs text-text-secondary">Handicap</div>
                 <div className="text-base font-medium">{formData.baselineHandicap || '-'}</div>
               </div>
-              <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Driver speed</div>
+              <div className="p-3 rounded-lg bg-bg-secondary">
+                <div className="text-xs text-text-secondary">Driver speed</div>
                 <div className="text-base font-medium">
                   {formData.baselineDriverSpeed ? `${formData.baselineDriverSpeed} mph` : '-'}
                 </div>
@@ -517,16 +482,16 @@ const Step4Review = ({ formData }) => {
 
           {/* Schedule */}
           <div>
-            <h4 className="text-sm font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>
+            <h4 className="text-sm font-semibold mb-2 text-text-secondary">
               TRENINGSPLAN
             </h4>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
-              <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Timer/uke</div>
+              <div className="p-3 rounded-lg bg-bg-secondary">
+                <div className="text-xs text-text-secondary">Timer/uke</div>
                 <div className="text-base font-medium">{formData.weeklyHoursTarget || 12} timer</div>
               </div>
-              <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>Treningsdager</div>
+              <div className="p-3 rounded-lg bg-bg-secondary">
+                <div className="text-xs text-text-secondary">Treningsdager</div>
                 <div className="text-base font-medium">
                   {formData.preferredTrainingDays.map(d => dayNames[d]).join(', ') || '-'}
                 </div>
@@ -536,7 +501,7 @@ const Step4Review = ({ formData }) => {
 
           {/* Tournaments */}
           <div>
-            <h4 className="text-sm font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>
+            <h4 className="text-sm font-semibold mb-2 text-text-secondary">
               TURNERINGER ({formData.tournaments.length})
             </h4>
             {formData.tournaments.length > 0 ? (
@@ -544,18 +509,17 @@ const Step4Review = ({ formData }) => {
                 {formData.tournaments.map((t, i) => (
                   <div
                     key={i}
-                    className="flex justify-between py-2.5 px-3 rounded-lg"
-                    style={{ backgroundColor: 'var(--bg-secondary)' }}
+                    className="flex justify-between py-2.5 px-3 rounded-lg bg-bg-secondary"
                   >
                     <span className="font-medium">{t.name}</span>
-                    <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                    <span className="text-sm text-text-secondary">
                       {new Date(t.startDate).toLocaleDateString('nb-NO')} ({t.importance})
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-sm text-text-secondary">
                 Ingen turneringer lagt til
               </p>
             )}
@@ -563,18 +527,12 @@ const Step4Review = ({ formData }) => {
         </div>
       </FormCard>
 
-      <div
-        className="p-5 rounded-xl text-center"
-        style={{
-          backgroundColor: 'rgba(34, 197, 94, 0.05)',
-          border: '1px solid rgba(34, 197, 94, 0.2)',
-        }}
-      >
+      <div className="p-5 rounded-xl text-center bg-success-muted border border-success-muted">
         <Sparkles size={32} color="var(--success)" className="mb-3" />
-        <h3 className="text-lg font-semibold mb-2 m-0" style={{ color: 'var(--text-primary)' }}>
+        <h3 className="text-lg font-semibold mb-2 m-0 text-text-primary">
           Klar til å generere!
         </h3>
-        <p className="text-sm m-0" style={{ color: 'var(--text-secondary)' }}>
+        <p className="text-sm m-0 text-text-secondary">
           Klikk "Generer årsplan" for å lage din personlige 12-måneders treningsplan
         </p>
       </div>
@@ -605,61 +563,40 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
 
   return (
   <div className="text-center py-10 px-5">
-    <div
-      className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-      style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)' }}
-    >
+    <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-success-muted">
       <CheckCircle size={40} color="var(--success)" />
     </div>
 
-    <h2 className="text-2xl font-semibold mb-2 m-0" style={{ color: 'var(--text-primary)' }}>
+    <h2 className="text-2xl font-semibold mb-2 m-0 text-text-primary">
       Årsplan opprettet!
     </h2>
-    <p className="text-base mb-8 m-0" style={{ color: 'var(--text-secondary)' }}>
+    <p className="text-base mb-8 m-0 text-text-secondary">
       Din 12-måneders treningsplan er klar
     </p>
 
     {/* Stats */}
     <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto mb-8">
-      <div
-        className="p-5 rounded-xl"
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          border: '1px solid var(--border-default)',
-        }}
-      >
-        <div className="text-3xl font-bold" style={{ color: 'var(--accent)' }}>
+      <div className="p-5 rounded-xl bg-bg-primary border border-default">
+        <div className="text-3xl font-bold text-accent">
           {result?.dailyAssignments?.created || 365}
         </div>
-        <div className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+        <div className="text-sm mt-1 text-text-secondary">
           Treningsøkter
         </div>
       </div>
-      <div
-        className="p-5 rounded-xl"
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          border: '1px solid var(--border-default)',
-        }}
-      >
-        <div className="text-3xl font-bold" style={{ color: 'var(--accent)' }}>
+      <div className="p-5 rounded-xl bg-bg-primary border border-default">
+        <div className="text-3xl font-bold text-accent">
           52
         </div>
-        <div className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+        <div className="text-sm mt-1 text-text-secondary">
           Uker planlagt
         </div>
       </div>
-      <div
-        className="p-5 rounded-xl"
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          border: '1px solid var(--border-default)',
-        }}
-      >
-        <div className="text-3xl font-bold" style={{ color: 'var(--accent)' }}>
+      <div className="p-5 rounded-xl bg-bg-primary border border-default">
+        <div className="text-3xl font-bold text-accent">
           {result?.tournaments?.scheduled || 0}
         </div>
-        <div className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+        <div className="text-sm mt-1 text-text-secondary">
           Turneringer
         </div>
       </div>
@@ -676,10 +613,10 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
       <div className="flex gap-3 items-start">
         <Calendar size={20} color={syncResult ? 'var(--success)' : 'var(--accent)'} className="shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-medium mb-1 m-0" style={{ color: 'var(--text-primary)' }}>
+          <p className="text-sm font-medium mb-1 m-0 text-text-primary">
             {syncResult ? `${syncResult.syncedCount} økter synkronisert!` : 'Klar til synkronisering'}
           </p>
-          <p className="text-sm m-0" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm m-0 text-text-secondary">
             {syncResult
               ? 'Alle planlagte treningsøkter er lagt til i økt-oversikten. Du kan se dem under "Alle økter".'
               : 'Trykk "Synkroniser" for å legge til de neste 4 ukenes økter i økt-oversikten.'
@@ -704,7 +641,7 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
         >
           {isSyncing ? (
             <>
-              <Loader2 size={18} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
+              <Loader2 size={18} className="animate-spin" />
               Synkroniserer...
             </>
           ) : (
@@ -721,20 +658,14 @@ const SuccessScreen = ({ result, planId, onViewPlan, onViewCalendar, onSyncToSes
     <div className="flex gap-3 justify-center">
       <button
         onClick={onViewCalendar}
-        className="flex items-center gap-2 py-3.5 px-6 rounded-lg text-base font-medium cursor-pointer"
-        style={{
-          border: '1px solid var(--border-default)',
-          backgroundColor: 'var(--bg-primary)',
-          color: 'var(--text-primary)',
-        }}
+        className="flex items-center gap-2 py-3.5 px-6 rounded-lg text-base font-medium cursor-pointer border border-default bg-bg-primary text-text-primary"
       >
         <Calendar size={18} />
         Se kalender
       </button>
       <button
         onClick={onViewPlan}
-        className="flex items-center gap-2 py-3.5 px-6 rounded-lg border-none text-base font-medium cursor-pointer text-white"
-        style={{ backgroundColor: 'var(--accent)' }}
+        className="flex items-center gap-2 py-3.5 px-6 rounded-lg border-none text-base font-medium cursor-pointer text-white bg-accent"
       >
         Se årsplan
         <ArrowRight size={18} />
@@ -858,7 +789,7 @@ const AarsplanGenerator = () => {
   // Show success screen after generation
   if (showSuccess) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+      <div className="min-h-screen bg-bg-secondary">
         <PageHeader
           title="Årsplan opprettet"
           subtitle="Din treningsplan er klar"
@@ -866,13 +797,7 @@ const AarsplanGenerator = () => {
           onBack={() => navigate('/aarsplan')}
         />
         <div className="max-w-xl mx-auto p-6">
-          <div
-            className="rounded-2xl shadow-sm"
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              border: '1px solid var(--border-default)',
-            }}
-          >
+          <div className="rounded-2xl shadow-sm bg-bg-primary border border-default">
             <SuccessScreen
               result={generationResult}
               planId={createdPlanId}
@@ -887,7 +812,7 @@ const AarsplanGenerator = () => {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-bg-secondary">
       <PageHeader
         title="Årsplan Generator"
         subtitle="Lag din personlige 12-måneders treningsplan"
@@ -908,23 +833,13 @@ const AarsplanGenerator = () => {
 
         {/* Error message */}
         {error && (
-          <div
-            className="mt-5 py-3.5 px-4 rounded-lg text-sm"
-            style={{
-              backgroundColor: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.2)',
-              color: 'var(--error)',
-            }}
-          >
+          <div className="mt-5 py-3.5 px-4 rounded-lg text-sm bg-danger-muted border border-danger-muted text-danger">
             {error}
           </div>
         )}
 
         {/* Navigation buttons */}
-        <div
-          className="flex justify-between mt-8 pt-6"
-          style={{ borderTop: '1px solid var(--border-default)' }}
-        >
+        <div className="flex justify-between mt-8 pt-6 border-t border-default">
           <button
             type="button"
             onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
@@ -971,7 +886,7 @@ const AarsplanGenerator = () => {
             >
               {isGenerating ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
+                  <Loader2 size={18} className="animate-spin" />
                   Genererer...
                 </>
               ) : (
@@ -985,13 +900,6 @@ const AarsplanGenerator = () => {
         </div>
       </div>
 
-      {/* CSS for spinner animation */}
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 };
