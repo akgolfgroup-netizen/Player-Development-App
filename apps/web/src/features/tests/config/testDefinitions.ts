@@ -841,6 +841,30 @@ export const testDefinitions: TestDefinition[] = [
 // HELPER FUNCTIONS
 // ============================================================================
 
+/**
+ * Determines the score level based on the result value and scoring thresholds.
+ * Returns the appropriate threshold (excellent, good, average, needsWork) with label and color.
+ */
+export const getScoreLevel = (
+  result: number,
+  scoring: ScoringThresholds,
+  lowerIsBetter: boolean
+): ScoringThreshold => {
+  if (lowerIsBetter) {
+    // Lower is better (e.g., PEI, distance to hole)
+    if (result <= scoring.excellent.max) return scoring.excellent;
+    if (result <= scoring.good.max) return scoring.good;
+    if (result <= scoring.average.max) return scoring.average;
+    return scoring.needsWork;
+  } else {
+    // Higher is better (e.g., speed, distance, percentage)
+    if (result >= scoring.excellent.max) return scoring.excellent;
+    if (result >= scoring.good.max) return scoring.good;
+    if (result >= scoring.average.max) return scoring.average;
+    return scoring.needsWork;
+  }
+};
+
 export const getTestById = (id: string): TestDefinition | undefined => {
   return testDefinitions.find(t => t.id === id);
 };

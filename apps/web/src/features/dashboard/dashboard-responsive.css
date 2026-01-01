@@ -1,20 +1,27 @@
 /**
- * AK Golf Dashboard - Responsive Layout
+ * AK Golf Dashboard - Full-Width Responsive Layout
  * WCAG AA Compliant Grid System
  *
  * Breakpoints:
- * - Mobile:  320px - 767px  (single column)
- * - Tablet:  768px - 1023px (2 columns)
- * - Desktop: 1024px+        (2fr main + 1fr sidebar)
+ * - Mobile:  320px - 639px  (single column, 16px padding)
+ * - Tablet:  640px - 1023px (2 columns, 24px padding)
+ * - Desktop: 1024px+        (2fr main + 1fr sidebar, 32px padding)
+ *
+ * Uses layout variables from index.css:
+ * --layout-padding-mobile, --layout-padding-tablet, --layout-padding-desktop
  */
 
 /* ==================== BASE LAYOUT ==================== */
 
 .dashboard-layout {
   display: grid;
-  gap: var(--spacing-lg, 24px);
+  gap: var(--layout-gap, 24px);
   width: 100%;
-  padding: var(--spacing-md, 16px);
+  max-width: none; /* Full width - no constraints */
+  padding-left: var(--layout-padding-mobile, 1rem);
+  padding-right: var(--layout-padding-mobile, 1rem);
+  padding-top: var(--layout-padding-mobile, 1rem);
+  padding-bottom: var(--layout-padding-mobile, 1rem);
 }
 
 /* Full-width items that span all columns */
@@ -36,13 +43,13 @@
   gap: var(--spacing-lg, 24px);
 }
 
-/* ==================== MOBILE (320px - 767px) ==================== */
+/* ==================== MOBILE (< 640px) ==================== */
 
-@media (max-width: 767px) {
+@media (max-width: 639px) {
   .dashboard-layout {
     grid-template-columns: 1fr;
-    padding: var(--spacing-md, 16px);
-    gap: var(--spacing-md, 16px);
+    padding: var(--layout-padding-mobile, 1rem);
+    gap: var(--layout-gap, 24px);
   }
 
   /* Stack everything in single column */
@@ -54,12 +61,12 @@
   /* Smaller gaps on mobile */
   .dashboard-main,
   .dashboard-sidebar {
-    gap: var(--spacing-md, 16px);
+    gap: var(--layout-gap, 24px);
   }
 
   /* Adjust card padding for mobile */
   .dashboard-card {
-    padding: var(--spacing-md, 16px);
+    padding: var(--layout-padding-mobile, 1rem);
   }
 
   /* Quick actions: 2x2 grid on mobile */
@@ -76,8 +83,8 @@
 /* Very small mobile (320px) */
 @media (max-width: 374px) {
   .dashboard-layout {
-    padding: var(--spacing-sm, 12px);
-    gap: var(--spacing-sm, 12px);
+    padding: 0.75rem;
+    gap: 1rem;
   }
 
   /* Single column for quick actions on very small screens */
@@ -86,19 +93,20 @@
   }
 }
 
-/* ==================== TABLET (768px - 1023px) ==================== */
+/* ==================== TABLET (640px - 1023px) ==================== */
 
-@media (min-width: 768px) and (max-width: 1023px) {
+@media (min-width: 640px) and (max-width: 1023px) {
   .dashboard-layout {
     grid-template-columns: repeat(2, 1fr);
-    padding: var(--spacing-lg, 24px);
-    gap: var(--spacing-lg, 24px);
+    padding: var(--layout-padding-tablet, 1.5rem);
+    gap: var(--layout-gap, 24px);
   }
 
   /* Full-width sections */
   .dashboard-hero,
   .dashboard-action-card,
-  .dashboard-quick-actions-section {
+  .dashboard-quick-actions-section,
+  .dashboard-kpi-section {
     grid-column: 1 / -1;
   }
 
@@ -127,13 +135,15 @@
 @media (min-width: 1024px) {
   .dashboard-layout {
     grid-template-columns: 2fr 1fr;
-    padding: var(--spacing-xl, 32px);
-    gap: var(--spacing-xl, 32px);
+    padding: var(--layout-padding-desktop, 2rem);
+    gap: var(--layout-gap-lg, 32px);
   }
 
-  /* Full-width hero section */
+  /* Full-width sections */
   .dashboard-hero,
-  .dashboard-action-card {
+  .dashboard-action-card,
+  .dashboard-kpi-section,
+  .dashboard-quick-actions-section {
     grid-column: 1 / -1;
   }
 
@@ -142,7 +152,7 @@
     grid-column: 1 / 2;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-lg, 24px);
+    gap: var(--layout-gap, 24px);
     align-content: start;
   }
 
@@ -155,9 +165,9 @@
   .dashboard-sidebar {
     grid-column: 2 / 3;
     position: sticky;
-    top: var(--spacing-lg, 24px);
+    top: var(--layout-padding-desktop, 2rem);
     height: fit-content;
-    max-height: calc(100vh - var(--spacing-xl, 32px) * 2);
+    max-height: calc(100vh - var(--layout-padding-desktop, 2rem) * 2);
     overflow-y: auto;
   }
 
@@ -167,11 +177,7 @@
     grid-template-columns: repeat(4, 1fr) !important;
   }
 
-  /* Quick actions full width, 4 columns */
-  .dashboard-quick-actions-section {
-    grid-column: 1 / -1;
-  }
-
+  /* Quick actions: 4 columns */
   .dashboard-quick-actions {
     grid-template-columns: repeat(4, 1fr) !important;
   }
@@ -181,7 +187,8 @@
 
 @media (min-width: 1440px) {
   .dashboard-layout {
-    padding: var(--spacing-xl, 32px);
+    padding: var(--layout-padding-desktop, 2rem);
+    gap: var(--layout-gap-lg, 32px);
   }
 }
 
