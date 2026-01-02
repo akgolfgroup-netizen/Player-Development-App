@@ -82,6 +82,8 @@
     "apps/web/src/components/video/VoiceRecorder.jsx": 28,
     "apps/web/src/components/widgets/AIChatWidget.tsx": 30,
     "apps/web/src/components/widgets/PeerComparisonWidget.tsx": 61,
+    "apps/web/src/features/ai-coach/components/AICoachGuide.tsx": 1,
+    "apps/web/src/features/ai-coach/components/AICoachPanel.tsx": 9,
     "apps/web/src/features/admin-coach-management/AdminCoachManagement.tsx": 16,
     "apps/web/src/features/admin-escalation/AdminEscalationSupport.tsx": 13,
     "apps/web/src/features/admin-feature-flags/AdminFeatureFlagsEditor.tsx": 9,
