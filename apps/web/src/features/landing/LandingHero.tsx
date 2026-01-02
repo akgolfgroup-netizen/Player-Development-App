@@ -271,26 +271,26 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
       {/* Footer */}
       {footer && (
-        <footer style={styles.footer}>
-          <div style={styles.footerContainer}>
+        <footer className="bg-ak-brand-primary text-white py-10 px-6 pb-6">
+          <div className="max-w-[1536px] mx-auto">
             {/* Main footer content */}
-            <div style={styles.footerMain}>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-8 mb-8">
               {/* Brand column */}
-              <div style={styles.footerBrand}>
-                <span style={styles.footerLogo}>AK Golf</span>
-                <p style={styles.footerBrandText}>
+              <div className="max-w-[280px]">
+                <span className="block text-xl font-bold text-white tracking-tight mb-3">AK Golf</span>
+                <p className="text-sm leading-relaxed text-white/80 mb-4">
                   Systematisk talentutvikling for ambisiøse golfspillere.
                 </p>
                 {/* Social links */}
                 {footer.social && footer.social.length > 0 && (
-                  <div style={styles.socialLinks}>
+                  <div className="flex items-center gap-3">
                     {footer.social.map((item, index) => (
                       <a
                         key={index}
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={styles.socialLink}
+                        className="flex items-center justify-center w-10 h-10 bg-white text-ak-brand-primary rounded-full transition-all hover:scale-105 hover:opacity-90"
                         aria-label={item.platform}
                       >
                         {getSocialIcon(item.platform)}
@@ -302,21 +302,21 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
               {/* Link sections */}
               {footer.sections && footer.sections.length > 0 && (
-                <div style={styles.footerSections}>
+                <div className="flex gap-8 flex-wrap">
                   {footer.sections.map((section, index) => (
-                    <div key={index} style={styles.footerSection}>
-                      <CardTitle style={styles.footerSectionTitle}>{section.title}</CardTitle>
-                      <ul style={styles.footerLinks}>
+                    <div key={index} className="min-w-[140px]">
+                      <CardTitle className="text-xs font-semibold text-white uppercase tracking-widest mb-4">{section.title}</CardTitle>
+                      <ul className="list-none p-0 m-0 flex flex-col gap-2">
                         {section.links.map((link, linkIndex) => (
                           <li key={linkIndex}>
                             {link.href ? (
-                              <a href={link.href} style={styles.footerLink}>
+                              <a href={link.href} className="inline-block text-sm leading-relaxed text-white/80 no-underline py-1 transition-opacity hover:opacity-100">
                                 {link.label}
                               </a>
                             ) : (
                               <button
                                 onClick={link.onClick}
-                                style={styles.footerLinkButton}
+                                className="inline-block text-sm leading-relaxed text-white/80 bg-transparent border-none py-1 cursor-pointer text-left transition-opacity hover:opacity-100"
                               >
                                 {link.label}
                               </button>
@@ -331,11 +331,11 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
               {/* Contact column */}
               {footer.contact && (
-                <div style={styles.footerContact}>
-                  <CardTitle style={styles.footerSectionTitle}>Kontakt</CardTitle>
-                  <div style={styles.contactInfo}>
+                <div className="min-w-[200px]">
+                  <CardTitle className="text-xs font-semibold text-white uppercase tracking-widest mb-4">Kontakt</CardTitle>
+                  <div className="flex flex-col gap-3">
                     {footer.contact.email && (
-                      <a href={`mailto:${footer.contact.email}`} style={styles.contactItem}>
+                      <a href={`mailto:${footer.contact.email}`} className="flex items-center gap-2 text-sm leading-relaxed text-white/80 no-underline">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                           <polyline points="22,6 12,13 2,6"/>
@@ -344,7 +344,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                       </a>
                     )}
                     {footer.contact.phone && (
-                      <a href={`tel:${footer.contact.phone}`} style={styles.contactItem}>
+                      <a href={`tel:${footer.contact.phone}`} className="flex items-center gap-2 text-sm leading-relaxed text-white/80 no-underline">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                         </svg>
@@ -352,7 +352,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                       </a>
                     )}
                     {footer.contact.address && (
-                      <span style={styles.contactItem}>
+                      <span className="flex items-center gap-2 text-sm leading-relaxed text-white/80">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                           <circle cx="12" cy="10" r="3"/>
@@ -366,8 +366,8 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             </div>
 
             {/* Footer bottom */}
-            <div style={styles.footerBottom}>
-              <p style={styles.copyright}>
+            <div className="border-t border-white/20 pt-6">
+              <p className="text-xs leading-relaxed text-white/60 m-0 text-center">
                 {footer.copyright || `© ${new Date().getFullYear()} AK Golf. Alle rettigheter reservert.`}
               </p>
             </div>
@@ -378,366 +378,4 @@ const LandingHero: React.FC<LandingHeroProps> = ({
   );
 };
 
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    minHeight: '100vh',
-    backgroundColor: 'var(--background-white)',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  header: {
-    padding: 'var(--spacing-4) var(--spacing-6)',
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  nav: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    maxWidth: '1536px',
-    margin: '0 auto',
-    width: '100%',
-  },
-  logoArea: {
-    flexShrink: 0,
-  },
-  logo: {
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 700,
-    color: 'var(--text-brand)',
-    letterSpacing: '-0.01em',
-  },
-  navLinks: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1)',
-  },
-  navLink: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    height: '44px',
-    padding: '0 var(--spacing-4)',
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 500,
-    color: 'var(--text-secondary)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    cursor: 'pointer',
-    transition: 'color 0.15s ease, background-color 0.15s ease',
-  },
-  navLinkActive: {
-    color: 'var(--text-brand)',
-    backgroundColor: 'var(--accent-muted)',
-  },
-  userMenu: {
-    flexShrink: 0,
-  },
-  heroContent: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8) var(--spacing-6)',
-    maxWidth: '1536px',
-    margin: '0 auto',
-    width: '100%',
-    gap: 'var(--spacing-8)',
-  },
-  textContent: {
-    flex: 1,
-    maxWidth: '640px',
-  },
-  tagline: {
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 600,
-    color: 'var(--text-brand)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    margin: '0 0 var(--spacing-3) 0',
-  },
-  headline: {
-    fontSize: 'var(--font-size-largeTitle)',
-    lineHeight: 'var(--line-height-largeTitle)',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    margin: '0 0 var(--spacing-4) 0',
-    letterSpacing: '-0.02em',
-  },
-  headlineHighlight: {
-    color: 'var(--text-brand)',
-  },
-  description: {
-    fontSize: 'var(--font-size-body)',
-    lineHeight: 'var(--line-height-body)',
-    color: 'var(--text-secondary)',
-    margin: '0 0 var(--spacing-6) 0',
-    maxWidth: '520px',
-  },
-  actions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-4)',
-    flexWrap: 'wrap',
-  },
-  primaryButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '48px',
-    padding: '0 var(--spacing-6)',
-    backgroundColor: 'var(--ak-primary)',
-    color: 'var(--text-inverse)',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-    boxShadow: 'var(--shadow-sm)',
-  },
-  secondaryButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '48px',
-    padding: '0 var(--spacing-4)',
-    backgroundColor: 'transparent',
-    color: 'var(--text-brand)',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'color 0.15s ease',
-    gap: 'var(--spacing-2)',
-  },
-  arrowIcon: {
-    fontSize: 'var(--font-size-subheadline)',
-    transition: 'transform 0.15s ease',
-  },
-  imageArea: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    maxWidth: '560px',
-  },
-  // Features Section Styles
-  featuresSection: {
-    backgroundColor: 'var(--background-surface)',
-    borderTop: '1px solid var(--border-subtle)',
-    padding: 'var(--spacing-10) var(--spacing-6)',
-  },
-  featuresContainer: {
-    maxWidth: '1536px',
-    margin: '0 auto',
-  },
-  featuresSectionHeader: {
-    textAlign: 'center',
-    marginBottom: 'var(--spacing-8)',
-  },
-  featuresTitle: {
-    fontSize: 'var(--font-size-title2)',
-    lineHeight: 'var(--line-height-title2)',
-    fontWeight: 700,
-    color: 'var(--text-primary)',
-    margin: '0 0 var(--spacing-3) 0',
-    letterSpacing: '-0.01em',
-  },
-  featuresSubtitle: {
-    fontSize: 'var(--font-size-body)',
-    lineHeight: 'var(--line-height-body)',
-    color: 'var(--text-secondary)',
-    margin: 0,
-    maxWidth: '600px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  featuresGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-    gap: 'var(--spacing-6)',
-  },
-  featureCard: {
-    backgroundColor: 'var(--background-white)',
-    borderRadius: 'var(--radius-lg)',
-    padding: 'var(--spacing-6)',
-    boxShadow: 'var(--shadow-card)',
-    transition: 'box-shadow 0.2s ease, transform 0.2s ease',
-  },
-  featureIconWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '48px',
-    height: '48px',
-    backgroundColor: 'var(--accent-muted)',
-    borderRadius: 'var(--radius-md)',
-    color: 'var(--text-brand)',
-    marginBottom: 'var(--spacing-4)',
-  },
-  featureCardTitle: {
-    fontSize: 'var(--font-size-headline)',
-    lineHeight: 'var(--line-height-headline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: '0 0 var(--spacing-2) 0',
-  },
-  featureCardDescription: {
-    fontSize: 'var(--font-size-subheadline)',
-    lineHeight: 'var(--line-height-subheadline)',
-    color: 'var(--text-secondary)',
-    margin: 0,
-  },
-  // Footer Styles
-  footer: {
-    backgroundColor: 'var(--ak-primary)',
-    color: 'var(--text-inverse)',
-    padding: 'var(--spacing-10) var(--spacing-6) var(--spacing-6)',
-  },
-  footerContainer: {
-    maxWidth: '1536px',
-    margin: '0 auto',
-  },
-  footerMain: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: 'var(--spacing-8)',
-    marginBottom: 'var(--spacing-8)',
-  },
-  footerBrand: {
-    maxWidth: '280px',
-  },
-  footerLogo: {
-    display: 'block',
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 700,
-    color: 'var(--text-inverse)',
-    letterSpacing: '-0.01em',
-    marginBottom: 'var(--spacing-3)',
-  },
-  footerBrandText: {
-    fontSize: 'var(--font-size-footnote)',
-    lineHeight: 'var(--line-height-footnote)',
-    color: 'var(--text-inverse)',
-    opacity: 0.8,
-    margin: '0 0 var(--spacing-4) 0',
-  },
-  socialLinks: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-  },
-  socialLink: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '40px',
-    height: '40px',
-    backgroundColor: 'var(--background-white)',
-    color: 'var(--ak-primary)',
-    borderRadius: 'var(--radius-full)',
-    transition: 'transform 0.15s ease, opacity 0.15s ease',
-  },
-  footerSections: {
-    display: 'flex',
-    gap: 'var(--spacing-8)',
-    flexWrap: 'wrap',
-  },
-  footerSection: {
-    minWidth: '140px',
-  },
-  footerSectionTitle: {
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 600,
-    color: 'var(--text-inverse)',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-    margin: '0 0 var(--spacing-4) 0',
-  },
-  footerLinks: {
-    listStyle: 'none',
-    padding: 0,
-    margin: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-2)',
-  },
-  footerLink: {
-    display: 'inline-block',
-    fontSize: 'var(--font-size-subheadline)',
-    lineHeight: 'var(--line-height-subheadline)',
-    color: 'var(--text-inverse)',
-    opacity: 0.8,
-    textDecoration: 'none',
-    transition: 'opacity 0.15s ease',
-    padding: '4px 0',
-  },
-  footerLinkButton: {
-    display: 'inline-block',
-    fontSize: 'var(--font-size-subheadline)',
-    lineHeight: 'var(--line-height-subheadline)',
-    color: 'var(--text-inverse)',
-    opacity: 0.8,
-    backgroundColor: 'transparent',
-    border: 'none',
-    padding: '4px 0',
-    cursor: 'pointer',
-    textAlign: 'left',
-    transition: 'opacity 0.15s ease',
-  },
-  footerContact: {
-    minWidth: '200px',
-  },
-  contactInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3)',
-  },
-  contactItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    fontSize: 'var(--font-size-footnote)',
-    lineHeight: 'var(--line-height-footnote)',
-    color: 'var(--text-inverse)',
-    opacity: 0.8,
-    textDecoration: 'none',
-  },
-  footerBottom: {
-    borderTop: '1px solid',
-    borderColor: 'var(--text-inverse)',
-    opacity: 0.2,
-    paddingTop: 'var(--spacing-6)',
-  },
-  copyright: {
-    fontSize: 'var(--font-size-caption1)',
-    lineHeight: 'var(--line-height-caption1)',
-    color: 'var(--text-inverse)',
-    opacity: 0.6,
-    margin: 0,
-    textAlign: 'center',
-  },
-};
-
 export default LandingHero;
-
-/**
- * Responsive CSS to add to index.css:
- *
- * @media (max-width: 767px) {
- *   .landing-hero-content {
- *     flex-direction: column;
- *     text-align: center;
- *   }
- *   .landing-hero-text {
- *     max-width: 100%;
- *   }
- *   .landing-hero-actions {
- *     justify-content: center;
- *   }
- *   .landing-nav-links {
- *     display: none;
- *   }
- * }
- */
