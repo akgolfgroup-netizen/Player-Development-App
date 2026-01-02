@@ -45,9 +45,9 @@ interface VideoProgressViewProps {
 // Category configuration
 const CATEGORIES = [
   { id: 'all', label: 'Alle' },
-  { id: 'swing', label: 'Full Swing' },
+  { id: 'swing', label: 'Full sving' },
   { id: 'putting', label: 'Putting' },
-  { id: 'short_game', label: 'Short Game' },
+  { id: 'short_game', label: 'Nærspill' },
   { id: 'other', label: 'Annet' },
 ];
 

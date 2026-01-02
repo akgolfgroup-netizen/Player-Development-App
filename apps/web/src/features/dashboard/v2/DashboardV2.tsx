@@ -222,7 +222,7 @@ const DashboardV2: React.FC<DashboardV2Props> = ({ playerName, playerId }) => {
           subtitle="Siste 10 runder"
           metrics={[
             { id: 'driving', label: 'Driving', value: 0.42 },
-            { id: 'approach', label: 'Approach', value: -0.18 },
+            { id: 'approach', label: 'Innspill', value: -0.18 },
             { id: 'around', label: 'Around', value: 0.25 },
             { id: 'putting', label: 'Putting', value: -0.34 },
           ]}

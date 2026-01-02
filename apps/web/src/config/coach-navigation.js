@@ -87,7 +87,7 @@ export const coachNavigationConfig = [
   // Statistikk og analyse for spillere (inkl. Data Golf)
   // ────────────────────────────────────────────────────────────
   {
-    label: 'Stats',
+    label: 'Statistikk',
     icon: 'BarChart3',
     submenu: [
       { href: '/coach/stats', label: 'Spilleroversikt' },

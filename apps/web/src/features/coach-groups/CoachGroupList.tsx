@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Coach Group List
- * Design System v3.0 - Blue Palette 01
+ * CoachGroupList.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Oversikt over alle grupper treneren administrerer.
  * Støtter WANG Toppidrett, Team Norway, og egendefinerte grupper.
@@ -217,37 +219,14 @@ export default function CoachGroupList() {
 
   if (loading) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            border: `4px solid ${'var(--border-default)'}`,
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
+    <div className="min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Mine grupper"
@@ -263,49 +242,23 @@ export default function CoachGroupList() {
         }
       />
 
-      <div style={{ padding: '0 24px' }}>
+      <div className="px-6">
 
         {/* Quick stats */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '12px',
-            marginBottom: '20px',
-          }}
-        >
+        <div className="grid grid-cols-3 gap-3 mb-5">
           {[
-            { label: 'Totalt grupper', value: groups.length, color: 'var(--accent)' },
-            { label: 'Spillere', value: totalMembers, color: 'var(--success)' },
-            { label: 'Med treningsplan', value: groupsWithPlans, color: 'var(--achievement)' },
+            { label: 'Totalt grupper', value: groups.length, colorClass: 'text-ak-brand-primary' },
+            { label: 'Spillere', value: totalMembers, colorClass: 'text-ak-status-success' },
+            { label: 'Med treningsplan', value: groupsWithPlans, colorClass: 'text-ak-status-warning' },
           ].map((stat, index) => (
             <div
               key={index}
-              style={{
-                padding: '16px',
-                backgroundColor: 'var(--bg-primary)',
-                borderRadius: 'var(--radius-md)',
-                boxShadow: 'var(--shadow-card)',
-                textAlign: 'center',
-              }}
+              className="p-4 bg-ak-surface-base rounded-lg shadow-sm text-center"
             >
-              <p
-                style={{
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  color: stat.color,
-                  margin: 0,
-                }}
-              >
+              <p className={`text-2xl font-bold m-0 ${stat.colorClass}`}>
                 {stat.value}
               </p>
-              <p
-                style={{
-                  fontSize: '12px', lineHeight: '16px',
-                  color: 'var(--text-secondary)',
-                  margin: '4px 0 0',
-                }}
-              >
+              <p className="text-xs leading-4 text-ak-text-secondary mt-1 mb-0">
                 {stat.label}
               </p>
             </div>
@@ -313,38 +266,24 @@ export default function CoachGroupList() {
         </div>
 
         {/* Search and filters */}
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="flex gap-3">
           {/* Search */}
-          <div style={{ flex: 1, position: 'relative' }}>
+          <div className="flex-1 relative">
             <Search
               size={18}
-              style={{
-                position: 'absolute',
-                left: '12px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: 'var(--text-secondary)',
-              }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
             />
             <input
               type="text"
               placeholder="Søk i grupper..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '10px 12px 10px 40px',
-                backgroundColor: 'var(--bg-primary)',
-                border: `1px solid ${'var(--border-default)'}`,
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                outline: 'none',
-              }}
+              className="w-full py-2.5 pl-10 pr-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-brand-primary"
             />
           </div>
 
           {/* Filter buttons */}
-          <div style={{ display: 'flex', gap: '4px' }}>
+          <div className="flex gap-1">
             {[
               { key: 'all', label: 'Alle' },
               { key: 'wang', label: 'WANG' },
@@ -354,27 +293,11 @@ export default function CoachGroupList() {
               <button
                 key={filter.key}
                 onClick={() => setFilterType(filter.key as any)}
-                style={{
-                  padding: '8px 14px',
-                  backgroundColor:
-                    filterType === filter.key
-                      ? 'var(--accent)'
-                      : 'var(--bg-primary)',
-                  color:
-                    filterType === filter.key
-                      ? 'var(--bg-primary)'
-                      : 'var(--text-primary)',
-                  border: `1px solid ${
-                    filterType === filter.key
-                      ? 'var(--accent)'
-                      : 'var(--border-default)'
-                  }`,
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                }}
+                className={`py-2 px-3.5 rounded text-[13px] font-medium cursor-pointer whitespace-nowrap ${
+                  filterType === filter.key
+                    ? 'bg-ak-brand-primary text-white border border-ak-brand-primary'
+                    : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
+                }`}
               >
                 {filter.label}
               </button>
@@ -384,38 +307,14 @@ export default function CoachGroupList() {
       </div>
 
       {/* Groups list */}
-      <div style={{ padding: '0 24px 24px' }}>
+      <div className="px-6 pb-6">
         {filteredGroups.length === 0 ? (
-          <div
-            style={{
-              padding: '48px 24px',
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              textAlign: 'center',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <Users
-              size={48}
-              color={'var(--border-default)'}
-              style={{ marginBottom: '16px' }}
-            />
-            <p
-              style={{
-                fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: '0 0 8px',
-              }}
-            >
+          <div className="py-12 px-6 bg-ak-surface-base rounded-xl text-center shadow-sm">
+            <Users size={48} className="text-ak-border-default mb-4" />
+            <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-2">
               {searchQuery ? 'Ingen grupper funnet' : 'Ingen grupper ennå'}
             </p>
-            <p
-              style={{
-                fontSize: '15px', lineHeight: '20px',
-                color: 'var(--text-secondary)',
-                margin: '0 0 20px',
-              }}
-            >
+            <p className="text-[15px] leading-5 text-ak-text-secondary m-0 mb-5">
               {searchQuery
                 ? 'Prøv et annet søkeord'
                 : 'Opprett din første gruppe for å komme i gang'}
@@ -423,19 +322,7 @@ export default function CoachGroupList() {
             {!searchQuery && (
               <button
                 onClick={() => navigate('/coach/groups/create')}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 20px',
-                  backgroundColor: 'var(--accent)',
-                  color: 'var(--bg-primary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                className="inline-flex items-center gap-2 py-2.5 px-5 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
               >
                 <Plus size={18} />
                 Opprett gruppe
@@ -443,7 +330,7 @@ export default function CoachGroupList() {
             )}
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div className="flex flex-col gap-3">
             {filteredGroups.map((group) => {
               const typeBadge = getTypeBadge(group.type);
               const nextSession = formatNextSession(group.nextSession);
@@ -451,131 +338,57 @@ export default function CoachGroupList() {
               return (
                 <div
                   key={group.id}
-                  style={{
-                    backgroundColor: 'var(--bg-primary)',
-                    borderRadius: 'var(--radius-lg)',
-                    boxShadow: 'var(--shadow-card)',
-                    overflow: 'hidden',
-                  }}
+                  className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden"
                 >
                   {/* Main content - clickable */}
                   <div
                     onClick={() => navigate(`/coach/groups/${group.id}`)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '16px',
-                      padding: '16px',
-                      cursor: 'pointer',
-                    }}
+                    className="flex items-center gap-4 p-4 cursor-pointer"
                   >
                     {/* Avatar */}
                     <div
-                      style={{
-                        width: 56,
-                        height: 56,
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: group.avatarColor,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--bg-primary)',
-                        fontWeight: 700,
-                        fontSize: '18px',
-                        flexShrink: 0,
-                      }}
+                      className="w-14 h-14 rounded-lg flex items-center justify-center text-white font-bold text-lg shrink-0"
+                      style={{ backgroundColor: group.avatarColor }}
                     >
                       {group.avatarInitials}
                     </div>
 
                     {/* Info */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                          marginBottom: '4px',
-                        }}
-                      >
-                        <SubSectionTitle style={{ margin: 0 }}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2.5 mb-1">
+                        <SubSectionTitle className="m-0">
                           {group.name}
                         </SubSectionTitle>
                         <span
-                          style={{
-                            padding: '2px 8px',
-                            backgroundColor: typeBadge.bg,
-                            color: typeBadge.text,
-                            borderRadius: 'var(--radius-sm)',
-                            fontSize: '11px',
-                            fontWeight: 600,
-                          }}
+                          className="py-0.5 px-2 rounded text-[11px] font-semibold"
+                          style={{ backgroundColor: typeBadge.bg, color: typeBadge.text }}
                         >
                           {typeBadge.label}
                         </span>
                       </div>
 
                       {group.description && (
-                        <p
-                          style={{
-                            fontSize: '15px', lineHeight: '20px',
-                            color: 'var(--text-secondary)',
-                            margin: '0 0 8px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
+                        <p className="text-[15px] leading-5 text-ak-text-secondary m-0 mb-2 overflow-hidden text-ellipsis whitespace-nowrap">
                           {group.description}
                         </p>
                       )}
 
                       {/* Meta info */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '16px',
-                        }}
-                      >
-                        <span
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            fontSize: '12px', lineHeight: '16px',
-                            color: 'var(--text-secondary)',
-                          }}
-                        >
+                      <div className="flex items-center gap-4">
+                        <span className="flex items-center gap-1 text-xs leading-4 text-ak-text-secondary">
                           <Users size={14} />
                           {group.memberCount} spillere
                         </span>
 
                         {group.hasTrainingPlan && (
-                          <span
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '4px',
-                              fontSize: '12px', lineHeight: '16px',
-                              color: 'var(--success)',
-                            }}
-                          >
+                          <span className="flex items-center gap-1 text-xs leading-4 text-ak-status-success">
                             <ClipboardList size={14} />
                             Treningsplan
                           </span>
                         )}
 
                         {nextSession && (
-                          <span
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '4px',
-                              fontSize: '12px', lineHeight: '16px',
-                              color: 'var(--accent)',
-                            }}
-                          >
+                          <span className="flex items-center gap-1 text-xs leading-4 text-ak-brand-primary">
                             <Calendar size={14} />
                             Neste: {nextSession}
                           </span>
@@ -584,118 +397,46 @@ export default function CoachGroupList() {
                     </div>
 
                     {/* Members preview */}
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        marginRight: '8px',
-                      }}
-                    >
+                    <div className="flex items-center gap-1 mr-2">
                       {group.members.slice(0, 4).map((member, index) => (
                         <div
                           key={member.id}
                           title={member.name}
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: '50%',
-                            backgroundColor: 'var(--accent)',
-                            color: 'var(--bg-primary)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            marginLeft: index > 0 ? '-10px' : 0,
-                            border: `2px solid ${'var(--bg-primary)'}`,
-                          }}
+                          className={`w-8 h-8 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-[11px] font-semibold border-2 border-ak-surface-base ${index > 0 ? '-ml-2.5' : ''}`}
                         >
                           {member.avatarInitials}
                         </div>
                       ))}
                       {group.memberCount > 4 && (
-                        <div
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: '50%',
-                            backgroundColor: 'var(--bg-tertiary)',
-                            color: 'var(--text-secondary)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '10px',
-                            fontWeight: 600,
-                            marginLeft: '-10px',
-                            border: `2px solid ${'var(--bg-primary)'}`,
-                          }}
-                        >
+                        <div className="w-8 h-8 rounded-full bg-ak-surface-subtle text-ak-text-secondary flex items-center justify-center text-[10px] font-semibold -ml-2.5 border-2 border-ak-surface-base">
                           +{group.memberCount - 4}
                         </div>
                       )}
                     </div>
 
                     {/* Menu button */}
-                    <div style={{ position: 'relative' }}>
+                    <div className="relative">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           setActiveMenu(activeMenu === group.id ? null : group.id);
                         }}
-                        style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor:
-                            activeMenu === group.id
-                              ? 'var(--bg-tertiary)'
-                              : 'transparent',
-                          border: 'none',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          cursor: 'pointer',
-                        }}
+                        className={`w-9 h-9 rounded flex items-center justify-center border-none cursor-pointer ${
+                          activeMenu === group.id ? 'bg-ak-surface-subtle' : 'bg-transparent'
+                        }`}
                       >
-                        <MoreVertical size={18} color={'var(--text-secondary)'} />
+                        <MoreVertical size={18} className="text-ak-text-secondary" />
                       </button>
 
                       {/* Dropdown menu */}
                       {activeMenu === group.id && (
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '100%',
-                            right: 0,
-                            marginTop: '4px',
-                            width: '180px',
-                            backgroundColor: 'var(--bg-primary)',
-                            borderRadius: 'var(--radius-md)',
-                            boxShadow: 'var(--shadow-dropdown)',
-                            border: `1px solid ${'var(--bg-tertiary)'}`,
-                            zIndex: 100,
-                            overflow: 'hidden',
-                          }}
-                        >
+                        <div className="absolute top-full right-0 mt-1 w-[180px] bg-ak-surface-base rounded-lg shadow-lg border border-ak-surface-subtle z-[100] overflow-hidden">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/coach/groups/${group.id}/edit`);
                             }}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                              width: '100%',
-                              padding: '10px 14px',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              fontSize: '13px',
-                              color: 'var(--text-primary)',
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                            }}
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-text-primary cursor-pointer text-left hover:bg-ak-surface-subtle"
                           >
                             <Edit size={16} />
                             Rediger gruppe
@@ -705,19 +446,7 @@ export default function CoachGroupList() {
                               e.stopPropagation();
                               navigate(`/coach/groups/${group.id}/members`);
                             }}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                              width: '100%',
-                              padding: '10px 14px',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              fontSize: '13px',
-                              color: 'var(--text-primary)',
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                            }}
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-text-primary cursor-pointer text-left hover:bg-ak-surface-subtle"
                           >
                             <UserPlus size={16} />
                             Administrer medlemmer
@@ -727,48 +456,18 @@ export default function CoachGroupList() {
                               e.stopPropagation();
                               navigate(`/coach/groups/${group.id}/plan`);
                             }}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                              width: '100%',
-                              padding: '10px 14px',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              fontSize: '13px',
-                              color: 'var(--text-primary)',
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                            }}
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-text-primary cursor-pointer text-left hover:bg-ak-surface-subtle"
                           >
                             <ClipboardList size={16} />
                             Treningsplan
                           </button>
-                          <div
-                            style={{
-                              height: '1px',
-                              backgroundColor: 'var(--bg-tertiary)',
-                              margin: '4px 0',
-                            }}
-                          />
+                          <div className="h-px bg-ak-surface-subtle my-1" />
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               handleDeleteGroup(group);
                             }}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                              width: '100%',
-                              padding: '10px 14px',
-                              backgroundColor: 'transparent',
-                              border: 'none',
-                              fontSize: '13px',
-                              color: 'var(--error)',
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                            }}
+                            className="flex items-center gap-2.5 w-full py-2.5 px-3.5 bg-transparent border-none text-[13px] text-ak-status-error cursor-pointer text-left hover:bg-ak-surface-subtle"
                           >
                             <Trash2 size={16} />
                             Slett gruppe
@@ -777,7 +476,7 @@ export default function CoachGroupList() {
                       )}
                     </div>
 
-                    <ChevronRight size={20} color={'var(--text-secondary)'} />
+                    <ChevronRight size={20} className="text-ak-text-secondary" />
                   </div>
                 </div>
               );
@@ -789,14 +488,7 @@ export default function CoachGroupList() {
       {/* Click outside to close menu */}
       {activeMenu && (
         <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 50,
-          }}
+          className="fixed inset-0 z-50"
           onClick={() => setActiveMenu(null)}
         />
       )}
@@ -808,42 +500,24 @@ export default function CoachGroupList() {
         title="Slett gruppe"
         size="sm"
         footer={
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <div className="flex gap-3 justify-end">
             <button
               onClick={() => setGroupToDelete(null)}
-              style={{
-                padding: '10px 18px',
-                backgroundColor: 'transparent',
-                border: `1px solid ${'var(--border-default)'}`,
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--text-primary)',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className="py-2.5 px-[18px] bg-transparent border border-ak-border-default rounded-lg text-ak-text-primary text-sm font-medium cursor-pointer"
             >
               Avbryt
             </button>
             <button
               onClick={handleConfirmDeleteGroup}
-              style={{
-                padding: '10px 18px',
-                backgroundColor: 'var(--error)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--bg-primary)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className="py-2.5 px-[18px] bg-ak-status-error border-none rounded-lg text-white text-sm font-semibold cursor-pointer"
             >
               Slett gruppe
             </button>
           </div>
         }
       >
-        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-          Er du sikker på at du vil slette gruppen <strong style={{ color: 'var(--text-primary)' }}>{groupToDelete?.name}</strong>? Denne handlingen kan ikke angres.
+        <p className="m-0 text-ak-text-secondary leading-relaxed">
+          Er du sikker på at du vil slette gruppen <strong className="text-ak-text-primary">{groupToDelete?.name}</strong>? Denne handlingen kan ikke angres.
         </p>
       </Modal>
     </div>

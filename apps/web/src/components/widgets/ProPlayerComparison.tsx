@@ -112,9 +112,9 @@ const ProPlayerComparison: React.FC<ProPlayerComparisonProps> = ({ suggestedPlay
 
   const comparisonCategories = [
     { key: 'total', label: 'Total SG', proKey: 'sgTotal' as keyof ProPlayerStats },
-    { key: 'tee', label: 'Off the Tee', proKey: 'sgTee' as keyof ProPlayerStats },
-    { key: 'approach', label: 'Approach', proKey: 'sgApproach' as keyof ProPlayerStats },
-    { key: 'aroundGreen', label: 'Around Green', proKey: 'sgAround' as keyof ProPlayerStats },
+    { key: 'tee', label: 'Fra tee', proKey: 'sgTee' as keyof ProPlayerStats },
+    { key: 'approach', label: 'Innspill', proKey: 'sgApproach' as keyof ProPlayerStats },
+    { key: 'aroundGreen', label: 'Rundt green', proKey: 'sgAround' as keyof ProPlayerStats },
     { key: 'putting', label: 'Putting', proKey: 'sgPutting' as keyof ProPlayerStats },
   ];
 

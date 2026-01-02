@@ -201,7 +201,7 @@ const BenchmarkPage: React.FC = () => {
 
         <div style={styles.categoryGrid}>
           {[
-            { key: 'approach', label: 'Approach', icon: Crosshair, desc: 'Slag mot green' },
+            { key: 'approach', label: 'Innspill', icon: Crosshair, desc: 'Slag mot green' },
             { key: 'putting', label: 'Putting', icon: CircleDot, desc: 'Slag på green' },
             { key: 'aroundGreen', label: 'Kortspill', icon: Flag, desc: 'Rundt green' },
           ].map(cat => {

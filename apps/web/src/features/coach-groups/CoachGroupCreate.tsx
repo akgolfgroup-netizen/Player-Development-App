@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * AK Golf Academy - Coach Group Create
- * Design System v3.0 - Blue Palette 01
+ * CoachGroupCreate.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Opprett ny gruppe med navn, beskrivelse, type og medlemmer.
  */
@@ -15,8 +17,6 @@ import {
   Check,
   AlertCircle,
 } from 'lucide-react';
-import Card from '../../ui/primitives/Card';
-import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { SectionTitle } from '../../components/typography';
 
@@ -170,13 +170,7 @@ export default function CoachGroupCreate() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
+    <div className="min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Opprett ny gruppe"
@@ -185,50 +179,24 @@ export default function CoachGroupCreate() {
       />
 
       <form onSubmit={handleSubmit}>
-        <div style={{ padding: '24px', maxWidth: '800px' }}>
+        <div className="p-6 max-w-[800px]">
           {/* Error message */}
           {error && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '12px 16px',
-                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
-                borderRadius: 'var(--radius-md)',
-                marginBottom: '20px',
-              }}
-            >
-              <AlertCircle size={18} color={'var(--error)'} />
-              <span style={{ color: 'var(--error)', fontSize: '14px' }}>{error}</span>
+            <div className="flex items-center gap-2.5 py-3 px-4 bg-ak-status-error/10 rounded-lg mb-5">
+              <AlertCircle size={18} className="text-ak-status-error" />
+              <span className="text-ak-status-error text-sm">{error}</span>
             </div>
           )}
 
           {/* Basic info */}
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '20px',
-              marginBottom: '20px',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <SectionTitle style={{ margin: '0 0 16px' }}>
+          <div className="bg-ak-surface-base rounded-xl p-5 mb-5 shadow-sm">
+            <SectionTitle className="m-0 mb-4">
               Grunnleggende informasjon
             </SectionTitle>
 
             {/* Name */}
-            <div style={{ marginBottom: '16px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '6px',
-                  fontWeight: 500,
-                }}
-              >
+            <div className="mb-4">
+              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
                 Gruppenavn *
               </label>
               <input
@@ -236,29 +204,13 @@ export default function CoachGroupCreate() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="F.eks. WANG Toppidrett 2025"
-                style={{
-                  width: '100%',
-                  padding: '12px 14px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: `1px solid ${'var(--border-default)'}`,
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  outline: 'none',
-                }}
+                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none focus:border-ak-brand-primary"
               />
             </div>
 
             {/* Description */}
-            <div style={{ marginBottom: '16px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '6px',
-                  fontWeight: 500,
-                }}
-              >
+            <div className="mb-4">
+              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
                 Beskrivelse
               </label>
               <textarea
@@ -266,34 +218,16 @@ export default function CoachGroupCreate() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Kort beskrivelse av gruppen..."
                 rows={3}
-                style={{
-                  width: '100%',
-                  padding: '12px 14px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: `1px solid ${'var(--border-default)'}`,
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  outline: 'none',
-                  resize: 'vertical',
-                  fontFamily: 'inherit',
-                }}
+                className="w-full py-3 px-3.5 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none resize-y font-inherit focus:border-ak-brand-primary"
               />
             </div>
 
             {/* Type */}
-            <div style={{ marginBottom: '16px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '6px',
-                  fontWeight: 500,
-                }}
-              >
+            <div className="mb-4">
+              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
                 Gruppetype
               </label>
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div className="flex gap-2.5">
                 {[
                   { key: 'wang', label: 'WANG Toppidrett' },
                   { key: 'team_norway', label: 'Team Norway' },
@@ -303,26 +237,11 @@ export default function CoachGroupCreate() {
                     key={type.key}
                     type="button"
                     onClick={() => setFormData({ ...formData, type: type.key as any })}
-                    style={{
-                      padding: '10px 18px',
-                      backgroundColor:
-                        formData.type === type.key
-                          ? 'var(--accent)'
-                          : 'var(--bg-secondary)',
-                      color:
-                        formData.type === type.key
-                          ? 'var(--bg-primary)'
-                          : 'var(--text-primary)',
-                      border: `1px solid ${
-                        formData.type === type.key
-                          ? 'var(--accent)'
-                          : 'var(--border-default)'
-                      }`,
-                      borderRadius: 'var(--radius-md)',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                    }}
+                    className={`py-2.5 px-[18px] rounded-lg text-sm font-medium cursor-pointer ${
+                      formData.type === type.key
+                        ? 'bg-ak-brand-primary text-white border border-ak-brand-primary'
+                        : 'bg-ak-surface-subtle text-ak-text-primary border border-ak-border-default'
+                    }`}
                   >
                     {type.label}
                   </button>
@@ -332,41 +251,22 @@ export default function CoachGroupCreate() {
 
             {/* Color */}
             <div>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '6px',
-                  fontWeight: 500,
-                }}
-              >
+              <label className="block text-[15px] leading-5 text-ak-text-primary mb-1.5 font-medium">
                 Gruppefarge
               </label>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <div className="flex gap-2 flex-wrap">
                 {GROUP_COLORS.map((color) => (
                   <button
                     key={color.value}
                     type="button"
                     onClick={() => setFormData({ ...formData, color: color.value })}
                     title={color.label}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center cursor-pointer ${
+                      formData.color === color.value ? 'border-[3px] border-white ring-2' : 'border-none'
+                    }`}
                     style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 'var(--radius-md)',
                       backgroundColor: color.value,
-                      border:
-                        formData.color === color.value
-                          ? '3px solid white'
-                          : 'none',
-                      boxShadow:
-                        formData.color === color.value
-                          ? `0 0 0 2px ${color.value}`
-                          : 'none',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      ...(formData.color === color.value && { '--tw-ring-color': color.value } as any)
                     }}
                   >
                     {formData.color === color.value && (
@@ -379,53 +279,23 @@ export default function CoachGroupCreate() {
           </div>
 
           {/* Preview */}
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '20px',
-              marginBottom: '20px',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <SectionTitle style={{ margin: '0 0 16px' }}>
+          <div className="bg-ak-surface-base rounded-xl p-5 mb-5 shadow-sm">
+            <SectionTitle className="m-0 mb-4">
               Forhåndsvisning
             </SectionTitle>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div className="flex items-center gap-3.5">
               <div
-                style={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: formData.color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--bg-primary)',
-                  fontWeight: 700,
-                  fontSize: '18px',
-                }}
+                className="w-14 h-14 rounded-lg flex items-center justify-center text-white font-bold text-lg"
+                style={{ backgroundColor: formData.color }}
               >
                 {formData.name ? getInitials(formData.name) : '??'}
               </div>
               <div>
-                <p
-                  style={{
-                    fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                    color: 'var(--text-primary)',
-                    margin: 0,
-                  }}
-                >
+                <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                   {formData.name || 'Gruppenavn'}
                 </p>
-                <p
-                  style={{
-                    fontSize: '12px', lineHeight: '16px',
-                    color: 'var(--text-secondary)',
-                    margin: '2px 0 0',
-                  }}
-                >
+                <p className="text-xs leading-4 text-ak-text-secondary mt-0.5 m-0">
                   {formData.memberIds.length} medlemmer valgt
                 </p>
               </div>
@@ -433,79 +303,31 @@ export default function CoachGroupCreate() {
           </div>
 
           {/* Members selection */}
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '20px',
-              marginBottom: '20px',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '16px',
-              }}
-            >
-              <SectionTitle style={{ margin: 0 }}>
+          <div className="bg-ak-surface-base rounded-xl p-5 mb-5 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <SectionTitle className="m-0">
                 Velg medlemmer *
               </SectionTitle>
-              <span
-                style={{
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--accent)',
-                }}
-              >
+              <span className="text-[15px] leading-5 text-ak-brand-primary">
                 {formData.memberIds.length} valgt
               </span>
             </div>
 
             {/* Selected members */}
             {selectedPlayers.length > 0 && (
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '8px',
-                  marginBottom: '16px',
-                  padding: '12px',
-                  backgroundColor: `${'var(--accent)'}08`,
-                  borderRadius: 'var(--radius-md)',
-                }}
-              >
+              <div className="flex flex-wrap gap-2 mb-4 p-3 bg-ak-brand-primary/5 rounded-lg">
                 {selectedPlayers.map((player) => (
                   <div
                     key={player.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 10px',
-                      backgroundColor: 'var(--bg-primary)',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '13px',
-                    }}
+                    className="flex items-center gap-1.5 py-1.5 px-2.5 bg-ak-surface-base rounded text-[13px]"
                   >
-                    <span style={{ fontWeight: 500 }}>{player.name}</span>
+                    <span className="font-medium">{player.name}</span>
                     <button
                       type="button"
                       onClick={() => toggleMember(player.id)}
-                      style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: '50%',
-                        backgroundColor: 'var(--border-default)',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                      }}
+                      className="w-[18px] h-[18px] rounded-full bg-ak-border-default border-none flex items-center justify-center cursor-pointer"
                     >
-                      <X size={12} color={'var(--text-secondary)'} />
+                      <X size={12} className="text-ak-text-secondary" />
                     </button>
                   </div>
                 ))}
@@ -513,59 +335,27 @@ export default function CoachGroupCreate() {
             )}
 
             {/* Search */}
-            <div style={{ position: 'relative', marginBottom: '12px' }}>
+            <div className="relative mb-3">
               <Search
                 size={18}
-                style={{
-                  position: 'absolute',
-                  left: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-secondary)',
-                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
               />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Søk etter spillere..."
-                style={{
-                  width: '100%',
-                  padding: '10px 12px 10px 40px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: `1px solid ${'var(--border-default)'}`,
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  outline: 'none',
-                }}
+                className="w-full py-2.5 pl-10 pr-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm outline-none"
               />
             </div>
 
             {/* Player list */}
             {loadingPlayers ? (
-              <div style={{ textAlign: 'center', padding: '20px' }}>
-                <div
-                  style={{
-                    width: 32,
-                    height: 32,
-                    border: `3px solid ${'var(--border-default)'}`,
-                    borderTopColor: 'var(--accent)',
-                    borderRadius: '50%',
-                    margin: '0 auto',
-                    animation: 'spin 1s linear infinite',
-                  }}
-                />
+              <div className="text-center p-5">
+                <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto animate-spin" />
               </div>
             ) : (
-              <div
-                style={{
-                  maxHeight: '300px',
-                  overflowY: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '6px',
-                }}
-              >
+              <div className="max-h-[300px] overflow-y-auto flex flex-col gap-1.5">
                 {filteredPlayers.map((player) => {
                   const isSelected = formData.memberIds.includes(player.id);
                   return (
@@ -573,58 +363,21 @@ export default function CoachGroupCreate() {
                       key={player.id}
                       type="button"
                       onClick={() => toggleMember(player.id)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        padding: '10px 14px',
-                        backgroundColor: isSelected
-                          ? 'rgba(var(--accent-rgb), 0.10)'
-                          : 'var(--bg-secondary)',
-                        border: `1px solid ${
-                          isSelected ? 'var(--accent)' : 'var(--border-default)'
-                        }`,
-                        borderRadius: 'var(--radius-md)',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        width: '100%',
-                      }}
+                      className={`flex items-center gap-3 py-2.5 px-3.5 rounded-lg cursor-pointer text-left w-full ${
+                        isSelected
+                          ? 'bg-ak-brand-primary/10 border border-ak-brand-primary'
+                          : 'bg-ak-surface-subtle border border-ak-border-default'
+                      }`}
                     >
-                      <div
-                        style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: '50%',
-                          backgroundColor: 'var(--accent)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--bg-primary)',
-                          fontSize: '12px',
-                          fontWeight: 600,
-                        }}
-                      >
+                      <div className="w-9 h-9 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-xs font-semibold">
                         {player.avatarInitials}
                       </div>
 
-                      <div style={{ flex: 1 }}>
-                        <p
-                          style={{
-                            fontSize: '15px', lineHeight: '20px',
-                            color: 'var(--text-primary)',
-                            margin: 0,
-                            fontWeight: 500,
-                          }}
-                        >
+                      <div className="flex-1">
+                        <p className="text-[15px] leading-5 text-ak-text-primary m-0 font-medium">
                           {player.name}
                         </p>
-                        <p
-                          style={{
-                            fontSize: '12px', lineHeight: '16px',
-                            color: 'var(--text-secondary)',
-                            margin: '2px 0 0',
-                          }}
-                        >
+                        <p className="text-xs leading-4 text-ak-text-secondary mt-0.5 m-0">
                           Kategori {player.category}
                           {player.currentGroups.length > 0 &&
                             ` · ${player.currentGroups.join(', ')}`}
@@ -632,17 +385,9 @@ export default function CoachGroupCreate() {
                       </div>
 
                       <div
-                        style={{
-                          width: 24,
-                          height: 24,
-                          borderRadius: '50%',
-                          backgroundColor: isSelected
-                            ? 'var(--accent)'
-                            : 'var(--border-default)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
+                        className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                          isSelected ? 'bg-ak-brand-primary' : 'bg-ak-border-default'
+                        }`}
                       >
                         {isSelected && <Check size={14} color="white" />}
                       </div>
@@ -654,40 +399,20 @@ export default function CoachGroupCreate() {
           </div>
 
           {/* Submit buttons */}
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <div className="flex gap-3 justify-end">
             <button
               type="button"
               onClick={() => navigate('/coach/groups')}
-              style={{
-                padding: '12px 24px',
-                backgroundColor: 'transparent',
-                color: 'var(--text-primary)',
-                border: `1px solid ${'var(--border-default)'}`,
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className="py-3 px-6 bg-transparent text-ak-text-primary border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer"
             >
               Avbryt
             </button>
             <button
               type="submit"
               disabled={loading}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 24px',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                opacity: loading ? 0.7 : 1,
-              }}
+              className={`flex items-center gap-2 py-3 px-6 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold ${
+                loading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'
+              }`}
             >
               <Users size={18} />
               {loading ? 'Oppretter...' : 'Opprett gruppe'}

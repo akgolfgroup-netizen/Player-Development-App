@@ -8,7 +8,9 @@
 |---|----------|--------|
 | 01 | [GAP_ANALYSIS.md](./01_GAP_ANALYSIS.md) | Kartlegging av hva som finnes vs mangler |
 | 02 | [CRITICAL_DECISIONS.md](./02_CRITICAL_DECISIONS.md) | Beslutninger som MÅ tas før algoritmer røres |
-| 03 | [IMPLEMENTATION_PLAN.md](./03_IMPLEMENTATION_PLAN.md) | Konkret implementeringsplan (kommer) |
+| 03 | [IMPLEMENTATION_PLAN.md](./03_IMPLEMENTATION_PLAN.md) | Konkret implementeringsplan (fylles ut etter beslutninger) |
+| 04 | [SESSION_TEMPLATES_INVENTORY.md](./04_SESSION_TEMPLATES_INVENTORY.md) | Komplett oversikt over 39 session templates |
+| 05 | [MEASUREMENT_INVENTORY.md](./05_MEASUREMENT_INVENTORY.md) | Alle tester, metrics og datakilder |
 
 ## Bakgrunn
 

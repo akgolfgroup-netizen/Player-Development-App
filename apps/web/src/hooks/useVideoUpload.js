@@ -44,7 +44,7 @@ export const UPLOAD_STATES = {
 
 // Video categories for golf
 export const VIDEO_CATEGORIES = [
-  { value: 'full_swing', label: 'Full Swing' },
+  { value: 'full_swing', label: 'Full sving' },
   { value: 'driver', label: 'Driver' },
   { value: 'iron', label: 'Jern' },
   { value: 'wedge', label: 'Wedge' },

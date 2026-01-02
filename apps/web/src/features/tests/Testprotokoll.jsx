@@ -918,7 +918,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
             { id: 'dashboard', Icon: HomeIcon, label: 'Hjem' },
             { id: 'calendar', Icon: CalendarIcon, label: 'Kalender' },
             { id: 'tests', Icon: GolfScorecard, label: 'Tester', active: true },
-            { id: 'stats', Icon: ChartIcon, label: 'Stats' },
+            { id: 'stats', Icon: ChartIcon, label: 'Statistikk' },
             { id: 'profile', Icon: ProfileIcon, label: 'Profil' },
           ].map(tab => (
             <button

@@ -32,7 +32,7 @@ import { Plus, Search, X, Upload, Video, Check, FileVideo } from 'lucide-react';
 // Video categories for golf
 const VIDEO_CATEGORIES = [
   { value: '', label: 'Alle kategorier' },
-  { value: 'full_swing', label: 'Full Swing' },
+  { value: 'full_swing', label: 'Full sving' },
   { value: 'putting', label: 'Putting' },
   { value: 'chipping', label: 'Chipping' },
   { value: 'pitching', label: 'Pitching' },

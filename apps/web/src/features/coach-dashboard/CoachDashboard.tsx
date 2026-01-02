@@ -54,7 +54,7 @@ const quickActions = [
   { id: 'calendar', label: 'Kalender', icon: Calendar, href: '/coach/calendar' },
   { id: 'plans', label: 'Treningsplaner', icon: ClipboardList, href: '/coach/training-plans/create' },
   { id: 'messages', label: 'Meldinger', icon: MessageSquare, href: '/coach/messages' },
-  { id: 'stats', label: 'Stats', icon: BarChart3, href: '/coach/stats' },
+  { id: 'stats', label: 'Statistikk', icon: BarChart3, href: '/coach/stats' },
   { id: 'tournaments', label: 'Turneringer', icon: Trophy, href: '/coach/tournaments' },
 ];
 

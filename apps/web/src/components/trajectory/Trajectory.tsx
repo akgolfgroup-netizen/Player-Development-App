@@ -53,7 +53,7 @@ const CATEGORIES = [
   { id: "all", label: "Alle" },
   { id: "putting", label: "Putting" },
   { id: "driving", label: "Driving" },
-  { id: "approach", label: "Approach" },
+  { id: "approach", label: "Innspill" },
 ];
 
 //////////////////////////////

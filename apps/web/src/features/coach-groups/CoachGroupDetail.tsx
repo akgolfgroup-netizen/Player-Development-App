@@ -899,64 +899,30 @@ export default function CoachGroupDetail() {
                     if (!session) return null;
 
                     return (
-                      <div
-                        style={{
-                          marginTop: '24px',
-                          backgroundColor: 'var(--bg-primary)',
-                          borderRadius: 'var(--radius-lg)',
-                          boxShadow: 'var(--shadow-card)',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <div
-                          style={{
-                            padding: '16px 20px',
-                            backgroundColor: 'var(--accent)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}
-                        >
+                      <div className="mt-6 bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
+                        <div className="py-4 px-5 bg-ak-brand-primary flex items-center justify-between">
                           <div>
-                            <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--bg-primary)', margin: 0 }}>
+                            <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-white m-0">
                               {session.title}
                             </SubSectionTitle>
-                            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'rgba(255,255,255,0.8)', margin: '2px 0 0' }}>
+                            <p className="text-[13px] leading-[18px] text-white/80 mt-0.5 mb-0">
                               {dayNames[session.dayOfWeek]} kl. {session.time}
                             </p>
                           </div>
                           <button
                             onClick={() => setEditingSession(null)}
-                            style={{
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              backgroundColor: 'rgba(255,255,255,0.2)',
-                              border: 'none',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer',
-                            }}
+                            className="w-8 h-8 rounded-full bg-white/20 border-none flex items-center justify-center cursor-pointer"
                           >
-                            <X size={18} color={'var(--bg-primary)'} />
+                            <X size={18} className="text-white" />
                           </button>
                         </div>
 
-                        <div style={{ padding: '20px' }}>
-                          <CardTitle
-                            style={{
-                              fontSize: '13px', lineHeight: '18px',
-                              color: 'var(--text-secondary)',
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px',
-                              margin: '0 0 12px',
-                            }}
-                          >
+                        <div className="p-5">
+                          <CardTitle className="text-[13px] leading-[18px] text-ak-text-secondary uppercase tracking-wide m-0 mb-3">
                             Øvelser ({session.exercises.length})
                           </CardTitle>
 
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div className="flex flex-col gap-2">
                             {session.exercises
                               .sort((a, b) => a.order - b.order)
                               .map((exercise, index) => {
@@ -964,139 +930,47 @@ export default function CoachGroupDetail() {
                                 return (
                                   <div
                                     key={exercise.id}
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      gap: '12px',
-                                      padding: '12px 14px',
-                                      backgroundColor: 'var(--bg-tertiary)',
-                                      borderRadius: 'var(--radius-md)',
-                                    }}
+                                    className="flex items-center gap-3 py-3 px-3.5 bg-ak-surface-subtle rounded-lg"
                                   >
-                                    <div
-                                      style={{
-                                        width: 28,
-                                        height: 28,
-                                        borderRadius: '50%',
-                                        backgroundColor: 'var(--accent)',
-                                        color: 'var(--bg-primary)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontSize: '12px',
-                                        fontWeight: 600,
-                                        flexShrink: 0,
-                                      }}
-                                    >
+                                    <div className="w-7 h-7 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-xs font-semibold shrink-0">
                                       {index + 1}
                                     </div>
-                                    <div style={{ flex: 1 }}>
-                                      <p style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
+                                    <div className="flex-1">
+                                      <p className="text-[15px] leading-5 font-medium text-ak-text-primary m-0">
                                         {exercise.name}
                                       </p>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                                      <div className="flex items-center gap-2 mt-0.5">
                                         <span
-                                          style={{
-                                            fontSize: '11px',
-                                            padding: '2px 6px',
-                                            backgroundColor: catStyle.bg,
-                                            color: catStyle.text,
-                                            borderRadius: '4px',
-                                            fontWeight: 500,
-                                          }}
+                                          className="text-[11px] py-0.5 px-1.5 rounded font-medium"
+                                          style={{ backgroundColor: catStyle.bg, color: catStyle.text }}
                                         >
                                           {catStyle.label}
                                         </span>
-                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                                        <span className="text-[11px] text-ak-text-secondary">
                                           {exercise.duration} min
                                         </span>
                                       </div>
                                     </div>
-                                    <GripVertical size={16} color={'var(--border-default)'} style={{ cursor: 'grab' }} />
+                                    <GripVertical size={16} className="text-ak-border-default cursor-grab" />
                                   </div>
                                 );
                               })}
                           </div>
 
-                          <div
-                            style={{
-                              display: 'flex',
-                              gap: '10px',
-                              marginTop: '16px',
-                              paddingTop: '16px',
-                              borderTop: `1px solid ${'var(--border-default)'}`,
-                            }}
-                          >
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'var(--accent)',
-                                color: 'var(--bg-primary)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                              }}
-                            >
+                          <div className="flex gap-2.5 mt-4 pt-4 border-t border-ak-border-default">
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Play size={16} />
                               Start økt
                             </button>
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'var(--bg-tertiary)',
-                                color: 'var(--text-primary)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                              }}
-                            >
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Edit3 size={16} />
                               Rediger
                             </button>
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'var(--bg-tertiary)',
-                                color: 'var(--text-primary)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                              }}
-                            >
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Copy size={16} />
                               Kopier
                             </button>
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
-                                color: 'var(--error)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                marginLeft: 'auto',
-                              }}
-                            >
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-status-error/10 text-ak-status-error border-none rounded-lg text-[13px] font-medium cursor-pointer ml-auto">
                               <Trash2 size={16} />
                               Slett
                             </button>
@@ -1111,37 +985,17 @@ export default function CoachGroupDetail() {
 
             {/* No plan message */}
             {!group.trainingPlan && (
-              <div
-                style={{
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  padding: '48px 24px',
-                  textAlign: 'center',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <ClipboardList size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
-                <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <div className="bg-ak-surface-base rounded-xl py-12 px-6 text-center shadow-sm">
+                <ClipboardList size={48} className="text-ak-border-default mb-4" />
+                <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                   Ingen treningsplan
                 </SubSectionTitle>
-                <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: '8px 0 20px' }}>
+                <p className="text-[15px] leading-5 text-ak-text-secondary mt-2 mb-5">
                   Opprett en treningsplan for å strukturere gruppens økter
                 </p>
                 <button
                   onClick={() => navigate(`/coach/groups/${groupId}/plan/create`)}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '12px 20px',
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--bg-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  className="inline-flex items-center gap-2 py-3 px-5 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
                 >
                   <Plus size={18} />
                   Opprett treningsplan
@@ -1154,83 +1008,55 @@ export default function CoachGroupDetail() {
         {/* Stats tab */}
         {activeTab === 'stats' && (
           <div>
-            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
+            <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-4">
               Gruppestatistikk
             </SectionTitle>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Trophy size={20} color={'var(--achievement)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Trophy size={20} className="text-ak-status-warning" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Topp utøver denne måneden
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.topPerformer}
                 </p>
               </div>
 
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Target size={20} color={'var(--success)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Target size={20} className="text-ak-status-success" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Gjennomsnittlig oppmøte
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.avgAttendance}%
                 </p>
               </div>
 
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Clock size={20} color={'var(--accent)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Clock size={20} className="text-ak-brand-primary" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Økter per uke (snitt)
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.avgSessionsPerWeek}
                 </p>
               </div>
 
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Calendar size={20} color={'var(--accent)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Calendar size={20} className="text-ak-brand-primary" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Totalt antall økter
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.totalSessions}
                 </p>
               </div>
@@ -1246,42 +1072,24 @@ export default function CoachGroupDetail() {
         title="Fjern medlem"
         size="sm"
         footer={
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <div className="flex gap-3 justify-end">
             <button
               onClick={() => setMemberToRemove(null)}
-              style={{
-                padding: '10px 18px',
-                backgroundColor: 'transparent',
-                border: `1px solid ${'var(--border-default)'}`,
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--text-primary)',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className="py-2.5 px-[18px] bg-transparent border border-ak-border-default rounded-lg text-ak-text-primary text-sm font-medium cursor-pointer"
             >
               Avbryt
             </button>
             <button
               onClick={handleConfirmRemoveMember}
-              style={{
-                padding: '10px 18px',
-                backgroundColor: 'var(--error)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--bg-primary)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className="py-2.5 px-[18px] bg-ak-status-error border-none rounded-lg text-white text-sm font-semibold cursor-pointer"
             >
               Fjern medlem
             </button>
           </div>
         }
       >
-        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-          Er du sikker på at du vil fjerne <strong style={{ color: 'var(--text-primary)' }}>{memberToRemove?.name}</strong> fra gruppen?
+        <p className="m-0 text-ak-text-secondary leading-relaxed">
+          Er du sikker på at du vil fjerne <strong className="text-ak-text-primary">{memberToRemove?.name}</strong> fra gruppen?
         </p>
       </Modal>
     </div>

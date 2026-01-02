@@ -346,7 +346,7 @@ const StatsSummary = ({ position }) => {
  */
 const CategoryBreakdown = ({ breakdown }) => {
   const categories = [
-    { id: 'approach', label: 'Approach', icon: '🎯' },
+    { id: 'approach', label: 'Innspill', icon: '🎯' },
     { id: 'aroundGreen', label: 'Kortspill', icon: '⛳' },
     { id: 'putting', label: 'Putting', icon: '🏌️' },
   ];

@@ -1,16 +1,14 @@
 /**
- * AK Golf Academy - Coach Group Plan Editor
+ * CoachGroupPlan.tsx
  * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Full-screen group training plan editor with:
  * - Weekly view with day columns
  * - Drag-drop session management
  * - Exercise library integration
  * - Apply to all members functionality
- *
- * Contract references:
- * - COACH_ADMIN_IMPLEMENTATION_CONTRACT.md
- * - COACH_ADMIN_SCREEN_CONTRACT.md
  *
  * NON-NEGOTIABLE:
  * - Past sessions are READ-ONLY
@@ -287,15 +285,15 @@ export default function CoachGroupPlan() {
 
   if (loading) {
     return (
-      <div style={styles.loadingContainer}>
-        <div style={styles.spinner} />
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!group || !weeklyPlan) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
+      <div className="p-6 text-center">
         <p>Kunne ikke laste gruppeplan</p>
         <Button onClick={() => navigate('/coach/groups')}>Tilbake til grupper</Button>
       </div>
@@ -303,17 +301,19 @@ export default function CoachGroupPlan() {
   }
 
   return (
-    <div style={styles.container}>
+    <div className="min-h-screen bg-ak-surface-base font-sans">
       {/* Header */}
-      <div style={styles.headerWrapper}>
+      <div className="px-6 pt-6 bg-ak-surface-card border-b border-ak-border-default">
         <PageHeader
           title={`Treningsplan: ${group.name}`}
           subtitle={`${group.memberCount} medlemmer`}
           onBack={() => navigate(`/coach/groups/${groupId}`)}
           actions={
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div className="flex gap-2">
               {hasUnsavedChanges && (
-                <span style={styles.unsavedBadge}>Ulagrede endringer</span>
+                <span className="flex items-center py-1.5 px-3 bg-ak-status-warning/10 text-ak-status-warning text-[13px] font-medium rounded-lg">
+                  Ulagrede endringer
+                </span>
               )}
               <Button
                 variant="primary"
@@ -329,33 +329,33 @@ export default function CoachGroupPlan() {
       </div>
 
       {/* Week Theme/Focus */}
-      <div style={styles.weekInfo}>
-        <div style={styles.weekTheme}>
-          <Flag size={16} style={{ color: 'var(--ak-brand-primary)' }} />
-          <span style={styles.weekThemeLabel}>Tema:</span>
-          <span style={styles.weekThemeValue}>{weeklyPlan.theme || 'Ikke satt'}</span>
+      <div className="flex gap-6 py-4 px-6 bg-ak-surface-card">
+        <div className="flex items-center gap-2">
+          <Flag size={16} className="text-ak-brand-primary" />
+          <span className="text-[13px] text-ak-text-secondary">Tema:</span>
+          <span className="text-sm font-medium text-ak-text-primary">{weeklyPlan.theme || 'Ikke satt'}</span>
         </div>
-        <div style={styles.weekTheme}>
-          <Target size={16} style={{ color: 'var(--ak-status-success)' }} />
-          <span style={styles.weekThemeLabel}>Fokus:</span>
-          <span style={styles.weekThemeValue}>{weeklyPlan.focus || 'Ikke satt'}</span>
+        <div className="flex items-center gap-2">
+          <Target size={16} className="text-ak-status-success" />
+          <span className="text-[13px] text-ak-text-secondary">Fokus:</span>
+          <span className="text-sm font-medium text-ak-text-primary">{weeklyPlan.focus || 'Ikke satt'}</span>
         </div>
       </div>
 
       {/* Week Navigation */}
-      <div style={styles.weekNav}>
+      <div className="flex items-center justify-between py-4 px-6 bg-ak-surface-card border-b border-ak-border-default">
         <button
           onClick={() => setCurrentWeekOffset((prev) => prev - 1)}
-          style={styles.weekNavButton}
+          className="flex items-center gap-1.5 py-2.5 px-4 bg-ak-surface-subtle border-none rounded-lg text-sm font-medium text-ak-text-primary cursor-pointer"
         >
           <ChevronLeft size={18} />
           Forrige uke
         </button>
 
-        <div style={styles.weekNavCenter}>
-          <Calendar size={20} style={{ color: 'var(--ak-brand-primary)' }} />
-          <span style={styles.weekNavTitle}>Uke {currentWeekNumber}</span>
-          <span style={styles.weekNavDates}>
+        <div className="flex items-center gap-3">
+          <Calendar size={20} className="text-ak-brand-primary" />
+          <span className="text-xl font-bold text-ak-text-primary">Uke {currentWeekNumber}</span>
+          <span className="text-sm text-ak-text-secondary">
             {weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })} -{' '}
             {weekDates[6].toLocaleDateString('nb-NO', { day: 'numeric', month: 'short', year: 'numeric' })}
           </span>
@@ -363,7 +363,7 @@ export default function CoachGroupPlan() {
 
         <button
           onClick={() => setCurrentWeekOffset((prev) => prev + 1)}
-          style={styles.weekNavButton}
+          className="flex items-center gap-1.5 py-2.5 px-4 bg-ak-surface-subtle border-none rounded-lg text-sm font-medium text-ak-text-primary cursor-pointer"
         >
           Neste uke
           <ChevronRight size={18} />
@@ -371,7 +371,7 @@ export default function CoachGroupPlan() {
       </div>
 
       {/* Week Grid */}
-      <div style={styles.weekGrid}>
+      <div className="grid grid-cols-7 gap-px bg-ak-border-default m-6 rounded-xl overflow-hidden shadow-sm">
         {dayNames.map((day, dayIndex) => {
           const sessions = getSessionsForDay(dayIndex);
           const date = weekDates[dayIndex];
@@ -379,36 +379,50 @@ export default function CoachGroupPlan() {
           const isPast = date < new Date() && !isToday;
 
           return (
-            <div key={day} style={{ ...styles.dayColumn, ...(isToday ? styles.dayColumnToday : {}) }}>
+            <div
+              key={day}
+              className={`min-h-[400px] ${isToday ? 'bg-ak-brand-primary/5' : 'bg-ak-surface-card'}`}
+            >
               {/* Day Header */}
-              <div style={{ ...styles.dayHeader, ...(isToday ? styles.dayHeaderToday : {}) }}>
-                <span style={styles.dayName}>{day}</span>
-                <span style={styles.dayDate}>
+              <div
+                className={`p-3 text-center border-b ${
+                  isToday
+                    ? 'bg-ak-brand-primary border-transparent'
+                    : 'border-ak-border-default'
+                }`}
+              >
+                <span className={`block text-sm font-semibold ${isToday ? 'text-white' : 'text-ak-text-primary'}`}>
+                  {day}
+                </span>
+                <span className={`block text-xs mt-0.5 ${isToday ? 'text-white/80' : 'text-ak-text-secondary'}`}>
                   {date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
                 </span>
               </div>
 
               {/* Sessions */}
-              <div style={styles.dayContent}>
+              <div className="p-3 flex flex-col gap-2">
                 {sessions.map((session) => (
-                  <div key={session.id} style={{ ...styles.sessionCard, ...(isPast ? styles.sessionCardLocked : {}) }}>
-                    <div style={styles.sessionHeader}>
-                      <span style={styles.sessionTime}>
+                  <div
+                    key={session.id}
+                    className={`p-3 bg-ak-surface-base rounded-lg border border-ak-border-default ${isPast ? 'opacity-60' : ''}`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="flex items-center gap-1 text-xs font-medium text-ak-brand-primary">
                         <Clock size={12} />
                         {session.time}
                       </span>
                       {!isPast && (
-                        <div style={styles.sessionActions}>
+                        <div className="flex gap-1">
                           <button
                             onClick={() => handleDuplicateSession(session)}
-                            style={styles.sessionActionBtn}
+                            className="p-1 bg-transparent border-none rounded text-ak-text-tertiary cursor-pointer hover:text-ak-text-secondary"
                             title="Dupliser"
                           >
                             <Copy size={14} />
                           </button>
                           <button
                             onClick={() => handleDeleteSession(session.id)}
-                            style={styles.sessionActionBtn}
+                            className="p-1 bg-transparent border-none rounded text-ak-text-tertiary cursor-pointer hover:text-ak-text-secondary"
                             title="Slett"
                           >
                             <Trash2 size={14} />
@@ -416,13 +430,13 @@ export default function CoachGroupPlan() {
                         </div>
                       )}
                     </div>
-                    <p style={styles.sessionTitle}>{session.title}</p>
-                    <div style={styles.sessionExercises}>
+                    <p className="text-sm font-semibold text-ak-text-primary m-0 mb-2">{session.title}</p>
+                    <div className="flex flex-wrap gap-1 mb-2">
                       {session.exercises.map((ex) => (
                         <span
                           key={ex.id}
+                          className="py-0.5 px-2 text-[11px] font-medium rounded"
                           style={{
-                            ...styles.exerciseTag,
                             backgroundColor: categoryColors[ex.category]?.bg || 'var(--ak-surface-subtle)',
                             color: categoryColors[ex.category]?.text || 'var(--ak-text-primary)',
                           }}
@@ -431,12 +445,12 @@ export default function CoachGroupPlan() {
                         </span>
                       ))}
                     </div>
-                    <div style={styles.sessionFooter}>
-                      <span style={styles.sessionDuration}>
+                    <div className="flex items-center justify-between pt-2 border-t border-ak-border-muted">
+                      <span className="flex items-center gap-1 text-[11px] text-ak-text-secondary">
                         <Clock size={12} />
                         {getTotalDuration(session.exercises)} min
                       </span>
-                      <span style={styles.sessionType}>
+                      <span className="flex items-center gap-1 text-[11px] text-ak-text-secondary">
                         <Users size={12} />
                         {session.type === 'group' ? 'Gruppe' : session.type === 'individual' ? 'Individuell' : 'Konkurranse'}
                       </span>
@@ -451,7 +465,7 @@ export default function CoachGroupPlan() {
                       setSelectedDay(dayIndex);
                       setShowAddSessionModal(true);
                     }}
-                    style={styles.addSessionButton}
+                    className="flex items-center justify-center gap-1.5 p-2.5 bg-transparent border-2 border-dashed border-ak-border-default rounded-lg text-[13px] font-medium text-ak-text-secondary cursor-pointer hover:border-ak-brand-primary hover:text-ak-brand-primary"
                   >
                     <Plus size={16} />
                     Legg til økt
@@ -471,42 +485,43 @@ export default function CoachGroupPlan() {
           title={`Ny økt - ${dayNames[selectedDay]}`}
           size="lg"
         >
-          <div style={styles.modalContent}>
+          <div className="flex flex-col gap-5">
             {/* Session Title */}
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Tittel</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-ak-text-primary">Tittel</label>
               <input
                 type="text"
                 value={newSession.title}
                 onChange={(e) => setNewSession({ ...newSession, title: e.target.value })}
                 placeholder="F.eks. Morgentrening"
-                style={styles.input}
+                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
               />
             </div>
 
             {/* Time */}
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Tidspunkt</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-ak-text-primary">Tidspunkt</label>
               <input
                 type="time"
                 value={newSession.time}
                 onChange={(e) => setNewSession({ ...newSession, time: e.target.value })}
-                style={styles.input}
+                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
               />
             </div>
 
             {/* Type */}
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Type</label>
-              <div style={styles.typeButtons}>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-ak-text-primary">Type</label>
+              <div className="flex gap-2">
                 {['group', 'individual', 'competition'].map((type) => (
                   <button
                     key={type}
                     onClick={() => setNewSession({ ...newSession, type: type as any })}
-                    style={{
-                      ...styles.typeButton,
-                      ...(newSession.type === type ? styles.typeButtonActive : {}),
-                    }}
+                    className={`flex-1 p-2.5 rounded-lg text-[13px] font-medium cursor-pointer ${
+                      newSession.type === type
+                        ? 'bg-ak-brand-primary border-ak-brand-primary text-white'
+                        : 'bg-ak-surface-subtle border border-ak-border-default text-ak-text-secondary'
+                    }`}
                   >
                     {type === 'group' ? 'Gruppe' : type === 'individual' ? 'Individuell' : 'Konkurranse'}
                   </button>
@@ -515,24 +530,22 @@ export default function CoachGroupPlan() {
             </div>
 
             {/* Exercises */}
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Øvelser</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-ak-text-primary">Øvelser</label>
               {newSession.exercises.length > 0 ? (
-                <div style={styles.exerciseList}>
+                <div className="flex flex-col gap-2 p-3 bg-ak-surface-subtle rounded-lg">
                   {newSession.exercises.map((ex) => (
-                    <div key={ex.id} style={styles.exerciseItem}>
-                      <GripVertical size={14} style={{ color: 'var(--ak-text-tertiary)' }} />
+                    <div key={ex.id} className="flex items-center gap-2.5 py-2 border-b border-ak-border-muted last:border-b-0">
+                      <GripVertical size={14} className="text-ak-text-tertiary" />
                       <span
-                        style={{
-                          ...styles.exerciseCategoryDot,
-                          backgroundColor: categoryColors[ex.category]?.text || 'var(--ak-text-secondary)',
-                        }}
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: categoryColors[ex.category]?.text || 'var(--ak-text-secondary)' }}
                       />
-                      <span style={styles.exerciseName}>{ex.name}</span>
-                      <span style={styles.exerciseDuration}>{ex.duration} min</span>
+                      <span className="flex-1 text-sm text-ak-text-primary">{ex.name}</span>
+                      <span className="text-[13px] text-ak-text-secondary">{ex.duration} min</span>
                       <button
                         onClick={() => handleRemoveExerciseFromNewSession(ex.id)}
-                        style={styles.exerciseRemoveBtn}
+                        className="p-1 bg-transparent border-none rounded text-ak-text-tertiary cursor-pointer hover:text-ak-text-secondary"
                       >
                         <X size={14} />
                       </button>
@@ -540,11 +553,11 @@ export default function CoachGroupPlan() {
                   ))}
                 </div>
               ) : (
-                <p style={styles.noExercises}>Ingen øvelser lagt til</p>
+                <p className="text-sm text-ak-text-tertiary italic m-0">Ingen øvelser lagt til</p>
               )}
               <button
                 onClick={() => setShowExerciseLibrary(true)}
-                style={styles.addExerciseButton}
+                className="flex items-center justify-center gap-2 p-3 bg-ak-surface-base border border-dashed border-ak-border-default rounded-lg text-sm font-medium text-ak-text-secondary cursor-pointer hover:border-ak-brand-primary hover:text-ak-brand-primary"
               >
                 <Dumbbell size={16} />
                 Legg til øvelse fra bibliotek
@@ -552,19 +565,19 @@ export default function CoachGroupPlan() {
             </div>
 
             {/* Notes */}
-            <div style={styles.formGroup}>
-              <label style={styles.label}>Notater (valgfritt)</label>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-ak-text-primary">Notater (valgfritt)</label>
               <textarea
                 value={newSession.notes}
                 onChange={(e) => setNewSession({ ...newSession, notes: e.target.value })}
                 placeholder="Spesielle instruksjoner..."
-                style={styles.textarea}
+                className="py-2.5 px-3.5 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none resize-y font-inherit focus:border-ak-brand-primary"
                 rows={3}
               />
             </div>
 
             {/* Actions */}
-            <div style={styles.modalActions}>
+            <div className="flex justify-end gap-3 pt-4 border-t border-ak-border-default">
               <Button variant="secondary" onClick={() => setShowAddSessionModal(false)}>
                 Avbryt
               </Button>
@@ -584,30 +597,30 @@ export default function CoachGroupPlan() {
           title="Øvelsesbibliotek"
           size="md"
         >
-          <div style={styles.exerciseLibrary}>
+          <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto">
             {exerciseLibrary.map((ex) => (
               <div
                 key={ex.id}
-                style={styles.libraryItem}
+                className="flex items-center gap-3 p-3 bg-ak-surface-base rounded-lg cursor-pointer hover:bg-ak-surface-subtle"
                 onClick={() => {
                   handleAddExerciseToNewSession(ex);
                   setShowExerciseLibrary(false);
                 }}
               >
                 <span
+                  className="py-1 px-2.5 text-xs font-medium rounded whitespace-nowrap"
                   style={{
-                    ...styles.libraryCategoryBadge,
                     backgroundColor: categoryColors[ex.category]?.bg || 'var(--ak-surface-subtle)',
                     color: categoryColors[ex.category]?.text || 'var(--ak-text-primary)',
                   }}
                 >
                   {categoryColors[ex.category]?.label || ex.category}
                 </span>
-                <div style={styles.libraryItemContent}>
-                  <p style={styles.libraryItemName}>{ex.name}</p>
-                  {ex.description && <p style={styles.libraryItemDesc}>{ex.description}</p>}
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-ak-text-primary m-0">{ex.name}</p>
+                  {ex.description && <p className="text-xs text-ak-text-secondary mt-0.5 m-0">{ex.description}</p>}
                 </div>
-                <span style={styles.libraryItemDuration}>{ex.duration} min</span>
+                <span className="text-[13px] font-medium text-ak-text-secondary">{ex.duration} min</span>
               </div>
             ))}
           </div>
@@ -616,388 +629,3 @@ export default function CoachGroupPlan() {
     </div>
   );
 }
-
-// Styles
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    minHeight: '100vh',
-    backgroundColor: 'var(--ak-surface-base)',
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-  },
-  headerWrapper: {
-    padding: '24px 24px 0',
-    backgroundColor: 'var(--ak-surface-card)',
-    borderBottom: '1px solid var(--ak-border-default)',
-  },
-  loadingContainer: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  spinner: {
-    width: 48,
-    height: 48,
-    border: '4px solid var(--ak-border-default)',
-    borderTopColor: 'var(--ak-brand-primary)',
-    borderRadius: '50%',
-    animation: 'spin 1s linear infinite',
-  },
-  unsavedBadge: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '6px 12px',
-    backgroundColor: 'var(--ak-status-warningMuted)',
-    color: 'var(--ak-status-warning)',
-    fontSize: '13px',
-    fontWeight: 500,
-    borderRadius: 'var(--radius-md)',
-  },
-  weekInfo: {
-    display: 'flex',
-    gap: '24px',
-    padding: '16px 24px',
-    backgroundColor: 'var(--ak-surface-card)',
-  },
-  weekTheme: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-  },
-  weekThemeLabel: {
-    fontSize: '13px',
-    color: 'var(--ak-text-secondary)',
-  },
-  weekThemeValue: {
-    fontSize: '14px',
-    fontWeight: 500,
-    color: 'var(--ak-text-primary)',
-  },
-  weekNav: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '16px 24px',
-    backgroundColor: 'var(--ak-surface-card)',
-    borderBottom: '1px solid var(--ak-border-default)',
-  },
-  weekNavButton: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    padding: '10px 16px',
-    backgroundColor: 'var(--ak-surface-subtle)',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: 'var(--ak-text-primary)',
-    cursor: 'pointer',
-  },
-  weekNavCenter: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-  },
-  weekNavTitle: {
-    fontSize: '20px',
-    fontWeight: 700,
-    color: 'var(--ak-text-primary)',
-  },
-  weekNavDates: {
-    fontSize: '14px',
-    color: 'var(--ak-text-secondary)',
-  },
-  weekGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
-    gap: '1px',
-    backgroundColor: 'var(--ak-border-default)',
-    margin: '24px',
-    borderRadius: 'var(--radius-lg)',
-    overflow: 'hidden',
-    boxShadow: 'var(--shadow-card)',
-  },
-  dayColumn: {
-    backgroundColor: 'var(--ak-surface-card)',
-    minHeight: '400px',
-  },
-  dayColumnToday: {
-    backgroundColor: 'var(--ak-brand-primaryMuted)',
-  },
-  dayHeader: {
-    padding: '12px 16px',
-    borderBottom: '1px solid var(--ak-border-default)',
-    textAlign: 'center',
-  },
-  dayHeaderToday: {
-    backgroundColor: 'var(--ak-brand-primary)',
-    borderBottom: 'none',
-  },
-  dayName: {
-    display: 'block',
-    fontSize: '14px',
-    fontWeight: 600,
-    color: 'var(--ak-text-primary)',
-  },
-  dayDate: {
-    display: 'block',
-    fontSize: '12px',
-    color: 'var(--ak-text-secondary)',
-    marginTop: '2px',
-  },
-  dayContent: {
-    padding: '12px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-  },
-  sessionCard: {
-    padding: '12px',
-    backgroundColor: 'var(--ak-surface-base)',
-    borderRadius: 'var(--radius-md)',
-    border: '1px solid var(--ak-border-default)',
-  },
-  sessionCardLocked: {
-    opacity: 0.6,
-  },
-  sessionHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '8px',
-  },
-  sessionTime: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    fontSize: '12px',
-    fontWeight: 500,
-    color: 'var(--ak-brand-primary)',
-  },
-  sessionActions: {
-    display: 'flex',
-    gap: '4px',
-  },
-  sessionActionBtn: {
-    padding: '4px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-text-tertiary)',
-    cursor: 'pointer',
-  },
-  sessionTitle: {
-    fontSize: '14px',
-    fontWeight: 600,
-    color: 'var(--ak-text-primary)',
-    margin: '0 0 8px 0',
-  },
-  sessionExercises: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '4px',
-    marginBottom: '8px',
-  },
-  exerciseTag: {
-    padding: '2px 8px',
-    fontSize: '11px',
-    fontWeight: 500,
-    borderRadius: 'var(--radius-sm)',
-  },
-  sessionFooter: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: '8px',
-    borderTop: '1px solid var(--ak-border-muted)',
-  },
-  sessionDuration: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    fontSize: '11px',
-    color: 'var(--ak-text-secondary)',
-  },
-  sessionType: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-    fontSize: '11px',
-    color: 'var(--ak-text-secondary)',
-  },
-  addSessionButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '6px',
-    padding: '10px',
-    backgroundColor: 'transparent',
-    border: '2px dashed var(--ak-border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: 'var(--ak-text-secondary)',
-    cursor: 'pointer',
-  },
-  modalContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-  },
-  label: {
-    fontSize: '14px',
-    fontWeight: 500,
-    color: 'var(--ak-text-primary)',
-  },
-  input: {
-    padding: '10px 14px',
-    backgroundColor: 'var(--ak-surface-base)',
-    border: '1px solid var(--ak-border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '14px',
-    color: 'var(--ak-text-primary)',
-    outline: 'none',
-  },
-  textarea: {
-    padding: '10px 14px',
-    backgroundColor: 'var(--ak-surface-base)',
-    border: '1px solid var(--ak-border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '14px',
-    color: 'var(--ak-text-primary)',
-    outline: 'none',
-    resize: 'vertical',
-  },
-  typeButtons: {
-    display: 'flex',
-    gap: '8px',
-  },
-  typeButton: {
-    flex: 1,
-    padding: '10px',
-    backgroundColor: 'var(--ak-surface-subtle)',
-    border: '1px solid var(--ak-border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '13px',
-    fontWeight: 500,
-    color: 'var(--ak-text-secondary)',
-    cursor: 'pointer',
-  },
-  typeButtonActive: {
-    backgroundColor: 'var(--ak-brand-primary)',
-    borderColor: 'var(--ak-brand-primary)',
-    color: 'var(--ak-surface-card)',
-  },
-  exerciseList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    padding: '12px',
-    backgroundColor: 'var(--ak-surface-subtle)',
-    borderRadius: 'var(--radius-md)',
-  },
-  exerciseItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-    padding: '8px 0',
-    borderBottom: '1px solid var(--ak-border-muted)',
-  },
-  exerciseCategoryDot: {
-    width: '8px',
-    height: '8px',
-    borderRadius: '50%',
-  },
-  exerciseName: {
-    flex: 1,
-    fontSize: '14px',
-    color: 'var(--ak-text-primary)',
-  },
-  exerciseDuration: {
-    fontSize: '13px',
-    color: 'var(--ak-text-secondary)',
-  },
-  exerciseRemoveBtn: {
-    padding: '4px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    color: 'var(--ak-text-tertiary)',
-    cursor: 'pointer',
-  },
-  noExercises: {
-    fontSize: '14px',
-    color: 'var(--ak-text-tertiary)',
-    fontStyle: 'italic',
-    margin: 0,
-  },
-  addExerciseButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '8px',
-    padding: '12px',
-    backgroundColor: 'var(--ak-surface-base)',
-    border: '1px dashed var(--ak-border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '14px',
-    fontWeight: 500,
-    color: 'var(--ak-text-secondary)',
-    cursor: 'pointer',
-  },
-  modalActions: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    gap: '12px',
-    paddingTop: '16px',
-    borderTop: '1px solid var(--ak-border-default)',
-  },
-  exerciseLibrary: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
-    maxHeight: '400px',
-    overflowY: 'auto',
-  },
-  libraryItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
-    padding: '12px',
-    backgroundColor: 'var(--ak-surface-base)',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-  },
-  libraryCategoryBadge: {
-    padding: '4px 10px',
-    fontSize: '12px',
-    fontWeight: 500,
-    borderRadius: 'var(--radius-sm)',
-    whiteSpace: 'nowrap',
-  },
-  libraryItemContent: {
-    flex: 1,
-  },
-  libraryItemName: {
-    fontSize: '14px',
-    fontWeight: 500,
-    color: 'var(--ak-text-primary)',
-    margin: 0,
-  },
-  libraryItemDesc: {
-    fontSize: '12px',
-    color: 'var(--ak-text-secondary)',
-    margin: '2px 0 0 0',
-  },
-  libraryItemDuration: {
-    fontSize: '13px',
-    fontWeight: 500,
-    color: 'var(--ak-text-secondary)',
-  },
-};
