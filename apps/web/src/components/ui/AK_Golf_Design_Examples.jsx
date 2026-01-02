@@ -625,7 +625,7 @@ const ComponentsShowcase = () => {
             style={{
               width: '100%',
               height: '48px',
-              background: '#fef2f2',
+              background: `${tokens.colors.error}10`,
               border: `1px solid ${theme.colors.error}`,
               borderRadius: '10px',
               padding: '0 14px',
@@ -1027,30 +1027,30 @@ const DesignExamples = () => {
       flexWrap: 'wrap',
       gap: '40px',
       padding: '40px',
-      background: '#e5e7eb',
+      background: tokens.colors.gray300,
       minHeight: '100vh',
     }}>
       <div>
-        <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginBottom: '16px', color: tokens.colors.gray700, fontSize: '14px', fontWeight: '600' }}>
           STARTMENY / HJEM
         </SubSectionTitle>
         <HomeScreenLight />
       </div>
       
       <div>
-        <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginBottom: '16px', color: tokens.colors.gray700, fontSize: '14px', fontWeight: '600' }}>
           KOMPONENTER
         </SubSectionTitle>
         <ComponentsShowcase />
       </div>
       
       <div>
-        <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginBottom: '16px', color: tokens.colors.gray700, fontSize: '14px', fontWeight: '600' }}>
           TRENINGSKORT
         </SubSectionTitle>
         <TrainingCard />
         
-        <SubSectionTitle style={{ marginTop: '32px', marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
+        <SubSectionTitle style={{ marginTop: '32px', marginBottom: '16px', color: tokens.colors.gray700, fontSize: '14px', fontWeight: '600' }}>
           SPILLERPROFIL
         </SubSectionTitle>
         <PlayerProfileCard />

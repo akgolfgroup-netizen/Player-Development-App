@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { tokens } from '../design-tokens';
 
 /**
  * ============================================================
@@ -123,7 +124,7 @@ const styles: Record<string, React.CSSProperties> = {
   toggle: {
     padding: '6px 10px',
     backgroundColor: 'var(--ak-toast-bg)',
-    color: '#fff',
+    color: tokens.colors.white,
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
@@ -135,7 +136,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '320px',
     maxHeight: '300px',
     backgroundColor: 'var(--ak-toast-bg)',
-    color: '#e0e0e0',
+    color: tokens.colors.gray300,
     borderRadius: '6px',
     overflow: 'hidden',
     boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
@@ -145,17 +146,17 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '8px 10px',
-    borderBottom: '1px solid #333',
+    borderBottom: `1px solid ${tokens.colors.gray700}`,
   },
   title: {
     fontWeight: 'bold',
-    color: '#fff',
+    color: tokens.colors.white,
   },
   clearBtn: {
     padding: '2px 8px',
     fontSize: '10px',
-    backgroundColor: '#333',
-    color: '#fff',
+    backgroundColor: tokens.colors.gray700,
+    color: tokens.colors.white,
     border: 'none',
     borderRadius: '3px',
     cursor: 'pointer',
@@ -175,7 +176,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '3px',
   },
   time: {
-    color: '#888',
+    color: tokens.colors.gray600,
     fontSize: '9px',
   },
   eventName: {
@@ -183,12 +184,12 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 'bold',
   },
   payload: {
-    color: '#aaa',
+    color: tokens.colors.gray500,
     fontSize: '10px',
     wordBreak: 'break-all',
   },
   empty: {
-    color: '#666',
+    color: tokens.colors.gray600,
     textAlign: 'center',
     padding: '20px',
   },

@@ -654,7 +654,7 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
               </div>
             </div>
 
-            <div style={{ marginTop: spacing.lg, paddingTop: spacing.lg, borderTop: `1px solid ${colors.mist}` }}>
+            <div style={{ marginTop: spacing.lg, paddingTop: spacing.lg, borderTop: `1px solid ${tokens.colors.mist}` }}>
               <SubSectionTitle style={{ fontSize: '16px', fontWeight: '600', color: colors.textPrimary, marginBottom: spacing.md, display: 'flex', alignItems: 'center', gap: spacing.sm }}>
                 <AlertCircle size={20} color={colors.forest} strokeWidth={1.5} />
                 Nødkontakt

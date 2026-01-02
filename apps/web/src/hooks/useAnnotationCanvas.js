@@ -12,6 +12,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { tokens } from '../design-tokens';
 
 // Drawing tool types
 export const TOOL_TYPES = {
@@ -25,15 +26,17 @@ export const TOOL_TYPES = {
 };
 
 // Default colors for annotations
+// Note: Magenta and Cyan use special annotation palette values
+// as the design system does not have direct mappings for these high-contrast drawing colors
 export const ANNOTATION_COLORS = [
-  '#FF0000', // Red
-  '#00FF00', // Green
-  '#0000FF', // Blue
-  '#FFFF00', // Yellow
-  '#FF00FF', // Magenta
-  '#00FFFF', // Cyan
-  '#FFFFFF', // White
-  '#FFA500', // Orange
+  tokens.colors.error, // Red
+  tokens.colors.success, // Green
+  tokens.colors.info, // Blue
+  tokens.colors.warningLight, // Yellow
+  tokens.colors.errorLight, // Magenta/Pink (using errorLight as closest match)
+  tokens.colors.infoLight, // Cyan (using infoLight as closest match)
+  tokens.colors.white, // White
+  tokens.colors.warning, // Orange
 ];
 
 // Default stroke widths

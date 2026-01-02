@@ -7,6 +7,7 @@ import React from 'react';
 import { TrendingUp, TrendingDown, Minus, Mountain, Award } from 'lucide-react';
 import { DashboardCard, WidgetHeader } from '../../ui/widgets';
 import StateCard from '../../ui/composites/StateCard';
+import { tokens } from '../../design-tokens';
 
 // Journey level colors - using semantic SG tokens
 const LEVEL_COLORS = {
@@ -45,7 +46,7 @@ const MountainVisualization = ({ position, levels }) => {
     <div style={{
       position: 'relative',
       height: '200px',
-      background: 'linear-gradient(to bottom, #1e3a5f 0%, #2d5a87 30%, #4a7c59 70%, #6b8e23 100%)',
+      background: 'linear-gradient(to bottom, var(--sg-gradient-top) 0%, var(--sg-gradient-mid1) 30%, var(--sg-gradient-mid2) 70%, var(--sg-gradient-bottom) 100%)',
       borderRadius: 'var(--radius-lg)',
       overflow: 'hidden',
       marginBottom: '16px',
@@ -442,7 +443,7 @@ const SGJourneyWidget = ({ data, loading, error, onViewDetails }) => {
           alignItems: 'center',
           gap: '6px',
           padding: '8px 12px',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          backgroundColor: 'var(--info-muted)',
           borderRadius: 'var(--radius-md)',
           marginBottom: '16px',
           fontSize: '12px',

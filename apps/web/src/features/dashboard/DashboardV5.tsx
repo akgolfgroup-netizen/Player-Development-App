@@ -42,6 +42,10 @@ import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import { PageTitle, SectionTitle, CardTitle } from '../../components/typography';
 
+// AI Coach
+import { AICoachGuide } from '../ai-coach';
+import { GUIDE_PRESETS } from '../ai-coach/types';
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -445,6 +449,9 @@ export default function DashboardV5() {
         category={playerCategory}
         greeting={getGreeting()}
       />
+
+      {/* AI Coach Guide */}
+      <AICoachGuide config={GUIDE_PRESETS.dashboard} />
 
       {/* Stats Grid */}
       <StatsGrid stats={quickStats} />

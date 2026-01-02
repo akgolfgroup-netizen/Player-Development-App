@@ -20,6 +20,7 @@ import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import { useAuth } from '../../contexts/AuthContext';
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
+import { tokens } from '../../design-tokens';
 
 /**
  * BenchmarkContent - Compare with PGA & WAGR
@@ -401,10 +402,10 @@ const BenchmarkContent: React.FC = () => {
 // Approach Distance Card
 const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }> = ({ skill, index }) => {
   const gradients = [
-    'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-    'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-    'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    `linear-gradient(135deg, ${tokens.colors.successLight} 0%, ${tokens.colors.success} 100%)`,
+    `linear-gradient(135deg, ${tokens.colors.infoLight} 0%, ${tokens.colors.info} 100%)`,
+    `linear-gradient(135deg, ${tokens.colors.primaryLight} 0%, ${tokens.colors.primary} 100%)`, // was purple, using primary (forest) instead
+    `linear-gradient(135deg, ${tokens.colors.warningLight} 0%, ${tokens.colors.warning} 100%)`,
   ];
 
   return (

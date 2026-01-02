@@ -36,7 +36,7 @@ const AarsplanGolf = () => {
       learningPhase: "L3-L4",
       clubSpeed: "CS60-80",
       setting: "S2-S4",
-      color: "#6B7280"
+      color: tokens.colors.gray600
     },
     { 
       month: "November", 
@@ -55,7 +55,7 @@ const AarsplanGolf = () => {
       learningPhase: "L1-L3",
       clubSpeed: "CS40-70",
       setting: "S1-S3",
-      color: "#3B82F6"
+      color: tokens.colors.info
     },
     { 
       month: "Desember", 
@@ -74,7 +74,7 @@ const AarsplanGolf = () => {
       learningPhase: "L1-L3",
       clubSpeed: "CS50-80",
       setting: "S1-S4",
-      color: "#3B82F6"
+      color: tokens.colors.info
     },
     { 
       month: "Januar", 
@@ -93,7 +93,7 @@ const AarsplanGolf = () => {
       learningPhase: "L2-L4",
       clubSpeed: "CS60-90",
       setting: "S2-S5",
-      color: "#3B82F6"
+      color: tokens.colors.info
     },
     { 
       month: "Februar", 
@@ -112,7 +112,7 @@ const AarsplanGolf = () => {
       learningPhase: "L3-L5",
       clubSpeed: "CS70-100",
       setting: "S4-S7",
-      color: "#8B5CF6"
+      color: tokens.colors.primaryLight
     },
     { 
       month: "Mars", 
@@ -131,7 +131,7 @@ const AarsplanGolf = () => {
       learningPhase: "L4-L5",
       clubSpeed: "CS80-100",
       setting: "S5-S8",
-      color: "#8B5CF6"
+      color: tokens.colors.primaryLight
     },
     { 
       month: "April", 
@@ -150,7 +150,7 @@ const AarsplanGolf = () => {
       learningPhase: "L4-L5",
       clubSpeed: "CS90-100",
       setting: "S6-S9",
-      color: "#8B5CF6"
+      color: tokens.colors.primaryLight
     },
     { 
       month: "Mai", 
@@ -169,7 +169,7 @@ const AarsplanGolf = () => {
       learningPhase: "L5",
       clubSpeed: "CS100",
       setting: "S8-S10",
-      color: "#10B981"
+      color: tokens.colors.success
     },
     { 
       month: "Juni", 
@@ -188,7 +188,7 @@ const AarsplanGolf = () => {
       learningPhase: "L5",
       clubSpeed: "CS100",
       setting: "S9-S10",
-      color: "#10B981"
+      color: tokens.colors.success
     },
     { 
       month: "Juli", 
@@ -207,7 +207,7 @@ const AarsplanGolf = () => {
       learningPhase: "L5",
       clubSpeed: "CS100",
       setting: "S10",
-      color: "#10B981"
+      color: tokens.colors.success
     },
     { 
       month: "August", 
@@ -226,7 +226,7 @@ const AarsplanGolf = () => {
       learningPhase: "L5",
       clubSpeed: "CS100",
       setting: "S9-S10",
-      color: "#10B981"
+      color: tokens.colors.success
     },
     { 
       month: "September", 
@@ -245,22 +245,22 @@ const AarsplanGolf = () => {
       learningPhase: "L4-L5",
       clubSpeed: "CS80-100",
       setting: "S5-S8",
-      color: "#6B7280"
+      color: tokens.colors.gray600
     }
   ];
   
   const priorityLabels = {
-    3: { label: "Utvikle", color: "#10B981", bg: "#D1FAE5" },
-    2: { label: "Beholde", color: "#F59E0B", bg: "#FEF3C7" },
-    1: { label: "Vedlikehold", color: "#6B7280", bg: "#F3F4F6" },
-    0: { label: "Pause", color: "#D1D5DB", bg: "#F9FAFB" }
+    3: { label: "Utvikle", color: tokens.colors.success, bg: 'rgba(5, 150, 105, 0.12)' },
+    2: { label: "Beholde", color: tokens.colors.warning, bg: 'rgba(217, 119, 6, 0.12)' },
+    1: { label: "Vedlikehold", color: tokens.colors.gray600, bg: tokens.colors.gray100 },
+    0: { label: "Pause", color: tokens.colors.gray400, bg: tokens.colors.gray50 }
   };
   
   const periodColors = {
-    E: { name: "Evaluering/Plan", color: "#6B7280", bg: "#F3F4F6" },
-    G: { name: "Grunnperiode", color: "#3B82F6", bg: "#DBEAFE" },
-    S: { name: "Spesialperiode", color: "#8B5CF6", bg: "#EDE9FE" },
-    T: { name: "Turneringsperiode", color: "#10B981", bg: "#D1FAE5" }
+    E: { name: "Evaluering/Plan", color: tokens.colors.gray600, bg: tokens.colors.gray100 },
+    G: { name: "Grunnperiode", color: tokens.colors.info, bg: 'rgba(2, 132, 199, 0.12)' },
+    S: { name: "Spesialperiode", color: tokens.colors.primaryLight, bg: 'rgba(42, 107, 85, 0.12)' },
+    T: { name: "Turneringsperiode", color: tokens.colors.success, bg: 'rgba(5, 150, 105, 0.12)' }
   };
   
   const locationLabels = {
@@ -278,7 +278,7 @@ const AarsplanGolf = () => {
           key={i}
           className="h-3 w-3 rounded-sm transition-all duration-300"
           style={{
-            backgroundColor: i < value ? priorityLabels[value]?.color || '#D1D5DB' : '#E5E7EB'
+            backgroundColor: i < value ? priorityLabels[value]?.color || tokens.colors.gray400 : tokens.colors.gray300
           }}
         />
       ))}
@@ -311,7 +311,7 @@ const AarsplanGolf = () => {
         }
         
         .timeline-connector {
-          background: linear-gradient(90deg, transparent, #10B981, transparent);
+          background: linear-gradient(90deg, transparent, ${tokens.colors.success}, transparent);
         }
       `}</style>
       
@@ -495,11 +495,11 @@ const AarsplanGolf = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             {[
-              { name: 'Teknisk', icon: 'âš™ï¸', color: '#3B82F6', desc: 'Sving, slag, teknikk' },
-              { name: 'Fysisk', icon: 'ðŸ’ª', color: '#10B981', desc: 'Styrke, utholdenhet, mobilitet' },
-              { name: 'Mental', icon: 'ðŸ§ ', color: '#8B5CF6', desc: 'Fokus, visualisering, rutiner' },
-              { name: 'Strategisk', icon: 'ðŸŽ¯', color: '#F59E0B', desc: 'Banestrategi, beslutninger' },
-              { name: 'Sosial', icon: 'ðŸ‘¥', color: '#EC4899', desc: 'Team, kommunikasjon, nettverk' }
+              { name: 'Teknisk', icon: 'âš™ï¸', color: tokens.colors.info, desc: 'Sving, slag, teknikk' },
+              { name: 'Fysisk', icon: 'ðŸ’ª', color: tokens.colors.success, desc: 'Styrke, utholdenhet, mobilitet' },
+              { name: 'Mental', icon: 'ðŸ§ ', color: tokens.colors.primaryLight, desc: 'Fokus, visualisering, rutiner' },
+              { name: 'Strategisk', icon: 'ðŸŽ¯', color: tokens.colors.warning, desc: 'Banestrategi, beslutninger' },
+              { name: 'Sosial', icon: 'ðŸ‘¥', color: tokens.colors.error, desc: 'Team, kommunikasjon, nettverk' }
             ].map(process => (
               <div 
                 key={process.name}

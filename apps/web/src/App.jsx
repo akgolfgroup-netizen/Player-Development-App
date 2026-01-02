@@ -9,7 +9,7 @@ import { initMobileApp } from './utils/mobile';
 
 // PWA & AI components
 import OfflineIndicator from './components/ui/OfflineIndicator';
-import AIChatWidget from './components/widgets/AIChatWidget';
+import { AICoachProvider, AICoachButton, AICoachPanel } from './features/ai-coach';
 import CommandPalette from './features/command-palette';
 import BuildInfo from './components/BuildInfo';
 
@@ -265,16 +265,21 @@ const AdminLayout = ({ children }) => (
   <AdminAppShell>{children}</AdminAppShell>
 );
 
-// AI Chat wrapper - only shows for authenticated players
-const AuthenticatedAIChat = () => {
+// AI Coach wrapper - only shows for authenticated players
+const AuthenticatedAICoach = () => {
   const { user, isAuthenticated } = useAuth();
 
-  // Only show AI chat for authenticated players (not coaches/admins)
+  // Only show AI Coach for authenticated players (not coaches/admins)
   if (!isAuthenticated || !user || user.role !== 'player') {
     return null;
   }
 
-  return <AIChatWidget position="bottom-right" />;
+  return (
+    <>
+      <AICoachButton />
+      <AICoachPanel />
+    </>
+  );
 };
 
 function App() {
@@ -287,13 +292,14 @@ function App() {
     <Router>
       <ThemeProvider>
         <AuthProvider>
+          <AICoachProvider>
           <NotificationProvider>
             <BadgeNotificationProvider>
               <ErrorBoundary>
                 <TooltipProvider>
                 <BuildInfo showBadge={process.env.NODE_ENV === 'development'} />
                 <OfflineIndicator position="top" />
-                <AuthenticatedAIChat />
+                <AuthenticatedAICoach />
                 <Toast />
                 <Toaster />
                 <CommandPalette />
@@ -1575,6 +1581,7 @@ function App() {
               </ErrorBoundary>
             </BadgeNotificationProvider>
           </NotificationProvider>
+          </AICoachProvider>
         </AuthProvider>
       </ThemeProvider>
     </Router>

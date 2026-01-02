@@ -253,6 +253,9 @@ model Player {
   badges               PlayerBadge[]
   playerGoals          PlayerGoal[]
 
+  // AI Coaching
+  aiConversations      AIConversation[]
+
   @@index([tenantId])
   @@index([category])
   @@index([status])
@@ -3029,4 +3032,32 @@ model AuditEvent {
   @@index([resourceType, resourceId])
   @@index([actorId])
   @@map("audit_events")
+}
+
+// ============================================================================
+// AI COACHING
+// ============================================================================
+
+model AIConversation {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  playerId            String   @map("player_id") @db.Uuid
+  title               String?  @db.VarChar(255)
+
+  messages            Json     @default("[]") @db.JsonB // Array of {role, content, timestamp}
+  context             Json?    @db.JsonB // Metadata about the conversation
+
+  totalInputTokens    Int      @default(0) @map("total_input_tokens")
+  totalOutputTokens   Int      @default(0) @map("total_output_tokens")
+  toolsUsed           String[] @default([]) @map("tools_used") @db.VarChar(100)
+
+  isActive            Boolean  @default(true) @map("is_active")
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  player              Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, isActive])
+  @@index([playerId, updatedAt(sort: Desc)])
+  @@map("ai_conversations")
 }

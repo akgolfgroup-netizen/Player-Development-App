@@ -298,7 +298,7 @@
     "apps/web/src/features/trening-plan/LoggTreningContainer.jsx": 49,
     "apps/web/src/features/trening-plan/TekniskPlanContainer.jsx": 80,
     "apps/web/src/features/trening-plan/TreningsdagbokContainer.jsx": 43,
-    "apps/web/src/features/trening-plan/UkensTreningsplanContainer.jsx": 92,
+    "apps/web/src/features/trening-plan/UkensTreningsplanContainer.jsx": 93,
     "apps/web/src/features/trening-plan/treningsdagbok/TreningsdagbokPage.tsx": 8,
     "apps/web/src/features/trening-plan/treningsdagbok/components/DagbokComplianceBand.tsx": 25,
     "apps/web/src/features/trening-plan/treningsdagbok/components/DagbokFilterBar.tsx": 23,

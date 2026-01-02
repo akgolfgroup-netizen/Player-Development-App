@@ -4,11 +4,11 @@ import { Target, TrendingUp, Calendar, Award, ChevronRight, Users, Zap, Clock } 
 import { tokens } from '../design-tokens';
 import { PageTitle, SectionTitle, SubSectionTitle } from '../typography';
 
-// Session type colors (Blue Palette 01)
+// Session type colors (using design tokens)
 const sessionTypeColors = {
-  teknikk: '#2C5F7F',
-  golfslag: '#4A7C59',
-  spill: '#10456A',
+  teknikk: tokens.colors.info,      // was #2C5F7F (blue)
+  golfslag: tokens.colors.success,   // was #4A7C59 (green)
+  spill: tokens.colors.primaryDark,  // was #10456A (dark blue)
 };
 
 // Sample benchmark data following Team Norway protocols
@@ -168,9 +168,9 @@ const RadarChartComponent = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height={250}>
       <RadarChart data={radarData}>
-        <PolarGrid stroke="#e5e7eb" />
-        <PolarAngleAxis dataKey="subject" tick={{ fill: '#6b7280', fontSize: 12 }} />
-        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#9ca3af', fontSize: 10 }} />
+        <PolarGrid stroke={tokens.colors.gray300} />
+        <PolarAngleAxis dataKey="subject" tick={{ fill: tokens.colors.gray600, fontSize: 12 }} />
+        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: tokens.colors.gray500, fontSize: 10 }} />
         <Radar name="Score" dataKey="A" stroke="{tokens.colors.forest}" fill="{tokens.colors.forest}" fillOpacity={0.3} strokeWidth={2} />
       </RadarChart>
     </ResponsiveContainer>
@@ -180,13 +180,13 @@ const RadarChartComponent = ({ data }) => {
 const ProgressChart = ({ data, dataKey, name, color }) => (
   <ResponsiveContainer width="100%" height={200}>
     <LineChart data={data}>
-      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-      <XAxis dataKey="cycle" tick={{ fill: '#6b7280', fontSize: 12 }} tickFormatter={(v) => `C${v}`} />
-      <YAxis tick={{ fill: '#6b7280', fontSize: 12 }} domain={['auto', 'auto']} />
+      <CartesianGrid strokeDasharray="3 3" stroke={tokens.colors.gray100} />
+      <XAxis dataKey="cycle" tick={{ fill: tokens.colors.gray600, fontSize: 12 }} tickFormatter={(v) => `C${v}`} />
+      <YAxis tick={{ fill: tokens.colors.gray600, fontSize: 12 }} domain={['auto', 'auto']} />
       <Tooltip 
         contentStyle={{ 
           backgroundColor: 'white', 
-          border: '1px solid #e5e7eb',
+          border: `1px solid ${tokens.colors.gray300}`,
           borderRadius: '8px',
           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
         }}
@@ -211,9 +211,9 @@ const ComparisonBar = ({ data, players }) => {
   return (
     <ResponsiveContainer width="100%" height={200}>
       <BarChart data={chartData} layout="vertical">
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-        <XAxis type="number" domain={[0, 500]} tick={{ fill: '#6b7280', fontSize: 12 }} />
-        <YAxis dataKey="name" type="category" tick={{ fill: '#6b7280', fontSize: 12 }} width={60} />
+        <CartesianGrid strokeDasharray="3 3" stroke={tokens.colors.gray100} />
+        <XAxis type="number" domain={[0, 500]} tick={{ fill: tokens.colors.gray600, fontSize: 12 }} />
+        <YAxis dataKey="name" type="category" tick={{ fill: tokens.colors.gray600, fontSize: 12 }} width={60} />
         <Tooltip />
         <Bar dataKey="score" radius={[0, 4, 4, 0]}>
           {chartData.map((entry, index) => (

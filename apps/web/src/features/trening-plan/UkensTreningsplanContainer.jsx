@@ -5,6 +5,19 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
+import { AICoachGuide } from '../ai-coach';
+import { GUIDE_PRESETS } from '../ai-coach/types';
+import { tokens } from '../../design-tokens';
+
+// Session type color configuration using design tokens
+const SESSION_COLORS = {
+  technical: { color: tokens.colors.info, bgColor: 'rgba(2, 132, 199, 0.08)' },
+  physical: { color: tokens.colors.error, bgColor: 'rgba(220, 38, 38, 0.08)' },
+  mental: { color: tokens.colors.primaryLight, bgColor: 'rgba(42, 107, 85, 0.08)' },
+  short_game: { color: tokens.colors.success, bgColor: 'rgba(5, 150, 105, 0.08)' },
+  warmup: { color: tokens.colors.warning, bgColor: 'rgba(217, 119, 6, 0.08)' },
+  rest: { color: tokens.colors.gray600, bgColor: tokens.colors.gray50 },
+};
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -119,22 +132,29 @@ const WEEK_DATA = {
 // ============================================================================
 
 const getSessionTypeConfig = (type) => {
-  switch (type) {
-    case 'technical':
-      return { color: '#2563eb', bgColor: '#eff6ff', label: 'Teknikk', icon: Target };
-    case 'physical':
-      return { color: '#dc2626', bgColor: '#fef2f2', label: 'Fysisk', icon: Dumbbell };
-    case 'mental':
-      return { color: '#7c3aed', bgColor: '#f5f3ff', label: 'Mental', icon: Brain };
-    case 'short_game':
-      return { color: '#16a34a', bgColor: '#f0fdf4', label: 'Kortspill', icon: Flag };
-    case 'warmup':
-      return { color: '#ea580c', bgColor: '#fff7ed', label: 'Oppvarming', icon: Flame };
-    case 'rest':
-      return { color: '#6b7280', bgColor: '#f9fafb', label: 'Hvile', icon: RotateCcw };
-    default:
-      return { color: '#6b7280', bgColor: '#f9fafb', label: type, icon: Calendar };
-  }
+  const icons = {
+    technical: Target,
+    physical: Dumbbell,
+    mental: Brain,
+    short_game: Flag,
+    warmup: Flame,
+    rest: RotateCcw,
+  };
+  const labels = {
+    technical: 'Teknikk',
+    physical: 'Fysisk',
+    mental: 'Mental',
+    short_game: 'Kortspill',
+    warmup: 'Oppvarming',
+    rest: 'Hvile',
+  };
+  const colors = SESSION_COLORS[type] || SESSION_COLORS.rest;
+  return {
+    color: colors.color,
+    bgColor: colors.bgColor,
+    label: labels[type] || type,
+    icon: icons[type] || Calendar,
+  };
 };
 
 const formatDate = (dateStr) => {
@@ -163,7 +183,7 @@ const SessionChip = ({ session, isSelected, onClick }) => {
         style={{
           padding: '6px 10px',
           fontSize: '12px',
-          color: '#9ca3af',
+          color: tokens.colors.gray500,
           fontStyle: 'italic',
         }}
       >
@@ -184,7 +204,7 @@ const SessionChip = ({ session, isSelected, onClick }) => {
         gap: '6px',
         padding: '6px 10px',
         backgroundColor: isSelected ? config.color : config.bgColor,
-        color: isSelected ? '#fff' : config.color,
+        color: isSelected ? tokens.colors.white : config.color,
         border: 'none',
         borderRadius: '6px',
         fontSize: '12px',
@@ -199,7 +219,7 @@ const SessionChip = ({ session, isSelected, onClick }) => {
       onMouseEnter={(e) => {
         if (!isSelected) {
           e.currentTarget.style.backgroundColor = config.color;
-          e.currentTarget.style.color = '#fff';
+          e.currentTarget.style.color = tokens.colors.white;
         }
       }}
       onMouseLeave={(e) => {
@@ -238,7 +258,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
       style={{
         flex: 1,
         minWidth: 0,
-        borderRight: '1px solid #e5e7eb',
+        borderRight: `1px solid ${tokens.colors.gray300}`,
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -247,9 +267,9 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
       <div
         style={{
           padding: '12px 8px',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: `1px solid ${tokens.colors.gray300}`,
           textAlign: 'center',
-          backgroundColor: isToday ? '#eff6ff' : 'transparent',
+          backgroundColor: isToday ? 'rgba(2, 132, 199, 0.06)' : 'transparent',
           position: 'relative',
         }}
       >
@@ -261,7 +281,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
               top: 0,
               bottom: 0,
               width: '3px',
-              backgroundColor: '#2563eb',
+              backgroundColor: tokens.colors.info,
             }}
           />
         )}
@@ -269,7 +289,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
           style={{
             fontSize: '11px',
             fontWeight: 500,
-            color: isToday ? '#2563eb' : '#6b7280',
+            color: isToday ? tokens.colors.info : tokens.colors.gray600,
             textTransform: 'uppercase',
             letterSpacing: '0.5px',
           }}
@@ -280,7 +300,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
           style={{
             fontSize: '20px',
             fontWeight: 600,
-            color: isToday ? '#2563eb' : '#111827',
+            color: isToday ? tokens.colors.info : tokens.colors.ink,
             marginTop: '2px',
           }}
         >
@@ -292,7 +312,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
               marginTop: '4px',
               fontSize: '9px',
               fontWeight: 600,
-              color: '#2563eb',
+              color: tokens.colors.info,
               textTransform: 'uppercase',
               letterSpacing: '0.5px',
             }}
@@ -311,7 +331,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
           flexDirection: 'column',
           gap: '6px',
           minHeight: '120px',
-          backgroundColor: day.isCompleted ? '#fafafa' : 'transparent',
+          backgroundColor: day.isCompleted ? tokens.colors.gray50 : 'transparent',
         }}
       >
         {day.sessions.map((session) => (
@@ -387,7 +407,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
           left: 0,
           bottom: 0,
           width: '380px',
-          backgroundColor: '#fff',
+          backgroundColor: tokens.colors.white,
           boxShadow: isOpen ? '4px 0 24px rgba(0, 0, 0, 0.1)' : 'none',
           transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 0.25s ease',
@@ -404,14 +424,14 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '16px 20px',
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: `1px solid ${tokens.colors.gray300}`,
           }}
         >
           <h2
             style={{
               fontSize: '14px',
               fontWeight: 600,
-              color: '#111827',
+              color: tokens.colors.ink,
               margin: 0,
             }}
           >
@@ -430,10 +450,10 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               backgroundColor: 'transparent',
               borderRadius: '6px',
               cursor: 'pointer',
-              color: '#6b7280',
+              color: tokens.colors.gray600,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#f3f4f6';
+              e.currentTarget.style.backgroundColor = tokens.colors.gray100;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
@@ -471,7 +491,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   style={{
                     fontSize: '20px',
                     fontWeight: 600,
-                    color: '#111827',
+                    color: tokens.colors.ink,
                     margin: 0,
                   }}
                 >
@@ -486,42 +506,42 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   flexDirection: 'column',
                   gap: '12px',
                   padding: '16px',
-                  backgroundColor: '#f9fafb',
+                  backgroundColor: tokens.colors.gray50,
                   borderRadius: '8px',
                   marginBottom: '20px',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Calendar size={14} color="#6b7280" />
-                  <span style={{ fontSize: '13px', color: '#374151' }}>
+                  <Calendar size={14} color={tokens.colors.gray600} />
+                  <span style={{ fontSize: '13px', color: tokens.colors.gray700 }}>
                     {formatFullDate(WEEK_DATA.days.find(d => d.sessions.some(s => s.id === session.id))?.date)}
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Clock size={14} color="#6b7280" />
-                  <span style={{ fontSize: '13px', color: '#374151' }}>
+                  <Clock size={14} color={tokens.colors.gray600} />
+                  <span style={{ fontSize: '13px', color: tokens.colors.gray700 }}>
                     {session.duration} minutter
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   {session.status === 'completed' ? (
                     <>
-                      <CheckCircle size={14} color="#16a34a" />
-                      <span style={{ fontSize: '13px', color: '#16a34a', fontWeight: 500 }}>
+                      <CheckCircle size={14} color={tokens.colors.success} />
+                      <span style={{ fontSize: '13px', color: tokens.colors.success, fontWeight: 500 }}>
                         Fullført
                       </span>
                     </>
                   ) : session.status === 'in_progress' ? (
                     <>
-                      <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: '#2563eb' }} />
-                      <span style={{ fontSize: '13px', color: '#2563eb', fontWeight: 500 }}>
+                      <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: tokens.colors.info }} />
+                      <span style={{ fontSize: '13px', color: tokens.colors.info, fontWeight: 500 }}>
                         Pågår
                       </span>
                     </>
                   ) : (
                     <>
-                      <div style={{ width: 14, height: 14, borderRadius: '50%', border: '2px solid #d1d5db' }} />
-                      <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                      <div style={{ width: 14, height: 14, borderRadius: '50%', border: `2px solid ${tokens.colors.gray400}` }} />
+                      <span style={{ fontSize: '13px', color: tokens.colors.gray600 }}>
                         Planlagt
                       </span>
                     </>
@@ -536,7 +556,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                     style={{
                       fontSize: '12px',
                       fontWeight: 600,
-                      color: '#6b7280',
+                      color: tokens.colors.gray600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px',
                       marginBottom: '8px',
@@ -547,7 +567,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   <p
                     style={{
                       fontSize: '14px',
-                      color: '#374151',
+                      color: tokens.colors.gray700,
                       lineHeight: 1.6,
                       margin: 0,
                     }}
@@ -564,7 +584,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                     style={{
                       fontSize: '12px',
                       fontWeight: 600,
-                      color: '#6b7280',
+                      color: tokens.colors.gray600,
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px',
                       marginBottom: '8px',
@@ -587,7 +607,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                           alignItems: 'center',
                           gap: '10px',
                           padding: '10px 0',
-                          borderBottom: idx < session.exercises.length - 1 ? '1px solid #e5e7eb' : 'none',
+                          borderBottom: idx < session.exercises.length - 1 ? `1px solid ${tokens.colors.gray300}` : 'none',
                         }}
                       >
                         <div
@@ -599,7 +619,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                             flexShrink: 0,
                           }}
                         />
-                        <span style={{ fontSize: '13px', color: '#374151' }}>
+                        <span style={{ fontSize: '13px', color: tokens.colors.gray700 }}>
                           {exercise}
                         </span>
                       </li>
@@ -618,8 +638,8 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                       justifyContent: 'center',
                       gap: '8px',
                       padding: '12px 16px',
-                      backgroundColor: '#2563eb',
-                      color: '#fff',
+                      backgroundColor: tokens.colors.info,
+                      color: tokens.colors.white,
                       border: 'none',
                       borderRadius: '8px',
                       fontSize: '14px',
@@ -639,8 +659,8 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                     gap: '8px',
                     padding: '12px 16px',
                     backgroundColor: 'transparent',
-                    color: '#374151',
-                    border: '1px solid #e5e7eb',
+                    color: tokens.colors.gray700,
+                    border: `1px solid ${tokens.colors.gray300}`,
                     borderRadius: '8px',
                     fontSize: '14px',
                     fontWeight: 500,
@@ -661,7 +681,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   style={{
                     fontSize: '12px',
                     fontWeight: 600,
-                    color: '#6b7280',
+                    color: tokens.colors.gray600,
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                     marginBottom: '12px',
@@ -686,7 +706,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                             alignItems: 'center',
                             gap: '10px',
                             padding: '12px',
-                            backgroundColor: '#f9fafb',
+                            backgroundColor: tokens.colors.gray50,
                             border: 'none',
                             borderRadius: '8px',
                             cursor: 'pointer',
@@ -708,14 +728,14 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                             {React.createElement(cfg.icon, { size: 16, color: cfg.color })}
                           </div>
                           <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: '13px', fontWeight: 500, color: '#111827' }}>
+                            <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.ink }}>
                               {session.name}
                             </div>
-                            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                            <div style={{ fontSize: '12px', color: tokens.colors.gray600 }}>
                               {session.duration} min
                             </div>
                           </div>
-                          <ChevronRight size={16} color="#9ca3af" />
+                          <ChevronRight size={16} color={tokens.colors.gray500} />
                         </button>
                       );
                     })}
@@ -723,7 +743,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                     const day = WEEK_DATA.days.find(d => d.sessions.some(sess => sess.id === s.id));
                     return day?.isToday;
                   }).length === 0 && (
-                    <p style={{ fontSize: '13px', color: '#6b7280', fontStyle: 'italic' }}>
+                    <p style={{ fontSize: '13px', color: tokens.colors.gray600, fontStyle: 'italic' }}>
                       Ingen økter planlagt i dag
                     </p>
                   )}
@@ -736,7 +756,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   style={{
                     fontSize: '12px',
                     fontWeight: 600,
-                    color: '#6b7280',
+                    color: tokens.colors.gray600,
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                     marginBottom: '12px',
@@ -747,20 +767,20 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                 <div
                   style={{
                     padding: '16px',
-                    backgroundColor: '#f9fafb',
+                    backgroundColor: tokens.colors.gray50,
                     borderRadius: '8px',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                    <span style={{ fontSize: '13px', color: '#6b7280' }}>Fullført</span>
-                    <span style={{ fontSize: '14px', fontWeight: 600, color: '#111827' }}>
+                    <span style={{ fontSize: '13px', color: tokens.colors.gray600 }}>Fullført</span>
+                    <span style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.ink }}>
                       {WEEK_DATA.completedHours}t / {WEEK_DATA.totalPlannedHours}t
                     </span>
                   </div>
                   <div
                     style={{
                       height: '6px',
-                      backgroundColor: '#e5e7eb',
+                      backgroundColor: tokens.colors.gray300,
                       borderRadius: '3px',
                       overflow: 'hidden',
                     }}
@@ -769,7 +789,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                       style={{
                         height: '100%',
                         width: `${(WEEK_DATA.completedHours / WEEK_DATA.totalPlannedHours) * 100}%`,
-                        backgroundColor: '#2563eb',
+                        backgroundColor: tokens.colors.info,
                         borderRadius: '3px',
                       }}
                     />
@@ -783,7 +803,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   style={{
                     fontSize: '12px',
                     fontWeight: 600,
-                    color: '#6b7280',
+                    color: tokens.colors.gray600,
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px',
                     marginBottom: '12px',
@@ -838,19 +858,19 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
         alignItems: 'center',
         gap: '24px',
         padding: '12px 20px',
-        backgroundColor: '#fff',
-        borderBottom: '1px solid #e5e7eb',
+        backgroundColor: tokens.colors.white,
+        borderBottom: `1px solid ${tokens.colors.gray300}`,
         fontSize: '13px',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ color: '#6b7280' }}>Fremgang:</span>
-        <span style={{ fontWeight: 600, color: '#111827' }}>{progressPercent}%</span>
+        <span style={{ color: tokens.colors.gray600 }}>Fremgang:</span>
+        <span style={{ fontWeight: 600, color: tokens.colors.ink }}>{progressPercent}%</span>
         <div
           style={{
             width: '80px',
             height: '4px',
-            backgroundColor: '#e5e7eb',
+            backgroundColor: tokens.colors.gray300,
             borderRadius: '2px',
             overflow: 'hidden',
           }}
@@ -859,23 +879,23 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
             style={{
               height: '100%',
               width: `${progressPercent}%`,
-              backgroundColor: '#2563eb',
+              backgroundColor: tokens.colors.info,
               borderRadius: '2px',
             }}
           />
         </div>
       </div>
 
-      <div style={{ width: '1px', height: '16px', backgroundColor: '#e5e7eb' }} />
+      <div style={{ width: '1px', height: '16px', backgroundColor: tokens.colors.gray300 }} />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-        <Clock size={14} color="#6b7280" />
-        <span style={{ color: '#6b7280' }}>{completedHours}t fullført</span>
-        <span style={{ color: '#9ca3af' }}>/</span>
-        <span style={{ color: '#6b7280' }}>{totalHours}t planlagt</span>
+        <Clock size={14} color={tokens.colors.gray600} />
+        <span style={{ color: tokens.colors.gray600 }}>{completedHours}t fullført</span>
+        <span style={{ color: tokens.colors.gray500 }}>/</span>
+        <span style={{ color: tokens.colors.gray600 }}>{totalHours}t planlagt</span>
       </div>
 
-      <div style={{ width: '1px', height: '16px', backgroundColor: '#e5e7eb' }} />
+      <div style={{ width: '1px', height: '16px', backgroundColor: tokens.colors.gray300 }} />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {[
@@ -902,7 +922,7 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
                   backgroundColor: cfg.color,
                 }}
               />
-              <span style={{ color: '#6b7280' }}>{hours}t</span>
+              <span style={{ color: tokens.colors.gray600 }}>{hours}t</span>
             </div>
           );
         })}
@@ -949,12 +969,17 @@ const UkensTreningsplanContainer = () => {
   }, [isSidebarOpen, handleCloseSidebar]);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#fff' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.white }}>
       {/* Page Header */}
       <PageHeader
         title="Ukens treningsplan"
         subtitle="Din plan for denne uken"
       />
+
+      {/* AI Coach Guide */}
+      <div style={{ padding: '0 20px', marginBottom: '12px' }}>
+        <AICoachGuide config={GUIDE_PRESETS.weeklyPlan} variant="compact" />
+      </div>
 
       {/* Navigation Bar */}
       <div
@@ -963,8 +988,8 @@ const UkensTreningsplanContainer = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '12px 20px',
-          borderBottom: '1px solid #e5e7eb',
-          backgroundColor: '#fff',
+          borderBottom: `1px solid ${tokens.colors.gray300}`,
+          backgroundColor: tokens.colors.white,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -977,11 +1002,11 @@ const UkensTreningsplanContainer = () => {
               justifyContent: 'center',
               width: '32px',
               height: '32px',
-              border: '1px solid #e5e7eb',
+              border: `1px solid ${tokens.colors.gray300}`,
               borderRadius: '6px',
-              backgroundColor: isSidebarOpen ? '#f3f4f6' : '#fff',
+              backgroundColor: isSidebarOpen ? tokens.colors.gray100 : tokens.colors.white,
               cursor: 'pointer',
-              color: '#6b7280',
+              color: tokens.colors.gray600,
             }}
             aria-label="Toggle sidebar"
           >
@@ -997,11 +1022,11 @@ const UkensTreningsplanContainer = () => {
               justifyContent: 'center',
               width: '32px',
               height: '32px',
-              border: '1px solid #e5e7eb',
+              border: `1px solid ${tokens.colors.gray300}`,
               borderRadius: '6px',
-              backgroundColor: '#fff',
+              backgroundColor: tokens.colors.white,
               cursor: 'pointer',
-              color: '#374151',
+              color: tokens.colors.gray700,
             }}
             aria-label="Forrige uke"
           >
@@ -1015,11 +1040,11 @@ const UkensTreningsplanContainer = () => {
               justifyContent: 'center',
               width: '32px',
               height: '32px',
-              border: '1px solid #e5e7eb',
+              border: `1px solid ${tokens.colors.gray300}`,
               borderRadius: '6px',
-              backgroundColor: '#fff',
+              backgroundColor: tokens.colors.white,
               cursor: 'pointer',
-              color: '#374151',
+              color: tokens.colors.gray700,
             }}
             aria-label="Neste uke"
           >
@@ -1032,7 +1057,7 @@ const UkensTreningsplanContainer = () => {
               style={{
                 fontSize: '15px',
                 fontWeight: 600,
-                color: '#111827',
+                color: tokens.colors.ink,
               }}
             >
               Uke {WEEK_DATA.weekNumber}
@@ -1040,7 +1065,7 @@ const UkensTreningsplanContainer = () => {
             <span
               style={{
                 fontSize: '14px',
-                color: '#6b7280',
+                color: tokens.colors.gray600,
                 marginLeft: '8px',
               }}
             >
@@ -1057,11 +1082,11 @@ const UkensTreningsplanContainer = () => {
               alignItems: 'center',
               gap: '6px',
               padding: '6px 12px',
-              backgroundColor: '#eff6ff',
+              backgroundColor: 'rgba(2, 132, 199, 0.08)',
               borderRadius: '6px',
               fontSize: '12px',
               fontWeight: 500,
-              color: '#2563eb',
+              color: tokens.colors.info,
             }}
           >
             <Calendar size={12} />
@@ -1074,8 +1099,8 @@ const UkensTreningsplanContainer = () => {
               alignItems: 'center',
               gap: '6px',
               padding: '8px 14px',
-              backgroundColor: '#111827',
-              color: '#fff',
+              backgroundColor: tokens.colors.ink,
+              color: tokens.colors.white,
               border: 'none',
               borderRadius: '6px',
               fontSize: '13px',
@@ -1100,7 +1125,7 @@ const UkensTreningsplanContainer = () => {
       <div
         style={{
           display: 'flex',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: `1px solid ${tokens.colors.gray300}`,
           minHeight: 'calc(100vh - 280px)',
         }}
       >

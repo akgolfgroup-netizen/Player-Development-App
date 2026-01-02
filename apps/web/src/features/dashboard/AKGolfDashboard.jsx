@@ -6,6 +6,7 @@ import {
   BarChart3, Award, MessageCircle, Plus, ClipboardList,
   Video, Circle, Apple, Dumbbell, Flag, BookOpen, ListChecks
 } from 'lucide-react';
+import { tokens } from '../../design-tokens';
 import { useDashboard } from '../../hooks/useDashboard';
 import { DashboardWidget, KPIValue, KPIMeta } from './components';
 import Button from '../../ui/primitives/Button';
@@ -347,7 +348,7 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
         trend={stats.streakTrend}
         trendLabel="vs. forrige uke"
         context={stats.streak >= 7 ? '🔥 Lengste denne måneden!' : stats.streak >= 3 ? '💪 Godt jobbet!' : null}
-        iconColor="#f97316"
+        iconColor={tokens.colors.warning}
       />
       <KPICard
         icon={TrendingUp}
