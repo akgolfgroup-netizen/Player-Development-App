@@ -1,28 +1,20 @@
 /**
  * AK Golf Academy - Admin Feature Flags Editor
- * Design System v3.0 - Blue Palette 01
  *
- * Purpose:
- * - Allow admin to enable/disable system features
- * - No access to users, athletes, or performance
+ * Archetype: A - List/Index Page
+ * Purpose: Enable/disable system features
  *
- * Contract references:
- * - COACH_ADMIN_IMPLEMENTATION_CONTRACT.md
- * - COACH_ADMIN_SCREEN_CONTRACT.md
- *
- * NON-NEGOTIABLE:
- * - Flags affect behavior, not interpretation
- * - No visibility into who is affected
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
-import React, { useState, useEffect } from "react";
-import { ToggleLeft, ToggleRight } from "lucide-react";
-import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import React, { useState, useEffect } from 'react';
+import { ToggleLeft, ToggleRight } from 'lucide-react';
+import { Page } from '../../ui/components/Page';
+import { Text } from '../../ui/primitives';
 
-
-//////////////////////////////
-// 1. TYPES
-//////////////////////////////
+// ============================================================================
+// TYPES
+// ============================================================================
 
 type FeatureFlag = {
   key: string;
@@ -30,46 +22,47 @@ type FeatureFlag = {
   enabled: boolean;
 };
 
-//////////////////////////////
-// 2. DEFAULT FLAGS (used when no API)
-//////////////////////////////
+// ============================================================================
+// DEFAULTS
+// ============================================================================
 
 const DEFAULT_FLAGS: FeatureFlag[] = [
   {
-    key: "proof_enabled",
-    description: "Aktiver PROOF-visning for spillere",
+    key: 'proof_enabled',
+    description: 'Aktiver PROOF-visning for spillere',
     enabled: true,
   },
   {
-    key: "coach_notes",
-    description: "Aktiver trenernotater i spillervisning",
+    key: 'coach_notes',
+    description: 'Aktiver trenernotater i spillervisning',
     enabled: true,
   },
   {
-    key: "trajectory_view",
-    description: "Aktiver utviklingsvisning for trenere",
+    key: 'trajectory_view',
+    description: 'Aktiver utviklingsvisning for trenere',
     enabled: true,
   },
   {
-    key: "advanced_analytics",
-    description: "Aktiver avansert statistikk",
+    key: 'advanced_analytics',
+    description: 'Aktiver avansert statistikk',
     enabled: false,
   },
 ];
 
-//////////////////////////////
-// 3. COMPONENT
-//////////////////////////////
+// ============================================================================
+// COMPONENT
+// ============================================================================
 
 interface AdminFeatureFlagsEditorProps {
   flags?: FeatureFlag[];
 }
 
-export default function AdminFeatureFlagsEditor({ flags: apiFlags }: AdminFeatureFlagsEditorProps = {}) {
+export default function AdminFeatureFlagsEditor({
+  flags: apiFlags,
+}: AdminFeatureFlagsEditorProps = {}) {
   const [flags, setFlags] = useState<FeatureFlag[]>(apiFlags || DEFAULT_FLAGS);
   const [loading, setLoading] = useState(!apiFlags);
 
-  // Fetch feature flags from API
   useEffect(() => {
     if (apiFlags) return;
 
@@ -77,7 +70,7 @@ export default function AdminFeatureFlagsEditor({ flags: apiFlags }: AdminFeatur
       try {
         const token = localStorage.getItem('token');
         const response = await fetch('/api/v1/admin/feature-flags', {
-          headers: { 'Authorization': `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
           const data = await response.json();
@@ -97,118 +90,62 @@ export default function AdminFeatureFlagsEditor({ flags: apiFlags }: AdminFeatur
 
   const toggleFlag = (key: string) => {
     setFlags((prev) =>
-      prev.map((flag) =>
-        flag.key === key ? { ...flag, enabled: !flag.enabled } : flag
-      )
+      prev.map((flag) => (flag.key === key ? { ...flag, enabled: !flag.enabled } : flag))
     );
   };
 
-  const enabledCount = flags.filter(f => f.enabled).length;
+  const enabledCount = flags.filter((f) => f.enabled).length;
+
+  // Determine page state
+  const pageState = loading ? 'loading' : flags.length === 0 ? 'empty' : 'idle';
 
   return (
-    <section
-      aria-label="Feature flags"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
-      {/* Header - using PageHeader from design system */}
-      <PageHeader
+    <Page state={pageState} maxWidth="xl">
+      <Page.Header
         title="Feature Flags"
-        subtitle={`${enabledCount} av ${flags.length} funksjoner aktivert`}
+        subtitle={flags.length > 0 ? `${enabledCount} av ${flags.length} funksjoner aktivert` : undefined}
       />
 
-      {/* Flags List */}
-      <div style={{ padding: '0 24px 24px' }}>
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-card)',
-            overflow: 'hidden',
-          }}
-        >
-          {flags.map((flag, index) => (
-            <div
-              key={flag.key}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '16px 20px',
-                borderBottom: index < flags.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
-              }}
-            >
-              {/* Flag Info */}
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    fontSize: '15px', lineHeight: '20px',
-                    fontWeight: 500,
-                    color: 'var(--text-primary)',
-                    fontFamily: 'monospace',
-                    backgroundColor: 'var(--bg-secondary)',
-                    padding: '4px 8px',
-                    borderRadius: 'var(--radius-sm)',
-                    display: 'inline-block',
-                  }}
-                >
-                  {flag.key}
-                </div>
-                <div style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', marginTop: '8px' }}>
-                  {flag.description}
-                </div>
-              </div>
-
-              {/* Toggle Button */}
-              <button
-                type="button"
-                onClick={() => toggleFlag(flag.key)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '10px 16px',
-                  borderRadius: 'var(--radius-md)',
-                  border: 'none',
-                  backgroundColor: flag.enabled ? 'rgba(var(--success-rgb), 0.15)' : 'rgba(var(--text-secondary-rgb), 0.15)',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
+      <Page.Content>
+        <Page.Section title="Funksjoner" description="Aktiver eller deaktiver systemfunksjoner">
+          <div className="divide-y divide-ak-border-default">
+            {flags.map((flag) => (
+              <div
+                key={flag.key}
+                className="flex items-center gap-4 py-4 first:pt-0 last:pb-0"
               >
-                {flag.enabled ? (
-                  <ToggleRight size={24} color={'var(--success)'} />
-                ) : (
-                  <ToggleLeft size={24} color={'var(--text-secondary)'} />
-                )}
-                <span
-                  style={{
-                    fontSize: '15px', lineHeight: '20px',
-                    fontWeight: 500,
-                    color: flag.enabled ? 'var(--success)' : 'var(--text-secondary)',
-                  }}
+                <div className="flex-1 min-w-0">
+                  <code className="px-2 py-1 bg-ak-surface-subtle rounded text-sm font-mono text-ak-text-primary">
+                    {flag.key}
+                  </code>
+                  <Text variant="caption1" color="secondary" className="mt-2 block">
+                    {flag.description}
+                  </Text>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => toggleFlag(flag.key)}
+                  className={`
+                    flex items-center gap-2 px-4 py-2.5 rounded-lg
+                    transition-colors cursor-pointer
+                    ${
+                      flag.enabled
+                        ? 'bg-ak-status-success-light text-ak-status-success'
+                        : 'bg-ak-surface-subtle text-ak-text-secondary'
+                    }
+                  `}
                 >
-                  {flag.enabled ? 'Aktivert' : 'Deaktivert'}
-                </span>
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+                  {flag.enabled ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
+                  <Text variant="body" className="font-medium">
+                    {flag.enabled ? 'Aktivert' : 'Deaktivert'}
+                  </Text>
+                </button>
+              </div>
+            ))}
+          </div>
+        </Page.Section>
+      </Page.Content>
+    </Page>
   );
 }
-
-//////////////////////////////
-// 4. STRICT NOTES
-//////////////////////////////
-
-/*
-- Do NOT show impact metrics.
-- Do NOT show affected users or athletes.
-- Do NOT allow bulk enable/disable.
-- Do NOT log or display usage statistics.
-- This screen controls switches, nothing more.
-*/

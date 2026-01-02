@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
@@ -6,12 +6,14 @@ import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 // BottomNav removed per design requirements
 import StateCard from '../../ui/composites/StateCard';
-import { RefreshCw, Plus } from 'lucide-react';
+import { RefreshCw, Plus, TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
 import { useStats } from '../../data';
 import type { StatsOverviewItem } from '../../data';
 import { getSimState } from '../../dev/simulateState';
 import { useScreenView } from '../../analytics/useScreenView';
 import { SectionTitle } from '../../components/typography/Headings';
+import { useTrainingAnalytics } from '../../hooks/useTrainingAnalytics';
+import { GolfAreaChart, chartColors } from '../../components/shadcn/chart';
 
 // Pure function - moved outside component to avoid recreation
 const getTrendColor = (trend?: 'positive' | 'negative' | 'neutral') => {
@@ -43,6 +45,17 @@ const StatsPageV2: React.FC = () => {
   const simState = getSimState(location.search);
 
   const hookResult = useStats();
+  const { data: analyticsData } = useTrainingAnalytics();
+
+  // Transform weekly trend data for chart
+  const trendChartData = useMemo(() => {
+    if (!analyticsData?.weeklyTrend) return [];
+    return analyticsData.weeklyTrend.map(week => ({
+      name: `U${week.weekNumber}`,
+      Fullfort: week.completed,
+      Planlagt: week.planned,
+    }));
+  }, [analyticsData?.weeklyTrend]);
 
   // Override data based on simState (DEV only)
   const { data, isLoading, error, refetch } = simState
@@ -157,17 +170,51 @@ const StatsPageV2: React.FC = () => {
         )}
       </section>
 
-      {/* Trend Chart Placeholder */}
+      {/* Trend Chart */}
       <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Trend</SectionTitle>
+        <div style={styles.sectionHeader}>
+          <SectionTitle style={{ margin: 0 }}>Treningstrend</SectionTitle>
+          {analyticsData?.overview && (
+            <div style={styles.trendBadge}>
+              {analyticsData.overview.completionRate >= 70 ? (
+                <TrendingUp size={14} color="var(--success)" />
+              ) : (
+                <TrendingDown size={14} color="var(--warning)" />
+              )}
+              <span style={{
+                fontSize: 'var(--font-size-caption1)',
+                fontWeight: 600,
+                color: analyticsData.overview.completionRate >= 70 ? 'var(--success)' : 'var(--warning)',
+              }}>
+                {analyticsData.overview.completionRate.toFixed(0)}%
+              </span>
+            </div>
+          )}
+        </div>
         <Card>
-          <div style={styles.chartPlaceholder}>
-            <div style={styles.chartIcon}>📈</div>
-            <p style={styles.chartText}>Graf kommer snart</p>
-            <p style={styles.chartSubtext}>
-              Visualisering av fremgang over tid
-            </p>
-          </div>
+          {trendChartData.length > 1 ? (
+            <div style={{ padding: 'var(--spacing-2)' }}>
+              <GolfAreaChart
+                data={trendChartData}
+                dataKeys={['Fullfort', 'Planlagt']}
+                xAxisKey="name"
+                colors={[chartColors.success, chartColors.mist]}
+                height={180}
+                stacked={false}
+              />
+              <p style={styles.chartHint}>
+                Ukentlig gjennomforing av treningsokter
+              </p>
+            </div>
+          ) : (
+            <div style={styles.chartPlaceholder}>
+              <BarChart3 size={40} style={{ marginBottom: 'var(--spacing-3)', opacity: 0.3, color: 'var(--text-tertiary)' }} />
+              <p style={styles.chartText}>Ikke nok data enna</p>
+              <p style={styles.chartSubtext}>
+                Fullfør flere treningsokter for å se din trend
+              </p>
+            </div>
+          )}
         </Card>
       </section>
     </AppShellTemplate>
@@ -250,6 +297,27 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-secondary)',
     margin: 0,
     marginTop: 'var(--spacing-1)',
+  },
+  sectionHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 'var(--spacing-3)',
+  },
+  trendBadge: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'var(--spacing-1)',
+    padding: 'var(--spacing-1) var(--spacing-2)',
+    backgroundColor: 'var(--background-elevated)',
+    borderRadius: 'var(--radius-md)',
+  },
+  chartHint: {
+    fontSize: 'var(--font-size-caption1)',
+    color: 'var(--text-tertiary)',
+    textAlign: 'center',
+    marginTop: 'var(--spacing-2)',
+    marginBottom: 0,
   },
 };
 

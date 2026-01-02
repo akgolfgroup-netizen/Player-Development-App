@@ -1,6 +1,12 @@
 // @ts-nocheck
 /**
- * Kalender - Calendar with shadcn/ui components
+ * AK Golf Academy - Kalender
+ *
+ * Archetype: C - Dashboard/Calendar Page
+ * Purpose: Calendar with shadcn/ui components
+ *
+ * MIGRATED TO PAGE ARCHITECTURE
+ * Note: 1 dynamic inline style for session type border color (passing CSS variable)
  */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

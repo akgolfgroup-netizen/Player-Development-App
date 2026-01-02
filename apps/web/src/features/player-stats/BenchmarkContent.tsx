@@ -176,18 +176,27 @@ const BenchmarkContent: React.FC = () => {
       </section>
 
       {/* Peer Comparison */}
-      {user?.playerId && (
-        <section style={styles.section}>
-          <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
-            Peer Sammenligning
-          </SectionTitle>
+      <section style={styles.section}>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
+          Peer Sammenligning
+        </SectionTitle>
+        {user?.playerId ? (
           <PeerComparisonWidget
             playerId={user.playerId}
             testNumber={1}
             showMultiLevel={true}
           />
-        </section>
-      )}
+        ) : (
+          <Card padding="md">
+            <div style={styles.peerLoginPrompt}>
+              <Users size={32} style={{ marginBottom: 8, opacity: 0.5, color: 'var(--text-tertiary)' }} />
+              <p style={styles.peerLoginText}>
+                Logg inn for å se hvordan du ligger an mot andre spillere i din kategori
+              </p>
+            </div>
+          </Card>
+        )}
+      </section>
 
       {/* Category Comparison */}
       <section style={styles.section}>
@@ -855,6 +864,20 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'var(--font-size-footnote)',
     color: 'var(--text-tertiary)',
     fontStyle: 'normal',
+  },
+  peerLoginPrompt: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 'var(--spacing-6)',
+    textAlign: 'center',
+  },
+  peerLoginText: {
+    fontSize: 'var(--font-size-body)',
+    color: 'var(--text-secondary)',
+    margin: 0,
+    maxWidth: '300px',
   },
 };
 

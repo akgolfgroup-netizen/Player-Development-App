@@ -2,13 +2,16 @@
 /**
  * CalendarPage
  *
- * Multi-view calendar system with:
+ * Archetype: C - Dashboard/Calendar Page
+ * Purpose: Multi-view calendar system
+ *
+ * Features:
  * - DAG / UKE / MÅNED / ÅR views
  * - URL-based state management
  * - Deterministic seed data fallback
  * - AppShell persistence (renders inside main layout)
  *
- * Uses semantic tokens only (no raw hex values).
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
@@ -219,10 +222,7 @@ const CalendarPage: React.FC = () => {
   // Loading state (only show when no cached data)
   if (isLoading && events.length === 0) {
     return (
-      <div
-        className="h-[calc(100vh-160px)] flex items-center justify-center"
-        style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-      >
+      <div className="h-[calc(100vh-160px)] flex items-center justify-center bg-ak-surface-base">
         <StateCard
           variant="loading"
           title="Laster kalender..."
@@ -235,10 +235,7 @@ const CalendarPage: React.FC = () => {
   // Error state (only show when no cached data)
   if (error && events.length === 0) {
     return (
-      <div
-        className="h-[calc(100vh-160px)] flex items-center justify-center"
-        style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-      >
+      <div className="h-[calc(100vh-160px)] flex items-center justify-center bg-ak-surface-base">
         <StateCard
           variant="error"
           title="Noe gikk galt"
@@ -259,44 +256,19 @@ const CalendarPage: React.FC = () => {
   }
 
   return (
-    <div
-      className="flex flex-col h-[calc(100vh-160px)]"
-      style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-    >
+    <div className="flex flex-col h-[calc(100vh-160px)] bg-ak-surface-base">
       {/* Seed data info banner */}
       {isSeedData && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--spacing-2)',
-            padding: 'var(--spacing-3) var(--spacing-4)',
-            backgroundColor: 'var(--info-muted)',
-            border: '1px solid rgba(2, 132, 199, 0.2)',
-            borderRadius: 'var(--radius-md)',
-            marginBottom: 'var(--spacing-4)',
-            fontSize: 'var(--font-size-footnote)',
-            color: 'var(--text-secondary)',
-          }}
-        >
-          <Info size={16} color="var(--info)" />
+        <div className="flex items-center gap-2 py-3 px-4 bg-ak-status-info-light border border-ak-status-info/20 rounded-lg mb-4 text-xs text-ak-text-secondary">
+          <Info size={16} className="text-ak-status-info" />
           <span>Viser demodata. Faktiske økter vil vises når du har lagt dem til.</span>
         </div>
       )}
 
       {/* Error banner (when showing stale data) */}
       {error && events.length > 0 && (
-        <div
-          className="flex items-center justify-between px-4 py-2"
-          style={{
-            backgroundColor: 'var(--warning-muted)',
-            borderBottom: '1px solid var(--calendar-border)',
-          }}
-        >
-          <span
-            className="text-sm"
-            style={{ color: 'var(--ak-warning)' }}
-          >
+        <div className="flex items-center justify-between px-4 py-2 bg-ak-status-warning-light border-b border-ak-border-default">
+          <span className="text-sm text-ak-status-warning">
             Viser tidligere data
           </span>
           <Button

@@ -708,6 +708,8 @@ model SessionTemplate {
   objectives      String?  @db.Text
   structure       String?  @db.Text
   successCriteria String?  @map("success_criteria") @db.Text
+  // Domain mapping for session selection algorithm
+  primaryDomain   String?  @map("primary_domain") @db.VarChar(10) // TEE, INN50, INN100, INN150, INN200, ARG, PUTT, PHYS
   usageCount      Int      @default(0) @map("usage_count")
   isActive        Boolean  @default(true) @map("is_active")
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -719,6 +721,7 @@ model SessionTemplate {
 
   @@index([tenantId])
   @@index([sessionType])
+  @@index([primaryDomain])
   @@map("session_templates")
 }
 

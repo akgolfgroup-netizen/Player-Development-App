@@ -1,8 +1,10 @@
 /**
  * Day View Page
  *
- * Entry point for the Decision Engine Day View.
- * This wraps DayViewExecution with routing and navigation.
+ * Archetype: C - Dashboard/Calendar Page
+ * Purpose: Entry point for the Decision Engine Day View
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React from 'react';
@@ -36,7 +38,7 @@ export const DayViewPage: React.FC = () => {
   };
 
   return (
-    <div style={{ height: 'calc(100vh - 64px)' }}>
+    <div className="h-[calc(100vh-64px)]">
       <DayViewExecution
         date={initialDate}
         onNavigate={handleNavigate}

@@ -19,6 +19,7 @@ const StrokesGainedContent = lazy(() => import('./StrokesGainedContent'));
 const TestResultsContent = lazy(() => import('./TestResultsContent'));
 const BenchmarkContent = lazy(() => import('./BenchmarkContent'));
 const StatusProgressContent = lazy(() => import('./StatusProgressContent'));
+const TrendsContent = lazy(() => import('./TrendsContent'));
 
 /**
  * StatistikkHub - Unified statistics page with tab navigation
@@ -31,7 +32,7 @@ const StatusProgressContent = lazy(() => import('./StatusProgressContent'));
  * 5. Status & Mål - Progress tracking
  */
 
-type TabId = 'oversikt' | 'strokes-gained' | 'benchmark' | 'testresultater' | 'status';
+type TabId = 'oversikt' | 'strokes-gained' | 'benchmark' | 'trends' | 'testresultater' | 'status';
 
 interface TabConfig {
   id: TabId;
@@ -60,6 +61,12 @@ const TABS: TabConfig[] = [
     description: 'Sammenlign med elite',
   },
   {
+    id: 'trends',
+    label: 'Trender',
+    icon: TrendingUp,
+    description: 'Historisk utvikling',
+  },
+  {
     id: 'testresultater',
     label: 'Testresultater',
     icon: ClipboardList,
@@ -68,7 +75,7 @@ const TABS: TabConfig[] = [
   {
     id: 'status',
     label: 'Status & Mål',
-    icon: TrendingUp,
+    icon: Target,
     description: 'Din progresjon',
   },
 ];
@@ -132,6 +139,12 @@ const StatistikkHub: React.FC = () => {
         return (
           <Suspense fallback={fallback}>
             <BenchmarkContent />
+          </Suspense>
+        );
+      case 'trends':
+        return (
+          <Suspense fallback={fallback}>
+            <TrendsContent />
           </Suspense>
         );
       case 'testresultater':
