@@ -1,18 +1,20 @@
 /**
  * AK Golf Academy - Coach Athlete List
- * Design System v3.0 - Semantic CSS Variables
  *
- * Purpose:
- * - Provide neutral access to athletes for a coach
+ * Archetype: A - List/Index Page
+ * Purpose: Provide neutral access to athletes for a coach
  * - Alphabetically sorted, no ranking or comparison
  *
  * Contract references:
  * - COACH_ADMIN_IMPLEMENTATION_CONTRACT.md
  * - COACH_ADMIN_SCREEN_CONTRACT.md
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic avatar colors which require runtime calculation)
  */
 
-import React, { useState, useEffect, useCallback } from "react";
-import { Search, ChevronRight, CheckSquare, Square, Users } from "lucide-react";
+import React, { useState, useEffect, useCallback } from 'react';
+import { Search, ChevronRight, CheckSquare, Square, Users } from 'lucide-react';
 import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
@@ -20,9 +22,9 @@ import Card from '../../ui/primitives/Card';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import BatchOperationsPanel from './BatchOperationsPanel';
 
-//////////////////////////////
-// 1. DATA MODEL (READ-ONLY)
-//////////////////////////////
+// ============================================================================
+// TYPES
+// ============================================================================
 
 type Athlete = {
   id: string;
@@ -30,36 +32,39 @@ type Athlete = {
   lastName: string;
 };
 
-//////////////////////////////
-// 2. MOCK DATA (TEMPORARY)
-//////////////////////////////
+// ============================================================================
+// MOCK DATA
+// ============================================================================
 
 const MOCK_ATHLETES: Athlete[] = [
-  { id: "1", firstName: "Anders", lastName: "Hansen" },
-  { id: "2", firstName: "Erik", lastName: "Johansen" },
-  { id: "3", firstName: "Lars", lastName: "Olsen" },
-  { id: "4", firstName: "Mikkel", lastName: "Pedersen" },
-  { id: "5", firstName: "Sofie", lastName: "Andersen" },
-  { id: "6", firstName: "Emma", lastName: "Berg" },
+  { id: '1', firstName: 'Anders', lastName: 'Hansen' },
+  { id: '2', firstName: 'Erik', lastName: 'Johansen' },
+  { id: '3', firstName: 'Lars', lastName: 'Olsen' },
+  { id: '4', firstName: 'Mikkel', lastName: 'Pedersen' },
+  { id: '5', firstName: 'Sofie', lastName: 'Andersen' },
+  { id: '6', firstName: 'Emma', lastName: 'Berg' },
 ];
 
-//////////////////////////////
-// 3. SORTING (NON-NEGOTIABLE)
-//////////////////////////////
+// ============================================================================
+// HELPERS
+// ============================================================================
 
 const sortAlphabetically = (athletes: Athlete[]): Athlete[] =>
   [...athletes].sort((a, b) =>
-    `${a.lastName} ${a.firstName}`.localeCompare(
-      `${b.lastName} ${b.firstName}`
-    )
+    `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`)
   );
 
-//////////////////////////////
-// 4. AVATAR COMPONENT
-//////////////////////////////
+// ============================================================================
+// AVATAR COMPONENT
+// ============================================================================
 
 const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 44 }) => {
-  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const initials = name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   const colors = ['var(--accent)', 'var(--success)', 'var(--warning)'];
   let hash = 0;
@@ -70,18 +75,12 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 44 }) 
 
   return (
     <div
+      className="rounded-full flex items-center justify-center font-semibold flex-shrink-0 text-white"
       style={{
         width: size,
         height: size,
-        borderRadius: '50%',
         backgroundColor: bgColor,
-        color: 'white',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         fontSize: size * 0.4,
-        fontWeight: 600,
-        flexShrink: 0,
       }}
     >
       {initials}
@@ -89,51 +88,42 @@ const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 44 }) 
   );
 };
 
-//////////////////////////////
-// 5. LOADING & ERROR STATES (using canonical StateCard)
-//////////////////////////////
+// ============================================================================
+// STATE COMPONENTS
+// ============================================================================
 
 const LoadingState: React.FC = () => (
-  <div style={{
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--bg-secondary)'
-  }}>
+  <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle">
     <StateCard variant="loading" title="Laster spillere..." />
   </div>
 );
 
 const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, onRetry }) => (
-  <div style={{
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--bg-secondary)',
-    padding: '24px'
-  }}>
+  <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle p-6">
     <StateCard
       variant="error"
       title="Kunne ikke laste spillere"
       description={error}
-      action={<Button variant="primary" onClick={onRetry}>Prov igjen</Button>}
+      action={
+        <Button variant="primary" onClick={onRetry}>
+          Prøv igjen
+        </Button>
+      }
     />
   </div>
 );
 
-//////////////////////////////
-// 6. MAIN COMPONENT
-//////////////////////////////
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 type Props = {
   onSelectAthlete: (athleteId: string) => void;
-  athletes?: Athlete[];  // Optional API data
+  athletes?: Athlete[];
 };
 
 export default function CoachAthleteList({ onSelectAthlete, athletes: propAthletes }: Props) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [athletes, setAthletes] = useState<Athlete[]>(propAthletes || []);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -151,9 +141,13 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
 
       const response = await coachesAPI.getAthletes();
       setAthletes(response.data?.data || response.data || MOCK_ATHLETES);
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'En ukjent feil oppstod');
-      // Fallback to mock data on error
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+            'En ukjent feil oppstod';
+      setError(errorMessage);
       setAthletes(MOCK_ATHLETES);
     } finally {
       setLoading(false);
@@ -161,7 +155,6 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
   };
 
   useEffect(() => {
-    // Only fetch if not using props
     if (!propAthletes) {
       fetchAthletes();
     } else {
@@ -169,8 +162,8 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
     }
   }, [propAthletes]);
 
-  // Filter and sort athletes (before callbacks that use it)
-  const filteredAthletes = sortAlphabetically(athletes).filter(a =>
+  // Filter and sort athletes
+  const filteredAthletes = sortAlphabetically(athletes).filter((a) =>
     `${a.firstName} ${a.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -208,7 +201,7 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
     setShowBatchPanel(false);
     setSelectedIds(new Set());
     setIsSelectMode(false);
-    fetchAthletes(); // Refresh data
+    fetchAthletes();
   }, []);
 
   // Create player names map for batch panel
@@ -223,37 +216,22 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
   if (error && athletes.length === 0) return <ErrorState error={error} onRetry={fetchAthletes} />;
 
   return (
-    <section
-      aria-label="Athlete list"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
-      {/* Header - using PageHeader from design system */}
+    <section aria-label="Athlete list" className="min-h-screen bg-ak-surface-subtle font-sans">
+      {/* Header */}
       <PageHeader
         title="Spillere"
         subtitle={`${filteredAthletes.length} spillere (sortert alfabetisk)`}
       />
 
       {/* Select Mode Controls */}
-      <div style={{ padding: '0 24px', marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center' }}>
+      <div className="px-6 mb-4 flex gap-3 items-center">
         <button
           onClick={toggleSelectMode}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 16px',
-            borderRadius: 'var(--radius-md)',
-            border: isSelectMode ? 'none' : '1px solid var(--border-default)',
-            backgroundColor: isSelectMode ? 'var(--accent)' : 'var(--bg-primary)',
-            color: isSelectMode ? 'var(--bg-primary)' : 'var(--text-primary)',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 500,
-          }}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+            isSelectMode
+              ? 'bg-ak-brand-primary text-white border-none'
+              : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
+          }`}
         >
           <Users size={16} />
           {isSelectMode ? 'Avbryt valg' : 'Velg flere'}
@@ -263,15 +241,7 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
           <>
             <button
               onClick={selectedIds.size === filteredAthletes.length ? deselectAll : selectAll}
-              style={{
-                padding: '10px 16px',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border-default)',
-                backgroundColor: 'var(--bg-primary)',
-                color: 'var(--text-secondary)',
-                cursor: 'pointer',
-                fontSize: '14px',
-              }}
+              className="px-4 py-2.5 rounded-lg border border-ak-border-default bg-ak-surface-base text-ak-text-secondary cursor-pointer text-sm"
             >
               {selectedIds.size === filteredAthletes.length ? 'Velg ingen' : 'Velg alle'}
             </button>
@@ -279,16 +249,7 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
             {selectedIds.size > 0 && (
               <button
                 onClick={() => setShowBatchPanel(true)}
-                style={{
-                  padding: '10px 16px',
-                  borderRadius: 'var(--radius-md)',
-                  border: 'none',
-                  backgroundColor: 'var(--success)',
-                  color: 'white',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                }}
+                className="px-4 py-2.5 rounded-lg border-none bg-ak-status-success text-white cursor-pointer text-sm font-medium"
               >
                 Handlinger ({selectedIds.size})
               </button>
@@ -298,39 +259,25 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
       </div>
 
       {/* Search */}
-      <div style={{ padding: '0 24px', marginBottom: '16px' }}>
+      <div className="px-6 mb-4">
         <Card variant="default" padding="none">
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '12px 16px',
-            }}
-          >
-            <Search size={20} style={{ color: 'var(--text-secondary)' }} />
+          <div className="flex items-center gap-3 px-4 py-3">
+            <Search size={20} className="text-ak-text-secondary" />
             <input
               type="text"
-              placeholder="Sok etter spiller..."
+              placeholder="Søk etter spiller..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{
-                flex: 1,
-                border: 'none',
-                background: 'none',
-                outline: 'none',
-                fontSize: '15px',
-                color: 'var(--text-primary)',
-              }}
+              className="flex-1 border-none bg-transparent outline-none text-[15px] text-ak-text-primary"
             />
           </div>
         </Card>
       </div>
 
       {/* Athletes List */}
-      <div style={{ padding: '0 24px 24px' }}>
+      <div className="px-6 pb-6">
         <Card variant="default" padding="none">
-          <div style={{ overflow: 'hidden' }}>
+          <div className="overflow-hidden">
             {filteredAthletes.map((athlete, index) => (
               <button
                 key={athlete.id}
@@ -342,49 +289,26 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
                     onSelectAthlete(athlete.id);
                   }
                 }}
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  padding: '16px 20px',
-                  backgroundColor: selectedIds.has(athlete.id) ? 'rgba(var(--accent-rgb), 0.08)' : 'transparent',
-                  border: 'none',
-                  borderBottom: index < filteredAthletes.length - 1 ? '1px solid var(--border-default)' : 'none',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'background-color 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (!selectedIds.has(athlete.id)) {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = selectedIds.has(athlete.id) ? 'rgba(var(--accent-rgb), 0.08)' : 'transparent';
-                }}
+                className={`w-full flex items-center gap-3.5 px-5 py-4 border-none cursor-pointer text-left transition-colors ${
+                  selectedIds.has(athlete.id)
+                    ? 'bg-ak-brand-primary/10'
+                    : 'bg-transparent hover:bg-ak-surface-subtle'
+                } ${index < filteredAthletes.length - 1 ? 'border-b border-ak-border-default' : ''}`}
               >
                 {isSelectMode && (
-                  <div style={{ flexShrink: 0 }}>
+                  <div className="flex-shrink-0">
                     {selectedIds.has(athlete.id) ? (
-                      <CheckSquare size={22} color="var(--accent)" />
+                      <CheckSquare size={22} className="text-ak-brand-primary" />
                     ) : (
-                      <Square size={22} color="var(--text-secondary)" />
+                      <Square size={22} className="text-ak-text-secondary" />
                     )}
                   </div>
                 )}
                 <Avatar name={`${athlete.firstName} ${athlete.lastName}`} />
-                <span style={{
-                  flex: 1,
-                  fontSize: '15px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                }}>
+                <span className="flex-1 text-[15px] font-medium text-ak-text-primary">
                   {athlete.lastName}, {athlete.firstName}
                 </span>
-                {!isSelectMode && (
-                  <ChevronRight size={20} style={{ color: 'var(--text-secondary)' }} />
-                )}
+                {!isSelectMode && <ChevronRight size={20} className="text-ak-text-secondary" />}
               </button>
             ))}
           </div>
@@ -404,11 +328,8 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
   );
 }
 
-//////////////////////////////
-// 6. NOTES
-//////////////////////////////
-
 /*
+STRICT NOTES:
 - Alphabetical sorting only (by last name)
 - No counts, badges, or performance indicators
 - Neutral presentation - no ranking or comparison

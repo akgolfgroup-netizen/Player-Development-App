@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { tokens } from "../../design-tokens";
 import { SectionTitle } from '../../components/typography';
 
 /**
  * StatsPage.jsx
+ * Design System v3.0 - Premium Light
+ *
  * Phase 1: Demo mode only (DataGolf integration kommer i Fase 2)
  * Phase 2: Live API integration
  *
- * Design System: v3.0 Blue Palette
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
-
-// Design System colors (using tokens directly in components)
 
 // ============================================================================
 // FEATURE FLAGS
@@ -156,8 +155,8 @@ async function fetchStats(tour, signal) {
 
 function Card({ title, children }) {
   return (
-    <div style={{ border: `1px solid ${tokens.semantic.border.default}`, borderRadius: 12, padding: 16, background: "white" }}>
-      <div style={{ fontWeight: 700, marginBottom: 10 }}>{title}</div>
+    <div className="border border-ak-border-default rounded-xl p-4 bg-ak-surface-base">
+      <div className="font-bold mb-2.5">{title}</div>
       {children}
     </div>
   );
@@ -169,25 +168,25 @@ function StatRow({ label, you, avg, unit, invertBetter }) {
   const better = invertBetter ? delta <= 0 : delta >= 0;
   const sign = delta >= 0 ? "+" : "";
   return (
-    <div style={{ padding: "10px 0", borderTop: `1px solid ${tokens.semantic.border.subtle}` }}>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <div style={{ fontWeight: 600 }}>{label}</div>
-        <div style={{ opacity: 0.85 }}>
-          <span style={{ fontWeight: 700 }}>{sign}{delta.toFixed(1)}{unit}</span>{" "}
-          <span style={{ opacity: 0.75 }}>({ratio.toFixed(0)}%)</span>{" "}
-          <span style={{ marginLeft: 8, color: better ? tokens.colors.success : tokens.colors.warning }}>
+    <div className="py-2.5 border-t border-ak-border-default">
+      <div className="flex justify-between gap-3 flex-wrap">
+        <div className="font-semibold">{label}</div>
+        <div className="opacity-85">
+          <span className="font-bold">{sign}{delta.toFixed(1)}{unit}</span>{" "}
+          <span className="opacity-75">({ratio.toFixed(0)}%)</span>{" "}
+          <span className={`ml-2 ${better ? 'text-ak-status-success' : 'text-ak-status-warning'}`}>
             {better ? "+" : "-"}
           </span>
         </div>
       </div>
-      <div style={{ display: "flex", gap: 18, marginTop: 8, opacity: 0.9, flexWrap: "wrap" }}>
+      <div className="flex gap-4 mt-2 opacity-90 flex-wrap">
         <div>
-          <div style={{ fontSize: 12, opacity: 0.7 }}>Du</div>
-          <div style={{ fontWeight: 700 }}>{you.toFixed(1)}{unit}</div>
+          <div className="text-xs opacity-70">Du</div>
+          <div className="font-bold">{you.toFixed(1)}{unit}</div>
         </div>
         <div>
-          <div style={{ fontSize: 12, opacity: 0.7 }}>Tour Avg</div>
-          <div style={{ fontWeight: 700 }}>{avg.toFixed(1)}{unit}</div>
+          <div className="text-xs opacity-70">Tour Avg</div>
+          <div className="font-bold">{avg.toFixed(1)}{unit}</div>
         </div>
       </div>
     </div>
@@ -197,30 +196,24 @@ function StatRow({ label, you, avg, unit, invertBetter }) {
 function MiniStat({ title, value }) {
   const isPositive = value.startsWith('+');
   const isNegative = value.startsWith('-');
+  const colorClass = isPositive ? 'text-ak-status-success' : isNegative ? 'text-ak-status-warning' : 'text-ak-text-primary';
   return (
-    <div style={{ padding: 12, borderRadius: 12, border: `1px solid ${tokens.semantic.border.subtle}` }}>
-      <div style={{ opacity: 0.8, marginBottom: 4 }}>{title}</div>
-      <div style={{
-        fontSize: 22,
-        fontWeight: 800,
-        color: isPositive ? tokens.colors.success : isNegative ? tokens.colors.warning : 'inherit'
-      }}>
+    <div className="p-3 rounded-xl border border-ak-border-default">
+      <div className="opacity-80 mb-1">{title}</div>
+      <div className={`text-[22px] font-extrabold ${colorClass}`}>
         {value}
       </div>
     </div>
   );
 }
 
-function btn(active) {
-  return {
-    padding: "8px 10px",
-    borderRadius: 12,
-    border: `1px solid ${tokens.semantic.border.default}`,
-    background: active ? tokens.colors.ink : "white",
-    color: active ? "white" : tokens.colors.ink,
-    cursor: "pointer",
-    fontWeight: 700,
-  };
+// Helper for tab button classes
+function getTabButtonClasses(active) {
+  const base = 'py-2 px-2.5 rounded-xl border cursor-pointer font-bold';
+  if (active) {
+    return `${base} border-ak-text-primary bg-ak-text-primary text-white`;
+  }
+  return `${base} border-ak-border-default bg-ak-surface-base text-ak-text-primary`;
 }
 
 export default function StatsPage() {
@@ -264,33 +257,30 @@ export default function StatsPage() {
     };
   }, [loading, source]);
 
-  const bannerStyles = {
-    loading: { background: tokens.semantic.background.default, color: tokens.colors.steel },
-    info: { background: tokens.colors.snow, color: tokens.colors.primary },
-    ok: { background: `${tokens.colors.success}15`, color: tokens.colors.success },
+  // Helper for banner classes
+  const getBannerClasses = (type) => {
+    const base = 'mt-2.5 py-2 px-3 rounded-lg text-[13px] flex items-center gap-1.5';
+    const types = {
+      loading: `${base} bg-ak-surface-subtle text-ak-text-secondary`,
+      info: `${base} bg-ak-surface-subtle text-ak-brand-primary`,
+      ok: `${base} bg-ak-status-success/15 text-ak-status-success`,
+    };
+    return types[type] || types.loading;
   };
 
   return (
-    <div style={{ padding: 20, maxWidth: 1100, margin: "0 auto", fontFamily: "system-ui, -apple-system, Segoe UI, Roboto" }}>
-      <SectionTitle style={{ margin: "6px 0 14px" }}>Statistikk</SectionTitle>
+    <div className="p-5 max-w-[1100px] mx-auto font-sans">
+      <SectionTitle className="my-1.5 mb-3.5">Statistikk</SectionTitle>
 
-      <div
-        style={{
-          padding: 12,
-          borderRadius: 12,
-          border: `1px solid ${tokens.semantic.border.default}`,
-          background: "white",
-          marginBottom: 16,
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          <div style={{ fontWeight: 700 }}>Strokes Gained Profil</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ opacity: 0.8 }}>Sammenlign med:</span>
+      <div className="p-3 rounded-xl border border-ak-border-default bg-ak-surface-base mb-4">
+        <div className="flex justify-between gap-3 flex-wrap">
+          <div className="font-bold">Strokes Gained Profil</div>
+          <div className="flex items-center gap-2.5">
+            <span className="opacity-80">Sammenlign med:</span>
             <select
               value={tour}
               onChange={(e) => setTour(e.target.value)}
-              style={{ padding: "6px 8px", borderRadius: 10 }}
+              className="py-1.5 px-2 rounded-lg border border-ak-border-default"
             >
               <option value="PGA">PGA Tour</option>
               <option value="LPGA">LPGA Tour</option>
@@ -299,54 +289,45 @@ export default function StatsPage() {
           </div>
         </div>
 
-        <div style={{
-          marginTop: 10,
-          padding: "8px 12px",
-          borderRadius: 8,
-          fontSize: 13,
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          ...bannerStyles[banner.type]
-        }}>
-          {banner.type === "ok" && <span style={{ color: tokens.colors.success }}>&#10003;</span>}
+        <div className={getBannerClasses(banner.type)}>
+          {banner.type === "ok" && <span className="text-ak-status-success">&#10003;</span>}
           {banner.type === "info" && <span>&#8505;</span>}
           {banner.type === "loading" && <span>&#8987;</span>}
           {banner.text}
         </div>
 
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
-          <button onClick={() => setActiveTab("min")} style={btn(activeTab === "min")}>Min Statistikk</button>
-          <button onClick={() => setActiveTab("sg")} style={btn(activeTab === "sg")}>SG Profil</button>
-          <button onClick={() => setActiveTab("peer")} style={btn(activeTab === "peer")}>Peer</button>
-          <button onClick={() => setActiveTab("tour")} style={btn(activeTab === "tour")}>Tour</button>
-          <button onClick={() => setActiveTab("trends")} style={btn(activeTab === "trends")}>Trends</button>
+        <div className="flex gap-2 flex-wrap mt-3">
+          <button onClick={() => setActiveTab("min")} className={getTabButtonClasses(activeTab === "min")}>Min Statistikk</button>
+          <button onClick={() => setActiveTab("sg")} className={getTabButtonClasses(activeTab === "sg")}>SG Profil</button>
+          <button onClick={() => setActiveTab("peer")} className={getTabButtonClasses(activeTab === "peer")}>Peer</button>
+          <button onClick={() => setActiveTab("tour")} className={getTabButtonClasses(activeTab === "tour")}>Tour</button>
+          <button onClick={() => setActiveTab("trends")} className={getTabButtonClasses(activeTab === "trends")}>Trends</button>
         </div>
       </div>
 
       {activeTab !== "sg" ? (
         <Card title="Ikke implementert i denne filen">
-          <div style={{ opacity: 0.85 }}>
+          <div className="opacity-85">
             Fanen <b>{activeTab}</b> er markert som "kommer senere" i Fase-planen.
           </div>
         </Card>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
+        <div className="grid grid-cols-1 gap-3.5">
           <Card title="Din SG vs Tour Snitt">
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+            <div className="flex justify-between gap-3 flex-wrap">
               <div>
-                <div style={{ opacity: 0.8 }}>Total Strokes Gained</div>
-                <div style={{ fontSize: 34, fontWeight: 800, color: data.sgTotal >= 0 ? tokens.colors.success : tokens.colors.warning }}>
+                <div className="opacity-80">Total Strokes Gained</div>
+                <div className={`text-[34px] font-extrabold ${data.sgTotal >= 0 ? 'text-ak-status-success' : 'text-ak-status-warning'}`}>
                   {formatSigned(data.sgTotal, 2)}
                 </div>
-                <div style={{ opacity: 0.8 }}>vs {tour} Tour Average (0.00)</div>
+                <div className="opacity-80">vs {tour} Tour Average (0.00)</div>
               </div>
-              <div style={{ alignSelf: "center", fontWeight: 800 }}>{verdictLabel(data.sgTotal)}</div>
+              <div className="self-center font-extrabold">{verdictLabel(data.sgTotal)}</div>
             </div>
           </Card>
 
           <Card title="SG Komponenter">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10 }}>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-2.5">
               <MiniStat title="Off Tee" value={formatSigned(data.sgComponents.offTee)} />
               <MiniStat title="Approach" value={formatSigned(data.sgComponents.approach)} />
               <MiniStat title="Around Green" value={formatSigned(data.sgComponents.aroundGreen)} />
@@ -389,18 +370,18 @@ export default function StatsPage() {
           </Card>
 
           <Card title="Oppsummering">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12 }}>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3">
               <div>
-                <div style={{ fontWeight: 800, marginBottom: 6, color: tokens.colors.success }}>Styrker vs Tour</div>
-                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                <div className="font-extrabold mb-1.5 text-ak-status-success">Styrker vs Tour</div>
+                <ul className="m-0 pl-4">
                   {data.summary.strengths.map((s) => (
                     <li key={s}>{s}</li>
                   ))}
                 </ul>
               </div>
               <div>
-                <div style={{ fontWeight: 800, marginBottom: 6, color: tokens.colors.warning }}>Forbedringsomrader</div>
-                <ul style={{ margin: 0, paddingLeft: 18 }}>
+                <div className="font-extrabold mb-1.5 text-ak-status-warning">Forbedringsomrader</div>
+                <ul className="m-0 pl-4">
                   {data.summary.improvements.map((s) => (
                     <li key={s}>{s}</li>
                   ))}
@@ -410,7 +391,7 @@ export default function StatsPage() {
           </Card>
 
           <Card title="Stats Dashboard - Fase 1">
-            <div style={{ opacity: 0.9 }}>
+            <div className="opacity-90">
               <strong>Aktivt:</strong> Min Statistikk, SG Profil (demo fallback), Peer Sammenligning
               <br />
               <strong>Kommer snart:</strong> Tour Benchmark (Fase 2), Live Trends (Fase 3)

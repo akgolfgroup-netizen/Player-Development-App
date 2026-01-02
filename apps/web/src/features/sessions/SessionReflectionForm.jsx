@@ -1,9 +1,11 @@
 /**
  * SessionReflectionForm - Refleksjon etter fullført økt
+ * Design System v3.0 - Premium Light
  *
  * Samler data for treningsanalyse og utvikling.
  * Basert på: APP_FUNCTIONALITY.md Section 8
- * Design: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React, { useState } from 'react';
 import Button from '../../ui/primitives/Button';
@@ -19,64 +21,40 @@ function formatTime(seconds) {
 // Rating scale component with custom icons and labels
 function RatingScale({ label, description, value, onChange, icons, labels }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
+    <div className="mb-6">
+      <span className="block text-[15px] font-medium text-ak-text-primary mb-1">
         {label}
       </span>
       {description && (
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+        <span className="block text-xs text-ak-text-secondary mb-2">
           {description}
         </span>
       )}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-md)',
-          padding: '16px',
-        }}
-      >
+      <div className="flex justify-between bg-ak-surface-subtle rounded-lg p-4">
         {[1, 2, 3, 4, 5].map((rating) => (
           <button
             key={rating}
             onClick={() => onChange(rating)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: '8px',
-              backgroundColor: value === rating ? 'var(--accent)' : 'transparent',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              cursor: 'pointer',
-              minWidth: '48px',
-            }}
+            className={`flex flex-col items-center p-2 border-none rounded cursor-pointer min-w-[48px] ${
+              value === rating ? 'bg-ak-brand-primary' : 'bg-transparent'
+            }`}
           >
-            <span style={{ fontSize: '24px' }}>{icons[rating - 1]}</span>
+            <span className="text-2xl">{icons[rating - 1]}</span>
             <span
-              style={{
-                fontSize: '12px', lineHeight: '16px',
-                color: value === rating ? 'var(--bg-primary)' : 'var(--text-secondary)',
-                marginTop: '4px',
-              }}
+              className={`text-xs mt-1 ${
+                value === rating ? 'text-white' : 'text-ak-text-secondary'
+              }`}
             >
               {rating}
             </span>
           </button>
         ))}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '4px',
-        }}
-      >
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+      <div className="flex justify-between mt-1">
+        <span className="text-xs text-ak-text-secondary">
           {labels[0]}
         </span>
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <span className="text-xs text-ak-text-secondary">
           {labels[1]}
         </span>
       </div>
@@ -89,30 +67,20 @@ function SleepDurationSelector({ value, onChange }) {
   const options = ['< 5t', '5-6t', '6-7t', '7-8t', '> 8t'];
 
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+    <div className="mb-6">
+      <span className="block text-[15px] font-medium text-ak-text-primary mb-2">
         Søvn siste natt
       </span>
-      <div
-        style={{
-          display: 'flex',
-          gap: '8px',
-          flexWrap: 'wrap',
-        }}
-      >
+      <div className="flex gap-2 flex-wrap">
         {options.map((option) => (
           <button
             key={option}
             onClick={() => onChange(option)}
-            style={{
-              padding: `${'8px'} ${'16px'}`,
-              backgroundColor: value === option ? 'var(--accent)' : 'var(--bg-secondary)',
-              color: value === option ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              fontSize: '15px', lineHeight: '20px', fontWeight: 500,
-            }}
+            className={`py-2 px-4 border-none rounded-lg cursor-pointer text-[15px] font-medium ${
+              value === option
+                ? 'bg-ak-brand-primary text-white'
+                : 'bg-ak-surface-subtle text-ak-text-primary'
+            }`}
           >
             {option}
           </button>
@@ -125,24 +93,15 @@ function SleepDurationSelector({ value, onChange }) {
 // Text area field
 function TextAreaField({ label, value, onChange, placeholder }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+    <div className="mb-6">
+      <span className="block text-[15px] font-medium text-ak-text-primary mb-2">
         {label}
       </span>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        style={{
-          width: '100%',
-          minHeight: '80px',
-          padding: '16px',
-          backgroundColor: 'var(--bg-secondary)',
-          border: 'none',
-          borderRadius: 'var(--radius-md)',
-          resize: 'vertical',
-          fontSize: '16px', lineHeight: '21px', fontWeight: 400,
-        }}
+        className="w-full min-h-[80px] p-4 bg-ak-surface-subtle border-none rounded-lg resize-y text-base text-ak-text-primary"
       />
     </div>
   );
@@ -150,16 +109,7 @@ function TextAreaField({ label, value, onChange, placeholder }) {
 
 // Section divider
 function SectionDivider() {
-  return (
-    <div
-      style={{
-        height: '1px',
-        backgroundColor: 'var(--border-default)',
-        marginTop: '24px',
-        marginBottom: '24px',
-      }}
-    />
-  );
+  return <div className="h-px bg-ak-border-default my-6" />;
 }
 
 // Main SessionReflectionForm component
@@ -210,45 +160,27 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
   const isComplete = fokus > 0 && energiniva > 0 && motivasjon > 0;
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-secondary)',
-        minHeight: '100vh',
-        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
-      }}
-    >
+    <div className="bg-ak-surface-subtle min-h-screen font-sans">
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          padding: '24px',
-          borderBottom: '1px solid var(--border-default)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <span style={{ color: 'var(--success)', fontSize: '28px' }}>✓</span>
-          <span style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)' }}>
+      <div className="bg-ak-surface-base p-6 border-b border-ak-border-default">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-ak-status-success text-[28px]">✓</span>
+          <span className="text-[28px] font-bold text-ak-text-primary">
             Økt fullført!
           </span>
         </div>
-        <div
-          style={{
-            height: '2px',
-            backgroundColor: 'var(--accent)',
-            marginBottom: '16px',
-          }}
-        />
-        <div style={{ fontSize: '16px', lineHeight: '21px', fontWeight: 400, color: 'var(--text-secondary)' }}>
+        <div className="h-0.5 bg-ak-brand-primary mb-4" />
+        <div className="text-base text-ak-text-secondary">
           {session?.date} • {formatTime(totalDuration)}
         </div>
-        <div style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <div className="text-xs text-ak-text-secondary">
           {blocksCompleted} av {session?.blocks?.length || 0} blokker fullført
         </div>
       </div>
 
       {/* Form content */}
-      <div style={{ padding: '24px' }}>
-        <div style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '24px' }}>
+      <div className="p-6">
+        <div className="text-[22px] font-bold text-ak-text-primary mb-6">
           REFLEKSJON
         </div>
 
@@ -356,7 +288,7 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
           variant="primary"
           onClick={handleSubmit}
           disabled={!isComplete}
-          style={{ width: '100%', marginBottom: '16px' }}
+          className="w-full mb-4"
         >
           Lagre refleksjon
         </Button>
@@ -364,21 +296,14 @@ export default function SessionReflectionForm({ session, totalDuration, blocksCo
         <Button
           variant="ghost"
           onClick={onSkip}
-          style={{ width: '100%' }}
+          className="w-full"
         >
           Hopp over
         </Button>
 
         {/* Sports science info */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: 'var(--radius-md)',
-            padding: '16px',
-            marginTop: '32px',
-          }}
-        >
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <div className="bg-ak-surface-subtle rounded-lg p-4 mt-8">
+          <span className="text-xs text-ak-text-secondary">
             💡 Refleksjonene hjelper deg og treneren din med å forstå hvordan kropp og sinn responderer på trening,
             og justere treningsbelastningen for optimal utvikling.
           </span>

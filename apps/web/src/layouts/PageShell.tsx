@@ -1,7 +1,7 @@
 /**
  * ============================================================
  * PageShell - Standardisert sidelayout
- * AK Golf Academy Design System v3.0
+ * AK Golf Academy Design System v3.0 - Premium Light
  * ============================================================
  *
  * Felles layout-komponent som alle sider i spillerportalen bruker.
@@ -19,11 +19,12 @@
  * - Feiltilstand (error)
  * - Fullført med neste steg CTA
  *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic padding and maxWidth which require runtime values)
  * ============================================================
  */
 
 import React from 'react';
-import { tokens } from '../design-tokens';
 import ProfileDropdown from '../components/layout/ProfileDropdown';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -86,26 +87,26 @@ export interface PageShellProps {
 // ────────────────────────────────────────────────────────────
 // Skeleton Loader (for loading state)
 // ────────────────────────────────────────────────────────────
-const SkeletonBlock = ({ width = '100%', height = 20 }: { width?: string | number; height?: number }) => (
+interface SkeletonBlockProps {
+  width?: string | number;
+  height?: number;
+}
+
+const SkeletonBlock = ({ width = '100%', height = 20 }: SkeletonBlockProps) => (
   <div
-    style={{
-      width,
-      height,
-      backgroundColor: tokens.colors.gray200,
-      borderRadius: 8,
-      animation: 'pulse 1.5s ease-in-out infinite',
-    }}
+    className="bg-ak-surface-subtle rounded-lg animate-pulse"
+    style={{ width, height }}
   />
 );
 
 const LoadingSkeleton = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: PAGE_SPACING.card }}>
+  <div className="flex flex-col gap-4">
     <SkeletonBlock height={32} width="40%" />
     <SkeletonBlock height={16} width="60%" />
-    <div style={{ marginTop: PAGE_SPACING.heading }}>
+    <div className="mt-6">
       <SkeletonBlock height={180} />
     </div>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: PAGE_SPACING.card }}>
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
       <SkeletonBlock height={120} />
       <SkeletonBlock height={120} />
       <SkeletonBlock height={120} />
@@ -127,55 +128,24 @@ interface EmptyStateProps {
 }
 
 const EmptyState = ({ title, description, cta }: EmptyStateProps) => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '64px 24px',
-      textAlign: 'center',
-    }}
-  >
-    <div
-      style={{
-        width: 80,
-        height: 80,
-        borderRadius: 20,
-        backgroundColor: tokens.colors.gray200,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 24,
-      }}
-    >
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.gray600} strokeWidth="1.5">
+  <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+    <div className="w-20 h-20 rounded-[20px] bg-ak-surface-subtle flex items-center justify-center mb-6">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-ak-text-tertiary">
         <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </div>
-    <h3 style={{ fontSize: 18, fontWeight: 600, color: tokens.colors.ink, margin: 0 }}>
+    <h3 className="text-lg font-semibold text-ak-text-primary m-0">
       {title}
     </h3>
     {description && (
-      <p style={{ fontSize: 14, color: tokens.colors.gray700, marginTop: 8, maxWidth: 400 }}>
+      <p className="text-sm text-ak-text-secondary mt-2 max-w-[400px]">
         {description}
       </p>
     )}
     {cta && (
       <button
         onClick={cta.onClick}
-        style={{
-          marginTop: 24,
-          padding: '12px 24px',
-          borderRadius: 12,
-          border: 'none',
-          backgroundColor: tokens.colors.primary,
-          color: tokens.colors.white,
-          fontSize: 14,
-          fontWeight: 600,
-          cursor: 'pointer',
-          transition: 'opacity 0.2s',
-        }}
+        className="mt-6 px-6 py-3 rounded-xl border-none bg-ak-brand-primary text-white text-sm font-semibold cursor-pointer transition-opacity hover:opacity-90"
       >
         {cta.label}
       </button>
@@ -192,53 +162,22 @@ interface ErrorStateProps {
 }
 
 const ErrorState = ({ message = 'Noe gikk galt', onRetry }: ErrorStateProps) => (
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '64px 24px',
-      textAlign: 'center',
-    }}
-  >
-    <div
-      style={{
-        width: 80,
-        height: 80,
-        borderRadius: 20,
-        backgroundColor: 'rgba(220, 38, 38, 0.08)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 24,
-      }}
-    >
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={tokens.colors.error} strokeWidth="1.5">
+  <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+    <div className="w-20 h-20 rounded-[20px] bg-ak-status-error/10 flex items-center justify-center mb-6">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-ak-status-error">
         <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
       </svg>
     </div>
-    <h3 style={{ fontSize: 18, fontWeight: 600, color: tokens.colors.ink, margin: 0 }}>
+    <h3 className="text-lg font-semibold text-ak-text-primary m-0">
       Feil oppstod
     </h3>
-    <p style={{ fontSize: 14, color: tokens.colors.gray700, marginTop: 8, maxWidth: 400 }}>
+    <p className="text-sm text-ak-text-secondary mt-2 max-w-[400px]">
       {message}
     </p>
     {onRetry && (
       <button
         onClick={onRetry}
-        style={{
-          marginTop: 24,
-          padding: '12px 24px',
-          borderRadius: 12,
-          border: `1px solid ${tokens.colors.gray300}`,
-          backgroundColor: 'transparent',
-          color: tokens.colors.ink,
-          fontSize: 14,
-          fontWeight: 600,
-          cursor: 'pointer',
-          transition: 'background-color 0.2s',
-        }}
+        className="mt-6 px-6 py-3 rounded-xl border border-ak-border-default bg-transparent text-ak-text-primary text-sm font-semibold cursor-pointer transition-colors hover:bg-ak-surface-subtle"
       >
         Prøv igjen
       </button>
@@ -257,20 +196,8 @@ interface NextStepCTAProps {
 
 const NextStepCTA = ({ label, href, onClick }: NextStepCTAProps) => {
   const content = (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '20px 24px',
-        borderRadius: 16,
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
-        cursor: 'pointer',
-        transition: 'opacity 0.2s',
-      }}
-    >
-      <span style={{ fontSize: 16, fontWeight: 600 }}>{label}</span>
+    <div className="flex items-center justify-between py-5 px-6 rounded-2xl bg-ak-brand-primary text-white cursor-pointer transition-opacity hover:opacity-90">
+      <span className="text-base font-semibold">{label}</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M5 12h14M12 5l7 7-7 7" />
       </svg>
@@ -278,10 +205,10 @@ const NextStepCTA = ({ label, href, onClick }: NextStepCTAProps) => {
   );
 
   if (href) {
-    return <a href={href} style={{ textDecoration: 'none' }}>{content}</a>;
+    return <a href={href} className="no-underline">{content}</a>;
   }
 
-  return <button onClick={onClick} style={{ all: 'unset', width: '100%' }}>{content}</button>;
+  return <button onClick={onClick} className="w-full border-none bg-transparent p-0 cursor-pointer">{content}</button>;
 };
 
 // ────────────────────────────────────────────────────────────
@@ -330,78 +257,34 @@ export default function PageShell({
 
   return (
     <div
+      className="min-h-full"
       style={{
-        minHeight: '100%',
         paddingTop: padding.top,
         paddingRight: padding.right,
         paddingBottom: padding.bottom,
         paddingLeft: padding.left,
       }}
     >
-      {/* CSS for skeleton animation */}
-      <style>
-        {`
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-          }
-        `}
-      </style>
-
-      <div style={{ maxWidth, margin: '0 auto' }}>
+      <div className="mx-auto" style={{ maxWidth }}>
         {/* Header */}
-        <header
-          style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            marginBottom: PAGE_SPACING.heading,
-            flexWrap: 'wrap',
-            gap: 16,
-          }}
-        >
+        <header className="flex items-start justify-between mb-6 flex-wrap gap-4">
           <div>
-            <h1
-              style={{
-                fontSize: isMobile ? 24 : 28,
-                fontWeight: 700,
-                color: tokens.colors.ink,
-                margin: 0,
-                lineHeight: 1.2,
-              }}
-            >
+            <h1 className={`font-bold text-ak-text-primary m-0 leading-tight ${isMobile ? 'text-2xl' : 'text-[28px]'}`}>
               {title}
             </h1>
             {subtitle && (
-              <p
-                style={{
-                  fontSize: 14,
-                  color: tokens.colors.gray700,
-                  margin: '4px 0 0 0',
-                }}
-              >
+              <p className="text-sm text-ak-text-secondary mt-1 mb-0">
                 {subtitle}
               </p>
             )}
             {context && (
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginTop: 8,
-                  padding: '4px 12px',
-                  borderRadius: 6,
-                  backgroundColor: tokens.colors.gray200,
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: tokens.colors.gray700,
-                }}
-              >
+              <span className="inline-block mt-2 px-3 py-1 rounded-md bg-ak-surface-subtle text-xs font-medium text-ak-text-secondary">
                 {context}
               </span>
             )}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div className="flex items-center gap-3">
             {headerActions}
             {!hideProfile && !isMobile && (
               <ProfileDropdown
@@ -420,7 +303,7 @@ export default function PageShell({
 
         {/* Next Step CTA */}
         {nextStep && state === 'success' && (
-          <div style={{ marginTop: PAGE_SPACING.section }}>
+          <div className="mt-12">
             <NextStepCTA {...nextStep} />
           </div>
         )}

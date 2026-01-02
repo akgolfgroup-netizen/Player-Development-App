@@ -1,25 +1,75 @@
+/**
+ * LoggTreningContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Plus, Clock, Target, Dumbbell, Brain,
   Star, Save, CheckCircle, AlertCircle
 } from 'lucide-react';
-// UiCanon: Using CSS variables
 import Button from '../../ui/primitives/Button';
 import { sessionsAPI } from '../../services/api';
 import { SubSectionTitle } from '../../components/typography';
 
 // ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const SESSION_TYPE_CLASSES = {
+  technical: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/15',
+    activeBg: 'bg-ak-brand-primary',
+    border: 'border-ak-brand-primary',
+    icon: Target,
+    label: 'Teknikk',
+  },
+  short_game: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    activeBg: 'bg-ak-status-success',
+    border: 'border-ak-status-success',
+    icon: Target,
+    label: 'Kortspill',
+  },
+  physical: {
+    text: 'text-ak-status-error',
+    bg: 'bg-ak-status-error/15',
+    activeBg: 'bg-ak-status-error',
+    border: 'border-ak-status-error',
+    icon: Dumbbell,
+    label: 'Fysisk',
+  },
+  mental: {
+    text: 'text-amber-500',
+    bg: 'bg-amber-500/15',
+    activeBg: 'bg-amber-500',
+    border: 'border-amber-500',
+    icon: Brain,
+    label: 'Mental',
+  },
+  round: {
+    text: 'text-ak-text-primary',
+    bg: 'bg-ak-surface-subtle',
+    activeBg: 'bg-ak-text-primary',
+    border: 'border-ak-text-primary',
+    icon: Target,
+    label: 'Runde',
+  },
+};
+
+// ============================================================================
 // MOCK DATA
 // ============================================================================
 
-const SESSION_TYPES = [
-  { id: 'technical', label: 'Teknikk', icon: Target, color: 'var(--accent)' },
-  { id: 'short_game', label: 'Kortspill', icon: Target, color: 'var(--success)' },
-  { id: 'physical', label: 'Fysisk', icon: Dumbbell, color: 'var(--error)' },
-  { id: 'mental', label: 'Mental', icon: Brain, color: 'var(--achievement)' },
-  { id: 'round', label: 'Runde', icon: Target, color: 'var(--text-primary)' },
-];
+const SESSION_TYPES = Object.entries(SESSION_TYPE_CLASSES).map(([id, config]) => ({
+  id,
+  label: config.label,
+  icon: config.icon,
+}));
 
 const QUICK_EXERCISES = [
   { id: 'driver', name: 'Driver-trening', type: 'technical', duration: 45 },
@@ -64,13 +114,9 @@ const RECENT_LOGS = [
 // ============================================================================
 
 const SessionTypeSelector = ({ selected, onSelect }) => (
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-    gap: 'var(--spacing-2)',
-    marginBottom: 'var(--spacing-6)',
-  }}>
+  <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2 mb-6">
     {SESSION_TYPES.map((type) => {
+      const classes = SESSION_TYPE_CLASSES[type.id];
       const Icon = type.icon;
       const isSelected = selected === type.id;
 
@@ -78,35 +124,20 @@ const SessionTypeSelector = ({ selected, onSelect }) => (
         <button
           key={type.id}
           onClick={() => onSelect(type.id)}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 'var(--spacing-2)',
-            padding: 'var(--spacing-4) var(--spacing-3)',
-            borderRadius: '12px',
-            border: isSelected ? `2px solid ${type.color}` : '2px solid transparent',
-            backgroundColor: isSelected ? `${type.color}15` : 'var(--bg-primary)',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-          }}
+          className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+            isSelected
+              ? `${classes.border} ${classes.bg}`
+              : 'border-transparent bg-ak-surface-base'
+          }`}
         >
-          <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '10px',
-            backgroundColor: isSelected ? type.color : `${type.color}20`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <Icon size={20} color={isSelected ? 'var(--bg-primary)' : type.color} />
+          <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center ${
+            isSelected ? classes.activeBg : classes.bg
+          }`}>
+            <Icon size={20} className={isSelected ? 'text-white' : classes.text} />
           </div>
-          <span style={{
-            fontSize: '12px',
-            fontWeight: 500,
-            color: isSelected ? type.color : 'var(--text-primary)',
-          }}>
+          <span className={`text-xs font-medium ${
+            isSelected ? classes.text : 'text-ak-text-primary'
+          }`}>
             {type.label}
           </span>
         </button>
@@ -125,47 +156,20 @@ const QuickLogButtons = ({ sessionType, onQuickLog }) => {
     : QUICK_EXERCISES;
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '14px',
-      padding: 'var(--spacing-4)',
-      marginBottom: 'var(--spacing-5)',
-    }}>
-      <SubSectionTitle style={{
-        fontSize: '14px',
-        marginBottom: 'var(--spacing-3)',
-      }}>
+    <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+      <SubSectionTitle className="text-sm m-0 mb-3">
         Hurtiglogg
       </SubSectionTitle>
-      <div style={{ display: 'flex', gap: 'var(--spacing-2)', flexWrap: 'wrap' }}>
+      <div className="flex gap-2 flex-wrap">
         {filtered.map((exercise) => (
           <button
             key={exercise.id}
             onClick={() => onQuickLog(exercise)}
-            style={{
-              padding: 'var(--spacing-2) var(--spacing-3)',
-              borderRadius: '8px',
-              border: '1px solid var(--border-default)',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--spacing-1)',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--border-default)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-            }}
+            className="py-2 px-3 rounded-lg border border-ak-border-default bg-ak-surface-subtle text-ak-text-primary text-[13px] font-medium cursor-pointer flex items-center gap-1 transition-all duration-200 hover:bg-ak-border-default"
           >
             <Plus size={14} />
             {exercise.name}
-            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+            <span className="text-[11px] text-ak-text-secondary">
               ({exercise.duration} min)
             </span>
           </button>
@@ -200,28 +204,14 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '14px',
-      padding: 'var(--spacing-5)',
-      marginBottom: 'var(--spacing-5)',
-    }}>
-      <SubSectionTitle style={{
-        fontSize: '15px',
-        marginBottom: 'var(--spacing-4)',
-      }}>
+    <form onSubmit={handleSubmit} className="bg-ak-surface-base rounded-[14px] p-5 mb-5">
+      <SubSectionTitle className="text-[15px] m-0 mb-4">
         Logg okt
       </SubSectionTitle>
 
       {/* Session Name */}
-      <div style={{ marginBottom: 'var(--spacing-4)' }}>
-        <label style={{
-          display: 'block',
-          fontSize: '13px',
-          fontWeight: 500,
-          color: 'var(--text-primary)',
-          marginBottom: 'var(--spacing-1)',
-        }}>
+      <div className="mb-4">
+        <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
           Navn pa okten
         </label>
         <input
@@ -229,82 +219,45 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           placeholder="F.eks. Driver-trening pa range"
-          style={{
-            width: '100%',
-            padding: 'var(--spacing-3) var(--spacing-3)',
-            borderRadius: '8px',
-            border: '1px solid var(--border-default)',
-            fontSize: '14px',
-            outline: 'none',
-          }}
+          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-brand-primary"
         />
       </div>
 
       {/* Duration and Rating Row */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 'var(--spacing-4)',
-        marginBottom: 'var(--spacing-4)',
-      }}>
+      <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <label style={{
-            display: 'block',
-            fontSize: '13px',
-            fontWeight: 500,
-            color: 'var(--text-primary)',
-            marginBottom: 'var(--spacing-1)',
-          }}>
+          <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
             Varighet (minutter)
           </label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
-            <Clock size={18} color={'var(--text-secondary)'} />
+          <div className="flex items-center gap-2">
+            <Clock size={18} className="text-ak-text-secondary" />
             <input
               type="number"
               value={formData.duration}
               onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) || 0 })}
               min="5"
               max="300"
-              style={{
-                flex: 1,
-                padding: 'var(--spacing-3) var(--spacing-3)',
-                borderRadius: '8px',
-                border: '1px solid var(--border-default)',
-                fontSize: '14px',
-                outline: 'none',
-              }}
+              className="flex-1 py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-brand-primary"
             />
           </div>
         </div>
 
         <div>
-          <label style={{
-            display: 'block',
-            fontSize: '13px',
-            fontWeight: 500,
-            color: 'var(--text-primary)',
-            marginBottom: 'var(--spacing-1)',
-          }}>
+          <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
             Rating
           </label>
-          <div style={{ display: 'flex', gap: 'var(--spacing-1)' }}>
+          <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
                 type="button"
                 onClick={() => setFormData({ ...formData, rating: star })}
-                style={{
-                  padding: 'var(--spacing-2)',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: 'transparent',
-                  cursor: 'pointer',
-                }}
+                className="p-2 rounded-md border-none bg-transparent cursor-pointer"
               >
                 <Star
                   size={24}
-                  fill={star <= formData.rating ? 'var(--achievement)' : 'none'}
-                  color={star <= formData.rating ? 'var(--achievement)' : 'var(--border-default)'}
+                  fill={star <= formData.rating ? '#F59E0B' : 'none'}
+                  className={star <= formData.rating ? 'text-amber-500' : 'text-ak-border-default'}
                 />
               </button>
             ))}
@@ -313,65 +266,35 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
       </div>
 
       {/* Energy Level */}
-      <div style={{ marginBottom: 'var(--spacing-4)' }}>
-        <label style={{
-          display: 'block',
-          fontSize: '13px',
-          fontWeight: 500,
-          color: 'var(--text-primary)',
-          marginBottom: 'var(--spacing-1)',
-        }}>
+      <div className="mb-4">
+        <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
           Energiniva
         </label>
-        <div style={{ display: 'flex', gap: 'var(--spacing-2)' }}>
+        <div className="flex gap-2">
           {[1, 2, 3, 4, 5].map((level) => (
             <button
               key={level}
               type="button"
               onClick={() => setFormData({ ...formData, energyLevel: level })}
-              style={{
-                flex: 1,
-                padding: 'var(--spacing-2)',
-                borderRadius: '8px',
-                border: formData.energyLevel === level
-                  ? '2px solid var(--accent)'
-                  : '1px solid var(--border-default)',
-                backgroundColor: formData.energyLevel === level
-                  ? 'rgba(var(--accent-rgb), 0.15)'
-                  : 'var(--bg-primary)',
-                color: formData.energyLevel === level
-                  ? 'var(--accent)'
-                  : 'var(--text-primary)',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all ${
+                formData.energyLevel === level
+                  ? 'border-2 border-ak-brand-primary bg-ak-brand-primary/15 text-ak-brand-primary'
+                  : 'border border-ak-border-default bg-ak-surface-base text-ak-text-primary'
+              }`}
             >
               {level}
             </button>
           ))}
         </div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          fontSize: '11px',
-          color: 'var(--text-secondary)',
-          marginTop: 'var(--spacing-1)',
-        }}>
+        <div className="flex justify-between text-[11px] text-ak-text-secondary mt-1">
           <span>Lav</span>
           <span>Hoy</span>
         </div>
       </div>
 
       {/* Notes */}
-      <div style={{ marginBottom: 'var(--spacing-4)' }}>
-        <label style={{
-          display: 'block',
-          fontSize: '13px',
-          fontWeight: 500,
-          color: 'var(--text-primary)',
-          marginBottom: 'var(--spacing-1)',
-        }}>
+      <div className="mb-4">
+        <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
           Notater
         </label>
         <textarea
@@ -379,28 +302,13 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
           placeholder="Hva jobbet du med? Hvordan gikk det?"
           rows={3}
-          style={{
-            width: '100%',
-            padding: 'var(--spacing-3) var(--spacing-3)',
-            borderRadius: '8px',
-            border: '1px solid var(--border-default)',
-            fontSize: '14px',
-            outline: 'none',
-            resize: 'vertical',
-            fontFamily: 'inherit',
-          }}
+          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-brand-primary"
         />
       </div>
 
       {/* Achievements */}
-      <div style={{ marginBottom: 'var(--spacing-4)' }}>
-        <label style={{
-          display: 'block',
-          fontSize: '13px',
-          fontWeight: 500,
-          color: 'var(--text-primary)',
-          marginBottom: 'var(--spacing-1)',
-        }}>
+      <div className="mb-4">
+        <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
           Prestasjoner (valgfritt)
         </label>
         <input
@@ -408,14 +316,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
           value={formData.achievements}
           onChange={(e) => setFormData({ ...formData, achievements: e.target.value })}
           placeholder="F.eks. Ny toppfart, PR i ovelse"
-          style={{
-            width: '100%',
-            padding: 'var(--spacing-3) var(--spacing-3)',
-            borderRadius: '8px',
-            border: '1px solid var(--border-default)',
-            fontSize: '14px',
-            outline: 'none',
-          }}
+          className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none focus:border-ak-brand-primary"
         />
       </div>
 
@@ -426,7 +327,7 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
         leftIcon={<Save size={18} />}
         disabled={saving}
         loading={saving}
-        style={{ width: '100%', justifyContent: 'center' }}
+        className="w-full justify-center"
       >
         {saving ? 'Lagrer...' : 'Lagre økt'}
       </Button>
@@ -439,68 +340,40 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
 // ============================================================================
 
 const RecentLogs = ({ logs }) => (
-  <div style={{
-    backgroundColor: 'var(--bg-primary)',
-    borderRadius: '14px',
-    padding: 'var(--spacing-4)',
-  }}>
-    <SubSectionTitle style={{
-      fontSize: '14px',
-      marginBottom: 'var(--spacing-3)',
-    }}>
+  <div className="bg-ak-surface-base rounded-[14px] p-4">
+    <SubSectionTitle className="text-sm m-0 mb-3">
       Siste loggforinger
     </SubSectionTitle>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
+    <div className="flex flex-col gap-2">
       {logs.map((log) => {
-        const typeConfig = SESSION_TYPES.find((t) => t.id === log.type);
-        const Icon = typeConfig?.icon || Target;
+        const typeConfig = SESSION_TYPE_CLASSES[log.type] || SESSION_TYPE_CLASSES.technical;
+        const Icon = typeConfig.icon;
 
         return (
           <div
             key={log.id}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--spacing-3)',
-              padding: 'var(--spacing-2)',
-              borderRadius: '8px',
-              backgroundColor: 'var(--bg-secondary)',
-            }}
+            className="flex items-center gap-3 p-2 rounded-lg bg-ak-surface-subtle"
           >
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: `${typeConfig?.color || 'var(--accent)'}15`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Icon size={18} color={typeConfig?.color || 'var(--accent)'} />
+            <div className={`w-9 h-9 rounded-lg ${typeConfig.bg} flex items-center justify-center`}>
+              <Icon size={18} className={typeConfig.text} />
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+            <div className="flex-1">
+              <div className="text-[13px] font-medium text-ak-text-primary">
                 {log.name}
               </div>
-              <div style={{
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--spacing-2)',
-              }}>
+              <div className="text-[11px] text-ak-text-secondary flex items-center gap-2">
                 <span>{new Date(log.date).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}</span>
                 <span>•</span>
                 <span>{log.duration} min</span>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 'var(--spacing-0)' }}>
+            <div className="flex gap-0">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
                   size={12}
-                  fill={star <= log.rating ? 'var(--achievement)' : 'none'}
-                  color={star <= log.rating ? 'var(--achievement)' : 'var(--border-default)'}
+                  fill={star <= log.rating ? '#F59E0B' : 'none'}
+                  className={star <= log.rating ? 'text-amber-500' : 'text-ak-border-default'}
                 />
               ))}
             </div>
@@ -564,66 +437,42 @@ const LoggTreningContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       {/* Session Type Selector */}
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '14px',
-          padding: 'var(--spacing-4)',
-          marginBottom: 'var(--spacing-5)',
-        }}>
-          <SubSectionTitle style={{
-            fontSize: '14px',
-            marginBottom: 'var(--spacing-3)',
-          }}>
-            Velg type okt
-          </SubSectionTitle>
-          <SessionTypeSelector selected={selectedType} onSelect={setSelectedType} />
+      <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+        <SubSectionTitle className="text-sm m-0 mb-3">
+          Velg type okt
+        </SubSectionTitle>
+        <SessionTypeSelector selected={selectedType} onSelect={setSelectedType} />
+      </div>
+
+      {/* Quick Log Buttons */}
+      <QuickLogButtons sessionType={selectedType} onQuickLog={handleQuickLog} />
+
+      {/* Save Status */}
+      {saveStatus === 'success' && (
+        <div className="flex items-center gap-2 py-3 px-4 rounded-[10px] bg-ak-status-success/15 mb-5">
+          <CheckCircle size={20} className="text-ak-status-success" />
+          <span className="text-sm text-ak-status-success font-medium">
+            Økten ble lagret! Videresender...
+          </span>
         </div>
+      )}
 
-        {/* Quick Log Buttons */}
-        <QuickLogButtons sessionType={selectedType} onQuickLog={handleQuickLog} />
+      {saveStatus === 'error' && (
+        <div className="flex items-center gap-2 py-3 px-4 rounded-[10px] bg-ak-status-error/15 mb-5">
+          <AlertCircle size={20} className="text-ak-status-error" />
+          <span className="text-sm text-ak-status-error font-medium">
+            {errorMessage}
+          </span>
+        </div>
+      )}
 
-        {/* Save Status */}
-        {saveStatus === 'success' && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--spacing-2)',
-            padding: 'var(--spacing-3) var(--spacing-4)',
-            borderRadius: '10px',
-            backgroundColor: 'rgba(34, 197, 94, 0.15)',
-            marginBottom: 'var(--spacing-5)',
-          }}>
-            <CheckCircle size={20} color="var(--success)" />
-            <span style={{ fontSize: '14px', color: 'var(--success)', fontWeight: 500 }}>
-              Økten ble lagret! Videresender...
-            </span>
-          </div>
-        )}
+      {/* Log Form */}
+      <LogForm sessionType={selectedType} onSubmit={handleSubmit} saving={saving} />
 
-        {saveStatus === 'error' && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--spacing-2)',
-            padding: 'var(--spacing-3) var(--spacing-4)',
-            borderRadius: '10px',
-            backgroundColor: 'rgba(239, 68, 68, 0.15)',
-            marginBottom: 'var(--spacing-5)',
-          }}>
-            <AlertCircle size={20} color="var(--error)" />
-            <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>
-              {errorMessage}
-            </span>
-          </div>
-        )}
-
-        {/* Log Form */}
-        <LogForm sessionType={selectedType} onSubmit={handleSubmit} saving={saving} />
-
-        {/* Recent Logs */}
-        <RecentLogs logs={RECENT_LOGS} />
+      {/* Recent Logs */}
+      <RecentLogs logs={RECENT_LOGS} />
     </div>
   );
 };

@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Fra Trener Container
+ * Design System v3.0 - Premium Light
+ *
+ * Coach messages and feedback for players.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState } from 'react';
 import {
   User, ChevronRight, Calendar, Target, Video, FileText,
@@ -5,6 +14,7 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SubSectionTitle } from '../../components/typography';
+import StateCard from '../../ui/composites/StateCard';
 
 // ============================================================================
 // MOCK DATA
@@ -90,17 +100,17 @@ const COACH_MESSAGES = [
 const getTypeConfig = (type) => {
   switch (type) {
     case 'feedback':
-      return { label: 'Feedback', color: 'var(--accent)', icon: MessageSquare };
+      return { label: 'Feedback', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: MessageSquare };
     case 'plan_update':
-      return { label: 'Planoppdatering', color: 'var(--success)', icon: Calendar };
+      return { label: 'Planoppdatering', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Calendar };
     case 'goal_review':
-      return { label: 'Malevaluering', color: 'var(--achievement)', icon: Target };
+      return { label: 'Malevaluering', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Target };
     case 'achievement':
-      return { label: 'Prestasjon', color: 'var(--success)', icon: Star };
+      return { label: 'Prestasjon', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Star };
     case 'breaking_point':
-      return { label: 'Breaking Point', color: 'var(--error)', icon: Target };
+      return { label: 'Breaking Point', colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error' }, icon: Target };
     default:
-      return { label: type, color: 'var(--text-secondary)', icon: FileText };
+      return { label: type, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: FileText };
   }
 };
 
@@ -126,159 +136,70 @@ const CoachMessageCard = ({ message, onClick }) => {
   return (
     <div
       onClick={() => onClick(message)}
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '14px',
-        padding: '16px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        borderLeft: message.read ? 'none' : `3px solid ${'var(--accent)'}`,
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
+      className={`bg-ak-surface-base rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md ${
+        message.read ? '' : 'border-l-[3px] border-l-ak-brand-primary'
+      }`}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+      <div className="flex items-start gap-3.5">
         {/* Coach Avatar */}
-        <div style={{
-          width: '44px',
-          height: '44px',
-          borderRadius: '50%',
-          backgroundColor: 'var(--accent)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--bg-primary)',
-          fontSize: '14px',
-          fontWeight: 600,
-          flexShrink: 0,
-        }}>
+        <div className="w-11 h-11 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
           {message.coach.name.split(' ').map((n) => n[0]).join('')}
         </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="flex-1 min-w-0">
           {/* Header */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '4px',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <span style={{
-                fontSize: '13px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-              }}>
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-2">
+              <span className="text-[13px] font-semibold text-ak-text-primary">
                 {message.coach.name}
               </span>
-              <span style={{
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-              }}>
+              <span className="text-[11px] text-ak-text-secondary">
                 {message.coach.role}
               </span>
             </div>
-            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+            <span className="text-[11px] text-ak-text-secondary">
               {formatDate(message.date)}
             </span>
           </div>
 
           {/* Type Badge and Title */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '8px',
-          }}>
-            <span style={{
-              fontSize: '10px',
-              fontWeight: 500,
-              padding: '3px 8px',
-              borderRadius: '4px',
-              backgroundColor: `${typeConfig.color}15`,
-              color: typeConfig.color,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-            }}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`text-[10px] font-medium py-0.5 px-2 rounded ${typeConfig.colorClasses.bg} ${typeConfig.colorClasses.text} flex items-center gap-1`}>
               <TypeIcon size={10} />
               {typeConfig.label}
             </span>
-            <SubSectionTitle style={{
-              fontSize: '15px',
-              fontWeight: message.read ? 500 : 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle className={`text-[15px] ${message.read ? 'font-medium' : 'font-semibold'} text-ak-text-primary m-0`}>
               {message.title}
             </SubSectionTitle>
           </div>
 
           {/* Content Preview */}
-          <p style={{
-            fontSize: '13px',
-            color: 'var(--text-secondary)',
-            margin: '0 0 10px 0',
-            lineHeight: 1.4,
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}>
+          <p className="text-[13px] text-ak-text-secondary m-0 mb-2.5 leading-snug line-clamp-2">
             {message.content}
           </p>
 
           {/* Footer */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-            <div style={{ display: 'flex', gap: '12px' }}>
+          <div className="flex items-center justify-between">
+            <div className="flex gap-3">
               {message.attachments.length > 0 && (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  fontSize: '11px',
-                  color: 'var(--accent)',
-                }}>
+                <div className="flex items-center gap-1 text-[11px] text-ak-brand-primary">
                   <Video size={12} />
                   {message.attachments.length} vedlegg
                 </div>
               )}
               {message.relatedTo && (
-                <div style={{
-                  fontSize: '11px',
-                  color: 'var(--text-secondary)',
-                }}>
+                <div className="text-[11px] text-ak-text-secondary">
                   Relatert til: {message.relatedTo}
                 </div>
               )}
             </div>
             {!message.read && (
-              <div style={{
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--accent)',
-              }} />
+              <div className="w-2 h-2 rounded-full bg-ak-brand-primary" />
             )}
           </div>
         </div>
 
-        <ChevronRight size={18} color={'var(--text-secondary)'} style={{ flexShrink: 0 }} />
+        <ChevronRight size={18} className="text-ak-text-secondary flex-shrink-0" />
       </div>
     </div>
   );
@@ -306,77 +227,46 @@ const FraTrenerContainer = () => {
   const unreadCount = COACH_MESSAGES.filter((m) => !m.read).length;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Fra trener"
         subtitle={`${unreadCount} uleste meldinger`}
       />
 
-      <div style={{ padding: '16px 24px 24px', width: '100%' }}>
+      <div className="p-4 px-6 pb-6 w-full">
         {/* Stats */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          gap: '10px',
-          marginBottom: '24px',
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-2.5 mb-6">
+          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+            <div className="text-[22px] font-bold text-ak-brand-primary">
               {COACH_MESSAGES.length}
             </div>
-            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Totalt</div>
+            <div className="text-[11px] text-ak-text-secondary">Totalt</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--error)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+            <div className="text-[22px] font-bold text-ak-status-error">
               {unreadCount}
             </div>
-            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Uleste</div>
+            <div className="text-[11px] text-ak-text-secondary">Uleste</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '14px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+            <div className="text-[22px] font-bold text-ak-status-success">
               {COACH_MESSAGES.filter((m) => m.type === 'feedback').length}
             </div>
-            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Feedbacks</div>
+            <div className="text-[11px] text-ak-text-secondary">Feedbacks</div>
           </div>
         </div>
 
         {/* Filters */}
-        <div style={{
-          display: 'flex',
-          gap: '6px',
-          marginBottom: '20px',
-          overflowX: 'auto',
-        }}>
+        <div className="flex gap-1.5 mb-5 overflow-x-auto">
           {filters.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              style={{
-                padding: '8px 14px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
-                color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
+              className={`py-2 px-3.5 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap transition-colors ${
+                filter === f.key
+                  ? 'bg-ak-brand-primary text-white'
+                  : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
+              }`}
             >
               {f.label}
             </button>
@@ -384,7 +274,7 @@ const FraTrenerContainer = () => {
         </div>
 
         {/* Messages List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div className="flex flex-col gap-2.5">
           {filteredMessages.map((message) => (
             <CoachMessageCard
               key={message.id}
@@ -394,17 +284,12 @@ const FraTrenerContainer = () => {
           ))}
 
           {filteredMessages.length === 0 && (
-            <div style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '14px',
-              padding: '40px',
-              textAlign: 'center',
-            }}>
-              <User size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
-                Ingen meldinger funnet
-              </p>
-            </div>
+            <StateCard
+              variant="empty"
+              icon={User}
+              title="Ingen meldinger funnet"
+              description="Prøv å justere filteret for å se flere meldinger."
+            />
           )}
         </div>
       </div>

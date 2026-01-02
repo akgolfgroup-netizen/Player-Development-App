@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Training Plan Editor
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Purpose:
  * - Enable coach to create, modify, and remove FUTURE training blocks
@@ -18,6 +18,8 @@
  * - No performance data shown
  * - No "effective" or "recommended" indicators
  * - All changes logged via audit trail
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState } from "react";
@@ -157,81 +159,42 @@ export default function CoachTrainingPlanEditor({
   return (
     <section
       aria-label="Training plan editor"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
+      className="min-h-screen bg-ak-surface-subtle font-['Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif]"
     >
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-          padding: '16px 24px',
-        }}
-      >
+      <div className="bg-ak-surface-base border-b border-ak-border-default py-4 px-6">
         <button
           onClick={onBack}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'none',
-            border: 'none',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-            padding: 0,
-            marginBottom: '16px',
-            fontSize: '15px', lineHeight: '20px',
-          }}
+          className="flex items-center gap-2 bg-transparent border-none text-ak-brand-primary cursor-pointer p-0 mb-4 text-[15px] leading-5"
         >
           <ArrowLeft size={20} />
           <span>Tilbake</span>
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ClipboardList size={24} color={'var(--accent)'} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
+              <ClipboardList size={24} className="text-ak-brand-primary" />
             </div>
             <div>
-              <PageTitle style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+              <PageTitle className="text-[28px] leading-[34px] font-bold text-ak-text-primary m-0">
                 Treningsplan
               </PageTitle>
-              <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
+              <p className="text-xs leading-4 text-ak-text-secondary m-0 mt-1">
                 {athleteName} • {futureBlocks.length} kommende økter
               </p>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div className="flex gap-3">
             <button
               type="button"
               onClick={() => setShowAIPanel(!showAIPanel)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 20px',
-                borderRadius: 'var(--radius-md)',
-                border: showAIPanel ? 'none' : '1px solid var(--accent)',
-                backgroundColor: showAIPanel ? 'rgba(var(--accent-rgb), 0.1)' : 'transparent',
-                color: 'var(--accent)',
-                cursor: 'pointer',
-                fontSize: '15px', lineHeight: '20px',
-                fontWeight: 600,
-              }}
+              className={`flex items-center gap-2 py-3 px-5 rounded-lg text-ak-brand-primary cursor-pointer text-[15px] leading-5 font-semibold ${
+                showAIPanel
+                  ? 'border-none bg-ak-brand-primary/10'
+                  : 'border border-ak-brand-primary bg-transparent'
+              }`}
             >
               {showAIPanel ? <X size={18} /> : <Sparkles size={18} />}
               {showAIPanel ? 'Skjul AI' : 'AI Assistent'}
@@ -239,19 +202,7 @@ export default function CoachTrainingPlanEditor({
             <button
               type="button"
               onClick={() => setShowAddForm(!showAddForm)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 20px',
-                borderRadius: 'var(--radius-md)',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                cursor: 'pointer',
-                fontSize: '15px', lineHeight: '20px',
-                fontWeight: 600,
-              }}
+              className="flex items-center gap-2 py-3 px-5 rounded-lg border-none bg-ak-brand-primary text-ak-surface-base cursor-pointer text-[15px] leading-5 font-semibold"
             >
               <Plus size={18} />
               Ny økt
@@ -260,33 +211,19 @@ export default function CoachTrainingPlanEditor({
         </div>
       </div>
 
-      <div style={{
-        padding: '24px',
-        display: showAIPanel ? 'grid' : 'block',
-        gridTemplateColumns: showAIPanel ? '1fr 380px' : '1fr',
-        gap: '24px',
-      }}>
+      <div className={`p-6 ${showAIPanel ? 'grid grid-cols-[1fr_380px] gap-6' : 'block'}`}>
         {/* Main Content */}
         <div>
         {/* Add Block Form */}
         {showAddForm && (
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: 'var(--shadow-card)',
-              padding: '20px',
-              marginBottom: '24px',
-              border: `2px solid ${'var(--accent)'}`,
-            }}
-          >
-            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0, marginBottom: '20px' }}>
+          <div className="bg-ak-surface-base rounded-2xl shadow-ak-card p-5 mb-6 border-2 border-ak-brand-primary">
+            <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-5">
               Legg til ny økt
             </SectionTitle>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+                <label className="text-xs leading-4 text-ak-text-secondary block mb-2">
                   Navn på økt *
                 </label>
                 <input
@@ -294,21 +231,12 @@ export default function CoachTrainingPlanEditor({
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder="F.eks. Putting fokus"
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    borderRadius: 'var(--radius-md)',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    fontSize: '15px', lineHeight: '20px',
-                    color: 'var(--text-primary)',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                  }}
+                  className="w-full py-3 px-3.5 rounded-lg border border-ak-border-default text-[15px] leading-5 text-ak-text-primary outline-none box-border bg-ak-surface-base"
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+                <label className="text-xs leading-4 text-ak-text-secondary block mb-2">
                   Dato *
                 </label>
                 <input
@@ -316,21 +244,12 @@ export default function CoachTrainingPlanEditor({
                   value={newDate}
                   min={getTodayISO()}
                   onChange={(e) => setNewDate(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    borderRadius: 'var(--radius-md)',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    fontSize: '15px', lineHeight: '20px',
-                    color: 'var(--text-primary)',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                  }}
+                  className="w-full py-3 px-3.5 rounded-lg border border-ak-border-default text-[15px] leading-5 text-ak-text-primary outline-none box-border bg-ak-surface-base"
                 />
               </div>
 
-              <div style={{ gridColumn: '1 / -1' }}>
-                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+              <div className="col-span-2">
+                <label className="text-xs leading-4 text-ak-text-secondary block mb-2">
                   Beskrivelse
                 </label>
                 <textarea
@@ -338,22 +257,12 @@ export default function CoachTrainingPlanEditor({
                   onChange={(e) => setNewDescription(e.target.value)}
                   placeholder="Valgfri beskrivelse av økten..."
                   rows={2}
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    borderRadius: 'var(--radius-md)',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    fontSize: '15px', lineHeight: '20px',
-                    color: 'var(--text-primary)',
-                    outline: 'none',
-                    resize: 'vertical',
-                    boxSizing: 'border-box',
-                  }}
+                  className="w-full py-3 px-3.5 rounded-lg border border-ak-border-default text-[15px] leading-5 text-ak-text-primary outline-none resize-y box-border bg-ak-surface-base"
                 />
               </div>
 
               <div>
-                <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+                <label className="text-xs leading-4 text-ak-text-secondary block mb-2">
                   Varighet (minutter)
                 </label>
                 <input
@@ -362,34 +271,16 @@ export default function CoachTrainingPlanEditor({
                   onChange={(e) => setNewDuration(e.target.value)}
                   placeholder="F.eks. 60"
                   min="1"
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    borderRadius: 'var(--radius-md)',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    fontSize: '15px', lineHeight: '20px',
-                    color: 'var(--text-primary)',
-                    outline: 'none',
-                    boxSizing: 'border-box',
-                  }}
+                  className="w-full py-3 px-3.5 rounded-lg border border-ak-border-default text-[15px] leading-5 text-ak-text-primary outline-none box-border bg-ak-surface-base"
                 />
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '20px' }}>
+            <div className="flex justify-end gap-3 mt-5">
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                style={{
-                  padding: '12px 20px',
-                  borderRadius: 'var(--radius-md)',
-                  border: `1px solid ${'var(--border-default)'}`,
-                  backgroundColor: 'transparent',
-                  color: 'var(--text-secondary)',
-                  cursor: 'pointer',
-                  fontSize: '15px', lineHeight: '20px',
-                  fontWeight: 500,
-                }}
+                className="py-3 px-5 rounded-lg border border-ak-border-default bg-transparent text-ak-text-secondary cursor-pointer text-[15px] leading-5 font-medium"
               >
                 Avbryt
               </button>
@@ -397,16 +288,11 @@ export default function CoachTrainingPlanEditor({
                 type="button"
                 onClick={handleAdd}
                 disabled={!newName.trim() || !newDate}
-                style={{
-                  padding: '12px 20px',
-                  borderRadius: 'var(--radius-md)',
-                  border: 'none',
-                  backgroundColor: (newName.trim() && newDate) ? 'var(--accent)' : 'var(--border-default)',
-                  color: (newName.trim() && newDate) ? 'var(--bg-primary)' : 'var(--text-secondary)',
-                  cursor: (newName.trim() && newDate) ? 'pointer' : 'not-allowed',
-                  fontSize: '15px', lineHeight: '20px',
-                  fontWeight: 600,
-                }}
+                className={`py-3 px-5 rounded-lg border-none text-[15px] leading-5 font-semibold ${
+                  newName.trim() && newDate
+                    ? 'bg-ak-brand-primary text-ak-surface-base cursor-pointer'
+                    : 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed'
+                }`}
               >
                 Legg til økt
               </button>
@@ -415,25 +301,17 @@ export default function CoachTrainingPlanEditor({
         )}
 
         {/* Future Blocks */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-card)',
-            overflow: 'hidden',
-            marginBottom: '24px',
-          }}
-        >
-          <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}` }}>
-            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+        <div className="bg-ak-surface-base rounded-2xl shadow-ak-card overflow-hidden mb-6">
+          <div className="p-5 border-b border-ak-border-default">
+            <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
               Kommende økter
             </SectionTitle>
           </div>
 
           {futureBlocks.length === 0 ? (
-            <div style={{ padding: '48px 24px', textAlign: 'center' }}>
-              <Calendar size={40} color={'var(--border-default)'} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+            <div className="py-12 px-6 text-center">
+              <Calendar size={40} className="text-ak-border-default mb-3" />
+              <p className="text-[15px] leading-5 text-ak-text-secondary">
                 Ingen planlagte økter
               </p>
             </div>
@@ -442,45 +320,32 @@ export default function CoachTrainingPlanEditor({
               {futureBlocks.map((block, index) => (
                 <div
                   key={block.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '16px 20px',
-                    borderBottom: index < futureBlocks.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
-                  }}
+                  className={`flex items-center gap-4 py-4 px-5 ${
+                    index < futureBlocks.length - 1 ? 'border-b border-ak-border-default' : ''
+                  }`}
                 >
-                  <div
-                    style={{
-                      width: 56,
-                      padding: '8px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--accent)',
-                      color: 'var(--bg-primary)',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600, textTransform: 'uppercase' }}>
+                  <div className="w-14 py-2 rounded-lg bg-ak-brand-primary text-ak-surface-base text-center">
+                    <div className="text-xs leading-4 font-semibold uppercase">
                       {formatDate(block.date).split(' ')[0]}
                     </div>
-                    <div style={{ fontSize: '20px', fontWeight: 700 }}>
+                    <div className="text-xl font-bold">
                       {new Date(block.date).getDate()}
                     </div>
                   </div>
 
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <div className="flex-1">
+                    <div className="text-[15px] leading-5 font-semibold text-ak-text-primary">
                       {block.name}
                     </div>
                     {block.description && (
-                      <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
+                      <p className="text-xs leading-4 text-ak-text-secondary m-0 mt-1">
                         {block.description}
                       </p>
                     )}
                     {block.durationMinutes && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                        <Clock size={12} color={'var(--text-secondary)'} />
-                        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+                      <div className="flex items-center gap-1 mt-1">
+                        <Clock size={12} className="text-ak-text-secondary" />
+                        <span className="text-xs leading-4 text-ak-text-secondary">
                           {block.durationMinutes} min
                         </span>
                       </div>
@@ -490,18 +355,7 @@ export default function CoachTrainingPlanEditor({
                   <button
                     type="button"
                     onClick={() => handleRemove(block)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 40,
-                      height: 40,
-                      borderRadius: 'var(--radius-md)',
-                      border: `1px solid ${'var(--error)'}`,
-                      backgroundColor: 'transparent',
-                      color: 'var(--error)',
-                      cursor: 'pointer',
-                    }}
+                    className="flex items-center justify-center w-10 h-10 rounded-lg border border-ak-status-error bg-transparent text-ak-status-error cursor-pointer"
                   >
                     <Trash2 size={18} />
                   </button>
@@ -513,18 +367,10 @@ export default function CoachTrainingPlanEditor({
 
         {/* Past Blocks (Read-only) */}
         {pastBlocks.length > 0 && (
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: 'var(--shadow-card)',
-              overflow: 'hidden',
-              opacity: 0.8,
-            }}
-          >
-            <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}`, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Lock size={16} color={'var(--text-secondary)'} />
-              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-secondary)', margin: 0 }}>
+          <div className="bg-ak-surface-base rounded-2xl shadow-ak-card overflow-hidden opacity-80">
+            <div className="p-5 border-b border-ak-border-default flex items-center gap-2">
+              <Lock size={16} className="text-ak-text-secondary" />
+              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-secondary m-0">
                 Fullførte økter
               </SectionTitle>
             </div>
@@ -533,41 +379,27 @@ export default function CoachTrainingPlanEditor({
               {pastBlocks.map((block, index) => (
                 <div
                   key={block.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '16px 20px',
-                    borderBottom: index < pastBlocks.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
-                    backgroundColor: 'var(--bg-secondary)',
-                  }}
+                  className={`flex items-center gap-4 py-4 px-5 bg-ak-surface-subtle ${
+                    index < pastBlocks.length - 1 ? 'border-b border-ak-border-default' : ''
+                  }`}
                 >
-                  <div
-                    style={{
-                      width: 56,
-                      padding: '8px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--border-default)',
-                      color: 'var(--text-secondary)',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600, textTransform: 'uppercase' }}>
+                  <div className="w-14 py-2 rounded-lg bg-ak-border-default text-ak-text-secondary text-center">
+                    <div className="text-xs leading-4 font-semibold uppercase">
                       {formatDate(block.date).split(' ')[0]}
                     </div>
-                    <div style={{ fontSize: '20px', fontWeight: 700 }}>
+                    <div className="text-xl font-bold">
                       {new Date(block.date).getDate()}
                     </div>
                   </div>
 
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-secondary)' }}>
+                  <div className="flex-1">
+                    <div className="text-[15px] leading-5 font-medium text-ak-text-secondary">
                       {block.name}
                     </div>
                     {block.durationMinutes && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                        <Clock size={12} color={'var(--text-secondary)'} />
-                        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+                      <div className="flex items-center gap-1 mt-1">
+                        <Clock size={12} className="text-ak-text-secondary" />
+                        <span className="text-xs leading-4 text-ak-text-secondary">
                           {block.durationMinutes} min
                         </span>
                       </div>
@@ -575,9 +407,9 @@ export default function CoachTrainingPlanEditor({
                   </div>
 
                   {block.completed && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <CheckCircle size={16} color={'var(--success)'} />
-                      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--success)' }}>
+                    <div className="flex items-center gap-1.5">
+                      <CheckCircle size={16} className="text-ak-status-success" />
+                      <span className="text-xs leading-4 text-ak-status-success">
                         Fullført
                       </span>
                     </div>
@@ -591,7 +423,7 @@ export default function CoachTrainingPlanEditor({
 
         {/* AI Panel */}
         {showAIPanel && (
-          <div style={{ position: 'sticky', top: '24px', alignSelf: 'start' }}>
+          <div className="sticky top-6 self-start">
             <AIPlanSuggestions
               playerId={athleteId}
               playerName={athleteName}

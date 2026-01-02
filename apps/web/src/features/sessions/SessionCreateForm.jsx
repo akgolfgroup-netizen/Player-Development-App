@@ -1,8 +1,6 @@
 /**
- * SessionCreateForm - Create new training session
- *
- * Design Source: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
- * Spec Source: /Docs/specs/APP_FUNCTIONALITY.md
+ * AK Golf Academy - Session Create Form
+ * Design System v3.0 - Premium Light
  *
  * Features:
  * - Session type selection
@@ -13,9 +11,10 @@
  * - Intensity slider
  * - Focus area
  * - Notes
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React, { useState, useCallback } from 'react';
-// UiCanon: CSS variables
 import { ChevronLeft, Calendar, Clock, Target, Zap, FileText, Plus } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 
@@ -42,11 +41,26 @@ const LEARNING_PHASES = [
 
 // Periods
 const PERIODS = [
-  { id: 'E', label: 'Etableringsfase', color: 'var(--accent)' },
-  { id: 'G', label: 'Grunnfase', color: 'var(--success)' },
-  { id: 'S', label: 'Spesifikkfase', color: 'var(--warning)' },
-  { id: 'T', label: 'Toppfase', color: 'var(--error)' },
+  { id: 'E', label: 'Etableringsfase' },
+  { id: 'G', label: 'Grunnfase' },
+  { id: 'S', label: 'Spesifikkfase' },
+  { id: 'T', label: 'Toppfase' },
 ];
+
+// Helper to get period color classes
+const getPeriodClasses = (periodId, isSelected) => {
+  const colors = {
+    E: { bg: 'bg-ak-brand-primary', text: 'text-white', border: 'border-ak-brand-primary' },
+    G: { bg: 'bg-ak-status-success', text: 'text-white', border: 'border-ak-status-success' },
+    S: { bg: 'bg-ak-status-warning', text: 'text-white', border: 'border-ak-status-warning' },
+    T: { bg: 'bg-ak-status-error', text: 'text-white', border: 'border-ak-status-error' },
+  };
+  const colorSet = colors[periodId] || colors.E;
+  if (isSelected) {
+    return `${colorSet.bg} ${colorSet.text} ${colorSet.border}`;
+  }
+  return 'bg-ak-surface-base text-ak-text-primary border-ak-border-default';
+};
 
 // Duration options (in minutes)
 const DURATION_OPTIONS = [15, 30, 45, 60, 90, 120, 150, 180];
@@ -57,43 +71,24 @@ const DURATION_OPTIONS = [15, 30, 45, 60, 90, 120, 150, 180];
 
 function TypeSelector({ selected, onChange }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <label
-        style={{
-          display: 'block',
-          marginBottom: '8px',
-          color: 'var(--text-primary)',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
-      >
+    <div className="mb-6">
+      <label className="block mb-2 text-ak-text-primary text-xs font-medium">
         Type trening *
       </label>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '8px',
-        }}
-      >
+      <div className="grid grid-cols-4 gap-2">
         {SESSION_TYPES.map((type) => (
           <button
             key={type.id}
             type="button"
             onClick={() => onChange(type.id)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: '16px',
-              backgroundColor: selected === type.id ? 'var(--accent)' : 'var(--bg-primary)',
-              color: selected === type.id ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: `1px solid ${selected === type.id ? 'var(--accent)' : 'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-            }}
+            className={`flex flex-col items-center p-4 rounded-lg cursor-pointer border ${
+              selected === type.id
+                ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                : 'bg-ak-surface-base text-ak-text-primary border-ak-border-default'
+            }`}
           >
-            <span style={{ fontSize: '24px', marginBottom: '4px' }}>{type.icon}</span>
-            <span style={{ fontSize: '12px', lineHeight: '16px', textAlign: 'center' }}>{type.label}</span>
+            <span className="text-2xl mb-1">{type.icon}</span>
+            <span className="text-xs text-center">{type.label}</span>
           </button>
         ))}
       </div>
@@ -103,30 +98,16 @@ function TypeSelector({ selected, onChange }) {
 
 function DateTimePicker({ date, onDateChange }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <label
-        style={{
-          display: 'block',
-          marginBottom: '8px',
-          color: 'var(--text-primary)',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
-      >
-        <Calendar size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+    <div className="mb-6">
+      <label className="block mb-2 text-ak-text-primary text-xs font-medium">
+        <Calendar size={16} className="mr-1 align-middle inline-block" />
         Dato og tid *
       </label>
       <input
         type="datetime-local"
         value={date}
         onChange={(e) => onDateChange(e.target.value)}
-        style={{
-          width: '100%',
-          padding: '16px',
-          backgroundColor: 'var(--bg-secondary)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-md)',
-          fontSize: '15px', lineHeight: '20px',
-        }}
+        className="w-full p-4 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-[15px] text-ak-text-primary"
       />
     </div>
   );
@@ -134,39 +115,22 @@ function DateTimePicker({ date, onDateChange }) {
 
 function DurationSelector({ duration, onChange }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <label
-        style={{
-          display: 'block',
-          marginBottom: '8px',
-          color: 'var(--text-primary)',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
-      >
-        <Clock size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+    <div className="mb-6">
+      <label className="block mb-2 text-ak-text-primary text-xs font-medium">
+        <Clock size={16} className="mr-1 align-middle inline-block" />
         Varighet *
       </label>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '8px',
-        }}
-      >
+      <div className="flex flex-wrap gap-2">
         {DURATION_OPTIONS.map((mins) => (
           <button
             key={mins}
             type="button"
             onClick={() => onChange(mins)}
-            style={{
-              padding: `${'8px'} ${'16px'}`,
-              backgroundColor: duration === mins ? 'var(--accent)' : 'var(--bg-primary)',
-              color: duration === mins ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: `1px solid ${duration === mins ? 'var(--accent)' : 'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              fontSize: '15px', lineHeight: '20px',
-            }}
+            className={`py-2 px-4 rounded-lg cursor-pointer text-[15px] border ${
+              duration === mins
+                ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                : 'bg-ak-surface-base text-ak-text-primary border-ak-border-default'
+            }`}
           >
             {mins} min
           </button>
@@ -178,51 +142,32 @@ function DurationSelector({ duration, onChange }) {
 
 function LearningPhaseSelector({ selected, onChange }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <label
-        style={{
-          display: 'block',
-          marginBottom: '8px',
-          color: 'var(--text-primary)',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
-      >
+    <div className="mb-6">
+      <label className="block mb-2 text-ak-text-primary text-xs font-medium">
         Laeringsfase
       </label>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div className="flex flex-col gap-2">
         {LEARNING_PHASES.map((phase) => (
           <button
             key={phase.id}
             type="button"
             onClick={() => onChange(selected === phase.id ? null : phase.id)}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '16px',
-              backgroundColor: selected === phase.id ? 'rgba(var(--accent-rgb), 0.1)' : 'var(--bg-primary)',
-              border: `1px solid ${selected === phase.id ? 'var(--accent)' : 'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              textAlign: 'left',
-            }}
+            className={`flex justify-between items-center p-4 rounded-lg cursor-pointer text-left border ${
+              selected === phase.id
+                ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                : 'bg-ak-surface-base border-ak-border-default'
+            }`}
           >
             <div>
-              <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+              <span className="text-[15px] text-ak-text-primary">
                 {phase.label}
               </span>
-              <span
-                style={{
-                  display: 'block',
-                  fontSize: '12px', lineHeight: '16px',
-                  color: 'var(--text-secondary)',
-                }}
-              >
+              <span className="block text-xs text-ak-text-secondary">
                 {phase.description}
               </span>
             </div>
             {selected === phase.id && (
-              <span style={{ color: 'var(--accent)', fontSize: '18px' }}>✓</span>
+              <span className="text-ak-brand-primary text-lg">✓</span>
             )}
           </button>
         ))}
@@ -233,52 +178,24 @@ function LearningPhaseSelector({ selected, onChange }) {
 
 function PeriodSelector({ selected, onChange }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <label
-        style={{
-          display: 'block',
-          marginBottom: '8px',
-          color: 'var(--text-primary)',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
-      >
+    <div className="mb-6">
+      <label className="block mb-2 text-ak-text-primary text-xs font-medium">
         Treningsperiode
       </label>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '8px',
-        }}
-      >
+      <div className="grid grid-cols-4 gap-2">
         {PERIODS.map((period) => (
           <button
             key={period.id}
             type="button"
             onClick={() => onChange(selected === period.id ? null : period.id)}
-            style={{
-              padding: '16px',
-              backgroundColor: selected === period.id ? period.color : 'var(--bg-primary)',
-              color: selected === period.id ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: `1px solid ${selected === period.id ? period.color : 'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-            }}
+            className={`p-4 rounded-lg cursor-pointer text-xs font-medium border ${getPeriodClasses(period.id, selected === period.id)}`}
           >
             {period.id}
           </button>
         ))}
       </div>
       {selected && (
-        <span
-          style={{
-            display: 'block',
-            marginTop: '4px',
-            fontSize: '12px', lineHeight: '16px',
-            color: 'var(--text-secondary)',
-          }}
-        >
+        <span className="block mt-1 text-xs text-ak-text-secondary">
           {PERIODS.find((p) => p.id === selected)?.label}
         </span>
       )}
@@ -287,22 +204,17 @@ function PeriodSelector({ selected, onChange }) {
 }
 
 function IntensitySlider({ value, onChange }) {
+  // Dynamic gradient requires inline style
+  const sliderProgress = ((value || 5) - 1) * 11.1;
+
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <label
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginBottom: '8px',
-          color: 'var(--text-primary)',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
-      >
+    <div className="mb-6">
+      <label className="flex justify-between mb-2 text-ak-text-primary text-xs font-medium">
         <span>
-          <Zap size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+          <Zap size={16} className="mr-1 align-middle inline-block" />
           Intensitet
         </span>
-        <span style={{ color: 'var(--accent)' }}>{value || '-'}/10</span>
+        <span className="text-ak-brand-primary">{value || '-'}/10</span>
       </label>
       <input
         type="range"
@@ -310,23 +222,12 @@ function IntensitySlider({ value, onChange }) {
         max="10"
         value={value || 5}
         onChange={(e) => onChange(parseInt(e.target.value))}
+        className="w-full h-2 rounded-full appearance-none"
         style={{
-          width: '100%',
-          height: '8px',
-          borderRadius: '9999px',
-          appearance: 'none',
-          background: `linear-gradient(to right, var(--accent) ${((value || 5) - 1) * 11.1}%, var(--border-default) ${((value || 5) - 1) * 11.1}%)`,
+          background: `linear-gradient(to right, var(--ak-brand-primary) ${sliderProgress}%, var(--ak-border-default) ${sliderProgress}%)`,
         }}
       />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '4px',
-          fontSize: '12px', lineHeight: '16px',
-          color: 'var(--text-secondary)',
-        }}
-      >
+      <div className="flex justify-between mt-1 text-xs text-ak-text-secondary">
         <span>Lett</span>
         <span>Moderat</span>
         <span>Hard</span>
@@ -337,16 +238,9 @@ function IntensitySlider({ value, onChange }) {
 
 function TextAreaField({ label, value, onChange, placeholder, icon: Icon }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <label
-        style={{
-          display: 'block',
-          marginBottom: '8px',
-          color: 'var(--text-primary)',
-          fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-        }}
-      >
-        {Icon && <Icon size={16} style={{ marginRight: '4px', verticalAlign: 'middle' }} />}
+    <div className="mb-6">
+      <label className="block mb-2 text-ak-text-primary text-xs font-medium">
+        {Icon && <Icon size={16} className="mr-1 align-middle inline-block" />}
         {label}
       </label>
       <textarea
@@ -354,15 +248,7 @@ function TextAreaField({ label, value, onChange, placeholder, icon: Icon }) {
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={3}
-        style={{
-          width: '100%',
-          padding: '16px',
-          backgroundColor: 'var(--bg-secondary)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-md)',
-          resize: 'vertical',
-          fontSize: '15px', lineHeight: '20px',
-        }}
+        className="w-full p-4 bg-ak-surface-subtle border border-ak-border-default rounded-lg resize-y text-[15px] text-ak-text-primary"
       />
     </div>
   );
@@ -446,45 +332,27 @@ export default function SessionCreateForm({
   );
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        minHeight: '100vh',
-        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
-      }}
-    >
+    <div className="bg-ak-surface-base min-h-screen font-sans">
       {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '16px',
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: '1px solid var(--border-default)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-        }}
-      >
+      <div className="flex justify-between items-center p-4 bg-ak-surface-base border-b border-ak-border-default sticky top-0 z-10">
         <Button variant="ghost" onClick={onCancel} leftIcon={<ChevronLeft size={20} />}>
           Avbryt
         </Button>
-        <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
+        <span className="text-xl font-semibold text-ak-text-primary">
           Ny treningsokt
         </span>
-        <div style={{ width: '60px' }} /> {/* Spacer for centering */}
+        <div className="w-[60px]" /> {/* Spacer for centering */}
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} style={{ padding: '24px' }}>
+      <form onSubmit={handleSubmit} className="p-6">
         {/* Session Type */}
         <TypeSelector
           selected={formData.sessionType}
           onChange={(value) => updateField('sessionType', value)}
         />
         {errors.sessionType && (
-          <span style={{ color: 'var(--error)', fontSize: '12px', lineHeight: '16px' }}>
+          <span className="text-ak-status-error text-xs">
             {errors.sessionType}
           </span>
         )}
@@ -495,7 +363,7 @@ export default function SessionCreateForm({
           onDateChange={(value) => updateField('sessionDate', value)}
         />
         {errors.sessionDate && (
-          <span style={{ color: 'var(--error)', fontSize: '12px', lineHeight: '16px' }}>
+          <span className="text-ak-status-error text-xs">
             {errors.sessionDate}
           </span>
         )}
@@ -506,7 +374,7 @@ export default function SessionCreateForm({
           onChange={(value) => updateField('duration', value)}
         />
         {errors.duration && (
-          <span style={{ color: 'var(--error)', fontSize: '12px', lineHeight: '16px' }}>
+          <span className="text-ak-status-error text-xs">
             {errors.duration}
           </span>
         )}
@@ -554,7 +422,7 @@ export default function SessionCreateForm({
           disabled={isLoading}
           loading={isLoading}
           leftIcon={<Plus size={20} />}
-          style={{ width: '100%', padding: '16px', marginTop: '24px', fontSize: '20px', fontWeight: 600 }}
+          className="w-full p-4 mt-6 text-xl font-semibold"
         >
           {isLoading ? 'Oppretter...' : 'Opprett treningsokt'}
         </Button>

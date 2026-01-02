@@ -1,3 +1,11 @@
+/**
+ * AK Golf Academy - Quick Actions Widget
+ * Design System v3.0 - Premium Light
+ *
+ * Today's training quick actions: start, complete, skip, substitute.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiClient from '../../services/apiClient';
@@ -70,13 +78,13 @@ export default function QuickActionsWidget({ planId }) {
 
   if (!assignment) {
     return (
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-ak-surface-base rounded-lg shadow p-6">
         <SubSectionTitle className="mb-2">Today's Training</SubSectionTitle>
-        <p className="text-gray-600 mb-4">No session scheduled for today</p>
+        <p className="text-ak-text-secondary mb-4">No session scheduled for today</p>
         <Button
           variant="primary"
           onClick={() => navigate('/session/new')}
-          style={{ width: '100%' }}
+          className="w-full"
         >
           + Opprett treningsokt
         </Button>
@@ -86,22 +94,22 @@ export default function QuickActionsWidget({ planId }) {
 
   if (assignment.isRestDay) {
     return (
-      <div className="bg-blue-50 rounded-lg shadow p-6 border-2 border-blue-200">
+      <div className="bg-ak-brand-primary/10 rounded-lg shadow p-6 border-2 border-ak-brand-primary/30">
         <SubSectionTitle className="mb-2">Rest Day</SubSectionTitle>
-        <p className="text-gray-700">Recovery is important! Enjoy your rest day.</p>
+        <p className="text-ak-text-primary">Recovery is important! Enjoy your rest day.</p>
       </div>
     );
   }
 
   const statusColors = {
-    planned: 'bg-gray-100 text-gray-700',
-    in_progress: 'bg-blue-100 text-blue-700',
-    completed: 'bg-green-100 text-green-700',
-    skipped: 'bg-orange-100 text-orange-700',
+    planned: 'bg-ak-surface-subtle text-ak-text-secondary',
+    in_progress: 'bg-ak-brand-primary/15 text-ak-brand-primary',
+    completed: 'bg-ak-status-success/15 text-ak-status-success',
+    skipped: 'bg-ak-status-warning/15 text-ak-status-warning',
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-ak-surface-base rounded-lg shadow p-6">
       <div className="flex justify-between items-start mb-4">
         <div>
           <SubSectionTitle>Today's Training</SubSectionTitle>
@@ -109,33 +117,33 @@ export default function QuickActionsWidget({ planId }) {
             {assignment.status.replace('_', ' ').toUpperCase()}
           </span>
         </div>
-        <span className="text-sm text-gray-500">{assignment.period} Period</span>
+        <span className="text-sm text-ak-text-secondary">{assignment.period} Period</span>
       </div>
 
       <div className="mb-4">
         <CardTitle>{assignment.type}</CardTitle>
-        <p className="text-gray-600 text-sm">Duration: {assignment.duration} minutes</p>
+        <p className="text-ak-text-secondary text-sm">Duration: {assignment.duration} minutes</p>
         {assignment.sessionTemplate?.description && (
-          <p className="text-gray-600 text-sm mt-2">{assignment.sessionTemplate.description}</p>
+          <p className="text-ak-text-secondary text-sm mt-2">{assignment.sessionTemplate.description}</p>
         )}
         {assignment.notes && (
-          <div className="mt-2 p-2 bg-yellow-50 rounded text-sm">
+          <div className="mt-2 p-2 bg-amber-50 rounded text-sm">
             <strong>Coach notes:</strong> {assignment.notes}
           </div>
         )}
       </div>
 
       {showSubstitute ? (
-        <div className="border-t pt-4">
+        <div className="border-t border-ak-border-default pt-4">
           <CardTitle className="mb-3">Alternative Sessions:</CardTitle>
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {alternatives.map(alt => (
-              <div key={alt.id} className="p-3 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">
-                <div className="font-medium">{alt.name}</div>
-                <div className="text-sm text-gray-600">
+              <div key={alt.id} className="p-3 bg-ak-surface-subtle rounded hover:bg-ak-surface-base cursor-pointer">
+                <div className="font-medium text-ak-text-primary">{alt.name}</div>
+                <div className="text-sm text-ak-text-secondary">
                   {alt.duration} min • {alt.period} • {alt.learningPhase}
                 </div>
-                {alt.description && <div className="text-sm text-gray-500 mt-1">{alt.description}</div>}
+                {alt.description && <div className="text-sm text-ak-text-secondary mt-1">{alt.description}</div>}
               </div>
             ))}
           </div>
@@ -143,7 +151,7 @@ export default function QuickActionsWidget({ planId }) {
             variant="ghost"
             size="sm"
             onClick={() => setShowSubstitute(false)}
-            style={{ marginTop: '12px' }}
+            className="mt-3"
           >
             ← Back
           </Button>
@@ -156,7 +164,7 @@ export default function QuickActionsWidget({ planId }) {
                 variant="primary"
                 onClick={() => handleQuickAction('start')}
                 disabled={loading}
-                style={{ flex: 1 }}
+                className="flex-1"
               >
                 ▶️ Start
               </Button>
@@ -164,7 +172,7 @@ export default function QuickActionsWidget({ planId }) {
                 variant="primary"
                 onClick={() => handleQuickAction('complete')}
                 disabled={loading}
-                style={{ flex: 1, backgroundColor: 'var(--success)' }}
+                className="flex-1 bg-ak-status-success hover:bg-ak-status-success/90"
               >
                 ✅ Complete
               </Button>
@@ -176,7 +184,7 @@ export default function QuickActionsWidget({ planId }) {
                 variant="primary"
                 onClick={handleEvaluate}
                 disabled={loading}
-                style={{ flex: 1, backgroundColor: 'var(--success)' }}
+                className="flex-1 bg-ak-status-success hover:bg-ak-status-success/90"
               >
                 📝 Evaluer
               </Button>
@@ -184,7 +192,7 @@ export default function QuickActionsWidget({ planId }) {
                 variant="primary"
                 onClick={() => handleQuickAction('complete')}
                 disabled={loading}
-                style={{ flex: 1 }}
+                className="flex-1"
               >
                 ✅ Complete
               </Button>
@@ -204,7 +212,7 @@ export default function QuickActionsWidget({ planId }) {
               variant="secondary"
               onClick={loadSubstitutes}
               disabled={loading}
-              style={{ backgroundColor: 'rgba(251, 146, 60, 0.2)', color: 'rgb(194, 65, 12)' }}
+              className="bg-orange-400/20 text-orange-700 hover:bg-orange-400/30"
             >
               🔄 Substitute
             </Button>

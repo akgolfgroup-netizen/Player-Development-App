@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Booking Calendar
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Kalendervisning for trenerens bookinger.
  * Viser alle bookinger, ledige tider og forespørsler.
@@ -20,6 +22,29 @@ import {
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const SLOT_STATUS_CLASSES = {
+  booked: {
+    bg: 'bg-ak-brand-primary/15',
+    border: 'border-l-ak-brand-primary',
+  },
+  pending: {
+    bg: 'bg-ak-status-warning/15',
+    border: 'border-l-ak-status-warning',
+  },
+  blocked: {
+    bg: 'bg-ak-surface-subtle',
+    border: 'border-l-ak-border-default',
+  },
+  available: {
+    bg: 'bg-ak-surface-base',
+    border: 'border-l-ak-border-default',
+  },
+};
 
 interface BookingSlot {
   id: string;
@@ -160,18 +185,9 @@ export default function CoachBookingCalendar() {
     setCurrentDate(new Date());
   };
 
-  // Get status color
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'booked':
-        return { bg: 'rgba(var(--accent-rgb), 0.15)', border: 'var(--accent)' };
-      case 'pending':
-        return { bg: 'rgba(var(--warning-rgb), 0.15)', border: 'var(--warning)' };
-      case 'blocked':
-        return { bg: 'var(--bg-tertiary)', border: 'var(--border-default)' };
-      default:
-        return { bg: 'var(--bg-primary)', border: 'var(--border-default)' };
-    }
+  // Get status classes
+  const getStatusClasses = (status: string) => {
+    return SLOT_STATUS_CLASSES[status as keyof typeof SLOT_STATUS_CLASSES] || SLOT_STATUS_CLASSES.available;
   };
 
   // Handle slot actions
@@ -231,117 +247,46 @@ export default function CoachBookingCalendar() {
 
   if (loading) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            border: `4px solid ${'var(--border-default)'}`,
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
+    <div className="min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-          padding: '20px 24px',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '16px',
-          }}
-        >
+      <div className="bg-ak-surface-base border-b border-ak-border-default py-5 px-6">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <PageTitle style={{ margin: 0 }}>
+            <PageTitle className="m-0">
               Booking-kalender
             </PageTitle>
-            <p
-              style={{
-                fontSize: '15px', lineHeight: '20px',
-                color: 'var(--text-secondary)',
-                margin: '4px 0 0',
-              }}
-            >
+            <p className="text-[15px] text-ak-text-secondary mt-1 m-0">
               Administrer dine bookinger og tilgjengelighet
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="flex gap-2.5">
             <button
               onClick={() => navigate('/coach/booking/requests')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                backgroundColor: stats.pending > 0 ? 'rgba(var(--warning-rgb), 0.15)' : 'var(--bg-primary)',
-                color: stats.pending > 0 ? 'var(--status-pending)' : 'var(--text-primary)',
-                border: `1px solid ${stats.pending > 0 ? 'var(--warning)' : 'var(--border-default)'}`,
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className={`flex items-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium cursor-pointer ${
+                stats.pending > 0
+                  ? 'bg-ak-status-warning/15 text-ak-status-warning border border-ak-status-warning'
+                  : 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default'
+              }`}
             >
               <Clock size={18} />
               Forespørsler
               {stats.pending > 0 && (
-                <span
-                  style={{
-                    padding: '2px 8px',
-                    backgroundColor: 'var(--warning)',
-                    color: 'var(--bg-primary)',
-                    borderRadius: '10px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                  }}
-                >
+                <span className="py-0.5 px-2 bg-ak-status-warning text-white rounded-full text-xs font-semibold">
                   {stats.pending}
                 </span>
               )}
             </button>
             <button
               onClick={() => navigate('/coach/booking/settings')}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                backgroundColor: 'var(--accent)',
-                color: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className="flex items-center gap-2 py-2.5 px-4 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
             >
               <Settings size={18} />
               Tilgjengelighet
@@ -350,70 +295,22 @@ export default function CoachBookingCalendar() {
         </div>
 
         {/* Quick stats */}
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <div
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                backgroundColor: 'var(--accent)',
-              }}
-            />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+        <div className="flex gap-4">
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-brand-primary/10 rounded-lg">
+            <div className="w-2 h-2 rounded-full bg-ak-brand-primary" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.booked}</strong> bookede
             </span>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'rgba(var(--warning-rgb), 0.10)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <div
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                backgroundColor: 'var(--warning)',
-              }}
-            />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-warning/10 rounded-lg">
+            <div className="w-2 h-2 rounded-full bg-ak-status-warning" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.pending}</strong> ventende
             </span>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'rgba(var(--success-rgb), 0.10)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <div
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                backgroundColor: 'var(--success)',
-              }}
-            />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-success/10 rounded-lg">
+            <div className="w-2 h-2 rounded-full bg-ak-status-success" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.available}</strong> ledige
             </span>
           </div>
@@ -421,50 +318,21 @@ export default function CoachBookingCalendar() {
       </div>
 
       {/* Calendar navigation */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          padding: '16px 24px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="bg-ak-surface-base py-4 px-6 flex items-center justify-between border-b border-ak-border-default">
+        <div className="flex items-center gap-3">
           <button
             onClick={goToPreviousWeek}
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
+            className="w-9 h-9 rounded-lg bg-ak-surface-subtle border-none flex items-center justify-center cursor-pointer"
           >
-            <ChevronLeft size={20} color={'var(--text-primary)'} />
+            <ChevronLeft size={20} className="text-ak-text-primary" />
           </button>
           <button
             onClick={goToNextWeek}
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
+            className="w-9 h-9 rounded-lg bg-ak-surface-subtle border-none flex items-center justify-center cursor-pointer"
           >
-            <ChevronRight size={20} color={'var(--text-primary)'} />
+            <ChevronRight size={20} className="text-ak-text-primary" />
           </button>
-          <SectionTitle style={{ margin: 0 }}>
+          <SectionTitle className="m-0">
             {weekDates[0].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })} -{' '}
             {weekDates[6].toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' })}
           </SectionTitle>
@@ -472,41 +340,17 @@ export default function CoachBookingCalendar() {
 
         <button
           onClick={goToToday}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: 'var(--bg-primary)',
-            border: `1px solid ${'var(--border-default)'}`,
-            borderRadius: 'var(--radius-md)',
-            fontSize: '13px',
-            fontWeight: 500,
-            color: 'var(--text-primary)',
-            cursor: 'pointer',
-          }}
+          className="py-2 px-4 bg-ak-surface-base border border-ak-border-default rounded-lg text-[13px] font-medium text-ak-text-primary cursor-pointer"
         >
           I dag
         </button>
       </div>
 
       {/* Calendar grid */}
-      <div style={{ padding: '24px', overflowX: 'auto' }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '60px repeat(7, 1fr)',
-            gap: '1px',
-            backgroundColor: 'var(--border-default)',
-            borderRadius: 'var(--radius-lg)',
-            overflow: 'hidden',
-            minWidth: '900px',
-          }}
-        >
+      <div className="p-6 overflow-x-auto">
+        <div className="grid grid-cols-[60px_repeat(7,1fr)] gap-px bg-ak-border-default rounded-xl overflow-hidden min-w-[900px]">
           {/* Header row */}
-          <div
-            style={{
-              backgroundColor: 'var(--bg-tertiary)',
-              padding: '12px',
-            }}
-          />
+          <div className="bg-ak-surface-subtle p-3" />
           {weekDates.map((date) => {
             const isToday = date.toDateString() === new Date().toDateString();
             const daySchedule = schedule.find(
@@ -517,40 +361,16 @@ export default function CoachBookingCalendar() {
             return (
               <div
                 key={date.toISOString()}
-                style={{
-                  backgroundColor: isToday ? `${'var(--accent)'}08` : 'var(--bg-tertiary)',
-                  padding: '12px',
-                  textAlign: 'center',
-                }}
+                className={`p-3 text-center ${isToday ? 'bg-ak-brand-primary/5' : 'bg-ak-surface-subtle'}`}
               >
-                <p
-                  style={{
-                    fontSize: '11px',
-                    color: 'var(--text-secondary)',
-                    margin: 0,
-                    textTransform: 'uppercase',
-                  }}
-                >
+                <p className="text-[11px] text-ak-text-secondary m-0 uppercase">
                   {date.toLocaleDateString('nb-NO', { weekday: 'short' })}
                 </p>
-                <p
-                  style={{
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    color: isToday ? 'var(--accent)' : 'var(--text-primary)',
-                    margin: '4px 0 0',
-                  }}
-                >
+                <p className={`text-lg font-semibold mt-1 m-0 ${isToday ? 'text-ak-brand-primary' : 'text-ak-text-primary'}`}>
                   {date.getDate()}
                 </p>
                 {bookedCount > 0 && (
-                  <p
-                    style={{
-                      fontSize: '10px',
-                      color: 'var(--accent)',
-                      margin: '4px 0 0',
-                    }}
-                  >
+                  <p className="text-[10px] text-ak-brand-primary mt-1 m-0">
                     {bookedCount} booking{bookedCount > 1 ? 'er' : ''}
                   </p>
                 )}
@@ -562,112 +382,43 @@ export default function CoachBookingCalendar() {
           {['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'].map(
             (time) => (
               <React.Fragment key={time}>
-                <div
-                  style={{
-                    backgroundColor: 'var(--bg-primary)',
-                    padding: '8px',
-                    fontSize: '12px',
-                    color: 'var(--text-secondary)',
-                    textAlign: 'right',
-                    borderTop: time === '12:00' ? `2px solid ${'var(--border-default)'}` : undefined,
-                  }}
-                >
+                <div className={`bg-ak-surface-base p-2 text-xs text-ak-text-secondary text-right ${time === '12:00' ? 'border-t-2 border-ak-border-default' : ''}`}>
                   {time}
                 </div>
                 {weekDates.map((date) => {
                   const dateStr = date.toISOString().split('T')[0];
                   const daySchedule = schedule.find((s) => s.date === dateStr);
                   const slot = daySchedule?.slots.find((s) => s.startTime === time);
-                  const statusColor = slot ? getStatusColor(slot.status) : getStatusColor('available');
+                  const statusClasses = slot ? getStatusClasses(slot.status) : getStatusClasses('available');
 
                   return (
                     <div
                       key={`${dateStr}-${time}`}
                       onClick={() => slot && slot.booking && setSelectedSlot(slot)}
-                      style={{
-                        backgroundColor: statusColor.bg,
-                        borderLeft: slot?.booking ? `3px solid ${statusColor.border}` : undefined,
-                        padding: '8px',
-                        minHeight: '60px',
-                        cursor: slot?.booking ? 'pointer' : 'default',
-                        borderTop: time === '12:00' ? `2px solid ${'var(--border-default)'}` : undefined,
-                      }}
+                      className={`p-2 min-h-[60px] ${statusClasses.bg} ${slot?.booking ? `border-l-[3px] ${statusClasses.border}` : ''} ${slot?.booking ? 'cursor-pointer' : 'cursor-default'} ${time === '12:00' ? 'border-t-2 border-t-ak-border-default' : ''}`}
                     >
                       {slot?.booking && (
                         <div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '6px',
-                              marginBottom: '4px',
-                            }}
-                          >
-                            <div
-                              style={{
-                                width: 24,
-                                height: 24,
-                                borderRadius: '50%',
-                                backgroundColor: 'var(--accent)',
-                                color: 'var(--bg-primary)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '10px',
-                                fontWeight: 600,
-                              }}
-                            >
+                          <div className="flex items-center gap-1.5 mb-1">
+                            <div className="w-6 h-6 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-[10px] font-semibold">
                               {slot.booking.playerInitials}
                             </div>
-                            <span
-                              style={{
-                                fontSize: '12px',
-                                fontWeight: 500,
-                                color: 'var(--text-primary)',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                              }}
-                            >
+                            <span className="text-xs font-medium text-ak-text-primary overflow-hidden text-ellipsis whitespace-nowrap">
                               {slot.booking.playerName}
                             </span>
                           </div>
-                          <p
-                            style={{
-                              fontSize: '11px',
-                              color: 'var(--text-secondary)',
-                              margin: 0,
-                            }}
-                          >
+                          <p className="text-[11px] text-ak-text-secondary m-0">
                             {slot.booking.sessionType}
                           </p>
                           {slot.status === 'pending' && (
-                            <span
-                              style={{
-                                display: 'inline-block',
-                                marginTop: '4px',
-                                padding: '2px 6px',
-                                backgroundColor: 'var(--warning)',
-                                color: 'var(--bg-primary)',
-                                borderRadius: '4px',
-                                fontSize: '9px',
-                                fontWeight: 600,
-                              }}
-                            >
+                            <span className="inline-block mt-1 py-0.5 px-1.5 bg-ak-status-warning text-white rounded text-[9px] font-semibold">
                               VENTER
                             </span>
                           )}
                         </div>
                       )}
                       {slot?.status === 'blocked' && (
-                        <p
-                          style={{
-                            fontSize: '11px',
-                            color: 'var(--text-secondary)',
-                            margin: 0,
-                            fontStyle: 'italic',
-                          }}
-                        >
+                        <p className="text-[11px] text-ak-text-secondary m-0 italic">
                           Blokkert
                         </p>
                       )}
@@ -684,127 +435,43 @@ export default function CoachBookingCalendar() {
       {selectedSlot && selectedSlot.booking && (
         <>
           <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              zIndex: 100,
-            }}
+            className="fixed inset-0 bg-black/50 z-[100]"
             onClick={() => setSelectedSlot(null)}
           />
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '24px',
-              width: '400px',
-              maxWidth: '90vw',
-              zIndex: 101,
-              boxShadow: 'var(--shadow-dropdown)',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '20px',
-              }}
-            >
-              <SubSectionTitle style={{ margin: 0 }}>
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-ak-surface-base rounded-xl p-6 w-[400px] max-w-[90vw] z-[101] shadow-lg">
+            <div className="flex items-center justify-between mb-5">
+              <SubSectionTitle className="m-0">
                 Booking-detaljer
               </SubSectionTitle>
               <button
                 onClick={() => setSelectedSlot(null)}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  border: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                }}
+                className="w-8 h-8 rounded bg-ak-surface-subtle border-none flex items-center justify-center cursor-pointer"
               >
-                <X size={18} color={'var(--text-secondary)'} />
+                <X size={18} className="text-ak-text-secondary" />
               </button>
             </div>
 
-            <div style={{ marginBottom: '20px' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  marginBottom: '16px',
-                }}
-              >
-                <div
-                  style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--bg-primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '16px',
-                    fontWeight: 600,
-                  }}
-                >
+            <div className="mb-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-base font-semibold">
                   {selectedSlot.booking.playerInitials}
                 </div>
                 <div>
-                  <p
-                    style={{
-                      fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                      color: 'var(--text-primary)',
-                      margin: 0,
-                    }}
-                  >
+                  <p className="text-[17px] font-semibold text-ak-text-primary m-0">
                     {selectedSlot.booking.playerName}
                   </p>
-                  <p
-                    style={{
-                      fontSize: '12px', lineHeight: '16px',
-                      color: 'var(--text-secondary)',
-                      margin: '2px 0 0',
-                    }}
-                  >
+                  <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
                     {selectedSlot.booking.sessionType}
                   </p>
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '12px',
-                  marginBottom: '12px',
-                }}
-              >
-                <div
-                  style={{
-                    flex: 1,
-                    padding: '12px',
-                    backgroundColor: 'var(--bg-tertiary)',
-                    borderRadius: 'var(--radius-md)',
-                  }}
-                >
-                  <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
+              <div className="flex gap-3 mb-3">
+                <div className="flex-1 p-3 bg-ak-surface-subtle rounded-lg">
+                  <p className="text-xs text-ak-text-secondary m-0">
                     Dato
                   </p>
-                  <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
+                  <p className="text-[15px] text-ak-text-primary mt-1 m-0">
                     {new Date(selectedSlot.date).toLocaleDateString('nb-NO', {
                       weekday: 'long',
                       day: 'numeric',
@@ -812,36 +479,22 @@ export default function CoachBookingCalendar() {
                     })}
                   </p>
                 </div>
-                <div
-                  style={{
-                    flex: 1,
-                    padding: '12px',
-                    backgroundColor: 'var(--bg-tertiary)',
-                    borderRadius: 'var(--radius-md)',
-                  }}
-                >
-                  <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
+                <div className="flex-1 p-3 bg-ak-surface-subtle rounded-lg">
+                  <p className="text-xs text-ak-text-secondary m-0">
                     Tid
                   </p>
-                  <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
+                  <p className="text-[15px] text-ak-text-primary mt-1 m-0">
                     {selectedSlot.startTime} - {selectedSlot.endTime}
                   </p>
                 </div>
               </div>
 
               {selectedSlot.booking.notes && (
-                <div
-                  style={{
-                    padding: '12px',
-                    backgroundColor: `${'var(--accent)'}08`,
-                    borderRadius: 'var(--radius-md)',
-                    borderLeft: `3px solid ${'var(--accent)'}`,
-                  }}
-                >
-                  <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0 }}>
+                <div className="p-3 bg-ak-brand-primary/5 rounded-lg border-l-[3px] border-l-ak-brand-primary">
+                  <p className="text-xs text-ak-text-secondary m-0">
                     Notat fra spiller
                   </p>
-                  <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
+                  <p className="text-[15px] text-ak-text-primary mt-1 m-0">
                     {selectedSlot.booking.notes}
                   </p>
                 </div>
@@ -849,45 +502,17 @@ export default function CoachBookingCalendar() {
             </div>
 
             {selectedSlot.status === 'pending' ? (
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="flex gap-3">
                 <button
                   onClick={() => handleDecline(selectedSlot.id)}
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    padding: '12px',
-                    backgroundColor: 'var(--bg-primary)',
-                    color: 'var(--error)',
-                    border: `1px solid ${'var(--error)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  className="flex-1 flex items-center justify-center gap-2 p-3 bg-ak-surface-base text-ak-status-error border border-ak-status-error rounded-lg text-sm font-semibold cursor-pointer"
                 >
                   <X size={18} />
                   Avslå
                 </button>
                 <button
                   onClick={() => handleApprove(selectedSlot.id)}
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    padding: '12px',
-                    backgroundColor: 'var(--success)',
-                    color: 'var(--bg-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  className="flex-1 flex items-center justify-center gap-2 p-3 bg-ak-status-success text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
                 >
                   <Check size={18} />
                   Godkjenn
@@ -896,17 +521,7 @@ export default function CoachBookingCalendar() {
             ) : (
               <button
                 onClick={() => navigate(`/coach/athletes/${selectedSlot.booking?.id}`)}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  backgroundColor: 'var(--accent)',
-                  color: 'var(--bg-primary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                className="w-full p-3 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
               >
                 Se spillerprofil
               </button>

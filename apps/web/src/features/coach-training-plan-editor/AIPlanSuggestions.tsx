@@ -1,8 +1,11 @@
 /**
  * AK Golf Academy - AI Plan Suggestions Component
+ * Design System v3.0 - Premium Light
  *
  * Provides AI-generated training plan suggestions for coaches.
  * Uses the AI service to analyze player data and generate recommendations.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState, useCallback } from 'react';
@@ -22,10 +25,15 @@ export interface SuggestionToApply {
   durationMinutes: number;
 }
 
-const PRIORITY_COLORS = {
-  high: { bg: 'rgba(239, 68, 68, 0.1)', text: 'var(--error)', border: 'var(--error)' },
-  medium: { bg: 'rgba(245, 158, 11, 0.1)', text: 'var(--warning)', border: 'var(--warning)' },
-  low: { bg: 'rgba(34, 197, 94, 0.1)', text: 'var(--success)', border: 'var(--success)' },
+const getPriorityClasses = (priority: 'high' | 'medium' | 'low') => {
+  switch (priority) {
+    case 'high':
+      return { bg: 'bg-ak-status-error/10', text: 'text-ak-status-error', border: 'border-ak-status-error' };
+    case 'medium':
+      return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning', border: 'border-ak-status-warning' };
+    case 'low':
+      return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success', border: 'border-ak-status-success' };
+  }
 };
 
 export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', onApplySuggestion }: Props) {
@@ -80,42 +88,18 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: 'var(--radius-lg)',
-        boxShadow: 'var(--shadow-card)',
-        overflow: 'hidden',
-        border: '1px solid rgba(var(--accent-rgb), 0.2)',
-      }}
-    >
+    <div className="bg-ak-surface-base rounded-2xl shadow-ak-card overflow-hidden border border-ak-brand-primary/20">
       {/* Header */}
-      <div
-        style={{
-          padding: '20px',
-          borderBottom: '1px solid var(--border-default)',
-          background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.05) 0%, rgba(var(--accent-rgb), 0.02) 100%)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Sparkles size={20} color="var(--accent)" />
+      <div className="p-5 border-b border-ak-border-default bg-gradient-to-br from-ak-brand-primary/5 to-ak-brand-primary/[0.02]">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
+            <Sparkles size={20} className="text-ak-brand-primary" />
           </div>
           <div>
-            <h3 style={{ margin: 0, fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)' }}>
+            <h3 className="m-0 text-[17px] font-semibold text-ak-text-primary">
               AI Treningsassistent
             </h3>
-            <p style={{ margin: 0, marginTop: '2px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+            <p className="m-0 mt-0.5 text-[13px] text-ak-text-secondary">
               Få personlige anbefalinger for {playerName}
             </p>
           </div>
@@ -123,10 +107,10 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
       </div>
 
       {/* Input Form */}
-      <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="p-5 border-b border-ak-border-default">
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+            <label className="text-xs text-ak-text-secondary block mb-2">
               Timer per uke (valgfritt)
             </label>
             <input
@@ -136,19 +120,11 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
               placeholder="F.eks. 10"
               min="1"
               max="40"
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border-default)',
-                fontSize: '14px',
-                color: 'var(--text-primary)',
-                boxSizing: 'border-box',
-              }}
+              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm text-ak-text-primary bg-ak-surface-base box-border outline-none"
             />
           </div>
           <div>
-            <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+            <label className="text-xs text-ak-text-secondary block mb-2">
               Mål (valgfritt)
             </label>
             <input
@@ -156,15 +132,7 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
               value={goalDescription}
               onChange={(e) => setGoalDescription(e.target.value)}
               placeholder="F.eks. Forbedre putting"
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border-default)',
-                fontSize: '14px',
-                color: 'var(--text-primary)',
-                boxSizing: 'border-box',
-              }}
+              className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm text-ak-text-primary bg-ak-surface-base box-border outline-none"
             />
           </div>
         </div>
@@ -172,26 +140,15 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
         <button
           onClick={fetchSuggestions}
           disabled={isLoading}
-          style={{
-            marginTop: '16px',
-            width: '100%',
-            padding: '12px',
-            borderRadius: 'var(--radius-md)',
-            border: 'none',
-            backgroundColor: isLoading ? 'var(--border-default)' : 'var(--accent)',
-            color: isLoading ? 'var(--text-secondary)' : 'var(--bg-primary)',
-            fontSize: '14px',
-            fontWeight: 600,
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-          }}
+          className={`mt-4 w-full py-3 rounded-lg border-none text-sm font-semibold flex items-center justify-center gap-2 transition-colors ${
+            isLoading
+              ? 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed'
+              : 'bg-ak-brand-primary text-ak-surface-base cursor-pointer'
+          }`}
         >
           {isLoading ? (
             <>
-              <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+              <Loader2 size={16} className="animate-spin" />
               Analyserer spillerdata...
             </>
           ) : (
@@ -205,167 +162,109 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
 
       {/* Error */}
       {error && (
-        <div
-          style={{
-            margin: '16px 20px',
-            padding: '12px 16px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid var(--error)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}
-        >
-          <AlertCircle size={16} color="var(--error)" />
-          <span style={{ fontSize: '14px', color: 'var(--error)' }}>{error}</span>
+        <div className="mx-5 my-4 py-3 px-4 rounded-lg bg-ak-status-error/10 border border-ak-status-error flex items-center gap-2">
+          <AlertCircle size={16} className="text-ak-status-error" />
+          <span className="text-sm text-ak-status-error">{error}</span>
         </div>
       )}
 
       {/* Results */}
       {suggestions && (
-        <div style={{ padding: '0 20px 20px' }}>
+        <div className="px-5 pb-5">
           {/* Summary */}
-          <div
-            style={{
-              padding: '16px',
-              marginTop: '16px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--bg-secondary)',
-              border: '1px solid var(--border-default)',
-            }}
-          >
-            <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.6', color: 'var(--text-primary)' }}>
+          <div className="p-4 mt-4 rounded-lg bg-ak-surface-subtle border border-ak-border-default">
+            <p className="m-0 text-sm leading-relaxed text-ak-text-primary">
               {suggestions.summary}
             </p>
           </div>
 
           {/* Focus Areas */}
-          <div style={{ marginTop: '20px' }}>
+          <div className="mt-5">
             <button
               onClick={() => toggleSection('focus')}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '12px 0',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="w-full flex items-center justify-between py-3 bg-transparent border-none cursor-pointer"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Target size={18} color="var(--accent)" />
-                <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              <div className="flex items-center gap-2">
+                <Target size={18} className="text-ak-brand-primary" />
+                <span className="text-[15px] font-semibold text-ak-text-primary">
                   Fokusområder ({suggestions.suggestedFocus.length})
                 </span>
               </div>
-              {expandedSections.focus ? <ChevronUp size={18} color="var(--text-secondary)" /> : <ChevronDown size={18} color="var(--text-secondary)" />}
+              {expandedSections.focus ? (
+                <ChevronUp size={18} className="text-ak-text-secondary" />
+              ) : (
+                <ChevronDown size={18} className="text-ak-text-secondary" />
+              )}
             </button>
 
             {expandedSections.focus && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {suggestions.suggestedFocus.map((focus, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      padding: '14px 16px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: PRIORITY_COLORS[focus.priority].bg,
-                      borderLeft: `3px solid ${PRIORITY_COLORS[focus.priority].border}`,
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
-                        {focus.area}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          textTransform: 'uppercase',
-                          color: PRIORITY_COLORS[focus.priority].text,
-                        }}
-                      >
-                        {focus.priority === 'high' ? 'Høy' : focus.priority === 'medium' ? 'Medium' : 'Lav'} prioritet
-                      </span>
+              <div className="flex flex-col gap-3">
+                {suggestions.suggestedFocus.map((focus, index) => {
+                  const classes = getPriorityClasses(focus.priority);
+                  return (
+                    <div
+                      key={index}
+                      className={`py-3.5 px-4 rounded-lg ${classes.bg} border-l-[3px] ${classes.border}`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-semibold text-ak-text-primary">
+                          {focus.area}
+                        </span>
+                        <span className={`text-[11px] font-semibold uppercase ${classes.text}`}>
+                          {focus.priority === 'high' ? 'Høy' : focus.priority === 'medium' ? 'Medium' : 'Lav'} prioritet
+                        </span>
+                      </div>
+                      <p className="m-0 mt-2 text-[13px] text-ak-text-secondary leading-relaxed">
+                        {focus.reason}
+                      </p>
+                      <div className="mt-2 text-xs text-ak-text-secondary">
+                        Anbefalt: {focus.suggestedHoursPerWeek} timer/uke
+                      </div>
                     </div>
-                    <p style={{ margin: '8px 0 0', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                      {focus.reason}
-                    </p>
-                    <div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-                      Anbefalt: {focus.suggestedHoursPerWeek} timer/uke
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
 
           {/* Weekly Structure */}
-          <div style={{ marginTop: '16px' }}>
+          <div className="mt-4">
             <button
               onClick={() => toggleSection('structure')}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '12px 0',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="w-full flex items-center justify-between py-3 bg-transparent border-none cursor-pointer"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Calendar size={18} color="var(--accent)" />
-                <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              <div className="flex items-center gap-2">
+                <Calendar size={18} className="text-ak-brand-primary" />
+                <span className="text-[15px] font-semibold text-ak-text-primary">
                   Ukestruktur ({suggestions.weeklyStructure.recommendedDays} dager/uke)
                 </span>
               </div>
-              {expandedSections.structure ? <ChevronUp size={18} color="var(--text-secondary)" /> : <ChevronDown size={18} color="var(--text-secondary)" />}
+              {expandedSections.structure ? (
+                <ChevronUp size={18} className="text-ak-text-secondary" />
+              ) : (
+                <ChevronDown size={18} className="text-ak-text-secondary" />
+              )}
             </button>
 
             {expandedSections.structure && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div className="flex flex-col gap-2.5">
                 {suggestions.weeklyStructure.sessionTypes.map((session, index) => (
                   <div
                     key={index}
-                    style={{
-                      padding: '12px 16px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--bg-secondary)',
-                      border: '1px solid var(--border-default)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
+                    className="py-3 px-4 rounded-lg bg-ak-surface-subtle border border-ak-border-default flex items-center justify-between"
                   >
                     <div>
-                      <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                      <div className="text-sm font-medium text-ak-text-primary">
                         {session.type}
                       </div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                      <div className="text-xs text-ak-text-secondary mt-0.5">
                         {session.frequency} • {session.duration}
                       </div>
                     </div>
                     {onApplySuggestion && (
                       <button
                         onClick={() => handleApplySession(session)}
-                        style={{
-                          padding: '6px 12px',
-                          borderRadius: 'var(--radius-sm)',
-                          border: '1px solid var(--accent)',
-                          backgroundColor: 'transparent',
-                          color: 'var(--accent)',
-                          fontSize: '12px',
-                          fontWeight: 500,
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                        }}
+                        className="py-1.5 px-3 rounded border border-ak-brand-primary bg-transparent text-ak-brand-primary text-xs font-medium cursor-pointer flex items-center gap-1"
                       >
                         <CheckCircle2 size={12} />
                         Legg til
@@ -378,59 +277,47 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
           </div>
 
           {/* Periodization */}
-          <div style={{ marginTop: '16px' }}>
+          <div className="mt-4">
             <button
               onClick={() => toggleSection('periodization')}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '12px 0',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="w-full flex items-center justify-between py-3 bg-transparent border-none cursor-pointer"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <TrendingUp size={18} color="var(--accent)" />
-                <span style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              <div className="flex items-center gap-2">
+                <TrendingUp size={18} className="text-ak-brand-primary" />
+                <span className="text-[15px] font-semibold text-ak-text-primary">
                   Periodisering
                 </span>
               </div>
-              {expandedSections.periodization ? <ChevronUp size={18} color="var(--text-secondary)" /> : <ChevronDown size={18} color="var(--text-secondary)" />}
+              {expandedSections.periodization ? (
+                <ChevronUp size={18} className="text-ak-text-secondary" />
+              ) : (
+                <ChevronDown size={18} className="text-ak-text-secondary" />
+              )}
             </button>
 
             {expandedSections.periodization && (
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: '1px solid var(--border-default)',
-                }}
-              >
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '16px' }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+              <div className="p-4 rounded-lg bg-ak-surface-subtle border border-ak-border-default">
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-ak-brand-primary">
                       {suggestions.periodization.baseWeeks}
                     </div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Base uker</div>
+                    <div className="text-xs text-ak-text-secondary">Base uker</div>
                   </div>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--warning)' }}>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-ak-status-warning">
                       {suggestions.periodization.buildWeeks}
                     </div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Build uker</div>
+                    <div className="text-xs text-ak-text-secondary">Build uker</div>
                   </div>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-ak-status-success">
                       {suggestions.periodization.peakWeeks}
                     </div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Peak uker</div>
+                    <div className="text-xs text-ak-text-secondary">Peak uker</div>
                   </div>
                 </div>
-                <p style={{ margin: 0, fontSize: '13px', lineHeight: '1.5', color: 'var(--text-secondary)' }}>
+                <p className="m-0 text-[13px] leading-relaxed text-ak-text-secondary">
                   {suggestions.periodization.rationale}
                 </p>
               </div>
@@ -439,29 +326,12 @@ export default function AIPlanSuggestions({ playerId, playerName = 'Spiller', on
 
           {/* Tools Used */}
           {suggestions.toolsUsed.length > 0 && (
-            <div
-              style={{
-                marginTop: '20px',
-                padding: '12px 16px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
-                fontSize: '12px',
-                color: 'var(--text-secondary)',
-              }}
-            >
+            <div className="mt-5 py-3 px-4 rounded-lg bg-ak-brand-primary/5 text-xs text-ak-text-secondary">
               <strong>Data brukt:</strong> {suggestions.toolsUsed.join(', ')}
             </div>
           )}
         </div>
       )}
-
-      {/* Animation keyframes */}
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

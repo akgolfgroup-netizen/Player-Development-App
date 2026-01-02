@@ -1,3 +1,9 @@
+/**
+ * CoachPlanningHub.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   ClipboardList,
@@ -14,6 +20,16 @@ import { coachesAPI } from '../../services/api';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import { SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const CATEGORY_CLASSES = {
+  A: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
+  B: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
+  C: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' },
+};
 
 interface Player {
   id: string;
@@ -122,13 +138,8 @@ export const CoachPlanningHub: React.FC = () => {
     groupsWithoutPlan: groups.filter(g => !g.hasGroupPlan).length
   }), [players, groups]);
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'A': return { bg: 'var(--bg-success-subtle)', text: 'var(--success)' };
-      case 'B': return { bg: 'var(--bg-accent-subtle)', text: 'var(--info)' };
-      case 'C': return { bg: 'var(--bg-warning-subtle)', text: 'var(--warning)' };
-      default: return { bg: 'var(--card)', text: 'var(--text-secondary)' };
-    }
+  const getCategoryClasses = (category: string) => {
+    return CATEGORY_CLASSES[category as keyof typeof CATEGORY_CLASSES] || { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
   };
 
   const formatDate = (dateString?: string) => {
@@ -139,20 +150,14 @@ export const CoachPlanningHub: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Loader2 size={40} color={'var(--accent)'} style={{ animation: 'spin 1s linear infinite' }} />
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <Loader2 size={40} className="text-ak-brand-primary animate-spin" />
       </div>
     );
   }
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <div className="bg-ak-surface-subtle min-h-screen">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Treningsplanlegger"
@@ -168,119 +173,68 @@ export const CoachPlanningHub: React.FC = () => {
         }
       />
 
-      <div style={{ padding: '0 24px 24px' }}>
+      <div className="px-6 pb-6">
 
       {/* Stats Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '12px',
-        marginBottom: '24px'
-      }}>
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <User size={16} color={'var(--accent)'} />
-            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Spillere med plan</span>
+      <div className="grid grid-cols-4 gap-3 mb-6">
+        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+          <div className="flex items-center gap-2 mb-2">
+            <User size={16} className="text-ak-brand-primary" />
+            <span className="text-xs text-ak-text-secondary">Spillere med plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--accent)', margin: 0 }}>
+          <p className="text-2xl font-bold text-ak-brand-primary m-0">
             {stats.playersWithPlan}
           </p>
         </div>
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <User size={16} color="var(--warning)" />
-            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Mangler plan</span>
+        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+          <div className="flex items-center gap-2 mb-2">
+            <User size={16} className="text-ak-status-warning" />
+            <span className="text-xs text-ak-text-secondary">Mangler plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--warning)', margin: 0 }}>
+          <p className="text-2xl font-bold text-ak-status-warning m-0">
             {stats.playersWithoutPlan}
           </p>
         </div>
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <Users size={16} color="var(--success)" />
-            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Grupper med plan</span>
+        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+          <div className="flex items-center gap-2 mb-2">
+            <Users size={16} className="text-ak-status-success" />
+            <span className="text-xs text-ak-text-secondary">Grupper med plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--success)', margin: 0 }}>
+          <p className="text-2xl font-bold text-ak-status-success m-0">
             {stats.groupsWithPlan}
           </p>
         </div>
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <Users size={16} color="var(--error)" />
-            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Grupper uten plan</span>
+        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+          <div className="flex items-center gap-2 mb-2">
+            <Users size={16} className="text-ak-status-error" />
+            <span className="text-xs text-ak-text-secondary">Grupper uten plan</span>
           </div>
-          <p style={{ fontSize: '24px', fontWeight: '700', color: 'var(--error)', margin: 0 }}>
+          <p className="text-2xl font-bold text-ak-status-error m-0">
             {stats.groupsWithoutPlan}
           </p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div style={{
-        display: 'flex',
-        gap: '4px',
-        marginBottom: '20px',
-        padding: '4px',
-        backgroundColor: 'var(--bg-tertiary)',
-        borderRadius: '12px',
-        width: 'fit-content'
-      }}>
+      <div className="flex gap-1 mb-5 p-1 bg-ak-surface-subtle rounded-xl w-fit">
         <button
           onClick={() => setActiveTab('players')}
-          style={{
-            padding: '10px 20px',
-            borderRadius: '8px',
-            border: 'none',
-            backgroundColor: activeTab === 'players' ? 'var(--bg-primary)' : 'transparent',
-            color: activeTab === 'players' ? 'var(--text-primary)' : 'var(--text-secondary)',
-            fontSize: '14px',
-            fontWeight: '500',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            boxShadow: activeTab === 'players' ? 'var(--shadow-xs)' : 'none'
-          }}
+          className={`py-2.5 px-5 rounded-lg border-none text-sm font-medium cursor-pointer flex items-center gap-2 transition-all ${
+            activeTab === 'players'
+              ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+              : 'bg-transparent text-ak-text-secondary'
+          }`}
         >
           <User size={16} />
           Spillere ({players.length})
         </button>
         <button
           onClick={() => setActiveTab('groups')}
-          style={{
-            padding: '10px 20px',
-            borderRadius: '8px',
-            border: 'none',
-            backgroundColor: activeTab === 'groups' ? 'var(--bg-primary)' : 'transparent',
-            color: activeTab === 'groups' ? 'var(--text-primary)' : 'var(--text-secondary)',
-            fontSize: '14px',
-            fontWeight: '500',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            boxShadow: activeTab === 'groups' ? 'var(--shadow-xs)' : 'none'
-          }}
+          className={`py-2.5 px-5 rounded-lg border-none text-sm font-medium cursor-pointer flex items-center gap-2 transition-all ${
+            activeTab === 'groups'
+              ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+              : 'bg-transparent text-ak-text-secondary'
+          }`}
         >
           <Users size={16} />
           Grupper ({groups.length})
@@ -288,41 +242,21 @@ export const CoachPlanningHub: React.FC = () => {
       </div>
 
       {/* Search and Filter */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '20px',
-        flexWrap: 'wrap'
-      }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '200px', maxWidth: '400px' }}>
+      <div className="flex gap-4 mb-5 flex-wrap">
+        <div className="relative flex-1 min-w-[200px] max-w-[400px]">
           <Search
             size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--text-tertiary)'
-            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
           />
           <input
             type="text"
             placeholder={activeTab === 'players' ? 'Søk etter spiller...' : 'Søk etter gruppe...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '12px 12px 12px 40px',
-              borderRadius: '10px',
-              border: `1px solid ${'var(--border-default)'}`,
-              backgroundColor: 'var(--bg-primary)',
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              outline: 'none'
-            }}
+            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
           />
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex gap-2">
           {[
             { key: 'all', label: 'Alle' },
             { key: 'with', label: 'Med plan' },
@@ -331,20 +265,11 @@ export const CoachPlanningHub: React.FC = () => {
             <button
               key={filter.key}
               onClick={() => setFilterPlan(filter.key as typeof filterPlan)}
-              style={{
-                padding: '10px 16px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: filterPlan === filter.key
-                  ? 'var(--accent)'
-                  : 'var(--bg-primary)',
-                color: filterPlan === filter.key
-                  ? 'white'
-                  : 'var(--text-secondary)',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
+              className={`py-2.5 px-4 rounded-[10px] border-none text-[13px] font-medium cursor-pointer transition-colors ${
+                filterPlan === filter.key
+                  ? 'bg-ak-brand-primary text-white'
+                  : 'bg-ak-surface-base text-ak-text-secondary hover:bg-ak-surface-subtle'
+              }`}
             >
               {filter.label}
             </button>
@@ -354,176 +279,102 @@ export const CoachPlanningHub: React.FC = () => {
 
       {/* Content */}
       {activeTab === 'players' ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '12px' }}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-3">
           {filteredPlayers.map(player => {
-            const catColors = getCategoryColor(player.category);
+            const catClasses = getCategoryClasses(player.category);
             return (
               <div
                 key={player.id}
                 onClick={() => navigate(`/coach/athletes/${player.id}/plan`)}
-                style={{
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  border: `1px solid ${'var(--border-default)'}`,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px'
-                }}
+                className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default cursor-pointer transition-all hover:shadow-md flex items-center gap-3"
               >
-                <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  backgroundColor: player.hasActivePlan
-                    ? 'var(--success-muted)'
-                    : 'var(--warning-muted)',
-                  border: `2px solid ${player.hasActivePlan ? 'var(--success)' : 'var(--warning)'}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  color: player.hasActivePlan ? 'var(--success)' : 'var(--warning)'
-                }}>
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-base font-semibold border-2 ${
+                  player.hasActivePlan
+                    ? 'bg-ak-status-success/15 border-ak-status-success text-ak-status-success'
+                    : 'bg-ak-status-warning/15 border-ak-status-warning text-ak-status-warning'
+                }`}>
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <SubSectionTitle style={{
-                      fontSize: '15px',
-                      fontWeight: '600',
-                      color: 'var(--text-primary)',
-                      margin: 0
-                    }}>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
                       {player.name}
                     </SubSectionTitle>
-                    <span style={{
-                      fontSize: '10px',
-                      fontWeight: '600',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                      backgroundColor: catColors.bg,
-                      color: catColors.text
-                    }}>
+                    <span className={`text-[10px] font-semibold py-0.5 px-1.5 rounded ${catClasses.bg} ${catClasses.text}`}>
                       {player.category}
                     </span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-ak-text-secondary">
                       HCP {player.hcp}
                     </span>
                     {player.hasActivePlan ? (
                       <>
-                        <span style={{
-                          fontSize: '11px',
-                          color: 'var(--success)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px'
-                        }}>
+                        <span className="text-[11px] text-ak-status-success flex items-center gap-1">
                           <CheckCircle size={12} />
                           {player.weeksInPlan}u plan
                         </span>
                         {player.planUpdated && (
-                          <span style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>
+                          <span className="text-[11px] text-ak-text-secondary">
                             Oppdatert {formatDate(player.planUpdated)}
                           </span>
                         )}
                       </>
                     ) : (
-                      <span style={{
-                        fontSize: '11px',
-                        color: 'var(--warning)',
-                        fontWeight: '500'
-                      }}>
+                      <span className="text-[11px] text-ak-status-warning font-medium">
                         Ingen aktiv plan
                       </span>
                     )}
                   </div>
                 </div>
-                <ChevronRight size={18} color={'var(--text-tertiary)'} />
+                <ChevronRight size={18} className="text-ak-text-secondary" />
               </div>
             );
           })}
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '12px' }}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-3">
           {filteredGroups.map(group => (
             <div
               key={group.id}
               onClick={() => navigate(`/coach/groups/${group.id}/plan`)}
-              style={{
-                backgroundColor: 'var(--bg-primary)',
-                borderRadius: '12px',
-                padding: '16px',
-                border: `1px solid ${'var(--border-default)'}`,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px'
-              }}
+              className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default cursor-pointer transition-all hover:shadow-md flex items-center gap-3"
             >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '12px',
-                backgroundColor: group.hasGroupPlan
-                  ? 'var(--success-muted)'
-                  : 'var(--warning-muted)',
-                border: `2px solid ${group.hasGroupPlan ? 'var(--success)' : 'var(--warning)'}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <Users size={20} color={group.hasGroupPlan ? 'var(--success)' : 'var(--warning)'} />
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center border-2 ${
+                group.hasGroupPlan
+                  ? 'bg-ak-status-success/15 border-ak-status-success'
+                  : 'bg-ak-status-warning/15 border-ak-status-warning'
+              }`}>
+                <Users size={20} className={group.hasGroupPlan ? 'text-ak-status-success' : 'text-ak-status-warning'} />
               </div>
-              <div style={{ flex: 1 }}>
-                <SubSectionTitle style={{
-                  fontSize: '15px',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  margin: '0 0 4px 0'
-                }}>
+              <div className="flex-1">
+                <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0 mb-1">
                   {group.name}
                 </SubSectionTitle>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-ak-text-secondary">
                     {group.memberCount} medlemmer
                   </span>
                   {group.hasGroupPlan ? (
                     <>
-                      <span style={{
-                        fontSize: '11px',
-                        color: 'var(--success)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}>
+                      <span className="text-[11px] text-ak-status-success flex items-center gap-1">
                         <CheckCircle size={12} />
                         Aktiv plan
                       </span>
                       {group.planUpdated && (
-                        <span style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>
+                        <span className="text-[11px] text-ak-text-secondary">
                           Oppdatert {formatDate(group.planUpdated)}
                         </span>
                       )}
                     </>
                   ) : (
-                    <span style={{
-                      fontSize: '11px',
-                      color: 'var(--warning)',
-                      fontWeight: '500'
-                    }}>
+                    <span className="text-[11px] text-ak-status-warning font-medium">
                       Ingen gruppeplan
                     </span>
                   )}
                 </div>
               </div>
-              <ChevronRight size={18} color={'var(--text-tertiary)'} />
+              <ChevronRight size={18} className="text-ak-text-secondary" />
             </div>
           ))}
         </div>
@@ -531,19 +382,9 @@ export const CoachPlanningHub: React.FC = () => {
 
       {((activeTab === 'players' && filteredPlayers.length === 0) ||
         (activeTab === 'groups' && filteredGroups.length === 0)) && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <ClipboardList size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: 'var(--text-secondary)',
-            margin: 0
-          }}>
+        <div className="text-center py-16 px-5 bg-ak-surface-base rounded-2xl border border-ak-border-default">
+          <ClipboardList size={48} className="text-ak-text-secondary mb-4 mx-auto" />
+          <p className="text-base text-ak-text-secondary m-0">
             Ingen {activeTab === 'players' ? 'spillere' : 'grupper'} funnet
           </p>
         </div>

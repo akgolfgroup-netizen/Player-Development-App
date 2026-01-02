@@ -1,3 +1,9 @@
+/**
+ * Treningsprotokoll.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
@@ -5,18 +11,56 @@ import {
   TeknikIcon, GolfslagIcon, SpillIcon, KonkurranseIcon,
   FysiskIcon, MentalIcon, GolfScorecard
 } from '../../components/icons';
-import { tokens } from '../../design-tokens';
 import StateCard from '../../ui/composites/StateCard';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
-// Session type colors (Blue Palette 01) - use CSS custom properties
-const sessionColors = {
-  teknikk: 'var(--ak-session-teknikk)',
-  golfslag: 'var(--ak-session-golfslag)',
-  spill: 'var(--ak-session-spill)',
-  konkurranse: 'var(--achievement)',
-  fysisk: 'var(--achievement)',
-  mental: 'var(--text-muted)',
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const SESSION_CATEGORY_CLASSES = {
+  teknikk: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/15',
+  },
+  golfslag: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+  },
+  spill: {
+    text: 'text-ak-status-warning',
+    bg: 'bg-ak-status-warning/15',
+  },
+  konkurranse: {
+    text: 'text-amber-500',
+    bg: 'bg-amber-500/15',
+  },
+  fysisk: {
+    text: 'text-ak-status-error',
+    bg: 'bg-ak-status-error/15',
+  },
+  mental: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+  },
+};
+
+const LEVEL_CLASSES = {
+  L1: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', label: 'L1 · Eksponering' },
+  L2: { bg: 'bg-ak-border-default', text: 'text-ak-text-primary', label: 'L2 · Fundamentals' },
+  L3: { bg: 'bg-ak-status-success/20', text: 'text-ak-status-success', label: 'L3 · Variasjon' },
+  L4: { bg: 'bg-ak-status-success', text: 'text-white', label: 'L4 · Timing' },
+  L5: { bg: 'bg-ak-brand-primary', text: 'text-white', label: 'L5 · Automatikk' },
+};
+
+const SPEED_CLASSES = {
+  CS0: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', label: 'CS0 · N/A' },
+  CS20: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', label: 'CS20 · 20%' },
+  CS40: { bg: 'bg-ak-border-default', text: 'text-ak-text-primary', label: 'CS40 · 40%' },
+  CS60: { bg: 'bg-ak-status-success/20', text: 'text-ak-status-success', label: 'CS60 · 60%' },
+  CS70: { bg: 'bg-ak-status-success', text: 'text-white', label: 'CS70 · 70%' },
+  CS80: { bg: 'bg-ak-brand-primary/80', text: 'text-white', label: 'CS80 · 80%' },
+  CS100: { bg: 'bg-ak-brand-primary', text: 'text-white', label: 'CS100 · Maks' },
 };
 
 // ===== ICONS =====
@@ -84,8 +128,7 @@ const Icons = {
 
 // ===== UI COMPONENTS =====
 const Card = ({ children, className = '', padding = true }) => (
-  <div className={`bg-white border border-ak-mist rounded-xl ${padding ? 'p-4' : ''} ${className}`}
-       style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+  <div className={`bg-white border border-ak-mist rounded-xl shadow-sm ${padding ? 'p-4' : ''} ${className}`}>
     {children}
   </div>
 );
@@ -113,39 +156,21 @@ const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
 
 // ===== LEVEL TAG COMPONENT =====
 const LevelTag = ({ level }) => {
-  const config = {
-    L1: { bg: tokens.colors.cloud, text: tokens.colors.steel, label: 'L1 · Eksponering' },
-    L2: { bg: tokens.colors.mist, text: tokens.colors.charcoal, label: 'L2 · Fundamentals' },
-    L3: { bg: `${tokens.colors.success}20`, text: tokens.colors.primaryLight, label: 'L3 · Variasjon' },
-    L4: { bg: tokens.colors.success, text: tokens.colors.white, label: 'L4 · Timing' },
-    L5: { bg: tokens.colors.primary, text: tokens.colors.white, label: 'L5 · Automatikk' },
-  };
-
-  const { bg, text, label } = config[level] || config.L3;
+  const classes = LEVEL_CLASSES[level] || LEVEL_CLASSES.L3;
 
   return (
-    <span className="px-2 py-1 rounded-md text-[11px] font-medium" style={{ backgroundColor: bg, color: text }}>
-      {label}
+    <span className={`px-2 py-1 rounded-md text-[11px] font-medium ${classes.bg} ${classes.text}`}>
+      {classes.label}
     </span>
   );
 };
 
 const SpeedTag = ({ speed }) => {
-  const config = {
-    CS0: { bg: tokens.colors.cloud, text: tokens.colors.steel, label: 'CS0 · N/A' },
-    CS20: { bg: tokens.colors.cloud, text: tokens.colors.steel, label: 'CS20 · 20%' },
-    CS40: { bg: tokens.colors.mist, text: tokens.colors.charcoal, label: 'CS40 · 40%' },
-    CS60: { bg: `${tokens.colors.success}20`, text: tokens.colors.primaryLight, label: 'CS60 · 60%' },
-    CS70: { bg: tokens.colors.success, text: tokens.colors.white, label: 'CS70 · 70%' },
-    CS80: { bg: tokens.colors.primaryLight, text: tokens.colors.white, label: 'CS80 · 80%' },
-    CS100: { bg: tokens.colors.primary, text: tokens.colors.white, label: 'CS100 · Maks' },
-  };
-
-  const { bg, text, label } = config[speed] || config.CS60;
+  const classes = SPEED_CLASSES[speed] || SPEED_CLASSES.CS60;
 
   return (
-    <span className="px-2 py-1 rounded-md text-[11px] font-medium" style={{ backgroundColor: bg, color: text }}>
-      {label}
+    <span className={`px-2 py-1 rounded-md text-[11px] font-medium ${classes.bg} ${classes.text}`}>
+      {classes.label}
     </span>
   );
 };
@@ -391,9 +416,9 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
       .filter(cat => cat.count > 0)
   ];
 
-  // Get session type color
-  const getSessionColor = (category) => {
-    return sessionColors[category] || tokens.colors.steel;
+  // Get session category classes
+  const getSessionClasses = (category) => {
+    return SESSION_CATEGORY_CLASSES[category] || SESSION_CATEGORY_CLASSES.teknikk;
   };
 
   // Filter sessions based on selected category
@@ -418,14 +443,14 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.snow, fontFamily: 'Inter, -apple-system, system-ui, sans-serif' }}>
+    <div className="min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header */}
       <PageHeader
         title="Treningsprotokoll"
         subtitle="Planlagte og gjennomførte økter"
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Session Library */}
           <div className="lg:col-span-1">
@@ -465,10 +490,9 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                 >
                   <div className="flex items-start gap-3">
                     <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0"
-                      style={{ backgroundColor: `${getSessionColor(session.category)}15` }}
+                      className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0 ${getSessionClasses(session.category).bg}`}
                     >
-                      {session.icon && <session.icon size={24} color={getSessionColor(session.category)} />}
+                      {session.icon && <session.icon size={24} className={getSessionClasses(session.category).text} />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <SubSectionTitle className="text-[14px] line-clamp-1">{session.name}</SubSectionTitle>
@@ -499,7 +523,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        {selectedSession.icon && <selectedSession.icon size={28} color={getSessionColor(selectedSession.category)} />}
+                        {selectedSession.icon && <selectedSession.icon size={28} className="text-white/80" />}
                         <SectionTitle className="text-[20px] text-white">{selectedSession.name}</SectionTitle>
                       </div>
                       <p className="text-white/70 text-[13px] mb-3">{selectedSession.description}</p>
@@ -569,7 +593,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                         disabled={activeExercise === 0}
                         className="p-2 rounded-lg border border-ak-mist disabled:opacity-50"
                       >
-                        <Icons.ChevronRight style={{ transform: 'rotate(180deg)' }} />
+                        <span className="rotate-180 inline-block"><Icons.ChevronRight /></span>
                       </button>
                       <Button
                         variant="primary"
@@ -581,7 +605,7 @@ const AKGolfTreningsprotokoll = ({ sessions: apiSessions = [], player: apiPlayer
                             setActiveExercise(activeExercise + 1);
                           }
                         }}
-                        style={{ backgroundColor: 'var(--success)' }}
+                        className="!bg-ak-status-success hover:!bg-ak-status-success/90"
                       >
                         Fullfør
                       </Button>

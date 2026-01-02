@@ -1,3 +1,9 @@
+/**
+ * TurneringsstatistikkContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import {
   Trophy, TrendingUp, TrendingDown, Target, ChevronRight,
@@ -5,6 +11,15 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+
+// Color class mapping
+const COLOR_CLASSES = {
+  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
+  warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
+  error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
+  secondary: { text: 'text-ak-text-secondary', bg: 'bg-ak-surface-subtle' },
+};
 
 // ============================================================================
 // MOCK DATA
@@ -110,36 +125,26 @@ const TOURNAMENT_STATS = {
 // STAT CARD COMPONENT
 // ============================================================================
 
-const StatCard = ({ label, value, subValue, icon: Icon, color }) => (
-  <div style={{
-    backgroundColor: 'var(--bg-primary)',
-    borderRadius: '12px',
-    padding: '16px',
-    textAlign: 'center',
-  }}>
-    <div style={{
-      width: '36px',
-      height: '36px',
-      borderRadius: '10px',
-      backgroundColor: `${color}15`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '0 auto 10px',
-    }}>
-      <Icon size={18} color={color} />
-    </div>
-    <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
-      {value}
-    </div>
-    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{label}</div>
-    {subValue && (
-      <div style={{ fontSize: '11px', color: 'var(--accent)', marginTop: '4px' }}>
-        {subValue}
+const StatCard = ({ label, value, subValue, icon: Icon, colorKey }) => {
+  const colors = COLOR_CLASSES[colorKey] || COLOR_CLASSES.brand;
+
+  return (
+    <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+      <div className={`w-9 h-9 rounded-[10px] ${colors.bg} flex items-center justify-center mx-auto mb-2.5`}>
+        <Icon size={18} className={colors.text} />
       </div>
-    )}
-  </div>
-);
+      <div className="text-[22px] font-bold text-ak-text-primary">
+        {value}
+      </div>
+      <div className="text-xs text-ak-text-secondary">{label}</div>
+      {subValue && (
+        <div className="text-[11px] text-ak-brand-primary mt-1">
+          {subValue}
+        </div>
+      )}
+    </div>
+  );
+};
 
 // ============================================================================
 // TREND INDICATOR COMPONENT
@@ -150,38 +155,24 @@ const TrendIndicator = ({ trend, current, previous, label, unit = '' }) => {
   const diff = Math.abs(current - previous).toFixed(1);
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '14px 16px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    }}>
+    <div className="bg-ak-surface-base rounded-xl py-3.5 px-4 flex items-center justify-between">
       <div>
-        <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{label}</div>
-        <div style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
+        <div className="text-[13px] text-ak-text-secondary">{label}</div>
+        <div className="text-lg font-semibold text-ak-text-primary">
           {current}{unit}
         </div>
       </div>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '4px',
-        padding: '4px 8px',
-        borderRadius: '6px',
-        backgroundColor: isImproving ? `${'var(--success)'}15` : `${'var(--error)'}15`,
-      }}>
+      <div className={`flex items-center gap-1 py-1 px-2 rounded-md ${
+        isImproving ? 'bg-ak-status-success/15' : 'bg-ak-status-error/15'
+      }`}>
         {isImproving ? (
-          <TrendingUp size={14} color={'var(--success)'} />
+          <TrendingUp size={14} className="text-ak-status-success" />
         ) : (
-          <TrendingDown size={14} color={'var(--error)'} />
+          <TrendingDown size={14} className="text-ak-status-error" />
         )}
-        <span style={{
-          fontSize: '12px',
-          fontWeight: 500,
-          color: isImproving ? 'var(--success)' : 'var(--error)',
-        }}>
+        <span className={`text-xs font-medium ${
+          isImproving ? 'text-ak-status-success' : 'text-ak-status-error'
+        }`}>
           {diff}{unit}
         </span>
       </div>
@@ -197,51 +188,31 @@ const TournamentRow = ({ tournament }) => {
   const isTopThree = tournament.position <= 3;
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '16px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '16px',
-    }}>
+    <div className="bg-ak-surface-base rounded-xl p-4 flex items-center gap-4">
       {/* Position */}
-      <div style={{
-        width: '44px',
-        height: '44px',
-        borderRadius: '10px',
-        backgroundColor: isTopThree ? `${'var(--achievement)'}15` : 'var(--bg-secondary)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <div className={`w-11 h-11 rounded-[10px] flex items-center justify-center ${
+        isTopThree ? 'bg-ak-status-warning/15' : 'bg-ak-surface-subtle'
+      }`}>
         {isTopThree ? (
-          <Award size={20} color={'var(--achievement)'} />
+          <Award size={20} className="text-ak-status-warning" />
         ) : (
-          <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <span className="text-base font-semibold text-ak-text-primary">
             {tournament.position}
           </span>
         )}
       </div>
 
       {/* Info */}
-      <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+      <div className="flex-1">
+        <div className="text-sm font-medium text-ak-text-primary">
           {tournament.name}
         </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          marginTop: '4px',
-          fontSize: '12px',
-          color: 'var(--text-secondary)',
-        }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div className="flex items-center gap-3 mt-1 text-xs text-ak-text-secondary">
+          <span className="flex items-center gap-1">
             <Calendar size={12} />
             {tournament.date}
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <span className="flex items-center gap-1">
             <MapPin size={12} />
             {tournament.course}
           </span>
@@ -249,18 +220,13 @@ const TournamentRow = ({ tournament }) => {
       </div>
 
       {/* Rounds */}
-      <div style={{ display: 'flex', gap: '6px' }}>
+      <div className="flex gap-1.5">
         {tournament.rounds.map((round, idx) => (
           <span
             key={idx}
-            style={{
-              fontSize: '12px',
-              fontWeight: 500,
-              color: round <= 72 ? 'var(--success)' : 'var(--text-primary)',
-              backgroundColor: 'var(--bg-secondary)',
-              padding: '4px 8px',
-              borderRadius: '6px',
-            }}
+            className={`text-xs font-medium bg-ak-surface-subtle py-1 px-2 rounded-md ${
+              round <= 72 ? 'text-ak-status-success' : 'text-ak-text-primary'
+            }`}
           >
             {round}
           </span>
@@ -268,32 +234,25 @@ const TournamentRow = ({ tournament }) => {
       </div>
 
       {/* Score */}
-      <div style={{ textAlign: 'right', minWidth: '80px' }}>
-        <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+      <div className="text-right min-w-[80px]">
+        <div className="text-base font-semibold text-ak-text-primary">
           {tournament.total}
         </div>
-        <div style={{
-          fontSize: '12px',
-          color: tournament.toPar.startsWith('-') ? 'var(--success)' : 'var(--error)',
-        }}>
+        <div className={`text-xs ${
+          tournament.toPar.startsWith('-') ? 'text-ak-status-success' : 'text-ak-status-error'
+        }`}>
           {tournament.toPar}
         </div>
       </div>
 
       {/* Earnings */}
       {tournament.earnings > 0 && (
-        <div style={{
-          fontSize: '13px',
-          fontWeight: 500,
-          color: 'var(--achievement)',
-          minWidth: '70px',
-          textAlign: 'right',
-        }}>
+        <div className="text-[13px] font-medium text-ak-status-warning min-w-[70px] text-right">
           {tournament.earnings.toLocaleString('nb-NO')} kr
         </div>
       )}
 
-      <ChevronRight size={16} color={'var(--text-secondary)'} />
+      <ChevronRight size={16} className="text-ak-text-secondary" />
     </div>
   );
 };
@@ -303,43 +262,22 @@ const TournamentRow = ({ tournament }) => {
 // ============================================================================
 
 const CategoryStatsCard = ({ title, stats, fields }) => (
-  <div style={{
-    backgroundColor: 'var(--bg-primary)',
-    borderRadius: '12px',
-    padding: '16px',
-  }}>
-    <SubSectionTitle style={{ fontSize: '14px', margin: '0 0 12px 0' }}>
+  <div className="bg-ak-surface-base rounded-xl p-4">
+    <SubSectionTitle className="text-sm m-0 mb-3">
       {title}
     </SubSectionTitle>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div className="flex flex-col gap-2.5">
       {fields.map((field, idx) => (
-        <div
-          key={idx}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{field.label}</span>
-          <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+        <div key={idx} className="flex items-center justify-between">
+          <span className="text-[13px] text-ak-text-secondary">{field.label}</span>
+          <span className="text-sm font-medium text-ak-text-primary">
             {field.value}{field.unit || ''}
           </span>
         </div>
       ))}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingTop: '8px',
-        borderTop: '1px solid var(--border-default)',
-      }}>
-        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Tour-ranking</span>
-        <span style={{
-          fontSize: '13px',
-          fontWeight: 600,
-          color: 'var(--accent)',
-        }}>
+      <div className="flex items-center justify-between pt-2 border-t border-ak-border-default">
+        <span className="text-xs text-ak-text-secondary">Tour-ranking</span>
+        <span className="text-[13px] font-semibold text-ak-brand-primary">
           #{stats.ranking}
         </span>
       </div>
@@ -356,33 +294,24 @@ const TurneringsstatistikkContainer = () => {
   const stats = TOURNAMENT_STATS;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Turneringsstatistikk"
         subtitle={`Sesong ${selectedSeason}`}
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         {/* Season Selector */}
-        <div style={{
-          display: 'flex',
-          gap: '8px',
-          marginBottom: '20px',
-        }}>
+        <div className="flex gap-2 mb-5">
           {[2025, 2024, 2023].map((year) => (
             <button
               key={year}
               onClick={() => setSelectedSeason(year)}
-              style={{
-                padding: '8px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: selectedSeason === year ? 'var(--accent)' : 'var(--bg-primary)',
-                color: selectedSeason === year ? 'var(--bg-primary)' : 'var(--text-primary)',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className={`py-2 px-4 rounded-lg border-none text-[13px] font-medium cursor-pointer ${
+                selectedSeason === year
+                  ? 'bg-ak-brand-primary text-white'
+                  : 'bg-ak-surface-base text-ak-text-primary'
+              }`}
             >
               {year}
             </button>
@@ -390,63 +319,54 @@ const TurneringsstatistikkContainer = () => {
         </div>
 
         {/* Overview Stats */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          gap: '12px',
-          marginBottom: '24px',
-        }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 mb-6">
           <StatCard
             label="Turneringer"
             value={stats.overview.tournamentsPlayed}
             icon={Trophy}
-            color={'var(--accent)'}
+            colorKey="brand"
           />
           <StatCard
             label="Seiere"
             value={stats.overview.wins}
             icon={Award}
-            color={'var(--achievement)'}
+            colorKey="warning"
           />
           <StatCard
             label="Topp 10"
             value={stats.overview.topTens}
             icon={TrendingUp}
-            color={'var(--success)'}
+            colorKey="success"
           />
           <StatCard
             label="Gj.sn. score"
             value={stats.overview.avgScore.toFixed(1)}
             icon={Target}
-            color={'var(--accent)'}
+            colorKey="brand"
           />
           <StatCard
             label="Gj.sn. plassering"
             value={stats.overview.avgPosition}
             icon={BarChart2}
-            color={'var(--text-secondary)'}
+            colorKey="secondary"
           />
           <StatCard
             label="Premiepenger"
             value={`${(stats.overview.totalEarnings / 1000).toFixed(1)}k`}
             subValue="kr"
             icon={Award}
-            color={'var(--achievement)'}
+            colorKey="warning"
           />
         </div>
 
         {/* Main Content */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 360px',
-          gap: '24px',
-        }}>
+        <div className="grid grid-cols-[1fr_360px] gap-6">
           {/* Left: Tournament List */}
           <div>
-            <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
+            <SectionTitle className="text-base m-0 mb-4">
               Turneringshistorikk
             </SectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div className="flex flex-col gap-2.5">
               {stats.tournaments.map((tournament) => (
                 <TournamentRow key={tournament.id} tournament={tournament} />
               ))}
@@ -454,13 +374,13 @@ const TurneringsstatistikkContainer = () => {
           </div>
 
           {/* Right: Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="flex flex-col gap-4">
             {/* Trends */}
             <div>
-              <SubSectionTitle style={{ fontSize: '14px', margin: '0 0 12px 0' }}>
+              <SubSectionTitle className="text-sm m-0 mb-3">
                 Utvikling fra forrige sesong
               </SubSectionTitle>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="flex flex-col gap-2">
                 <TrendIndicator
                   label="Gj.sn. score"
                   current={stats.trends.scoring.current}

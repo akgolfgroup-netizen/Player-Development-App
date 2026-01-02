@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import fp from 'fastify-plugin';
+import { getPrismaClient } from '../core/db/prisma';
 
 interface MetricsData {
   httpRequestDuration: Map<string, number[]>;
@@ -183,6 +184,22 @@ export function setActiveUsers(count: number) {
   metrics.activeUsers = Math.max(0, count);
 }
 
+// Helper function to check database connectivity
+async function checkDatabase(): Promise<{ ok: boolean; responseTime: number; error?: string }> {
+  const start = Date.now();
+  try {
+    const prisma = getPrismaClient();
+    await prisma.$queryRaw`SELECT 1`;
+    return { ok: true, responseTime: Date.now() - start };
+  } catch (error) {
+    return {
+      ok: false,
+      responseTime: Date.now() - start,
+      error: error instanceof Error ? error.message : 'Unknown database error',
+    };
+  }
+}
+
 // Plugin definition
 async function metricsPlugin(fastify: FastifyInstance) {
   // Add metrics endpoint
@@ -191,13 +208,29 @@ async function metricsPlugin(fastify: FastifyInstance) {
     return formatPrometheusMetrics();
   });
 
-  // Add health check endpoint
-  fastify.get('/health', async (_request: FastifyRequest, _reply: FastifyReply) => {
+  // Add health check endpoint - Railway uses this for health checks
+  fastify.get('/health', async (_request: FastifyRequest, reply: FastifyReply) => {
+    const dbCheck = await checkDatabase();
+    const memUsage = process.memoryUsage();
+    const heapUsedMB = Math.round(memUsage.heapUsed / 1024 / 1024);
+    const heapTotalMB = Math.round(memUsage.heapTotal / 1024 / 1024);
+
+    const status = dbCheck.ok ? 'healthy' : 'unhealthy';
+
     const healthCheck = {
-      status: 'healthy',
+      status,
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
-      memory: process.memoryUsage(),
+      database: {
+        connected: dbCheck.ok,
+        responseTime: `${dbCheck.responseTime}ms`,
+        error: dbCheck.error,
+      },
+      memory: {
+        heapUsed: `${heapUsedMB}MB`,
+        heapTotal: `${heapTotalMB}MB`,
+        rss: `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
+      },
       metrics: {
         totalRequests: Array.from(metrics.httpRequestCount.values()).reduce((a, b) => a + b, 0),
         totalErrors: Array.from(metrics.errorCount.values()).reduce((a, b) => a + b, 0),
@@ -206,23 +239,36 @@ async function metricsPlugin(fastify: FastifyInstance) {
       },
     };
 
+    // Return 503 if database is down
+    if (!dbCheck.ok) {
+      reply.code(503);
+    }
+
     return healthCheck;
   });
 
-  // Add readiness check endpoint
+  // Add readiness check endpoint - checks if app can serve traffic
   fastify.get('/ready', async (_request: FastifyRequest, reply: FastifyReply) => {
-    // Check if application is ready to serve traffic
-    // You can add database connectivity check here
-    try {
-      // Simple check - if we can respond, we're ready
-      return { ready: true, timestamp: new Date().toISOString() };
-    } catch (error) {
+    const dbCheck = await checkDatabase();
+
+    if (dbCheck.ok) {
+      return {
+        ready: true,
+        timestamp: new Date().toISOString(),
+        database: { responseTime: `${dbCheck.responseTime}ms` },
+      };
+    } else {
       reply.code(503);
-      return { ready: false, error: 'Service not ready' };
+      return {
+        ready: false,
+        timestamp: new Date().toISOString(),
+        error: 'Database not available',
+        details: dbCheck.error,
+      };
     }
   });
 
-  // Add liveness check endpoint
+  // Add liveness check endpoint - basic process health
   fastify.get('/live', async (_request: FastifyRequest, _reply: FastifyReply) => {
     // Basic liveness check - process is alive if it can respond
     return { alive: true, timestamp: new Date().toISOString() };
@@ -231,8 +277,6 @@ async function metricsPlugin(fastify: FastifyInstance) {
   // Hooks to track all requests
   fastify.addHook('onRequest', trackRequestStart);
   fastify.addHook('onResponse', trackRequestComplete);
-
-  fastify.log.info('Metrics plugin loaded - endpoints: /metrics, /health, /ready, /live');
 }
 
 export default fp(metricsPlugin, {

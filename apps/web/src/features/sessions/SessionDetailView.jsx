@@ -1,68 +1,75 @@
 /**
- * SessionDetailView - Treningsøkt Detaljvisning
+ * AK Golf Academy - Session Detail View
+ * Design System v3.0 - Premium Light
  *
  * Viser full økt med alle blokker når spiller trykker på en økt.
  * Basert på: APP_FUNCTIONALITY.md Section 6
- * Design: Blue Palette 01 (v3.0)
  *
- * Uses design system components for consistent styling.
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { Button } from '../../ui/primitives';
 
-// Learning phase colors - Blue Palette 01
-const learningPhaseColors = {
-  Ball: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--accent)' },
-  Teknikk: { bg: 'rgba(var(--success-rgb), 0.2)', text: 'var(--accent)' },
-  Transfer: { bg: 'rgba(var(--success-rgb), 0.3)', text: 'var(--accent)' },
-  Variasjon: { bg: 'rgba(var(--success-rgb), 0.5)', text: 'var(--bg-primary)' },
-  Spill: { bg: 'var(--success)', text: 'var(--bg-primary)' },
+// Helper functions for tag color classes
+const getLearningPhaseClasses = (phase) => {
+  const classes = {
+    Ball: 'bg-ak-status-success/15 text-ak-brand-primary',
+    Teknikk: 'bg-ak-status-success/20 text-ak-brand-primary',
+    Transfer: 'bg-ak-status-success/30 text-ak-brand-primary',
+    Variasjon: 'bg-ak-status-success/50 text-white',
+    Spill: 'bg-ak-status-success text-white',
+  };
+  return classes[phase] || classes.Ball;
 };
 
-// CS level colors - Blue Palette 01
-const csLevelColors = {
-  20: { bg: 'var(--bg-secondary)', text: 'var(--text-secondary)' },
-  40: { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--accent)' },
-  60: { bg: 'rgba(var(--success-rgb), 0.2)', text: 'var(--accent)' },
-  80: { bg: 'rgba(var(--success-rgb), 0.3)', text: 'var(--accent)' },
-  100: { bg: 'var(--accent)', text: 'var(--bg-primary)' },
+const getCsLevelClasses = (level) => {
+  const classes = {
+    20: 'bg-ak-surface-subtle text-ak-text-secondary',
+    40: 'bg-ak-status-success/15 text-ak-brand-primary',
+    60: 'bg-ak-status-success/20 text-ak-brand-primary',
+    80: 'bg-ak-status-success/30 text-ak-brand-primary',
+    100: 'bg-ak-brand-primary text-white',
+  };
+  return classes[level] || classes[80];
 };
 
-// Environment colors - Blue Palette 01
-const environmentColors = {
-  M1: { bg: 'var(--border-default)', text: 'var(--text-primary)', label: 'Inne' },
-  M2: { bg: 'var(--bg-secondary)', text: 'var(--text-primary)', label: 'Matte' },
-  M3: { bg: 'rgba(var(--success-rgb), 0.2)', text: 'var(--accent)', label: 'Treningsområde' },
-  M4: { bg: 'rgba(var(--success-rgb), 0.3)', text: 'var(--accent)', label: 'Øvingsbane' },
-  M5: { bg: 'var(--accent)', text: 'var(--bg-primary)', label: 'Bane' },
+const getEnvironmentClasses = (env) => {
+  const classes = {
+    M1: 'bg-ak-border-default text-ak-text-primary',
+    M2: 'bg-ak-surface-subtle text-ak-text-primary',
+    M3: 'bg-ak-status-success/20 text-ak-brand-primary',
+    M4: 'bg-ak-status-success/30 text-ak-brand-primary',
+    M5: 'bg-ak-brand-primary text-white',
+  };
+  return classes[env] || classes.M3;
 };
 
-// Pressure rating colors - Blue Palette 01
-const pressureColors = {
-  PR1: { bg: 'var(--bg-secondary)', text: 'var(--text-secondary)', label: 'Ingen press' },
-  PR2: { bg: 'rgba(var(--achievement-rgb), 0.1)', text: 'var(--text-primary)', label: 'Lavt press' },
-  PR3: { bg: 'rgba(var(--warning-rgb), 0.5)', text: 'var(--text-primary)', label: 'Medium press' },
-  PR4: { bg: 'var(--warning)', text: 'var(--bg-primary)', label: 'Høyt press' },
-  PR5: { bg: 'var(--achievement)', text: 'var(--bg-primary)', label: 'Maks press' },
+const getPressureClasses = (pressure) => {
+  const classes = {
+    PR1: 'bg-ak-surface-subtle text-ak-text-secondary',
+    PR2: 'bg-amber-500/10 text-ak-text-primary',
+    PR3: 'bg-ak-status-warning/50 text-ak-text-primary',
+    PR4: 'bg-ak-status-warning text-white',
+    PR5: 'bg-amber-500 text-white',
+  };
+  return classes[pressure] || classes.PR2;
+};
+
+const getStatusClasses = (status) => {
+  const classes = {
+    Planlagt: 'bg-ak-surface-subtle text-ak-text-secondary',
+    Pågår: 'bg-ak-status-warning text-white',
+    Fullført: 'bg-ak-status-success text-white',
+  };
+  return classes[status] || classes.Planlagt;
 };
 
 // Tag component for block parameters
-function Tag({ label, color }) {
+function Tag({ label, colorClasses }) {
   return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        padding: '4px 10px',
-        borderRadius: 'var(--radius-sm)',
-        backgroundColor: color.bg,
-        color: color.text,
-        fontSize: '12px', lineHeight: '16px',
-        fontWeight: 500,
-      }}
-    >
+    <span className={`inline-flex items-center py-1 px-2.5 rounded text-xs font-medium ${colorClasses}`}>
       {label}
     </span>
   );
@@ -70,100 +77,75 @@ function Tag({ label, color }) {
 
 // Single block component
 function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
-  const phaseColor = learningPhaseColors[block.learningPhase] || learningPhaseColors.Ball;
-  const csColor = csLevelColors[block.csLevel] || csLevelColors[80];
-  const envColor = environmentColors[block.environment] || environmentColors.M3;
-  const pressColor = pressureColors[block.pressureRating] || pressureColors.PR2;
-
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: 'var(--radius-lg)',
-        boxShadow: 'var(--shadow-card)',
-        marginBottom: '16px',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="bg-ak-surface-base rounded-xl shadow-sm mb-4 overflow-hidden">
       {/* Block header */}
       <div
         onClick={() => onToggle(index)}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '16px',
-          cursor: 'pointer',
-          borderBottom: expanded ? '1px solid var(--border-default)' : 'none',
-        }}
+        className={`flex justify-between items-center p-4 cursor-pointer ${
+          expanded ? 'border-b border-ak-border-default' : ''
+        }`}
       >
         <div>
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+          <span className="text-xs text-ak-text-secondary">
             BLOKK {index + 1} av {total}
           </span>
         </div>
-        <span style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
+        <span className="text-sm text-ak-text-secondary">
           {block.duration} min
         </span>
       </div>
 
       {/* Block content */}
-      <div style={{ padding: '16px' }}>
+      <div className="p-4">
         {/* Exercise name and focus */}
-        <div style={{ marginBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '18px' }}>📋</span>
-            <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
+        <div className="mb-4">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-lg">📋</span>
+            <span className="text-xl font-semibold text-ak-text-primary">
               {block.exercise}
             </span>
           </div>
-          <span style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
+          <span className="text-sm text-ak-text-secondary">
             Fokus: {block.focus}
           </span>
         </div>
 
         {/* Training area */}
-        <div style={{ marginBottom: '16px' }}>
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+        <div className="mb-4">
+          <span className="block text-xs text-ak-text-secondary mb-1">
             Treningsområde
           </span>
-          <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+          <span className="text-[15px] text-ak-text-primary">
             {block.trainingArea}
           </span>
         </div>
 
         {/* Volume */}
-        <div style={{ marginBottom: '16px' }}>
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+        <div className="mb-4">
+          <span className="block text-xs text-ak-text-secondary mb-1">
             Volum
           </span>
-          <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+          <span className="text-[15px] text-ak-text-primary">
             {block.reps} repetisjoner
           </span>
         </div>
 
         {/* Tags */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
-          <Tag label={block.learningPhase} color={phaseColor} />
-          <Tag label={`CS ${block.csLevel}%`} color={csColor} />
-          <Tag label={block.environment} color={envColor} />
-          <Tag label={block.pressureRating} color={pressColor} />
+        <div className="flex flex-wrap gap-2 mb-4">
+          <Tag label={block.learningPhase} colorClasses={getLearningPhaseClasses(block.learningPhase)} />
+          <Tag label={`CS ${block.csLevel}%`} colorClasses={getCsLevelClasses(block.csLevel)} />
+          <Tag label={block.environment} colorClasses={getEnvironmentClasses(block.environment)} />
+          <Tag label={block.pressureRating} colorClasses={getPressureClasses(block.pressureRating)} />
         </div>
 
         {/* Instructions toggle (expanded view) */}
         {expanded && block.instructions && (
-          <div
-            style={{
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-md)',
-              padding: '16px',
-              marginBottom: '16px',
-            }}
-          >
-            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)', display: 'block', marginBottom: '4px' }}>
+          <div className="bg-ak-surface-subtle rounded-lg p-4 mb-4">
+            <span className="block text-xs font-medium text-ak-brand-primary mb-1">
               Instruksjoner
             </span>
-            <span style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-primary)' }}>
+            <span className="text-sm text-ak-text-primary">
               {block.instructions}
             </span>
           </div>
@@ -172,19 +154,11 @@ function SessionBlock({ block, index, total, expanded, onToggle, onComplete }) {
         {/* Complete checkbox */}
         <button
           onClick={() => onComplete(index)}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            padding: '16px',
-            backgroundColor: block.completed ? 'var(--success)' : 'var(--bg-secondary)',
-            color: block.completed ? 'var(--bg-primary)' : 'var(--text-primary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-          }}
+          className={`flex items-center justify-center w-full p-4 border-none rounded-lg cursor-pointer text-xs font-medium ${
+            block.completed
+              ? 'bg-ak-status-success text-white'
+              : 'bg-ak-surface-subtle text-ak-text-primary'
+          }`}
         >
           {block.completed ? '✓ Fullført' : '☐ Marker som fullført'}
         </button>
@@ -217,37 +191,10 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
     ));
   };
 
-  // Status badge
-  const getStatusBadge = (status) => {
-    const styles = {
-      Planlagt: { bg: 'var(--bg-secondary)', text: 'var(--text-secondary)' },
-      Pågår: { bg: 'var(--warning)', text: 'var(--bg-primary)' },
-      Fullført: { bg: 'var(--success)', text: 'var(--bg-primary)' },
-    };
-    const style = styles[status] || styles.Planlagt;
-
-    return (
-      <span
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          padding: '6px 12px',
-          borderRadius: '9999px',
-          backgroundColor: style.bg,
-          color: style.text,
-          fontSize: '12px', lineHeight: '16px',
-          fontWeight: 600,
-        }}
-      >
-        {status}
-      </span>
-    );
-  };
-
   if (!session) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+      <div className="p-6 text-center">
+        <span className="text-[15px] text-ak-text-secondary">
           Ingen økt valgt
         </span>
       </div>
@@ -255,11 +202,7 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
   }
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      minHeight: '100vh',
-      fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
-    }}>
+    <div className="bg-ak-surface-base min-h-screen font-sans">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Treningsøkt"
@@ -273,44 +216,39 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
       />
 
       {/* Session info */}
-      <div style={{ padding: '24px' }}>
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>
+      <div className="p-6">
+        <span className="text-xs text-ak-text-secondary tracking-wide">
           TRENINGSØKT
         </span>
-        <div
-          style={{
-            height: '2px',
-            backgroundColor: 'var(--accent)',
-            marginTop: '4px',
-            marginBottom: '16px',
-          }}
-        />
+        <div className="h-0.5 bg-ak-brand-primary mt-1 mb-4" />
 
         {/* Date, time, location */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="flex flex-col gap-2 mb-6">
+          <div className="flex items-center gap-2">
             <span>📅</span>
-            <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+            <span className="text-[15px] text-ak-text-primary">
               {session.date}
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="flex items-center gap-2">
             <span>🕐</span>
-            <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+            <span className="text-[15px] text-ak-text-primary">
               {session.startTime} - {session.endTime} ({session.duration} min)
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="flex items-center gap-2">
             <span>📍</span>
-            <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+            <span className="text-[15px] text-ak-text-primary">
               {session.location}
             </span>
           </div>
         </div>
 
         {/* Status */}
-        <div style={{ marginBottom: '24px' }}>
-          {getStatusBadge(session.status)}
+        <div className="mb-6">
+          <span className={`inline-flex items-center py-1.5 px-3 rounded-full text-xs font-semibold ${getStatusClasses(session.status)}`}>
+            {session.status}
+          </span>
         </div>
 
         {/* Blocks */}
@@ -327,43 +265,27 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
         ))}
 
         {/* Notes */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '16px',
-            marginBottom: '24px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        <div className="bg-ak-surface-base rounded-xl p-4 mb-6">
+          <div className="flex items-center gap-2 mb-2">
             <span>📝</span>
-            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)' }}>
+            <span className="text-xs font-medium text-ak-text-primary">
               Notater
             </span>
           </div>
           <textarea
             placeholder="Legg til notater fra økten..."
-            style={{
-              width: '100%',
-              minHeight: '80px',
-              padding: '16px',
-              backgroundColor: 'var(--bg-secondary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              resize: 'vertical',
-              fontSize: '14px', lineHeight: '19px',
-            }}
+            className="w-full min-h-[80px] p-4 bg-ak-surface-subtle border-none rounded-lg resize-y text-sm text-ak-text-primary"
           />
         </div>
 
         {/* Action buttons based on session status */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="flex flex-col gap-2">
           {/* Start session button - only for planned sessions */}
           {session.status === 'Planlagt' && (
             <Button
               variant="primary"
               onClick={onStartSession}
-              style={{ width: '100%' }}
+              className="w-full"
             >
               Start økt
             </Button>
@@ -374,7 +296,7 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
             <Button
               variant="primary"
               onClick={handleEvaluate}
-              style={{ width: '100%', backgroundColor: 'var(--success)' }}
+              className="w-full bg-ak-status-success hover:bg-ak-status-success/90"
             >
               Evaluer økt
             </Button>
@@ -385,7 +307,7 @@ export default function SessionDetailView({ session, onBack, onStartSession }) {
             <Button
               variant="primary"
               onClick={onStartSession}
-              style={{ width: '100%' }}
+              className="w-full"
             >
               Fortsett økt
             </Button>

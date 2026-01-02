@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Message Center
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Hovedkomponent for meldingssystemet.
  * Viser alle samtaler og gir tilgang til chat.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic avatar background colors which require runtime values)
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -21,6 +24,10 @@ import {
 } from 'lucide-react';
 import MembersList, { Member } from '../../ui/composites/MembersList.composite';
 import { SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// TYPES
+// ============================================================================
 
 interface ChatGroup {
   id: string;
@@ -47,6 +54,40 @@ interface MessageCenterProps {
   userId?: string;
   filterType?: 'all' | 'unread' | 'coach';
 }
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+
+const formatTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 1) return 'Nå';
+  if (diffMins < 60) return `${diffMins}m`;
+  if (diffHours < 24) return `${diffHours}t`;
+  if (diffDays < 7) return `${diffDays}d`;
+  return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
+};
+
+const getGroupIcon = (type: string) => {
+  switch (type) {
+    case 'team':
+      return <Users size={14} />;
+    case 'coach_player':
+      return <User size={14} />;
+    default:
+      return <MessageSquare size={14} />;
+  }
+};
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 export default function MessageCenter({ userId, filterType: initialFilterType }: MessageCenterProps) {
   const navigate = useNavigate();
@@ -82,7 +123,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Anders Kristiansen (Trener)',
             groupType: 'coach_player',
             avatarInitials: 'AK',
-            avatarColor: 'var(--achievement)',
+            avatarColor: 'var(--ak-status-warning)',
             lastMessage: {
               content: 'Husk å fokusere på putting i dag!',
               senderName: 'Anders',
@@ -99,7 +140,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'WANG Toppidrett',
             groupType: 'team',
             avatarInitials: 'WT',
-            avatarColor: 'var(--accent)',
+            avatarColor: 'var(--ak-brand-primary)',
             lastMessage: {
               content: 'Samling på lørdag kl 10:00',
               senderName: 'Trener',
@@ -118,7 +159,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Team Norway U18',
             groupType: 'team',
             avatarInitials: 'TN',
-            avatarColor: 'var(--error)',
+            avatarColor: 'var(--ak-status-error)',
             lastMessage: {
               content: 'Treningsplan for neste uke er klar',
               senderName: 'Landslagstrener',
@@ -156,7 +197,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             email: 'anders@akgolf.no',
             role: 'Hovedtrener',
             avatarInitials: 'AK',
-            avatarColor: 'var(--achievement)',
+            avatarColor: 'var(--ak-status-warning)',
             type: 'coach',
             isOnline: true,
           },
@@ -165,7 +206,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Erik Johansen',
             email: 'erik@demo.no',
             avatarInitials: 'EJ',
-            avatarColor: 'var(--success)',
+            avatarColor: 'var(--ak-status-success)',
             category: 'Kat. A',
             type: 'player',
             lastSeen: '2t siden',
@@ -175,7 +216,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Sofie Andersen',
             email: 'sofie@demo.no',
             avatarInitials: 'SA',
-            avatarColor: 'var(--accent)',
+            avatarColor: 'var(--ak-brand-primary)',
             category: 'Kat. A',
             type: 'player',
             isOnline: true,
@@ -185,7 +226,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Lars Olsen',
             email: 'lars@demo.no',
             avatarInitials: 'LO',
-            avatarColor: 'var(--error)',
+            avatarColor: 'var(--ak-status-error)',
             category: 'Kat. B',
             type: 'player',
             lastSeen: '1d siden',
@@ -195,7 +236,7 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             name: 'Emma Berg',
             email: 'emma@demo.no',
             avatarInitials: 'EB',
-            avatarColor: 'var(--accent)',
+            avatarColor: 'var(--ak-brand-primary)',
             category: 'Kat. B',
             type: 'player',
             lastSeen: '3t siden',
@@ -230,99 +271,36 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
     });
   }, [conversations, searchQuery, filterType]);
 
-  // Format relative time
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return 'Nå';
-    if (diffMins < 60) return `${diffMins}m`;
-    if (diffHours < 24) return `${diffHours}t`;
-    if (diffDays < 7) return `${diffDays}d`;
-    return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
-  };
-
-  // Get group type icon
-  const getGroupIcon = (type: string) => {
-    switch (type) {
-      case 'team':
-        return <Users size={14} />;
-      case 'coach_player':
-        return <User size={14} />;
-      default:
-        return <MessageSquare size={14} />;
-    }
-  };
-
   if (loading) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            border: `3px solid ${'var(--border-default)'}`,
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            margin: '0 auto 16px',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
-        <p style={{ color: 'var(--text-secondary)' }}>Laster meldinger...</p>
+      <div className="p-6 text-center">
+        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto mb-4 animate-spin" />
+        <p className="text-ak-text-secondary">Laster meldinger...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+    <div className="max-w-[800px] mx-auto">
       {/* Search and filters */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '12px',
-          marginBottom: '20px',
-        }}
-      >
+      <div className="flex gap-3 mb-5">
         {/* Search */}
-        <div
-          style={{
-            flex: 1,
-            position: 'relative',
-          }}
-        >
+        <div className="flex-1 relative">
           <Search
             size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--text-secondary)',
-            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
           />
           <input
             type="text"
             placeholder="Søk i samtaler..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px 12px 10px 40px',
-              backgroundColor: 'var(--bg-primary)',
-              border: `1px solid ${'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              outline: 'none',
-            }}
+            className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-base border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
           />
         </div>
 
         {/* Filter buttons */}
-        <div style={{ display: 'flex', gap: '4px' }}>
+        <div className="flex gap-1">
           {[
             { key: 'all', label: 'Alle' },
             { key: 'unread', label: 'Uleste' },
@@ -331,26 +309,11 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             <button
               key={filter.key}
               onClick={() => setFilterType(filter.key as any)}
-              style={{
-                padding: '8px 14px',
-                backgroundColor:
-                  filterType === filter.key
-                    ? 'var(--accent)'
-                    : 'var(--bg-primary)',
-                color:
-                  filterType === filter.key
-                    ? 'var(--bg-primary)'
-                    : 'var(--text-primary)',
-                border: `1px solid ${
-                  filterType === filter.key
-                    ? 'var(--accent)'
-                    : 'var(--border-default)'
-                }`,
-                borderRadius: 'var(--radius-sm)',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className={`px-3.5 py-2 text-[13px] font-medium rounded cursor-pointer border transition-colors ${
+                filterType === filter.key
+                  ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                  : 'bg-ak-surface-base text-ak-text-primary border-ak-border-default hover:border-ak-brand-primary'
+              }`}
             >
               {filter.label}
             </button>
@@ -359,46 +322,14 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
       </div>
 
       {/* Conversations list */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: 'var(--radius-lg)',
-          border: `1px solid ${'var(--border-default)'}`,
-          overflow: 'hidden',
-        }}
-      >
+      <div className="bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
         {filteredConversations.length === 0 ? (
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 'var(--spacing-12) var(--spacing-4)',
-              textAlign: 'center',
-            }}
-          >
-            <MessageSquare
-              style={{ width: '48px', height: '48px', color: 'var(--text-muted)', marginBottom: 'var(--spacing-4)' }}
-            />
-            <h3
-              style={{
-                fontSize: 'var(--font-size-headline)',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                marginBottom: 'var(--spacing-2)',
-              }}
-            >
+          <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+            <MessageSquare className="w-12 h-12 text-ak-text-tertiary mb-4" />
+            <h3 className="text-lg font-semibold text-ak-text-primary mb-2">
               Ingen meldinger
             </h3>
-            <p
-              style={{
-                fontSize: 'var(--font-size-footnote)',
-                color: 'var(--text-tertiary)',
-                marginBottom: 'var(--spacing-4)',
-                maxWidth: '320px',
-              }}
-            >
+            <p className="text-sm text-ak-text-tertiary mb-4 max-w-[320px]">
               {searchQuery
                 ? 'Ingen samtaler matcher søket ditt'
                 : 'Start en ny samtale med treneren din'}
@@ -409,73 +340,25 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
             <Link
               key={conversation.id}
               to={`/meldinger/${conversation.id}`}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '14px',
-                padding: '16px',
-                textDecoration: 'none',
-                borderBottom:
-                  index < filteredConversations.length - 1
-                    ? `1px solid ${'var(--bg-tertiary)'}`
-                    : 'none',
-                backgroundColor:
-                  conversation.unreadCount > 0
-                    ? `${'var(--accent)'}08`
-                    : 'transparent',
-                transition: 'background-color 0.15s',
-              }}
+              className={`flex items-center gap-3.5 p-4 no-underline transition-colors hover:bg-ak-surface-subtle ${
+                index < filteredConversations.length - 1 ? 'border-b border-ak-surface-subtle' : ''
+              } ${conversation.unreadCount > 0 ? 'bg-ak-brand-primary/5' : 'bg-transparent'}`}
             >
               {/* Avatar */}
               <div
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: conversation.avatarColor || 'var(--accent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--bg-primary)',
-                  fontWeight: 700,
-                  fontSize: '16px',
-                  flexShrink: 0,
-                }}
+                className="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-base flex-shrink-0"
+                style={{ backgroundColor: conversation.avatarColor || 'var(--ak-brand-primary)' }}
               >
                 {conversation.avatarInitials}
               </div>
 
               {/* Content */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '4px',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '17px', lineHeight: '22px',
-                      color: 'var(--text-primary)',
-                      fontWeight: conversation.unreadCount > 0 ? 700 : 600,
-                    }}
-                  >
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className={`text-[17px] leading-[22px] text-ak-text-primary ${conversation.unreadCount > 0 ? 'font-bold' : 'font-semibold'}`}>
                     {conversation.name}
                   </span>
-                  <span
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      padding: '2px 6px',
-                      backgroundColor: 'var(--bg-tertiary)',
-                      borderRadius: '4px',
-                      color: 'var(--text-secondary)',
-                      fontSize: '11px',
-                    }}
-                  >
+                  <span className="flex items-center gap-1 px-1.5 py-0.5 bg-ak-surface-subtle rounded text-ak-text-secondary text-[11px]">
                     {getGroupIcon(conversation.groupType)}
                     {conversation.groupType === 'team' && 'Gruppe'}
                     {conversation.groupType === 'coach_player' && 'Trener'}
@@ -483,31 +366,15 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
                 </div>
 
                 {conversation.lastMessage && (
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                    }}
-                  >
+                  <div className="flex items-center gap-1.5">
                     {conversation.lastMessage.isRead ? (
-                      <CheckCheck size={14} color={'var(--success)'} />
+                      <CheckCheck size={14} className="text-ak-status-success" />
                     ) : (
-                      <Check size={14} color={'var(--text-secondary)'} />
+                      <Check size={14} className="text-ak-text-secondary" />
                     )}
-                    <p
-                      style={{
-                        fontSize: '13px', lineHeight: '18px',
-                        color: conversation.unreadCount > 0
-                          ? 'var(--text-primary)'
-                          : 'var(--text-secondary)',
-                        fontWeight: conversation.unreadCount > 0 ? 500 : 400,
-                        margin: 0,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
+                    <p className={`text-[13px] leading-[18px] m-0 overflow-hidden text-ellipsis whitespace-nowrap ${
+                      conversation.unreadCount > 0 ? 'text-ak-text-primary font-medium' : 'text-ak-text-secondary'
+                    }`}>
                       {conversation.lastMessage.content}
                     </p>
                   </div>
@@ -515,43 +382,14 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
               </div>
 
               {/* Time and unread badge */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  gap: '6px',
-                  flexShrink: 0,
-                }}
-              >
+              <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                 {conversation.lastMessage && (
-                  <span
-                    style={{
-                      fontSize: '12px', lineHeight: '16px',
-                      color: conversation.unreadCount > 0
-                        ? 'var(--accent)'
-                        : 'var(--text-secondary)',
-                    }}
-                  >
+                  <span className={`text-xs leading-4 ${conversation.unreadCount > 0 ? 'text-ak-brand-primary' : 'text-ak-text-secondary'}`}>
                     {formatTime(conversation.lastMessage.sentAt)}
                   </span>
                 )}
                 {conversation.unreadCount > 0 && (
-                  <span
-                    style={{
-                      minWidth: 20,
-                      height: 20,
-                      borderRadius: '10px',
-                      backgroundColor: 'var(--accent)',
-                      color: 'var(--bg-primary)',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '0 6px',
-                    }}
-                  >
+                  <span className="min-w-[20px] h-5 rounded-full bg-ak-brand-primary text-white text-[11px] font-bold flex items-center justify-center px-1.5">
                     {conversation.unreadCount}
                   </span>
                 )}
@@ -562,78 +400,38 @@ export default function MessageCenter({ userId, filterType: initialFilterType }:
       </div>
 
       {/* Contacts Section */}
-      <div style={{ marginTop: '24px' }}>
+      <div className="mt-6">
         <button
           onClick={() => setShowContacts(!showContacts)}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            padding: '16px 20px',
-            backgroundColor: 'var(--bg-primary)',
-            border: `1px solid ${'var(--border-default)'}`,
-            borderRadius: showContacts ? 'var(--radius-lg) var(--radius-lg) 0 0' : 'var(--radius-lg)',
-            cursor: 'pointer',
-            textAlign: 'left',
-          }}
+          className={`flex items-center justify-between w-full p-4 px-5 bg-ak-surface-base border border-ak-border-default cursor-pointer text-left ${
+            showContacts ? 'rounded-t-xl' : 'rounded-xl'
+          }`}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                backgroundColor: 'var(--accent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-ak-brand-primary flex items-center justify-center">
               <Users size={20} color="white" />
             </div>
             <div>
-              <SubSectionTitle
-                style={{
-                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                }}
-              >
+              <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                 Kontakter
               </SubSectionTitle>
-              <p
-                style={{
-                  fontSize: '13px', lineHeight: '18px',
-                  color: 'var(--text-secondary)',
-                  margin: '2px 0 0',
-                }}
-              >
+              <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
                 {contacts.length} personer · {contacts.filter(c => c.isOnline).length} online
               </p>
             </div>
           </div>
           {showContacts ? (
-            <ChevronUp size={20} color="var(--text-secondary)" />
+            <ChevronUp size={20} className="text-ak-text-secondary" />
           ) : (
-            <ChevronDown size={20} color="var(--text-secondary)" />
+            <ChevronDown size={20} className="text-ak-text-secondary" />
           )}
         </button>
 
         {showContacts && (
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              border: `1px solid ${'var(--border-default)'}`,
-              borderTop: 'none',
-              borderRadius: '0 0 var(--radius-lg) var(--radius-lg)',
-              overflow: 'hidden',
-            }}
-          >
+          <div className="bg-ak-surface-base border border-ak-border-default border-t-0 rounded-b-xl overflow-hidden">
             <MembersList
               members={contacts}
               onMemberClick={(member) => {
-                // Navigate to or create conversation with this contact
                 navigate(`/meldinger/ny?contact=${member.id}`);
               }}
               showEmail={true}

@@ -1,5 +1,7 @@
 /**
- * ReferenceLibrary Component
+ * AK Golf Academy - Reference Library
+ * Design System v3.0 - Premium Light
+ *
  * Library for coach demo videos, pro references, and drill instructions
  *
  * Features:
@@ -9,6 +11,8 @@
  * - Search functionality
  * - Share videos with players
  * - Compare with player videos
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
@@ -23,6 +27,7 @@ import { useNotification } from '../../contexts/NotificationContext';
 import { track } from '../../analytics/track';
 import Button from '../../ui/primitives/Button';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import { Plus, Search, X, Upload, Video, Check, FileVideo } from 'lucide-react';
 
 // Video categories for golf
 const VIDEO_CATEGORIES = [
@@ -47,449 +52,8 @@ const TYPE_OPTIONS = [
   { value: REFERENCE_TYPES.TECHNIQUE_BREAKDOWN, label: 'Teknikk' },
 ];
 
-// Styles
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-4, 16px)',
-    padding: 'var(--spacing-4, 16px)',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 'var(--spacing-3, 12px)',
-    flexWrap: 'wrap',
-  },
-  titleSection: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3, 12px)',
-  },
-  title: {
-    margin: 0,
-    fontSize: '20px',
-    fontWeight: '700',
-    color: 'var(--text-primary, white)',
-  },
-  videoCount: {
-    padding: '4px 10px',
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-    borderRadius: 'var(--radius-full, 9999px)',
-    fontSize: '12px',
-    fontWeight: '600',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-  },
-  uploadButton: {
-    padding: '10px 20px',
-    backgroundColor: 'var(--accent)',
-    border: 'none',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'white',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-    transition: 'all 0.15s ease',
-  },
-  filters: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3, 12px)',
-    flexWrap: 'wrap',
-    padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-toast-bg)',
-    borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-  },
-  searchContainer: {
-    flex: '1 1 200px',
-    position: 'relative',
-  },
-  searchInput: {
-    width: '100%',
-    padding: '10px 12px 10px 36px',
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--text-primary, white)',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'border-color 0.15s ease',
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: '12px',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
-    pointerEvents: 'none',
-  },
-  select: {
-    padding: '10px 32px 10px 12px',
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--text-primary, white)',
-    fontSize: '14px',
-    cursor: 'pointer',
-    outline: 'none',
-    appearance: 'none',
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right 10px center',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-    gap: 'var(--spacing-4, 16px)',
-  },
-  emptyState: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8, 32px)',
-    textAlign: 'center',
-  },
-  emptyIcon: {
-    width: '64px',
-    height: '64px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.3))',
-    marginBottom: 'var(--spacing-4, 16px)',
-  },
-  emptyTitle: {
-    margin: '0 0 8px 0',
-    fontSize: '18px',
-    fontWeight: '600',
-    color: 'var(--text-primary, white)',
-  },
-  emptyText: {
-    margin: '0 0 16px 0',
-    fontSize: '14px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-    maxWidth: '300px',
-  },
-  // Upload modal styles
-  modalOverlay: {
-    position: 'fixed',
-    inset: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000,
-    padding: 'var(--spacing-4, 16px)',
-  },
-  modal: {
-    width: '100%',
-    maxWidth: '500px',
-    backgroundColor: 'var(--ak-toast-bg)',
-    borderRadius: 'var(--radius-xl, 16px)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-    boxShadow: '0 24px 48px rgba(0, 0, 0, 0.4)',
-    overflow: 'hidden',
-  },
-  modalHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 'var(--spacing-4, 16px)',
-    borderBottom: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-  },
-  modalTitle: {
-    margin: 0,
-    fontSize: '18px',
-    fontWeight: '600',
-    color: 'var(--text-primary, white)',
-  },
-  closeButton: {
-    width: '32px',
-    height: '32px',
-    borderRadius: 'var(--radius-md, 8px)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'background-color 0.15s ease',
-  },
-  modalBody: {
-    padding: 'var(--spacing-4, 16px)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-4, 16px)',
-  },
-  formGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-2, 8px)',
-  },
-  label: {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-  },
-  input: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--text-primary, white)',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'border-color 0.15s ease',
-  },
-  textarea: {
-    padding: '10px 12px',
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--text-primary, white)',
-    fontSize: '14px',
-    outline: 'none',
-    resize: 'vertical',
-    minHeight: '80px',
-    fontFamily: 'inherit',
-  },
-  dropZone: {
-    padding: 'var(--spacing-6, 24px)',
-    border: '2px dashed var(--border, rgba(255, 255, 255, 0.2))',
-    borderRadius: 'var(--radius-lg, 12px)',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 'var(--spacing-3, 12px)',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-  },
-  dropZoneActive: {
-    borderColor: 'var(--accent)',
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-  },
-  dropZoneIcon: {
-    width: '48px',
-    height: '48px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.4))',
-  },
-  dropZoneText: {
-    fontSize: '14px',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-    textAlign: 'center',
-  },
-  dropZoneHint: {
-    fontSize: '12px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
-  },
-  selectedFile: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3, 12px)',
-    padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-    borderRadius: 'var(--radius-md, 8px)',
-  },
-  fileIcon: {
-    width: '40px',
-    height: '40px',
-    borderRadius: 'var(--radius-md, 8px)',
-    backgroundColor: 'var(--accent)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-  },
-  fileInfo: {
-    flex: 1,
-    minWidth: 0,
-  },
-  fileName: {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: 'var(--text-primary, white)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  fileSize: {
-    fontSize: '12px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
-  },
-  removeFileButton: {
-    width: '28px',
-    height: '28px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalFooter: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    gap: 'var(--spacing-3, 12px)',
-    padding: 'var(--spacing-4, 16px)',
-    borderTop: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
-  },
-  cancelButton: {
-    padding: '10px 20px',
-    backgroundColor: 'transparent',
-    border: '1px solid var(--border, rgba(255, 255, 255, 0.2))',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))',
-    fontSize: '14px',
-    fontWeight: '500',
-    cursor: 'pointer',
-  },
-  submitButton: {
-    padding: '10px 20px',
-    backgroundColor: 'var(--accent)',
-    border: 'none',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'white',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-  },
-  submitButtonDisabled: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  },
-  deleteButton: {
-    padding: '10px 20px',
-    backgroundColor: 'var(--error)',
-    border: 'none',
-    borderRadius: 'var(--radius-md, 8px)',
-    color: 'white',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-  },
-  // Share modal styles
-  shareModal: {
-    maxWidth: '400px',
-  },
-  playerList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-2, 8px)',
-    maxHeight: '300px',
-    overflowY: 'auto',
-  },
-  playerItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3, 12px)',
-    padding: 'var(--spacing-3, 12px)',
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-    borderRadius: 'var(--radius-md, 8px)',
-    cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
-  },
-  playerItemSelected: {
-    backgroundColor: 'rgba(99, 102, 241, 0.2)',
-    outline: '1px solid var(--accent)',
-  },
-  playerAvatar: {
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--accent)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '14px',
-    fontWeight: '600',
-    color: 'white',
-  },
-  playerInfo: {
-    flex: 1,
-  },
-  playerName: {
-    fontSize: '14px',
-    fontWeight: '500',
-    color: 'var(--text-primary, white)',
-  },
-  playerLevel: {
-    fontSize: '12px',
-    color: 'var(--text-tertiary, rgba(255, 255, 255, 0.5))',
-  },
-  checkbox: {
-    width: '20px',
-    height: '20px',
-    borderRadius: 'var(--radius-sm, 4px)',
-    border: '2px solid var(--border, rgba(255, 255, 255, 0.3))',
-    backgroundColor: 'transparent',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'all 0.15s ease',
-  },
-  checkboxChecked: {
-    backgroundColor: 'var(--accent)',
-    borderColor: 'var(--accent)',
-  },
-};
-
-// Icons
-const PlusIcon = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
-);
-
-const SearchIcon = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="11" cy="11" r="8" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-  </svg>
-);
-
-const FolderVideoIcon = ({ size = 64 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-    <polygon points="10 9 16 12 10 15 10 9" fill="currentColor" />
-  </svg>
-);
-
-const UploadIcon = ({ size = 48 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-    <polyline points="17 8 12 3 7 8" />
-    <line x1="12" y1="3" x2="12" y2="15" />
-  </svg>
-);
-
-const XIcon = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <line x1="18" y1="6" x2="6" y2="18" />
-    <line x1="6" y1="6" x2="18" y2="18" />
-  </svg>
-);
-
-const VideoIcon = ({ size = 20 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
-  </svg>
-);
-
-const CheckIcon = ({ size = 14 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-);
+// Select dropdown arrow SVG
+const selectBgImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`;
 
 /**
  * Format file size for display
@@ -589,7 +153,6 @@ export function ReferenceLibrary({
   onEdit,
   onDelete,
   onPlay,
-  style,
   className,
 }) {
   const { user } = useAuth();
@@ -905,39 +468,20 @@ export function ReferenceLibrary({
   // Loading state
   if (loading && videos.length === 0) {
     return (
-      <div className={className} style={{ ...styles.container, ...style }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px' }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            border: '3px solid var(--border, rgba(255, 255, 255, 0.1))',
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }} />
+      <div className={`flex flex-col gap-4 p-4 ${className || ''}`}>
+        <div className="flex items-center justify-center p-12">
+          <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
         </div>
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
 
   return (
-    <div className={className} style={{ ...styles.container, ...style }}>
+    <div className={`flex flex-col gap-4 p-4 ${className || ''}`}>
       {/* Error state */}
       {error && (
-        <div style={{
-          padding: 'var(--spacing-4, 16px)',
-          backgroundColor: 'rgba(239, 68, 68, 0.1)',
-          borderRadius: 'var(--radius-lg, 12px)',
-          border: '1px solid var(--error)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 'var(--spacing-4, 16px)',
-        }}>
-          <span style={{ color: 'var(--text-primary, white)', fontSize: '14px' }}>
-            {error}
-          </span>
+        <div className="p-4 bg-ak-status-error/10 rounded-xl border border-ak-status-error flex items-center justify-between mb-4">
+          <span className="text-ak-text-primary text-sm">{error}</span>
           <Button variant="primary" size="sm" onClick={refetchVideos}>
             Prøv igjen
           </Button>
@@ -945,14 +489,18 @@ export function ReferenceLibrary({
       )}
 
       {/* Header */}
-      <div style={styles.header}>
-        <div style={styles.titleSection}>
-          <SectionTitle style={styles.title}>Referansebibliotek</SectionTitle>
-          <span style={styles.videoCount}>{videos.length} videoer</span>
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex items-center gap-3">
+          <SectionTitle className="m-0 text-xl font-bold text-ak-text-primary">
+            Referansebibliotek
+          </SectionTitle>
+          <span className="py-1 px-2.5 bg-ak-surface-subtle rounded-full text-xs font-semibold text-ak-text-secondary">
+            {videos.length} videoer
+          </span>
         </div>
         <Button
           variant="primary"
-          leftIcon={<PlusIcon />}
+          leftIcon={<Plus size={16} />}
           onClick={() => setShowUploadModal(true)}
         >
           Last opp video
@@ -960,21 +508,22 @@ export function ReferenceLibrary({
       </div>
 
       {/* Filters */}
-      <div style={styles.filters}>
-        <div style={styles.searchContainer}>
-          <SearchIcon style={styles.searchIcon} />
+      <div className="flex items-center gap-3 flex-wrap p-3 bg-ak-surface-subtle rounded-xl border border-ak-border-default">
+        <div className="flex-1 min-w-[200px] relative">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-tertiary pointer-events-none" />
           <input
             type="text"
             placeholder="Søk i videoer..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={styles.searchInput}
+            className="w-full py-2.5 pl-9 pr-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-ak-text-primary text-sm outline-none"
           />
         </div>
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          style={styles.select}
+          className="py-2.5 pl-3 pr-8 bg-ak-surface-base border border-ak-border-default rounded-lg text-ak-text-primary text-sm cursor-pointer outline-none appearance-none bg-no-repeat bg-[right_10px_center]"
+          style={{ backgroundImage: selectBgImage }}
         >
           {VIDEO_CATEGORIES.map((cat) => (
             <option key={cat.value} value={cat.value}>
@@ -985,7 +534,8 @@ export function ReferenceLibrary({
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          style={styles.select}
+          className="py-2.5 pl-3 pr-8 bg-ak-surface-base border border-ak-border-default rounded-lg text-ak-text-primary text-sm cursor-pointer outline-none appearance-none bg-no-repeat bg-[right_10px_center]"
+          style={{ backgroundImage: selectBgImage }}
         >
           {TYPE_OPTIONS.map((type) => (
             <option key={type.value} value={type.value}>
@@ -997,7 +547,7 @@ export function ReferenceLibrary({
 
       {/* Video grid */}
       {filteredVideos.length > 0 ? (
-        <div style={styles.grid}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
           {filteredVideos.map((video) => (
             <ReferenceVideoCard
               key={video.id}
@@ -1012,10 +562,12 @@ export function ReferenceLibrary({
           ))}
         </div>
       ) : (
-        <div style={styles.emptyState}>
-          <FolderVideoIcon style={styles.emptyIcon} />
-          <SubSectionTitle style={styles.emptyTitle}>Ingen videoer funnet</SubSectionTitle>
-          <p style={styles.emptyText}>
+        <div className="flex flex-col items-center justify-center p-8 text-center">
+          <FileVideo size={64} className="text-ak-text-tertiary mb-4 opacity-50" />
+          <SubSectionTitle className="m-0 mb-2 text-lg font-semibold text-ak-text-primary">
+            Ingen videoer funnet
+          </SubSectionTitle>
+          <p className="m-0 mb-4 text-sm text-ak-text-secondary max-w-[300px]">
             {searchQuery || categoryFilter || typeFilter
               ? 'Prøv å justere søket eller filtrene dine.'
               : 'Last opp din første referansevideo for å komme i gang.'}
@@ -1023,7 +575,7 @@ export function ReferenceLibrary({
           {!searchQuery && !categoryFilter && !typeFilter && (
             <Button
               variant="primary"
-              leftIcon={<PlusIcon />}
+              leftIcon={<Plus size={16} />}
               onClick={() => setShowUploadModal(true)}
             >
               Last opp video
@@ -1034,35 +586,45 @@ export function ReferenceLibrary({
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div style={styles.modalOverlay} onClick={() => setShowUploadModal(false)}>
-          <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <div style={styles.modalHeader}>
-              <SubSectionTitle style={styles.modalTitle}>Last opp referansevideo</SubSectionTitle>
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-[1000] p-4"
+          onClick={() => setShowUploadModal(false)}
+        >
+          <div
+            className="w-full max-w-[500px] bg-ak-surface-base rounded-2xl border border-ak-border-default shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-ak-border-default">
+              <SubSectionTitle className="m-0 text-lg font-semibold text-ak-text-primary">
+                Last opp referansevideo
+              </SubSectionTitle>
               <button
-                style={styles.closeButton}
+                className="w-8 h-8 rounded-lg bg-transparent border-none text-ak-text-secondary cursor-pointer flex items-center justify-center"
                 onClick={() => setShowUploadModal(false)}
               >
-                <XIcon />
+                <X size={20} />
               </button>
             </div>
-            <div style={styles.modalBody}>
+
+            <div className="p-4 flex flex-col gap-4">
               {/* File upload */}
               {!uploadForm.file ? (
                 <div
-                  style={{
-                    ...styles.dropZone,
-                    ...(isDragging ? styles.dropZoneActive : {}),
-                  }}
+                  className={`p-6 border-2 border-dashed rounded-xl flex flex-col items-center justify-center gap-3 cursor-pointer transition-all ${
+                    isDragging
+                      ? 'border-ak-brand-primary bg-ak-brand-primary/10'
+                      : 'border-ak-border-default'
+                  }`}
                   onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                   onDragLeave={() => setIsDragging(false)}
                   onDrop={handleDrop}
                   onClick={() => document.getElementById('file-input').click()}
                 >
-                  <UploadIcon style={styles.dropZoneIcon} />
-                  <span style={styles.dropZoneText}>
+                  <Upload size={48} className="text-ak-text-tertiary" />
+                  <span className="text-sm text-ak-text-secondary text-center">
                     Dra og slipp video her, eller klikk for å velge
                   </span>
-                  <span style={styles.dropZoneHint}>
+                  <span className="text-xs text-ak-text-tertiary">
                     MP4, MOV, WebM (maks 5 min)
                   </span>
                   <input
@@ -1070,59 +632,68 @@ export function ReferenceLibrary({
                     type="file"
                     accept="video/*"
                     onChange={handleFileSelect}
-                    style={{ display: 'none' }}
+                    className="hidden"
                   />
                 </div>
               ) : (
-                <div style={styles.selectedFile}>
-                  <div style={styles.fileIcon}>
-                    <VideoIcon />
+                <div className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg">
+                  <div className="w-10 h-10 rounded-lg bg-ak-brand-primary flex items-center justify-center text-white">
+                    <Video size={20} />
                   </div>
-                  <div style={styles.fileInfo}>
-                    <div style={styles.fileName}>{uploadForm.file.name}</div>
-                    <div style={styles.fileSize}>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[13px] font-medium text-ak-text-primary overflow-hidden text-ellipsis whitespace-nowrap">
+                      {uploadForm.file.name}
+                    </div>
+                    <div className="text-xs text-ak-text-tertiary">
                       {formatFileSize(uploadForm.file.size)}
                     </div>
                   </div>
                   <button
-                    style={styles.removeFileButton}
+                    className="w-7 h-7 rounded bg-transparent border-none text-ak-text-tertiary cursor-pointer flex items-center justify-center"
                     onClick={() => setUploadForm((prev) => ({ ...prev, file: null }))}
                   >
-                    <XIcon size={16} />
+                    <X size={16} />
                   </button>
                 </div>
               )}
 
               {/* Title */}
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Tittel *</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-medium text-ak-text-secondary">
+                  Tittel *
+                </label>
                 <input
                   type="text"
                   placeholder="F.eks. Full Swing Grunnlag"
                   value={uploadForm.title}
                   onChange={(e) => setUploadForm((prev) => ({ ...prev, title: e.target.value }))}
-                  style={styles.input}
+                  className="py-2.5 px-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-ak-text-primary text-sm outline-none"
                 />
               </div>
 
               {/* Description */}
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Beskrivelse</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-medium text-ak-text-secondary">
+                  Beskrivelse
+                </label>
                 <textarea
                   placeholder="Beskriv hva videoen viser..."
                   value={uploadForm.description}
                   onChange={(e) => setUploadForm((prev) => ({ ...prev, description: e.target.value }))}
-                  style={styles.textarea}
+                  className="py-2.5 px-3 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-ak-text-primary text-sm outline-none resize-y min-h-[80px]"
                 />
               </div>
 
               {/* Type */}
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Type</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-medium text-ak-text-secondary">
+                  Type
+                </label>
                 <select
                   value={uploadForm.type}
                   onChange={(e) => setUploadForm((prev) => ({ ...prev, type: e.target.value }))}
-                  style={styles.select}
+                  className="py-2.5 pl-3 pr-8 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-ak-text-primary text-sm cursor-pointer outline-none appearance-none bg-no-repeat bg-[right_10px_center]"
+                  style={{ backgroundImage: selectBgImage }}
                 >
                   {TYPE_OPTIONS.slice(1).map((type) => (
                     <option key={type.value} value={type.value}>
@@ -1133,12 +704,15 @@ export function ReferenceLibrary({
               </div>
 
               {/* Category */}
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Kategori</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-medium text-ak-text-secondary">
+                  Kategori
+                </label>
                 <select
                   value={uploadForm.category}
                   onChange={(e) => setUploadForm((prev) => ({ ...prev, category: e.target.value }))}
-                  style={styles.select}
+                  className="py-2.5 pl-3 pr-8 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-ak-text-primary text-sm cursor-pointer outline-none appearance-none bg-no-repeat bg-[right_10px_center]"
+                  style={{ backgroundImage: selectBgImage }}
                 >
                   {VIDEO_CATEGORIES.slice(1).map((cat) => (
                     <option key={cat.value} value={cat.value}>
@@ -1148,7 +722,8 @@ export function ReferenceLibrary({
                 </select>
               </div>
             </div>
-            <div style={styles.modalFooter}>
+
+            <div className="flex items-center justify-end gap-3 p-4 border-t border-ak-border-default">
               <Button
                 variant="secondary"
                 onClick={() => setShowUploadModal(false)}
@@ -1169,52 +744,70 @@ export function ReferenceLibrary({
 
       {/* Share Modal */}
       {showShareModal && selectedVideo && (
-        <div style={styles.modalOverlay} onClick={() => setShowShareModal(false)}>
-          <div style={{ ...styles.modal, ...styles.shareModal }} onClick={(e) => e.stopPropagation()}>
-            <div style={styles.modalHeader}>
-              <SubSectionTitle style={styles.modalTitle}>Del med spillere</SubSectionTitle>
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-[1000] p-4"
+          onClick={() => setShowShareModal(false)}
+        >
+          <div
+            className="w-full max-w-[400px] bg-ak-surface-base rounded-2xl border border-ak-border-default shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-ak-border-default">
+              <SubSectionTitle className="m-0 text-lg font-semibold text-ak-text-primary">
+                Del med spillere
+              </SubSectionTitle>
               <button
-                style={styles.closeButton}
+                className="w-8 h-8 rounded-lg bg-transparent border-none text-ak-text-secondary cursor-pointer flex items-center justify-center"
                 onClick={() => setShowShareModal(false)}
               >
-                <XIcon />
+                <X size={20} />
               </button>
             </div>
-            <div style={styles.modalBody}>
-              <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)' }}>
+
+            <div className="p-4 flex flex-col gap-4">
+              <p className="m-0 text-sm text-ak-text-secondary">
                 Velg spillere som skal få tilgang til "{selectedVideo.title}"
               </p>
-              <div style={styles.playerList}>
+              <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto">
                 {players.map((player) => {
                   const isSelected = selectedPlayers.has(player.id);
                   return (
                     <div
                       key={player.id}
-                      style={{
-                        ...styles.playerItem,
-                        ...(isSelected ? styles.playerItemSelected : {}),
-                      }}
+                      className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                        isSelected
+                          ? 'bg-ak-brand-primary/20 outline outline-1 outline-ak-brand-primary'
+                          : 'bg-ak-surface-subtle'
+                      }`}
                       onClick={() => handlePlayerToggle(player.id)}
                     >
-                      <div style={styles.playerAvatar}>{player.initials}</div>
-                      <div style={styles.playerInfo}>
-                        <div style={styles.playerName}>{player.name}</div>
-                        <div style={styles.playerLevel}>{player.level}</div>
+                      <div className="w-9 h-9 rounded-full bg-ak-brand-primary flex items-center justify-center text-sm font-semibold text-white">
+                        {player.initials}
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium text-ak-text-primary">
+                          {player.name}
+                        </div>
+                        <div className="text-xs text-ak-text-tertiary">
+                          {player.level}
+                        </div>
                       </div>
                       <div
-                        style={{
-                          ...styles.checkbox,
-                          ...(isSelected ? styles.checkboxChecked : {}),
-                        }}
+                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                          isSelected
+                            ? 'bg-ak-brand-primary border-ak-brand-primary'
+                            : 'bg-transparent border-ak-border-default'
+                        }`}
                       >
-                        {isSelected && <CheckIcon />}
+                        {isSelected && <Check size={14} className="text-white" />}
                       </div>
                     </div>
                   );
                 })}
               </div>
             </div>
-            <div style={styles.modalFooter}>
+
+            <div className="flex items-center justify-end gap-3 p-4 border-t border-ak-border-default">
               <Button
                 variant="secondary"
                 onClick={() => setShowShareModal(false)}
@@ -1235,24 +828,34 @@ export function ReferenceLibrary({
 
       {/* Delete Confirmation Modal */}
       {videoToDelete && (
-        <div style={styles.modalOverlay} onClick={() => setVideoToDelete(null)}>
-          <div style={{ ...styles.modal, ...styles.shareModal }} onClick={(e) => e.stopPropagation()}>
-            <div style={styles.modalHeader}>
-              <SubSectionTitle style={styles.modalTitle}>Slett video</SubSectionTitle>
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-[1000] p-4"
+          onClick={() => setVideoToDelete(null)}
+        >
+          <div
+            className="w-full max-w-[400px] bg-ak-surface-base rounded-2xl border border-ak-border-default shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-ak-border-default">
+              <SubSectionTitle className="m-0 text-lg font-semibold text-ak-text-primary">
+                Slett video
+              </SubSectionTitle>
               <button
-                style={styles.closeButton}
+                className="w-8 h-8 rounded-lg bg-transparent border-none text-ak-text-secondary cursor-pointer flex items-center justify-center"
                 onClick={() => setVideoToDelete(null)}
               >
-                <XIcon />
+                <X size={20} />
               </button>
             </div>
-            <div style={styles.modalBody}>
-              <p style={{ margin: 0, color: 'var(--text-secondary, rgba(255, 255, 255, 0.7))' }}>
+
+            <div className="p-4">
+              <p className="m-0 text-ak-text-secondary">
                 Er du sikker på at du vil slette "{videoToDelete.title}"?
                 Denne handlingen kan ikke angres.
               </p>
             </div>
-            <div style={styles.modalFooter}>
+
+            <div className="flex items-center justify-end gap-3 p-4 border-t border-ak-border-default">
               <Button
                 variant="secondary"
                 onClick={() => setVideoToDelete(null)}
@@ -1264,7 +867,7 @@ export function ReferenceLibrary({
                 onClick={handleConfirmDelete}
                 disabled={isDeleting}
                 loading={isDeleting}
-                style={{ backgroundColor: 'var(--error)' }}
+                className="bg-ak-status-error hover:bg-ak-status-error/90"
               >
                 {isDeleting ? 'Sletter...' : 'Slett video'}
               </Button>

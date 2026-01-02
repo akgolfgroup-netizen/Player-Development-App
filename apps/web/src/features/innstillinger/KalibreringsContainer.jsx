@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Kalibrerings Container
+ * Design System v3.0 - Premium Light
+ *
+ * Calibration settings for player metrics and club distances.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Target, Save, RotateCcw,
@@ -80,44 +89,23 @@ const saveCalibrationToStorage = (userId, data) => {
 // ============================================================================
 
 const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '12px 14px',
-    backgroundColor: 'var(--bg-secondary)',
-    borderRadius: '10px',
-    marginBottom: '8px',
-  }}>
+  <div className="flex items-center justify-between py-3 px-3.5 bg-ak-surface-subtle rounded-[10px] mb-2">
     <div>
-      <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+      <div className="text-[13px] font-medium text-ak-text-primary">
         {label}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+      <div className="text-[11px] text-ak-text-secondary">
         Oppdatert: {new Date(lastUpdated).toLocaleDateString('nb-NO')}
       </div>
     </div>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div className="flex items-center gap-2">
       <input
         type="number"
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        style={{
-          width: '80px',
-          padding: '8px 12px',
-          borderRadius: '6px',
-          border: `1px solid ${'var(--border-default)'}`,
-          fontSize: '14px',
-          fontWeight: 500,
-          textAlign: 'right',
-          outline: 'none',
-        }}
+        className="w-20 py-2 px-3 rounded-md border border-ak-border-default text-sm font-medium text-right outline-none focus:border-ak-brand-primary bg-ak-surface-base"
       />
-      <span style={{
-        fontSize: '13px',
-        color: 'var(--text-secondary)',
-        minWidth: '40px',
-      }}>
+      <span className="text-[13px] text-ak-text-secondary min-w-[40px]">
         {unit}
       </span>
     </div>
@@ -129,46 +117,21 @@ const CalibrationInput = ({ label, value, unit, lastUpdated, onChange }) => (
 // ============================================================================
 
 const ClubDistanceRow = ({ club, carry, total, onChange }) => (
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: '80px 1fr 1fr',
-    gap: '12px',
-    alignItems: 'center',
-    padding: '10px 0',
-    borderBottom: `1px solid ${'var(--border-default)'}`,
-  }}>
-    <span style={{
-      fontSize: '13px',
-      fontWeight: 500,
-      color: 'var(--text-primary)',
-    }}>
+  <div className="grid grid-cols-[80px_1fr_1fr] gap-3 items-center py-2.5 border-b border-ak-border-default">
+    <span className="text-[13px] font-medium text-ak-text-primary">
       {club}
     </span>
     <input
       type="number"
       value={carry}
       onChange={(e) => onChange('carry', parseInt(e.target.value))}
-      style={{
-        padding: '8px 12px',
-        borderRadius: '6px',
-        border: `1px solid ${'var(--border-default)'}`,
-        fontSize: '14px',
-        textAlign: 'center',
-        outline: 'none',
-      }}
+      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-brand-primary bg-ak-surface-base"
     />
     <input
       type="number"
       value={total}
       onChange={(e) => onChange('total', parseInt(e.target.value))}
-      style={{
-        padding: '8px 12px',
-        borderRadius: '6px',
-        border: `1px solid ${'var(--border-default)'}`,
-        fontSize: '14px',
-        textAlign: 'center',
-        outline: 'none',
-      }}
+      className="py-2 px-3 rounded-md border border-ak-border-default text-sm text-center outline-none focus:border-ak-brand-primary bg-ak-surface-base"
     />
   </div>
 );
@@ -261,49 +224,31 @@ const KalibreringsContainer = () => {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ width: 40, height: 40, border: '3px solid var(--border-default)', borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: 'var(--text-secondary)' }}>Laster kalibrering...</p>
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-ak-text-secondary">Laster kalibrering...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Kalibrering"
         subtitle="Juster dine personlige mål og verdier"
       />
 
-      <div style={{ padding: '16px 24px 24px', maxWidth: '800px', margin: '0 auto' }}>
+      <div className="p-4 px-6 pb-6 max-w-[800px] mx-auto">
         {/* Info Banner */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '12px',
-          padding: '14px',
-          backgroundColor: `${'var(--accent)'}10`,
-          borderRadius: '12px',
-          marginBottom: '24px',
-        }}>
-          <Info size={20} color={'var(--accent)'} style={{ flexShrink: 0, marginTop: '2px' }} />
+        <div className="flex items-start gap-3 p-3.5 bg-ak-brand-primary/10 rounded-xl mb-6">
+          <Info size={20} className="text-ak-brand-primary flex-shrink-0 mt-0.5" />
           <div>
-            <CardTitle style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: '0 0 4px 0',
-            }}>
+            <CardTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-1">
               Viktig for presise mål
             </CardTitle>
-            <p style={{
-              fontSize: '13px',
-              color: 'var(--text-secondary)',
-              margin: 0,
-              lineHeight: 1.4,
-            }}>
+            <p className="text-[13px] text-ak-text-secondary m-0 leading-snug">
               Oppdater disse verdiene regelmessig for a fa mest mulig noyaktige treningsmal og analyser.
               Verdiene brukes til a beregne fremgang og sammenligne med benchmark.
             </p>
@@ -312,17 +257,9 @@ const KalibreringsContainer = () => {
 
         {/* Success Banner */}
         {success && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            padding: '12px 14px',
-            backgroundColor: `${'var(--success)'}15`,
-            borderRadius: '10px',
-            marginBottom: '16px',
-          }}>
-            <Check size={18} color={'var(--success)'} />
-            <span style={{ fontSize: '14px', color: 'var(--success)', fontWeight: 500 }}>
+          <div className="flex items-center gap-2.5 py-3 px-3.5 bg-ak-status-success/15 rounded-[10px] mb-4">
+            <Check size={18} className="text-ak-status-success" />
+            <span className="text-sm text-ak-status-success font-medium">
               Kalibrering lagret!
             </span>
           </div>
@@ -330,52 +267,21 @@ const KalibreringsContainer = () => {
 
         {/* Error Banner */}
         {error && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            padding: '12px 14px',
-            backgroundColor: `${'var(--error)'}15`,
-            borderRadius: '10px',
-            marginBottom: '16px',
-          }}>
-            <Info size={18} color={'var(--error)'} />
-            <span style={{ fontSize: '14px', color: 'var(--error)', fontWeight: 500 }}>
+          <div className="flex items-center gap-2.5 py-3 px-3.5 bg-ak-status-error/15 rounded-[10px] mb-4">
+            <Info size={18} className="text-ak-status-error" />
+            <span className="text-sm text-ak-status-error font-medium">
               {error}
             </span>
           </div>
         )}
 
         {/* Driving Settings */}
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '14px',
-          padding: '16px',
-          marginBottom: '20px',
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            marginBottom: '14px',
-          }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: `${'var(--accent)'}15`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Gauge size={18} color={'var(--accent)'} />
+        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+          <div className="flex items-center gap-2.5 mb-3.5">
+            <div className="w-9 h-9 rounded-lg bg-ak-brand-primary/15 flex items-center justify-center">
+              <Gauge size={18} className="text-ak-brand-primary" />
             </div>
-            <SubSectionTitle style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
               Driver-verdier
             </SubSectionTitle>
           </div>
@@ -423,50 +329,20 @@ const KalibreringsContainer = () => {
         </div>
 
         {/* Club Distances */}
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '14px',
-          padding: '16px',
-          marginBottom: '20px',
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            marginBottom: '14px',
-          }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: `${'var(--success)'}15`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Target size={18} color={'var(--success)'} />
+        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+          <div className="flex items-center gap-2.5 mb-3.5">
+            <div className="w-9 h-9 rounded-lg bg-ak-status-success/15 flex items-center justify-center">
+              <Target size={18} className="text-ak-status-success" />
             </div>
-            <SubSectionTitle style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
               Klubbavstander
             </SubSectionTitle>
           </div>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '80px 1fr 1fr',
-            gap: '12px',
-            padding: '8px 0',
-            borderBottom: `2px solid ${'var(--border-default)'}`,
-            marginBottom: '8px',
-          }}>
-            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>Klubb</span>
-            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center' }}>Carry (m)</span>
-            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'center' }}>Total (m)</span>
+          <div className="grid grid-cols-[80px_1fr_1fr] gap-3 py-2 border-b-2 border-ak-border-default mb-2">
+            <span className="text-xs font-semibold text-ak-text-secondary">Klubb</span>
+            <span className="text-xs font-semibold text-ak-text-secondary text-center">Carry (m)</span>
+            <span className="text-xs font-semibold text-ak-text-secondary text-center">Total (m)</span>
           </div>
 
           {clubDistances.map((club, idx) => (
@@ -486,35 +362,12 @@ const KalibreringsContainer = () => {
         </div>
 
         {/* Physical Settings */}
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '14px',
-          padding: '16px',
-          marginBottom: '20px',
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            marginBottom: '14px',
-          }}>
-            <div style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '8px',
-              backgroundColor: `${'var(--error)'}15`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Activity size={18} color={'var(--error)'} />
+        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+          <div className="flex items-center gap-2.5 mb-3.5">
+            <div className="w-9 h-9 rounded-lg bg-ak-status-error/15 flex items-center justify-center">
+              <Activity size={18} className="text-ak-status-error" />
             </div>
-            <SubSectionTitle style={{
-              fontSize: '15px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
               Fysiske verdier
             </SubSectionTitle>
           </div>
@@ -552,48 +405,22 @@ const KalibreringsContainer = () => {
         </div>
 
         {/* Action Buttons */}
-        <div style={{
-          display: 'flex',
-          gap: '12px',
-        }}>
+        <div className="flex gap-3">
           <button
             onClick={handleReset}
-            style={{
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px',
-              borderRadius: '10px',
-              border: `1px solid ${'var(--border-default)'}`,
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              fontSize: '15px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-ak-text-primary text-[15px] font-medium cursor-pointer hover:bg-ak-surface-subtle transition-colors"
           >
             <RotateCcw size={18} />
             Tilbakestill
           </button>
           <button
             onClick={handleSave}
-            style={{
-              flex: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px',
-              borderRadius: '10px',
-              border: 'none',
-              backgroundColor: hasChanges ? 'var(--accent)' : 'var(--border-default)',
-              color: hasChanges ? 'var(--bg-primary)' : 'var(--text-secondary)',
-              fontSize: '15px',
-              fontWeight: 600,
-              cursor: hasChanges ? 'pointer' : 'not-allowed',
-            }}
+            disabled={!hasChanges}
+            className={`flex-[2] flex items-center justify-center gap-2 py-3.5 rounded-[10px] border-none text-[15px] font-semibold transition-colors ${
+              hasChanges
+                ? 'bg-ak-brand-primary text-white cursor-pointer hover:bg-ak-brand-primary/90'
+                : 'bg-ak-border-default text-ak-text-secondary cursor-not-allowed'
+            }`}
           >
             <Save size={18} />
             Lagre endringer

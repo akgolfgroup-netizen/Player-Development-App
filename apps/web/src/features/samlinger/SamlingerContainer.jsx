@@ -1,12 +1,22 @@
+/**
+ * AK Golf Academy - Samlinger Container
+ * Design System v3.0 - Premium Light
+ *
+ * Training camps and gatherings overview with registration.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState } from 'react';
 import {
   Users, Calendar, MapPin, Clock, ChevronRight,
   CheckCircle, AlertCircle, Tent, Target, Dumbbell,
-  BookOpen, Utensils, Car
+  BookOpen, Utensils, Car, X
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -145,8 +155,7 @@ const getStatusConfig = (status, isRegistered) => {
   if (isRegistered) {
     return {
       label: 'Pameldt',
-      color: 'var(--success)',
-      bg: 'rgba(var(--success-rgb), 0.15)',
+      colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
       icon: CheckCircle,
     };
   }
@@ -155,29 +164,25 @@ const getStatusConfig = (status, isRegistered) => {
     case 'registration_open':
       return {
         label: 'Apen for pamelding',
-        color: 'var(--accent)',
-        bg: 'rgba(var(--accent-rgb), 0.15)',
+        colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
         icon: Calendar,
       };
     case 'registration_closed':
       return {
         label: 'Fullt',
-        color: 'var(--error)',
-        bg: 'rgba(var(--error-rgb), 0.15)',
+        colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error' },
         icon: AlertCircle,
       };
     case 'upcoming':
       return {
         label: 'Kommer snart',
-        color: 'var(--text-secondary)',
-        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
+        colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' },
         icon: Clock,
       };
     default:
       return {
         label: status,
-        color: 'var(--text-secondary)',
-        bg: 'rgba(var(--text-secondary-rgb), 0.15)',
+        colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' },
         icon: Tent,
       };
   }
@@ -186,12 +191,12 @@ const getStatusConfig = (status, isRegistered) => {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'elite':
-      return { label: 'Elite', color: 'var(--achievement)', icon: Target };
+      return { label: 'Elite', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Target };
     case 'intensive':
-      return { label: 'Intensiv', color: 'var(--accent)', icon: Dumbbell };
+      return { label: 'Intensiv', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Dumbbell };
     case 'training':
     default:
-      return { label: 'Trening', color: 'var(--success)', icon: Tent };
+      return { label: 'Trening', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Tent };
   }
 };
 
@@ -209,119 +214,64 @@ const CampCard = ({ camp, onSelect }) => {
   return (
     <div
       onClick={() => onSelect(camp)}
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '16px',
-        padding: '20px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        border: camp.isRegistered ? '2px solid var(--success)' : '2px solid transparent',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
+      className={`bg-ak-surface-base rounded-2xl p-5 shadow-sm cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md ${
+        camp.isRegistered ? 'border-2 border-ak-status-success' : 'border-2 border-transparent'
+      }`}
     >
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '44px',
-            height: '44px',
-            borderRadius: '12px',
-            backgroundColor: `${typeConfig.color}15`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <TypeIcon size={22} color={typeConfig.color} />
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className={`w-11 h-11 rounded-xl ${typeConfig.colorClasses.bg} flex items-center justify-center`}>
+            <TypeIcon size={22} className={typeConfig.colorClasses.text} />
           </div>
           <div>
-            <SubSectionTitle style={{
-              fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+            <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
               {camp.name}
             </SubSectionTitle>
-            <span style={{
-              fontSize: '12px',
-              fontWeight: 500,
-              color: typeConfig.color,
-              backgroundColor: `${typeConfig.color}15`,
-              padding: '2px 8px',
-              borderRadius: '4px',
-              marginTop: '4px',
-              display: 'inline-block',
-            }}>
+            <span className={`text-xs font-medium ${typeConfig.colorClasses.bg} ${typeConfig.colorClasses.text} py-0.5 px-2 rounded mt-1 inline-block`}>
               {typeConfig.label}
             </span>
           </div>
         </div>
 
         {/* Status Badge */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '6px 10px',
-          borderRadius: '8px',
-          backgroundColor: statusConfig.bg,
-        }}>
-          <StatusIcon size={14} color={statusConfig.color} />
-          <span style={{ fontSize: '12px', fontWeight: 500, color: statusConfig.color }}>
+        <div className={`flex items-center gap-1.5 py-1.5 px-2.5 rounded-lg ${statusConfig.colorClasses.bg}`}>
+          <StatusIcon size={14} className={statusConfig.colorClasses.text} />
+          <span className={`text-xs font-medium ${statusConfig.colorClasses.text}`}>
             {statusConfig.label}
           </span>
         </div>
       </div>
 
       {/* Details */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Calendar size={14} color={'var(--text-secondary)'} />
-          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+      <div className="flex flex-col gap-2 mb-4">
+        <div className="flex items-center gap-2">
+          <Calendar size={14} className="text-ak-text-secondary" />
+          <span className="text-sm text-ak-text-primary">
             {formatDateRange(camp.startDate, camp.endDate)}
           </span>
-          <span style={{
-            fontSize: '11px',
-            color: 'var(--text-secondary)',
-            backgroundColor: 'var(--bg-secondary)',
-            padding: '2px 6px',
-            borderRadius: '4px',
-          }}>
+          <span className="text-[11px] text-ak-text-secondary bg-ak-surface-subtle py-0.5 px-1.5 rounded">
             {getDuration(camp.startDate, camp.endDate)}
           </span>
           {daysUntil > 0 && daysUntil <= 60 && (
-            <span style={{
-              fontSize: '11px',
-              color: 'var(--accent)',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-              padding: '2px 6px',
-              borderRadius: '4px',
-            }}>
+            <span className="text-[11px] text-ak-brand-primary bg-ak-brand-primary/10 py-0.5 px-1.5 rounded">
               om {daysUntil} dager
             </span>
           )}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <MapPin size={14} color={'var(--text-secondary)'} />
-          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+        <div className="flex items-center gap-2">
+          <MapPin size={14} className="text-ak-text-secondary" />
+          <span className="text-sm text-ak-text-primary">
             {camp.location}, {camp.country}
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Users size={14} color={'var(--text-secondary)'} />
-          <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+        <div className="flex items-center gap-2">
+          <Users size={14} className="text-ak-text-secondary" />
+          <span className="text-sm text-ak-text-primary">
             {camp.currentParticipants}/{camp.maxParticipants} pameldte
           </span>
           {camp.currentParticipants >= camp.maxParticipants && (
-            <span style={{ fontSize: '11px', color: 'var(--error)', fontWeight: 500 }}>
+            <span className="text-[11px] text-ak-status-error font-medium">
               (Fullt)
             </span>
           )}
@@ -329,29 +279,19 @@ const CampCard = ({ camp, onSelect }) => {
       </div>
 
       {/* Program preview */}
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '6px' }}>Program:</div>
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+      <div className="mb-4">
+        <div className="text-xs text-ak-text-secondary mb-1.5">Program:</div>
+        <div className="flex gap-1.5 flex-wrap">
           {camp.program.slice(0, 3).map((item, idx) => (
             <span
               key={idx}
-              style={{
-                fontSize: '11px',
-                color: 'var(--text-primary)',
-                backgroundColor: 'var(--bg-secondary)',
-                padding: '4px 8px',
-                borderRadius: '6px',
-              }}
+              className="text-[11px] text-ak-text-primary bg-ak-surface-subtle py-1 px-2 rounded-md"
             >
               {item}
             </span>
           ))}
           {camp.program.length > 3 && (
-            <span style={{
-              fontSize: '11px',
-              color: 'var(--text-secondary)',
-              padding: '4px 8px',
-            }}>
+            <span className="text-[11px] text-ak-text-secondary py-1 px-2">
               +{camp.program.length - 3} mer
             </span>
           )}
@@ -359,27 +299,14 @@ const CampCard = ({ camp, onSelect }) => {
       </div>
 
       {/* Footer */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingTop: '12px',
-        borderTop: '1px solid var(--border-default)',
-      }}>
+      <div className="flex items-center justify-between pt-3 border-t border-ak-border-default">
         <div>
-          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Pris</span>
-          <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <span className="text-xs text-ak-text-secondary">Pris</span>
+          <div className="text-base font-semibold text-ak-text-primary">
             {camp.price.toLocaleString('nb-NO')} kr
           </div>
         </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '4px',
-          color: 'var(--accent)',
-          fontSize: '14px',
-          fontWeight: 500,
-        }}>
+        <div className="flex items-center gap-1 text-ak-brand-primary text-sm font-medium">
           Se detaljer
           <ChevronRight size={16} />
         </div>
@@ -394,47 +321,29 @@ const CampCard = ({ camp, onSelect }) => {
 
 const PastCampCard = ({ camp }) => {
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '16px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '16px',
-    }}>
-      <div style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '10px',
-        backgroundColor: camp.participated ? 'rgba(var(--success-rgb), 0.15)' : 'var(--bg-secondary)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+    <div className="bg-ak-surface-base rounded-xl p-4 flex items-center gap-4">
+      <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center ${
+        camp.participated ? 'bg-ak-status-success/15' : 'bg-ak-surface-subtle'
+      }`}>
         {camp.participated ? (
-          <CheckCircle size={20} color={'var(--success)'} />
+          <CheckCircle size={20} className="text-ak-status-success" />
         ) : (
-          <Tent size={20} color={'var(--text-secondary)'} />
+          <Tent size={20} className="text-ak-text-secondary" />
         )}
       </div>
 
-      <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+      <div className="flex-1">
+        <div className="text-sm font-medium text-ak-text-primary">
           {camp.name}
         </div>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+        <div className="text-xs text-ak-text-secondary mt-0.5">
           {formatDate(camp.date)} - {camp.location}
         </div>
       </div>
 
       {camp.highlights && (
-        <div style={{
-          backgroundColor: 'rgba(var(--achievement-rgb), 0.15)',
-          padding: '6px 10px',
-          borderRadius: '8px',
-          maxWidth: '200px',
-        }}>
-          <div style={{ fontSize: '11px', color: 'var(--achievement)', fontWeight: 500 }}>
+        <div className="bg-amber-500/15 py-1.5 px-2.5 rounded-lg max-w-[200px]">
+          <div className="text-[11px] text-amber-600 font-medium">
             {camp.highlights}
           </div>
         </div>
@@ -457,29 +366,16 @@ const FilterBar = ({ activeFilter, onFilterChange }) => {
   ];
 
   return (
-    <div style={{
-      display: 'flex',
-      gap: '8px',
-      overflowX: 'auto',
-      paddingBottom: '4px',
-    }}>
+    <div className="flex gap-2 overflow-x-auto pb-1">
       {filters.map((filter) => (
         <button
           key={filter.key}
           onClick={() => onFilterChange(filter.key)}
-          style={{
-            padding: '8px 16px',
-            borderRadius: '20px',
-            border: 'none',
-            backgroundColor: activeFilter === filter.key ? 'var(--accent)' : 'var(--bg-primary)',
-            color: activeFilter === filter.key ? 'var(--bg-primary)' : 'var(--text-primary)',
-            fontSize: '13px',
-            fontWeight: 500,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            whiteSpace: 'nowrap',
-            boxShadow: activeFilter === filter.key ? 'none' : '0 1px 3px rgba(0,0,0,0.08)',
-          }}
+          className={`py-2 px-4 rounded-full border-none text-[13px] font-medium cursor-pointer transition-colors whitespace-nowrap ${
+            activeFilter === filter.key
+              ? 'bg-ak-brand-primary text-white shadow-none'
+              : 'bg-ak-surface-base text-ak-text-primary shadow-sm hover:bg-ak-surface-subtle'
+          }`}
         >
           {filter.label}
         </button>
@@ -498,128 +394,83 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
   const typeConfig = getTypeConfig(camp.type);
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000,
-      padding: '20px',
-    }} onClick={onClose}>
-      <div style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '20px',
-        maxWidth: '500px',
-        width: '100%',
-        maxHeight: '85vh',
-        overflow: 'auto',
-      }} onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-5"
+      onClick={onClose}
+    >
+      <div
+        className="bg-ak-surface-base rounded-[20px] max-w-[500px] w-full max-h-[85vh] overflow-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div style={{
-          padding: '24px',
-          borderBottom: '1px solid var(--border-default)',
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="p-6 border-b border-ak-border-default">
+          <div className="flex justify-between items-start">
             <div>
-              <SectionTitle style={{
-                fontSize: '20px',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                margin: '0 0 8px 0',
-              }}>
+              <SectionTitle className="text-xl font-bold text-ak-text-primary m-0 mb-2">
                 {camp.name}
               </SectionTitle>
-              <span style={{
-                fontSize: '12px',
-                fontWeight: 500,
-                color: typeConfig.color,
-                backgroundColor: `${typeConfig.color}15`,
-                padding: '4px 10px',
-                borderRadius: '6px',
-              }}>
+              <span className={`text-xs font-medium ${typeConfig.colorClasses.bg} ${typeConfig.colorClasses.text} py-1 px-2.5 rounded-md`}>
                 {typeConfig.label}
               </span>
             </div>
             <button
               onClick={onClose}
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: 'var(--bg-secondary)',
-                cursor: 'pointer',
-                fontSize: '18px',
-                color: 'var(--text-secondary)',
-              }}
+              className="w-8 h-8 rounded-lg border-none bg-ak-surface-subtle cursor-pointer text-lg text-ak-text-secondary flex items-center justify-center hover:bg-ak-border-default"
             >
-              x
+              <X size={18} />
             </button>
           </div>
         </div>
 
         {/* Content */}
-        <div style={{ padding: '24px' }}>
-          <p style={{
-            fontSize: '14px',
-            color: 'var(--text-primary)',
-            lineHeight: 1.6,
-            margin: '0 0 20px 0',
-          }}>
+        <div className="p-6">
+          <p className="text-sm text-ak-text-primary leading-relaxed m-0 mb-5">
             {camp.description}
           </p>
 
           {/* Info grid */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Calendar size={18} color={'var(--accent)'} />
+          <div className="flex flex-col gap-3 mb-5">
+            <div className="flex items-center gap-3">
+              <Calendar size={18} className="text-ak-brand-primary" />
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <div className="text-sm font-medium text-ak-text-primary">
                   {formatDateRange(camp.startDate, camp.endDate)} ({getDuration(camp.startDate, camp.endDate)})
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <div className="text-xs text-ak-text-secondary">
                   Pameldingsfrist: {formatDate(camp.registrationDeadline)}
                 </div>
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <MapPin size={18} color={'var(--accent)'} />
+            <div className="flex items-center gap-3">
+              <MapPin size={18} className="text-ak-brand-primary" />
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <div className="text-sm font-medium text-ak-text-primary">
                   {camp.location}
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <div className="text-xs text-ak-text-secondary">
                   {camp.country}
                 </div>
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Users size={18} color={'var(--accent)'} />
-              <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+            <div className="flex items-center gap-3">
+              <Users size={18} className="text-ak-brand-primary" />
+              <div className="text-sm font-medium text-ak-text-primary">
                 {camp.currentParticipants}/{camp.maxParticipants} pameldte - Trener: {camp.coach}
               </div>
             </div>
           </div>
 
           {/* Program */}
-          <div style={{ marginBottom: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <BookOpen size={16} color={'var(--accent)'} />
-              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Program</span>
+          <div className="mb-5">
+            <div className="flex items-center gap-2 mb-2">
+              <BookOpen size={16} className="text-ak-brand-primary" />
+              <span className="text-sm font-semibold text-ak-text-primary">Program</span>
             </div>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="flex gap-2 flex-wrap">
               {camp.program.map((item, idx) => (
                 <span
                   key={idx}
-                  style={{
-                    fontSize: '12px',
-                    color: 'var(--text-primary)',
-                    backgroundColor: 'var(--bg-secondary)',
-                    padding: '6px 10px',
-                    borderRadius: '8px',
-                  }}
+                  className="text-xs text-ak-text-primary bg-ak-surface-subtle py-1.5 px-2.5 rounded-lg"
                 >
                   {item}
                 </span>
@@ -628,25 +479,16 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
           </div>
 
           {/* Includes */}
-          <div style={{ marginBottom: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <CheckCircle size={16} color={'var(--success)'} />
-              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>Inkludert</span>
+          <div className="mb-5">
+            <div className="flex items-center gap-2 mb-2">
+              <CheckCircle size={16} className="text-ak-status-success" />
+              <span className="text-sm font-semibold text-ak-text-primary">Inkludert</span>
             </div>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="flex gap-2 flex-wrap">
               {camp.includes.map((item, idx) => (
                 <span
                   key={idx}
-                  style={{
-                    fontSize: '12px',
-                    color: 'var(--success)',
-                    backgroundColor: 'rgba(var(--success-rgb), 0.10)',
-                    padding: '6px 10px',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                  }}
+                  className="text-xs text-ak-status-success bg-ak-status-success/10 py-1.5 px-2.5 rounded-lg flex items-center gap-1"
                 >
                   {item.includes('Overnatting') && <Tent size={12} />}
                   {item.includes('rokost') && <Utensils size={12} />}
@@ -658,16 +500,11 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
           </div>
 
           {/* Price */}
-          <div style={{
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: '12px',
-            padding: '16px',
-            marginBottom: '20px',
-          }}>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+          <div className="bg-ak-surface-subtle rounded-xl p-4 mb-5">
+            <div className="text-xs text-ak-text-secondary mb-1">
               Pris
             </div>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
+            <div className="text-2xl font-bold text-ak-text-primary">
               {camp.price.toLocaleString('nb-NO')} kr
             </div>
           </div>
@@ -677,41 +514,19 @@ const CampDetailModal = ({ camp, onClose, onRegister }) => {
             <Button
               variant="primary"
               onClick={() => onRegister(camp.id)}
-              style={{ width: '100%' }}
+              className="w-full"
             >
               Meld deg pa
             </Button>
           )}
           {camp.isRegistered && (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px',
-              borderRadius: '12px',
-              backgroundColor: 'rgba(var(--success-rgb), 0.15)',
-              color: 'var(--success)',
-              fontSize: '15px',
-              fontWeight: 600,
-            }}>
+            <div className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-ak-status-success/15 text-ak-status-success text-[15px] font-semibold">
               <CheckCircle size={18} />
               Du er pameldt
             </div>
           )}
           {camp.status === 'upcoming' && (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px',
-              borderRadius: '12px',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-secondary)',
-              fontSize: '15px',
-              fontWeight: 500,
-            }}>
+            <div className="flex items-center justify-center gap-2 py-3.5 rounded-xl bg-ak-surface-subtle text-ak-text-secondary text-[15px] font-medium">
               <Clock size={18} />
               Pamelding apner snart
             </div>
@@ -747,88 +562,54 @@ const SamlingerContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Samlinger"
         subtitle="Treningssamlinger og leirer"
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         {/* Stats Row */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-          gap: '12px',
-          marginBottom: '16px',
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3 mb-4">
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-brand-primary">
               {camps.length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Kommende</div>
+            <div className="text-xs text-ak-text-secondary">Kommende</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-status-success">
               {camps.filter(c => c.isRegistered).length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Pameldt</div>
+            <div className="text-xs text-ak-text-secondary">Pameldt</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-amber-500">
               {PAST_CAMPS.length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Deltatt i ar</div>
+            <div className="text-xs text-ak-text-secondary">Deltatt i ar</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-text-primary">
               {camps.filter(c => c.status === 'registration_open' && !c.isRegistered).length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Apen pamelding</div>
+            <div className="text-xs text-ak-text-secondary">Apen pamelding</div>
           </div>
         </div>
 
         {/* Filter */}
-        <div style={{ marginBottom: '20px' }}>
+        <div className="mb-5">
           <FilterBar activeFilter={filter} onFilterChange={setFilter} />
         </div>
 
         {/* Upcoming Camps */}
-        <div style={{ marginBottom: '32px' }}>
-          <SectionTitle style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 16px 0',
-          }}>
+        <div className="mb-8">
+          <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4">
             Kommende samlinger
           </SectionTitle>
 
           {filteredCamps.length > 0 ? (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-              gap: '16px',
-            }}>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-4">
               {filteredCamps.map((camp) => (
                 <CampCard
                   key={camp.id}
@@ -838,32 +619,22 @@ const SamlingerContainer = () => {
               ))}
             </div>
           ) : (
-            <div style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '16px',
-              padding: '40px',
-              textAlign: 'center',
-            }}>
-              <Tent size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
-                Ingen samlinger funnet med valgt filter
-              </p>
-            </div>
+            <StateCard
+              variant="empty"
+              icon={Tent}
+              title="Ingen samlinger funnet"
+              description="Ingen samlinger funnet med valgt filter"
+            />
           )}
         </div>
 
         {/* Past Camps */}
         <div>
-          <SectionTitle style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 16px 0',
-          }}>
+          <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4">
             Tidligere samlinger
           </SectionTitle>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="flex flex-col gap-2">
             {PAST_CAMPS.map((camp) => (
               <PastCampCard key={camp.id} camp={camp} />
             ))}

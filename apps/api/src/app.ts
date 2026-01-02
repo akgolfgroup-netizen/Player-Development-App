@@ -63,6 +63,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   const { playerRoutes } = await import('./api/v1/players');
   const { coachRoutes } = await import('./api/v1/coaches');
   const { exerciseRoutes } = await import('./api/v1/exercises');
+  const { samlingRoutes } = await import('./api/v1/samling');
   const { testRoutes } = await import('./api/v1/tests');
   const { enhancedTestRoutes } = await import('./api/v1/tests/enhanced-routes');
   const { breakingPointRoutes } = await import('./api/v1/breaking-points');
@@ -109,6 +110,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
   await app.register(coachRoutes, { prefix: `/api/${config.server.apiVersion}/coaches` });
   await app.register(exerciseRoutes, { prefix: `/api/${config.server.apiVersion}/exercises` });
+  await app.register(samlingRoutes, { prefix: `/api/${config.server.apiVersion}/samling` });
   await app.register(testRoutes, { prefix: `/api/${config.server.apiVersion}/tests` });
   await app.register(enhancedTestRoutes, { prefix: `/api/${config.server.apiVersion}/tests` });
   await app.register(breakingPointRoutes, { prefix: `/api/${config.server.apiVersion}/breaking-points` });

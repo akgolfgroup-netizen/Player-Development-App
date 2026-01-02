@@ -1,8 +1,16 @@
+/**
+ * AK Golf Academy - Turneringsevaluering Container
+ * Design System v3.0 - Premium Light
+ *
+ * Tournament evaluations with stats and performance tracking.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState } from 'react';
 import {
   Calendar, Star, ChevronRight, Plus, Target,
-  Award, MapPin, CheckCircle,
-  AlertCircle
+  Award, MapPin, CheckCircle, AlertCircle
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
@@ -154,13 +162,13 @@ const formatDate = (dateStr) => {
 // ============================================================================
 
 const RatingStars = ({ rating, size = 14 }) => (
-  <div style={{ display: 'flex', gap: '2px' }}>
+  <div className="flex gap-0.5">
     {[1, 2, 3, 4, 5].map((star) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? 'var(--achievement)' : 'none'}
-        color={star <= rating ? 'var(--achievement)' : 'var(--border-default)'}
+        fill={star <= rating ? '#f59e0b' : 'none'}
+        className={star <= rating ? 'text-amber-500' : 'text-ak-border-default'}
       />
     ))}
   </div>
@@ -177,75 +185,37 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
   return (
     <div
       onClick={() => onClick(evaluation)}
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '16px',
-        padding: '18px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        border: isWin ? '2px solid var(--achievement)' : '2px solid transparent',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
+      className={`bg-ak-surface-base rounded-2xl p-[18px] cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-lg ${
+        isWin ? 'border-2 border-amber-500' : 'border-2 border-transparent'
+      }`}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+      <div className="flex items-start gap-4">
         {/* Position Badge */}
-        <div style={{
-          width: '50px',
-          height: '50px',
-          borderRadius: '12px',
-          backgroundColor: isTopThree ? 'rgba(var(--achievement-rgb), 0.15)' : 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}>
+        <div className={`w-[50px] h-[50px] rounded-xl flex items-center justify-center flex-shrink-0 ${
+          isTopThree ? 'bg-amber-500/15' : 'bg-ak-surface-subtle'
+        }`}>
           {isTopThree ? (
-            <Award size={24} color={'var(--achievement)'} />
+            <Award size={24} className="text-amber-500" />
           ) : (
-            <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
+            <span className="text-lg font-bold text-ak-text-primary">
               {evaluation.position}
             </span>
           )}
         </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="flex-1 min-w-0">
           {/* Header */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            marginBottom: '8px',
-          }}>
+          <div className="flex items-start justify-between mb-2">
             <div>
-              <SubSectionTitle style={{
-                fontSize: '16px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}>
+              <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
                 {evaluation.tournamentName}
               </SubSectionTitle>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginTop: '4px',
-                fontSize: '12px',
-                color: 'var(--text-secondary)',
-              }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div className="flex items-center gap-3 mt-1 text-xs text-ak-text-secondary">
+                <span className="flex items-center gap-1">
                   <Calendar size={12} />
                   {formatDate(evaluation.date)}
                 </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span className="flex items-center gap-1">
                   <MapPin size={12} />
                   {evaluation.course}
                 </span>
@@ -255,81 +225,51 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           </div>
 
           {/* Score Info */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            marginBottom: '12px',
-          }}>
-            <div style={{
-              padding: '8px 12px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '8px',
-            }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Plassering</div>
-              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="py-2 px-3 bg-ak-surface-subtle rounded-lg">
+              <div className="text-[11px] text-ak-text-secondary">Plassering</div>
+              <div className="text-base font-bold text-ak-text-primary">
                 {evaluation.position}/{evaluation.field}
               </div>
             </div>
-            <div style={{
-              padding: '8px 12px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '8px',
-            }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Score</div>
-              <div style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
+            <div className="py-2 px-3 bg-ak-surface-subtle rounded-lg">
+              <div className="text-[11px] text-ak-text-secondary">Score</div>
+              <div className="text-base font-bold text-ak-text-primary">
                 {evaluation.total} ({evaluation.toPar})
               </div>
             </div>
-            <div style={{
-              padding: '8px 12px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '8px',
-            }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Runder</div>
-              <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
+            <div className="py-2 px-3 bg-ak-surface-subtle rounded-lg">
+              <div className="text-[11px] text-ak-text-secondary">Runder</div>
+              <div className="text-sm font-semibold text-ak-text-primary">
                 {evaluation.rounds.join(' - ')}
               </div>
             </div>
           </div>
 
           {/* Rating Breakdown */}
-          <div style={{
-            display: 'flex',
-            gap: '16px',
-            marginBottom: '12px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Target size={14} color={'var(--accent)'} />
-              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Teknikk:</span>
-              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <div className="flex gap-4 mb-3">
+            <div className="flex items-center gap-1.5">
+              <Target size={14} className="text-ak-brand-primary" />
+              <span className="text-xs text-ak-text-secondary">Teknikk:</span>
+              <span className="text-xs font-semibold text-ak-text-primary">
                 {evaluation.technicalRating}/5
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Star size={14} color={'var(--achievement)'} />
-              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Mental:</span>
-              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+            <div className="flex items-center gap-1.5">
+              <Star size={14} className="text-amber-500" />
+              <span className="text-xs text-ak-text-secondary">Mental:</span>
+              <span className="text-xs font-semibold text-ak-text-primary">
                 {evaluation.mentalRating}/5
               </span>
             </div>
           </div>
 
           {/* Key Points */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+          <div className="flex flex-wrap gap-1.5">
             {evaluation.strengths.slice(0, 2).map((strength, idx) => (
               <span
                 key={idx}
-                style={{
-                  fontSize: '11px',
-                  color: 'var(--success)',
-                  backgroundColor: 'rgba(var(--success-rgb), 0.1)',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                }}
+                className="text-[11px] text-ak-status-success bg-ak-status-success/10 py-1 px-2 rounded-md flex items-center gap-1"
               >
                 <CheckCircle size={10} />
                 {strength}
@@ -338,16 +278,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
             {evaluation.weaknesses.slice(0, 1).map((weakness, idx) => (
               <span
                 key={idx}
-                style={{
-                  fontSize: '11px',
-                  color: 'var(--error)',
-                  backgroundColor: 'rgba(var(--error-rgb), 0.1)',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                }}
+                className="text-[11px] text-ak-status-error bg-ak-status-error/10 py-1 px-2 rounded-md flex items-center gap-1"
               >
                 <AlertCircle size={10} />
                 {weakness}
@@ -356,7 +287,7 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
           </div>
         </div>
 
-        <ChevronRight size={20} color={'var(--text-secondary)'} style={{ flexShrink: 0 }} />
+        <ChevronRight size={20} className="text-ak-text-secondary flex-shrink-0" />
       </div>
     </div>
   );
@@ -367,80 +298,45 @@ const TournamentEvaluationCard = ({ evaluation, onClick }) => {
 // ============================================================================
 
 const StatsOverview = ({ stats }) => (
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-    gap: '10px',
-    marginBottom: '24px',
-  }}>
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
+  <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2.5 mb-6">
+    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-ak-brand-primary">
         {stats.tournaments}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Turneringer</div>
+      <div className="text-[11px] text-ak-text-secondary">Turneringer</div>
     </div>
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
+    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-amber-500">
         {stats.wins}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Seiere</div>
+      <div className="text-[11px] text-ak-text-secondary">Seiere</div>
     </div>
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
+    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-amber-500">
         {stats.topThrees}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Topp 3</div>
+      <div className="text-[11px] text-ak-text-secondary">Topp 3</div>
     </div>
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
+    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-ak-status-success">
         {stats.topTens}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Topp 10</div>
+      <div className="text-[11px] text-ak-text-secondary">Topp 10</div>
     </div>
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
+    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+      <div className="text-[22px] font-bold text-ak-text-primary">
         {stats.avgPosition}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gj.sn. plass</div>
+      <div className="text-[11px] text-ak-text-secondary">Gj.sn. plass</div>
     </div>
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '12px',
-      padding: '14px',
-      textAlign: 'center',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}>
-        <span style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
+    <div className="bg-ak-surface-base rounded-xl p-3.5 text-center">
+      <div className="flex items-center justify-center gap-0.5">
+        <span className="text-[22px] font-bold text-amber-500">
           {stats.avgRating}
         </span>
-        <Star size={14} fill={'var(--achievement)'} color={'var(--achievement)'} />
+        <Star size={14} fill="#f59e0b" className="text-amber-500" />
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gj.sn. rating</div>
+      <div className="text-[11px] text-ak-text-secondary">Gj.sn. rating</div>
     </div>
   </div>
 );
@@ -460,27 +356,20 @@ const TurneringsevalueringContainer = () => {
   });
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Turneringsevalueringer"
         subtitle="Evaluering av turneringsprestasjoner"
       />
 
-      <div style={{ padding: '16px 24px 24px', maxWidth: '1000px', margin: '0 auto' }}>
+      <div className="p-4 px-6 pb-6 max-w-[1000px] mx-auto">
         {/* Stats */}
         <StatsOverview stats={SEASON_STATS} />
 
         {/* Filters */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '20px',
-          flexWrap: 'wrap',
-          gap: '12px',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Sorter:</span>
+        <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-[13px] text-ak-text-secondary">Sorter:</span>
             {[
               { key: 'date', label: 'Dato' },
               { key: 'rating', label: 'Rating' },
@@ -489,16 +378,11 @@ const TurneringsevalueringContainer = () => {
               <button
                 key={option.key}
                 onClick={() => setSortBy(option.key)}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: sortBy === option.key ? 'var(--accent)' : 'var(--bg-primary)',
-                  color: sortBy === option.key ? 'var(--bg-primary)' : 'var(--text-primary)',
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                }}
+                className={`py-1.5 px-3 rounded-md border-none text-xs font-medium cursor-pointer transition-colors ${
+                  sortBy === option.key
+                    ? 'bg-ak-brand-primary text-white'
+                    : 'bg-ak-surface-base text-ak-text-primary hover:bg-ak-surface-subtle'
+                }`}
               >
                 {option.label}
               </button>
@@ -515,7 +399,7 @@ const TurneringsevalueringContainer = () => {
         </div>
 
         {/* Evaluations List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className="flex flex-col gap-3">
           {sortedEvaluations.map((evaluation) => (
             <TournamentEvaluationCard
               key={evaluation.id}

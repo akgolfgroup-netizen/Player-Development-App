@@ -1,8 +1,10 @@
 /**
  * AK Golf Academy - Coach Stats Overview
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Hovedoversikt over spillerstatistikk for trenere.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -231,33 +233,33 @@ export default function CoachStatsOverview() {
     return result;
   }, [players, searchQuery, categoryFilter, sortBy]);
 
-  const getTrendIcon = (trend: string) => {
+  const getTrendConfig = (trend: string) => {
     switch (trend) {
       case 'up':
-        return { icon: TrendingUp, color: 'var(--success)' };
+        return { icon: TrendingUp, colorClass: 'bg-ak-status-success text-white' };
       case 'down':
-        return { icon: TrendingDown, color: 'var(--error)' };
+        return { icon: TrendingDown, colorClass: 'bg-ak-status-error text-white' };
       default:
-        return { icon: Minus, color: 'var(--text-secondary)' };
+        return { icon: Minus, colorClass: 'bg-ak-text-secondary text-white' };
     }
   };
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: 48, height: 48, border: `4px solid ${'var(--border-default)'}`, borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif" }}>
+    <div className="min-h-screen bg-ak-surface-subtle font-[Inter,-apple-system,BlinkMacSystemFont,system-ui,sans-serif]">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Spillerstatistikk"
         subtitle="Oversikt over fremgang og utvikling"
         actions={
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="flex gap-2.5">
             <Button variant="ghost" size="sm" onClick={() => navigate('/coach/stats/progress')} leftIcon={<TrendingUp size={18} />}>
               Fremgang
             </Button>
@@ -271,65 +273,65 @@ export default function CoachStatsOverview() {
         }
         divider={false}
       />
-      <div style={{ backgroundColor: 'var(--bg-primary)', borderBottom: `1px solid ${'var(--border-default)'}`, padding: '0 24px 20px' }}>
+      <div className="bg-ak-surface-base border-b border-ak-border-default px-6 pb-5">
 
         {/* Quick stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px' }}>
-          <div style={{ padding: '16px', backgroundColor: 'rgba(var(--success-rgb), 0.10)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--success)' }}>{overallStats.improving}</div>
-            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Spillere i fremgang</div>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
+          <div className="p-4 bg-ak-status-success/10 rounded-lg text-center">
+            <div className="text-[28px] font-bold text-ak-status-success">{overallStats.improving}</div>
+            <div className="text-[13px] text-ak-text-primary">Spillere i fremgang</div>
           </div>
-          <div style={{ padding: '16px', backgroundColor: 'rgba(var(--error-rgb), 0.10)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--error)' }}>{overallStats.declining}</div>
-            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Trenger oppfølging</div>
+          <div className="p-4 bg-ak-status-error/10 rounded-lg text-center">
+            <div className="text-[28px] font-bold text-ak-status-error">{overallStats.declining}</div>
+            <div className="text-[13px] text-ak-text-primary">Trenger oppfølging</div>
           </div>
-          <div style={{ padding: '16px', backgroundColor: 'rgba(var(--accent-rgb), 0.10)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--accent)' }}>
+          <div className="p-4 bg-ak-brand-primary/10 rounded-lg text-center">
+            <div className="text-[28px] font-bold text-ak-brand-primary">
               {overallStats.avgHandicapChange > 0 ? '+' : ''}{overallStats.avgHandicapChange}
             </div>
-            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Snitt HCP-endring</div>
+            <div className="text-[13px] text-ak-text-primary">Snitt HCP-endring</div>
           </div>
-          <div style={{ padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>{overallStats.totalSessions}</div>
-            <div style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Økter denne mnd</div>
+          <div className="p-4 bg-ak-surface-muted rounded-lg text-center">
+            <div className="text-[28px] font-bold text-ak-text-primary">{overallStats.totalSessions}</div>
+            <div className="text-[13px] text-ak-text-primary">Økter denne mnd</div>
           </div>
         </div>
       </div>
 
       {/* Category summary */}
-      <div style={{ padding: '24px', borderBottom: `1px solid ${'var(--border-default)'}`, backgroundColor: 'var(--bg-primary)' }}>
-        <SectionTitle style={{ margin: '0 0 16px' }}>Kategori-oversikt</SectionTitle>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+      <div className="p-6 border-b border-ak-border-default bg-ak-surface-base">
+        <SectionTitle className="m-0 mb-4">Kategori-oversikt</SectionTitle>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
           {categorySummary.map((cat) => (
             <div
               key={cat.category}
               onClick={() => setCategoryFilter(cat.category)}
-              style={{
-                padding: '16px', backgroundColor: categoryFilter === cat.category ? `${'var(--accent)'}08` : 'var(--bg-tertiary)',
-                borderRadius: 'var(--radius-md)', cursor: 'pointer',
-                border: categoryFilter === cat.category ? `2px solid ${'var(--accent)'}` : '2px solid transparent',
-              }}
+              className={`p-4 rounded-lg cursor-pointer border-2 ${
+                categoryFilter === cat.category
+                  ? 'bg-ak-brand-primary/5 border-ak-brand-primary'
+                  : 'bg-ak-surface-muted border-transparent'
+              }`}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--accent)' }}>Kategori {cat.category}</span>
-                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{cat.playerCount} spillere</span>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-lg font-bold text-ak-brand-primary">Kategori {cat.category}</span>
+                <span className="text-sm text-ak-text-secondary">{cat.playerCount} spillere</span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Snitt HCP</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>{cat.avgHandicap}</div>
+                  <div className="text-xs text-ak-text-secondary">Snitt HCP</div>
+                  <div className="text-base font-semibold text-ak-text-primary">{cat.avgHandicap}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Økter/uke</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>{cat.avgSessions}</div>
+                  <div className="text-xs text-ak-text-secondary">Økter/uke</div>
+                  <div className="text-base font-semibold text-ak-text-primary">{cat.avgSessions}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>I fremgang</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--success)' }}>{cat.improving}</div>
+                  <div className="text-xs text-ak-text-secondary">I fremgang</div>
+                  <div className="text-base font-semibold text-ak-status-success">{cat.improving}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Tilbakegang</div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--error)' }}>{cat.declining}</div>
+                  <div className="text-xs text-ak-text-secondary">Tilbakegang</div>
+                  <div className="text-base font-semibold text-ak-status-error">{cat.declining}</div>
                 </div>
               </div>
             </div>
@@ -338,19 +340,19 @@ export default function CoachStatsOverview() {
       </div>
 
       {/* Filters */}
-      <div style={{ padding: '16px 24px', backgroundColor: 'var(--bg-primary)', borderBottom: `1px solid ${'var(--border-default)'}`, display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', flex: 1, maxWidth: '250px' }}>
-          <Search size={18} color={'var(--text-secondary)'} />
+      <div className="py-4 px-6 bg-ak-surface-base border-b border-ak-border-default flex gap-3 flex-wrap">
+        <div className="flex items-center gap-2 py-2 px-3 bg-ak-surface-muted rounded-lg flex-1 max-w-[250px]">
+          <Search size={18} className="text-ak-text-secondary" />
           <input
             type="text"
             placeholder="Søk spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ flex: 1, border: 'none', backgroundColor: 'transparent', fontSize: '14px', color: 'var(--text-primary)', outline: 'none' }}
+            className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex gap-2">
           {['all', 'A', 'B', 'C'].map((cat) => (
             <Button
               key={cat}
@@ -366,7 +368,7 @@ export default function CoachStatsOverview() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          style={{ padding: '8px 12px', backgroundColor: 'var(--bg-primary)', border: `1px solid ${'var(--border-default)'}`, borderRadius: 'var(--radius-md)', fontSize: '13px', color: 'var(--text-primary)' }}
+          className="py-2 px-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-[13px] text-ak-text-primary"
         >
           <option value="trend">Sorter: Trend</option>
           <option value="name">Sorter: Navn</option>
@@ -376,48 +378,43 @@ export default function CoachStatsOverview() {
       </div>
 
       {/* Player list */}
-      <div style={{ padding: '24px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="p-6">
+        <div className="flex flex-col gap-3">
           {filteredPlayers.map((player) => {
-            const trendConfig = getTrendIcon(player.trend);
+            const trendConfig = getTrendConfig(player.trend);
             const TrendIcon = trendConfig.icon;
 
             return (
               <div
                 key={player.id}
                 onClick={() => navigate(`/coach/athletes/${player.id}`)}
-                style={{
-                  backgroundColor: 'var(--bg-primary)', borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)', padding: '16px 20px', cursor: 'pointer',
-                  border: player.trend === 'down' ? `2px solid ${'var(--error)'}` : `1px solid ${'var(--border-default)'}`,
-                }}
+                className={`bg-ak-surface-base rounded-xl shadow-sm p-4 px-5 cursor-pointer border ${
+                  player.trend === 'down'
+                    ? 'border-2 border-ak-status-error'
+                    : 'border-ak-border-default'
+                }`}
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                    <div style={{ position: 'relative' }}>
-                      <div style={{
-                        width: 48, height: 48, borderRadius: '50%', backgroundColor: player.avatarColor,
-                        color: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '16px', fontWeight: 600,
-                      }}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3.5">
+                    <div className="relative">
+                      <div
+                        className="w-12 h-12 rounded-full flex items-center justify-center text-base font-semibold text-ak-surface-base"
+                        style={{ backgroundColor: player.avatarColor }}
+                      >
                         {player.initials}
                       </div>
-                      <div style={{
-                        position: 'absolute', bottom: -2, right: -2, width: 20, height: 20,
-                        borderRadius: '50%', backgroundColor: trendConfig.color, display: 'flex',
-                        alignItems: 'center', justifyContent: 'center', border: '2px solid white',
-                      }}>
-                        <TrendIcon size={12} color="white" />
+                      <div className={`absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center border-2 border-white ${trendConfig.colorClass}`}>
+                        <TrendIcon size={12} />
                       </div>
                     </div>
                     <div>
-                      <SubSectionTitle style={{ margin: 0 }}>{player.name}</SubSectionTitle>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-                        <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)', backgroundColor: 'rgba(var(--accent-rgb), 0.15)', padding: '2px 8px', borderRadius: '4px' }}>
+                      <SubSectionTitle className="m-0">{player.name}</SubSectionTitle>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs font-semibold text-ak-brand-primary bg-ak-brand-primary/15 py-0.5 px-2 rounded">
                           Kategori {player.category}
                         </span>
                         {player.highlights.map((h, i) => (
-                          <span key={i} style={{ fontSize: '11px', color: 'var(--achievement)', backgroundColor: 'rgba(var(--achievement-rgb), 0.15)', padding: '2px 6px', borderRadius: '4px' }}>
+                          <span key={i} className="text-[11px] text-amber-600 bg-amber-500/15 py-0.5 px-1.5 rounded">
                             {h}
                           </span>
                         ))}
@@ -425,24 +422,30 @@ export default function CoachStatsOverview() {
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                    <div style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Handicap</div>
-                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{player.handicap}</div>
-                      <div style={{ fontSize: '12px', fontWeight: 500, color: player.handicapChange < 0 ? 'var(--success)' : player.handicapChange > 0 ? 'var(--error)' : 'var(--text-secondary)' }}>
+                  <div className="flex items-center gap-6">
+                    <div className="text-center">
+                      <div className="text-xs text-ak-text-secondary">Handicap</div>
+                      <div className="text-lg font-bold text-ak-text-primary">{player.handicap}</div>
+                      <div className={`text-xs font-medium ${
+                        player.handicapChange < 0
+                          ? 'text-ak-status-success'
+                          : player.handicapChange > 0
+                            ? 'text-ak-status-error'
+                            : 'text-ak-text-secondary'
+                      }`}>
                         {player.handicapChange > 0 ? '+' : ''}{player.handicapChange}
                       </div>
                     </div>
-                    <div style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Økter/mnd</div>
-                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{player.sessionsThisMonth}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{player.avgSessionsPerWeek}/uke</div>
+                    <div className="text-center">
+                      <div className="text-xs text-ak-text-secondary">Økter/mnd</div>
+                      <div className="text-lg font-bold text-ak-text-primary">{player.sessionsThisMonth}</div>
+                      <div className="text-xs text-ak-text-secondary">{player.avgSessionsPerWeek}/uke</div>
                     </div>
-                    <div style={{ textAlign: 'center' }}>
-                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Snitt score</div>
-                      <div style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>{player.tournamentScore}</div>
+                    <div className="text-center">
+                      <div className="text-xs text-ak-text-secondary">Snitt score</div>
+                      <div className="text-lg font-bold text-ak-text-primary">{player.tournamentScore}</div>
                     </div>
-                    <ChevronRight size={20} color={'var(--text-secondary)'} />
+                    <ChevronRight size={20} className="text-ak-text-secondary" />
                   </div>
                 </div>
               </div>

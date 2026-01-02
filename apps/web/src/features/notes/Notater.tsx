@@ -154,7 +154,7 @@ const TAGS: TagConfig[] = [
   { id: 'refleksjon', label: 'Refleksjon', color: 'var(--accent)' },
 ];
 
-const MOOD_ICONS: Record<number, React.FC<{ size?: number }>> = {
+const MOOD_ICONS: Record<number, React.FC<{ size?: number; className?: string; color?: string }>> = {
   1: MoodIcon1,
   2: MoodIcon2,
   3: MoodIcon3,

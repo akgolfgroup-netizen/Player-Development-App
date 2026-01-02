@@ -188,6 +188,11 @@ const CoachGroupDetail = lazy(() => import('./features/coach-groups').then(m => 
 const CoachGroupCreate = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupCreate })));
 const CoachGroupPlan = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupPlan })));
 
+// Samling (training camp) (lazy-loaded)
+const SamlingList = lazy(() => import('./features/samling').then(m => ({ default: m.SamlingList })));
+const SamlingDetail = lazy(() => import('./features/samling').then(m => ({ default: m.SamlingDetail })));
+const SamlingCreate = lazy(() => import('./features/samling').then(m => ({ default: m.SamlingCreate })));
+
 // Coach booking (lazy-loaded)
 const CoachBookingCalendar = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingCalendar })));
 const CoachBookingRequests = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingRequests })));
@@ -1317,6 +1322,29 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <CoachGroupPlan />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Samlinger (Training Camps) */}
+          <Route path="/coach/samlinger" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <SamlingList />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/samlinger/ny" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <SamlingCreate />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/samlinger/:id" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <SamlingDetail />
               </CoachLayout>
             </ProtectedRoute>
           } />

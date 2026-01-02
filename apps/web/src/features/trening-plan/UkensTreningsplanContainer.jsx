@@ -1,3 +1,9 @@
+/**
+ * UkensTreningsplanContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Calendar, Clock, Target, CheckCircle, ChevronRight, ChevronLeft,
@@ -7,16 +13,51 @@ import {
 import { PageHeader } from '../../components/layout/PageHeader';
 import { AICoachGuide } from '../ai-coach';
 import { GUIDE_PRESETS } from '../ai-coach/types';
-import { tokens } from '../../design-tokens';
 
-// Session type color configuration using design tokens
-const SESSION_COLORS = {
-  technical: { color: tokens.colors.info, bgColor: 'rgba(2, 132, 199, 0.08)' },
-  physical: { color: tokens.colors.error, bgColor: 'rgba(220, 38, 38, 0.08)' },
-  mental: { color: tokens.colors.primaryLight, bgColor: 'rgba(42, 107, 85, 0.08)' },
-  short_game: { color: tokens.colors.success, bgColor: 'rgba(5, 150, 105, 0.08)' },
-  warmup: { color: tokens.colors.warning, bgColor: 'rgba(217, 119, 6, 0.08)' },
-  rest: { color: tokens.colors.gray600, bgColor: tokens.colors.gray50 },
+// Session type color configuration
+const SESSION_TYPE_CLASSES = {
+  technical: {
+    text: 'text-sky-600',
+    bg: 'bg-sky-600/10',
+    activeBg: 'bg-sky-600',
+    icon: Target,
+    label: 'Teknikk',
+  },
+  physical: {
+    text: 'text-red-600',
+    bg: 'bg-red-600/10',
+    activeBg: 'bg-red-600',
+    icon: Dumbbell,
+    label: 'Fysisk',
+  },
+  mental: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/10',
+    activeBg: 'bg-ak-brand-primary',
+    icon: Brain,
+    label: 'Mental',
+  },
+  short_game: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/10',
+    activeBg: 'bg-ak-status-success',
+    icon: Flag,
+    label: 'Kortspill',
+  },
+  warmup: {
+    text: 'text-ak-status-warning',
+    bg: 'bg-ak-status-warning/10',
+    activeBg: 'bg-ak-status-warning',
+    icon: Flame,
+    label: 'Oppvarming',
+  },
+  rest: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+    activeBg: 'bg-ak-text-secondary',
+    icon: RotateCcw,
+    label: 'Hvile',
+  },
 };
 
 // ============================================================================
@@ -132,29 +173,7 @@ const WEEK_DATA = {
 // ============================================================================
 
 const getSessionTypeConfig = (type) => {
-  const icons = {
-    technical: Target,
-    physical: Dumbbell,
-    mental: Brain,
-    short_game: Flag,
-    warmup: Flame,
-    rest: RotateCcw,
-  };
-  const labels = {
-    technical: 'Teknikk',
-    physical: 'Fysisk',
-    mental: 'Mental',
-    short_game: 'Kortspill',
-    warmup: 'Oppvarming',
-    rest: 'Hvile',
-  };
-  const colors = SESSION_COLORS[type] || SESSION_COLORS.rest;
-  return {
-    color: colors.color,
-    bgColor: colors.bgColor,
-    label: labels[type] || type,
-    icon: icons[type] || Calendar,
-  };
+  return SESSION_TYPE_CLASSES[type] || SESSION_TYPE_CLASSES.rest;
 };
 
 const formatDate = (dateStr) => {
@@ -179,14 +198,7 @@ const SessionChip = ({ session, isSelected, onClick }) => {
 
   if (isRest) {
     return (
-      <div
-        style={{
-          padding: '6px 10px',
-          fontSize: '12px',
-          color: tokens.colors.gray500,
-          fontStyle: 'italic',
-        }}
-      >
+      <div className="py-1.5 px-2.5 text-xs text-ak-text-secondary italic">
         Hviledag
       </div>
     );
@@ -198,46 +210,17 @@ const SessionChip = ({ session, isSelected, onClick }) => {
         e.stopPropagation();
         onClick(session);
       }}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        padding: '6px 10px',
-        backgroundColor: isSelected ? config.color : config.bgColor,
-        color: isSelected ? tokens.colors.white : config.color,
-        border: 'none',
-        borderRadius: '6px',
-        fontSize: '12px',
-        fontWeight: 500,
-        cursor: 'pointer',
-        width: '100%',
-        textAlign: 'left',
-        transition: 'all 0.15s ease',
-        opacity: isCompleted ? 0.7 : 1,
-        textDecoration: isCompleted ? 'line-through' : 'none',
-      }}
-      onMouseEnter={(e) => {
-        if (!isSelected) {
-          e.currentTarget.style.backgroundColor = config.color;
-          e.currentTarget.style.color = tokens.colors.white;
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (!isSelected) {
-          e.currentTarget.style.backgroundColor = config.bgColor;
-          e.currentTarget.style.color = config.color;
-        }
-      }}
+      className={`flex items-center gap-1.5 py-1.5 px-2.5 border-none rounded-md text-xs font-medium cursor-pointer w-full text-left transition-all duration-150 ${
+        isSelected
+          ? `${config.activeBg} text-white`
+          : `${config.bg} ${config.text} hover:${config.activeBg} hover:text-white`
+      } ${isCompleted ? 'opacity-70 line-through' : ''}`}
     >
-      {isCompleted ? (
-        <CheckCircle size={12} />
-      ) : (
-        <Icon size={12} />
-      )}
-      <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+      {isCompleted ? <CheckCircle size={12} /> : <Icon size={12} />}
+      <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
         {session.name}
       </span>
-      <span style={{ fontSize: '10px', opacity: 0.8 }}>
+      <span className="text-[10px] opacity-80">
         {session.duration}m
       </span>
     </button>
@@ -254,86 +237,35 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
   const dayName = day.dayName.slice(0, 3);
 
   return (
-    <div
-      style={{
-        flex: 1,
-        minWidth: 0,
-        borderRight: `1px solid ${tokens.colors.gray300}`,
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <div className="flex-1 min-w-0 border-r border-ak-border-default flex flex-col">
       {/* Day Header */}
-      <div
-        style={{
-          padding: '12px 8px',
-          borderBottom: `1px solid ${tokens.colors.gray300}`,
-          textAlign: 'center',
-          backgroundColor: isToday ? 'rgba(2, 132, 199, 0.06)' : 'transparent',
-          position: 'relative',
-        }}
-      >
+      <div className={`py-3 px-2 border-b border-ak-border-default text-center relative ${
+        isToday ? 'bg-sky-600/5' : ''
+      }`}>
         {isToday && (
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: '3px',
-              backgroundColor: tokens.colors.info,
-            }}
-          />
+          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-sky-600" />
         )}
-        <div
-          style={{
-            fontSize: '11px',
-            fontWeight: 500,
-            color: isToday ? tokens.colors.info : tokens.colors.gray600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-          }}
-        >
+        <div className={`text-[11px] font-medium uppercase tracking-wide ${
+          isToday ? 'text-sky-600' : 'text-ak-text-secondary'
+        }`}>
           {dayName}
         </div>
-        <div
-          style={{
-            fontSize: '20px',
-            fontWeight: 600,
-            color: isToday ? tokens.colors.info : tokens.colors.ink,
-            marginTop: '2px',
-          }}
-        >
+        <div className={`text-xl font-semibold mt-0.5 ${
+          isToday ? 'text-sky-600' : 'text-ak-text-primary'
+        }`}>
           {dayNumber}
         </div>
         {isToday && (
-          <div
-            style={{
-              marginTop: '4px',
-              fontSize: '9px',
-              fontWeight: 600,
-              color: tokens.colors.info,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-            }}
-          >
+          <div className="mt-1 text-[9px] font-semibold text-sky-600 uppercase tracking-wide">
             I dag
           </div>
         )}
       </div>
 
       {/* Sessions */}
-      <div
-        style={{
-          flex: 1,
-          padding: '8px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '6px',
-          minHeight: '120px',
-          backgroundColor: day.isCompleted ? tokens.colors.gray50 : 'transparent',
-        }}
-      >
+      <div className={`flex-1 p-2 flex flex-col gap-1.5 min-h-[120px] ${
+        day.isCompleted ? 'bg-ak-surface-subtle' : ''
+      }`}>
         {day.sessions.map((session) => (
           <SessionChip
             key={session.id}
@@ -353,6 +285,7 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
 
 const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSessionSelect }) => {
   const drawerRef = useRef(null);
+  const config = session ? getSessionTypeConfig(session.type) : null;
 
   // Handle ESC key
   useEffect(() => {
@@ -369,7 +302,6 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (drawerRef.current && !drawerRef.current.contains(e.target) && isOpen) {
-        // Don't close if clicking on a session chip
         if (e.target.closest('[data-session-chip]')) return;
         onClose();
       }
@@ -378,21 +310,13 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, onClose]);
 
-  const config = session ? getSessionTypeConfig(session.type) : null;
-
   return (
     <>
       {/* Backdrop */}
       <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.1)',
-          opacity: isOpen ? 1 : 0,
-          visibility: isOpen ? 'visible' : 'hidden',
-          transition: 'opacity 0.2s ease, visibility 0.2s ease',
-          zIndex: 40,
-        }}
+        className={`fixed inset-0 bg-black/10 transition-all duration-200 z-40 ${
+          isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
         onClick={onClose}
       />
 
@@ -401,147 +325,73 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
         ref={drawerRef}
         role="complementary"
         aria-label="Øktdetaljer"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          width: '380px',
-          backgroundColor: tokens.colors.white,
-          boxShadow: isOpen ? '4px 0 24px rgba(0, 0, 0, 0.1)' : 'none',
-          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 0.25s ease',
-          zIndex: 50,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-        }}
+        className={`fixed top-0 left-0 bottom-0 w-[380px] bg-ak-surface-base z-50 flex flex-col overflow-hidden transition-transform duration-[250ms] ${
+          isOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full'
+        }`}
       >
         {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '16px 20px',
-            borderBottom: `1px solid ${tokens.colors.gray300}`,
-          }}
-        >
-          <h2
-            style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              color: tokens.colors.ink,
-              margin: 0,
-            }}
-          >
+        <div className="flex items-center justify-between py-4 px-5 border-b border-ak-border-default">
+          <h2 className="text-sm font-semibold text-ak-text-primary m-0">
             {session ? 'Øktdetaljer' : 'Oversikt'}
           </h2>
           <button
             onClick={onClose}
             aria-label="Lukk sidebar"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              border: 'none',
-              backgroundColor: 'transparent',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              color: tokens.colors.gray600,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = tokens.colors.gray100;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
+            className="flex items-center justify-center w-8 h-8 border-none bg-transparent rounded-md cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Content */}
-        <div style={{ flex: 1, overflow: 'auto', padding: '20px' }}>
+        <div className="flex-1 overflow-auto p-5">
           {session ? (
             // Session Details View
             <div>
               {/* Session Title */}
-              <div style={{ marginBottom: '20px' }}>
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '4px 10px',
-                    backgroundColor: config.bgColor,
-                    color: config.color,
-                    borderRadius: '6px',
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    marginBottom: '12px',
-                  }}
-                >
+              <div className="mb-5">
+                <div className={`inline-flex items-center gap-1.5 py-1 px-2.5 ${config.bg} ${config.text} rounded-md text-[11px] font-semibold mb-3`}>
                   {React.createElement(config.icon, { size: 12 })}
                   {config.label}
                 </div>
-                <h3
-                  style={{
-                    fontSize: '20px',
-                    fontWeight: 600,
-                    color: tokens.colors.ink,
-                    margin: 0,
-                  }}
-                >
+                <h3 className="text-xl font-semibold text-ak-text-primary m-0">
                   {session.name}
                 </h3>
               </div>
 
               {/* Metadata */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px',
-                  padding: '16px',
-                  backgroundColor: tokens.colors.gray50,
-                  borderRadius: '8px',
-                  marginBottom: '20px',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Calendar size={14} color={tokens.colors.gray600} />
-                  <span style={{ fontSize: '13px', color: tokens.colors.gray700 }}>
+              <div className="flex flex-col gap-3 p-4 bg-ak-surface-subtle rounded-lg mb-5">
+                <div className="flex items-center gap-2.5">
+                  <Calendar size={14} className="text-ak-text-secondary" />
+                  <span className="text-[13px] text-ak-text-primary">
                     {formatFullDate(WEEK_DATA.days.find(d => d.sessions.some(s => s.id === session.id))?.date)}
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Clock size={14} color={tokens.colors.gray600} />
-                  <span style={{ fontSize: '13px', color: tokens.colors.gray700 }}>
+                <div className="flex items-center gap-2.5">
+                  <Clock size={14} className="text-ak-text-secondary" />
+                  <span className="text-[13px] text-ak-text-primary">
                     {session.duration} minutter
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div className="flex items-center gap-2.5">
                   {session.status === 'completed' ? (
                     <>
-                      <CheckCircle size={14} color={tokens.colors.success} />
-                      <span style={{ fontSize: '13px', color: tokens.colors.success, fontWeight: 500 }}>
+                      <CheckCircle size={14} className="text-ak-status-success" />
+                      <span className="text-[13px] text-ak-status-success font-medium">
                         Fullført
                       </span>
                     </>
                   ) : session.status === 'in_progress' ? (
                     <>
-                      <div style={{ width: 14, height: 14, borderRadius: '50%', backgroundColor: tokens.colors.info }} />
-                      <span style={{ fontSize: '13px', color: tokens.colors.info, fontWeight: 500 }}>
+                      <div className="w-3.5 h-3.5 rounded-full bg-sky-600" />
+                      <span className="text-[13px] text-sky-600 font-medium">
                         Pågår
                       </span>
                     </>
                   ) : (
                     <>
-                      <div style={{ width: 14, height: 14, borderRadius: '50%', border: `2px solid ${tokens.colors.gray400}` }} />
-                      <span style={{ fontSize: '13px', color: tokens.colors.gray600 }}>
+                      <div className="w-3.5 h-3.5 rounded-full border-2 border-ak-text-secondary" />
+                      <span className="text-[13px] text-ak-text-secondary">
                         Planlagt
                       </span>
                     </>
@@ -551,27 +401,11 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
 
               {/* Description */}
               {session.description && (
-                <div style={{ marginBottom: '20px' }}>
-                  <h4
-                    style={{
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      color: tokens.colors.gray600,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      marginBottom: '8px',
-                    }}
-                  >
+                <div className="mb-5">
+                  <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
                     Beskrivelse
                   </h4>
-                  <p
-                    style={{
-                      fontSize: '14px',
-                      color: tokens.colors.gray700,
-                      lineHeight: 1.6,
-                      margin: 0,
-                    }}
-                  >
+                  <p className="text-sm text-ak-text-primary leading-relaxed m-0">
                     {session.description}
                   </p>
                 </div>
@@ -579,47 +413,20 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
 
               {/* Exercises */}
               {session.exercises && session.exercises.length > 0 && (
-                <div style={{ marginBottom: '20px' }}>
-                  <h4
-                    style={{
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      color: tokens.colors.gray600,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      marginBottom: '8px',
-                    }}
-                  >
+                <div className="mb-5">
+                  <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
                     Øvelser
                   </h4>
-                  <ul
-                    style={{
-                      margin: 0,
-                      padding: 0,
-                      listStyle: 'none',
-                    }}
-                  >
+                  <ul className="m-0 p-0 list-none">
                     {session.exercises.map((exercise, idx) => (
                       <li
                         key={idx}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                          padding: '10px 0',
-                          borderBottom: idx < session.exercises.length - 1 ? `1px solid ${tokens.colors.gray300}` : 'none',
-                        }}
+                        className={`flex items-center gap-2.5 py-2.5 ${
+                          idx < session.exercises.length - 1 ? 'border-b border-ak-border-default' : ''
+                        }`}
                       >
-                        <div
-                          style={{
-                            width: '6px',
-                            height: '6px',
-                            borderRadius: '50%',
-                            backgroundColor: config.color,
-                            flexShrink: 0,
-                          }}
-                        />
-                        <span style={{ fontSize: '13px', color: tokens.colors.gray700 }}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${config.activeBg} shrink-0`} />
+                        <span className="text-[13px] text-ak-text-primary">
                           {exercise}
                         </span>
                       </li>
@@ -629,44 +436,14 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               )}
 
               {/* Actions */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="flex flex-col gap-2">
                 {session.status !== 'completed' && (
-                  <button
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      padding: '12px 16px',
-                      backgroundColor: tokens.colors.info,
-                      color: tokens.colors.white,
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                    }}
-                  >
+                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-sky-600 text-white border-none rounded-lg text-sm font-medium cursor-pointer">
                     <CheckCircle size={16} />
                     Marker som fullført
                   </button>
                 )}
-                <button
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    padding: '12px 16px',
-                    backgroundColor: 'transparent',
-                    color: tokens.colors.gray700,
-                    border: `1px solid ${tokens.colors.gray300}`,
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                  }}
-                >
+                <button className="flex items-center justify-center gap-2 py-3 px-4 bg-transparent text-ak-text-primary border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer">
                   <FileText size={16} />
                   Legg til notat
                 </button>
@@ -676,66 +453,36 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
             // Overview View (when no session selected)
             <div>
               {/* Today's Sessions */}
-              <div style={{ marginBottom: '24px' }}>
-                <h4
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: tokens.colors.gray600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '12px',
-                  }}
-                >
+              <div className="mb-6">
+                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
                   Dagens økter
                 </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="flex flex-col gap-2">
                   {allSessions
                     .filter(s => {
                       const day = WEEK_DATA.days.find(d => d.sessions.some(sess => sess.id === s.id));
                       return day?.isToday;
                     })
-                    .map(session => {
-                      const cfg = getSessionTypeConfig(session.type);
+                    .map(sess => {
+                      const cfg = getSessionTypeConfig(sess.type);
                       return (
                         <button
-                          key={session.id}
-                          onClick={() => onSessionSelect(session)}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '12px',
-                            backgroundColor: tokens.colors.gray50,
-                            border: 'none',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            textAlign: 'left',
-                            width: '100%',
-                          }}
+                          key={sess.id}
+                          onClick={() => onSessionSelect(sess)}
+                          className="flex items-center gap-2.5 p-3 bg-ak-surface-subtle border-none rounded-lg cursor-pointer text-left w-full"
                         >
-                          <div
-                            style={{
-                              width: '32px',
-                              height: '32px',
-                              borderRadius: '6px',
-                              backgroundColor: cfg.bgColor,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            {React.createElement(cfg.icon, { size: 16, color: cfg.color })}
+                          <div className={`w-8 h-8 rounded-md ${cfg.bg} flex items-center justify-center`}>
+                            {React.createElement(cfg.icon, { size: 16, className: cfg.text })}
                           </div>
-                          <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.ink }}>
-                              {session.name}
+                          <div className="flex-1">
+                            <div className="text-[13px] font-medium text-ak-text-primary">
+                              {sess.name}
                             </div>
-                            <div style={{ fontSize: '12px', color: tokens.colors.gray600 }}>
-                              {session.duration} min
+                            <div className="text-xs text-ak-text-secondary">
+                              {sess.duration} min
                             </div>
                           </div>
-                          <ChevronRight size={16} color={tokens.colors.gray500} />
+                          <ChevronRight size={16} className="text-ak-text-secondary" />
                         </button>
                       );
                     })}
@@ -743,7 +490,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                     const day = WEEK_DATA.days.find(d => d.sessions.some(sess => sess.id === s.id));
                     return day?.isToday;
                   }).length === 0 && (
-                    <p style={{ fontSize: '13px', color: tokens.colors.gray600, fontStyle: 'italic' }}>
+                    <p className="text-[13px] text-ak-text-secondary italic">
                       Ingen økter planlagt i dag
                     </p>
                   )}
@@ -751,47 +498,21 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               </div>
 
               {/* Week Summary */}
-              <div style={{ marginBottom: '24px' }}>
-                <h4
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: tokens.colors.gray600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '12px',
-                  }}
-                >
+              <div className="mb-6">
+                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
                   Ukeoversikt
                 </h4>
-                <div
-                  style={{
-                    padding: '16px',
-                    backgroundColor: tokens.colors.gray50,
-                    borderRadius: '8px',
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                    <span style={{ fontSize: '13px', color: tokens.colors.gray600 }}>Fullført</span>
-                    <span style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.ink }}>
+                <div className="p-4 bg-ak-surface-subtle rounded-lg">
+                  <div className="flex justify-between mb-3">
+                    <span className="text-[13px] text-ak-text-secondary">Fullført</span>
+                    <span className="text-sm font-semibold text-ak-text-primary">
                       {WEEK_DATA.completedHours}t / {WEEK_DATA.totalPlannedHours}t
                     </span>
                   </div>
-                  <div
-                    style={{
-                      height: '6px',
-                      backgroundColor: tokens.colors.gray300,
-                      borderRadius: '3px',
-                      overflow: 'hidden',
-                    }}
-                  >
+                  <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
                     <div
-                      style={{
-                        height: '100%',
-                        width: `${(WEEK_DATA.completedHours / WEEK_DATA.totalPlannedHours) * 100}%`,
-                        backgroundColor: tokens.colors.info,
-                        borderRadius: '3px',
-                      }}
+                      className="h-full bg-sky-600 rounded-sm"
+                      style={{ width: `${(WEEK_DATA.completedHours / WEEK_DATA.totalPlannedHours) * 100}%` }}
                     />
                   </div>
                 </div>
@@ -799,35 +520,16 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
 
               {/* Category Filter */}
               <div>
-                <h4
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: tokens.colors.gray600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
-                    marginBottom: '12px',
-                  }}
-                >
+                <h4 className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
                   Kategorier
                 </h4>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                <div className="flex flex-wrap gap-2">
                   {['technical', 'physical', 'mental', 'short_game'].map(type => {
                     const cfg = getSessionTypeConfig(type);
                     return (
                       <div
                         key={type}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          padding: '6px 12px',
-                          backgroundColor: cfg.bgColor,
-                          borderRadius: '6px',
-                          fontSize: '12px',
-                          fontWeight: 500,
-                          color: cfg.color,
-                        }}
+                        className={`flex items-center gap-1.5 py-1.5 px-3 ${cfg.bg} rounded-md text-xs font-medium ${cfg.text}`}
                       >
                         {React.createElement(cfg.icon, { size: 12 })}
                         {cfg.label}
@@ -852,52 +554,30 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
   const progressPercent = Math.round((completedHours / totalHours) * 100);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '24px',
-        padding: '12px 20px',
-        backgroundColor: tokens.colors.white,
-        borderBottom: `1px solid ${tokens.colors.gray300}`,
-        fontSize: '13px',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ color: tokens.colors.gray600 }}>Fremgang:</span>
-        <span style={{ fontWeight: 600, color: tokens.colors.ink }}>{progressPercent}%</span>
-        <div
-          style={{
-            width: '80px',
-            height: '4px',
-            backgroundColor: tokens.colors.gray300,
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
-        >
+    <div className="flex items-center gap-6 py-3 px-5 bg-ak-surface-base border-b border-ak-border-default text-[13px]">
+      <div className="flex items-center gap-2">
+        <span className="text-ak-text-secondary">Fremgang:</span>
+        <span className="font-semibold text-ak-text-primary">{progressPercent}%</span>
+        <div className="w-20 h-1 bg-ak-border-default rounded-sm overflow-hidden">
           <div
-            style={{
-              height: '100%',
-              width: `${progressPercent}%`,
-              backgroundColor: tokens.colors.info,
-              borderRadius: '2px',
-            }}
+            className="h-full bg-sky-600 rounded-sm"
+            style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
 
-      <div style={{ width: '1px', height: '16px', backgroundColor: tokens.colors.gray300 }} />
+      <div className="w-px h-4 bg-ak-border-default" />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-        <Clock size={14} color={tokens.colors.gray600} />
-        <span style={{ color: tokens.colors.gray600 }}>{completedHours}t fullført</span>
-        <span style={{ color: tokens.colors.gray500 }}>/</span>
-        <span style={{ color: tokens.colors.gray600 }}>{totalHours}t planlagt</span>
+      <div className="flex items-center gap-1.5">
+        <Clock size={14} className="text-ak-text-secondary" />
+        <span className="text-ak-text-secondary">{completedHours}t fullført</span>
+        <span className="text-ak-text-secondary/50">/</span>
+        <span className="text-ak-text-secondary">{totalHours}t planlagt</span>
       </div>
 
-      <div style={{ width: '1px', height: '16px', backgroundColor: tokens.colors.gray300 }} />
+      <div className="w-px h-4 bg-ak-border-default" />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="flex items-center gap-3">
         {[
           { type: 'technical', hours: stats.technicalHours },
           { type: 'physical', hours: stats.physicalHours },
@@ -906,23 +586,9 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
         ].map(({ type, hours }) => {
           const cfg = getSessionTypeConfig(type);
           return (
-            <div
-              key={type}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-            >
-              <div
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '2px',
-                  backgroundColor: cfg.color,
-                }}
-              />
-              <span style={{ color: tokens.colors.gray600 }}>{hours}t</span>
+            <div key={type} className="flex items-center gap-1">
+              <div className={`w-2 h-2 rounded-sm ${cfg.activeBg}`} />
+              <span className="text-ak-text-secondary">{hours}t</span>
             </div>
           );
         })}
@@ -955,7 +621,6 @@ const UkensTreningsplanContainer = () => {
 
   const handleCloseSidebar = useCallback(() => {
     setIsSidebarOpen(false);
-    // Delay clearing selection for smooth animation
     setTimeout(() => setSelectedSessionId(null), 200);
   }, []);
 
@@ -969,7 +634,7 @@ const UkensTreningsplanContainer = () => {
   }, [isSidebarOpen, handleCloseSidebar]);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: tokens.colors.white }}>
+    <div className="min-h-screen bg-ak-surface-base">
       {/* Page Header */}
       <PageHeader
         title="Ukens treningsplan"
@@ -977,37 +642,19 @@ const UkensTreningsplanContainer = () => {
       />
 
       {/* AI Coach Guide */}
-      <div style={{ padding: '0 20px', marginBottom: '12px' }}>
+      <div className="px-5 mb-3">
         <AICoachGuide config={GUIDE_PRESETS.weeklyPlan} variant="compact" />
       </div>
 
       {/* Navigation Bar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px 20px',
-          borderBottom: `1px solid ${tokens.colors.gray300}`,
-          backgroundColor: tokens.colors.white,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="flex items-center justify-between py-3 px-5 border-b border-ak-border-default bg-ak-surface-base">
+        <div className="flex items-center gap-3">
           {/* Sidebar Toggle */}
           <button
             onClick={handleToggleSidebar}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: '6px',
-              backgroundColor: isSidebarOpen ? tokens.colors.gray100 : tokens.colors.white,
-              cursor: 'pointer',
-              color: tokens.colors.gray600,
-            }}
+            className={`flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md cursor-pointer text-ak-text-secondary ${
+              isSidebarOpen ? 'bg-ak-surface-subtle' : 'bg-ak-surface-base'
+            }`}
             aria-label="Toggle sidebar"
           >
             <MoreHorizontal size={16} />
@@ -1016,98 +663,38 @@ const UkensTreningsplanContainer = () => {
           {/* Week Navigation */}
           <button
             onClick={() => setWeekOffset(weekOffset - 1)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: '6px',
-              backgroundColor: tokens.colors.white,
-              cursor: 'pointer',
-              color: tokens.colors.gray700,
-            }}
+            className="flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md bg-ak-surface-base cursor-pointer text-ak-text-primary"
             aria-label="Forrige uke"
           >
             <ChevronLeft size={16} />
           </button>
           <button
             onClick={() => setWeekOffset(weekOffset + 1)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              border: `1px solid ${tokens.colors.gray300}`,
-              borderRadius: '6px',
-              backgroundColor: tokens.colors.white,
-              cursor: 'pointer',
-              color: tokens.colors.gray700,
-            }}
+            className="flex items-center justify-center w-8 h-8 border border-ak-border-default rounded-md bg-ak-surface-base cursor-pointer text-ak-text-primary"
             aria-label="Neste uke"
           >
             <ChevronRight size={16} />
           </button>
 
           {/* Week Info */}
-          <div style={{ marginLeft: '8px' }}>
-            <span
-              style={{
-                fontSize: '15px',
-                fontWeight: 600,
-                color: tokens.colors.ink,
-              }}
-            >
+          <div className="ml-2">
+            <span className="text-[15px] font-semibold text-ak-text-primary">
               Uke {WEEK_DATA.weekNumber}
             </span>
-            <span
-              style={{
-                fontSize: '14px',
-                color: tokens.colors.gray600,
-                marginLeft: '8px',
-              }}
-            >
+            <span className="text-sm text-ak-text-secondary ml-2">
               {startDate} – {endDate}
             </span>
           </div>
         </div>
 
         {/* Right Side */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
-              backgroundColor: 'rgba(2, 132, 199, 0.08)',
-              borderRadius: '6px',
-              fontSize: '12px',
-              fontWeight: 500,
-              color: tokens.colors.info,
-            }}
-          >
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-sky-600/10 rounded-md text-xs font-medium text-sky-600">
             <Calendar size={12} />
             {WEEK_DATA.period}
           </div>
 
-          <button
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              backgroundColor: tokens.colors.ink,
-              color: tokens.colors.white,
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
-          >
+          <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-text-primary text-white border-none rounded-md text-[13px] font-medium cursor-pointer">
             <Plus size={14} />
             Legg til økt
           </button>
@@ -1122,13 +709,7 @@ const UkensTreningsplanContainer = () => {
       />
 
       {/* Calendar Grid */}
-      <div
-        style={{
-          display: 'flex',
-          borderBottom: `1px solid ${tokens.colors.gray300}`,
-          minHeight: 'calc(100vh - 280px)',
-        }}
-      >
+      <div className="flex border-b border-ak-border-default min-h-[calc(100vh-280px)]">
         {WEEK_DATA.days.map((day, idx) => (
           <DayColumn
             key={idx}
@@ -1137,12 +718,6 @@ const UkensTreningsplanContainer = () => {
             onSessionClick={handleSessionClick}
           />
         ))}
-        {/* Remove last border */}
-        <style>{`
-          .week-grid > div:last-child {
-            border-right: none;
-          }
-        `}</style>
       </div>
 
       {/* Sidebar Drawer */}

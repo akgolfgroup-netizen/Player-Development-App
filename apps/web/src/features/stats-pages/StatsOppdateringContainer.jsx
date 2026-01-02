@@ -1,3 +1,9 @@
+/**
+ * StatsOppdateringContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import {
   Target, Flag, ChevronRight, Save, X, BarChart2
@@ -5,6 +11,14 @@ import {
 import { PageHeader } from '../../components/layout/PageHeader';
 import apiClient from '../../services/apiClient';
 import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
+
+// Color class mapping for categories
+const COLOR_CLASSES = {
+  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
+  warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
+  error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
+};
 
 // ============================================================================
 // MOCK DATA
@@ -15,7 +29,7 @@ const STAT_CATEGORIES = [
     id: 'driving',
     name: 'Driving',
     icon: Target,
-    color: 'var(--accent)',
+    colorKey: 'brand',
     fields: [
       { id: 'fairways_hit', label: 'Fairways truffet', type: 'fraction', max: 14 },
       { id: 'avg_drive_distance', label: 'Gj.sn. drivelengde', type: 'number', unit: 'm' },
@@ -25,7 +39,7 @@ const STAT_CATEGORIES = [
     id: 'approach',
     name: 'Approach',
     icon: Flag,
-    color: 'var(--success)',
+    colorKey: 'success',
     fields: [
       { id: 'gir', label: 'GIR (Green in Regulation)', type: 'fraction', max: 18 },
       { id: 'proximity', label: 'Gj.sn. avstand til hull', type: 'number', unit: 'm' },
@@ -35,7 +49,7 @@ const STAT_CATEGORIES = [
     id: 'short_game',
     name: 'Kortspill',
     icon: Flag,
-    color: 'var(--achievement)',
+    colorKey: 'warning',
     fields: [
       { id: 'sand_saves', label: 'Sand saves', type: 'fraction', max: null },
       { id: 'up_and_downs', label: 'Up & Downs', type: 'fraction', max: null },
@@ -46,7 +60,7 @@ const STAT_CATEGORIES = [
     id: 'putting',
     name: 'Putting',
     icon: Target,
-    color: 'var(--error)',
+    colorKey: 'error',
     fields: [
       { id: 'total_putts', label: 'Totalt antall putter', type: 'number' },
       { id: 'putts_per_gir', label: 'Putter per GIR', type: 'decimal' },
@@ -68,81 +82,40 @@ const RECENT_ENTRIES = [
 
 const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
   const Icon = category.icon;
+  const colors = COLOR_CLASSES[category.colorKey] || COLOR_CLASSES.brand;
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      overflow: 'hidden',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
+    <div className="bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm">
       <div
         onClick={onToggle}
-        style={{
-          padding: '16px 20px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-        }}
+        className="py-4 px-5 cursor-pointer flex items-center gap-3"
       >
-        <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '10px',
-          backgroundColor: `${category.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <Icon size={20} color={category.color} />
+        <div className={`w-10 h-10 rounded-[10px] ${colors.bg} flex items-center justify-center`}>
+          <Icon size={20} className={colors.text} />
         </div>
-        <div style={{ flex: 1 }}>
-          <SubSectionTitle style={{ fontSize: '15px', margin: 0 }}>
+        <div className="flex-1">
+          <SubSectionTitle className="text-[15px] m-0">
             {category.name}
           </SubSectionTitle>
-          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+          <div className="text-xs text-ak-text-secondary">
             {category.fields.length} felt
           </div>
         </div>
-        <div style={{
-          width: '28px',
-          height: '28px',
-          borderRadius: '8px',
-          backgroundColor: 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-          transition: 'transform 0.2s',
-        }}>
-          <ChevronRight size={16} color={'var(--text-secondary)'} />
+        <div className={`w-7 h-7 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${isExpanded ? 'rotate-90' : 'rotate-0'}`}>
+          <ChevronRight size={16} className="text-ak-text-secondary" />
         </div>
       </div>
 
       {isExpanded && (
-        <div style={{
-          padding: '0 20px 20px',
-          borderTop: '1px solid var(--border-default)',
-        }}>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            marginTop: '16px',
-          }}>
+        <div className="px-5 pb-5 border-t border-ak-border-default">
+          <div className="flex flex-col gap-3 mt-4">
             {category.fields.map((field) => (
               <div key={field.id}>
-                <label style={{
-                  fontSize: '13px',
-                  color: 'var(--text-primary)',
-                  marginBottom: '6px',
-                  display: 'block',
-                }}>
+                <label className="text-[13px] text-ak-text-primary mb-1.5 block">
                   {field.label}
                 </label>
                 {field.type === 'fraction' ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div className="flex items-center gap-2">
                     <input
                       type="number"
                       min="0"
@@ -153,16 +126,9 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                         numerator: e.target.value,
                       })}
                       placeholder="0"
-                      style={{
-                        width: '60px',
-                        padding: '10px 12px',
-                        borderRadius: '8px',
-                        border: '1px solid var(--border-default)',
-                        fontSize: '14px',
-                        textAlign: 'center',
-                      }}
+                      className="w-[60px] py-2.5 px-3 rounded-lg border border-ak-border-default text-sm text-center"
                     />
-                    <span style={{ color: 'var(--text-secondary)' }}>/</span>
+                    <span className="text-ak-text-secondary">/</span>
                     <input
                       type="number"
                       min="1"
@@ -173,48 +139,31 @@ const CategoryCard = ({ category, values, onChange, isExpanded, onToggle }) => {
                         denominator: e.target.value,
                       })}
                       placeholder={field.max?.toString() || ''}
-                      style={{
-                        width: '60px',
-                        padding: '10px 12px',
-                        borderRadius: '8px',
-                        border: '1px solid var(--border-default)',
-                        fontSize: '14px',
-                        textAlign: 'center',
-                      }}
+                      className="w-[60px] py-2.5 px-3 rounded-lg border border-ak-border-default text-sm text-center"
                     />
                     {values[field.id]?.numerator && values[field.id]?.denominator && (
-                      <span style={{
-                        fontSize: '13px',
-                        color: 'var(--accent)',
-                        marginLeft: '8px',
-                      }}>
+                      <span className="text-[13px] text-ak-brand-primary ml-2">
                         = {Math.round((values[field.id].numerator / values[field.id].denominator) * 100)}%
                       </span>
                     )}
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div className="flex items-center gap-2">
                     <input
                       type="number"
                       step={field.type === 'decimal' ? '0.01' : '1'}
                       value={values[field.id] || ''}
                       onChange={(e) => onChange(field.id, e.target.value)}
                       placeholder="0"
-                      style={{
-                        width: '100px',
-                        padding: '10px 12px',
-                        borderRadius: '8px',
-                        border: '1px solid var(--border-default)',
-                        fontSize: '14px',
-                      }}
+                      className="w-[100px] py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
                     />
                     {field.unit && (
-                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                      <span className="text-[13px] text-ak-text-secondary">
                         {field.unit}
                       </span>
                     )}
                     {field.type === 'percentage' && (
-                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>%</span>
+                      <span className="text-[13px] text-ak-text-secondary">%</span>
                     )}
                   </div>
                 )}
@@ -286,50 +235,28 @@ const StatsOppdateringContainer = () => {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Ny statistikk"
         subtitle="Registrer nye prestasjonsdata"
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         {/* Session Info */}
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '16px',
-          padding: '20px',
-          marginBottom: '20px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        }}>
-          <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
+        <div className="bg-ak-surface-base rounded-2xl p-5 mb-5 shadow-sm">
+          <SectionTitle className="text-base m-0 mb-4">
             Okt-informasjon
           </SectionTitle>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '16px',
-          }}>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
             <div>
-              <label style={{
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                marginBottom: '6px',
-                display: 'block',
-              }}>
+              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
                 Type okt
               </label>
               <select
                 value={sessionType}
                 onChange={(e) => setSessionType(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  borderRadius: '8px',
-                  border: '1px solid var(--border-default)',
-                  fontSize: '14px',
-                  backgroundColor: 'var(--bg-primary)',
-                }}
+                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm bg-ak-surface-base"
               >
                 <option value="">Velg type...</option>
                 {sessionTypes.map((type) => (
@@ -339,12 +266,7 @@ const StatsOppdateringContainer = () => {
             </div>
 
             <div>
-              <label style={{
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                marginBottom: '6px',
-                display: 'block',
-              }}>
+              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
                 Bane / Sted
               </label>
               <input
@@ -352,46 +274,24 @@ const StatsOppdateringContainer = () => {
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
                 placeholder="F.eks. Miklagard Golf"
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  borderRadius: '8px',
-                  border: '1px solid var(--border-default)',
-                  fontSize: '14px',
-                }}
+                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
               />
             </div>
 
             <div>
-              <label style={{
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                marginBottom: '6px',
-                display: 'block',
-              }}>
+              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
                 Dato
               </label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  borderRadius: '8px',
-                  border: '1px solid var(--border-default)',
-                  fontSize: '14px',
-                }}
+                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
               />
             </div>
 
             <div>
-              <label style={{
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                marginBottom: '6px',
-                display: 'block',
-              }}>
+              <label className="text-[13px] text-ak-text-primary mb-1.5 block">
                 Score (valgfritt)
               </label>
               <input
@@ -399,24 +299,18 @@ const StatsOppdateringContainer = () => {
                 value={score}
                 onChange={(e) => setScore(e.target.value)}
                 placeholder="F.eks. 72"
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  borderRadius: '8px',
-                  border: '1px solid var(--border-default)',
-                  fontSize: '14px',
-                }}
+                className="w-full py-2.5 px-3 rounded-lg border border-ak-border-default text-sm"
               />
             </div>
           </div>
         </div>
 
         {/* Stat Categories */}
-        <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
+        <SectionTitle className="text-base m-0 mb-4">
           Statistikk
         </SectionTitle>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+        <div className="flex flex-col gap-3 mb-6">
           {STAT_CATEGORIES.map((category) => (
             <CategoryCard
               key={category.id}
@@ -432,44 +326,14 @@ const StatsOppdateringContainer = () => {
         </div>
 
         {/* Actions */}
-        <div style={{
-          display: 'flex',
-          gap: '12px',
-          justifyContent: 'flex-end',
-        }}>
-          <button
-            style={{
-              padding: '12px 24px',
-              borderRadius: '10px',
-              border: '1px solid var(--border-default)',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-          >
+        <div className="flex gap-3 justify-end">
+          <button className="py-3 px-6 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-ak-text-primary text-sm font-medium cursor-pointer flex items-center gap-2">
             <X size={16} />
             Avbryt
           </button>
           <button
             onClick={handleSave}
-            style={{
-              padding: '12px 24px',
-              borderRadius: '10px',
-              border: 'none',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              fontSize: '14px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
+            className="py-3 px-6 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-semibold cursor-pointer flex items-center gap-2"
           >
             <Save size={16} />
             Lagre statistikk
@@ -477,53 +341,34 @@ const StatsOppdateringContainer = () => {
         </div>
 
         {/* Recent Entries */}
-        <div style={{ marginTop: '32px' }}>
-          <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
+        <div className="mt-8">
+          <SectionTitle className="text-base m-0 mb-4">
             Siste registreringer
           </SectionTitle>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="flex flex-col gap-2">
             {RECENT_ENTRIES.map((entry) => (
               <div
                 key={entry.id}
-                style={{
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: '12px',
-                  padding: '14px 16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                }}
+                className="bg-ak-surface-base rounded-xl py-3.5 px-4 flex items-center gap-3"
               >
-                <div style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '8px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  <BarChart2 size={18} color={'var(--accent)'} />
+                <div className="w-9 h-9 rounded-lg bg-ak-surface-subtle flex items-center justify-center">
+                  <BarChart2 size={18} className="text-ak-brand-primary" />
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-ak-text-primary">
                     {entry.type} - {entry.course}
                   </div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                  <div className="text-xs text-ak-text-secondary">
                     {entry.date}
                   </div>
                 </div>
                 {entry.score && (
-                  <div style={{
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    color: 'var(--text-primary)',
-                  }}>
+                  <div className="text-base font-semibold text-ak-text-primary">
                     {entry.score}
                   </div>
                 )}
-                <ChevronRight size={16} color={'var(--text-secondary)'} />
+                <ChevronRight size={16} className="text-ak-text-secondary" />
               </div>
             ))}
           </div>

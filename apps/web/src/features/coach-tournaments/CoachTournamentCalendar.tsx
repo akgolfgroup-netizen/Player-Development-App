@@ -1,7 +1,8 @@
 /**
  * AK Golf Academy - Coach Tournament Calendar
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  * Turneringskalender for trenere med oversikt over spillerdeltakelse.
  */
 
@@ -341,46 +342,27 @@ export default function CoachTournamentCalendar() {
 
   if (loading) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'var(--bg-primary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <div className="min-h-screen bg-ak-surface-base flex items-center justify-center">
         <StateCard variant="loading" title="Laster turneringer..." />
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-primary)',
-      }}
-    >
+    <div className="min-h-screen bg-ak-surface-base">
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-surface)',
-          borderBottom: '1px solid var(--border-default)',
-          padding: '20px 24px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+      <div className="bg-ak-surface-base border-b border-ak-border-default py-5 px-6">
+        <div className="flex items-center justify-between mb-4">
           <div>
-            <PageTitle style={{ fontSize: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+            <PageTitle className="text-[28px] font-bold text-ak-text-primary m-0">
               Turneringskalender
             </PageTitle>
-            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+            <p className="text-[15px] text-ak-text-secondary mt-1">
               Oversikt over turneringer og spillerdeltakelse
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div className="flex gap-2.5">
             <Button
               variant="ghost"
               size="sm"
@@ -401,65 +383,29 @@ export default function CoachTournamentCalendar() {
         </div>
 
         {/* Stats */}
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'var(--bg-accent-subtle)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <Trophy size={16} color="var(--accent)" />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+        <div className="flex gap-4 flex-wrap">
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-brand-primary/10 rounded-lg">
+            <Trophy size={16} className="text-ak-brand-primary" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.upcoming}</strong> kommende
             </span>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'color-mix(in srgb, var(--success) 15%, transparent)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <Users size={16} color="var(--success)" />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-success/15 rounded-lg">
+            <Users size={16} className="text-ak-status-success" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.withPlayers}</strong> med mine spillere
             </span>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <CheckCircle size={16} color="var(--warning)" />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-warning/15 rounded-lg">
+            <CheckCircle size={16} className="text-ak-status-warning" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.totalParticipations}</strong> påmeldinger
             </span>
           </div>
           {stats.pendingRegistrations > 0 && (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '8px 14px',
-                backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
-                borderRadius: 'var(--radius-md)',
-              }}
-            >
-              <Clock size={16} color="var(--warning)" />
-              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+            <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-warning/15 rounded-lg">
+              <Clock size={16} className="text-ak-status-warning" />
+              <span className="text-[13px] text-ak-text-primary">
                 <strong>{stats.pendingRegistrations}</strong> venter
               </span>
             </div>
@@ -468,38 +414,21 @@ export default function CoachTournamentCalendar() {
       </div>
 
       {/* Filters */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-surface)',
-          padding: '16px 24px',
-          borderBottom: '1px solid var(--border-default)',
-          display: 'flex',
-          gap: '12px',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-        }}
-      >
-        <Card variant="default" padding="sm" style={{ flex: 1, maxWidth: '300px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Search size={18} color="var(--text-tertiary)" />
+      <div className="bg-ak-surface-base py-4 px-6 border-b border-ak-border-default flex gap-3 flex-wrap items-center">
+        <Card variant="default" padding="sm" className="flex-1 max-w-[300px]">
+          <div className="flex items-center gap-2">
+            <Search size={18} className="text-ak-text-tertiary" />
             <input
               type="text"
               placeholder="Søk turnering..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                flex: 1,
-                border: 'none',
-                backgroundColor: 'transparent',
-                fontSize: '14px',
-                color: 'var(--text-primary)',
-                outline: 'none',
-              }}
+              className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
             />
           </div>
         </Card>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex gap-2">
           {(['all', 'my_players', 'upcoming'] as const).map((f) => (
             <Button
               key={f}
@@ -517,15 +446,7 @@ export default function CoachTournamentCalendar() {
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          style={{
-            padding: '8px 12px',
-            backgroundColor: 'var(--bg-surface)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '13px',
-            color: 'var(--text-primary)',
-            cursor: 'pointer',
-          }}
+          className="py-2 px-3 bg-ak-surface-base border border-ak-border-default rounded-lg text-[13px] text-ak-text-primary cursor-pointer"
         >
           <option value="all">Alle kategorier</option>
           <option value="junior">Junior</option>
@@ -536,7 +457,7 @@ export default function CoachTournamentCalendar() {
       </div>
 
       {/* Tournament list */}
-      <div style={{ padding: '24px' }}>
+      <div className="p-6">
         {filteredTournaments.length === 0 ? (
           <StateCard
             variant="empty"
@@ -545,7 +466,7 @@ export default function CoachTournamentCalendar() {
             description="Prøv å endre filter eller søkekriterier"
           />
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="flex flex-col gap-4">
             {filteredTournaments.map((tournament) => {
               const TypeIcon = getTypeIcon(tournament.type);
               const statusConfig = getStatusConfig(tournament.status);
@@ -559,34 +480,24 @@ export default function CoachTournamentCalendar() {
                   variant="default"
                   padding="none"
                   onClick={() => setSelectedTournament(tournament)}
-                  style={{
-                    cursor: 'pointer',
-                    border: tournament.myPlayers.length > 0 ? '2px solid var(--accent)' : '1px solid var(--border-default)',
-                    overflow: 'hidden',
-                  }}
+                  className={`cursor-pointer overflow-hidden ${
+                    tournament.myPlayers.length > 0
+                      ? 'border-2 border-ak-brand-primary'
+                      : 'border border-ak-border-default'
+                  }`}
                 >
-                  <div style={{ padding: '20px' }}>
+                  <div className="p-5">
                     {/* Header */}
-                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <div
-                          style={{
-                            width: 48,
-                            height: 48,
-                            borderRadius: 'var(--radius-md)',
-                            backgroundColor: 'color-mix(in srgb, var(--warning) 15%, transparent)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <TypeIcon size={24} color="var(--warning)" />
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-lg bg-ak-status-warning/15 flex items-center justify-center">
+                          <TypeIcon size={24} className="text-ak-status-warning" />
                         </div>
                         <div>
-                          <SubSectionTitle style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                          <SubSectionTitle className="text-[17px] font-semibold text-ak-text-primary m-0">
                             {tournament.name}
                           </SubSectionTitle>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                          <div className="flex items-center gap-2 mt-1">
                             <Badge variant={categoryConfig.variant} size="sm">{categoryConfig.label}</Badge>
                             <Badge variant={statusConfig.variant} size="sm">{statusConfig.label}</Badge>
                           </div>
@@ -601,28 +512,28 @@ export default function CoachTournamentCalendar() {
                     </div>
 
                     {/* Details */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '12px', marginBottom: '16px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Calendar size={16} color="var(--text-tertiary)" />
-                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                    <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-4">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={16} className="text-ak-text-tertiary" />
+                        <span className="text-sm text-ak-text-primary">
                           {formatDateRange(tournament.startDate, tournament.endDate)}
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <MapPin size={16} color="var(--text-tertiary)" />
-                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                      <div className="flex items-center gap-2">
+                        <MapPin size={16} className="text-ak-text-tertiary" />
+                        <span className="text-sm text-ak-text-primary">
                           {tournament.location}
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Users size={16} color="var(--text-tertiary)" />
-                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                      <div className="flex items-center gap-2">
+                        <Users size={16} className="text-ak-text-tertiary" />
+                        <span className="text-sm text-ak-text-primary">
                           {tournament.currentParticipants}/{tournament.maxParticipants}
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Flag size={16} color="var(--text-tertiary)" />
-                        <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                      <div className="flex items-center gap-2">
+                        <Flag size={16} className="text-ak-text-tertiary" />
+                        <span className="text-sm text-ak-text-primary">
                           {tournament.format}
                         </span>
                       </div>
@@ -630,60 +541,36 @@ export default function CoachTournamentCalendar() {
 
                     {/* My Players */}
                     {tournament.myPlayers.length > 0 && (
-                      <div
-                        style={{
-                          padding: '12px 16px',
-                          backgroundColor: 'var(--bg-accent-subtle)',
-                          borderRadius: 'var(--radius-md)',
-                          borderLeft: '3px solid var(--accent)',
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                          <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
+                      <div className="p-3 px-4 bg-ak-brand-primary/10 rounded-lg border-l-[3px] border-ak-brand-primary">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[13px] font-semibold text-ak-brand-primary">
                             Mine spillere ({tournament.myPlayers.length})
                           </span>
                           {pendingPlayers.length > 0 && (
                             <Badge variant="warning" size="sm">{pendingPlayers.length} venter</Badge>
                           )}
                         </div>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        <div className="flex gap-2 flex-wrap">
                           {tournament.myPlayers.map((player) => (
                             <div
                               key={player.id}
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '4px 10px',
-                                backgroundColor: 'var(--bg-surface)',
-                                borderRadius: 'var(--radius-full)',
-                                border: player.status === 'pending' ? '1px solid var(--warning)' : '1px solid var(--border-default)',
-                              }}
+                              className={`flex items-center gap-1.5 py-1 px-2.5 bg-ak-surface-base rounded-full ${
+                                player.status === 'pending'
+                                  ? 'border border-ak-status-warning'
+                                  : 'border border-ak-border-default'
+                              }`}
                             >
-                              <div
-                                style={{
-                                  width: 20,
-                                  height: 20,
-                                  borderRadius: '50%',
-                                  backgroundColor: 'var(--accent)',
-                                  color: 'var(--bg-surface)',
-                                  fontSize: '9px',
-                                  fontWeight: 600,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                }}
-                              >
+                              <div className="w-5 h-5 rounded-full bg-ak-brand-primary text-ak-surface-base text-[9px] font-semibold flex items-center justify-center">
                                 {player.initials}
                               </div>
-                              <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
+                              <span className="text-xs text-ak-text-primary">
                                 {player.name}
                               </span>
                               {player.status === 'pending' && (
-                                <Clock size={12} color="var(--warning)" />
+                                <Clock size={12} className="text-ak-status-warning" />
                               )}
                               {player.status === 'interested' && (
-                                <Star size={12} color="var(--warning)" />
+                                <Star size={12} className="text-ak-status-warning" />
                               )}
                             </div>
                           ))}
@@ -693,23 +580,14 @@ export default function CoachTournamentCalendar() {
                   </div>
 
                   {/* Footer */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '12px 20px',
-                      backgroundColor: 'var(--bg-secondary)',
-                      borderTop: '1px solid var(--border-default)',
-                    }}
-                  >
+                  <div className="flex items-center justify-between py-3 px-5 bg-ak-surface-subtle border-t border-ak-border-default">
                     <div>
-                      <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>Startavgift</span>
-                      <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                      <span className="text-xs text-ak-text-tertiary">Startavgift</span>
+                      <div className="text-base font-semibold text-ak-text-primary">
                         {tournament.fee === 0 ? 'Gratis' : `${tournament.fee} kr`}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="flex items-center gap-2">
                       <Button
                         variant="ghost"
                         size="sm"
@@ -745,118 +623,65 @@ export default function CoachTournamentCalendar() {
       {selectedTournament && (
         <>
           <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              zIndex: 100,
-            }}
+            className="fixed inset-0 bg-black/50 z-[100]"
             onClick={() => setSelectedTournament(null)}
           />
-          <div
-            style={{
-              position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: 'var(--bg-surface)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '24px',
-              width: '500px',
-              maxWidth: '90vw',
-              maxHeight: '80vh',
-              overflow: 'auto',
-              zIndex: 101,
-              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <SectionTitle style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-ak-surface-base rounded-xl p-6 w-[500px] max-w-[90vw] max-h-[80vh] overflow-auto z-[101] shadow-2xl">
+            <div className="flex items-center justify-between mb-5">
+              <SectionTitle className="text-xl font-semibold text-ak-text-primary m-0">
                 {selectedTournament.name}
               </SectionTitle>
               <button
                 onClick={() => setSelectedTournament(null)}
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  border: 'none',
-                  fontSize: '18px',
-                  cursor: 'pointer',
-                  color: 'var(--text-secondary)',
-                }}
+                className="w-8 h-8 rounded bg-ak-surface-subtle border-none text-lg cursor-pointer text-ak-text-secondary hover:bg-ak-surface-muted"
               >
                 ×
               </button>
             </div>
 
-            <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: '0 0 20px' }}>
+            <p className="text-[15px] text-ak-text-primary mb-5">
               {selectedTournament.description}
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Calendar size={18} color="var(--accent)" />
-                <span style={{ color: 'var(--text-primary)' }}>{formatDateRange(selectedTournament.startDate, selectedTournament.endDate)}</span>
+            <div className="flex flex-col gap-3 mb-5">
+              <div className="flex items-center gap-3">
+                <Calendar size={18} className="text-ak-brand-primary" />
+                <span className="text-ak-text-primary">{formatDateRange(selectedTournament.startDate, selectedTournament.endDate)}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <MapPin size={18} color="var(--accent)" />
-                <span style={{ color: 'var(--text-primary)' }}>{selectedTournament.location}, {selectedTournament.city}</span>
+              <div className="flex items-center gap-3">
+                <MapPin size={18} className="text-ak-brand-primary" />
+                <span className="text-ak-text-primary">{selectedTournament.location}, {selectedTournament.city}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Flag size={18} color="var(--accent)" />
-                <span style={{ color: 'var(--text-primary)' }}>{selectedTournament.format}</span>
+              <div className="flex items-center gap-3">
+                <Flag size={18} className="text-ak-brand-primary" />
+                <span className="text-ak-text-primary">{selectedTournament.format}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <Clock size={18} color="var(--accent)" />
-                <span style={{ color: 'var(--text-primary)' }}>Påmeldingsfrist: {formatDate(selectedTournament.registrationDeadline)}</span>
+              <div className="flex items-center gap-3">
+                <Clock size={18} className="text-ak-brand-primary" />
+                <span className="text-ak-text-primary">Påmeldingsfrist: {formatDate(selectedTournament.registrationDeadline)}</span>
               </div>
             </div>
 
             {selectedTournament.myPlayers.length > 0 && (
-              <div style={{ marginBottom: '20px' }}>
-                <CardTitle style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 12px' }}>
+              <div className="mb-5">
+                <CardTitle className="text-[15px] font-semibold text-ak-text-primary mb-3">
                   Påmeldte spillere
                 </CardTitle>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="flex flex-col gap-2">
                   {selectedTournament.myPlayers.map((player) => (
                     <div
                       key={player.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '10px 12px',
-                        backgroundColor: 'var(--bg-secondary)',
-                        borderRadius: 'var(--radius-md)',
-                      }}
+                      className="flex items-center justify-between py-2.5 px-3 bg-ak-surface-subtle rounded-lg"
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: '50%',
-                            backgroundColor: 'var(--accent)',
-                            color: 'var(--bg-surface)',
-                            fontSize: '12px',
-                            fontWeight: 600,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-full bg-ak-brand-primary text-ak-surface-base text-xs font-semibold flex items-center justify-center">
                           {player.initials}
                         </div>
                         <div>
-                          <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                          <div className="text-sm font-medium text-ak-text-primary">
                             {player.name}
                           </div>
-                          <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                          <div className="text-xs text-ak-text-secondary">
                             Kategori {player.category}
                           </div>
                         </div>
@@ -878,7 +703,7 @@ export default function CoachTournamentCalendar() {
               </div>
             )}
 
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div className="flex gap-3">
               <Button
                 variant="ghost"
                 leftIcon={<UserPlus size={18} />}
@@ -886,7 +711,7 @@ export default function CoachTournamentCalendar() {
                   setSelectedTournament(null);
                   navigate(`/coach/tournaments/players?tournament=${selectedTournament.id}`);
                 }}
-                style={{ flex: 1 }}
+                className="flex-1"
               >
                 Meld på spiller
               </Button>
@@ -894,7 +719,7 @@ export default function CoachTournamentCalendar() {
                 variant="primary"
                 leftIcon={<ExternalLink size={18} />}
                 onClick={() => window.open(`https://mingolf.no/turnering/${selectedTournament.id}`, '_blank')}
-                style={{ flex: 1 }}
+                className="flex-1"
               >
                 Åpne i MinGolf
               </Button>

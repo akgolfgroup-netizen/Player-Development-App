@@ -1,3 +1,9 @@
+/**
+ * TreningsdagbokContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState, useEffect } from 'react';
 import {
   BookOpen, ChevronRight, Plus, Star, Clock,
@@ -8,7 +14,49 @@ import Button from '../../ui/primitives/Button';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import apiClient from '../../services/apiClient';
-import { SubSectionTitle, CardTitle } from '../../components/typography';
+import { SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const TYPE_CLASSES = {
+  technical: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/15',
+    icon: Target,
+    label: 'Teknikk',
+    variant: 'accent',
+  },
+  short_game: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    icon: Target,
+    label: 'Kortspill',
+    variant: 'success',
+  },
+  physical: {
+    text: 'text-ak-status-error',
+    bg: 'bg-ak-status-error/15',
+    icon: Dumbbell,
+    label: 'Fysisk',
+    variant: 'error',
+  },
+  mental: {
+    text: 'text-ak-status-warning',
+    bg: 'bg-ak-status-warning/15',
+    icon: Brain,
+    label: 'Mental',
+    variant: 'warning',
+  },
+  competition: {
+    text: 'text-ak-text-primary',
+    bg: 'bg-ak-surface-subtle',
+    icon: Target,
+    label: 'Runde',
+    variant: 'neutral',
+  },
+};
 
 // ============================================================================
 // MOCK DATA
@@ -109,23 +157,6 @@ const STATS = {
 // HELPERS
 // ============================================================================
 
-const getTypeConfig = (type) => {
-  switch (type) {
-    case 'technical':
-      return { label: 'Teknikk', color: 'var(--accent)', icon: Target, variant: 'accent' };
-    case 'short_game':
-      return { label: 'Kortspill', color: 'var(--success)', icon: Target, variant: 'success' };
-    case 'physical':
-      return { label: 'Fysisk', color: 'var(--error)', icon: Dumbbell, variant: 'error' };
-    case 'mental':
-      return { label: 'Mental', color: 'var(--warning)', icon: Brain, variant: 'warning' };
-    case 'competition':
-      return { label: 'Runde', color: 'var(--text-primary)', icon: Target, variant: 'neutral' };
-    default:
-      return { label: type, color: 'var(--text-tertiary)', icon: BookOpen, variant: 'neutral' };
-  }
-};
-
 const getMoodEmoji = (mood) => {
   switch (mood) {
     case 'excited': return '🔥';
@@ -153,13 +184,13 @@ const formatDate = (dateStr) => {
 // ============================================================================
 
 const RatingStars = ({ rating, size = 14 }) => (
-  <div style={{ display: 'flex', gap: 'var(--spacing-0)' }}>
+  <div className="flex gap-0">
     {[1, 2, 3, 4, 5].map((star) => (
       <Star
         key={star}
         size={size}
-        fill={star <= rating ? 'var(--warning)' : 'none'}
-        color={star <= rating ? 'var(--warning)' : 'var(--border-default)'}
+        fill={star <= rating ? '#F59E0B' : 'none'}
+        className={star <= rating ? 'text-amber-500' : 'text-ak-border-default'}
       />
     ))}
   </div>
@@ -170,7 +201,7 @@ const RatingStars = ({ rating, size = 14 }) => (
 // ============================================================================
 
 const DiaryEntryCard = ({ entry, onClick }) => {
-  const typeConfig = getTypeConfig(entry.type);
+  const typeConfig = TYPE_CLASSES[entry.type] || TYPE_CLASSES.competition;
   const TypeIcon = typeConfig.icon;
 
   return (
@@ -178,56 +209,29 @@ const DiaryEntryCard = ({ entry, onClick }) => {
       variant="default"
       padding="md"
       onClick={() => onClick(entry)}
-      style={{ cursor: 'pointer' }}
+      className="cursor-pointer"
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-3)' }}>
-        <div style={{
-          width: '44px',
-          height: '44px',
-          borderRadius: 'var(--radius-sm)',
-          backgroundColor: `${typeConfig.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}>
-          <TypeIcon size={22} color={typeConfig.color} />
+      <div className="flex items-start gap-3">
+        <div className={`w-11 h-11 rounded-lg ${typeConfig.bg} flex items-center justify-center shrink-0`}>
+          <TypeIcon size={22} className={typeConfig.text} />
         </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: 'var(--spacing-1)',
-          }}>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-1">
             <div>
-              <SubSectionTitle style={{
-                fontSize: '15px',
-              }}>
+              <SubSectionTitle className="text-[15px] m-0">
                 {entry.title}
               </SubSectionTitle>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--spacing-2)',
-                marginTop: 'var(--spacing-1)',
-              }}>
+              <div className="flex items-center gap-2 mt-1">
                 <Badge variant={typeConfig.variant} size="sm">{typeConfig.label}</Badge>
-                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <span className="text-xs text-ak-text-secondary">
                   {formatDate(entry.date)}
                 </span>
-                <span style={{
-                  fontSize: '12px',
-                  color: 'var(--text-secondary)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 'var(--spacing-1)',
-                }}>
+                <span className="text-xs text-ak-text-secondary flex items-center gap-1">
                   <Clock size={12} />
                   {entry.duration} min
                 </span>
-                <span style={{ fontSize: '14px' }}>
+                <span className="text-sm">
                   {getMoodEmoji(entry.mood)}
                 </span>
               </div>
@@ -235,21 +239,12 @@ const DiaryEntryCard = ({ entry, onClick }) => {
             <RatingStars rating={entry.rating} />
           </div>
 
-          <p style={{
-            fontSize: '13px',
-            color: 'var(--text-primary)',
-            margin: 'var(--spacing-2) 0',
-            lineHeight: 1.4,
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}>
+          <p className="text-[13px] text-ak-text-primary my-2 leading-[1.4] line-clamp-2">
             {entry.reflection}
           </p>
 
           {entry.achievements.length > 0 && (
-            <div style={{ display: 'flex', gap: 'var(--spacing-1)', flexWrap: 'wrap' }}>
+            <div className="flex gap-1 flex-wrap">
               {entry.achievements.slice(0, 2).map((achievement, idx) => (
                 <Badge key={idx} variant="success" size="sm">✓ {achievement}</Badge>
               ))}
@@ -257,7 +252,7 @@ const DiaryEntryCard = ({ entry, onClick }) => {
           )}
         </div>
 
-        <ChevronRight size={18} color="var(--text-tertiary)" style={{ flexShrink: 0 }} />
+        <ChevronRight size={18} className="text-ak-text-secondary shrink-0" />
       </div>
     </Card>
   );
@@ -268,52 +263,39 @@ const DiaryEntryCard = ({ entry, onClick }) => {
 // ============================================================================
 
 const StatsOverview = ({ stats }) => (
-  <div style={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-    gap: 'var(--spacing-2)',
-    marginBottom: 'var(--spacing-6)',
-  }}>
-    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
+  <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2 mb-6">
+    <Card variant="default" padding="sm" className="text-center">
+      <div className="text-[22px] font-bold text-ak-brand-primary">
         {stats.totalEntries}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Totalt</div>
+      <div className="text-[11px] text-ak-text-secondary">Totalt</div>
     </Card>
-    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
+    <Card variant="default" padding="sm" className="text-center">
+      <div className="text-[22px] font-bold text-ak-status-success">
         {stats.thisMonth}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Denne mnd</div>
+      <div className="text-[11px] text-ak-text-secondary">Denne mnd</div>
     </Card>
-    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--spacing-0)' }}>
-        <span style={{ fontSize: '22px', fontWeight: 700, color: 'var(--warning)' }}>
+    <Card variant="default" padding="sm" className="text-center">
+      <div className="flex items-center justify-center gap-0">
+        <span className="text-[22px] font-bold text-amber-500">
           {stats.avgRating}
         </span>
-        <Star size={14} fill="var(--warning)" color="var(--warning)" />
+        <Star size={14} fill="#F59E0B" className="text-amber-500" />
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Snittrating</div>
+      <div className="text-[11px] text-ak-text-secondary">Snittrating</div>
     </Card>
-    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
+    <Card variant="default" padding="sm" className="text-center">
+      <div className="text-[22px] font-bold text-ak-text-primary">
         {stats.avgDuration}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Min/okt</div>
+      <div className="text-[11px] text-ak-text-secondary">Min/okt</div>
     </Card>
-    <Card variant="default" padding="sm" style={{ textAlign: 'center' }}>
-      <div style={{
-        fontSize: '22px',
-        fontWeight: 700,
-        color: 'var(--error)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 'var(--spacing-1)',
-      }}>
+    <Card variant="default" padding="sm" className="text-center">
+      <div className="text-[22px] font-bold text-ak-status-error flex items-center justify-center gap-1">
         🔥 {stats.streak}
       </div>
-      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Streak</div>
+      <div className="text-[11px] text-ak-text-secondary">Streak</div>
     </Card>
   </div>
 );
@@ -357,7 +339,7 @@ const TreningsdagbokContainer = () => {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-primary)' }}>
+      <div className="min-h-screen flex items-center justify-center bg-ak-surface-base">
         <StateCard variant="loading" title="Laster treningsdagbok..." />
       </div>
     );
@@ -372,47 +354,36 @@ const TreningsdagbokContainer = () => {
   });
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
-      <div style={{ padding: '0' }}>
-        {/* Stats */}
+    <div className="min-h-screen bg-ak-surface-base">
+      <div className="p-0">
+        {/* Error message */}
         {error && (
-          <div style={{ padding: 'var(--spacing-3)', backgroundColor: 'color-mix(in srgb, var(--error) 15%, transparent)', borderRadius: 'var(--radius-sm)', marginBottom: 'var(--spacing-4)', display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
-            <AlertCircle size={16} color="var(--error)" />
-            <span style={{ fontSize: '13px', color: 'var(--error)' }}>{error} (viser demo-data)</span>
+          <div className="p-3 bg-ak-status-error/15 rounded-lg mb-4 flex items-center gap-2">
+            <AlertCircle size={16} className="text-ak-status-error" />
+            <span className="text-[13px] text-ak-status-error">{error} (viser demo-data)</span>
           </div>
         )}
+
+        {/* Stats */}
         <StatsOverview stats={{ ...STATS, totalEntries: entries.length }} />
 
         {/* Search and Filters */}
-        <div style={{ marginBottom: 'var(--spacing-5)' }}>
-          <Card variant="default" padding="sm" style={{ marginBottom: 'var(--spacing-3)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
-              <Search size={18} color="var(--text-tertiary)" />
+        <div className="mb-5">
+          <Card variant="default" padding="sm" className="mb-3">
+            <div className="flex items-center gap-2">
+              <Search size={18} className="text-ak-text-secondary" />
               <input
                 type="text"
                 placeholder="Sok i dagboken..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  outline: 'none',
-                  fontSize: '14px',
-                  color: 'var(--text-primary)',
-                  backgroundColor: 'transparent',
-                }}
+                className="flex-1 border-none outline-none text-sm text-ak-text-primary bg-transparent"
               />
             </div>
           </Card>
 
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: 'var(--spacing-3)',
-          }}>
-            <div style={{ display: 'flex', gap: 'var(--spacing-1)', overflowX: 'auto' }}>
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex gap-1 overflow-x-auto">
               {filters.map((f) => (
                 <Button
                   key={f.key}
@@ -432,7 +403,7 @@ const TreningsdagbokContainer = () => {
         </div>
 
         {/* Entries List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
+        <div className="flex flex-col gap-2">
           {filteredEntries.length > 0 ? (
             filteredEntries.map((entry) => (
               <DiaryEntryCard

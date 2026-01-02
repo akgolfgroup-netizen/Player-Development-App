@@ -1,69 +1,89 @@
 /**
- * EvaluationStatsDashboard - Display session evaluation statistics
+ * AK Golf Academy - Evaluation Stats Dashboard
+ * Design System v3.0 - Premium Light
  *
  * Shows:
  * - Average ratings over time (focus, technical, energy, mental)
  * - Pre-shot routine consistency
  * - Technical cues usage frequency
  * - Session trends and insights
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React from 'react';
-// UiCanon: CSS variables
 import { TrendingUp, TrendingDown, Target, Battery, BarChart2, Calendar } from 'lucide-react';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+const getIconBgClasses = (colorKey) => {
+  switch (colorKey) {
+    case 'accent':
+      return 'bg-ak-brand-primary/15';
+    case 'success':
+      return 'bg-ak-status-success/15';
+    case 'warning':
+      return 'bg-ak-status-warning/15';
+    case 'error':
+      return 'bg-ak-status-error/15';
+    default:
+      return 'bg-ak-brand-primary/15';
+  }
+};
+
+const getIconTextClasses = (colorKey) => {
+  switch (colorKey) {
+    case 'accent':
+      return 'text-ak-brand-primary';
+    case 'success':
+      return 'text-ak-status-success';
+    case 'warning':
+      return 'text-ak-status-warning';
+    case 'error':
+      return 'text-ak-status-error';
+    default:
+      return 'text-ak-brand-primary';
+  }
+};
 
 // ============================================================================
 // SUB-COMPONENTS
 // ============================================================================
 
-function StatCard({ title, value, subtitle, trend, icon: Icon, color }) {
-  const trendColor = trend > 0 ? 'var(--success)' : trend < 0 ? 'var(--error)' : 'var(--text-secondary)';
-  const TrendIcon = trend > 0 ? TrendingUp : trend < 0 ? TrendingDown : null;
+function StatCard({ title, value, subtitle, trend, icon: Icon, colorKey = 'accent' }) {
+  const trendPositive = trend > 0;
+  const trendNegative = trend < 0;
+  const TrendIcon = trendPositive ? TrendingUp : trendNegative ? TrendingDown : null;
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: 'var(--radius-lg)',
-        padding: '24px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-      }}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+    <div className="bg-ak-surface-base rounded-xl p-6 shadow-sm">
+      <div className="flex justify-between items-start">
         <div>
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+          <span className="text-xs text-ak-text-secondary">
             {title}
           </span>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginTop: '4px' }}>
-            <span style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--text-primary)' }}>
+          <div className="flex items-baseline gap-2 mt-1">
+            <span className="text-[28px] font-bold text-ak-text-primary">
               {value}
             </span>
             {trend !== undefined && TrendIcon && (
-              <span style={{ display: 'flex', alignItems: 'center', gap: '2px', color: trendColor, fontSize: '12px', lineHeight: '16px' }}>
+              <span className={`flex items-center gap-0.5 text-xs ${trendPositive ? 'text-ak-status-success' : 'text-ak-status-error'}`}>
                 <TrendIcon size={14} />
                 {Math.abs(trend).toFixed(1)}
               </span>
             )}
           </div>
           {subtitle && (
-            <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+            <span className="text-xs text-ak-text-secondary">
               {subtitle}
             </span>
           )}
         </div>
         {Icon && (
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: `${color || 'var(--accent)'}15`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Icon size={20} color={color || 'var(--accent)'} />
+          <div className={`w-10 h-10 rounded-lg ${getIconBgClasses(colorKey)} flex items-center justify-center`}>
+            <Icon size={20} className={getIconTextClasses(colorKey)} />
           </div>
         )}
       </div>
@@ -71,32 +91,28 @@ function StatCard({ title, value, subtitle, trend, icon: Icon, color }) {
   );
 }
 
-function RatingBar({ label, value, maxValue = 10, color }) {
+function RatingBar({ label, value, maxValue = 10, colorKey = 'accent' }) {
   const percentage = (value / maxValue) * 100;
 
+  const getBarColorClass = () => {
+    switch (colorKey) {
+      case 'success': return 'bg-ak-status-success';
+      case 'warning': return 'bg-ak-status-warning';
+      case 'achievement': return 'bg-amber-500';
+      default: return 'bg-ak-brand-primary';
+    }
+  };
+
   return (
-    <div style={{ marginBottom: '16px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-        <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>{label}</span>
-        <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>{value.toFixed(1)}/10</span>
+    <div className="mb-4">
+      <div className="flex justify-between mb-1">
+        <span className="text-[15px] text-ak-text-primary">{label}</span>
+        <span className="text-xs font-medium text-ak-brand-primary">{value.toFixed(1)}/10</span>
       </div>
-      <div
-        style={{
-          width: '100%',
-          height: '8px',
-          backgroundColor: 'var(--border-default)',
-          borderRadius: '9999px',
-          overflow: 'hidden',
-        }}
-      >
+      <div className="w-full h-2 bg-ak-border-default rounded-full overflow-hidden">
         <div
-          style={{
-            width: `${percentage}%`,
-            height: '100%',
-            backgroundColor: color || 'var(--accent)',
-            borderRadius: '9999px',
-            transition: 'width 0.3s ease',
-          }}
+          className={`h-full rounded-full transition-all duration-300 ${getBarColorClass()}`}
+          style={{ width: `${percentage}%` }}
         />
       </div>
     </div>
@@ -106,30 +122,25 @@ function RatingBar({ label, value, maxValue = 10, color }) {
 function TechnicalCuesList({ cues }) {
   if (!cues || cues.length === 0) {
     return (
-      <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+      <p className="text-[15px] text-ak-text-secondary">
         Ingen tekniske cues registrert enna
       </p>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+    <div className="flex flex-col gap-2">
       {cues.map((cue, index) => (
         <div
           key={cue.name}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '8px',
-            backgroundColor: index === 0 ? 'rgba(var(--accent-rgb), 0.1)' : 'var(--bg-secondary)',
-            borderRadius: 'var(--radius-md)',
-          }}
+          className={`flex justify-between items-center p-2 rounded-lg ${
+            index === 0 ? 'bg-ak-brand-primary/10' : 'bg-ak-surface-subtle'
+          }`}
         >
-          <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+          <span className="text-[15px] text-ak-text-primary">
             {cue.name}
           </span>
-          <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>
+          <span className="text-xs font-medium text-ak-brand-primary">
             {cue.count}x
           </span>
         </div>
@@ -141,7 +152,7 @@ function TechnicalCuesList({ cues }) {
 function PreShotRoutineChart({ data }) {
   if (!data) {
     return (
-      <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+      <p className="text-[15px] text-ak-text-secondary">
         Ingen pre-shot data tilgjengelig
       </p>
     );
@@ -156,31 +167,23 @@ function PreShotRoutineChart({ data }) {
 
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          height: '24px',
-          borderRadius: 'var(--radius-md)',
-          overflow: 'hidden',
-          marginBottom: '16px',
-        }}
-      >
-        <div style={{ width: `${percentages.yes}%`, backgroundColor: 'var(--success)' }} />
-        <div style={{ width: `${percentages.partial}%`, backgroundColor: 'var(--warning)' }} />
-        <div style={{ width: `${percentages.no}%`, backgroundColor: 'var(--error)' }} />
+      <div className="flex h-6 rounded-lg overflow-hidden mb-4">
+        <div className="bg-ak-status-success" style={{ width: `${percentages.yes}%` }} />
+        <div className="bg-ak-status-warning" style={{ width: `${percentages.partial}%` }} />
+        <div className="bg-ak-status-error" style={{ width: `${percentages.no}%` }} />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <div style={{ width: '12px', height: '12px', backgroundColor: 'var(--success)', borderRadius: '2px' }} />
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>Ja ({percentages.yes.toFixed(0)}%)</span>
+      <div className="flex justify-between">
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 bg-ak-status-success rounded-sm" />
+          <span className="text-xs text-ak-text-secondary">Ja ({percentages.yes.toFixed(0)}%)</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <div style={{ width: '12px', height: '12px', backgroundColor: 'var(--warning)', borderRadius: '2px' }} />
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>Delvis ({percentages.partial.toFixed(0)}%)</span>
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 bg-ak-status-warning rounded-sm" />
+          <span className="text-xs text-ak-text-secondary">Delvis ({percentages.partial.toFixed(0)}%)</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <div style={{ width: '12px', height: '12px', backgroundColor: 'var(--error)', borderRadius: '2px' }} />
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>Nei ({percentages.no.toFixed(0)}%)</span>
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 bg-ak-status-error rounded-sm" />
+          <span className="text-xs text-ak-text-secondary">Nei ({percentages.no.toFixed(0)}%)</span>
         </div>
       </div>
     </div>
@@ -189,16 +192,8 @@ function PreShotRoutineChart({ data }) {
 
 function Section({ title, children }) {
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: 'var(--radius-lg)',
-        padding: '24px',
-        marginBottom: '16px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-      }}
-    >
-      <SubSectionTitle style={{ marginBottom: '16px' }}>
+    <div className="bg-ak-surface-base rounded-xl p-6 mb-4 shadow-sm">
+      <SubSectionTitle className="mb-4">
         {title}
       </SubSectionTitle>
       {children}
@@ -213,8 +208,8 @@ function Section({ title, children }) {
 export default function EvaluationStatsDashboard({ stats, isLoading }) {
   if (isLoading) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+      <div className="p-6 text-center">
+        <span className="text-[15px] text-ak-text-secondary">
           Laster statistikk...
         </span>
       </div>
@@ -223,8 +218,8 @@ export default function EvaluationStatsDashboard({ stats, isLoading }) {
 
   if (!stats) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+      <div className="p-6 text-center">
+        <span className="text-[15px] text-ak-text-secondary">
           Ingen statistikk tilgjengelig
         </span>
       </div>
@@ -237,60 +232,46 @@ export default function EvaluationStatsDashboard({ stats, isLoading }) {
   const energyTrend = stats.trends?.energy || 0;
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        minHeight: '100vh',
-        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
-        padding: '24px',
-      }}
-    >
+    <div className="bg-ak-surface-base min-h-screen font-sans p-6">
       {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
+      <div className="mb-6">
         <SectionTitle>
           Evalueringsstatistikk
         </SectionTitle>
-        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+        <p className="text-[15px] text-ak-text-secondary">
           Oversikt over dine treningsevalueringer
         </p>
       </div>
 
       {/* Summary Cards */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '16px',
-          marginBottom: '24px',
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4 mb-6">
         <StatCard
           title="Antall okter"
           value={stats.totalSessions || 0}
           subtitle="siste 30 dager"
           icon={Calendar}
-          color={'var(--accent)'}
+          colorKey="accent"
         />
         <StatCard
           title="Gj.snitt fokus"
           value={(stats.averages?.focus || 0).toFixed(1)}
           trend={focusTrend}
           icon={Target}
-          color={'var(--success)'}
+          colorKey="success"
         />
         <StatCard
           title="Gj.snitt teknikk"
           value={(stats.averages?.technical || 0).toFixed(1)}
           trend={technicalTrend}
           icon={BarChart2}
-          color={'var(--accent)'}
+          colorKey="accent"
         />
         <StatCard
           title="Gj.snitt energi"
           value={(stats.averages?.energy || 0).toFixed(1)}
           trend={energyTrend}
           icon={Battery}
-          color={'var(--warning)'}
+          colorKey="warning"
         />
       </div>
 
@@ -299,22 +280,22 @@ export default function EvaluationStatsDashboard({ stats, isLoading }) {
         <RatingBar
           label="Fokus"
           value={stats.averages?.focus || 0}
-          color={'var(--success)'}
+          colorKey="success"
         />
         <RatingBar
           label="Teknisk"
           value={stats.averages?.technical || 0}
-          color={'var(--accent)'}
+          colorKey="accent"
         />
         <RatingBar
           label="Energi"
           value={stats.averages?.energy || 0}
-          color={'var(--warning)'}
+          colorKey="warning"
         />
         <RatingBar
           label="Mental"
           value={stats.averages?.mental || 0}
-          color={'var(--achievement)'}
+          colorKey="achievement"
         />
       </Section>
 
@@ -322,8 +303,8 @@ export default function EvaluationStatsDashboard({ stats, isLoading }) {
       <Section title="Pre-shot rutine konsistens">
         <PreShotRoutineChart data={stats.preShotRoutine} />
         {stats.preShotRoutine && (
-          <div style={{ marginTop: '16px' }}>
-            <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+          <div className="mt-4">
+            <p className="text-[15px] text-ak-text-primary">
               Gjennomsnitt: {stats.preShotRoutine.averageCount?.toFixed(0) || 0} av {stats.preShotRoutine.averageTotal?.toFixed(0) || 0} slag
             </p>
           </div>
@@ -341,18 +322,10 @@ export default function EvaluationStatsDashboard({ stats, isLoading }) {
           {stats.insights.map((insight, index) => (
             <div
               key={index}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '8px',
-                padding: '8px',
-                backgroundColor: 'var(--bg-secondary)',
-                borderRadius: 'var(--radius-md)',
-                marginBottom: '8px',
-              }}
+              className="flex items-start gap-2 p-2 bg-ak-surface-subtle rounded-lg mb-2"
             >
-              <span style={{ fontSize: '16px' }}>{insight.icon || '💡'}</span>
-              <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+              <span className="text-base">{insight.icon || '💡'}</span>
+              <span className="text-[15px] text-ak-text-primary">
                 {insight.text}
               </span>
             </div>

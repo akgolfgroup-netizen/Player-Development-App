@@ -9,6 +9,9 @@
  * - Bulk selection for comparison/deletion
  * - Empty state and loading states
  * - Pagination/infinite scroll
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic border color which requires runtime value)
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
@@ -22,267 +25,40 @@ import StateCard from '../../ui/composites/StateCard';
 import Modal from '../../ui/composites/Modal.composite';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
-import { Upload, RefreshCw } from 'lucide-react';
+import { Upload, RefreshCw, Video, BarChart2, Trash2 } from 'lucide-react';
 import { SubSectionTitle } from '../../components/typography';
 
-// Styles
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-4, 16px)',
-    padding: 'var(--spacing-4, 16px)',
-  },
-  header: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 'var(--spacing-4, 16px)',
-  },
-  headerLeft: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-1, 4px)',
-  },
-  title: {
-    margin: 0,
-    fontSize: '24px',
-    fontWeight: '700',
-    color: 'var(--text-primary, white)',
-  },
-  subtitle: {
-    margin: 0,
-    fontSize: '14px',
-    color: 'var(--video-text-secondary)',
-  },
-  headerActions: {
-    display: 'flex',
-    gap: 'var(--spacing-2, 8px)',
-  },
-  uploadButton: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-    padding: '10px 20px',
-    backgroundColor: 'var(--accent)',
-    color: 'white',
-    border: 'none',
-    borderRadius: 'var(--radius-md, 8px)',
-    fontSize: '14px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s ease',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-    gap: 'var(--spacing-4, 16px)',
-  },
-  list: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3, 12px)',
-  },
-  listCard: {
-    display: 'flex',
-    gap: 'var(--spacing-4)',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--ak-toast-bg)',
-    borderRadius: 'var(--radius-lg)',
-    border: '1px solid var(--video-border)',
-    cursor: 'pointer',
-    transition: 'border-color 0.2s ease',
-  },
-  listThumbnail: {
-    width: '160px',
-    height: '90px',
-    borderRadius: 'var(--radius-md, 8px)',
-    overflow: 'hidden',
-    flexShrink: 0,
-    backgroundColor: 'var(--ak-surface-dark-elevated)',
-  },
-  listThumbnailImg: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-  },
-  listContent: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    minWidth: 0,
-  },
-  listTitle: {
-    margin: 0,
-    fontSize: '16px',
-    fontWeight: '600',
-    color: 'var(--text-primary, white)',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  listMeta: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 'var(--spacing-3)',
-    marginTop: 'var(--spacing-1)',
-    fontSize: '13px',
-    color: 'var(--video-text-secondary)',
-  },
-  listActions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-  },
-  bulkActionsBar: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-4, 16px)',
-    padding: 'var(--spacing-3, 12px) var(--spacing-4, 16px)',
-    backgroundColor: 'var(--accent)',
-    borderRadius: 'var(--radius-lg, 12px)',
-    color: 'white',
-  },
-  bulkCount: {
-    fontSize: '14px',
-    fontWeight: '600',
-  },
-  bulkActions: {
-    display: 'flex',
-    gap: 'var(--spacing-2, 8px)',
-    marginLeft: 'auto',
-  },
-  bulkButton: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1)',
-    padding: '6px 12px',
-    backgroundColor: 'var(--video-control-hover)',
-    color: 'white',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '13px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    transition: 'background-color 0.2s ease',
-  },
-  cancelButton: {
-    padding: '6px 12px',
-    backgroundColor: 'transparent',
-    color: 'var(--text-inverse)',
-    border: '1px solid var(--video-progress-bg)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '13px',
-    cursor: 'pointer',
-  },
-  deleteButton: {
-    padding: '6px 16px',
-    backgroundColor: 'var(--color-danger, var(--error))',
-    color: 'white',
-    border: 'none',
-    borderRadius: 'var(--radius-md, 8px)',
-    fontSize: '13px',
-    fontWeight: '600',
-    cursor: 'pointer',
-  },
-  emptyState: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8, 32px)',
-    textAlign: 'center',
-  },
-  emptyIcon: {
-    width: '80px',
-    height: '80px',
-    color: 'var(--video-text-muted)',
-    marginBottom: 'var(--spacing-4)',
-  },
-  emptyTitle: {
-    margin: 0,
-    fontSize: '18px',
-    fontWeight: '600',
-    color: 'var(--text-inverse)',
-  },
-  emptyDescription: {
-    margin: 'var(--spacing-2) 0 0',
-    fontSize: '14px',
-    color: 'var(--video-text-secondary)',
-    maxWidth: '300px',
-  },
-  loadingContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8, 32px)',
-  },
-  spinner: {
-    width: '40px',
-    height: '40px',
-    border: '3px solid var(--video-border)',
-    borderTopColor: 'var(--accent)',
-    borderRadius: '50%',
-    animation: 'spin 1s linear infinite',
-  },
-  loadMoreButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--ak-toast-bg)',
-    color: 'var(--video-text-secondary)',
-    border: '1px solid var(--video-border)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: '14px',
-    fontWeight: '500',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-  },
-  pagination: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 'var(--spacing-2, 8px)',
-    marginTop: 'var(--spacing-4, 16px)',
-  },
-};
+// ============================================================================
+// TYPES
+// ============================================================================
 
-// Icons
-const UploadIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-    <polyline points="17 8 12 3 7 8" />
-    <line x1="12" y1="3" x2="12" y2="15" />
-  </svg>
-);
+interface VideoItem {
+  id: string;
+  title: string;
+  category?: string;
+  viewAngle?: string;
+  duration?: number;
+  status?: string;
+  thumbnailUrl?: string;
+  createdAt: string;
+}
 
-const VideoEmptyIcon = () => (
-  <svg style={styles.emptyIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <rect x="2" y="4" width="20" height="16" rx="2" />
-    <path d="m10 9 5 3-5 3V9z" />
-  </svg>
-);
+interface VideoLibraryProps {
+  playerId?: string;
+  showPlayerFilter?: boolean;
+  players?: Array<{ id: string; name: string }>;
+  onVideoClick?: (video: VideoItem) => void;
+  onUploadClick?: () => void;
+  onCompareClick?: (video1: VideoItem, video2: VideoItem) => void;
+  style?: React.CSSProperties;
+  className?: string;
+}
 
-const CompareIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="2" y="4" width="8" height="16" rx="1" />
-    <rect x="14" y="4" width="8" height="16" rx="1" />
-  </svg>
-);
+// ============================================================================
+// DEMO DATA
+// ============================================================================
 
-const DeleteIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="3 6 5 6 21 6" />
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-  </svg>
-);
-
-// Demo videos for fallback
-const DEMO_VIDEOS = [
+const DEMO_VIDEOS: VideoItem[] = [
   {
     id: '1',
     title: 'Driver Swing - September',
@@ -290,7 +66,7 @@ const DEMO_VIDEOS = [
     viewAngle: 'face_on',
     duration: 45,
     status: 'ready',
-    thumbnailUrl: null,
+    thumbnailUrl: undefined,
     createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
@@ -300,7 +76,7 @@ const DEMO_VIDEOS = [
     viewAngle: 'down_the_line',
     duration: 120,
     status: 'ready',
-    thumbnailUrl: null,
+    thumbnailUrl: undefined,
     createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
@@ -310,7 +86,7 @@ const DEMO_VIDEOS = [
     viewAngle: 'face_on',
     duration: 30,
     status: 'processing',
-    thumbnailUrl: null,
+    thumbnailUrl: undefined,
     createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
   },
   {
@@ -320,7 +96,7 @@ const DEMO_VIDEOS = [
     viewAngle: 'side',
     duration: 90,
     status: 'ready',
-    thumbnailUrl: null,
+    thumbnailUrl: undefined,
     createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
   },
   {
@@ -330,14 +106,15 @@ const DEMO_VIDEOS = [
     viewAngle: 'down_the_line',
     duration: 60,
     status: 'ready',
-    thumbnailUrl: null,
+    thumbnailUrl: undefined,
     createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ];
 
-/**
- * VideoLibrary Component
- */
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
 export function VideoLibrary({
   playerId,
   showPlayerFilter = false,
@@ -347,17 +124,23 @@ export function VideoLibrary({
   onCompareClick,
   style,
   className,
-}) {
+}: VideoLibraryProps) {
   const { user } = useAuth();
   const { showNotification } = useNotification();
 
   // Filter state
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    sortBy: string;
+    sortOrder: string;
+    playerId?: string;
+    category?: string;
+    status?: string;
+  }>({
     sortBy: 'createdAt',
     sortOrder: 'desc',
   });
   const [viewMode, setViewMode] = useState(VIEW_MODES.GRID);
-  const [selectedVideos, setSelectedVideos] = useState(new Set());
+  const [selectedVideos, setSelectedVideos] = useState<Set<string>>(new Set());
   const [loadingMore, setLoadingMore] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -377,19 +160,19 @@ export function VideoLibrary({
   } = useVideos({
     playerId: filters.playerId || playerId,
     category: filters.category,
-    status: filters.status || '', // Empty string means all statuses
+    status: filters.status || '',
     sortBy: filters.sortBy || 'createdAt',
     sortOrder: filters.sortOrder || 'desc',
   });
 
   // Handle filter change
-  const handleFilterChange = useCallback((newFilters) => {
+  const handleFilterChange = useCallback((newFilters: typeof filters) => {
     setFilters(newFilters);
     setSelectedVideos(new Set());
   }, []);
 
   // Handle video selection
-  const handleVideoSelect = useCallback((video, selected) => {
+  const handleVideoSelect = useCallback((video: VideoItem, selected: boolean) => {
     setSelectedVideos((prev) => {
       const next = new Set(prev);
       if (selected) {
@@ -406,7 +189,7 @@ export function VideoLibrary({
     if (selectedVideos.size === videos.length) {
       setSelectedVideos(new Set());
     } else {
-      setSelectedVideos(new Set(videos.map((v) => v.id)));
+      setSelectedVideos(new Set(videos.map((v: VideoItem) => v.id)));
     }
   }, [videos, selectedVideos.size]);
 
@@ -417,13 +200,13 @@ export function VideoLibrary({
 
   // Handle compare selected
   const handleCompareSelected = useCallback(() => {
-    const selectedArray = videos.filter((v) => selectedVideos.has(v.id));
+    const selectedArray = videos.filter((v: VideoItem) => selectedVideos.has(v.id));
     if (selectedArray.length >= 2) {
       onCompareClick?.(selectedArray[0], selectedArray[1]);
     }
   }, [videos, selectedVideos, onCompareClick]);
 
-  // Handle delete selected - opens confirmation modal
+  // Handle delete selected
   const handleDeleteSelected = useCallback(() => {
     setShowDeleteConfirm(true);
   }, []);
@@ -432,7 +215,6 @@ export function VideoLibrary({
   const handleConfirmDelete = useCallback(async () => {
     setShowDeleteConfirm(false);
     try {
-      // Delete videos using videoApi
       for (const videoId of selectedVideos) {
         await videoApi.deleteVideo(videoId);
         removeVideoFromList(videoId);
@@ -458,8 +240,8 @@ export function VideoLibrary({
 
   // Render grid view
   const renderGridView = () => (
-    <div style={styles.grid}>
-      {videos.map((video) => (
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+      {videos.map((video: VideoItem) => (
         <VideoCard
           key={video.id}
           video={video}
@@ -474,47 +256,40 @@ export function VideoLibrary({
 
   // Render list view
   const renderListView = () => (
-    <div style={styles.list}>
-      {videos.map((video) => (
+    <div className="flex flex-col gap-3">
+      {videos.map((video: VideoItem) => (
         <div
           key={video.id}
-          style={{
-            ...styles.listCard,
-            borderColor: selectedVideos.has(video.id)
-              ? 'var(--accent)'
-              : 'var(--video-border)',
-          }}
+          className={`flex gap-4 p-3 bg-ak-surface-elevated rounded-xl cursor-pointer transition-colors border ${
+            selectedVideos.has(video.id)
+              ? 'border-ak-brand-primary'
+              : 'border-ak-border-default hover:border-ak-brand-primary/50'
+          }`}
           onClick={() => onVideoClick?.(video)}
           role="button"
           tabIndex={0}
         >
-          <div style={styles.listThumbnail}>
+          {/* Thumbnail */}
+          <div className="w-[160px] h-[90px] rounded-lg overflow-hidden flex-shrink-0 bg-ak-surface-subtle">
             {video.thumbnailUrl ? (
               <img
                 src={video.thumbnailUrl}
                 alt={video.title}
-                style={styles.listThumbnailImg}
+                className="w-full h-full object-cover"
               />
             ) : (
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--text-tertiary)',
-                }}
-              >
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
-                </svg>
+              <div className="w-full h-full flex items-center justify-center text-ak-text-tertiary">
+                <Video size={32} />
               </div>
             )}
           </div>
-          <div style={styles.listContent}>
-            <SubSectionTitle style={styles.listTitle}>{video.title}</SubSectionTitle>
-            <div style={styles.listMeta}>
+
+          {/* Content */}
+          <div className="flex-1 flex flex-col justify-center min-w-0">
+            <SubSectionTitle className="m-0 text-base font-semibold text-ak-text-primary overflow-hidden text-ellipsis whitespace-nowrap">
+              {video.title}
+            </SubSectionTitle>
+            <div className="flex flex-wrap gap-3 mt-1 text-[13px] text-ak-text-secondary">
               {video.category && <span>{video.category}</span>}
               {video.viewAngle && <span>{video.viewAngle}</span>}
               {video.duration && (
@@ -531,7 +306,9 @@ export function VideoLibrary({
               </span>
             </div>
           </div>
-          <div style={styles.listActions}>
+
+          {/* Checkbox */}
+          <div className="flex items-center gap-2">
             <input
               type="checkbox"
               checked={selectedVideos.has(video.id)}
@@ -541,6 +318,7 @@ export function VideoLibrary({
               }}
               onClick={(e) => e.stopPropagation()}
               aria-label={`Velg ${video.title}`}
+              className="w-5 h-5 accent-ak-brand-primary"
             />
           </div>
         </div>
@@ -549,16 +327,13 @@ export function VideoLibrary({
   );
 
   return (
-    <div className={className} style={{ ...styles.container, ...style }}>
+    <div className={`flex flex-col gap-4 p-4 ${className || ''}`} style={style}>
       {/* Header */}
       <PageHeader
         title="Videobibliotek"
         subtitle="Se og analyser dine sving-videoer"
         actions={
-          <Button
-            onClick={onUploadClick}
-            leftIcon={<Upload size={18} />}
-          >
+          <Button onClick={onUploadClick} leftIcon={<Upload size={18} />}>
             Last opp video
           </Button>
         }
@@ -571,36 +346,36 @@ export function VideoLibrary({
         onFilterChange={handleFilterChange}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
-        players={players}
+        players={players as Array<{ id: string; name: string }>}
         showPlayerFilter={showPlayerFilter && isCoach}
         resultCount={loading ? undefined : videos.length}
       />
 
       {/* Bulk actions bar */}
       {selectedVideos.size > 0 && (
-        <div style={styles.bulkActionsBar}>
-          <span style={styles.bulkCount}>
+        <div className="flex items-center gap-4 px-4 py-3 bg-ak-brand-primary rounded-xl text-white">
+          <span className="text-sm font-semibold">
             {selectedVideos.size} valgt
           </span>
-          <div style={styles.bulkActions}>
+          <div className="flex gap-2 ml-auto">
             {selectedVideos.size >= 2 && onCompareClick && (
               <button
-                style={styles.bulkButton}
+                className="flex items-center gap-1 px-3 py-1.5 bg-white/20 text-white border-none rounded-lg text-[13px] font-medium cursor-pointer hover:bg-white/30"
                 onClick={handleCompareSelected}
               >
-                <CompareIcon />
+                <BarChart2 size={16} />
                 Sammenlign
               </button>
             )}
             <button
-              style={{ ...styles.bulkButton, backgroundColor: 'var(--error-muted)' }}
+              className="flex items-center gap-1 px-3 py-1.5 bg-ak-status-error/80 text-white border-none rounded-lg text-[13px] font-medium cursor-pointer hover:bg-ak-status-error"
               onClick={handleDeleteSelected}
             >
-              <DeleteIcon />
+              <Trash2 size={16} />
               Slett
             </button>
             <button
-              style={styles.cancelButton}
+              className="px-3 py-1.5 bg-transparent text-white border border-white/30 rounded-lg text-[13px] cursor-pointer hover:bg-white/10"
               onClick={handleClearSelection}
             >
               Avbryt
@@ -611,8 +386,8 @@ export function VideoLibrary({
 
       {/* Content */}
       {loading ? (
-        <div style={styles.loadingContainer}>
-          <div style={styles.spinner} />
+        <div className="flex items-center justify-center py-8">
+          <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
         </div>
       ) : error ? (
         <StateCard
@@ -636,10 +411,7 @@ export function VideoLibrary({
           title="Ingen videoer ennå"
           description="Last opp din første video for å begynne å analysere svingen din."
           action={
-            <Button
-              leftIcon={<Upload size={16} />}
-              onClick={onUploadClick}
-            >
+            <Button leftIcon={<Upload size={16} />} onClick={onUploadClick}>
               Last opp video
             </Button>
           }
@@ -662,13 +434,6 @@ export function VideoLibrary({
         </>
       )}
 
-      {/* Spinner animation */}
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-
       {/* Delete confirmation modal */}
       <Modal
         isOpen={showDeleteConfirm}
@@ -677,22 +442,16 @@ export function VideoLibrary({
         size="sm"
         footer={
           <>
-            <Button
-              variant="ghost"
-              onClick={() => setShowDeleteConfirm(false)}
-            >
+            <Button variant="ghost" onClick={() => setShowDeleteConfirm(false)}>
               Avbryt
             </Button>
-            <Button
-              variant="destructive"
-              onClick={handleConfirmDelete}
-            >
+            <Button variant="destructive" onClick={handleConfirmDelete}>
               Slett {selectedVideos.size} {selectedVideos.size === 1 ? 'video' : 'videoer'}
             </Button>
           </>
         }
       >
-        <p style={{ margin: 0, color: 'var(--color-text-secondary)' }}>
+        <p className="m-0 text-ak-text-secondary">
           Er du sikker på at du vil slette {selectedVideos.size} {selectedVideos.size === 1 ? 'video' : 'videoer'}?
           Denne handlingen kan ikke angres.
         </p>

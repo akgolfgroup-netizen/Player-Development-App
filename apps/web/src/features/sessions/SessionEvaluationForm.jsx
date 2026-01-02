@@ -1,13 +1,13 @@
 /**
- * SessionEvaluationForm - Evaluering av treningsøkt
+ * AK Golf Academy - Session Evaluation Form
+ * Design System v3.0 - Premium Light
  *
  * Samler evalueringsdata etter fullført økt.
  * Inkluderer: fokus, teknisk, energi, mental, pre-shot rutine, tekniske cues
  *
- * Design: AK Golf Academy Design System v3.0
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React, { useState, useEffect } from 'react';
-// UiCanon: CSS variables
 import { Check, X, ChevronLeft, Clock, Target, Zap, Brain } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 
@@ -20,59 +20,38 @@ import Button from '../../ui/primitives/Button';
  */
 function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel, highLabel }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-        {Icon && <Icon size={18} color={'var(--accent)'} />}
-        <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)' }}>
+    <div className="mb-6">
+      <div className="flex items-center gap-2 mb-1">
+        {Icon && <Icon size={18} className="text-ak-brand-primary" />}
+        <span className="text-[17px] font-semibold text-ak-text-primary">
           {label}
         </span>
       </div>
       {description && (
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+        <span className="block text-xs text-ak-text-secondary mb-2">
           {description}
         </span>
       )}
-      <div
-        style={{
-          display: 'flex',
-          gap: '4px',
-          backgroundColor: 'var(--bg-tertiary)',
-          borderRadius: 'var(--radius-md)',
-          padding: '8px',
-        }}
-      >
+      <div className="flex gap-1 bg-ak-surface-subtle rounded-lg p-2">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((rating) => (
           <button
             key={rating}
             onClick={() => onChange(rating)}
-            style={{
-              flex: 1,
-              padding: `${'8px'} 0`,
-              backgroundColor: value === rating ? 'var(--accent)' : 'transparent',
-              color: value === rating ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              cursor: 'pointer',
-              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-              fontWeight: value === rating ? 600 : 400,
-              transition: 'all 0.15s ease',
-            }}
+            className={`flex-1 py-2 border-none rounded cursor-pointer text-xs transition-all duration-150 ${
+              value === rating
+                ? 'bg-ak-brand-primary text-white font-semibold'
+                : 'bg-transparent text-ak-text-primary font-medium'
+            }`}
           >
             {rating}
           </button>
         ))}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '4px',
-        }}
-      >
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+      <div className="flex justify-between mt-1">
+        <span className="text-xs text-ak-text-secondary">
           {lowLabel || '1'}
         </span>
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <span className="text-xs text-ak-text-secondary">
           {highLabel || '10'}
         </span>
       </div>
@@ -84,48 +63,47 @@ function RatingScale({ label, description, value, onChange, icon: Icon, lowLabel
  * Pre-shot routine selector (yes/partial/no)
  */
 function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShotCountChange, onTotalShotsChange }) {
-  const options = [
-    { value: 'yes', label: 'Ja', color: 'var(--success)' },
-    { value: 'partial', label: 'Delvis', color: 'var(--warning)' },
-    { value: 'no', label: 'Nei', color: 'var(--error)' },
-  ];
+  const getOptionClasses = (optionValue) => {
+    const isSelected = value === optionValue;
+    const baseClasses = 'flex-1 p-4 border-none rounded-lg cursor-pointer text-xs transition-all duration-150';
+
+    if (!isSelected) {
+      return `${baseClasses} bg-ak-surface-subtle text-ak-text-primary font-medium`;
+    }
+
+    switch (optionValue) {
+      case 'yes': return `${baseClasses} bg-ak-status-success text-white font-semibold`;
+      case 'partial': return `${baseClasses} bg-ak-status-warning text-white font-semibold`;
+      case 'no': return `${baseClasses} bg-ak-status-error text-white font-semibold`;
+      default: return `${baseClasses} bg-ak-surface-subtle text-ak-text-primary font-medium`;
+    }
+  };
 
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
+    <div className="mb-6">
+      <span className="block text-[17px] font-semibold text-ak-text-primary mb-1">
         Konsistent pre-shot rutine?
       </span>
-      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+      <span className="block text-xs text-ak-text-secondary mb-2">
         Fulgte du pre-shot rutinen din konsekvent?
       </span>
 
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-        {options.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => onChange(option.value)}
-            style={{
-              flex: 1,
-              padding: '16px',
-              backgroundColor: value === option.value ? option.color : 'var(--bg-tertiary)',
-              color: value === option.value ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-              fontWeight: value === option.value ? 600 : 400,
-              transition: 'all 0.15s ease',
-            }}
-          >
-            {option.label}
-          </button>
-        ))}
+      <div className="flex gap-2 mb-4">
+        <button onClick={() => onChange('yes')} className={getOptionClasses('yes')}>
+          Ja
+        </button>
+        <button onClick={() => onChange('partial')} className={getOptionClasses('partial')}>
+          Delvis
+        </button>
+        <button onClick={() => onChange('no')} className={getOptionClasses('no')}>
+          Nei
+        </button>
       </div>
 
       {/* Shot count inputs */}
-      <div style={{ display: 'flex', gap: '16px' }}>
-        <div style={{ flex: 1 }}>
-          <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+      <div className="flex gap-4">
+        <div className="flex-1">
+          <label className="block text-xs text-ak-text-secondary mb-1">
             Slag med rutine
           </label>
           <input
@@ -134,18 +112,11 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
             value={shotCount || ''}
             onChange={(e) => onShotCountChange(parseInt(e.target.value) || 0)}
             placeholder="0"
-            style={{
-              width: '100%',
-              padding: '8px',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '15px', lineHeight: '20px',
-            }}
+            className="w-full p-2 bg-ak-surface-subtle border-none rounded text-[15px] text-ak-text-primary"
           />
         </div>
-        <div style={{ flex: 1 }}>
-          <label style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+        <div className="flex-1">
+          <label className="block text-xs text-ak-text-secondary mb-1">
             Totalt slag
           </label>
           <input
@@ -154,25 +125,18 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
             value={totalShots || ''}
             onChange={(e) => onTotalShotsChange(parseInt(e.target.value) || 0)}
             placeholder="0"
-            style={{
-              width: '100%',
-              padding: '8px',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '15px', lineHeight: '20px',
-            }}
+            className="w-full p-2 bg-ak-surface-subtle border-none rounded text-[15px] text-ak-text-primary"
           />
         </div>
       </div>
 
       {/* Percentage display */}
       {totalShots > 0 && shotCount >= 0 && (
-        <div style={{ marginTop: '8px', textAlign: 'center' }}>
-          <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--accent)' }}>
+        <div className="mt-2 text-center">
+          <span className="text-[17px] font-semibold text-ak-brand-primary">
             {Math.round((shotCount / totalShots) * 100)}%
           </span>
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginLeft: '4px' }}>
+          <span className="text-xs text-ak-text-secondary ml-1">
             konsistens
           </span>
         </div>
@@ -186,34 +150,26 @@ function PreShotRoutineSelector({ value, onChange, shotCount, totalShots, onShot
  */
 function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCustomCueChange }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
+    <div className="mb-6">
+      <span className="block text-[17px] font-semibold text-ak-text-primary mb-1">
         Tekniske cues brukt
       </span>
-      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+      <span className="block text-xs text-ak-text-secondary mb-2">
         Velg cues du fokuserte på i dag
       </span>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+      <div className="flex flex-wrap gap-2 mb-4">
         {cues.map((cue) => {
           const isSelected = selectedCues.includes(cue);
           return (
             <button
               key={cue}
               onClick={() => onToggle(cue)}
-              style={{
-                padding: `${'4px'} ${'16px'}`,
-                backgroundColor: isSelected ? 'var(--accent)' : 'var(--bg-tertiary)',
-                color: isSelected ? 'var(--bg-primary)' : 'var(--text-primary)',
-                border: 'none',
-                borderRadius: '9999px',
-                cursor: 'pointer',
-                fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                transition: 'all 0.15s ease',
-              }}
+              className={`py-1 px-4 border-none rounded-full cursor-pointer text-xs font-medium flex items-center gap-1 transition-all duration-150 ${
+                isSelected
+                  ? 'bg-ak-brand-primary text-white'
+                  : 'bg-ak-surface-subtle text-ak-text-primary'
+              }`}
             >
               {isSelected && <Check size={14} />}
               {cue}
@@ -228,14 +184,7 @@ function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCust
         value={customCue || ''}
         onChange={(e) => onCustomCueChange(e.target.value)}
         placeholder="Egen cue..."
-        style={{
-          width: '100%',
-          padding: '8px',
-          backgroundColor: 'var(--bg-tertiary)',
-          border: 'none',
-          borderRadius: 'var(--radius-sm)',
-          fontSize: '15px', lineHeight: '20px',
-        }}
+        className="w-full p-2 bg-ak-surface-subtle border-none rounded text-[15px] text-ak-text-primary"
       />
     </div>
   );
@@ -246,12 +195,12 @@ function TechnicalCuesSelector({ cues, selectedCues, onToggle, customCue, onCust
  */
 function TextAreaField({ label, description, value, onChange, placeholder }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>
+    <div className="mb-6">
+      <span className="block text-[17px] font-semibold text-ak-text-primary mb-1">
         {label}
       </span>
       {description && (
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+        <span className="block text-xs text-ak-text-secondary mb-2">
           {description}
         </span>
       )}
@@ -259,16 +208,7 @@ function TextAreaField({ label, description, value, onChange, placeholder }) {
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        style={{
-          width: '100%',
-          minHeight: '80px',
-          padding: '16px',
-          backgroundColor: 'var(--bg-tertiary)',
-          border: 'none',
-          borderRadius: 'var(--radius-md)',
-          resize: 'vertical',
-          fontSize: '15px', lineHeight: '20px',
-        }}
+        className="w-full min-h-[80px] p-4 bg-ak-surface-subtle border-none rounded-lg resize-y text-[15px] text-ak-text-primary"
       />
     </div>
   );
@@ -279,16 +219,10 @@ function TextAreaField({ label, description, value, onChange, placeholder }) {
  */
 function SectionDivider({ title }) {
   return (
-    <div style={{ marginTop: '32px', marginBottom: '24px' }}>
-      <div
-        style={{
-          height: '1px',
-          backgroundColor: 'var(--border-default)',
-          marginBottom: title ? '16px' : 0,
-        }}
-      />
+    <div className="mt-8 mb-6">
+      <div className={`h-px bg-ak-border-default ${title ? 'mb-4' : ''}`} />
       {title && (
-        <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        <span className="text-xs font-medium text-ak-text-secondary uppercase tracking-wide">
           {title}
         </span>
       )}
@@ -391,48 +325,26 @@ export default function SessionEvaluationForm({
   const hasMinimumData = evaluationFocus > 0 || evaluationTechnical > 0 || evaluationEnergy > 0 || evaluationMental > 0;
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        minHeight: '100vh',
-        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
-      }}
-    >
+    <div className="bg-ak-surface-base min-h-screen font-sans">
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--accent)',
-          color: 'var(--bg-primary)',
-          padding: '24px',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Button variant="ghost" onClick={onCancel} style={{ color: 'var(--bg-primary)', padding: '4px' }}>
+      <div className="bg-ak-brand-primary text-white p-6 sticky top-0 z-10">
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" onClick={onCancel} className="text-white p-1">
             <ChevronLeft size={24} />
           </Button>
-          <span style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700 }}>
+          <span className="text-[22px] font-bold">
             Evaluer Okt
           </span>
-          <div style={{ width: 40 }} /> {/* Spacer for centering */}
+          <div className="w-10" /> {/* Spacer for centering */}
         </div>
 
         {/* Session info */}
         {session && (
-          <div
-            style={{
-              marginTop: '16px',
-              padding: '16px',
-              backgroundColor: 'rgba(255,255,255,0.1)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <div style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600 }}>
+          <div className="mt-4 p-4 bg-white/10 rounded-lg">
+            <div className="text-[17px] font-semibold">
               {session.focusArea || session.sessionType}
             </div>
-            <div style={{ fontSize: '12px', lineHeight: '16px', opacity: 0.8, marginTop: '4px' }}>
+            <div className="text-xs opacity-80 mt-1">
               {session.duration} min | {session.learningPhase} | {session.period}
             </div>
           </div>
@@ -440,7 +352,7 @@ export default function SessionEvaluationForm({
       </div>
 
       {/* Form content */}
-      <div style={{ padding: '24px' }}>
+      <div className="p-6">
         {/* Ratings Section */}
         <SectionDivider title="Vurdering" />
 
@@ -534,14 +446,14 @@ export default function SessionEvaluationForm({
         />
 
         {/* Action buttons */}
-        <div style={{ marginTop: '32px' }}>
+        <div className="mt-8">
           <Button
             variant="primary"
             onClick={handleComplete}
             disabled={isLoading}
             loading={isLoading}
             leftIcon={<Check size={20} />}
-            style={{ width: '100%', padding: '16px', marginBottom: '16px', fontSize: '17px', fontWeight: 600 }}
+            className="w-full p-4 mb-4 text-[17px] font-semibold"
           >
             Fullfør økt
           </Button>
@@ -551,7 +463,7 @@ export default function SessionEvaluationForm({
             onClick={handleAbandon}
             disabled={isLoading}
             leftIcon={<X size={16} />}
-            style={{ width: '100%', color: 'var(--error)', borderColor: 'var(--error)' }}
+            className="w-full text-ak-status-error border-ak-status-error"
           >
             Avbryt okt
           </Button>
@@ -559,28 +471,14 @@ export default function SessionEvaluationForm({
 
         {/* Auto-save indicator */}
         {autoSaveEnabled && hasMinimumData && (
-          <div
-            style={{
-              marginTop: '24px',
-              textAlign: 'center',
-              fontSize: '12px', lineHeight: '16px',
-              color: 'var(--text-secondary)',
-            }}
-          >
+          <div className="mt-6 text-center text-xs text-ak-text-secondary">
             Lagres automatisk
           </div>
         )}
 
         {/* Info box */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-tertiary)',
-            borderRadius: 'var(--radius-md)',
-            padding: '16px',
-            marginTop: '32px',
-          }}
-        >
-          <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <div className="bg-ak-surface-subtle rounded-lg p-4 mt-8">
+          <span className="text-xs text-ak-text-secondary">
             Evalueringen hjelper deg og treneren din med a folge utviklingen over tid.
             Okten auto-fullføres etter 15 minutter uten aktivitet.
           </span>

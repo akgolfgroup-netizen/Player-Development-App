@@ -1,3 +1,9 @@
+/**
+ * CoachSettings.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 // @ts-nocheck
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useCallback } from 'react';
@@ -18,11 +24,34 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { coachesAPI, settingsAPI } from '../../services/api';
-import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import StateCard from '../../ui/composites/StateCard';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// COMPONENTS
+// ============================================================================
+
+interface ToggleSwitchProps {
+  enabled: boolean;
+  onToggle: () => void;
+}
+
+const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ enabled, onToggle }) => (
+  <button
+    onClick={onToggle}
+    className={`w-12 h-[26px] rounded-[13px] border-none relative cursor-pointer transition-colors ${
+      enabled ? 'bg-ak-brand-primary' : 'bg-ak-border-default'
+    }`}
+  >
+    <div
+      className={`w-[22px] h-[22px] rounded-full bg-white absolute top-0.5 shadow transition-all ${
+        enabled ? 'left-6' : 'left-0.5'
+      }`}
+    />
+  </button>
+);
 
 interface CoachProfile {
   name: string;
@@ -162,13 +191,7 @@ export const CoachSettings: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div style={{
-        backgroundColor: 'var(--bg-secondary)',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <div className="bg-ak-surface-subtle min-h-screen flex items-center justify-center">
         <StateCard variant="loading" title="Laster innstillinger..." />
       </div>
     );
@@ -182,112 +205,69 @@ export const CoachSettings: React.FC = () => {
   ];
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <div className="bg-ak-surface-subtle min-h-screen">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Innstillinger"
         subtitle="Administrer din profil og preferanser"
       />
 
-      <div style={{ padding: '0 24px 24px' }}>
-
-      <div style={{ display: 'flex', gap: '24px' }}>
-        {/* Sidebar Navigation */}
-        <div style={{
-          width: '240px',
-          flexShrink: 0
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '16px',
-            border: `1px solid ${'var(--border-default)'}`,
-            overflow: 'hidden'
-          }}>
-            {tabs.map(tab => {
-              const isActive = activeTab === tab.key;
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.key}
-                  onClick={() => setActiveTab(tab.key as typeof activeTab)}
-                  style={{
-                    width: '100%',
-                    padding: '14px 16px',
-                    border: 'none',
-                    backgroundColor: isActive ? 'rgba(var(--accent-rgb), 0.1)' : 'transparent',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    cursor: 'pointer',
-                    borderLeft: isActive ? `3px solid ${'var(--accent)'}` : '3px solid transparent',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  <Icon
-                    size={18}
-                    color={isActive ? 'var(--accent)' : 'var(--text-secondary)'}
-                  />
-                  <span style={{
-                    fontSize: '14px',
-                    fontWeight: isActive ? '600' : '500',
-                    color: isActive ? 'var(--accent)' : 'var(--text-secondary)'
-                  }}>
-                    {tab.label}
-                  </span>
-                  <ChevronRight
-                    size={16}
-                    color={'var(--text-tertiary)'}
-                    style={{ marginLeft: 'auto', opacity: isActive ? 1 : 0 }}
-                  />
-                </button>
-              );
-            })}
+      <div className="px-6 pb-6">
+        <div className="flex gap-6">
+          {/* Sidebar Navigation */}
+          <div className="w-60 flex-shrink-0">
+            <div className="bg-ak-surface-base rounded-2xl border border-ak-border-default overflow-hidden">
+              {tabs.map(tab => {
+                const isActive = activeTab === tab.key;
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => setActiveTab(tab.key as typeof activeTab)}
+                    className={`w-full py-3.5 px-4 border-none flex items-center gap-3 cursor-pointer transition-all ${
+                      isActive
+                        ? 'bg-ak-brand-primary/10 border-l-[3px] border-l-ak-brand-primary'
+                        : 'bg-transparent border-l-[3px] border-l-transparent'
+                    }`}
+                  >
+                    <Icon
+                      size={18}
+                      className={isActive ? 'text-ak-brand-primary' : 'text-ak-text-secondary'}
+                    />
+                    <span className={`text-sm ${isActive ? 'font-semibold text-ak-brand-primary' : 'font-medium text-ak-text-secondary'}`}>
+                      {tab.label}
+                    </span>
+                    <ChevronRight
+                      size={16}
+                      className={`text-ak-text-secondary ml-auto ${isActive ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        {/* Content Area */}
-        <div style={{ flex: 1 }}>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '16px',
-            border: `1px solid ${'var(--border-default)'}`,
-            padding: '24px'
-          }}>
+          {/* Content Area */}
+          <div className="flex-1">
+            <div className="bg-ak-surface-base rounded-2xl border border-ak-border-default p-6">
             {/* Profile Tab */}
             {activeTab === 'profile' && (
               <div>
-                <SectionTitle style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  margin: '0 0 20px 0'
-                }}>
+                <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-5">
                   Profilinformasjon
                 </SectionTitle>
 
                 {/* Avatar */}
-                <div style={{ marginBottom: '24px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{
-                      width: '80px',
-                      height: '80px',
-                      borderRadius: '50%',
-                      backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '28px',
-                      fontWeight: '600',
-                      color: 'var(--accent)'
-                    }}>
+                <div className="mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-20 h-20 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-[28px] font-semibold text-ak-brand-primary">
                       {profile.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <Button variant="secondary" style={{ marginBottom: '6px' }}>
-                        <Camera size={14} />
+                      <Button variant="secondary" className="mb-1.5" leftIcon={<Camera size={14} />}>
                         Last opp bilde
                       </Button>
-                      <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
+                      <p className="text-xs text-ak-text-secondary m-0">
                         JPG, PNG maks 2MB
                       </p>
                     </div>
@@ -295,134 +275,67 @@ export const CoachSettings: React.FC = () => {
                 </div>
 
                 {/* Form Fields */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      color: 'var(--text-secondary)',
-                      marginBottom: '6px'
-                    }}>
+                    <label className="block text-[13px] font-medium text-ak-text-secondary mb-1.5">
                       Fullt navn
                     </label>
                     <input
                       type="text"
                       value={profile.name}
                       onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        fontSize: '14px',
-                        color: 'var(--text-primary)'
-                      }}
+                      className="w-full py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm text-ak-text-primary"
                     />
                   </div>
                   <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      color: 'var(--text-secondary)',
-                      marginBottom: '6px'
-                    }}>
+                    <label className="block text-[13px] font-medium text-ak-text-secondary mb-1.5">
                       Tittel
                     </label>
                     <input
                       type="text"
                       value={profile.title}
                       onChange={(e) => setProfile({ ...profile, title: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        fontSize: '14px',
-                        color: 'var(--text-primary)'
-                      }}
+                      className="w-full py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm text-ak-text-primary"
                     />
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      color: 'var(--text-secondary)',
-                      marginBottom: '6px'
-                    }}>
-                      <Mail size={12} style={{ marginRight: '6px' }} />
+                    <label className="block text-[13px] font-medium text-ak-text-secondary mb-1.5">
+                      <Mail size={12} className="mr-1.5 inline" />
                       E-post
                     </label>
                     <input
                       type="email"
                       value={profile.email}
                       onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        fontSize: '14px',
-                        color: 'var(--text-primary)'
-                      }}
+                      className="w-full py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm text-ak-text-primary"
                     />
                   </div>
                   <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      color: 'var(--text-secondary)',
-                      marginBottom: '6px'
-                    }}>
-                      <Phone size={12} style={{ marginRight: '6px' }} />
+                    <label className="block text-[13px] font-medium text-ak-text-secondary mb-1.5">
+                      <Phone size={12} className="mr-1.5 inline" />
                       Telefon
                     </label>
                     <input
                       type="tel"
                       value={profile.phone}
                       onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        fontSize: '14px',
-                        color: 'var(--text-primary)'
-                      }}
+                      className="w-full py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm text-ak-text-primary"
                     />
                   </div>
                 </div>
 
-                <div style={{ marginBottom: '16px' }}>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '13px',
-                    fontWeight: '500',
-                    color: 'var(--text-secondary)',
-                    marginBottom: '6px'
-                  }}>
+                <div className="mb-4">
+                  <label className="block text-[13px] font-medium text-ak-text-secondary mb-1.5">
                     Bio / Beskrivelse
                   </label>
                   <textarea
                     value={profile.bio}
                     onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
                     rows={4}
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      borderRadius: '8px',
-                      border: `1px solid ${'var(--border-default)'}`,
-                      fontSize: '14px',
-                      color: 'var(--text-primary)',
-                      resize: 'vertical',
-                      fontFamily: 'inherit'
-                    }}
+                    className="w-full py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm text-ak-text-primary resize-y font-inherit"
                   />
                 </div>
               </div>
@@ -431,24 +344,12 @@ export const CoachSettings: React.FC = () => {
             {/* Notifications Tab */}
             {activeTab === 'notifications' && (
               <div>
-                <SectionTitle style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  margin: '0 0 20px 0'
-                }}>
+                <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-5">
                   Varslingsinnstillinger
                 </SectionTitle>
 
-                <div style={{ marginBottom: '24px' }}>
-                  <SubSectionTitle style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 12px 0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
+                <div className="mb-6">
+                  <SubSectionTitle className="text-sm font-semibold text-ak-text-secondary m-0 mb-3 uppercase tracking-wide">
                     Aktivitetsvarsler
                   </SubSectionTitle>
                   {[
@@ -458,113 +359,48 @@ export const CoachSettings: React.FC = () => {
                     { key: 'tournamentResults', label: 'Turneringsresultater', desc: 'Når spillere registrerer resultater' },
                     { key: 'systemUpdates', label: 'Systemoppdateringer', desc: 'Nyheter og oppdateringer fra plattformen' }
                   ].map(item => (
-                    <div key={item.key} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '12px 0',
-                      borderBottom: `1px solid ${'var(--border-default)'}`
-                    }}>
+                    <div key={item.key} className="flex items-center justify-between py-3 border-b border-ak-border-default">
                       <div>
-                        <p style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', margin: 0 }}>
+                        <p className="text-sm font-medium text-ak-text-primary m-0">
                           {item.label}
                         </p>
-                        <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
+                        <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
                           {item.desc}
                         </p>
                       </div>
-                      <button
-                        onClick={() => setNotifications({
+                      <ToggleSwitch
+                        enabled={!!notifications[item.key as keyof NotificationSettings]}
+                        onToggle={() => setNotifications({
                           ...notifications,
                           [item.key]: !notifications[item.key as keyof NotificationSettings]
                         })}
-                        style={{
-                          width: '48px',
-                          height: '26px',
-                          borderRadius: '13px',
-                          border: 'none',
-                          backgroundColor: notifications[item.key as keyof NotificationSettings]
-                            ? 'var(--accent)'
-                            : 'var(--border-default)',
-                          position: 'relative',
-                          cursor: 'pointer',
-                          transition: 'background-color 0.2s ease'
-                        }}
-                      >
-                        <div style={{
-                          width: '22px',
-                          height: '22px',
-                          borderRadius: '50%',
-                          backgroundColor: 'white',
-                          position: 'absolute',
-                          top: '2px',
-                          left: notifications[item.key as keyof NotificationSettings] ? '24px' : '2px',
-                          transition: 'left 0.2s ease',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
-                        }} />
-                      </button>
+                      />
                     </div>
                   ))}
                 </div>
 
                 <div>
-                  <SubSectionTitle style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 12px 0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
+                  <SubSectionTitle className="text-sm font-semibold text-ak-text-secondary m-0 mb-3 uppercase tracking-wide">
                     Leveringsmetode
                   </SubSectionTitle>
                   {[
                     { key: 'emailNotifications', label: 'E-postvarsler', icon: Mail },
                     { key: 'pushNotifications', label: 'Push-varsler', icon: Bell }
                   ].map(item => (
-                    <div key={item.key} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '12px 0',
-                      borderBottom: `1px solid ${'var(--border-default)'}`
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <item.icon size={18} color={'var(--text-secondary)'} />
-                        <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)' }}>
+                    <div key={item.key} className="flex items-center justify-between py-3 border-b border-ak-border-default">
+                      <div className="flex items-center gap-2.5">
+                        <item.icon size={18} className="text-ak-text-secondary" />
+                        <span className="text-sm font-medium text-ak-text-primary">
                           {item.label}
                         </span>
                       </div>
-                      <button
-                        onClick={() => setNotifications({
+                      <ToggleSwitch
+                        enabled={!!notifications[item.key as keyof NotificationSettings]}
+                        onToggle={() => setNotifications({
                           ...notifications,
                           [item.key]: !notifications[item.key as keyof NotificationSettings]
                         })}
-                        style={{
-                          width: '48px',
-                          height: '26px',
-                          borderRadius: '13px',
-                          border: 'none',
-                          backgroundColor: notifications[item.key as keyof NotificationSettings]
-                            ? 'var(--accent)'
-                            : 'var(--border-default)',
-                          position: 'relative',
-                          cursor: 'pointer',
-                          transition: 'background-color 0.2s ease'
-                        }}
-                      >
-                        <div style={{
-                          width: '22px',
-                          height: '22px',
-                          borderRadius: '50%',
-                          backgroundColor: 'white',
-                          position: 'absolute',
-                          top: '2px',
-                          left: notifications[item.key as keyof NotificationSettings] ? '24px' : '2px',
-                          transition: 'left 0.2s ease',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
-                        }} />
-                      </button>
+                      />
                     </div>
                   ))}
                 </div>
@@ -574,26 +410,15 @@ export const CoachSettings: React.FC = () => {
             {/* Display Tab */}
             {activeTab === 'display' && (
               <div>
-                <SectionTitle style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  margin: '0 0 20px 0'
-                }}>
+                <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-5">
                   Visningsinnstillinger
                 </SectionTitle>
 
-                <div style={{ marginBottom: '24px' }}>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '13px',
-                    fontWeight: '500',
-                    color: 'var(--text-secondary)',
-                    marginBottom: '10px'
-                  }}>
+                <div className="mb-6">
+                  <label className="block text-[13px] font-medium text-ak-text-secondary mb-2.5">
                     Tema
                   </label>
-                  <div style={{ display: 'flex', gap: '12px' }}>
+                  <div className="flex gap-3">
                     {[
                       { key: 'light', label: 'Lyst', icon: Sun },
                       { key: 'dark', label: 'Mørkt', icon: Moon },
@@ -604,32 +429,17 @@ export const CoachSettings: React.FC = () => {
                         <button
                           key={option.key}
                           onClick={() => setDisplay({ ...display, theme: option.key as DisplaySettings['theme'] })}
-                          style={{
-                            flex: 1,
-                            padding: '16px',
-                            borderRadius: '12px',
-                            border: isSelected
-                              ? `2px solid ${'var(--accent)'}`
-                              : `1px solid ${'var(--border-default)'}`,
-                            backgroundColor: isSelected
-                              ? 'rgba(var(--accent-rgb), 0.1)'
-                              : 'transparent',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '8px',
-                            cursor: 'pointer'
-                          }}
+                          className={`flex-1 p-4 rounded-xl flex flex-col items-center gap-2 cursor-pointer ${
+                            isSelected
+                              ? 'border-2 border-ak-brand-primary bg-ak-brand-primary/10'
+                              : 'border border-ak-border-default bg-transparent'
+                          }`}
                         >
                           <option.icon
                             size={24}
-                            color={isSelected ? 'var(--accent)' : 'var(--text-secondary)'}
+                            className={isSelected ? 'text-ak-brand-primary' : 'text-ak-text-secondary'}
                           />
-                          <span style={{
-                            fontSize: '14px',
-                            fontWeight: isSelected ? '600' : '500',
-                            color: isSelected ? 'var(--accent)' : 'var(--text-secondary)'
-                          }}>
+                          <span className={`text-sm ${isSelected ? 'font-semibold text-ak-brand-primary' : 'font-medium text-ak-text-secondary'}`}>
                             {option.label}
                           </span>
                         </button>
@@ -638,29 +448,15 @@ export const CoachSettings: React.FC = () => {
                   </div>
                 </div>
 
-                <div style={{ marginBottom: '24px' }}>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '13px',
-                    fontWeight: '500',
-                    color: 'var(--text-secondary)',
-                    marginBottom: '10px'
-                  }}>
-                    <Globe size={14} style={{ marginRight: '6px' }} />
+                <div className="mb-6">
+                  <label className="block text-[13px] font-medium text-ak-text-secondary mb-2.5">
+                    <Globe size={14} className="mr-1.5 inline" />
                     Språk
                   </label>
                   <select
                     value={display.language}
                     onChange={(e) => setDisplay({ ...display, language: e.target.value as DisplaySettings['language'] })}
-                    style={{
-                      width: '200px',
-                      padding: '10px 14px',
-                      borderRadius: '8px',
-                      border: `1px solid ${'var(--border-default)'}`,
-                      fontSize: '14px',
-                      color: 'var(--text-primary)',
-                      cursor: 'pointer'
-                    }}
+                    className="w-52 py-2.5 px-3.5 rounded-lg border border-ak-border-default text-sm text-ak-text-primary cursor-pointer"
                   >
                     <option value="no">Norsk</option>
                     <option value="en">English</option>
@@ -668,65 +464,29 @@ export const CoachSettings: React.FC = () => {
                 </div>
 
                 <div>
-                  <SubSectionTitle style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 12px 0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
+                  <SubSectionTitle className="text-sm font-semibold text-ak-text-secondary m-0 mb-3 uppercase tracking-wide">
                     Visningsalternativer
                   </SubSectionTitle>
                   {[
                     { key: 'compactView', label: 'Kompakt visning', desc: 'Vis mer innhold med mindre mellomrom' },
                     { key: 'showPlayerPhotos', label: 'Vis spillerbilder', desc: 'Vis profilbilder i lister' }
                   ].map(item => (
-                    <div key={item.key} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '12px 0',
-                      borderBottom: `1px solid ${'var(--border-default)'}`
-                    }}>
+                    <div key={item.key} className="flex items-center justify-between py-3 border-b border-ak-border-default">
                       <div>
-                        <p style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', margin: 0 }}>
+                        <p className="text-sm font-medium text-ak-text-primary m-0">
                           {item.label}
                         </p>
-                        <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '2px 0 0' }}>
+                        <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
                           {item.desc}
                         </p>
                       </div>
-                      <button
-                        onClick={() => setDisplay({
+                      <ToggleSwitch
+                        enabled={!!display[item.key as keyof DisplaySettings]}
+                        onToggle={() => setDisplay({
                           ...display,
                           [item.key]: !display[item.key as keyof DisplaySettings]
                         })}
-                        style={{
-                          width: '48px',
-                          height: '26px',
-                          borderRadius: '13px',
-                          border: 'none',
-                          backgroundColor: display[item.key as keyof DisplaySettings]
-                            ? 'var(--accent)'
-                            : 'var(--border-default)',
-                          position: 'relative',
-                          cursor: 'pointer',
-                          transition: 'background-color 0.2s ease'
-                        }}
-                      >
-                        <div style={{
-                          width: '22px',
-                          height: '22px',
-                          borderRadius: '50%',
-                          backgroundColor: 'white',
-                          position: 'absolute',
-                          top: '2px',
-                          left: display[item.key as keyof DisplaySettings] ? '24px' : '2px',
-                          transition: 'left 0.2s ease',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
-                        }} />
-                      </button>
+                      />
                     </div>
                   ))}
                 </div>

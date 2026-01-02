@@ -1,9 +1,11 @@
 /**
- * BlockRatingModal - Kvalitetsvurdering etter fullført blokk
+ * AK Golf Academy - Block Rating Modal
+ * Design System v3.0 - Premium Light
  *
- * Vises når spiller fullfører en blokk.
- * Basert på: APP_FUNCTIONALITY.md Section 7.5
- * Design: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
+ * Quality rating after completing a training block.
+ * Based on: APP_FUNCTIONALITY.md Section 7.5
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React, { useState } from 'react';
 import Button from '../../ui/primitives/Button';
@@ -18,59 +20,35 @@ function formatTimeShort(seconds) {
 // Rating scale component
 function RatingScale({ label, value, onChange, icons, labels }) {
   return (
-    <div style={{ marginBottom: '24px' }}>
-      <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+    <div className="mb-6">
+      <span className="text-[15px] font-medium text-ak-text-primary block mb-2">
         {label}
       </span>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-md)',
-          padding: '16px',
-        }}
-      >
+      <div className="flex justify-between bg-ak-surface-subtle rounded-lg p-4">
         {[1, 2, 3, 4, 5].map((rating) => (
           <button
             key={rating}
             onClick={() => onChange(rating)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: '8px',
-              backgroundColor: value === rating ? 'var(--accent)' : 'transparent',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              cursor: 'pointer',
-              minWidth: '48px',
-            }}
+            className={`flex flex-col items-center p-2 border-none rounded cursor-pointer min-w-12 ${
+              value === rating ? 'bg-ak-brand-primary' : 'bg-transparent'
+            }`}
           >
-            <span style={{ fontSize: '24px' }}>{icons[rating - 1]}</span>
+            <span className="text-2xl">{icons[rating - 1]}</span>
             <span
-              style={{
-                fontSize: '12px', lineHeight: '16px',
-                color: value === rating ? 'var(--bg-primary)' : 'var(--text-secondary)',
-                marginTop: '4px',
-              }}
+              className={`text-xs mt-1 ${
+                value === rating ? 'text-white' : 'text-ak-text-secondary'
+              }`}
             >
               {rating}
             </span>
           </button>
         ))}
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '4px',
-        }}
-      >
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+      <div className="flex justify-between mt-1">
+        <span className="text-xs text-ak-text-secondary">
           {labels[0]}
         </span>
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <span className="text-xs text-ak-text-secondary">
           {labels[1]}
         </span>
       </div>
@@ -95,68 +73,31 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-        padding: '16px',
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '24px',
-          width: '100%',
-          maxWidth: '400px',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-        }}
-      >
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-4">
+      <div className="bg-ak-surface-base rounded-xl p-6 w-full max-w-[400px] max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span style={{ color: 'var(--success)', fontSize: '24px' }}>✓</span>
-            <span style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)' }}>
+        <div className="text-center mb-6">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="text-ak-status-success text-2xl">✓</span>
+            <span className="text-[22px] font-bold text-ak-text-primary">
               Blokk fullført
             </span>
           </div>
-          <div
-            style={{
-              height: '2px',
-              backgroundColor: 'var(--border-default)',
-              marginBottom: '16px',
-            }}
-          />
+          <div className="h-0.5 bg-ak-border-default mb-4" />
         </div>
 
         {/* Block summary */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: 'var(--radius-md)',
-            padding: '16px',
-            marginBottom: '24px',
-          }}
-        >
-          <div style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--accent)' }}>
+        <div className="bg-ak-surface-subtle rounded-lg p-4 mb-6">
+          <div className="text-[15px] font-medium text-ak-brand-primary">
             {block.exercise}: {block.focus}
           </div>
-          <div style={{ fontSize: '16px', lineHeight: '21px', fontWeight: 400, color: 'var(--text-secondary)' }}>
+          <div className="text-base text-ak-text-secondary">
             {block.trainingArea} • {reps} reps • {formatTimeShort(duration)}
           </div>
         </div>
 
         {/* Question */}
-        <div style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '24px', textAlign: 'center' }}>
+        <div className="text-xl font-semibold text-ak-text-primary mb-6 text-center">
           Hvordan gikk det?
         </div>
 
@@ -186,24 +127,15 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
         />
 
         {/* Note */}
-        <div style={{ marginBottom: '24px' }}>
-          <span style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
+        <div className="mb-6">
+          <span className="text-[15px] font-medium text-ak-text-primary block mb-2">
             Notat (valgfritt)
           </span>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Følte god kontakt på de siste 100 slagene..."
-            style={{
-              width: '100%',
-              minHeight: '80px',
-              padding: '16px',
-              backgroundColor: 'var(--bg-secondary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              resize: 'vertical',
-              fontSize: '16px', lineHeight: '21px', fontWeight: 400,
-            }}
+            className="w-full min-h-[80px] p-4 bg-ak-surface-subtle border-none rounded-lg resize-y text-base text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-brand-primary"
           />
         </div>
 
@@ -212,7 +144,7 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
           variant="primary"
           onClick={handleSubmit}
           disabled={quality === 0 || focus === 0 || intensity === 0}
-          style={{ width: '100%', marginBottom: '16px' }}
+          className="w-full mb-4"
         >
           Lagre og fortsett →
         </Button>
@@ -220,7 +152,7 @@ export default function BlockRatingModal({ block, duration, reps, onComplete, on
         <Button
           variant="ghost"
           onClick={onSkip}
-          style={{ width: '100%' }}
+          className="w-full"
         >
           Hopp over
         </Button>

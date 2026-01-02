@@ -166,10 +166,13 @@ export default function CoachAlertsPage({
     try {
       setLoading(true);
       const response = await coachesAPI.getAlerts();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const responseData = response.data?.data as any;
       const alertsData =
-        response.data?.data?.alerts || response.data?.data || response.data || [];
+        responseData?.alerts || responseData || response.data || [];
 
       if (Array.isArray(alertsData) && alertsData.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const transformedAlerts: Alert[] = alertsData.map(
           (a: {
             id: string;

@@ -1,14 +1,15 @@
 /**
- * ActiveSessionView - Aktiv Økt Under Trening
+ * AK Golf Academy - Active Session View
+ * Design System v3.0 - Premium Light
  *
- * Fokusert treningsvisning med timer og blokknavigasjon.
- * Basert på: APP_FUNCTIONALITY.md Section 7
- * Design: Blue Palette 01 (v3.0)
+ * Focused training view with timer and block navigation.
+ * Based on: APP_FUNCTIONALITY.md Section 7
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BlockRatingModal from './BlockRatingModal';
-import { tokens } from '../../design-tokens';
 import Button from '../../ui/primitives/Button';
 
 // Format time as HH:MM:SS
@@ -23,21 +24,12 @@ function formatTime(seconds) {
 function ProgressBar({ current, total, color }) {
   const percentage = (current / total) * 100;
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '8px',
-        backgroundColor: 'var(--border-default)',
-        borderRadius: '9999px',
-        overflow: 'hidden',
-      }}
-    >
+    <div className="w-full h-2 bg-ak-border-default rounded-full overflow-hidden">
       <div
+        className="h-full transition-all duration-300 ease-out"
         style={{
           width: `${percentage}%`,
-          height: '100%',
-          backgroundColor: color || 'var(--accent)',
-          transition: 'width 0.3s ease',
+          backgroundColor: color || 'var(--ak-brand-primary)',
         }}
       />
     </div>
@@ -47,107 +39,51 @@ function ProgressBar({ current, total, color }) {
 // Rep counter component
 function RepCounter({ current, target, onIncrement, onDecrement }) {
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: 'var(--radius-lg)',
-        padding: '24px',
-        textAlign: 'center',
-      }}
-    >
-      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+    <div className="bg-ak-surface-base rounded-xl p-6 text-center">
+      <span className="text-xs text-ak-text-secondary">
         Repetisjonsteller
       </span>
 
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '32px',
-          marginTop: '16px',
-        }}
-      >
+      <div className="flex items-center justify-center gap-8 mt-4">
         <button
           onClick={onDecrement}
-          style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-secondary)',
-            border: 'none',
-            fontSize: '24px',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-          }}
+          className="w-14 h-14 rounded-lg bg-ak-surface-subtle border-none text-2xl text-ak-brand-primary cursor-pointer hover:bg-ak-surface-base transition-colors"
         >
           −
         </button>
 
-        <span style={{ fontSize: '48px', fontWeight: 700, color: 'var(--text-primary)', fontSize: '48px' }}>
+        <span className="text-5xl font-bold text-ak-text-primary">
           {current}
         </span>
 
         <button
           onClick={onIncrement}
-          style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--accent)',
-            border: 'none',
-            fontSize: '24px',
-            color: 'var(--bg-primary)',
-            cursor: 'pointer',
-          }}
+          className="w-14 h-14 rounded-lg bg-ak-brand-primary border-none text-2xl text-white cursor-pointer hover:opacity-90 transition-opacity"
         >
           +
         </button>
       </div>
 
       {/* Quick add buttons */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '8px',
-          marginTop: '16px',
-        }}
-      >
+      <div className="flex justify-center gap-2 mt-4">
         <button
           onClick={() => onIncrement(10)}
-          style={{
-            padding: `${'8px'} ${'16px'}`,
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-secondary)',
-            border: 'none',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-          }}
+          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-brand-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
         >
           + 10
         </button>
         <button
           onClick={() => onIncrement(25)}
-          style={{
-            padding: `${'8px'} ${'16px'}`,
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'var(--bg-secondary)',
-            border: 'none',
-            color: 'var(--accent)',
-            cursor: 'pointer',
-            fontSize: '12px', lineHeight: '16px', fontWeight: 500,
-          }}
+          className="py-2 px-4 rounded-lg bg-ak-surface-subtle border-none text-ak-brand-primary cursor-pointer text-xs font-medium hover:bg-ak-surface-base transition-colors"
         >
           + 25
         </button>
       </div>
 
       {/* Progress */}
-      <div style={{ marginTop: '16px' }}>
+      <div className="mt-4">
         <ProgressBar current={current} total={target} />
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <span className="text-xs text-ak-text-secondary">
           {current} / {target} repetisjoner ({Math.round((current / target) * 100)}%)
         </span>
       </div>
@@ -157,49 +93,41 @@ function RepCounter({ current, target, onIncrement, onDecrement }) {
 
 // Block navigation chips
 function BlockNavigationChips({ blocks, currentIndex, completedIndices, onSelectBlock }) {
+  const getChipClasses = (index) => {
+    const isActive = index === currentIndex;
+    const isCompleted = completedIndices.includes(index);
+
+    if (isActive) {
+      return 'bg-ak-brand-primary text-white border-none';
+    }
+    if (isCompleted) {
+      return 'bg-ak-status-success text-white border-none';
+    }
+    return 'bg-ak-surface-base text-ak-text-primary border border-ak-border-default';
+  };
+
   return (
-    <div style={{ padding: '16px' }}>
-      <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block' }}>
+    <div className="p-4">
+      <span className="text-xs text-ak-text-secondary mb-2 block">
         Alle blokker
       </span>
-      <div
-        style={{
-          display: 'flex',
-          gap: '8px',
-          overflowX: 'auto',
-          paddingBottom: '8px',
-        }}
-      >
+      <div className="flex gap-2 overflow-x-auto pb-2">
         {blocks.map((block, index) => {
-          const isActive = index === currentIndex;
           const isCompleted = completedIndices.includes(index);
 
           return (
             <button
               key={index}
               onClick={() => onSelectBlock(index)}
-              style={{
-                minWidth: '64px',
-                padding: '8px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: isActive
-                  ? 'var(--accent)'
-                  : isCompleted
-                    ? 'var(--success)'
-                    : 'var(--bg-primary)',
-                border: isActive || isCompleted ? 'none' : '1px solid var(--border-default)',
-                color: isActive || isCompleted ? 'var(--bg-primary)' : 'var(--text-primary)',
-                cursor: 'pointer',
-                textAlign: 'center',
-              }}
+              className={`min-w-16 p-2 rounded-lg cursor-pointer text-center ${getChipClasses(index)}`}
             >
-              <div style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, fontWeight: 600 }}>
+              <div className="text-xs font-semibold">
                 {isCompleted ? '✓' : index + 1}
               </div>
-              <div style={{ fontSize: '12px', lineHeight: '16px' }}>
+              <div className="text-xs">
                 {block.duration}m
               </div>
-              <div style={{ fontSize: '12px', lineHeight: '16px', fontSize: '9px' }}>
+              <div className="text-[9px]">
                 {block.exercise.substring(0, 6)}
               </div>
             </button>
@@ -213,34 +141,20 @@ function BlockNavigationChips({ blocks, currentIndex, completedIndices, onSelect
 // Pause mode overlay
 function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
-    >
-      <span style={{ fontSize: '48px', marginBottom: '24px' }}>⏸️</span>
-      <span style={{ fontSize: '28px', lineHeight: '34px', fontWeight: 700, color: 'var(--bg-primary)', marginBottom: '8px' }}>
+    <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[1000]">
+      <span className="text-5xl mb-6">⏸️</span>
+      <span className="text-[28px] font-bold text-white mb-2">
         PAUSE
       </span>
-      <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
+      <span className="text-[15px] text-ak-text-secondary mb-6">
         Økten er pauset
       </span>
 
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <div style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
+      <div className="text-center mb-8">
+        <div className="text-sm text-ak-text-secondary">
           Total tid: {formatTime(totalTime)}
         </div>
-        <div style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-secondary)' }}>
+        <div className="text-sm text-ak-text-secondary">
           Pause: {formatTime(pauseTime)}
         </div>
       </div>
@@ -248,7 +162,7 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
       <Button
         variant="primary"
         onClick={onResume}
-        style={{ width: '200px', padding: '16px', marginBottom: '16px', fontSize: '20px', fontWeight: 600 }}
+        className="w-[200px] py-4 mb-4 text-xl font-semibold"
       >
         ▶️ Fortsett økt
       </Button>
@@ -256,7 +170,7 @@ function PauseOverlay({ totalTime, pauseTime, onResume, onEnd }) {
       <Button
         variant="secondary"
         onClick={onEnd}
-        style={{ width: '200px', padding: '16px', color: 'var(--error)', borderColor: 'var(--error)' }}
+        className="w-[200px] py-4 text-ak-status-error border-ak-status-error"
       >
         Avslutt økt
       </Button>
@@ -360,8 +274,8 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
 
   if (!session || !currentBlock) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+      <div className="p-6 text-center">
+        <span className="text-[15px] text-ak-text-secondary">
           Ingen økt aktiv
         </span>
       </div>
@@ -369,13 +283,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        minHeight: '100vh',
-        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
-      }}
-    >
+    <div className="bg-ak-surface-base min-h-screen font-sans">
       {/* Pause overlay */}
       {isPaused && (
         <PauseOverlay
@@ -408,16 +316,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
       )}
 
       {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '16px',
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: '1px solid var(--border-default)',
-        }}
-      >
+      <div className="flex justify-between items-center p-4 bg-ak-surface-base border-b border-ak-border-default">
         <Button variant="secondary" size="sm" onClick={togglePause}>
           ← Pause
         </Button>
@@ -425,95 +324,69 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
           variant="primary"
           size="sm"
           onClick={() => handleEndSessionAndEvaluate(totalSeconds, completedBlocks)}
-          style={{ backgroundColor: 'var(--error)' }}
+          className="bg-ak-status-error hover:bg-ak-status-error/90"
         >
           Avslutt økt
         </Button>
       </div>
 
       {/* Total timer */}
-      <div
-        style={{
-          textAlign: 'center',
-          padding: '24px',
-          backgroundColor: 'var(--accent)',
-        }}
-      >
-        <div style={{ fontSize: '48px', fontWeight: 700, color: 'var(--bg-primary)', fontSize: '48px' }}>
+      <div className="text-center p-6 bg-ak-brand-primary">
+        <div className="text-5xl font-bold text-white">
           {formatTime(totalSeconds)}
         </div>
-        <span style={{ fontSize: '14px', lineHeight: '19px', color: 'rgba(255,255,255,0.7)' }}>
+        <span className="text-sm text-white/70">
           Total økttid
         </span>
 
-        <div style={{ marginTop: '16px' }}>
-          <span style={{ fontSize: '14px', lineHeight: '19px', color: 'rgba(255,255,255,0.7)' }}>
+        <div className="mt-4">
+          <span className="text-sm text-white/70">
             Blokk {currentBlockIndex + 1} av {session.blocks.length}
           </span>
           <ProgressBar
             current={currentBlockIndex + 1}
             total={session.blocks.length}
-            color={'var(--achievement)'}
+            color="#f59e0b"
           />
         </div>
       </div>
 
       {/* Block timer */}
-      <div
-        style={{
-          textAlign: 'center',
-          padding: '24px',
-          backgroundColor: 'var(--bg-primary)',
-        }}
-      >
-        <div style={{ fontSize: '48px', fontWeight: 700, color: 'var(--text-primary)', fontSize: '40px' }}>
+      <div className="text-center p-6 bg-ak-surface-base">
+        <div className="text-[40px] font-bold text-ak-text-primary">
           {formatTime(Math.max(0, blockTimeRemaining))}
         </div>
-        <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+        <span className="text-xs text-ak-text-secondary">
           Gjenstående tid
         </span>
       </div>
 
       {/* Current block info */}
-      <div style={{ padding: '16px' }}>
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '16px',
-            marginBottom: '16px',
-          }}
-        >
-          <span style={{ fontSize: '20px', lineHeight: '25px', fontWeight: 600, color: 'var(--text-primary)' }}>
+      <div className="p-4">
+        <div className="bg-ak-surface-base rounded-xl p-4 mb-4">
+          <span className="text-xl font-semibold text-ak-text-primary">
             BLOKK {currentBlockIndex + 1}: {currentBlock.exercise}
           </span>
 
-          <div
-            style={{
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-md)',
-              padding: '16px',
-              marginTop: '16px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="bg-ak-surface-subtle rounded-lg p-4 mt-4">
+            <div className="flex items-center gap-2">
               <span>🎯</span>
-              <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--accent)' }}>
+              <span className="text-xs font-medium text-ak-brand-primary">
                 {currentBlock.focus}
               </span>
             </div>
             {currentBlock.instructions && (
-              <div style={{ fontSize: '14px', lineHeight: '19px', color: 'var(--text-primary)', marginTop: '8px' }}>
+              <div className="text-sm text-ak-text-primary mt-2">
                 {currentBlock.instructions}
               </div>
             )}
           </div>
 
-          <div style={{ marginTop: '16px' }}>
-            <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
+          <div className="mt-4">
+            <span className="text-xs text-ak-text-secondary">
               Treningsområde
             </span>
-            <div style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
+            <div className="text-[15px] text-ak-text-primary">
               {currentBlock.trainingArea}
             </div>
           </div>
@@ -537,25 +410,19 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
       />
 
       {/* Next block / Note */}
-      <div style={{ padding: '16px' }}>
+      <div className="p-4">
         <Button
           variant="primary"
           onClick={handleNextBlock}
-          style={{ width: '100%', padding: '16px', marginBottom: '16px', fontSize: '20px', fontWeight: 600 }}
+          className="w-full py-4 mb-4 text-xl font-semibold"
         >
           {currentBlockIndex < session.blocks.length - 1 ? 'Neste blokk →' : 'Fullfør økt'}
         </Button>
 
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '16px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        <div className="bg-ak-surface-base rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-2">
             <span>📝</span>
-            <span style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 500, color: 'var(--text-primary)' }}>
+            <span className="text-xs font-medium text-ak-text-primary">
               Legg til notat...
             </span>
           </div>
@@ -563,16 +430,7 @@ export default function ActiveSessionView({ session, onEndSession, onPause: _onP
             value={blockNote}
             onChange={(e) => setBlockNote(e.target.value)}
             placeholder="Notater for denne blokken..."
-            style={{
-              width: '100%',
-              minHeight: '60px',
-              padding: '8px',
-              backgroundColor: 'var(--bg-secondary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              resize: 'none',
-              fontSize: '14px', lineHeight: '19px',
-            }}
+            className="w-full min-h-[60px] p-2 bg-ak-surface-subtle border-none rounded-lg resize-none text-sm text-ak-text-primary outline-none focus:ring-1 focus:ring-ak-brand-primary"
           />
         </div>
       </div>

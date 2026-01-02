@@ -1,9 +1,12 @@
 /**
  * AK Golf Academy - Conversation View
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Chat-visning for en enkelt samtale.
  * Støtter tekst, bilder og svar på meldinger.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic avatar color which requires runtime value)
  */
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -94,7 +97,7 @@ export default function ConversationView() {
           name: 'Anders Kristiansen (Trener)',
           groupType: 'coach_player',
           avatarInitials: 'AK',
-          avatarColor: 'var(--achievement)',
+          avatarColor: 'var(--ak-status-warning)',
           members: [
             { id: '1', name: 'Anders Kristiansen', type: 'coach', isOnline: true },
           ],
@@ -270,30 +273,20 @@ export default function ConversationView() {
 
   if (loading) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            border: `3px solid ${'var(--border-default)'}`,
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            margin: '0 auto 16px',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
-        <p style={{ color: 'var(--text-secondary)' }}>Laster samtale...</p>
+      <div className="p-6 text-center">
+        <div className="w-10 h-10 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto mb-4 animate-spin" />
+        <p className="text-ak-text-secondary">Laster samtale...</p>
       </div>
     );
   }
 
   if (!conversation) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <p style={{ color: 'var(--error)' }}>Samtale ikke funnet</p>
+      <div className="p-6 text-center">
+        <p className="text-ak-status-error">Samtale ikke funnet</p>
         <Link
           to="/meldinger"
-          style={{ color: 'var(--accent)', marginTop: '16px', display: 'block' }}
+          className="text-ak-brand-primary mt-4 block"
         >
           Tilbake til meldinger
         </Link>
@@ -302,91 +295,41 @@ export default function ConversationView() {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: 'calc(100vh - 48px)',
-        maxWidth: '800px',
-        margin: '0 auto',
-      }}
-    >
+    <div className="flex flex-col h-[calc(100vh-48px)] max-w-[800px] mx-auto">
       {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          padding: '16px',
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-          borderRadius: `${'var(--radius-lg)'} ${'var(--radius-lg)'} 0 0`,
-        }}
-      >
+      <div className="flex items-center gap-3 p-4 bg-ak-surface-base border-b border-ak-border-default rounded-t-xl">
         <button
           onClick={() => navigate('/meldinger')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 36,
-            height: 36,
-            backgroundColor: 'transparent',
-            border: 'none',
-            borderRadius: 'var(--radius-sm)',
-            cursor: 'pointer',
-            color: 'var(--text-primary)',
-          }}
+          className="flex items-center justify-center w-9 h-9 bg-transparent border-none rounded cursor-pointer text-ak-text-primary hover:bg-ak-surface-subtle"
         >
           <ArrowLeft size={20} />
         </button>
 
         <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: conversation.avatarColor,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--bg-primary)',
-            fontWeight: 700,
-            fontSize: '14px',
-          }}
+          className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+          style={{ backgroundColor: conversation.avatarColor }}
         >
           {conversation.avatarInitials}
         </div>
 
-        <div style={{ flex: 1 }}>
-          <SectionTitle
-            style={{
-              fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}
-          >
+        <div className="flex-1">
+          <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
             {conversation.name}
           </SectionTitle>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div className="flex items-center gap-1.5">
             {conversation.groupType === 'team' ? (
-              <Users size={12} color={'var(--text-secondary)'} />
+              <Users size={12} className="text-ak-text-secondary" />
             ) : (
-              <User size={12} color={'var(--text-secondary)'} />
+              <User size={12} className="text-ak-text-secondary" />
             )}
-            <span style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)' }}>
+            <span className="text-[13px] leading-[18px] text-ak-text-secondary">
               {conversation.members.length}{' '}
               {conversation.members.length === 1 ? 'medlem' : 'medlemmer'}
             </span>
             {conversation.members.some((m) => m.isOnline) && (
               <>
-                <span style={{ color: 'var(--border-default)' }}>•</span>
-                <span
-                  style={{
-                    fontSize: '13px', lineHeight: '18px',
-                    color: 'var(--success)',
-                  }}
-                >
+                <span className="text-ak-border-default">•</span>
+                <span className="text-[13px] leading-[18px] text-ak-status-success">
                   Aktiv nå
                 </span>
               </>
@@ -394,52 +337,18 @@ export default function ConversationView() {
           </div>
         </div>
 
-        <button
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 36,
-            height: 36,
-            backgroundColor: 'transparent',
-            border: 'none',
-            borderRadius: 'var(--radius-sm)',
-            cursor: 'pointer',
-            color: 'var(--text-secondary)',
-          }}
-        >
+        <button className="flex items-center justify-center w-9 h-9 bg-transparent border-none rounded cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle">
           <Info size={20} />
         </button>
       </div>
 
       {/* Messages */}
-      <div
-        style={{
-          flex: 1,
-          overflowY: 'auto',
-          padding: '16px',
-          backgroundColor: 'var(--bg-secondary)',
-        }}
-      >
+      <div className="flex-1 overflow-y-auto p-4 bg-ak-surface-subtle">
         {Object.entries(groupedMessages).map(([date, dateMessages]: [string, Message[]]) => (
           <div key={date}>
             {/* Date header */}
-            <div
-              style={{
-                textAlign: 'center',
-                margin: '16px 0',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '13px', lineHeight: '18px',
-                  color: 'var(--text-secondary)',
-                  backgroundColor: 'var(--bg-primary)',
-                  padding: '4px 12px',
-                  borderRadius: '9999px',
-                  border: `1px solid ${'var(--border-default)'}`,
-                }}
-              >
+            <div className="text-center my-4">
+              <span className="text-[13px] leading-[18px] text-ak-text-secondary bg-ak-surface-base py-1 px-3 rounded-full border border-ak-border-default">
                 {formatDateHeader(dateMessages[0].createdAt)}
               </span>
             </div>
@@ -448,49 +357,22 @@ export default function ConversationView() {
             {dateMessages.map((message) => (
               <div
                 key={message.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: message.isOwn ? 'flex-end' : 'flex-start',
-                  marginBottom: '12px',
-                }}
+                className={`flex mb-3 ${message.isOwn ? 'justify-end' : 'justify-start'}`}
               >
-                <div
-                  style={{
-                    maxWidth: '75%',
-                  }}
-                >
+                <div className="max-w-[75%]">
                   {/* Reply preview */}
                   {message.replyTo && (
                     <div
-                      style={{
-                        padding: '8px 12px',
-                        backgroundColor: message.isOwn
-                          ? 'rgba(var(--accent-rgb), 0.20)'
-                          : 'var(--bg-tertiary)',
-                        borderRadius: `${'var(--radius-md)'} ${'var(--radius-md)'} 0 0`,
-                        borderLeft: `3px solid ${
-                          message.isOwn ? 'var(--accent)' : 'var(--achievement)'
-                        }`,
-                        marginBottom: '-4px',
-                      }}
+                      className={`py-2 px-3 rounded-t-lg -mb-1 border-l-[3px] ${
+                        message.isOwn
+                          ? 'bg-ak-brand-primary/20 border-l-ak-brand-primary'
+                          : 'bg-ak-surface-elevated border-l-ak-status-warning'
+                      }`}
                     >
-                      <p
-                        style={{
-                          fontSize: '12px', lineHeight: '16px',
-                          color: 'var(--accent)',
-                          fontWeight: 600,
-                          margin: '0 0 2px',
-                        }}
-                      >
+                      <p className="text-xs leading-4 text-ak-brand-primary font-semibold m-0 mb-0.5">
                         {message.replyTo.senderName}
                       </p>
-                      <p
-                        style={{
-                          fontSize: '13px', lineHeight: '18px',
-                          color: 'var(--text-secondary)',
-                          margin: 0,
-                        }}
-                      >
+                      <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
                         {message.replyTo.content}
                       </p>
                     </div>
@@ -498,63 +380,33 @@ export default function ConversationView() {
 
                   {/* Message bubble */}
                   <div
-                    style={{
-                      padding: '10px 14px',
-                      backgroundColor: message.isOwn
-                        ? 'var(--accent)'
-                        : 'var(--bg-primary)',
-                      color: message.isOwn ? 'var(--bg-primary)' : 'var(--text-primary)',
-                      borderRadius: message.replyTo
-                        ? `0 0 ${'var(--radius-md)'} ${'var(--radius-md)'}`
-                        : 'var(--radius-md)',
-                      boxShadow: message.isOwn ? 'none' : 'var(--shadow-card)',
-                    }}
+                    className={`py-2.5 px-3.5 ${
+                      message.isOwn
+                        ? 'bg-ak-brand-primary text-white'
+                        : 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+                    } ${message.replyTo ? 'rounded-b-lg' : 'rounded-lg'}`}
                   >
                     {!message.isOwn && conversation.groupType === 'team' && (
-                      <p
-                        style={{
-                          fontSize: '12px', lineHeight: '16px',
-                          color: 'var(--achievement)',
-                          fontWeight: 600,
-                          margin: '0 0 4px',
-                        }}
-                      >
+                      <p className="text-xs leading-4 text-ak-status-warning font-semibold m-0 mb-1">
                         {message.senderName}
                       </p>
                     )}
-                    <p
-                      style={{
-                        fontSize: '15px', lineHeight: '20px',
-                        margin: 0,
-                        whiteSpace: 'pre-wrap',
-                      }}
-                    >
+                    <p className="text-[15px] leading-5 m-0 whitespace-pre-wrap">
                       {message.content}
                     </p>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        gap: '4px',
-                        marginTop: '4px',
-                      }}
-                    >
+                    <div className="flex items-center justify-end gap-1 mt-1">
                       <span
-                        style={{
-                          fontSize: '12px', lineHeight: '16px',
-                          color: message.isOwn
-                            ? 'rgba(255,255,255,0.7)'
-                            : 'var(--text-secondary)',
-                        }}
+                        className={`text-xs leading-4 ${
+                          message.isOwn ? 'text-white/70' : 'text-ak-text-secondary'
+                        }`}
                       >
                         {formatTime(message.createdAt)}
                       </span>
                       {message.isOwn && (
                         message.isRead ? (
-                          <CheckCheck size={14} color="rgba(255,255,255,0.7)" />
+                          <CheckCheck size={14} className="text-white/70" />
                         ) : (
-                          <Check size={14} color="rgba(255,255,255,0.7)" />
+                          <Check size={14} className="text-white/70" />
                         )
                       )}
                     </div>
@@ -564,19 +416,7 @@ export default function ConversationView() {
                   {!message.isOwn && (
                     <button
                       onClick={() => setReplyingTo(message)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        marginTop: '4px',
-                        padding: '4px 8px',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        borderRadius: 'var(--radius-sm)',
-                        color: 'var(--text-secondary)',
-                        fontSize: '12px',
-                        cursor: 'pointer',
-                      }}
+                      className="flex items-center gap-1 mt-1 py-1 px-2 bg-transparent border-none rounded text-ak-text-secondary text-xs cursor-pointer hover:bg-ak-surface-base"
                     >
                       <Reply size={12} />
                       Svar
@@ -592,55 +432,19 @@ export default function ConversationView() {
 
       {/* Reply indicator */}
       {replyingTo && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            padding: '10px 16px',
-            backgroundColor: 'var(--bg-tertiary)',
-            borderTop: `1px solid ${'var(--border-default)'}`,
-          }}
-        >
-          <Reply size={16} color={'var(--accent)'} />
-          <div style={{ flex: 1 }}>
-            <p
-              style={{
-                fontSize: '12px', lineHeight: '16px',
-                color: 'var(--accent)',
-                fontWeight: 600,
-                margin: 0,
-              }}
-            >
+        <div className="flex items-center gap-3 py-2.5 px-4 bg-ak-surface-elevated border-t border-ak-border-default">
+          <Reply size={16} className="text-ak-brand-primary" />
+          <div className="flex-1">
+            <p className="text-xs leading-4 text-ak-brand-primary font-semibold m-0">
               Svarer til {replyingTo.senderName}
             </p>
-            <p
-              style={{
-                fontSize: '13px', lineHeight: '18px',
-                color: 'var(--text-secondary)',
-                margin: 0,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0 overflow-hidden text-ellipsis whitespace-nowrap">
               {replyingTo.content}
             </p>
           </div>
           <button
             onClick={() => setReplyingTo(null)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 28,
-              height: 28,
-              backgroundColor: 'transparent',
-              border: 'none',
-              borderRadius: 'var(--radius-sm)',
-              cursor: 'pointer',
-              color: 'var(--text-secondary)',
-            }}
+            className="flex items-center justify-center w-7 h-7 bg-transparent border-none rounded cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
           >
             <X size={16} />
           </button>
@@ -648,35 +452,12 @@ export default function ConversationView() {
       )}
 
       {/* Input area */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-end',
-          gap: '10px',
-          padding: '12px 16px',
-          backgroundColor: 'var(--bg-primary)',
-          borderTop: `1px solid ${'var(--border-default)'}`,
-          borderRadius: `0 0 ${'var(--radius-lg)'} ${'var(--radius-lg)'}`,
-        }}
-      >
-        <button
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 40,
-            height: 40,
-            backgroundColor: 'transparent',
-            border: 'none',
-            borderRadius: 'var(--radius-sm)',
-            cursor: 'pointer',
-            color: 'var(--text-secondary)',
-          }}
-        >
+      <div className="flex items-end gap-2.5 py-3 px-4 bg-ak-surface-base border-t border-ak-border-default rounded-b-xl">
+        <button className="flex items-center justify-center w-10 h-10 bg-transparent border-none rounded cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle">
           <Paperclip size={20} />
         </button>
 
-        <div style={{ flex: 1 }}>
+        <div className="flex-1">
           <textarea
             ref={inputRef}
             value={newMessage}
@@ -684,38 +465,18 @@ export default function ConversationView() {
             onKeyPress={handleKeyPress}
             placeholder="Skriv en melding..."
             rows={1}
-            style={{
-              width: '100%',
-              padding: '10px 14px',
-              backgroundColor: 'var(--bg-tertiary)',
-              border: `1px solid ${'var(--border-default)'}`,
-              borderRadius: 'var(--radius-md)',
-              fontSize: '15px',
-              resize: 'none',
-              outline: 'none',
-              fontFamily: 'inherit',
-            }}
+            className="w-full py-2.5 px-3.5 bg-ak-surface-elevated border border-ak-border-default rounded-lg text-[15px] resize-none outline-none font-[inherit] focus:border-ak-brand-primary"
           />
         </div>
 
         <button
           onClick={handleSend}
           disabled={!newMessage.trim() || sending}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 40,
-            height: 40,
-            backgroundColor: newMessage.trim()
-              ? 'var(--accent)'
-              : 'var(--border-default)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            cursor: newMessage.trim() ? 'pointer' : 'not-allowed',
-            color: 'var(--bg-primary)',
-            transition: 'background-color 0.15s',
-          }}
+          className={`flex items-center justify-center w-10 h-10 border-none rounded-lg text-white transition-colors ${
+            newMessage.trim()
+              ? 'bg-ak-brand-primary cursor-pointer hover:bg-ak-brand-primary/90'
+              : 'bg-ak-border-default cursor-not-allowed'
+          }`}
         >
           <Send size={18} />
         </button>

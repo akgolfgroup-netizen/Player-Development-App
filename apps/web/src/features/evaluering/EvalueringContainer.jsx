@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Evaluering Container
+ * Design System v3.0 - Premium Light
+ *
+ * Player evaluations overview with stats and filtering.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState } from 'react';
 import {
   ClipboardCheck, Star, ChevronRight,
@@ -5,6 +14,7 @@ import {
 } from 'lucide-react';
 import Button from '../../ui/primitives/Button';
 import { SubSectionTitle } from '../../components/typography';
+import StateCard from '../../ui/composites/StateCard';
 
 // ============================================================================
 // MOCK DATA
@@ -86,11 +96,11 @@ const STATS = {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'training':
-      return { label: 'Trening', color: 'var(--accent)', icon: Dumbbell };
+      return { label: 'Trening', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Dumbbell };
     case 'tournament':
-      return { label: 'Turnering', color: 'var(--achievement)', icon: Trophy };
+      return { label: 'Turnering', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Trophy };
     default:
-      return { label: type, color: 'var(--text-secondary)', icon: ClipboardCheck };
+      return { label: type, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: ClipboardCheck };
   }
 };
 
@@ -105,13 +115,13 @@ const formatDate = (dateStr) => {
 
 const RatingStars = ({ rating, size = 14 }) => {
   return (
-    <div style={{ display: 'flex', gap: '2px' }}>
+    <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
           key={star}
           size={size}
-          fill={star <= rating ? 'var(--achievement)' : 'none'}
-          color={star <= rating ? 'var(--achievement)' : 'var(--border-default)'}
+          fill={star <= rating ? '#f59e0b' : 'none'}
+          className={star <= rating ? 'text-amber-500' : 'text-ak-border-default'}
         />
       ))}
     </div>
@@ -129,125 +139,48 @@ const EvaluationCard = ({ evaluation, onClick }) => {
   return (
     <div
       onClick={() => onClick(evaluation)}
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '14px',
-        padding: '16px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
+      className="bg-ak-surface-base rounded-[14px] p-4 cursor-pointer transition-all shadow-sm hover:-translate-y-0.5 hover:shadow-md"
     >
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '14px',
-      }}>
-        <div style={{
-          width: '42px',
-          height: '42px',
-          borderRadius: '10px',
-          backgroundColor: `${typeConfig.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}>
-          <TypeIcon size={20} color={typeConfig.color} />
+      <div className="flex items-start gap-3.5">
+        <div className={`w-[42px] h-[42px] rounded-[10px] ${typeConfig.colorClasses.bg} flex items-center justify-center flex-shrink-0`}>
+          <TypeIcon size={20} className={typeConfig.colorClasses.text} />
         </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '4px',
-          }}>
-            <SubSectionTitle style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: 0,
-            }}>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-1">
+            <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0">
               {evaluation.title}
             </SubSectionTitle>
             <RatingStars rating={evaluation.rating} />
           </div>
 
-          <div style={{
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-            marginBottom: '8px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}>
-            <span style={{
-              padding: '2px 6px',
-              borderRadius: '4px',
-              backgroundColor: `${typeConfig.color}15`,
-              color: typeConfig.color,
-              fontWeight: 500,
-            }}>
+          <div className="text-xs text-ak-text-secondary mb-2 flex items-center gap-2">
+            <span className={`py-0.5 px-1.5 rounded ${typeConfig.colorClasses.bg} ${typeConfig.colorClasses.text} font-medium`}>
               {typeConfig.label}
             </span>
             <span>{formatDate(evaluation.date)}</span>
           </div>
 
-          <p style={{
-            fontSize: '13px',
-            color: 'var(--text-primary)',
-            margin: '0 0 8px 0',
-            lineHeight: 1.4,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-          }}>
+          <p className="text-[13px] text-ak-text-primary m-0 mb-2 leading-snug line-clamp-2">
             {evaluation.summary}
           </p>
 
           {evaluation.result && (
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '6px 10px',
-              backgroundColor: evaluation.result.position <= 3 ? 'rgba(var(--achievement-rgb), 0.15)' : 'var(--bg-secondary)',
-              borderRadius: '6px',
-              marginBottom: '8px',
-            }}>
-              <Trophy size={14} color={evaluation.result.position <= 3 ? 'var(--achievement)' : 'var(--text-secondary)'} />
-              <span style={{
-                fontSize: '12px',
-                fontWeight: 500,
-                color: 'var(--text-primary)',
-              }}>
+            <div className={`inline-flex items-center gap-2 py-1.5 px-2.5 rounded-md mb-2 ${
+              evaluation.result.position <= 3 ? 'bg-amber-500/15' : 'bg-ak-surface-subtle'
+            }`}>
+              <Trophy size={14} className={evaluation.result.position <= 3 ? 'text-amber-500' : 'text-ak-text-secondary'} />
+              <span className="text-xs font-medium text-ak-text-primary">
                 {evaluation.result.position}. plass - Score: {evaluation.result.score}
               </span>
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          <div className="flex gap-1.5 flex-wrap">
             {evaluation.tags.map((tag, idx) => (
               <span
                 key={idx}
-                style={{
-                  fontSize: '11px',
-                  color: 'var(--text-secondary)',
-                  backgroundColor: 'var(--bg-secondary)',
-                  padding: '3px 8px',
-                  borderRadius: '4px',
-                }}
+                className="text-[11px] text-ak-text-secondary bg-ak-surface-subtle py-0.5 px-2 rounded"
               >
                 {tag}
               </span>
@@ -255,7 +188,7 @@ const EvaluationCard = ({ evaluation, onClick }) => {
           </div>
         </div>
 
-        <ChevronRight size={18} color={'var(--text-secondary)'} style={{ flexShrink: 0 }} />
+        <ChevronRight size={18} className="text-ak-text-secondary flex-shrink-0" />
       </div>
     </div>
   );
@@ -267,58 +200,33 @@ const EvaluationCard = ({ evaluation, onClick }) => {
 
 const StatsOverview = ({ stats }) => {
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-      gap: '12px',
-      marginBottom: '24px',
-    }}>
-      <div style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '12px',
-        padding: '16px',
-        textAlign: 'center',
-      }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 mb-6">
+      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+        <div className="text-2xl font-bold text-ak-brand-primary">
           {stats.totalEvaluations}
         </div>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Totalt</div>
+        <div className="text-xs text-ak-text-secondary">Totalt</div>
       </div>
-      <div style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '12px',
-        padding: '16px',
-        textAlign: 'center',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-          <span style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
+      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+        <div className="flex items-center justify-center gap-1">
+          <span className="text-2xl font-bold text-amber-500">
             {stats.avgRating.toFixed(1)}
           </span>
-          <Star size={18} fill={'var(--achievement)'} color={'var(--achievement)'} />
+          <Star size={18} fill="#f59e0b" className="text-amber-500" />
         </div>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Gj.sn. rating</div>
+        <div className="text-xs text-ak-text-secondary">Gj.sn. rating</div>
       </div>
-      <div style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '12px',
-        padding: '16px',
-        textAlign: 'center',
-      }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+        <div className="text-2xl font-bold text-ak-brand-primary">
           {stats.trainingCount}
         </div>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Treninger</div>
+        <div className="text-xs text-ak-text-secondary">Treninger</div>
       </div>
-      <div style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '12px',
-        padding: '16px',
-        textAlign: 'center',
-      }}>
-        <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
+      <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+        <div className="text-2xl font-bold text-amber-500">
           {stats.tournamentCount}
         </div>
-        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Turneringer</div>
+        <div className="text-xs text-ak-text-secondary">Turneringer</div>
       </div>
     </div>
   );
@@ -345,67 +253,40 @@ const EvalueringContainer = () => {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <div style={{ padding: '16px 24px 24px', width: '100%' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
+      <div className="p-4 px-6 pb-6 w-full">
         {/* Stats Overview */}
         <StatsOverview stats={STATS} />
 
         {/* Filters and Search */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          marginBottom: '20px',
-          flexWrap: 'wrap',
-        }}>
-          <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex items-center gap-3 mb-5 flex-wrap">
+          <div className="flex gap-2">
             {filters.map((f) => (
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                style={{
-                  backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--background-white)',
-                  color: filter === f.key ? 'var(--text-inverse)' : 'var(--text-secondary)',
-                  padding: 'var(--spacing-2) var(--spacing-4)',
-                  borderRadius: 'var(--radius-full)',
-                  fontSize: 'var(--font-size-footnote)',
-                  fontWeight: 500,
-                  border: filter === f.key ? 'none' : '1px solid var(--border-default)',
-                  cursor: 'pointer',
-                }}
+                className={`py-2 px-4 rounded-full text-xs font-medium cursor-pointer transition-colors ${
+                  filter === f.key
+                    ? 'bg-ak-brand-primary text-white border-none'
+                    : 'bg-ak-surface-base text-ak-text-secondary border border-ak-border-default'
+                }`}
               >
                 {f.label}
               </button>
             ))}
           </div>
 
-          <div style={{
-            flex: 1,
-            minWidth: '200px',
-            position: 'relative',
-          }}>
+          <div className="flex-1 min-w-[200px] relative">
             <Search
               size={16}
-              color={'var(--text-secondary)'}
-              style={{
-                position: 'absolute',
-                left: '12px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-              }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
             />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Sok i evalueringer..."
-              style={{
-                width: '100%',
-                padding: '10px 12px 10px 36px',
-                borderRadius: '8px',
-                border: '1px solid var(--border-default)',
-                fontSize: '13px',
-              }}
+              className="w-full py-2.5 pr-3 pl-9 rounded-lg border border-ak-border-default text-[13px] bg-ak-surface-base text-ak-text-primary outline-none focus:border-ak-brand-primary"
             />
           </div>
 
@@ -419,7 +300,7 @@ const EvalueringContainer = () => {
         </div>
 
         {/* Evaluations List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div className="flex flex-col gap-2.5">
           {filteredEvaluations.length > 0 ? (
             filteredEvaluations.map((evaluation) => (
               <EvaluationCard
@@ -429,17 +310,12 @@ const EvalueringContainer = () => {
               />
             ))
           ) : (
-            <div style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '14px',
-              padding: '40px',
-              textAlign: 'center',
-            }}>
-              <ClipboardCheck size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
-                Ingen evalueringer funnet
-              </p>
-            </div>
+            <StateCard
+              variant="empty"
+              icon={ClipboardCheck}
+              title="Ingen evalueringer funnet"
+              description="Prøv å justere søket eller filteret for å se flere evalueringer."
+            />
           )}
         </div>
       </div>

@@ -113,8 +113,8 @@ export function VideoCard({
   selectable = false,
   onSelect,
   onClick,
-  style,
-  className,
+  style = {},
+  className = '',
 }) {
   const [isHovered, setIsHovered] = useState(false);
 

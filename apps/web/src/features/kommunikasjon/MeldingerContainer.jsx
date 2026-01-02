@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Meldinger Container
+ * Design System v3.0 - Premium Light
+ *
+ * Messaging system with conversations and chat view.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useEffect } from 'react';
 import {
   MessageSquare, Search, Plus, ChevronRight, Check,
@@ -110,103 +119,38 @@ const ConversationCard = ({ conversation, selected, onClick }) => {
   return (
     <div
       onClick={() => onClick(conversation)}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '12px 14px',
-        backgroundColor: selected ? `${'var(--accent)'}10` : 'var(--bg-primary)',
-        borderRadius: '12px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        borderLeft: selected ? `3px solid ${'var(--accent)'}` : '3px solid transparent',
-      }}
-      onMouseEnter={(e) => {
-        if (!selected) e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-      }}
-      onMouseLeave={(e) => {
-        if (!selected) e.currentTarget.style.backgroundColor = 'var(--bg-primary)';
-      }}
+      className={`flex items-center gap-3 py-3 px-3.5 rounded-xl cursor-pointer transition-all ${
+        selected
+          ? 'bg-ak-brand-primary/10 border-l-[3px] border-l-ak-brand-primary'
+          : 'bg-ak-surface-base border-l-[3px] border-l-transparent hover:bg-ak-surface-subtle'
+      }`}
     >
-      <div style={{ position: 'relative' }}>
-        <div style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '50%',
-          backgroundColor: 'var(--accent)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--bg-primary)',
-          fontSize: '16px',
-          fontWeight: 600,
-        }}>
+      <div className="relative">
+        <div className="w-12 h-12 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-base font-semibold">
           {contact.name.split(' ').map((n) => n[0]).join('')}
         </div>
         {isOnline && (
-          <div style={{
-            position: 'absolute',
-            bottom: '2px',
-            right: '2px',
-            width: '12px',
-            height: '12px',
-            borderRadius: '50%',
-            backgroundColor: 'var(--success)',
-            border: '2px solid white',
-          }} />
+          <div className="absolute bottom-0.5 right-0.5 w-3 h-3 rounded-full bg-ak-status-success border-2 border-white" />
         )}
       </div>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '2px',
-        }}>
-          <CardTitle style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between mb-0.5">
+          <CardTitle className="text-sm font-semibold text-ak-text-primary m-0">
             {contact.name}
           </CardTitle>
-          <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+          <span className="text-[11px] text-ak-text-secondary">
             {timeStr}
           </span>
         </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-          <p style={{
-            fontSize: '13px',
-            color: unread > 0 ? 'var(--text-primary)' : 'var(--text-secondary)',
-            fontWeight: unread > 0 ? 500 : 400,
-            margin: 0,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            maxWidth: '200px',
-          }}>
+        <div className="flex items-center justify-between">
+          <p className={`text-[13px] m-0 overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px] ${
+            unread > 0 ? 'text-ak-text-primary font-medium' : 'text-ak-text-secondary font-normal'
+          }`}>
             {lastMessage}
           </p>
           {unread > 0 && (
-            <div style={{
-              minWidth: '20px',
-              height: '20px',
-              borderRadius: '10px',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              fontSize: '11px',
-              fontWeight: 600,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '0 6px',
-            }}>
+            <div className="min-w-[20px] h-5 rounded-[10px] bg-ak-brand-primary text-white text-[11px] font-semibold flex items-center justify-center px-1.5">
               {unread}
             </div>
           )}
@@ -224,44 +168,24 @@ const MessageBubble = ({ message, isOwn }) => {
   const time = new Date(message.timestamp);
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: isOwn ? 'flex-end' : 'flex-start',
-      marginBottom: '8px',
-    }}>
-      <div style={{
-        maxWidth: '70%',
-        padding: '10px 14px',
-        borderRadius: isOwn ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-        backgroundColor: isOwn ? 'var(--accent)' : 'var(--bg-primary)',
-        color: isOwn ? 'var(--bg-primary)' : 'var(--text-primary)',
-        boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-      }}>
-        <p style={{
-          fontSize: '14px',
-          margin: 0,
-          lineHeight: 1.4,
-        }}>
+    <div className={`flex mb-2 ${isOwn ? 'justify-end' : 'justify-start'}`}>
+      <div className={`max-w-[70%] py-2.5 px-3.5 shadow-sm ${
+        isOwn
+          ? 'bg-ak-brand-primary text-white rounded-[16px_16px_4px_16px]'
+          : 'bg-ak-surface-base text-ak-text-primary rounded-[16px_16px_16px_4px]'
+      }`}>
+        <p className="text-sm m-0 leading-snug">
           {message.text}
         </p>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          gap: '4px',
-          marginTop: '4px',
-        }}>
-          <span style={{
-            fontSize: '10px',
-            color: isOwn ? 'rgba(255,255,255,0.7)' : 'var(--text-secondary)',
-          }}>
+        <div className="flex items-center justify-end gap-1 mt-1">
+          <span className={`text-[10px] ${isOwn ? 'text-white/70' : 'text-ak-text-secondary'}`}>
             {time.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' })}
           </span>
           {isOwn && (
             message.read ? (
-              <CheckCheck size={12} color="rgba(255,255,255,0.7)" />
+              <CheckCheck size={12} className="text-white/70" />
             ) : (
-              <Check size={12} color="rgba(255,255,255,0.7)" />
+              <Check size={12} className="text-white/70" />
             )
           )}
         </div>
@@ -295,17 +219,9 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
 
   if (!conversation) {
     return (
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
-        borderRadius: '14px',
-      }}>
-        <MessageSquare size={48} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
-        <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+      <div className="flex-1 flex flex-col items-center justify-center bg-ak-surface-subtle rounded-[14px]">
+        <MessageSquare size={48} className="text-ak-text-secondary mb-3" />
+        <p className="text-sm text-ak-text-secondary">
           Velg en samtale for a starte
         </p>
       </div>
@@ -313,65 +229,27 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
   }
 
   return (
-    <div style={{
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      backgroundColor: 'var(--bg-secondary)',
-      borderRadius: '14px',
-      overflow: 'hidden',
-    }}>
+    <div className="flex-1 flex flex-col bg-ak-surface-subtle rounded-[14px] overflow-hidden">
       {/* Header */}
-      <div style={{
-        padding: '14px 16px',
-        backgroundColor: 'var(--bg-primary)',
-        borderBottom: `1px solid ${'var(--border-default)'}`,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-      }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          backgroundColor: 'var(--accent)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--bg-primary)',
-          fontSize: '14px',
-          fontWeight: 600,
-        }}>
+      <div className="py-3.5 px-4 bg-ak-surface-base border-b border-ak-border-default flex items-center gap-3">
+        <div className="w-10 h-10 rounded-full bg-ak-brand-primary flex items-center justify-center text-white text-sm font-semibold">
           {conversation.contact.name.split(' ').map((n) => n[0]).join('')}
         </div>
         <div>
-          <SubSectionTitle style={{
-            fontSize: '15px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
+          <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
             {conversation.contact.name}
           </SubSectionTitle>
-          <p style={{
-            fontSize: '12px',
-            color: conversation.isOnline ? 'var(--success)' : 'var(--text-secondary)',
-            margin: 0,
-          }}>
+          <p className={`text-xs m-0 ${conversation.isOnline ? 'text-ak-status-success' : 'text-ak-text-secondary'}`}>
             {conversation.isOnline ? 'Online' : conversation.contact.role}
           </p>
         </div>
       </div>
 
       {/* Messages */}
-      <div style={{
-        flex: 1,
-        padding: '16px',
-        overflowY: 'auto',
-      }}>
+      <div className="flex-1 p-4 overflow-y-auto">
         {isLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
-            <Loader2 size={24} color="var(--accent)" style={{ animation: 'spin 1s linear infinite' }} />
+          <div className="flex justify-center p-5">
+            <Loader2 size={24} className="text-ak-brand-primary animate-spin" />
           </div>
         ) : (
           messages.map((message) => (
@@ -385,22 +263,9 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
       </div>
 
       {/* Input */}
-      <div style={{
-        padding: '12px 16px',
-        backgroundColor: 'var(--bg-primary)',
-        borderTop: `1px solid ${'var(--border-default)'}`,
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-      }}>
-        <button style={{
-          padding: '8px',
-          borderRadius: '8px',
-          border: 'none',
-          backgroundColor: 'transparent',
-          cursor: 'pointer',
-        }}>
-          <Paperclip size={20} color={'var(--text-secondary)'} />
+      <div className="py-3 px-4 bg-ak-surface-base border-t border-ak-border-default flex items-center gap-2.5">
+        <button className="p-2 rounded-lg border-none bg-transparent cursor-pointer">
+          <Paperclip size={20} className="text-ak-text-secondary" />
         </button>
         <input
           type="text"
@@ -408,28 +273,18 @@ const ChatView = ({ conversation, messages, onMessageSent, isLoading }) => {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           placeholder="Skriv en melding..."
-          style={{
-            flex: 1,
-            padding: '10px 14px',
-            borderRadius: '20px',
-            border: `1px solid ${'var(--border-default)'}`,
-            fontSize: '14px',
-            outline: 'none',
-          }}
+          className="flex-1 py-2.5 px-3.5 rounded-[20px] border border-ak-border-default text-sm outline-none bg-ak-surface-base text-ak-text-primary focus:border-ak-brand-primary"
         />
         <button
           onClick={handleSend}
           disabled={!newMessage.trim() || isSending}
-          style={{
-            padding: '10px',
-            borderRadius: '50%',
-            border: 'none',
-            backgroundColor: newMessage.trim() && !isSending ? 'var(--accent)' : 'var(--border-default)',
-            cursor: newMessage.trim() && !isSending ? 'pointer' : 'not-allowed',
-            opacity: isSending ? 0.7 : 1,
-          }}
+          className={`p-2.5 rounded-full border-none cursor-pointer transition-opacity ${
+            newMessage.trim() && !isSending
+              ? 'bg-ak-brand-primary'
+              : 'bg-ak-border-default cursor-not-allowed'
+          } ${isSending ? 'opacity-70' : 'opacity-100'}`}
         >
-          <Send size={18} color={newMessage.trim() && !isSending ? 'var(--bg-primary)' : 'var(--text-secondary)'} />
+          <Send size={18} className={newMessage.trim() && !isSending ? 'text-white' : 'text-ak-text-secondary'} />
         </button>
       </div>
     </div>
@@ -541,60 +396,29 @@ const MeldingerContainer = () => {
     : [];
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Meldinger"
         subtitle="Kommuniser med trenere og administrasjon"
       />
 
-      <div style={{
-        padding: '24px',
-        maxWidth: '1536px',
-        margin: '0 auto',
-        display: 'grid',
-        gridTemplateColumns: '280px 1fr',
-        gap: '20px',
-        height: 'calc(100vh - 140px)',
-      }}>
+      <div className="p-6 max-w-7xl mx-auto grid grid-cols-[280px_1fr] gap-5 h-[calc(100vh-140px)]">
         {/* Conversations List */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px',
-        }}>
+        <div className="flex flex-col gap-3">
           {/* Search */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '10px',
-            padding: '10px 14px',
-          }}>
-            <Search size={18} color={'var(--text-secondary)'} />
+          <div className="flex items-center gap-2.5 bg-ak-surface-base rounded-[10px] py-2.5 px-3.5">
+            <Search size={18} className="text-ak-text-secondary" />
             <input
               type="text"
               placeholder="Sok i samtaler..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                flex: 1,
-                border: 'none',
-                outline: 'none',
-                fontSize: '14px',
-                color: 'var(--text-primary)',
-              }}
+              className="flex-1 border-none outline-none text-sm text-ak-text-primary bg-transparent"
             />
           </div>
 
           {/* Conversations */}
-          <div style={{
-            flex: 1,
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px',
-          }}>
+          <div className="flex-1 overflow-y-auto flex flex-col gap-1.5">
             {filteredConversations.map((conversation) => (
               <ConversationCard
                 key={conversation.id}
@@ -620,25 +444,10 @@ const MeldingerContainer = () => {
 
       {/* Loading overlay for initial load */}
       {loading && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(0,0,0,0.3)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 100,
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            padding: '24px 32px',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-          }}>
-            <Loader2 size={24} color="var(--accent)" style={{ animation: 'spin 1s linear infinite' }} />
-            <span>Laster samtaler...</span>
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-[100]">
+          <div className="bg-ak-surface-base py-6 px-8 rounded-xl flex items-center gap-3">
+            <Loader2 size={24} className="text-ak-brand-primary animate-spin" />
+            <span className="text-ak-text-primary">Laster samtaler...</span>
           </div>
         </div>
       )}

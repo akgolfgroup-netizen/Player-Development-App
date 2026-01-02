@@ -48,6 +48,7 @@ model Tenant {
   videoShares            VideoShare[]
   videoRequests          VideoRequest[]
   auditEvents            AuditEvent[]
+  samlinger              Samling[]
 
   @@map("tenants")
 }
@@ -164,6 +165,7 @@ model Coach {
   trainingSessions      TrainingSession[]
   savedFilters          SavedFilter[]
   events                Event[]
+  samlinger             Samling[]
 
   @@index([tenantId])
   @@index([status])
@@ -255,6 +257,9 @@ model Player {
 
   // AI Coaching
   aiConversations      AIConversation[]
+
+  // Samlinger
+  samlingParticipations SamlingParticipant[]
 
   @@index([tenantId])
   @@index([category])
@@ -718,6 +723,7 @@ model SessionTemplate {
   // Relations
   tenant                Tenant                      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   dailyAssignments      DailyTrainingAssignment[]
+  samlingSessions       SamlingSession[]
 
   @@index([tenantId])
   @@index([sessionType])
@@ -1377,6 +1383,7 @@ model GolfCourse {
   // Relations
   club            GolfClub @relation(fields: [clubId], references: [id], onDelete: Cascade)
   tees            GolfCourseTee[]
+  samlinger       Samling[]
 
   @@index([clubId])
   @@index([name])
@@ -1763,6 +1770,10 @@ model DailyTrainingAssignment {
   coachNotes            String?  @map("coach_notes") @db.Text
   playerNotes           String?  @map("player_notes") @db.Text
 
+  // Samling source tracking
+  samlingSessionId      String?  @map("samling_session_id") @db.Uuid
+  sourceType            String   @default("plan") @map("source_type") @db.VarChar(20) // plan, samling, manual
+
   createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt             DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1771,6 +1782,7 @@ model DailyTrainingAssignment {
   player                Player              @relation(fields: [playerId], references: [id], onDelete: Cascade)
   sessionTemplate       SessionTemplate?    @relation(fields: [sessionTemplateId], references: [id], onDelete: SetNull)
   completedSession      TrainingSession?    @relation(fields: [completedSessionId], references: [id], onDelete: SetNull)
+  samlingSession        SamlingSession?     @relation(fields: [samlingSessionId], references: [id], onDelete: SetNull)
 
   @@unique([annualPlanId, assignedDate, sessionType])
   @@index([annualPlanId])
@@ -1778,6 +1790,7 @@ model DailyTrainingAssignment {
   @@index([assignedDate])
   @@index([weekNumber])
   @@index([status])
+  @@index([samlingSessionId])
   @@index([playerId, sessionType, assignedDate, status]) // Optimized for dashboard getNextTest query
   @@map("daily_training_assignments")
 }
@@ -3063,4 +3076,176 @@ model AIConversation {
   @@index([playerId, isActive])
   @@index([playerId, updatedAt(sort: Desc)])
   @@map("ai_conversations")
+}
+
+// ============================================================================
+// SAMLING (TRAINING CAMPS/GATHERINGS)
+// ============================================================================
+
+model Samling {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenantId              String    @map("tenant_id") @db.Uuid
+  coachId               String    @map("coach_id") @db.Uuid
+
+  // Basic info
+  name                  String    @db.VarChar(255)
+  description           String?   @db.Text
+
+  // Dates
+  startDate             DateTime  @map("start_date") @db.Date
+  endDate               DateTime  @map("end_date") @db.Date
+
+  // Location info
+  venue                 String?   @db.VarChar(255)
+  golfCourseId          String?   @map("golf_course_id") @db.Uuid
+  address               String?   @db.Text
+  locationDetails       Json?     @map("location_details") @db.JsonB
+
+  // Accommodation & logistics
+  accommodation         String?   @db.Text
+  meetingPoint          String?   @map("meeting_point") @db.Text
+  transportInfo         String?   @map("transport_info") @db.Text
+
+  // Status workflow: draft, published, in_progress, completed, cancelled
+  status                String    @default("draft") @db.VarChar(20)
+  publishedAt           DateTime? @map("published_at") @db.Timestamptz(6)
+
+  // Additional info
+  maxParticipants       Int?      @map("max_participants")
+  notes                 String?   @db.Text
+  metadata              Json?     @default("{}") @db.JsonB
+
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  tenant                Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  coach                 Coach               @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  golfCourse            GolfCourse?         @relation(fields: [golfCourseId], references: [id], onDelete: SetNull)
+  participants          SamlingParticipant[]
+  sessions              SamlingSession[]
+
+  @@index([tenantId])
+  @@index([coachId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+  @@map("samlinger")
+}
+
+model SamlingParticipant {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  samlingId             String    @map("samling_id") @db.Uuid
+  playerId              String    @map("player_id") @db.Uuid
+
+  // How they were added: 'group' or 'individual'
+  addedVia              String    @map("added_via") @db.VarChar(20)
+  sourceGroupId         String?   @map("source_group_id") @db.Uuid
+
+  // Invitation status: invited, confirmed, declined, tentative
+  invitationStatus      String    @default("invited") @map("invitation_status") @db.VarChar(20)
+  respondedAt           DateTime? @map("responded_at") @db.Timestamptz(6)
+  declineReason         String?   @map("decline_reason") @db.Text
+
+  // Attendance tracking
+  checkedIn             Boolean   @default(false) @map("checked_in")
+  checkedInAt           DateTime? @map("checked_in_at") @db.Timestamptz(6)
+
+  // Sync tracking
+  syncedToCalendar      Boolean   @default(false) @map("synced_to_calendar")
+  syncedToTrainingPlan  Boolean   @default(false) @map("synced_to_training_plan")
+
+  notes                 String?   @db.Text
+
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  samling               Samling   @relation(fields: [samlingId], references: [id], onDelete: Cascade)
+  player                Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  sessionAttendance     SamlingSessionAttendance[]
+
+  @@unique([samlingId, playerId])
+  @@index([samlingId])
+  @@index([playerId])
+  @@index([invitationStatus])
+  @@map("samling_participants")
+}
+
+model SamlingSession {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  samlingId             String    @map("samling_id") @db.Uuid
+
+  // Scheduling
+  sessionDate           DateTime  @map("session_date") @db.Date
+  startTime             String    @map("start_time") @db.VarChar(5)
+  endTime               String?   @map("end_time") @db.VarChar(5)
+  duration              Int
+
+  // Session details
+  title                 String    @db.VarChar(255)
+  description           String?   @db.Text
+  sessionType           String    @map("session_type") @db.VarChar(50)
+
+  // Location (can differ from Samling venue)
+  location              String?   @db.VarChar(255)
+
+  // Content
+  exercises             Json      @default("[]") @db.JsonB
+  objectives            String[]  @db.VarChar(255)
+  equipment             String[]  @db.VarChar(100)
+
+  // Periodization context
+  period                String?   @db.VarChar(1)
+  learningPhase         String?   @map("learning_phase") @db.VarChar(10)
+  intensity             Int?
+
+  // Linking to session template
+  sessionTemplateId     String?   @map("session_template_id") @db.Uuid
+
+  // Order within day
+  orderInDay            Int       @default(0) @map("order_in_day")
+
+  notes                 String?   @db.Text
+
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  samling               Samling             @relation(fields: [samlingId], references: [id], onDelete: Cascade)
+  sessionTemplate       SessionTemplate?    @relation(fields: [sessionTemplateId], references: [id], onDelete: SetNull)
+  attendance            SamlingSessionAttendance[]
+  syncedAssignments     DailyTrainingAssignment[]
+
+  @@index([samlingId])
+  @@index([sessionDate])
+  @@index([sessionType])
+  @@map("samling_sessions")
+}
+
+model SamlingSessionAttendance {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId             String    @map("session_id") @db.Uuid
+  participantId         String    @map("participant_id") @db.Uuid
+
+  // Attendance
+  attended              Boolean   @default(false)
+  attendedAt            DateTime? @map("attended_at") @db.Timestamptz(6)
+
+  // Performance/notes
+  performance           Json?     @db.JsonB
+  coachNotes            String?   @map("coach_notes") @db.Text
+  playerNotes           String?   @map("player_notes") @db.Text
+
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  session               SamlingSession      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  participant           SamlingParticipant  @relation(fields: [participantId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, participantId])
+  @@index([sessionId])
+  @@index([participantId])
+  @@map("samling_session_attendance")
 }

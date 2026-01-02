@@ -1,8 +1,15 @@
-// @ts-nocheck
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * CoachMessageList
+ *
+ * List of sent messages for coaches.
+ * Shows message subject, recipients, status, and category.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic icon background colors which require runtime values)
+ */
+
 import React, { useState, useMemo, useEffect } from 'react';
 import {
-  MessageCircle,
   Search,
   Send,
   Users,
@@ -22,6 +29,10 @@ import StateCard from '../../ui/composites/StateCard';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { SubSectionTitle } from '../../components/typography';
 
+// ============================================================================
+// TYPES
+// ============================================================================
+
 interface Message {
   id: string;
   subject: string;
@@ -36,6 +47,10 @@ interface Message {
   hasAttachment: boolean;
   category: 'training' | 'tournament' | 'general' | 'urgent';
 }
+
+// ============================================================================
+// MOCK DATA
+// ============================================================================
 
 const mockMessages: Message[] = [
   {
@@ -100,6 +115,74 @@ const mockMessages: Message[] = [
   }
 ];
 
+// ============================================================================
+// HELPERS
+// ============================================================================
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) {
+    return date.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
+  } else if (diffDays === 1) {
+    return 'I går';
+  } else if (diffDays < 7) {
+    return date.toLocaleDateString('nb-NO', { weekday: 'short' });
+  }
+  return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
+};
+
+const getRecipientIcon = (type: string) => {
+  switch (type) {
+    case 'group':
+    case 'all':
+      return <Users size={14} />;
+    default:
+      return <User size={14} />;
+  }
+};
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'read':
+      return <CheckCheck size={14} className="text-ak-status-success" />;
+    case 'delivered':
+      return <Check size={14} className="text-ak-text-tertiary" />;
+    default:
+      return <Clock size={14} className="text-ak-text-tertiary" />;
+  }
+};
+
+const getCategoryConfig = (category: string): { label: string; variant: 'accent' | 'warning' | 'neutral' | 'error' } => {
+  switch (category) {
+    case 'training':
+      return { label: 'Trening', variant: 'accent' };
+    case 'tournament':
+      return { label: 'Turnering', variant: 'warning' };
+    case 'urgent':
+      return { label: 'Viktig', variant: 'error' };
+    default:
+      return { label: 'Generelt', variant: 'neutral' };
+  }
+};
+
+const getRecipientIconBgClass = (type: string): string => {
+  switch (type) {
+    case 'player':
+      return 'bg-ak-brand-primary/15 text-ak-brand-primary';
+    case 'group':
+      return 'bg-ak-status-warning/15 text-ak-status-warning';
+    default:
+      return 'bg-ak-status-success/15 text-ak-status-success';
+  }
+};
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
 export const CoachMessageList: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -115,10 +198,10 @@ export const CoachMessageList: React.FC = () => {
       setError(null);
 
       const response = await messagesAPI.list({ type: 'sent' });
-      setMessages(response.data?.data || response.data || mockMessages);
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'Kunne ikke laste meldinger');
-      // Fallback to mock data
+      setMessages((response.data?.data || response.data || mockMessages) as Message[]);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Kunne ikke laste meldinger';
+      setError(errorMessage);
       setMessages(mockMessages);
     } finally {
       setLoading(false);
@@ -154,72 +237,19 @@ export const CoachMessageList: React.FC = () => {
     read: messages.filter(m => m.status === 'read').length
   }), [messages]);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) {
-      return date.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
-    } else if (diffDays === 1) {
-      return 'I går';
-    } else if (diffDays < 7) {
-      return date.toLocaleDateString('nb-NO', { weekday: 'short' });
-    }
-    return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
-  };
-
-  const getRecipientIcon = (type: string) => {
-    switch (type) {
-      case 'group': return <Users size={14} />;
-      case 'all': return <Users size={14} />;
-      default: return <User size={14} />;
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'read': return <CheckCheck size={14} color="var(--success)" />;
-      case 'delivered': return <Check size={14} color="var(--text-tertiary)" />;
-      default: return <Clock size={14} color="var(--text-tertiary)" />;
-    }
-  };
-
-  const getCategoryConfig = (category: string): { label: string; variant: 'accent' | 'warning' | 'neutral' | 'error' } => {
-    switch (category) {
-      case 'training': return { label: 'Trening', variant: 'accent' };
-      case 'tournament': return { label: 'Turnering', variant: 'warning' };
-      case 'urgent': return { label: 'Viktig', variant: 'error' };
-      default: return { label: 'Generelt', variant: 'neutral' };
-    }
-  };
-
   // Loading state
   if (loading) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'var(--bg-primary)',
-      }}>
+      <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle">
         <StateCard variant="loading" title="Laster meldinger..." />
       </div>
     );
   }
 
-  // Error state (with fallback to mock data)
+  // Error state
   if (error && messages.length === 0) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'var(--bg-primary)',
-        padding: '24px',
-      }}>
+      <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle p-6">
         <StateCard
           variant="error"
           title="Kunne ikke laste meldinger"
@@ -231,8 +261,8 @@ export const CoachMessageList: React.FC = () => {
   }
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
-      {/* Header - using PageHeader from design system */}
+    <div className="bg-ak-surface-subtle min-h-screen">
+      {/* Header */}
       <PageHeader
         title="Sendte beskjeder"
         subtitle={`${stats.total} beskjeder sendt • ${stats.read} lest`}
@@ -247,167 +277,120 @@ export const CoachMessageList: React.FC = () => {
         }
       />
 
-      <div style={{ padding: '0 24px 24px' }}>
-
-      {/* Search and Filter */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '20px',
-        flexWrap: 'wrap',
-      }}>
-        <Card variant="default" padding="sm" style={{ flex: 1, minWidth: '200px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Search size={18} color="var(--text-tertiary)" />
-            <input
-              type="text"
-              placeholder="Søk i beskjeder..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                flex: 1,
-                border: 'none',
-                backgroundColor: 'transparent',
-                fontSize: '14px',
-                color: 'var(--text-primary)',
-                outline: 'none',
-              }}
-            />
+      <div className="px-6 pb-6">
+        {/* Search and Filter */}
+        <div className="flex gap-4 mb-5 flex-wrap">
+          <Card variant="default" padding="sm" className="flex-1 min-w-[200px]">
+            <div className="flex items-center gap-2">
+              <Search size={18} className="text-ak-text-tertiary" />
+              <input
+                type="text"
+                placeholder="Søk i beskjeder..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
+              />
+            </div>
+          </Card>
+          <div className="flex gap-2">
+            {[
+              { key: 'all', label: 'Alle' },
+              { key: 'training', label: 'Trening' },
+              { key: 'tournament', label: 'Turnering' },
+              { key: 'urgent', label: 'Viktig' },
+            ].map(cat => (
+              <Button
+                key={cat.key}
+                variant={categoryFilter === cat.key ? 'primary' : 'ghost'}
+                size="sm"
+                onClick={() => setCategoryFilter(cat.key)}
+              >
+                {cat.label}
+              </Button>
+            ))}
           </div>
-        </Card>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          {[
-            { key: 'all', label: 'Alle' },
-            { key: 'training', label: 'Trening' },
-            { key: 'tournament', label: 'Turnering' },
-            { key: 'urgent', label: 'Viktig' },
-          ].map(cat => (
-            <Button
-              key={cat.key}
-              variant={categoryFilter === cat.key ? 'primary' : 'ghost'}
-              size="sm"
-              onClick={() => setCategoryFilter(cat.key)}
-            >
-              {cat.label}
-            </Button>
-          ))}
         </div>
-      </div>
 
-      {/* Message List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {filteredMessages.map((message) => {
-          const categoryConfig = getCategoryConfig(message.category);
-          return (
-            <Card
-              key={message.id}
-              variant="default"
-              padding="md"
-              onClick={() => navigate(`/coach/messages/${message.id}`)}
-              style={{ cursor: 'pointer' }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                {/* Left - Icon */}
-                <div style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: message.recipients.type === 'player'
-                    ? 'var(--bg-accent-subtle)'
-                    : message.recipients.type === 'group'
-                      ? 'color-mix(in srgb, var(--warning) 15%, transparent)'
-                      : 'color-mix(in srgb, var(--success) 15%, transparent)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: message.recipients.type === 'player'
-                    ? 'var(--accent)'
-                    : message.recipients.type === 'group'
-                      ? 'var(--warning)'
-                      : 'var(--success)',
-                  flexShrink: 0,
-                }}>
-                  {getRecipientIcon(message.recipients.type)}
-                </div>
-
-                {/* Center - Content */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <SubSectionTitle style={{
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      color: 'var(--text-primary)',
-                      margin: 0,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      {message.subject}
-                    </SubSectionTitle>
-                    <Badge variant={categoryConfig.variant} size="sm">{categoryConfig.label}</Badge>
+        {/* Message List */}
+        <div className="flex flex-col gap-2">
+          {filteredMessages.map((message) => {
+            const categoryConfig = getCategoryConfig(message.category);
+            return (
+              <Card
+                key={message.id}
+                variant="default"
+                padding="md"
+                onClick={() => navigate(`/coach/messages/${message.id}`)}
+                className="cursor-pointer hover:border-ak-brand-primary/50 transition-colors"
+              >
+                <div className="flex items-center gap-4">
+                  {/* Left - Icon */}
+                  <div
+                    className={`w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0 ${getRecipientIconBgClass(message.recipients.type)}`}
+                  >
+                    {getRecipientIcon(message.recipients.type)}
                   </div>
-                  <p style={{
-                    fontSize: '13px',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 6px 0',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {message.preview}
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-tertiary)' }}>
-                      {getRecipientIcon(message.recipients.type)}
-                      <span style={{ fontSize: '12px' }}>
-                        {message.recipients.name}
-                        {message.recipients.count && ` (${message.recipients.count})`}
+
+                  {/* Center - Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 overflow-hidden text-ellipsis whitespace-nowrap">
+                        {message.subject}
+                      </SubSectionTitle>
+                      <Badge variant={categoryConfig.variant} size="sm">
+                        {categoryConfig.label}
+                      </Badge>
+                    </div>
+                    <p className="text-[13px] text-ak-text-secondary m-0 mb-1.5 overflow-hidden text-ellipsis whitespace-nowrap">
+                      {message.preview}
+                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1 text-ak-text-tertiary">
+                        {getRecipientIcon(message.recipients.type)}
+                        <span className="text-xs">
+                          {message.recipients.name}
+                          {message.recipients.count && ` (${message.recipients.count})`}
+                        </span>
+                      </div>
+                      {message.hasAttachment && (
+                        <span className="text-xs text-ak-text-tertiary">
+                          📎 Vedlegg
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right - Status and time */}
+                  <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                    <span className="text-xs text-ak-text-tertiary">
+                      {formatDate(message.sentAt)}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      {getStatusIcon(message.status)}
+                      <span
+                        className={`text-[11px] ${
+                          message.status === 'read' ? 'text-ak-status-success' : 'text-ak-text-tertiary'
+                        }`}
+                      >
+                        {message.status === 'read' ? 'Lest' : message.status === 'delivered' ? 'Levert' : 'Sender...'}
                       </span>
                     </div>
-                    {message.hasAttachment && (
-                      <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                        📎 Vedlegg
-                      </span>
-                    )}
                   </div>
+
+                  <ChevronRight size={18} className="text-ak-text-tertiary" />
                 </div>
+              </Card>
+            );
+          })}
+        </div>
 
-                {/* Right - Status and time */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  gap: '8px',
-                  flexShrink: 0,
-                }}>
-                  <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                    {formatDate(message.sentAt)}
-                  </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    {getStatusIcon(message.status)}
-                    <span style={{
-                      fontSize: '11px',
-                      color: message.status === 'read' ? 'var(--success)' : 'var(--text-tertiary)',
-                    }}>
-                      {message.status === 'read' ? 'Lest' : message.status === 'delivered' ? 'Levert' : 'Sender...'}
-                    </span>
-                  </div>
-                </div>
-
-                <ChevronRight size={18} color="var(--text-tertiary)" />
-              </div>
-            </Card>
-          );
-        })}
-      </div>
-
-      {filteredMessages.length === 0 && (
-        <StateCard
-          variant="empty"
-          icon={Send}
-          title="Ingen beskjeder funnet"
-        />
-      )}
+        {filteredMessages.length === 0 && (
+          <StateCard
+            variant="empty"
+            icon={Send}
+            title="Ingen beskjeder funnet"
+          />
+        )}
       </div>
     </div>
   );

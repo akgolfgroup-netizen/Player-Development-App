@@ -1,3 +1,9 @@
+/**
+ * StatsGuidePage.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import {
   Target, TrendingUp, Trophy, Dumbbell, Zap, Ruler, Circle,
@@ -11,12 +17,21 @@ import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typog
 // DATA - De 20 Offisielle Testene
 // ============================================================================
 
+// Color class mapping for categories
+const COLOR_CLASSES = {
+  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
+  warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
+  error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
+  secondary: { text: 'text-ak-text-secondary', bg: 'bg-ak-surface-subtle' },
+};
+
 const TEST_CATEGORIES = [
   {
     id: 'distance',
     name: 'Distanse',
     icon: Ruler,
-    color: 'var(--accent)',
+    colorKey: 'brand',
     description: 'Måler lengden på slagene dine',
     tests: [
       { id: 1, name: 'Driver distanse', description: 'Gjennomsnitt av 3 beste av 6 slag', unit: 'meter' },
@@ -29,7 +44,7 @@ const TEST_CATEGORIES = [
     id: 'speed',
     name: 'Hastighet',
     icon: Zap,
-    color: 'var(--warning)',
+    colorKey: 'warning',
     description: 'Måler svinghastighet og ballhastighet',
     tests: [
       { id: 5, name: 'Klubbhastighet', description: 'Maksimal svinghastighet med driver', unit: 'km/t' },
@@ -41,7 +56,7 @@ const TEST_CATEGORIES = [
     id: 'approach',
     name: 'Approach',
     icon: Target,
-    color: 'var(--success)',
+    colorKey: 'success',
     description: 'Presisjon på innspill',
     tests: [
       { id: 8, name: '25m presisjon', description: 'Avstand fra hull på 10 slag', unit: 'cm' },
@@ -54,7 +69,7 @@ const TEST_CATEGORIES = [
     id: 'physical',
     name: 'Fysisk',
     icon: Dumbbell,
-    color: 'var(--error)',
+    colorKey: 'error',
     description: 'Fysisk kapasitet og styrke',
     tests: [
       { id: 12, name: 'Benkpress', description: 'Maksimal styrke i overkropp', unit: 'kg' },
@@ -66,7 +81,7 @@ const TEST_CATEGORIES = [
     id: 'shortgame',
     name: 'Kortspill',
     icon: Circle,
-    color: 'var(--achievement)',
+    colorKey: 'warning',
     description: 'Putting, chipping og bunker',
     tests: [
       { id: 15, name: 'Putting 3m', description: '10 putter fra 3 meter', unit: 'treff' },
@@ -79,7 +94,7 @@ const TEST_CATEGORIES = [
     id: 'oncourse',
     name: 'On-Course',
     icon: Trophy,
-    color: 'var(--accent)',
+    colorKey: 'brand',
     description: 'Prestasjon på banen',
     tests: [
       { id: 19, name: '9-hulls simulering', description: 'Score på standardisert 9-hulls test', unit: 'slag' },
@@ -93,17 +108,17 @@ const TEST_CATEGORIES = [
 // ============================================================================
 
 const PLAYER_CATEGORIES = [
-  { category: 'A', scoreRange: '< 70', level: 'Elite / Tour', emoji: '🏆', color: 'var(--success)' },
-  { category: 'B', scoreRange: '70-72', level: 'Scratch', emoji: '⭐', color: 'var(--success)' },
-  { category: 'C', scoreRange: '73-75', level: 'Lavt handicap', emoji: '🎯', color: 'var(--success)' },
-  { category: 'D', scoreRange: '76-78', level: 'Singel handicap', emoji: '📊', color: 'var(--warning)' },
-  { category: 'E', scoreRange: '79-81', level: 'Middels', emoji: '📈', color: 'var(--warning)' },
-  { category: 'F', scoreRange: '82-84', level: 'Hobby+', emoji: '🏌️', color: 'var(--text-secondary)' },
-  { category: 'G', scoreRange: '85-87', level: 'Hobby', emoji: '🏌️', color: 'var(--text-secondary)' },
-  { category: 'H', scoreRange: '88-90', level: 'Nybegynner+', emoji: '🌱', color: 'var(--text-secondary)' },
-  { category: 'I', scoreRange: '91-93', level: 'Nybegynner', emoji: '🌱', color: 'var(--text-secondary)' },
-  { category: 'J', scoreRange: '94-96', level: 'Starter+', emoji: '🆕', color: 'var(--text-secondary)' },
-  { category: 'K', scoreRange: '97+', level: 'Starter', emoji: '🆕', color: 'var(--text-secondary)' },
+  { category: 'A', scoreRange: '< 70', level: 'Elite / Tour', emoji: '🏆', colorKey: 'success' },
+  { category: 'B', scoreRange: '70-72', level: 'Scratch', emoji: '⭐', colorKey: 'success' },
+  { category: 'C', scoreRange: '73-75', level: 'Lavt handicap', emoji: '🎯', colorKey: 'success' },
+  { category: 'D', scoreRange: '76-78', level: 'Singel handicap', emoji: '📊', colorKey: 'warning' },
+  { category: 'E', scoreRange: '79-81', level: 'Middels', emoji: '📈', colorKey: 'warning' },
+  { category: 'F', scoreRange: '82-84', level: 'Hobby+', emoji: '🏌️', colorKey: 'secondary' },
+  { category: 'G', scoreRange: '85-87', level: 'Hobby', emoji: '🏌️', colorKey: 'secondary' },
+  { category: 'H', scoreRange: '88-90', level: 'Nybegynner+', emoji: '🌱', colorKey: 'secondary' },
+  { category: 'I', scoreRange: '91-93', level: 'Nybegynner', emoji: '🌱', colorKey: 'secondary' },
+  { category: 'J', scoreRange: '94-96', level: 'Starter+', emoji: '🆕', colorKey: 'secondary' },
+  { category: 'K', scoreRange: '97+', level: 'Starter', emoji: '🆕', colorKey: 'secondary' },
 ];
 
 // ============================================================================
@@ -117,7 +132,7 @@ const SG_COMPONENTS = [
     description: 'Driver og utslag',
     detail: 'Måler hvor mye verdi du skaper med driveren og utslag på par 4 og 5. Inkluderer både distanse og presisjon.',
     icon: Ruler,
-    color: 'var(--accent)',
+    colorKey: 'brand',
   },
   {
     id: 'app',
@@ -125,7 +140,7 @@ const SG_COMPONENTS = [
     description: 'Innspill til green',
     detail: 'Måler presisjonen på slag fra fairway og rough inn mot green. Hvor nær hullet treffer du?',
     icon: Target,
-    color: 'var(--success)',
+    colorKey: 'success',
   },
   {
     id: 'arg',
@@ -133,7 +148,7 @@ const SG_COMPONENTS = [
     description: 'Kortspill rundt green',
     detail: 'Chipping, pitching og bunker slag. Hvor effektiv er du når du bommer på green?',
     icon: Circle,
-    color: 'var(--warning)',
+    colorKey: 'warning',
   },
   {
     id: 'putt',
@@ -141,7 +156,7 @@ const SG_COMPONENTS = [
     description: 'Putter på green',
     detail: 'Effektiviteten din på green. Antall putter per runde sammenlignet med forventet basert på avstand.',
     icon: Trophy,
-    color: 'var(--error)',
+    colorKey: 'error',
   },
 ];
 
@@ -161,47 +176,32 @@ const TABS = [
 // REUSABLE COMPONENTS
 // ============================================================================
 
-const Card = ({ children, style = {}, onClick }) => (
+const Card = ({ children, className = '', onClick }) => (
   <div
     onClick={onClick}
-    style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '14px',
-      padding: '20px',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-      cursor: onClick ? 'pointer' : 'default',
-      transition: 'all 0.2s',
-      ...style,
-    }}
+    className={`bg-ak-surface-base rounded-[14px] p-5 shadow-sm transition-all duration-200 ${onClick ? 'cursor-pointer' : ''} ${className}`}
   >
     {children}
   </div>
 );
 
-const IconBadge = ({ icon: Icon, color, size = 40 }) => (
-  <div
-    style={{
-      width: size,
-      height: size,
-      borderRadius: size / 4,
-      backgroundColor: `${color}15`,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexShrink: 0,
-    }}
-  >
-    <Icon size={size * 0.5} color={color} />
-  </div>
-);
+const IconBadge = ({ icon: Icon, colorKey, size = 40 }) => {
+  const colors = COLOR_CLASSES[colorKey] || COLOR_CLASSES.brand;
+  const sizeClasses = size === 44 ? 'w-11 h-11 rounded-[11px]' : 'w-10 h-10 rounded-[10px]';
+  return (
+    <div className={`${sizeClasses} ${colors.bg} flex items-center justify-center shrink-0`}>
+      <Icon size={size * 0.5} className={colors.text} />
+    </div>
+  );
+};
 
 const GuideSectionTitle = ({ children, subtitle }) => (
-  <div style={{ marginBottom: '24px' }}>
+  <div className="mb-6">
     <SectionTitle>
       {children}
     </SectionTitle>
     {subtitle && (
-      <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '6px 0 0 0' }}>
+      <p className="text-sm text-ak-text-secondary mt-1.5 mb-0">
         {subtitle}
       </p>
     )}
@@ -221,23 +221,23 @@ const IntroSection = () => {
         Din golfutvikling - målt og analysert
       </GuideSectionTitle>
 
-      <Card style={{ marginBottom: '24px', backgroundColor: 'var(--accent-soft)', border: '1px solid var(--accent)20' }}>
-        <p style={{ fontSize: '15px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.6 }}>
+      <Card className="mb-6 bg-ak-brand-primary/10 border border-ak-brand-primary/20">
+        <p className="text-[15px] text-ak-text-primary m-0 leading-relaxed">
           AK Golf Academy bruker <strong>Team Norway Golf Testing Protocol</strong> for å måle alle aspekter
           av golfspillet ditt. Basert på dine testresultater tilpasser vi treningsplanen automatisk til
           dine styrker og forbedringsområder.
         </p>
       </Card>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4 mb-8">
         <Card>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-            <IconBadge icon={Target} color="var(--accent)" />
+          <div className="flex items-start gap-3.5">
+            <IconBadge icon={Target} colorKey="brand" />
             <div>
-              <SubSectionTitle style={{ margin: '0 0 6px 0' }}>
+              <SubSectionTitle className="m-0 mb-1.5">
                 20 Standardiserte Tester
               </SubSectionTitle>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+              <p className="text-[13px] text-ak-text-secondary m-0 leading-snug">
                 Dekker alt fra driving til putting - alle aspekter av spillet ditt måles objektivt.
               </p>
             </div>
@@ -245,13 +245,13 @@ const IntroSection = () => {
         </Card>
 
         <Card>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-            <IconBadge icon={Award} color="var(--success)" />
+          <div className="flex items-start gap-3.5">
+            <IconBadge icon={Award} colorKey="success" />
             <div>
-              <SubSectionTitle style={{ margin: '0 0 6px 0' }}>
+              <SubSectionTitle className="m-0 mb-1.5">
                 Personlig Kategori (A-K)
               </SubSectionTitle>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+              <p className="text-[13px] text-ak-text-secondary m-0 leading-snug">
                 Din spillernivå basert på 18-hulls gjennomsnitt, fra Elite (A) til Starter (K).
               </p>
             </div>
@@ -259,13 +259,13 @@ const IntroSection = () => {
         </Card>
 
         <Card>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-            <IconBadge icon={TrendingUp} color="var(--warning)" />
+          <div className="flex items-start gap-3.5">
+            <IconBadge icon={TrendingUp} colorKey="warning" />
             <div>
-              <SubSectionTitle style={{ margin: '0 0 6px 0' }}>
+              <SubSectionTitle className="m-0 mb-1.5">
                 Automatisk Tilpasning
               </SubSectionTitle>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+              <p className="text-[13px] text-ak-text-secondary m-0 leading-snug">
                 Treningsplanen justeres etter testresultatene - fokus på det som gir størst forbedring.
               </p>
             </div>
@@ -273,41 +273,17 @@ const IntroSection = () => {
         </Card>
       </div>
 
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <div className="flex gap-3 flex-wrap">
         <button
           onClick={() => navigate('/testresultater')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            backgroundColor: 'var(--accent)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '10px',
-            fontSize: '14px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
+          className="flex items-center gap-2 py-3 px-5 bg-ak-brand-primary text-white border-none rounded-[10px] text-sm font-medium cursor-pointer"
         >
           Se mine tester
           <ChevronRight size={16} />
         </button>
         <button
           onClick={() => navigate('/statistikk')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            backgroundColor: 'var(--bg-secondary)',
-            color: 'var(--text-primary)',
-            border: '1px solid var(--border)',
-            borderRadius: '10px',
-            fontSize: '14px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
+          className="flex items-center gap-2 py-3 px-5 bg-ak-surface-subtle text-ak-text-primary border border-ak-border-default rounded-[10px] text-sm font-medium cursor-pointer"
         >
           Gå til statistikk
           <ChevronRight size={16} />
@@ -323,67 +299,51 @@ const IntroSection = () => {
 
 const TestCategoryCard = ({ category, isExpanded, onToggle }) => {
   const Icon = category.icon;
+  const colors = COLOR_CLASSES[category.colorKey] || COLOR_CLASSES.brand;
 
   return (
     <Card
       onClick={onToggle}
-      style={{
-        cursor: 'pointer',
-        border: isExpanded ? `2px solid ${category.color}` : '2px solid transparent',
-      }}
+      className={`cursor-pointer border-2 ${isExpanded ? 'border-ak-brand-primary' : 'border-transparent'}`}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <IconBadge icon={Icon} color={category.color} size={44} />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <IconBadge icon={Icon} colorKey={category.colorKey} size={44} />
           <div>
-            <SubSectionTitle style={{ margin: 0 }}>
+            <SubSectionTitle className="m-0">
               {category.name}
             </SubSectionTitle>
-            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '2px 0 0 0' }}>
+            <p className="text-xs text-ak-text-secondary mt-0.5 mb-0">
               {category.tests.length} tester
             </p>
           </div>
         </div>
-        {isExpanded ? <ChevronDown size={20} color="var(--text-secondary)" /> : <ChevronRight size={20} color="var(--text-secondary)" />}
+        {isExpanded ? (
+          <ChevronDown size={20} className="text-ak-text-secondary" />
+        ) : (
+          <ChevronRight size={20} className="text-ak-text-secondary" />
+        )}
       </div>
 
       {isExpanded && (
-        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 12px 0' }}>
+        <div className="mt-4 pt-4 border-t border-ak-border-default">
+          <p className="text-[13px] text-ak-text-secondary m-0 mb-3">
             {category.description}
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div className="flex flex-col gap-2.5">
             {category.tests.map((test) => (
               <div
                 key={test.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  padding: '10px 12px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderRadius: '8px',
-                }}
+                className="flex items-center gap-2.5 py-2.5 px-3 bg-ak-surface-subtle rounded-lg"
               >
-                <span style={{
-                  width: '24px',
-                  height: '24px',
-                  borderRadius: '6px',
-                  backgroundColor: `${category.color}20`,
-                  color: category.color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                }}>
+                <span className={`w-6 h-6 rounded-md ${colors.bg} ${colors.text} flex items-center justify-center text-[11px] font-semibold`}>
                   {test.id}
                 </span>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                  <div className="text-[13px] font-medium text-ak-text-primary">
                     {test.name}
                   </div>
-                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                  <div className="text-[11px] text-ak-text-secondary">
                     {test.description}
                   </div>
                 </div>
@@ -405,17 +365,17 @@ const TestsSection = () => {
         De 20 Offisielle Testene
       </GuideSectionTitle>
 
-      <Card style={{ marginBottom: '24px', backgroundColor: 'var(--bg-secondary)' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-          <Info size={20} color="var(--accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
-          <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.5 }}>
+      <Card className="mb-6 bg-ak-surface-subtle">
+        <div className="flex items-start gap-3">
+          <Info size={20} className="text-ak-brand-primary shrink-0 mt-0.5" />
+          <p className="text-sm text-ak-text-primary m-0 leading-snug">
             Hver test har klare krav for hver spillerkategori, så du alltid vet hva du jobber mot.
             Klikk på en kategori for å se alle testene.
           </p>
         </div>
       </Card>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '12px' }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-3">
         {TEST_CATEGORIES.map((category) => (
           <TestCategoryCard
             key={category.id}
@@ -442,83 +402,62 @@ const CategoriesSection = () => {
         Din Spillerkategori
       </GuideSectionTitle>
 
-      <Card style={{ marginBottom: '24px' }}>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '400px' }}>
+      <Card className="mb-6">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse min-w-[400px]">
             <thead>
               <tr>
-                <th style={{ padding: '12px', textAlign: 'left', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', borderBottom: '1px solid var(--border)' }}>
+                <th className="p-3 text-left text-xs font-semibold text-ak-text-secondary border-b border-ak-border-default">
                   Kategori
                 </th>
-                <th style={{ padding: '12px', textAlign: 'left', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', borderBottom: '1px solid var(--border)' }}>
+                <th className="p-3 text-left text-xs font-semibold text-ak-text-secondary border-b border-ak-border-default">
                   Score (18 hull)
                 </th>
-                <th style={{ padding: '12px', textAlign: 'left', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', borderBottom: '1px solid var(--border)' }}>
+                <th className="p-3 text-left text-xs font-semibold text-ak-text-secondary border-b border-ak-border-default">
                   Nivå
                 </th>
               </tr>
             </thead>
             <tbody>
-              {PLAYER_CATEGORIES.map((cat, index) => (
-                <tr key={cat.category} style={{ backgroundColor: index % 2 === 0 ? 'transparent' : 'var(--bg-secondary)' }}>
-                  <td style={{ padding: '12px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '8px',
-                        backgroundColor: `${cat.color}20`,
-                        color: cat.color,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '14px',
-                        fontWeight: 700,
-                      }}>
-                        {cat.category}
+              {PLAYER_CATEGORIES.map((cat, index) => {
+                const colors = COLOR_CLASSES[cat.colorKey] || COLOR_CLASSES.secondary;
+                return (
+                  <tr key={cat.category} className={index % 2 === 0 ? 'bg-transparent' : 'bg-ak-surface-subtle'}>
+                    <td className="p-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className={`w-8 h-8 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center text-sm font-bold`}>
+                          {cat.category}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="p-3 text-sm text-ak-text-primary font-medium">
+                      {cat.scoreRange}
+                    </td>
+                    <td className="p-3">
+                      <span className="text-sm text-ak-text-secondary">
+                        {cat.emoji} {cat.level}
                       </span>
-                    </div>
-                  </td>
-                  <td style={{ padding: '12px', fontSize: '14px', color: 'var(--text-primary)', fontWeight: 500 }}>
-                    {cat.scoreRange}
-                  </td>
-                  <td style={{ padding: '12px' }}>
-                    <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                      {cat.emoji} {cat.level}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </Card>
 
-      <Card style={{ backgroundColor: 'var(--bg-secondary)' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-          <HelpCircle size={20} color="var(--accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
+      <Card className="bg-ak-surface-subtle">
+        <div className="flex items-start gap-3">
+          <HelpCircle size={20} className="text-ak-brand-primary shrink-0 mt-0.5" />
           <div>
-            <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.5 }}>
+            <p className="text-sm text-ak-text-primary m-0 leading-snug">
               <strong>Hvordan fungerer det?</strong><br />
               Hver test har egne krav for hver kategori. For eksempel krever kategori A lengre driver-distanse
               enn kategori E. Se dine personlige krav under "Mine tester".
             </p>
             <button
               onClick={() => navigate('/testresultater')}
-              style={{
-                marginTop: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 14px',
-                backgroundColor: 'var(--accent)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className="mt-3 flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer"
             >
               Se mine kategorikrav
               <ChevronRight size={14} />
@@ -541,14 +480,14 @@ const StrokesGainedSection = () => {
         Strokes Gained Forklaring
       </GuideSectionTitle>
 
-      <Card style={{ marginBottom: '24px', backgroundColor: 'var(--accent-soft)', border: '1px solid var(--accent)20' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-          <BarChart2 size={24} color="var(--accent)" style={{ flexShrink: 0, marginTop: '2px' }} />
+      <Card className="mb-6 bg-ak-brand-primary/10 border border-ak-brand-primary/20">
+        <div className="flex items-start gap-3">
+          <BarChart2 size={24} className="text-ak-brand-primary shrink-0 mt-0.5" />
           <div>
-            <SubSectionTitle style={{ margin: '0 0 8px 0' }}>
+            <SubSectionTitle className="m-0 mb-2">
               Enkelt forklart
             </SubSectionTitle>
-            <p style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0, lineHeight: 1.6 }}>
+            <p className="text-sm text-ak-text-primary m-0 leading-relaxed">
               Strokes Gained viser hvor mange slag du <strong>sparer</strong> (eller taper) sammenlignet med
               tour-gjennomsnittet. <strong>+1.0</strong> betyr du er 1 slag bedre per runde i den kategorien.
             </p>
@@ -556,25 +495,26 @@ const StrokesGainedSection = () => {
         </div>
       </Card>
 
-      <SubSectionTitle style={{ margin: '0 0 16px 0' }}>
+      <SubSectionTitle className="m-0 mb-4">
         De 4 komponentene
       </SubSectionTitle>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '12px', marginBottom: '24px' }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-3 mb-6">
         {SG_COMPONENTS.map((comp) => {
           const Icon = comp.icon;
+          const colors = COLOR_CLASSES[comp.colorKey] || COLOR_CLASSES.brand;
           return (
             <Card key={comp.id}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                <IconBadge icon={Icon} color={comp.color} />
+              <div className="flex items-start gap-3.5">
+                <IconBadge icon={Icon} colorKey={comp.colorKey} />
                 <div>
-                  <CardTitle style={{ margin: '0 0 4px 0' }}>
+                  <CardTitle className="m-0 mb-1">
                     {comp.name}
                   </CardTitle>
-                  <p style={{ fontSize: '12px', color: comp.color, margin: '0 0 8px 0', fontWeight: 500 }}>
+                  <p className={`text-xs ${colors.text} m-0 mb-2 font-medium`}>
                     {comp.description}
                   </p>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+                  <p className="text-[13px] text-ak-text-secondary m-0 leading-snug">
                     {comp.detail}
                   </p>
                 </div>
@@ -584,38 +524,38 @@ const StrokesGainedSection = () => {
         })}
       </div>
 
-      <SubSectionTitle style={{ margin: '0 0 16px 0' }}>
+      <SubSectionTitle className="m-0 mb-4">
         Hvordan tolke tallene
       </SubSectionTitle>
 
       <Card>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px', backgroundColor: 'var(--success)10', borderRadius: '8px' }}>
-            <TrendingUp size={20} color="var(--success)" />
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3 p-2.5 bg-ak-status-success/10 rounded-lg">
+            <TrendingUp size={20} className="text-ak-status-success" />
             <div>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--success)' }}>+2.0 eller høyere</span>
-              <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '12px' }}>Tour-nivå styrke</span>
+              <span className="text-sm font-semibold text-ak-status-success">+2.0 eller høyere</span>
+              <span className="text-[13px] text-ak-text-secondary ml-3">Tour-nivå styrke</span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px', backgroundColor: 'var(--success)08', borderRadius: '8px' }}>
-            <TrendingUp size={20} color="var(--success)" style={{ opacity: 0.7 }} />
+          <div className="flex items-center gap-3 p-2.5 bg-ak-status-success/5 rounded-lg">
+            <TrendingUp size={20} className="text-ak-status-success opacity-70" />
             <div>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>+0.5 til +2.0</span>
-              <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '12px' }}>Over gjennomsnittet</span>
+              <span className="text-sm font-semibold text-ak-text-primary">+0.5 til +2.0</span>
+              <span className="text-[13px] text-ak-text-secondary ml-3">Over gjennomsnittet</span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px', backgroundColor: 'var(--bg-secondary)', borderRadius: '8px' }}>
-            <div style={{ width: '20px', height: '2px', backgroundColor: 'var(--text-secondary)' }} />
+          <div className="flex items-center gap-3 p-2.5 bg-ak-surface-subtle rounded-lg">
+            <div className="w-5 h-0.5 bg-ak-text-secondary" />
             <div>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>-0.5 til +0.5</span>
-              <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '12px' }}>Gjennomsnittlig</span>
+              <span className="text-sm font-semibold text-ak-text-primary">-0.5 til +0.5</span>
+              <span className="text-[13px] text-ak-text-secondary ml-3">Gjennomsnittlig</span>
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px', backgroundColor: 'var(--error)08', borderRadius: '8px' }}>
-            <TrendingUp size={20} color="var(--error)" style={{ transform: 'rotate(180deg)' }} />
+          <div className="flex items-center gap-3 p-2.5 bg-ak-status-error/5 rounded-lg">
+            <TrendingUp size={20} className="text-ak-status-error rotate-180" />
             <div>
-              <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--error)' }}>-0.5 eller lavere</span>
-              <span style={{ fontSize: '13px', color: 'var(--text-secondary)', marginLeft: '12px' }}>Forbedringsområde</span>
+              <span className="text-sm font-semibold text-ak-status-error">-0.5 eller lavere</span>
+              <span className="text-[13px] text-ak-text-secondary ml-3">Forbedringsområde</span>
             </div>
           </div>
         </div>
@@ -632,34 +572,10 @@ const HowItWorksSection = () => {
   const navigate = useNavigate();
 
   const steps = [
-    {
-      id: 1,
-      title: 'Du tar test',
-      description: 'Gjennomfør en eller flere av de 20 standardiserte testene.',
-      icon: Target,
-      color: 'var(--accent)',
-    },
-    {
-      id: 2,
-      title: 'Resultat lagres',
-      description: 'Resultatet sammenlignes med kravene for din kategori.',
-      icon: BarChart2,
-      color: 'var(--warning)',
-    },
-    {
-      id: 3,
-      title: 'Analyse',
-      description: 'Vi identifiserer styrker og forbedringsområder (Breaking Points).',
-      icon: TrendingUp,
-      color: 'var(--success)',
-    },
-    {
-      id: 4,
-      title: 'Plan tilpasses',
-      description: 'Treningsplanen oppdateres automatisk basert på dine resultater.',
-      icon: Calendar,
-      color: 'var(--accent)',
-    },
+    { id: 1, title: 'Du tar test', description: 'Gjennomfør en eller flere av de 20 standardiserte testene.', icon: Target, colorKey: 'brand' },
+    { id: 2, title: 'Resultat lagres', description: 'Resultatet sammenlignes med kravene for din kategori.', icon: BarChart2, colorKey: 'warning' },
+    { id: 3, title: 'Analyse', description: 'Vi identifiserer styrker og forbedringsområder (Breaking Points).', icon: TrendingUp, colorKey: 'success' },
+    { id: 4, title: 'Plan tilpasses', description: 'Treningsplanen oppdateres automatisk basert på dine resultater.', icon: Calendar, colorKey: 'brand' },
   ];
 
   return (
@@ -669,50 +585,35 @@ const HowItWorksSection = () => {
       </GuideSectionTitle>
 
       {/* Flow diagram */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0', marginBottom: '32px' }}>
+      <div className="flex flex-col gap-0 mb-8">
         {steps.map((step, index) => {
           const Icon = step.icon;
+          const colors = COLOR_CLASSES[step.colorKey] || COLOR_CLASSES.brand;
           return (
             <div key={step.id}>
-              <Card style={{ position: 'relative' }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    backgroundColor: `${step.color}15`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}>
-                    <Icon size={24} color={step.color} />
+              <Card className="relative">
+                <div className="flex items-start gap-4">
+                  <div className={`w-12 h-12 rounded-full ${colors.bg} flex items-center justify-center shrink-0`}>
+                    <Icon size={24} className={colors.text} />
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
-                      <span style={{
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        color: step.color,
-                        backgroundColor: `${step.color}15`,
-                        padding: '2px 8px',
-                        borderRadius: '10px',
-                      }}>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2.5 mb-1">
+                      <span className={`text-[11px] font-semibold ${colors.text} ${colors.bg} py-0.5 px-2 rounded-[10px]`}>
                         Steg {step.id}
                       </span>
                     </div>
-                    <CardTitle style={{ fontSize: '16px', margin: '0 0 4px 0' }}>
+                    <CardTitle className="text-base m-0 mb-1">
                       {step.title}
                     </CardTitle>
-                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+                    <p className="text-sm text-ak-text-secondary m-0 leading-snug">
                       {step.description}
                     </p>
                   </div>
                 </div>
               </Card>
               {index < steps.length - 1 && (
-                <div style={{ display: 'flex', justifyContent: 'center', padding: '8px 0' }}>
-                  <ArrowRight size={24} color="var(--border)" style={{ transform: 'rotate(90deg)' }} />
+                <div className="flex justify-center py-2">
+                  <ArrowRight size={24} className="text-ak-border-default rotate-90" />
                 </div>
               )}
             </div>
@@ -721,59 +622,35 @@ const HowItWorksSection = () => {
       </div>
 
       {/* Key points */}
-      <SubSectionTitle style={{ margin: '0 0 16px 0' }}>
+      <SubSectionTitle className="m-0 mb-4">
         Nøkkelpunkter
       </SubSectionTitle>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
+      <div className="flex flex-col gap-2.5 mb-6">
         {[
           'Tester avdekker dine styrker og svakheter objektivt',
           'Svake områder blir "Breaking Points" som får ekstra fokus',
           'Treningsplanen oppdateres automatisk når du forbedrer deg',
           'Test regelmessig for å spore fremgang',
         ].map((point, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', backgroundColor: 'var(--bg-primary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
-            <CheckCircle size={18} color="var(--success)" />
-            <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>{point}</span>
+          <div key={index} className="flex items-center gap-3 py-3 px-4 bg-ak-surface-base rounded-[10px] border border-ak-border-default">
+            <CheckCircle size={18} className="text-ak-status-success" />
+            <span className="text-sm text-ak-text-primary">{point}</span>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      <div className="flex gap-3 flex-wrap">
         <button
           onClick={() => navigate('/testresultater')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            backgroundColor: 'var(--accent)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '10px',
-            fontSize: '14px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
+          className="flex items-center gap-2 py-3 px-5 bg-ak-brand-primary text-white border-none rounded-[10px] text-sm font-medium cursor-pointer"
         >
           Se mine tester
           <ChevronRight size={16} />
         </button>
         <button
           onClick={() => navigate('/utvikling/breaking-points')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            backgroundColor: 'var(--bg-secondary)',
-            color: 'var(--text-primary)',
-            border: '1px solid var(--border)',
-            borderRadius: '10px',
-            fontSize: '14px',
-            fontWeight: 500,
-            cursor: 'pointer',
-          }}
+          className="flex items-center gap-2 py-3 px-5 bg-ak-surface-subtle text-ak-text-primary border border-ak-border-default rounded-[10px] text-sm font-medium cursor-pointer"
         >
           Se Breaking Points
           <ChevronRight size={16} />
@@ -808,16 +685,10 @@ const StatsGuidePage = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
-      <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
+      <div className="p-6 max-w-[1200px] mx-auto">
         {/* Tab Navigation */}
-        <div style={{
-          display: 'flex',
-          gap: '6px',
-          marginBottom: '24px',
-          overflowX: 'auto',
-          paddingBottom: '8px',
-        }}>
+        <div className="flex gap-1.5 mb-6 overflow-x-auto pb-2">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -825,22 +696,11 @@ const StatsGuidePage = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '10px 16px',
-                  backgroundColor: isActive ? 'var(--accent)' : 'var(--bg-primary)',
-                  color: isActive ? 'white' : 'var(--text-primary)',
-                  border: 'none',
-                  borderRadius: '10px',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  boxShadow: isActive ? '0 2px 8px var(--accent)30' : 'none',
-                  transition: 'all 0.2s',
-                }}
+                className={`flex items-center gap-1.5 py-2.5 px-4 border-none rounded-[10px] text-[13px] font-medium cursor-pointer whitespace-nowrap transition-all duration-200 ${
+                  isActive
+                    ? 'bg-ak-brand-primary text-white shadow-md'
+                    : 'bg-ak-surface-base text-ak-text-primary'
+                }`}
               >
                 <Icon size={16} />
                 {tab.label}

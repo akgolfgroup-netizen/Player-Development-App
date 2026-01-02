@@ -1,8 +1,8 @@
 /**
  * ShareSessionModal - Del økt med andre spillere
+ * Design System v3.0 - Premium Light
  *
  * Based on: APP_FUNCTIONALITY.md Section 12
- * Design Source: /packages/design-system/figma/ak_golf_complete_figma_kit.svg
  *
  * Features:
  * - Friend search/selection
@@ -10,126 +10,65 @@
  * - Share as template option (editable by recipient)
  * - Share results option (include your training data)
  * - Multi-recipient support
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState, useMemo } from 'react';
 import Button from '../../ui/primitives/Button';
 import { SectionTitle } from '../../components/typography';
 
-const colors = {
-  // Brand Colors
-  forest: 'var(--accent)',
-  forestLight: 'var(--accent-light)',
-  foam: 'var(--bg-secondary)',
-  ivory: 'var(--bg-tertiary)',
-  gold: 'var(--achievement)',
-
-  // Semantic Colors
-  success: 'var(--success)',
-  warning: 'var(--warning)',
-  error: 'var(--error)',
-
-  // Neutrals
-  charcoal: 'var(--text-primary)',
-  steel: 'var(--text-secondary)',
-  mist: 'var(--border-default)',
-  cloud: 'var(--bg-tertiary)',
-  white: 'var(--bg-primary)',
+// Helper for category color classes
+const getCategoryClasses = (category) => {
+  const classes = {
+    A: 'text-amber-500',
+    B: 'text-ak-brand-primary/70',
+    C: 'text-ak-status-success',
+    Junior: 'text-ak-status-warning',
+  };
+  return classes[category] || 'text-ak-text-secondary';
 };
 
 // ============================================================================
 // Friend/Player Card Component
 // ============================================================================
 const FriendCard = ({ friend, selected, onToggle }) => {
-  const categoryColors = {
-    'A': colors.gold,
-    'B': colors.forestLight,
-    'C': colors.success,
-    'Junior': colors.warning,
-  };
-
   return (
     <button
       onClick={() => onToggle(friend.id)}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '12px',
-        background: selected ? `${colors.forest}10` : colors.white,
-        border: `1px solid ${selected ? colors.forest : colors.mist}`,
-        borderRadius: '8px',
-        cursor: 'pointer',
-        width: '100%',
-        textAlign: 'left',
-        transition: 'all 150ms ease',
-      }}
+      className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer w-full text-left transition-all duration-150 border ${
+        selected
+          ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+          : 'bg-ak-surface-base border-ak-border-default'
+      }`}
     >
       {/* Checkbox */}
       <div
-        style={{
-          width: '20px',
-          height: '20px',
-          borderRadius: '4px',
-          border: `2px solid ${selected ? colors.forest : colors.steel}`,
-          background: selected ? colors.forest : 'transparent',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}
+        className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${
+          selected
+            ? 'border-ak-brand-primary bg-ak-brand-primary'
+            : 'border-ak-text-secondary bg-transparent'
+        }`}
       >
         {selected && (
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={colors.white} strokeWidth="3">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         )}
       </div>
 
       {/* Avatar */}
-      <div
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          background: colors.foam,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}
-      >
-        <span style={{ fontSize: '16px' }}>👤</span>
+      <div className="w-10 h-10 rounded-full bg-ak-surface-subtle flex items-center justify-center shrink-0">
+        <span className="text-base">👤</span>
       </div>
 
       {/* Info */}
-      <div style={{ flex: 1 }}>
-        <div
-          style={{
-            fontSize: '15px',
-            fontWeight: '600',
-            color: colors.charcoal,
-            lineHeight: '20px',
-          }}
-        >
+      <div className="flex-1">
+        <div className="text-[15px] font-semibold text-ak-text-primary leading-5">
           {friend.name}
         </div>
-        <div
-          style={{
-            fontSize: '13px',
-            color: colors.steel,
-            lineHeight: '18px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}
-        >
-          <span
-            style={{
-              color: categoryColors[friend.category] || colors.steel,
-              fontWeight: '500',
-            }}
-          >
+        <div className="text-[13px] text-ak-text-secondary leading-[18px] flex items-center gap-1.5">
+          <span className={`font-medium ${getCategoryClasses(friend.category)}`}>
             {friend.category}-kategori
           </span>
           <span>•</span>
@@ -145,33 +84,11 @@ const FriendCard = ({ friend, selected, onToggle }) => {
 // ============================================================================
 const SessionPreview = ({ session }) => {
   return (
-    <div
-      style={{
-        padding: '16px',
-        background: colors.foam,
-        borderRadius: '8px',
-        marginBottom: '20px',
-      }}
-    >
-      <div
-        style={{
-          fontSize: '17px',
-          fontWeight: '600',
-          color: colors.charcoal,
-          marginBottom: '4px',
-        }}
-      >
+    <div className="p-4 bg-ak-surface-subtle rounded-lg mb-5">
+      <div className="text-[17px] font-semibold text-ak-text-primary mb-1">
         {session.title}
       </div>
-      <div
-        style={{
-          fontSize: '14px',
-          color: colors.steel,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-        }}
-      >
+      <div className="text-sm text-ak-text-secondary flex items-center gap-2">
         <span>{session.date}</span>
         <span>•</span>
         <span>{session.duration} min</span>
@@ -187,54 +104,26 @@ const SessionPreview = ({ session }) => {
 // ============================================================================
 const CheckboxOption = ({ checked, onChange, label, description }) => {
   return (
-    <label
-      style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '12px',
-        cursor: 'pointer',
-        padding: '8px 0',
-      }}
-    >
+    <label className="flex items-start gap-3 cursor-pointer py-2">
       <div
-        style={{
-          width: '20px',
-          height: '20px',
-          borderRadius: '4px',
-          border: `2px solid ${checked ? colors.forest : colors.steel}`,
-          background: checked ? colors.forest : 'transparent',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          marginTop: '2px',
-        }}
+        className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 ${
+          checked
+            ? 'border-ak-brand-primary bg-ak-brand-primary'
+            : 'border-ak-text-secondary bg-transparent'
+        }`}
       >
         {checked && (
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={colors.white} strokeWidth="3">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         )}
       </div>
       <div>
-        <div
-          style={{
-            fontSize: '15px',
-            fontWeight: '500',
-            color: colors.charcoal,
-            lineHeight: '20px',
-          }}
-        >
+        <div className="text-[15px] font-medium text-ak-text-primary leading-5">
           {label}
         </div>
         {description && (
-          <div
-            style={{
-              fontSize: '13px',
-              color: colors.steel,
-              lineHeight: '18px',
-            }}
-          >
+          <div className="text-[13px] text-ak-text-secondary leading-[18px]">
             {description}
           </div>
         )}
@@ -243,7 +132,7 @@ const CheckboxOption = ({ checked, onChange, label, description }) => {
         type="checkbox"
         checked={checked}
         onChange={onChange}
-        style={{ display: 'none' }}
+        className="hidden"
       />
     </label>
   );
@@ -344,107 +233,37 @@ const ShareSessionModal = ({
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px',
-        zIndex: 1000,
-      }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-5 z-[1000]"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div
-        style={{
-          background: colors.white,
-          borderRadius: '16px',
-          width: '100%',
-          maxWidth: '480px',
-          maxHeight: '90vh',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-        }}
-      >
+      <div className="bg-ak-surface-base rounded-2xl w-full max-w-[480px] max-h-[90vh] overflow-hidden flex flex-col shadow-lg">
         {/* Header */}
-        <div
-          style={{
-            padding: '20px',
-            borderBottom: `1px solid ${colors.mist}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
+        <div className="p-5 border-b border-ak-border-default flex items-center justify-between">
           <SectionTitle>
             Del økt
           </SectionTitle>
           <button
             onClick={onClose}
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              border: 'none',
-              background: colors.cloud,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className="w-8 h-8 rounded-full border-none bg-ak-surface-subtle cursor-pointer flex items-center justify-center"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={colors.steel} strokeWidth="2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="stroke-ak-text-secondary" strokeWidth="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Content - Scrollable */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: '20px',
-          }}
-        >
+        <div className="flex-1 overflow-y-auto p-5">
           {/* Session Preview */}
           <SessionPreview session={demoSession} />
 
           {/* Search */}
-          <div style={{ marginBottom: '16px' }}>
-            <label
-              style={{
-                fontSize: '13px',
-                fontWeight: '600',
-                color: colors.steel,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                display: 'block',
-                marginBottom: '8px',
-              }}
-            >
+          <div className="mb-4">
+            <label className="block text-[13px] font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
               Velg mottakere
             </label>
-            <div
-              style={{
-                position: 'relative',
-              }}
-            >
-              <span
-                style={{
-                  position: 'absolute',
-                  left: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  fontSize: '16px',
-                }}
-              >
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-base">
                 🔍
               </span>
               <input
@@ -452,49 +271,17 @@ const ShareSessionModal = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Søk etter spiller..."
-                style={{
-                  width: '100%',
-                  height: '44px',
-                  padding: '0 12px 0 40px',
-                  border: `1px solid ${colors.mist}`,
-                  borderRadius: '8px',
-                  fontSize: '15px',
-                  color: colors.charcoal,
-                  background: colors.white,
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
+                className="w-full h-11 pl-10 pr-3 border border-ak-border-default rounded-lg text-[15px] text-ak-text-primary bg-ak-surface-base outline-none box-border"
               />
             </div>
           </div>
 
           {/* Friends List */}
-          <div
-            style={{
-              marginBottom: '20px',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '12px',
-                fontWeight: '600',
-                color: colors.steel,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                marginBottom: '12px',
-              }}
-            >
+          <div className="mb-5">
+            <div className="text-xs font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
               Mine venner
             </div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                maxHeight: '200px',
-                overflowY: 'auto',
-              }}
-            >
+            <div className="flex flex-col gap-2 max-h-[200px] overflow-y-auto">
               {filteredFriends.map(friend => (
                 <FriendCard
                   key={friend.id}
@@ -504,14 +291,7 @@ const ShareSessionModal = ({
                 />
               ))}
               {filteredFriends.length === 0 && (
-                <div
-                  style={{
-                    padding: '20px',
-                    textAlign: 'center',
-                    color: colors.steel,
-                    fontSize: '14px',
-                  }}
-                >
+                <div className="p-5 text-center text-ak-text-secondary text-sm">
                   Ingen venner funnet
                 </div>
               )}
@@ -519,18 +299,8 @@ const ShareSessionModal = ({
           </div>
 
           {/* Message */}
-          <div style={{ marginBottom: '20px' }}>
-            <label
-              style={{
-                fontSize: '13px',
-                fontWeight: '600',
-                color: colors.steel,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                display: 'block',
-                marginBottom: '8px',
-              }}
-            >
+          <div className="mb-5">
+            <label className="block text-[13px] font-semibold text-ak-text-secondary uppercase tracking-wide mb-2">
               Beskrivelse (valgfritt)
             </label>
             <textarea
@@ -538,41 +308,13 @@ const ShareSessionModal = ({
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Skriv en melding til mottakerne..."
               rows={3}
-              style={{
-                width: '100%',
-                padding: '12px',
-                border: `1px solid ${colors.mist}`,
-                borderRadius: '8px',
-                fontSize: '15px',
-                color: colors.charcoal,
-                background: colors.white,
-                outline: 'none',
-                resize: 'vertical',
-                minHeight: '80px',
-                fontFamily: 'inherit',
-                boxSizing: 'border-box',
-              }}
+              className="w-full p-3 border border-ak-border-default rounded-lg text-[15px] text-ak-text-primary bg-ak-surface-base outline-none resize-y min-h-[80px] font-sans box-border"
             />
           </div>
 
           {/* Share Options */}
-          <div
-            style={{
-              padding: '16px',
-              background: colors.foam,
-              borderRadius: '8px',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '13px',
-                fontWeight: '600',
-                color: colors.steel,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                marginBottom: '12px',
-              }}
-            >
+          <div className="p-4 bg-ak-surface-subtle rounded-lg">
+            <div className="text-[13px] font-semibold text-ak-text-secondary uppercase tracking-wide mb-3">
               Delingsalternativer
             </div>
             <CheckboxOption
@@ -591,19 +333,13 @@ const ShareSessionModal = ({
         </div>
 
         {/* Footer */}
-        <div
-          style={{
-            padding: '16px 20px',
-            borderTop: `1px solid ${colors.mist}`,
-            background: colors.white,
-          }}
-        >
+        <div className="px-5 py-4 border-t border-ak-border-default bg-ak-surface-base">
           <Button
             variant="primary"
             onClick={handleShare}
             disabled={selectedFriends.length === 0 || isSharing}
             loading={isSharing}
-            style={{ width: '100%', height: '48px', fontSize: '17px', fontWeight: 600 }}
+            className="w-full h-12 text-[17px] font-semibold"
           >
             {isSharing
               ? 'Deler...'
@@ -653,95 +389,43 @@ export const ReceivedSessionModal = ({
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px',
-        zIndex: 1000,
-      }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-5 z-[1000]"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div
-        style={{
-          background: colors.white,
-          borderRadius: '16px',
-          width: '100%',
-          maxWidth: '420px',
-          overflow: 'hidden',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-        }}
-      >
+      <div className="bg-ak-surface-base rounded-2xl w-full max-w-[420px] overflow-hidden shadow-lg">
         {/* Header */}
-        <div
-          style={{
-            padding: '20px',
-            borderBottom: `1px solid ${colors.mist}`,
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span style={{ fontSize: '20px' }}>📩</span>
+        <div className="p-5 border-b border-ak-border-default">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xl">📩</span>
             <SectionTitle>
               Ny delt økt
             </SectionTitle>
           </div>
-          <div style={{ fontSize: '14px', color: colors.steel }}>
-            Fra: <span style={{ fontWeight: '500', color: colors.charcoal }}>{demoSharedSession.sender.name}</span>
+          <div className="text-sm text-ak-text-secondary">
+            Fra: <span className="font-medium text-ak-text-primary">{demoSharedSession.sender.name}</span>
           </div>
-          <div style={{ fontSize: '13px', color: colors.steel }}>
+          <div className="text-[13px] text-ak-text-secondary">
             Delt: {demoSharedSession.sharedAt}
           </div>
         </div>
 
         {/* Content */}
-        <div style={{ padding: '20px' }}>
+        <div className="p-5">
           {/* Session Info */}
-          <div
-            style={{
-              padding: '16px',
-              background: colors.foam,
-              borderRadius: '8px',
-              marginBottom: '16px',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '17px',
-                fontWeight: '600',
-                color: colors.charcoal,
-                marginBottom: '4px',
-              }}
-            >
+          <div className="p-4 bg-ak-surface-subtle rounded-lg mb-4">
+            <div className="text-[17px] font-semibold text-ak-text-primary mb-1">
               {demoSharedSession.session.title}
             </div>
-            <div
-              style={{
-                fontSize: '14px',
-                color: colors.steel,
-                marginBottom: '12px',
-              }}
-            >
+            <div className="text-sm text-ak-text-secondary mb-3">
               {demoSharedSession.session.duration} min • {demoSharedSession.session.blockCount} blokker
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <div className="flex flex-col gap-1">
               {demoSharedSession.session.blocks.map((block, index) => (
                 <div
                   key={index}
-                  style={{
-                    fontSize: '14px',
-                    color: colors.charcoal,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                  }}
+                  className="text-sm text-ak-text-primary flex items-center gap-2"
                 >
-                  <span style={{ color: colors.steel }}>•</span>
+                  <span className="text-ak-text-secondary">•</span>
                   <span>Blokk {index + 1}: {block.name} ({block.duration} min)</span>
                 </div>
               ))}
@@ -750,53 +434,36 @@ export const ReceivedSessionModal = ({
 
           {/* Message */}
           {demoSharedSession.message && (
-            <div style={{ marginBottom: '20px' }}>
-              <div
-                style={{
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  color: colors.steel,
-                  marginBottom: '8px',
-                }}
-              >
+            <div className="mb-5">
+              <div className="text-[13px] font-semibold text-ak-text-secondary mb-2">
                 Melding fra {demoSharedSession.sender.name}:
               </div>
-              <div
-                style={{
-                  padding: '12px',
-                  background: colors.cloud,
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  color: colors.charcoal,
-                  lineHeight: '20px',
-                  fontStyle: 'italic',
-                }}
-              >
+              <div className="p-3 bg-ak-surface-subtle rounded-lg text-sm text-ak-text-primary leading-5 italic">
                 "{demoSharedSession.message}"
               </div>
             </div>
           )}
 
           {/* Actions */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="flex flex-col gap-2">
             <Button
               variant="primary"
               onClick={() => onAccept && onAccept(demoSharedSession)}
-              style={{ width: '100%', height: '48px', fontSize: '17px', fontWeight: 600 }}
+              className="w-full h-12 text-[17px] font-semibold"
             >
               Legg til i mine økter
             </Button>
             <Button
               variant="secondary"
               onClick={onClose}
-              style={{ width: '100%', height: '44px', fontSize: '15px', fontWeight: 600 }}
+              className="w-full h-11 text-[15px] font-semibold"
             >
               Se detaljer
             </Button>
             <Button
               variant="ghost"
               onClick={() => onDecline && onDecline(demoSharedSession)}
-              style={{ width: '100%', height: '40px', fontSize: '14px', color: colors.steel }}
+              className="w-full h-10 text-sm text-ak-text-secondary"
             >
               Avvis
             </Button>
