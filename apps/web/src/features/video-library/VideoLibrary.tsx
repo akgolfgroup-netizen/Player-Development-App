@@ -349,6 +349,8 @@ export function VideoLibrary({
         players={players as unknown as never[]}
         showPlayerFilter={showPlayerFilter && isCoach}
         resultCount={loading ? undefined : videos.length}
+        style={undefined}
+        className={undefined}
       />
 
       {/* Bulk actions bar */}
