@@ -231,6 +231,50 @@ export const GUIDE_PRESETS: Record<string, GuideConfig> = {
     ],
     pageContext: 'sessions',
   },
+  statistics: {
+    id: 'statistics',
+    title: 'Statistikk og analyse',
+    description: 'Her kan du se detaljert statistikk over prestasjonene dine. Jeg kan forklare trendene og hjelpe deg forstå dataene.',
+    suggestions: [
+      'Forklar mine trender',
+      'Sammenlign perioder',
+      'Hva bør jeg forbedre?',
+    ],
+    pageContext: 'statistics',
+  },
+  calendar: {
+    id: 'calendar',
+    title: 'Kalender og planlegging',
+    description: 'Oversikt over økter, turneringer og andre aktiviteter. La meg hjelpe deg planlegge tiden din effektivt.',
+    suggestions: [
+      'Optimaliser ukeplanen',
+      'Når bør jeg hvile?',
+      'Balanse trening/turnering',
+    ],
+    pageContext: 'calendar',
+  },
+  tournaments: {
+    id: 'tournaments',
+    title: 'Turneringer',
+    description: 'Se kommende og tidligere turneringer. Jeg kan hjelpe deg forberede deg mentalt og fysisk.',
+    suggestions: [
+      'Forbered til turnering',
+      'Analyser tidligere runder',
+      'Tips for turneringsspill',
+    ],
+    pageContext: 'tournaments',
+  },
+  videoAnalysis: {
+    id: 'video-analysis',
+    title: 'Videoanalyse',
+    description: 'Analyser teknikken din gjennom video. Jeg kan hjelpe deg forstå hva du ser og foreslå forbedringer.',
+    suggestions: [
+      'Hva bør jeg se etter?',
+      'Sammenlign med ideell teknikk',
+      'Øvelser for forbedring',
+    ],
+    pageContext: 'video-analysis',
+  },
 };
 
 /**

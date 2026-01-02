@@ -1,7 +1,9 @@
 /**
  * CalendarOversiktPage
  *
- * Full calendar overview page at /kalender/oversikt
+ * Archetype: C - Dashboard/Calendar Page
+ * Purpose: Full calendar overview page at /kalender/oversikt
+ *
  * Read-only unified view of all event types:
  * - Golf training (teknikk, golfslag, spill)
  * - Physical training (fysisk)
@@ -9,6 +11,8 @@
  * - Tournaments (turnering)
  *
  * Supports day/week/month views with URL-based state.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useCallback } from 'react';
@@ -21,6 +25,7 @@ import { OversiktWeekView } from './components/OversiktWeekView';
 import { OversiktMonthView } from './components/OversiktMonthView';
 import { OversiktDayView } from './components/OversiktDayView';
 import { EventLegend } from './components/EventLegend';
+import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
 import type { UnifiedCalendarEvent, OversiktView } from './types';
 
 export const CalendarOversiktPage: React.FC = () => {
@@ -69,35 +74,20 @@ export const CalendarOversiktPage: React.FC = () => {
   const renderView = () => {
     if (isLoading) {
       return (
-        <div
-          className="flex-1 flex items-center justify-center"
-          style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-        >
-          <Loader2
-            className="w-8 h-8 animate-spin"
-            style={{ color: 'var(--calendar-text-tertiary)' }}
-          />
+        <div className="flex-1 flex items-center justify-center bg-ak-surface-base">
+          <Loader2 className="w-8 h-8 animate-spin text-ak-text-tertiary" />
         </div>
       );
     }
 
     if (error) {
       return (
-        <div
-          className="flex-1 flex items-center justify-center p-4"
-          style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-        >
+        <div className="flex-1 flex items-center justify-center p-4 bg-ak-surface-base">
           <div className="text-center">
-            <p
-              className="text-sm mb-2"
-              style={{ color: 'var(--error)' }}
-            >
+            <p className="text-sm mb-2 text-ak-status-error">
               Kunne ikke laste kalender
             </p>
-            <p
-              className="text-xs"
-              style={{ color: 'var(--calendar-text-muted)' }}
-            >
+            <p className="text-xs text-ak-text-tertiary">
               {error}
             </p>
           </div>
@@ -138,10 +128,7 @@ export const CalendarOversiktPage: React.FC = () => {
   };
 
   return (
-    <div
-      className="flex flex-col h-full"
-      style={{ backgroundColor: 'var(--background-page)' }}
-    >
+    <div className="flex flex-col h-full bg-ak-surface-base">
       {/* Header */}
       <OversiktHeader
         view={view}
@@ -155,31 +142,24 @@ export const CalendarOversiktPage: React.FC = () => {
         onNext={goToNext}
       />
 
+      {/* AI Coach contextual guide */}
+      <div className="px-4 pt-2">
+        <AICoachGuide config={GUIDE_PRESETS.calendar} variant="banner" />
+      </div>
+
       {/* Main content area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Calendar view */}
         <div className="flex-1 overflow-hidden">{renderView()}</div>
 
         {/* Sidebar with legend (desktop only) */}
-        <div
-          className="hidden lg:block w-56 p-4 border-l overflow-auto"
-          style={{
-            backgroundColor: 'var(--calendar-surface-base)',
-            borderColor: 'var(--calendar-border)',
-          }}
-        >
+        <div className="hidden lg:block w-56 p-4 border-l border-ak-border-default overflow-auto bg-ak-surface-base">
           <EventLegend />
         </div>
       </div>
 
       {/* Mobile legend (bottom) */}
-      <div
-        className="lg:hidden p-3 border-t"
-        style={{
-          backgroundColor: 'var(--calendar-surface-base)',
-          borderColor: 'var(--calendar-border)',
-        }}
-      >
+      <div className="lg:hidden p-3 border-t border-ak-border-default bg-ak-surface-base">
         <EventLegend compact />
       </div>
     </div>

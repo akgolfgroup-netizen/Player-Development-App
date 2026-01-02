@@ -5,6 +5,7 @@
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle as TypographyCardTitle } from '../../components/typography';
+import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
 import {
   TrendingUp, TrendingDown, Minus, Calendar, ChevronDown,
   ChevronRight, Info, Target
@@ -468,6 +469,8 @@ const Testresultater: React.FC<TestresultaterProps> = ({
       />
 
       <div className="p-6 max-w-7xl mx-auto">
+        {/* AI Coach contextual guide */}
+        <AICoachGuide config={GUIDE_PRESETS.tests} />
         {/* Stats Overview */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <PlayerStatCard

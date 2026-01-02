@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { tokens } from "../../design-tokens";
 import { SectionTitle } from '../../components/typography/Headings';
+import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
 
 /**
  * StatsPage.tsx
@@ -340,6 +341,9 @@ export default function StatsPage() {
   return (
     <div style={{ padding: 20, maxWidth: 1100, margin: "0 auto", fontFamily: "system-ui, -apple-system, Segoe UI, Roboto" }}>
       <SectionTitle style={{ margin: "6px 0 14px" }}>Statistikk</SectionTitle>
+
+      {/* AI Coach contextual guide */}
+      <AICoachGuide config={GUIDE_PRESETS.statistics} variant="compact" />
 
       <div
         style={{
