@@ -8,6 +8,9 @@
  * - Quick action suggestions for empty state
  * - Loading indicator
  * - Minimize/maximize/close controls
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic height which requires runtime value)
  */
 
 import React, { useRef, useEffect, useState } from 'react';
@@ -92,35 +95,34 @@ export function AICoachPanel() {
 
   return (
     <div
-      style={{
-        ...styles.container,
-        height: isMinimized ? 'auto' : '500px',
-      }}
+      className={`fixed right-4 bottom-4 w-[380px] max-w-[calc(100vw-32px)] bg-ak-surface-base rounded-xl shadow-xl flex flex-col z-[1001] overflow-hidden border border-ak-border-default ${
+        isMinimized ? 'h-auto' : 'h-[500px]'
+      }`}
       role="dialog"
       aria-label="AI Coach chat"
     >
       {/* Header */}
-      <div style={styles.header}>
-        <div style={styles.headerInfo}>
-          <Bot size={20} style={{ color: 'var(--accent)' }} />
+      <div className="flex items-center justify-between px-4 py-3 bg-ak-surface-elevated border-b border-ak-border-default">
+        <div className="flex items-center gap-3">
+          <Bot size={20} className="text-ak-brand-primary" />
           <div>
-            <div style={styles.headerTitle}>AI Golf Coach</div>
-            <div style={styles.headerStatus}>
+            <div className="font-semibold text-sm text-ak-text-primary">AI Golf Coach</div>
+            <div className="text-xs text-ak-text-secondary">
               {isAvailable ? 'Klar til å hjelpe' : 'Utilgjengelig'}
             </div>
           </div>
         </div>
-        <div style={styles.headerActions}>
+        <div className="flex gap-1">
           <button
             onClick={isMinimized ? maximizePanel : minimizePanel}
-            style={styles.headerButton}
+            className="flex items-center justify-center w-7 h-7 bg-transparent border-none rounded-sm text-ak-text-secondary cursor-pointer hover:bg-ak-surface-subtle transition-colors"
             aria-label={isMinimized ? 'Maksimer' : 'Minimer'}
           >
             {isMinimized ? <Maximize2 size={16} /> : <Minimize2 size={16} />}
           </button>
           <button
             onClick={closePanel}
-            style={styles.headerButton}
+            className="flex items-center justify-center w-7 h-7 bg-transparent border-none rounded-sm text-ak-text-secondary cursor-pointer hover:bg-ak-surface-subtle transition-colors"
             aria-label="Lukk chat"
           >
             <X size={16} />
@@ -131,20 +133,22 @@ export function AICoachPanel() {
       {!isMinimized && (
         <>
           {/* Messages */}
-          <div style={styles.messagesContainer}>
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
             {messages.length === 0 ? (
-              <div style={styles.welcomeContainer}>
-                <Bot size={48} style={{ color: 'var(--accent)', opacity: 0.5 }} />
-                <h3 style={styles.welcomeTitle}>Hei! Jeg er din AI Golf Coach</h3>
-                <p style={styles.welcomeText}>
+              <div className="flex flex-col items-center justify-center text-center p-6 gap-3">
+                <Bot size={48} className="text-ak-brand-primary opacity-50" />
+                <h3 className="text-base font-semibold text-ak-text-primary m-0">
+                  Hei! Jeg er din AI Golf Coach
+                </h3>
+                <p className="text-sm text-ak-text-secondary m-0">
                   Spør meg om trening, teknikk, mentale strategier eller målsetting.
                 </p>
-                <div style={styles.quickActions}>
+                <div className="flex flex-wrap gap-2 justify-center mt-2">
                   {DEFAULT_QUICK_ACTIONS.map((action) => (
                     <button
                       key={action.label}
                       onClick={() => handleQuickAction(action.message)}
-                      style={styles.quickActionButton}
+                      className="px-3 py-2 bg-ak-surface-elevated border border-ak-border-default rounded-full text-xs text-ak-text-secondary cursor-pointer transition-all hover:bg-ak-surface-subtle hover:border-ak-brand-primary disabled:opacity-50"
                       disabled={isBusy}
                     >
                       {action.label}
@@ -157,28 +161,25 @@ export function AICoachPanel() {
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    style={{
-                      ...styles.message,
-                      ...(message.role === 'user' ? styles.userMessage : styles.assistantMessage),
-                    }}
+                    className={`flex gap-2 max-w-[85%] ${
+                      message.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'
+                    }`}
                   >
                     <div
-                      style={{
-                        ...styles.messageIcon,
-                        ...(message.role === 'user' ? styles.userIcon : styles.assistantIcon),
-                      }}
+                      className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        message.role === 'user'
+                          ? 'bg-ak-brand-primary text-white'
+                          : 'bg-ak-surface-elevated text-ak-text-secondary'
+                      }`}
                     >
-                      {message.role === 'user' ? (
-                        <User size={16} />
-                      ) : (
-                        <Bot size={16} />
-                      )}
+                      {message.role === 'user' ? <User size={16} /> : <Bot size={16} />}
                     </div>
                     <div
-                      style={{
-                        ...styles.messageContent,
-                        ...(message.role === 'user' ? styles.userContent : styles.assistantContent),
-                      }}
+                      className={`p-3 rounded-lg text-sm leading-relaxed whitespace-pre-wrap ${
+                        message.role === 'user'
+                          ? 'bg-ak-brand-primary text-white'
+                          : 'bg-ak-surface-elevated text-ak-text-primary'
+                      }`}
                     >
                       {message.content}
                     </div>
@@ -186,36 +187,38 @@ export function AICoachPanel() {
                 ))}
                 {/* Streaming response in progress */}
                 {isStreaming && streamingContent && (
-                  <div style={{ ...styles.message, ...styles.assistantMessage }}>
-                    <div style={{ ...styles.messageIcon, ...styles.assistantIcon }}>
+                  <div className="flex gap-2 max-w-[85%] self-start">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 bg-ak-surface-elevated text-ak-text-secondary">
                       <Bot size={16} />
                     </div>
-                    <div style={{ ...styles.messageContent, ...styles.assistantContent }}>
+                    <div className="p-3 rounded-lg text-sm leading-relaxed whitespace-pre-wrap bg-ak-surface-elevated text-ak-text-primary">
                       {streamingContent}
-                      <span style={styles.streamingCursor}>▌</span>
+                      <span className="inline-block ml-0.5 text-ak-brand-primary animate-pulse">
+                        ▌
+                      </span>
                     </div>
                   </div>
                 )}
                 {/* Loading indicator (non-streaming fallback) */}
                 {isLoading && !isStreaming && (
-                  <div style={{ ...styles.message, ...styles.assistantMessage }}>
-                    <div style={{ ...styles.messageIcon, ...styles.assistantIcon }}>
+                  <div className="flex gap-2 max-w-[85%] self-start">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 bg-ak-surface-elevated text-ak-text-secondary">
                       <Bot size={16} />
                     </div>
-                    <div style={styles.loadingIndicator}>
-                      <Loader2 size={16} className="ai-coach-spin" />
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-ak-surface-elevated text-ak-text-secondary text-sm">
+                      <Loader2 size={16} className="animate-spin" />
                       <span>Tenker...</span>
                     </div>
                   </div>
                 )}
                 {/* Streaming initial state - waiting for first token */}
                 {isStreaming && !streamingContent && (
-                  <div style={{ ...styles.message, ...styles.assistantMessage }}>
-                    <div style={{ ...styles.messageIcon, ...styles.assistantIcon }}>
+                  <div className="flex gap-2 max-w-[85%] self-start">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 bg-ak-surface-elevated text-ak-text-secondary">
                       <Bot size={16} />
                     </div>
-                    <div style={styles.loadingIndicator}>
-                      <Loader2 size={16} className="ai-coach-spin" />
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-ak-surface-elevated text-ak-text-secondary text-sm">
+                      <Loader2 size={16} className="animate-spin" />
                       <span>Skriver...</span>
                     </div>
                   </div>
@@ -227,16 +230,16 @@ export function AICoachPanel() {
 
           {/* Error */}
           {error && (
-            <div style={styles.errorBanner}>
+            <div className="px-4 py-2 bg-ak-status-error/10 text-ak-status-error text-xs text-center">
               {error}
             </div>
           )}
 
           {/* Input */}
-          <div style={styles.inputContainer}>
+          <div className="flex items-center gap-2 px-4 py-3 border-t border-ak-border-default bg-ak-surface-base">
             <button
               onClick={clearMessages}
-              style={styles.clearButton}
+              className="flex items-center justify-center w-8 h-8 bg-transparent border-none rounded-sm text-ak-text-secondary cursor-pointer flex-shrink-0 hover:bg-ak-surface-subtle"
               aria-label="Tøm chat"
               title="Tøm samtalen"
             >
@@ -249,16 +252,15 @@ export function AICoachPanel() {
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Skriv en melding..."
-              style={styles.input}
+              className="flex-1 px-3 py-2 bg-ak-surface-subtle border border-ak-border-default rounded-lg text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary focus:ring-2 focus:ring-ak-brand-primary/20"
               disabled={isBusy || !isAvailable}
             />
             <button
               onClick={() => handleSendMessage()}
               disabled={!inputValue.trim() || isBusy}
-              style={{
-                ...styles.sendButton,
-                opacity: inputValue.trim() && !isBusy ? 1 : 0.5,
-              }}
+              className={`flex items-center justify-center w-9 h-9 bg-ak-brand-primary border-none rounded-full text-white cursor-pointer flex-shrink-0 transition-opacity ${
+                inputValue.trim() && !isBusy ? 'opacity-100' : 'opacity-50'
+              }`}
               aria-label="Send melding"
             >
               <Send size={18} />
@@ -270,262 +272,11 @@ export function AICoachPanel() {
   );
 }
 
-// =============================================================================
-// Styles
-// =============================================================================
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    position: 'fixed',
-    right: 'var(--spacing-4)',
-    bottom: 'var(--spacing-4)',
-    width: '380px',
-    maxWidth: 'calc(100vw - 32px)',
-    backgroundColor: 'var(--background-surface)',
-    borderRadius: 'var(--radius-lg)',
-    boxShadow: 'var(--shadow-xl)',
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 1001,
-    overflow: 'hidden',
-    border: '1px solid var(--border-subtle)',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    backgroundColor: 'var(--background-elevated)',
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  headerInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-  },
-  headerTitle: {
-    fontWeight: 600,
-    fontSize: 'var(--font-size-body)',
-    color: 'var(--text-primary)',
-  },
-  headerStatus: {
-    fontSize: 'var(--font-size-caption)',
-    color: 'var(--text-tertiary)',
-  },
-  headerActions: {
-    display: 'flex',
-    gap: 'var(--spacing-1)',
-  },
-  headerButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '28px',
-    height: '28px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    color: 'var(--text-tertiary)',
-    cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
-  },
-  messagesContainer: {
-    flex: 1,
-    overflowY: 'auto',
-    padding: 'var(--spacing-4)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3)',
-  },
-  welcomeContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    padding: 'var(--spacing-6)',
-    gap: 'var(--spacing-3)',
-  },
-  welcomeTitle: {
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: 0,
-  },
-  welcomeText: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-    margin: 0,
-  },
-  quickActions: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 'var(--spacing-2)',
-    justifyContent: 'center',
-    marginTop: 'var(--spacing-2)',
-  },
-  quickActionButton: {
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'var(--background-elevated)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-caption)',
-    color: 'var(--text-secondary)',
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-    fontFamily: 'inherit',
-  },
-  message: {
-    display: 'flex',
-    gap: 'var(--spacing-2)',
-    maxWidth: '85%',
-  },
-  userMessage: {
-    alignSelf: 'flex-end',
-    flexDirection: 'row-reverse',
-  },
-  assistantMessage: {
-    alignSelf: 'flex-start',
-  },
-  messageIcon: {
-    width: '28px',
-    height: '28px',
-    borderRadius: 'var(--radius-full)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  userIcon: {
-    backgroundColor: 'var(--accent)',
-    color: 'white',
-  },
-  assistantIcon: {
-    backgroundColor: 'var(--background-elevated)',
-    color: 'var(--text-tertiary)',
-  },
-  messageContent: {
-    padding: 'var(--spacing-3)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-footnote)',
-    lineHeight: 1.5,
-    whiteSpace: 'pre-wrap',
-  },
-  userContent: {
-    backgroundColor: 'var(--accent)',
-    color: 'white',
-  },
-  assistantContent: {
-    backgroundColor: 'var(--background-elevated)',
-    color: 'var(--text-primary)',
-  },
-  loadingIndicator: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3)',
-    borderRadius: 'var(--radius-md)',
-    backgroundColor: 'var(--background-elevated)',
-    color: 'var(--text-tertiary)',
-    fontSize: 'var(--font-size-footnote)',
-  },
-  streamingCursor: {
-    display: 'inline-block',
-    marginLeft: '2px',
-    color: 'var(--accent)',
-    animation: 'ai-coach-blink 1s step-end infinite',
-  },
-  errorBanner: {
-    padding: 'var(--spacing-2) var(--spacing-4)',
-    backgroundColor: 'var(--status-error-muted)',
-    color: 'var(--status-error)',
-    fontSize: 'var(--font-size-caption)',
-    textAlign: 'center',
-  },
-  inputContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    borderTop: '1px solid var(--border-subtle)',
-    backgroundColor: 'var(--background-default)',
-  },
-  clearButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '32px',
-    height: '32px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    color: 'var(--text-tertiary)',
-    cursor: 'pointer',
-    flexShrink: 0,
-  },
-  input: {
-    flex: 1,
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'var(--background-surface)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-primary)',
-    outline: 'none',
-    fontFamily: 'inherit',
-  },
-  sendButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '36px',
-    height: '36px',
-    backgroundColor: 'var(--accent)',
-    border: 'none',
-    borderRadius: 'var(--radius-full)',
-    color: 'white',
-    cursor: 'pointer',
-    flexShrink: 0,
-    transition: 'opacity 0.15s ease',
-  },
-};
-
-// Add animations and responsive styles
+// Add responsive styles via CSS
 if (typeof document !== 'undefined' && !document.getElementById('ai-coach-panel-styles')) {
   const styleSheet = document.createElement('style');
   styleSheet.id = 'ai-coach-panel-styles';
   styleSheet.textContent = `
-    @keyframes ai-coach-spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .ai-coach-spin {
-      animation: ai-coach-spin 1s linear infinite;
-    }
-    @keyframes ai-coach-blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-
-    /* Header button hover */
-    [aria-label="Lukk chat"]:hover,
-    [aria-label="Minimer"]:hover,
-    [aria-label="Maksimer"]:hover {
-      background-color: var(--background-surface);
-    }
-
-    /* Quick action hover */
-    [role="dialog"] button[disabled="false"]:hover {
-      background-color: var(--background-surface);
-      border-color: var(--accent);
-    }
-
-    /* Input focus */
-    [role="dialog"] input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-muted);
-    }
-
     /* Mobile responsive */
     @media (max-width: 480px) {
       [role="dialog"][aria-label="AI Coach chat"] {

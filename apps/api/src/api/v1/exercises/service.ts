@@ -250,4 +250,53 @@ export class ExerciseService {
       where: { id: exerciseId },
     });
   }
+
+  /**
+   * Duplicate an exercise
+   * Creates a copy of the exercise with "(Kopi)" appended to the name
+   */
+  async duplicateExercise(tenantId: string, exerciseId: string): Promise<Exercise> {
+    // Find the original exercise
+    const original = await this.prisma.exercise.findFirst({
+      where: { id: exerciseId, tenantId },
+    });
+
+    if (!original) {
+      throw new NotFoundError('Exercise not found');
+    }
+
+    // Create a copy with "(Kopi)" appended to the name
+    const duplicate = await this.prisma.exercise.create({
+      data: {
+        tenantId,
+        name: `${original.name} (Kopi)`,
+        description: original.description,
+        purpose: original.purpose,
+        exerciseType: original.exerciseType,
+        learningPhases: original.learningPhases,
+        settings: original.settings,
+        clubSpeedLevels: original.clubSpeedLevels,
+        categories: original.categories,
+        periods: original.periods,
+        repsOrTime: original.repsOrTime,
+        equipment: original.equipment as Prisma.InputJsonValue,
+        location: original.location,
+        difficulty: original.difficulty,
+        progressionSteps: original.progressionSteps,
+        regressionSteps: original.regressionSteps,
+        successCriteria: original.successCriteria,
+        commonMistakes: original.commonMistakes,
+        coachingCues: original.coachingCues,
+        addressesBreakingPoints: original.addressesBreakingPoints,
+        processCategory: original.processCategory,
+        videoUrl: original.videoUrl,
+        imageUrl: original.imageUrl,
+        source: original.source,
+        tags: original.tags,
+        isActive: original.isActive,
+      },
+    });
+
+    return duplicate;
+  }
 }

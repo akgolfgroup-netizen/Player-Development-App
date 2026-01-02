@@ -1,12 +1,15 @@
 /**
  * TreningsdagbokPage
  *
- * Main Training Ledger page with:
+ * Archetype: C - Dashboard/Calendar Page
+ * Purpose: Main Training Ledger page with:
  * - Full AK hierarchy filtering
  * - URL-based state persistence
  * - Weekly heatmap visualization
  * - Compliance tracking
  * - Session list with drill/reps display
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState, useCallback } from 'react';
@@ -27,60 +30,7 @@ import { DagbokSessionList } from './components/DagbokSessionList';
 
 import type { DagbokSession } from './types';
 
-// =============================================================================
-// STYLES
-// =============================================================================
-
-const styles = {
-  page: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    height: '100%',
-    minHeight: '100vh',
-    backgroundColor: 'var(--bg-primary)',
-  },
-  topBar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 0 16px 0',
-  },
-  content: {
-    display: 'flex',
-    flex: 1,
-    overflow: 'hidden',
-  },
-  mainColumn: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column' as const,
-    overflow: 'hidden',
-  },
-  sideColumn: {
-    width: '320px',
-    borderLeft: '1px solid var(--border-default)',
-    backgroundColor: 'var(--bg-secondary)',
-    padding: '16px',
-    overflow: 'auto' as const,
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: '16px',
-  },
-  sessionListContainer: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-  mobileVisuals: {
-    display: 'none',
-    padding: '16px',
-    backgroundColor: 'var(--bg-secondary)',
-    borderBottom: '1px solid var(--border-default)',
-    flexDirection: 'column' as const,
-    gap: '16px',
-  },
-};
-
-// Media query styles (applied via className or inline check)
+// Media query styles
 const mediaStyles = `
   @media (max-width: 1024px) {
     .dagbok-side-column {
@@ -92,10 +42,6 @@ const mediaStyles = `
   }
 `;
 
-// =============================================================================
-// COMPONENT
-// =============================================================================
-
 export const TreningsdagbokPage: React.FC = () => {
   const navigate = useNavigate();
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
@@ -103,7 +49,7 @@ export const TreningsdagbokPage: React.FC = () => {
   // State management
   const state = useDagbokState();
   const { visibility, options, activeFilterCount } = useDagbokFilters(state);
-  const { sessions, stats, isLoading, error } = useDagbokSessions(state);
+  const { sessions, stats, isLoading } = useDagbokSessions(state);
   const { heatmapData } = useDagbokHeatmap(sessions, state.anchorDate);
 
   // Actions (extracted from state hook)
@@ -135,10 +81,12 @@ export const TreningsdagbokPage: React.FC = () => {
     setShowAdvancedFilters((prev) => !prev);
   }, []);
 
-  const handleSessionClick = useCallback((session: DagbokSession) => {
-    // Navigate to session detail page
-    navigate(`/session/${session.id}`);
-  }, [navigate]);
+  const handleSessionClick = useCallback(
+    (session: DagbokSession) => {
+      navigate(`/session/${session.id}`);
+    },
+    [navigate]
+  );
 
   const handleNewSession = useCallback(() => {
     navigate('/logg-trening');
@@ -149,24 +97,12 @@ export const TreningsdagbokPage: React.FC = () => {
       {/* Inject media query styles */}
       <style>{mediaStyles}</style>
 
-      <div style={styles.page}>
+      <div className="flex flex-col h-full min-h-screen bg-ak-surface-base">
         {/* Top bar with action button */}
-        <div style={styles.topBar}>
+        <div className="flex items-center justify-end pb-4">
           <button
             onClick={handleNewSession}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 16px',
-              backgroundColor: 'var(--accent)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
+            className="flex items-center gap-1.5 px-4 py-2 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer"
           >
             <Plus size={18} />
             Ny okt
@@ -194,15 +130,15 @@ export const TreningsdagbokPage: React.FC = () => {
         )}
 
         {/* Mobile visuals (hidden on desktop) */}
-        <div className="dagbok-mobile-visuals" style={styles.mobileVisuals}>
+        <div className="dagbok-mobile-visuals hidden p-4 bg-ak-surface-subtle border-b border-ak-border-default flex-col gap-4">
           <DagbokSummarySection stats={stats} isLoading={isLoading} />
         </div>
 
         {/* Main content area */}
-        <div style={styles.content}>
+        <div className="flex flex-1 overflow-hidden">
           {/* Main column - session list */}
-          <div style={styles.mainColumn}>
-            <div style={styles.sessionListContainer}>
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 overflow-hidden">
               <DagbokSessionList
                 sessions={sessions}
                 isLoading={isLoading}
@@ -217,16 +153,13 @@ export const TreningsdagbokPage: React.FC = () => {
           </div>
 
           {/* Side column - visuals (hidden on mobile) */}
-          <div className="dagbok-side-column" style={styles.sideColumn}>
+          <div className="dagbok-side-column w-80 border-l border-ak-border-default bg-ak-surface-subtle p-4 overflow-auto flex flex-col gap-4">
             {/* Summary stats */}
             <DagbokSummarySection stats={stats} isLoading={isLoading} />
 
             {/* Weekly heatmap */}
             {state.period === 'week' && (
-              <DagbokWeeklyHeatmap
-                data={heatmapData}
-                isLoading={isLoading}
-              />
+              <DagbokWeeklyHeatmap data={heatmapData} isLoading={isLoading} />
             )}
 
             {/* Compliance band */}

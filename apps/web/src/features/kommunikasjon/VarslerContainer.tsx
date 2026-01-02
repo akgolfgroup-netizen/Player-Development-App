@@ -1,7 +1,25 @@
+/**
+ * VarslerContainer
+ *
+ * Archetype: A - List/Index Page
+ * Purpose: Display user notifications
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useEffect } from 'react';
 import {
-  Bell, Check, ChevronRight, Calendar, Trophy, Target,
-  MessageSquare, Award, AlertCircle, Clock, Filter, Trash2, Loader2
+  Bell,
+  Check,
+  Calendar,
+  Trophy,
+  Target,
+  MessageSquare,
+  Award,
+  AlertCircle,
+  Clock,
+  Trash2,
+  Loader2,
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
@@ -9,10 +27,24 @@ import { CardTitle } from '../../components/typography';
 import { notificationsAPI } from '../../services/api';
 
 // ============================================================================
+// TYPES
+// ============================================================================
+
+interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  actionUrl: string;
+}
+
+// ============================================================================
 // MOCK DATA
 // ============================================================================
 
-const NOTIFICATIONS = [
+const NOTIFICATIONS: Notification[] = [
   {
     id: 'n1',
     type: 'training',
@@ -82,31 +114,31 @@ const NOTIFICATIONS = [
 // HELPERS
 // ============================================================================
 
-const getNotificationConfig = (type) => {
+const getNotificationConfig = (type: string) => {
   switch (type) {
     case 'training':
-      return { icon: Calendar, color: 'var(--accent)' };
+      return { icon: Calendar, colorClass: 'text-ak-brand-primary bg-ak-brand-primary/15' };
     case 'tournament':
-      return { icon: Trophy, color: 'var(--achievement)' };
+      return { icon: Trophy, colorClass: 'text-ak-status-warning bg-ak-status-warning/15' };
     case 'achievement':
-      return { icon: Award, color: 'var(--success)' };
+      return { icon: Award, colorClass: 'text-ak-status-success bg-ak-status-success/15' };
     case 'message':
-      return { icon: MessageSquare, color: 'var(--accent)' };
+      return { icon: MessageSquare, colorClass: 'text-ak-brand-primary bg-ak-brand-primary/15' };
     case 'reminder':
-      return { icon: Clock, color: 'var(--warning)' };
+      return { icon: Clock, colorClass: 'text-ak-status-warning bg-ak-status-warning/15' };
     case 'test':
-      return { icon: Target, color: 'var(--success)' };
+      return { icon: Target, colorClass: 'text-ak-status-success bg-ak-status-success/15' };
     case 'alert':
-      return { icon: AlertCircle, color: 'var(--error)' };
+      return { icon: AlertCircle, colorClass: 'text-ak-status-error bg-ak-status-error/15' };
     default:
-      return { icon: Bell, color: 'var(--text-secondary)' };
+      return { icon: Bell, colorClass: 'text-ak-text-secondary bg-ak-surface-subtle' };
   }
 };
 
-const formatTimestamp = (timestamp) => {
+const formatTimestamp = (timestamp: string) => {
   const date = new Date(timestamp);
   const now = new Date();
-  const diffMs = now - date;
+  const diffMs = now.getTime() - date.getTime();
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
@@ -123,94 +155,64 @@ const formatTimestamp = (timestamp) => {
 // NOTIFICATION CARD
 // ============================================================================
 
-const NotificationCard = ({ notification, onRead, onDelete }) => {
+interface NotificationCardProps {
+  notification: Notification;
+  onRead: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+const NotificationCard: React.FC<NotificationCardProps> = ({
+  notification,
+  onRead,
+  onDelete,
+}) => {
   const config = getNotificationConfig(notification.type);
   const Icon = config.icon;
 
   return (
     <div
-      style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '14px',
-        padding: '14px 16px',
-        backgroundColor: notification.read ? 'var(--bg-primary)' : `${'var(--accent)'}05`,
-        borderRadius: '12px',
-        borderLeft: notification.read ? 'none' : `3px solid ${'var(--accent)'}`,
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-      }}
+      className={`
+        flex items-start gap-3.5 p-3.5 rounded-xl shadow-sm cursor-pointer transition-all
+        ${notification.read ? 'bg-ak-surface-base' : 'bg-ak-brand-primary/5 border-l-[3px] border-ak-brand-primary'}
+        hover:bg-ak-surface-subtle
+      `}
       onClick={() => {
         if (!notification.read) onRead(notification.id);
-        // Navigate to actionUrl in a real app
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = notification.read ? 'var(--bg-primary)' : `${'var(--accent)'}05`;
       }}
     >
-      <div style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '10px',
-        backgroundColor: `${config.color}15`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-      }}>
-        <Icon size={20} color={config.color} />
+      <div
+        className={`w-10 h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 ${config.colorClass}`}
+      >
+        <Icon size={20} />
       </div>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '4px',
-        }}>
-          <CardTitle style={{
-            fontSize: '14px',
-            fontWeight: notification.read ? 500 : 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between mb-1">
+          <CardTitle
+            className={`text-sm m-0 text-ak-text-primary ${notification.read ? 'font-medium' : 'font-semibold'}`}
+          >
             {notification.title}
           </CardTitle>
-          <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+          <span className="text-[11px] text-ak-text-secondary">
             {formatTimestamp(notification.timestamp)}
           </span>
         </div>
-        <p style={{
-          fontSize: '13px',
-          color: 'var(--text-secondary)',
-          margin: 0,
-          lineHeight: 1.4,
-        }}>
+        <p className="text-[13px] text-ak-text-secondary m-0 leading-relaxed">
           {notification.message}
         </p>
       </div>
 
-      <div style={{ display: 'flex', gap: '4px' }}>
+      <div className="flex gap-1">
         {!notification.read && (
           <button
             onClick={(e) => {
               e.stopPropagation();
               onRead(notification.id);
             }}
-            style={{
-              padding: '6px',
-              borderRadius: '6px',
-              border: 'none',
-              backgroundColor: 'transparent',
-              cursor: 'pointer',
-            }}
+            className="p-1.5 rounded-md border-none bg-transparent cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
             title="Merk som lest"
           >
-            <Check size={16} color={'var(--text-secondary)'} />
+            <Check size={16} />
           </button>
         )}
         <button
@@ -218,16 +220,10 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
             e.stopPropagation();
             onDelete(notification.id);
           }}
-          style={{
-            padding: '6px',
-            borderRadius: '6px',
-            border: 'none',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-          }}
+          className="p-1.5 rounded-md border-none bg-transparent cursor-pointer text-ak-text-secondary hover:bg-ak-surface-subtle"
           title="Slett"
         >
-          <Trash2 size={16} color={'var(--text-secondary)'} />
+          <Trash2 size={16} />
         </button>
       </div>
     </div>
@@ -238,8 +234,8 @@ const NotificationCard = ({ notification, onRead, onDelete }) => {
 // MAIN COMPONENT
 // ============================================================================
 
-const VarslerContainer = () => {
-  const [notifications, setNotifications] = useState([]);
+const VarslerContainer: React.FC = () => {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [filter, setFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
@@ -249,18 +245,33 @@ const VarslerContainer = () => {
       setLoading(true);
       try {
         const response = await notificationsAPI.getAll();
-        if (response?.data?.data?.notifications && Array.isArray(response.data.data.notifications)) {
-          // Transform API data to match component format
-          const apiNotifications = response.data.data.notifications.map(n => ({
-            id: n.id,
-            type: mapNotificationType(n.notificationType),
-            title: n.title,
-            message: n.message,
-            timestamp: n.createdAt,
-            read: n.readAt !== null,
-            actionUrl: n.metadata?.actionUrl || getDefaultActionUrl(n.notificationType),
-          }));
-          setNotifications(apiNotifications.length > 0 ? apiNotifications : NOTIFICATIONS);
+        if (
+          response?.data?.data?.notifications &&
+          Array.isArray(response.data.data.notifications)
+        ) {
+          const apiNotifications = response.data.data.notifications.map(
+            (n: {
+              id: string;
+              notificationType: string;
+              title: string;
+              message: string;
+              createdAt: string;
+              readAt: string | null;
+              metadata?: { actionUrl?: string };
+            }) => ({
+              id: n.id,
+              type: mapNotificationType(n.notificationType),
+              title: n.title,
+              message: n.message,
+              timestamp: n.createdAt,
+              read: n.readAt !== null,
+              actionUrl:
+                n.metadata?.actionUrl || getDefaultActionUrl(n.notificationType),
+            })
+          );
+          setNotifications(
+            apiNotifications.length > 0 ? apiNotifications : NOTIFICATIONS
+          );
         } else {
           setNotifications(NOTIFICATIONS);
         }
@@ -275,30 +286,28 @@ const VarslerContainer = () => {
     fetchNotifications();
   }, []);
 
-  // Map API notification type to component type
-  const mapNotificationType = (type) => {
-    const typeMap = {
-      'training_plan': 'training',
-      'session_reminder': 'reminder',
-      'tournament': 'tournament',
-      'achievement': 'achievement',
-      'message': 'message',
-      'test_result': 'test',
-      'breaking_point': 'alert',
+  const mapNotificationType = (type: string) => {
+    const typeMap: Record<string, string> = {
+      training_plan: 'training',
+      session_reminder: 'reminder',
+      tournament: 'tournament',
+      achievement: 'achievement',
+      message: 'message',
+      test_result: 'test',
+      breaking_point: 'alert',
     };
     return typeMap[type] || 'reminder';
   };
 
-  // Get default action URL based on notification type
-  const getDefaultActionUrl = (type) => {
-    const urlMap = {
-      'training_plan': '/trening/ukens',
-      'session_reminder': '/kalender',
-      'tournament': '/turneringskalender',
-      'achievement': '/achievements',
-      'message': '/meldinger',
-      'test_result': '/testresultater',
-      'breaking_point': '/utvikling/breaking-points',
+  const getDefaultActionUrl = (type: string) => {
+    const urlMap: Record<string, string> = {
+      training_plan: '/trening/ukens',
+      session_reminder: '/kalender',
+      tournament: '/turneringskalender',
+      achievement: '/achievements',
+      message: '/meldinger',
+      test_result: '/testresultater',
+      breaking_point: '/utvikling/breaking-points',
     };
     return urlMap[type] || '/';
   };
@@ -319,104 +328,83 @@ const VarslerContainer = () => {
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  const handleRead = async (id) => {
-    // Optimistic update
-    setNotifications(notifications.map((n) =>
-      n.id === id ? { ...n, read: true } : n
-    ));
+  const handleRead = async (id: string) => {
+    setNotifications(
+      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
 
-    // Call API
     try {
       await notificationsAPI.markRead(id);
     } catch (err) {
       console.warn('Failed to mark notification as read:', err);
-      // Revert on failure
-      setNotifications(notifications.map((n) =>
-        n.id === id ? { ...n, read: false } : n
-      ));
+      setNotifications(
+        notifications.map((n) => (n.id === id ? { ...n, read: false } : n))
+      );
     }
   };
 
-  const handleDelete = (id) => {
-    // Note: API doesn't support delete, so just remove locally
+  const handleDelete = (id: string) => {
     setNotifications(notifications.filter((n) => n.id !== id));
   };
 
   const handleMarkAllRead = async () => {
-    // Optimistic update
     const previousState = [...notifications];
     setNotifications(notifications.map((n) => ({ ...n, read: true })));
 
-    // Call API
     try {
       await notificationsAPI.markAllRead();
     } catch (err) {
       console.warn('Failed to mark all notifications as read:', err);
-      // Revert on failure
       setNotifications(previousState);
     }
   };
 
-  // Loading state
   if (loading) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <Loader2 size={32} color="var(--accent)" style={{ animation: 'spin 1s linear infinite' }} />
-          <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Laster varsler...</p>
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 size={32} className="text-ak-brand-primary animate-spin mx-auto" />
+          <p className="mt-4 text-ak-text-secondary">Laster varsler...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Varsler"
         subtitle={`${unreadCount} uleste varsler`}
+        actions={null}
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         {/* Header Actions */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '20px',
-        }}>
-          <div style={{ display: 'flex', gap: '6px', overflowX: 'auto' }}>
+        <div className="flex items-center justify-between mb-5">
+          <div className="flex gap-1.5 overflow-x-auto">
             {filters.map((f) => (
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                style={{
-                  padding: '8px 14px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: filter === f.key ? 'var(--accent)' : 'var(--bg-primary)',
-                  color: filter === f.key ? 'var(--bg-primary)' : 'var(--text-primary)',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                }}
+                className={`
+                  px-3.5 py-2 rounded-lg border-none text-[13px] font-medium cursor-pointer whitespace-nowrap
+                  ${filter === f.key
+                    ? 'bg-ak-brand-primary text-white'
+                    : 'bg-ak-surface-base text-ak-text-primary'
+                  }
+                `}
               >
                 {f.label}
                 {f.key === 'unread' && unreadCount > 0 && (
-                  <span style={{
-                    marginLeft: '6px',
-                    padding: '2px 6px',
-                    borderRadius: '10px',
-                    backgroundColor: filter === f.key ? 'rgba(255,255,255,0.3)' : 'var(--error)',
-                    color: 'var(--bg-primary)',
-                    fontSize: '11px',
-                  }}>
+                  <span
+                    className={`
+                      ml-1.5 px-1.5 py-0.5 rounded-[10px] text-[11px]
+                      ${filter === f.key
+                        ? 'bg-white/30 text-white'
+                        : 'bg-ak-status-error text-white'
+                      }
+                    `}
+                  >
                     {unreadCount}
                   </span>
                 )}
@@ -437,7 +425,7 @@ const VarslerContainer = () => {
         </div>
 
         {/* Notifications List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="flex flex-col gap-2">
           {filteredNotifications.map((notification) => (
             <NotificationCard
               key={notification.id}
@@ -448,14 +436,9 @@ const VarslerContainer = () => {
           ))}
 
           {filteredNotifications.length === 0 && (
-            <div style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '14px',
-              padding: '40px',
-              textAlign: 'center',
-            }}>
-              <Bell size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
+            <div className="bg-ak-surface-base rounded-[14px] p-10 text-center">
+              <Bell size={40} className="text-ak-text-secondary mb-3 mx-auto" />
+              <p className="text-sm text-ak-text-secondary m-0">
                 {filter === 'unread' ? 'Ingen uleste varsler' : 'Ingen varsler funnet'}
               </p>
             </div>

@@ -11,6 +11,7 @@ import {
   Globe,
   Star,
   Users,
+  Swords,
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
@@ -20,6 +21,8 @@ import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import { useAuth } from '../../contexts/AuthContext';
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
+import ProPlayerComparison from '../../components/widgets/ProPlayerComparison';
+import { useNorwegianProPlayers } from '../../hooks/useProPlayerSearch';
 import { tokens } from '../../design-tokens';
 
 /**
@@ -30,6 +33,7 @@ const BenchmarkContent: React.FC = () => {
   const { eliteBenchmarks, topPlayers, approachSkills, wagrRankings, loading, error } = useProBenchmark();
   const { data: sgData } = useStrokesGained();
   const { user } = useAuth();
+  const { players: norwegianPlayers } = useNorwegianProPlayers();
 
   const formatSG = (value: number | null | undefined) => {
     if (value === null || value === undefined) return '-';
@@ -173,6 +177,17 @@ const BenchmarkContent: React.FC = () => {
             </div>
           </div>
         </Card>
+      </section>
+
+      {/* Pro Player Comparison */}
+      <section style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <SectionTitle style={{ margin: 0 }}>
+            Sammenlign med Proff
+          </SectionTitle>
+          <Badge variant="accent">Nytt</Badge>
+        </div>
+        <ProPlayerComparison suggestedPlayers={norwegianPlayers} />
       </section>
 
       {/* Peer Comparison */}

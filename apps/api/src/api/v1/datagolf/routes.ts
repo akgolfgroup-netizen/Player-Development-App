@@ -567,6 +567,86 @@ export async function dataGolfRoutes(app: FastifyInstance): Promise<void> {
     }
   );
 
+  /**
+   * GET /api/v1/datagolf/pro-players/search
+   * Search pro players by name (for typeahead comparison feature)
+   */
+  app.get<{ Querystring: { q: string; tour?: string; limit?: number } }>(
+    '/pro-players/search',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Search pro players by name for comparison feature',
+        tags: ['datagolf'],
+        security: [{ bearerAuth: [] }],
+        querystring: {
+          type: 'object',
+          required: ['q'],
+          properties: {
+            q: { type: 'string', minLength: 2, description: 'Search query (min 2 characters)' },
+            tour: { type: 'string', description: 'Filter by tour (pga, euro, kft)' },
+            limit: { type: 'number', default: 20, description: 'Max results (default 20)' },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean', example: true },
+              data: { type: 'array' },
+            },
+          },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Querystring: { q: string; tour?: string; limit?: number } }>, reply: FastifyReply) => {
+      const { q, tour, limit } = request.query;
+      const players = await service.searchProPlayers({
+        query: q,
+        tour,
+        limit: limit || 20,
+      });
+      return reply.send({ success: true, data: players });
+    }
+  );
+
+  /**
+   * GET /api/v1/datagolf/pro-players/:dataGolfId
+   * Get a specific pro player by DataGolf ID
+   */
+  app.get<{ Params: { dataGolfId: string } }>(
+    '/pro-players/:dataGolfId',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Get a specific pro player by DataGolf ID',
+        tags: ['datagolf'],
+        security: [{ bearerAuth: [] }],
+        params: {
+          type: 'object',
+          required: ['dataGolfId'],
+          properties: {
+            dataGolfId: { type: 'string', description: 'DataGolf player ID' },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean', example: true },
+              data: { type: 'object', nullable: true },
+            },
+          },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: { dataGolfId: string } }>, reply: FastifyReply) => {
+      const { dataGolfId } = request.params;
+      const player = await service.getProPlayerById(dataGolfId);
+      return reply.send({ success: true, data: player });
+    }
+  );
+
   // ============================================================================
   // PLAYER SG SUMMARY ENDPOINT
   // ============================================================================
