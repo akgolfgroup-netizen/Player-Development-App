@@ -92,7 +92,7 @@
 │  │    • Driver Distance Test                            │     │
 │  │    • 7-iron Precision Test                           │     │
 │  │    • Putting Test                                    │     │
-│  │    • Short Game Test                                 │     │
+│  │    • Short Game Test                                │     │
 │  │    • Fysisk test                                     │     │
 │  │                                                      │     │
 │  │ 3. System beregner:                                  │     │
@@ -397,11 +397,11 @@
 │  └─────────────┘    └─────────────┘    └─────────────┘             │
 │        │                  │                  │                      │
 │        ▼                  ▼                  ▼                      │
-│  • Driving Range    • Varighet         • Selvvurdering 1-5         │
-│  • Short Game       • Øvelser utført   • Hva gikk bra?             │
-│  • Putting          • Antall slag      • Hva kan forbedres?        │
-│  • On-Course        • Notater          • Energinivå                │
-│  • Fysisk                                                           │
+│  • Tee Total     • Varighet         • Selvvurdering 1-5         │
+│  • Innspill        • Øvelser utført   • Hva gikk bra?             │
+│  • Nærspill          • Antall slag      • Hva kan forbedres?        │
+│  • Spill         • Notater          • Energinivå                │
+│  • Fysisk            . Reps                                               │
 │  • Mental                                                           │
 │                                                                      │
 │                           │                                          │

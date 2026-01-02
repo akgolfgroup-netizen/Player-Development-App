@@ -1,75 +1,127 @@
 # IUP APP - STATUS DASHBOARD
-> **Sist oppdatert:** 15. desember 2025 kl. 14:16
-> **Auto-oppdateres:** Ved hver commit til main
+> **Sist oppdatert:** 2. januar 2026 kl. 23:30
+> **Neste milestone:** Spania treningssamling 3-10. januar 2026
 
 ---
 
-## 📊 TOTAL PROGRESJON
+## TOTAL PROGRESJON
 
 ```
-██████████████░░░░░░░░░░░░░░░░ 46%
+██████████████████████░░░░░░░░ 72%
 ```
 
-**Estimert ferdigstillelse:** mars 2026
+**Estimert ferdigstillelse:** februar 2026
 
 ---
 
-## 🎯 HOVEDOMRÅDER
+## HOVEDOMRADER
 
 ### 1. Frontend (UI)
 ```
-██████████████████████████░░░░ 85%
+█████████████████████████████░ 95%
 ```
-- ✅ 18 skjermer ferdigstilt
-- ✅ Design System v2.1 implementert
-- 🔴 Backend-integrasjon mangler
+- 550 React-komponenter
+- 180,566 linjer kode
+- Design System v2.1 komplett
+- 109 feature-filer implementert
+- Mangler: Siste polish før prod
 
 ### 2. Backend (API)
 ```
-████████████████████░░░░░░░░░░ 65%
+██████████████████████████░░░░ 85%
 ```
-- ✅ 11 API-ruter opprettet
-- 🟡 CRUD operasjoner delvis
-- 🔴 Avansert logikk mangler
+- 231 TypeScript-filer
+- 69,622 linjer kode
+- 133 API-endepunkter
+- Health check og metrics implementert (2. jan)
+- Mangler: Noen edge-cases
 
 ### 3. Database
 ```
-█████████░░░░░░░░░░░░░░░░░░░░░ 30%
+██████████████████████░░░░░░░░ 75%
 ```
-- ✅ Schema komplett
-- 🔴 Data mangler (øvelser, økter, ukemaler)
+- Schema komplett med 15 migrasjoner
+- Prisma ORM konfigurert
+- Railway PostgreSQL i prod
+- Redis cache tilkoblet
+- Mangler: Seed data for øvelser
 
 ### 4. Treningsdata
 ```
-█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 2%
+████████████████░░░░░░░░░░░░░░ 55%
 ```
-- ✅ Kategori-system definert
-- 🔴 10/300 øvelser
-- 🔴 6/150 økter
-- 🔴 0/88 ukemaler
+- Kategori-system A-K komplett
+- Treningsplan-algoritmer implementert
+- Session-templates strukturert
+- Spania-prep dokumentasjon klar
+- Mangler: Full øvelsesdatabase
 
 ### 5. Test-system
 ```
-███████████████░░░░░░░░░░░░░░░ 50%
+███████████████████░░░░░░░░░░░ 60%
 ```
-- ✅ 20 tester definert
-- 🟡 Digital registrering delvis
-- 🔴 Automatisk analyse mangler
+- 20+ tester definert
+- Digital registrering klar
+- Analyse-logikk delvis
+- Mangler: Full integrasjon
+
+### 6. Deployment
+```
+████████████████████████████░░ 92%
+```
+- Railway backend LIVE
+- Railway frontend LIVE
+- GitHub CI/CD konfigurert
+- Health checks fungerer
+- Mangler: Sentry DSN
 
 ---
 
-## 📈 STATISTIKK
+## STATISTIKK
 
-| Kategori | Verdi |
-|----------|-------|
-| Frontend-filer | 22 |
-| Frontend-linjer | 18,577 |
-| Backend-filer | 16 |
-| Backend-linjer | 3,862 |
-| Øvelser i database | 10/300 |
-| Økter i database | 6/150 |
-| Ukemaler i database | 0/88 |
+| Kategori | Verdi | Forrige |
+|----------|-------|---------|
+| Frontend-filer | 550 | 22 |
+| Frontend-linjer | 180,566 | 18,577 |
+| Backend-filer | 231 | 16 |
+| Backend-linjer | 69,622 | 3,862 |
+| API-endepunkter | 133 | 11 |
+| Docs-filer | 238 | - |
 
 ---
 
-**Dette dokumentet oppdateres automatisk.**
+## SISTE ENDRINGER (2. januar 2026)
+
+### Kode-oppdateringer
+- Health check med database-verifisering
+- Deprecation fix (routerPath -> routeOptions.url)
+- Metrics plugin forbedringer
+- Logger PII-redaksjon
+
+### Dokumentasjon
+- Spania treningsplan komplett
+- Konkrete øktplaner opprettet
+- Hurtigreferanse for coaches
+- Docs cleanup rapport generert
+
+### Deployment
+- 110 filer pushet til Railway
+- Backend live og stabil
+- PostgreSQL recovery OK
+
+---
+
+## NESTE STEG
+
+1. **Spania-camp (3-10 jan)**
+   - Teste treningsplaner i praksis
+   - Samle feedback fra spillere
+
+2. **Etter camp**
+   - Implementere feedback
+   - Fylle øvelsesdatabase
+   - Sentry-integrasjon
+
+---
+
+_Oppdatert manuelt. Commit: 6a3af17_
