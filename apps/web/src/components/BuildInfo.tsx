@@ -17,6 +17,7 @@
  */
 
 import { useEffect } from 'react';
+import { tokens } from '../design-tokens';
 
 interface BuildInfoProps {
   /** Show visual indicator in corner (default: only in development) */
@@ -59,22 +60,22 @@ export function BuildInfo({ showBadge = false }: BuildInfoProps) {
     // Additional styled logging for better visibility
     console.log(
       '%c🏌️ AK Golf Academy',
-      'color: #1B4D3E; font-weight: bold; font-size: 12px;'
+      `color: ${tokens.colors.primary}; font-weight: bold; font-size: 12px;`
     );
     console.log(
       `%cCommit: %c${BUILD_INFO.sha}`,
-      'color: #6B7280;',
-      'color: #059669; font-family: monospace;'
+      `color: ${tokens.colors.gray600};`,
+      `color: ${tokens.colors.success}; font-family: monospace;`
     );
     console.log(
       `%cBranch: %c${BUILD_INFO.branch}`,
-      'color: #6B7280;',
-      'color: #2563EB; font-family: monospace;'
+      `color: ${tokens.colors.gray600};`,
+      `color: ${tokens.colors.info}; font-family: monospace;`
     );
     console.log(
       `%cBuilt:  %c${BUILD_INFO.date}`,
-      'color: #6B7280;',
-      'color: #D97706; font-family: monospace;'
+      `color: ${tokens.colors.gray600};`,
+      `color: ${tokens.colors.warning}; font-family: monospace;`
     );
 
     // Set on window for easy DevTools access
@@ -105,7 +106,7 @@ export function BuildInfo({ showBadge = false }: BuildInfoProps) {
             right: '8px',
             padding: '4px 8px',
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            color: '#10B981',
+            color: 'var(--ak-success-light)',
             fontFamily: 'monospace',
             fontSize: '10px',
             borderRadius: '4px',
