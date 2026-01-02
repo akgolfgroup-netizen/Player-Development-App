@@ -1,5 +1,7 @@
 /**
  * DataGolf Integration API Routes
+ *
+ * Includes pro player search for comparison feature
  */
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
