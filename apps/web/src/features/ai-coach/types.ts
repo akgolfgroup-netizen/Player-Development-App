@@ -26,6 +26,93 @@ export interface GuideConfig {
 }
 
 /**
+ * AI Trigger configuration for proactive suggestions
+ * Based on user data state
+ */
+export interface AITriggerConfig {
+  id: string;
+  condition: string; // Description of when this trigger fires
+  title: string;
+  description: string;
+  primaryAction: string;
+  suggestions: string[];
+}
+
+/**
+ * AI Trigger presets based on user state
+ */
+export const AI_TRIGGERS: Record<string, AITriggerConfig> = {
+  // Dashboard triggers
+  noGoals: {
+    id: 'no-goals',
+    condition: 'User has no active goals',
+    title: 'Sett ditt første mål!',
+    description: 'Du har ingen aktive mål ennå. Mål hjelper deg holde fokus og spore fremgang. La meg hjelpe deg sette et realistisk mål!',
+    primaryAction: 'Hjelp meg sette et mål',
+    suggestions: ['Hva er et godt mål?', 'Vis eksempler på mål'],
+  },
+  noSessions: {
+    id: 'no-sessions',
+    condition: 'User has no sessions this week',
+    title: 'Planlegg ukens trening',
+    description: 'Du har ingen planlagte økter denne uken. Skal jeg hjelpe deg lage en treningsplan?',
+    primaryAction: 'Lag ukeplan',
+    suggestions: ['Hvor mye bør jeg trene?', 'Foreslå øvelser'],
+  },
+  fewSessions: {
+    id: 'few-sessions',
+    condition: 'User has less than 3 sessions this week',
+    title: 'Trenger du flere økter?',
+    description: 'Du har bare noen få økter planlagt. For god utvikling anbefales minimum 3 økter per uke.',
+    primaryAction: 'Legg til flere økter',
+    suggestions: ['Hva kan jeg trene på?', 'Vis øvelsesbank'],
+  },
+  // Goals triggers
+  behindSchedule: {
+    id: 'behind-schedule',
+    condition: 'User is behind on goal progress',
+    title: 'Litt etter skjema',
+    description: 'Du ligger litt bak planen på noen mål. La meg se på mulige justeringer eller alternative tilnærminger.',
+    primaryAction: 'Juster målene mine',
+    suggestions: ['Hvorfor ligger jeg bak?', 'Foreslå tiltak'],
+  },
+  goalNearCompletion: {
+    id: 'goal-near-completion',
+    condition: 'User is close to completing a goal',
+    title: 'Nesten i mål! 🎯',
+    description: 'Du er nær ved å nå et av målene dine! La meg gi deg noen tips for å fullføre sterkt.',
+    primaryAction: 'Gi meg sluttspurt-tips',
+    suggestions: ['Hva er neste steg?', 'Sett nytt mål'],
+  },
+  // Tests triggers
+  newTestResult: {
+    id: 'new-test-result',
+    condition: 'User has a new test result',
+    title: 'Ny testresultat',
+    description: 'Jeg ser du har fått et nytt testresultat. Vil du at jeg forklarer hva det betyr for treningen din?',
+    primaryAction: 'Forklar resultatet',
+    suggestions: ['Hva bør jeg forbedre?', 'Sammenlign med forrige test'],
+  },
+  // Analysis triggers
+  negativeTrend: {
+    id: 'negative-trend',
+    condition: 'User shows declining performance',
+    title: 'La oss se på utviklingen',
+    description: 'Jeg ser en nedadgående trend i noen områder. Dette kan ha flere årsaker. La meg hjelpe deg analysere.',
+    primaryAction: 'Analyser trenden',
+    suggestions: ['Hva kan være årsaken?', 'Foreslå justeringer'],
+  },
+  positiveTrend: {
+    id: 'positive-trend',
+    condition: 'User shows improving performance',
+    title: 'Flott fremgang! 📈',
+    description: 'Du viser god fremgang! La meg foreslå hvordan du kan bygge videre på dette momentumet.',
+    primaryAction: 'Maksimer fremgangen',
+    suggestions: ['Hva fungerer?', 'Neste utfordring'],
+  },
+};
+
+/**
  * AI Coach state
  */
 export interface AICoachState {
@@ -132,6 +219,17 @@ export const GUIDE_PRESETS: Record<string, GuideConfig> = {
       'Juster målene mine',
     ],
     pageContext: 'goals',
+  },
+  sessions: {
+    id: 'sessions',
+    title: 'Treningsøkter',
+    description: 'Her ser du oversikten over alle øktene dine. Jeg kan hjelpe deg planlegge neste økt eller analysere treningshistorikken din.',
+    suggestions: [
+      'Planlegg en ny økt',
+      'Analyser treningshistorikken',
+      'Hva bør jeg trene på?',
+    ],
+    pageContext: 'sessions',
   },
 };
 

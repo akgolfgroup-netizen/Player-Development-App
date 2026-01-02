@@ -1,28 +1,135 @@
+/**
+ * AK Golf Academy - Goals Page
+ *
+ * Archetype: A - List/Index Page
+ * Purpose: View and manage player goals
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import AppShellTemplate from '../../ui/templates/AppShellTemplate';
-import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
-import Card from '../../ui/primitives/Card';
-import Button from '../../ui/primitives/Button';
-import { SectionTitle } from '../../components/typography';
-
+import { Plus, RefreshCw, Target } from 'lucide-react';
+import { Page } from '../../ui/components/Page';
+import { Text, Button, Badge, Card } from '../../ui/primitives';
 import StateCard from '../../ui/composites/StateCard';
-import { Plus, RefreshCw } from 'lucide-react';
 import { useGoals } from '../../data';
 import { getSimState } from '../../dev/simulateState';
 import { useScreenView } from '../../analytics/useScreenView';
+import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
 
-/**
- * GoalsPage
- * Goals/Mål page using UI templates
- * Composes AppShellTemplate + StatsGridTemplate + Card
- * Data fetched via useGoals hook
- *
- * DEV: Test states via querystring:
- *   /goals?state=loading
- *   /goals?state=error
- *   /goals?state=empty
- */
+// ============================================================================
+// TYPES
+// ============================================================================
+
+interface Goal {
+  id: string;
+  title: string;
+  description?: string;
+  type: 'short' | 'long';
+  status: 'active' | 'completed' | 'paused';
+  current: number;
+  target: number;
+  unit: string;
+}
+
+interface GoalsData {
+  goals: Goal[];
+  stats: Array<{ label: string; value: string | number; trend?: string }>;
+}
+
+// ============================================================================
+// HELPER COMPONENTS
+// ============================================================================
+
+interface GoalCardProps {
+  goal: Goal;
+}
+
+function GoalCard({ goal }: GoalCardProps) {
+  const progressPercent = Math.min(Math.max((goal.current / goal.target) * 100, 0), 100);
+
+  return (
+    <Card variant="default" padding="md">
+      <div className="flex justify-between items-center mb-2">
+        <Text variant="body" color="primary" className="font-semibold">
+          {goal.title}
+        </Text>
+        {goal.type === 'long' && (
+          <Badge variant={goal.status === 'completed' ? 'success' : 'primary'} size="sm">
+            {goal.status === 'completed' ? 'Fullført' : 'Pågår'}
+          </Badge>
+        )}
+      </div>
+
+      {goal.description && (
+        <Text variant="footnote" color="secondary" className="mb-3">
+          {goal.description}
+        </Text>
+      )}
+
+      {goal.type === 'short' && (
+        <div className="mt-3">
+          <div className="flex justify-between items-center mb-1.5">
+            <Text variant="caption1" color="secondary">
+              {goal.current} / {goal.target} {goal.unit}
+            </Text>
+            <Text variant="caption1" color="primary" className="font-semibold">
+              {Math.round(progressPercent)}%
+            </Text>
+          </div>
+          <div className="h-1.5 bg-ak-surface-subtle rounded-full overflow-hidden">
+            <div
+              className="h-full bg-ak-brand-primary rounded-full transition-all duration-300"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+// ============================================================================
+// STATS GRID
+// ============================================================================
+
+interface StatsGridProps {
+  stats: Array<{ label: string; value: string | number; trend?: string }>;
+}
+
+function StatsGrid({ stats }: StatsGridProps) {
+  if (!stats || stats.length === 0) return null;
+
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {stats.map((stat, index) => (
+        <div key={index} className="p-4 bg-ak-surface-subtle rounded-lg text-center">
+          <Text variant="caption1" color="secondary" className="uppercase tracking-wide">
+            {stat.label}
+          </Text>
+          <div className="flex items-baseline justify-center gap-2 mt-1">
+            <Text variant="title1" color="primary">
+              {stat.value}
+            </Text>
+            {stat.trend && (
+              <Text
+                variant="caption1"
+                color={stat.trend.startsWith('+') ? 'success' : 'secondary'}
+              >
+                {stat.trend}
+              </Text>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 const GoalsPage: React.FC = () => {
   useScreenView('Mål');
@@ -41,77 +148,70 @@ const GoalsPage: React.FC = () => {
       }
     : hookResult;
 
-  const getProgressPercent = (current: number, target: number): number => {
-    const percent = (current / target) * 100;
-    return Math.min(Math.max(percent, 0), 100);
-  };
-
-  // Action button for header
-  const headerActions = (
-    <Button size="sm" leftIcon={<Plus size={16} />}>
-      Nytt mål
-    </Button>
-  );
-
-  // Loading state
-  if (isLoading && !data) {
-    return (
-      <AppShellTemplate
-        title="Mine mål"
-        subtitle="Denne uken"
-        
-      >
-        <section style={styles.section}>
-          <StateCard
-            variant="loading"
-            title="Laster..."
-            description="Henter dine mål"
-          />
-        </section>
-      </AppShellTemplate>
-    );
-  }
-
-  const goals = data?.goals ?? [];
-  const stats = data?.stats ?? [];
+  const goals = (data as GoalsData)?.goals ?? [];
+  const stats = (data as GoalsData)?.stats ?? [];
   const activeGoals = goals.filter((g) => g.type === 'short' && g.status === 'active');
   const longTermGoals = goals.filter((g) => g.type === 'long');
 
+  // Determine page state
+  const pageState = isLoading && !data ? 'loading' : error ? 'error' : 'idle';
+
   return (
-    <AppShellTemplate
-      title="Mine mål"
-      subtitle="Denne uken"
-      actions={headerActions}
-      
-    >
-      {/* Error message */}
-      {error && (
-        <section style={styles.section}>
-          <StateCard
-            variant="error"
-            title="Noe gikk galt"
-            description={error}
-            action={
-              <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
-                Prøv igjen
+    <Page state={pageState} maxWidth="xl">
+      <Page.Header
+        title="Mine mål"
+        subtitle="Denne uken"
+        actions={
+          <Button size="sm" leftIcon={<Plus size={16} />}>
+            Nytt mål
+          </Button>
+        }
+      />
+
+      {/* AI Coach contextual guide */}
+      <div style={{ padding: '0 var(--spacing-4)' }}>
+        <AICoachGuide config={GUIDE_PRESETS.goals} />
+      </div>
+
+      <Page.Content>
+        {/* Error State */}
+        {error && (
+          <Page.Section card={false}>
+            <StateCard
+              variant="error"
+              title="Noe gikk galt"
+              description={error as string}
+              action={
+                <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
+                  Prøv igjen
+                </Button>
+              }
+            />
+          </Page.Section>
+        )}
+
+        {/* Stats Overview */}
+        {stats.length > 0 && (
+          <Page.Section title="Oversikt">
+            <StatsGrid stats={stats} />
+          </Page.Section>
+        )}
+
+        {/* Active Goals */}
+        <Page.Section
+          title="Aktive mål"
+          actions={
+            activeGoals.length > 0 && (
+              <Button variant="ghost" size="sm">
+                Se alle
               </Button>
-            }
-          />
-        </section>
-      )}
-
-      {/* Stats Grid */}
-      <section style={styles.section}>
-        <StatsGridTemplate items={stats} columns={3} />
-      </section>
-
-      {/* Active Goals */}
-      <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Aktive mål</SectionTitle>
-        <div style={styles.goalsList}>
+            )
+          }
+        >
           {activeGoals.length === 0 ? (
             <StateCard
               variant="empty"
+              icon={Target}
               title="Ingen aktive mål"
               description="Opprett ditt første mål for å komme i gang"
               action={
@@ -121,48 +221,29 @@ const GoalsPage: React.FC = () => {
               }
             />
           ) : (
-            activeGoals.map((goal) => {
-              const progressPercent = getProgressPercent(goal.current, goal.target);
-              return (
-                <Card key={goal.id} style={styles.goalCard}>
-                  <div style={styles.goalHeader}>
-                    <span style={styles.goalTitle}>{goal.title}</span>
-                  </div>
-                  {goal.description && (
-                    <p style={styles.goalDescription}>{goal.description}</p>
-                  )}
-                  <div style={styles.progressContainer}>
-                    <div style={styles.progressInfo}>
-                      <span style={styles.progressText}>
-                        {goal.current} / {goal.target} {goal.unit}
-                      </span>
-                      <span style={styles.progressPercent}>
-                        {Math.round(progressPercent)}%
-                      </span>
-                    </div>
-                    <div style={styles.progressBar}>
-                      <div
-                        style={{
-                          ...styles.progressFill,
-                          width: `${progressPercent}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                </Card>
-              );
-            })
+            <div className="space-y-3">
+              {activeGoals.map((goal) => (
+                <GoalCard key={goal.id} goal={goal} />
+              ))}
+            </div>
           )}
-        </div>
-      </section>
+        </Page.Section>
 
-      {/* Long-term Goals */}
-      <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Langsiktige mål</SectionTitle>
-        <div style={styles.goalsList}>
+        {/* Long-term Goals */}
+        <Page.Section
+          title="Langsiktige mål"
+          actions={
+            longTermGoals.length > 0 && (
+              <Button variant="ghost" size="sm">
+                Se alle
+              </Button>
+            )
+          }
+        >
           {longTermGoals.length === 0 ? (
             <StateCard
               variant="empty"
+              icon={Target}
               title="Ingen langsiktige mål"
               description="Legg til mål for sesongen"
               action={
@@ -172,94 +253,16 @@ const GoalsPage: React.FC = () => {
               }
             />
           ) : (
-            longTermGoals.map((goal) => (
-              <Card key={goal.id} style={styles.goalCard}>
-                <div style={styles.goalHeader}>
-                  <span style={styles.goalTitle}>{goal.title}</span>
-                  <span style={styles.statusBadge}>
-                    {goal.status === 'completed' ? 'Fullført' : 'Pågår'}
-                  </span>
-                </div>
-                {goal.description && (
-                  <p style={styles.goalDescription}>{goal.description}</p>
-                )}
-              </Card>
-            ))
+            <div className="space-y-3">
+              {longTermGoals.map((goal) => (
+                <GoalCard key={goal.id} goal={goal} />
+              ))}
+            </div>
           )}
-        </div>
-      </section>
-    </AppShellTemplate>
+        </Page.Section>
+      </Page.Content>
+    </Page>
   );
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  section: {
-    marginBottom: 'var(--spacing-6)',
-  },
-  goalsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3)',
-  },
-  goalCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-2)',
-  },
-  goalHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  goalTitle: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-  },
-  goalDescription: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-    margin: 0,
-    lineHeight: 1.4,
-  },
-  progressContainer: {
-    marginTop: 'var(--spacing-2)',
-  },
-  progressInfo: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 'var(--spacing-1)',
-  },
-  progressText: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-secondary)',
-  },
-  progressPercent: {
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 600,
-    color: 'var(--accent)',
-  },
-  progressBar: {
-    height: '6px',
-    backgroundColor: 'var(--background-surface)',
-    borderRadius: '3px',
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: 'var(--accent)',
-    borderRadius: '3px',
-    transition: 'width 0.3s ease',
-  },
-  statusBadge: {
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 500,
-    color: 'var(--accent)',
-    backgroundColor: 'rgba(16, 69, 106, 0.1)',
-    padding: '2px 8px',
-    borderRadius: '4px',
-  },
 };
 
 export default GoalsPage;

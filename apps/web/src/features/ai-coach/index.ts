@@ -16,6 +16,9 @@ export { AICoachButton } from './components/AICoachButton';
 export { AICoachPanel } from './components/AICoachPanel';
 export { AICoachGuide } from './components/AICoachGuide';
 
+// Hooks
+export { useAITriggers, triggerToGuideConfig } from './hooks';
+
 // Types
 export type {
   AICoachState,
@@ -23,3 +26,7 @@ export type {
   ChatMessage,
   GuideConfig,
 } from './types';
+
+// Presets & Triggers
+export { GUIDE_PRESETS, DEFAULT_QUICK_ACTIONS, AI_TRIGGERS } from './types';
+export type { AITriggerConfig } from './types';

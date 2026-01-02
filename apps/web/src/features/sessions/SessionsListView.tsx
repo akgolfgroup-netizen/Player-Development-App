@@ -10,6 +10,7 @@ import {
   Calendar, Clock, Target, Filter, ChevronRight,
   CheckCircle, AlertCircle, XCircle, Play, Search, X
 } from 'lucide-react';
+import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
 import {
   Card,
   CardContent,
@@ -478,6 +479,9 @@ export default function SessionsListView({
 
   return (
     <div className="max-w-4xl mx-auto">
+      {/* AI Coach contextual guide */}
+      <AICoachGuide config={GUIDE_PRESETS.sessions} variant="compact" />
+
       {/* Filters */}
       <FilterBar
         filters={filters}

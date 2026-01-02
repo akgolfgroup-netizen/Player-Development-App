@@ -11,11 +11,14 @@ interface AKLogoProps {
   size?: number;
   /** Fill color of the logo */
   color?: string;
+  /** Additional CSS class name */
+  className?: string;
 }
 
 export const AKLogo: React.FC<AKLogoProps> = ({
   size = 44,
-  color = tokens.colors.white
+  color = tokens.colors.white,
+  className,
 }) => {
   const aspectRatio = 196.41 / 204.13;
 
@@ -26,6 +29,7 @@ export const AKLogo: React.FC<AKLogoProps> = ({
       width={size * aspectRatio}
       height={size}
       fill={color}
+      className={className}
       style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 }}
       aria-label="AK Golf logo"
       role="img"

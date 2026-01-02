@@ -1,32 +1,25 @@
 /**
  * AK Golf Academy - Admin System Overview
- * Design System v3.0 - Blue Palette 01
  *
- * Purpose:
- * - Provide system-level visibility ONLY
- * - Zero access to athlete or performance data
+ * Archetype: A - List/Index Page
+ * Purpose: System-level visibility (status, feature flags)
  *
- * Contract references:
- * - COACH_ADMIN_IMPLEMENTATION_CONTRACT.md
- * - COACH_ADMIN_SCREEN_CONTRACT.md
- *
- * NON-NEGOTIABLE:
- * - No athlete data, coach performance, or metrics below system health
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
-import React, { useState, useEffect, useCallback } from "react";
-import { Shield, Activity, CheckCircle, XCircle, Clock, Loader2 } from "lucide-react";
-import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Shield, Activity, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Page } from '../../ui/components/Page';
+import { Text, Badge } from '../../ui/primitives';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
-import { SectionTitle } from '../../components/typography';
 
-//////////////////////////////
-// 1. TYPES
-//////////////////////////////
+// ============================================================================
+// TYPES
+// ============================================================================
 
 type SystemStatus = {
-  environment: "production" | "staging" | "development";
+  environment: 'production' | 'staging' | 'development';
   version: string;
   uptimeHours: number;
 };
@@ -36,26 +29,26 @@ type FeatureFlag = {
   enabled: boolean;
 };
 
-//////////////////////////////
-// 2. MOCK DATA (TEMP)
-//////////////////////////////
+// ============================================================================
+// DEFAULTS
+// ============================================================================
 
-const SYSTEM_STATUS: SystemStatus = {
-  environment: "production",
-  version: "1.0.0",
+const DEFAULT_STATUS: SystemStatus = {
+  environment: 'production',
+  version: '1.0.0',
   uptimeHours: 342,
 };
 
-const FEATURE_FLAGS: FeatureFlag[] = [
-  { key: "proof_enabled", enabled: true },
-  { key: "coach_notes", enabled: true },
-  { key: "trajectory_view", enabled: true },
-  { key: "advanced_analytics", enabled: false },
+const DEFAULT_FLAGS: FeatureFlag[] = [
+  { key: 'proof_enabled', enabled: true },
+  { key: 'coach_notes', enabled: true },
+  { key: 'trajectory_view', enabled: true },
+  { key: 'advanced_analytics', enabled: false },
 ];
 
-//////////////////////////////
-// 3. COMPONENT
-//////////////////////////////
+// ============================================================================
+// COMPONENT
+// ============================================================================
 
 interface AdminSystemOverviewProps {
   systemStatus?: SystemStatus;
@@ -64,22 +57,23 @@ interface AdminSystemOverviewProps {
 
 export default function AdminSystemOverview({
   systemStatus: propSystemStatus,
-  featureFlags: propFeatureFlags
+  featureFlags: propFeatureFlags,
 }: AdminSystemOverviewProps = {}) {
   const { user } = useAuth();
-  const [systemStatus, setSystemStatus] = useState<SystemStatus>(propSystemStatus || SYSTEM_STATUS);
-  const [featureFlags, setFeatureFlags] = useState<FeatureFlag[]>(propFeatureFlags || FEATURE_FLAGS);
+  const [systemStatus, setSystemStatus] = useState<SystemStatus>(propSystemStatus || DEFAULT_STATUS);
+  const [featureFlags, setFeatureFlags] = useState<FeatureFlag[]>(propFeatureFlags || DEFAULT_FLAGS);
   const [loading, setLoading] = useState(!propSystemStatus && !propFeatureFlags);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const [statusRes, flagsRes] = await Promise.all([
         apiClient.get('/admin/system/status').catch(() => ({ data: null })),
         apiClient.get('/admin/feature-flags').catch(() => ({ data: null })),
       ]);
 
-      // Process system status
       const statusData = statusRes.data?.data || statusRes.data;
       if (statusData) {
         setSystemStatus({
@@ -89,17 +83,18 @@ export default function AdminSystemOverview({
         });
       }
 
-      // Process feature flags
       const flagsData = flagsRes.data?.data || flagsRes.data;
       if (Array.isArray(flagsData) && flagsData.length > 0) {
-        setFeatureFlags(flagsData.map((f: { key?: string; name?: string; enabled?: boolean; active?: boolean }) => ({
-          key: f.key || f.name || '',
-          enabled: f.enabled ?? f.active ?? false,
-        })));
+        setFeatureFlags(
+          flagsData.map((f: { key?: string; name?: string; enabled?: boolean; active?: boolean }) => ({
+            key: f.key || f.name || '',
+            enabled: f.enabled ?? f.active ?? false,
+          }))
+        );
       }
     } catch (err) {
       console.error('Error fetching system data:', err);
-      // Keep default values on error
+      setError('Kunne ikke laste systemdata');
     } finally {
       setLoading(false);
     }
@@ -111,196 +106,99 @@ export default function AdminSystemOverview({
     }
   }, [propSystemStatus, propFeatureFlags, user, fetchData]);
 
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-        <Loader2 size={32} className="animate-spin" color="var(--accent)" />
-      </div>
-    );
-  }
   const formatUptime = (hours: number) => {
     const days = Math.floor(hours / 24);
     const remainingHours = hours % 24;
     return `${days}d ${remainingHours}t`;
   };
 
-  const getEnvBadgeStyle = (env: string) => {
+  const getEnvVariant = (env: string): 'success' | 'primary' | 'default' => {
     switch (env) {
       case 'production':
-        return { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)' };
+        return 'success';
       case 'staging':
-        return { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)' };
+        return 'primary';
       default:
-        return { bg: 'rgba(var(--text-secondary-rgb), 0.15)', text: 'var(--text-secondary)' };
+        return 'default';
     }
   };
 
-  const envStyle = getEnvBadgeStyle(systemStatus.environment);
+  // Determine page state
+  const pageState = loading ? 'loading' : error ? 'error' : 'idle';
 
   return (
-    <section
-      aria-label="System overview"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
-      {/* Header - using PageHeader from design system */}
-      <PageHeader
+    <Page state={pageState} maxWidth="xl">
+      <Page.Header
         title="Systemoversikt"
         subtitle="Systemhelse og konfigurasjon"
       />
 
-      {/* System Status Cards */}
-      <div style={{ padding: '0 24px 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
-          {/* Environment */}
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '20px',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Shield size={18} color={'var(--text-secondary)'} />
-              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
-                Miljo
-              </span>
+      <Page.Content>
+        {/* System Status Metrics */}
+        <Page.Section title="Systemstatus" description="Nåværende miljøinformasjon">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Environment */}
+            <div className="p-4 bg-ak-surface-subtle rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Shield size={16} className="text-ak-text-secondary" />
+                <Text variant="caption1" color="secondary">Miljø</Text>
+              </div>
+              <Badge variant={getEnvVariant(systemStatus.environment)} size="md">
+                {systemStatus.environment}
+              </Badge>
             </div>
-            <span
-              style={{
-                display: 'inline-block',
-                padding: '6px 12px',
-                borderRadius: 'var(--radius-sm)',
-                backgroundColor: envStyle.bg,
-                color: envStyle.text,
-                fontSize: '15px', lineHeight: '20px',
-                fontWeight: 600,
-                textTransform: 'capitalize',
-              }}
-            >
-              {systemStatus.environment}
-            </span>
-          </div>
 
-          {/* Version */}
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '20px',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Activity size={18} color={'var(--text-secondary)'} />
-              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
-                Versjon
-              </span>
+            {/* Version */}
+            <div className="p-4 bg-ak-surface-subtle rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Activity size={16} className="text-ak-text-secondary" />
+                <Text variant="caption1" color="secondary">Versjon</Text>
+              </div>
+              <Text variant="title2" color="primary">
+                v{systemStatus.version}
+              </Text>
             </div>
-            <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)' }}>
-              v{systemStatus.version}
-            </span>
-          </div>
 
-          {/* Uptime */}
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '20px',
-              boxShadow: 'var(--shadow-card)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Clock size={18} color={'var(--text-secondary)'} />
-              <span style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)' }}>
-                Oppetid
-              </span>
+            {/* Uptime */}
+            <div className="p-4 bg-ak-surface-subtle rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock size={16} className="text-ak-text-secondary" />
+                <Text variant="caption1" color="secondary">Oppetid</Text>
+              </div>
+              <Text variant="title2" color="primary">
+                {formatUptime(systemStatus.uptimeHours)}
+              </Text>
             </div>
-            <span style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)' }}>
-              {formatUptime(systemStatus.uptimeHours)}
-            </span>
           </div>
-        </div>
+        </Page.Section>
 
         {/* Feature Flags */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-card)',
-            overflow: 'hidden',
-          }}
-        >
-          <div style={{ padding: '20px', borderBottom: `1px solid ${'var(--border-default)'}` }}>
-            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
-              Feature Flags
-            </SectionTitle>
-            <p style={{ fontSize: '12px', lineHeight: '16px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
-              Aktive systemfunksjoner
-            </p>
-          </div>
-
-          <div>
-            {featureFlags.map((flag, index) => (
+        <Page.Section title="Feature Flags" description="Aktive systemfunksjoner">
+          <div className="divide-y divide-ak-border-default">
+            {featureFlags.map((flag) => (
               <div
                 key={flag.key}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '16px 20px',
-                  borderBottom: index < featureFlags.length - 1 ? `1px solid ${'var(--border-default)'}` : 'none',
-                }}
+                className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
               >
-                <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)' }}>
-                  {flag.key}
-                </span>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '4px 10px',
-                    borderRadius: 'var(--radius-sm)',
-                    backgroundColor: flag.enabled ? 'rgba(var(--success-rgb), 0.15)' : 'rgba(var(--error-rgb), 0.15)',
-                  }}
+                <Text variant="body" color="primary">{flag.key}</Text>
+                <Badge
+                  variant={flag.enabled ? 'success' : 'default'}
+                  size="sm"
                 >
-                  {flag.enabled ? (
-                    <CheckCircle size={16} color={'var(--success)'} />
-                  ) : (
-                    <XCircle size={16} color={'var(--error)'} />
-                  )}
-                  <span
-                    style={{
-                      fontSize: '12px', lineHeight: '16px',
-                      fontWeight: 500,
-                      color: flag.enabled ? 'var(--success)' : 'var(--error)',
-                    }}
-                  >
+                  <span className="flex items-center gap-1.5">
+                    {flag.enabled ? (
+                      <CheckCircle size={14} />
+                    ) : (
+                      <XCircle size={14} />
+                    )}
                     {flag.enabled ? 'Aktivert' : 'Deaktivert'}
                   </span>
-                </div>
+                </Badge>
               </div>
             ))}
           </div>
-        </div>
-      </div>
-    </section>
+        </Page.Section>
+      </Page.Content>
+    </Page>
   );
 }
-
-//////////////////////////////
-// 4. NOTES
-//////////////////////////////
-
-/*
-- Do NOT show counts of users, athletes, or coaches.
-- Do NOT link to athlete or coach views.
-- Do NOT introduce dashboards or charts.
-- This screen is for system integrity, not insight.
-*/
