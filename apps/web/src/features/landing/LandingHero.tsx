@@ -1,11 +1,10 @@
-import React from 'react';
-import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
-
 /**
- * LandingHero
+ * LandingHero.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Full-viewport hero section for landing/welcome pages.
- * Follows AK Golf Design System v3.0 (Premium Light - Forest Green).
  *
  * Design principles:
  * - Semantic tokens only (no raw hex/rgb values)
@@ -14,6 +13,9 @@ import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../compo
  * - Responsive: stacked on mobile, side-by-side on desktop
  * - No decorative gradients (per UI Canon v1.2)
  */
+
+import React from 'react';
+import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 interface Feature {
   /** Feature title */
@@ -137,26 +139,27 @@ const LandingHero: React.FC<LandingHeroProps> = ({
     return icons[platform] || null;
   };
   return (
-    <div style={styles.container}>
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header with navigation */}
       {(navigation || userMenu) && (
-        <header style={styles.header}>
-          <nav style={styles.nav}>
+        <header className="py-4 px-6 border-b border-ak-border-subtle">
+          <nav className="flex items-center justify-between max-w-[1536px] mx-auto w-full">
             {/* Logo area */}
-            <div style={styles.logoArea}>
-              <span style={styles.logo}>AK Golf</span>
+            <div className="shrink-0">
+              <span className="text-xl font-bold text-ak-brand-primary tracking-tight">AK Golf</span>
             </div>
 
             {/* Navigation links */}
             {navigation && (
-              <div style={styles.navLinks}>
+              <div className="flex items-center gap-1">
                 {navigation.map((item, index) => (
                   <button
                     key={index}
-                    style={{
-                      ...styles.navLink,
-                      ...(item.isActive ? styles.navLinkActive : {}),
-                    }}
+                    className={`inline-flex items-center h-11 px-4 text-sm font-medium bg-transparent border-none rounded cursor-pointer transition-colors ${
+                      item.isActive
+                        ? 'text-ak-brand-primary bg-ak-brand-primary/10'
+                        : 'text-ak-text-secondary hover:text-ak-text-primary hover:bg-ak-surface-subtle'
+                    }`}
                     onClick={item.onClick}
                   >
                     {item.label}
@@ -166,26 +169,26 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             )}
 
             {/* User menu */}
-            {userMenu && <div style={styles.userMenu}>{userMenu}</div>}
+            {userMenu && <div className="shrink-0">{userMenu}</div>}
           </nav>
         </header>
       )}
 
       {/* Main hero content */}
-      <div style={styles.heroContent}>
+      <div className="flex-1 flex items-center justify-center py-8 px-6 max-w-[1536px] mx-auto w-full gap-8 max-md:flex-col max-md:text-center">
         {/* Text content */}
-        <div style={styles.textContent}>
+        <div className="flex-1 max-w-[640px]">
           {/* Tagline */}
           {tagline && (
-            <p style={styles.tagline}>{tagline}</p>
+            <p className="text-sm font-semibold text-ak-brand-primary uppercase tracking-widest mb-3">{tagline}</p>
           )}
 
           {/* Headline */}
-          <PageTitle style={styles.headline}>
+          <PageTitle className="text-4xl md:text-5xl leading-tight font-bold text-ak-text-primary mb-4 tracking-tight">
             {headlineHighlight ? (
               <>
                 {headline.split(headlineHighlight)[0]}
-                <span style={styles.headlineHighlight}>{headlineHighlight}</span>
+                <span className="text-ak-brand-primary">{headlineHighlight}</span>
                 {headline.split(headlineHighlight)[1]}
               </>
             ) : (
@@ -195,29 +198,27 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
           {/* Description */}
           {description && (
-            <p style={styles.description}>{description}</p>
+            <p className="text-base leading-relaxed text-ak-text-secondary mb-6 max-w-[520px] max-md:mx-auto">{description}</p>
           )}
 
           {/* CTAs */}
           {(primaryAction || secondaryAction) && (
-            <div style={styles.actions}>
+            <div className="flex items-center gap-4 flex-wrap max-md:justify-center">
               {primaryAction && (
                 <button
-                  style={styles.primaryButton}
                   onClick={primaryAction.onClick}
-                  className="btn-interactive"
+                  className="inline-flex items-center justify-center h-12 px-6 bg-ak-brand-primary text-white border-none rounded font-semibold cursor-pointer transition-all shadow-sm hover:opacity-90 active:scale-[0.98]"
                 >
                   {primaryAction.label}
                 </button>
               )}
               {secondaryAction && (
                 <button
-                  style={styles.secondaryButton}
                   onClick={secondaryAction.onClick}
-                  className="btn-interactive"
+                  className="inline-flex items-center justify-center h-12 px-4 bg-transparent text-ak-brand-primary border-none rounded font-semibold cursor-pointer transition-colors gap-2 hover:bg-ak-surface-subtle"
                 >
                   {secondaryAction.label}
-                  <span style={styles.arrowIcon} aria-hidden="true">→</span>
+                  <span className="text-sm" aria-hidden="true">→</span>
                 </button>
               )}
             </div>
@@ -226,7 +227,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
         {/* Hero image/illustration */}
         {heroImage && (
-          <div style={styles.imageArea}>
+          <div className="flex-1 flex items-center justify-center max-w-[560px]">
             {heroImage}
           </div>
         )}
@@ -234,33 +235,33 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
       {/* Features Section */}
       {features && features.items.length > 0 && (
-        <section style={styles.featuresSection}>
-          <div style={styles.featuresContainer}>
+        <section className="bg-ak-surface-subtle border-t border-ak-border-subtle py-10 px-6">
+          <div className="max-w-[1536px] mx-auto">
             {/* Section header */}
             {(features.title || features.subtitle) && (
-              <div style={styles.featuresSectionHeader}>
+              <div className="text-center mb-8">
                 {features.title && (
-                  <SectionTitle style={styles.featuresTitle}>{features.title}</SectionTitle>
+                  <SectionTitle className="text-2xl md:text-3xl font-bold text-ak-text-primary mb-3 tracking-tight">{features.title}</SectionTitle>
                 )}
                 {features.subtitle && (
-                  <p style={styles.featuresSubtitle}>{features.subtitle}</p>
+                  <p className="text-base leading-relaxed text-ak-text-secondary max-w-[600px] mx-auto">{features.subtitle}</p>
                 )}
               </div>
             )}
 
             {/* Features grid */}
-            <div style={styles.featuresGrid}>
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
               {features.items.map((feature, index) => (
-                <div key={index} style={styles.featureCard}>
+                <div key={index} className="bg-white rounded-xl p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5">
                   {/* Icon */}
                   {feature.icon && (
-                    <div style={styles.featureIconWrapper}>
+                    <div className="flex items-center justify-center w-12 h-12 bg-ak-brand-primary/10 rounded-lg text-ak-brand-primary mb-4">
                       {feature.icon}
                     </div>
                   )}
                   {/* Content */}
-                  <SubSectionTitle style={styles.featureCardTitle}>{feature.title}</SubSectionTitle>
-                  <p style={styles.featureCardDescription}>{feature.description}</p>
+                  <SubSectionTitle className="text-lg font-semibold text-ak-text-primary mb-2">{feature.title}</SubSectionTitle>
+                  <p className="text-sm leading-relaxed text-ak-text-secondary m-0">{feature.description}</p>
                 </div>
               ))}
             </div>

@@ -198,7 +198,7 @@ export const CoachMessageList: React.FC = () => {
       setError(null);
 
       const response = await messagesAPI.list({ type: 'sent' });
-      setMessages((response.data?.data || response.data || mockMessages) as Message[]);
+      setMessages((response.data?.data || response.data || mockMessages) as unknown as Message[]);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Kunne ikke laste meldinger';
       setError(errorMessage);

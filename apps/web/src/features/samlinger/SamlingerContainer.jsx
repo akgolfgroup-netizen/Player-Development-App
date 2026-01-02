@@ -191,7 +191,7 @@ const getStatusConfig = (status, isRegistered) => {
 const getTypeConfig = (type) => {
   switch (type) {
     case 'elite':
-      return { label: 'Elite', colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Target };
+      return { label: 'Elite', colorClasses: { bg: 'bg-gold-500/15', text: 'text-gold-600' }, icon: Target };
     case 'intensive':
       return { label: 'Intensiv', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Dumbbell };
     case 'training':
@@ -342,8 +342,8 @@ const PastCampCard = ({ camp }) => {
       </div>
 
       {camp.highlights && (
-        <div className="bg-amber-500/15 py-1.5 px-2.5 rounded-lg max-w-[200px]">
-          <div className="text-[11px] text-amber-600 font-medium">
+        <div className="bg-gold-500/15 py-1.5 px-2.5 rounded-lg max-w-[200px]">
+          <div className="text-[11px] text-gold-600 font-medium">
             {camp.highlights}
           </div>
         </div>
@@ -584,7 +584,7 @@ const SamlingerContainer = () => {
             <div className="text-xs text-ak-text-secondary">Pameldt</div>
           </div>
           <div className="bg-ak-surface-base rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-amber-500">
+            <div className="text-2xl font-bold text-gold-500">
               {PAST_CAMPS.length}
             </div>
             <div className="text-xs text-ak-text-secondary">Deltatt i ar</div>

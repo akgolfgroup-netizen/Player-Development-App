@@ -92,14 +92,14 @@ const TrendsContent: React.FC = () => {
     <div style={styles.container}>
       {/* Summary Stats Grid */}
       <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
+        <SectionTitle className="mb-4">
           Din progresjon
         </SectionTitle>
         <div style={styles.statsGrid}>
           <Card padding="md">
             <div style={styles.statCard}>
-              <div style={{ ...styles.statIcon, backgroundColor: 'rgba(34, 197, 94, 0.1)' }}>
-                <Target size={20} color="var(--success)" />
+              <div className="w-11 h-11 rounded-md flex items-center justify-center bg-success-muted">
+                <Target size={20} className="text-success" />
               </div>
               <div style={styles.statContent}>
                 <span style={styles.statValue}>
@@ -112,8 +112,8 @@ const TrendsContent: React.FC = () => {
 
           <Card padding="md">
             <div style={styles.statCard}>
-              <div style={{ ...styles.statIcon, backgroundColor: 'rgba(251, 146, 60, 0.1)' }}>
-                <Flame size={20} color="var(--warning)" />
+              <div className="w-11 h-11 rounded-md flex items-center justify-center bg-warning-muted">
+                <Flame size={20} className="text-warning" />
               </div>
               <div style={styles.statContent}>
                 <span style={styles.statValue}>
@@ -126,8 +126,8 @@ const TrendsContent: React.FC = () => {
 
           <Card padding="md">
             <div style={styles.statCard}>
-              <div style={{ ...styles.statIcon, backgroundColor: 'rgba(99, 102, 241, 0.1)' }}>
-                <Clock size={20} color="var(--accent)" />
+              <div className="w-11 h-11 rounded-md flex items-center justify-center bg-accent-muted">
+                <Clock size={20} className="text-accent" />
               </div>
               <div style={styles.statContent}>
                 <span style={styles.statValue}>
@@ -140,8 +140,8 @@ const TrendsContent: React.FC = () => {
 
           <Card padding="md">
             <div style={styles.statCard}>
-              <div style={{ ...styles.statIcon, backgroundColor: 'rgba(20, 184, 166, 0.1)' }}>
-                <Activity size={20} color="var(--info)" />
+              <div className="w-11 h-11 rounded-md flex items-center justify-center bg-info-muted">
+                <Activity size={20} className="text-info" />
               </div>
               <div style={styles.statContent}>
                 <span style={styles.statValue}>
@@ -158,18 +158,15 @@ const TrendsContent: React.FC = () => {
       {sgChartData.length > 1 && (
         <section style={styles.section}>
           <div style={styles.sectionHeader}>
-            <SectionTitle style={{ margin: 0 }}>Strokes Gained Utvikling</SectionTitle>
+            <SectionTitle className="m-0">Strokes Gained Utvikling</SectionTitle>
             {sgData?.trend !== undefined && (
               <div style={styles.trendBadge}>
                 {sgData.trend >= 0 ? (
-                  <TrendingUp size={16} color="var(--success)" />
+                  <TrendingUp size={16} className="text-success" />
                 ) : (
-                  <TrendingDown size={16} color="var(--error)" />
+                  <TrendingDown size={16} className="text-danger" />
                 )}
-                <span style={{
-                  color: sgData.trend >= 0 ? 'var(--success)' : 'var(--error)',
-                  fontWeight: 600,
-                }}>
+                <span className={`font-semibold ${sgData.trend >= 0 ? 'text-success' : 'text-danger'}`}>
                   {sgData.trend >= 0 ? '+' : ''}{(sgData.trend * 100).toFixed(0)}%
                 </span>
               </div>
@@ -194,7 +191,7 @@ const TrendsContent: React.FC = () => {
       {/* Weekly Completion Trend */}
       {completionChartData.length > 1 && (
         <section style={styles.section}>
-          <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
+          <SectionTitle className="mb-4">
             Ukentlig treningsgjennomforing
           </SectionTitle>
           <Card padding="md">
@@ -213,7 +210,7 @@ const TrendsContent: React.FC = () => {
       {/* Hours Per Week */}
       {hoursChartData.length > 1 && (
         <section style={styles.section}>
-          <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
+          <SectionTitle className="mb-4">
             Treningstimer per uke
           </SectionTitle>
           <Card padding="md">
@@ -231,7 +228,7 @@ const TrendsContent: React.FC = () => {
       {/* Period Breakdown */}
       {periodChartData.length > 0 && (
         <section style={styles.section}>
-          <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
+          <SectionTitle className="mb-4">
             Periodeoversikt
           </SectionTitle>
           <Card padding="md">
@@ -239,23 +236,21 @@ const TrendsContent: React.FC = () => {
               {periodChartData.map(period => (
                 <div key={period.name} style={styles.periodCard}>
                   <div style={styles.periodHeader}>
-                    <SubSectionTitle style={{ margin: 0 }}>{period.name}</SubSectionTitle>
-                    <span style={{
-                      ...styles.periodRate,
-                      color: period.Rate >= 80 ? 'var(--success)' :
-                             period.Rate >= 60 ? 'var(--warning)' : 'var(--error)'
-                    }}>
+                    <SubSectionTitle className="m-0">{period.name}</SubSectionTitle>
+                    <span className={`text-base font-bold ${
+                      period.Rate >= 80 ? 'text-success' :
+                      period.Rate >= 60 ? 'text-warning' : 'text-danger'
+                    }`}>
                       {period.Rate}%
                     </span>
                   </div>
-                  <div style={styles.periodProgress}>
+                  <div className="h-2 bg-border-subtle rounded overflow-hidden">
                     <div
-                      style={{
-                        ...styles.periodProgressFill,
-                        width: `${period.Rate}%`,
-                        backgroundColor: period.Rate >= 80 ? 'var(--success)' :
-                                        period.Rate >= 60 ? 'var(--warning)' : 'var(--error)'
-                      }}
+                      className={`h-full rounded transition-all ${
+                        period.Rate >= 80 ? 'bg-success' :
+                        period.Rate >= 60 ? 'bg-warning' : 'bg-danger'
+                      }`}
+                      style={{ width: `${period.Rate}%` }}
                     />
                   </div>
                   <div style={styles.periodStats}>

@@ -428,14 +428,14 @@ export const MenuIcon = ({ size, className, color }) => (
   </IconWrapper>
 );
 
-export const ProfileIcon = ({ size, className, color }) => (
+export const ProfileIcon = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
     <circle cx="12" cy="7" r="4" />
   </IconWrapper>
 );
 
-export const TeamIcon = ({ size, className, color }) => (
+export const TeamIcon = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
     <circle cx="9" cy="7" r="4" />
@@ -492,7 +492,7 @@ export const NoteIcon = ({ size, className, color }) => (
   </IconWrapper>
 );
 
-export const NotesIcon = ({ size, className, color }) => (
+export const NotesIcon = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <path d="M12 20h9" />
     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
@@ -530,7 +530,7 @@ export const FlameIcon = ({ size, className, color }) => (
 // MOOD ICONS (Emoji replacements)
 // ============================================
 
-export const MoodIcon1 = ({ size, className, color }) => (
+export const MoodIcon1 = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <circle cx="12" cy="12" r="10" />
     <line x1="8" y1="15" x2="16" y2="15" />
@@ -540,7 +540,7 @@ export const MoodIcon1 = ({ size, className, color }) => (
   </IconWrapper>
 );
 
-export const MoodIcon2 = ({ size, className, color }) => (
+export const MoodIcon2 = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <circle cx="12" cy="12" r="10" />
     <line x1="8" y1="9" x2="8.01" y2="9" />
@@ -549,7 +549,7 @@ export const MoodIcon2 = ({ size, className, color }) => (
   </IconWrapper>
 );
 
-export const MoodIcon3 = ({ size, className, color }) => (
+export const MoodIcon3 = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <circle cx="12" cy="12" r="10" />
     <line x1="8" y1="9" x2="8.01" y2="9" />
@@ -558,7 +558,7 @@ export const MoodIcon3 = ({ size, className, color }) => (
   </IconWrapper>
 );
 
-export const MoodIcon4 = ({ size, className, color }) => (
+export const MoodIcon4 = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <circle cx="12" cy="12" r="10" />
     <line x1="8" y1="9" x2="8.01" y2="9" />
@@ -567,7 +567,7 @@ export const MoodIcon4 = ({ size, className, color }) => (
   </IconWrapper>
 );
 
-export const MoodIcon5 = ({ size, className, color }) => (
+export const MoodIcon5 = ({ size = 24, className = '', color = 'currentColor' }) => (
   <IconWrapper size={size} className={className} color={color}>
     <circle cx="12" cy="12" r="10" />
     <path d="M8 9h.01" />

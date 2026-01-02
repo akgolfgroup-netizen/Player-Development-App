@@ -17,16 +17,16 @@ import { GUIDE_PRESETS } from '../ai-coach/types';
 // Session type color configuration
 const SESSION_TYPE_CLASSES = {
   technical: {
-    text: 'text-sky-600',
-    bg: 'bg-sky-600/10',
-    activeBg: 'bg-sky-600',
+    text: 'text-ak-info',
+    bg: 'bg-ak-info/10',
+    activeBg: 'bg-ak-info',
     icon: Target,
     label: 'Teknikk',
   },
   physical: {
-    text: 'text-red-600',
-    bg: 'bg-red-600/10',
-    activeBg: 'bg-red-600',
+    text: 'text-danger',
+    bg: 'bg-danger/10',
+    activeBg: 'bg-danger',
     icon: Dumbbell,
     label: 'Fysisk',
   },
@@ -240,23 +240,23 @@ const DayColumn = ({ day, selectedSessionId, onSessionClick }) => {
     <div className="flex-1 min-w-0 border-r border-ak-border-default flex flex-col">
       {/* Day Header */}
       <div className={`py-3 px-2 border-b border-ak-border-default text-center relative ${
-        isToday ? 'bg-sky-600/5' : ''
+        isToday ? 'bg-ak-brand-primary/5' : ''
       }`}>
         {isToday && (
-          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-sky-600" />
+          <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-ak-brand-primary" />
         )}
         <div className={`text-[11px] font-medium uppercase tracking-wide ${
-          isToday ? 'text-sky-600' : 'text-ak-text-secondary'
+          isToday ? 'text-ak-brand-primary' : 'text-ak-text-secondary'
         }`}>
           {dayName}
         </div>
         <div className={`text-xl font-semibold mt-0.5 ${
-          isToday ? 'text-sky-600' : 'text-ak-text-primary'
+          isToday ? 'text-ak-brand-primary' : 'text-ak-text-primary'
         }`}>
           {dayNumber}
         </div>
         {isToday && (
-          <div className="mt-1 text-[9px] font-semibold text-sky-600 uppercase tracking-wide">
+          <div className="mt-1 text-[9px] font-semibold text-ak-brand-primary uppercase tracking-wide">
             I dag
           </div>
         )}
@@ -383,8 +383,8 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                     </>
                   ) : session.status === 'in_progress' ? (
                     <>
-                      <div className="w-3.5 h-3.5 rounded-full bg-sky-600" />
-                      <span className="text-[13px] text-sky-600 font-medium">
+                      <div className="w-3.5 h-3.5 rounded-full bg-ak-info" />
+                      <span className="text-[13px] text-ak-info font-medium">
                         Pågår
                       </span>
                     </>
@@ -438,7 +438,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
               {/* Actions */}
               <div className="flex flex-col gap-2">
                 {session.status !== 'completed' && (
-                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-sky-600 text-white border-none rounded-lg text-sm font-medium cursor-pointer">
+                  <button className="flex items-center justify-center gap-2 py-3 px-4 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-medium cursor-pointer">
                     <CheckCircle size={16} />
                     Marker som fullført
                   </button>
@@ -511,7 +511,7 @@ const SessionSidebarDrawer = ({ isOpen, session, onClose, allSessions, onSession
                   </div>
                   <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
                     <div
-                      className="h-full bg-sky-600 rounded-sm"
+                      className="h-full bg-ak-brand-primary rounded-sm"
                       style={{ width: `${(WEEK_DATA.completedHours / WEEK_DATA.totalPlannedHours) * 100}%` }}
                     />
                   </div>
@@ -560,7 +560,7 @@ const WeekStatsBar = ({ stats, completedHours, totalHours }) => {
         <span className="font-semibold text-ak-text-primary">{progressPercent}%</span>
         <div className="w-20 h-1 bg-ak-border-default rounded-sm overflow-hidden">
           <div
-            className="h-full bg-sky-600 rounded-sm"
+            className="h-full bg-ak-brand-primary rounded-sm"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -689,7 +689,7 @@ const UkensTreningsplanContainer = () => {
 
         {/* Right Side */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-sky-600/10 rounded-md text-xs font-medium text-sky-600">
+          <div className="flex items-center gap-1.5 py-1.5 px-3 bg-ak-brand-primary/10 rounded-md text-xs font-medium text-ak-brand-primary">
             <Calendar size={12} />
             {WEEK_DATA.period}
           </div>

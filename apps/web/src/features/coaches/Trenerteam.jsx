@@ -14,7 +14,7 @@ import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
-import { Badge } from '../../ui/primitives/Badge.primitive';
+import Badge from '../../ui/primitives/Badge.primitive';
 
 // =====================================================
 // UI KOMPONENTER

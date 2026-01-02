@@ -346,7 +346,7 @@ export function VideoLibrary({
         onFilterChange={handleFilterChange}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
-        players={players as Array<{ id: string; name: string }>}
+        players={players as unknown as never[]}
         showPlayerFilter={showPlayerFilter && isCoach}
         resultCount={loading ? undefined : videos.length}
       />

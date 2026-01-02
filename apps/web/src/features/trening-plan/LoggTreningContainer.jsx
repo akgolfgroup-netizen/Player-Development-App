@@ -44,10 +44,10 @@ const SESSION_TYPE_CLASSES = {
     label: 'Fysisk',
   },
   mental: {
-    text: 'text-amber-500',
-    bg: 'bg-amber-500/15',
-    activeBg: 'bg-amber-500',
-    border: 'border-amber-500',
+    text: 'text-gold-500',
+    bg: 'bg-gold-500/15',
+    activeBg: 'bg-gold-500',
+    border: 'border-gold-500',
     icon: Brain,
     label: 'Mental',
   },
@@ -256,8 +256,8 @@ const LogForm = ({ sessionType, onSubmit, saving = false }) => {
               >
                 <Star
                   size={24}
-                  fill={star <= formData.rating ? '#F59E0B' : 'none'}
-                  className={star <= formData.rating ? 'text-amber-500' : 'text-ak-border-default'}
+                  fill={star <= formData.rating ? 'var(--gold-500)' : 'none'}
+                  className={star <= formData.rating ? 'text-gold-500' : 'text-ak-border-default'}
                 />
               </button>
             ))}
@@ -372,8 +372,8 @@ const RecentLogs = ({ logs }) => (
                 <Star
                   key={star}
                   size={12}
-                  fill={star <= log.rating ? '#F59E0B' : 'none'}
-                  className={star <= log.rating ? 'text-amber-500' : 'text-ak-border-default'}
+                  fill={star <= log.rating ? 'var(--gold-500)' : 'none'}
+                  className={star <= log.rating ? 'text-gold-500' : 'text-ak-border-default'}
                 />
               ))}
             </div>

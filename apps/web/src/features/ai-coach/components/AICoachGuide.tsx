@@ -1,5 +1,8 @@
 /**
- * AI Coach Guide
+ * AICoachGuide.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Contextual inline guide component that appears on specific pages.
  * Features:
@@ -70,13 +73,13 @@ export function AICoachGuide({
 
   if (variant === 'compact') {
     return (
-      <div style={styles.compactContainer} className={className}>
-        <div style={styles.compactContent}>
-          <Bot size={16} style={{ color: 'var(--accent)', flexShrink: 0 }} />
-          <span style={styles.compactText}>{config.description}</span>
+      <div className={`bg-ak-brand-primary/10 rounded-lg py-2 px-3 ${className}`}>
+        <div className="flex items-center gap-2">
+          <Bot size={16} className="text-ak-brand-primary shrink-0" />
+          <span className="flex-1 text-xs text-ak-text-secondary">{config.description}</span>
           <button
             onClick={handleOpenChat}
-            style={styles.compactButton}
+            className="inline-flex items-center gap-1 py-1 px-2 bg-ak-brand-primary border-none rounded text-xs text-white cursor-pointer font-medium"
             aria-label="Spør AI Coach"
           >
             <MessageCircle size={14} />
@@ -84,7 +87,7 @@ export function AICoachGuide({
           </button>
           <button
             onClick={handleDismiss}
-            style={styles.dismissButtonSmall}
+            className="flex items-center justify-center w-6 h-6 bg-transparent border-none rounded text-ak-text-tertiary cursor-pointer p-0 hover:bg-ak-surface-subtle hover:text-ak-text-secondary"
             aria-label="Skjul veiviser"
           >
             <X size={14} />
@@ -96,27 +99,27 @@ export function AICoachGuide({
 
   if (variant === 'banner') {
     return (
-      <div style={styles.bannerContainer} className={className}>
-        <div style={styles.bannerContent}>
-          <div style={styles.bannerIcon}>
+      <div className={`bg-ak-surface-subtle border-b border-ak-border-subtle py-3 px-4 ${className}`}>
+        <div className="flex items-center gap-3 max-w-[1200px] mx-auto max-sm:flex-wrap">
+          <div className="w-9 h-9 rounded-full bg-ak-brand-primary/10 text-ak-brand-primary flex items-center justify-center shrink-0">
             <Bot size={24} />
           </div>
-          <div style={styles.bannerText}>
+          <div className="flex-1 text-sm text-ak-text-primary">
             <strong>{config.title}</strong> – {config.description}
           </div>
-          <div style={styles.bannerActions}>
+          <div className="flex items-center gap-2 max-sm:w-full max-sm:mt-2">
             {config.suggestions.slice(0, 2).map((suggestion) => (
               <button
                 key={suggestion}
                 onClick={() => handleSuggestionClick(suggestion)}
-                style={styles.bannerSuggestion}
+                className="py-1 px-3 bg-ak-brand-primary border-none rounded-full text-xs text-white cursor-pointer font-medium whitespace-nowrap hover:opacity-90"
               >
                 {suggestion}
               </button>
             ))}
             <button
               onClick={handleDismiss}
-              style={styles.dismissButtonSmall}
+              className="flex items-center justify-center w-6 h-6 bg-transparent border-none rounded text-ak-text-tertiary cursor-pointer p-0 hover:bg-ak-surface-subtle hover:text-ak-text-secondary"
               aria-label="Skjul veiviser"
             >
               <X size={16} />
@@ -129,21 +132,21 @@ export function AICoachGuide({
 
   // Default variant (card style)
   return (
-    <div style={styles.container} className={className}>
+    <div className={`bg-ak-surface-base border border-ak-brand-primary/20 rounded-xl p-4 mb-4 ${className}`}>
       {/* Header */}
-      <div style={styles.header}>
-        <div style={styles.headerLeft}>
-          <div style={styles.iconContainer}>
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-ak-brand-primary/10 text-ak-brand-primary flex items-center justify-center">
             <Bot size={20} />
           </div>
           <div>
-            <h3 style={styles.title}>{config.title}</h3>
-            <span style={styles.badge}>AI Coach</span>
+            <h3 className="text-base font-semibold text-ak-text-primary m-0 mb-0.5">{config.title}</h3>
+            <span className="text-xs text-ak-brand-primary font-medium">AI Coach</span>
           </div>
         </div>
         <button
           onClick={handleDismiss}
-          style={styles.dismissButton}
+          className="flex items-center justify-center w-7 h-7 bg-transparent border-none rounded text-ak-text-tertiary cursor-pointer transition-colors hover:bg-ak-surface-subtle hover:text-ak-text-secondary"
           aria-label="Skjul veiviser"
           title="Ikke vis igjen"
         >
@@ -152,15 +155,15 @@ export function AICoachGuide({
       </div>
 
       {/* Description */}
-      <p style={styles.description}>{config.description}</p>
+      <p className="text-sm text-ak-text-secondary leading-relaxed m-0 mb-4">{config.description}</p>
 
       {/* Suggestions */}
-      <div style={styles.suggestions}>
+      <div className="flex flex-wrap gap-2">
         {config.suggestions.map((suggestion) => (
           <button
             key={suggestion}
             onClick={() => handleSuggestionClick(suggestion)}
-            style={styles.suggestionButton}
+            className="inline-flex items-center gap-2 py-2 px-3 bg-ak-surface-subtle border border-ak-border-default rounded-full text-xs text-ak-text-secondary cursor-pointer transition-all hover:bg-ak-surface-base hover:border-ak-brand-primary hover:text-ak-text-primary"
           >
             <MessageCircle size={14} />
             {suggestion}
@@ -169,216 +172,6 @@ export function AICoachGuide({
       </div>
     </div>
   );
-}
-
-// =============================================================================
-// Styles
-// =============================================================================
-
-const styles: Record<string, React.CSSProperties> = {
-  // Default variant (card)
-  container: {
-    backgroundColor: 'var(--background-surface)',
-    border: '1px solid var(--accent-muted)',
-    borderRadius: 'var(--radius-lg)',
-    padding: 'var(--spacing-4)',
-    marginBottom: 'var(--spacing-4)',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: 'var(--spacing-3)',
-  },
-  headerLeft: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-  },
-  iconContainer: {
-    width: '40px',
-    height: '40px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'var(--accent-muted)',
-    color: 'var(--accent)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: 0,
-    marginBottom: '2px',
-  },
-  badge: {
-    fontSize: 'var(--font-size-caption)',
-    color: 'var(--accent)',
-    fontWeight: 500,
-  },
-  dismissButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '28px',
-    height: '28px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    color: 'var(--text-tertiary)',
-    cursor: 'pointer',
-    transition: 'background-color 0.15s ease, color 0.15s ease',
-  },
-  description: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-    lineHeight: 1.5,
-    margin: 0,
-    marginBottom: 'var(--spacing-4)',
-  },
-  suggestions: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 'var(--spacing-2)',
-  },
-  suggestionButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'var(--background-elevated)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-caption)',
-    color: 'var(--text-secondary)',
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-    fontFamily: 'inherit',
-  },
-
-  // Compact variant
-  compactContainer: {
-    backgroundColor: 'var(--accent-muted)',
-    borderRadius: 'var(--radius-md)',
-    padding: 'var(--spacing-2) var(--spacing-3)',
-  },
-  compactContent: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-  },
-  compactText: {
-    flex: 1,
-    fontSize: 'var(--font-size-caption)',
-    color: 'var(--text-secondary)',
-  },
-  compactButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1)',
-    padding: 'var(--spacing-1) var(--spacing-2)',
-    backgroundColor: 'var(--accent)',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--font-size-caption)',
-    color: 'white',
-    cursor: 'pointer',
-    fontFamily: 'inherit',
-    fontWeight: 500,
-  },
-  dismissButtonSmall: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '24px',
-    height: '24px',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    color: 'var(--text-tertiary)',
-    cursor: 'pointer',
-    padding: 0,
-  },
-
-  // Banner variant
-  bannerContainer: {
-    backgroundColor: 'var(--background-elevated)',
-    borderBottom: '1px solid var(--border-subtle)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-  },
-  bannerContent: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    maxWidth: '1200px',
-    margin: '0 auto',
-  },
-  bannerIcon: {
-    width: '36px',
-    height: '36px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'var(--accent-muted)',
-    color: 'var(--accent)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  bannerText: {
-    flex: 1,
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-primary)',
-  },
-  bannerActions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-  },
-  bannerSuggestion: {
-    padding: 'var(--spacing-1) var(--spacing-3)',
-    backgroundColor: 'var(--accent)',
-    border: 'none',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-caption)',
-    color: 'white',
-    cursor: 'pointer',
-    fontFamily: 'inherit',
-    fontWeight: 500,
-    whiteSpace: 'nowrap',
-  },
-};
-
-// Add hover styles
-if (typeof document !== 'undefined' && !document.getElementById('ai-coach-guide-styles')) {
-  const styleSheet = document.createElement('style');
-  styleSheet.id = 'ai-coach-guide-styles';
-  styleSheet.textContent = `
-    /* Dismiss button hover */
-    [aria-label="Skjul veiviser"]:hover {
-      background-color: var(--background-elevated);
-      color: var(--text-secondary);
-    }
-
-    /* Suggestion button hover */
-    .ai-coach-suggestion:hover {
-      background-color: var(--background-surface);
-      border-color: var(--accent);
-      color: var(--text-primary);
-    }
-
-    /* Mobile responsive for banner */
-    @media (max-width: 640px) {
-      [class*="bannerContent"] {
-        flex-wrap: wrap;
-      }
-      [class*="bannerActions"] {
-        width: 100%;
-        margin-top: var(--spacing-2);
-      }
-    }
-  `;
-  document.head.appendChild(styleSheet);
 }
 
 export default AICoachGuide;

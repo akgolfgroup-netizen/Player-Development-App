@@ -496,115 +496,55 @@ export const CoachSettings: React.FC = () => {
             {/* Privacy Tab */}
             {activeTab === 'privacy' && (
               <div>
-                <SectionTitle style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  margin: '0 0 20px 0'
-                }}>
+                <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-5">
                   Personvern og sikkerhet
                 </SectionTitle>
 
-                <div style={{
-                  padding: '16px',
-                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                  borderRadius: '12px',
-                  marginBottom: '24px'
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                    <Shield size={20} color="var(--accent)" />
-                    <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--accent)' }}>
+                <div className="p-4 bg-ak-brand-primary/10 rounded-xl mb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Shield size={20} className="text-ak-brand-primary" />
+                    <span className="text-sm font-semibold text-ak-brand-primary">
                       Din konto er beskyttet
                     </span>
                   </div>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
+                  <p className="text-[13px] text-ak-text-secondary m-0">
                     Tofaktorautentisering er aktivert. Sist innlogget: I dag kl 08:45
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <button style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '14px 16px',
-                    borderRadius: '10px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer'
-                  }}>
-                    <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                <div className="flex flex-col gap-3">
+                  <button className="flex items-center justify-between py-3.5 px-4 rounded-[10px] border border-ak-border-default bg-transparent cursor-pointer">
+                    <span className="text-sm text-ak-text-primary">
                       Endre passord
                     </span>
-                    <ChevronRight size={18} color={'var(--text-tertiary)'} />
+                    <ChevronRight size={18} className="text-ak-text-secondary" />
                   </button>
-                  <button style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '14px 16px',
-                    borderRadius: '10px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer'
-                  }}>
-                    <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                  <button className="flex items-center justify-between py-3.5 px-4 rounded-[10px] border border-ak-border-default bg-transparent cursor-pointer">
+                    <span className="text-sm text-ak-text-primary">
                       Administrer tofaktorautentisering
                     </span>
-                    <ChevronRight size={18} color={'var(--text-tertiary)'} />
+                    <ChevronRight size={18} className="text-ak-text-secondary" />
                   </button>
-                  <button style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '14px 16px',
-                    borderRadius: '10px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    backgroundColor: 'transparent',
-                    cursor: 'pointer'
-                  }}>
-                    <span style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
+                  <button className="flex items-center justify-between py-3.5 px-4 rounded-[10px] border border-ak-border-default bg-transparent cursor-pointer">
+                    <span className="text-sm text-ak-text-primary">
                       Last ned mine data
                     </span>
-                    <ChevronRight size={18} color={'var(--text-tertiary)'} />
+                    <ChevronRight size={18} className="text-ak-text-secondary" />
                   </button>
-                  <button style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '14px 16px',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                    backgroundColor: 'rgba(239, 68, 68, 0.05)',
-                    cursor: 'pointer'
-                  }}>
-                    <span style={{ fontSize: '14px', color: 'var(--error)' }}>
+                  <button className="flex items-center justify-between py-3.5 px-4 rounded-[10px] border border-ak-status-error/30 bg-ak-status-error/5 cursor-pointer">
+                    <span className="text-sm text-ak-status-error">
                       Slett konto
                     </span>
-                    <ChevronRight size={18} color="var(--error)" />
+                    <ChevronRight size={18} className="text-ak-status-error" />
                   </button>
                 </div>
               </div>
             )}
 
             {/* Save Button */}
-            <div style={{
-              marginTop: '24px',
-              paddingTop: '20px',
-              borderTop: `1px solid ${'var(--border-default)'}`,
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '12px'
-            }}>
+            <div className="mt-6 pt-5 border-t border-ak-border-default flex justify-end gap-3">
               {saveSuccess && (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  color: 'var(--success)',
-                  fontSize: '14px',
-                  fontWeight: '500'
-                }}>
+                <div className="flex items-center gap-1.5 text-ak-status-success text-sm font-medium">
                   <Check size={16} />
                   Lagret!
                 </div>
@@ -613,14 +553,14 @@ export const CoachSettings: React.FC = () => {
                 variant="primary"
                 onClick={handleSave}
                 disabled={isSaving}
+                leftIcon={<Save size={16} />}
               >
-                <Save size={16} />
                 {isSaving ? 'Lagrer...' : 'Lagre endringer'}
               </Button>
             </div>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   );

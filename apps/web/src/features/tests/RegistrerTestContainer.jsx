@@ -44,10 +44,10 @@ const CATEGORY_CLASSES = {
     border: 'border-ak-status-error',
   },
   physical: {
-    text: 'text-amber-500',
-    bg: 'bg-amber-500/15',
-    activeBg: 'bg-amber-500',
-    border: 'border-amber-500',
+    text: 'text-gold-500',
+    bg: 'bg-gold-500/15',
+    activeBg: 'bg-gold-500',
+    border: 'border-gold-500',
   },
 };
 

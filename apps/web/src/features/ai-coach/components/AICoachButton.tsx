@@ -1,5 +1,8 @@
 /**
- * AI Coach Button
+ * AICoachButton.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Floating action button that opens the AI Coach panel.
  * Shows unread message badge when there are new messages.
@@ -32,95 +35,23 @@ export function AICoachButton() {
   return (
     <button
       onClick={handleClick}
-      style={styles.button}
+      className="fixed right-4 bottom-4 flex items-center gap-2 py-3 px-4 bg-ak-brand-primary text-white border-none rounded-full cursor-pointer shadow-lg z-[1000] transition-all duration-200 font-inherit hover:scale-105 hover:shadow-xl active:scale-[0.98] max-[480px]:right-3 max-[480px]:bottom-3 max-[480px]:p-3"
       aria-label={`Åpne AI Coach${unreadCount > 0 ? ` (${unreadCount} uleste)` : ''}`}
     >
       <Sparkles size={24} />
-      <span style={styles.label}>AI Coach</span>
+      <span className="font-semibold text-base max-[480px]:hidden">AI Coach</span>
 
       {/* Unread badge */}
       {unreadCount > 0 && (
-        <span style={styles.badge} aria-label={`${unreadCount} uleste meldinger`}>
+        <span
+          className="absolute -top-1 -right-1 min-w-5 h-5 px-1.5 flex items-center justify-center bg-ak-status-error text-white rounded-full text-[11px] font-bold leading-none shadow-sm"
+          aria-label={`${unreadCount} uleste meldinger`}
+        >
           {unreadCount > 9 ? '9+' : unreadCount}
         </span>
       )}
     </button>
   );
-}
-
-// =============================================================================
-// Styles
-// =============================================================================
-
-const styles: Record<string, React.CSSProperties> = {
-  button: {
-    position: 'fixed',
-    right: 'var(--spacing-4)',
-    bottom: 'var(--spacing-4)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    backgroundColor: 'var(--accent)',
-    color: 'white',
-    border: 'none',
-    borderRadius: 'var(--radius-full)',
-    cursor: 'pointer',
-    boxShadow: 'var(--shadow-lg)',
-    zIndex: 1000,
-    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-    fontFamily: 'inherit',
-  },
-  label: {
-    fontWeight: 600,
-    fontSize: 'var(--font-size-body)',
-  },
-  badge: {
-    position: 'absolute',
-    top: '-4px',
-    right: '-4px',
-    minWidth: '20px',
-    height: '20px',
-    padding: '0 6px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--status-error)',
-    color: 'white',
-    borderRadius: 'var(--radius-full)',
-    fontSize: '11px',
-    fontWeight: 700,
-    lineHeight: 1,
-    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-  },
-};
-
-// Add hover styles via CSS
-if (typeof document !== 'undefined' && !document.getElementById('ai-coach-button-styles')) {
-  const styleSheet = document.createElement('style');
-  styleSheet.id = 'ai-coach-button-styles';
-  styleSheet.textContent = `
-    [aria-label^="Åpne AI Coach"]:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-    [aria-label^="Åpne AI Coach"]:active {
-      transform: scale(0.98);
-    }
-
-    /* Mobile responsive */
-    @media (max-width: 480px) {
-      [aria-label^="Åpne AI Coach"] {
-        right: var(--spacing-3) !important;
-        bottom: var(--spacing-3) !important;
-        padding: var(--spacing-3) !important;
-      }
-      [aria-label^="Åpne AI Coach"] span:not([aria-label]) {
-        display: none;
-      }
-    }
-  `;
-  document.head.appendChild(styleSheet);
 }
 
 export default AICoachButton;
