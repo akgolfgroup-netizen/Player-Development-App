@@ -34,6 +34,8 @@ export function AICoachPanel() {
     isMinimized,
     messages,
     isLoading,
+    isStreaming,
+    streamingContent,
     error,
     isAvailable,
     closePanel,
@@ -48,10 +50,10 @@ export function AICoachPanel() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Scroll to bottom when new messages arrive
+  // Scroll to bottom when new messages arrive or streaming updates
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, streamingContent]);
 
   // Focus input when opening/maximizing
   useEffect(() => {
@@ -68,11 +70,14 @@ export function AICoachPanel() {
 
   const handleSendMessage = async (messageText?: string) => {
     const text = messageText || inputValue.trim();
-    if (!text || isLoading) return;
+    if (!text || isLoading || isStreaming) return;
 
     setInputValue('');
     await sendMessage(text);
   };
+
+  // Combined loading state for UI
+  const isBusy = isLoading || isStreaming;
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -140,7 +145,7 @@ export function AICoachPanel() {
                       key={action.label}
                       onClick={() => handleQuickAction(action.message)}
                       style={styles.quickActionButton}
-                      disabled={isLoading}
+                      disabled={isBusy}
                     >
                       {action.label}
                     </button>
@@ -179,7 +184,20 @@ export function AICoachPanel() {
                     </div>
                   </div>
                 ))}
-                {isLoading && (
+                {/* Streaming response in progress */}
+                {isStreaming && streamingContent && (
+                  <div style={{ ...styles.message, ...styles.assistantMessage }}>
+                    <div style={{ ...styles.messageIcon, ...styles.assistantIcon }}>
+                      <Bot size={16} />
+                    </div>
+                    <div style={{ ...styles.messageContent, ...styles.assistantContent }}>
+                      {streamingContent}
+                      <span style={styles.streamingCursor}>▌</span>
+                    </div>
+                  </div>
+                )}
+                {/* Loading indicator (non-streaming fallback) */}
+                {isLoading && !isStreaming && (
                   <div style={{ ...styles.message, ...styles.assistantMessage }}>
                     <div style={{ ...styles.messageIcon, ...styles.assistantIcon }}>
                       <Bot size={16} />
@@ -187,6 +205,18 @@ export function AICoachPanel() {
                     <div style={styles.loadingIndicator}>
                       <Loader2 size={16} className="ai-coach-spin" />
                       <span>Tenker...</span>
+                    </div>
+                  </div>
+                )}
+                {/* Streaming initial state - waiting for first token */}
+                {isStreaming && !streamingContent && (
+                  <div style={{ ...styles.message, ...styles.assistantMessage }}>
+                    <div style={{ ...styles.messageIcon, ...styles.assistantIcon }}>
+                      <Bot size={16} />
+                    </div>
+                    <div style={styles.loadingIndicator}>
+                      <Loader2 size={16} className="ai-coach-spin" />
+                      <span>Skriver...</span>
                     </div>
                   </div>
                 )}
@@ -220,14 +250,14 @@ export function AICoachPanel() {
               onKeyDown={handleKeyDown}
               placeholder="Skriv en melding..."
               style={styles.input}
-              disabled={isLoading || !isAvailable}
+              disabled={isBusy || !isAvailable}
             />
             <button
               onClick={() => handleSendMessage()}
-              disabled={!inputValue.trim() || isLoading}
+              disabled={!inputValue.trim() || isBusy}
               style={{
                 ...styles.sendButton,
-                opacity: inputValue.trim() && !isLoading ? 1 : 0.5,
+                opacity: inputValue.trim() && !isBusy ? 1 : 0.5,
               }}
               aria-label="Send melding"
             >
@@ -399,6 +429,12 @@ const styles: Record<string, React.CSSProperties> = {
     color: 'var(--text-tertiary)',
     fontSize: 'var(--font-size-footnote)',
   },
+  streamingCursor: {
+    display: 'inline-block',
+    marginLeft: '2px',
+    color: 'var(--accent)',
+    animation: 'ai-coach-blink 1s step-end infinite',
+  },
   errorBanner: {
     padding: 'var(--spacing-2) var(--spacing-4)',
     backgroundColor: 'var(--status-error-muted)',
@@ -465,6 +501,10 @@ if (typeof document !== 'undefined' && !document.getElementById('ai-coach-panel-
     }
     .ai-coach-spin {
       animation: ai-coach-spin 1s linear infinite;
+    }
+    @keyframes ai-coach-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
 
     /* Header button hover */

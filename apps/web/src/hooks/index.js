@@ -12,3 +12,4 @@ export { default as useVideoAnnotations, useAnnotationAudio, useVideoComments } 
 export { default as useComparisonData, useComparisonVideos, useComparisonsList } from './useVideoComparisonApi';
 export { default as useVideoRequests, REQUEST_STATUS } from './useVideoRequests';
 export { default as useStrokesGained, useStrokesGained as useStrokesGainedNamed, usePeiToSg } from './useStrokesGained';
+export { useRealTimePolling, formatLastUpdated } from './useRealTimePolling';

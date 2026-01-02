@@ -569,4 +569,237 @@ export class CoachService {
     // Limit to 50 alerts
     return alerts.slice(0, 50);
   }
+
+  // =========================================================================
+  // BATCH OPERATIONS
+  // =========================================================================
+
+  /**
+   * Batch assign players to a training session type
+   */
+  async batchAssignSession(
+    tenantId: string,
+    coachId: string,
+    playerIds: string[],
+    session: {
+      sessionType: string;
+      scheduledDate: string;
+      durationMinutes?: number;
+      notes?: string;
+    }
+  ): Promise<{ success: string[]; failed: Array<{ playerId: string; error: string }> }> {
+    const success: string[] = [];
+    const failed: Array<{ playerId: string; error: string }> = [];
+
+    // Verify all players belong to this coach
+    const validPlayers = await this.prisma.player.findMany({
+      where: {
+        id: { in: playerIds },
+        tenantId,
+        coachId,
+      },
+      select: { id: true },
+    });
+
+    const validIds = new Set(validPlayers.map(p => p.id));
+
+    for (const playerId of playerIds) {
+      try {
+        if (!validIds.has(playerId)) {
+          failed.push({ playerId, error: 'Player not found or not assigned to this coach' });
+          continue;
+        }
+
+        // Create training session for this player
+        await this.prisma.trainingSession.create({
+          data: {
+            tenantId,
+            playerId,
+            coachId,
+            sessionDate: new Date(session.scheduledDate),
+            sessionType: session.sessionType,
+            duration: session.durationMinutes || 60,
+            notes: session.notes,
+            status: 'planned',
+          },
+        });
+
+        success.push(playerId);
+      } catch (err) {
+        const error = err instanceof Error ? err.message : 'Unknown error';
+        failed.push({ playerId, error });
+      }
+    }
+
+    return { success, failed };
+  }
+
+  /**
+   * Batch send notes to players
+   */
+  async batchSendNote(
+    tenantId: string,
+    coachId: string,
+    playerIds: string[],
+    note: {
+      title: string;
+      content: string;
+      category?: string;
+    }
+  ): Promise<{ success: string[]; failed: Array<{ playerId: string; error: string }> }> {
+    const success: string[] = [];
+    const failed: Array<{ playerId: string; error: string }> = [];
+
+    // Verify all players belong to this coach
+    const validPlayers = await this.prisma.player.findMany({
+      where: {
+        id: { in: playerIds },
+        tenantId,
+        coachId,
+      },
+      select: { id: true },
+    });
+
+    const validIds = new Set(validPlayers.map(p => p.id));
+
+    for (const playerId of playerIds) {
+      try {
+        if (!validIds.has(playerId)) {
+          failed.push({ playerId, error: 'Player not found or not assigned to this coach' });
+          continue;
+        }
+
+        // Create note for this player
+        await this.prisma.note.create({
+          data: {
+            tenantId,
+            playerId,
+            coachId,
+            title: note.title,
+            content: note.content,
+            category: note.category || 'general',
+            visibility: 'private',
+          },
+        });
+
+        success.push(playerId);
+      } catch (err) {
+        const error = err instanceof Error ? err.message : 'Unknown error';
+        failed.push({ playerId, error });
+      }
+    }
+
+    return { success, failed };
+  }
+
+  /**
+   * Batch update player status
+   */
+  async batchUpdateStatus(
+    tenantId: string,
+    coachId: string,
+    playerIds: string[],
+    status: 'active' | 'inactive' | 'on_break'
+  ): Promise<{ success: string[]; failed: Array<{ playerId: string; error: string }> }> {
+    const success: string[] = [];
+    const failed: Array<{ playerId: string; error: string }> = [];
+
+    // Verify all players belong to this coach
+    const validPlayers = await this.prisma.player.findMany({
+      where: {
+        id: { in: playerIds },
+        tenantId,
+        coachId,
+      },
+      select: { id: true },
+    });
+
+    const validIds = new Set(validPlayers.map(p => p.id));
+
+    for (const playerId of playerIds) {
+      try {
+        if (!validIds.has(playerId)) {
+          failed.push({ playerId, error: 'Player not found or not assigned to this coach' });
+          continue;
+        }
+
+        // Update player status
+        await this.prisma.player.update({
+          where: { id: playerId },
+          data: { status },
+        });
+
+        success.push(playerId);
+      } catch (err) {
+        const error = err instanceof Error ? err.message : 'Unknown error';
+        failed.push({ playerId, error });
+      }
+    }
+
+    return { success, failed };
+  }
+
+  /**
+   * Batch create training plan from template
+   */
+  async batchCreatePlanFromTemplate(
+    tenantId: string,
+    coachId: string,
+    playerIds: string[],
+    planOptions: {
+      planName: string;
+      startDate: string;
+      durationWeeks: number;
+      focusAreas?: string[];
+    }
+  ): Promise<{ success: string[]; failed: Array<{ playerId: string; error: string }> }> {
+    const success: string[] = [];
+    const failed: Array<{ playerId: string; error: string }> = [];
+
+    // Verify all players belong to this coach
+    const validPlayers = await this.prisma.player.findMany({
+      where: {
+        id: { in: playerIds },
+        tenantId,
+        coachId,
+      },
+      select: { id: true, firstName: true, lastName: true },
+    });
+
+    const validPlayersMap = new Map(validPlayers.map(p => [p.id, p]));
+
+    const startDate = new Date(planOptions.startDate);
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + planOptions.durationWeeks * 7);
+
+    for (const playerId of playerIds) {
+      try {
+        const player = validPlayersMap.get(playerId);
+        if (!player) {
+          failed.push({ playerId, error: 'Player not found or not assigned to this coach' });
+          continue;
+        }
+
+        // Create annual plan for this player
+        await this.prisma.annualPlan.create({
+          data: {
+            tenantId,
+            playerId,
+            planName: `${planOptions.planName} - ${player.firstName} ${player.lastName}`,
+            startDate,
+            endDate,
+            status: 'active',
+            goals: planOptions.focusAreas ? { focusAreas: planOptions.focusAreas } : {},
+          },
+        });
+
+        success.push(playerId);
+      } catch (err) {
+        const error = err instanceof Error ? err.message : 'Unknown error';
+        failed.push({ playerId, error });
+      }
+    }
+
+    return { success, failed };
+  }
 }

@@ -11,13 +11,14 @@
  * - COACH_ADMIN_SCREEN_CONTRACT.md
  */
 
-import React, { useState, useEffect } from "react";
-import { Search, ChevronRight } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Search, ChevronRight, CheckSquare, Square, Users } from "lucide-react";
 import { coachesAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
+import BatchOperationsPanel from './BatchOperationsPanel';
 
 //////////////////////////////
 // 1. DATA MODEL (READ-ONLY)
@@ -137,6 +138,11 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Multi-select state
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [showBatchPanel, setShowBatchPanel] = useState(false);
+
   // Fetch athletes from API
   const fetchAthletes = async () => {
     try {
@@ -163,13 +169,58 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
     }
   }, [propAthletes]);
 
-  if (loading) return <LoadingState />;
-  if (error && athletes.length === 0) return <ErrorState error={error} onRetry={fetchAthletes} />;
-
-  // Filter and sort athletes
+  // Filter and sort athletes (before callbacks that use it)
   const filteredAthletes = sortAlphabetically(athletes).filter(a =>
     `${a.firstName} ${a.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Selection handlers
+  const toggleSelectMode = useCallback(() => {
+    setIsSelectMode((prev) => !prev);
+    if (isSelectMode) {
+      setSelectedIds(new Set());
+      setShowBatchPanel(false);
+    }
+  }, [isSelectMode]);
+
+  const togglePlayerSelection = useCallback((playerId: string) => {
+    setSelectedIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(playerId)) {
+        newSet.delete(playerId);
+      } else {
+        newSet.add(playerId);
+      }
+      return newSet;
+    });
+  }, []);
+
+  const selectAll = useCallback(() => {
+    const allIds = new Set(filteredAthletes.map((a) => a.id));
+    setSelectedIds(allIds);
+  }, [filteredAthletes]);
+
+  const deselectAll = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
+  const handleBatchComplete = useCallback(() => {
+    setShowBatchPanel(false);
+    setSelectedIds(new Set());
+    setIsSelectMode(false);
+    fetchAthletes(); // Refresh data
+  }, []);
+
+  // Create player names map for batch panel
+  const selectedPlayerNames = new Map<string, string>();
+  athletes.forEach((a) => {
+    if (selectedIds.has(a.id)) {
+      selectedPlayerNames.set(a.id, `${a.firstName} ${a.lastName}`);
+    }
+  });
+
+  if (loading) return <LoadingState />;
+  if (error && athletes.length === 0) return <ErrorState error={error} onRetry={fetchAthletes} />;
 
   return (
     <section
@@ -185,6 +236,66 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
         title="Spillere"
         subtitle={`${filteredAthletes.length} spillere (sortert alfabetisk)`}
       />
+
+      {/* Select Mode Controls */}
+      <div style={{ padding: '0 24px', marginBottom: '16px', display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <button
+          onClick={toggleSelectMode}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 16px',
+            borderRadius: 'var(--radius-md)',
+            border: isSelectMode ? 'none' : '1px solid var(--border-default)',
+            backgroundColor: isSelectMode ? 'var(--accent)' : 'var(--bg-primary)',
+            color: isSelectMode ? 'var(--bg-primary)' : 'var(--text-primary)',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: 500,
+          }}
+        >
+          <Users size={16} />
+          {isSelectMode ? 'Avbryt valg' : 'Velg flere'}
+        </button>
+
+        {isSelectMode && (
+          <>
+            <button
+              onClick={selectedIds.size === filteredAthletes.length ? deselectAll : selectAll}
+              style={{
+                padding: '10px 16px',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-default)',
+                backgroundColor: 'var(--bg-primary)',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                fontSize: '14px',
+              }}
+            >
+              {selectedIds.size === filteredAthletes.length ? 'Velg ingen' : 'Velg alle'}
+            </button>
+
+            {selectedIds.size > 0 && (
+              <button
+                onClick={() => setShowBatchPanel(true)}
+                style={{
+                  padding: '10px 16px',
+                  borderRadius: 'var(--radius-md)',
+                  border: 'none',
+                  backgroundColor: 'var(--success)',
+                  color: 'white',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                }}
+              >
+                Handlinger ({selectedIds.size})
+              </button>
+            )}
+          </>
+        )}
+      </div>
 
       {/* Search */}
       <div style={{ padding: '0 24px', marginBottom: '16px' }}>
@@ -224,27 +335,44 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
               <button
                 key={athlete.id}
                 type="button"
-                onClick={() => onSelectAthlete(athlete.id)}
+                onClick={() => {
+                  if (isSelectMode) {
+                    togglePlayerSelection(athlete.id);
+                  } else {
+                    onSelectAthlete(athlete.id);
+                  }
+                }}
                 style={{
                   width: '100%',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '14px',
                   padding: '16px 20px',
-                  backgroundColor: 'transparent',
+                  backgroundColor: selectedIds.has(athlete.id) ? 'rgba(var(--accent-rgb), 0.08)' : 'transparent',
                   border: 'none',
-                  borderBottom: index < athletes.length - 1 ? '1px solid var(--border-default)' : 'none',
+                  borderBottom: index < filteredAthletes.length - 1 ? '1px solid var(--border-default)' : 'none',
                   cursor: 'pointer',
                   textAlign: 'left',
                   transition: 'background-color 0.2s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                  if (!selectedIds.has(athlete.id)) {
+                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.backgroundColor = selectedIds.has(athlete.id) ? 'rgba(var(--accent-rgb), 0.08)' : 'transparent';
                 }}
               >
+                {isSelectMode && (
+                  <div style={{ flexShrink: 0 }}>
+                    {selectedIds.has(athlete.id) ? (
+                      <CheckSquare size={22} color="var(--accent)" />
+                    ) : (
+                      <Square size={22} color="var(--text-secondary)" />
+                    )}
+                  </div>
+                )}
                 <Avatar name={`${athlete.firstName} ${athlete.lastName}`} />
                 <span style={{
                   flex: 1,
@@ -254,12 +382,24 @@ export default function CoachAthleteList({ onSelectAthlete, athletes: propAthlet
                 }}>
                   {athlete.lastName}, {athlete.firstName}
                 </span>
-                <ChevronRight size={20} style={{ color: 'var(--text-secondary)' }} />
+                {!isSelectMode && (
+                  <ChevronRight size={20} style={{ color: 'var(--text-secondary)' }} />
+                )}
               </button>
             ))}
           </div>
         </Card>
       </div>
+
+      {/* Batch Operations Panel */}
+      {showBatchPanel && selectedIds.size > 0 && (
+        <BatchOperationsPanel
+          selectedPlayerIds={Array.from(selectedIds)}
+          selectedPlayerNames={selectedPlayerNames}
+          onClose={() => setShowBatchPanel(false)}
+          onComplete={handleBatchComplete}
+        />
+      )}
     </section>
   );
 }

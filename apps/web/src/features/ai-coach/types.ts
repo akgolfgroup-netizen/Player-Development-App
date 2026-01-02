@@ -33,6 +33,8 @@ export interface AICoachState {
   isMinimized: boolean;
   messages: ChatMessage[];
   isLoading: boolean;
+  isStreaming: boolean;
+  streamingContent: string;
   error: string | null;
   isAvailable: boolean;
   unreadCount: number;

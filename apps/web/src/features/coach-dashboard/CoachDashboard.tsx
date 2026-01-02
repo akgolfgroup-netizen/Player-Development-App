@@ -11,11 +11,11 @@
  * - Quick navigation to coach tools
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, Calendar, ClipboardList, MessageSquare, Bell,
-  ChevronRight, Search, User, BarChart3, Trophy
+  ChevronRight, Search, User, BarChart3, Trophy, RefreshCw
 } from 'lucide-react';
 import { CoachPlayerAlerts, CoachWeeklyTournaments, CoachInjuryTracker } from './widgets';
 import { coachesAPI } from '../../services/api';
@@ -27,6 +27,7 @@ import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
 import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
+import { useRealTimePolling, formatLastUpdated } from '../../hooks';
 
 // Mock data for athletes
 const mockAthletes = [
@@ -169,86 +170,23 @@ const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, o
   </div>
 );
 
+// Dashboard data interface
+interface DashboardData {
+  athletes: typeof mockAthletes;
+  pendingItems: typeof mockPendingItems;
+  weeklyStats: any;
+  todaySchedule: any[];
+  defaultTeamId: string | null;
+}
+
 // Main Coach Dashboard component
 export default function CoachDashboard({ athletes: propAthletes, pendingItems: propPendingItems }: CoachDashboardProps = {}) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // State for API data
-  const [athletes, setAthletes] = useState<typeof mockAthletes>(propAthletes || []);
-  const [pendingItems, setPendingItems] = useState<typeof mockPendingItems>(propPendingItems || []);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [todaySchedule, _setTodaySchedule] = useState<any[]>([]);
-  const [weeklyStats, setWeeklyStats] = useState<any>(null);
-  const [defaultTeamId, setDefaultTeamId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Fetch dashboard data
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const coachId = (user as any)?.coachId || user?.id;
-
-      const [athletesRes, alertsRes, statsRes] = await Promise.all([
-        coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
-        coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
-        coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
-      ]);
-
-      // Transform athletes response
-      const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
-      setAthletes(Array.isArray(athleteData) ? athleteData.map((a: any) => ({
-        id: a.id,
-        firstName: a.firstName,
-        lastName: a.lastName,
-        category: a.category || 'B',
-        lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
-      })) : mockAthletes);
-
-      // Transform alerts to pending items format
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const alertsResponse = alertsRes.data?.data || alertsRes.data || {};
-      const alertsData = (alertsResponse as any)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
-      setPendingItems(Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
-        id: alert.id,
-        type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
-        athlete: alert.athleteName,
-        description: alert.message,
-        time: formatTimeAgo(alert.createdAt),
-      })) : mockPendingItems);
-
-      // Get stats from statistics response
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const statsData = (statsRes.data?.data || statsRes.data) as any;
-      if (statsData?.sessions) {
-        setWeeklyStats({
-          activePlayers: statsData.players?.active || 0,
-          sessionsThisWeek: statsData.sessions?.thisWeek || 0,
-          hoursTrained: statsData.sessions?.totalHours || 0,
-          pendingCount: alertsData.length || 0,
-        });
-      }
-
-      // Set default team for focus heatmap (use first athlete's ID as team proxy)
-      if (athleteData.length > 0) {
-        setDefaultTeamId(athleteData[0].id);
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'En ukjent feil oppstod');
-      // Fallback to mock data on error
-      setAthletes(mockAthletes);
-      setPendingItems(mockPendingItems);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Helper to format time ago
-  const formatTimeAgo = (dateStr: string): string => {
+  const formatTimeAgo = useCallback((dateStr: string): string => {
     const date = new Date(dateStr);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
@@ -258,19 +196,81 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     if (diffDays > 0) return `${diffDays} dag${diffDays > 1 ? 'er' : ''} siden`;
     if (diffHours > 0) return `${diffHours} time${diffHours > 1 ? 'r' : ''} siden`;
     return 'Akkurat nå';
-  };
+  }, []);
 
-  useEffect(() => {
-    // Only fetch if not using props
-    if (!propAthletes && !propPendingItems) {
-      fetchDashboardData();
-    } else {
-      setLoading(false);
-    }
-  }, [propAthletes, propPendingItems]);
+  // Fetch dashboard data function (memoized for polling hook)
+  const fetchDashboardData = useCallback(async (): Promise<DashboardData> => {
+    const coachId = (user as any)?.coachId || user?.id;
 
-  if (loading) return <LoadingState />;
-  if (error && athletes.length === 0) return <ErrorState error={error} onRetry={fetchDashboardData} />;
+    const [athletesRes, alertsRes, statsRes] = await Promise.all([
+      coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
+      coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
+      coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
+    ]);
+
+    // Transform athletes response
+    const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
+    const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: any) => ({
+      id: a.id,
+      firstName: a.firstName,
+      lastName: a.lastName,
+      category: a.category || 'B',
+      lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
+    })) : mockAthletes;
+
+    // Transform alerts to pending items format
+    const alertsResponse = alertsRes.data?.data || alertsRes.data || {};
+    const alertsData = (alertsResponse as any)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
+    const transformedPendingItems = Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
+      id: alert.id,
+      type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
+      athlete: alert.athleteName,
+      description: alert.message,
+      time: formatTimeAgo(alert.createdAt),
+    })) : mockPendingItems;
+
+    // Get stats from statistics response
+    const statsData = (statsRes.data?.data || statsRes.data) as any;
+    const transformedStats = statsData?.sessions ? {
+      activePlayers: statsData.players?.active || 0,
+      sessionsThisWeek: statsData.sessions?.thisWeek || 0,
+      hoursTrained: statsData.sessions?.totalHours || 0,
+      pendingCount: alertsData.length || 0,
+    } : null;
+
+    return {
+      athletes: transformedAthletes,
+      pendingItems: transformedPendingItems,
+      weeklyStats: transformedStats,
+      todaySchedule: [],
+      defaultTeamId: transformedAthletes.length > 0 ? transformedAthletes[0].id : null,
+    };
+  }, [user, formatTimeAgo]);
+
+  // Use real-time polling for dashboard data
+  const {
+    data: dashboardData,
+    isLoading: loading,
+    isRefreshing,
+    error,
+    lastUpdated,
+    refresh,
+  } = useRealTimePolling<DashboardData>({
+    fetchFn: fetchDashboardData,
+    interval: 30000, // Refresh every 30 seconds
+    enabled: !propAthletes && !propPendingItems,
+    showBackgroundLoading: true,
+  });
+
+  // Use prop data or fetched data
+  const athletes = propAthletes || dashboardData?.athletes || mockAthletes;
+  const pendingItems = propPendingItems || dashboardData?.pendingItems || mockPendingItems;
+  const weeklyStats = dashboardData?.weeklyStats || null;
+  const todaySchedule = dashboardData?.todaySchedule || [];
+  const defaultTeamId = dashboardData?.defaultTeamId || null;
+
+  if (loading && !dashboardData) return <LoadingState />;
+  if (error && athletes.length === 0) return <ErrorState error={error.message} onRetry={refresh} />;
 
   // Sort athletes alphabetically by last name
   const sortedAthletes = [...athletes]
@@ -286,9 +286,30 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     return 'God kveld';
   };
 
+  // Add refresh animations
+  useEffect(() => {
+    if (!document.getElementById('coach-dashboard-animations')) {
+      const style = document.createElement('style');
+      style.id = 'coach-dashboard-animations';
+      style.textContent = `
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes refreshProgress {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(0%); }
+          100% { transform: translateX(100%); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
   return (
     <div
       style={{
+        position: 'relative',
         minHeight: '100vh',
         backgroundColor: 'var(--bg-secondary)',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
@@ -296,16 +317,68 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     >
       {/* Header */}
       <div style={{ padding: '24px', paddingBottom: '16px' }}>
-        <PageTitle>
-          {getGreeting()}, Trener
-        </PageTitle>
-        <p style={{
-          fontSize: '15px',
-          color: 'var(--text-secondary)',
-          marginTop: '4px',
-        }}>
-          Her er din oversikt for i dag
-        </p>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+          <div>
+            <PageTitle>
+              {getGreeting()}, Trener
+            </PageTitle>
+            <p style={{
+              fontSize: '15px',
+              color: 'var(--text-secondary)',
+              marginTop: '4px',
+            }}>
+              Her er din oversikt for i dag
+            </p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Last updated indicator */}
+            <span style={{
+              fontSize: '13px',
+              color: 'var(--text-tertiary)',
+            }}>
+              {formatLastUpdated(lastUpdated)}
+            </span>
+            {/* Refresh button */}
+            <button
+              onClick={refresh}
+              disabled={isRefreshing}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '36px',
+                height: '36px',
+                backgroundColor: 'var(--bg-primary)',
+                border: '1px solid var(--border-default)',
+                borderRadius: 'var(--radius-md)',
+                cursor: isRefreshing ? 'not-allowed' : 'pointer',
+                opacity: isRefreshing ? 0.6 : 1,
+                transition: 'all 0.2s ease',
+              }}
+              title="Oppdater data"
+            >
+              <RefreshCw
+                size={18}
+                style={{
+                  color: 'var(--text-secondary)',
+                  animation: isRefreshing ? 'spin 1s linear infinite' : 'none',
+                }}
+              />
+            </button>
+          </div>
+        </div>
+        {/* Refreshing indicator bar */}
+        {isRefreshing && (
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '3px',
+            backgroundColor: 'var(--accent)',
+            animation: 'refreshProgress 1.5s ease-in-out infinite',
+          }} />
+        )}
       </div>
 
       {/* Quick Actions */}

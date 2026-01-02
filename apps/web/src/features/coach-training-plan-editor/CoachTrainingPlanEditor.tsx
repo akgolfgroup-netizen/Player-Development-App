@@ -21,10 +21,11 @@
  */
 
 import React, { useState } from "react";
-import { ArrowLeft, ClipboardList, Plus, Trash2, Calendar, Clock, CheckCircle, Lock } from "lucide-react";
+import { ArrowLeft, ClipboardList, Plus, Trash2, Calendar, Clock, CheckCircle, Lock, Sparkles, X } from "lucide-react";
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import { PageTitle, SectionTitle } from '../../components/typography';
+import AIPlanSuggestions, { SuggestionToApply } from './AIPlanSuggestions';
 
 //////////////////////////////
 // 1. TYPES
@@ -107,6 +108,7 @@ export default function CoachTrainingPlanEditor({
   const [newDate, setNewDate] = useState("");
   const [newDuration, setNewDuration] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showAIPanel, setShowAIPanel] = useState(false);
 
   const blocks = apiBlocks || MOCK_BLOCKS;
   const sortedBlocks = sortByDateAsc(blocks);
@@ -134,6 +136,22 @@ export default function CoachTrainingPlanEditor({
   const handleRemove = (block: TrainingBlock) => {
     if (isLocked(block)) return;
     onRemoveBlock(athleteId, block.id);
+  };
+
+  const handleApplyAISuggestion = (suggestion: SuggestionToApply) => {
+    if (suggestion.type === 'session') {
+      // Find next available date (tomorrow or later)
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const dateStr = tomorrow.toISOString().split('T')[0];
+
+      onAddBlock(athleteId, {
+        name: suggestion.name,
+        description: suggestion.description,
+        date: dateStr,
+        durationMinutes: suggestion.durationMinutes,
+      });
+    }
   };
 
   return (
@@ -197,30 +215,59 @@ export default function CoachTrainingPlanEditor({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setShowAddForm(!showAddForm)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '12px 20px',
-              borderRadius: 'var(--radius-md)',
-              border: 'none',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              cursor: 'pointer',
-              fontSize: '15px', lineHeight: '20px',
-              fontWeight: 600,
-            }}
-          >
-            <Plus size={18} />
-            Ny økt
-          </button>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button
+              type="button"
+              onClick={() => setShowAIPanel(!showAIPanel)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 20px',
+                borderRadius: 'var(--radius-md)',
+                border: showAIPanel ? 'none' : '1px solid var(--accent)',
+                backgroundColor: showAIPanel ? 'rgba(var(--accent-rgb), 0.1)' : 'transparent',
+                color: 'var(--accent)',
+                cursor: 'pointer',
+                fontSize: '15px', lineHeight: '20px',
+                fontWeight: 600,
+              }}
+            >
+              {showAIPanel ? <X size={18} /> : <Sparkles size={18} />}
+              {showAIPanel ? 'Skjul AI' : 'AI Assistent'}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowAddForm(!showAddForm)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 20px',
+                borderRadius: 'var(--radius-md)',
+                border: 'none',
+                backgroundColor: 'var(--accent)',
+                color: 'var(--bg-primary)',
+                cursor: 'pointer',
+                fontSize: '15px', lineHeight: '20px',
+                fontWeight: 600,
+              }}
+            >
+              <Plus size={18} />
+              Ny økt
+            </button>
+          </div>
         </div>
       </div>
 
-      <div style={{ padding: '24px' }}>
+      <div style={{
+        padding: '24px',
+        display: showAIPanel ? 'grid' : 'block',
+        gridTemplateColumns: showAIPanel ? '1fr 380px' : '1fr',
+        gap: '24px',
+      }}>
+        {/* Main Content */}
+        <div>
         {/* Add Block Form */}
         {showAddForm && (
           <div
@@ -538,6 +585,18 @@ export default function CoachTrainingPlanEditor({
                 </div>
               ))}
             </div>
+          </div>
+        )}
+        </div>
+
+        {/* AI Panel */}
+        {showAIPanel && (
+          <div style={{ position: 'sticky', top: '24px', alignSelf: 'start' }}>
+            <AIPlanSuggestions
+              playerId={athleteId}
+              playerName={athleteName}
+              onApplySuggestion={handleApplyAISuggestion}
+            />
           </div>
         )}
       </div>

@@ -22,8 +22,8 @@ import React, {
 } from 'react';
 import {
   aiService,
-  ChatMessage as ServiceChatMessage,
   ChatRequest,
+  StreamCallbacks,
 } from '../../../services/aiService';
 import type { AICoachContextValue, ChatMessage } from '../types';
 
@@ -93,6 +93,8 @@ export function AICoachProvider({ children }: AICoachProviderProps) {
     }));
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamingContent, setStreamingContent] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isAvailable, setIsAvailable] = useState(true);
   const [unreadCount, setUnreadCount] = useState(() =>
@@ -159,8 +161,8 @@ export function AICoachProvider({ children }: AICoachProviderProps) {
   // Chat Actions
   // =============================================================================
 
-  const sendMessage = useCallback(async (content: string) => {
-    if (!content.trim() || isLoading) return;
+  const sendMessage = useCallback(async (content: string, useStreaming = true) => {
+    if (!content.trim() || isLoading || isStreaming) return;
 
     setError(null);
 
@@ -173,40 +175,91 @@ export function AICoachProvider({ children }: AICoachProviderProps) {
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setIsLoading(true);
 
-    try {
-      const request: ChatRequest = {
-        message: content.trim(),
-        conversationHistory: messages.slice(-10).map(m => ({
-          role: m.role,
-          content: m.content,
-        })),
-        context: {},
+    const request: ChatRequest = {
+      message: content.trim(),
+      conversationHistory: messages.slice(-10).map(m => ({
+        role: m.role,
+        content: m.content,
+      })),
+      context: {},
+    };
+
+    if (useStreaming) {
+      // Use streaming for real-time response
+      setIsStreaming(true);
+      setStreamingContent('');
+      let fullContent = '';
+
+      const callbacks: StreamCallbacks = {
+        onText: (text: string) => {
+          fullContent += text;
+          setStreamingContent(fullContent);
+        },
+        onToolUse: (toolName: string) => {
+          console.log('[AICoach] Tool used:', toolName);
+        },
+        onDone: () => {
+          // Create final assistant message
+          const assistantMessage: ChatMessage = {
+            id: generateMessageId(),
+            role: 'assistant',
+            content: fullContent,
+            timestamp: new Date(),
+          };
+
+          setMessages(prev => [...prev, assistantMessage]);
+          setStreamingContent('');
+          setIsStreaming(false);
+
+          // Increment unread if panel is closed
+          if (!isOpen) {
+            setUnreadCount(prev => prev + 1);
+          }
+        },
+        onError: (errorMsg: string) => {
+          console.error('[AICoach] Stream error:', errorMsg);
+          setError('Kunne ikke få svar fra AI-treneren. Prøv igjen.');
+          setStreamingContent('');
+          setIsStreaming(false);
+        },
       };
 
-      const response = await aiService.chat(request);
-
-      const assistantMessage: ChatMessage = {
-        id: generateMessageId(),
-        role: 'assistant',
-        content: response.response,
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-
-      // Increment unread if panel is closed
-      if (!isOpen) {
-        setUnreadCount(prev => prev + 1);
+      try {
+        await aiService.chatStream(request, callbacks);
+      } catch (err) {
+        console.error('[AICoach] Chat error:', err);
+        setError('Kunne ikke få svar fra AI-treneren. Prøv igjen.');
+        setIsStreaming(false);
       }
-    } catch (err) {
-      console.error('[AICoach] Chat error:', err);
-      setError('Kunne ikke få svar fra AI-treneren. Prøv igjen.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      // Fallback to non-streaming
+      setIsLoading(true);
+
+      try {
+        const response = await aiService.chat(request);
+
+        const assistantMessage: ChatMessage = {
+          id: generateMessageId(),
+          role: 'assistant',
+          content: response.response,
+          timestamp: new Date(),
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
+
+        // Increment unread if panel is closed
+        if (!isOpen) {
+          setUnreadCount(prev => prev + 1);
+        }
+      } catch (err) {
+        console.error('[AICoach] Chat error:', err);
+        setError('Kunne ikke få svar fra AI-treneren. Prøv igjen.');
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }, [messages, isLoading, isOpen]);
+  }, [messages, isLoading, isStreaming, isOpen]);
 
   const clearMessages = useCallback(() => {
     setMessages([]);
@@ -258,6 +311,8 @@ export function AICoachProvider({ children }: AICoachProviderProps) {
     isMinimized,
     messages,
     isLoading,
+    isStreaming,
+    streamingContent,
     error,
     isAvailable,
     unreadCount,
@@ -287,6 +342,8 @@ export function AICoachProvider({ children }: AICoachProviderProps) {
     isMinimized,
     messages,
     isLoading,
+    isStreaming,
+    streamingContent,
     error,
     isAvailable,
     unreadCount,

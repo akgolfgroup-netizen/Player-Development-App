@@ -2,14 +2,18 @@
  * AI Coach Service
  *
  * Provides AI-powered golf coaching features:
- * - Chat with AI coach for training advice
+ * - Chat with AI coach for training advice (with tool use)
  * - Training plan recommendations
  * - Breaking point analysis
  * - Progress insights
+ *
+ * Uses Claude tool calling for dynamic data retrieval during conversations.
  */
 
 import { claudeClient, ChatMessage } from './claude-client.service';
+import { AI_COACH_TOOLS, executeToolCall } from './ai-tools';
 import { PrismaClient } from '@prisma/client';
+import Anthropic from '@anthropic-ai/sdk';
 
 const prisma = new PrismaClient();
 
@@ -91,8 +95,13 @@ class AICoachService {
             },
           },
           breakingPoints: {
-            where: { status: 'active' },
+            where: { status: { in: ['active', 'not_started', 'in_progress'] } },
             take: 5,
+            select: {
+              specificArea: true,
+              description: true,
+              progressPercent: true,
+            },
           },
         },
       });
@@ -105,30 +114,33 @@ class AICoachService {
           playerId,
           status: 'completed',
         },
-        orderBy: { date: 'desc' },
+        orderBy: { assignedDate: 'desc' },
         take: 5,
         include: {
-          sessionTemplate: true,
+          sessionTemplate: {
+            select: {
+              sessionType: true,
+            },
+          },
         },
       });
 
       return {
         id: player.id,
         name: `${player.firstName} ${player.lastName}`,
-        email: player.user?.email || '',
-        category: player.currentCategory || undefined,
+        email: player.user?.email || player.email || '',
+        category: player.category || undefined,
         handicap: player.handicap ? parseFloat(player.handicap.toString()) : undefined,
         averageScore: player.averageScore ? parseFloat(player.averageScore.toString()) : undefined,
-        breakingPoints: player.breakingPoints?.map((bp: { area: string; description: string | null; progressPercent: { toString: () => string } | null }) => ({
-          area: bp.area,
+        breakingPoints: player.breakingPoints?.map(bp => ({
+          area: bp.specificArea,
           description: bp.description || '',
-          progress: bp.progressPercent ? parseFloat(bp.progressPercent.toString()) : 0,
+          progress: bp.progressPercent,
         })),
-        recentSessions: recentAssignments.map((a: { date: Date; sessionTemplate: { sessionType: string } | null; actualDuration: number | null; estimatedDuration: number | null; qualityRating: number | null }) => ({
-          date: a.date.toISOString().split('T')[0],
-          type: a.sessionTemplate?.sessionType || 'general',
-          duration: a.actualDuration || a.estimatedDuration || 60,
-          rating: a.qualityRating || undefined,
+        recentSessions: recentAssignments.map(a => ({
+          date: a.assignedDate.toISOString().split('T')[0],
+          type: a.sessionTemplate?.sessionType || a.sessionType || 'general',
+          duration: a.estimatedDuration || 60,
         })),
         goals: player.goals ? (player.goals as string[]) : [],
       };
@@ -177,13 +189,21 @@ class AICoachService {
   }
 
   /**
-   * Chat with AI coach
+   * Chat with AI coach (with tool use support)
+   *
+   * Implements an agentic loop that allows Claude to call tools
+   * to fetch player data dynamically during the conversation.
    */
   async chat(
     playerId: string,
     message: string,
-    conversationHistory: ChatMessage[] = []
-  ): Promise<{ response: string; tokens: { input: number; output: number } }> {
+    conversationHistory: ChatMessage[] = [],
+    options: { useTools?: boolean } = {}
+  ): Promise<{
+    response: string;
+    tokens: { input: number; output: number };
+    toolsUsed?: string[];
+  }> {
     if (!claudeClient.isAvailable()) {
       return {
         response: 'AI-coach er ikke tilgjengelig for øyeblikket. Vennligst kontakt din trener direkte.',
@@ -193,26 +213,107 @@ class AICoachService {
 
     // Get player context
     const playerContext = await this.getPlayerContext(playerId);
-    const systemPrompt = this.buildSystemPrompt(playerContext);
+    const systemPrompt = this.buildSystemPromptWithTools(playerContext, playerId);
 
-    // Build messages
-    const messages: ChatMessage[] = [
-      ...conversationHistory,
-      { role: 'user', content: message },
+    // Build initial messages
+    const messages: Anthropic.MessageParam[] = [
+      ...conversationHistory.map(m => ({
+        role: m.role as 'user' | 'assistant',
+        content: m.content,
+      })),
+      { role: 'user' as const, content: message },
     ];
 
-    try {
-      const response = await claudeClient.chat(messages, {
-        system: systemPrompt,
-        temperature: 0.7,
-      });
+    const useTools = options.useTools !== false; // Default to true
+    const toolsUsed: string[] = [];
+    let totalInputTokens = 0;
+    let totalOutputTokens = 0;
 
+    try {
+      // Agentic loop - keep calling until we get a final response
+      const MAX_ITERATIONS = 5;
+      let iterations = 0;
+
+      while (iterations < MAX_ITERATIONS) {
+        iterations++;
+
+        const response = await claudeClient.chat(
+          messages as ChatMessage[],
+          {
+            system: systemPrompt,
+            temperature: 0.7,
+            tools: useTools ? AI_COACH_TOOLS : undefined,
+          }
+        );
+
+        totalInputTokens += response.usage.inputTokens;
+        totalOutputTokens += response.usage.outputTokens;
+
+        // If no tool calls, we're done
+        if (!response.toolCalls || response.toolCalls.length === 0) {
+          return {
+            response: response.content,
+            tokens: { input: totalInputTokens, output: totalOutputTokens },
+            toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
+          };
+        }
+
+        // Handle tool calls
+        const assistantContent: Anthropic.ContentBlockParam[] = [];
+
+        // Add any text content from the response
+        if (response.content) {
+          assistantContent.push({ type: 'text', text: response.content });
+        }
+
+        // Add tool use blocks
+        for (const toolCall of response.toolCalls) {
+          assistantContent.push({
+            type: 'tool_use',
+            id: toolCall.id,
+            name: toolCall.name,
+            input: toolCall.input,
+          });
+        }
+
+        // Add assistant message with tool calls
+        messages.push({
+          role: 'assistant',
+          content: assistantContent,
+        });
+
+        // Execute tools and build results
+        const toolResults: Anthropic.ToolResultBlockParam[] = [];
+
+        for (const toolCall of response.toolCalls) {
+          console.log(`[AI Coach] Executing tool: ${toolCall.name}`);
+          toolsUsed.push(toolCall.name);
+
+          const result = await executeToolCall(toolCall.name, {
+            ...toolCall.input,
+            player_id: playerId, // Always inject player_id
+          });
+
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: toolCall.id,
+            content: JSON.stringify(result.success ? result.data : { error: result.error }),
+            is_error: !result.success,
+          });
+        }
+
+        // Add tool results as user message
+        messages.push({
+          role: 'user',
+          content: toolResults,
+        });
+      }
+
+      // If we hit max iterations, return what we have
       return {
-        response: response.content,
-        tokens: {
-          input: response.usage.inputTokens,
-          output: response.usage.outputTokens,
-        },
+        response: 'Beklager, jeg brukte for lang tid på å svare. Vennligst prøv igjen med et enklere spørsmål.',
+        tokens: { input: totalInputTokens, output: totalOutputTokens },
+        toolsUsed,
       };
     } catch (error) {
       console.error('AI Coach chat error:', error);
@@ -224,37 +325,210 @@ class AICoachService {
   }
 
   /**
-   * Get training recommendations
+   * Build system prompt with tool instructions
    */
-  async getTrainingRecommendations(playerId: string): Promise<string> {
+  private buildSystemPromptWithTools(playerContext: PlayerContext | null, playerId: string): string {
+    let prompt = this.buildSystemPrompt(playerContext);
+
+    prompt += `\n\nVERKTØY TILGJENGELIG:
+Du har tilgang til verktøy for å hente oppdatert informasjon om spilleren. Bruk disse aktivt for å gi presise svar:
+
+- get_player_test_results: Hent testresultater for å analysere ferdigheter
+- get_player_training_history: Se treningshistorikk og volum
+- get_player_goals: Se spillerens mål og breaking points
+- get_player_category_requirements: Se krav for neste kategori
+- get_upcoming_tournaments: Se kommende turneringer
+- create_training_suggestion: Opprett konkrete treningsforslag
+
+Bruk alltid player_id: "${playerId}" når du kaller verktøy.
+
+VIKTIG: Hvis brukeren spør om sine resultater, progresjon, eller noe som krever fersk data - bruk verktøyene for å hente informasjon før du svarer.`;
+
+    return prompt;
+  }
+
+  /**
+   * Get training recommendations (with tool-enhanced data gathering)
+   *
+   * Uses AI tools to fetch comprehensive player data before generating
+   * personalized training recommendations.
+   */
+  async getTrainingRecommendations(
+    playerId: string,
+    options: { useTools?: boolean } = {}
+  ): Promise<{
+    recommendations: string;
+    toolsUsed?: string[];
+    suggestedExercises?: Array<{
+      name: string;
+      category: string;
+      duration: number;
+      priority: 'high' | 'medium' | 'low';
+    }>;
+  }> {
     const playerContext = await this.getPlayerContext(playerId);
 
     if (!playerContext) {
-      return 'Kunne ikke finne spillerinformasjon.';
+      return {
+        recommendations: 'Kunne ikke finne spillerinformasjon.',
+      };
     }
 
-    const prompt = `Basert på denne spillerens profil og treningshistorikk, gi 3-5 konkrete treningsanbefalinger for neste uke.
+    const useTools = options.useTools !== false;
+
+    const prompt = `Du skal generere treningsanbefalinger for denne spilleren.
+
+INSTRUKSJONER:
+1. FØRST: Bruk verktøyene til å hente detaljert informasjon:
+   - Hent testresultater for å se styrker og svakheter
+   - Hent treningshistorikk for å se nylig aktivitet
+   - Hent spillerens mål og breaking points
+   - Hent kategorikrav for å se hva som trengs for progresjon
+
+2. DERETTER: Analyser all innsamlet data og gi 3-5 konkrete treningsanbefalinger.
+
+3. For hver anbefaling, inkluder:
+   - Hva spilleren bør jobbe med
+   - Hvorfor dette er viktig basert på dataene
+   - Spesifikke øvelser eller drill
+   - Tidsanslag per uke
+
+4. Bruk ALLTID create_training_suggestion verktøyet for å registrere de viktigste forslagene.
 
 Fokuser på:
-1. Breaking points som trenger oppmerksomhet
-2. Balanse mellom teknikk, kort spill og putting
-3. Realistisk tidsbruk basert på spillerens nivå
+- Breaking points som trenger oppmerksomhet
+- Balanse mellom ulike treningstyper
+- Kategorikrav som ikke er oppfylt
+- Realistisk tidsbruk basert på spillerens nivå
 
-Vær spesifikk med øvelser og tidsangivelser.`;
+Formater svaret som en tydelig og motiverende treningsplan.`;
+
+    if (!useTools) {
+      // Simple mode without tools
+      try {
+        const response = await claudeClient.chat(
+          [{ role: 'user', content: prompt }],
+          {
+            system: this.buildSystemPrompt(playerContext),
+            temperature: 0.5,
+          }
+        );
+
+        return { recommendations: response.content };
+      } catch (error) {
+        console.error('Error getting recommendations:', error);
+        return {
+          recommendations: 'Kunne ikke generere anbefalinger. Vennligst prøv igjen senere.',
+        };
+      }
+    }
+
+    // Tool-enhanced mode
+    const systemPrompt = this.buildSystemPromptWithTools(playerContext, playerId);
+    const messages: Anthropic.MessageParam[] = [
+      { role: 'user', content: prompt },
+    ];
+
+    const toolsUsed: string[] = [];
+    const suggestedExercises: Array<{
+      name: string;
+      category: string;
+      duration: number;
+      priority: 'high' | 'medium' | 'low';
+    }> = [];
 
     try {
-      const response = await claudeClient.chat(
-        [{ role: 'user', content: prompt }],
-        {
-          system: this.buildSystemPrompt(playerContext),
-          temperature: 0.5,
-        }
-      );
+      const MAX_ITERATIONS = 5;
+      let iterations = 0;
 
-      return response.content;
+      while (iterations < MAX_ITERATIONS) {
+        iterations++;
+
+        const response = await claudeClient.chat(
+          messages as ChatMessage[],
+          {
+            system: systemPrompt,
+            temperature: 0.5,
+            tools: AI_COACH_TOOLS,
+          }
+        );
+
+        // If no tool calls, we're done
+        if (!response.toolCalls || response.toolCalls.length === 0) {
+          return {
+            recommendations: response.content,
+            toolsUsed: toolsUsed.length > 0 ? toolsUsed : undefined,
+            suggestedExercises: suggestedExercises.length > 0 ? suggestedExercises : undefined,
+          };
+        }
+
+        // Handle tool calls
+        const assistantContent: Anthropic.ContentBlockParam[] = [];
+
+        if (response.content) {
+          assistantContent.push({ type: 'text', text: response.content });
+        }
+
+        for (const toolCall of response.toolCalls) {
+          assistantContent.push({
+            type: 'tool_use',
+            id: toolCall.id,
+            name: toolCall.name,
+            input: toolCall.input,
+          });
+        }
+
+        messages.push({
+          role: 'assistant',
+          content: assistantContent,
+        });
+
+        // Execute tools
+        const toolResults: Anthropic.ToolResultBlockParam[] = [];
+
+        for (const toolCall of response.toolCalls) {
+          console.log(`[AI Recommendations] Executing tool: ${toolCall.name}`);
+          toolsUsed.push(toolCall.name);
+
+          const result = await executeToolCall(toolCall.name, {
+            ...toolCall.input,
+            player_id: playerId,
+          });
+
+          // Capture training suggestions for structured output
+          if (toolCall.name === 'create_training_suggestion' && result.success) {
+            const input = toolCall.input as Record<string, unknown>;
+            suggestedExercises.push({
+              name: input.title as string,
+              category: input.category as string,
+              duration: (input.duration_minutes as number) || 30,
+              priority: (input.priority as 'high' | 'medium' | 'low') || 'medium',
+            });
+          }
+
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: toolCall.id,
+            content: JSON.stringify(result.success ? result.data : { error: result.error }),
+            is_error: !result.success,
+          });
+        }
+
+        messages.push({
+          role: 'user',
+          content: toolResults,
+        });
+      }
+
+      return {
+        recommendations: 'Kunne ikke fullføre analyse. Prøv igjen.',
+        toolsUsed,
+      };
     } catch (error) {
-      console.error('Error getting recommendations:', error);
-      return 'Kunne ikke generere anbefalinger. Vennligst prøv igjen senere.';
+      console.error('Error getting recommendations with tools:', error);
+      return {
+        recommendations: 'Kunne ikke generere anbefalinger. Vennligst prøv igjen senere.',
+      };
     }
   }
 
@@ -292,6 +566,211 @@ Gi:
     } catch (error) {
       console.error('Error analyzing breaking point:', error);
       return 'Kunne ikke analysere breaking point. Vennligst prøv igjen senere.';
+    }
+  }
+
+  /**
+   * Generate AI-assisted training plan suggestions
+   *
+   * Uses AI tools to analyze player data and generate personalized
+   * training plan recommendations before running full plan generation.
+   */
+  async generatePlanSuggestions(
+    playerId: string,
+    options: {
+      weeklyHoursTarget?: number;
+      focusAreas?: string[];
+      goalDescription?: string;
+    } = {}
+  ): Promise<{
+    summary: string;
+    suggestedFocus: Array<{
+      area: string;
+      priority: 'high' | 'medium' | 'low';
+      reason: string;
+      suggestedHoursPerWeek: number;
+    }>;
+    weeklyStructure: {
+      recommendedDays: number;
+      sessionTypes: Array<{
+        type: string;
+        frequency: string;
+        duration: string;
+      }>;
+    };
+    periodization: {
+      baseWeeks: number;
+      buildWeeks: number;
+      peakWeeks: number;
+      rationale: string;
+    };
+    toolsUsed: string[];
+  }> {
+    const playerContext = await this.getPlayerContext(playerId);
+
+    if (!playerContext) {
+      return {
+        summary: 'Kunne ikke finne spillerinformasjon.',
+        suggestedFocus: [],
+        weeklyStructure: { recommendedDays: 4, sessionTypes: [] },
+        periodization: { baseWeeks: 16, buildWeeks: 12, peakWeeks: 24, rationale: '' },
+        toolsUsed: [],
+      };
+    }
+
+    const prompt = `Analyser denne spilleren og generer en treningsplan-anbefaling.
+
+INSTRUKSJONER:
+1. Bruk verktøyene til å hente:
+   - Testresultater for å identifisere styrker/svakheter
+   - Mål og breaking points
+   - Kategorikrav for progresjon
+   - Treningshistorikk
+
+2. Basert på dataene, lag en strukturert anbefaling for treningsplan.
+
+${options.weeklyHoursTarget ? `Spilleren ønsker å trene ca ${options.weeklyHoursTarget} timer per uke.` : ''}
+${options.focusAreas?.length ? `Fokusområder: ${options.focusAreas.join(', ')}` : ''}
+${options.goalDescription ? `Spillerens mål: ${options.goalDescription}` : ''}
+
+Svar i følgende JSON-format:
+{
+  "summary": "Kort oppsummering av anbefalingen",
+  "suggestedFocus": [
+    {
+      "area": "Område (f.eks. Putting, Driving, Kort spill)",
+      "priority": "high/medium/low",
+      "reason": "Begrunnelse basert på data",
+      "suggestedHoursPerWeek": 2
+    }
+  ],
+  "weeklyStructure": {
+    "recommendedDays": 4,
+    "sessionTypes": [
+      {
+        "type": "Putting",
+        "frequency": "2x per uke",
+        "duration": "45 min"
+      }
+    ]
+  },
+  "periodization": {
+    "baseWeeks": 16,
+    "buildWeeks": 12,
+    "peakWeeks": 24,
+    "rationale": "Begrunnelse for periodiseringen"
+  }
+}`;
+
+    const systemPrompt = this.buildSystemPromptWithTools(playerContext, playerId);
+    const messages: Anthropic.MessageParam[] = [
+      { role: 'user', content: prompt },
+    ];
+
+    const toolsUsed: string[] = [];
+
+    try {
+      const MAX_ITERATIONS = 5;
+      let iterations = 0;
+      let finalContent = '';
+
+      while (iterations < MAX_ITERATIONS) {
+        iterations++;
+
+        const response = await claudeClient.chat(
+          messages as ChatMessage[],
+          {
+            system: systemPrompt,
+            temperature: 0.3, // Lower temperature for structured output
+            tools: AI_COACH_TOOLS,
+          }
+        );
+
+        if (!response.toolCalls || response.toolCalls.length === 0) {
+          finalContent = response.content;
+          break;
+        }
+
+        // Handle tool calls
+        const assistantContent: Anthropic.ContentBlockParam[] = [];
+
+        if (response.content) {
+          assistantContent.push({ type: 'text', text: response.content });
+        }
+
+        for (const toolCall of response.toolCalls) {
+          assistantContent.push({
+            type: 'tool_use',
+            id: toolCall.id,
+            name: toolCall.name,
+            input: toolCall.input,
+          });
+        }
+
+        messages.push({ role: 'assistant', content: assistantContent });
+
+        const toolResults: Anthropic.ToolResultBlockParam[] = [];
+
+        for (const toolCall of response.toolCalls) {
+          console.log(`[AI Plan Suggestions] Executing tool: ${toolCall.name}`);
+          toolsUsed.push(toolCall.name);
+
+          const result = await executeToolCall(toolCall.name, {
+            ...toolCall.input,
+            player_id: playerId,
+          });
+
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: toolCall.id,
+            content: JSON.stringify(result.success ? result.data : { error: result.error }),
+            is_error: !result.success,
+          });
+        }
+
+        messages.push({ role: 'user', content: toolResults });
+      }
+
+      // Parse JSON from response
+      const jsonMatch = finalContent.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          const parsed = JSON.parse(jsonMatch[0]);
+          return {
+            summary: parsed.summary || '',
+            suggestedFocus: parsed.suggestedFocus || [],
+            weeklyStructure: parsed.weeklyStructure || { recommendedDays: 4, sessionTypes: [] },
+            periodization: parsed.periodization || { baseWeeks: 16, buildWeeks: 12, peakWeeks: 24, rationale: '' },
+            toolsUsed,
+          };
+        } catch {
+          // If JSON parsing fails, return the text as summary
+          return {
+            summary: finalContent,
+            suggestedFocus: [],
+            weeklyStructure: { recommendedDays: 4, sessionTypes: [] },
+            periodization: { baseWeeks: 16, buildWeeks: 12, peakWeeks: 24, rationale: '' },
+            toolsUsed,
+          };
+        }
+      }
+
+      return {
+        summary: finalContent,
+        suggestedFocus: [],
+        weeklyStructure: { recommendedDays: 4, sessionTypes: [] },
+        periodization: { baseWeeks: 16, buildWeeks: 12, peakWeeks: 24, rationale: '' },
+        toolsUsed,
+      };
+    } catch (error) {
+      console.error('Error generating plan suggestions:', error);
+      return {
+        summary: 'Kunne ikke generere anbefalinger. Prøv igjen senere.',
+        suggestedFocus: [],
+        weeklyStructure: { recommendedDays: 4, sessionTypes: [] },
+        periodization: { baseWeeks: 16, buildWeeks: 12, peakWeeks: 24, rationale: '' },
+        toolsUsed,
+      };
     }
   }
 
