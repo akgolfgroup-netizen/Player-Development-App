@@ -30,21 +30,21 @@ const SESSION_TYPES = [
   { id: 'mental', label: 'Mental', icon: '🧠' },
 ];
 
-// Learning phases
+// Learning phases (Læringsfaser)
 const LEARNING_PHASES = [
-  { id: 'L1', label: 'L1 - Ball', description: 'Fokus på ballkontakt' },
-  { id: 'L2', label: 'L2 - Teknikk', description: 'Teknisk trening' },
-  { id: 'L3', label: 'L3 - Transfer', description: 'Overføring til spill' },
-  { id: 'L4', label: 'L4 - Variasjon', description: 'Variasjon i trening' },
-  { id: 'L5', label: 'L5 - Spill', description: 'Spillsituasjoner' },
+  { id: 'L1', label: 'L1 - Eksponering', description: 'Introduksjon til ny ferdighet' },
+  { id: 'L2', label: 'L2 - Fundamentals', description: 'Etablere grunnleggende teknikk' },
+  { id: 'L3', label: 'L3 - Variasjon', description: 'Trening under ulike betingelser' },
+  { id: 'L4', label: 'L4 - Timing og Flow', description: 'Integrere i sving og spillflyt' },
+  { id: 'L5', label: 'L5 - Automatisering', description: 'Ferdighet under press' },
 ];
 
 // Periods
 const PERIODS = [
-  { id: 'E', label: 'Etableringsfase' },
-  { id: 'G', label: 'Grunnfase' },
-  { id: 'S', label: 'Spesifikkfase' },
-  { id: 'T', label: 'Toppfase' },
+  { id: 'E', label: 'Evaluering' },
+  { id: 'G', label: 'Grunnperiode' },
+  { id: 'S', label: 'Spesialisering' },
+  { id: 'T', label: 'Turnering' },
 ];
 
 // Helper to get period color classes

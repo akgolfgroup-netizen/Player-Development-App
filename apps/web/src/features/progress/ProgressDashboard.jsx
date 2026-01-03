@@ -167,6 +167,6 @@ function StatCard({ title, value, icon, color }) {
 }
 
 function getPeriodName(period) {
-  const names = { E: 'Basis', G: 'Generell', S: 'Spesifikk', T: 'Turnering' };
+  const names = { E: 'Evaluering', G: 'Grunnperiode', S: 'Spesialisering', T: 'Turnering' };
   return names[period] || period;
 }

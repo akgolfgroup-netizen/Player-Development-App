@@ -653,9 +653,9 @@ function WeeklyView({ data }) {
 
   const getPeriodLabel = (period) => {
     switch (period) {
-      case 'E': return 'Base';
-      case 'G': return 'General';
-      case 'S': return 'Spesifikk';
+      case 'E': return 'Evaluering';
+      case 'G': return 'Grunnperiode';
+      case 'S': return 'Spesialisering';
       case 'T': return 'Turnering';
       default: return period;
     }

@@ -30,7 +30,7 @@ const YearView = ({
     if (period) {
       const periodColors = {
         evaluering: 'var(--ak-text-tertiary)',
-        grunnlag: 'var(--ak-session-teknikk)',
+        grunnperiode: 'var(--ak-session-teknikk)',
         spesialisering: 'var(--ak-session-golfslag)',
         turnering: 'var(--ak-status-warning)',
       };
@@ -154,7 +154,7 @@ const YearView = ({
           <span className="text-xs text-ak-text-secondary">Perioder:</span>
           {[
             { type: 'evaluering', label: 'Evaluering', color: 'var(--ak-text-tertiary)' },
-            { type: 'grunnlag', label: 'Grunnlag', color: 'var(--ak-session-teknikk)' },
+            { type: 'grunnperiode', label: 'Grunnperiode', color: 'var(--ak-session-teknikk)' },
             { type: 'spesialisering', label: 'Spesialisering', color: 'var(--ak-session-golfslag)' },
             { type: 'turnering', label: 'Turnering', color: 'var(--ak-status-warning)' },
           ].map(p => (

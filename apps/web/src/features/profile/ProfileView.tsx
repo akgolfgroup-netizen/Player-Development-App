@@ -163,10 +163,10 @@ const ProfileView: React.FC<ProfileViewProps> = ({ profile, onUpdate }) => {
   const getPeriodLabel = (period?: string): string => {
     if (!period) return '-';
     const labels: Record<string, string> = {
-      G: 'Grunnleggende',
-      S: 'Spesifikk',
-      T: 'Turnering',
       E: 'Evaluering',
+      G: 'Grunnperiode',
+      S: 'Spesialisering',
+      T: 'Turnering',
     };
     return labels[period] || period;
   };

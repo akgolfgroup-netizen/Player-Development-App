@@ -15,13 +15,13 @@ import { Button } from '../../ui/primitives';
 // Helper functions for tag color classes
 const getLearningPhaseClasses = (phase) => {
   const classes = {
-    Ball: 'bg-ak-status-success/15 text-ak-brand-primary',
-    Teknikk: 'bg-ak-status-success/20 text-ak-brand-primary',
-    Transfer: 'bg-ak-status-success/30 text-ak-brand-primary',
-    Variasjon: 'bg-ak-status-success/50 text-white',
-    Spill: 'bg-ak-status-success text-white',
+    Eksponering: 'bg-ak-status-success/15 text-ak-brand-primary',
+    Fundamentals: 'bg-ak-status-success/20 text-ak-brand-primary',
+    Variasjon: 'bg-ak-status-success/30 text-ak-brand-primary',
+    'Timing og Flow': 'bg-ak-status-success/50 text-white',
+    Automatisering: 'bg-ak-status-success text-white',
   };
-  return classes[phase] || classes.Ball;
+  return classes[phase] || classes.Eksponering;
 };
 
 const getCsLevelClasses = (level) => {

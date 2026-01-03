@@ -74,10 +74,10 @@ const STATUS_CONFIG: Record<string, { label: string; variant: 'default' | 'secon
 
 // Period labels
 const PERIOD_LABELS: Record<string, string> = {
-  E: 'Etablering',
-  G: 'Grunn',
-  S: 'Spesifikk',
-  T: 'Topp',
+  E: 'Evaluering',
+  G: 'Grunnperiode',
+  S: 'Spesialisering',
+  T: 'Turnering',
 };
 
 // Map session type to training category for badge
