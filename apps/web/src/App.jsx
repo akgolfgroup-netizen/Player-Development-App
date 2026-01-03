@@ -1,10 +1,16 @@
+/**
+ * App Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { tokens } from './design-tokens';
 import { initMobileApp } from './utils/mobile';
 
 // PWA & AI components

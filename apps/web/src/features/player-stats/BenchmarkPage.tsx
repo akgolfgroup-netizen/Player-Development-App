@@ -17,6 +17,13 @@ import {
   Users,
 } from 'lucide-react';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
+/**
+ * BenchmarkPage Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
@@ -24,7 +31,6 @@ import { useProBenchmark, ApproachSkillData } from '../../hooks/useProBenchmark'
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { useScreenView } from '../../analytics/useScreenView';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
-import { tokens } from '../../design-tokens';
 
 /**
  * BenchmarkPage - Visuelt inspirerende sammenligning med PGA-proffer og amatører
@@ -441,10 +447,10 @@ const BenchmarkPage: React.FC = () => {
 // Approach Distance Card Component
 const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }> = ({ skill, index }) => {
   const gradients = [
-    `linear-gradient(135deg, ${tokens.colors.successLight} 0%, ${tokens.colors.success} 100%)`,
-    `linear-gradient(135deg, ${tokens.colors.infoLight} 0%, ${tokens.colors.info} 100%)`,
-    `linear-gradient(135deg, ${tokens.colors.primaryLight} 0%, ${tokens.colors.primary} 100%)`, // was purple, using primary (forest) instead
-    `linear-gradient(135deg, ${tokens.colors.warningLight} 0%, ${tokens.colors.warning} 100%)`,
+    'linear-gradient(135deg, var(--ak-status-success-light) 0%, var(--ak-status-success) 100%)',
+    'linear-gradient(135deg, var(--ak-status-info-light) 0%, var(--ak-status-info) 100%)',
+    'linear-gradient(135deg, var(--ak-brand-primary-light) 0%, var(--ak-brand-primary) 100%)',
+    'linear-gradient(135deg, var(--ak-status-warning-light) 0%, var(--ak-status-warning) 100%)',
   ];
 
   return (

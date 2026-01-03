@@ -1,5 +1,8 @@
 /**
- * Event Card Component
+ * EventCard.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Visual styling based on event intent (from spec):
  * 1. Recommended AK Golf workout - Primary brand styling, dominant
@@ -14,197 +17,7 @@
 
 import React from 'react';
 import { Play, Check, Clock, MapPin, Calendar } from 'lucide-react';
-import { EventCardProps, WorkoutCategory } from './types';
-
-// Category color mapping using semantic tokens
-const getCategoryStyles = (category: WorkoutCategory) => {
-  const categoryMap: Record<WorkoutCategory, { background: string; border: string; text: string }> = {
-    teknikk: {
-      background: 'var(--category-tek-muted)',
-      border: 'var(--category-tek)',
-      text: 'var(--category-tek)',
-    },
-    golfslag: {
-      background: 'var(--category-slag-muted)',
-      border: 'var(--category-slag)',
-      text: 'var(--category-slag)',
-    },
-    spill: {
-      background: 'var(--category-spill-muted)',
-      border: 'var(--category-spill)',
-      text: 'var(--category-spill)',
-    },
-    konkurranse: {
-      background: 'var(--category-turn-muted)',
-      border: 'var(--category-turn)',
-      text: 'var(--category-turn)',
-    },
-    fysisk: {
-      background: 'var(--category-fys-muted)',
-      border: 'var(--category-fys)',
-      text: 'var(--category-fys)',
-    },
-    mental: {
-      background: 'var(--bg-neutral-subtle)',
-      border: 'var(--text-tertiary)',
-      text: 'var(--text-secondary)',
-    },
-  };
-
-  return categoryMap[category] || categoryMap.mental;
-};
-
-// Semantic styles (NO raw hex values)
-const styles = {
-  card: {
-    height: '100%',
-    borderRadius: 'var(--radius-md)',
-    overflow: 'hidden',
-    cursor: 'pointer',
-    transition: 'box-shadow 0.15s ease, transform 0.15s ease',
-    display: 'flex',
-    flexDirection: 'column' as const,
-  },
-  cardHover: {
-    boxShadow: 'var(--shadow-elevated)',
-    transform: 'translateY(-1px)',
-  },
-  cardRecommended: {
-    backgroundColor: 'var(--accent-muted)',
-    borderLeft: '4px solid var(--accent)',
-  },
-  cardPlanned: {
-    backgroundColor: 'var(--background-elevated)',
-    borderLeft: '4px solid var(--border-strong)',
-  },
-  cardInProgress: {
-    backgroundColor: 'var(--success-muted)',
-    borderLeft: '4px solid var(--success)',
-  },
-  cardCompleted: {
-    backgroundColor: 'var(--background-elevated)',
-    borderLeft: '4px solid var(--success)',
-    opacity: 0.7,
-  },
-  cardExternal: {
-    backgroundColor: 'var(--background-surface)',
-    borderLeft: '4px solid var(--border-default)',
-  },
-  cardGhost: {
-    backgroundColor: 'transparent',
-    border: '2px dashed var(--border-brand)',
-    borderLeft: '2px dashed var(--border-brand)',
-    opacity: 0.6,
-  },
-  content: {
-    flex: 1,
-    padding: 'var(--spacing-3)',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: 'var(--spacing-1)',
-    minWidth: 0,
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: 'var(--spacing-2)',
-  },
-  title: {
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    lineHeight: 1.3,
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap' as const,
-  },
-  titleExternal: {
-    color: 'var(--text-secondary)',
-    fontWeight: 500,
-  },
-  meta: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-  },
-  metaItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2px',
-  },
-  badge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '2px',
-    padding: '2px 6px',
-    borderRadius: 'var(--radius-full)',
-    fontSize: '10px',
-    fontWeight: 600,
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.3px',
-    whiteSpace: 'nowrap' as const,
-  },
-  badgeRecommended: {
-    backgroundColor: 'var(--accent)',
-    color: 'var(--text-inverse)',
-  },
-  badgeInProgress: {
-    backgroundColor: 'var(--success)',
-    color: 'var(--text-inverse)',
-  },
-  badgeCompleted: {
-    backgroundColor: 'var(--success-muted)',
-    color: 'var(--success)',
-  },
-  badgePlanned: {
-    backgroundColor: 'var(--background-muted)',
-    color: 'var(--text-secondary)',
-  },
-  badgeGhost: {
-    backgroundColor: 'var(--accent-muted)',
-    color: 'var(--text-brand)',
-    border: '1px dashed var(--border-brand)',
-  },
-  actionButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '28px',
-    height: '28px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'var(--accent)',
-    color: 'var(--text-inverse)',
-    border: 'none',
-    cursor: 'pointer',
-    flexShrink: 0,
-    transition: 'background-color 0.15s ease',
-  },
-  actionButtonHover: {
-    backgroundColor: 'var(--accent-hover)',
-  },
-  completedIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '24px',
-    height: '24px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'var(--success)',
-    color: 'var(--text-inverse)',
-    flexShrink: 0,
-  },
-  location: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2px',
-    fontSize: 'var(--font-size-caption2)',
-    color: 'var(--text-tertiary)',
-    marginTop: 'auto',
-  },
-};
+import { EventCardProps } from './types';
 
 // Format duration
 const formatDuration = (minutes: number): string => {
@@ -216,28 +29,43 @@ const formatDuration = (minutes: number): string => {
   return `${minutes}m`;
 };
 
+// Base card classes
+const baseCardClasses = 'h-full rounded-lg overflow-hidden cursor-pointer transition-all flex flex-col';
+
+// Card variant classes based on status/type
+const getCardClasses = (
+  isGhost: boolean,
+  isAKWorkout: boolean,
+  status?: string,
+  isRecommended?: boolean
+): string => {
+  if (isGhost) {
+    return `${baseCardClasses} border-2 border-dashed border-ak-brand-primary opacity-60`;
+  }
+  if (!isAKWorkout) {
+    return `${baseCardClasses} bg-ak-surface-subtle border-l-4 border-ak-border-default hover:shadow-md`;
+  }
+
+  switch (status) {
+    case 'in_progress':
+      return `${baseCardClasses} bg-ak-status-success/10 border-l-4 border-ak-status-success hover:shadow-lg hover:-translate-y-px`;
+    case 'completed':
+      return `${baseCardClasses} bg-ak-surface-subtle border-l-4 border-ak-status-success opacity-70 hover:shadow-lg hover:-translate-y-px`;
+    default:
+      if (isRecommended) {
+        return `${baseCardClasses} bg-ak-brand-primary/10 border-l-4 border-ak-brand-primary hover:shadow-lg hover:-translate-y-px`;
+      }
+      return `${baseCardClasses} bg-ak-surface-subtle border-l-4 border-ak-border-default hover:shadow-lg hover:-translate-y-px`;
+  }
+};
+
+// Badge classes
+const baseBadgeClasses = 'inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide whitespace-nowrap';
+
 export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, onClick, onStart }) => {
   const isAKWorkout = event.type === 'ak_workout' && event.workout;
   const workout = event.workout;
   const external = event.external;
-
-  // Determine card style based on type and status
-  const getCardStyle = () => {
-    if (isGhost) return { ...styles.card, ...styles.cardGhost };
-    if (!isAKWorkout) return { ...styles.card, ...styles.cardExternal };
-
-    switch (workout?.status) {
-      case 'in_progress':
-        return { ...styles.card, ...styles.cardInProgress };
-      case 'completed':
-        return { ...styles.card, ...styles.cardCompleted };
-      default:
-        if (workout?.isRecommended) {
-          return { ...styles.card, ...styles.cardRecommended };
-        }
-        return { ...styles.card, ...styles.cardPlanned };
-    }
-  };
 
   // Determine badge to show (priority order)
   const getBadge = () => {
@@ -245,7 +73,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
 
     if (workout?.status === 'in_progress') {
       return (
-        <span style={{ ...styles.badge, ...styles.badgeInProgress }}>
+        <span className={`${baseBadgeClasses} bg-ak-status-success text-white`}>
           <Play size={8} />
           Pågår
         </span>
@@ -254,7 +82,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
 
     if (workout?.status === 'completed') {
       return (
-        <span style={{ ...styles.badge, ...styles.badgeCompleted }}>
+        <span className={`${baseBadgeClasses} bg-ak-status-success/10 text-ak-status-success`}>
           <Check size={8} />
           Fullført
         </span>
@@ -263,7 +91,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
 
     if (isGhost) {
       return (
-        <span style={{ ...styles.badge, ...styles.badgeGhost }}>
+        <span className={`${baseBadgeClasses} bg-ak-brand-primary/10 text-ak-brand-primary border border-dashed border-ak-brand-primary`}>
           Foreslått
         </span>
       );
@@ -271,14 +99,14 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
 
     if (workout?.isRecommended) {
       return (
-        <span style={{ ...styles.badge, ...styles.badgeRecommended }}>
+        <span className={`${baseBadgeClasses} bg-ak-brand-primary text-white`}>
           Anbefalt
         </span>
       );
     }
 
     return (
-      <span style={{ ...styles.badge, ...styles.badgePlanned }}>
+      <span className={`${baseBadgeClasses} bg-ak-surface-subtle text-ak-text-secondary`}>
         Planlagt
       </span>
     );
@@ -288,61 +116,45 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
   if (isAKWorkout && workout) {
     return (
       <div
-        style={getCardStyle()}
+        className={getCardClasses(isGhost, true, workout.status, workout.isRecommended)}
         onClick={onClick}
-        onMouseEnter={(e) => {
-          if (!isGhost) {
-            e.currentTarget.style.boxShadow = 'var(--shadow-elevated)';
-            e.currentTarget.style.transform = 'translateY(-1px)';
-          }
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = 'none';
-          e.currentTarget.style.transform = 'none';
-        }}
       >
-        <div style={styles.content}>
-          <div style={styles.header}>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={styles.title}>{workout.name}</div>
-              <div style={styles.meta}>
+        <div className="flex-1 p-3 flex flex-col gap-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-semibold text-ak-text-primary leading-tight truncate">{workout.name}</div>
+              <div className="flex items-center gap-2 text-xs text-ak-text-tertiary">
                 {workout.scheduledTime && (
-                  <span style={styles.metaItem}>
+                  <span className="flex items-center gap-0.5">
                     <Clock size={10} />
                     {workout.scheduledTime}
                   </span>
                 )}
-                <span style={styles.metaItem}>{formatDuration(workout.duration)}</span>
+                <span className="flex items-center gap-0.5">{formatDuration(workout.duration)}</span>
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
+            <div className="flex items-center gap-2">
               {getBadge()}
               {workout.status === 'completed' && (
-                <div style={styles.completedIcon}>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-ak-status-success text-white flex-shrink-0">
                   <Check size={14} />
                 </div>
               )}
               {workout.status !== 'completed' && workout.status !== 'in_progress' && onStart && (
                 <button
-                  style={styles.actionButton}
+                  className="flex items-center justify-center w-7 h-7 rounded-full bg-ak-brand-primary text-white flex-shrink-0 transition-colors hover:bg-ak-brand-primary/90"
                   onClick={(e) => {
                     e.stopPropagation();
                     onStart();
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--accent-hover)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--accent)';
-                  }}
                 >
-                  <Play size={14} style={{ marginLeft: '2px' }} />
+                  <Play size={14} className="ml-0.5" />
                 </button>
               )}
             </div>
           </div>
           {workout.location && (
-            <div style={styles.location}>
+            <div className="flex items-center gap-0.5 text-[10px] text-ak-text-tertiary mt-auto">
               <MapPin size={10} />
               {workout.location}
             </div>
@@ -356,24 +168,18 @@ export const EventCard: React.FC<EventCardProps> = ({ event, isGhost = false, on
   if (external) {
     return (
       <div
-        style={{ ...styles.card, ...styles.cardExternal }}
+        className={getCardClasses(false, false)}
         onClick={onClick}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = 'var(--shadow-card)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = 'none';
-        }}
       >
-        <div style={styles.content}>
-          <div style={{ ...styles.title, ...styles.titleExternal }}>{external.title}</div>
-          <div style={styles.meta}>
-            <span style={styles.metaItem}>
+        <div className="flex-1 p-3 flex flex-col gap-1 min-w-0">
+          <div className="text-sm font-medium text-ak-text-secondary leading-tight truncate">{external.title}</div>
+          <div className="flex items-center gap-2 text-xs text-ak-text-tertiary">
+            <span className="flex items-center gap-0.5">
               <Clock size={10} />
               {external.startTime} - {external.endTime}
             </span>
             {external.source && (
-              <span style={styles.metaItem}>
+              <span className="flex items-center gap-0.5">
                 <Calendar size={10} />
                 {external.source}
               </span>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { LogoBadge } from '../LogoBadge';
-import { tokens } from '../../../design-tokens';
 
 describe('LogoBadge', () => {
   it('renders container element', () => {

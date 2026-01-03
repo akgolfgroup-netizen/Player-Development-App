@@ -1,5 +1,8 @@
 /**
  * BuildInfo - Production build verification component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  *
  * FAILSAFE: Always logs build SHA to console and injects hidden DOM marker.
  * Used to verify which commit is actually running in production vs cache.
@@ -17,7 +20,6 @@
  */
 
 import { useEffect } from 'react';
-import { tokens } from '../design-tokens';
 
 interface BuildInfoProps {
   /** Show visual indicator in corner (default: only in development) */
@@ -60,22 +62,22 @@ export function BuildInfo({ showBadge = false }: BuildInfoProps) {
     // Additional styled logging for better visibility
     console.log(
       '%c🏌️ AK Golf Academy',
-      `color: ${tokens.colors.primary}; font-weight: bold; font-size: 12px;`
+      'color: #10456A; font-weight: bold; font-size: 12px;'
     );
     console.log(
       `%cCommit: %c${BUILD_INFO.sha}`,
-      `color: ${tokens.colors.gray600};`,
-      `color: ${tokens.colors.success}; font-family: monospace;`
+      'color: #8E8E93;',
+      'color: #4A7C59; font-family: monospace;'
     );
     console.log(
       `%cBranch: %c${BUILD_INFO.branch}`,
-      `color: ${tokens.colors.gray600};`,
-      `color: ${tokens.colors.info}; font-family: monospace;`
+      'color: #8E8E93;',
+      'color: #2C5F7F; font-family: monospace;'
     );
     console.log(
       `%cBuilt:  %c${BUILD_INFO.date}`,
-      `color: ${tokens.colors.gray600};`,
-      `color: ${tokens.colors.warning}; font-family: monospace;`
+      'color: #8E8E93;',
+      'color: #D4A84B; font-family: monospace;'
     );
 
     // Set on window for easy DevTools access

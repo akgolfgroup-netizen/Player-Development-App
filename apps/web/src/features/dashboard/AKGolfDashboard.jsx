@@ -1,3 +1,10 @@
+/**
+ * AKGolfDashboard Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -6,7 +13,6 @@ import {
   BarChart3, Award, MessageCircle, Plus, ClipboardList,
   Video, Circle, Apple, Dumbbell, Flag, BookOpen, ListChecks
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { useDashboard } from '../../hooks/useDashboard';
 import { DashboardWidget, KPIValue, KPIMeta } from './components';
 import Button from '../../ui/primitives/Button';
@@ -348,7 +354,7 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
         trend={stats.streakTrend}
         trendLabel="vs. forrige uke"
         context={stats.streak >= 7 ? '🔥 Lengste denne måneden!' : stats.streak >= 3 ? '💪 Godt jobbet!' : null}
-        iconColor={tokens.colors.warning}
+        iconColor="var(--ak-status-warning)"
       />
       <KPICard
         icon={TrendingUp}

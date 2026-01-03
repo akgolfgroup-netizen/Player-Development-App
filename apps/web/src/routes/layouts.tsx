@@ -1,9 +1,15 @@
+/**
+ * Route Layouts
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 // @ts-nocheck
 import React, { ReactNode } from 'react';
 import ApplicationLayoutTopNav from '../components/layout/ApplicationLayoutTopNav';
 import CoachAppShell from '../components/layout/CoachAppShell';
 import AdminAppShell from '../components/layout/AdminAppShell';
-import { tokens } from '../design-tokens';
 
 // =============================================================================
 // Layout Types
@@ -67,7 +73,7 @@ export const OfflineBanner: React.FC = () => (
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: tokens.colors.error,
+    backgroundColor: 'var(--ak-status-error)',
     color: 'white',
     padding: '12px 16px',
     textAlign: 'center',

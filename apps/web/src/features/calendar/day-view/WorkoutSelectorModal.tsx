@@ -1,5 +1,9 @@
 /**
  * WorkoutSelectorModal
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ *
  * Modal to select a workout from available sessions/exercises
  */
 
@@ -14,190 +18,6 @@ interface WorkoutSelectorModalProps {
   onSelect: (workout: Workout) => void;
   date: Date;
 }
-
-// Semantic styles
-const styles = {
-  overlay: {
-    position: 'fixed' as const,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'var(--overlay-backdrop)',
-    zIndex: 100,
-    opacity: 0,
-    pointerEvents: 'none' as const,
-    transition: 'opacity 0.2s ease',
-  },
-  overlayOpen: {
-    opacity: 1,
-    pointerEvents: 'auto' as const,
-  },
-  modal: {
-    position: 'fixed' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%) scale(0.95)',
-    width: '90%',
-    maxWidth: '500px',
-    maxHeight: '80vh',
-    backgroundColor: 'var(--background-white)',
-    borderRadius: 'var(--radius-lg)',
-    boxShadow: 'var(--shadow-float)',
-    zIndex: 101,
-    display: 'flex',
-    flexDirection: 'column' as const,
-    opacity: 0,
-    transition: 'opacity 0.2s ease, transform 0.2s ease',
-  },
-  modalOpen: {
-    opacity: 1,
-    transform: 'translate(-50%, -50%) scale(1)',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 'var(--spacing-4)',
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  title: {
-    fontSize: 'var(--font-size-headline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: 0,
-  },
-  closeButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '36px',
-    height: '36px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    color: 'var(--text-tertiary)',
-    transition: 'background-color 0.15s ease',
-  },
-  searchContainer: {
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  searchInput: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--background-surface)',
-    borderRadius: 'var(--radius-md)',
-    border: '1px solid var(--border-default)',
-  },
-  input: {
-    flex: 1,
-    border: 'none',
-    backgroundColor: 'transparent',
-    fontSize: 'var(--font-size-subheadline)',
-    color: 'var(--text-primary)',
-    outline: 'none',
-  },
-  categoryTabs: {
-    display: 'flex',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    overflowX: 'auto' as const,
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  categoryTab: {
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'var(--background-surface)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 500,
-    color: 'var(--text-secondary)',
-    cursor: 'pointer',
-    whiteSpace: 'nowrap' as const,
-    transition: 'all 0.15s ease',
-  },
-  categoryTabActive: {
-    backgroundColor: 'var(--accent)',
-    borderColor: 'var(--accent)',
-    color: 'var(--text-inverse)',
-  },
-  content: {
-    flex: 1,
-    overflow: 'auto',
-    padding: 'var(--spacing-2)',
-  },
-  workoutItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-    width: '100%',
-    textAlign: 'left' as const,
-    transition: 'background-color 0.15s ease',
-  },
-  workoutIcon: {
-    width: '44px',
-    height: '44px',
-    borderRadius: 'var(--radius-md)',
-    backgroundColor: 'var(--accent-muted)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  workoutInfo: {
-    flex: 1,
-    minWidth: 0,
-  },
-  workoutName: {
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    marginBottom: '2px',
-  },
-  workoutMeta: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-  },
-  metaItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-  },
-  emptyState: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8)',
-    textAlign: 'center' as const,
-  },
-  emptyIcon: {
-    width: '64px',
-    height: '64px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'var(--background-surface)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 'var(--spacing-4)',
-  },
-  emptyText: {
-    fontSize: 'var(--font-size-subheadline)',
-    color: 'var(--text-secondary)',
-  },
-};
 
 // Sample workouts (would be fetched from API)
 const sampleWorkouts: Workout[] = [
@@ -322,49 +142,56 @@ export const WorkoutSelectorModal: React.FC<WorkoutSelectorModalProps> = ({
     <>
       {/* Overlay */}
       <div
-        style={{ ...styles.overlay, ...(isOpen ? styles.overlayOpen : {}) }}
+        className={`fixed inset-0 z-[100] bg-black/50 transition-opacity duration-200 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div style={{ ...styles.modal, ...(isOpen ? styles.modalOpen : {}) }}>
+      <div
+        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[500px] max-h-[80vh] z-[101] flex flex-col rounded-xl shadow-lg transition-all duration-200 bg-ak-surface-card ${
+          isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+        }`}
+      >
         {/* Header */}
-        <div style={styles.header}>
-          <SectionTitle style={styles.title}>Velg okt</SectionTitle>
+        <div className="flex items-center justify-between p-4 border-b border-ak-border-subtle">
+          <SectionTitle className="text-lg font-semibold text-ak-text-primary">
+            Velg økt
+          </SectionTitle>
           <button
-            style={styles.closeButton}
             onClick={onClose}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+            className="flex items-center justify-center w-9 h-9 rounded-full transition-colors text-ak-text-tertiary hover:bg-ak-surface-subtle"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Search */}
-        <div style={styles.searchContainer}>
-          <div style={styles.searchInput}>
-            <Search size={18} style={{ color: 'var(--text-tertiary)' }} />
+        <div className="px-4 py-3 border-b border-ak-border-subtle">
+          <div className="flex items-center gap-2 p-3 rounded-lg border border-ak-border-default bg-ak-surface-subtle">
+            <Search size={18} className="text-ak-text-tertiary" />
             <input
               type="text"
-              placeholder="Sok etter okt..."
+              placeholder="Søk etter økt..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={styles.input}
+              className="flex-1 bg-transparent border-none text-base outline-none text-ak-text-primary placeholder:text-ak-text-tertiary"
             />
           </div>
         </div>
 
         {/* Category Tabs */}
-        <div style={styles.categoryTabs}>
+        <div className="flex gap-2 px-4 py-3 overflow-x-auto border-b border-ak-border-subtle">
           {(Object.keys(categoryLabels) as (WorkoutCategory | 'all')[]).map((category) => (
             <button
               key={category}
-              style={{
-                ...styles.categoryTab,
-                ...(selectedCategory === category ? styles.categoryTabActive : {}),
-              }}
               onClick={() => setSelectedCategory(category)}
+              className={`px-3 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all border ${
+                selectedCategory === category
+                  ? 'bg-ak-brand-primary border-ak-brand-primary text-white'
+                  : 'bg-ak-surface-subtle border-ak-border-default text-ak-text-secondary'
+              }`}
             >
               {categoryLabels[category]}
             </button>
@@ -372,40 +199,40 @@ export const WorkoutSelectorModal: React.FC<WorkoutSelectorModalProps> = ({
         </div>
 
         {/* Workout List */}
-        <div style={styles.content}>
+        <div className="flex-1 overflow-auto p-2">
           {filteredWorkouts.length === 0 ? (
-            <div style={styles.emptyState}>
-              <div style={styles.emptyIcon}>
-                <Dumbbell size={28} style={{ color: 'var(--text-tertiary)' }} />
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-ak-surface-subtle">
+                <Dumbbell size={28} className="text-ak-text-tertiary" />
               </div>
-              <p style={styles.emptyText}>Ingen okter funnet</p>
+              <p className="text-base text-ak-text-secondary">Ingen økter funnet</p>
             </div>
           ) : (
             filteredWorkouts.map((workout) => (
               <button
                 key={workout.id}
-                style={styles.workoutItem}
                 onClick={() => handleSelect(workout)}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                className="flex items-center gap-3 w-full px-4 py-3 text-left rounded-lg transition-colors hover:bg-ak-surface-subtle"
               >
-                <div style={styles.workoutIcon}>
-                  <Target size={22} style={{ color: 'var(--accent)' }} />
+                <div className="w-11 h-11 rounded-lg flex-shrink-0 flex items-center justify-center bg-ak-brand-primary/10">
+                  <Target size={22} className="text-ak-brand-primary" />
                 </div>
-                <div style={styles.workoutInfo}>
-                  <div style={styles.workoutName}>{workout.name}</div>
-                  <div style={styles.workoutMeta}>
-                    <span style={styles.metaItem}>
+                <div className="flex-1 min-w-0">
+                  <div className="text-base font-semibold mb-0.5 text-ak-text-primary">
+                    {workout.name}
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-ak-text-tertiary">
+                    <span className="flex items-center gap-1">
                       <Clock size={12} />
                       {workout.duration} min
                     </span>
-                    <span style={styles.metaItem}>
+                    <span className="flex items-center gap-1">
                       <Target size={12} />
                       {categoryLabels[workout.category]}
                     </span>
                   </div>
                 </div>
-                <Play size={18} style={{ color: 'var(--text-tertiary)' }} />
+                <Play size={18} className="text-ak-text-tertiary" />
               </button>
             ))
           )}

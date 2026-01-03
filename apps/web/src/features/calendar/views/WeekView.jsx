@@ -1,3 +1,10 @@
+/**
+ * WeekView Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic positioning)
+ */
+
 import React, { useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Clock, MapPin } from 'lucide-react';
 import { SectionTitle } from '../../../components/typography';
@@ -59,16 +66,17 @@ const WeekView = ({
     }
   }, []);
 
+  // Session colors using semantic tokens (see COLOR_USAGE_RULES.md)
   const getSessionColor = (type) => {
     const colors = {
-      teknikk: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', accent: 'bg-blue-500' },
-      golfslag: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700', accent: 'bg-green-500' },
-      spill: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', accent: 'bg-purple-500' },
-      konkurranse: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', accent: 'bg-amber-500' },
-      fysisk: { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700', accent: 'bg-red-500' },
-      mental: { bg: 'bg-gray-50', border: 'border-gray-200', text: 'text-gray-700', accent: 'bg-gray-500' },
+      teknikk: { bg: 'bg-ak-session-teknikk-muted', border: 'border-ak-session-teknikk', text: 'text-ak-text-primary', accent: 'bg-ak-session-teknikk' },
+      golfslag: { bg: 'bg-ak-session-golfslag-muted', border: 'border-ak-session-golfslag', text: 'text-ak-text-primary', accent: 'bg-ak-session-golfslag' },
+      spill: { bg: 'bg-ak-session-spill-muted', border: 'border-ak-session-spill', text: 'text-ak-text-primary', accent: 'bg-ak-session-spill' },
+      konkurranse: { bg: 'bg-ak-session-kompetanse-muted', border: 'border-ak-session-kompetanse', text: 'text-ak-text-primary', accent: 'bg-ak-session-kompetanse' },
+      fysisk: { bg: 'bg-ak-session-fysisk-muted', border: 'border-ak-session-fysisk', text: 'text-ak-text-primary', accent: 'bg-ak-session-fysisk' },
+      mental: { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' },
     };
-    return colors[type] || { bg: 'bg-gray-50', border: 'border-gray-200', text: 'text-gray-700', accent: 'bg-gray-400' };
+    return colors[type] || { bg: 'bg-ak-surface-elevated', border: 'border-ak-border-default', text: 'text-ak-text-secondary', accent: 'bg-ak-text-tertiary' };
   };
 
   const getSessionsForDay = (date) => {
@@ -91,25 +99,25 @@ const WeekView = ({
   };
 
   return (
-    <div className="flex h-full flex-col bg-white rounded-ak-lg shadow-sm ring-1 ring-border-default overflow-hidden">
+    <div className="flex h-full flex-col bg-ak-surface-card rounded-xl shadow-sm ring-1 ring-ak-border-default overflow-hidden">
       {/* Header */}
-      <header className="flex flex-none items-center justify-between border-b border-border-default px-6 py-4">
+      <header className="flex flex-none items-center justify-between border-b border-ak-border-default px-6 py-4">
         <div>
-          <SectionTitle className="text-base font-semibold leading-6 text-ak-charcoal">
+          <SectionTitle className="text-base font-semibold leading-6 text-ak-text-primary">
             <time dateTime={weekDates[0].toISOString().split('T')[0]}>
               Uke {getWeekNumber(currentDate)} · {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
             </time>
           </SectionTitle>
-          <p className="mt-1 text-sm text-ak-steel">
+          <p className="mt-1 text-sm text-ak-text-secondary">
             {weekDates[0].getDate()}. - {weekDates[6].getDate()}. {monthNames[weekDates[6].getMonth()]}
           </p>
         </div>
         <div className="flex items-center">
-          <div className="relative flex items-center rounded-ak-md bg-white shadow-sm ring-1 ring-border-default md:items-stretch">
+          <div className="relative flex items-center rounded-lg bg-ak-surface-card shadow-sm ring-1 ring-ak-border-default md:items-stretch">
             <button
               type="button"
               onClick={() => onNavigate?.(-1)}
-              className="flex h-9 w-9 items-center justify-center rounded-l-ak-md text-ak-steel hover:text-ak-charcoal focus:relative md:hover:bg-ak-snow"
+              className="flex h-9 w-9 items-center justify-center rounded-l-lg text-ak-text-secondary hover:text-ak-text-primary focus:relative md:hover:bg-ak-surface-subtle"
             >
               <span className="sr-only">Forrige uke</span>
               <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -120,14 +128,14 @@ const WeekView = ({
                 const today = new Date();
                 onDateSelect?.(today);
               }}
-              className="hidden px-3.5 text-sm font-semibold text-ak-charcoal hover:bg-ak-snow focus:relative md:block"
+              className="hidden px-3.5 text-sm font-semibold text-ak-text-primary hover:bg-ak-surface-subtle focus:relative md:block"
             >
               I dag
             </button>
             <button
               type="button"
               onClick={() => onNavigate?.(1)}
-              className="flex h-9 w-9 items-center justify-center rounded-r-ak-md text-ak-steel hover:text-ak-charcoal focus:relative md:hover:bg-ak-snow"
+              className="flex h-9 w-9 items-center justify-center rounded-r-lg text-ak-text-secondary hover:text-ak-text-primary focus:relative md:hover:bg-ak-surface-subtle"
             >
               <span className="sr-only">Neste uke</span>
               <ChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -135,11 +143,11 @@ const WeekView = ({
           </div>
           {onAddEvent && (
             <div className="hidden md:ml-4 md:flex md:items-center">
-              <div className="ml-6 h-6 w-px bg-border-default" />
+              <div className="ml-6 h-6 w-px bg-ak-border-default" />
               <button
                 type="button"
                 onClick={onAddEvent}
-                className="ml-6 rounded-ak-md bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary-light"
+                className="ml-6 rounded-lg bg-ak-brand-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-brand-primary/90"
               >
                 Ny hendelse
               </button>
@@ -151,9 +159,9 @@ const WeekView = ({
       {/* Week Days Header */}
       <div
         ref={containerNav}
-        className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black/5"
+        className="sticky top-0 z-30 flex-none bg-ak-surface-card shadow ring-1 ring-black/5"
       >
-        <div className="grid grid-cols-7 text-sm leading-6 text-ak-steel sm:hidden">
+        <div className="grid grid-cols-7 text-sm leading-6 text-ak-text-secondary sm:hidden">
           {weekDates.map((date, idx) => {
             const isToday = date.toDateString() === today.toDateString();
             const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
@@ -168,9 +176,9 @@ const WeekView = ({
                 <span
                   className={classNames(
                     'mt-1 flex h-8 w-8 items-center justify-center font-semibold',
-                    isToday && 'rounded-full bg-ak-primary text-white',
-                    isSelected && !isToday && 'rounded-full bg-ak-charcoal text-white',
-                    !isToday && !isSelected && 'text-ak-charcoal'
+                    isToday && 'rounded-full bg-ak-brand-primary text-white',
+                    isSelected && !isToday && 'rounded-full bg-ak-text-primary text-white',
+                    !isToday && !isSelected && 'text-ak-text-primary'
                   )}
                 >
                   {date.getDate()}
@@ -180,7 +188,7 @@ const WeekView = ({
           })}
         </div>
 
-        <div className="-mr-px hidden grid-cols-7 divide-x divide-border-default border-r border-border-default text-sm leading-6 text-ak-steel sm:grid">
+        <div className="-mr-px hidden grid-cols-7 divide-x divide-ak-border-default border-r border-ak-border-default text-sm leading-6 text-ak-text-secondary sm:grid">
           <div className="col-end-1 w-14" />
           {weekDates.map((date, idx) => {
             const isToday = date.toDateString() === today.toDateString();
@@ -194,17 +202,17 @@ const WeekView = ({
                 type="button"
                 onClick={() => onDateSelect?.(date)}
                 className={classNames(
-                  'flex flex-col items-center py-3 hover:bg-ak-snow transition-colors',
-                  isSelected && 'bg-ak-primary/5'
+                  'flex flex-col items-center py-3 hover:bg-ak-surface-subtle transition-colors',
+                  isSelected && 'bg-ak-brand-primary/5'
                 )}
               >
                 <span className="text-xs">{weekDays[idx]}</span>
                 <span
                   className={classNames(
                     'mt-1 flex h-8 w-8 items-center justify-center text-lg font-semibold',
-                    isToday && 'rounded-full bg-ak-primary text-white',
-                    isSelected && !isToday && 'rounded-full bg-ak-primary/10 text-ak-primary',
-                    !isToday && !isSelected && 'text-ak-charcoal'
+                    isToday && 'rounded-full bg-ak-brand-primary text-white',
+                    isSelected && !isToday && 'rounded-full bg-ak-brand-primary/10 text-ak-brand-primary',
+                    !isToday && !isSelected && 'text-ak-text-primary'
                   )}
                 >
                   {date.getDate()}
@@ -212,7 +220,7 @@ const WeekView = ({
                 {daySessions.length > 0 && (
                   <span className={classNames(
                     'mt-1 text-xs',
-                    completed === daySessions.length ? 'text-ak-success' : 'text-ak-steel'
+                    completed === daySessions.length ? 'text-ak-status-success' : 'text-ak-text-secondary'
                   )}>
                     {completed}/{daySessions.length}
                   </span>
@@ -226,8 +234,7 @@ const WeekView = ({
       {/* Time Grid */}
       <div
         ref={container}
-        className="flex flex-auto overflow-auto"
-        style={{ maxHeight: 'calc(100vh - 300px)' }}
+        className="flex flex-auto overflow-auto max-h-[calc(100vh-300px)]"
       >
         <div
           ref={containerOffset}
@@ -235,7 +242,7 @@ const WeekView = ({
         >
           <div className="flex flex-auto">
             {/* Time Labels */}
-            <div className="sticky left-0 z-10 w-14 flex-none bg-white ring-1 ring-border-default">
+            <div className="sticky left-0 z-10 w-14 flex-none bg-ak-surface-card ring-1 ring-ak-border-default">
               <div className="relative h-full">
                 {hours.map((hour) => (
                   <div
@@ -243,7 +250,7 @@ const WeekView = ({
                     className="absolute w-full"
                     style={{ top: `${((hour - 5) / 18) * 100}%` }}
                   >
-                    <span className="absolute right-2 -top-2 text-xs text-ak-steel">
+                    <span className="absolute right-2 -top-2 text-xs text-ak-text-tertiary">
                       {hour.toString().padStart(2, '0')}:00
                     </span>
                   </div>
@@ -255,7 +262,7 @@ const WeekView = ({
             <div className="grid flex-auto grid-cols-1 grid-rows-1">
               {/* Horizontal time lines */}
               <div
-                className="col-start-1 col-end-2 row-start-1 grid divide-y divide-border-default"
+                className="col-start-1 col-end-2 row-start-1 grid divide-y divide-ak-border-subtle"
                 style={{ gridTemplateRows: `repeat(${hours.length}, minmax(3.5rem, 1fr))` }}
               >
                 {hours.map((hour) => (
@@ -264,7 +271,7 @@ const WeekView = ({
               </div>
 
               {/* Events Grid */}
-              <div className="col-start-1 col-end-2 row-start-1 hidden grid-cols-7 grid-rows-1 divide-x divide-border-default sm:grid">
+              <div className="col-start-1 col-end-2 row-start-1 hidden grid-cols-7 grid-rows-1 divide-x divide-ak-border-default sm:grid">
                 {weekDates.map((date, dayIdx) => {
                   const daySessions = getSessionsForDay(date);
                   const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
@@ -274,14 +281,14 @@ const WeekView = ({
                       key={dayIdx}
                       className={classNames(
                         'relative',
-                        isSelected && 'bg-ak-primary/5'
+                        isSelected && 'bg-ak-brand-primary/5'
                       )}
                       style={{ minHeight: `${hours.length * 3.5}rem` }}
                     >
                       {/* Grid lines for hours */}
                       <div className="absolute inset-0 grid" style={{ gridTemplateRows: `repeat(${hours.length}, minmax(3.5rem, 1fr))` }}>
                         {hours.map((hour) => (
-                          <div key={hour} className="border-b border-border-default/50" />
+                          <div key={hour} className="border-b border-ak-border-subtle/50" />
                         ))}
                       </div>
 
@@ -295,7 +302,7 @@ const WeekView = ({
                             key={session.id}
                             onClick={() => onSessionClick?.(session, date)}
                             className={classNames(
-                              'absolute left-1 right-1 rounded-ak-sm p-2 text-left shadow-sm overflow-hidden',
+                              'absolute left-1 right-1 rounded p-2 text-left shadow-sm overflow-hidden',
                               colors.bg,
                               'border-l-4',
                               colors.border,
@@ -306,7 +313,6 @@ const WeekView = ({
                               top: style.top,
                               height: style.height,
                               minHeight: '2rem',
-                              borderLeftColor: colors.accent.replace('bg-', 'var(--ak-'),
                             }}
                           >
                             <p className={classNames('text-xs font-semibold truncate', colors.text)}>
@@ -348,7 +354,7 @@ const WeekView = ({
                   {/* Grid lines */}
                   <div className="absolute inset-0 grid" style={{ gridTemplateRows: `repeat(${hours.length}, minmax(3.5rem, 1fr))` }}>
                     {hours.map((hour) => (
-                      <div key={hour} className="border-b border-border-default/50" />
+                      <div key={hour} className="border-b border-ak-border-subtle/50" />
                     ))}
                   </div>
 
@@ -366,7 +372,7 @@ const WeekView = ({
                           key={session.id}
                           onClick={() => onSessionClick?.(session, viewDate)}
                           className={classNames(
-                            'absolute left-1 right-1 rounded-ak-sm p-2 text-left shadow-sm',
+                            'absolute left-1 right-1 rounded p-2 text-left shadow-sm',
                             colors.bg,
                             'border-l-4',
                             colors.border,

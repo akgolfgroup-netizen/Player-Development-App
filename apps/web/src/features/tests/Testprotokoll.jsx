@@ -1,3 +1,10 @@
+/**
+ * Testprotokoll Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
@@ -57,34 +64,18 @@ const Icons = {
 
 // ===== UI COMPONENTS =====
 const Card = ({ children, className = '', padding = true }) => (
-  <div className={`bg-white border border-ak-mist rounded-xl ${padding ? 'p-4' : ''} ${className}`}
-       style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+  <div className={`bg-ak-surface-card border border-ak-border-subtle rounded-xl shadow-sm ${padding ? 'p-4' : ''} ${className}`}>
     {children}
   </div>
 );
 
 const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
-  const variantStyles = {
-    neutral: {
-      backgroundColor: 'var(--bg-neutral-subtle)',
-      color: 'var(--text-tertiary)',
-    },
-    accent: {
-      backgroundColor: 'var(--bg-accent-subtle)',
-      color: 'var(--accent)',
-    },
-    success: {
-      backgroundColor: 'var(--success-muted)',
-      color: 'var(--success)',
-    },
-    warning: {
-      backgroundColor: 'var(--warning-muted)',
-      color: 'var(--warning)',
-    },
-    error: {
-      backgroundColor: 'var(--error-muted)',
-      color: 'var(--error)',
-    },
+  const variantClasses = {
+    neutral: 'bg-ak-surface-subtle text-ak-text-tertiary',
+    accent: 'bg-ak-brand-primary/10 text-ak-brand-primary',
+    success: 'bg-ak-status-success/10 text-ak-status-success',
+    warning: 'bg-ak-status-warning/10 text-ak-status-warning',
+    error: 'bg-ak-status-error/10 text-ak-status-error',
   };
 
   const sizes = {
@@ -92,12 +83,9 @@ const Badge = ({ children, variant = 'neutral', size = 'sm' }) => {
     md: 'px-2.5 py-1 text-[13px]',
   };
 
-  const style = variantStyles[variant] || variantStyles.neutral;
-
   return (
     <span
-      className={`inline-flex items-center rounded-full font-medium ${sizes[size]}`}
-      style={style}
+      className={`inline-flex items-center rounded-full font-medium ${sizes[size]} ${variantClasses[variant] || variantClasses.neutral}`}
     >
       {children}
     </span>
@@ -108,11 +96,10 @@ const Avatar = ({ name, size = 40 }) => {
   const initials = name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'AK';
   return (
     <div
-      className="rounded-full flex items-center justify-center font-medium text-white"
+      className="rounded-full flex items-center justify-center font-medium text-white bg-ak-brand-primary"
       style={{
         width: size,
         height: size,
-        backgroundColor: 'var(--accent)',
         fontSize: size * 0.4
       }}
     >
@@ -121,10 +108,10 @@ const Avatar = ({ name, size = 40 }) => {
   );
 };
 
-const ProgressBar = ({ value, max, color = 'var(--accent)' }) => {
+const ProgressBar = ({ value, max, color = 'var(--ak-brand-primary)' }) => {
   const percentage = Math.min((value / max) * 100, 100);
   return (
-    <div className="h-2 bg-ak-mist rounded-full overflow-hidden">
+    <div className="h-2 bg-ak-surface-muted rounded-full overflow-hidden">
       <div
         className="h-full rounded-full transition-all duration-500"
         style={{ width: `${percentage}%`, backgroundColor: color }}
@@ -653,39 +640,39 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
             <div className="flex items-center gap-3 mb-4">
               <Avatar name={player.name} size={48} />
               <div>
-                <SectionTitle className="text-[15px] font-semibold text-ak-charcoal">{player.name}</SectionTitle>
-                <p className="text-[12px] text-ak-steel">Kategori {player.category} · {player.age} år</p>
+                <SectionTitle className="text-[15px] font-semibold text-ak-text-primary">{player.name}</SectionTitle>
+                <p className="text-[12px] text-ak-text-secondary">Kategori {player.category} · {player.age} år</p>
               </div>
             </div>
-            <div className="text-[12px] text-ak-steel">
-              <p>Neste benchmark: <span className="text-ak-charcoal font-medium">Uke 50</span></p>
-              <p>Sist testet: <span className="text-ak-charcoal font-medium">1. des 2025</span></p>
+            <div className="text-[12px] text-ak-text-secondary">
+              <p>Neste benchmark: <span className="text-ak-text-primary font-medium">Uke 50</span></p>
+              <p>Sist testet: <span className="text-ak-text-primary font-medium">1. des 2025</span></p>
             </div>
           </Card>
 
           {/* Stats Cards */}
           <Card className="text-center">
-            <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Bestått</p>
-            <p className="text-[32px] font-bold text-ak-success">{stats.passed}/{stats.total}</p>
-            <ProgressBar value={stats.passed} max={stats.total} color={'var(--success)'} />
+            <p className="text-[11px] text-ak-text-secondary uppercase tracking-wide mb-1">Bestått</p>
+            <p className="text-[32px] font-bold text-ak-status-success">{stats.passed}/{stats.total}</p>
+            <ProgressBar value={stats.passed} max={stats.total} color={'var(--ak-status-success)'} />
           </Card>
 
           <Card className="text-center">
-            <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Forbedret</p>
-            <p className="text-[32px] font-bold text-ak-primary">{stats.improved}</p>
-            <p className="text-[12px] text-ak-steel">av {stats.total} tester</p>
+            <p className="text-[11px] text-ak-text-secondary uppercase tracking-wide mb-1">Forbedret</p>
+            <p className="text-[32px] font-bold text-ak-brand-primary">{stats.improved}</p>
+            <p className="text-[12px] text-ak-text-secondary">av {stats.total} tester</p>
           </Card>
 
           <Card className="text-center">
-            <p className="text-[11px] text-ak-steel uppercase tracking-wide mb-1">Fokusområder</p>
-            <p className="text-[32px] font-bold text-ak-error">{stats.total - stats.passed}</p>
-            <p className="text-[12px] text-ak-steel">under krav</p>
+            <p className="text-[11px] text-ak-text-secondary uppercase tracking-wide mb-1">Fokusområder</p>
+            <p className="text-[32px] font-bold text-ak-status-error">{stats.total - stats.passed}</p>
+            <p className="text-[12px] text-ak-text-secondary">under krav</p>
           </Card>
         </div>
 
         {/* All Tests Section */}
         <div className="mb-6">
-          <SectionTitle className="text-[17px] font-semibold text-ak-charcoal mb-4">
+          <SectionTitle className="text-[17px] font-semibold text-ak-text-primary mb-4">
             Alle 20 Tester
           </SectionTitle>
 
@@ -707,7 +694,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
 
             return (
               <div key={category} className="mb-4">
-                <SubSectionTitle className="text-[14px] font-medium text-ak-steel mb-2">
+                <SubSectionTitle className="text-[14px] font-medium text-ak-text-secondary mb-2">
                   {categoryLabels[category]}
                 </SubSectionTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -717,22 +704,22 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
                       to={`/testing/${test.id}`}
                       style={{ textDecoration: 'none' }}
                     >
-                      <Card className="cursor-pointer transition-all hover:shadow-md hover:border-ak-primary">
+                      <Card className="cursor-pointer transition-all hover:shadow-md hover:border-ak-brand-primary">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg"
                                style={{ backgroundColor: 'rgba(0,82,147,0.08)' }}>
                             {test.icon}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <SubSectionTitle className="text-[14px] font-semibold text-ak-charcoal truncate">
+                            <SubSectionTitle className="text-[14px] font-semibold text-ak-text-primary truncate">
                               {test.shortName}
                             </SubSectionTitle>
-                            <p className="text-[11px] text-ak-steel">
+                            <p className="text-[11px] text-ak-text-secondary">
                               Test {test.testNumber} · {test.duration}
                             </p>
                           </div>
-                          <div className="w-6 h-6 rounded-full bg-ak-snow flex items-center justify-center">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-ak-steel">
+                          <div className="w-6 h-6 rounded-full bg-ak-surface-subtle flex items-center justify-center">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-ak-text-secondary">
                               <path d="M9 18l6-6-6-6"/>
                             </svg>
                           </div>
@@ -773,18 +760,18 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
               <Card
                 key={test.id}
                 className={`cursor-pointer transition-all hover:shadow-md ${
-                  selectedTest === test.id ? 'ring-2 ring-ak-primary' : ''
+                  selectedTest === test.id ? 'ring-2 ring-ak-brand-primary' : ''
                 }`}
                 onClick={() => setSelectedTest(selectedTest === test.id ? null : test.id)}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-ak-snow flex items-center justify-center text-lg">
+                    <div className="w-10 h-10 rounded-lg bg-ak-surface-subtle flex items-center justify-center text-lg">
                       {test.icon}
                     </div>
                     <div>
-                      <SubSectionTitle className="text-[15px] font-semibold text-ak-charcoal">{test.name}</SubSectionTitle>
-                      <p className="text-[11px] text-ak-steel">Test {test.id}</p>
+                      <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary">{test.name}</SubSectionTitle>
+                      <p className="text-[11px] text-ak-text-secondary">Test {test.id}</p>
                     </div>
                   </div>
 
@@ -801,54 +788,54 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
 
                 {/* Results */}
                 <div className="grid grid-cols-3 gap-3 mb-3">
-                  <div className="bg-ak-snow rounded-lg p-2 text-center">
-                    <p className="text-[10px] text-ak-steel uppercase">Nåværende</p>
-                    <p className={`text-[16px] font-bold ${status.noData ? 'text-ak-steel' : status.meetsReq ? 'text-ak-success' : 'text-ak-error'}`}>
+                  <div className="bg-ak-surface-subtle rounded-lg p-2 text-center">
+                    <p className="text-[10px] text-ak-text-secondary uppercase">Nåværende</p>
+                    <p className={`text-[16px] font-bold ${status.noData ? 'text-ak-text-secondary' : status.meetsReq ? 'text-ak-status-success' : 'text-ak-status-error'}`}>
                       {status.noData ? '–' : `${test.currentResult}${test.unit}`}
                     </p>
                   </div>
-                  <div className="bg-ak-snow rounded-lg p-2 text-center">
-                    <p className="text-[10px] text-ak-steel uppercase">Krav ({player.category})</p>
-                    <p className="text-[16px] font-bold text-ak-charcoal">
+                  <div className="bg-ak-surface-subtle rounded-lg p-2 text-center">
+                    <p className="text-[10px] text-ak-text-secondary uppercase">Krav ({player.category})</p>
+                    <p className="text-[16px] font-bold text-ak-text-primary">
                       {test.lowerIsBetter ? '≤' : '≥'}{test.requirement[player.category] || test.requirement.B}{test.unit}
                     </p>
                   </div>
-                  <div className="bg-ak-snow rounded-lg p-2 text-center">
-                    <p className="text-[10px] text-ak-steel uppercase">Beste</p>
-                    <p className="text-[16px] font-bold text-ak-primary">
+                  <div className="bg-ak-surface-subtle rounded-lg p-2 text-center">
+                    <p className="text-[10px] text-ak-text-secondary uppercase">Beste</p>
+                    <p className="text-[16px] font-bold text-ak-brand-primary">
                       {test.bestResult !== null ? `${test.bestResult}${test.unit}` : '–'}
                     </p>
                   </div>
                 </div>
 
                 {/* Trend Indicator */}
-                <div className="flex items-center justify-between pt-3 border-t border-ak-mist">
+                <div className="flex items-center justify-between pt-3 border-t border-ak-border-subtle">
                   <div className="flex items-center gap-2">
                     {status.noData ? (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-steel">
+                      <span className="flex items-center gap-1 text-[12px] text-ak-text-secondary">
                         <Icons.Info /> Ingen data
                       </span>
                     ) : status.improved ? (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-success">
+                      <span className="flex items-center gap-1 text-[12px] text-ak-status-success">
                         <Icons.TrendingUp /> Forbedret
                       </span>
                     ) : status.declined ? (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-error">
+                      <span className="flex items-center gap-1 text-[12px] text-ak-status-error">
                         <Icons.TrendingDown /> Tilbakegang
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1 text-[12px] text-ak-steel">
+                      <span className="flex items-center gap-1 text-[12px] text-ak-text-secondary">
                         <Icons.Minus /> Uendret
                       </span>
                     )}
                     {!status.noData && test.previousResult !== null && (
-                      <span className="text-[11px] text-ak-steel">
+                      <span className="text-[11px] text-ak-text-secondary">
                         (forrige: {test.previousResult}{test.unit})
                       </span>
                     )}
                   </div>
                   {test.lastTested && (
-                    <span className="text-[11px] text-ak-steel flex items-center gap-1">
+                    <span className="text-[11px] text-ak-text-secondary flex items-center gap-1">
                       <Icons.Calendar /> {test.lastTested}
                     </span>
                   )}
@@ -856,22 +843,22 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
 
                 {/* Expanded Details */}
                 {selectedTest === test.id && (
-                  <div className="mt-4 pt-4 border-t border-ak-mist">
-                    <p className="text-[13px] text-ak-charcoal mb-3">{test.description}</p>
+                  <div className="mt-4 pt-4 border-t border-ak-border-subtle">
+                    <p className="text-[13px] text-ak-text-primary mb-3">{test.description}</p>
 
                     {/* Progress to requirement */}
                     {!status.noData && (
                       <div className="mb-3">
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-[11px] text-ak-steel">Progresjon mot krav</span>
-                          <span className="text-[11px] font-medium text-ak-charcoal">
+                          <span className="text-[11px] text-ak-text-secondary">Progresjon mot krav</span>
+                          <span className="text-[11px] font-medium text-ak-text-primary">
                             {Math.round((test.currentResult / (test.requirement[player.category] || test.requirement.B)) * 100)}%
                           </span>
                         </div>
                         <ProgressBar
                           value={test.currentResult}
                           max={test.requirement[player.category] || test.requirement.B}
-                          color={status.meetsReq ? 'var(--success)' : 'var(--error)'}
+                          color={status.meetsReq ? 'var(--ak-status-success)' : 'var(--ak-status-error)'}
                         />
                       </div>
                     )}
@@ -896,12 +883,12 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
         </div>
 
         {/* Info Card */}
-        <Card className="mt-6 bg-ak-primary/5 border-ak-primary/20">
+        <Card className="mt-6 bg-ak-brand-primary/5 border-ak-brand-primary/20">
           <div className="flex items-start gap-3">
             <Icons.Info />
             <div>
-              <CardTitle className="text-[14px] font-semibold text-ak-charcoal mb-1">Om testprotokollen</CardTitle>
-              <p className="text-[13px] text-ak-charcoal">
+              <CardTitle className="text-[14px] font-semibold text-ak-text-primary mb-1">Om testprotokollen</CardTitle>
+              <p className="text-[13px] text-ak-text-primary">
                 Testprotokollen inneholder 20 offisielle tester basert på Team Norway standarder.
                 14 teknisk/fysiske tester pluss 6 mental/strategiske tester. Benchmark gjennomføres hver 3. uke
                 (uke 3, 6, 9, 12, osv.). For kategori {player.category} kreves at minimum 4 av 7 golf-tester er bestått
@@ -912,7 +899,7 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
         </Card>
 
       {/* Bottom Navigation (Mobile) */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-ak-mist z-50 lg:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-ak-border-subtle z-50 lg:hidden">
         <div className="max-w-lg mx-auto flex items-center justify-around py-2">
           {[
             { id: 'dashboard', Icon: HomeIcon, label: 'Hjem' },
@@ -925,13 +912,13 @@ const AKGolfTestprotokoll = ({ player: apiPlayer = null, tests: apiTests = null,
               key={tab.id}
               className={`flex flex-col items-center py-2 px-4 rounded-xl transition-all ${
                 tab.active
-                  ? 'text-ak-primary'
-                  : 'text-ak-steel hover:text-ak-charcoal'
+                  ? 'text-ak-brand-primary'
+                  : 'text-ak-text-secondary hover:text-ak-text-primary'
               }`}
             >
               <span className="mb-1">{tab.Icon && <tab.Icon size={20} />}</span>
               <span className={`text-[11px] font-medium ${
-                tab.active ? 'text-ak-primary' : 'text-ak-steel'
+                tab.active ? 'text-ak-brand-primary' : 'text-ak-text-secondary'
               }`}>{tab.label}</span>
             </button>
           ))}

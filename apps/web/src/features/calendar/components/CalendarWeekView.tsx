@@ -1,5 +1,8 @@
 /**
- * CalendarWeekView Component
+ * CalendarWeekView.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
  *
  * 7-day week view (Man–Søn) with:
  * - Vertical time axis (05:00–23:00)
@@ -9,7 +12,7 @@
  * - Overlap handling (side-by-side)
  * - Now line
  *
- * Uses semantic tokens only (no raw hex values).
+ * Note: Dynamic positioning and calendar theming use inline styles.
  */
 
 import React, { useMemo, useEffect, useRef, useState } from 'react';
@@ -196,23 +199,11 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
   }, [nowLineTop]);
 
   return (
-    <div
-      className="flex flex-col h-full"
-      style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-    >
+    <div className="flex flex-col h-full bg-ak-surface-base">
       {/* Header row with day names - sticky */}
-      <div
-        className="flex border-b sticky top-0 z-20"
-        style={{
-          backgroundColor: 'var(--calendar-surface-base)',
-          borderColor: 'var(--calendar-border)',
-        }}
-      >
+      <div className="flex border-b border-ak-border-default sticky top-0 z-20 bg-ak-surface-base">
         {/* Time column header */}
-        <div
-          className="w-16 flex-shrink-0 border-r"
-          style={{ borderColor: 'var(--calendar-border)' }}
-        />
+        <div className="w-16 flex-shrink-0 border-r border-ak-border-default" />
 
         {/* Day headers */}
         {weekDates.map((date, idx) => {
@@ -223,40 +214,25 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
           return (
             <div
               key={dateKey}
-              className="flex-1 min-w-[120px] flex flex-col items-center justify-center py-3 border-r last:border-r-0"
-              style={{
-                backgroundColor: isWeekend
-                  ? 'var(--calendar-surface-weekend)'
-                  : 'var(--calendar-surface-base)',
-                borderColor: 'var(--calendar-border)',
-              }}
+              className={`flex-1 min-w-[120px] flex flex-col items-center justify-center py-3 border-r border-ak-border-default last:border-r-0 ${
+                isWeekend ? 'bg-ak-surface-subtle' : 'bg-ak-surface-base'
+              }`}
             >
               <span
-                className="text-xs font-medium"
-                style={{
-                  color: isWeekend
-                    ? 'var(--calendar-text-weekend)'
-                    : 'var(--calendar-text-tertiary)',
-                }}
+                className={`text-xs font-medium ${
+                  isWeekend ? 'text-ak-text-tertiary' : 'text-ak-text-tertiary'
+                }`}
               >
                 {DAY_NAMES[idx]}
               </span>
               <span
                 className={`text-lg font-semibold mt-0.5 ${
                   isToday
-                    ? 'w-8 h-8 flex items-center justify-center rounded-full'
-                    : ''
-                }`}
-                style={{
-                  backgroundColor: isToday
-                    ? 'var(--calendar-today-marker-bg)'
-                    : 'transparent',
-                  color: isToday
-                    ? 'var(--calendar-today-marker-text)'
+                    ? 'w-8 h-8 flex items-center justify-center rounded-full bg-ak-brand-primary text-white'
                     : isWeekend
-                    ? 'var(--calendar-text-weekend)'
-                    : 'var(--calendar-text-primary)',
-                }}
+                    ? 'text-ak-text-secondary'
+                    : 'text-ak-text-primary'
+                }`}
               >
                 {date.getDate()}
               </span>
@@ -268,20 +244,13 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
       {/* Scrollable time grid */}
       <div ref={scrollRef} className="flex flex-1 overflow-auto">
         {/* Time column */}
-        <div
-          className="w-16 flex-shrink-0 border-r sticky left-0 z-10"
-          style={{
-            backgroundColor: 'var(--calendar-surface-base)',
-            borderColor: 'var(--calendar-border)',
-          }}
-        >
+        <div className="w-16 flex-shrink-0 border-r border-ak-border-default sticky left-0 z-10 bg-ak-surface-base">
           {TIME_SLOTS.map((time, idx) => (
             <div
               key={time}
-              className="flex items-start justify-end pr-2 text-xs"
+              className="flex items-start justify-end pr-2 text-xs text-ak-text-tertiary"
               style={{
                 height: `${HOUR_HEIGHT}px`,
-                color: 'var(--calendar-text-muted)',
                 marginTop: idx === 0 ? '-6px' : 0,
               }}
             >
@@ -301,41 +270,30 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
           return (
             <div
               key={dateKey}
-              className="flex-1 min-w-[120px] border-r last:border-r-0 relative"
-              style={{
-                backgroundColor: isToday
-                  ? 'var(--calendar-surface-today)'
+              className={`flex-1 min-w-[120px] border-r border-ak-border-default last:border-r-0 relative ${
+                isToday
+                  ? 'bg-ak-brand-primary/5'
                   : isWeekend
-                  ? 'var(--calendar-surface-weekend)'
-                  : 'transparent',
-                borderColor: 'var(--calendar-border)',
-              }}
+                  ? 'bg-ak-surface-subtle'
+                  : ''
+              }`}
             >
               {/* Hour lines */}
               {TIME_SLOTS.map((_, idx) => (
                 <div
                   key={idx}
-                  className="absolute w-full border-t"
-                  style={{
-                    top: `${idx * HOUR_HEIGHT}px`,
-                    borderColor: 'var(--calendar-grid-line)',
-                  }}
+                  className="absolute w-full border-t border-ak-border-subtle"
+                  style={{ top: `${idx * HOUR_HEIGHT}px` }}
                 />
               ))}
 
               {/* Now line (only for today) */}
               {isToday && nowLineTop !== null && (
                 <div
-                  className="absolute w-full h-0.5 z-10 pointer-events-none"
-                  style={{
-                    top: `${nowLineTop}px`,
-                    backgroundColor: 'var(--calendar-now-line)',
-                  }}
+                  className="absolute w-full h-0.5 z-10 pointer-events-none bg-ak-status-error"
+                  style={{ top: `${nowLineTop}px` }}
                 >
-                  <div
-                    className="absolute -left-1 -top-1 w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: 'var(--calendar-now-line)' }}
-                  />
+                  <div className="absolute -left-1 -top-1 w-2.5 h-2.5 rounded-full bg-ak-status-error" />
                 </div>
               )}
 
@@ -364,10 +322,7 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
                       onClick={() => onEventClick(event)}
                     >
                       {/* Time */}
-                      <div
-                        className="text-[10px] font-medium"
-                        style={{ color: 'var(--calendar-text-tertiary)' }}
-                      >
+                      <div className="text-[10px] font-medium text-ak-text-tertiary">
                         {event.start}
                       </div>
 
@@ -381,10 +336,7 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
 
                       {/* Location */}
                       {event.location && (
-                        <div
-                          className="text-[10px] truncate"
-                          style={{ color: 'var(--calendar-text-muted)' }}
-                        >
+                        <div className="text-[10px] truncate text-ak-text-tertiary">
                           {event.location}
                         </div>
                       )}
@@ -392,32 +344,21 @@ export const CalendarWeekView: React.FC<CalendarWeekViewProps> = ({
                       {/* Badges */}
                       {event.badges && event.badges.length > 0 && (
                         <div className="flex gap-1 mt-1 flex-wrap">
-                          {event.badges.slice(0, 2).map((badge) => (
-                            <span
-                              key={badge}
-                              className="text-[9px] px-1 py-0.5 rounded"
-                              style={{
-                                backgroundColor:
-                                  badge === 'Anbefalt'
-                                    ? 'var(--calendar-event-recommended-bg)'
-                                    : badge === 'Fullført'
-                                    ? 'var(--calendar-event-completed-bg)'
-                                    : badge === 'Pågår'
-                                    ? 'var(--calendar-event-inprogress-bg)'
-                                    : 'var(--calendar-surface-elevated)',
-                                color:
-                                  badge === 'Anbefalt'
-                                    ? 'var(--calendar-event-recommended-text)'
-                                    : badge === 'Fullført'
-                                    ? 'var(--calendar-event-completed-text)'
-                                    : badge === 'Pågår'
-                                    ? 'var(--calendar-event-inprogress-text)'
-                                    : 'var(--calendar-text-secondary)',
-                              }}
-                            >
-                              {badge}
-                            </span>
-                          ))}
+                          {event.badges.slice(0, 2).map((badge) => {
+                            const badgeClasses =
+                              badge === 'Anbefalt' ? 'bg-ak-brand-primary/10 text-ak-brand-primary' :
+                              badge === 'Fullført' ? 'bg-ak-status-success/10 text-ak-status-success' :
+                              badge === 'Pågår' ? 'bg-ak-status-warning/10 text-ak-status-warning' :
+                              'bg-ak-surface-subtle text-ak-text-secondary';
+                            return (
+                              <span
+                                key={badge}
+                                className={`text-[9px] px-1 py-0.5 rounded ${badgeClasses}`}
+                              >
+                                {badge}
+                              </span>
+                            );
+                          })}
                         </div>
                       )}
                     </div>

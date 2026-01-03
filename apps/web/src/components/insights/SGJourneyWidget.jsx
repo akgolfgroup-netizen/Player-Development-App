@@ -1,5 +1,8 @@
 /**
  * SG Journey Widget
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  * Visualizes player's progression toward PGA Elite level as a mountain climb
  */
 
@@ -7,7 +10,6 @@ import React from 'react';
 import { TrendingUp, TrendingDown, Minus, Mountain, Award } from 'lucide-react';
 import { DashboardCard, WidgetHeader } from '../../ui/widgets';
 import StateCard from '../../ui/composites/StateCard';
-import { tokens } from '../../design-tokens';
 
 // Journey level colors - using semantic SG tokens
 const LEVEL_COLORS = {

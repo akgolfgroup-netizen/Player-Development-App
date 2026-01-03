@@ -1,14 +1,20 @@
+/**
+ * Benchmark Dashboard Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, BarChart, Bar, Cell } from 'recharts';
 import { Target, TrendingUp, Calendar, Award, ChevronRight, Users, Zap, Clock } from 'lucide-react';
-import { tokens } from '../design-tokens';
 import { PageTitle, SectionTitle, SubSectionTitle } from '../typography';
 
-// Session type colors (using design tokens)
+// Session type colors (hex values for charts)
 const sessionTypeColors = {
-  teknikk: tokens.colors.info,      // was #2C5F7F (blue)
-  golfslag: tokens.colors.success,   // was #4A7C59 (green)
-  spill: tokens.colors.primaryDark,  // was #10456A (dark blue)
+  teknikk: '#2C5F7F',   // blue (info)
+  golfslag: '#4A7C59',  // green (success)
+  spill: '#10456A',     // dark blue (primaryDark)
 };
 
 // Sample benchmark data following Team Norway protocols
@@ -168,10 +174,10 @@ const RadarChartComponent = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height={250}>
       <RadarChart data={radarData}>
-        <PolarGrid stroke={tokens.colors.gray300} />
-        <PolarAngleAxis dataKey="subject" tick={{ fill: tokens.colors.gray600, fontSize: 12 }} />
-        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: tokens.colors.gray500, fontSize: 10 }} />
-        <Radar name="Score" dataKey="A" stroke="{tokens.colors.forest}" fill="{tokens.colors.forest}" fillOpacity={0.3} strokeWidth={2} />
+        <PolarGrid stroke="#D1D5DB" />
+        <PolarAngleAxis dataKey="subject" tick={{ fill: '#4B5563', fontSize: 12 }} />
+        <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: '#6B7280', fontSize: 10 }} />
+        <Radar name="Score" dataKey="A" stroke="#4A7C59" fill="#4A7C59" fillOpacity={0.3} strokeWidth={2} />
       </RadarChart>
     </ResponsiveContainer>
   );
@@ -180,13 +186,13 @@ const RadarChartComponent = ({ data }) => {
 const ProgressChart = ({ data, dataKey, name, color }) => (
   <ResponsiveContainer width="100%" height={200}>
     <LineChart data={data}>
-      <CartesianGrid strokeDasharray="3 3" stroke={tokens.colors.gray100} />
-      <XAxis dataKey="cycle" tick={{ fill: tokens.colors.gray600, fontSize: 12 }} tickFormatter={(v) => `C${v}`} />
-      <YAxis tick={{ fill: tokens.colors.gray600, fontSize: 12 }} domain={['auto', 'auto']} />
-      <Tooltip 
-        contentStyle={{ 
-          backgroundColor: 'white', 
-          border: `1px solid ${tokens.colors.gray300}`,
+      <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+      <XAxis dataKey="cycle" tick={{ fill: '#4B5563', fontSize: 12 }} tickFormatter={(v) => `C${v}`} />
+      <YAxis tick={{ fill: '#4B5563', fontSize: 12 }} domain={['auto', 'auto']} />
+      <Tooltip
+        contentStyle={{
+          backgroundColor: 'white',
+          border: '1px solid #D1D5DB',
           borderRadius: '8px',
           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
         }}
@@ -206,14 +212,14 @@ const ComparisonBar = ({ data, players }) => {
            playerBenchmarks[p.id].radar[2].mental
   }));
 
-  const colors = [tokens.colors.forest, sessionTypeColors.golfslag, sessionTypeColors.teknikk];
+  const colors = ['#4A7C59', sessionTypeColors.golfslag, sessionTypeColors.teknikk];
 
   return (
     <ResponsiveContainer width="100%" height={200}>
       <BarChart data={chartData} layout="vertical">
-        <CartesianGrid strokeDasharray="3 3" stroke={tokens.colors.gray100} />
-        <XAxis type="number" domain={[0, 500]} tick={{ fill: tokens.colors.gray600, fontSize: 12 }} />
-        <YAxis dataKey="name" type="category" tick={{ fill: tokens.colors.gray600, fontSize: 12 }} width={60} />
+        <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+        <XAxis type="number" domain={[0, 500]} tick={{ fill: '#4B5563', fontSize: 12 }} />
+        <YAxis dataKey="name" type="category" tick={{ fill: '#4B5563', fontSize: 12 }} width={60} />
         <Tooltip />
         <Bar dataKey="score" radius={[0, 4, 4, 0]}>
           {chartData.map((entry, index) => (

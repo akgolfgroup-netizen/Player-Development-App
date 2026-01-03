@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /**
  * useAnnotationCanvas Hook
- * Custom hook for canvas-based video annotation
+ * Design System v3.0 - Premium Light
  *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ *
+ * Custom hook for canvas-based video annotation
  * Provides:
  * - Drawing tool management (line, circle, arrow, angle, freehand, text)
  * - Canvas state management
@@ -12,7 +15,6 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { tokens } from '../design-tokens';
 
 // Drawing tool types
 export const TOOL_TYPES = {
@@ -25,18 +27,17 @@ export const TOOL_TYPES = {
   TEXT: 'text',
 };
 
-// Default colors for annotations
-// Note: Magenta and Cyan use special annotation palette values
-// as the design system does not have direct mappings for these high-contrast drawing colors
+// Default colors for annotations - using direct hex values for canvas drawing
+// Note: Canvas requires actual color values, not CSS variables
 export const ANNOTATION_COLORS = [
-  tokens.colors.error, // Red
-  tokens.colors.success, // Green
-  tokens.colors.info, // Blue
-  tokens.colors.warningLight, // Yellow
-  tokens.colors.errorLight, // Magenta/Pink (using errorLight as closest match)
-  tokens.colors.infoLight, // Cyan (using infoLight as closest match)
-  tokens.colors.white, // White
-  tokens.colors.warning, // Orange
+  '#C45B4E', // Red (error)
+  '#4A7C59', // Green (success)
+  '#2C5F7F', // Blue (info)
+  '#E5D49B', // Yellow (warningLight)
+  '#E5B5B0', // Magenta/Pink (errorLight)
+  '#B5CCD6', // Cyan (infoLight)
+  '#FFFFFF', // White
+  '#D4A84B', // Orange (warning)
 ];
 
 // Default stroke widths

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { tokens } from '../design-tokens';
-
 /**
- * ============================================================
- * DEV ONLY — NOT RENDERED IN PRODUCTION
- * ============================================================
  * Analytics Debug Overlay
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ *
+ * DEV ONLY — NOT RENDERED IN PRODUCTION
  * Shows last 20 tracked events in a collapsible panel.
  */
+
+import React, { useState, useEffect } from 'react';
 
 const IS_DEV = process.env.NODE_ENV === 'development';
 
@@ -124,7 +125,7 @@ const styles: Record<string, React.CSSProperties> = {
   toggle: {
     padding: '6px 10px',
     backgroundColor: 'var(--ak-toast-bg)',
-    color: tokens.colors.white,
+    color: 'var(--ak-surface-card)',
     border: 'none',
     borderRadius: '4px',
     cursor: 'pointer',
@@ -136,7 +137,7 @@ const styles: Record<string, React.CSSProperties> = {
     width: '320px',
     maxHeight: '300px',
     backgroundColor: 'var(--ak-toast-bg)',
-    color: tokens.colors.gray300,
+    color: 'var(--ak-text-tertiary)',
     borderRadius: '6px',
     overflow: 'hidden',
     boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
@@ -146,17 +147,17 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '8px 10px',
-    borderBottom: `1px solid ${tokens.colors.gray700}`,
+    borderBottom: '1px solid var(--ak-border-subtle)',
   },
   title: {
     fontWeight: 'bold',
-    color: tokens.colors.white,
+    color: 'var(--ak-surface-card)',
   },
   clearBtn: {
     padding: '2px 8px',
     fontSize: '10px',
-    backgroundColor: tokens.colors.gray700,
-    color: tokens.colors.white,
+    backgroundColor: 'var(--ak-surface-subtle)',
+    color: 'var(--ak-surface-card)',
     border: 'none',
     borderRadius: '3px',
     cursor: 'pointer',
@@ -176,7 +177,7 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '3px',
   },
   time: {
-    color: tokens.colors.gray600,
+    color: 'var(--ak-text-secondary)',
     fontSize: '9px',
   },
   eventName: {
@@ -184,12 +185,12 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 'bold',
   },
   payload: {
-    color: tokens.colors.gray500,
+    color: 'var(--ak-text-tertiary)',
     fontSize: '10px',
     wordBreak: 'break-all',
   },
   empty: {
-    color: tokens.colors.gray600,
+    color: 'var(--ak-text-secondary)',
     textAlign: 'center',
     padding: '20px',
   },

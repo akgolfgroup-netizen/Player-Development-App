@@ -3,7 +3,7 @@
 > Dette dokumentet inneholder 4 beslutninger som MÅ tas før algoritmer kan røres.
 > Hver beslutning har kontekst, alternativer, og et felt for endelig valg.
 
-**Status:** UBESVART - Krever produktbeslutning
+**Status:** ANBEFALING GITT - Venter på endelig godkjenning
 
 ---
 
@@ -78,11 +78,20 @@ Hva endres: Ingenting før coach/spiller godkjenner
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ VALGT ALTERNATIV: [ ]                                       │
+│ ANBEFALT ALTERNATIV: [D] Foreslå, ikke tving               │
 │                                                             │
 │ BEGRUNNELSE:                                                │
+│ • Beholder menneskelig kontroll - coach/spiller godkjenner  │
+│ • Transparent system - spilleren forstår hvorfor endring    │
+│ • Kan bygges ut - start enkelt, legg til triggers senere    │
+│ • Lavere risiko - feil forslag ignoreres, plan ødelegges    │
+│   ikke                                                      │
 │                                                             │
-│                                                             │
+│ TRIGGERS SOM AKTIVERER FORSLAG:                             │
+│ • Kategori-opprykk                                          │
+│ • Breaking point resolved                                   │
+│ • >20% avvik fra forventet gjennomføring                    │
+│ • Ny turnering lagt til                                     │
 │                                                             │
 │ BESLUTTET AV: ________________  DATO: ________________      │
 └─────────────────────────────────────────────────────────────┘
@@ -95,7 +104,7 @@ Hva endres: Ingenting før coach/spiller godkjenner
 | A | Ingen |
 | B | Ny scheduled job, `plan-regeneration.service.ts` |
 | C | Event listeners, trigger-logikk, partial regeneration |
-| D | Som C + forslags-UI + godkjennings-flow |
+| **D** | **Som C + forslags-UI + godkjennings-flow** |
 
 ---
 
@@ -173,11 +182,18 @@ Bruker: Velger første delmål som aktivt mål
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ VALGT ALTERNATIV: [ ]                                       │
+│ ANBEFALT ALTERNATIV: [B] Soft validation (advarsel)        │
 │                                                             │
 │ BEGRUNNELSE:                                                │
+│ • Ærlig uten å begrense - respekterer spillerens autonomi   │
+│ • Setter forventninger - ingen overraskelse når det tar tid │
+│ • Enkel implementering - bare én advarsel-dialog            │
+│ • Kan utvides til D - "Vil du se delmål?" kan legges til    │
 │                                                             │
-│                                                             │
+│ EKSEMPEL PÅ DIALOG:                                         │
+│ "Basert på kategori F tar dette typisk 4-6 år med           │
+│  10+ timer/uke. Vil du fortsatt sette dette målet?"         │
+│  [Ja, jeg forstår] [Juster målet]                           │
 │                                                             │
 │ BESLUTTET AV: ________________  DATO: ________________      │
 └─────────────────────────────────────────────────────────────┘
@@ -188,7 +204,7 @@ Bruker: Velger første delmål som aktivt mål
 | Valg | Kode som må endres |
 |------|-------------------|
 | A | Ingen |
-| B | `goals/schema.ts` + progresjons-estimator + frontend-advarsel |
+| **B** | **`goals/schema.ts` + progresjons-estimator + frontend-advarsel** |
 | C | `goals/schema.ts` + kategori→mål-mapping + blokkerings-logikk |
 | D | Som B + mål-dekomponerings-algoritme + sub-goals relasjon |
 
@@ -284,12 +300,25 @@ Alle kategori-krav bestått → Automatisk kategori-opprykk
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ VALGT ALTERNATIV: [ ]                                       │
+│ ANBEFALT ALTERNATIV: [B+E] Kombinasjon                      │
 │                                                             │
-│ KOMBINASJON? (f.eks. B+E):                                  │
+│ KOMBINASJON:                                                │
+│ • B: Automatisk breaking point-lukking                      │
+│ • E: Kategori-opprykk trigger                               │
 │                                                             │
 │ BEGRUNNELSE:                                                │
+│ • Løser to forskjellige problemer:                          │
+│   - B: Hva skjer når én test forbedres?                     │
+│   - E: Hva skjer når ALLE kategori-krav oppfylles?          │
+│ • Tydelige milepæler - kategori-opprykk er motiverende      │
+│ • Breaking points flyter - ingen manuell lukking nødvendig  │
+│ • Kobler til Beslutning 1 - opprykk trigger plan-forslag    │
 │                                                             │
+│ FLYT:                                                       │
+│ Test bestått → BP status oppdateres (B)                     │
+│             → Sjekk om alle kategori-krav oppfylt           │
+│             → Hvis ja: Kategori-opprykk (E)                 │
+│             → Trigger plan-forslag (kobler til D1)          │
 │                                                             │
 │ BESLUTTET AV: ________________  DATO: ________________      │
 └─────────────────────────────────────────────────────────────┘
@@ -300,10 +329,10 @@ Alle kategori-krav bestått → Automatisk kategori-opprykk
 | Valg | Kode som må endres |
 |------|-------------------|
 | A | Ingen |
-| B | `plan-progress.service.ts` + BP-prioriterings-logikk |
+| **B** | **`plan-progress.service.ts` + BP-prioriterings-logikk** |
 | C | Som B + `session-selection.service.ts` re-scoring |
 | D | Event-trigger + forslags-generering + coach-UI |
-| E | Kategori-evaluator + plan-regenerering + notifikasjoner |
+| **E** | **Kategori-evaluator + plan-regenerering + notifikasjoner** |
 
 ---
 
@@ -392,11 +421,22 @@ Når kompetanse er demonstrert (via test) → Nye øvelser tilgjengelig
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ VALGT ALTERNATIV: [ ]                                       │
+│ ANBEFALT ALTERNATIV: [D] Kategori-basert øvelsesfilter     │
 │                                                             │
 │ BEGRUNNELSE:                                                │
+│ • Minimal kode-endring - bare filter i queries              │
+│ • Skalerbart - funker for 10 eller 10,000 spillere          │
+│ • Naturlig progresjon - opprykk = nye øvelser               │
+│ • Kan bygges ut - legg til B/C/E senere                     │
+│ • Kobler til Beslutning 3 - kategori-opprykk trigger        │
+│   automatisk at nye øvelser blir synlige                    │
 │                                                             │
-│                                                             │
+│ FORESLÅTT KATEGORI-RANGE PER LEARNING PHASE:                │
+│ • L1 Fundamental:  [F, G, H, I, J, K]                       │
+│ • L2 Development:  [D, E, F, G, H]                          │
+│ • L3 Integration:  [C, D, E, F]                             │
+│ • L4 Specific:     [B, C, D]                                │
+│ • L5 Competition:  [A, B, C]                                │
 │                                                             │
 │ BESLUTTET AV: ________________  DATO: ________________      │
 └─────────────────────────────────────────────────────────────┘
@@ -409,19 +449,19 @@ Når kompetanse er demonstrert (via test) → Nye øvelser tilgjengelig
 | A | Ingen |
 | B | Ny `ExerciseProgression` modell + kjede-logikk |
 | C | Utvide `Exercise` schema + parameter-variasjon i sessions |
-| D | Kategori-filter i øvelse-queries + tagging av alle øvelser |
+| **D** | **Kategori-filter i øvelse-queries + tagging av alle øvelser** |
 | E | `Competency` modell + test→kompetanse mapping + øvelse→kompetanse |
 
 ---
 
 ## Oppsummering: Beslutningsmatrise
 
-| # | Beslutning | Alternativer | Anbefalt start |
-|---|-----------|--------------|----------------|
-| 1 | Plan regenerering | A/B/C/D | D (foreslå) |
-| 2 | Mål-validering | A/B/C/D | B (advarsel) |
-| 3 | Test → handling | A/B/C/D/E | B+E (BP + kategori) |
-| 4 | Øvelsesprogresjon | A/B/C/D/E | D (kategori-filter) |
+| # | Beslutning | Anbefalt | Kompleksitet | Avhenger av |
+|---|-----------|----------|--------------|-------------|
+| 1 | Plan regenerering | **D** (foreslå) | Moderat | - |
+| 2 | Mål-validering | **B** (advarsel) | Lav | - |
+| 3 | Test → handling | **B+E** (BP + kategori) | Moderat | D1, D4 |
+| 4 | Øvelsesprogresjon | **D** (kategori-filter) | Lav-Moderat | D3 |
 
 **Anbefalingene er basert på:**
 - Lavest implementeringskompleksitet som gir reell verdi
@@ -430,15 +470,78 @@ Når kompetanse er demonstrert (via test) → Nye øvelser tilgjengelig
 
 ---
 
-## Neste steg
+## Hvordan beslutningene henger sammen
 
-Når alle 4 beslutninger er tatt:
+```
+┌────────────────────────────────────────────────────────────┐
+│                                                            │
+│   Spiller forbedrer seg på tester                          │
+│                 │                                          │
+│                 ▼                                          │
+│   [D3-B] Breaking point → resolved                         │
+│                 │                                          │
+│                 ▼                                          │
+│   Alle kategori-krav oppfylt?                              │
+│        │                    │                              │
+│       NEI                  JA                              │
+│        │                    │                              │
+│        ▼                    ▼                              │
+│   Fortsett             [D3-E] Kategori-opprykk             │
+│                             │                              │
+│              ┌──────────────┴──────────────┐               │
+│              ▼                             ▼               │
+│   [D1-D] Foreslå plan-justering    [D4-D] Nye øvelser      │
+│              │                       synlige               │
+│              ▼                                             │
+│   [D2-B] Nye mål valideres mot                             │
+│          oppdatert kategori                                │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+```
 
-1. [ ] Oppdater dette dokumentet med valg
-2. [ ] Lag implementeringsplan i `03_IMPLEMENTATION_PLAN.md`
-3. [ ] Prioriter rekkefølge basert på avhengigheter
-4. [ ] Estimer kompleksitet per valg
+Dette gir et **koherent system** hvor:
+1. Forbedring måles (tester)
+2. Forbedring anerkjennes (BP resolved, kategori-opprykk)
+3. Plan tilpasses (forslag til coach/spiller)
+4. Innhold tilpasses (nye øvelser blir synlige)
+5. Forventninger justeres (mål-validering mot ny kategori)
 
 ---
 
-*Sist oppdatert: 2026-01-02*
+## Neste steg
+
+Anbefalinger er nå dokumentert. For å gå videre:
+
+1. [ ] **Godkjenn eller juster** anbefalingene (fyll inn BESLUTTET AV/DATO)
+2. [ ] **Oppdater implementeringsplan** i `03_IMPLEMENTATION_PLAN.md`
+3. [ ] **Prioriter rekkefølge:**
+   - Start med D2 (mål-validering) - lavest kompleksitet
+   - Deretter D4 (øvelsesfilter) - forberedelse til D3
+   - Så D3 (test → handling) - kjernefunksjonalitet
+   - Til slutt D1 (plan-forslag) - avhenger av D3
+4. [ ] **Estimer** konkrete oppgaver per beslutning
+
+---
+
+## Estimat-tabell for mål-validering (D2)
+
+For å implementere soft validation trengs denne kategori→tid mappingen:
+
+| Fra | Til | Estimert tid | Timer/uke krav |
+|-----|-----|--------------|----------------|
+| K | J | 6-12 mnd | 5-8 |
+| J | I | 6-12 mnd | 6-10 |
+| I | H | 8-14 mnd | 8-12 |
+| H | G | 10-16 mnd | 8-12 |
+| G | F | 12-18 mnd | 10-14 |
+| F | E | 12-24 mnd | 10-14 |
+| E | D | 18-30 mnd | 12-16 |
+| D | C | 24-36 mnd | 14-18 |
+| C | B | 30-48 mnd | 16-20 |
+| B | A | 36-60 mnd | 18-22 |
+
+*Disse estimatene bør valideres mot faktisk progresjonsdata når tilgjengelig.*
+
+---
+
+*Sist oppdatert: 2026-01-03*

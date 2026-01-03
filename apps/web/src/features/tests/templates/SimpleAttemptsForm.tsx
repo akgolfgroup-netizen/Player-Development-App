@@ -1,6 +1,12 @@
+/**
+ * SimpleAttemptsForm Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Save, RotateCcw, TrendingUp, Trophy, Calculator } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
 import { SectionTitle, SubSectionTitle } from '../../../components/typography';
 import Button from '../../../ui/primitives/Button';
 import { TestDefinition, getScoreLevel } from '../config/testDefinitions';
@@ -153,17 +159,17 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
             height: '40px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--ak-surface-subtle)',
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={tokens.colors.charcoal} />
+          <ArrowLeft size={20} color={var(--ak-text-primary)} />
         </button>
         <div>
           <SectionTitle style={{ margin: 0, fontSize: '20px' }}>
             {test.name}
           </SectionTitle>
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             {player?.name || 'Registrer forsøk'}
           </p>
         </div>
@@ -171,7 +177,7 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
 
       {/* Attempts Input */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '12px',
         padding: '24px',
         marginBottom: '16px',
@@ -193,7 +199,7 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
               <label style={{
                 display: 'block',
                 fontSize: '13px',
-                color: tokens.colors.steel,
+                color: 'var(--ak-text-secondary)',
                 marginBottom: '6px',
               }}>
                 Forsøk {index + 1}
@@ -209,9 +215,9 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
                     padding: '12px 40px 12px 16px',
                     fontSize: '18px',
                     fontWeight: 600,
-                    border: `2px solid ${value > 0 ? tokens.colors.primary : tokens.colors.silver}`,
+                    border: `2px solid ${value > 0 ? var(--ak-brand-primary) : 'var(--ak-border-default)'}`,
                     borderRadius: '10px',
-                    backgroundColor: value > 0 ? `${tokens.colors.primary}08` : tokens.colors.white,
+                    backgroundColor: value > 0 ? `rgba(26, 61, 46, 0.05)` : 'var(--ak-surface-card)',
                     outline: 'none',
                     transition: 'all 0.2s',
                   }}
@@ -222,7 +228,7 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
                   top: '50%',
                   transform: 'translateY(-50%)',
                   fontSize: '14px',
-                  color: tokens.colors.steel,
+                  color: 'var(--ak-text-secondary)',
                 }}>
                   {test.unit}
                 </span>
@@ -234,41 +240,41 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
 
       {/* Result Card */}
       <div style={{
-        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : tokens.colors.snow,
+        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : 'var(--ak-surface-subtle)',
         borderRadius: '12px',
         padding: '24px',
         marginBottom: '24px',
-        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid ${tokens.colors.silver}`,
+        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid var(--ak-border-default)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
           <div style={{
             width: '40px',
             height: '40px',
             borderRadius: '10px',
-            backgroundColor: scoreLevel ? `${scoreLevel.color}20` : tokens.colors.white,
+            backgroundColor: scoreLevel ? `${scoreLevel.color}20` : 'var(--ak-surface-card)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
             {test.calculationType === 'best' ? (
-              <Trophy size={20} color={scoreLevel?.color || tokens.colors.steel} />
+              <Trophy size={20} color={scoreLevel?.color || var(--ak-text-secondary)} />
             ) : (
-              <Calculator size={20} color={scoreLevel?.color || tokens.colors.steel} />
+              <Calculator size={20} color={scoreLevel?.color || var(--ak-text-secondary)} />
             )}
           </div>
           <div>
-            <p style={{ margin: 0, fontSize: '13px', color: tokens.colors.steel }}>
+            <p style={{ margin: 0, fontSize: '13px', color: 'var(--ak-text-secondary)' }}>
               {getCalculationLabel(test.calculationType)}
             </p>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
               <span style={{
                 fontSize: '32px',
                 fontWeight: 700,
-                color: scoreLevel?.color || tokens.colors.charcoal,
+                color: scoreLevel?.color || var(--ak-text-primary),
               }}>
                 {result !== null ? result.toFixed(1) : '—'}
               </span>
-              <span style={{ fontSize: '16px', color: tokens.colors.steel }}>
+              <span style={{ fontSize: '16px', color: 'var(--ak-text-secondary)' }}>
                 {test.unit}
               </span>
             </div>
@@ -296,7 +302,7 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
         )}
 
         {!result && (
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             Registrer minst ett forsøk for å se resultat
           </p>
         )}

@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { tokens } from "../../design-tokens";
-import { SectionTitle } from '../../components/typography/Headings';
-import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
-
 /**
- * StatsPage.tsx
+ * StatsPage Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ *
  * Phase 1: Demo mode only (DataGolf integration kommer i Fase 2)
  * Phase 2: Live API integration
  *
@@ -13,23 +12,25 @@ import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
  * - Inline info banner instead of huge warning icon
  * - Errors logged once with status code
  * - Dashboard always renders with demo data fallback
- *
- * Design System: v3.0 Blue Palette
  */
 
-// Design System color mapping
+import React, { useEffect, useMemo, useState } from "react";
+import { SectionTitle } from '../../components/typography/Headings';
+import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
+
+// Design System color mapping - using CSS variables
 const colors = {
-  border: tokens.semantic.border.default,
-  borderSubtle: tokens.semantic.border.subtle,
-  bgWhite: tokens.colors.white,
-  bgSurface: tokens.semantic.background.surface,
-  bgDefault: tokens.semantic.background.default,
-  ink: tokens.colors.ink,
-  steel: tokens.colors.steel,
-  success: tokens.colors.success,
-  warning: tokens.colors.warning,
-  primary: tokens.colors.primary,
-  snow: tokens.colors.snow,
+  border: 'var(--ak-border-default)',
+  borderSubtle: 'var(--ak-border-subtle)',
+  bgWhite: 'var(--ak-surface-card)',
+  bgSurface: 'var(--ak-surface-subtle)',
+  bgDefault: 'var(--ak-surface-default)',
+  ink: 'var(--ak-text-primary)',
+  steel: 'var(--ak-text-secondary)',
+  success: 'var(--ak-status-success)',
+  warning: 'var(--ak-status-warning)',
+  primary: 'var(--ak-brand-primary)',
+  snow: 'var(--ak-surface-subtle)',
 };
 
 // ============================================================================

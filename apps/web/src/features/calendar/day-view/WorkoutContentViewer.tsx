@@ -1,5 +1,9 @@
 /**
  * WorkoutContentViewer
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ *
  * Read-only view of workout exercises/content
  */
 
@@ -23,206 +27,6 @@ interface WorkoutContentViewerProps {
   onClose: () => void;
   workout: Workout | null;
 }
-
-// Semantic styles
-const styles = {
-  overlay: {
-    position: 'fixed' as const,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'var(--overlay-backdrop)',
-    zIndex: 100,
-    opacity: 0,
-    pointerEvents: 'none' as const,
-    transition: 'opacity 0.2s ease',
-  },
-  overlayOpen: {
-    opacity: 1,
-    pointerEvents: 'auto' as const,
-  },
-  modal: {
-    position: 'fixed' as const,
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%) scale(0.95)',
-    width: '90%',
-    maxWidth: '600px',
-    maxHeight: '85vh',
-    backgroundColor: 'var(--background-white)',
-    borderRadius: 'var(--radius-lg)',
-    boxShadow: 'var(--shadow-float)',
-    zIndex: 101,
-    display: 'flex',
-    flexDirection: 'column' as const,
-    opacity: 0,
-    transition: 'opacity 0.2s ease, transform 0.2s ease',
-  },
-  modalOpen: {
-    opacity: 1,
-    transform: 'translate(-50%, -50%) scale(1)',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 'var(--spacing-4)',
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  headerInfo: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 'var(--font-size-headline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: 0,
-  },
-  subtitle: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    marginTop: 'var(--spacing-1)',
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-  },
-  subtitleItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4px',
-  },
-  closeButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '36px',
-    height: '36px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    color: 'var(--text-tertiary)',
-    transition: 'background-color 0.15s ease',
-  },
-  content: {
-    flex: 1,
-    overflow: 'auto',
-    padding: 'var(--spacing-4)',
-  },
-  description: {
-    fontSize: 'var(--font-size-subheadline)',
-    color: 'var(--text-secondary)',
-    lineHeight: 1.6,
-    marginBottom: 'var(--spacing-4)',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--background-surface)',
-    borderRadius: 'var(--radius-md)',
-  },
-  sectionTitle: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 600,
-    color: 'var(--text-tertiary)',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
-    marginBottom: 'var(--spacing-3)',
-  },
-  exerciseList: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    gap: 'var(--spacing-2)',
-  },
-  exerciseItem: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--background-white)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-  },
-  exerciseItemCompleted: {
-    backgroundColor: 'var(--success-muted)',
-    borderColor: 'var(--success)',
-  },
-  exerciseIcon: {
-    flexShrink: 0,
-    marginTop: '2px',
-  },
-  exerciseContent: {
-    flex: 1,
-  },
-  exerciseName: {
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    marginBottom: '2px',
-  },
-  exerciseMeta: {
-    display: 'flex',
-    gap: 'var(--spacing-3)',
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-  },
-  exerciseDescription: {
-    marginTop: 'var(--spacing-2)',
-    padding: 'var(--spacing-2)',
-    backgroundColor: 'var(--background-surface)',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-    lineHeight: 1.5,
-  },
-  expandIcon: {
-    color: 'var(--text-tertiary)',
-    flexShrink: 0,
-    transition: 'transform 0.2s ease',
-  },
-  emptyState: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8)',
-    textAlign: 'center' as const,
-  },
-  emptyIcon: {
-    width: '64px',
-    height: '64px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'var(--background-surface)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 'var(--spacing-4)',
-  },
-  emptyText: {
-    fontSize: 'var(--font-size-subheadline)',
-    color: 'var(--text-secondary)',
-  },
-  footer: {
-    padding: 'var(--spacing-4)',
-    borderTop: '1px solid var(--border-subtle)',
-    backgroundColor: 'var(--background-surface)',
-  },
-  footerButton: {
-    width: '100%',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--accent)',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    color: 'var(--text-inverse)',
-    cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
-  },
-};
 
 // Translate category
 const translateCategory = (category: string): string => {
@@ -317,107 +121,107 @@ export const WorkoutContentViewer: React.FC<WorkoutContentViewerProps> = ({
     <>
       {/* Overlay */}
       <div
-        style={{ ...styles.overlay, ...(isOpen ? styles.overlayOpen : {}) }}
+        className={`fixed inset-0 z-[100] bg-black/50 transition-opacity duration-200 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div style={{ ...styles.modal, ...(isOpen ? styles.modalOpen : {}) }}>
+      <div
+        className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[600px] max-h-[85vh] z-[101] flex flex-col rounded-xl shadow-lg transition-all duration-200 bg-ak-surface-card ${
+          isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+        }`}
+      >
         {/* Header */}
-        <div style={styles.header}>
-          <div style={styles.headerInfo}>
-            <SectionTitle style={styles.title}>{workout.name}</SectionTitle>
-            <div style={styles.subtitle}>
-              <span style={styles.subtitleItem}>
+        <div className="flex items-center justify-between p-4 border-b border-ak-border-subtle">
+          <div className="flex-1">
+            <SectionTitle className="text-lg font-semibold text-ak-text-primary">
+              {workout.name}
+            </SectionTitle>
+            <div className="flex items-center gap-3 mt-1 text-xs text-ak-text-tertiary">
+              <span className="flex items-center gap-1">
                 <Clock size={12} />
                 {workout.duration} min
               </span>
-              <span style={styles.subtitleItem}>
+              <span className="flex items-center gap-1">
                 <Target size={12} />
                 {translateCategory(workout.category)}
               </span>
-              <span style={styles.subtitleItem}>
+              <span className="flex items-center gap-1">
                 <CheckCircle2 size={12} />
-                {completedCount}/{totalCount} ovelser
+                {completedCount}/{totalCount} øvelser
               </span>
             </div>
           </div>
           <button
-            style={styles.closeButton}
             onClick={onClose}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+            className="flex items-center justify-center w-9 h-9 rounded-full transition-colors text-ak-text-tertiary hover:bg-ak-surface-subtle"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Content */}
-        <div style={styles.content}>
+        <div className="flex-1 overflow-auto p-4">
           {/* Description */}
           {workout.description && (
-            <p style={styles.description}>{workout.description}</p>
+            <p className="text-base leading-relaxed mb-4 p-3 rounded-lg text-ak-text-secondary bg-ak-surface-subtle">
+              {workout.description}
+            </p>
           )}
 
           {/* Exercises */}
-          <div style={styles.sectionTitle}>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-3 text-ak-text-tertiary">
             <Dumbbell size={14} />
-            Ovelser
+            Øvelser
           </div>
 
           {exercises.length === 0 ? (
-            <div style={styles.emptyState}>
-              <div style={styles.emptyIcon}>
-                <Dumbbell size={28} style={{ color: 'var(--text-tertiary)' }} />
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-ak-surface-subtle">
+                <Dumbbell size={28} className="text-ak-text-tertiary" />
               </div>
-              <p style={styles.emptyText}>Ingen ovelser definert</p>
+              <p className="text-base text-ak-text-secondary">Ingen øvelser definert</p>
             </div>
           ) : (
-            <div style={styles.exerciseList}>
+            <div className="flex flex-col gap-2">
               {exercises.map((exercise) => (
                 <div
                   key={exercise.id}
-                  style={{
-                    ...styles.exerciseItem,
-                    ...(exercise.isCompleted ? styles.exerciseItemCompleted : {}),
-                  }}
                   onClick={() => toggleExpanded(exercise.id)}
-                  onMouseEnter={(e) => {
-                    if (!exercise.isCompleted) {
-                      e.currentTarget.style.borderColor = 'var(--border-brand)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!exercise.isCompleted) {
-                      e.currentTarget.style.borderColor = 'var(--border-default)';
-                    }
-                  }}
+                  className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all border ${
+                    exercise.isCompleted
+                      ? 'bg-ak-status-success/10 border-ak-status-success'
+                      : 'bg-ak-surface-card border-ak-border-default hover:border-ak-brand-primary'
+                  }`}
                 >
-                  <div style={styles.exerciseIcon}>
+                  <div className="flex-shrink-0 mt-0.5">
                     {exercise.isCompleted ? (
-                      <CheckCircle2 size={20} style={{ color: 'var(--success)' }} />
+                      <CheckCircle2 size={20} className="text-ak-status-success" />
                     ) : (
-                      <Circle size={20} style={{ color: 'var(--text-tertiary)' }} />
+                      <Circle size={20} className="text-ak-text-tertiary" />
                     )}
                   </div>
-                  <div style={styles.exerciseContent}>
-                    <div style={styles.exerciseName}>{exercise.name}</div>
-                    <div style={styles.exerciseMeta}>
+                  <div className="flex-1">
+                    <div className="text-base font-semibold mb-0.5 text-ak-text-primary">
+                      {exercise.name}
+                    </div>
+                    <div className="flex gap-3 text-xs text-ak-text-tertiary">
                       {exercise.duration && <span>{exercise.duration} min</span>}
                       {exercise.sets && <span>{exercise.sets} sett</span>}
                       {exercise.reps && <span>{exercise.reps} rep</span>}
                     </div>
                     {expandedExercise === exercise.id && exercise.description && (
-                      <div style={styles.exerciseDescription}>
+                      <div className="mt-2 p-2 rounded text-sm leading-relaxed text-ak-text-secondary bg-ak-surface-subtle">
                         {exercise.description}
                       </div>
                     )}
                   </div>
                   <div
-                    style={{
-                      ...styles.expandIcon,
-                      transform: expandedExercise === exercise.id ? 'rotate(180deg)' : 'none',
-                    }}
+                    className={`flex-shrink-0 transition-transform text-ak-text-tertiary ${
+                      expandedExercise === exercise.id ? 'rotate-180' : ''
+                    }`}
                   >
                     <ChevronDown size={16} />
                   </div>
@@ -428,12 +232,10 @@ export const WorkoutContentViewer: React.FC<WorkoutContentViewerProps> = ({
         </div>
 
         {/* Footer */}
-        <div style={styles.footer}>
+        <div className="p-4 border-t border-ak-border-subtle bg-ak-surface-subtle">
           <button
-            style={styles.footerButton}
             onClick={onClose}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent-hover)')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent)')}
+            className="w-full p-3 rounded-lg text-base font-semibold transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
           >
             Lukk
           </button>

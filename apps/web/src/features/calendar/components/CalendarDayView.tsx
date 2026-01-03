@@ -1,5 +1,8 @@
 /**
- * CalendarDayView Component
+ * CalendarDayView.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
  *
  * Execution-oriented day view with:
  * - Decision Anchor (sticky)
@@ -7,7 +10,7 @@
  * - Event blocks
  * - State handling (S0-S6)
  *
- * Uses semantic tokens only (no raw hex values).
+ * Note: Calendar-specific CSS variables (--calendar-*) used for theming.
  */
 
 import React, { useMemo, useEffect, useRef, useState } from 'react';
@@ -186,11 +189,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           primaryCta = (
             <button
               onClick={() => onCompleteSession(inProgressEvent)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-              style={{
-                backgroundColor: 'var(--ak-success)',
-                color: 'var(--text-inverse)',
-              }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-status-success text-white"
             >
               <Check size={16} />
               Fullfør
@@ -198,11 +197,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           );
           secondaryCta = (
             <button
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium text-sm transition-colors"
-              style={{
-                backgroundColor: 'var(--calendar-surface-elevated)',
-                color: 'var(--calendar-text-secondary)',
-              }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-surface-subtle text-ak-text-secondary"
             >
               <Pause size={16} />
               Pause
@@ -217,11 +212,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           primaryCta = (
             <button
               onClick={() => onStartSession(recommendedEvent)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-              style={{
-                backgroundColor: 'var(--ak-primary)',
-                color: 'var(--text-inverse)',
-              }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white"
             >
               <Play size={16} />
               Start nå
@@ -229,21 +220,14 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           );
           secondaryCta = (
             <div className="flex items-center gap-2">
-              <span
-                className="text-sm"
-                style={{ color: 'var(--calendar-text-tertiary)' }}
-              >
+              <span className="text-sm text-ak-text-tertiary">
                 Utsett:
               </span>
               {[15, 30, 60].map((mins) => (
                 <button
                   key={mins}
                   onClick={() => onPostponeSession(recommendedEvent, mins)}
-                  className="px-2 py-1 rounded text-sm"
-                  style={{
-                    backgroundColor: 'var(--calendar-surface-elevated)',
-                    color: 'var(--calendar-text-secondary)',
-                  }}
+                  className="px-2 py-1 rounded text-sm bg-ak-surface-subtle text-ak-text-secondary"
                 >
                   {mins}min
                 </button>
@@ -258,11 +242,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
         primaryCta = (
           <button
             onClick={() => onAddSession(date, '09:00')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-            style={{
-              backgroundColor: 'var(--ak-primary)',
-              color: 'var(--text-inverse)',
-            }}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white"
           >
             <Clock size={16} />
             Start 15 min terskeløkt
@@ -271,10 +251,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
         secondaryCta = (
           <button
             onClick={() => onAddSession(date, '09:00')}
-            className="px-3 py-2 rounded-lg font-medium text-sm"
-            style={{
-              color: 'var(--calendar-text-secondary)',
-            }}
+            className="px-3 py-2 rounded-lg font-medium text-sm text-ak-text-secondary"
           >
             Velg økt
           </button>
@@ -287,11 +264,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           primaryCta = (
             <button
               onClick={() => onPostponeSession(recommendedEvent, 30)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-              style={{
-                backgroundColor: 'var(--ak-warning)',
-                color: 'var(--text-inverse)',
-              }}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-status-warning text-white"
             >
               <ArrowRight size={16} />
               Flytt 30 min
@@ -300,10 +273,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
           secondaryCta = (
             <button
               onClick={() => onStartSession(recommendedEvent)}
-              className="px-3 py-2 rounded-lg font-medium text-sm"
-              style={{
-                color: 'var(--calendar-text-secondary)',
-              }}
+              className="px-3 py-2 rounded-lg font-medium text-sm text-ak-text-secondary"
             >
               Start likevel
             </button>
@@ -315,11 +285,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
         line2 = '✓ Alle økter fullført for i dag';
         primaryCta = (
           <button
-            className="px-4 py-2 rounded-lg font-medium text-sm"
-            style={{
-              backgroundColor: 'var(--calendar-event-completed-bg)',
-              color: 'var(--calendar-event-completed-text)',
-            }}
+            className="px-4 py-2 rounded-lg font-medium text-sm bg-ak-status-success/10 text-ak-status-success"
           >
             Loggfør notat
           </button>
@@ -333,35 +299,20 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
     }
 
     return (
-      <div
-        className="sticky top-0 z-20 px-4 py-3 border-b"
-        style={{
-          backgroundColor: 'var(--calendar-surface-base)',
-          borderColor: 'var(--calendar-border)',
-        }}
-      >
+      <div className="sticky top-0 z-20 px-4 py-3 border-b bg-ak-surface-base border-ak-border-default">
         {/* Date header */}
-        <div
-          className="text-sm font-medium mb-2"
-          style={{ color: 'var(--calendar-text-tertiary)' }}
-        >
+        <div className="text-sm font-medium mb-2 text-ak-text-tertiary">
           {formatDate(date)}
         </div>
 
         {/* Decision anchor content */}
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1">
-            <div
-              className="text-sm"
-              style={{ color: 'var(--calendar-text-secondary)' }}
-            >
+            <div className="text-sm text-ak-text-secondary">
               {line1}
             </div>
             {line2 && (
-              <div
-                className="text-base font-medium mt-1"
-                style={{ color: 'var(--calendar-text-primary)' }}
-              >
+              <div className="text-base font-medium mt-1 text-ak-text-primary">
                 {line2}
               </div>
             )}
@@ -377,10 +328,7 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
   };
 
   return (
-    <div
-      className="flex flex-col h-full"
-      style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-    >
+    <div className="flex flex-col h-full bg-ak-surface-base">
       {/* Decision Anchor */}
       {renderDecisionAnchor()}
 
@@ -398,32 +346,20 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
               className="absolute w-full flex items-start"
               style={{ top: `${idx * HOUR_HEIGHT}px` }}
             >
-              <div
-                className="w-16 flex-shrink-0 text-xs text-right pr-3 -mt-2"
-                style={{ color: 'var(--calendar-text-muted)' }}
-              >
+              <div className="w-16 flex-shrink-0 text-xs text-right pr-3 -mt-2 text-ak-text-tertiary">
                 {time}
               </div>
-              <div
-                className="flex-1 border-t"
-                style={{ borderColor: 'var(--calendar-grid-line)' }}
-              />
+              <div className="flex-1 border-t border-ak-border-subtle" />
             </div>
           ))}
 
           {/* Now line */}
           {nowLineTop !== null && (
             <div
-              className="absolute w-full h-0.5 z-10 pointer-events-none"
-              style={{
-                top: `${nowLineTop}px`,
-                backgroundColor: 'var(--calendar-now-line)',
-              }}
+              className="absolute w-full h-0.5 z-10 pointer-events-none bg-ak-status-error"
+              style={{ top: `${nowLineTop}px` }}
             >
-              <div
-                className="absolute left-14 -top-1 w-2.5 h-2.5 rounded-full"
-                style={{ backgroundColor: 'var(--calendar-now-line)' }}
-              />
+              <div className="absolute left-14 -top-1 w-2.5 h-2.5 rounded-full bg-ak-status-error" />
             </div>
           )}
 
@@ -435,13 +371,14 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
             return (
               <div
                 key={event.id}
-                className="px-3 py-2 rounded-lg cursor-pointer overflow-hidden hover:opacity-90 transition-opacity"
+                className={`px-3 py-2 rounded-lg cursor-pointer overflow-hidden hover:opacity-90 transition-opacity ${
+                  event.status === 'completed' ? 'opacity-70' : ''
+                }`}
                 style={{
                   ...positionStyle,
                   backgroundColor: colors.bg,
                   borderLeft: `4px solid ${colors.border}`,
                   borderStyle: event.status === 'ghost' ? 'dashed' : 'solid',
-                  opacity: event.status === 'completed' ? 0.7 : 1,
                 }}
                 onClick={() => onEventClick(event)}
               >
@@ -453,58 +390,38 @@ export const CalendarDayView: React.FC<CalendarDayViewProps> = ({
                     >
                       {event.title}
                     </div>
-                    <div
-                      className="text-xs mt-0.5"
-                      style={{ color: 'var(--calendar-text-tertiary)' }}
-                    >
+                    <div className="text-xs mt-0.5 text-ak-text-tertiary">
                       {event.start} – {event.end} · {event.duration}min
                     </div>
                   </div>
 
                   {/* Status indicator */}
                   {event.status === 'completed' && (
-                    <Check
-                      size={18}
-                      style={{ color: 'var(--calendar-event-completed-text)' }}
-                    />
+                    <Check size={18} className="text-ak-status-success" />
                   )}
                   {event.status === 'in_progress' && (
-                    <div
-                      className="w-2 h-2 rounded-full animate-pulse"
-                      style={{ backgroundColor: 'var(--calendar-event-inprogress-border)' }}
-                    />
+                    <div className="w-2 h-2 rounded-full animate-pulse bg-ak-brand-primary" />
                   )}
                 </div>
 
                 {/* Badges */}
                 {event.badges && event.badges.length > 0 && (
                   <div className="flex gap-1 mt-2 flex-wrap">
-                    {event.badges.slice(0, 2).map((badge) => (
-                      <span
-                        key={badge}
-                        className="text-xs px-1.5 py-0.5 rounded"
-                        style={{
-                          backgroundColor:
-                            badge === 'Anbefalt'
-                              ? 'var(--calendar-event-recommended-bg)'
-                              : badge === 'Fullført'
-                              ? 'var(--calendar-event-completed-bg)'
-                              : badge === 'Pågår'
-                              ? 'var(--calendar-event-inprogress-bg)'
-                              : 'var(--calendar-surface-elevated)',
-                          color:
-                            badge === 'Anbefalt'
-                              ? 'var(--calendar-event-recommended-text)'
-                              : badge === 'Fullført'
-                              ? 'var(--calendar-event-completed-text)'
-                              : badge === 'Pågår'
-                              ? 'var(--calendar-event-inprogress-text)'
-                              : 'var(--calendar-text-secondary)',
-                        }}
-                      >
-                        {badge}
-                      </span>
-                    ))}
+                    {event.badges.slice(0, 2).map((badge) => {
+                      const badgeClasses =
+                        badge === 'Anbefalt' ? 'bg-ak-brand-primary/10 text-ak-brand-primary' :
+                        badge === 'Fullført' ? 'bg-ak-status-success/10 text-ak-status-success' :
+                        badge === 'Pågår' ? 'bg-ak-status-warning/10 text-ak-status-warning' :
+                        'bg-ak-surface-subtle text-ak-text-secondary';
+                      return (
+                        <span
+                          key={badge}
+                          className={`text-xs px-1.5 py-0.5 rounded ${badgeClasses}`}
+                        >
+                          {badge}
+                        </span>
+                      );
+                    })}
                   </div>
                 )}
               </div>

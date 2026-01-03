@@ -1,7 +1,13 @@
+/**
+ * TestDetailPage Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (layout/error states)
+ */
+
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
 import { SectionTitle } from '../../../components/typography';
 import Button from '../../../ui/primitives/Button';
 import { testDefinitions, TestDefinition } from '../config/testDefinitions';
@@ -46,13 +52,13 @@ const TestDetailPage: React.FC = () => {
           width: '80px',
           height: '80px',
           borderRadius: '20px',
-          backgroundColor: `${tokens.colors.error}15`,
+          backgroundColor: `rgba(239, 68, 68, 0.09)`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: '24px',
         }}>
-          <AlertCircle size={40} color={tokens.colors.error} />
+          <AlertCircle size={40} color={var(--ak-status-error)} />
         </div>
         <SectionTitle style={{ margin: '0 0 8px 0' }}>
           Test ikke funnet
@@ -60,7 +66,7 @@ const TestDetailPage: React.FC = () => {
         <p style={{
           margin: '0 0 24px 0',
           fontSize: '15px',
-          color: tokens.colors.steel,
+          color: 'var(--ak-text-secondary)',
           maxWidth: '400px',
         }}>
           Vi kunne ikke finne testen "{testId}". Sjekk at du har riktig URL eller velg en test fra listen.
@@ -125,7 +131,7 @@ const TestDetailPage: React.FC = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: tokens.colors.snow,
+      backgroundColor: 'var(--ak-surface-subtle)',
       padding: '24px',
     }}>
       <TestOverviewPage

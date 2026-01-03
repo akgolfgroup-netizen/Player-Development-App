@@ -1,5 +1,8 @@
 /**
  * Time Grid Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic positioning)
  *
  * Vertical hour grid (00-24) with:
  * - Current time indicator ("now line")
@@ -17,125 +20,6 @@ const HOUR_START = 5; // 05:00
 const HOUR_END = 23; // 23:00
 const TOTAL_HOURS = HOUR_END - HOUR_START;
 const HOUR_HEIGHT_REM = 4; // Height of each hour in rem
-
-// Semantic style tokens (NO raw hex values)
-const styles = {
-  container: {
-    flex: 1,
-    overflow: 'auto',
-    backgroundColor: 'var(--background-white)',
-  },
-  grid: {
-    display: 'flex',
-    position: 'relative' as const,
-    minHeight: `${TOTAL_HOURS * HOUR_HEIGHT_REM}rem`,
-  },
-  timeLabels: {
-    width: '60px',
-    flexShrink: 0,
-    backgroundColor: 'var(--background-white)',
-    position: 'sticky' as const,
-    left: 0,
-    zIndex: 10,
-  },
-  timeLabel: {
-    position: 'absolute' as const,
-    right: 'var(--spacing-3)',
-    transform: 'translateY(-50%)',
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 500,
-    color: 'var(--text-tertiary)',
-    fontVariantNumeric: 'tabular-nums',
-  },
-  eventsColumn: {
-    flex: 1,
-    position: 'relative' as const,
-    borderLeft: '1px solid var(--border-default)',
-  },
-  hourLine: {
-    position: 'absolute' as const,
-    left: 0,
-    right: 0,
-    borderTop: '1px solid var(--border-subtle)',
-    cursor: 'pointer',
-    transition: 'background-color 0.1s ease',
-  },
-  hourLineHover: {
-    backgroundColor: 'rgba(0, 0, 0, 0.02)',
-  },
-  nowLine: {
-    position: 'absolute' as const,
-    left: 0,
-    right: 0,
-    zIndex: 20,
-    display: 'flex',
-    alignItems: 'center',
-    pointerEvents: 'none' as const,
-  },
-  nowDot: {
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-    backgroundColor: 'var(--accent)',
-    marginLeft: '-5px',
-    boxShadow: '0 0 0 2px var(--background-white)',
-  },
-  nowLineBar: {
-    flex: 1,
-    height: '2px',
-    backgroundColor: 'var(--accent)',
-  },
-  eventWrapper: {
-    position: 'absolute' as const,
-    left: 'var(--spacing-2)',
-    right: 'var(--spacing-2)',
-    zIndex: 5,
-  },
-  ghostEvent: {
-    opacity: 0.4,
-    border: '2px dashed var(--border-brand)',
-  },
-  allDayLane: {
-    borderBottom: '1px solid var(--border-default)',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    paddingLeft: '76px', // Account for time labels
-    backgroundColor: 'var(--background-surface)',
-    display: 'flex',
-    gap: 'var(--spacing-2)',
-    flexWrap: 'wrap' as const,
-    minHeight: '52px',
-  },
-  allDayEvent: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'opacity 0.1s ease',
-  },
-  allDayEventAK: {
-    backgroundColor: 'var(--accent-muted)',
-    color: 'var(--text-brand)',
-    border: '1px solid var(--border-brand)',
-  },
-  allDayEventExternal: {
-    backgroundColor: 'var(--background-elevated)',
-    color: 'var(--text-secondary)',
-    border: '1px solid var(--border-default)',
-  },
-  emptyState: {
-    position: 'absolute' as const,
-    left: '50%',
-    top: '40%',
-    transform: 'translate(-50%, -50%)',
-    textAlign: 'center' as const,
-    color: 'var(--text-tertiary)',
-    fontSize: 'var(--font-size-footnote)',
-  },
-};
 
 // Helper: Calculate position percentage from time
 const getPositionFromTime = (time: string): number => {
@@ -260,14 +144,18 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
 
   return (
     <div
-      style={styles.container}
       ref={containerRef}
+      className="flex-1 overflow-auto bg-ak-surface-card"
       role="region"
       aria-label="Dagskalender tidslinje"
     >
       {/* All-Day Lane */}
       {allDayEvents.length > 0 && (
-        <div style={styles.allDayLane} role="list" aria-label="Heldagshendelser">
+        <div
+          className="border-b border-ak-border-default py-3 pr-4 pl-[76px] flex flex-wrap gap-2 min-h-[52px] bg-ak-surface-subtle"
+          role="list"
+          aria-label="Heldagshendelser"
+        >
           {allDayEvents.map((event) => {
             const isAK = event.type === 'ak_workout';
             const title = isAK ? event.workout?.name : event.external?.title;
@@ -275,11 +163,12 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
             return (
               <button
                 key={event.id}
-                style={{
-                  ...styles.allDayEvent,
-                  ...(isAK ? styles.allDayEventAK : styles.allDayEventExternal),
-                }}
                 onClick={() => onEventClick(event)}
+                className={`inline-flex items-center gap-2 px-3 py-2 rounded text-sm font-medium cursor-pointer transition-opacity border ${
+                  isAK
+                    ? 'bg-ak-brand-primary/10 text-ak-brand-primary border-ak-brand-primary'
+                    : 'bg-ak-surface-elevated text-ak-text-secondary border-ak-border-default'
+                }`}
                 role="listitem"
                 aria-label={`Heldagshendelse: ${title}`}
               >
@@ -291,16 +180,17 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
       )}
 
       {/* Time Grid */}
-      <div style={styles.grid}>
+      <div
+        className="flex relative"
+        style={{ minHeight: `${TOTAL_HOURS * HOUR_HEIGHT_REM}rem` }}
+      >
         {/* Time Labels */}
-        <div style={styles.timeLabels}>
+        <div className="w-[60px] flex-shrink-0 sticky left-0 z-10 bg-ak-surface-card">
           {hours.map((hour) => (
             <div
               key={hour}
-              style={{
-                ...styles.timeLabel,
-                top: `${((hour - HOUR_START) / TOTAL_HOURS) * 100}%`,
-              }}
+              className="absolute right-3 -translate-y-1/2 text-xs font-medium tabular-nums text-ak-text-tertiary"
+              style={{ top: `${((hour - HOUR_START) / TOTAL_HOURS) * 100}%` }}
             >
               {formatHour(hour)}
             </div>
@@ -308,23 +198,17 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
         </div>
 
         {/* Events Column */}
-        <div style={styles.eventsColumn}>
+        <div className="flex-1 relative border-l border-ak-border-default">
           {/* Hour grid lines */}
           {hours.map((hour) => (
             <div
               key={hour}
+              className="absolute left-0 right-0 border-t border-ak-border-subtle cursor-pointer transition-colors hover:bg-black/5"
               style={{
-                ...styles.hourLine,
                 top: `${((hour - HOUR_START) / TOTAL_HOURS) * 100}%`,
                 height: `${(1 / TOTAL_HOURS) * 100}%`,
               }}
               onClick={() => onTimeSlotClick?.(hour)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.02)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
               role="button"
               tabIndex={0}
               aria-label={`Legg til hendelse kl ${formatHour(hour)}`}
@@ -340,24 +224,27 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
           {/* Now line */}
           {nowPosition !== null && (
             <div
-              style={{ ...styles.nowLine, top: `${nowPosition}%` }}
+              className="absolute left-0 right-0 z-20 flex items-center pointer-events-none"
+              style={{ top: `${nowPosition}%` }}
               aria-label="Nåværende tidspunkt"
               role="presentation"
             >
-              <div style={styles.nowDot} aria-hidden="true" />
-              <div style={styles.nowLineBar} aria-hidden="true" />
+              <div
+                className="w-2.5 h-2.5 rounded-full -ml-[5px] shadow-[0_0_0_2px_white] bg-ak-brand-primary"
+                aria-hidden="true"
+              />
+              <div className="flex-1 h-0.5 bg-ak-brand-primary" aria-hidden="true" />
             </div>
           )}
 
           {/* Ghost slot for S2 state */}
           {recommendedSlot && (
             <div
+              className="absolute left-2 right-2 z-5 opacity-40 border-2 border-dashed border-ak-brand-primary"
               style={{
-                ...styles.eventWrapper,
                 top: `${getPositionFromTime(recommendedSlot.time)}%`,
                 height: `${getHeightFromDuration(recommendedSlot.duration)}%`,
                 minHeight: '3rem',
-                ...styles.ghostEvent,
               }}
             >
               <EventCard
@@ -386,7 +273,11 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
             const eventStyle = getEventStyle(event);
 
             return (
-              <div key={event.id} style={{ ...styles.eventWrapper, ...eventStyle }}>
+              <div
+                key={event.id}
+                className="absolute left-2 right-2 z-5"
+                style={eventStyle}
+              >
                 <EventCard event={event} onClick={() => onEventClick(event)} />
               </div>
             );
@@ -394,7 +285,7 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
 
           {/* Empty state */}
           {timedEvents.length === 0 && allDayEvents.length === 0 && !recommendedSlot && (
-            <div style={styles.emptyState}>
+            <div className="absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2 text-center text-sm text-ak-text-tertiary">
               Ingen hendelser denne dagen
             </div>
           )}

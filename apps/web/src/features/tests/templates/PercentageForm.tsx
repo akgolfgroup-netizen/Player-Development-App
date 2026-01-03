@@ -1,6 +1,12 @@
+/**
+ * PercentageForm Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Save, RotateCcw, Check, X, Target, Percent } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
 import { SectionTitle, SubSectionTitle } from '../../../components/typography';
 import Button from '../../../ui/primitives/Button';
 import { TestDefinition, getScoreLevel } from '../config/testDefinitions';
@@ -54,22 +60,22 @@ const AttemptButton: React.FC<AttemptButtonProps> = ({ index, value, onChange })
   const getStyles = () => {
     if (value === 'success') {
       return {
-        backgroundColor: tokens.colors.success,
-        borderColor: tokens.colors.success,
-        color: tokens.colors.white,
+        backgroundColor: 'var(--ak-status-success)',
+        borderColor: 'var(--ak-status-success)',
+        color: 'var(--ak-surface-card)',
       };
     }
     if (value === 'fail') {
       return {
-        backgroundColor: tokens.colors.error,
-        borderColor: tokens.colors.error,
-        color: tokens.colors.white,
+        backgroundColor: 'var(--ak-status-error)',
+        borderColor: 'var(--ak-status-error)',
+        color: 'var(--ak-surface-card)',
       };
     }
     return {
-      backgroundColor: tokens.colors.white,
-      borderColor: tokens.colors.silver,
-      color: tokens.colors.steel,
+      backgroundColor: 'var(--ak-surface-card)',
+      borderColor: 'var(--ak-border-default)',
+      color: 'var(--ak-text-secondary)',
     };
   };
 
@@ -122,9 +128,9 @@ const QuickActions: React.FC<QuickActionsProps> = ({ onMarkAll, onReset }) => (
       style={{
         padding: '8px 16px',
         borderRadius: '8px',
-        border: `1px solid ${tokens.colors.success}`,
-        backgroundColor: `${tokens.colors.success}10`,
-        color: tokens.colors.success,
+        border: `1px solid var(--ak-status-success)`,
+        backgroundColor: `rgba(34, 197, 94, 0.06)`,
+        color: 'var(--ak-status-success)',
         fontSize: '13px',
         fontWeight: 500,
         cursor: 'pointer',
@@ -141,9 +147,9 @@ const QuickActions: React.FC<QuickActionsProps> = ({ onMarkAll, onReset }) => (
       style={{
         padding: '8px 16px',
         borderRadius: '8px',
-        border: `1px solid ${tokens.colors.error}`,
-        backgroundColor: `${tokens.colors.error}10`,
-        color: tokens.colors.error,
+        border: `1px solid var(--ak-status-error)`,
+        backgroundColor: `rgba(239, 68, 68, 0.06)`,
+        color: 'var(--ak-status-error)',
         fontSize: '13px',
         fontWeight: 500,
         cursor: 'pointer',
@@ -160,9 +166,9 @@ const QuickActions: React.FC<QuickActionsProps> = ({ onMarkAll, onReset }) => (
       style={{
         padding: '8px 16px',
         borderRadius: '8px',
-        border: `1px solid ${tokens.colors.steel}`,
-        backgroundColor: tokens.colors.snow,
-        color: tokens.colors.steel,
+        border: `1px solid var(--ak-text-secondary)`,
+        backgroundColor: 'var(--ak-surface-subtle)',
+        color: 'var(--ak-text-secondary)',
         fontSize: '13px',
         fontWeight: 500,
         cursor: 'pointer',
@@ -273,17 +279,17 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
             height: '40px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--ak-surface-subtle)',
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={tokens.colors.charcoal} />
+          <ArrowLeft size={20} color={var(--ak-text-primary)} />
         </button>
         <div>
           <SectionTitle style={{ margin: 0, fontSize: '20px' }}>
             {test.name}
           </SectionTitle>
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             {player?.name || 'Registrer forsøk'}
           </p>
         </div>
@@ -291,7 +297,7 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
 
       {/* Instructions */}
       <div style={{
-        backgroundColor: `${tokens.colors.primary}10`,
+        backgroundColor: `rgba(26, 61, 46, 0.06)`,
         borderRadius: '10px',
         padding: '12px 16px',
         marginBottom: '16px',
@@ -299,9 +305,9 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
         alignItems: 'center',
         gap: '12px',
       }}>
-        <Target size={18} color={tokens.colors.primary} />
-        <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.charcoal }}>
-          Trykk for å sykle: Tomt → <Check size={14} style={{ color: tokens.colors.success, verticalAlign: 'middle' }} /> Treff → <X size={14} style={{ color: tokens.colors.error, verticalAlign: 'middle' }} /> Bom → Tomt
+        <Target size={18} color={var(--ak-brand-primary)} />
+        <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-primary)' }}>
+          Trykk for å sykle: Tomt → <Check size={14} style={{ color: 'var(--ak-status-success)', verticalAlign: 'middle' }} /> Treff → <X size={14} style={{ color: 'var(--ak-status-error)', verticalAlign: 'middle' }} /> Bom → Tomt
         </p>
       </div>
 
@@ -313,7 +319,7 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
 
       {/* Attempts Grid */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '12px',
         padding: '20px',
         marginBottom: '16px',
@@ -348,49 +354,49 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
         marginBottom: '16px',
       }}>
         <div style={{
-          backgroundColor: `${tokens.colors.success}10`,
+          backgroundColor: `rgba(34, 197, 94, 0.06)`,
           borderRadius: '10px',
           padding: '16px',
           textAlign: 'center',
         }}>
-          <p style={{ margin: 0, fontSize: '13px', color: tokens.colors.steel }}>Treff</p>
+          <p style={{ margin: 0, fontSize: '13px', color: 'var(--ak-text-secondary)' }}>Treff</p>
           <p style={{
             margin: '4px 0 0 0',
             fontSize: '24px',
             fontWeight: 700,
-            color: tokens.colors.success,
+            color: 'var(--ak-status-success)',
           }}>
             {stats.successes}
           </p>
         </div>
         <div style={{
-          backgroundColor: `${tokens.colors.error}10`,
+          backgroundColor: `rgba(239, 68, 68, 0.06)`,
           borderRadius: '10px',
           padding: '16px',
           textAlign: 'center',
         }}>
-          <p style={{ margin: 0, fontSize: '13px', color: tokens.colors.steel }}>Bom</p>
+          <p style={{ margin: 0, fontSize: '13px', color: 'var(--ak-text-secondary)' }}>Bom</p>
           <p style={{
             margin: '4px 0 0 0',
             fontSize: '24px',
             fontWeight: 700,
-            color: tokens.colors.error,
+            color: 'var(--ak-status-error)',
           }}>
             {stats.fails}
           </p>
         </div>
         <div style={{
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--ak-surface-subtle)',
           borderRadius: '10px',
           padding: '16px',
           textAlign: 'center',
         }}>
-          <p style={{ margin: 0, fontSize: '13px', color: tokens.colors.steel }}>Gjenstår</p>
+          <p style={{ margin: 0, fontSize: '13px', color: 'var(--ak-text-secondary)' }}>Gjenstår</p>
           <p style={{
             margin: '4px 0 0 0',
             fontSize: '24px',
             fontWeight: 700,
-            color: tokens.colors.charcoal,
+            color: 'var(--ak-text-primary)',
           }}>
             {test.attempts - stats.completed}
           </p>
@@ -399,11 +405,11 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
 
       {/* Result Card */}
       <div style={{
-        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : tokens.colors.snow,
+        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : 'var(--ak-surface-subtle)',
         borderRadius: '12px',
         padding: '24px',
         marginBottom: '24px',
-        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid ${tokens.colors.silver}`,
+        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid var(--ak-border-default)`,
         textAlign: 'center',
       }}>
         <div style={{
@@ -413,15 +419,15 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
           gap: '12px',
           marginBottom: '8px',
         }}>
-          <Percent size={24} color={scoreLevel?.color || tokens.colors.steel} />
+          <Percent size={24} color={scoreLevel?.color || var(--ak-text-secondary)} />
           <span style={{
             fontSize: '40px',
             fontWeight: 700,
-            color: scoreLevel?.color || tokens.colors.charcoal,
+            color: scoreLevel?.color || var(--ak-text-primary),
           }}>
             {stats.completed > 0 ? stats.percentage.toFixed(0) : '—'}
           </span>
-          <span style={{ fontSize: '20px', color: tokens.colors.steel }}>%</span>
+          <span style={{ fontSize: '20px', color: 'var(--ak-text-secondary)' }}>%</span>
         </div>
 
         {scoreLevel && (
@@ -439,7 +445,7 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
         )}
 
         {stats.completed === 0 && (
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             Registrer forsøk for å se resultat
           </p>
         )}

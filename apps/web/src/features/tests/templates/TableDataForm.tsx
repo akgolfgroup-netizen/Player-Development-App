@@ -1,6 +1,12 @@
+/**
+ * TableDataForm Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Save, RotateCcw, Target, Calculator, Check } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
 import { SectionTitle, SubSectionTitle } from '../../../components/typography';
 import Button from '../../../ui/primitives/Button';
 import { TestDefinition, ColumnDef, getScoreLevel } from '../config/testDefinitions';
@@ -92,9 +98,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, rowIndex
           width: '40px',
           height: '40px',
           borderRadius: '8px',
-          border: `2px solid ${value ? tokens.colors.success : tokens.colors.silver}`,
-          backgroundColor: value ? tokens.colors.success : tokens.colors.white,
-          color: value ? tokens.colors.white : tokens.colors.steel,
+          border: `2px solid ${value ? var(--ak-status-success) : 'var(--ak-border-default)'}`,
+          backgroundColor: value ? var(--ak-status-success) : 'var(--ak-surface-card)',
+          color: value ? var(--ak-surface-card) : 'var(--ak-text-secondary)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -115,9 +121,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, rowIndex
         style={{
           padding: '8px 12px',
           fontSize: '14px',
-          border: `1px solid ${tokens.colors.silver}`,
+          border: `1px solid var(--ak-border-default)`,
           borderRadius: '8px',
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--ak-surface-card)',
           width: '100%',
           minWidth: '80px',
         }}
@@ -144,9 +150,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, rowIndex
           paddingRight: column.unit ? '35px' : '12px',
           fontSize: '14px',
           fontWeight: 500,
-          border: `1px solid ${value ? tokens.colors.primary : tokens.colors.silver}`,
+          border: `1px solid ${value ? var(--ak-brand-primary) : 'var(--ak-border-default)'}`,
           borderRadius: '8px',
-          backgroundColor: value ? `${tokens.colors.primary}05` : tokens.colors.white,
+          backgroundColor: value ? `rgba(26, 61, 46, 0.03)` : 'var(--ak-surface-card)',
           outline: 'none',
         }}
       />
@@ -157,7 +163,7 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, rowIndex
           top: '50%',
           transform: 'translateY(-50%)',
           fontSize: '12px',
-          color: tokens.colors.steel,
+          color: 'var(--ak-text-secondary)',
         }}>
           {column.unit}
         </span>
@@ -269,17 +275,17 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
             height: '40px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--ak-surface-subtle)',
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={tokens.colors.charcoal} />
+          <ArrowLeft size={20} color={var(--ak-text-primary)} />
         </button>
         <div>
           <SectionTitle style={{ margin: 0, fontSize: '20px' }}>
             {test.name}
           </SectionTitle>
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             {player?.name || 'Registrer data'}
           </p>
         </div>
@@ -287,7 +293,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
 
       {/* Progress */}
       <div style={{
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--ak-surface-subtle)',
         borderRadius: '8px',
         padding: '12px 16px',
         marginBottom: '16px',
@@ -295,13 +301,13 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+        <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
           Fremgang
         </span>
         <span style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: completedRows === test.attempts ? tokens.colors.success : tokens.colors.primary,
+          color: completedRows === test.attempts ? var(--ak-status-success) : 'var(--ak-brand-primary)',
         }}>
           {completedRows} / {test.attempts} rader
         </span>
@@ -309,7 +315,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
 
       {/* Data Table */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '12px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
         overflow: 'hidden',
@@ -321,16 +327,16 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
           gridTemplateColumns: `40px ${columns.map(() => '1fr').join(' ')}`,
           gap: '8px',
           padding: '12px 16px',
-          backgroundColor: tokens.colors.snow,
-          borderBottom: `1px solid ${tokens.colors.silver}`,
+          backgroundColor: 'var(--ak-surface-subtle)',
+          borderBottom: `1px solid var(--ak-border-default)`,
         }}>
-          <div style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel }}>
+          <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ak-text-secondary)' }}>
             #
           </div>
           {columns.map(col => (
-            <div key={col.key} style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel }}>
+            <div key={col.key} style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ak-text-secondary)' }}>
               {col.label}
-              {col.required && <span style={{ color: tokens.colors.error }}> *</span>}
+              {col.required && <span style={{ color: 'var(--ak-status-error)' }}> *</span>}
             </div>
           ))}
         </div>
@@ -345,14 +351,14 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
                 gridTemplateColumns: `40px ${columns.map(() => '1fr').join(' ')}`,
                 gap: '8px',
                 padding: '10px 16px',
-                borderBottom: rowIndex < rows.length - 1 ? `1px solid ${tokens.colors.snow}` : 'none',
+                borderBottom: rowIndex < rows.length - 1 ? `1px solid var(--ak-surface-subtle)` : 'none',
                 alignItems: 'center',
               }}
             >
               <div style={{
                 fontSize: '14px',
                 fontWeight: 600,
-                color: tokens.colors.steel,
+                color: 'var(--ak-text-secondary)',
                 textAlign: 'center',
               }}>
                 {rowIndex + 1}
@@ -373,30 +379,30 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
 
       {/* Result Card */}
       <div style={{
-        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : tokens.colors.snow,
+        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : 'var(--ak-surface-subtle)',
         borderRadius: '12px',
         padding: '24px',
         marginBottom: '24px',
-        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid ${tokens.colors.silver}`,
+        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid var(--ak-border-default)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
           <div style={{
             width: '40px',
             height: '40px',
             borderRadius: '10px',
-            backgroundColor: scoreLevel ? `${scoreLevel.color}20` : tokens.colors.white,
+            backgroundColor: scoreLevel ? `${scoreLevel.color}20` : 'var(--ak-surface-card)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
             {test.calculationType === 'pei' ? (
-              <Target size={20} color={scoreLevel?.color || tokens.colors.steel} />
+              <Target size={20} color={scoreLevel?.color || var(--ak-text-secondary)} />
             ) : (
-              <Calculator size={20} color={scoreLevel?.color || tokens.colors.steel} />
+              <Calculator size={20} color={scoreLevel?.color || var(--ak-text-secondary)} />
             )}
           </div>
           <div>
-            <p style={{ margin: 0, fontSize: '13px', color: tokens.colors.steel }}>
+            <p style={{ margin: 0, fontSize: '13px', color: 'var(--ak-text-secondary)' }}>
               {test.calculationType === 'pei' && 'PEI (Precision Error Index)'}
               {test.calculationType === 'percentage' && 'Treffprosent'}
               {test.calculationType === 'average' && 'Gjennomsnitt'}
@@ -405,11 +411,11 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
               <span style={{
                 fontSize: '32px',
                 fontWeight: 700,
-                color: scoreLevel?.color || tokens.colors.charcoal,
+                color: scoreLevel?.color || var(--ak-text-primary),
               }}>
                 {result !== null ? result.toFixed(1) : '—'}
               </span>
-              <span style={{ fontSize: '16px', color: tokens.colors.steel }}>
+              <span style={{ fontSize: '16px', color: 'var(--ak-text-secondary)' }}>
                 {test.unit}
               </span>
             </div>
@@ -431,7 +437,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
         )}
 
         {result === null && (
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             Fyll inn data for å se resultat
           </p>
         )}

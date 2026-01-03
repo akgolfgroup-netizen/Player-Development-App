@@ -1,5 +1,8 @@
 /**
  * Event Detail Panel Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Desktop: Side panel (slides in from right)
  * Mobile: Bottom sheet (slides up)
@@ -26,264 +29,6 @@ import {
   Target,
 } from 'lucide-react';
 import { EventDetailPanelProps, RescheduleOption, ShortenOption, Workout } from './types';
-
-// Semantic styles (NO raw hex values)
-const styles = {
-  // Overlay
-  overlay: {
-    position: 'fixed' as const,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'var(--overlay-backdrop)',
-    zIndex: 100,
-    opacity: 0,
-    pointerEvents: 'none' as const,
-    transition: 'opacity 0.2s ease',
-  },
-  overlayOpen: {
-    opacity: 1,
-    pointerEvents: 'auto' as const,
-  },
-
-  // Desktop side panel
-  sidePanel: {
-    position: 'fixed' as const,
-    top: 0,
-    right: 0,
-    bottom: 0,
-    width: '400px',
-    maxWidth: '100vw',
-    backgroundColor: 'var(--background-white)',
-    boxShadow: 'var(--shadow-float)',
-    zIndex: 101,
-    transform: 'translateX(100%)',
-    transition: 'transform 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
-    display: 'flex',
-    flexDirection: 'column' as const,
-  },
-  sidePanelOpen: {
-    transform: 'translateX(0)',
-  },
-
-  // Mobile bottom sheet
-  bottomSheet: {
-    position: 'fixed' as const,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'var(--background-white)',
-    borderRadius: 'var(--radius-lg) var(--radius-lg) 0 0',
-    boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.15)',
-    zIndex: 101,
-    maxHeight: '85vh',
-    transform: 'translateY(100%)',
-    transition: 'transform 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    paddingBottom: 'var(--safe-area-inset-bottom)',
-  },
-  bottomSheetOpen: {
-    transform: 'translateY(0)',
-  },
-  bottomSheetHandle: {
-    width: '36px',
-    height: '4px',
-    backgroundColor: 'var(--border-default)',
-    borderRadius: 'var(--radius-full)',
-    margin: '8px auto 0',
-    flexShrink: 0,
-  },
-
-  // Header
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 'var(--spacing-4)',
-    borderBottom: '1px solid var(--border-subtle)',
-    flexShrink: 0,
-  },
-  closeButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '36px',
-    height: '36px',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    cursor: 'pointer',
-    color: 'var(--text-tertiary)',
-    transition: 'background-color 0.15s ease',
-  },
-  title: {
-    fontSize: 'var(--font-size-headline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    flex: 1,
-    marginLeft: 'var(--spacing-3)',
-  },
-
-  // Content
-  content: {
-    flex: 1,
-    overflow: 'auto',
-    padding: 'var(--spacing-4)',
-  },
-  section: {
-    marginBottom: 'var(--spacing-6)',
-  },
-  sectionTitle: {
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 600,
-    color: 'var(--text-tertiary)',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
-    marginBottom: 'var(--spacing-3)',
-  },
-  infoRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    padding: 'var(--spacing-3) 0',
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  infoIcon: {
-    color: 'var(--text-tertiary)',
-    flexShrink: 0,
-  },
-  infoContent: {
-    flex: 1,
-  },
-  infoLabel: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-  },
-  infoValue: {
-    fontSize: 'var(--font-size-subheadline)',
-    color: 'var(--text-primary)',
-    fontWeight: 500,
-  },
-
-  // Actions
-  actionsContainer: {
-    padding: 'var(--spacing-4)',
-    borderTop: '1px solid var(--border-subtle)',
-    backgroundColor: 'var(--background-surface)',
-    flexShrink: 0,
-  },
-  primaryAction: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 'var(--spacing-2)',
-    width: '100%',
-    padding: 'var(--spacing-4)',
-    backgroundColor: 'var(--accent)',
-    color: 'var(--text-inverse)',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'background-color 0.15s ease',
-    marginBottom: 'var(--spacing-3)',
-  },
-  secondaryActions: {
-    display: 'flex',
-    gap: 'var(--spacing-2)',
-    flexWrap: 'wrap' as const,
-  },
-  secondaryAction: {
-    flex: 1,
-    minWidth: '120px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--background-white)',
-    color: 'var(--text-secondary)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-  },
-
-  // Duration selector
-  durationSelector: {
-    display: 'flex',
-    gap: 'var(--spacing-2)',
-    marginTop: 'var(--spacing-2)',
-  },
-  durationOption: {
-    flex: 1,
-    padding: 'var(--spacing-3)',
-    backgroundColor: 'var(--background-white)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 500,
-    color: 'var(--text-secondary)',
-    cursor: 'pointer',
-    textAlign: 'center' as const,
-    transition: 'all 0.15s ease',
-  },
-  durationOptionActive: {
-    backgroundColor: 'var(--accent-muted)',
-    borderColor: 'var(--border-brand)',
-    color: 'var(--text-brand)',
-  },
-
-  // Reschedule options
-  rescheduleOptions: {
-    marginTop: 'var(--spacing-2)',
-    backgroundColor: 'var(--background-white)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    overflow: 'hidden',
-  },
-  rescheduleOption: {
-    display: 'block',
-    width: '100%',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderBottom: '1px solid var(--border-subtle)',
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-primary)',
-    cursor: 'pointer',
-    textAlign: 'left' as const,
-    transition: 'background-color 0.1s ease',
-  },
-
-  // Badge
-  badge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '4px',
-    padding: '4px 10px',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 600,
-  },
-  badgeRecommended: {
-    backgroundColor: 'var(--accent-muted)',
-    color: 'var(--text-brand)',
-  },
-  badgeInProgress: {
-    backgroundColor: 'var(--success-muted)',
-    color: 'var(--success)',
-  },
-  badgeCompleted: {
-    backgroundColor: 'var(--success-muted)',
-    color: 'var(--success)',
-  },
-};
 
 // Hook to detect mobile viewport
 const useIsMobile = () => {
@@ -368,72 +113,78 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
 
   const shortenOptions: ShortenOption[] = [45, 30, 15];
 
-  const panelStyle = isMobile
-    ? { ...styles.bottomSheet, ...(isOpen ? styles.bottomSheetOpen : {}) }
-    : { ...styles.sidePanel, ...(isOpen ? styles.sidePanelOpen : {}) };
-
   const renderWorkoutContent = () => {
     if (!workout) return null;
 
     return (
       <>
         {/* Header with badge */}
-        <div style={{ marginBottom: 'var(--spacing-4)' }}>
+        <div className="mb-4">
           {workout.status === 'in_progress' && (
-            <span style={{ ...styles.badge, ...styles.badgeInProgress }}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-ak-status-success/10 text-ak-status-success">
               <Play size={12} />
               Pågår
             </span>
           )}
           {workout.status === 'completed' && (
-            <span style={{ ...styles.badge, ...styles.badgeCompleted }}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-ak-status-success/10 text-ak-status-success">
               <Check size={12} />
               Fullført
             </span>
           )}
           {workout.isRecommended && workout.status === 'scheduled' && (
-            <span style={{ ...styles.badge, ...styles.badgeRecommended }}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-ak-brand-primary/10 text-ak-brand-primary">
               Anbefalt
             </span>
           )}
         </div>
 
         {/* Info section */}
-        <div style={styles.section}>
-          <div style={styles.sectionTitle}>Detaljer</div>
+        <div className="mb-6">
+          <div className="text-xs font-semibold uppercase tracking-wide mb-3 text-ak-text-tertiary">
+            Detaljer
+          </div>
 
-          <div style={styles.infoRow}>
-            <Timer size={18} style={styles.infoIcon} />
-            <div style={styles.infoContent}>
-              <div style={styles.infoLabel}>Varighet</div>
-              <div style={styles.infoValue}>{formatDuration(workout.duration)}</div>
+          <div className="flex items-center gap-3 py-3 border-b border-ak-border-subtle">
+            <Timer size={18} className="flex-shrink-0 text-ak-text-tertiary" />
+            <div className="flex-1">
+              <div className="text-xs text-ak-text-tertiary">Varighet</div>
+              <div className="text-base font-medium text-ak-text-primary">
+                {formatDuration(workout.duration)}
+              </div>
             </div>
           </div>
 
           {workout.scheduledTime && (
-            <div style={styles.infoRow}>
-              <Clock size={18} style={styles.infoIcon} />
-              <div style={styles.infoContent}>
-                <div style={styles.infoLabel}>Tidspunkt</div>
-                <div style={styles.infoValue}>{workout.scheduledTime}</div>
+            <div className="flex items-center gap-3 py-3 border-b border-ak-border-subtle">
+              <Clock size={18} className="flex-shrink-0 text-ak-text-tertiary" />
+              <div className="flex-1">
+                <div className="text-xs text-ak-text-tertiary">Tidspunkt</div>
+                <div className="text-base font-medium text-ak-text-primary">
+                  {workout.scheduledTime}
+                </div>
               </div>
             </div>
           )}
 
-          <div style={styles.infoRow}>
-            <Target size={18} style={styles.infoIcon} />
-            <div style={styles.infoContent}>
-              <div style={styles.infoLabel}>Kategori</div>
-              <div style={styles.infoValue}>{translateCategory(workout.category)}</div>
+          <div className="flex items-center gap-3 py-3 border-b border-ak-border-subtle">
+            <Target size={18} className="flex-shrink-0 text-ak-text-tertiary" />
+            <div className="flex-1">
+              <div className="text-xs text-ak-text-tertiary">Kategori</div>
+              <div className="text-base font-medium text-ak-text-primary">
+                {translateCategory(workout.category)}
+              </div>
             </div>
           </div>
 
           {workout.location && (
-            <div style={styles.infoRow}>
-              <MapPin size={18} style={styles.infoIcon} />
-              <div style={styles.infoContent}>
-                <div style={styles.infoLabel}>Sted</div>
-                <div style={styles.infoValue}>{workout.location}</div>
+            <div className="flex items-center gap-3 py-3 border-b border-ak-border-subtle">
+              <MapPin size={18} className="flex-shrink-0 text-ak-text-tertiary" />
+              <div className="flex-1">
+                <div className="text-xs text-ak-text-tertiary">Sted</div>
+                <div className="text-base font-medium text-ak-text-primary">
+                  {workout.location}
+                </div>
               </div>
             </div>
           )}
@@ -441,9 +192,11 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
 
         {/* Description if available */}
         {workout.description && (
-          <div style={styles.section}>
-            <div style={styles.sectionTitle}>Beskrivelse</div>
-            <p style={{ fontSize: 'var(--font-size-subheadline)', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          <div className="mb-6">
+            <div className="text-xs font-semibold uppercase tracking-wide mb-3 text-ak-text-tertiary">
+              Beskrivelse
+            </div>
+            <p className="text-base leading-relaxed text-ak-text-secondary">
               {workout.description}
             </p>
           </div>
@@ -456,25 +209,29 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
     if (!external) return null;
 
     return (
-      <div style={styles.section}>
-        <div style={styles.sectionTitle}>Detaljer</div>
+      <div className="mb-6">
+        <div className="text-xs font-semibold uppercase tracking-wide mb-3 text-ak-text-tertiary">
+          Detaljer
+        </div>
 
-        <div style={styles.infoRow}>
-          <Clock size={18} style={styles.infoIcon} />
-          <div style={styles.infoContent}>
-            <div style={styles.infoLabel}>Tid</div>
-            <div style={styles.infoValue}>
+        <div className="flex items-center gap-3 py-3 border-b border-ak-border-subtle">
+          <Clock size={18} className="flex-shrink-0 text-ak-text-tertiary" />
+          <div className="flex-1">
+            <div className="text-xs text-ak-text-tertiary">Tid</div>
+            <div className="text-base font-medium text-ak-text-primary">
               {external.startTime} - {external.endTime}
             </div>
           </div>
         </div>
 
         {external.source && (
-          <div style={styles.infoRow}>
-            <Calendar size={18} style={styles.infoIcon} />
-            <div style={styles.infoContent}>
-              <div style={styles.infoLabel}>Kilde</div>
-              <div style={styles.infoValue}>{external.source}</div>
+          <div className="flex items-center gap-3 py-3 border-b border-ak-border-subtle">
+            <Calendar size={18} className="flex-shrink-0 text-ak-text-tertiary" />
+            <div className="flex-1">
+              <div className="text-xs text-ak-text-tertiary">Kilde</div>
+              <div className="text-base font-medium text-ak-text-primary">
+                {external.source}
+              </div>
             </div>
           </div>
         )}
@@ -488,12 +245,10 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
     // In progress: Show complete button
     if (workout.status === 'in_progress') {
       return (
-        <div style={styles.actionsContainer}>
+        <div className="p-4 border-t border-ak-border-subtle flex-shrink-0 bg-ak-surface-subtle">
           <button
-            style={styles.primaryAction}
             onClick={onComplete}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent-hover)')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent)')}
+            className="flex items-center justify-center gap-2 w-full p-4 rounded-lg text-base font-semibold transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
             aria-label={`Marker ${workout.name} som fullført`}
           >
             <Check size={18} aria-hidden="true" />
@@ -506,10 +261,10 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
     // Completed: Show view content only
     if (workout.status === 'completed') {
       return (
-        <div style={styles.actionsContainer}>
+        <div className="p-4 border-t border-ak-border-subtle flex-shrink-0 bg-ak-surface-subtle">
           <button
-            style={styles.secondaryAction}
             onClick={() => onViewContent?.(workout)}
+            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-brand-primary"
             aria-label="Se innhold i økten"
           >
             <Eye size={16} aria-hidden="true" />
@@ -521,74 +276,76 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
 
     // Scheduled: Full action set
     return (
-      <div style={styles.actionsContainer}>
+      <div className="p-4 border-t border-ak-border-subtle flex-shrink-0 bg-ak-surface-subtle">
         <button
-          style={styles.primaryAction}
           onClick={onStart}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent-hover)')}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--accent)')}
+          className="flex items-center justify-center gap-2 w-full p-4 mb-3 rounded-lg text-base font-semibold transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
           aria-label={`Start ${workout.name}`}
         >
           <Play size={18} aria-hidden="true" />
           Start økt
         </button>
 
-        <div style={styles.secondaryActions}>
+        <div className="flex gap-2 flex-wrap">
           <button
-            style={styles.secondaryAction}
             onClick={() => setShowReschedule(!showReschedule)}
-            onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--border-brand)')}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-default)')}
+            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-brand-primary"
             aria-expanded={showReschedule}
             aria-haspopup="menu"
             aria-label="Utsett trening"
           >
             <Clock size={16} aria-hidden="true" />
             Utsett
-            <ChevronDown size={14} style={{ transform: showReschedule ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} aria-hidden="true" />
+            <ChevronDown
+              size={14}
+              className={`transition-transform ${showReschedule ? 'rotate-180' : ''}`}
+              aria-hidden="true"
+            />
           </button>
 
           <button
-            style={styles.secondaryAction}
             onClick={() => setShowShorten(!showShorten)}
-            onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--border-brand)')}
-            onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-default)')}
+            className="flex items-center justify-center gap-2 flex-1 min-w-[120px] p-3 rounded-lg text-sm font-medium transition-all border border-ak-border-default text-ak-text-secondary bg-ak-surface-card hover:border-ak-brand-primary"
             aria-expanded={showShorten}
             aria-haspopup="menu"
             aria-label="Kort ned varighet"
           >
             <Timer size={16} aria-hidden="true" />
             Kort ned
-            <ChevronDown size={14} style={{ transform: showShorten ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} aria-hidden="true" />
+            <ChevronDown
+              size={14}
+              className={`transition-transform ${showShorten ? 'rotate-180' : ''}`}
+              aria-hidden="true"
+            />
           </button>
         </div>
 
         {/* Reschedule options */}
         {showReschedule && (
-          <div style={styles.rescheduleOptions} role="menu" aria-label="Utsett trening">
+          <div
+            className="mt-2 rounded-lg border border-ak-border-default overflow-hidden bg-ak-surface-card"
+            role="menu"
+            aria-label="Utsett trening"
+          >
             {rescheduleOptions.map(({ label, option }) => (
               <button
                 key={label}
-                style={styles.rescheduleOption}
                 onClick={() => {
                   onReschedule(option);
                   setShowReschedule(false);
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                className="block w-full px-4 py-3 text-left text-sm border-b border-ak-border-subtle transition-colors text-ak-text-primary hover:bg-ak-surface-subtle"
                 role="menuitem"
               >
                 {label}
               </button>
             ))}
             <button
-              style={{ ...styles.rescheduleOption, borderBottom: 'none' }}
               onClick={() => {
                 setShowReschedule(false);
                 onOpenTimePicker?.();
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+              className="block w-full px-4 py-3 text-left text-sm transition-colors text-ak-text-primary hover:bg-ak-surface-subtle"
               role="menuitem"
             >
               Velg tidspunkt...
@@ -598,28 +355,19 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
 
         {/* Shorten options */}
         {showShorten && (
-          <div style={styles.durationSelector} role="radiogroup" aria-label="Velg varighet">
+          <div className="flex gap-2 mt-2" role="radiogroup" aria-label="Velg varighet">
             {shortenOptions.map((duration) => (
               <button
                 key={duration}
-                style={{
-                  ...styles.durationOption,
-                  ...(workout.duration === duration ? styles.durationOptionActive : {}),
-                }}
                 onClick={() => {
                   onShorten(duration);
                   setShowShorten(false);
                 }}
-                onMouseEnter={(e) => {
-                  if (workout.duration !== duration) {
-                    e.currentTarget.style.borderColor = 'var(--border-brand)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (workout.duration !== duration) {
-                    e.currentTarget.style.borderColor = 'var(--border-default)';
-                  }
-                }}
+                className={`flex-1 p-3 rounded-lg text-sm font-medium text-center transition-all border ${
+                  workout.duration === duration
+                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary text-ak-brand-primary'
+                    : 'bg-ak-surface-card border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary'
+                }`}
                 role="radio"
                 aria-checked={workout.duration === duration}
                 aria-label={`${duration} minutter`}
@@ -639,43 +387,50 @@ export const EventDetailPanel: React.FC<EventDetailPanelProps> = ({
     <>
       {/* Overlay */}
       <div
-        style={{
-          ...styles.overlay,
-          ...(isOpen ? styles.overlayOpen : {}),
-        }}
+        className={`fixed inset-0 z-[100] bg-black/50 transition-opacity duration-200 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Panel */}
+      {/* Panel - Desktop side panel or Mobile bottom sheet */}
       <div
-        style={panelStyle}
+        className={`fixed z-[101] flex flex-col transition-transform duration-300 ease-out bg-ak-surface-card ${
+          isMobile
+            ? `left-0 right-0 bottom-0 max-h-[85vh] rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.15)] pb-safe ${
+                isOpen ? 'translate-y-0' : 'translate-y-full'
+              }`
+            : `top-0 right-0 bottom-0 w-[400px] max-w-full shadow-lg ${
+                isOpen ? 'translate-x-0' : 'translate-x-full'
+              }`
+        }`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="event-detail-title"
         aria-describedby="event-detail-content"
       >
         {/* Bottom sheet handle (mobile only) */}
-        {isMobile && <div style={styles.bottomSheetHandle} aria-hidden="true" />}
+        {isMobile && (
+          <div className="w-9 h-1 rounded-full mx-auto mt-2 flex-shrink-0 bg-ak-border-default" aria-hidden="true" />
+        )}
 
         {/* Header */}
-        <div style={styles.header}>
+        <div className="flex items-center justify-between p-4 border-b border-ak-border-subtle flex-shrink-0">
           <button
-            style={styles.closeButton}
             onClick={onClose}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--background-surface)')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+            className="flex items-center justify-center w-9 h-9 rounded-full transition-colors text-ak-text-tertiary hover:bg-ak-surface-subtle"
             aria-label="Lukk panel"
           >
             <X size={20} aria-hidden="true" />
           </button>
-          <div style={styles.title} id="event-detail-title">
+          <div className="flex-1 ml-3 text-lg font-semibold text-ak-text-primary" id="event-detail-title">
             {panelTitle}
           </div>
         </div>
 
         {/* Content */}
-        <div style={styles.content} id="event-detail-content">
+        <div className="flex-1 overflow-auto p-4" id="event-detail-content">
           {isAKWorkout ? renderWorkoutContent() : renderExternalContent()}
         </div>
 

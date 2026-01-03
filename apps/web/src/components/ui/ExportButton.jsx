@@ -1,5 +1,8 @@
 /**
  * AK GOLF ACADEMY - ExportButton Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  *
  * Exports a target element to PDF using html2canvas and jspdf.
  * Supports both button and icon-only modes.
@@ -9,7 +12,6 @@ import React, { useState, useCallback } from 'react';
 import { Download, FileDown, Loader2 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { tokens } from '../../design-tokens';
 
 /**
  * ExportButton - Export content to PDF
@@ -65,7 +67,7 @@ export default function ExportButton({
         scale: 2, // Higher quality
         useCORS: true,
         allowTaint: true,
-        backgroundColor: tokens.colors.white,
+        backgroundColor: '#FFFFFF',
         logging: false,
         windowWidth: element.scrollWidth,
         windowHeight: element.scrollHeight,
@@ -250,7 +252,7 @@ export function usePdfExport() {
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: tokens.colors.white,
+        backgroundColor: '#FFFFFF',
         logging: false,
       });
 

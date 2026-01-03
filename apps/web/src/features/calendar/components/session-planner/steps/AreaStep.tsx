@@ -1,10 +1,11 @@
 /**
  * AreaStep Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Step 2: Select training area
  * Grouped by category: Full Swing, Kortspill, Putting
- *
- * Uses semantic tokens only.
  */
 
 import React from 'react';
@@ -36,28 +37,20 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
         key={area}
         type="button"
         onClick={() => setArea(area)}
-        className="flex flex-col items-start p-3 rounded-lg transition-all duration-200"
-        style={{
-          backgroundColor: isSelected
-            ? 'var(--calendar-event-recommended-bg)'
-            : 'var(--calendar-surface-elevated)',
-          border: `2px solid ${isSelected ? 'var(--ak-primary)' : 'transparent'}`,
-        }}
+        className={`flex flex-col items-start p-3 rounded-lg transition-all duration-200 border-2 ${
+          isSelected
+            ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+            : 'bg-ak-surface-subtle border-transparent'
+        }`}
       >
         <span
-          className="font-medium text-sm"
-          style={{
-            color: isSelected
-              ? 'var(--ak-primary)'
-              : 'var(--calendar-text-primary)',
-          }}
+          className={`font-medium text-sm ${
+            isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+          }`}
         >
           {areaData.label}
         </span>
-        <span
-          className="text-xs mt-0.5"
-          style={{ color: 'var(--calendar-text-tertiary)' }}
-        >
+        <span className="text-xs mt-0.5 text-ak-text-tertiary">
           {areaData.description}
         </span>
       </button>
@@ -66,20 +59,14 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
 
   return (
     <div className="space-y-6">
-      <SubSectionTitle
-        className="text-sm font-medium"
-        style={{ color: 'var(--calendar-text-secondary)' }}
-      >
+      <SubSectionTitle className="text-sm font-medium text-ak-text-secondary">
         Velg treningsområde
       </SubSectionTitle>
 
       {/* Full Swing */}
       {fullSwingAreas.length > 0 && (
         <div>
-          <CardTitle
-            className="text-xs font-medium uppercase tracking-wide mb-2"
-            style={{ color: 'var(--calendar-text-tertiary)' }}
-          >
+          <CardTitle className="text-xs font-medium uppercase tracking-wide mb-2 text-ak-text-tertiary">
             Full Swing
           </CardTitle>
           <div className="grid grid-cols-2 gap-2">
@@ -91,10 +78,7 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
       {/* Kortspill */}
       {shortGameAreas.length > 0 && (
         <div>
-          <CardTitle
-            className="text-xs font-medium uppercase tracking-wide mb-2"
-            style={{ color: 'var(--calendar-text-tertiary)' }}
-          >
+          <CardTitle className="text-xs font-medium uppercase tracking-wide mb-2 text-ak-text-tertiary">
             Kortspill
           </CardTitle>
           <div className="grid grid-cols-2 gap-2">
@@ -106,10 +90,7 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
       {/* Putting */}
       {puttingAreas.length > 0 && (
         <div>
-          <CardTitle
-            className="text-xs font-medium uppercase tracking-wide mb-2"
-            style={{ color: 'var(--calendar-text-tertiary)' }}
-          >
+          <CardTitle className="text-xs font-medium uppercase tracking-wide mb-2 text-ak-text-tertiary">
             Putting
           </CardTitle>
           <div className="grid grid-cols-2 gap-2">
@@ -120,10 +101,7 @@ export const AreaStep: React.FC<AreaStepProps> = ({ planner }) => {
 
       {/* Empty state */}
       {validAreas.length === 0 && (
-        <div
-          className="text-center py-8"
-          style={{ color: 'var(--calendar-text-tertiary)' }}
-        >
+        <div className="text-center py-8 text-ak-text-tertiary">
           Ingen områder tilgjengelig for valgt nivå
         </div>
       )}

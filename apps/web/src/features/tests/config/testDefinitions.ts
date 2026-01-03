@@ -1,8 +1,13 @@
+/**
+ * Test Definitions Configuration
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 // ============================================================================
 // TEST DEFINITIONS - Alle 20 IUP Golf Tester
 // ============================================================================
-
-import { tokens } from '../../../design-tokens';
 
 export type FormType = 'simple' | 'percentage' | 'table' | 'round';
 export type CalculationType = 'best' | 'average' | 'averageBest3' | 'percentage' | 'pei' | 'stddev' | 'direct';
@@ -61,45 +66,45 @@ export interface TestDefinition {
 // ============================================================================
 
 const speedScoring: ScoringThresholds = {
-  excellent: { max: 120, label: 'Utmerket', color: tokens.colors.successLight },
-  good: { max: 110, label: 'Bra', color: tokens.colors.warningLight },
-  average: { max: 100, label: 'Gjennomsnitt', color: tokens.colors.warning },
-  needsWork: { max: 0, label: 'Trenger arbeid', color: tokens.colors.errorLight },
+  excellent: { max: 120, label: 'Utmerket', color: 'var(--ak-status-success-light)' },
+  good: { max: 110, label: 'Bra', color: 'var(--ak-status-warning-light)' },
+  average: { max: 100, label: 'Gjennomsnitt', color: 'var(--ak-status-warning)' },
+  needsWork: { max: 0, label: 'Trenger arbeid', color: 'var(--ak-status-error-light)' },
 };
 
 const distanceScoring: ScoringThresholds = {
-  excellent: { max: 280, label: 'Utmerket', color: tokens.colors.successLight },
-  good: { max: 250, label: 'Bra', color: tokens.colors.warningLight },
-  average: { max: 220, label: 'Gjennomsnitt', color: tokens.colors.warning },
-  needsWork: { max: 0, label: 'Trenger arbeid', color: tokens.colors.errorLight },
+  excellent: { max: 280, label: 'Utmerket', color: 'var(--ak-status-success-light)' },
+  good: { max: 250, label: 'Bra', color: 'var(--ak-status-warning-light)' },
+  average: { max: 220, label: 'Gjennomsnitt', color: 'var(--ak-status-warning)' },
+  needsWork: { max: 0, label: 'Trenger arbeid', color: 'var(--ak-status-error-light)' },
 };
 
 const accuracyScoring: ScoringThresholds = {
-  excellent: { max: 5, label: 'Utmerket', color: tokens.colors.successLight },
-  good: { max: 10, label: 'Bra', color: tokens.colors.warningLight },
-  average: { max: 15, label: 'Gjennomsnitt', color: tokens.colors.warning },
-  needsWork: { max: 100, label: 'Trenger arbeid', color: tokens.colors.errorLight },
+  excellent: { max: 5, label: 'Utmerket', color: 'var(--ak-status-success-light)' },
+  good: { max: 10, label: 'Bra', color: 'var(--ak-status-warning-light)' },
+  average: { max: 15, label: 'Gjennomsnitt', color: 'var(--ak-status-warning)' },
+  needsWork: { max: 100, label: 'Trenger arbeid', color: 'var(--ak-status-error-light)' },
 };
 
 const percentageScoring: ScoringThresholds = {
-  excellent: { max: 100, label: 'Utmerket', color: tokens.colors.successLight },
-  good: { max: 75, label: 'Bra', color: tokens.colors.warningLight },
-  average: { max: 50, label: 'Gjennomsnitt', color: tokens.colors.warning },
-  needsWork: { max: 0, label: 'Trenger arbeid', color: tokens.colors.errorLight },
+  excellent: { max: 100, label: 'Utmerket', color: 'var(--ak-status-success-light)' },
+  good: { max: 75, label: 'Bra', color: 'var(--ak-status-warning-light)' },
+  average: { max: 50, label: 'Gjennomsnitt', color: 'var(--ak-status-warning)' },
+  needsWork: { max: 0, label: 'Trenger arbeid', color: 'var(--ak-status-error-light)' },
 };
 
 const puttingShortScoring: ScoringThresholds = {
-  excellent: { max: 100, label: 'Utmerket', color: tokens.colors.successLight },
-  good: { max: 85, label: 'Bra', color: tokens.colors.warningLight },
-  average: { max: 70, label: 'Gjennomsnitt', color: tokens.colors.warning },
-  needsWork: { max: 0, label: 'Trenger arbeid', color: tokens.colors.errorLight },
+  excellent: { max: 100, label: 'Utmerket', color: 'var(--ak-status-success-light)' },
+  good: { max: 85, label: 'Bra', color: 'var(--ak-status-warning-light)' },
+  average: { max: 70, label: 'Gjennomsnitt', color: 'var(--ak-status-warning)' },
+  needsWork: { max: 0, label: 'Trenger arbeid', color: 'var(--ak-status-error-light)' },
 };
 
 const physicalScoring: ScoringThresholds = {
-  excellent: { max: 100, label: 'Utmerket', color: tokens.colors.successLight },
-  good: { max: 75, label: 'Bra', color: tokens.colors.warningLight },
-  average: { max: 50, label: 'Gjennomsnitt', color: tokens.colors.warning },
-  needsWork: { max: 0, label: 'Trenger arbeid', color: tokens.colors.errorLight },
+  excellent: { max: 100, label: 'Utmerket', color: 'var(--ak-status-success-light)' },
+  good: { max: 75, label: 'Bra', color: 'var(--ak-status-warning-light)' },
+  average: { max: 50, label: 'Gjennomsnitt', color: 'var(--ak-status-warning)' },
+  needsWork: { max: 0, label: 'Trenger arbeid', color: 'var(--ak-status-error-light)' },
 };
 
 // ============================================================================
@@ -359,10 +364,10 @@ export const testDefinitions: TestDefinition[] = [
       columns: [
         { key: 'position', label: 'Posisjon', type: 'number' },
         { key: 'lie', label: 'Lie', type: 'select', options: [
-          { id: 'fairway', label: 'Fairway', color: tokens.colors.successLight },
-          { id: 'rough', label: 'Rough', color: tokens.colors.warningLight },
-          { id: 'bunker', label: 'Bunker', color: tokens.colors.warning },
-          { id: 'fringe', label: 'Fringe', color: tokens.colors.info },
+          { id: 'fairway', label: 'Fairway', color: 'var(--ak-status-success-light)' },
+          { id: 'rough', label: 'Rough', color: 'var(--ak-status-warning-light)' },
+          { id: 'bunker', label: 'Bunker', color: 'var(--ak-status-warning)' },
+          { id: 'fringe', label: 'Fringe', color: 'var(--ak-status-info)' },
         ]},
         { key: 'distance', label: 'Avstand', type: 'number', unit: 'm' },
         { key: 'upDown', label: 'Up&Down', type: 'boolean', required: true },

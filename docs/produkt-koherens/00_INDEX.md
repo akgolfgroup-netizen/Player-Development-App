@@ -29,9 +29,20 @@ Men mangler:
 ## Beslutningsprosess
 
 1. **Les GAP_ANALYSIS** - Forstå nåsituasjonen
-2. **Ta stilling til CRITICAL_DECISIONS** - Fyll inn valg
+2. **Gjennomgå CRITICAL_DECISIONS** - Anbefalinger er fylt inn, godkjenn eller juster
 3. **Følg IMPLEMENTATION_PLAN** - Implementer i riktig rekkefølge
+
+## Anbefalte beslutninger (oppsummert)
+
+| # | Beslutning | Anbefaling |
+|---|-----------|------------|
+| 1 | Plan regenerering | **D** - Foreslå, ikke tving |
+| 2 | Mål-validering | **B** - Soft validation (advarsel) |
+| 3 | Test → handling | **B+E** - BP-lukking + kategori-opprykk |
+| 4 | Øvelsesprogresjon | **D** - Kategori-basert filter |
+
+Se `02_CRITICAL_DECISIONS.md` for full begrunnelse og implementeringsdetaljer.
 
 ---
 
-*Sist oppdatert: 2026-01-02*
+*Sist oppdatert: 2026-01-03*

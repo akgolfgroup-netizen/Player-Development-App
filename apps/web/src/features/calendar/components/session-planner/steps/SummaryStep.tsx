@@ -1,12 +1,13 @@
 /**
  * SummaryStep Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Final step: Review and confirm session
  * - Formula preview (human-readable + raw)
  * - Date, time, duration inputs
  * - Validation errors
- *
- * Uses semantic tokens only.
  */
 
 import React from 'react';
@@ -32,10 +33,7 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
 
   if (!parsedFormula) {
     return (
-      <div
-        className="text-center py-8"
-        style={{ color: 'var(--calendar-text-tertiary)' }}
-      >
+      <div className="text-center py-8 text-ak-text-tertiary">
         Noe gikk galt. Gå tilbake og prøv igjen.
       </div>
     );
@@ -44,34 +42,22 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
   return (
     <div className="space-y-6">
       {/* Formula preview card */}
-      <div
-        className="rounded-xl overflow-hidden"
-        style={{
-          backgroundColor: 'var(--calendar-surface-elevated)',
-          border: '1px solid var(--calendar-border)',
-        }}
-      >
+      <div className="rounded-xl overflow-hidden bg-ak-surface-subtle border border-ak-border-default">
         {/* Header with status */}
         <div
-          className="flex items-center gap-2 px-4 py-3"
-          style={{
-            backgroundColor: parsedFormula.isValid
-              ? 'var(--success-muted)'
-              : 'var(--warning-muted)',
-          }}
+          className={`flex items-center gap-2 px-4 py-3 ${
+            parsedFormula.isValid ? 'bg-ak-status-success/10' : 'bg-ak-status-warning/10'
+          }`}
         >
           {parsedFormula.isValid ? (
-            <CheckCircle size={16} style={{ color: 'var(--ak-success)' }} />
+            <CheckCircle size={16} className="text-ak-status-success" />
           ) : (
-            <AlertCircle size={16} style={{ color: 'var(--ak-warning)' }} />
+            <AlertCircle size={16} className="text-ak-status-warning" />
           )}
           <span
-            className="text-sm font-medium"
-            style={{
-              color: parsedFormula.isValid
-                ? 'var(--ak-success)'
-                : 'var(--ak-warning)',
-            }}
+            className={`text-sm font-medium ${
+              parsedFormula.isValid ? 'text-ak-status-success' : 'text-ak-status-warning'
+            }`}
           >
             {parsedFormula.isValid ? 'Klar til å opprettes' : 'Mangler informasjon'}
           </span>
@@ -80,29 +66,17 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
         {/* Content */}
         <div className="p-4 space-y-3">
           {/* Title */}
-          <SubSectionTitle
-            className="text-lg font-semibold"
-            style={{ color: 'var(--calendar-text-primary)' }}
-          >
+          <SubSectionTitle className="text-lg font-semibold text-ak-text-primary">
             {parsedFormula.title}
           </SubSectionTitle>
 
           {/* Description */}
-          <p
-            className="text-sm"
-            style={{ color: 'var(--calendar-text-secondary)' }}
-          >
+          <p className="text-sm text-ak-text-secondary">
             {parsedFormula.description}
           </p>
 
           {/* Formula */}
-          <div
-            className="p-3 rounded-lg font-mono text-xs break-all"
-            style={{
-              backgroundColor: 'var(--calendar-surface-base)',
-              color: 'var(--calendar-text-tertiary)',
-            }}
-          >
+          <div className="p-3 rounded-lg font-mono text-xs break-all bg-ak-surface-base text-ak-text-tertiary">
             {parsedFormula.formula}
           </div>
 
@@ -112,8 +86,7 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
               {parsedFormula.errors.map((error, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-2 text-xs"
-                  style={{ color: 'var(--ak-warning)' }}
+                  className="flex items-start gap-2 text-xs text-ak-status-warning"
                 >
                   <AlertCircle size={12} className="mt-0.5 shrink-0" />
                   {error}
@@ -126,19 +99,13 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
 
       {/* Date/Time/Duration */}
       <div className="space-y-4">
-        <SubSectionTitle
-          className="text-sm font-medium"
-          style={{ color: 'var(--calendar-text-secondary)' }}
-        >
+        <SubSectionTitle className="text-sm font-medium text-ak-text-secondary">
           Når?
         </SubSectionTitle>
 
         {/* Date */}
         <div>
-          <label
-            className="flex items-center gap-2 text-xs font-medium mb-1"
-            style={{ color: 'var(--calendar-text-tertiary)' }}
-          >
+          <label className="flex items-center gap-2 text-xs font-medium mb-1 text-ak-text-tertiary">
             <Calendar size={14} />
             Dato
           </label>
@@ -146,12 +113,7 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
             type="date"
             value={formState.date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg text-sm"
-            style={{
-              backgroundColor: 'var(--calendar-surface-elevated)',
-              border: '1px solid var(--calendar-border)',
-              color: 'var(--calendar-text-primary)',
-            }}
+            className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary"
           />
         </div>
 
@@ -159,10 +121,7 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
         <div className="grid grid-cols-2 gap-4">
           {/* Start time */}
           <div>
-            <label
-              className="flex items-center gap-2 text-xs font-medium mb-1"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-            >
+            <label className="flex items-center gap-2 text-xs font-medium mb-1 text-ak-text-tertiary">
               <Clock size={14} />
               Starttid
             </label>
@@ -170,33 +129,20 @@ export const SummaryStep: React.FC<SummaryStepProps> = ({ planner }) => {
               type="time"
               value={formState.startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg text-sm"
-              style={{
-                backgroundColor: 'var(--calendar-surface-elevated)',
-                border: '1px solid var(--calendar-border)',
-                color: 'var(--calendar-text-primary)',
-              }}
+              className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary"
             />
           </div>
 
           {/* Duration */}
           <div>
-            <label
-              className="flex items-center gap-2 text-xs font-medium mb-1"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-            >
+            <label className="flex items-center gap-2 text-xs font-medium mb-1 text-ak-text-tertiary">
               <Timer size={14} />
               Varighet
             </label>
             <select
               value={formState.duration}
               onChange={(e) => setDuration(Number(e.target.value))}
-              className="w-full px-3 py-2 rounded-lg text-sm"
-              style={{
-                backgroundColor: 'var(--calendar-surface-elevated)',
-                border: '1px solid var(--calendar-border)',
-                color: 'var(--calendar-text-primary)',
-              }}
+              className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary"
             >
               {DURATION_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>

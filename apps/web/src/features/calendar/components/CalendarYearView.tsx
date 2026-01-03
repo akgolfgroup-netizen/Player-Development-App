@@ -1,12 +1,13 @@
 /**
  * CalendarYearView Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * 12 mini-month grids for fast navigation:
  * - Minimal day grids with density markers
  * - Click month to navigate to month view
  * - Current month highlight
- *
- * Uses semantic tokens only (no raw hex values).
  */
 
 import React, { useMemo } from 'react';
@@ -99,40 +100,24 @@ const MiniMonth: React.FC<MiniMonthProps> = ({
 
   return (
     <div
-      className="p-3 rounded-xl cursor-pointer transition-all"
-      style={{
-        backgroundColor: isCurrentMonth
-          ? 'var(--calendar-surface-today)'
-          : 'var(--calendar-surface-card)',
-        border: isCurrentMonth
-          ? '2px solid var(--calendar-today-marker-bg)'
-          : '1px solid var(--calendar-border)',
-      }}
+      className={`p-3 rounded-xl cursor-pointer transition-all hover:shadow-lg ${
+        isCurrentMonth
+          ? 'bg-ak-brand-primary/5 border-2 border-ak-brand-primary'
+          : 'bg-ak-surface-card border border-ak-border-default'
+      }`}
       onClick={onClick}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = 'var(--shadow-elevated)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = 'none';
-      }}
     >
       {/* Month header */}
       <div className="flex items-center justify-between mb-2">
         <span
-          className="text-sm font-semibold"
-          style={{
-            color: isCurrentMonth
-              ? 'var(--calendar-today-marker-bg)'
-              : 'var(--calendar-text-primary)',
-          }}
+          className={`text-sm font-semibold ${
+            isCurrentMonth ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+          }`}
         >
           {MONTH_NAMES[month]}
         </span>
         {totalEvents > 0 && (
-          <span
-            className="text-[10px]"
-            style={{ color: 'var(--calendar-text-tertiary)' }}
-          >
+          <span className="text-[10px] text-ak-text-tertiary">
             {completedEvents}/{totalEvents}
           </span>
         )}
@@ -143,8 +128,7 @@ const MiniMonth: React.FC<MiniMonthProps> = ({
         {WEEK_DAYS.map((day, i) => (
           <div
             key={i}
-            className="w-4 h-3 flex items-center justify-center text-[8px]"
-            style={{ color: 'var(--calendar-text-muted)' }}
+            className="w-4 h-3 flex items-center justify-center text-[8px] text-ak-text-tertiary"
           >
             {day}
           </div>
@@ -157,22 +141,14 @@ const MiniMonth: React.FC<MiniMonthProps> = ({
           <div
             key={idx}
             className={`w-4 h-4 flex items-center justify-center text-[9px] rounded-sm ${
-              cell.isToday ? 'font-bold' : ''
-            }`}
-            style={{
-              backgroundColor: cell.isToday
-                ? 'var(--calendar-today-marker-bg)'
+              cell.isToday
+                ? 'font-bold bg-ak-brand-primary text-white'
                 : cell.eventCount > 0
-                ? 'var(--calendar-event-recommended-bg)'
-                : 'transparent',
-              color: cell.isToday
-                ? 'var(--calendar-today-marker-text)'
-                : cell.eventCount > 0
-                ? 'var(--calendar-event-recommended-text)'
+                ? 'bg-ak-brand-primary/10 text-ak-brand-primary'
                 : cell.day
-                ? 'var(--calendar-text-primary)'
-                : 'transparent',
-            }}
+                ? 'text-ak-text-primary'
+                : 'text-transparent'
+            }`}
           >
             {cell.day}
           </div>
@@ -229,19 +205,10 @@ export const CalendarYearView: React.FC<CalendarYearViewProps> = ({
   }, [eventsByMonth]);
 
   return (
-    <div
-      className="flex flex-col h-full"
-      style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-    >
+    <div className="flex flex-col h-full bg-ak-surface-base">
       {/* Year header */}
-      <div
-        className="text-center py-4 border-b"
-        style={{ borderColor: 'var(--calendar-border)' }}
-      >
-        <SectionTitle
-          className="text-2xl font-bold"
-          style={{ color: 'var(--calendar-text-primary)' }}
-        >
+      <div className="text-center py-4 border-b border-ak-border-default">
+        <SectionTitle className="text-2xl font-bold text-ak-text-primary">
           {year}
         </SectionTitle>
       </div>
@@ -263,53 +230,29 @@ export const CalendarYearView: React.FC<CalendarYearViewProps> = ({
       </div>
 
       {/* Year stats footer */}
-      <div
-        className="border-t p-4"
-        style={{
-          backgroundColor: 'var(--calendar-surface-elevated)',
-          borderColor: 'var(--calendar-border)',
-        }}
-      >
+      <div className="border-t border-ak-border-default p-4 bg-ak-surface-subtle">
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <div
-              className="text-2xl font-bold"
-              style={{ color: 'var(--ak-primary)' }}
-            >
+            <div className="text-2xl font-bold text-ak-brand-primary">
               {yearStats.total}
             </div>
-            <div
-              className="text-xs"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-            >
+            <div className="text-xs text-ak-text-tertiary">
               Totalt økter
             </div>
           </div>
           <div>
-            <div
-              className="text-2xl font-bold"
-              style={{ color: 'var(--ak-success)' }}
-            >
+            <div className="text-2xl font-bold text-ak-status-success">
               {yearStats.completed}
             </div>
-            <div
-              className="text-xs"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-            >
+            <div className="text-xs text-ak-text-tertiary">
               Fullført
             </div>
           </div>
           <div>
-            <div
-              className="text-2xl font-bold"
-              style={{ color: 'var(--calendar-text-primary)' }}
-            >
+            <div className="text-2xl font-bold text-ak-text-primary">
               {yearStats.hours}t
             </div>
-            <div
-              className="text-xs"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-            >
+            <div className="text-xs text-ak-text-tertiary">
               Timer trent
             </div>
           </div>

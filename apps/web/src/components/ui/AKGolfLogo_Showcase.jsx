@@ -1,30 +1,31 @@
 /**
  * @deprecated This file is kept for reference only
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  *
  * DO NOT USE THIS COMPONENT IN NEW CODE
  *
  * For logo usage, see:
  * - /apps/web/src/components/branding/AKLogo.jsx (component)
- * - /apps/web/src/design-tokens.js (design tokens)
  *
  * This showcase contains old patterns including "ACADEMY" wordmark
  * which is no longer part of the brand identity.
  */
 
 import React, { useState } from 'react';
-import { tokens } from '../design-tokens';
 import { SectionTitle, SubSectionTitle } from '../typography';
 
 const colors = {
-  forest: tokens.colors.forest,
-  forestLight: tokens.colors.primaryLight,
-  foam: tokens.colors.foam,
-  ivory: tokens.colors.ivory,
-  gold: tokens.colors.gold,
-  white: tokens.colors.white,
-  textPrimary: tokens.colors.charcoal,
-  textSecondary: tokens.colors.steel,
-  border: tokens.colors.mist
+  forest: '#4A7C59',
+  forestLight: '#5B9A6F',
+  foam: '#E8F0ED',
+  ivory: '#FAF9F7',
+  gold: '#C9A227',
+  white: '#FFFFFF',
+  textPrimary: '#2C2C2E',
+  textSecondary: '#8E8E93',
+  border: '#E5E5E5'
 };
 
 // AK Golf Logo Component with automatic sizing

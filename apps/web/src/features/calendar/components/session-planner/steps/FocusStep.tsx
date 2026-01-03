@@ -1,12 +1,13 @@
 /**
  * FocusStep Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Step 5: Select focus area
  * - For full swing/short game: Position range (P1.0-P10.0)
  * - For putting: Focus + Phases
  * - For SPILL: Play focus
- *
- * Uses semantic tokens only.
  */
 
 import React from 'react';
@@ -79,33 +80,23 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
     return (
       <div>
-        <SubSectionTitle
-          className="text-sm font-medium mb-2"
-          style={{ color: 'var(--calendar-text-secondary)' }}
-        >
+        <SubSectionTitle className="text-sm font-medium mb-2 text-ak-text-secondary">
           Fokusposisjon(er)
         </SubSectionTitle>
-        <p
-          className="text-xs mb-4"
-          style={{ color: 'var(--calendar-text-tertiary)' }}
-        >
+        <p className="text-xs mb-4 text-ak-text-tertiary">
           Velg en eller flere posisjoner å fokusere på
         </p>
 
         {/* Position slider visualization */}
         <div className="relative mb-6">
           {/* Track */}
-          <div
-            className="h-2 rounded-full"
-            style={{ backgroundColor: 'var(--calendar-border)' }}
-          />
+          <div className="h-2 rounded-full bg-ak-border-default" />
 
           {/* Selected range highlight */}
           {startIndex >= 0 && (
             <div
-              className="absolute top-0 h-2 rounded-full"
+              className="absolute top-0 h-2 rounded-full bg-ak-brand-primary"
               style={{
-                backgroundColor: 'var(--ak-primary)',
                 left: `${(startIndex / (mainPositions.length - 1)) * 100}%`,
                 width: `${((endIndex - startIndex) / (mainPositions.length - 1)) * 100}%`,
               }}
@@ -123,16 +114,11 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                   key={pos}
                   type="button"
                   onClick={() => handlePositionClick(pos, index)}
-                  className="w-4 h-4 rounded-full transition-all duration-200 hover:scale-125"
-                  style={{
-                    backgroundColor: isInRange
-                      ? 'var(--ak-primary)'
-                      : 'var(--calendar-surface-card)',
-                    border: `2px solid ${
-                      isInRange ? 'var(--ak-primary)' : 'var(--calendar-border)'
-                    }`,
-                    transform: isEndpoint ? 'scale(1.25)' : undefined,
-                  }}
+                  className={`w-4 h-4 rounded-full transition-all duration-200 hover:scale-125 border-2 ${
+                    isInRange
+                      ? 'bg-ak-brand-primary border-ak-brand-primary'
+                      : 'bg-ak-surface-card border-ak-border-default'
+                  } ${isEndpoint ? 'scale-125' : ''}`}
                 />
               );
             })}
@@ -149,18 +135,14 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
             return (
               <div key={pos} className="text-xs">
                 <span
-                  className="block font-medium"
-                  style={{
-                    color: isSelected
-                      ? 'var(--ak-primary)'
-                      : 'var(--calendar-text-secondary)',
-                  }}
+                  className={`block font-medium ${
+                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-secondary'
+                  }`}
                 >
                   {pos.replace('P', '')}
                 </span>
                 <span
-                  className="block truncate"
-                  style={{ color: 'var(--calendar-text-tertiary)' }}
+                  className="block truncate text-ak-text-tertiary"
                   title={posData.description}
                 >
                   {posData.label}
@@ -172,14 +154,8 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
         {/* Selected range display */}
         {formState.positionStart && (
-          <div
-            className="mt-4 p-3 rounded-lg text-center"
-            style={{ backgroundColor: 'var(--calendar-event-recommended-bg)' }}
-          >
-            <span
-              className="text-sm font-medium"
-              style={{ color: 'var(--ak-primary)' }}
-            >
+          <div className="mt-4 p-3 rounded-lg text-center bg-ak-brand-primary/10">
+            <span className="text-sm font-medium text-ak-brand-primary">
               {formState.positionStart === formState.positionEnd
                 ? `${POSITIONS[formState.positionStart].label}`
                 : `${POSITIONS[formState.positionStart].label} → ${POSITIONS[formState.positionEnd!].label}`}
@@ -198,10 +174,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
       <div className="space-y-6">
         {/* Focus area */}
         <div>
-          <SubSectionTitle
-            className="text-sm font-medium mb-3"
-            style={{ color: 'var(--calendar-text-secondary)' }}
-          >
+          <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
             Putting-fokus
           </SubSectionTitle>
 
@@ -214,28 +187,20 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                   key={key}
                   type="button"
                   onClick={() => setPuttingFocus(key)}
-                  className="flex flex-col items-start p-3 rounded-lg transition-all duration-200"
-                  style={{
-                    backgroundColor: isSelected
-                      ? 'var(--calendar-event-recommended-bg)'
-                      : 'var(--calendar-surface-elevated)',
-                    border: `2px solid ${isSelected ? 'var(--ak-primary)' : 'transparent'}`,
-                  }}
+                  className={`flex flex-col items-start p-3 rounded-lg transition-all duration-200 border-2 ${
+                    isSelected
+                      ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                      : 'bg-ak-surface-subtle border-transparent'
+                  }`}
                 >
                   <span
-                    className="font-medium text-sm"
-                    style={{
-                      color: isSelected
-                        ? 'var(--ak-primary)'
-                        : 'var(--calendar-text-primary)',
-                    }}
+                    className={`font-medium text-sm ${
+                      isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                    }`}
                   >
                     {value.label}
                   </span>
-                  <span
-                    className="text-xs mt-0.5"
-                    style={{ color: 'var(--calendar-text-tertiary)' }}
-                  >
+                  <span className="text-xs mt-0.5 text-ak-text-tertiary">
                     {value.description}
                   </span>
                 </button>
@@ -246,10 +211,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
         {/* Phases */}
         <div>
-          <SubSectionTitle
-            className="text-sm font-medium mb-3"
-            style={{ color: 'var(--calendar-text-secondary)' }}
-          >
+          <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
             Faser
           </SubSectionTitle>
 
@@ -263,15 +225,11 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                   key={combo}
                   type="button"
                   onClick={() => setPuttingPhases(combo)}
-                  className="px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200"
-                  style={{
-                    backgroundColor: isSelected
-                      ? 'var(--ak-primary)'
-                      : 'var(--calendar-surface-elevated)',
-                    color: isSelected
-                      ? 'var(--text-inverse)'
-                      : 'var(--calendar-text-secondary)',
-                  }}
+                  className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+                    isSelected
+                      ? 'bg-ak-brand-primary text-white'
+                      : 'bg-ak-surface-subtle text-ak-text-secondary'
+                  }`}
                 >
                   {label}
                 </button>
@@ -289,10 +247,7 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
     return (
       <div>
-        <SubSectionTitle
-          className="text-sm font-medium mb-3"
-          style={{ color: 'var(--calendar-text-secondary)' }}
-        >
+        <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
           Spillfokus
         </SubSectionTitle>
 
@@ -305,29 +260,21 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
                 key={key}
                 type="button"
                 onClick={() => setPlayFocus(key)}
-                className="w-full flex items-center p-3 rounded-lg transition-all duration-200"
-                style={{
-                  backgroundColor: isSelected
-                    ? 'var(--calendar-event-recommended-bg)'
-                    : 'var(--calendar-surface-elevated)',
-                  border: `2px solid ${isSelected ? 'var(--ak-primary)' : 'transparent'}`,
-                }}
+                className={`w-full flex items-center p-3 rounded-lg transition-all duration-200 border-2 ${
+                  isSelected
+                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    : 'bg-ak-surface-subtle border-transparent'
+                }`}
               >
                 <div className="text-left">
                   <span
-                    className="font-medium text-sm block"
-                    style={{
-                      color: isSelected
-                        ? 'var(--ak-primary)'
-                        : 'var(--calendar-text-primary)',
-                    }}
+                    className={`font-medium text-sm block ${
+                      isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                    }`}
                   >
                     {value.label}
                   </span>
-                  <span
-                    className="text-xs"
-                    style={{ color: 'var(--calendar-text-tertiary)' }}
-                  >
+                  <span className="text-xs text-ak-text-tertiary">
                     {value.description}
                   </span>
                 </div>
@@ -347,11 +294,8 @@ export const FocusStep: React.FC<FocusStepProps> = ({ planner }) => {
 
       {/* Skip hint for optional step */}
       {showPositionSelector && !showPuttingFocus && (
-        <div
-          className="p-3 rounded-lg"
-          style={{ backgroundColor: 'var(--info-muted)' }}
-        >
-          <span className="text-xs" style={{ color: 'var(--ak-info)' }}>
+        <div className="p-3 rounded-lg bg-ak-status-info/10">
+          <span className="text-xs text-ak-status-info">
             💡 Posisjonsvalg er valgfritt. Du kan gå videre uten å velge.
           </span>
         </div>

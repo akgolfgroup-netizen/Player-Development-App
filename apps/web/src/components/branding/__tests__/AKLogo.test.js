@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { AKLogo } from '../AKLogo';
-import { tokens } from '../../../design-tokens';
 
 describe('AKLogo', () => {
   it('renders SVG element', () => {
@@ -25,7 +24,7 @@ describe('AKLogo', () => {
   it('renders with default color (white)', () => {
     const { container } = render(<AKLogo />);
     const svg = container.querySelector('svg');
-    expect(svg).toHaveAttribute('fill', tokens.colors.white);
+    expect(svg).toHaveAttribute('fill', 'var(--ak-surface-card)');
   });
 
   it('renders with custom color', () => {

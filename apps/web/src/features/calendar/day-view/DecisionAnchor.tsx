@@ -1,5 +1,8 @@
 /**
- * Decision Anchor Component
+ * DecisionAnchor.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * ALWAYS VISIBLE - This is the anchor to the already-made decision.
  * Must never scroll out of view.
@@ -11,168 +14,6 @@
 import React, { useState } from 'react';
 import { Play, Check, Clock, Pause, X, ChevronDown, AlertTriangle, Zap } from 'lucide-react';
 import { DecisionAnchorProps, RescheduleOption } from './types';
-
-// Semantic style tokens (NO raw hex values)
-const styles = {
-  container: {
-    position: 'sticky' as const,
-    top: 0,
-    zIndex: 50,
-    backgroundColor: 'var(--background-white)',
-    borderBottom: '1px solid var(--border-default)',
-    padding: 'var(--spacing-4)',
-  },
-  content: {
-    maxWidth: '800px',
-    margin: '0 auto',
-  },
-  focusLine: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-tertiary)',
-    marginBottom: 'var(--spacing-1)',
-    fontWeight: 500,
-  },
-  recommendationLine: {
-    fontSize: 'var(--font-size-subheadline)',
-    color: 'var(--text-primary)',
-    fontWeight: 600,
-    marginBottom: 'var(--spacing-3)',
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    flexWrap: 'wrap' as const,
-  },
-  badge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1)',
-    padding: '2px 8px',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 500,
-  },
-  badgeRecommended: {
-    backgroundColor: 'var(--accent-muted)',
-    color: 'var(--text-brand)',
-  },
-  badgeInProgress: {
-    backgroundColor: 'var(--success-muted)',
-    color: 'var(--success)',
-  },
-  badgeCompleted: {
-    backgroundColor: 'var(--success-muted)',
-    color: 'var(--success)',
-  },
-  badgeCollision: {
-    backgroundColor: 'var(--warning-muted)',
-    color: 'var(--warning)',
-  },
-  actions: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-3)',
-    flexWrap: 'wrap' as const,
-  },
-  primaryButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-3) var(--spacing-5)',
-    backgroundColor: 'var(--accent)',
-    color: 'var(--text-inverse)',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-subheadline)',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-    minHeight: '44px',
-  },
-  primaryButtonHover: {
-    backgroundColor: 'var(--accent-hover)',
-  },
-  secondaryButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'transparent',
-    color: 'var(--text-secondary)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 500,
-    cursor: 'pointer',
-    transition: 'all 0.15s ease',
-    minHeight: '36px',
-  },
-  ghostButton: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1)',
-    padding: 'var(--spacing-2)',
-    backgroundColor: 'transparent',
-    color: 'var(--text-tertiary)',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--font-size-footnote)',
-    cursor: 'pointer',
-  },
-  timerDisplay: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    fontSize: 'var(--font-size-headline)',
-    fontWeight: 600,
-    fontVariantNumeric: 'tabular-nums',
-    color: 'var(--text-primary)',
-  },
-  rescheduleDropdown: {
-    position: 'relative' as const,
-  },
-  dropdown: {
-    position: 'absolute' as const,
-    top: '100%',
-    left: 0,
-    marginTop: 'var(--spacing-1)',
-    backgroundColor: 'var(--background-white)',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    boxShadow: 'var(--shadow-elevated)',
-    overflow: 'hidden',
-    minWidth: '160px',
-    zIndex: 60,
-  },
-  dropdownItem: {
-    display: 'block',
-    width: '100%',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    textAlign: 'left' as const,
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-primary)',
-    cursor: 'pointer',
-    transition: 'background-color 0.1s ease',
-  },
-  collisionWarning: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'var(--warning-muted)',
-    borderRadius: 'var(--radius-sm)',
-    marginBottom: 'var(--spacing-3)',
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-primary)',
-  },
-  noRecommendation: {
-    color: 'var(--text-secondary)',
-    fontSize: 'var(--font-size-subheadline)',
-  },
-};
 
 // Format elapsed time as MM:SS or HH:MM:SS
 const formatElapsedTime = (seconds: number): string => {
@@ -243,46 +84,40 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
       case 'S5_IN_PROGRESS':
         return (
           <>
-            <div style={styles.focusLine}>Pågår</div>
-            <div style={styles.recommendationLine}>
-              <span style={{ ...styles.badge, ...styles.badgeInProgress }}>
+            <div className="text-xs text-ak-text-tertiary mb-1 font-medium">Pågår</div>
+            <div className="text-base text-ak-text-primary font-semibold mb-3 flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-status-success/10 text-ak-status-success">
                 <Play size={12} />
                 Pågår
               </span>
               <span>{recommendedWorkout?.name}</span>
             </div>
-            <div style={styles.actions}>
+            <div className="flex items-center gap-3 flex-wrap">
               <div
-                style={styles.timerDisplay}
+                className="flex items-center gap-2 text-xl font-semibold tabular-nums text-ak-text-primary"
                 role="timer"
                 aria-live="polite"
                 aria-label={`Treningstid: ${formatElapsedTime(elapsedTime || 0)}`}
               >
-                <Clock size={20} style={{ color: 'var(--text-tertiary)' }} aria-hidden="true" />
+                <Clock size={20} className="text-ak-text-tertiary" aria-hidden="true" />
                 {formatElapsedTime(elapsedTime || 0)}
               </div>
               <button
-                style={styles.primaryButton}
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
                 onClick={onComplete}
-                onMouseEnter={(e) =>
-                  Object.assign(e.currentTarget.style, styles.primaryButtonHover)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = 'var(--accent)')
-                }
                 aria-label="Fullfør trening"
               >
                 <Check size={18} aria-hidden="true" />
                 Fullfør
               </button>
               {onPause && (
-                <button style={styles.ghostButton} onClick={onPause} aria-label="Pause trening">
+                <button className="inline-flex items-center gap-1 p-2 text-ak-text-tertiary rounded cursor-pointer hover:bg-ak-surface-subtle" onClick={onPause} aria-label="Pause trening">
                   <Pause size={16} aria-hidden="true" />
                   Pause
                 </button>
               )}
               {onCancel && (
-                <button style={styles.ghostButton} onClick={onCancel} aria-label="Avbryt trening">
+                <button className="inline-flex items-center gap-1 p-2 text-ak-text-tertiary rounded cursor-pointer hover:bg-ak-surface-subtle" onClick={onCancel} aria-label="Avbryt trening">
                   <X size={16} aria-hidden="true" />
                   Avbryt
                 </button>
@@ -294,16 +129,16 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
       case 'S6_COMPLETED':
         return (
           <>
-            <div style={styles.focusLine}>I dag: {weeklyFocus}</div>
-            <div style={styles.recommendationLine}>
-              <span style={{ ...styles.badge, ...styles.badgeCompleted }}>
+            <div className="text-xs text-ak-text-tertiary mb-1 font-medium">I dag: {weeklyFocus}</div>
+            <div className="text-base text-ak-text-primary font-semibold mb-3 flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-status-success/10 text-ak-status-success">
                 <Check size={12} />
                 Fullført
               </span>
               <span>{recommendedWorkout?.name}</span>
             </div>
-            <div style={styles.actions}>
-              <button style={styles.secondaryButton} onClick={onSelectWorkout}>
+            <div className="flex items-center gap-3 flex-wrap">
+              <button className="inline-flex items-center justify-center gap-2 py-2 px-3 border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer transition-all min-h-[36px] text-ak-text-secondary hover:bg-ak-surface-subtle" onClick={onSelectWorkout}>
                 Loggfør notat
               </button>
             </div>
@@ -313,15 +148,15 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
       case 'S4_COLLISION':
         return (
           <>
-            <div style={styles.focusLine}>I dag: {weeklyFocus}</div>
-            <div style={styles.collisionWarning}>
-              <AlertTriangle size={16} style={{ color: 'var(--warning)' }} />
+            <div className="text-xs text-ak-text-tertiary mb-1 font-medium">I dag: {weeklyFocus}</div>
+            <div className="flex items-center gap-2 py-2 px-3 bg-ak-status-warning/10 rounded mb-3 text-sm text-ak-text-primary">
+              <AlertTriangle size={16} className="text-ak-status-warning" />
               <span>
                 Konflikt med {collision?.conflictingEvent.title}
               </span>
             </div>
-            <div style={styles.recommendationLine}>
-              <span style={{ ...styles.badge, ...styles.badgeCollision }}>
+            <div className="text-base text-ak-text-primary font-semibold mb-3 flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-status-warning/10 text-ak-status-warning">
                 <AlertTriangle size={12} />
                 Konflikt
               </span>
@@ -330,14 +165,14 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                 {translateCategory(recommendedWorkout?.category || '')}
               </span>
             </div>
-            <div style={styles.actions}>
+            <div className="flex items-center gap-3 flex-wrap">
               <button
-                style={styles.primaryButton}
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
                 onClick={() => onReschedule({ type: 'delay', minutes: 30 })}
               >
                 Flytt 30 min
               </button>
-              <button style={styles.secondaryButton} onClick={onStartWorkout}>
+              <button className="inline-flex items-center justify-center gap-2 py-2 px-3 border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer transition-all min-h-[36px] text-ak-text-secondary hover:bg-ak-surface-subtle" onClick={onStartWorkout}>
                 Start likevel
               </button>
             </div>
@@ -347,13 +182,13 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
       case 'S3_NO_RECOMMENDATION':
         return (
           <>
-            <div style={styles.focusLine}>I dag: {weeklyFocus}</div>
-            <div style={{ ...styles.recommendationLine, ...styles.noRecommendation }}>
+            <div className="text-xs text-ak-text-tertiary mb-1 font-medium">I dag: {weeklyFocus}</div>
+            <div className="text-base text-ak-text-secondary font-semibold mb-3 flex items-center gap-2 flex-wrap">
               Ingen anbefalt økt i dag
             </div>
-            <div style={styles.actions}>
+            <div className="flex items-center gap-3 flex-wrap">
               <button
-                style={styles.primaryButton}
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
                 onClick={onStartWorkout}
                 aria-label="Start en rask 15 minutters terskeløkt"
               >
@@ -361,7 +196,7 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                 Start 15 min terskeløkt
               </button>
               <button
-                style={styles.secondaryButton}
+                className="inline-flex items-center justify-center gap-2 py-2 px-3 border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer transition-all min-h-[36px] text-ak-text-secondary hover:bg-ak-surface-subtle"
                 onClick={onSelectWorkout}
                 aria-label="Velg en økt fra biblioteket"
               >
@@ -374,32 +209,26 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
       case 'S2_UNSCHEDULED':
         return (
           <>
-            <div style={styles.focusLine}>I dag: {weeklyFocus}</div>
-            <div style={styles.recommendationLine}>
-              <span style={{ ...styles.badge, ...styles.badgeRecommended }}>Anbefalt</span>
+            <div className="text-xs text-ak-text-tertiary mb-1 font-medium">I dag: {weeklyFocus}</div>
+            <div className="text-base text-ak-text-primary font-semibold mb-3 flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-brand-primary/10 text-ak-brand-primary">Anbefalt</span>
               <span>
                 {recommendedWorkout?.name} · {formatDuration(recommendedWorkout?.duration || 0)} ·{' '}
                 {translateCategory(recommendedWorkout?.category || '')}
               </span>
             </div>
-            <div style={styles.actions}>
+            <div className="flex items-center gap-3 flex-wrap">
               <button
-                style={styles.primaryButton}
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
                 onClick={onStartWorkout}
-                onMouseEnter={(e) =>
-                  Object.assign(e.currentTarget.style, styles.primaryButtonHover)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = 'var(--accent)')
-                }
                 aria-label={`Start ${recommendedWorkout?.name} nå`}
               >
                 <Play size={18} aria-hidden="true" />
                 Start nå
               </button>
-              <div style={styles.rescheduleDropdown}>
+              <div className="relative">
                 <button
-                  style={styles.secondaryButton}
+                  className="inline-flex items-center justify-center gap-2 py-2 px-3 border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer transition-all min-h-[36px] text-ak-text-secondary hover:bg-ak-surface-subtle"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowRescheduleOptions(!showRescheduleOptions);
@@ -412,21 +241,15 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                   <ChevronDown size={14} aria-hidden="true" />
                 </button>
                 {showRescheduleOptions && (
-                  <div style={styles.dropdown} role="menu" aria-label="Planlegg tidspunkt">
+                  <div className="absolute top-full left-0 mt-1 bg-ak-surface-base border border-ak-border-default rounded-lg shadow-lg overflow-hidden min-w-[160px] z-[60]" role="menu" aria-label="Planlegg tidspunkt">
                     {rescheduleOptions.map(({ label, option }) => (
                       <button
                         key={label}
-                        style={styles.dropdownItem}
+                        className="block w-full py-3 px-4 text-left text-sm text-ak-text-primary cursor-pointer transition-colors hover:bg-ak-surface-subtle"
                         onClick={() => {
                           onReschedule(option);
                           setShowRescheduleOptions(false);
                         }}
-                        onMouseEnter={(e) =>
-                          (e.currentTarget.style.backgroundColor = 'var(--background-surface)')
-                        }
-                        onMouseLeave={(e) =>
-                          (e.currentTarget.style.backgroundColor = 'transparent')
-                        }
                         role="menuitem"
                       >
                         Om {label}
@@ -444,32 +267,26 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
       default:
         return (
           <>
-            <div style={styles.focusLine}>I dag: {weeklyFocus}</div>
-            <div style={styles.recommendationLine}>
-              <span style={{ ...styles.badge, ...styles.badgeRecommended }}>Anbefalt</span>
+            <div className="text-xs text-ak-text-tertiary mb-1 font-medium">I dag: {weeklyFocus}</div>
+            <div className="text-base text-ak-text-primary font-semibold mb-3 flex items-center gap-2 flex-wrap">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-ak-brand-primary/10 text-ak-brand-primary">Anbefalt</span>
               <span>
                 {recommendedWorkout?.name} · {formatDuration(recommendedWorkout?.duration || 0)} ·{' '}
                 {translateCategory(recommendedWorkout?.category || '')}
               </span>
             </div>
-            <div style={styles.actions}>
+            <div className="flex items-center gap-3 flex-wrap">
               <button
-                style={styles.primaryButton}
+                className="inline-flex items-center justify-center gap-2 py-3 px-5 bg-ak-brand-primary text-white rounded-lg text-base font-semibold cursor-pointer transition-all min-h-[44px] hover:bg-ak-brand-primary/90"
                 onClick={onStartWorkout}
-                onMouseEnter={(e) =>
-                  Object.assign(e.currentTarget.style, styles.primaryButtonHover)
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = 'var(--accent)')
-                }
                 aria-label={`Start ${recommendedWorkout?.name} nå`}
               >
                 <Play size={18} aria-hidden="true" />
                 Start nå
               </button>
-              <div style={styles.rescheduleDropdown}>
+              <div className="relative">
                 <button
-                  style={styles.secondaryButton}
+                  className="inline-flex items-center justify-center gap-2 py-2 px-3 border border-ak-border-default rounded-lg text-sm font-medium cursor-pointer transition-all min-h-[36px] text-ak-text-secondary hover:bg-ak-surface-subtle"
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowRescheduleOptions(!showRescheduleOptions);
@@ -482,41 +299,26 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
                   <ChevronDown size={14} aria-hidden="true" />
                 </button>
                 {showRescheduleOptions && (
-                  <div style={styles.dropdown} role="menu" aria-label="Utsett trening">
+                  <div className="absolute top-full left-0 mt-1 bg-ak-surface-base border border-ak-border-default rounded-lg shadow-lg overflow-hidden min-w-[160px] z-[60]" role="menu" aria-label="Utsett trening">
                     {rescheduleOptions.map(({ label, option }) => (
                       <button
                         key={label}
-                        style={styles.dropdownItem}
+                        className="block w-full py-3 px-4 text-left text-sm text-ak-text-primary cursor-pointer transition-colors hover:bg-ak-surface-subtle"
                         onClick={() => {
                           onReschedule(option);
                           setShowRescheduleOptions(false);
                         }}
-                        onMouseEnter={(e) =>
-                          (e.currentTarget.style.backgroundColor = 'var(--background-surface)')
-                        }
-                        onMouseLeave={(e) =>
-                          (e.currentTarget.style.backgroundColor = 'transparent')
-                        }
                         role="menuitem"
                       >
                         {label}
                       </button>
                     ))}
                     <button
-                      style={{
-                        ...styles.dropdownItem,
-                        borderTop: '1px solid var(--border-subtle)',
-                      }}
+                      className="block w-full py-3 px-4 text-left text-sm text-ak-text-primary cursor-pointer transition-colors border-t border-ak-border-subtle hover:bg-ak-surface-subtle"
                       onClick={() => {
                         setShowRescheduleOptions(false);
                         onOpenTimePicker?.();
                       }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor = 'var(--background-surface)')
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor = 'transparent')
-                      }
                       role="menuitem"
                     >
                       Velg tidspunkt...
@@ -532,11 +334,11 @@ export const DecisionAnchor: React.FC<DecisionAnchorProps> = ({
 
   return (
     <div
-      style={styles.container}
+      className="sticky top-0 z-50 bg-ak-surface-base border-b border-ak-border-default p-4"
       role="region"
       aria-label="Dagens beslutning"
     >
-      <div style={styles.content}>{renderContent()}</div>
+      <div className="max-w-[800px] mx-auto">{renderContent()}</div>
     </div>
   );
 };

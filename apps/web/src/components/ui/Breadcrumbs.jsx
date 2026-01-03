@@ -1,7 +1,13 @@
+/**
+ * Breadcrumbs Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 
 // Route name mappings
 const routeNames = {
@@ -72,7 +78,7 @@ export default function Breadcrumbs({ customItems, showHome = true }) {
     <nav
       aria-label="Brødsmuler"
       style={{
-        marginBottom: tokens.spacing.md,
+        marginBottom: '16px',
       }}
     >
       <ol
@@ -102,7 +108,7 @@ export default function Breadcrumbs({ customItems, showHome = true }) {
               {index > 0 && (
                 <ChevronRight
                   size={14}
-                  color={tokens.colors.steel}
+                  color="var(--ak-text-secondary)"
                   style={{ flexShrink: 0 }}
                 />
               )}
@@ -110,7 +116,7 @@ export default function Breadcrumbs({ customItems, showHome = true }) {
                 <span
                   style={{
                     fontSize: '13px',
-                    color: tokens.colors.charcoal,
+                    color: 'var(--ak-text-primary)',
                     fontWeight: '500',
                     display: 'flex',
                     alignItems: 'center',
@@ -126,15 +132,15 @@ export default function Breadcrumbs({ customItems, showHome = true }) {
                   to={item.href}
                   style={{
                     fontSize: '13px',
-                    color: tokens.colors.steel,
+                    color: 'var(--ak-text-secondary)',
                     textDecoration: 'none',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '4px',
                     transition: 'color 0.2s',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = tokens.colors.primary)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = tokens.colors.steel)}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--ak-brand-primary)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--ak-text-secondary)')}
                 >
                   {Icon && <Icon size={14} />}
                   {item.label}
