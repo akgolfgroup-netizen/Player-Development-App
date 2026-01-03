@@ -1,10 +1,10 @@
 # Railway configuration for IUP Golf API
 # Using DOCKERFILE builder for consistent deployments
-# Build date: 2026-01-03 v3 - Debugging samling routes
+# Build date: 2026-01-03 v5 - Simplified config
 
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "./Dockerfile"
 
 [deploy]
 startCommand = "npx prisma migrate deploy && node dist/server.js"
