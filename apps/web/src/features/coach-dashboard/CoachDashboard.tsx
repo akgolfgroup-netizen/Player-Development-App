@@ -13,7 +13,7 @@
  * - Quick navigation to coach tools
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, Calendar, ClipboardList, MessageSquare, Bell,
@@ -29,7 +29,6 @@ import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
 import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
-import { useRealTimePolling, formatLastUpdated } from '../../hooks';
 
 // Mock data for athletes
 const mockAthletes = [
@@ -153,88 +152,138 @@ interface DashboardData {
   defaultTeamId: string | null;
 }
 
+// Helper to format time ago
+function formatTimeAgo(dateStr: string): string {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffDays > 0) return `${diffDays} dag${diffDays > 1 ? 'er' : ''} siden`;
+  if (diffHours > 0) return `${diffHours} time${diffHours > 1 ? 'r' : ''} siden`;
+  return 'Akkurat nå';
+}
+
+// Helper to format last updated
+function formatLastUpdated(date: Date | null): string {
+  if (!date) return 'Aldri oppdatert';
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+
+  if (diffSeconds < 10) return 'Nettopp oppdatert';
+  if (diffSeconds < 60) return `${diffSeconds} sek siden`;
+  if (diffMinutes < 60) return `${diffMinutes} min siden`;
+  return date.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
+}
+
 // Main Coach Dashboard component
 export default function CoachDashboard({ athletes: propAthletes, pendingItems: propPendingItems }: CoachDashboardProps = {}) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Helper to format time ago
-  const formatTimeAgo = useCallback((dateStr: string): string => {
-    const date = new Date(dateStr);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffHours / 24);
+  // Simple state management instead of useRealTimePolling
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const mountedRef = useRef(true);
 
-    if (diffDays > 0) return `${diffDays} dag${diffDays > 1 ? 'er' : ''} siden`;
-    if (diffHours > 0) return `${diffHours} time${diffHours > 1 ? 'r' : ''} siden`;
-    return 'Akkurat nå';
+  // Fetch dashboard data
+  const fetchDashboardData = useCallback(async (isBackground = false) => {
+    try {
+      if (isBackground) {
+        setIsRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+
+      const coachId = (user as any)?.coachId || user?.id;
+
+      const [athletesRes, alertsRes, statsRes] = await Promise.all([
+        coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
+        coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
+        coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
+      ]);
+
+      // Transform athletes response
+      const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
+      const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: any) => ({
+        id: a.id,
+        firstName: a.firstName,
+        lastName: a.lastName,
+        category: a.category || 'B',
+        lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
+      })) : mockAthletes;
+
+      // Transform alerts to pending items format
+      const alertsResponse = alertsRes.data?.data || alertsRes.data || {};
+      const alertsData = (alertsResponse as any)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
+      const transformedPendingItems = Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
+        id: alert.id,
+        type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
+        athlete: alert.athleteName,
+        description: alert.message,
+        time: formatTimeAgo(alert.createdAt),
+      })) : mockPendingItems;
+
+      // Get stats from statistics response
+      const statsData = (statsRes.data?.data || statsRes.data) as any;
+      const transformedStats = statsData?.sessions ? {
+        activePlayers: statsData.players?.active || 0,
+        sessionsThisWeek: statsData.sessions?.thisWeek || 0,
+        hoursTrained: statsData.sessions?.totalHours || 0,
+        pendingCount: alertsData.length || 0,
+      } : null;
+
+      if (mountedRef.current) {
+        setDashboardData({
+          athletes: transformedAthletes,
+          pendingItems: transformedPendingItems,
+          weeklyStats: transformedStats,
+          todaySchedule: [],
+          defaultTeamId: transformedAthletes.length > 0 ? transformedAthletes[0].id : null,
+        });
+        setLastUpdated(new Date());
+        setError(null);
+      }
+    } catch (err) {
+      if (mountedRef.current) {
+        setError(err instanceof Error ? err : new Error(String(err)));
+      }
+    } finally {
+      if (mountedRef.current) {
+        setLoading(false);
+        setIsRefreshing(false);
+      }
+    }
+  }, [user]);
+
+  // Initial fetch
+  useEffect(() => {
+    if (!propAthletes && !propPendingItems) {
+      fetchDashboardData(false);
+    } else {
+      setLoading(false);
+    }
+  }, [propAthletes, propPendingItems, fetchDashboardData]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
-  // Fetch dashboard data function (memoized for polling hook)
-  const fetchDashboardData = useCallback(async (): Promise<DashboardData> => {
-    const coachId = (user as any)?.coachId || user?.id;
-
-    const [athletesRes, alertsRes, statsRes] = await Promise.all([
-      coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
-      coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
-      coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
-    ]);
-
-    // Transform athletes response
-    const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
-    const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: any) => ({
-      id: a.id,
-      firstName: a.firstName,
-      lastName: a.lastName,
-      category: a.category || 'B',
-      lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
-    })) : mockAthletes;
-
-    // Transform alerts to pending items format
-    const alertsResponse = alertsRes.data?.data || alertsRes.data || {};
-    const alertsData = (alertsResponse as any)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
-    const transformedPendingItems = Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
-      id: alert.id,
-      type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
-      athlete: alert.athleteName,
-      description: alert.message,
-      time: formatTimeAgo(alert.createdAt),
-    })) : mockPendingItems;
-
-    // Get stats from statistics response
-    const statsData = (statsRes.data?.data || statsRes.data) as any;
-    const transformedStats = statsData?.sessions ? {
-      activePlayers: statsData.players?.active || 0,
-      sessionsThisWeek: statsData.sessions?.thisWeek || 0,
-      hoursTrained: statsData.sessions?.totalHours || 0,
-      pendingCount: alertsData.length || 0,
-    } : null;
-
-    return {
-      athletes: transformedAthletes,
-      pendingItems: transformedPendingItems,
-      weeklyStats: transformedStats,
-      todaySchedule: [],
-      defaultTeamId: transformedAthletes.length > 0 ? transformedAthletes[0].id : null,
-    };
-  }, [user, formatTimeAgo]);
-
-  // Use real-time polling for dashboard data
-  const {
-    data: dashboardData,
-    isLoading: loading,
-    isRefreshing,
-    error,
-    lastUpdated,
-    refresh,
-  } = useRealTimePolling<DashboardData>({
-    fetchFn: fetchDashboardData,
-    interval: 30000, // Refresh every 30 seconds
-    enabled: !propAthletes && !propPendingItems,
-    showBackgroundLoading: true,
-  });
+  // Manual refresh function
+  const refresh = useCallback(() => {
+    fetchDashboardData(true);
+  }, [fetchDashboardData]);
 
   // Use prop data or fetched data
   const athletes = propAthletes || dashboardData?.athletes || mockAthletes;
@@ -243,6 +292,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
   const todaySchedule = dashboardData?.todaySchedule || [];
   const defaultTeamId = dashboardData?.defaultTeamId || null;
 
+  // Conditional returns AFTER all hooks
   if (loading && !dashboardData) return <LoadingState />;
   if (error && athletes.length === 0) return <ErrorState error={error.message} onRetry={refresh} />;
 
@@ -259,26 +309,6 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     if (hour < 18) return 'God dag';
     return 'God kveld';
   };
-
-  // Add refresh animations
-  useEffect(() => {
-    if (!document.getElementById('coach-dashboard-animations')) {
-      const style = document.createElement('style');
-      style.id = 'coach-dashboard-animations';
-      style.textContent = `
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes refreshProgress {
-          0% { transform: translateX(-100%); }
-          50% { transform: translateX(0%); }
-          100% { transform: translateX(100%); }
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }, []);
 
   return (
     <div className="relative min-h-screen bg-ak-surface-subtle font-sans">
