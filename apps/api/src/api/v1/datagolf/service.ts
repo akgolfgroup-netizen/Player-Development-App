@@ -560,6 +560,18 @@ export class DataGolfService {
    * Sync individual player data to database
    */
   private async syncPlayer(playerData: DataGolfSkillRating): Promise<void> {
+    const currentYear = new Date().getFullYear();
+    await this.syncPlayerWithHistory(playerData, currentYear);
+  }
+
+  /**
+   * Sync individual player data with year/season support
+   */
+  private async syncPlayerWithHistory(
+    playerData: DataGolfSkillRating,
+    season: number,
+    tour: string = 'pga'
+  ): Promise<void> {
     await this.prisma.dataGolfPlayer.upsert({
       where: {
         dataGolfId: playerData.dg_id.toString(),
@@ -572,8 +584,8 @@ export class DataGolfService {
         sgApproach: playerData.sg_app,
         sgAroundGreen: playerData.sg_arg,
         sgPutting: playerData.sg_putt,
-        tour: 'pga',
-        season: 2025,
+        tour,
+        season,
         lastSynced: new Date(),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -585,6 +597,8 @@ export class DataGolfService {
         sgApproach: playerData.sg_app,
         sgAroundGreen: playerData.sg_arg,
         sgPutting: playerData.sg_putt,
+        tour,
+        season,
         lastSynced: new Date(),
         updatedAt: new Date(),
       },
