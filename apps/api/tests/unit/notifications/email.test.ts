@@ -67,14 +67,14 @@ describe('EmailService', () => {
       });
     });
 
-    it('should warn when SMTP is not configured', () => {
+    it('should log info when SMTP is not configured', () => {
       delete process.env.SMTP_HOST;
       delete process.env.SMTP_USER;
       delete process.env.SMTP_PASS;
 
       new EmailService();
 
-      expect(mockLogger.warn).toHaveBeenCalledWith(
+      expect(mockLogger.info).toHaveBeenCalledWith(
         'Email service not configured - emails will be logged only'
       );
     });
@@ -187,8 +187,8 @@ describe('EmailService', () => {
       delete process.env.SMTP_HOST;
       new EmailService();
 
-      // Should warn about not being configured
-      expect(mockLogger.warn).toHaveBeenCalledWith(
+      // Should log info about not being configured
+      expect(mockLogger.info).toHaveBeenCalledWith(
         expect.stringContaining('not configured')
       );
     });

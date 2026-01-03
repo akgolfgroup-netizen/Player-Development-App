@@ -58,6 +58,13 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
 
   // Note: /health, /metrics, /ready, /live endpoints are provided by the metrics plugin
 
+  // Version endpoint to verify deployments
+  app.get('/version', async () => ({
+    version: '2026-01-03-samling',
+    timestamp: new Date().toISOString(),
+    features: ['samling'],
+  }));
+
   // Register API routes
   const { authRoutes } = await import('./api/v1/auth');
   const { playerRoutes } = await import('./api/v1/players');

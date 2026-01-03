@@ -33,7 +33,7 @@ async function sentryPlugin(
 
   // Only enable Sentry if DSN is configured
   if (!dsn) {
-    fastify.log.warn('Sentry DSN not configured, error tracking disabled');
+    fastify.log.info('Sentry DSN not configured, error tracking disabled');
     return;
   }
 

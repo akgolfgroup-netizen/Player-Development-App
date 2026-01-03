@@ -377,7 +377,7 @@ export function createGoogleCalendarService(): GoogleCalendarService | null {
   const redirectUri = config.google?.redirectUri;
 
   if (!clientId || !clientSecret || !redirectUri) {
-    logger.warn('Google Calendar integration not configured');
+    logger.info('Google Calendar integration not configured');
     return null;
   }
 

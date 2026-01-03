@@ -130,7 +130,7 @@ export class DataGolfClient {
     this.rateLimit = parseInt(process.env.DATAGOLF_RATE_LIMIT || '1000', 10); // ms between requests
 
     if (!this.apiKey) {
-      logger.warn('⚠️  DataGolf API key not configured. DataGolf features will be disabled.');
+      logger.info('DataGolf API key not configured. DataGolf features will be disabled.');
     }
 
     this.client = axios.create({

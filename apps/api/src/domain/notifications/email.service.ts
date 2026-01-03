@@ -44,7 +44,7 @@ export class EmailService {
 
       logger.info('Email service configured and ready');
     } else {
-      logger.warn('Email service not configured - emails will be logged only');
+      logger.info('Email service not configured - emails will be logged only');
     }
   }
 
