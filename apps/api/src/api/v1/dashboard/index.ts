@@ -293,6 +293,18 @@ coaches and administrators to monitor their athletes' progress and training data
         return reply.status(403).send({ error: 'Insufficient permissions' });
       }
 
+      // Verify player exists in tenant
+      const player = await prisma.player.findFirst({
+        where: {
+          id: playerId,
+          tenantId,
+        },
+      });
+
+      if (!player) {
+        return reply.status(404).send({ error: 'Player not found' });
+      }
+
       const date = request.query.date ? new Date(request.query.date) : new Date();
 
       try {
