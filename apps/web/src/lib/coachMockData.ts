@@ -1,0 +1,365 @@
+/**
+ * ============================================================
+ * COACH MODULE MOCK DATA
+ * ============================================================
+ *
+ * Mock data for coach module development.
+ * Based on COACH_MODULE_FUNCTIONS.md specification.
+ *
+ * CRITICAL RULES:
+ * - Athlete lists ALWAYS sorted alphabetically A-Å
+ * - No athlete ranking or "best/worst" indicators
+ * - Neutral presentation throughout
+ * ============================================================
+ */
+
+// ============================================================
+// TYPES
+// ============================================================
+
+export interface Athlete {
+  id: string;
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  email: string;
+  hcp: number;
+  category: 'A' | 'B' | 'C' | 'D';
+  lastActivityAt: string;
+  injuryStatus: 'ready' | 'limited' | 'injured';
+  hasPlan: boolean;
+  avatarUrl?: string;
+}
+
+export interface Alert {
+  id: string;
+  type: 'proof_uploaded' | 'plan_pending' | 'note_request' | 'milestone' | 'injury' | 'test_completed';
+  athleteId: string;
+  athleteName: string;
+  message: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+export interface PendingItem {
+  id: string;
+  type: 'proof' | 'note' | 'plan' | 'booking';
+  athleteId: string;
+  athleteName: string;
+  description: string;
+  createdAt: string;
+}
+
+export interface Tournament {
+  id: string;
+  name: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  participants: string[];
+  participantCount: number;
+}
+
+export interface BookingSlot {
+  id: string;
+  date: string;
+  time: string;
+  status: 'available' | 'booked' | 'pending' | 'blocked';
+  athleteId?: string;
+  athleteName?: string;
+  sessionType?: string;
+  notes?: string;
+}
+
+export interface Message {
+  id: string;
+  subject: string;
+  preview: string;
+  category: 'training' | 'tournament' | 'important' | 'general';
+  recipientType: 'player' | 'group' | 'all';
+  recipientName: string;
+  status: 'pending' | 'delivered' | 'read';
+  sentAt: string;
+  scheduledFor?: string;
+  hasAttachment: boolean;
+}
+
+export interface Exercise {
+  id: string;
+  name: string;
+  description: string;
+  category: 'putting' | 'driving' | 'iron' | 'wedge' | 'bunker' | 'mental' | 'fitness';
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  duration: number; // minutes
+  equipment: string[];
+  hasMedia: boolean;
+  isFavorite: boolean;
+  usageCount: number;
+  rating: number;
+}
+
+export interface StatsOverview {
+  improvingCount: number;
+  regressingCount: number;
+  stableCount: number;
+  avgHcpChange: number;
+  totalSessions: number;
+  totalHours: number;
+  activePlayers: number;
+}
+
+export interface ModificationRequest {
+  id: string;
+  athleteId: string;
+  athleteName: string;
+  type: string;
+  description: string;
+  notes: string;
+  priority: 'low' | 'medium' | 'high';
+  status: 'waiting' | 'in_review' | 'resolved' | 'rejected';
+  createdAt: string;
+  resolvedAt?: string;
+  responseNote?: string;
+}
+
+export interface Group {
+  id: string;
+  name: string;
+  type: 'WANG' | 'Team Norway' | 'Custom';
+  memberCount: number;
+  members: string[];
+  hasPlan: boolean;
+  createdAt: string;
+}
+
+// ============================================================
+// HELPER: Sort alphabetically by displayName (Norwegian locale)
+// ============================================================
+
+function sortAlphabetically<T extends { displayName?: string; lastName?: string; firstName?: string }>(
+  items: T[]
+): T[] {
+  return [...items].sort((a, b) => {
+    const nameA = a.displayName || `${a.lastName}, ${a.firstName}` || '';
+    const nameB = b.displayName || `${b.lastName}, ${b.firstName}` || '';
+    return nameA.localeCompare(nameB, 'nb-NO');
+  });
+}
+
+// ============================================================
+// COACH GREETING
+// ============================================================
+
+export function getCoachGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'God morgen';
+  if (hour < 18) return 'God dag';
+  return 'God kveld';
+}
+
+// ============================================================
+// ATHLETE LIST (ALWAYS ALPHABETICAL)
+// ============================================================
+
+const rawAthletes: Omit<Athlete, 'displayName'>[] = [
+  { id: '1', firstName: 'Anders', lastName: 'Hansen', email: 'anders@example.com', hcp: 5.2, category: 'A', lastActivityAt: '2026-01-02T10:30:00Z', injuryStatus: 'ready', hasPlan: true },
+  { id: '2', firstName: 'Bjørn', lastName: 'Eriksen', email: 'bjorn@example.com', hcp: 8.1, category: 'B', lastActivityAt: '2026-01-01T14:00:00Z', injuryStatus: 'ready', hasPlan: true },
+  { id: '3', firstName: 'Christina', lastName: 'Olsen', email: 'christina@example.com', hcp: 3.4, category: 'A', lastActivityAt: '2026-01-03T09:00:00Z', injuryStatus: 'ready', hasPlan: true },
+  { id: '4', firstName: 'Daniel', lastName: 'Berg', email: 'daniel@example.com', hcp: 12.3, category: 'C', lastActivityAt: '2025-12-28T16:00:00Z', injuryStatus: 'limited', hasPlan: false },
+  { id: '5', firstName: 'Emma', lastName: 'Andersen', email: 'emma@example.com', hcp: 6.7, category: 'B', lastActivityAt: '2026-01-02T11:00:00Z', injuryStatus: 'ready', hasPlan: true },
+  { id: '6', firstName: 'Fredrik', lastName: 'Johansen', email: 'fredrik@example.com', hcp: 4.5, category: 'A', lastActivityAt: '2026-01-01T08:30:00Z', injuryStatus: 'ready', hasPlan: true },
+  { id: '7', firstName: 'Guro', lastName: 'Nilsen', email: 'guro@example.com', hcp: 9.8, category: 'B', lastActivityAt: '2025-12-30T15:00:00Z', injuryStatus: 'ready', hasPlan: false },
+  { id: '8', firstName: 'Henrik', lastName: 'Larsen', email: 'henrik@example.com', hcp: 7.2, category: 'B', lastActivityAt: '2026-01-02T13:00:00Z', injuryStatus: 'ready', hasPlan: true },
+  { id: '9', firstName: 'Ida', lastName: 'Pedersen', email: 'ida@example.com', hcp: 11.5, category: 'C', lastActivityAt: '2025-12-29T10:00:00Z', injuryStatus: 'injured', hasPlan: true },
+  { id: '10', firstName: 'Jonas', lastName: 'Kristiansen', email: 'jonas@example.com', hcp: 2.1, category: 'A', lastActivityAt: '2026-01-03T07:30:00Z', injuryStatus: 'ready', hasPlan: true },
+  { id: '11', firstName: 'Kari', lastName: 'Svendsen', email: 'kari@example.com', hcp: 14.2, category: 'C', lastActivityAt: '2025-12-27T12:00:00Z', injuryStatus: 'ready', hasPlan: false },
+  { id: '12', firstName: 'Lars', lastName: 'Ødegård', email: 'lars@example.com', hcp: 5.8, category: 'B', lastActivityAt: '2026-01-01T16:30:00Z', injuryStatus: 'ready', hasPlan: true },
+];
+
+// Add displayName and sort alphabetically
+export const athleteList: Athlete[] = sortAlphabetically(
+  rawAthletes.map(a => ({
+    ...a,
+    displayName: `${a.lastName}, ${a.firstName}`,
+  }))
+);
+
+// ============================================================
+// ALERTS FEED (grouped by athlete name alphabetically)
+// ============================================================
+
+const rawAlerts: Alert[] = [
+  { id: 'a1', type: 'proof_uploaded', athleteId: '1', athleteName: 'Hansen, Anders', message: 'Lastet opp ny treningsvideo', createdAt: '2026-01-03T08:30:00Z', isRead: false },
+  { id: 'a2', type: 'plan_pending', athleteId: '5', athleteName: 'Andersen, Emma', message: 'Treningsplan venter godkjenning', createdAt: '2026-01-02T15:00:00Z', isRead: false },
+  { id: 'a3', type: 'milestone', athleteId: '10', athleteName: 'Kristiansen, Jonas', message: 'Oppnådde milepæl: 100 økter', createdAt: '2026-01-02T10:00:00Z', isRead: true },
+  { id: 'a4', type: 'injury', athleteId: '9', athleteName: 'Pedersen, Ida', message: 'Rapportert skade - venstre håndledd', createdAt: '2026-01-01T14:00:00Z', isRead: false },
+  { id: 'a5', type: 'test_completed', athleteId: '3', athleteName: 'Olsen, Christina', message: 'Fullførte putting-test', createdAt: '2026-01-01T11:00:00Z', isRead: true },
+  { id: 'a6', type: 'note_request', athleteId: '7', athleteName: 'Nilsen, Guro', message: 'Ønsker tilbakemelding på siste økt', createdAt: '2025-12-31T16:00:00Z', isRead: false },
+  { id: 'a7', type: 'proof_uploaded', athleteId: '6', athleteName: 'Johansen, Fredrik', message: 'Lastet opp bevis for teknikk-øvelse', createdAt: '2025-12-31T09:00:00Z', isRead: true },
+];
+
+// Sort alerts by athlete name (alphabetically)
+export const alertsFeed: Alert[] = [...rawAlerts].sort((a, b) =>
+  a.athleteName.localeCompare(b.athleteName, 'nb-NO')
+);
+
+// ============================================================
+// PENDING ITEMS
+// ============================================================
+
+export const pendingItems: PendingItem[] = [
+  { id: 'p1', type: 'proof', athleteId: '1', athleteName: 'Hansen, Anders', description: 'Ny video å gjennomgå', createdAt: '2026-01-03T08:30:00Z' },
+  { id: 'p2', type: 'plan', athleteId: '5', athleteName: 'Andersen, Emma', description: 'Treningsplan venter godkjenning', createdAt: '2026-01-02T15:00:00Z' },
+  { id: 'p3', type: 'note', athleteId: '7', athleteName: 'Nilsen, Guro', description: 'Ønsker tilbakemelding', createdAt: '2025-12-31T16:00:00Z' },
+  { id: 'p4', type: 'booking', athleteId: '4', athleteName: 'Berg, Daniel', description: 'Booking-forespørsel for mandag', createdAt: '2026-01-02T09:00:00Z' },
+];
+
+// ============================================================
+// WEEKLY TOURNAMENTS
+// ============================================================
+
+export const weeklyTournaments: Tournament[] = [
+  {
+    id: 't1',
+    name: 'AK Golf Vinterserie Runde 1',
+    location: 'Oslo Golfklubb',
+    startDate: '2026-01-05',
+    endDate: '2026-01-05',
+    participants: ['1', '3', '6', '10'],
+    participantCount: 4,
+  },
+  {
+    id: 't2',
+    name: 'NGF Junior Tour',
+    location: 'Bærum Golfklubb',
+    startDate: '2026-01-07',
+    endDate: '2026-01-08',
+    participants: ['5', '8', '12'],
+    participantCount: 3,
+  },
+];
+
+// ============================================================
+// BOOKING SLOTS
+// ============================================================
+
+export const bookingSlots: BookingSlot[] = [
+  { id: 'b1', date: '2026-01-06', time: '09:00', status: 'booked', athleteId: '1', athleteName: 'Hansen, Anders', sessionType: 'Putting' },
+  { id: 'b2', date: '2026-01-06', time: '10:00', status: 'available' },
+  { id: 'b3', date: '2026-01-06', time: '11:00', status: 'booked', athleteId: '3', athleteName: 'Olsen, Christina', sessionType: 'Driving' },
+  { id: 'b4', date: '2026-01-06', time: '14:00', status: 'pending', athleteId: '4', athleteName: 'Berg, Daniel' },
+  { id: 'b5', date: '2026-01-06', time: '15:00', status: 'blocked', notes: 'Møte' },
+  { id: 'b6', date: '2026-01-07', time: '09:00', status: 'available' },
+  { id: 'b7', date: '2026-01-07', time: '10:00', status: 'booked', athleteId: '6', athleteName: 'Johansen, Fredrik', sessionType: 'Videoanalyse' },
+];
+
+// ============================================================
+// MESSAGES (sent and scheduled)
+// ============================================================
+
+export const messages: Message[] = [
+  { id: 'm1', subject: 'Ukens treningsfokus', preview: 'Hei alle, denne uken fokuserer vi på...', category: 'training', recipientType: 'all', recipientName: 'Alle spillere', status: 'delivered', sentAt: '2026-01-02T08:00:00Z', hasAttachment: false },
+  { id: 'm2', subject: 'Turnering på søndag', preview: 'Husk påmelding til AK Golf Vinterserie...', category: 'tournament', recipientType: 'group', recipientName: 'A-kategorien', status: 'read', sentAt: '2026-01-01T10:00:00Z', hasAttachment: true },
+  { id: 'm3', subject: 'Viktig: Endring i treningstider', preview: 'Grunnet vedlikehold endres tidene...', category: 'important', recipientType: 'all', recipientName: 'Alle spillere', status: 'pending', sentAt: '2026-01-03T06:00:00Z', hasAttachment: false },
+  { id: 'm4', subject: 'Din ukerapport', preview: 'Her er din ukentlige treningsrapport...', category: 'general', recipientType: 'player', recipientName: 'Hansen, Anders', status: 'delivered', sentAt: '2025-12-30T15:00:00Z', hasAttachment: true },
+];
+
+export const scheduledMessages: Message[] = [
+  { id: 'sm1', subject: 'Påminnelse om turnering', preview: 'Ikke glem turneringen i morgen...', category: 'tournament', recipientType: 'group', recipientName: 'Turneringsdeltakere', status: 'pending', sentAt: '', scheduledFor: '2026-01-04T18:00:00Z', hasAttachment: false },
+  { id: 'sm2', subject: 'Ukens oppsummering', preview: 'God jobb denne uken! Her er...', category: 'general', recipientType: 'all', recipientName: 'Alle spillere', status: 'pending', sentAt: '', scheduledFor: '2026-01-05T12:00:00Z', hasAttachment: false },
+];
+
+// ============================================================
+// EXERCISES
+// ============================================================
+
+export const exercises: Exercise[] = [
+  { id: 'e1', name: '3-meter putting drill', description: 'Fokus på distansekontroll fra 3 meter', category: 'putting', difficulty: 'beginner', duration: 15, equipment: ['Putter', 'Baller'], hasMedia: true, isFavorite: true, usageCount: 45, rating: 4.8 },
+  { id: 'e2', name: 'Gate drill', description: 'Putt gjennom porten for bedre presisjon', category: 'putting', difficulty: 'intermediate', duration: 20, equipment: ['Putter', 'Baller', 'Tees'], hasMedia: true, isFavorite: false, usageCount: 32, rating: 4.5 },
+  { id: 'e3', name: 'Driver alignment', description: 'Korrekt alignment for driver-slag', category: 'driving', difficulty: 'beginner', duration: 25, equipment: ['Driver', 'Alignment sticks'], hasMedia: true, isFavorite: true, usageCount: 28, rating: 4.6 },
+  { id: 'e4', name: 'Power training', description: 'Øk svinghastighet med motstandstrening', category: 'driving', difficulty: 'advanced', duration: 30, equipment: ['Driver', 'Resistance band'], hasMedia: false, isFavorite: false, usageCount: 15, rating: 4.2 },
+  { id: 'e5', name: '7-iron precision', description: 'Presisjonstrening med 7-jern', category: 'iron', difficulty: 'intermediate', duration: 25, equipment: ['7-iron', 'Targets'], hasMedia: true, isFavorite: true, usageCount: 38, rating: 4.7 },
+  { id: 'e6', name: 'Wedge distance control', description: 'Kontrollert lengde med wedge', category: 'wedge', difficulty: 'intermediate', duration: 20, equipment: ['Wedge', 'Targets'], hasMedia: true, isFavorite: false, usageCount: 25, rating: 4.4 },
+  { id: 'e7', name: 'Bunker basics', description: 'Grunnleggende bunker-teknikk', category: 'bunker', difficulty: 'beginner', duration: 20, equipment: ['Sand wedge'], hasMedia: true, isFavorite: false, usageCount: 22, rating: 4.3 },
+  { id: 'e8', name: 'Pre-shot routine', description: 'Mental forberedelse før slag', category: 'mental', difficulty: 'beginner', duration: 10, equipment: [], hasMedia: true, isFavorite: true, usageCount: 50, rating: 4.9 },
+  { id: 'e9', name: 'Core stability', description: 'Stabilitetstrening for bedre rotasjon', category: 'fitness', difficulty: 'intermediate', duration: 30, equipment: ['Matte', 'Swiss ball'], hasMedia: true, isFavorite: false, usageCount: 18, rating: 4.1 },
+];
+
+// ============================================================
+// STATS OVERVIEW
+// ============================================================
+
+export const statsOverview: StatsOverview = {
+  improvingCount: 8,
+  regressingCount: 2,
+  stableCount: 2,
+  avgHcpChange: -0.8,
+  totalSessions: 156,
+  totalHours: 234,
+  activePlayers: 12,
+};
+
+// ============================================================
+// MODIFICATION REQUESTS
+// ============================================================
+
+export const modificationRequests: ModificationRequest[] = [
+  { id: 'mr1', athleteId: '4', athleteName: 'Berg, Daniel', type: 'Planendring', description: 'Ønsker å endre treningstid på torsdager', notes: 'Har fått ny skoletime som kolliderer', priority: 'medium', status: 'waiting', createdAt: '2026-01-02T10:00:00Z' },
+  { id: 'mr2', athleteId: '7', athleteName: 'Nilsen, Guro', type: 'Øvelsesbytte', description: 'Ønsker alternativ til bunker-øvelse', notes: 'Har smerter i håndledd ved bunker-slag', priority: 'high', status: 'in_review', createdAt: '2026-01-01T14:00:00Z' },
+  { id: 'mr3', athleteId: '11', athleteName: 'Svendsen, Kari', type: 'Planpause', description: 'Ønsker pause fra trening i 2 uker', notes: 'Eksamensperiode', priority: 'low', status: 'resolved', createdAt: '2025-12-28T09:00:00Z', resolvedAt: '2025-12-29T11:00:00Z', responseNote: 'Godkjent. Plan settes på pause 6.-20. januar.' },
+];
+
+// ============================================================
+// GROUPS
+// ============================================================
+
+export const groups: Group[] = [
+  { id: 'g1', name: 'A-kategorien', type: 'Custom', memberCount: 4, members: ['1', '3', '6', '10'], hasPlan: true, createdAt: '2025-09-01T00:00:00Z' },
+  { id: 'g2', name: 'B-kategorien', type: 'Custom', memberCount: 4, members: ['2', '5', '8', '12'], hasPlan: true, createdAt: '2025-09-01T00:00:00Z' },
+  { id: 'g3', name: 'WANG Toppidrett', type: 'WANG', memberCount: 3, members: ['3', '6', '10'], hasPlan: true, createdAt: '2025-08-15T00:00:00Z' },
+  { id: 'g4', name: 'Team Norway U18', type: 'Team Norway', memberCount: 2, members: ['3', '10'], hasPlan: false, createdAt: '2025-10-01T00:00:00Z' },
+];
+
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+
+export function getAthleteById(id: string): Athlete | undefined {
+  return athleteList.find(a => a.id === id);
+}
+
+export function getUnreadAlerts(): Alert[] {
+  return alertsFeed.filter(a => !a.isRead);
+}
+
+export function getAlertsForAthlete(athleteId: string): Alert[] {
+  return alertsFeed.filter(a => a.athleteId === athleteId);
+}
+
+export function getBookingSlotsForDate(date: string): BookingSlot[] {
+  return bookingSlots.filter(b => b.date === date);
+}
+
+export function getBookingStats() {
+  const booked = bookingSlots.filter(b => b.status === 'booked').length;
+  const pending = bookingSlots.filter(b => b.status === 'pending').length;
+  const available = bookingSlots.filter(b => b.status === 'available').length;
+  const blocked = bookingSlots.filter(b => b.status === 'blocked').length;
+  return { booked, pending, available, blocked, total: bookingSlots.length };
+}
+
+export function getAthletesWithPlan(): Athlete[] {
+  return athleteList.filter(a => a.hasPlan);
+}
+
+export function getAthletesWithoutPlan(): Athlete[] {
+  return athleteList.filter(a => !a.hasPlan);
+}
+
+export function getExercisesByCategory(category: Exercise['category']): Exercise[] {
+  return exercises.filter(e => e.category === category);
+}
+
+export function getFavoriteExercises(): Exercise[] {
+  return exercises.filter(e => e.isFavorite);
+}

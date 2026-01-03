@@ -1,6 +1,6 @@
 /**
  * AK Golf Academy - Coach Sidebar
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Sidebar navigation for coaches.
  * Role-based navigation using coachNavigationConfig.
@@ -9,7 +9,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
-import { coachNavigationConfig, coachQuickActions } from '../../config/coach-navigation';
+import { coachNavigationConfig, coachQuickActions, type NavItem } from '../../config/coach-navigation';
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
 
@@ -27,9 +27,10 @@ interface CoachSidebarProps {
   };
   unreadAlerts?: number;
   onLogout?: () => void;
+  isMobileOverlay?: boolean;
 }
 
-export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: CoachSidebarProps) {
+export default function CoachSidebar({ user, unreadAlerts = 0, onLogout, isMobileOverlay = false }: CoachSidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const pathname = location.pathname;
@@ -42,9 +43,14 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
   const items = useMemo(() => {
     return coachNavigationConfig.map(item => ({
       ...item,
+      label: item.labelNO, // Use Norwegian labels
       Icon: getIcon(item.icon),
       // Replace dynamic badge values
       badge: item.badge === 'unreadCount' && unreadAlerts > 0 ? String(unreadAlerts) : undefined,
+      submenu: item.submenu?.map(sub => ({
+        ...sub,
+        label: sub.labelNO, // Use Norwegian labels for submenu
+      })),
     }));
   }, [unreadAlerts]);
 
@@ -301,7 +307,29 @@ export default function CoachSidebar({ user, unreadAlerts = 0, onLogout }: Coach
     </div>
   );
 
-  // Mobile view
+  // Mobile overlay view (used by CoachAppShell's mobile menu)
+  if (isMobileOverlay) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          color: 'var(--bg-primary)',
+        }}
+      >
+        {renderQuickActions()}
+        <div style={{ padding: '0 12px', flex: 1, overflowY: 'auto' }}>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {renderNavItems()}
+          </nav>
+        </div>
+        {renderUserSection()}
+      </div>
+    );
+  }
+
+  // Legacy mobile view (kept for backwards compatibility but no longer used)
   if (isMobile) {
     return (
       <>

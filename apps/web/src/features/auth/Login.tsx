@@ -59,8 +59,15 @@ const Login: React.FC = () => {
 
     const result = await login(email, password);
 
-    if (result.success && result.user) {
-      navigate(getRedirectPath(result.user.role));
+    if (result.success) {
+      // Get user from localStorage since AuthContext just set it
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        navigate(getRedirectPath(user.role));
+      } else {
+        navigate('/dashboard');
+      }
     } else {
       setError(result.error ?? 'Innlogging feilet');
     }
@@ -80,8 +87,15 @@ const Login: React.FC = () => {
     setLoading(true);
     const result = await login(credentials[role].email, credentials[role].password);
 
-    if (result.success && result.user) {
-      navigate(getRedirectPath(result.user.role));
+    if (result.success) {
+      // Get user from localStorage since AuthContext just set it
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        navigate(getRedirectPath(user.role));
+      } else {
+        navigate(getRedirectPath(role));
+      }
     } else {
       setError(result.error ?? 'Innlogging feilet');
     }
