@@ -257,12 +257,14 @@ function StatCard({ icon, label, value, color }: StatCardProps) {
   );
 }
 
+type ColorScheme = (typeof navigationColors)[keyof typeof navigationColors];
+
 interface NavigationCardProps {
   title: string;
   description: string;
   href: string;
   icon: React.ReactNode;
-  color: typeof navigationColors.dashboard;
+  color: ColorScheme;
 }
 
 function NavigationCard({ title, description, href, icon, color }: NavigationCardProps) {

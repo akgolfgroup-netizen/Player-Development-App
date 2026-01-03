@@ -19,7 +19,8 @@ import { navigationColors } from '../../config/navigation-tokens';
 const { ChevronRight } = LucideIcons;
 
 const getIcon = (iconName: string): React.ComponentType<{ size?: number }> => {
-  return (LucideIcons as Record<string, React.ComponentType<{ size?: number }>>)[iconName] || LucideIcons.Circle;
+  const icons = LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number }>>;
+  return icons[iconName] || LucideIcons.Circle;
 };
 
 interface HubPageProps {
@@ -179,9 +180,11 @@ export default function HubPage({
   );
 }
 
+type ColorScheme = (typeof navigationColors)[keyof typeof navigationColors];
+
 interface SectionCardProps {
   section: NavSection;
-  colors: typeof navigationColors.dashboard;
+  colors: ColorScheme;
 }
 
 function SectionCard({ section, colors }: SectionCardProps) {

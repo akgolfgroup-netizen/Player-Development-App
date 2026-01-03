@@ -31,7 +31,8 @@ const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
 
 // Helper to get icon from string name
 const getIcon = (iconName: string): React.ComponentType<{ size?: number }> => {
-  return (LucideIcons as Record<string, React.ComponentType<{ size?: number }>>)[iconName] || LucideIcons.Circle;
+  const icons = LucideIcons as unknown as Record<string, React.ComponentType<{ size?: number }>>;
+  return icons[iconName] || LucideIcons.Circle;
 };
 
 interface PlayerAppShellV3Props {
