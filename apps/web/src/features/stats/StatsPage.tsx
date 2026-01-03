@@ -20,6 +20,7 @@ import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
 import { useAuth } from '../../contexts/AuthContext';
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
 import TrendsContent from '../player-stats/TrendsContent';
+import BenchmarkContent from '../player-stats/BenchmarkContent';
 
 // Design System color mapping - using CSS variables
 const colors = {
@@ -495,6 +496,10 @@ export default function StatsPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
           <TrendsContent />
         </div>
+      ) : activeTab === "tour" ? (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
+          <BenchmarkContent />
+        </div>
       ) : activeTab !== "sg" ? (
         <Card title="Kommer snart">
           <div style={{ opacity: 0.85 }}>
@@ -582,9 +587,9 @@ export default function StatsPage() {
 
           <Card title="Stats Dashboard - Status">
             <div style={{ opacity: 0.9 }}>
-              <strong>Aktivt:</strong> SG Profil, Peer Sammenligning, Trends
+              <strong>Aktivt:</strong> SG Profil, Peer Sammenligning, Tour Benchmark, Trends
               <br />
-              <strong>Kommer snart:</strong> Min Statistikk, Tour Benchmark (Live API)
+              <strong>Kommer snart:</strong> Min Statistikk
             </div>
           </Card>
         </div>
