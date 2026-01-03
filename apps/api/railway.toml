@@ -1,9 +1,9 @@
 # Railway configuration for IUP Golf API
-# Use DOCKERFILE builder for consistent deployments
+# Using Nixpacks for build
 
 [build]
-builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
+builder = "NIXPACKS"
+buildCommand = "npm install && npx prisma generate && npm run build"
 
 [deploy]
 startCommand = "node dist/server.js"
