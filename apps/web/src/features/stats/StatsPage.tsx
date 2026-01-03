@@ -21,6 +21,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
 import TrendsContent from '../player-stats/TrendsContent';
 import BenchmarkContent from '../player-stats/BenchmarkContent';
+import PlayerStatsContent from '../player-stats/PlayerStatsContent';
 
 // Design System color mapping - using CSS variables
 const colors = {
@@ -500,12 +501,10 @@ export default function StatsPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
           <BenchmarkContent />
         </div>
-      ) : activeTab !== "sg" ? (
-        <Card title="Kommer snart">
-          <div style={{ opacity: 0.85 }}>
-            Fanen <b>{activeTab}</b> er under utvikling og kommer i neste oppdatering.
-          </div>
-        </Card>
+      ) : activeTab === "min" ? (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
+          <PlayerStatsContent />
+        </div>
       ) : (
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
           <Card title="Din SG vs Tour Snitt">
@@ -587,9 +586,9 @@ export default function StatsPage() {
 
           <Card title="Stats Dashboard - Status">
             <div style={{ opacity: 0.9 }}>
-              <strong>Aktivt:</strong> SG Profil, Peer Sammenligning, Tour Benchmark, Trends
+              <strong>Aktivt:</strong> Alle faner er nå implementert!
               <br />
-              <strong>Kommer snart:</strong> Min Statistikk
+              <span style={{ fontSize: 13 }}>Min Statistikk, SG Profil, Peer, Tour Benchmark, Trends</span>
             </div>
           </Card>
         </div>
