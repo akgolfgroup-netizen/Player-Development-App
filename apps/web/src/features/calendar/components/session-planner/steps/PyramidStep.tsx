@@ -1,11 +1,12 @@
 /**
  * PyramidStep Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Step 1: Select pyramid level (FYS, TEK, SLAG, SPILL, TURN)
  * For FYS: Also select physical focus
  * For TURN: Also select tournament type
- *
- * Uses semantic tokens only.
  */
 
 import React from 'react';
@@ -33,10 +34,7 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
     <div className="space-y-6">
       {/* Pyramid selection */}
       <div>
-        <SubSectionTitle
-          className="text-sm font-medium mb-3"
-          style={{ color: 'var(--calendar-text-secondary)' }}
-        >
+        <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
           Hva vil du trene?
         </SubSectionTitle>
 
@@ -49,33 +47,21 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
                 key={key}
                 type="button"
                 onClick={() => setPyramid(key)}
-                className="flex flex-col items-center p-4 rounded-xl transition-all duration-200"
-                style={{
-                  backgroundColor: isSelected
-                    ? 'var(--calendar-event-recommended-bg)'
-                    : 'var(--calendar-surface-elevated)',
-                  border: `2px solid ${
-                    isSelected
-                      ? 'var(--ak-primary)'
-                      : 'transparent'
-                  }`,
-                }}
+                className={`flex flex-col items-center p-4 rounded-xl transition-all duration-200 border-2 ${
+                  isSelected
+                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    : 'bg-ak-surface-subtle border-transparent'
+                }`}
               >
                 <span className="text-2xl mb-2">{value.icon}</span>
                 <span
-                  className="font-medium text-sm"
-                  style={{
-                    color: isSelected
-                      ? 'var(--ak-primary)'
-                      : 'var(--calendar-text-primary)',
-                  }}
+                  className={`font-medium text-sm ${
+                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                  }`}
                 >
                   {value.label}
                 </span>
-                <span
-                  className="text-xs text-center mt-1"
-                  style={{ color: 'var(--calendar-text-tertiary)' }}
-                >
+                <span className="text-xs text-center mt-1 text-ak-text-tertiary">
                   {value.description}
                 </span>
               </button>
@@ -87,10 +73,7 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
       {/* FYS: Physical focus selection */}
       {formState.pyramid === 'FYS' && (
         <div>
-          <SubSectionTitle
-            className="text-sm font-medium mb-3"
-            style={{ color: 'var(--calendar-text-secondary)' }}
-          >
+          <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
             Fokusområde
           </SubSectionTitle>
 
@@ -104,30 +87,20 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
                     key={key}
                     type="button"
                     onClick={() => setPhysicalFocus(key)}
-                    className="flex flex-col items-start p-3 rounded-lg transition-all duration-200"
-                    style={{
-                      backgroundColor: isSelected
-                        ? 'var(--calendar-event-recommended-bg)'
-                        : 'var(--calendar-surface-elevated)',
-                      border: `2px solid ${
-                        isSelected ? 'var(--ak-primary)' : 'transparent'
-                      }`,
-                    }}
+                    className={`flex flex-col items-start p-3 rounded-lg transition-all duration-200 border-2 ${
+                      isSelected
+                        ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                        : 'bg-ak-surface-subtle border-transparent'
+                    }`}
                   >
                     <span
-                      className="font-medium text-sm"
-                      style={{
-                        color: isSelected
-                          ? 'var(--ak-primary)'
-                          : 'var(--calendar-text-primary)',
-                      }}
+                      className={`font-medium text-sm ${
+                        isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                      }`}
                     >
                       {value.label}
                     </span>
-                    <span
-                      className="text-xs mt-0.5"
-                      style={{ color: 'var(--calendar-text-tertiary)' }}
-                    >
+                    <span className="text-xs mt-0.5 text-ak-text-tertiary">
                       {value.description}
                     </span>
                   </button>
@@ -141,10 +114,7 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
       {/* TURN: Tournament type selection */}
       {formState.pyramid === 'TURN' && (
         <div>
-          <SubSectionTitle
-            className="text-sm font-medium mb-3"
-            style={{ color: 'var(--calendar-text-secondary)' }}
-          >
+          <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
             Turneringstype
           </SubSectionTitle>
 
@@ -158,31 +128,21 @@ export const PyramidStep: React.FC<PyramidStepProps> = ({ planner }) => {
                     key={key}
                     type="button"
                     onClick={() => setTournamentType(key)}
-                    className="w-full flex items-center p-3 rounded-lg transition-all duration-200"
-                    style={{
-                      backgroundColor: isSelected
-                        ? 'var(--calendar-event-recommended-bg)'
-                        : 'var(--calendar-surface-elevated)',
-                      border: `2px solid ${
-                        isSelected ? 'var(--ak-primary)' : 'transparent'
-                      }`,
-                    }}
+                    className={`w-full flex items-center p-3 rounded-lg transition-all duration-200 border-2 ${
+                      isSelected
+                        ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                        : 'bg-ak-surface-subtle border-transparent'
+                    }`}
                   >
                     <div className="flex-1 text-left">
                       <span
-                        className="font-medium text-sm block"
-                        style={{
-                          color: isSelected
-                            ? 'var(--ak-primary)'
-                            : 'var(--calendar-text-primary)',
-                        }}
+                        className={`font-medium text-sm block ${
+                          isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                        }`}
                       >
                         {value.label}
                       </span>
-                      <span
-                        className="text-xs"
-                        style={{ color: 'var(--calendar-text-tertiary)' }}
-                      >
+                      <span className="text-xs text-ak-text-tertiary">
                         {value.description}
                       </span>
                     </div>

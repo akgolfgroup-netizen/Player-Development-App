@@ -1,10 +1,11 @@
 /**
  * ContextStep Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
  *
  * Step 4: Select context (Environment, CS level, Pressure)
  * CS slider only shown for full swing areas.
- *
- * Uses semantic tokens only.
  */
 
 import React from 'react';
@@ -39,10 +40,7 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
     <div className="space-y-6">
       {/* Environment */}
       <div>
-        <SubSectionTitle
-          className="text-sm font-medium mb-3"
-          style={{ color: 'var(--calendar-text-secondary)' }}
-        >
+        <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
           Treningsmiljø
         </SubSectionTitle>
 
@@ -55,28 +53,20 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
                 key={key}
                 type="button"
                 onClick={() => setEnvironment(key)}
-                className="flex flex-col items-start p-3 rounded-lg transition-all duration-200"
-                style={{
-                  backgroundColor: isSelected
-                    ? 'var(--calendar-event-recommended-bg)'
-                    : 'var(--calendar-surface-elevated)',
-                  border: `2px solid ${isSelected ? 'var(--ak-primary)' : 'transparent'}`,
-                }}
+                className={`flex flex-col items-start p-3 rounded-lg transition-all duration-200 border-2 ${
+                  isSelected
+                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    : 'bg-ak-surface-subtle border-transparent'
+                }`}
               >
                 <span
-                  className="font-medium text-sm"
-                  style={{
-                    color: isSelected
-                      ? 'var(--ak-primary)'
-                      : 'var(--calendar-text-primary)',
-                  }}
+                  className={`font-medium text-sm ${
+                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                  }`}
                 >
                   {value.label}
                 </span>
-                <span
-                  className="text-xs mt-0.5"
-                  style={{ color: 'var(--calendar-text-tertiary)' }}
-                >
+                <span className="text-xs mt-0.5 text-ak-text-tertiary">
                   {value.description}
                 </span>
               </button>
@@ -89,21 +79,15 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
       {showCSSlider && (
         <div>
           <div className="flex items-center justify-between mb-3">
-            <SubSectionTitle
-              className="text-sm font-medium"
-              style={{ color: 'var(--calendar-text-secondary)' }}
-            >
+            <SubSectionTitle className="text-sm font-medium text-ak-text-secondary">
               Klubbhastighet
             </SubSectionTitle>
-            <span
-              className="text-lg font-bold"
-              style={{ color: 'var(--ak-primary)' }}
-            >
+            <span className="text-lg font-bold text-ak-brand-primary">
               {formState.csLevel}%
             </span>
           </div>
 
-          {/* Slider */}
+          {/* Slider - keeps inline style for dynamic gradient */}
           <div className="relative">
             <input
               type="range"
@@ -114,18 +98,14 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
               onChange={(e) => setCSLevel(Number(e.target.value) as CSLevel)}
               className="w-full h-2 rounded-lg appearance-none cursor-pointer"
               style={{
-                background: `linear-gradient(to right, var(--ak-primary) 0%, var(--ak-primary) ${formState.csLevel}%, var(--calendar-border) ${formState.csLevel}%, var(--calendar-border) 100%)`,
+                background: `linear-gradient(to right, var(--ak-brand-primary) 0%, var(--ak-brand-primary) ${formState.csLevel}%, var(--ak-border-default) ${formState.csLevel}%, var(--ak-border-default) 100%)`,
               }}
             />
 
             {/* CS level markers */}
             <div className="flex justify-between mt-1 px-1">
               {CS_LEVELS.filter((l) => l % 20 === 0).map((level) => (
-                <span
-                  key={level}
-                  className="text-xs"
-                  style={{ color: 'var(--calendar-text-tertiary)' }}
-                >
+                <span key={level} className="text-xs text-ak-text-tertiary">
                   {level}
                 </span>
               ))}
@@ -134,11 +114,8 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
 
           {/* Recommended range hint */}
           {recommendedCS && (
-            <div
-              className="flex items-center gap-2 mt-3 p-2 rounded-lg"
-              style={{ backgroundColor: 'var(--info-muted)' }}
-            >
-              <span className="text-xs" style={{ color: 'var(--ak-info)' }}>
+            <div className="flex items-center gap-2 mt-3 p-2 rounded-lg bg-ak-status-info/10">
+              <span className="text-xs text-ak-status-info">
                 💡 Anbefalt for {formState.lPhase}: CS{recommendedCS.min}-{recommendedCS.max}
               </span>
             </div>
@@ -148,10 +125,7 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
 
       {/* Pressure */}
       <div>
-        <SubSectionTitle
-          className="text-sm font-medium mb-3"
-          style={{ color: 'var(--calendar-text-secondary)' }}
-        >
+        <SubSectionTitle className="text-sm font-medium mb-3 text-ak-text-secondary">
           Pressnivå
         </SubSectionTitle>
 
@@ -164,39 +138,25 @@ export const ContextStep: React.FC<ContextStepProps> = ({ planner }) => {
                 key={key}
                 type="button"
                 onClick={() => setPressure(key)}
-                className="w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200"
-                style={{
-                  backgroundColor: isSelected
-                    ? 'var(--calendar-event-recommended-bg)'
-                    : 'var(--calendar-surface-elevated)',
-                  border: `2px solid ${isSelected ? 'var(--ak-primary)' : 'transparent'}`,
-                }}
+                className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 border-2 ${
+                  isSelected
+                    ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                    : 'bg-ak-surface-subtle border-transparent'
+                }`}
               >
                 <div className="text-left">
                   <span
-                    className="font-medium text-sm block"
-                    style={{
-                      color: isSelected
-                        ? 'var(--ak-primary)'
-                        : 'var(--calendar-text-primary)',
-                    }}
+                    className={`font-medium text-sm block ${
+                      isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                    }`}
                   >
                     {value.label}
                   </span>
-                  <span
-                    className="text-xs"
-                    style={{ color: 'var(--calendar-text-tertiary)' }}
-                  >
+                  <span className="text-xs text-ak-text-tertiary">
                     {value.description}
                   </span>
                 </div>
-                <span
-                  className="text-xs font-medium px-2 py-1 rounded"
-                  style={{
-                    backgroundColor: 'var(--calendar-surface-base)',
-                    color: 'var(--calendar-text-tertiary)',
-                  }}
-                >
+                <span className="text-xs font-medium px-2 py-1 rounded bg-ak-surface-base text-ak-text-tertiary">
                   {key}
                 </span>
               </button>

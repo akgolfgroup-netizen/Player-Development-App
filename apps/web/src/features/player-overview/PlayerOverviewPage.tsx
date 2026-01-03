@@ -1,71 +1,84 @@
-import { useEffect, useState } from "react";
+/**
+ * PlayerOverviewPage
+ *
+ * Archetype: A - List/Index Page
+ * Purpose: Display coach's assigned players
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
+import { useEffect, useState } from 'react';
 import { PageTitle } from '../../components/typography';
 
+interface Player {
+  id: string;
+  name: string;
+  category: string;
+  handicap: number | null;
+  status: string;
+}
+
 export function PlayerOverviewPage() {
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch("/api/v1/coaches/me/players", {
+    fetch('/api/v1/coaches/me/players', {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     })
-      .then(r => {
+      .then((r) => {
         if (!r.ok) throw new Error('Failed to fetch players');
         return r.json();
       })
-      .then(data => {
+      .then((data) => {
         setPlayers(data.data || []);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         setError(err.message);
         setLoading(false);
       });
   }, []);
 
   if (loading) {
-    return <div style={{ padding: '24px' }}>Laster spillere...</div>;
+    return <div className="p-6 text-ak-text-primary">Laster spillere...</div>;
   }
 
   if (error) {
-    return <div style={{ padding: '24px', color: 'red' }}>Feil: {error}</div>;
+    return <div className="p-6 text-ak-status-error">Feil: {error}</div>;
   }
 
   return (
-    <div style={{ padding: '24px' }}>
-      <PageTitle style={{ fontSize: '24px', fontWeight: 700, marginBottom: '16px' }}>Mine spillere</PageTitle>
+    <div className="p-6">
+      <PageTitle className="text-2xl font-bold mb-4 text-ak-text-primary">
+        Mine spillere
+      </PageTitle>
 
       {players.length === 0 ? (
-        <p style={{ color: 'var(--text-secondary)' }}>Ingen spillere tildelt ennå.</p>
+        <p className="text-ak-text-secondary">Ingen spillere tildelt ennå.</p>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {players.map((p: any) => (
-            <div key={p.id} style={{
-              padding: '16px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '8px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+        <div className="flex flex-col gap-3">
+          {players.map((p) => (
+            <div
+              key={p.id}
+              className="p-4 bg-ak-surface-subtle rounded-lg flex justify-between items-center"
+            >
               <div>
-                <strong style={{ fontSize: '16px' }}>{p.name}</strong>
-                <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                <strong className="text-base text-ak-text-primary">{p.name}</strong>
+                <div className="text-sm text-ak-text-secondary">
                   Kategori {p.category} • HCP {p.handicap ?? '-'}
                 </div>
               </div>
-              <span style={{
-                padding: '4px 8px',
-                backgroundColor: p.status === 'active' ? 'var(--success)' : 'var(--text-tertiary)',
-                color: 'white',
-                borderRadius: '4px',
-                fontSize: '12px',
-              }}>
+              <span
+                className={`px-2 py-1 rounded text-xs text-white ${
+                  p.status === 'active' ? 'bg-ak-status-success' : 'bg-ak-text-tertiary'
+                }`}
+              >
                 {p.status === 'active' ? 'Aktiv' : p.status}
               </span>
             </div>
@@ -75,3 +88,5 @@ export function PlayerOverviewPage() {
     </div>
   );
 }
+
+export default PlayerOverviewPage;

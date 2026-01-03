@@ -9,7 +9,6 @@
 import React, { useState, useEffect } from 'react';
 import PlayerSidebarV2 from './PlayerSidebarV2';
 import BackToTop from '../ui/BackToTop';
-import { tokens } from '../../design-tokens';
 import { useAuth } from '../../contexts/AuthContext';
 import { eventClient } from '../../analytics/eventClient';
 
@@ -19,8 +18,8 @@ const skipLinkStyles: React.CSSProperties = {
   top: '-40px',
   left: '0',
   padding: '8px 16px',
-  backgroundColor: tokens.colors.primary,
-  color: tokens.colors.white,
+  backgroundColor: 'var(--ak-brand-primary)',
+  color: 'var(--ak-surface-card)',
   textDecoration: 'none',
   fontWeight: 600,
   fontSize: '14px',
@@ -100,7 +99,7 @@ export default function PlayerAppShell({ children }: PlayerAppShellProps) {
         height: '100vh',
         display: 'flex',
         flexDirection: isMobile ? 'column' : 'row',
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--ak-surface-page)',
       }}
     >
       {/* Skip to content link for accessibility */}

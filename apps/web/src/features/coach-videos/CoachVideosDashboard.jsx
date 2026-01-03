@@ -1,5 +1,7 @@
 /**
- * CoachVideosDashboard Component
+ * AK Golf Academy - Coach Videos Dashboard
+ * Design System v3.0 - Premium Light
+ *
  * Main dashboard for coaches to review and manage player videos
  *
  * Features:
@@ -15,6 +17,9 @@
  * 2. Switch to coach → Should appear in pending queue
  * 3. Click video → Should load playback URL
  * 4. Mark as reviewed → Status should update
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
+ * Note: Select dropdown arrows use inline backgroundImage (data URI SVG)
  */
 
 import React, { useState, useCallback, useEffect, useMemo } from 'react';

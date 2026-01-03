@@ -11,6 +11,7 @@ import {
   Globe,
   Star,
   Users,
+  Swords,
 } from 'lucide-react';
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
@@ -19,7 +20,16 @@ import { useProBenchmark, ApproachSkillData } from '../../hooks/useProBenchmark'
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import { useAuth } from '../../contexts/AuthContext';
+/**
+ * BenchmarkContent Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
+import ProPlayerComparison from '../../components/widgets/ProPlayerComparison';
+import { useNorwegianProPlayers } from '../../hooks/useProPlayerSearch';
 
 /**
  * BenchmarkContent - Compare with PGA & WAGR
@@ -29,6 +39,7 @@ const BenchmarkContent: React.FC = () => {
   const { eliteBenchmarks, topPlayers, approachSkills, wagrRankings, loading, error } = useProBenchmark();
   const { data: sgData } = useStrokesGained();
   const { user } = useAuth();
+  const { players: norwegianPlayers } = useNorwegianProPlayers();
 
   const formatSG = (value: number | null | undefined) => {
     if (value === null || value === undefined) return '-';
@@ -174,19 +185,39 @@ const BenchmarkContent: React.FC = () => {
         </Card>
       </section>
 
-      {/* Peer Comparison */}
-      {user?.playerId && (
-        <section style={styles.section}>
-          <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
-            Peer Sammenligning
+      {/* Pro Player Comparison */}
+      <section style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <SectionTitle style={{ margin: 0 }}>
+            Sammenlign med Proff
           </SectionTitle>
+          <Badge variant="accent">Nytt</Badge>
+        </div>
+        <ProPlayerComparison suggestedPlayers={norwegianPlayers} />
+      </section>
+
+      {/* Peer Comparison */}
+      <section style={styles.section}>
+        <SectionTitle style={{ marginBottom: 'var(--spacing-4)' }}>
+          Peer Sammenligning
+        </SectionTitle>
+        {user?.playerId ? (
           <PeerComparisonWidget
             playerId={user.playerId}
             testNumber={1}
             showMultiLevel={true}
           />
-        </section>
-      )}
+        ) : (
+          <Card padding="md">
+            <div style={styles.peerLoginPrompt}>
+              <Users size={32} style={{ marginBottom: 8, opacity: 0.5, color: 'var(--text-tertiary)' }} />
+              <p style={styles.peerLoginText}>
+                Logg inn for å se hvordan du ligger an mot andre spillere i din kategori
+              </p>
+            </div>
+          </Card>
+        )}
+      </section>
 
       {/* Category Comparison */}
       <section style={styles.section}>
@@ -196,7 +227,7 @@ const BenchmarkContent: React.FC = () => {
 
         <div style={styles.categoryGrid}>
           {[
-            { key: 'approach', label: 'Approach', icon: Crosshair, desc: 'Slag mot green' },
+            { key: 'approach', label: 'Innspill', icon: Crosshair, desc: 'Slag mot green' },
             { key: 'putting', label: 'Putting', icon: CircleDot, desc: 'Slag på green' },
             { key: 'aroundGreen', label: 'Kortspill', icon: Flag, desc: 'Rundt green' },
           ].map(cat => {
@@ -401,10 +432,10 @@ const BenchmarkContent: React.FC = () => {
 // Approach Distance Card
 const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }> = ({ skill, index }) => {
   const gradients = [
-    'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-    'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-    'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    'linear-gradient(135deg, var(--ak-status-success-light) 0%, var(--ak-status-success) 100%)',
+    'linear-gradient(135deg, var(--ak-status-info-light) 0%, var(--ak-status-info) 100%)',
+    'linear-gradient(135deg, var(--ak-brand-primary-light) 0%, var(--ak-brand-primary) 100%)',
+    'linear-gradient(135deg, var(--ak-status-warning-light) 0%, var(--ak-status-warning) 100%)',
   ];
 
   return (
@@ -854,6 +885,20 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: 'var(--font-size-footnote)',
     color: 'var(--text-tertiary)',
     fontStyle: 'normal',
+  },
+  peerLoginPrompt: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 'var(--spacing-6)',
+    textAlign: 'center',
+  },
+  peerLoginText: {
+    fontSize: 'var(--font-size-body)',
+    color: 'var(--text-secondary)',
+    margin: 0,
+    maxWidth: '300px',
   },
 };
 

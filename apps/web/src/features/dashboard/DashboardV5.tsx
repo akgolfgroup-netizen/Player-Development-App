@@ -42,6 +42,10 @@ import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import { PageTitle, SectionTitle, CardTitle } from '../../components/typography';
 
+// AI Coach
+import { AICoachGuide } from '../ai-coach';
+import { GUIDE_PRESETS } from '../ai-coach/types';
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -446,6 +450,9 @@ export default function DashboardV5() {
         greeting={getGreeting()}
       />
 
+      {/* AI Coach Guide */}
+      <AICoachGuide config={GUIDE_PRESETS.dashboard} />
+
       {/* Stats Grid */}
       <StatsGrid stats={quickStats} />
 
@@ -525,8 +532,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: 'var(--spacing-5)',
     padding: 'var(--spacing-4)',
-    maxWidth: '600px',
-    margin: '0 auto',
+    width: '100%',
   },
 
   // Welcome Header

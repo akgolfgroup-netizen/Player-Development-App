@@ -1,10 +1,34 @@
+/**
+ * MobileHome Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useEffect } from 'react';
-import { tokens, typographyStyle } from '../design-tokens';
 import { PageTitle, SectionTitle } from '../components/typography';
 import LoadingState from '../components/ui/LoadingState';
 import EmptyState from '../components/ui/EmptyState';
 import ErrorState from '../components/ui/ErrorState';
 import apiClient from '../services/apiClient';
+
+// Design token values (inline styles)
+const tokenValues = {
+  spacing: { sm: '8px', md: '16px', lg: '24px' },
+  colors: { charcoal: '#1C1C1E', white: '#FFFFFF', steel: '#8E8E93' },
+  borderRadius: { md: '12px' },
+  shadows: { card: '0 2px 8px rgba(0, 0, 0, 0.08)' },
+};
+
+// Typography helper (simplified inline)
+const typographyStyle = (variant) => {
+  const styles = {
+    title1: { fontSize: '28px', fontWeight: 700, lineHeight: 1.2 },
+    title3: { fontSize: '20px', fontWeight: 600, lineHeight: 1.3 },
+    body: { fontSize: '16px', fontWeight: 400, lineHeight: 1.5 },
+  };
+  return styles[variant] || {};
+};
 
 export default function MobileHome() {
   const [state, setState] = useState('loading');
@@ -35,20 +59,20 @@ export default function MobileHome() {
   if (!data?.user) return <EmptyState title="Ingen data" />;
 
   return (
-    <div style={{ padding: tokens.spacing.md }}>
-      <PageTitle style={{ ...typographyStyle('title1'), color: tokens.colors.charcoal, margin: `${tokens.spacing.lg} 0` }}>
+    <div style={{ padding: tokenValues.spacing.md }}>
+      <PageTitle style={{ ...typographyStyle('title1'), color: tokenValues.colors.charcoal, margin: `${tokenValues.spacing.lg} 0` }}>
         Hei, {data.user.firstName}!
       </PageTitle>
       <div style={{
-        backgroundColor: tokens.colors.white,
-        padding: tokens.spacing.lg,
-        borderRadius: tokens.borderRadius.md,
-        boxShadow: tokens.shadows.card,
+        backgroundColor: tokenValues.colors.white,
+        padding: tokenValues.spacing.lg,
+        borderRadius: tokenValues.borderRadius.md,
+        boxShadow: tokenValues.shadows.card,
       }}>
-        <SectionTitle style={{ ...typographyStyle('title3'), color: tokens.colors.charcoal, margin: `0 0 ${tokens.spacing.sm}` }}>
+        <SectionTitle style={{ ...typographyStyle('title3'), color: tokenValues.colors.charcoal, margin: `0 0 ${tokenValues.spacing.sm}` }}>
           Dagens fokus
         </SectionTitle>
-        <p style={{ ...typographyStyle('body'), color: tokens.colors.steel, margin: 0 }}>
+        <p style={{ ...typographyStyle('body'), color: tokenValues.colors.steel, margin: 0 }}>
           {data.dashboard?.focus || 'Ingen planlagt aktivitet i dag'}
         </p>
       </div>

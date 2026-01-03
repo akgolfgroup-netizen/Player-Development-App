@@ -1,3 +1,9 @@
+/**
+ * CoachExerciseTemplates.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useMemo } from 'react';
 import {
@@ -16,9 +22,21 @@ import {
   Play
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography';
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const CATEGORY_CLASSES = {
+  putting: { bg: 'bg-red-500/15', text: 'text-red-500' },
+  fullspill: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
+  kortspill: { bg: 'bg-amber-500/15', text: 'text-amber-500' },
+  fysisk: { bg: 'bg-pink-500/15', text: 'text-pink-500' },
+  mental: { bg: 'bg-purple-500/15', text: 'text-purple-500' },
+  blandet: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
+};
 
 interface TrainingTemplate {
   id: string;
@@ -183,16 +201,11 @@ export const CoachExerciseTemplates: React.FC = () => {
     return labels[cat] || cat;
   };
 
-  const getCategoryColor = (cat: string) => {
-    const colors: Record<string, { bg: string; text: string }> = {
-      putting: { bg: 'var(--ex-putting-muted)', text: 'var(--ex-putting)' },
-      fullspill: { bg: 'var(--ex-fullspill-muted)', text: 'var(--ex-fullspill)' },
-      kortspill: { bg: 'var(--ex-kortspill-muted)', text: 'var(--ex-kortspill)' },
-      fysisk: { bg: 'var(--ex-fitness-muted)', text: 'var(--ex-fitness)' },
-      mental: { bg: 'var(--ex-mental-muted)', text: 'var(--ex-mental)' },
-      blandet: { bg: 'var(--ex-blandet-muted)', text: 'var(--ex-blandet)' }
+  const getCategoryClasses = (cat: string) => {
+    return CATEGORY_CLASSES[cat as keyof typeof CATEGORY_CLASSES] || {
+      bg: 'bg-ak-surface-subtle',
+      text: 'text-ak-text-secondary'
     };
-    return colors[cat] || { bg: 'var(--card)', text: 'var(--text-tertiary)' };
   };
 
   const getDifficultyLabel = (diff: string) => {
@@ -211,36 +224,19 @@ export const CoachExerciseTemplates: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <div className="p-6 bg-ak-surface-subtle min-h-screen">
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+      <div className="flex justify-between items-start mb-6">
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--ex-kortspill), var(--ex-wedge))',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <BookOpen size={24} color="white" />
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+              <BookOpen size={24} className="text-white" />
             </div>
             <div>
-              <PageTitle style={{
-                fontSize: '28px',
-                fontWeight: '700',
-                color: 'var(--text-primary)',
-                margin: 0
-              }}>
+              <PageTitle className="text-[28px] font-bold text-ak-text-primary m-0">
                 Treningsplaner
               </PageTitle>
-              <p style={{
-                fontSize: '14px',
-                color: 'var(--text-secondary)',
-                margin: 0
-              }}>
+              <p className="text-sm text-ak-text-secondary m-0">
                 {mockTemplates.length} maler tilgjengelig
               </p>
             </div>
@@ -248,19 +244,7 @@ export const CoachExerciseTemplates: React.FC = () => {
         </div>
         <button
           onClick={() => navigate('/coach/exercises/templates/create')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '12px 20px',
-            borderRadius: '10px',
-            border: 'none',
-            backgroundColor: 'var(--accent)',
-            color: 'white',
-            fontSize: '14px',
-            fontWeight: '600',
-            cursor: 'pointer'
-          }}
+          className="flex items-center gap-2 py-3 px-5 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-semibold cursor-pointer"
         >
           <Plus size={18} />
           Ny treningsplan
@@ -268,41 +252,21 @@ export const CoachExerciseTemplates: React.FC = () => {
       </div>
 
       {/* Search and Filter */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '20px',
-        flexWrap: 'wrap'
-      }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '200px', maxWidth: '400px' }}>
+      <div className="flex gap-4 mb-5 flex-wrap">
+        <div className="relative flex-1 min-w-[200px] max-w-[400px]">
           <Search
             size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--text-tertiary)'
-            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
           />
           <input
             type="text"
             placeholder="Søk i treningsplaner..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '12px 12px 12px 40px',
-              borderRadius: '10px',
-              border: `1px solid ${'var(--border-default)'}`,
-              backgroundColor: 'var(--bg-primary)',
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              outline: 'none'
-            }}
+            className="w-full py-3 pl-10 pr-3 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none"
           />
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex gap-2">
           {[
             { key: 'all', label: 'Alle' },
             { key: 'putting', label: 'Putting' },
@@ -313,20 +277,11 @@ export const CoachExerciseTemplates: React.FC = () => {
             <button
               key={cat.key}
               onClick={() => setCategoryFilter(cat.key)}
-              style={{
-                padding: '10px 16px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: categoryFilter === cat.key
-                  ? 'var(--accent)'
-                  : 'var(--bg-primary)',
-                color: categoryFilter === cat.key
-                  ? 'white'
-                  : 'var(--text-secondary)',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
+              className={`py-2.5 px-4 rounded-[10px] border-none text-[13px] font-medium cursor-pointer ${
+                categoryFilter === cat.key
+                  ? 'bg-ak-brand-primary text-white'
+                  : 'bg-ak-surface-base text-ak-text-secondary'
+              }`}
             >
               {cat.label}
             </button>
@@ -335,255 +290,121 @@ export const CoachExerciseTemplates: React.FC = () => {
       </div>
 
       {/* Template List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="flex flex-col gap-4">
         {filteredTemplates.map((template) => {
-          const catColor = getCategoryColor(template.category);
+          const catClasses = getCategoryClasses(template.category);
           const isExpanded = expandedTemplate === template.id;
 
           return (
             <div
               key={template.id}
-              style={{
-                backgroundColor: 'var(--bg-primary)',
-                borderRadius: '16px',
-                border: `1px solid ${'var(--border-default)'}`,
-                overflow: 'hidden'
-              }}
+              className="bg-ak-surface-base rounded-2xl border border-ak-border-default overflow-hidden"
             >
               {/* Main Content */}
-              <div style={{
-                padding: '20px',
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '16px'
-              }}>
+              <div className="p-5 flex items-start gap-4">
                 {/* Icon */}
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  borderRadius: '12px',
-                  backgroundColor: catColor.bg,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}>
-                  <BookOpen size={24} color={catColor.text} />
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${catClasses.bg}`}>
+                  <BookOpen size={24} className={catClasses.text} />
                 </div>
 
                 {/* Content */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                    <SubSectionTitle style={{
-                      fontSize: '17px',
-                      fontWeight: '600',
-                      color: 'var(--text-primary)',
-                      margin: 0
-                    }}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <SubSectionTitle className="text-[17px] font-semibold text-ak-text-primary m-0">
                       {template.name}
                     </SubSectionTitle>
-                    <span style={{
-                      fontSize: '10px',
-                      fontWeight: '600',
-                      padding: '3px 8px',
-                      borderRadius: '4px',
-                      backgroundColor: catColor.bg,
-                      color: catColor.text
-                    }}>
+                    <span className={`text-[10px] font-semibold py-0.5 px-2 rounded ${catClasses.bg} ${catClasses.text}`}>
                       {getCategoryLabel(template.category)}
                     </span>
-                    <span style={{
-                      fontSize: '10px',
-                      fontWeight: '500',
-                      padding: '3px 8px',
-                      borderRadius: '4px',
-                      backgroundColor: 'var(--bg-tertiary)',
-                      color: 'var(--text-secondary)'
-                    }}>
+                    <span className="text-[10px] font-medium py-0.5 px-2 rounded bg-ak-surface-subtle text-ak-text-secondary">
                       {getDifficultyLabel(template.difficulty)}
                     </span>
                     {template.isOwn && (
-                      <span style={{
-                        fontSize: '10px',
-                        fontWeight: '500',
-                        padding: '3px 8px',
-                        borderRadius: '4px',
-                        backgroundColor: 'var(--success-muted)',
-                        color: 'var(--success)'
-                      }}>
+                      <span className="text-[10px] font-medium py-0.5 px-2 rounded bg-ak-status-success/15 text-ak-status-success">
                         Egen
                       </span>
                     )}
                   </div>
 
-                  <p style={{
-                    fontSize: '13px',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 12px 0',
-                    lineHeight: '1.5'
-                  }}>
+                  <p className="text-[13px] text-ak-text-secondary m-0 mb-3 leading-relaxed">
                     {template.description}
                   </p>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Clock size={14} color={'var(--text-tertiary)'} />
-                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                  <div className="flex items-center gap-5 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                      <Clock size={14} className="text-ak-text-secondary" />
+                      <span className="text-xs text-ak-text-secondary">
                         {template.duration} min
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Dumbbell size={14} color={'var(--text-tertiary)'} />
-                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    <div className="flex items-center gap-1.5">
+                      <Dumbbell size={14} className="text-ak-text-secondary" />
+                      <span className="text-xs text-ak-text-secondary">
                         {template.exerciseCount} øvelser
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Target size={14} color={'var(--text-tertiary)'} />
-                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    <div className="flex items-center gap-1.5">
+                      <Target size={14} className="text-ak-text-secondary" />
+                      <span className="text-xs text-ak-text-secondary">
                         {template.usageCount}x brukt
                       </span>
                     </div>
                     {template.targetGroup && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Users size={14} color={'var(--text-tertiary)'} />
-                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      <div className="flex items-center gap-1.5">
+                        <Users size={14} className="text-ak-text-secondary" />
+                        <span className="text-xs text-ak-text-secondary">
                           {template.targetGroup}
                         </span>
                       </div>
                     )}
-                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                    <span className="text-xs text-ak-text-secondary">
                       Sist brukt: {formatDate(template.lastUsed)}
                     </span>
                   </div>
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div className="flex gap-2 items-center">
                   <button
                     onClick={() => setExpandedTemplate(isExpanded ? null : template.id)}
-                    style={{
-                      padding: '10px 16px',
-                      borderRadius: '8px',
-                      border: `1px solid ${'var(--border-default)'}`,
-                      backgroundColor: 'transparent',
-                      color: 'var(--text-secondary)',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}
+                    className="py-2.5 px-4 rounded-lg border border-ak-border-default bg-transparent text-ak-text-secondary text-[13px] font-medium cursor-pointer flex items-center gap-1.5"
                   >
                     {isExpanded ? 'Skjul' : 'Vis øvelser'}
                     <ChevronRight
                       size={14}
-                      style={{
-                        transform: isExpanded ? 'rotate(90deg)' : 'none',
-                        transition: 'transform 0.2s ease'
-                      }}
+                      className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`}
                     />
                   </button>
-                  <button
-                    style={{
-                      padding: '10px 16px',
-                      borderRadius: '8px',
-                      border: 'none',
-                      backgroundColor: 'var(--accent)',
-                      color: 'white',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px'
-                    }}
-                  >
+                  <button className="py-2.5 px-4 rounded-lg border-none bg-ak-brand-primary text-white text-[13px] font-medium cursor-pointer flex items-center gap-1.5">
                     <Play size={14} />
                     Bruk
                   </button>
-                  <div style={{ position: 'relative' }}>
+                  <div className="relative">
                     <button
                       onClick={() => setActiveMenu(activeMenu === template.id ? null : template.id)}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        backgroundColor: 'transparent',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
-                      }}
+                      className="w-9 h-9 rounded-lg border border-ak-border-default bg-transparent flex items-center justify-center cursor-pointer"
                     >
-                      <MoreVertical size={16} color={'var(--text-secondary)'} />
+                      <MoreVertical size={16} className="text-ak-text-secondary" />
                     </button>
                     {activeMenu === template.id && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        right: 0,
-                        marginTop: '4px',
-                        backgroundColor: 'var(--bg-primary)',
-                        borderRadius: '10px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        boxShadow: 'var(--shadow-float)',
-                        zIndex: 100,
-                        minWidth: '160px',
-                        overflow: 'hidden'
-                      }}>
+                      <div className="absolute top-full right-0 mt-1 bg-ak-surface-base rounded-[10px] border border-ak-border-default shadow-lg z-[100] min-w-[160px] overflow-hidden">
                         <button
                           onClick={() => setActiveMenu(null)}
-                          style={{
-                            width: '100%',
-                            padding: '10px 14px',
-                            border: 'none',
-                            backgroundColor: 'transparent',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            cursor: 'pointer',
-                            fontSize: '13px',
-                            color: 'var(--text-primary)'
-                          }}
+                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-ak-text-primary hover:bg-ak-surface-subtle"
                         >
                           <Edit2 size={14} />
                           Rediger
                         </button>
                         <button
                           onClick={() => setActiveMenu(null)}
-                          style={{
-                            width: '100%',
-                            padding: '10px 14px',
-                            border: 'none',
-                            backgroundColor: 'transparent',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            cursor: 'pointer',
-                            fontSize: '13px',
-                            color: 'var(--text-primary)'
-                          }}
+                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-ak-text-primary hover:bg-ak-surface-subtle"
                         >
                           <Copy size={14} />
                           Dupliser
                         </button>
                         <button
                           onClick={() => setActiveMenu(null)}
-                          style={{
-                            width: '100%',
-                            padding: '10px 14px',
-                            border: 'none',
-                            backgroundColor: 'transparent',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            cursor: 'pointer',
-                            fontSize: '13px',
-                            color: 'var(--error)'
-                          }}
+                          className="w-full py-2.5 px-3.5 border-none bg-transparent flex items-center gap-2.5 cursor-pointer text-[13px] text-ak-status-error hover:bg-ak-surface-subtle"
                         >
                           <Trash2 size={14} />
                           Slett
@@ -596,60 +417,23 @@ export const CoachExerciseTemplates: React.FC = () => {
 
               {/* Expanded Exercise List */}
               {isExpanded && (
-                <div style={{
-                  padding: '0 20px 20px',
-                  borderTop: `1px solid ${'var(--border-default)'}`,
-                  marginTop: '-4px',
-                  paddingTop: '16px'
-                }}>
-                  <CardTitle style={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    color: 'var(--text-secondary)',
-                    margin: '0 0 12px 0',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}>
+                <div className="px-5 pb-5 pt-4 border-t border-ak-border-default -mt-1">
+                  <CardTitle className="text-[13px] font-semibold text-ak-text-secondary m-0 mb-3 uppercase tracking-wide">
                     Øvelser i denne planen
                   </CardTitle>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div className="flex flex-col gap-2">
                     {template.exercises.map((exercise, idx) => (
                       <div
                         key={idx}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '12px',
-                          padding: '10px 14px',
-                          backgroundColor: 'var(--bg-tertiary)',
-                          borderRadius: '8px'
-                        }}
+                        className="flex items-center gap-3 py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg"
                       >
-                        <span style={{
-                          width: '24px',
-                          height: '24px',
-                          borderRadius: '50%',
-                          backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
-                          color: 'var(--accent)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '12px',
-                          fontWeight: '600'
-                        }}>
+                        <span className="w-6 h-6 rounded-full bg-ak-brand-primary/15 text-ak-brand-primary flex items-center justify-center text-xs font-semibold">
                           {idx + 1}
                         </span>
-                        <span style={{
-                          flex: 1,
-                          fontSize: '14px',
-                          color: 'var(--text-primary)'
-                        }}>
+                        <span className="flex-1 text-sm text-ak-text-primary">
                           {exercise.name}
                         </span>
-                        <span style={{
-                          fontSize: '12px',
-                          color: 'var(--text-tertiary)'
-                        }}>
+                        <span className="text-xs text-ak-text-secondary">
                           {exercise.duration} min
                         </span>
                       </div>
@@ -663,37 +447,15 @@ export const CoachExerciseTemplates: React.FC = () => {
       </div>
 
       {filteredTemplates.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <BookOpen size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: 'var(--text-secondary)',
-            margin: '0 0 16px 0'
-          }}>
+        <div className="text-center py-16 px-5 bg-ak-surface-base rounded-2xl border border-ak-border-default">
+          <BookOpen size={48} className="text-ak-text-secondary mb-4 mx-auto" />
+          <p className="text-base text-ak-text-secondary m-0 mb-4">
             {searchQuery ? 'Ingen treningsplaner funnet' : 'Ingen treningsplaner opprettet ennå'}
           </p>
           {!searchQuery && (
             <button
               onClick={() => navigate('/coach/exercises/templates/create')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 20px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'white',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
+              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-medium cursor-pointer"
             >
               <Plus size={16} />
               Opprett første treningsplan
@@ -706,14 +468,7 @@ export const CoachExerciseTemplates: React.FC = () => {
       {activeMenu && (
         <div
           onClick={() => setActiveMenu(null)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 50
-          }}
+          className="fixed inset-0 z-50"
         />
       )}
     </div>

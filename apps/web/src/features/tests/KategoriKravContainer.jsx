@@ -8,6 +8,8 @@ import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { AICoachGuide } from '../ai-coach';
+import { GUIDE_PRESETS } from '../ai-coach/types';
 
 // ============================================================================
 // MOCK DATA
@@ -430,6 +432,9 @@ const KategoriKravContainer = () => {
 
   return (
     <div style={{ width: '100%' }}>
+        {/* AI Coach Guide */}
+        <AICoachGuide config={GUIDE_PRESETS.categoryRequirements} />
+
         {/* Category Selector */}
         <CategorySelector
           selected={selectedCategory}

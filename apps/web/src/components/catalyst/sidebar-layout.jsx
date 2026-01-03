@@ -2,6 +2,9 @@
 
 /**
  * SidebarLayout - Catalyst-based layout with AK Golf Blue Palette
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  *
  * Uses Tailwind classes mapped to CSS variables in tailwind.config.js:
  * - bg-ak-primary → var(--accent)
@@ -13,7 +16,9 @@ import * as Headless from '@headlessui/react'
 import React, { useState } from 'react'
 import { NavbarItem } from './navbar'
 import { AKLogo } from '../branding/AKLogo'
-import { tokens } from '../../design-tokens'
+
+// Design token hex values
+const SURFACE_COLOR = '#FFFFFF';
 
 function OpenMenuIcon() {
   return (
@@ -44,7 +49,7 @@ function MobileSidebar({ open, close, children }) {
       >
         <div className="flex h-full flex-col rounded-lg bg-ak-primary shadow-lg ring-1 ring-white/10">
           <div className="-mb-3 px-4 pt-3 flex items-center justify-between">
-            <AKLogo size={32} color={tokens.colors.surface} />
+            <AKLogo size={32} color={SURFACE_COLOR} />
             <Headless.CloseButton as={NavbarItem} aria-label="Close navigation" className="text-white">
               <CloseMenuIcon />
             </Headless.CloseButton>

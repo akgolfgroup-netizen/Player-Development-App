@@ -1,9 +1,10 @@
 /**
- * AK Golf Academy - Coach Athletes Tournaments Overview
- * Design System v3.0 - Blue Palette 01
+ * CoachAthleteTournaments.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Oversikt over alle spilleres turneringsdeltakelse for trenere.
- * Fokus: Hvem deltar i hvilke turneringer, statusoversikt.
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -26,6 +27,37 @@ import {
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import { SubSectionTitle, CardTitle } from '../../components/typography';
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const STATUS_CLASSES = {
+  registered: {
+    bg: 'bg-ak-status-success/15',
+    text: 'text-ak-status-success',
+    icon: CheckCircle,
+    label: 'Påmeldt',
+  },
+  pending: {
+    bg: 'bg-ak-status-warning/15',
+    text: 'text-ak-status-warning',
+    icon: Clock,
+    label: 'Venter',
+  },
+  interested: {
+    bg: 'bg-amber-500/15',
+    text: 'text-amber-500',
+    icon: Star,
+    label: 'Interessert',
+  },
+  declined: {
+    bg: 'bg-ak-status-error/15',
+    text: 'text-ak-status-error',
+    icon: AlertCircle,
+    label: 'Avslått',
+  },
+};
 
 // Types
 interface TournamentEntry {
@@ -69,64 +101,22 @@ const Avatar: React.FC<{ name: string; color: string; size?: number }> = ({
 
   return (
     <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: '50%',
-        backgroundColor: color,
-        color: 'var(--bg-primary)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: size * 0.4,
-        fontWeight: 600,
-        flexShrink: 0,
-      }}
+      className="rounded-full flex items-center justify-center font-semibold text-white flex-shrink-0"
+      style={{ width: size, height: size, backgroundColor: color, fontSize: size * 0.4 }}
     >
       {initials}
     </div>
   );
 };
 
-// Status badge config
-const getStatusConfig = (status: string) => {
-  switch (status) {
-    case 'registered':
-      return {
-        label: 'Påmeldt',
-        color: 'var(--success)',
-        bg: 'rgba(var(--success-rgb), 0.15)',
-        icon: CheckCircle,
-      };
-    case 'pending':
-      return {
-        label: 'Venter',
-        color: 'var(--warning)',
-        bg: 'rgba(var(--warning-rgb), 0.15)',
-        icon: Clock,
-      };
-    case 'interested':
-      return {
-        label: 'Interessert',
-        color: 'var(--achievement)',
-        bg: 'rgba(var(--achievement-rgb), 0.15)',
-        icon: Star,
-      };
-    case 'declined':
-      return {
-        label: 'Avslått',
-        color: 'var(--error)',
-        bg: 'rgba(var(--error-rgb), 0.15)',
-        icon: AlertCircle,
-      };
-    default:
-      return {
-        label: status,
-        color: 'var(--text-secondary)',
-        bg: 'var(--bg-tertiary)',
-        icon: Clock,
-      };
-  }
+// Get status classes helper
+const getStatusClasses = (status: string) => {
+  return STATUS_CLASSES[status as keyof typeof STATUS_CLASSES] || {
+    bg: 'bg-ak-surface-subtle',
+    text: 'text-ak-text-secondary',
+    icon: Clock,
+    label: status,
+  };
 };
 
 // Generate mock data
@@ -459,37 +449,14 @@ export default function CoachAthleteTournaments() {
 
   if (loading) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            border: '4px solid var(--border-default)',
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
-      }}
-    >
+    <div className="min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Turneringsdeltakelse"
@@ -497,67 +464,31 @@ export default function CoachAthleteTournaments() {
       />
 
       {/* Stats badges */}
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', padding: '0 24px 16px', borderBottom: '1px solid var(--border-default)' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 14px',
-            backgroundColor: 'rgba(var(--success-rgb), 0.1)',
-            borderRadius: 'var(--radius-md)',
-          }}
-        >
-          <CheckCircle size={16} color={'var(--success)'} />
-          <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+      <div className="flex gap-3 flex-wrap px-6 pb-4 border-b border-ak-border-default">
+        <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-success/10 rounded-lg">
+          <CheckCircle size={16} className="text-ak-status-success" />
+          <span className="text-[13px] text-ak-text-primary">
             <strong>{stats.totalRegistrations}</strong> påmeldinger
           </span>
         </div>
         {stats.pendingRegistrations > 0 && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'rgba(var(--warning-rgb), 0.15)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <Clock size={16} color={'var(--warning)'} />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-status-warning/15 rounded-lg">
+            <Clock size={16} className="text-ak-status-warning" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.pendingRegistrations}</strong> venter
             </span>
           </div>
         )}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 14px',
-            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-            borderRadius: 'var(--radius-md)',
-          }}
-        >
-          <Users size={16} color={'var(--accent)'} />
-          <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+        <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-brand-primary/10 rounded-lg">
+          <Users size={16} className="text-ak-brand-primary" />
+          <span className="text-[13px] text-ak-text-primary">
             <strong>{stats.athletesWithTournaments}</strong> med turneringer
           </span>
         </div>
         {stats.athletesWithoutTournaments > 0 && (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 14px',
-              backgroundColor: 'var(--bg-tertiary)',
-              borderRadius: 'var(--radius-md)',
-            }}
-          >
-            <AlertCircle size={16} color={'var(--text-secondary)'} />
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+          <div className="flex items-center gap-2 py-2 px-3.5 bg-ak-surface-subtle rounded-lg">
+            <AlertCircle size={16} className="text-ak-text-secondary" />
+            <span className="text-[13px] text-ak-text-primary">
               <strong>{stats.athletesWithoutTournaments}</strong> uten påmeldinger
             </span>
           </div>
@@ -565,44 +496,16 @@ export default function CoachAthleteTournaments() {
       </div>
 
       {/* Search and filters */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          padding: '16px 24px',
-          borderBottom: '1px solid var(--border-default)',
-          display: 'flex',
-          gap: '12px',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
+      <div className="bg-ak-surface-base py-4 px-6 border-b border-ak-border-default flex gap-3 items-center flex-wrap">
         {/* Search */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '10px 14px',
-            backgroundColor: 'var(--bg-tertiary)',
-            borderRadius: 'var(--radius-md)',
-            flex: 1,
-            maxWidth: '300px',
-          }}
-        >
-          <Search size={18} color={'var(--text-secondary)'} />
+        <div className="flex items-center gap-2 py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg flex-1 max-w-[300px]">
+          <Search size={18} className="text-ak-text-secondary" />
           <input
             type="text"
             placeholder="Søk spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              flex: 1,
-              border: 'none',
-              backgroundColor: 'transparent',
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              outline: 'none',
-            }}
+            className="flex-1 border-none bg-transparent text-sm text-ak-text-primary outline-none"
           />
         </div>
 
@@ -614,22 +517,14 @@ export default function CoachAthleteTournaments() {
           leftIcon={<Filter size={16} />}
         >
           Filter
-          <ChevronDown size={16} style={{ transform: showFilters ? 'rotate(180deg)' : 'none', marginLeft: '4px' }} />
+          <ChevronDown size={16} className={`ml-1 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
         </Button>
 
         {/* Sort select */}
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
-          style={{
-            padding: '10px 14px',
-            backgroundColor: 'var(--bg-tertiary)',
-            border: 'none',
-            borderRadius: 'var(--radius-md)',
-            fontSize: '14px',
-            color: 'var(--text-primary)',
-            cursor: 'pointer',
-          }}
+          className="py-2.5 px-3.5 bg-ak-surface-subtle border-none rounded-lg text-sm text-ak-text-primary cursor-pointer"
         >
           <option value="name">Sorter: Navn</option>
           <option value="tournaments">Sorter: Flest turneringer</option>
@@ -639,16 +534,7 @@ export default function CoachAthleteTournaments() {
 
       {/* Filter options */}
       {showFilters && (
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            padding: '16px 24px',
-            borderBottom: '1px solid var(--border-default)',
-            display: 'flex',
-            gap: '8px',
-            flexWrap: 'wrap',
-          }}
-        >
+        <div className="bg-ak-surface-base py-4 px-6 border-b border-ak-border-default flex gap-2 flex-wrap">
           {[
             { value: 'all', label: 'Alle' },
             { value: 'A', label: 'Kategori A' },
@@ -660,17 +546,11 @@ export default function CoachAthleteTournaments() {
             <button
               key={option.value}
               onClick={() => setFilterBy(option.value as FilterOption)}
-              style={{
-                padding: '8px 16px',
-                backgroundColor:
-                  filterBy === option.value ? 'var(--accent)' : 'var(--bg-tertiary)',
-                color: filterBy === option.value ? 'var(--bg-primary)' : 'var(--text-primary)',
-                border: 'none',
-                borderRadius: '9999px',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className={`py-2 px-4 border-none rounded-full text-[13px] font-medium cursor-pointer ${
+                filterBy === option.value
+                  ? 'bg-ak-brand-primary text-white'
+                  : 'bg-ak-surface-subtle text-ak-text-primary'
+              }`}
             >
               {option.label}
             </button>
@@ -679,22 +559,15 @@ export default function CoachAthleteTournaments() {
       )}
 
       {/* Athletes list */}
-      <div style={{ padding: '24px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="p-6">
+        <div className="flex flex-col gap-3">
           {sortedAndFilteredAthletes.length === 0 ? (
-            <div
-              style={{
-                backgroundColor: 'var(--bg-primary)',
-                borderRadius: 'var(--radius-lg)',
-                padding: '48px 24px',
-                textAlign: 'center',
-              }}
-            >
-              <Users size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
-              <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+            <div className="bg-ak-surface-base rounded-xl py-12 px-6 text-center">
+              <Users size={48} className="text-ak-border-default mb-4 mx-auto" />
+              <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                 Ingen spillere funnet
               </SubSectionTitle>
-              <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', marginTop: '8px' }}>
+              <p className="text-[15px] leading-5 text-ak-text-secondary mt-2">
                 Prøv å endre søk eller filter
               </p>
             </div>
@@ -706,98 +579,45 @@ export default function CoachAthleteTournaments() {
               return (
                 <div
                   key={athlete.id}
-                  style={{
-                    backgroundColor: 'var(--bg-primary)',
-                    borderRadius: 'var(--radius-lg)',
-                    boxShadow: 'var(--shadow-card)',
-                    overflow: 'hidden',
-                  }}
+                  className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden"
                 >
                   {/* Athlete header */}
                   <div
                     onClick={() => setExpandedAthlete(isExpanded ? null : athlete.id)}
-                    style={{
-                      padding: '16px 20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      cursor: 'pointer',
-                      borderBottom: isExpanded ? '1px solid var(--bg-tertiary)' : 'none',
-                    }}
+                    className={`py-4 px-5 flex items-center justify-between cursor-pointer ${
+                      isExpanded ? 'border-b border-ak-surface-subtle' : ''
+                    }`}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                    <div className="flex items-center gap-3.5">
                       <Avatar name={fullName} color={athlete.avatarColor} />
                       <div>
-                        <SubSectionTitle
-                          style={{
-                            fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                            color: 'var(--text-primary)',
-                            margin: 0,
-                          }}
-                        >
+                        <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                           {athlete.lastName}, {athlete.firstName}
                         </SubSectionTitle>
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            marginTop: '4px',
-                          }}
-                        >
-                          <span
-                            style={{
-                              fontSize: '11px',
-                              fontWeight: 600,
-                              color: 'var(--accent)',
-                              backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
-                              padding: '2px 8px',
-                              borderRadius: '4px',
-                            }}
-                          >
+                        <div className="flex items-center gap-2.5 mt-1">
+                          <span className="text-[11px] font-semibold text-ak-brand-primary bg-ak-brand-primary/15 py-0.5 px-2 rounded">
                             Kategori {athlete.category}
                           </span>
-                          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                          <span className="text-xs text-ak-text-secondary">
                             {athlete.totalThisYear} turneringer i år
                           </span>
                         </div>
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="flex items-center gap-3">
                       {/* Tournament count badges */}
-                      <div style={{ display: 'flex', gap: '8px' }}>
+                      <div className="flex gap-2">
                         {athlete.upcomingTournaments.length > 0 && (
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '4px',
-                              padding: '4px 10px',
-                              backgroundColor: 'rgba(var(--success-rgb), 0.1)',
-                              borderRadius: '9999px',
-                            }}
-                          >
-                            <Trophy size={14} color={'var(--success)'} />
-                            <span
-                              style={{
-                                fontSize: '12px',
-                                fontWeight: 600,
-                                color: 'var(--success)',
-                              }}
-                            >
+                          <div className="flex items-center gap-1 py-1 px-2.5 bg-ak-status-success/10 rounded-full">
+                            <Trophy size={14} className="text-ak-status-success" />
+                            <span className="text-xs font-semibold text-ak-status-success">
                               {athlete.upcomingTournaments.length}
                             </span>
                           </div>
                         )}
                         {athlete.upcomingTournaments.length === 0 && (
-                          <span
-                            style={{
-                              fontSize: '12px',
-                              color: 'var(--text-secondary)',
-                              fontStyle: 'italic',
-                            }}
-                          >
+                          <span className="text-xs text-ak-text-secondary italic">
                             Ingen kommende
                           </span>
                         )}
@@ -805,100 +625,53 @@ export default function CoachAthleteTournaments() {
 
                       <ChevronDown
                         size={20}
-                        color={'var(--text-secondary)'}
-                        style={{
-                          transform: isExpanded ? 'rotate(180deg)' : 'none',
-                          transition: 'transform 0.2s ease',
-                        }}
+                        className={`text-ak-text-secondary transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                       />
                     </div>
                   </div>
 
                   {/* Expanded content */}
                   {isExpanded && (
-                    <div style={{ padding: '16px 20px' }}>
+                    <div className="py-4 px-5">
                       {/* Upcoming tournaments */}
                       {athlete.upcomingTournaments.length > 0 && (
-                        <div style={{ marginBottom: '20px' }}>
-                          <CardTitle
-                            style={{
-                              fontSize: '13px', lineHeight: '18px',
-                              color: 'var(--text-secondary)',
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px',
-                              margin: '0 0 12px',
-                            }}
-                          >
+                        <div className="mb-5">
+                          <CardTitle className="text-[13px] leading-[18px] text-ak-text-secondary uppercase tracking-wide m-0 mb-3">
                             Kommende turneringer
                           </CardTitle>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div className="flex flex-col gap-2">
                             {athlete.upcomingTournaments.map((entry) => {
-                              const statusConfig = getStatusConfig(entry.status);
-                              const StatusIcon = statusConfig.icon;
+                              const statusClasses = getStatusClasses(entry.status);
+                              const StatusIcon = statusClasses.icon;
 
                               return (
                                 <div
                                   key={entry.id}
-                                  style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    padding: '12px 14px',
-                                    backgroundColor: 'var(--bg-secondary)',
-                                    borderRadius: 'var(--radius-md)',
-                                  }}
+                                  className="flex items-center justify-between p-3 px-3.5 bg-ak-surface-subtle rounded-lg"
                                 >
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <Trophy size={16} color={'var(--achievement)'} />
+                                  <div className="flex items-center gap-3">
+                                    <Trophy size={16} className="text-amber-500" />
                                     <div>
-                                      <div
-                                        style={{
-                                          fontSize: '14px',
-                                          fontWeight: 500,
-                                          color: 'var(--text-primary)',
-                                        }}
-                                      >
+                                      <div className="text-sm font-medium text-ak-text-primary">
                                         {entry.tournamentName}
                                       </div>
-                                      <div
-                                        style={{
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          gap: '8px',
-                                          marginTop: '4px',
-                                        }}
-                                      >
-                                        <Calendar size={12} color={'var(--text-secondary)'} />
-                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <Calendar size={12} className="text-ak-text-secondary" />
+                                        <span className="text-xs text-ak-text-secondary">
                                           {formatShortDate(entry.date)}
                                         </span>
-                                        <MapPin size={12} color={'var(--text-secondary)'} />
-                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                        <MapPin size={12} className="text-ak-text-secondary" />
+                                        <span className="text-xs text-ak-text-secondary">
                                           {entry.location}
                                         </span>
                                       </div>
                                     </div>
                                   </div>
 
-                                  <div
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      gap: '6px',
-                                      padding: '4px 10px',
-                                      backgroundColor: statusConfig.bg,
-                                      borderRadius: '9999px',
-                                    }}
-                                  >
-                                    <StatusIcon size={14} color={statusConfig.color} />
-                                    <span
-                                      style={{
-                                        fontSize: '12px',
-                                        fontWeight: 500,
-                                        color: statusConfig.color,
-                                      }}
-                                    >
-                                      {statusConfig.label}
+                                  <div className={`flex items-center gap-1.5 py-1 px-2.5 rounded-full ${statusClasses.bg}`}>
+                                    <StatusIcon size={14} className={statusClasses.text} />
+                                    <span className={`text-xs font-medium ${statusClasses.text}`}>
+                                      {statusClasses.label}
                                     </span>
                                   </div>
                                 </div>
@@ -910,63 +683,35 @@ export default function CoachAthleteTournaments() {
 
                       {/* Completed tournaments (last 3) */}
                       {athlete.completedTournaments.length > 0 && (
-                        <div style={{ marginBottom: '16px' }}>
-                          <CardTitle
-                            style={{
-                              fontSize: '13px', lineHeight: '18px',
-                              color: 'var(--text-secondary)',
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px',
-                              margin: '0 0 12px',
-                            }}
-                          >
+                        <div className="mb-4">
+                          <CardTitle className="text-[13px] leading-[18px] text-ak-text-secondary uppercase tracking-wide m-0 mb-3">
                             Siste resultater
                           </CardTitle>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div className="flex flex-col gap-2">
                             {athlete.completedTournaments.slice(0, 3).map((entry) => (
                               <div
                                 key={entry.id}
-                                style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'space-between',
-                                  padding: '12px 14px',
-                                  backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
-                                  borderRadius: 'var(--radius-md)',
-                                  borderLeft: '3px solid var(--accent)',
-                                }}
+                                className="flex items-center justify-between p-3 px-3.5 bg-ak-brand-primary/5 rounded-lg border-l-[3px] border-l-ak-brand-primary"
                               >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                  <Award size={16} color={'var(--accent)'} />
+                                <div className="flex items-center gap-3">
+                                  <Award size={16} className="text-ak-brand-primary" />
                                   <div>
-                                    <div
-                                      style={{
-                                        fontSize: '14px',
-                                        fontWeight: 500,
-                                        color: 'var(--text-primary)',
-                                      }}
-                                    >
+                                    <div className="text-sm font-medium text-ak-text-primary">
                                       {entry.tournamentName}
                                     </div>
-                                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                    <div className="text-xs text-ak-text-secondary">
                                       {formatDate(entry.date)} • {entry.location}
                                     </div>
                                   </div>
                                 </div>
 
                                 {entry.result && (
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                    <div style={{ textAlign: 'right' }}>
-                                      <div
-                                        style={{
-                                          fontSize: '16px',
-                                          fontWeight: 700,
-                                          color: 'var(--accent)',
-                                        }}
-                                      >
+                                  <div className="flex items-center gap-3">
+                                    <div className="text-right">
+                                      <div className="text-base font-bold text-ak-brand-primary">
                                         #{entry.result.position}
                                       </div>
-                                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                      <div className="text-xs text-ak-text-secondary">
                                         {entry.result.score > 0 ? '+' : ''}
                                         {entry.result.score}
                                       </div>
@@ -982,31 +727,14 @@ export default function CoachAthleteTournaments() {
                       {/* No tournaments */}
                       {athlete.upcomingTournaments.length === 0 &&
                         athlete.completedTournaments.length === 0 && (
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              padding: '24px',
-                              color: 'var(--text-secondary)',
-                              fontSize: '14px',
-                            }}
-                          >
-                            <Trophy size={18} style={{ marginRight: '8px' }} />
+                          <div className="flex items-center justify-center p-6 text-ak-text-secondary text-sm">
+                            <Trophy size={18} className="mr-2" />
                             Ingen turneringer registrert
                           </div>
                         )}
 
                       {/* Actions */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          gap: '12px',
-                          marginTop: '16px',
-                          paddingTop: '16px',
-                          borderTop: '1px solid var(--bg-tertiary)',
-                        }}
-                      >
+                      <div className="flex gap-3 mt-4 pt-4 border-t border-ak-surface-subtle">
                         <Button
                           variant="primary"
                           size="sm"
@@ -1014,9 +742,9 @@ export default function CoachAthleteTournaments() {
                             e.stopPropagation();
                             navigate(`/coach/athletes/${athlete.id}`);
                           }}
+                          rightIcon={<ChevronRight size={16} />}
                         >
                           Se spillerprofil
-                          <ChevronRight size={16} style={{ marginLeft: '4px' }} />
                         </Button>
                         <Button
                           variant="secondary"

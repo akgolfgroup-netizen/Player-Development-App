@@ -208,6 +208,13 @@ export const CoachPlanningHub = lazy(() => import('../features/coach-planning').
 export const CoachSessionEvaluations = lazy(() => import('../features/coach-session-evaluations').then(m => ({ default: m.CoachSessionEvaluations })));
 
 // =============================================================================
+// Samling (Training Camps)
+// =============================================================================
+export const SamlingList = lazy(() => import('../features/samling').then(m => ({ default: m.SamlingList })));
+export const SamlingDetail = lazy(() => import('../features/samling').then(m => ({ default: m.SamlingDetail })));
+export const SamlingCreate = lazy(() => import('../features/samling').then(m => ({ default: m.SamlingCreate })));
+
+// =============================================================================
 // Admin Features
 // =============================================================================
 export const AdminSystemOverview = lazy(() => import('../features/admin-system-overview').then(m => ({ default: m.AdminSystemOverview })));

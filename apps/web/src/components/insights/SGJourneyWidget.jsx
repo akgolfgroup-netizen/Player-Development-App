@@ -1,5 +1,8 @@
 /**
  * SG Journey Widget
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  * Visualizes player's progression toward PGA Elite level as a mountain climb
  */
 
@@ -45,7 +48,7 @@ const MountainVisualization = ({ position, levels }) => {
     <div style={{
       position: 'relative',
       height: '200px',
-      background: 'linear-gradient(to bottom, #1e3a5f 0%, #2d5a87 30%, #4a7c59 70%, #6b8e23 100%)',
+      background: 'linear-gradient(to bottom, var(--sg-gradient-top) 0%, var(--sg-gradient-mid1) 30%, var(--sg-gradient-mid2) 70%, var(--sg-gradient-bottom) 100%)',
       borderRadius: 'var(--radius-lg)',
       overflow: 'hidden',
       marginBottom: '16px',
@@ -345,7 +348,7 @@ const StatsSummary = ({ position }) => {
  */
 const CategoryBreakdown = ({ breakdown }) => {
   const categories = [
-    { id: 'approach', label: 'Approach', icon: '🎯' },
+    { id: 'approach', label: 'Innspill', icon: '🎯' },
     { id: 'aroundGreen', label: 'Kortspill', icon: '⛳' },
     { id: 'putting', label: 'Putting', icon: '🏌️' },
   ];
@@ -442,7 +445,7 @@ const SGJourneyWidget = ({ data, loading, error, onViewDetails }) => {
           alignItems: 'center',
           gap: '6px',
           padding: '8px 12px',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          backgroundColor: 'var(--info-muted)',
           borderRadius: 'var(--radius-md)',
           marginBottom: '16px',
           fontSize: '12px',

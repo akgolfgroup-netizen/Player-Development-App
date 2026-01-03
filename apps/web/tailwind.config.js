@@ -128,6 +128,23 @@ module.exports = {
         },
 
         // ═══════════════════════════════════════════
+        // SEMANTIC SHORTHAND TOKENS
+        // Enables: text-accent, bg-accent, border-accent
+        // Replaces inline: style={{ color: 'var(--accent)' }}
+        // ═══════════════════════════════════════════
+        accent: {
+          DEFAULT: 'var(--accent)',
+          hover: 'var(--accent-hover)',
+          muted: 'var(--accent-muted)',
+          soft: 'var(--accent-soft)',
+        },
+
+        // Background shorthand (replaces --bg-primary, --bg-secondary)
+        'bg-primary': 'var(--bg-primary)',
+        'bg-secondary': 'var(--bg-secondary)',
+        'bg-tertiary': 'var(--bg-tertiary)',
+
+        // ═══════════════════════════════════════════
         // STATUS COLORS - Complete Semantic System
         // ═══════════════════════════════════════════
         success: {
@@ -136,6 +153,7 @@ module.exports = {
           dark: 'var(--ak-success-dark)',
           bg: 'var(--ak-success-bg)',
           border: 'var(--ak-success-border)',
+          muted: 'var(--success-muted)',  // rgba(5, 150, 105, 0.1)
         },
         warning: {
           DEFAULT: 'var(--ak-warning)',
@@ -143,6 +161,7 @@ module.exports = {
           dark: 'var(--ak-warning-dark)',
           bg: 'var(--ak-warning-bg)',
           border: 'var(--ak-warning-border)',
+          muted: 'var(--warning-muted)',  // rgba(217, 119, 6, 0.1)
         },
         danger: {
           DEFAULT: 'var(--ak-error)',
@@ -150,6 +169,7 @@ module.exports = {
           dark: 'var(--ak-error-dark)',
           bg: 'var(--ak-error-bg)',
           border: 'var(--ak-error-border)',
+          muted: 'var(--error-muted)',  // rgba(220, 38, 38, 0.08)
         },
         info: {
           DEFAULT: 'var(--ak-info)',
@@ -157,6 +177,7 @@ module.exports = {
           dark: 'var(--ak-info-dark)',
           bg: 'var(--ak-info-bg)',
           border: 'var(--ak-info-border)',
+          muted: 'var(--info-muted)',  // rgba(2, 132, 199, 0.1)
         },
 
         // ═══════════════════════════════════════════
@@ -387,6 +408,16 @@ module.exports = {
         DEFAULT: 'var(--color-border)',
         subtle: 'var(--border-subtle)',
         brand: 'var(--border-brand)',
+        accent: 'var(--accent)',
+        'accent-muted': 'var(--accent-soft)',
+        success: 'var(--ak-success-border)',
+        'success-muted': 'var(--success-border-muted)',
+        warning: 'var(--ak-warning-border)',
+        'warning-muted': 'var(--warning-border-muted)',
+        danger: 'var(--ak-error-border)',
+        'danger-muted': 'var(--error-border-muted)',
+        info: 'var(--ak-info-border)',
+        'info-muted': 'var(--info-border-muted)',
       },
 
       // ═══════════════════════════════════════════

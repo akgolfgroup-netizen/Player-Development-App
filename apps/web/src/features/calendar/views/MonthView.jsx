@@ -1,3 +1,10 @@
+/**
+ * MonthView Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React from 'react';
 import { ChevronLeft, ChevronRight, Clock, MoreHorizontal } from 'lucide-react';
 import { SectionTitle } from '../../../components/typography';
@@ -87,16 +94,17 @@ const MonthView = ({
 
   const allDays = [...prevMonthDays, ...currentMonthDays, ...nextMonthDays];
 
+  // Session colors using semantic tokens (see COLOR_USAGE_RULES.md)
   const getSessionColor = (type) => {
     const colors = {
-      teknikk: { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500' },
-      golfslag: { bg: 'bg-green-50', text: 'text-green-700', dot: 'bg-green-500' },
-      spill: { bg: 'bg-purple-50', text: 'text-purple-700', dot: 'bg-purple-500' },
-      konkurranse: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500' },
-      fysisk: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500' },
-      mental: { bg: 'bg-gray-50', text: 'text-gray-700', dot: 'bg-gray-500' },
+      teknikk: { bg: 'bg-ak-session-teknikk-muted', text: 'text-ak-text-primary', dot: 'bg-ak-session-teknikk' },
+      golfslag: { bg: 'bg-ak-session-golfslag-muted', text: 'text-ak-text-primary', dot: 'bg-ak-session-golfslag' },
+      spill: { bg: 'bg-ak-session-spill-muted', text: 'text-ak-text-primary', dot: 'bg-ak-session-spill' },
+      konkurranse: { bg: 'bg-ak-session-kompetanse-muted', text: 'text-ak-text-primary', dot: 'bg-ak-session-kompetanse' },
+      fysisk: { bg: 'bg-ak-session-fysisk-muted', text: 'text-ak-text-primary', dot: 'bg-ak-session-fysisk' },
+      mental: { bg: 'bg-ak-surface-elevated', text: 'text-ak-text-secondary', dot: 'bg-ak-text-tertiary' },
     };
-    return colors[type] || { bg: 'bg-gray-50', text: 'text-gray-700', dot: 'bg-gray-400' };
+    return colors[type] || { bg: 'bg-ak-surface-elevated', text: 'text-ak-text-secondary', dot: 'bg-ak-text-tertiary' };
   };
 
   // Get selected day's events for mobile view
@@ -107,18 +115,18 @@ const MonthView = ({
   return (
     <div className="lg:flex lg:h-full lg:flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-border-default bg-white px-6 py-4 lg:flex-none">
-        <SectionTitle className="text-base font-semibold text-ak-charcoal">
+      <header className="flex items-center justify-between border-b border-ak-border-default bg-ak-surface-card px-6 py-4 lg:flex-none">
+        <SectionTitle className="text-base font-semibold text-ak-text-primary">
           <time dateTime={`${year}-${String(month + 1).padStart(2, '0')}`}>
             {monthNames[month]} {year}
           </time>
         </SectionTitle>
         <div className="flex items-center">
-          <div className="relative flex items-center rounded-ak-md bg-white shadow-sm ring-1 ring-border-default md:items-stretch">
+          <div className="relative flex items-center rounded-lg bg-ak-surface-card shadow-sm ring-1 ring-ak-border-default md:items-stretch">
             <button
               type="button"
               onClick={() => onNavigate?.(-1)}
-              className="flex h-9 w-12 items-center justify-center rounded-l-ak-md pr-1 text-ak-steel hover:text-ak-charcoal focus:relative md:w-9 md:pr-0 md:hover:bg-ak-snow"
+              className="flex h-9 w-12 items-center justify-center rounded-l-lg pr-1 text-ak-text-secondary hover:text-ak-text-primary focus:relative md:w-9 md:pr-0 md:hover:bg-ak-surface-subtle"
             >
               <span className="sr-only">Forrige måned</span>
               <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -129,15 +137,15 @@ const MonthView = ({
                 const today = new Date();
                 onDateClick?.(today);
               }}
-              className="hidden px-3.5 text-sm font-semibold text-ak-charcoal hover:bg-ak-snow focus:relative md:block"
+              className="hidden px-3.5 text-sm font-semibold text-ak-text-primary hover:bg-ak-surface-subtle focus:relative md:block"
             >
               I dag
             </button>
-            <span className="relative -mx-px h-5 w-px bg-border-default md:hidden" />
+            <span className="relative -mx-px h-5 w-px bg-ak-border-default md:hidden" />
             <button
               type="button"
               onClick={() => onNavigate?.(1)}
-              className="flex h-9 w-12 items-center justify-center rounded-r-ak-md pl-1 text-ak-steel hover:text-ak-charcoal focus:relative md:w-9 md:pl-0 md:hover:bg-ak-snow"
+              className="flex h-9 w-12 items-center justify-center rounded-r-lg pl-1 text-ak-text-secondary hover:text-ak-text-primary focus:relative md:w-9 md:pl-0 md:hover:bg-ak-surface-subtle"
             >
               <span className="sr-only">Neste måned</span>
               <ChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -145,11 +153,11 @@ const MonthView = ({
           </div>
           {onAddEvent && (
             <div className="hidden md:ml-4 md:flex md:items-center">
-              <div className="ml-6 h-6 w-px bg-border-default" />
+              <div className="ml-6 h-6 w-px bg-ak-border-default" />
               <button
                 type="button"
                 onClick={onAddEvent}
-                className="ml-6 rounded-ak-md bg-ak-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-primary-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ak-primary"
+                className="ml-6 rounded-lg bg-ak-brand-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-ak-brand-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ak-brand-primary"
               >
                 Ny hendelse
               </button>
@@ -159,11 +167,11 @@ const MonthView = ({
       </header>
 
       {/* Calendar Grid */}
-      <div className="shadow-sm ring-1 ring-border-default lg:flex lg:flex-auto lg:flex-col">
+      <div className="shadow-sm ring-1 ring-ak-border-default lg:flex lg:flex-auto lg:flex-col">
         {/* Week Day Headers */}
-        <div className="grid grid-cols-7 gap-px border-b border-border-default bg-ak-mist text-center text-xs font-semibold leading-6 text-ak-steel lg:flex-none">
+        <div className="grid grid-cols-7 gap-px border-b border-ak-border-default bg-ak-surface-subtle text-center text-xs font-semibold leading-6 text-ak-text-secondary lg:flex-none">
           {weekDays.map((day, idx) => (
-            <div key={day} className="flex justify-center bg-white py-2">
+            <div key={day} className="flex justify-center bg-ak-surface-card py-2">
               <span>{day.charAt(0)}</span>
               <span className="sr-only sm:not-sr-only">{day.slice(1)}</span>
             </div>
@@ -171,7 +179,7 @@ const MonthView = ({
         </div>
 
         {/* Days Grid */}
-        <div className="flex bg-ak-mist text-xs leading-6 text-ak-steel lg:flex-auto">
+        <div className="flex bg-ak-surface-subtle text-xs leading-6 text-ak-text-secondary lg:flex-auto">
           {/* Desktop View */}
           <div className="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px">
             {allDays.map((dayInfo) => (
@@ -179,20 +187,20 @@ const MonthView = ({
                 key={dayInfo.date}
                 onClick={() => dayInfo.isCurrentMonth && onDateClick?.(new Date(year, month, dayInfo.day))}
                 className={classNames(
-                  dayInfo.isCurrentMonth ? 'bg-white' : 'bg-ak-snow/50 text-ak-mist',
-                  'group relative min-h-[100px] px-3 py-2 cursor-pointer hover:bg-ak-snow/80 transition-colors'
+                  dayInfo.isCurrentMonth ? 'bg-ak-surface-card' : 'bg-ak-surface-subtle/50 text-ak-text-tertiary',
+                  'group relative min-h-[100px] px-3 py-2 cursor-pointer hover:bg-ak-surface-subtle/80 transition-colors'
                 )}
               >
                 <time
                   dateTime={dayInfo.date}
                   className={classNames(
                     dayInfo.isToday
-                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-primary font-semibold text-white'
+                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-brand-primary font-semibold text-white'
                       : dayInfo.isSelected
-                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-primary/10 font-semibold text-ak-primary'
+                      ? 'flex h-6 w-6 items-center justify-center rounded-full bg-ak-brand-primary/10 font-semibold text-ak-brand-primary'
                       : dayInfo.isCurrentMonth
-                      ? 'text-ak-charcoal'
-                      : 'text-ak-mist',
+                      ? 'text-ak-text-primary'
+                      : 'text-ak-text-tertiary',
                     'relative'
                   )}
                 >
@@ -229,7 +237,7 @@ const MonthView = ({
                       );
                     })}
                     {dayInfo.events.length > 2 && (
-                      <li className="text-ak-steel text-xs">+ {dayInfo.events.length - 2} mer</li>
+                      <li className="text-ak-text-secondary text-xs">+ {dayInfo.events.length - 2} mer</li>
                     )}
                   </ol>
                 )}
@@ -245,21 +253,21 @@ const MonthView = ({
                 type="button"
                 onClick={() => dayInfo.isCurrentMonth && onDateClick?.(new Date(year, month, dayInfo.day))}
                 className={classNames(
-                  dayInfo.isCurrentMonth ? 'bg-white' : 'bg-ak-snow/50',
+                  dayInfo.isCurrentMonth ? 'bg-ak-surface-card' : 'bg-ak-surface-subtle/50',
                   (dayInfo.isSelected || dayInfo.isToday) && 'font-semibold',
                   dayInfo.isSelected && 'text-white',
-                  !dayInfo.isSelected && dayInfo.isToday && 'text-ak-primary',
-                  !dayInfo.isSelected && dayInfo.isCurrentMonth && !dayInfo.isToday && 'text-ak-charcoal',
-                  !dayInfo.isSelected && !dayInfo.isCurrentMonth && !dayInfo.isToday && 'text-ak-mist',
-                  'group relative flex h-14 flex-col px-3 py-2 hover:bg-ak-snow focus:z-10'
+                  !dayInfo.isSelected && dayInfo.isToday && 'text-ak-brand-primary',
+                  !dayInfo.isSelected && dayInfo.isCurrentMonth && !dayInfo.isToday && 'text-ak-text-primary',
+                  !dayInfo.isSelected && !dayInfo.isCurrentMonth && !dayInfo.isToday && 'text-ak-text-tertiary',
+                  'group relative flex h-14 flex-col px-3 py-2 hover:bg-ak-surface-subtle focus:z-10'
                 )}
               >
                 <time
                   dateTime={dayInfo.date}
                   className={classNames(
                     dayInfo.isSelected && 'flex h-6 w-6 items-center justify-center rounded-full',
-                    dayInfo.isSelected && dayInfo.isToday && 'bg-ak-primary',
-                    dayInfo.isSelected && !dayInfo.isToday && 'bg-ak-charcoal',
+                    dayInfo.isSelected && dayInfo.isToday && 'bg-ak-brand-primary',
+                    dayInfo.isSelected && !dayInfo.isToday && 'bg-ak-text-primary',
                     'ml-auto'
                   )}
                 >
@@ -285,28 +293,28 @@ const MonthView = ({
       {/* Mobile Event List */}
       {selectedDayEvents.length > 0 && (
         <div className="relative px-4 py-10 sm:px-6 lg:hidden">
-          <ol className="divide-y divide-border-default overflow-hidden rounded-ak-lg bg-white text-sm shadow-sm ring-1 ring-border-default">
+          <ol className="divide-y divide-ak-border-default overflow-hidden rounded-xl bg-ak-surface-card text-sm shadow-sm ring-1 ring-ak-border-default">
             {selectedDayEvents.map((event) => {
               const colors = getSessionColor(event.type);
               return (
                 <li
                   key={event.id}
-                  className="group flex p-4 pr-6 focus-within:bg-ak-snow hover:bg-ak-snow"
+                  className="group flex p-4 pr-6 focus-within:bg-ak-surface-subtle hover:bg-ak-surface-subtle"
                 >
                   <div className="flex-auto">
-                    <p className="font-semibold text-ak-charcoal">{event.name}</p>
-                    <time dateTime={event.datetime} className="mt-2 flex items-center text-ak-steel">
-                      <Clock className="mr-2 h-5 w-5 text-ak-mist" aria-hidden="true" />
+                    <p className="font-semibold text-ak-text-primary">{event.name}</p>
+                    <time dateTime={event.datetime} className="mt-2 flex items-center text-ak-text-secondary">
+                      <Clock className="mr-2 h-5 w-5 text-ak-text-tertiary" aria-hidden="true" />
                       {event.time}
                       {event.duration > 0 && <span className="ml-2">· {event.duration} min</span>}
                     </time>
                     {event.location && (
-                      <p className="mt-1 text-ak-steel">📍 {event.location}</p>
+                      <p className="mt-1 text-ak-text-secondary">📍 {event.location}</p>
                     )}
                   </div>
                   <button
                     onClick={() => onSessionClick?.(event, selectedDate)}
-                    className="ml-6 flex-none self-center rounded-ak-md bg-white px-3 py-2 font-semibold text-ak-charcoal opacity-0 shadow-sm ring-1 ring-border-default group-hover:opacity-100 hover:ring-ak-steel focus:opacity-100"
+                    className="ml-6 flex-none self-center rounded-lg bg-ak-surface-card px-3 py-2 font-semibold text-ak-text-primary opacity-0 shadow-sm ring-1 ring-ak-border-default group-hover:opacity-100 hover:ring-ak-border-subtle focus:opacity-100"
                   >
                     Vis<span className="sr-only">, {event.name}</span>
                   </button>

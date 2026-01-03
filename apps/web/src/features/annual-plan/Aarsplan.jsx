@@ -1,7 +1,13 @@
+/**
+ * AKGolfAarsplan Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
-import { tokens } from '../../design-tokens';
 import ExportButton from '../../components/ui/ExportButton';
 
 // Period colors (Blue Palette 01)

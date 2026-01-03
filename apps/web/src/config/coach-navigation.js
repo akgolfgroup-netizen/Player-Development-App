@@ -56,6 +56,19 @@ export const coachNavigationConfig = [
   },
 
   // ────────────────────────────────────────────────────────────
+  // SAMLINGER
+  // Treningssamlinger med egen kalender og øktplanlegging
+  // ────────────────────────────────────────────────────────────
+  {
+    label: 'Samlinger',
+    icon: 'Tent',
+    submenu: [
+      { href: '/coach/samlinger', label: 'Alle samlinger' },
+      { href: '/coach/samlinger/ny', label: 'Ny samling', badge: 'NY' },
+    ]
+  },
+
+  // ────────────────────────────────────────────────────────────
   // BOOKINGSYSTEM
   // Booking av økter med spillere
   // ────────────────────────────────────────────────────────────
@@ -74,7 +87,7 @@ export const coachNavigationConfig = [
   // Statistikk og analyse for spillere (inkl. Data Golf)
   // ────────────────────────────────────────────────────────────
   {
-    label: 'Stats',
+    label: 'Statistikk',
     icon: 'BarChart3',
     submenu: [
       { href: '/coach/stats', label: 'Spilleroversikt' },
@@ -208,8 +221,8 @@ export const coachAlertTypes = {
  */
 
 export const coachSidebarSections = {
-  main: coachNavigationConfig.slice(0, 4),     // Dashboard, Spillere, Grupper, Booking
-  planning: coachNavigationConfig.slice(4, 7), // Stats, Planlegger, Turneringer
-  communication: coachNavigationConfig.slice(7, 9), // Beskjeder, Øvelsesbank
-  system: coachNavigationConfig.slice(9),      // Varsler, Innstillinger
+  main: coachNavigationConfig.slice(0, 5),     // Dashboard, Spillere, Grupper, Samlinger, Booking
+  planning: coachNavigationConfig.slice(5, 8), // Stats, Planlegger, Turneringer
+  communication: coachNavigationConfig.slice(8, 10), // Beskjeder, Øvelsesbank
+  system: coachNavigationConfig.slice(10),      // Varsler, Innstillinger
 };

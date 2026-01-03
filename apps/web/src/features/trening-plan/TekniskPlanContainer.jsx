@@ -1,3 +1,9 @@
+/**
+ * TekniskPlanContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import {
   Target, Video, CheckCircle, Clock, ChevronRight, ChevronDown,
@@ -7,6 +13,31 @@ import {
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+
+// Status configuration
+const STATUS_CLASSES = {
+  completed: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    activeBg: 'bg-ak-status-success',
+    icon: CheckCircle,
+    label: 'Fullfort',
+  },
+  in_progress: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/15',
+    activeBg: 'bg-ak-brand-primary',
+    icon: Play,
+    label: 'Pagar',
+  },
+  pending: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+    activeBg: 'bg-ak-text-secondary',
+    icon: Clock,
+    label: 'Venter',
+  },
+};
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -88,16 +119,7 @@ const TECHNICAL_PLAN = {
 // ============================================================================
 
 const getStatusConfig = (status) => {
-  switch (status) {
-    case 'completed':
-      return { color: 'var(--success)', icon: CheckCircle, label: 'Fullfort' };
-    case 'in_progress':
-      return { color: 'var(--accent)', icon: Play, label: 'Pagar' };
-    case 'pending':
-      return { color: 'var(--text-secondary)', icon: Clock, label: 'Venter' };
-    default:
-      return { color: 'var(--text-secondary)', icon: Clock, label: status };
-  }
+  return STATUS_CLASSES[status] || STATUS_CLASSES.pending;
 };
 
 // ============================================================================
@@ -114,150 +136,86 @@ const AreaCard = ({ area }) => {
   const progressPercent = (completedCheckpoints / totalCheckpoints) * 100;
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      overflow: 'hidden',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      border: area.status === 'in_progress' ? '2px solid var(--accent)' : '2px solid transparent',
-    }}>
+    <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm ${
+      area.status === 'in_progress' ? 'border-2 border-ak-brand-primary' : 'border-2 border-transparent'
+    }`}>
       {/* Header */}
       <div
         onClick={() => setIsExpanded(!isExpanded)}
-        style={{
-          padding: '20px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-        }}
+        className="p-5 cursor-pointer flex items-center gap-4"
       >
-        <div style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '12px',
-          backgroundColor: `${statusConfig.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <StatusIcon size={24} color={statusConfig.color} />
+        <div className={`w-12 h-12 rounded-xl ${statusConfig.bg} flex items-center justify-center`}>
+          <StatusIcon size={24} className={statusConfig.text} />
         </div>
 
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <SubSectionTitle style={{
-              fontSize: '16px',
-            }}>
+        <div className="flex-1">
+          <div className="flex items-center gap-2.5">
+            <SubSectionTitle className="text-base">
               {area.name}
             </SubSectionTitle>
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 500,
-              color: statusConfig.color,
-              backgroundColor: `${statusConfig.color}15`,
-              padding: '2px 8px',
-              borderRadius: '4px',
-            }}>
+            <span className={`text-[11px] font-medium ${statusConfig.text} ${statusConfig.bg} py-0.5 px-2 rounded`}>
               {statusConfig.label}
             </span>
           </div>
-          <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+          <div className="text-[13px] text-ak-text-secondary mt-1">
             {area.focus}
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            <div className="text-sm font-semibold text-ak-text-primary">
               {completedCheckpoints}/{totalCheckpoints}
             </div>
-            <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>checkpoints</div>
+            <div className="text-[11px] text-ak-text-secondary">checkpoints</div>
           </div>
-          <div style={{
-            width: '28px',
-            height: '28px',
-            borderRadius: '8px',
-            backgroundColor: 'var(--bg-secondary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-            transition: 'transform 0.2s',
-          }}>
-            <ChevronDown size={16} color={'var(--text-secondary)'} />
+          <div className={`w-7 h-7 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${
+            isExpanded ? 'rotate-180' : ''
+          }`}>
+            <ChevronDown size={16} className="text-ak-text-secondary" />
           </div>
         </div>
       </div>
 
       {/* Progress bar */}
-      <div style={{ padding: '0 20px 12px' }}>
-        <div style={{
-          height: '4px',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: '2px',
-          overflow: 'hidden',
-        }}>
-          <div style={{
-            height: '100%',
-            width: `${progressPercent}%`,
-            backgroundColor: statusConfig.color,
-            borderRadius: '2px',
-            transition: 'width 0.3s ease',
-          }} />
+      <div className="px-5 pb-3">
+        <div className="h-1 bg-ak-surface-subtle rounded-sm overflow-hidden">
+          <div
+            className={`h-full ${statusConfig.activeBg} rounded-sm transition-all duration-300`}
+            style={{ width: `${progressPercent}%` }}
+          />
         </div>
       </div>
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div style={{
-          padding: '0 20px 20px',
-          borderTop: '1px solid var(--border-default)',
-        }}>
+        <div className="px-5 pb-5 border-t border-ak-border-default">
           {/* Checkpoints */}
-          <div style={{ marginTop: '16px' }}>
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              marginBottom: '10px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}>
+          <div className="mt-4">
+            <div className="text-[13px] font-semibold text-ak-text-primary mb-2.5 flex items-center gap-1.5">
               <Target size={14} />
               Checkpoints
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="flex flex-col gap-2">
               {area.checkpoints.map((checkpoint) => (
                 <div
                   key={checkpoint.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    padding: '10px 12px',
-                    backgroundColor: checkpoint.completed ? 'rgba(var(--success-rgb), 0.08)' : 'var(--bg-secondary)',
-                    borderRadius: '8px',
-                  }}
+                  className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg ${
+                    checkpoint.completed ? 'bg-ak-status-success/10' : 'bg-ak-surface-subtle'
+                  }`}
                 >
-                  <div style={{
-                    width: '22px',
-                    height: '22px',
-                    borderRadius: '50%',
-                    backgroundColor: checkpoint.completed ? 'var(--success)' : 'var(--bg-primary)',
-                    border: checkpoint.completed ? 'none' : '2px solid var(--border-default)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    {checkpoint.completed && <CheckCircle size={14} color={'var(--bg-primary)'} />}
+                  <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center ${
+                    checkpoint.completed
+                      ? 'bg-ak-status-success'
+                      : 'bg-ak-surface-base border-2 border-ak-border-default'
+                  }`}>
+                    {checkpoint.completed && <CheckCircle size={14} className="text-white" />}
                   </div>
-                  <span style={{
-                    fontSize: '13px',
-                    color: checkpoint.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
-                    textDecoration: checkpoint.completed ? 'line-through' : 'none',
-                  }}>
+                  <span className={`text-[13px] ${
+                    checkpoint.completed
+                      ? 'text-ak-text-secondary line-through'
+                      : 'text-ak-text-primary'
+                  }`}>
                     {checkpoint.text}
                   </span>
                 </div>
@@ -266,44 +224,22 @@ const AreaCard = ({ area }) => {
           </div>
 
           {/* Drills */}
-          <div style={{ marginTop: '16px' }}>
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              marginBottom: '10px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}>
+          <div className="mt-4">
+            <div className="text-[13px] font-semibold text-ak-text-primary mb-2.5 flex items-center gap-1.5">
               <Repeat size={14} />
               Drills
             </div>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="flex gap-2 flex-wrap">
               {area.drills.map((drill, idx) => (
                 <div
                   key={idx}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '8px 12px',
-                    backgroundColor: 'var(--bg-secondary)',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                  }}
+                  className="flex items-center gap-2 py-2 px-3 bg-ak-surface-subtle rounded-lg cursor-pointer"
                 >
-                  <Video size={14} color={'var(--accent)'} />
-                  <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
+                  <Video size={14} className="text-ak-brand-primary" />
+                  <span className="text-xs text-ak-text-primary">
                     {drill.name}
                   </span>
-                  <span style={{
-                    fontSize: '11px',
-                    color: 'var(--text-secondary)',
-                    backgroundColor: 'var(--bg-primary)',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                  }}>
+                  <span className="text-[11px] text-ak-text-secondary bg-ak-surface-base py-0.5 px-1.5 rounded">
                     {drill.duration}
                   </span>
                 </div>
@@ -313,30 +249,14 @@ const AreaCard = ({ area }) => {
 
           {/* Coach Feedback */}
           {area.coachFeedback && (
-            <div style={{
-              marginTop: '16px',
-              padding: '12px',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
-              borderRadius: '10px',
-              borderLeft: '3px solid var(--accent)',
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                marginBottom: '6px',
-              }}>
-                <MessageCircle size={14} color={'var(--accent)'} />
-                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent)' }}>
+            <div className="mt-4 p-3 bg-ak-brand-primary/10 rounded-[10px] border-l-[3px] border-ak-brand-primary">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <MessageCircle size={14} className="text-ak-brand-primary" />
+                <span className="text-xs font-semibold text-ak-brand-primary">
                   Trener-feedback
                 </span>
               </div>
-              <p style={{
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                margin: 0,
-                lineHeight: 1.5,
-              }}>
+              <p className="text-[13px] text-ak-text-primary m-0 leading-relaxed">
                 {area.coachFeedback}
               </p>
             </div>
@@ -344,21 +264,11 @@ const AreaCard = ({ area }) => {
 
           {/* Notes */}
           {area.notes && !area.coachFeedback && (
-            <div style={{
-              marginTop: '16px',
-              padding: '12px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '10px',
-            }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+            <div className="mt-4 p-3 bg-ak-surface-subtle rounded-[10px]">
+              <div className="text-[11px] text-ak-text-secondary mb-1">
                 Notater
               </div>
-              <p style={{
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                margin: 0,
-                lineHeight: 1.5,
-              }}>
+              <p className="text-[13px] text-ak-text-primary m-0 leading-relaxed">
                 {area.notes}
               </p>
             </div>
@@ -375,60 +285,38 @@ const AreaCard = ({ area }) => {
 
 const MetricsCard = ({ metrics }) => {
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      padding: '20px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        marginBottom: '16px',
-      }}>
-        <TrendingUp size={16} color={'var(--achievement)'} />
-        <SubSectionTitle style={{
-          fontSize: '14px',
-        }}>
+    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+      <div className="flex items-center gap-2 mb-4">
+        <TrendingUp size={16} className="text-ak-status-warning" />
+        <SubSectionTitle className="text-sm">
           Nokkeltall
         </SubSectionTitle>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <div className="flex flex-col gap-3.5">
         {metrics.map((metric, idx) => (
           <div key={idx}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '6px',
-            }}>
-              <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[13px] text-ak-text-primary">
                 {metric.name}
               </span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              <div className="flex items-center gap-2">
+                <span className="text-[13px] font-semibold text-ak-text-primary">
                   {metric.current}
                 </span>
-                <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                <span className="text-[11px] text-ak-text-secondary">
                   / {metric.target}
                 </span>
               </div>
             </div>
-            <div style={{
-              height: '6px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '3px',
-              overflow: 'hidden',
-            }}>
-              <div style={{
-                height: '100%',
-                width: `${metric.progress}%`,
-                backgroundColor: metric.progress >= 80 ? 'var(--success)' :
-                  metric.progress >= 50 ? 'var(--accent)' : 'var(--warning)',
-                borderRadius: '3px',
-              }} />
+            <div className="h-1.5 bg-ak-surface-subtle rounded-sm overflow-hidden">
+              <div
+                className={`h-full rounded-sm ${
+                  metric.progress >= 80 ? 'bg-ak-status-success' :
+                  metric.progress >= 50 ? 'bg-ak-brand-primary' : 'bg-ak-status-warning'
+                }`}
+                style={{ width: `${metric.progress}%` }}
+              />
             </div>
           </div>
         ))}
@@ -443,23 +331,11 @@ const MetricsCard = ({ metrics }) => {
 
 const RecentVideosCard = ({ videos }) => {
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      padding: '20px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '16px',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Camera size={16} color={'var(--accent)'} />
-          <SubSectionTitle style={{
-            fontSize: '14px',
-          }}>
+    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Camera size={16} className="text-ak-brand-primary" />
+          <SubSectionTitle className="text-sm">
             Siste videoer
           </SubSectionTitle>
         </div>
@@ -468,40 +344,24 @@ const RecentVideosCard = ({ videos }) => {
         </Button>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div className="flex flex-col gap-2.5">
         {videos.map((video) => (
           <div
             key={video.id}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '10px',
-              cursor: 'pointer',
-            }}
+            className="flex items-center gap-3 p-2.5 bg-ak-surface-subtle rounded-[10px] cursor-pointer"
           >
-            <div style={{
-              width: '48px',
-              height: '36px',
-              borderRadius: '6px',
-              backgroundColor: 'var(--text-primary)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Play size={16} color={'var(--bg-primary)'} />
+            <div className="w-12 h-9 rounded-md bg-ak-text-primary flex items-center justify-center">
+              <Play size={16} className="text-white" />
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+            <div className="flex-1">
+              <div className="text-[13px] font-medium text-ak-text-primary">
                 {video.title}
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+              <div className="text-[11px] text-ak-text-secondary">
                 {video.date} - {video.duration}
               </div>
             </div>
-            <ChevronRight size={16} color={'var(--text-secondary)'} />
+            <ChevronRight size={16} className="text-ak-text-secondary" />
           </div>
         ))}
       </div>
@@ -518,92 +378,55 @@ const TekniskPlanContainer = () => {
   const completedAreas = plan.areas.filter(a => a.status === 'completed').length;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Teknisk plan"
         subtitle={`Fokus: ${plan.currentFocus}`}
       />
 
-      <div style={{ padding: '0' }}>
+      <div className="p-6">
         {/* Progress Overview */}
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '16px',
-          padding: '20px',
-          marginBottom: '20px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '16px',
-          }}>
+        <div className="bg-ak-surface-base rounded-2xl p-5 mb-5 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <SectionTitle style={{
-                fontSize: '18px',
-              }}>
+              <SectionTitle className="text-lg">
                 Teknisk utviklingsplan
               </SectionTitle>
-              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+              <div className="text-[13px] text-ak-text-secondary mt-1">
                 Trener: {plan.coach} - Maldat: {new Date(plan.targetDate).toLocaleDateString('nb-NO', { day: 'numeric', month: 'long' })}
               </div>
             </div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-            }}>
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <div className="text-2xl font-bold text-ak-brand-primary">
                   {plan.progress}%
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>total fremgang</div>
+                <div className="text-[11px] text-ak-text-secondary">total fremgang</div>
               </div>
             </div>
           </div>
 
-          <div style={{
-            height: '8px',
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: '4px',
-            overflow: 'hidden',
-          }}>
-            <div style={{
-              height: '100%',
-              width: `${plan.progress}%`,
-              backgroundColor: 'var(--accent)',
-              borderRadius: '4px',
-            }} />
+          <div className="h-2 bg-ak-surface-subtle rounded overflow-hidden">
+            <div
+              className="h-full bg-ak-brand-primary rounded"
+              style={{ width: `${plan.progress}%` }}
+            />
           </div>
 
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '8px',
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-          }}>
+          <div className="flex justify-between mt-2 text-xs text-ak-text-secondary">
             <span>{completedAreas}/{plan.areas.length} omrader fullfort</span>
             <span>Startet {new Date(plan.startDate).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}</span>
           </div>
         </div>
 
         {/* Main Content */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 340px',
-          gap: '24px',
-        }}>
+        <div className="grid grid-cols-[1fr_340px] gap-6">
           {/* Areas */}
           <div>
-            <SectionTitle style={{
-              fontSize: '16px',
-              margin: '0 0 16px 0',
-            }}>
+            <SectionTitle className="text-base m-0 mb-4">
               Utviklingsomrader
             </SectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="flex flex-col gap-3">
               {plan.areas.map((area) => (
                 <AreaCard key={area.id} area={area} />
               ))}
@@ -611,36 +434,24 @@ const TekniskPlanContainer = () => {
           </div>
 
           {/* Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="flex flex-col gap-4">
             <MetricsCard metrics={plan.keyMetrics} />
             <RecentVideosCard videos={plan.recentVideos} />
 
             {/* Resources */}
-            <div style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '16px',
-              padding: '20px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginBottom: '12px',
-              }}>
-                <BookOpen size={16} color={'var(--success)'} />
-                <SubSectionTitle style={{
-                  fontSize: '14px',
-                }}>
+            <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <BookOpen size={16} className="text-ak-status-success" />
+                <SubSectionTitle className="text-sm">
                   Ressurser
                 </SubSectionTitle>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="flex flex-col gap-2">
                 <Button
                   variant="secondary"
                   size="sm"
                   leftIcon={<Eye size={14} />}
-                  style={{ width: '100%', justifyContent: 'flex-start' }}
+                  className="w-full justify-start"
                 >
                   Se treningsvideoer
                 </Button>
@@ -648,7 +459,7 @@ const TekniskPlanContainer = () => {
                   variant="secondary"
                   size="sm"
                   leftIcon={<Award size={14} />}
-                  style={{ width: '100%', justifyContent: 'flex-start' }}
+                  className="w-full justify-start"
                 >
                   Tidligere planer
                 </Button>

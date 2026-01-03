@@ -1,6 +1,8 @@
 /**
- * AK Golf Academy - Coach Group Detail
- * Design System v3.0 - Blue Palette 01
+ * CoachGroupDetail.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Detaljvisning av en gruppe med medlemmer, treningsplan og statistikk.
  * Inkluderer gruppeplan-funksjonalitet med ukentlig planlegging.
@@ -401,32 +403,15 @@ export default function CoachGroupDetail() {
 
   if (loading) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            border: `4px solid ${'var(--border-default)'}`,
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!group) {
     return (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
+      <div className="p-6 text-center">
         <p>Gruppe ikke funnet</p>
         <button onClick={() => navigate('/coach/groups')}>Tilbake til grupper</button>
       </div>
@@ -434,33 +419,16 @@ export default function CoachGroupDetail() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
+    <div className="min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header - using PageHeader from design system */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '24px 24px 0' }}>
+      <div className="flex items-start gap-4 p-6 pb-0">
         <div
-          style={{
-            width: 56,
-            height: 56,
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: group.avatarColor,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--bg-primary)',
-            fontWeight: 700,
-            fontSize: '20px',
-            flexShrink: 0,
-          }}
+          className="w-14 h-14 rounded-lg flex items-center justify-center text-ak-surface-base font-bold text-xl shrink-0"
+          style={{ backgroundColor: group.avatarColor }}
         >
           {group.avatarInitials}
         </div>
-        <div style={{ flex: 1 }}>
+        <div className="flex-1">
           <PageHeader
             title={group.name}
             subtitle={group.description}
@@ -481,7 +449,7 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Quick actions */}
-      <div style={{ display: 'flex', gap: '10px', padding: '16px 24px', borderBottom: '1px solid var(--border-default)' }}>
+      <div className="flex gap-2.5 py-4 px-6 border-b border-ak-border-default">
         <Button
           variant="primary"
           leftIcon={<ClipboardList size={18} />}
@@ -506,37 +474,37 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Stats bar */}
-      <div style={{ padding: '16px 24px', backgroundColor: 'var(--bg-primary)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)', margin: 0 }}>
+      <div className="py-4 px-6 bg-ak-surface-base">
+        <div className="grid grid-cols-4 gap-4">
+          <div className="text-center">
+            <p className="text-2xl font-bold text-ak-brand-primary m-0">
               {group.members.length}
             </p>
-            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
               Medlemmer
             </p>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)', margin: 0 }}>
+          <div className="text-center">
+            <p className="text-2xl font-bold text-ak-status-success m-0">
               {group.stats.avgAttendance}%
             </p>
-            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
               Snitt oppmøte
             </p>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)', margin: 0 }}>
+          <div className="text-center">
+            <p className="text-2xl font-bold text-ak-status-warning m-0">
               {group.stats.totalSessions}
             </p>
-            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
               Økter totalt
             </p>
           </div>
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)', margin: 0 }}>
+          <div className="text-center">
+            <p className="text-2xl font-bold text-ak-brand-primary m-0">
               {group.stats.avgSessionsPerWeek}
             </p>
-            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+            <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
               Økter/uke
             </p>
           </div>
@@ -544,15 +512,7 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Tabs */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '4px',
-          padding: '16px 24px',
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: `1px solid ${'var(--border-default)'}`,
-        }}
-      >
+      <div className="flex gap-1 py-4 px-6 bg-ak-surface-base border-b border-ak-border-default">
         {[
           { key: 'members', label: 'Medlemmer', icon: Users },
           { key: 'sessions', label: 'Økter', icon: Calendar },
@@ -562,19 +522,11 @@ export default function CoachGroupDetail() {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key as any)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 18px',
-              backgroundColor: activeTab === tab.key ? 'var(--accent)' : 'transparent',
-              color: activeTab === tab.key ? 'var(--bg-primary)' : 'var(--text-primary)',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer',
-            }}
+            className={`flex items-center gap-2 py-2.5 px-[18px] border-none rounded-lg text-sm font-medium cursor-pointer ${
+              activeTab === tab.key
+                ? 'bg-ak-brand-primary text-white'
+                : 'bg-transparent text-ak-text-primary'
+            }`}
           >
             <tab.icon size={18} />
             {tab.label}
@@ -583,36 +535,17 @@ export default function CoachGroupDetail() {
       </div>
 
       {/* Tab content */}
-      <div style={{ padding: '24px' }}>
+      <div className="p-6">
         {/* Members tab */}
         {activeTab === 'members' && (
           <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '16px',
-              }}
-            >
-              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+            <div className="flex items-center justify-between mb-4">
+              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                 Gruppemedlemmer ({group.members.length})
               </SectionTitle>
               <button
                 onClick={() => navigate(`/coach/groups/${groupId}/members/add`)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '8px 14px',
-                  backgroundColor: 'var(--accent)',
-                  color: 'var(--bg-primary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
               >
                 <Plus size={16} />
                 Legg til medlem
@@ -620,14 +553,7 @@ export default function CoachGroupDetail() {
             </div>
 
             {/* Members List using reusable component */}
-            <div
-              style={{
-                backgroundColor: 'var(--bg-primary)',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: 'var(--shadow-card)',
-                overflow: 'hidden',
-              }}
-            >
+            <div className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
               <MembersList
                 members={group.members.map((m): Member => ({
                   id: m.id,
@@ -647,89 +573,51 @@ export default function CoachGroupDetail() {
             </div>
 
             {/* Additional member actions */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '16px' }}>
+            <div className="flex flex-col gap-2.5 mt-4">
               {group.members.map((member) => {
                 const trendStyle = getTrendStyle(member.trend);
                 return (
                   <div
                     key={`actions-${member.id}`}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '12px 16px',
-                      backgroundColor: 'var(--bg-primary)',
-                      borderRadius: 'var(--radius-md)',
-                      boxShadow: 'var(--shadow-card)',
-                    }}
+                    className="flex items-center justify-between py-3 px-4 bg-ak-surface-base rounded-lg shadow-sm"
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="flex items-center gap-3">
                       <div
-                        style={{
-                          width: 36,
-                          height: 36,
-                          borderRadius: '50%',
-                          backgroundColor: member.avatarColor,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--bg-primary)',
-                          fontWeight: 600,
-                          fontSize: '12px',
-                        }}
+                        className="w-9 h-9 rounded-full flex items-center justify-center text-ak-surface-base font-semibold text-xs"
+                        style={{ backgroundColor: member.avatarColor }}
                       >
                         {member.avatarInitials}
                       </div>
-                      <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                      <span className="text-sm font-medium text-ak-text-primary">
                         {member.name}
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
                         <TrendingUp
                           size={16}
                           color={trendStyle.color}
                           style={{ transform: `rotate(${trendStyle.rotation})` }}
                         />
-                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                        <span className="text-[13px] text-ak-text-secondary">
                           {member.sessionsThisWeek} økter
                         </span>
                       </div>
 
                       <button
                         onClick={() => navigate(`/coach/athletes/${member.id}`)}
-                        style={{
-                          padding: '6px 12px',
-                          backgroundColor: 'var(--bg-tertiary)',
-                          border: 'none',
-                          borderRadius: 'var(--radius-sm)',
-                          fontSize: '12px',
-                          fontWeight: 500,
-                          color: 'var(--text-primary)',
-                          cursor: 'pointer',
-                        }}
+                        className="py-1.5 px-3 bg-ak-surface-subtle border-none rounded text-xs font-medium text-ak-text-primary cursor-pointer"
                       >
                         Se profil
                       </button>
 
                       <button
                         onClick={() => handleRemoveMember(member)}
-                        style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          cursor: 'pointer',
-                          opacity: 0.6,
-                        }}
+                        className="w-8 h-8 rounded bg-transparent border-none flex items-center justify-center cursor-pointer opacity-60"
                         title="Fjern fra gruppe"
                       >
-                        <UserMinus size={16} color={'var(--error)'} />
+                        <UserMinus size={16} className="text-ak-status-error" />
                       </button>
                     </div>
                   </div>
@@ -743,62 +631,41 @@ export default function CoachGroupDetail() {
         {activeTab === 'sessions' && (
           <div>
             {/* Upcoming sessions */}
-            <div style={{ marginBottom: '32px' }}>
-              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
+            <div className="mb-8">
+              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-4">
                 Kommende økter
               </SectionTitle>
               {group.upcomingSessions.length === 0 ? (
-                <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+                <p className="text-[15px] leading-5 text-ak-text-secondary">
                   Ingen planlagte økter
                 </p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div className="flex flex-col gap-2.5">
                   {group.upcomingSessions.map((session) => (
                     <div
                       key={session.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '14px',
-                        padding: '14px 16px',
-                        backgroundColor: 'var(--bg-primary)',
-                        borderRadius: 'var(--radius-md)',
-                        boxShadow: 'var(--shadow-card)',
-                        borderLeft: `3px solid ${'var(--accent)'}`,
-                      }}
+                      className="flex items-center gap-3.5 py-3.5 px-4 bg-ak-surface-base rounded-lg shadow-sm border-l-[3px] border-l-ak-brand-primary"
                     >
-                      <div
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: 'var(--radius-md)',
-                          backgroundColor: 'var(--accent)',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          color: 'var(--bg-primary)',
-                        }}
-                      >
-                        <span style={{ fontSize: '14px', fontWeight: 700 }}>{session.time}</span>
+                      <div className="w-12 h-12 rounded-lg bg-ak-brand-primary flex flex-col items-center justify-center text-white">
+                        <span className="text-sm font-bold">{session.time}</span>
                       </div>
-                      <div style={{ flex: 1 }}>
-                        <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                      <div className="flex-1">
+                        <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                           {session.title}
                         </p>
-                        <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
+                        <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
                           {formatDate(session.date)} · {session.duration} min
                         </p>
                       </div>
-                      <div style={{ textAlign: 'right' }}>
-                        <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--success)', margin: 0 }}>
+                      <div className="text-right">
+                        <p className="text-[17px] leading-[22px] font-semibold text-ak-status-success m-0">
                           {session.attendees}/{session.totalMembers}
                         </p>
-                        <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
+                        <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
                           bekreftet
                         </p>
                       </div>
-                      <ChevronRight size={18} color={'var(--text-secondary)'} />
+                      <ChevronRight size={18} className="text-ak-text-secondary" />
                     </div>
                   ))}
                 </div>
@@ -807,52 +674,31 @@ export default function CoachGroupDetail() {
 
             {/* Recent sessions */}
             <div>
-              <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
+              <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-4">
                 Tidligere økter
               </SectionTitle>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div className="flex flex-col gap-2.5">
                 {group.recentSessions.map((session) => (
                   <div
                     key={session.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '14px',
-                      padding: '14px 16px',
-                      backgroundColor: 'var(--bg-primary)',
-                      borderRadius: 'var(--radius-md)',
-                      boxShadow: 'var(--shadow-card)',
-                      opacity: 0.8,
-                    }}
+                    className="flex items-center gap-3.5 py-3.5 px-4 bg-ak-surface-base rounded-lg shadow-sm opacity-80"
                   >
-                    <div
-                      style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: 'var(--border-default)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--text-secondary)',
-                      }}
-                    >
-                      <span style={{ fontSize: '14px', fontWeight: 700 }}>{session.time}</span>
+                    <div className="w-12 h-12 rounded-lg bg-ak-border-default flex flex-col items-center justify-center text-ak-text-secondary">
+                      <span className="text-sm font-bold">{session.time}</span>
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                    <div className="flex-1">
+                      <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                         {session.title}
                       </p>
-                      <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
+                      <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
                         {formatDate(session.date)} · {session.duration} min
                       </p>
                     </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                    <div className="text-right">
+                      <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                         {session.attendees}/{session.totalMembers}
                       </p>
-                      <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: 0 }}>
+                      <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
                         deltok
                       </p>
                     </div>
@@ -867,59 +713,28 @@ export default function CoachGroupDetail() {
         {activeTab === 'plan' && (
           <div>
             {/* Plan header */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '20px',
-              }}
-            >
+            <div className="flex items-center justify-between mb-5">
               <div>
-                <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                   {group.trainingPlan?.name || 'Treningsplan'}
                 </SectionTitle>
                 {group.trainingPlan && (
-                  <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+                  <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-1 mb-0">
                     Aktiv plan: {new Date(group.trainingPlan.startDate).toLocaleDateString('nb-NO')} - {new Date(group.trainingPlan.endDate).toLocaleDateString('nb-NO')}
                   </p>
                 )}
               </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div className="flex gap-2">
                 <button
                   onClick={() => navigate(`/coach/groups/${groupId}/plan/edit`)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '8px 14px',
-                    backgroundColor: 'var(--bg-tertiary)',
-                    color: 'var(--text-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                  }}
+                  className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer"
                 >
                   <Edit3 size={16} />
                   Rediger plan
                 </button>
                 <button
                   onClick={() => setShowAddSessionModal(true)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '8px 14px',
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--bg-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-semibold cursor-pointer"
                 >
                   <Plus size={16} />
                   Legg til økt
@@ -928,40 +743,17 @@ export default function CoachGroupDetail() {
             </div>
 
             {/* Week navigation */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '16px 20px',
-                backgroundColor: 'var(--bg-primary)',
-                borderRadius: 'var(--radius-lg)',
-                marginBottom: '16px',
-                boxShadow: 'var(--shadow-card)',
-              }}
-            >
+            <div className="flex items-center justify-between py-4 px-5 bg-ak-surface-base rounded-xl mb-4 shadow-sm">
               <button
                 onClick={() => setCurrentWeekOffset((prev) => prev - 1)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '8px 12px',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                  cursor: 'pointer',
-                }}
+                className="flex items-center gap-1.5 py-2 px-3 bg-ak-surface-subtle border-none rounded-lg text-[13px] font-medium text-ak-text-primary cursor-pointer"
               >
                 <ChevronLeft size={16} />
                 Forrige uke
               </button>
 
-              <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <div className="text-center">
+                <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                   Uke {(() => {
                     const now = new Date();
                     now.setDate(now.getDate() + currentWeekOffset * 7);
@@ -970,7 +762,7 @@ export default function CoachGroupDetail() {
                     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
                   })()}
                 </p>
-                <p style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', margin: '2px 0 0' }}>
+                <p className="text-[13px] leading-[18px] text-ak-text-secondary mt-0.5 mb-0">
                   {(() => {
                     const now = new Date();
                     now.setDate(now.getDate() + currentWeekOffset * 7);
@@ -985,19 +777,7 @@ export default function CoachGroupDetail() {
 
               <button
                 onClick={() => setCurrentWeekOffset((prev) => prev + 1)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '8px 12px',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                  cursor: 'pointer',
-                }}
+                className="flex items-center gap-1.5 py-2 px-3 bg-ak-surface-subtle border-none rounded-lg text-[13px] font-medium text-ak-text-primary cursor-pointer"
               >
                 Neste uke
                 <ChevronRight size={16} />
@@ -1013,22 +793,14 @@ export default function CoachGroupDetail() {
                 <>
                   {/* Week theme/focus */}
                   {(currentWeek.theme || currentWeek.focus) && (
-                    <div
-                      style={{
-                        padding: '16px 20px',
-                        backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-                        borderRadius: 'var(--radius-lg)',
-                        marginBottom: '16px',
-                        borderLeft: `4px solid ${'var(--accent)'}`,
-                      }}
-                    >
+                    <div className="py-4 px-5 bg-ak-brand-primary/10 rounded-xl mb-4 border-l-4 border-l-ak-brand-primary">
                       {currentWeek.theme && (
-                        <p style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--accent)', margin: 0 }}>
+                        <p className="text-[17px] leading-[22px] font-semibold text-ak-brand-primary m-0">
                           {currentWeek.theme}
                         </p>
                       )}
                       {currentWeek.focus && (
-                        <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-primary)', margin: '4px 0 0' }}>
+                        <p className="text-[15px] leading-5 text-ak-text-primary mt-1 mb-0">
                           Fokus: {currentWeek.focus}
                         </p>
                       )}
@@ -1036,7 +808,7 @@ export default function CoachGroupDetail() {
                   )}
 
                   {/* Weekly schedule grid */}
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
+                  <div className="grid grid-cols-7 gap-2">
                     {dayNames.map((day, index) => {
                       const sessionsForDay = currentWeek.sessions.filter((s) => s.dayOfWeek === index);
                       const isToday = (() => {
@@ -1048,57 +820,34 @@ export default function CoachGroupDetail() {
                       return (
                         <div
                           key={day}
-                          style={{
-                            backgroundColor: 'var(--bg-primary)',
-                            borderRadius: 'var(--radius-md)',
-                            overflow: 'hidden',
-                            boxShadow: 'var(--shadow-card)',
-                            border: isToday ? `2px solid ${'var(--accent)'}` : 'none',
-                          }}
+                          className={`bg-ak-surface-base rounded-lg overflow-hidden shadow-sm ${
+                            isToday ? 'border-2 border-ak-brand-primary' : ''
+                          }`}
                         >
                           {/* Day header */}
                           <div
-                            style={{
-                              padding: '10px 12px',
-                              backgroundColor: isToday ? 'var(--accent)' : 'var(--bg-tertiary)',
-                              borderBottom: `1px solid ${'var(--border-default)'}`,
-                            }}
+                            className={`py-2.5 px-3 border-b border-ak-border-default ${
+                              isToday ? 'bg-ak-brand-primary' : 'bg-ak-surface-subtle'
+                            }`}
                           >
                             <p
-                              style={{
-                                fontSize: '13px', lineHeight: '18px',
-                                fontWeight: 600,
-                                color: isToday ? 'var(--bg-primary)' : 'var(--text-primary)',
-                                margin: 0,
-                                textAlign: 'center',
-                              }}
+                              className={`text-[13px] leading-[18px] font-semibold m-0 text-center ${
+                                isToday ? 'text-white' : 'text-ak-text-primary'
+                              }`}
                             >
                               {day.slice(0, 3)}
                             </p>
                           </div>
 
                           {/* Sessions for day */}
-                          <div style={{ padding: '8px', minHeight: '120px' }}>
+                          <div className="p-2 min-h-[120px]">
                             {sessionsForDay.length === 0 ? (
                               <button
                                 onClick={() => {
                                   setSelectedDay(index);
                                   setShowAddSessionModal(true);
                                 }}
-                                style={{
-                                  width: '100%',
-                                  padding: '12px',
-                                  backgroundColor: 'var(--bg-tertiary)',
-                                  border: `1px dashed ${'var(--border-default)'}`,
-                                  borderRadius: 'var(--radius-sm)',
-                                  color: 'var(--text-secondary)',
-                                  fontSize: '11px',
-                                  cursor: 'pointer',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  gap: '4px',
-                                }}
+                                className="w-full p-3 bg-ak-surface-subtle border border-dashed border-ak-border-default rounded text-ak-text-secondary text-[11px] cursor-pointer flex items-center justify-center gap-1"
                               >
                                 <Plus size={12} />
                                 Legg til
@@ -1107,73 +856,30 @@ export default function CoachGroupDetail() {
                               sessionsForDay.map((session) => (
                                 <div
                                   key={session.id}
-                                  style={{
-                                    padding: '8px',
-                                    backgroundColor: `${'var(--accent)'}08`,
-                                    borderRadius: 'var(--radius-sm)',
-                                    marginBottom: '6px',
-                                    cursor: 'pointer',
-                                    borderLeft: `3px solid ${'var(--accent)'}`,
-                                  }}
+                                  className="p-2 bg-ak-brand-primary/5 rounded mb-1.5 cursor-pointer border-l-[3px] border-l-ak-brand-primary"
                                   onClick={() => setEditingSession(session.id)}
                                 >
-                                  <p
-                                    style={{
-                                      fontSize: '13px', lineHeight: '18px',
-                                      fontWeight: 600,
-                                      color: 'var(--text-primary)',
-                                      margin: 0,
-                                    }}
-                                  >
+                                  <p className="text-[13px] leading-[18px] font-semibold text-ak-text-primary m-0">
                                     {session.time}
                                   </p>
-                                  <p
-                                    style={{
-                                      fontSize: '11px',
-                                      color: 'var(--text-primary)',
-                                      margin: '2px 0 0',
-                                      whiteSpace: 'nowrap',
-                                      overflow: 'hidden',
-                                      textOverflow: 'ellipsis',
-                                    }}
-                                  >
+                                  <p className="text-[11px] text-ak-text-primary mt-0.5 mb-0 whitespace-nowrap overflow-hidden text-ellipsis">
                                     {session.title}
                                   </p>
-                                  <div
-                                    style={{
-                                      display: 'flex',
-                                      gap: '2px',
-                                      marginTop: '4px',
-                                      flexWrap: 'wrap',
-                                    }}
-                                  >
+                                  <div className="flex gap-0.5 mt-1 flex-wrap">
                                     {session.exercises.slice(0, 2).map((ex) => {
                                       const catStyle = categoryColors[ex.category] || { bg: 'var(--bg-tertiary)', text: 'var(--text-secondary)', label: ex.category };
                                       return (
                                         <span
                                           key={ex.id}
-                                          style={{
-                                            fontSize: '9px',
-                                            padding: '1px 4px',
-                                            backgroundColor: catStyle.bg,
-                                            color: catStyle.text,
-                                            borderRadius: '3px',
-                                          }}
+                                          className="text-[9px] py-px px-1 rounded-sm"
+                                          style={{ backgroundColor: catStyle.bg, color: catStyle.text }}
                                         >
                                           {catStyle.label || ex.category}
                                         </span>
                                       );
                                     })}
                                     {session.exercises.length > 2 && (
-                                      <span
-                                        style={{
-                                          fontSize: '9px',
-                                          padding: '1px 4px',
-                                          backgroundColor: 'var(--bg-tertiary)',
-                                          color: 'var(--text-secondary)',
-                                          borderRadius: '3px',
-                                        }}
-                                      >
+                                      <span className="text-[9px] py-px px-1 bg-ak-surface-subtle text-ak-text-secondary rounded-sm">
                                         +{session.exercises.length - 2}
                                       </span>
                                     )}
@@ -1193,64 +899,30 @@ export default function CoachGroupDetail() {
                     if (!session) return null;
 
                     return (
-                      <div
-                        style={{
-                          marginTop: '24px',
-                          backgroundColor: 'var(--bg-primary)',
-                          borderRadius: 'var(--radius-lg)',
-                          boxShadow: 'var(--shadow-card)',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <div
-                          style={{
-                            padding: '16px 20px',
-                            backgroundColor: 'var(--accent)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                          }}
-                        >
+                      <div className="mt-6 bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
+                        <div className="py-4 px-5 bg-ak-brand-primary flex items-center justify-between">
                           <div>
-                            <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--bg-primary)', margin: 0 }}>
+                            <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-white m-0">
                               {session.title}
                             </SubSectionTitle>
-                            <p style={{ fontSize: '13px', lineHeight: '18px', color: 'rgba(255,255,255,0.8)', margin: '2px 0 0' }}>
+                            <p className="text-[13px] leading-[18px] text-white/80 mt-0.5 mb-0">
                               {dayNames[session.dayOfWeek]} kl. {session.time}
                             </p>
                           </div>
                           <button
                             onClick={() => setEditingSession(null)}
-                            style={{
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              backgroundColor: 'rgba(255,255,255,0.2)',
-                              border: 'none',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer',
-                            }}
+                            className="w-8 h-8 rounded-full bg-white/20 border-none flex items-center justify-center cursor-pointer"
                           >
-                            <X size={18} color={'var(--bg-primary)'} />
+                            <X size={18} className="text-white" />
                           </button>
                         </div>
 
-                        <div style={{ padding: '20px' }}>
-                          <CardTitle
-                            style={{
-                              fontSize: '13px', lineHeight: '18px',
-                              color: 'var(--text-secondary)',
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px',
-                              margin: '0 0 12px',
-                            }}
-                          >
+                        <div className="p-5">
+                          <CardTitle className="text-[13px] leading-[18px] text-ak-text-secondary uppercase tracking-wide m-0 mb-3">
                             Øvelser ({session.exercises.length})
                           </CardTitle>
 
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          <div className="flex flex-col gap-2">
                             {session.exercises
                               .sort((a, b) => a.order - b.order)
                               .map((exercise, index) => {
@@ -1258,139 +930,47 @@ export default function CoachGroupDetail() {
                                 return (
                                   <div
                                     key={exercise.id}
-                                    style={{
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      gap: '12px',
-                                      padding: '12px 14px',
-                                      backgroundColor: 'var(--bg-tertiary)',
-                                      borderRadius: 'var(--radius-md)',
-                                    }}
+                                    className="flex items-center gap-3 py-3 px-3.5 bg-ak-surface-subtle rounded-lg"
                                   >
-                                    <div
-                                      style={{
-                                        width: 28,
-                                        height: 28,
-                                        borderRadius: '50%',
-                                        backgroundColor: 'var(--accent)',
-                                        color: 'var(--bg-primary)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontSize: '12px',
-                                        fontWeight: 600,
-                                        flexShrink: 0,
-                                      }}
-                                    >
+                                    <div className="w-7 h-7 rounded-full bg-ak-brand-primary text-white flex items-center justify-center text-xs font-semibold shrink-0">
                                       {index + 1}
                                     </div>
-                                    <div style={{ flex: 1 }}>
-                                      <p style={{ fontSize: '15px', lineHeight: '20px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
+                                    <div className="flex-1">
+                                      <p className="text-[15px] leading-5 font-medium text-ak-text-primary m-0">
                                         {exercise.name}
                                       </p>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                                      <div className="flex items-center gap-2 mt-0.5">
                                         <span
-                                          style={{
-                                            fontSize: '11px',
-                                            padding: '2px 6px',
-                                            backgroundColor: catStyle.bg,
-                                            color: catStyle.text,
-                                            borderRadius: '4px',
-                                            fontWeight: 500,
-                                          }}
+                                          className="text-[11px] py-0.5 px-1.5 rounded font-medium"
+                                          style={{ backgroundColor: catStyle.bg, color: catStyle.text }}
                                         >
                                           {catStyle.label}
                                         </span>
-                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                                        <span className="text-[11px] text-ak-text-secondary">
                                           {exercise.duration} min
                                         </span>
                                       </div>
                                     </div>
-                                    <GripVertical size={16} color={'var(--border-default)'} style={{ cursor: 'grab' }} />
+                                    <GripVertical size={16} className="text-ak-border-default cursor-grab" />
                                   </div>
                                 );
                               })}
                           </div>
 
-                          <div
-                            style={{
-                              display: 'flex',
-                              gap: '10px',
-                              marginTop: '16px',
-                              paddingTop: '16px',
-                              borderTop: `1px solid ${'var(--border-default)'}`,
-                            }}
-                          >
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'var(--accent)',
-                                color: 'var(--bg-primary)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                              }}
-                            >
+                          <div className="flex gap-2.5 mt-4 pt-4 border-t border-ak-border-default">
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-brand-primary text-white border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Play size={16} />
                               Start økt
                             </button>
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'var(--bg-tertiary)',
-                                color: 'var(--text-primary)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                              }}
-                            >
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Edit3 size={16} />
                               Rediger
                             </button>
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'var(--bg-tertiary)',
-                                color: 'var(--text-primary)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                              }}
-                            >
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-surface-subtle text-ak-text-primary border-none rounded-lg text-[13px] font-medium cursor-pointer">
                               <Copy size={16} />
                               Kopier
                             </button>
-                            <button
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                padding: '8px 14px',
-                                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
-                                color: 'var(--error)',
-                                border: 'none',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '13px',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                marginLeft: 'auto',
-                              }}
-                            >
+                            <button className="flex items-center gap-1.5 py-2 px-3.5 bg-ak-status-error/10 text-ak-status-error border-none rounded-lg text-[13px] font-medium cursor-pointer ml-auto">
                               <Trash2 size={16} />
                               Slett
                             </button>
@@ -1405,37 +985,17 @@ export default function CoachGroupDetail() {
 
             {/* No plan message */}
             {!group.trainingPlan && (
-              <div
-                style={{
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  padding: '48px 24px',
-                  textAlign: 'center',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <ClipboardList size={48} color={'var(--border-default)'} style={{ marginBottom: '16px' }} />
-                <SubSectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+              <div className="bg-ak-surface-base rounded-xl py-12 px-6 text-center shadow-sm">
+                <ClipboardList size={48} className="text-ak-border-default mb-4" />
+                <SubSectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0">
                   Ingen treningsplan
                 </SubSectionTitle>
-                <p style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)', margin: '8px 0 20px' }}>
+                <p className="text-[15px] leading-5 text-ak-text-secondary mt-2 mb-5">
                   Opprett en treningsplan for å strukturere gruppens økter
                 </p>
                 <button
                   onClick={() => navigate(`/coach/groups/${groupId}/plan/create`)}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '12px 20px',
-                    backgroundColor: 'var(--accent)',
-                    color: 'var(--bg-primary)',
-                    border: 'none',
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  className="inline-flex items-center gap-2 py-3 px-5 bg-ak-brand-primary text-white border-none rounded-lg text-sm font-semibold cursor-pointer"
                 >
                   <Plus size={18} />
                   Opprett treningsplan
@@ -1448,83 +1008,55 @@ export default function CoachGroupDetail() {
         {/* Stats tab */}
         {activeTab === 'stats' && (
           <div>
-            <SectionTitle style={{ fontSize: '17px', lineHeight: '22px', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 16px' }}>
+            <SectionTitle className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-4">
               Gruppestatistikk
             </SectionTitle>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Trophy size={20} color={'var(--achievement)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Trophy size={20} className="text-ak-status-warning" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Topp utøver denne måneden
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.topPerformer}
                 </p>
               </div>
 
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Target size={20} color={'var(--success)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Target size={20} className="text-ak-status-success" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Gjennomsnittlig oppmøte
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.avgAttendance}%
                 </p>
               </div>
 
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Clock size={20} color={'var(--accent)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Clock size={20} className="text-ak-brand-primary" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Økter per uke (snitt)
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.avgSessionsPerWeek}
                 </p>
               </div>
 
-              <div
-                style={{
-                  padding: '20px',
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                  <Calendar size={20} color={'var(--accent)'} />
-                  <span style={{ fontSize: '15px', lineHeight: '20px', color: 'var(--text-secondary)' }}>
+              <div className="p-5 bg-ak-surface-base rounded-xl shadow-sm">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <Calendar size={20} className="text-ak-brand-primary" />
+                  <span className="text-[15px] leading-5 text-ak-text-secondary">
                     Totalt antall økter
                   </span>
                 </div>
-                <p style={{ fontSize: '22px', lineHeight: '28px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <p className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
                   {group.stats.totalSessions}
                 </p>
               </div>
@@ -1540,42 +1072,24 @@ export default function CoachGroupDetail() {
         title="Fjern medlem"
         size="sm"
         footer={
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <div className="flex gap-3 justify-end">
             <button
               onClick={() => setMemberToRemove(null)}
-              style={{
-                padding: '10px 18px',
-                backgroundColor: 'transparent',
-                border: `1px solid ${'var(--border-default)'}`,
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--text-primary)',
-                fontSize: '14px',
-                fontWeight: 500,
-                cursor: 'pointer',
-              }}
+              className="py-2.5 px-[18px] bg-transparent border border-ak-border-default rounded-lg text-ak-text-primary text-sm font-medium cursor-pointer"
             >
               Avbryt
             </button>
             <button
               onClick={handleConfirmRemoveMember}
-              style={{
-                padding: '10px 18px',
-                backgroundColor: 'var(--error)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--bg-primary)',
-                fontSize: '14px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className="py-2.5 px-[18px] bg-ak-status-error border-none rounded-lg text-white text-sm font-semibold cursor-pointer"
             >
               Fjern medlem
             </button>
           </div>
         }
       >
-        <p style={{ margin: 0, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-          Er du sikker på at du vil fjerne <strong style={{ color: 'var(--text-primary)' }}>{memberToRemove?.name}</strong> fra gruppen?
+        <p className="m-0 text-ak-text-secondary leading-relaxed">
+          Er du sikker på at du vil fjerne <strong className="text-ak-text-primary">{memberToRemove?.name}</strong> fra gruppen?
         </p>
       </Modal>
     </div>

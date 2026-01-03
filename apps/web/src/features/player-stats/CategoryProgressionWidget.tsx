@@ -1,5 +1,8 @@
 /**
- * CategoryProgressionWidget - Visual progression towards next category
+ * CategoryProgressionWidget Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  *
  * Features:
  * - Visual timeline from current to target category
@@ -44,11 +47,11 @@ const CATEGORY_INFO: Record<PlayerCategory, CategoryInfo> = {
   I: { level: 'I', name: 'Junior 2', description: 'Utviklende', color: '#475569' },
   H: { level: 'H', name: 'Junior 1', description: 'Progresjon', color: '#22c55e' },
   G: { level: 'G', name: 'Aspirant', description: 'Fremadstormende', color: '#16a34a' },
-  F: { level: 'F', name: 'Klubb', description: 'Konkurransenivå', color: '#0ea5e9' },
-  E: { level: 'E', name: 'Region', description: 'Regionalt nivå', color: '#0284c7' },
+  F: { level: 'F', name: 'Klubb', description: 'Konkurransenivå', color: 'var(--ak-status-info-light)' },
+  E: { level: 'E', name: 'Region', description: 'Regionalt nivå', color: 'var(--ak-status-info)' },
   D: { level: 'D', name: 'Nasjonal', description: 'Nasjonalt nivå', color: '#8b5cf6' },
   C: { level: 'C', name: 'Talent', description: 'Høyt talent', color: '#7c3aed' },
-  B: { level: 'B', name: 'Elite', description: 'Elitenivå', color: '#f59e0b' },
+  B: { level: 'B', name: 'Elite', description: 'Elitenivå', color: 'var(--ak-status-warning-light)' },
   A: { level: 'A', name: 'Proff', description: 'Profesjonelt', color: '#eab308' },
 };
 

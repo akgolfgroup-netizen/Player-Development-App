@@ -1,12 +1,13 @@
 /**
- * EventDetailsPanel Component
+ * EventDetailsPanel.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
  *
  * Shared panel for displaying event details:
  * - Side panel on desktop
  * - Bottom sheet on mobile (simplified version)
  * - Event info, actions, and status
- *
- * Uses semantic tokens only (no raw hex values).
  */
 
 import React from 'react';
@@ -113,19 +114,12 @@ export const EventDetailsPanel: React.FC<EventDetailsPanelProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-40 lg:hidden"
-        style={{ backgroundColor: 'var(--overlay-backdrop)' }}
+        className="fixed inset-0 z-40 lg:hidden bg-black/50"
         onClick={onClose}
       />
 
       {/* Panel */}
-      <div
-        className="fixed z-50 lg:relative lg:z-auto"
-        style={{
-          backgroundColor: 'var(--calendar-surface-card)',
-          borderLeft: '1px solid var(--calendar-border)',
-        }}
-      >
+      <div className="fixed z-50 lg:relative lg:z-auto bg-ak-surface-card border-l border-ak-border-default">
         {/* Desktop: Side panel */}
         <div className="hidden lg:block w-80 h-full">
           <PanelContent
@@ -141,13 +135,7 @@ export const EventDetailsPanel: React.FC<EventDetailsPanelProps> = ({
         </div>
 
         {/* Mobile: Bottom sheet */}
-        <div
-          className="lg:hidden fixed bottom-0 left-0 right-0 max-h-[70vh] rounded-t-2xl overflow-hidden"
-          style={{
-            backgroundColor: 'var(--calendar-surface-card)',
-            boxShadow: 'var(--shadow-float)',
-          }}
-        >
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 max-h-[70vh] rounded-t-2xl overflow-hidden bg-ak-surface-card shadow-lg">
           <PanelContent
             event={event}
             statusBadge={statusBadge}
@@ -193,18 +181,12 @@ const PanelContent: React.FC<PanelContentProps> = ({
       {/* Handle (mobile) */}
       {isMobile && (
         <div className="flex justify-center py-2">
-          <div
-            className="w-10 h-1 rounded-full"
-            style={{ backgroundColor: 'var(--calendar-border)' }}
-          />
+          <div className="w-10 h-1 rounded-full bg-ak-border-default" />
         </div>
       )}
 
       {/* Header */}
-      <div
-        className="flex items-start justify-between p-4 border-b"
-        style={{ borderColor: 'var(--calendar-border)' }}
-      >
+      <div className="flex items-start justify-between p-4 border-b border-ak-border-default">
         <div className="flex-1 pr-2">
           {/* Status badge */}
           <span
@@ -218,19 +200,13 @@ const PanelContent: React.FC<PanelContentProps> = ({
           </span>
 
           {/* Title */}
-          <SubSectionTitle
-            className="text-lg font-semibold mt-2"
-            style={{ color: 'var(--calendar-text-primary)' }}
-          >
+          <SubSectionTitle className="text-lg font-semibold mt-2 text-ak-text-primary">
             {event.title}
           </SubSectionTitle>
 
           {/* Category */}
           {categoryLabel && (
-            <span
-              className="text-sm"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-            >
+            <span className="text-sm text-ak-text-tertiary">
               {categoryLabel}
             </span>
           )}
@@ -238,14 +214,7 @@ const PanelContent: React.FC<PanelContentProps> = ({
 
         <button
           onClick={onClose}
-          className="p-1 rounded-lg transition-colors"
-          style={{ color: 'var(--calendar-text-tertiary)' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--calendar-hover)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }}
+          className="p-1 rounded-lg transition-colors text-ak-text-tertiary hover:bg-ak-surface-subtle"
         >
           <X size={20} />
         </button>
@@ -255,30 +224,21 @@ const PanelContent: React.FC<PanelContentProps> = ({
       <div className="flex-1 overflow-auto p-4 space-y-4">
         {/* Date and time */}
         <div className="space-y-2">
-          <div
-            className="flex items-center gap-2"
-            style={{ color: 'var(--calendar-text-secondary)' }}
-          >
-            <Calendar size={16} style={{ color: 'var(--calendar-text-tertiary)' }} />
+          <div className="flex items-center gap-2 text-ak-text-secondary">
+            <Calendar size={16} className="text-ak-text-tertiary" />
             <span className="text-sm">{formatDate(event.date)}</span>
           </div>
 
-          <div
-            className="flex items-center gap-2"
-            style={{ color: 'var(--calendar-text-secondary)' }}
-          >
-            <Clock size={16} style={{ color: 'var(--calendar-text-tertiary)' }} />
+          <div className="flex items-center gap-2 text-ak-text-secondary">
+            <Clock size={16} className="text-ak-text-tertiary" />
             <span className="text-sm">
               {event.start} – {event.end} ({event.duration} min)
             </span>
           </div>
 
           {event.location && (
-            <div
-              className="flex items-center gap-2"
-              style={{ color: 'var(--calendar-text-secondary)' }}
-            >
-              <MapPin size={16} style={{ color: 'var(--calendar-text-tertiary)' }} />
+            <div className="flex items-center gap-2 text-ak-text-secondary">
+              <MapPin size={16} className="text-ak-text-tertiary" />
               <span className="text-sm">{event.location}</span>
             </div>
           )}
@@ -286,20 +246,11 @@ const PanelContent: React.FC<PanelContentProps> = ({
 
         {/* Weekly focus (for recommended) */}
         {event.weeklyFocus && (
-          <div
-            className="p-3 rounded-lg"
-            style={{ backgroundColor: 'var(--calendar-surface-elevated)' }}
-          >
-            <div
-              className="text-xs font-medium mb-1"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-            >
+          <div className="p-3 rounded-lg bg-ak-surface-subtle">
+            <div className="text-xs font-medium mb-1 text-ak-text-tertiary">
               Ukens fokus
             </div>
-            <div
-              className="text-sm"
-              style={{ color: 'var(--calendar-text-primary)' }}
-            >
+            <div className="text-sm text-ak-text-primary">
               {event.weeklyFocus}
             </div>
           </div>
@@ -311,11 +262,7 @@ const PanelContent: React.FC<PanelContentProps> = ({
             {event.badges.map((badge) => (
               <span
                 key={badge}
-                className="px-2 py-1 rounded text-xs"
-                style={{
-                  backgroundColor: 'var(--calendar-surface-elevated)',
-                  color: 'var(--calendar-text-secondary)',
-                }}
+                className="px-2 py-1 rounded text-xs bg-ak-surface-subtle text-ak-text-secondary"
               >
                 {badge}
               </span>
@@ -325,19 +272,12 @@ const PanelContent: React.FC<PanelContentProps> = ({
       </div>
 
       {/* Actions */}
-      <div
-        className="p-4 border-t space-y-2"
-        style={{ borderColor: 'var(--calendar-border)' }}
-      >
+      <div className="p-4 border-t border-ak-border-default space-y-2">
         {/* Primary action based on status */}
         {event.status === 'recommended' || event.status === 'planned' ? (
           <button
             onClick={() => onStart(event)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-            style={{
-              backgroundColor: 'var(--ak-primary)',
-              color: 'var(--text-inverse)',
-            }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white"
           >
             <Play size={16} />
             Start økt
@@ -345,11 +285,7 @@ const PanelContent: React.FC<PanelContentProps> = ({
         ) : event.status === 'in_progress' ? (
           <button
             onClick={() => onComplete(event)}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-            style={{
-              backgroundColor: 'var(--ak-success)',
-              color: 'var(--text-inverse)',
-            }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-status-success text-white"
           >
             <Check size={16} />
             Fullfør
@@ -360,22 +296,14 @@ const PanelContent: React.FC<PanelContentProps> = ({
         <div className="flex gap-2">
           <button
             onClick={() => onEdit(event)}
-            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-colors"
-            style={{
-              backgroundColor: 'var(--calendar-surface-elevated)',
-              color: 'var(--calendar-text-secondary)',
-            }}
+            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-surface-subtle text-ak-text-secondary"
           >
             <Edit2 size={14} />
             Rediger
           </button>
           <button
             onClick={() => onDelete(event)}
-            className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-colors"
-            style={{
-              backgroundColor: 'var(--error-muted)',
-              color: 'var(--ak-error)',
-            }}
+            className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-status-error/10 text-ak-status-error"
           >
             <Trash2 size={14} />
           </button>

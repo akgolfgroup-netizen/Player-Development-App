@@ -17,6 +17,13 @@ import {
   Users,
 } from 'lucide-react';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
+/**
+ * BenchmarkPage Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import Card from '../../ui/primitives/Card';
 import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
@@ -200,7 +207,7 @@ const BenchmarkPage: React.FC = () => {
 
         <div style={styles.categoryGrid}>
           {[
-            { key: 'approach', label: 'Approach', icon: Crosshair, desc: 'Slag mot green' },
+            { key: 'approach', label: 'Innspill', icon: Crosshair, desc: 'Slag mot green' },
             { key: 'putting', label: 'Putting', icon: CircleDot, desc: 'Slag på green' },
             { key: 'aroundGreen', label: 'Kortspill', icon: Flag, desc: 'Rundt green' },
           ].map(cat => {
@@ -440,10 +447,10 @@ const BenchmarkPage: React.FC = () => {
 // Approach Distance Card Component
 const ApproachDistanceCard: React.FC<{ skill: ApproachSkillData; index: number }> = ({ skill, index }) => {
   const gradients = [
-    'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-    'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-    'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    'linear-gradient(135deg, var(--ak-status-success-light) 0%, var(--ak-status-success) 100%)',
+    'linear-gradient(135deg, var(--ak-status-info-light) 0%, var(--ak-status-info) 100%)',
+    'linear-gradient(135deg, var(--ak-brand-primary-light) 0%, var(--ak-brand-primary) 100%)',
+    'linear-gradient(135deg, var(--ak-status-warning-light) 0%, var(--ak-status-warning) 100%)',
   ];
 
   return (

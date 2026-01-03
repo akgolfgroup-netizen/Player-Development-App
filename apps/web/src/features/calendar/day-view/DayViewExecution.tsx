@@ -1,5 +1,8 @@
 /**
  * Day View Execution Surface
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * STRATEGIC INTENT (NON-NEGOTIABLE):
  * - The Home screen decides WHAT the athlete should do.
@@ -20,129 +23,6 @@ import { EventDetailPanel } from './EventDetailPanel';
 import { WorkoutSelectorModal } from './WorkoutSelectorModal';
 import { TimePickerModal } from './TimePickerModal';
 import { WorkoutContentViewer } from './WorkoutContentViewer';
-
-// Semantic styles (NO raw hex values)
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    height: '100%',
-    backgroundColor: 'var(--background-default)',
-  },
-  topBar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    backgroundColor: 'var(--background-white)',
-    borderBottom: '1px solid var(--border-subtle)',
-    flexShrink: 0,
-  },
-  breadcrumb: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-2)',
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-tertiary)',
-  },
-  breadcrumbLink: {
-    color: 'var(--text-tertiary)',
-    textDecoration: 'none',
-    cursor: 'pointer',
-    transition: 'color 0.15s ease',
-  },
-  breadcrumbCurrent: {
-    color: 'var(--text-primary)',
-    fontWeight: 500,
-  },
-  dateNav: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-1)',
-  },
-  dateDisplay: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    padding: '0 var(--spacing-3)',
-  },
-  dateDay: {
-    fontSize: 'var(--font-size-headline)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-  },
-  dateMonth: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
-  },
-  navButton: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '36px',
-    height: '36px',
-    backgroundColor: 'transparent',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-    color: 'var(--text-secondary)',
-    transition: 'all 0.15s ease',
-  },
-  todayButton: {
-    padding: '0 var(--spacing-3)',
-    backgroundColor: 'transparent',
-    border: '1px solid var(--border-default)',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-    color: 'var(--text-secondary)',
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 500,
-    height: '36px',
-    transition: 'all 0.15s ease',
-  },
-  viewSwitcher: {
-    display: 'flex',
-    gap: '2px',
-    padding: '2px',
-    backgroundColor: 'var(--background-surface)',
-    borderRadius: 'var(--radius-md)',
-  },
-  viewButton: {
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderRadius: 'calc(var(--radius-md) - 2px)',
-    cursor: 'pointer',
-    color: 'var(--text-secondary)',
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 500,
-    transition: 'all 0.15s ease',
-  },
-  viewButtonActive: {
-    backgroundColor: 'var(--background-white)',
-    color: 'var(--text-primary)',
-    boxShadow: 'var(--shadow-xs)',
-  },
-  mainContent: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column' as const,
-    overflow: 'hidden',
-  },
-  todayBadge: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    padding: '2px 8px',
-    backgroundColor: 'var(--accent)',
-    color: 'var(--text-inverse)',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--font-size-caption2)',
-    fontWeight: 600,
-    marginLeft: 'var(--spacing-2)',
-  },
-};
 
 // Day names in Norwegian
 const dayNames = ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'];
@@ -331,88 +211,62 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
   }, []);
 
   return (
-    <div style={styles.container}>
+    <div className="flex flex-col h-full bg-ak-surface-base">
       {/* Top Bar */}
-      <div style={styles.topBar}>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-ak-border-subtle flex-shrink-0 bg-ak-surface-card">
         {/* Breadcrumb */}
-        <div style={styles.breadcrumb}>
+        <div className="flex items-center gap-2 text-sm text-ak-text-tertiary">
           <span
-            style={styles.breadcrumbLink}
             onClick={onBack}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-tertiary)')}
+            className="cursor-pointer transition-colors hover:text-ak-text-primary"
           >
             Dashboard
           </span>
           <span>→</span>
           <span
-            style={styles.breadcrumbLink}
             onClick={() => setCurrentView('month')}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-tertiary)')}
+            className="cursor-pointer transition-colors hover:text-ak-text-primary"
           >
             Kalender
           </span>
           <span>→</span>
-          <span style={styles.breadcrumbCurrent}>Dag</span>
+          <span className="font-medium text-ak-text-primary">Dag</span>
         </div>
 
         {/* Date Navigation */}
-        <div style={styles.dateNav}>
+        <div className="flex items-center gap-1">
           <button
-            style={styles.navButton}
             onClick={() => handleNavigate(-1)}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-brand)';
-              e.currentTarget.style.color = 'var(--text-brand)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-default)';
-              e.currentTarget.style.color = 'var(--text-secondary)';
-            }}
+            className="flex items-center justify-center w-9 h-9 rounded-lg border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary hover:text-ak-brand-primary"
           >
             <ChevronLeft size={18} />
           </button>
 
-          <div style={styles.dateDisplay}>
-            <div style={styles.dateDay}>
+          <div className="flex flex-col items-center px-3">
+            <div className="text-lg font-semibold text-ak-text-primary">
               {dayNames[currentDate.getDay()]} {currentDate.getDate()}
-              {isToday && <span style={styles.todayBadge}>I dag</span>}
+              {isToday && (
+                <span className="inline-flex items-center ml-2 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-ak-brand-primary text-white">
+                  I dag
+                </span>
+              )}
             </div>
-            <div style={styles.dateMonth}>
+            <div className="text-xs uppercase tracking-wide text-ak-text-tertiary">
               {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
             </div>
           </div>
 
           <button
-            style={styles.navButton}
             onClick={() => handleNavigate(1)}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-brand)';
-              e.currentTarget.style.color = 'var(--text-brand)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-default)';
-              e.currentTarget.style.color = 'var(--text-secondary)';
-            }}
+            className="flex items-center justify-center w-9 h-9 rounded-lg border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary hover:text-ak-brand-primary"
           >
             <ChevronRight size={18} />
           </button>
 
           {!isToday && (
             <button
-              style={styles.todayButton}
               onClick={() => handleNavigate(0, true)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border-brand)';
-                e.currentTarget.style.backgroundColor = 'var(--accent-muted)';
-                e.currentTarget.style.color = 'var(--text-brand)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border-default)';
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = 'var(--text-secondary)';
-              }}
+              className="h-9 px-3 rounded-lg text-sm font-medium border transition-all border-ak-border-default text-ak-text-secondary hover:border-ak-brand-primary hover:bg-ak-brand-primary/10 hover:text-ak-brand-primary"
             >
               I dag
             </button>
@@ -420,15 +274,16 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
         </div>
 
         {/* View Switcher */}
-        <div style={styles.viewSwitcher}>
+        <div className="flex gap-0.5 p-0.5 rounded-lg bg-ak-surface-subtle">
           {(['day', 'week', 'month'] as const).map((view) => (
             <button
               key={view}
-              style={{
-                ...styles.viewButton,
-                ...(currentView === view ? styles.viewButtonActive : {}),
-              }}
               onClick={() => setCurrentView(view)}
+              className={`px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                currentView === view
+                  ? 'bg-ak-surface-card text-ak-text-primary shadow-sm'
+                  : 'text-ak-text-secondary'
+              }`}
             >
               {view === 'day' ? 'Dag' : view === 'week' ? 'Uke' : 'Måned'}
             </button>
@@ -449,7 +304,7 @@ export const DayViewExecution: React.FC<DayViewProps> = ({ date: initialDate, on
       />
 
       {/* Main Content Area */}
-      <div style={styles.mainContent}>
+      <div className="flex-1 flex flex-col overflow-hidden">
         <TimeGrid
           date={currentDate}
           events={allEvents}

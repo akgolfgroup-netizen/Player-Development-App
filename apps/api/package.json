@@ -1,13 +1,13 @@
 {
   "name": "iup-golf-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "IUP Golf Academy Backend - Fastify + Prisma + TypeScript",
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "prebuild": "prisma generate",
     "build": "swc src -d dist --strip-leading-paths",
-    "postbuild": "cp -r src/templates dist/ && npx swc scripts/wait-for-db.ts -o dist/wait-for-db.js",
+    "postbuild": "[ -d src/templates ] && cp -r src/templates dist/ || true; npx swc scripts/wait-for-db.ts -o dist/wait-for-db.js",
     "postinstall": "prisma generate || true",
     "build:tsc": "tsc",
     "type-check": "tsc --noEmit",

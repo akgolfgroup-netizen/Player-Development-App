@@ -1,5 +1,8 @@
 /**
- * CalendarHeader Component
+ * CalendarHeader.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Header for the calendar with:
  * - Month/Year label (contextual)
@@ -8,8 +11,6 @@
  * - Today button ("I dag")
  * - Next/Prev navigation
  * - Primary action: "Ny økt"
- *
- * Uses semantic tokens only (no raw hex values).
  */
 
 import React from 'react';
@@ -64,45 +65,21 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   };
 
   return (
-    <header
-      className="flex items-center justify-between px-4 py-3 border-b"
-      style={{
-        backgroundColor: 'var(--calendar-surface-base)',
-        borderColor: 'var(--calendar-border)',
-      }}
-    >
+    <header className="flex items-center justify-between px-4 py-3 border-b bg-ak-surface-base border-ak-border-default">
       {/* Left: Navigation and Title */}
       <div className="flex items-center gap-4">
         {/* Prev/Next Navigation */}
         <div className="flex items-center gap-1">
           <button
             onClick={onPrev}
-            className="p-2 rounded-lg transition-colors"
-            style={{
-              color: 'var(--calendar-text-secondary)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--calendar-hover)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
+            className="p-2 rounded-lg transition-colors text-ak-text-secondary hover:bg-ak-surface-subtle"
             aria-label="Forrige"
           >
             <ChevronLeft size={20} />
           </button>
           <button
             onClick={onNext}
-            className="p-2 rounded-lg transition-colors"
-            style={{
-              color: 'var(--calendar-text-secondary)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--calendar-hover)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-            }}
+            className="p-2 rounded-lg transition-colors text-ak-text-secondary hover:bg-ak-surface-subtle"
             aria-label="Neste"
           >
             <ChevronRight size={20} />
@@ -110,53 +87,29 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
         </div>
 
         {/* Title */}
-        <SectionTitle
-          className="text-lg font-semibold capitalize"
-          style={{ color: 'var(--calendar-text-primary)' }}
-        >
+        <SectionTitle className="text-lg font-semibold capitalize text-ak-text-primary">
           {getViewLabel()}
         </SectionTitle>
 
         {/* Week number badge (only for week view) */}
         {view === 'week' && (
-          <span
-            className="text-sm px-2 py-1 rounded"
-            style={{
-              backgroundColor: 'var(--calendar-surface-elevated)',
-              color: 'var(--calendar-text-tertiary)',
-            }}
-          >
+          <span className="text-sm px-2 py-1 rounded bg-ak-surface-subtle text-ak-text-tertiary">
             Uke {weekNumber}
           </span>
         )}
       </div>
 
       {/* Center: View Switcher (Segmented Control) */}
-      <div
-        className="hidden md:flex items-center rounded-lg p-1"
-        style={{
-          backgroundColor: 'var(--calendar-surface-elevated)',
-        }}
-      >
+      <div className="hidden md:flex items-center rounded-lg p-1 bg-ak-surface-subtle">
         {VIEW_OPTIONS.map((option) => (
           <button
             key={option.value}
             onClick={() => onViewChange(option.value)}
-            className="px-3 py-1.5 text-sm font-medium rounded-md transition-colors"
-            style={{
-              backgroundColor:
-                view === option.value
-                  ? 'var(--calendar-surface-base)'
-                  : 'transparent',
-              color:
-                view === option.value
-                  ? 'var(--calendar-text-primary)'
-                  : 'var(--calendar-text-tertiary)',
-              boxShadow:
-                view === option.value
-                  ? 'var(--shadow-card)'
-                  : 'none',
-            }}
+            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              view === option.value
+                ? 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+                : 'text-ak-text-tertiary'
+            }`}
           >
             {option.label}
           </button>
@@ -167,33 +120,14 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
       <div className="flex items-center gap-3">
         <button
           onClick={onToday}
-          className="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors"
-          style={{
-            color: 'var(--calendar-text-secondary)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--calendar-hover)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent';
-          }}
+          className="px-3 py-1.5 text-sm font-medium rounded-lg transition-colors text-ak-text-secondary hover:bg-ak-surface-subtle"
         >
           I dag
         </button>
 
         <button
           onClick={onNewSession}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors"
-          style={{
-            backgroundColor: 'var(--ak-primary)',
-            color: 'var(--text-inverse)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--ak-primary-light)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--ak-primary)';
-          }}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
         >
           <Plus size={16} />
           Ny økt
@@ -205,12 +139,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
         <select
           value={view}
           onChange={(e) => onViewChange(e.target.value as CalendarView)}
-          className="px-2 py-1 text-sm rounded-md border"
-          style={{
-            backgroundColor: 'var(--calendar-surface-base)',
-            borderColor: 'var(--calendar-border)',
-            color: 'var(--calendar-text-primary)',
-          }}
+          className="px-2 py-1 text-sm rounded-md border bg-ak-surface-base border-ak-border-default text-ak-text-primary"
         >
           {VIEW_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>

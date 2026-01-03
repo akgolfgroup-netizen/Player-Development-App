@@ -58,11 +58,19 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
 
   // Note: /health, /metrics, /ready, /live endpoints are provided by the metrics plugin
 
+  // Version endpoint to verify deployments
+  app.get('/version', async () => ({
+    version: '2026-01-03-samling',
+    timestamp: new Date().toISOString(),
+    features: ['samling'],
+  }));
+
   // Register API routes
   const { authRoutes } = await import('./api/v1/auth');
   const { playerRoutes } = await import('./api/v1/players');
   const { coachRoutes } = await import('./api/v1/coaches');
   const { exerciseRoutes } = await import('./api/v1/exercises');
+  const { samlingRoutes } = await import('./api/v1/samling');
   const { testRoutes } = await import('./api/v1/tests');
   const { enhancedTestRoutes } = await import('./api/v1/tests/enhanced-routes');
   const { breakingPointRoutes } = await import('./api/v1/breaking-points');
@@ -109,6 +117,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   await app.register(playerRoutes, { prefix: `/api/${config.server.apiVersion}/players` });
   await app.register(coachRoutes, { prefix: `/api/${config.server.apiVersion}/coaches` });
   await app.register(exerciseRoutes, { prefix: `/api/${config.server.apiVersion}/exercises` });
+  await app.register(samlingRoutes, { prefix: `/api/${config.server.apiVersion}/samling` });
   await app.register(testRoutes, { prefix: `/api/${config.server.apiVersion}/tests` });
   await app.register(enhancedTestRoutes, { prefix: `/api/${config.server.apiVersion}/tests` });
   await app.register(breakingPointRoutes, { prefix: `/api/${config.server.apiVersion}/breaking-points` });

@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Coach Stats Regression
+ * Design System v3.0 - Premium Light
+ *
+ * Shows players who need attention due to negative trends.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useMemo } from 'react';
 import {
   TrendingDown,
@@ -170,21 +179,21 @@ export const CoachStatsRegression: React.FC = () => {
     lowRisk: mockRegressionPlayers.filter(p => p.riskLevel === 'low').length
   }), []);
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryClasses = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'var(--bg-success-subtle)', text: 'var(--success)' };
-      case 'B': return { bg: 'var(--bg-accent-subtle)', text: 'var(--info)' };
-      case 'C': return { bg: 'var(--bg-warning-subtle)', text: 'var(--warning)' };
-      default: return { bg: 'var(--card)', text: 'var(--text-secondary)' };
+      case 'A': return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
+      case 'B': return { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' };
+      case 'C': return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
+      default: return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
     }
   };
 
-  const getRiskColor = (risk: string) => {
+  const getRiskClasses = (risk: string) => {
     switch (risk) {
-      case 'high': return { bg: 'var(--error-muted)', border: 'rgba(var(--error-rgb), 0.3)', text: 'var(--error)' };
-      case 'medium': return { bg: 'var(--warning-muted)', border: 'rgba(var(--warning-rgb), 0.3)', text: 'var(--warning)' };
-      case 'low': return { bg: 'var(--success-muted)', border: 'rgba(var(--success-rgb), 0.3)', text: 'var(--success)' };
-      default: return { bg: 'var(--card)', border: 'var(--border-default)', text: 'var(--text-secondary)' };
+      case 'high': return { bg: 'bg-ak-status-error/15', border: 'border-ak-status-error/30', text: 'text-ak-status-error' };
+      case 'medium': return { bg: 'bg-ak-status-warning/15', border: 'border-ak-status-warning/30', text: 'text-ak-status-warning' };
+      case 'low': return { bg: 'bg-ak-status-success/15', border: 'border-ak-status-success/30', text: 'text-ak-status-success' };
+      default: return { bg: 'bg-ak-surface-base', border: 'border-ak-border-default', text: 'text-ak-text-secondary' };
     }
   };
 
@@ -203,22 +212,13 @@ export const CoachStatsRegression: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
+    <div className="p-6 bg-ak-surface-base min-h-screen">
       {/* Header with icon */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '24px' }}>
-        <div style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '12px',
-          background: 'linear-gradient(135deg, var(--error), var(--error))',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0
-        }}>
-          <TrendingDown size={24} color="white" />
+      <div className="flex items-start gap-4 mb-6">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-status-error to-ak-status-error flex items-center justify-center flex-shrink-0">
+          <TrendingDown size={24} className="text-white" />
         </div>
-        <div style={{ flex: 1 }}>
+        <div className="flex-1">
           <PageHeader
             title="Oppfølging påkrevd"
             subtitle="Spillere med negativ utvikling som trenger oppmerksomhet"
@@ -228,110 +228,65 @@ export const CoachStatsRegression: React.FC = () => {
       </div>
 
       {/* Risk Summary Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '16px',
-        marginBottom: '24px'
-      }}>
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
+          <p className="text-xs text-ak-text-tertiary m-0 mb-1">
             Totalt
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+          <p className="text-[28px] font-bold text-ak-text-primary m-0">
             {stats.total}
           </p>
         </div>
-        <div style={{
-          backgroundColor: 'var(--bg-error-subtle)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: '1px solid rgba(var(--error-rgb), 0.2)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-            <AlertTriangle size={14} color="var(--error)" />
-            <p style={{ fontSize: '12px', color: 'var(--error)', margin: 0 }}>Høy risiko</p>
+        <div className="bg-ak-status-error/5 rounded-xl p-4 border border-ak-status-error/20">
+          <div className="flex items-center gap-1.5 mb-1">
+            <AlertTriangle size={14} className="text-ak-status-error" />
+            <p className="text-xs text-ak-status-error m-0">Høy risiko</p>
           </div>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--error)', margin: 0 }}>
+          <p className="text-[28px] font-bold text-ak-status-error m-0">
             {stats.highRisk}
           </p>
         </div>
-        <div style={{
-          backgroundColor: 'rgba(var(--warning-rgb), 0.05)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: '1px solid rgba(var(--warning-rgb), 0.2)'
-        }}>
-          <p style={{ fontSize: '12px', color: 'var(--warning)', margin: '0 0 4px 0' }}>
+        <div className="bg-ak-status-warning/5 rounded-xl p-4 border border-ak-status-warning/20">
+          <p className="text-xs text-ak-status-warning m-0 mb-1">
             Medium risiko
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--warning)', margin: 0 }}>
+          <p className="text-[28px] font-bold text-ak-status-warning m-0">
             {stats.mediumRisk}
           </p>
         </div>
-        <div style={{
-          backgroundColor: 'rgba(var(--success-rgb), 0.05)',
-          borderRadius: '12px',
-          padding: '16px',
-          border: '1px solid rgba(var(--success-rgb), 0.2)'
-        }}>
-          <p style={{ fontSize: '12px', color: 'var(--success)', margin: '0 0 4px 0' }}>
+        <div className="bg-ak-status-success/5 rounded-xl p-4 border border-ak-status-success/20">
+          <p className="text-xs text-ak-status-success m-0 mb-1">
             Lav risiko
           </p>
-          <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--success)', margin: 0 }}>
+          <p className="text-[28px] font-bold text-ak-status-success m-0">
             {stats.lowRisk}
           </p>
         </div>
       </div>
 
       {/* Search and Filter */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '20px',
-        flexWrap: 'wrap'
-      }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
+      <div className="flex gap-4 mb-5 flex-wrap">
+        <div className="relative flex-1 min-w-[200px]">
           <Search
             size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--text-tertiary)'
-            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-tertiary"
           />
           <input
             type="text"
             placeholder="Søk etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '12px 12px 12px 40px',
-              borderRadius: '10px',
-              border: `1px solid ${'var(--border-default)'}`,
-              backgroundColor: 'var(--bg-primary)',
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              outline: 'none'
-            }}
+            className="w-full py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none"
           />
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex gap-2">
           {(['all', 'high', 'medium', 'low'] as const).map(risk => (
             <Button
               key={risk}
               variant={riskFilter === risk ? 'primary' : 'secondary'}
               size="sm"
               onClick={() => setRiskFilter(risk)}
-              style={riskFilter === risk && risk !== 'all' ? { backgroundColor: getRiskColor(risk).text } : undefined}
+              className={riskFilter === risk && risk !== 'all' ? getRiskClasses(risk).text : ''}
             >
               {risk === 'all' ? 'Alle' : getRiskLabel(risk)}
             </Button>
@@ -340,106 +295,61 @@ export const CoachStatsRegression: React.FC = () => {
       </div>
 
       {/* Player List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="flex flex-col gap-3">
         {filteredPlayers.map((player) => {
-          const riskColors = getRiskColor(player.riskLevel);
+          const riskClasses = getRiskClasses(player.riskLevel);
           return (
             <div
               key={player.id}
-              style={{
-                backgroundColor: 'var(--bg-primary)',
-                borderRadius: '16px',
-                padding: '20px',
-                border: `1px solid ${riskColors.border}`,
-                borderLeft: `4px solid ${riskColors.text}`
-              }}
+              className={`bg-ak-surface-base rounded-2xl p-5 border ${riskClasses.border} border-l-4`}
+              style={{ borderLeftColor: player.riskLevel === 'high' ? 'rgb(var(--ak-status-error-rgb))' : player.riskLevel === 'medium' ? 'rgb(var(--ak-status-warning-rgb))' : 'rgb(var(--ak-status-success-rgb))' }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div className="flex justify-between items-start">
                 {/* Left side - Player info */}
-                <div style={{ display: 'flex', gap: '16px', flex: 1 }}>
-                  <div style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '50%',
-                    backgroundColor: riskColors.bg,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '20px',
-                    fontWeight: '600',
-                    color: riskColors.text
-                  }}>
+                <div className="flex gap-4 flex-1">
+                  <div className={`w-14 h-14 rounded-full flex items-center justify-center text-xl font-semibold ${riskClasses.bg} ${riskClasses.text}`}>
                     {player.name.split(' ').map(n => n[0]).join('')}
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <SubSectionTitle style={{ margin: 0 }}>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <SubSectionTitle className="m-0">
                         {player.name}
                       </SubSectionTitle>
-                      <span style={{
-                        fontSize: '11px',
-                        fontWeight: '500',
-                        padding: '2px 8px',
-                        borderRadius: '4px',
-                        backgroundColor: getCategoryColor(player.category).bg,
-                        color: getCategoryColor(player.category).text
-                      }}>
+                      <span className={`text-[11px] font-medium py-0.5 px-2 rounded ${getCategoryClasses(player.category).bg} ${getCategoryClasses(player.category).text}`}>
                         Kat. {player.category}
                       </span>
-                      <span style={{
-                        fontSize: '11px',
-                        fontWeight: '600',
-                        padding: '2px 8px',
-                        borderRadius: '4px',
-                        backgroundColor: riskColors.bg,
-                        color: riskColors.text,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}>
+                      <span className={`text-[11px] font-semibold py-0.5 px-2 rounded flex items-center gap-1 ${riskClasses.bg} ${riskClasses.text}`}>
                         {player.riskLevel === 'high' && <AlertTriangle size={10} />}
                         {getRiskLabel(player.riskLevel)}
                       </span>
                     </div>
 
                     {/* Warning stats */}
-                    <div style={{
-                      display: 'flex',
-                      gap: '20px',
-                      marginBottom: '12px',
-                      flexWrap: 'wrap'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Clock size={14} color="var(--error)" />
-                        <span style={{ fontSize: '13px', color: 'var(--error)', fontWeight: '500' }}>
+                    <div className="flex gap-5 mb-3 flex-wrap">
+                      <div className="flex items-center gap-1.5">
+                        <Clock size={14} className="text-ak-status-error" />
+                        <span className="text-[13px] text-ak-status-error font-medium">
                           {player.daysSinceSession} dager siden sist
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <XCircle size={14} color={'var(--text-tertiary)'} />
-                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                      <div className="flex items-center gap-1.5">
+                        <XCircle size={14} className="text-ak-text-tertiary" />
+                        <span className="text-[13px] text-ak-text-secondary">
                           {player.missedSessions} økter avlyst/uteblitt
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Calendar size={14} color={'var(--text-tertiary)'} />
-                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                      <div className="flex items-center gap-1.5">
+                        <Calendar size={14} className="text-ak-text-tertiary" />
+                        <span className="text-[13px] text-ak-text-secondary">
                           Sist: {formatDate(player.lastSession)}
                         </span>
                       </div>
                     </div>
 
                     {/* Concerns */}
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                    <div className="flex gap-2 flex-wrap mb-3">
                       {player.concerns.map((concern, idx) => (
-                        <span key={idx} style={{
-                          fontSize: '11px',
-                          padding: '4px 10px',
-                          borderRadius: '6px',
-                          backgroundColor: 'var(--error-muted)',
-                          color: 'var(--error)',
-                          fontWeight: '500'
-                        }}>
+                        <span key={idx} className="text-[11px] py-1 px-2.5 rounded-md bg-ak-status-error/15 text-ak-status-error font-medium">
                           {concern}
                         </span>
                       ))}
@@ -447,26 +357,15 @@ export const CoachStatsRegression: React.FC = () => {
 
                     {/* Notes if any */}
                     {player.notes && (
-                      <div style={{
-                        padding: '10px 12px',
-                        backgroundColor: 'var(--warning-muted)',
-                        borderRadius: '8px',
-                        borderLeft: '3px solid var(--warning)',
-                        marginBottom: '12px'
-                      }}>
-                        <p style={{
-                          fontSize: '13px',
-                          color: 'var(--warning)',
-                          margin: 0,
-                          fontStyle: 'italic'
-                        }}>
+                      <div className="py-2.5 px-3 bg-ak-status-warning/15 rounded-lg border-l-[3px] border-ak-status-warning mb-3">
+                        <p className="text-[13px] text-ak-status-warning m-0 italic">
                           {player.notes}
                         </p>
                       </div>
                     )}
 
                     {/* Action buttons */}
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <div className="flex gap-2 flex-wrap">
                       <Button
                         variant="primary"
                         size="sm"
@@ -493,31 +392,15 @@ export const CoachStatsRegression: React.FC = () => {
                 </div>
 
                 {/* Right side - HCP change */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  gap: '8px'
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    padding: '8px 16px',
-                    backgroundColor: 'var(--error-muted)',
-                    borderRadius: '10px'
-                  }}>
-                    <ArrowDownRight size={18} color="var(--error)" />
-                    <span style={{
-                      fontSize: '20px',
-                      fontWeight: '700',
-                      color: 'var(--error)'
-                    }}>
+                <div className="flex flex-col items-end gap-2">
+                  <div className="flex items-center gap-1 py-2 px-4 bg-ak-status-error/15 rounded-[10px]">
+                    <ArrowDownRight size={18} className="text-ak-status-error" />
+                    <span className="text-xl font-bold text-ak-status-error">
                       +{player.hcpChange}
                     </span>
                   </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
+                  <div className="text-right">
+                    <p className="text-xs text-ak-text-tertiary m-0">
                       HCP: {player.previousHcp} → {player.currentHcp}
                     </p>
                   </div>
@@ -526,7 +409,7 @@ export const CoachStatsRegression: React.FC = () => {
                     size="sm"
                   >
                     Se historikk
-                    <ChevronRight size={14} style={{ marginLeft: '4px' }} />
+                    <ChevronRight size={14} className="ml-1" />
                   </Button>
                 </div>
               </div>

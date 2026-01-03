@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /**
  * useAnnotationCanvas Hook
- * Custom hook for canvas-based video annotation
+ * Design System v3.0 - Premium Light
  *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ *
+ * Custom hook for canvas-based video annotation
  * Provides:
  * - Drawing tool management (line, circle, arrow, angle, freehand, text)
  * - Canvas state management
@@ -24,16 +27,17 @@ export const TOOL_TYPES = {
   TEXT: 'text',
 };
 
-// Default colors for annotations
+// Default colors for annotations - using direct hex values for canvas drawing
+// Note: Canvas requires actual color values, not CSS variables
 export const ANNOTATION_COLORS = [
-  '#FF0000', // Red
-  '#00FF00', // Green
-  '#0000FF', // Blue
-  '#FFFF00', // Yellow
-  '#FF00FF', // Magenta
-  '#00FFFF', // Cyan
+  '#C45B4E', // Red (error)
+  '#4A7C59', // Green (success)
+  '#2C5F7F', // Blue (info)
+  '#E5D49B', // Yellow (warningLight)
+  '#E5B5B0', // Magenta/Pink (errorLight)
+  '#B5CCD6', // Cyan (infoLight)
   '#FFFFFF', // White
-  '#FFA500', // Orange
+  '#D4A84B', // Orange (warning)
 ];
 
 // Default stroke widths

@@ -1,6 +1,12 @@
+/**
+ * BackToTop Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 
 export default function BackToTop({ scrollThreshold = 300, targetId = 'main-content' }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -44,8 +50,8 @@ export default function BackToTop({ scrollThreshold = 300, targetId = 'main-cont
         width: '48px',
         height: '48px',
         borderRadius: '50%',
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
+        backgroundColor: 'var(--ak-brand-primary)',
+        color: 'var(--ak-surface-card)',
         border: 'none',
         cursor: 'pointer',
         display: 'flex',
@@ -59,11 +65,11 @@ export default function BackToTop({ scrollThreshold = 300, targetId = 'main-cont
         zIndex: 1000,
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = tokens.colors.primaryLight;
+        e.currentTarget.style.backgroundColor = 'var(--ak-brand-primary-light)';
         e.currentTarget.style.transform = isVisible ? 'translateY(-2px)' : 'translateY(20px)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = tokens.colors.primary;
+        e.currentTarget.style.backgroundColor = 'var(--ak-brand-primary)';
         e.currentTarget.style.transform = isVisible ? 'translateY(0)' : 'translateY(20px)';
       }}
       aria-label="Tilbake til toppen"

@@ -1,10 +1,11 @@
 /**
  * StepIndicator Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
  *
  * Visual progress indicator for the session planner wizard.
  * Shows current step, completed steps, and remaining steps.
- *
- * Uses semantic tokens only (no raw hex values).
  */
 
 import React from 'react';
@@ -52,22 +53,15 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
               disabled={!isClickable}
               className={`
                 flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
-                transition-all duration-200
+                transition-all duration-200 border-2
                 ${isClickable ? 'cursor-pointer' : 'cursor-default'}
-              `}
-              style={{
-                backgroundColor: isActive
-                  ? 'var(--ak-primary)'
+                ${isActive
+                  ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
                   : isCompleted
-                  ? 'var(--ak-success)'
-                  : 'var(--calendar-surface-elevated)',
-                color: isActive || isCompleted
-                  ? 'var(--text-inverse)'
-                  : 'var(--calendar-text-tertiary)',
-                border: isActive
-                  ? 'none'
-                  : `2px solid ${isCompleted ? 'var(--ak-success)' : 'var(--calendar-border)'}`,
-              }}
+                  ? 'bg-ak-status-success text-white border-ak-status-success'
+                  : 'bg-ak-surface-subtle text-ak-text-tertiary border-ak-border-default'
+                }
+              `}
               title={STEP_LABELS[step]}
             >
               {isCompleted && !isActive ? (
@@ -80,12 +74,9 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
             {/* Connector line (not after last step) */}
             {index < steps.length - 1 && (
               <div
-                className="flex-1 h-0.5 max-w-8"
-                style={{
-                  backgroundColor: index < currentStepIndex
-                    ? 'var(--ak-success)'
-                    : 'var(--calendar-border)',
-                }}
+                className={`flex-1 h-0.5 max-w-8 ${
+                  index < currentStepIndex ? 'bg-ak-status-success' : 'bg-ak-border-default'
+                }`}
               />
             )}
           </React.Fragment>
@@ -114,14 +105,13 @@ export const StepIndicatorCompact: React.FC<StepIndicatorProps> = ({
             key={step}
             className={`h-1.5 rounded-full transition-all duration-200 ${
               isActive ? 'w-6' : 'w-1.5'
-            }`}
-            style={{
-              backgroundColor: isActive
-                ? 'var(--ak-primary)'
+            } ${
+              isActive
+                ? 'bg-ak-brand-primary'
                 : isPast
-                ? 'var(--ak-success)'
-                : 'var(--calendar-border)',
-            }}
+                ? 'bg-ak-status-success'
+                : 'bg-ak-border-default'
+            }`}
           />
         );
       })}
@@ -144,18 +134,12 @@ export const StepIndicatorWithLabels: React.FC<StepIndicatorProps> = ({
       {/* Progress bar */}
       <div className="relative mb-2">
         {/* Background track */}
-        <div
-          className="absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2"
-          style={{ backgroundColor: 'var(--calendar-border)' }}
-        />
+        <div className="absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 bg-ak-border-default" />
 
-        {/* Progress fill */}
+        {/* Progress fill - needs inline style for dynamic width */}
         <div
-          className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 transition-all duration-300"
-          style={{
-            backgroundColor: 'var(--ak-primary)',
-            width: `${(currentStepIndex / (steps.length - 1)) * 100}%`,
-          }}
+          className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 transition-all duration-300 bg-ak-brand-primary"
+          style={{ width: `${(currentStepIndex / (steps.length - 1)) * 100}%` }}
         />
 
         {/* Step dots */}
@@ -174,22 +158,13 @@ export const StepIndicatorWithLabels: React.FC<StepIndicatorProps> = ({
                 disabled={!isClickable}
                 className={`
                   flex items-center justify-center w-6 h-6 rounded-full text-xs font-medium
-                  transition-all duration-200
+                  transition-all duration-200 border-2
                   ${isClickable ? 'cursor-pointer hover:scale-110' : 'cursor-default'}
+                  ${isActive || isCompleted
+                    ? 'bg-ak-brand-primary text-white border-ak-brand-primary'
+                    : 'bg-white text-ak-text-tertiary border-ak-border-default'
+                  }
                 `}
-                style={{
-                  backgroundColor: isActive || isCompleted
-                    ? 'var(--ak-primary)'
-                    : 'var(--background-white)',
-                  color: isActive || isCompleted
-                    ? 'var(--text-inverse)'
-                    : 'var(--calendar-text-tertiary)',
-                  border: `2px solid ${
-                    isActive || isCompleted
-                      ? 'var(--ak-primary)'
-                      : 'var(--calendar-border)'
-                  }`,
-                }}
               >
                 {isCompleted ? <Check size={12} /> : index + 1}
               </button>
@@ -198,7 +173,7 @@ export const StepIndicatorWithLabels: React.FC<StepIndicatorProps> = ({
         </div>
       </div>
 
-      {/* Labels */}
+      {/* Labels - need inline style for dynamic width */}
       <div className="flex justify-between">
         {steps.map((step, index) => {
           const isActive = step === currentStep;
@@ -206,14 +181,10 @@ export const StepIndicatorWithLabels: React.FC<StepIndicatorProps> = ({
           return (
             <span
               key={step}
-              className="text-xs text-center"
-              style={{
-                color: isActive
-                  ? 'var(--ak-primary)'
-                  : 'var(--calendar-text-tertiary)',
-                fontWeight: isActive ? 600 : 400,
-                width: `${100 / steps.length}%`,
-              }}
+              className={`text-xs text-center ${
+                isActive ? 'text-ak-brand-primary font-semibold' : 'text-ak-text-tertiary'
+              }`}
+              style={{ width: `${100 / steps.length}%` }}
             >
               {STEP_LABELS[step]}
             </span>

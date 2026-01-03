@@ -1,11 +1,8 @@
-// @ts-nocheck
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * AK Golf Academy - Coach Alerts Page
- * Design System v3.0 - Blue Palette 01
  *
- * Purpose:
- * - Display actionable alerts for coach attention
+ * Archetype: A - List/Index Page
+ * Purpose: Display actionable alerts for coach attention
  * - No ranking, no comparison between athletes
  *
  * Contract references:
@@ -16,85 +13,85 @@
  * - Alerts are neutral observations, not rankings
  * - No "priority" or "importance" ordering
  * - Alphabetical by athlete name only
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
-import React, { useState, useEffect, useCallback } from "react";
-import { Bell, CheckCircle, Clock, AlertCircle, ChevronRight, Filter } from "lucide-react";
-import Card from '../../ui/primitives/Card';
-import Button from '../../ui/primitives/Button';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Bell,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  ChevronRight,
+  Filter,
+} from 'lucide-react';
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import { useAuth } from '../../contexts/AuthContext';
 import { coachesAPI } from '../../services/api';
 
-// Typography
-const typography = {
-  title1: { fontSize: '28px', lineHeight: '34px', fontWeight: 700 },
-  body: { fontSize: '15px', lineHeight: '20px', fontWeight: 400 },
-  caption: { fontSize: '12px', lineHeight: '16px', fontWeight: 400 },
-};
-
-//////////////////////////////
-// 1. TYPES
-//////////////////////////////
+// ============================================================================
+// TYPES
+// ============================================================================
 
 type Alert = {
   id: string;
   athleteId: string;
   athleteName: string;
-  type: "proof_uploaded" | "plan_pending" | "note_request" | "milestone";
+  type: 'proof_uploaded' | 'plan_pending' | 'note_request' | 'milestone';
   message: string;
   createdAt: string;
   read: boolean;
 };
 
-type AlertFilter = "all" | "unread";
+type AlertFilter = 'all' | 'unread';
 
-//////////////////////////////
-// 2. MOCK DATA
-//////////////////////////////
+// ============================================================================
+// MOCK DATA
+// ============================================================================
 
 const MOCK_ALERTS: Alert[] = [
   {
-    id: "a1",
-    athleteId: "1",
-    athleteName: "Anders Hansen",
-    type: "proof_uploaded",
-    message: "Ny video lastet opp: Putting øvelse",
-    createdAt: "2025-12-21T10:30:00Z",
+    id: 'a1',
+    athleteId: '1',
+    athleteName: 'Anders Hansen',
+    type: 'proof_uploaded',
+    message: 'Ny video lastet opp: Putting øvelse',
+    createdAt: '2025-12-21T10:30:00Z',
     read: false,
   },
   {
-    id: "a2",
-    athleteId: "2",
-    athleteName: "Emma Berg",
-    type: "plan_pending",
-    message: "Treningsplan venter på godkjenning",
-    createdAt: "2025-12-21T09:15:00Z",
+    id: 'a2',
+    athleteId: '2',
+    athleteName: 'Emma Berg',
+    type: 'plan_pending',
+    message: 'Treningsplan venter på godkjenning',
+    createdAt: '2025-12-21T09:15:00Z',
     read: false,
   },
   {
-    id: "a3",
-    athleteId: "3",
-    athleteName: "Lars Olsen",
-    type: "milestone",
-    message: "Fullført 10 økter denne måneden",
-    createdAt: "2025-12-20T16:00:00Z",
+    id: 'a3',
+    athleteId: '3',
+    athleteName: 'Lars Olsen',
+    type: 'milestone',
+    message: 'Fullført 10 økter denne måneden',
+    createdAt: '2025-12-20T16:00:00Z',
     read: true,
   },
   {
-    id: "a4",
-    athleteId: "4",
-    athleteName: "Sofie Andersen",
-    type: "note_request",
-    message: "Bedt om tilbakemelding på siste økt",
-    createdAt: "2025-12-20T14:30:00Z",
+    id: 'a4',
+    athleteId: '4',
+    athleteName: 'Sofie Andersen',
+    type: 'note_request',
+    message: 'Bedt om tilbakemelding på siste økt',
+    createdAt: '2025-12-20T14:30:00Z',
     read: true,
   },
 ];
 
-//////////////////////////////
-// 3. HELPERS
-//////////////////////////////
+// ============================================================================
+// HELPERS
+// ============================================================================
 
 const sortAlphabetically = (alerts: Alert[]): Alert[] =>
   [...alerts].sort((a, b) => a.athleteName.localeCompare(b.athleteName));
@@ -106,59 +103,107 @@ const formatTimeAgo = (isoString: string): string => {
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   const diffDays = Math.floor(diffHours / 24);
 
-  if (diffHours < 1) return "Nå nettopp";
+  if (diffHours < 1) return 'Nå nettopp';
   if (diffHours < 24) return `${diffHours} timer siden`;
-  if (diffDays === 1) return "I går";
+  if (diffDays === 1) return 'I går';
   return `${diffDays} dager siden`;
 };
 
-const getAlertConfig = (type: Alert["type"]) => {
+const getAlertConfig = (type: Alert['type']) => {
   switch (type) {
-    case "proof_uploaded":
-      return { icon: CheckCircle, color: 'var(--success)', label: "Dokumentasjon" };
-    case "plan_pending":
-      return { icon: Clock, color: 'var(--warning)', label: "Treningsplan" };
-    case "note_request":
-      return { icon: AlertCircle, color: 'var(--accent)', label: "Tilbakemelding" };
-    case "milestone":
-      return { icon: Bell, color: 'var(--achievement)', label: "Milepæl" };
+    case 'proof_uploaded':
+      return {
+        icon: CheckCircle,
+        colorClass: 'text-ak-status-success bg-ak-status-success/15',
+        label: 'Dokumentasjon',
+      };
+    case 'plan_pending':
+      return {
+        icon: Clock,
+        colorClass: 'text-ak-status-warning bg-ak-status-warning/15',
+        label: 'Treningsplan',
+      };
+    case 'note_request':
+      return {
+        icon: AlertCircle,
+        colorClass: 'text-ak-brand-primary bg-ak-brand-primary/15',
+        label: 'Tilbakemelding',
+      };
+    case 'milestone':
+      return {
+        icon: Bell,
+        colorClass: 'text-ak-status-warning bg-ak-status-warning/15',
+        label: 'Milepæl',
+      };
     default:
-      return { icon: Bell, color: 'var(--text-secondary)', label: "Varsel" };
+      return {
+        icon: Bell,
+        colorClass: 'text-ak-text-secondary bg-ak-surface-subtle',
+        label: 'Varsel',
+      };
   }
 };
 
-//////////////////////////////
-// 4. COMPONENT
-//////////////////////////////
+// ============================================================================
+// COMPONENT
+// ============================================================================
 
 interface CoachAlertsPageProps {
   alerts?: Alert[];
   onAlertClick?: (alert: Alert) => void;
 }
 
-export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: CoachAlertsPageProps = {}) {
+export default function CoachAlertsPage({
+  alerts: apiAlerts,
+  onAlertClick,
+}: CoachAlertsPageProps = {}) {
   const { user } = useAuth();
   const [alerts, setAlerts] = useState<Alert[]>(apiAlerts || []);
-  const [filter, setFilter] = useState<AlertFilter>("all");
+  const [filter, setFilter] = useState<AlertFilter>('all');
   const [loading, setLoading] = useState(!apiAlerts);
 
   const fetchAlerts = useCallback(async () => {
     try {
       setLoading(true);
       const response = await coachesAPI.getAlerts();
-      const alertsData = response.data?.data?.alerts || response.data?.data || response.data || [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const responseData = response.data?.data as any;
+      const alertsData =
+        responseData?.alerts || responseData || response.data || [];
 
       if (Array.isArray(alertsData) && alertsData.length > 0) {
-        const transformedAlerts: Alert[] = alertsData.map((a: any) => ({
-          id: a.id,
-          athleteId: a.athleteId || a.playerId || a.player?.id,
-          athleteName: a.athleteName || a.playerName ||
-            (a.player ? `${a.player.firstName || ''} ${a.player.lastName || ''}`.trim() : 'Ukjent'),
-          type: a.type || 'milestone',
-          message: a.message || a.text || a.description || '',
-          createdAt: a.createdAt || a.created_at || new Date().toISOString(),
-          read: a.read ?? a.isRead ?? false,
-        }));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const transformedAlerts: Alert[] = alertsData.map(
+          (a: {
+            id: string;
+            athleteId?: string;
+            playerId?: string;
+            player?: { id: string; firstName?: string; lastName?: string };
+            athleteName?: string;
+            playerName?: string;
+            type?: string;
+            message?: string;
+            text?: string;
+            description?: string;
+            createdAt?: string;
+            created_at?: string;
+            read?: boolean;
+            isRead?: boolean;
+          }) => ({
+            id: a.id,
+            athleteId: a.athleteId || a.playerId || a.player?.id || '',
+            athleteName:
+              a.athleteName ||
+              a.playerName ||
+              (a.player
+                ? `${a.player.firstName || ''} ${a.player.lastName || ''}`.trim()
+                : 'Ukjent'),
+            type: (a.type as Alert['type']) || 'milestone',
+            message: a.message || a.text || a.description || '',
+            createdAt: a.createdAt || a.created_at || new Date().toISOString(),
+            read: a.read ?? a.isRead ?? false,
+          })
+        );
         setAlerts(transformedAlerts);
       } else {
         setAlerts(MOCK_ALERTS);
@@ -171,7 +216,6 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
     }
   }, []);
 
-  // Fetch alerts if not provided via props
   useEffect(() => {
     if (!apiAlerts && user) {
       fetchAlerts();
@@ -179,7 +223,7 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
   }, [apiAlerts, user, fetchAlerts]);
 
   const filteredAlerts = sortAlphabetically(
-    filter === "unread" ? alerts.filter((a) => !a.read) : alerts
+    filter === 'unread' ? alerts.filter((a) => !a.read) : alerts
   );
 
   const unreadCount = alerts.filter((a) => !a.read).length;
@@ -198,51 +242,19 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
   return (
     <section
       aria-label="Coach alerts"
-      style={{
-        minHeight: "100vh",
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
+      className="min-h-screen bg-ak-surface-subtle font-sans"
     >
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '24px 24px 0' }}>
-        <div
-          style={{
-            position: "relative",
-            width: 48,
-            height: 48,
-            borderRadius: 'var(--radius-md)',
-            backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
-          }}
-        >
-          <Bell size={24} color={'var(--accent)'} />
+      <div className="flex items-start gap-4 p-6 pb-0">
+        <div className="relative w-12 h-12 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center flex-shrink-0">
+          <Bell size={24} className="text-ak-brand-primary" />
           {unreadCount > 0 && (
-            <div
-              style={{
-                position: "absolute",
-                top: -4,
-                right: -4,
-                width: 20,
-                height: 20,
-                borderRadius: "50%",
-                backgroundColor: 'var(--error)',
-                color: 'var(--bg-primary)',
-                fontSize: "11px",
-                fontWeight: 700,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-ak-status-error text-white text-[11px] font-bold flex items-center justify-center">
               {unreadCount}
             </div>
           )}
         </div>
-        <div style={{ flex: 1 }}>
+        <div className="flex-1">
           <PageHeader
             title="Varsler"
             subtitle={`${unreadCount} uleste av ${alerts.length} totalt`}
@@ -252,56 +264,41 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
       </div>
 
       {/* Filter */}
-      <div style={{ padding: "0 24px 16px" }}>
-        <div style={{ display: "flex", gap: "8px" }}>
+      <div className="px-6 pb-4">
+        <div className="flex gap-2">
           <button
-            onClick={() => setFilter("all")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "10px 16px",
-              borderRadius: 'var(--radius-md)',
-              border: "none",
-              backgroundColor: filter === "all" ? 'var(--accent)' : 'var(--bg-primary)',
-              color: filter === "all" ? 'var(--bg-primary)' : 'var(--text-primary)',
-              cursor: "pointer",
-              boxShadow: 'var(--shadow-card)',
-              ...typography.body as React.CSSProperties,
-              fontWeight: 500,
-            }}
+            onClick={() => setFilter('all')}
+            className={`
+              flex items-center gap-1.5 px-4 py-2.5 rounded-lg border-none cursor-pointer shadow-sm text-[15px] font-medium
+              ${filter === 'all'
+                ? 'bg-ak-brand-primary text-white'
+                : 'bg-ak-surface-base text-ak-text-primary'
+              }
+            `}
           >
             <Filter size={16} />
             Alle
           </button>
           <button
-            onClick={() => setFilter("unread")}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "10px 16px",
-              borderRadius: 'var(--radius-md)',
-              border: "none",
-              backgroundColor: filter === "unread" ? 'var(--accent)' : 'var(--bg-primary)',
-              color: filter === "unread" ? 'var(--bg-primary)' : 'var(--text-primary)',
-              cursor: "pointer",
-              boxShadow: 'var(--shadow-card)',
-              ...typography.body as React.CSSProperties,
-              fontWeight: 500,
-            }}
+            onClick={() => setFilter('unread')}
+            className={`
+              flex items-center gap-1.5 px-4 py-2.5 rounded-lg border-none cursor-pointer shadow-sm text-[15px] font-medium
+              ${filter === 'unread'
+                ? 'bg-ak-brand-primary text-white'
+                : 'bg-ak-surface-base text-ak-text-primary'
+              }
+            `}
           >
             Uleste
             {unreadCount > 0 && (
               <span
-                style={{
-                  padding: "2px 8px",
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: filter === "unread" ? "rgba(255,255,255,0.2)" : 'rgba(var(--error-rgb), 0.15)',
-                  color: filter === "unread" ? 'var(--bg-primary)' : 'var(--error)',
-                  fontSize: "12px",
-                  fontWeight: 600,
-                }}
+                className={`
+                  px-2 py-0.5 rounded text-xs font-semibold
+                  ${filter === 'unread'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-ak-status-error/15 text-ak-status-error'
+                  }
+                `}
               >
                 {unreadCount}
               </span>
@@ -311,37 +308,20 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
       </div>
 
       {/* Alerts List */}
-      <div style={{ padding: "0 24px 24px" }}>
+      <div className="px-6 pb-6">
         {loading ? (
-          <div style={{ padding: "48px 24px", textAlign: "center" }}>
-            <p style={{ ...typography.body as React.CSSProperties, color: 'var(--text-secondary)' }}>
-              Laster varsler...
-            </p>
+          <div className="py-12 text-center">
+            <p className="text-[15px] text-ak-text-secondary">Laster varsler...</p>
           </div>
         ) : filteredAlerts.length === 0 ? (
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: 'var(--shadow-card)',
-              padding: "48px 24px",
-              textAlign: "center",
-            }}
-          >
-            <Bell size={40} color={'var(--border-default)'} style={{ marginBottom: "12px" }} />
-            <p style={{ ...typography.body as React.CSSProperties, color: 'var(--text-secondary)' }}>
-              {filter === "unread" ? "Ingen uleste varsler" : "Ingen varsler"}
+          <div className="bg-ak-surface-base rounded-xl shadow-sm py-12 px-6 text-center">
+            <Bell size={40} className="text-ak-border-default mb-3 mx-auto" />
+            <p className="text-[15px] text-ak-text-secondary">
+              {filter === 'unread' ? 'Ingen uleste varsler' : 'Ingen varsler'}
             </p>
           </div>
         ) : (
-          <div
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: 'var(--radius-lg)',
-              boxShadow: 'var(--shadow-card)',
-              overflow: "hidden",
-            }}
-          >
+          <div className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
             {filteredAlerts.map((alert, index) => {
               const config = getAlertConfig(alert.type);
               const AlertIcon = config.icon;
@@ -351,91 +331,48 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
                   key={alert.id}
                   type="button"
                   onClick={() => handleAlertClick(alert)}
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "16px",
-                    padding: "16px 20px",
-                    backgroundColor: alert.read ? "transparent" : `${'var(--accent)'}05`,
-                    border: "none",
-                    borderBottom: index < filteredAlerts.length - 1 ? `1px solid ${'var(--border-default)'}` : "none",
-                    cursor: "pointer",
-                    textAlign: "left",
-                    transition: "background-color 0.2s ease",
-                  }}
+                  className={`
+                    w-full flex items-center gap-4 px-5 py-4 border-none cursor-pointer text-left transition-colors
+                    ${alert.read ? 'bg-transparent' : 'bg-ak-brand-primary/5'}
+                    ${index < filteredAlerts.length - 1 ? 'border-b border-ak-border-default' : ''}
+                    hover:bg-ak-surface-subtle
+                  `}
                 >
                   {/* Alert Icon */}
                   <div
-                    style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: `${config.color}15`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
+                    className={`w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0 ${config.colorClass}`}
                   >
-                    <AlertIcon size={22} color={config.color} />
+                    <AlertIcon size={22} />
                   </div>
 
                   {/* Alert Content */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
                       <span
-                        style={{
-                          ...typography.body as React.CSSProperties,
-                          fontWeight: alert.read ? 400 : 600,
-                          color: 'var(--text-primary)',
-                        }}
+                        className={`text-[15px] text-ak-text-primary ${alert.read ? 'font-normal' : 'font-semibold'}`}
                       >
                         {alert.athleteName}
                       </span>
                       <span
-                        style={{
-                          padding: "2px 8px",
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: `${config.color}15`,
-                          color: config.color,
-                          ...typography.caption as React.CSSProperties,
-                          fontWeight: 500,
-                        }}
+                        className={`px-2 py-0.5 rounded text-xs font-medium ${config.colorClass}`}
                       >
                         {config.label}
                       </span>
                     </div>
-                    <p
-                      style={{
-                        ...typography.caption as React.CSSProperties,
-                        color: 'var(--text-secondary)',
-                        margin: 0,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
+                    <p className="text-xs text-ak-text-secondary m-0 truncate">
                       {alert.message}
                     </p>
                   </div>
 
                   {/* Time & Arrow */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
-                    <span style={{ ...typography.caption as React.CSSProperties, color: 'var(--text-secondary)' }}>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <span className="text-xs text-ak-text-secondary">
                       {formatTimeAgo(alert.createdAt)}
                     </span>
                     {!alert.read && (
-                      <div
-                        style={{
-                          width: 8,
-                          height: 8,
-                          borderRadius: "50%",
-                          backgroundColor: 'var(--accent)',
-                        }}
-                      />
+                      <div className="w-2 h-2 rounded-full bg-ak-brand-primary" />
                     )}
-                    <ChevronRight size={18} color={'var(--text-secondary)'} />
+                    <ChevronRight size={18} className="text-ak-text-secondary" />
                   </div>
                 </button>
               );
@@ -447,11 +384,8 @@ export default function CoachAlertsPage({ alerts: apiAlerts, onAlertClick }: Coa
   );
 }
 
-//////////////////////////////
-// 5. STRICT NOTES
-//////////////////////////////
-
 /*
+STRICT NOTES:
 - Alerts are sorted alphabetically by athlete name only.
 - Do NOT prioritize or rank alerts by importance.
 - Do NOT show "urgent" or "critical" labels.

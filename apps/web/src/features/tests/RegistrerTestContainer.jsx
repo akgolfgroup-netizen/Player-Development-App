@@ -1,13 +1,55 @@
+/**
+ * RegistrerTestContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import {
   Save, CheckCircle,
   Plus, Trash2
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import apiClient from '../../services/apiClient';
 import { getTestCategoryIcon } from '../../constants/icons';
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const CATEGORY_CLASSES = {
+  driving: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/15',
+    activeBg: 'bg-ak-brand-primary',
+    border: 'border-ak-brand-primary',
+  },
+  iron_play: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    activeBg: 'bg-ak-status-success',
+    border: 'border-ak-status-success',
+  },
+  short_game: {
+    text: 'text-ak-status-warning',
+    bg: 'bg-ak-status-warning/15',
+    activeBg: 'bg-ak-status-warning',
+    border: 'border-ak-status-warning',
+  },
+  putting: {
+    text: 'text-ak-status-error',
+    bg: 'bg-ak-status-error/15',
+    activeBg: 'bg-ak-status-error',
+    border: 'border-ak-status-error',
+  },
+  physical: {
+    text: 'text-gold-500',
+    bg: 'bg-gold-500/15',
+    activeBg: 'bg-gold-500',
+    border: 'border-gold-500',
+  },
+};
 
 // ============================================================================
 // MOCK DATA
@@ -17,7 +59,6 @@ const TEST_CATEGORIES = [
   {
     id: 'driving',
     name: 'Driving',
-    color: tokens.colors.primary,
     tests: [
       { id: 'driver_distance', name: 'Driver avstand', unit: 'm', type: 'number' },
       { id: 'driver_accuracy', name: 'Fairway treff', unit: '%', type: 'percentage' },
@@ -29,7 +70,6 @@ const TEST_CATEGORIES = [
   {
     id: 'iron_play',
     name: 'Jernspill',
-    color: tokens.colors.success,
     tests: [
       { id: 'gir', name: 'GIR', unit: '%', type: 'percentage' },
       { id: 'proximity_100', name: 'Naerhet fra 100m', unit: 'm', type: 'decimal' },
@@ -40,7 +80,6 @@ const TEST_CATEGORIES = [
   {
     id: 'short_game',
     name: 'Kortspill',
-    color: tokens.colors.warning,
     tests: [
       { id: 'scrambling', name: 'Scrambling', unit: '%', type: 'percentage' },
       { id: 'sand_saves', name: 'Sand saves', unit: '%', type: 'percentage' },
@@ -51,7 +90,6 @@ const TEST_CATEGORIES = [
   {
     id: 'putting',
     name: 'Putting',
-    color: tokens.colors.error,
     tests: [
       { id: 'putts_per_round', name: 'Putts per runde', unit: '', type: 'decimal' },
       { id: 'one_putt_pct', name: 'En-putt prosent', unit: '%', type: 'percentage' },
@@ -63,7 +101,6 @@ const TEST_CATEGORIES = [
   {
     id: 'physical',
     name: 'Fysisk',
-    color: tokens.colors.gold,
     tests: [
       { id: 'core_hold', name: 'Plankehold', unit: 'sek', type: 'number' },
       { id: 'squat', name: 'Squat maks', unit: 'kg', type: 'number' },
@@ -85,48 +122,29 @@ const RECENT_TESTS = [
 
 const TestCategoryCard = ({ category, selected, onSelect }) => {
   const CategoryIcon = getTestCategoryIcon(category.id);
+  const classes = CATEGORY_CLASSES[category.id] || CATEGORY_CLASSES.driving;
+  const isSelected = selected?.id === category.id;
 
   return (
     <button
       onClick={() => onSelect(category)}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 'var(--spacing-2)',
-        padding: 'var(--spacing-4) var(--spacing-3)',
-        borderRadius: '12px',
-        border: selected?.id === category.id
-          ? `2px solid ${category.color}`
-          : '2px solid transparent',
-        backgroundColor: selected?.id === category.id
-          ? `${category.color}15`
-          : tokens.colors.white,
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-      }}
+      className={`flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 cursor-pointer transition-all ${
+        isSelected
+          ? `${classes.border} ${classes.bg}`
+          : 'border-transparent bg-ak-surface-base'
+      }`}
     >
-      <div style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '10px',
-        backgroundColor: selected?.id === category.id
-          ? category.color
-          : `${category.color}20`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center ${
+        isSelected ? classes.activeBg : classes.bg
+      }`}>
         <CategoryIcon
           size={20}
-          color={selected?.id === category.id ? tokens.colors.white : category.color}
+          className={isSelected ? 'text-white' : classes.text}
         />
       </div>
-      <span style={{
-        fontSize: '12px',
-        fontWeight: 500,
-        color: selected?.id === category.id ? category.color : tokens.colors.charcoal,
-      }}>
+      <span className={`text-xs font-medium ${
+        isSelected ? classes.text : 'text-ak-text-primary'
+      }`}>
         {category.name}
       </span>
     </button>
@@ -151,48 +169,22 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 'var(--spacing-3)',
-      padding: 'var(--spacing-3) var(--spacing-3)',
-      backgroundColor: tokens.colors.white,
-      borderRadius: '10px',
-      boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-    }}>
-      <div style={{ flex: 1 }}>
-        <label style={{
-          display: 'block',
-          fontSize: '13px',
-          fontWeight: 500,
-          color: tokens.colors.charcoal,
-          marginBottom: 'var(--spacing-1)',
-        }}>
+    <div className="flex items-center gap-3 p-3 bg-ak-surface-base rounded-[10px] shadow-sm">
+      <div className="flex-1">
+        <label className="block text-[13px] font-medium text-ak-text-primary mb-1">
           {test.name}
         </label>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
+        <div className="flex items-center gap-2">
           <input
             type="number"
             value={value || ''}
             onChange={handleChange}
             placeholder="0"
             step={test.type === 'decimal' ? '0.1' : '1'}
-            style={{
-              flex: 1,
-              padding: 'var(--spacing-2) var(--spacing-3)',
-              borderRadius: '8px',
-              border: `1px solid ${tokens.colors.mist}`,
-              fontSize: '16px',
-              fontWeight: 500,
-              outline: 'none',
-            }}
+            className="flex-1 py-2 px-3 rounded-lg border border-ak-border-default text-base font-medium outline-none focus:border-ak-brand-primary"
           />
           {test.unit && (
-            <span style={{
-              fontSize: '14px',
-              color: tokens.colors.steel,
-              minWidth: '40px',
-            }}>
+            <span className="text-sm text-ak-text-secondary min-w-[40px]">
               {test.unit}
             </span>
           )}
@@ -200,15 +192,9 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
       </div>
       <button
         onClick={onRemove}
-        style={{
-          padding: 'var(--spacing-2)',
-          borderRadius: '8px',
-          border: 'none',
-          backgroundColor: `${tokens.colors.error}10`,
-          cursor: 'pointer',
-        }}
+        className="p-2 rounded-lg border-none bg-ak-status-error/10 cursor-pointer"
       >
-        <Trash2 size={16} color={tokens.colors.error} />
+        <Trash2 size={16} className="text-ak-status-error" />
       </button>
     </div>
   );
@@ -221,22 +207,14 @@ const TestInput = ({ test, value, onChange, onRemove }) => {
 const TestSelector = ({ category, selectedTests, onToggle }) => {
   if (!category) return null;
 
+  const classes = CATEGORY_CLASSES[category.id] || CATEGORY_CLASSES.driving;
+
   return (
-    <div style={{
-      backgroundColor: tokens.colors.white,
-      borderRadius: '14px',
-      padding: 'var(--spacing-4)',
-      marginBottom: 'var(--spacing-5)',
-    }}>
-      <SubSectionTitle style={{
-        fontSize: '14px',
-        fontWeight: 600,
-        color: tokens.colors.charcoal,
-        marginBottom: 'var(--spacing-3)',
-      }}>
+    <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+      <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
         Velg tester - {category.name}
       </SubSectionTitle>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-2)' }}>
+      <div className="flex flex-wrap gap-2">
         {category.tests.map((test) => {
           const isSelected = selectedTests.some((t) => t.id === test.id);
 
@@ -244,21 +222,11 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
             <button
               key={test.id}
               onClick={() => onToggle(test)}
-              style={{
-                padding: 'var(--spacing-2) var(--spacing-3)',
-                borderRadius: '8px',
-                border: isSelected
-                  ? `2px solid ${category.color}`
-                  : `1px solid ${tokens.colors.mist}`,
-                backgroundColor: isSelected ? `${category.color}10` : tokens.colors.snow,
-                color: isSelected ? category.color : tokens.colors.charcoal,
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--spacing-1)',
-              }}
+              className={`py-2 px-3 rounded-lg text-[13px] font-medium cursor-pointer flex items-center gap-1 ${
+                isSelected
+                  ? `border-2 ${classes.border} ${classes.bg} ${classes.text}`
+                  : 'border border-ak-border-default bg-ak-surface-subtle text-ak-text-primary'
+              }`}
             >
               {isSelected ? <CheckCircle size={14} /> : <Plus size={14} />}
               {test.name}
@@ -275,45 +243,25 @@ const TestSelector = ({ category, selectedTests, onToggle }) => {
 // ============================================================================
 
 const RecentTests = ({ tests }) => (
-  <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: '14px',
-    padding: 'var(--spacing-4)',
-  }}>
-    <SubSectionTitle style={{
-      fontSize: '14px',
-      fontWeight: 600,
-      color: tokens.colors.charcoal,
-      marginBottom: 'var(--spacing-3)',
-    }}>
+  <div className="bg-ak-surface-base rounded-[14px] p-4">
+    <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
       Siste registreringer
     </SubSectionTitle>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
+    <div className="flex flex-col gap-2">
       {tests.map((test) => (
         <div
           key={test.id}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: 'var(--spacing-2) var(--spacing-3)',
-            backgroundColor: tokens.colors.snow,
-            borderRadius: '8px',
-          }}
+          className="flex items-center justify-between py-2 px-3 bg-ak-surface-subtle rounded-lg"
         >
           <div>
-            <div style={{ fontSize: '13px', fontWeight: 500, color: tokens.colors.charcoal }}>
+            <div className="text-[13px] font-medium text-ak-text-primary">
               {test.name}
             </div>
-            <div style={{ fontSize: '11px', color: tokens.colors.steel }}>
+            <div className="text-[11px] text-ak-text-secondary">
               {new Date(test.date).toLocaleDateString('nb-NO')}
             </div>
           </div>
-          <div style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: tokens.colors.primary,
-          }}>
+          <div className="text-base font-semibold text-ak-brand-primary">
             {test.value}{test.unit}
           </div>
         </div>
@@ -395,122 +343,83 @@ const RegistrerTestContainer = () => {
     selectedTests.every((test) => testValues[test.id] !== undefined && testValues[test.id] !== '');
 
   return (
-    <div style={{ width: '100%' }}>
-        {/* Category Selection */}
-        <div style={{
-          backgroundColor: tokens.colors.white,
-          borderRadius: '14px',
-          padding: 'var(--spacing-4)',
-          marginBottom: 'var(--spacing-5)',
-        }}>
-          <SubSectionTitle style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: tokens.colors.charcoal,
-            marginBottom: 'var(--spacing-3)',
-          }}>
-            Velg testkategori
+    <div className="w-full">
+      {/* Category Selection */}
+      <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+        <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
+          Velg testkategori
+        </SubSectionTitle>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,1fr))] gap-2">
+          {TEST_CATEGORIES.map((category) => (
+            <TestCategoryCard
+              key={category.id}
+              category={category}
+              selected={selectedCategory}
+              onSelect={setSelectedCategory}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Test Selection */}
+      <TestSelector
+        category={selectedCategory}
+        selectedTests={selectedTests}
+        onToggle={handleToggleTest}
+      />
+
+      {/* Selected Tests with Inputs */}
+      {selectedTests.length > 0 && (
+        <div className="mb-5">
+          <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-3">
+            Registrer verdier
           </SubSectionTitle>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
-            gap: 'var(--spacing-2)',
-          }}>
-            {TEST_CATEGORIES.map((category) => (
-              <TestCategoryCard
-                key={category.id}
-                category={category}
-                selected={selectedCategory}
-                onSelect={setSelectedCategory}
+          <div className="flex flex-col gap-2">
+            {selectedTests.map((test) => (
+              <TestInput
+                key={test.id}
+                test={test}
+                value={testValues[test.id]}
+                onChange={(value) => handleValueChange(test.id, value)}
+                onRemove={() => handleRemoveTest(test.id)}
               />
             ))}
           </div>
         </div>
+      )}
 
-        {/* Test Selection */}
-        <TestSelector
-          category={selectedCategory}
-          selectedTests={selectedTests}
-          onToggle={handleToggleTest}
-        />
+      {/* Notes */}
+      {selectedTests.length > 0 && (
+        <div className="bg-ak-surface-base rounded-[14px] p-4 mb-5">
+          <label className="block text-sm font-semibold text-ak-text-primary mb-2">
+            Notater (valgfritt)
+          </label>
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Legg til eventuelle notater om testen..."
+            rows={3}
+            className="w-full py-3 px-3 rounded-lg border border-ak-border-default text-sm outline-none resize-y font-inherit focus:border-ak-brand-primary"
+          />
+        </div>
+      )}
 
-        {/* Selected Tests with Inputs */}
-        {selectedTests.length > 0 && (
-          <div style={{ marginBottom: 'var(--spacing-5)' }}>
-            <SubSectionTitle style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              color: tokens.colors.charcoal,
-              marginBottom: 'var(--spacing-3)',
-            }}>
-              Registrer verdier
-            </SubSectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-2)' }}>
-              {selectedTests.map((test) => (
-                <TestInput
-                  key={test.id}
-                  test={test}
-                  value={testValues[test.id]}
-                  onChange={(value) => handleValueChange(test.id, value)}
-                  onRemove={() => handleRemoveTest(test.id)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+      {/* Submit Button */}
+      {selectedTests.length > 0 && (
+        <Button
+          variant="primary"
+          onClick={handleSubmit}
+          disabled={!canSubmit}
+          leftIcon={<Save size={18} />}
+          fullWidth
+          className="mb-6"
+        >
+          Lagre testresultater
+        </Button>
+      )}
 
-        {/* Notes */}
-        {selectedTests.length > 0 && (
-          <div style={{
-            backgroundColor: tokens.colors.white,
-            borderRadius: '14px',
-            padding: 'var(--spacing-4)',
-            marginBottom: 'var(--spacing-5)',
-          }}>
-            <label style={{
-              display: 'block',
-              fontSize: '14px',
-              fontWeight: 600,
-              color: tokens.colors.charcoal,
-              marginBottom: 'var(--spacing-2)',
-            }}>
-              Notater (valgfritt)
-            </label>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="Legg til eventuelle notater om testen..."
-              rows={3}
-              style={{
-                width: '100%',
-                padding: 'var(--spacing-3) var(--spacing-3)',
-                borderRadius: '8px',
-                border: `1px solid ${tokens.colors.mist}`,
-                fontSize: '14px',
-                outline: 'none',
-                resize: 'vertical',
-                fontFamily: 'inherit',
-              }}
-            />
-          </div>
-        )}
-
-        {/* Submit Button */}
-        {selectedTests.length > 0 && (
-          <Button
-            variant="primary"
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            leftIcon={<Save size={18} />}
-            fullWidth
-            style={{ marginBottom: 'var(--spacing-6)' }}
-          >
-            Lagre testresultater
-          </Button>
-        )}
-
-        {/* Recent Tests */}
-        <RecentTests tests={RECENT_TESTS} />
+      {/* Recent Tests */}
+      <RecentTests tests={RECENT_TESTS} />
     </div>
   );
 };

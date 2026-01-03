@@ -1,10 +1,25 @@
+/**
+ * DashboardPage
+ *
+ * Archetype: C - Dashboard/Calendar Page
+ * Purpose: Main dashboard using the new UI templates
+ * Composes AppShellTemplate + StatsGridTemplate + Card
+ * Data fetched via useDashboardData hook
+ *
+ * DEV: Test states via querystring:
+ *   /dashboard-v2?state=loading
+ *   /dashboard-v2?state=error
+ *   /dashboard-v2?state=empty
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
-// BottomNav removed per design requirements
 import StateCard from '../../ui/composites/StateCard';
 import { Plus, RefreshCw } from 'lucide-react';
 import { useDashboardData } from '../../data';
@@ -25,28 +40,16 @@ const getStatusText = (status: DashboardSession['status']) => {
   }
 };
 
-const getStatusColor = (status: DashboardSession['status']) => {
+const getStatusColorClass = (status: DashboardSession['status']) => {
   switch (status) {
     case 'completed':
-      return 'var(--success)';
+      return 'text-ak-status-success';
     case 'in_progress':
-      return 'var(--accent)';
+      return 'text-ak-brand-primary';
     default:
-      return 'var(--text-secondary)';
+      return 'text-ak-text-secondary';
   }
 };
-
-/**
- * DashboardPage
- * Main dashboard using the new UI templates
- * Composes AppShellTemplate + StatsGridTemplate + Card
- * Data fetched via useDashboardData hook
- *
- * DEV: Test states via querystring:
- *   /dashboard-v2?state=loading
- *   /dashboard-v2?state=error
- *   /dashboard-v2?state=empty
- */
 
 const DashboardPage: React.FC = () => {
   useScreenView('Dashboard');
@@ -75,11 +78,8 @@ const DashboardPage: React.FC = () => {
   // Loading state
   if (isLoading && !data) {
     return (
-      <AppShellTemplate
-        title="Dashboard"
-        subtitle="Velkommen tilbake"
-      >
-        <section style={styles.section}>
+      <AppShellTemplate title="Dashboard" subtitle="Velkommen tilbake">
+        <section className="mb-6">
           <StateCard
             variant="info"
             title="Laster..."
@@ -101,13 +101,18 @@ const DashboardPage: React.FC = () => {
     >
       {/* Error message */}
       {error && (
-        <section style={styles.section}>
+        <section className="mb-6">
           <StateCard
             variant="error"
             title="Noe gikk galt"
             description={error}
             action={
-              <Button size="sm" variant="ghost" leftIcon={<RefreshCw size={14} />} onClick={refetch}>
+              <Button
+                size="sm"
+                variant="ghost"
+                leftIcon={<RefreshCw size={14} />}
+                onClick={refetch}
+              >
                 Prøv igjen
               </Button>
             }
@@ -116,14 +121,16 @@ const DashboardPage: React.FC = () => {
       )}
 
       {/* Stats Grid */}
-      <section style={styles.section}>
+      <section className="mb-6">
         <StatsGridTemplate items={stats} columns={2} />
       </section>
 
       {/* Today's Sessions */}
-      <section style={styles.section}>
-        <SectionTitle style={styles.sectionTitle}>Dine økter i dag</SectionTitle>
-        <div style={styles.sessionsList}>
+      <section className="mb-6">
+        <SectionTitle className="text-lg font-semibold text-ak-text-primary mb-3">
+          Dine økter i dag
+        </SectionTitle>
+        <div className="flex flex-col gap-3">
           {sessions.length === 0 ? (
             <StateCard
               variant="empty"
@@ -137,19 +144,18 @@ const DashboardPage: React.FC = () => {
             />
           ) : (
             sessions.map((session) => (
-              <Card key={session.id} style={styles.sessionCard}>
-                <div style={styles.sessionHeader}>
-                  <span style={styles.sessionTitle}>{session.title}</span>
+              <Card key={session.id} className="flex flex-col gap-1">
+                <div className="flex justify-between items-center">
+                  <span className="text-base font-semibold text-ak-text-primary">
+                    {session.title}
+                  </span>
                   <span
-                    style={{
-                      ...styles.sessionStatus,
-                      color: getStatusColor(session.status),
-                    }}
+                    className={`text-xs font-medium ${getStatusColorClass(session.status)}`}
                   >
                     {getStatusText(session.status)}
                   </span>
                 </div>
-                <div style={styles.sessionTime}>
+                <div className="text-xs text-ak-text-secondary">
                   {session.start} - {session.end}
                 </div>
               </Card>
@@ -159,46 +165,6 @@ const DashboardPage: React.FC = () => {
       </section>
     </AppShellTemplate>
   );
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  section: {
-    marginBottom: 'var(--spacing-6)',
-  },
-  sectionTitle: {
-    fontSize: 'var(--font-size-title3)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    marginBottom: 'var(--spacing-3)',
-  },
-  sessionsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3)',
-  },
-  sessionCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-1)',
-  },
-  sessionHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  sessionTitle: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-  },
-  sessionStatus: {
-    fontSize: 'var(--font-size-caption1)',
-    fontWeight: 500,
-  },
-  sessionTime: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-  },
 };
 
 export default DashboardPage;

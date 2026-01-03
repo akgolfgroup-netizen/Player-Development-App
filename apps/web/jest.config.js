@@ -14,6 +14,9 @@ module.exports = {
       ]
     }],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(.pnpm|date-fns|react-day-picker)/)',
+  ],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.spec.{js,jsx,ts,tsx}',

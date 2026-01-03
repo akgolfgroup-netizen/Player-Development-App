@@ -156,4 +156,28 @@ export async function exerciseRoutes(app: FastifyInstance): Promise<void> {
       return reply.send({ success: true, message: 'Exercise deleted successfully' });
     }
   );
+
+  /**
+   * Duplicate exercise
+   */
+  app.post<{ Params: ExerciseIdParam }>(
+    '/:id/duplicate',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Duplicate an exercise',
+        tags: ['exercises'],
+        security: [{ bearerAuth: [] }],
+        response: {
+          201: { type: 'object', additionalProperties: true },
+          404: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request: FastifyRequest<{ Params: ExerciseIdParam }>, reply: FastifyReply) => {
+      const params = validate(exerciseIdParamSchema, request.params);
+      const duplicate = await exerciseService.duplicateExercise(request.tenant!.id, params.id);
+      return reply.code(201).send({ success: true, data: duplicate });
+    }
+  );
 }

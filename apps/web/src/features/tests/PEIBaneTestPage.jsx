@@ -1,6 +1,12 @@
+/**
+ * PEIBaneTestPage Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
 import { Target, Clock, MapPin, CheckCircle, AlertCircle, Play, ChevronRight, Info } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 import PEIBaneTestForm from './PEIBaneTestForm';
@@ -22,10 +28,10 @@ const TEST_INFO = {
   equipment: ['Alle køller', 'Laseravstandsmåler', 'Scoreark eller app'],
   duration: '30-45 minutter',
   scoring: {
-    excellent: { max: 5, label: 'Utmerket', color: tokens.colors.success },
-    good: { max: 10, label: 'Bra', color: tokens.colors.gold },
-    average: { max: 15, label: 'Gjennomsnitt', color: tokens.colors.warning },
-    needsWork: { max: 100, label: 'Trenger arbeid', color: tokens.colors.error },
+    excellent: { max: 5, label: 'Utmerket', color: 'var(--ak-status-success)' },
+    good: { max: 10, label: 'Bra', color: 'var(--ak-status-warning)' },
+    average: { max: 15, label: 'Gjennomsnitt', color: 'var(--ak-text-secondary)' },
+    needsWork: { max: 100, label: 'Trenger arbeid', color: 'var(--ak-status-error)' },
   },
   tips: [
     'Velg varierte avstander og underlag for et realistisk bilde',
@@ -38,26 +44,16 @@ const TEST_INFO = {
 // INFO CARD COMPONENT
 // ============================================================================
 
-const InfoCard = ({ icon: Icon, title, children, color = tokens.colors.primary }) => (
-  <div style={{
-    backgroundColor: tokens.colors.white,
-    borderRadius: '12px',
-    padding: '20px',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-  }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-      <div style={{
-        width: '36px',
-        height: '36px',
-        borderRadius: '10px',
-        backgroundColor: `${color}15`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+const InfoCard = ({ icon: Icon, title, children, color = 'var(--ak-brand-primary)' }) => (
+  <div className="bg-ak-surface-card rounded-xl p-5 shadow-sm">
+    <div className="flex items-center gap-3 mb-3">
+      <div
+        className="w-9 h-9 rounded-lg flex items-center justify-center"
+        style={{ backgroundColor: `${color}15` }}
+      >
         <Icon size={18} color={color} />
       </div>
-      <SubSectionTitle style={{ margin: 0, fontSize: '15px', fontWeight: 600 }}>
+      <SubSectionTitle className="m-0 text-[15px] font-semibold">
         {title}
       </SubSectionTitle>
     </div>
@@ -90,10 +86,10 @@ const ScoringLegend = ({ scoring }) => (
           borderRadius: '50%',
           backgroundColor: color,
         }} />
-        <span style={{ fontSize: '13px', color: tokens.colors.charcoal, fontWeight: 500 }}>
+        <span style={{ fontSize: '13px', color: 'var(--ak-text-primary)', fontWeight: 500 }}>
           {label}
         </span>
-        <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', color: 'var(--ak-text-secondary)' }}>
           ≤ {max}%
         </span>
       </div>
@@ -126,25 +122,25 @@ const PEIBaneTestPage = () => {
     <div style={{ maxWidth: '900px', margin: '0 auto' }}>
       {/* Hero Section */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '16px',
         padding: '32px',
         marginBottom: '24px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        background: `linear-gradient(135deg, ${tokens.colors.white} 0%, ${tokens.colors.primary}08 100%)`,
+        background: 'linear-gradient(135deg, var(--ak-surface-card) 0%, var(--ak-brand-primary) 8%)',
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '24px' }}>
           <div style={{
             width: '64px',
             height: '64px',
             borderRadius: '16px',
-            backgroundColor: `${tokens.colors.primary}15`,
+            backgroundColor: 'var(--ak-brand-primary-light)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
           }}>
-            <Target size={32} color={tokens.colors.primary} />
+            <Target size={32} color="var(--ak-brand-primary)" />
           </div>
           <div style={{ flex: 1 }}>
             <SectionTitle style={{ margin: 0, fontSize: '24px', marginBottom: '8px' }}>
@@ -153,7 +149,7 @@ const PEIBaneTestPage = () => {
             <p style={{
               margin: 0,
               fontSize: '15px',
-              color: tokens.colors.steel,
+              color: 'var(--ak-text-secondary)',
               lineHeight: 1.6,
               maxWidth: '600px',
             }}>
@@ -168,25 +164,25 @@ const PEIBaneTestPage = () => {
           gap: '24px',
           flexWrap: 'wrap',
           padding: '16px 20px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--ak-surface-subtle)',
           borderRadius: '12px',
           marginBottom: '24px',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={18} color={tokens.colors.steel} />
-            <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+            <Clock size={18} color="var(--ak-text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               <strong>{TEST_INFO.duration}</strong>
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={18} color={tokens.colors.steel} />
-            <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+            <MapPin size={18} color="var(--ak-text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               <strong>18 slag</strong> fra ulike posisjoner
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Target size={18} color={tokens.colors.steel} />
-            <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+            <Target size={18} color="var(--ak-text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               <strong>PEI</strong> = Avstand til hull / Slaglengde
             </span>
           </div>
@@ -219,11 +215,11 @@ const PEIBaneTestPage = () => {
         marginBottom: '24px',
       }}>
         {/* Purpose */}
-        <InfoCard icon={Info} title="Formål" color={tokens.colors.primary}>
+        <InfoCard icon={Info} title="Formål" color="var(--ak-brand-primary)">
           <p style={{
             margin: 0,
             fontSize: '14px',
-            color: tokens.colors.charcoal,
+            color: 'var(--ak-text-primary)',
             lineHeight: 1.6
           }}>
             {TEST_INFO.purpose}
@@ -231,17 +227,17 @@ const PEIBaneTestPage = () => {
         </InfoCard>
 
         {/* Equipment */}
-        <InfoCard icon={CheckCircle} title="Utstyr" color={tokens.colors.success}>
+        <InfoCard icon={CheckCircle} title="Utstyr" color="var(--ak-status-success)">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {TEST_INFO.equipment.map((item, i) => (
               <span
                 key={i}
                 style={{
                   padding: '6px 12px',
-                  backgroundColor: tokens.colors.snow,
+                  backgroundColor: 'var(--ak-surface-subtle)',
                   borderRadius: '6px',
                   fontSize: '13px',
-                  color: tokens.colors.charcoal,
+                  color: 'var(--ak-text-primary)',
                 }}
               >
                 {item}
@@ -252,7 +248,7 @@ const PEIBaneTestPage = () => {
       </div>
 
       {/* Methodology */}
-      <InfoCard icon={MapPin} title="Gjennomføring" color={tokens.colors.gold}>
+      <InfoCard icon={MapPin} title="Gjennomføring" color="var(--ak-status-warning)">
         <ol style={{
           margin: 0,
           paddingLeft: '20px',
@@ -263,7 +259,7 @@ const PEIBaneTestPage = () => {
           {TEST_INFO.methodology.map((step, i) => (
             <li key={i} style={{
               fontSize: '14px',
-              color: tokens.colors.charcoal,
+              color: 'var(--ak-text-primary)',
               lineHeight: 1.5,
             }}>
               {step}
@@ -274,11 +270,11 @@ const PEIBaneTestPage = () => {
 
       {/* Scoring */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={Target} title="Scoring (PEI)" color={tokens.colors.primary}>
+        <InfoCard icon={Target} title="Scoring (PEI)" color="var(--ak-brand-primary)">
           <p style={{
             margin: '0 0 16px 0',
             fontSize: '14px',
-            color: tokens.colors.steel,
+            color: 'var(--ak-text-secondary)',
             lineHeight: 1.5,
           }}>
             PEI beregnes som forholdet mellom avstand til hull og slaglengde.
@@ -291,7 +287,7 @@ const PEIBaneTestPage = () => {
 
       {/* Tips */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={AlertCircle} title="Tips" color={tokens.colors.warning}>
+        <InfoCard icon={AlertCircle} title="Tips" color="var(--ak-status-warning)">
           <ul style={{
             margin: 0,
             paddingLeft: '20px',
@@ -302,7 +298,7 @@ const PEIBaneTestPage = () => {
             {TEST_INFO.tips.map((tip, i) => (
               <li key={i} style={{
                 fontSize: '14px',
-                color: tokens.colors.charcoal,
+                color: 'var(--ak-text-primary)',
                 lineHeight: 1.5,
               }}>
                 {tip}
@@ -316,7 +312,7 @@ const PEIBaneTestPage = () => {
       <div style={{
         marginTop: '32px',
         padding: '24px',
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '12px',
         textAlign: 'center',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -324,7 +320,7 @@ const PEIBaneTestPage = () => {
         <p style={{
           margin: '0 0 16px 0',
           fontSize: '15px',
-          color: tokens.colors.charcoal,
+          color: 'var(--ak-text-primary)',
         }}>
           Klar til å teste din presisjon?
         </p>

@@ -1,3 +1,9 @@
+/**
+ * StatsVerktoyContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -6,6 +12,14 @@ import {
 } from 'lucide-react';
 import { PageHeader } from '../../components/layout/PageHeader';
 import { SectionTitle, SubSectionTitle } from '../../components/typography/Headings';
+
+// Color class mapping for tools
+const COLOR_CLASSES = {
+  brand: { text: 'text-ak-brand-primary', bg: 'bg-ak-brand-primary/15' },
+  success: { text: 'text-ak-status-success', bg: 'bg-ak-status-success/15' },
+  warning: { text: 'text-ak-status-warning', bg: 'bg-ak-status-warning/15' },
+  error: { text: 'text-ak-status-error', bg: 'bg-ak-status-error/15' },
+};
 
 // ============================================================================
 // MOCK DATA
@@ -17,7 +31,7 @@ const TOOLS = [
     name: 'Handicap-kalkulator',
     description: 'Beregn forventet handicap basert pa dine siste runder',
     icon: Calculator,
-    color: 'var(--accent)',
+    colorKey: 'brand',
     category: 'calculators',
   },
   {
@@ -25,7 +39,7 @@ const TOOLS = [
     name: 'Strokes Gained analyse',
     description: 'Se hvor du vinner og taper slag mot feltet',
     icon: TrendingUp,
-    color: 'var(--success)',
+    colorKey: 'success',
     category: 'analysis',
   },
   {
@@ -33,7 +47,7 @@ const TOOLS = [
     name: 'Banestrategi',
     description: 'Planlegg strategi for kommende baner',
     icon: Target,
-    color: 'var(--achievement)',
+    colorKey: 'warning',
     category: 'planning',
   },
   {
@@ -41,7 +55,7 @@ const TOOLS = [
     name: 'Ytelsestrender',
     description: 'Se utvikling over tid i alle kategorier',
     icon: Activity,
-    color: 'var(--error)',
+    colorKey: 'error',
     category: 'analysis',
   },
   {
@@ -49,7 +63,7 @@ const TOOLS = [
     name: 'Kollelengder',
     description: 'Dine gjennomsnittlige avstander per kolle',
     icon: BarChart2,
-    color: 'var(--accent)',
+    colorKey: 'brand',
     category: 'reference',
   },
   {
@@ -57,7 +71,7 @@ const TOOLS = [
     name: 'Scorefordeling',
     description: 'Analyser dine scorer pa ulike hulltyper',
     icon: PieChart,
-    color: 'var(--achievement)',
+    colorKey: 'warning',
     category: 'analysis',
   },
 ];
@@ -101,58 +115,26 @@ const STROKES_GAINED = {
 
 const ToolCard = ({ tool, onClick }) => {
   const Icon = tool.icon;
+  const colors = COLOR_CLASSES[tool.colorKey] || COLOR_CLASSES.brand;
 
   return (
     <div
       onClick={() => onClick(tool)}
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '16px',
-        padding: '20px',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
+      className="bg-ak-surface-base rounded-2xl p-5 cursor-pointer transition-all duration-200 shadow-sm hover:-translate-y-0.5 hover:shadow-md"
     >
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '16px',
-      }}>
-        <div style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '12px',
-          backgroundColor: `${tool.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}>
-          <Icon size={24} color={tool.color} />
+      <div className="flex items-start gap-4">
+        <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center shrink-0`}>
+          <Icon size={24} className={colors.text} />
         </div>
-        <div style={{ flex: 1 }}>
-          <SubSectionTitle style={{ fontSize: '15px', margin: '0 0 4px 0' }}>
+        <div className="flex-1">
+          <SubSectionTitle className="text-[15px] m-0 mb-1">
             {tool.name}
           </SubSectionTitle>
-          <p style={{
-            fontSize: '13px',
-            color: 'var(--text-secondary)',
-            margin: 0,
-            lineHeight: 1.4,
-          }}>
+          <p className="text-[13px] text-ak-text-secondary m-0 leading-[1.4]">
             {tool.description}
           </p>
         </div>
-        <ChevronRight size={20} color={'var(--text-secondary)'} />
+        <ChevronRight size={20} className="text-ak-text-secondary" />
       </div>
     </div>
   );
@@ -167,71 +149,44 @@ const ClubDistancesWidget = () => {
   const displayedClubs = showAll ? CLUB_DISTANCES : CLUB_DISTANCES.slice(0, 6);
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      padding: '20px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '16px',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <BarChart2 size={18} color={'var(--accent)'} />
-          <SubSectionTitle style={{ fontSize: '15px', margin: 0 }}>
+    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2.5">
+          <BarChart2 size={18} className="text-ak-brand-primary" />
+          <SubSectionTitle className="text-[15px] m-0">
             Mine kollelengder
           </SubSectionTitle>
         </div>
         <button
           onClick={() => setShowAll(!showAll)}
-          style={{
-            fontSize: '12px',
-            color: 'var(--accent)',
-            backgroundColor: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            fontWeight: 500,
-          }}
+          className="text-xs text-ak-brand-primary bg-transparent border-none cursor-pointer font-medium"
         >
           {showAll ? 'Vis mindre' : 'Vis alle'}
         </button>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+      <div className="flex flex-col gap-1.5">
         {/* Header */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '80px 1fr 1fr',
-          gap: '8px',
-          padding: '8px 0',
-          borderBottom: '1px solid var(--border-default)',
-        }}>
-          <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500 }}>Kolle</span>
-          <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500, textAlign: 'center' }}>Carry</span>
-          <span style={{ fontSize: '11px', color: 'var(--text-secondary)', fontWeight: 500, textAlign: 'center' }}>Total</span>
+        <div className="grid grid-cols-[80px_1fr_1fr] gap-2 py-2 border-b border-ak-border-default">
+          <span className="text-[11px] text-ak-text-secondary font-medium">Kolle</span>
+          <span className="text-[11px] text-ak-text-secondary font-medium text-center">Carry</span>
+          <span className="text-[11px] text-ak-text-secondary font-medium text-center">Total</span>
         </div>
 
         {displayedClubs.map((club, idx) => (
           <div
             key={idx}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '80px 1fr 1fr',
-              gap: '8px',
-              padding: '8px 0',
-              borderBottom: idx < displayedClubs.length - 1 ? '1px solid var(--border-default)' : 'none',
-            }}
+            className={`grid grid-cols-[80px_1fr_1fr] gap-2 py-2 ${
+              idx < displayedClubs.length - 1 ? 'border-b border-ak-border-default' : ''
+            }`}
           >
-            <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+            <span className="text-[13px] font-medium text-ak-text-primary">
               {club.club}
             </span>
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)', textAlign: 'center' }}>
+            <span className="text-[13px] text-ak-text-primary text-center">
               {club.avgCarry}m
             </span>
-            <span style={{ fontSize: '13px', color: 'var(--text-primary)', textAlign: 'center' }}>
+            <span className="text-[13px] text-ak-text-primary text-center">
               {club.avgTotal}m
             </span>
           </div>
@@ -247,98 +202,52 @@ const ClubDistancesWidget = () => {
 
 const StrokesGainedWidget = () => {
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      padding: '20px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-        marginBottom: '16px',
-      }}>
-        <TrendingUp size={18} color={'var(--success)'} />
-        <SubSectionTitle style={{ fontSize: '15px', margin: 0 }}>
+    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+      <div className="flex items-center gap-2.5 mb-4">
+        <TrendingUp size={18} className="text-ak-status-success" />
+        <SubSectionTitle className="text-[15px] m-0">
           Strokes Gained
         </SubSectionTitle>
-        <div style={{
-          marginLeft: 'auto',
-          padding: '4px 10px',
-          borderRadius: '6px',
-          backgroundColor: STROKES_GAINED.total >= 0 ? `${'var(--success)'}15` : `${'var(--error)'}15`,
-        }}>
-          <span style={{
-            fontSize: '14px',
-            fontWeight: 600,
-            color: STROKES_GAINED.total >= 0 ? 'var(--success)' : 'var(--error)',
-          }}>
+        <div className={`ml-auto py-1 px-2.5 rounded-md ${
+          STROKES_GAINED.total >= 0 ? 'bg-ak-status-success/15' : 'bg-ak-status-error/15'
+        }`}>
+          <span className={`text-sm font-semibold ${
+            STROKES_GAINED.total >= 0 ? 'text-ak-status-success' : 'text-ak-status-error'
+          }`}>
             {STROKES_GAINED.total >= 0 ? '+' : ''}{STROKES_GAINED.total}
           </span>
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div className="flex flex-col gap-2.5">
         {STROKES_GAINED.categories.map((cat, idx) => (
-          <div
-            key={idx}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-          >
-            <span style={{
-              fontSize: '13px',
-              color: 'var(--text-primary)',
-              flex: 1,
-            }}>
+          <div key={idx} className="flex items-center gap-3">
+            <span className="text-[13px] text-ak-text-primary flex-1">
               {cat.name}
             </span>
-            <div style={{
-              width: '100px',
-              height: '8px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '4px',
-              overflow: 'hidden',
-              position: 'relative',
-            }}>
-              <div style={{
-                position: 'absolute',
-                left: '50%',
-                top: 0,
-                height: '100%',
-                width: `${Math.abs(cat.value) * 25}%`,
-                backgroundColor: cat.value >= 0 ? 'var(--success)' : 'var(--error)',
-                borderRadius: '4px',
-                transform: cat.value >= 0 ? 'translateX(0)' : 'translateX(-100%)',
-              }} />
+            <div className="w-[100px] h-2 bg-ak-surface-subtle rounded overflow-hidden relative">
+              <div
+                className={`absolute top-0 h-full rounded ${
+                  cat.value >= 0 ? 'bg-ak-status-success left-1/2' : 'bg-ak-status-error right-1/2'
+                }`}
+                style={{
+                  width: `${Math.abs(cat.value) * 25}%`,
+                  transform: cat.value >= 0 ? 'translateX(0)' : 'translateX(0)',
+                }}
+              />
             </div>
-            <span style={{
-              fontSize: '13px',
-              fontWeight: 600,
-              color: cat.value >= 0 ? 'var(--success)' : 'var(--error)',
-              width: '40px',
-              textAlign: 'right',
-            }}>
+            <span className={`text-[13px] font-semibold w-10 text-right ${
+              cat.value >= 0 ? 'text-ak-status-success' : 'text-ak-status-error'
+            }`}>
               {cat.value >= 0 ? '+' : ''}{cat.value}
             </span>
           </div>
         ))}
       </div>
 
-      <div style={{
-        marginTop: '16px',
-        padding: '10px',
-        backgroundColor: `${'var(--accent)'}08`,
-        borderRadius: '8px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-      }}>
-        <Info size={14} color={'var(--accent)'} />
-        <span style={{ fontSize: '12px', color: 'var(--text-primary)' }}>
+      <div className="mt-4 p-2.5 bg-ak-brand-primary/5 rounded-lg flex items-center gap-2">
+        <Info size={14} className="text-ak-brand-primary" />
+        <span className="text-xs text-ak-text-primary">
           Basert pa dine siste 10 turneringsrunder
         </span>
       </div>
@@ -352,64 +261,35 @@ const StrokesGainedWidget = () => {
 
 const QuickStatsWidget = ({ stats }) => {
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      padding: '20px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
-      <SubSectionTitle style={{ fontSize: '15px', margin: '0 0 16px 0' }}>
+    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+      <SubSectionTitle className="text-[15px] m-0 mb-4">
         Hurtigstatistikk
       </SubSectionTitle>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '12px',
-      }}>
-        <div style={{
-          padding: '14px',
-          backgroundColor: `${'var(--accent)'}08`,
-          borderRadius: '12px',
-          textAlign: 'center',
-        }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--accent)' }}>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="p-3.5 bg-ak-brand-primary/10 rounded-xl text-center">
+          <div className="text-[22px] font-bold text-ak-brand-primary">
             {stats.currentHandicap}
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Handicap</div>
+          <div className="text-[11px] text-ak-text-secondary">Handicap</div>
         </div>
-        <div style={{
-          padding: '14px',
-          backgroundColor: 'rgba(var(--success-rgb), 0.08)',
-          borderRadius: '12px',
-          textAlign: 'center',
-        }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--success)' }}>
+        <div className="p-3.5 bg-ak-status-success/10 rounded-xl text-center">
+          <div className="text-[22px] font-bold text-ak-status-success">
             {stats.avgScore}
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gj.sn. score</div>
+          <div className="text-[11px] text-ak-text-secondary">Gj.sn. score</div>
         </div>
-        <div style={{
-          padding: '14px',
-          backgroundColor: `${'var(--achievement)'}08`,
-          borderRadius: '12px',
-          textAlign: 'center',
-        }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--achievement)' }}>
+        <div className="p-3.5 bg-ak-status-warning/10 rounded-xl text-center">
+          <div className="text-[22px] font-bold text-ak-status-warning">
             {stats.bestRound}
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Beste runde</div>
+          <div className="text-[11px] text-ak-text-secondary">Beste runde</div>
         </div>
-        <div style={{
-          padding: '14px',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: '12px',
-          textAlign: 'center',
-        }}>
-          <div style={{ fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
+        <div className="p-3.5 bg-ak-surface-subtle rounded-xl text-center">
+          <div className="text-[22px] font-bold text-ak-text-primary">
             {stats.roundsThisYear}
           </div>
-          <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Runder i ar</div>
+          <div className="text-[11px] text-ak-text-secondary">Runder i ar</div>
         </div>
       </div>
     </div>
@@ -445,30 +325,22 @@ const StatsVerktoyContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Stats verktoy"
         subtitle="Analyser og forbedre spillet ditt"
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         {/* Main Content */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 380px',
-          gap: '24px',
-        }}>
+        <div className="grid grid-cols-[1fr_380px] gap-6">
           {/* Left: Tools */}
           <div>
-            <SectionTitle style={{ fontSize: '16px', margin: '0 0 16px 0' }}>
+            <SectionTitle className="text-base m-0 mb-4">
               Verktoy
             </SectionTitle>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-              gap: '12px',
-            }}>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3">
               {TOOLS.map((tool) => (
                 <ToolCard
                   key={tool.id}
@@ -480,7 +352,7 @@ const StatsVerktoyContainer = () => {
           </div>
 
           {/* Right: Widgets */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="flex flex-col gap-4">
             <QuickStatsWidget stats={QUICK_STATS} />
             <StrokesGainedWidget />
             <ClubDistancesWidget />

@@ -1,7 +1,13 @@
+/**
+ * MobileShell Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React from 'react';
 import { Outlet, NavLink, Link } from 'react-router-dom';
 import { Home, Calendar, Activity, BookOpen } from 'lucide-react';
-import { tokens, typographyStyle } from '../../design-tokens';
 import { AKLogo } from '../branding/AKLogo';
 
 export default function MobileShell() {
@@ -17,8 +23,8 @@ export default function MobileShell() {
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100vh',
-      backgroundColor: tokens.colors.snow,
-      fontFamily: tokens.typography.fontFamily,
+      backgroundColor: 'var(--ak-surface-page)',
+      fontFamily: 'var(--ak-font-family)',
     }}>
       {/* Mobile Header */}
       <header style={{
@@ -28,13 +34,13 @@ export default function MobileShell() {
         right: 0,
         height: '56px',
         paddingTop: 'env(safe-area-inset-top, 0px)',
-        backgroundColor: tokens.colors.primary,
-        borderBottom: `1px solid ${tokens.colors.primaryLight}`,
+        backgroundColor: 'var(--ak-brand-primary)',
+        borderBottom: '1px solid var(--ak-brand-secondary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1000,
-        boxShadow: tokens.shadows.elevated,
+        boxShadow: 'var(--ak-shadow-elevated)',
       }}>
         <Link
           to="/"
@@ -53,7 +59,7 @@ export default function MobileShell() {
             e.currentTarget.style.opacity = '1';
           }}
         >
-          <AKLogo size={40} color={tokens.colors.white} />
+          <AKLogo size={40} color="var(--ak-surface-card)" />
         </Link>
       </header>
 
@@ -72,12 +78,12 @@ export default function MobileShell() {
         right: 0,
         height: 'calc(72px + env(safe-area-inset-bottom, 0px))',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        backgroundColor: tokens.colors.surface,
-        borderTop: `1px solid ${tokens.colors.mist}`,
+        backgroundColor: 'var(--ak-surface-card)',
+        borderTop: '1px solid var(--ak-border-default)',
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center',
-        boxShadow: tokens.shadows.elevated,
+        boxShadow: 'var(--ak-shadow-elevated)',
       }}>
         {navItems.map(({ path, icon: Icon, label }) => (
           <NavLink key={path} to={path} style={({ isActive }) => ({
@@ -85,14 +91,14 @@ export default function MobileShell() {
             flexDirection: 'column',
             alignItems: 'center',
             gap: '4px',
-            padding: tokens.spacing.sm,
+            padding: '8px',
             textDecoration: 'none',
-            color: isActive ? tokens.colors.primary : tokens.colors.steel,
+            color: isActive ? 'var(--ak-brand-primary)' : 'var(--ak-text-secondary)',
           })}>
             {({ isActive }) => (<>
               <Icon size={24} strokeWidth={isActive ? 2 : 1.5} />
               <span style={{
-                ...typographyStyle('caption'),
+                fontSize: '12px',
                 fontWeight: isActive ? 600 : 400,
               }}>{label}</span>
             </>)}

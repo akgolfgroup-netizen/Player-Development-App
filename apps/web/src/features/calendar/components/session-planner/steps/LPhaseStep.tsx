@@ -1,10 +1,11 @@
 /**
  * LPhaseStep Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Step 3: Select learning phase (L-KROPP, L-ARM, L-KØLLE, L-BALL, L-AUTO)
  * Shows recommended CS range for each phase.
- *
- * Uses semantic tokens only.
  */
 
 import React from 'react';
@@ -32,16 +33,10 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
   return (
     <div className="space-y-4">
       <div>
-        <SubSectionTitle
-          className="text-sm font-medium mb-1"
-          style={{ color: 'var(--calendar-text-secondary)' }}
-        >
+        <SubSectionTitle className="text-sm font-medium mb-1 text-ak-text-secondary">
           Læringsfase
         </SubSectionTitle>
-        <p
-          className="text-xs"
-          style={{ color: 'var(--calendar-text-tertiary)' }}
-        >
+        <p className="text-xs text-ak-text-tertiary">
           Velg hvor du er i læringsprosessen
         </p>
       </div>
@@ -56,13 +51,11 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
               key={key}
               type="button"
               onClick={() => setLPhase(key)}
-              className="w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-200"
-              style={{
-                backgroundColor: isSelected
-                  ? 'var(--calendar-event-recommended-bg)'
-                  : 'var(--calendar-surface-elevated)',
-                border: `2px solid ${isSelected ? 'var(--ak-primary)' : 'transparent'}`,
-              }}
+              className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-200 border-2 ${
+                isSelected
+                  ? 'bg-ak-brand-primary/10 border-ak-brand-primary'
+                  : 'bg-ak-surface-subtle border-transparent'
+              }`}
             >
               {/* Icon */}
               <span className="text-2xl">{PHASE_ICONS[key]}</span>
@@ -70,43 +63,25 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
               {/* Content */}
               <div className="flex-1 text-left">
                 <span
-                  className="font-medium text-sm block"
-                  style={{
-                    color: isSelected
-                      ? 'var(--ak-primary)'
-                      : 'var(--calendar-text-primary)',
-                  }}
+                  className={`font-medium text-sm block ${
+                    isSelected ? 'text-ak-brand-primary' : 'text-ak-text-primary'
+                  }`}
                 >
                   {value.label}
                 </span>
-                <span
-                  className="text-xs"
-                  style={{ color: 'var(--calendar-text-tertiary)' }}
-                >
+                <span className="text-xs text-ak-text-tertiary">
                   {value.description}
                 </span>
               </div>
 
               {/* CS range badge */}
               {csRange && (
-                <span
-                  className="px-2 py-1 rounded text-xs font-medium"
-                  style={{
-                    backgroundColor: 'var(--calendar-surface-base)',
-                    color: 'var(--calendar-text-secondary)',
-                  }}
-                >
+                <span className="px-2 py-1 rounded text-xs font-medium bg-ak-surface-base text-ak-text-secondary">
                   CS{csRange.min}-{csRange.max}
                 </span>
               )}
               {!csRange && (
-                <span
-                  className="px-2 py-1 rounded text-xs font-medium"
-                  style={{
-                    backgroundColor: 'var(--calendar-surface-base)',
-                    color: 'var(--calendar-text-tertiary)',
-                  }}
-                >
+                <span className="px-2 py-1 rounded text-xs font-medium bg-ak-surface-base text-ak-text-tertiary">
                   CS0
                 </span>
               )}
@@ -116,14 +91,9 @@ export const LPhaseStep: React.FC<LPhaseStepProps> = ({ planner }) => {
       </div>
 
       {/* Progression hint */}
-      <div
-        className="flex items-center gap-2 p-3 rounded-lg"
-        style={{ backgroundColor: 'var(--info-muted)' }}
-      >
-        <span className="text-sm" style={{ color: 'var(--ak-info)' }}>
-          💡
-        </span>
-        <span className="text-xs" style={{ color: 'var(--ak-info)' }}>
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-ak-status-info/10">
+        <span className="text-sm text-ak-status-info">💡</span>
+        <span className="text-xs text-ak-status-info">
           Start med L-KROPP for nye bevegelser, og jobb deg oppover til L-AUTO
         </span>
       </div>

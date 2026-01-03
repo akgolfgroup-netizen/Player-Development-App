@@ -31,32 +31,40 @@ const CONTRAST_REQUIREMENTS = {
 };
 
 // Design token colors (source of truth)
-// These are extracted from packages/design-system/tokens/tokens.css
+// SYNCED WITH: packages/design-system/tokens/tokens.css
+// Last updated: 2026-01-02 - WCAG AA compliant
 const TOKEN_COLORS = {
-  // Brand Colors - Blue Palette 01
-  '--ak-primary': '#10456A',
-  '--ak-primary-light': '#2C5F7F',
-  '--ak-ink': '#02060D',
-  '--ak-snow': '#EDF0F2',
-  '--ak-surface': '#EBE5DA',
-  '--ak-gold': '#C9A227',
+  // Brand Colors - Premium Light (Forest Green)
+  '--ak-primary': '#1B4D3E',
+  '--ak-primary-light': '#2A6B55',
+  '--ak-primary-dark': '#133629',
+  '--ak-ink': '#111827',
+  '--ak-snow': '#FAFBFC',
+  '--ak-surface': '#F5F7F9',
+  '--ak-gold': '#996F09',        // WCAG AA: 4.53:1 on white
+  '--ak-gold-light': '#DAA520',
 
-  // Legacy aliases (same values)
-  '--ak-forest': '#10456A',
-  '--ak-forest-light': '#2C5F7F',
-  '--ak-foam': '#EDF0F2',
-  '--ak-ivory': '#EBE5DA',
+  // Legacy aliases (backwards compatible)
+  '--ak-forest': '#1B4D3E',
+  '--ak-forest-light': '#2A6B55',
+  '--ak-foam': '#FAFBFC',
+  '--ak-ivory': '#F5F7F9',
 
-  // Semantic Colors
-  '--ak-success': '#4A7C59',
-  '--ak-warning': '#D4A84B',
-  '--ak-error': '#C45B4E',
+  // Semantic Colors (WCAG AA compliant)
+  '--ak-success': '#05875F',     // WCAG AA: 4.53:1 on white
+  '--ak-success-light': '#10B981',
+  '--ak-warning': '#B16105',     // WCAG AA: 4.58:1 on white
+  '--ak-warning-light': '#F59E0B',
+  '--ak-error': '#DC2626',       // 4.83:1 on white
+  '--ak-error-light': '#EF4444',
+  '--ak-info': '#0284C7',
+  '--ak-info-light': '#0EA5E9',
 
   // Neutrals
-  '--ak-charcoal': '#1C1C1E',
-  '--ak-steel': '#8E8E93',
-  '--ak-mist': '#E5E5EA',
-  '--ak-cloud': '#F2F2F7',
+  '--ak-charcoal': '#111827',
+  '--ak-steel': '#6B7280',       // 4.83:1 on white
+  '--ak-mist': '#E5E7EB',
+  '--ak-cloud': '#F5F7F9',
   '--ak-white': '#FFFFFF',
 };
 

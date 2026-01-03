@@ -1,5 +1,7 @@
 /**
- * PlayerVideoFeed Component
+ * AK Golf Academy - Player Video Feed
+ * Design System v3.0 - Premium Light
+ *
  * Feed of all player videos for coach review
  *
  * Features:
@@ -8,6 +10,9 @@
  * - Player avatar and name display
  * - Review status indicators
  * - Quick actions (review, annotate, comment)
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
+ * Note: Status badge colors use inline styles for dynamic color values
  */
 
 import React, { useState, useCallback, useMemo } from 'react';

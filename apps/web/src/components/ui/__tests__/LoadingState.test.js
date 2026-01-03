@@ -13,10 +13,11 @@ describe('LoadingState', () => {
     expect(screen.getByText('Henter data...')).toBeInTheDocument();
   });
 
-  it('displays spinner element', () => {
+  it('has accessible loading status', () => {
     const { container } = render(<LoadingState />);
-    const spinner = container.querySelector('div[style*="animation"]');
-    expect(spinner).toBeInTheDocument();
+    // LoadingState uses role="status" for accessibility
+    const status = container.querySelector('[role="status"]');
+    expect(status).toBeInTheDocument();
   });
 
   it('uses correct styling from design tokens', () => {

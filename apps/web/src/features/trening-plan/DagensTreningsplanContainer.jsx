@@ -1,3 +1,9 @@
+/**
+ * DagensTreningsplanContainer.jsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
 import React, { useState } from 'react';
 import {
   Calendar, Clock, Target, CheckCircle, Play,
@@ -106,39 +112,70 @@ const TODAY_PLAN = {
 };
 
 // ============================================================================
-// HELPER FUNCTIONS
+// CLASS MAPPINGS
 // ============================================================================
 
-const getSessionTypeConfig = (type) => {
-  switch (type) {
-    case 'warmup':
-      return { color: 'var(--warning)', icon: Flame, label: 'Oppvarming' };
-    case 'technical':
-      return { color: 'var(--accent)', icon: Target, label: 'Teknikk' };
-    case 'short_game':
-      return { color: 'var(--success)', icon: Flag, label: 'Kortspill' };
-    case 'physical':
-      return { color: 'var(--error)', icon: Dumbbell, label: 'Fysisk' };
-    case 'mental':
-      return { color: 'var(--achievement)', icon: Brain, label: 'Mental' };
-    case 'cooldown':
-      return { color: 'var(--text-secondary)', icon: RotateCcw, label: 'Avslutning' };
-    default:
-      return { color: 'var(--text-secondary)', icon: Calendar, label: type };
-  }
+const SESSION_TYPE_CLASSES = {
+  warmup: {
+    text: 'text-ak-status-warning',
+    bg: 'bg-ak-status-warning/15',
+    icon: Flame,
+    label: 'Oppvarming',
+  },
+  technical: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/15',
+    icon: Target,
+    label: 'Teknikk',
+  },
+  short_game: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    icon: Flag,
+    label: 'Kortspill',
+  },
+  physical: {
+    text: 'text-ak-status-error',
+    bg: 'bg-ak-status-error/15',
+    icon: Dumbbell,
+    label: 'Fysisk',
+  },
+  mental: {
+    text: 'text-amber-500',
+    bg: 'bg-amber-500/15',
+    icon: Brain,
+    label: 'Mental',
+  },
+  cooldown: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+    icon: RotateCcw,
+    label: 'Avslutning',
+  },
 };
 
-const getStatusConfig = (status) => {
-  switch (status) {
-    case 'completed':
-      return { color: 'var(--success)', icon: CheckCircle, label: 'Fullført' };
-    case 'in_progress':
-      return { color: 'var(--accent)', icon: Play, label: 'Pågår' };
-    case 'pending':
-      return { color: 'var(--text-secondary)', icon: Clock, label: 'Venter' };
-    default:
-      return { color: 'var(--text-secondary)', icon: Clock, label: status };
-  }
+const STATUS_CLASSES = {
+  completed: {
+    text: 'text-ak-status-success',
+    bg: 'bg-ak-status-success/15',
+    progressBg: 'bg-ak-status-success',
+    icon: CheckCircle,
+    label: 'Fullført',
+  },
+  in_progress: {
+    text: 'text-ak-brand-primary',
+    bg: 'bg-ak-brand-primary/15',
+    progressBg: 'bg-ak-brand-primary',
+    icon: Play,
+    label: 'Pågår',
+  },
+  pending: {
+    text: 'text-ak-text-secondary',
+    bg: 'bg-ak-surface-subtle',
+    progressBg: 'bg-ak-text-secondary',
+    icon: Clock,
+    label: 'Venter',
+  },
 };
 
 // ============================================================================
@@ -147,172 +184,102 @@ const getStatusConfig = (status) => {
 
 const SessionCard = ({ session, onStart, onComplete }) => {
   const [isExpanded, setIsExpanded] = useState(session.status === 'in_progress');
-  const typeConfig = getSessionTypeConfig(session.type);
-  const statusConfig = getStatusConfig(session.status);
+  const typeConfig = SESSION_TYPE_CLASSES[session.type] || SESSION_TYPE_CLASSES.cooldown;
+  const statusConfig = STATUS_CLASSES[session.status] || STATUS_CLASSES.pending;
   const TypeIcon = typeConfig.icon;
 
   const completedExercises = session.exercises.filter(e => e.completed).length;
   const totalExercises = session.exercises.length;
+  const progressWidth = (completedExercises / totalExercises) * 100;
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      overflow: 'hidden',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      border: session.status === 'in_progress' ? '2px solid var(--accent)' : '2px solid transparent',
-      opacity: session.status === 'completed' ? 0.8 : 1,
-    }}>
+    <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm border-2 ${
+      session.status === 'in_progress' ? 'border-ak-brand-primary' : 'border-transparent'
+    } ${session.status === 'completed' ? 'opacity-80' : 'opacity-100'}`}>
       {/* Header */}
       <div
         onClick={() => setIsExpanded(!isExpanded)}
-        style={{
-          padding: '16px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-        }}
+        className="p-4 cursor-pointer flex items-center gap-3"
       >
-        <div style={{
-          width: '44px',
-          height: '44px',
-          borderRadius: '12px',
-          backgroundColor: `${typeConfig.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+        <div className={`w-11 h-11 rounded-xl ${typeConfig.bg} flex items-center justify-center`}>
           {session.status === 'completed' ? (
-            <CheckCircle size={22} color={'var(--success)'} />
+            <CheckCircle size={22} className="text-ak-status-success" />
           ) : (
-            <TypeIcon size={22} color={typeConfig.color} />
+            <TypeIcon size={22} className={typeConfig.text} />
           )}
         </div>
 
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <SubSectionTitle style={{
-              fontSize: '15px',
-              textDecoration: session.status === 'completed' ? 'line-through' : 'none',
-            }}>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <SubSectionTitle className={`text-[15px] m-0 ${
+              session.status === 'completed' ? 'line-through' : ''
+            }`}>
               {session.name}
             </SubSectionTitle>
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 500,
-              color: statusConfig.color,
-              backgroundColor: `${statusConfig.color}15`,
-              padding: '2px 6px',
-              borderRadius: '4px',
-            }}>
+            <span className={`text-[11px] font-medium ${statusConfig.text} ${statusConfig.bg} py-0.5 px-1.5 rounded`}>
               {statusConfig.label}
             </span>
           </div>
-          <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+          <div className="text-xs text-ak-text-secondary mt-0.5">
             {session.duration} min - {completedExercises}/{totalExercises} øvelser
           </div>
         </div>
 
-        <div style={{
-          width: '28px',
-          height: '28px',
-          borderRadius: '8px',
-          backgroundColor: 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-          transition: 'transform 0.2s',
-        }}>
-          <ChevronRight size={16} color={'var(--text-secondary)'} />
+        <div className={`w-7 h-7 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${
+          isExpanded ? 'rotate-90' : 'rotate-0'
+        }`}>
+          <ChevronRight size={16} className="text-ak-text-secondary" />
         </div>
       </div>
 
       {/* Progress bar */}
       {session.status !== 'pending' && (
-        <div style={{ padding: '0 16px 8px' }}>
-          <div style={{
-            height: '4px',
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}>
-            <div style={{
-              height: '100%',
-              width: `${(completedExercises / totalExercises) * 100}%`,
-              backgroundColor: session.status === 'completed' ? 'var(--success)' : 'var(--accent)',
-              borderRadius: '2px',
-              transition: 'width 0.3s ease',
-            }} />
+        <div className="px-4 pb-2">
+          <div className="h-1 bg-ak-surface-subtle rounded-sm overflow-hidden">
+            <div
+              className={`h-full rounded-sm transition-[width] duration-300 ${statusConfig.progressBg}`}
+              style={{ width: `${progressWidth}%` }}
+            />
           </div>
         </div>
       )}
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div style={{
-          padding: '0 16px 16px',
-          borderTop: '1px solid var(--border-default)',
-          marginTop: '8px',
-        }}>
-          <p style={{
-            fontSize: '13px',
-            color: 'var(--text-secondary)',
-            margin: '12px 0',
-            lineHeight: 1.5,
-          }}>
+        <div className="px-4 pb-4 border-t border-ak-border-default mt-2">
+          <p className="text-[13px] text-ak-text-secondary my-3 leading-relaxed">
             {session.description}
           </p>
 
           {/* Exercises */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div className="flex flex-col gap-2">
             {session.exercises.map((exercise, idx) => (
               <div
                 key={idx}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  padding: '10px 12px',
-                  backgroundColor: exercise.completed ? 'rgba(var(--success-rgb), 0.08)' : 'var(--bg-secondary)',
-                  borderRadius: '8px',
-                }}
+                className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg ${
+                  exercise.completed ? 'bg-ak-status-success/10' : 'bg-ak-surface-subtle'
+                }`}
               >
-                <div style={{
-                  width: '22px',
-                  height: '22px',
-                  borderRadius: '50%',
-                  backgroundColor: exercise.completed ? 'var(--success)' : 'var(--bg-primary)',
-                  border: exercise.completed ? 'none' : '2px solid var(--border-default)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                }}>
-                  {exercise.completed && <CheckCircle size={14} color={'var(--bg-primary)'} />}
+                <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center cursor-pointer ${
+                  exercise.completed
+                    ? 'bg-ak-status-success border-0'
+                    : 'bg-ak-surface-base border-2 border-ak-border-default'
+                }`}>
+                  {exercise.completed && <CheckCircle size={14} className="text-white" />}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{
-                    fontSize: '13px',
-                    color: exercise.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
-                    textDecoration: exercise.completed ? 'line-through' : 'none',
-                  }}>
+                <div className="flex-1">
+                  <div className={`text-[13px] ${
+                    exercise.completed ? 'text-ak-text-secondary line-through' : 'text-ak-text-primary'
+                  }`}>
                     {exercise.name}
                   </div>
                   {exercise.notes && (
-                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                    <div className="text-[11px] text-ak-text-secondary">
                       {exercise.notes}
                     </div>
                   )}
                 </div>
-                <span style={{
-                  fontSize: '12px',
-                  color: 'var(--text-secondary)',
-                  backgroundColor: 'var(--bg-primary)',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                }}>
+                <span className="text-xs text-ak-text-secondary bg-ak-surface-base py-1 px-2 rounded-md">
                   {exercise.reps}
                 </span>
               </div>
@@ -321,31 +288,18 @@ const SessionCard = ({ session, onStart, onComplete }) => {
 
           {/* Trackman Data (if available) */}
           {session.trackmanData && (
-            <div style={{
-              marginTop: '12px',
-              padding: '12px',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
-              borderRadius: '10px',
-            }}>
-              <div style={{
-                fontSize: '12px',
-                fontWeight: 600,
-                color: 'var(--accent)',
-                marginBottom: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}>
+            <div className="mt-3 p-3 bg-ak-brand-primary/10 rounded-[10px]">
+              <div className="text-xs font-semibold text-ak-brand-primary mb-2 flex items-center gap-1.5">
                 <Video size={14} />
                 TrackMan Data
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+              <div className="grid grid-cols-4 gap-2">
                 {Object.entries(session.trackmanData).map(([key, value]) => (
-                  <div key={key} style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <div key={key} className="text-center">
+                    <div className="text-sm font-semibold text-ak-text-primary">
                       {value}
                     </div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>
+                    <div className="text-[10px] text-ak-text-secondary">
                       {key.replace('avg', 'Gj.sn ')}
                     </div>
                   </div>
@@ -363,7 +317,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
                 e.stopPropagation();
                 onStart(session.id);
               }}
-              style={{ width: '100%', marginTop: '12px', justifyContent: 'center' }}
+              className="w-full mt-3 justify-center"
             >
               Start økt
             </Button>
@@ -376,7 +330,7 @@ const SessionCard = ({ session, onStart, onComplete }) => {
                 e.stopPropagation();
                 onComplete(session.id);
               }}
-              style={{ width: '100%', marginTop: '12px', justifyContent: 'center', backgroundColor: 'var(--success)' }}
+              className="w-full mt-3 justify-center !bg-ak-status-success"
             >
               Marker som fullført
             </Button>
@@ -422,184 +376,108 @@ const DagensTreningsplanContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       {/* Context info - theme and day */}
-      <div style={{
-        fontSize: '13px',
-        color: 'var(--text-secondary)',
-        marginBottom: '16px',
-      }}>
+      <div className="text-[13px] text-ak-text-secondary mb-4">
         {plan.dayName.charAt(0).toUpperCase() + plan.dayName.slice(1)} - {plan.theme}
       </div>
 
       {/* Two-column layout: Sessions left, Coach note top-right */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 320px',
-          gap: '24px',
-          marginBottom: '20px',
-        }}>
-          {/* Left column: Progress Overview */}
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '16px',
-            padding: '20px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '16px',
-            }}>
-              <div>
-                <SectionTitle style={{
-                  fontSize: '18px',
-                }}>
-                  Dagens fremgang
-                </SectionTitle>
-                <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                  {completedSessions}/{plan.sessions.length} økter fullført
-                </div>
-              </div>
-              <div style={{
-                fontSize: '28px',
-                fontWeight: 700,
-                color: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
-              }}>
-                {progressPercent}%
+      <div className="grid grid-cols-[1fr_320px] gap-6 mb-5">
+        {/* Left column: Progress Overview */}
+        <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <SectionTitle className="text-lg m-0">
+                Dagens fremgang
+              </SectionTitle>
+              <div className="text-[13px] text-ak-text-secondary mt-0.5">
+                {completedSessions}/{plan.sessions.length} økter fullført
               </div>
             </div>
-
-            <div style={{
-              height: '8px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '4px',
-              overflow: 'hidden',
-            }}>
-              <div style={{
-                height: '100%',
-                width: `${progressPercent}%`,
-                backgroundColor: progressPercent >= 100 ? 'var(--success)' : 'var(--accent)',
-                borderRadius: '4px',
-                transition: 'width 0.5s ease',
-              }} />
-            </div>
-
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginTop: '12px',
-              fontSize: '12px',
-              color: 'var(--text-secondary)',
-            }}>
-              <span>{plan.completedDuration} min fullført</span>
-              <span>{plan.totalDuration - plan.completedDuration} min gjenstår</span>
+            <div className={`text-[28px] font-bold ${
+              progressPercent >= 100 ? 'text-ak-status-success' : 'text-ak-brand-primary'
+            }`}>
+              {progressPercent}%
             </div>
           </div>
 
-          {/* Right column: Coach Note (top-right position) */}
-          {plan.coachNote && (
-            <div style={{
-              backgroundColor: 'rgba(var(--accent-rgb), 0.08)',
-              borderRadius: '12px',
-              padding: '16px',
-              borderLeft: '4px solid var(--accent)',
-              alignSelf: 'start',
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginBottom: '8px',
-              }}>
-                <MessageCircle size={16} color={'var(--accent)'} />
-                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
-                  Beskjed fra trener
-                </span>
-              </div>
-              <p style={{
-                fontSize: '13px',
-                color: 'var(--text-primary)',
-                margin: 0,
-                lineHeight: 1.5,
-              }}>
-                {plan.coachNote}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Today's Goals */}
-        <div style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '12px',
-          padding: '16px',
-          marginBottom: '20px',
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '12px',
-          }}>
-            <Award size={16} color={'var(--achievement)'} />
-            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
-              Dagens mål
-            </span>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            {plan.goals.map((goal, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  fontSize: '13px',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                <Target size={12} color={'var(--achievement)'} />
-                {goal}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Sessions */}
-        <SectionTitle style={{
-          fontSize: '16px',
-          margin: '0 0 16px 0',
-        }}>
-          Økter
-        </SectionTitle>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {plan.sessions.map((session) => (
-            <SessionCard
-              key={session.id}
-              session={session}
-              onStart={handleStartSession}
-              onComplete={handleCompleteSession}
+          <div className="h-2 bg-ak-surface-subtle rounded overflow-hidden">
+            <div
+              className={`h-full rounded transition-[width] duration-500 ${
+                progressPercent >= 100 ? 'bg-ak-status-success' : 'bg-ak-brand-primary'
+              }`}
+              style={{ width: `${progressPercent}%` }}
             />
+          </div>
+
+          <div className="flex justify-between mt-3 text-xs text-ak-text-secondary">
+            <span>{plan.completedDuration} min fullført</span>
+            <span>{plan.totalDuration - plan.completedDuration} min gjenstår</span>
+          </div>
+        </div>
+
+        {/* Right column: Coach Note (top-right position) */}
+        {plan.coachNote && (
+          <div className="bg-ak-brand-primary/10 rounded-xl p-4 border-l-4 border-ak-brand-primary self-start">
+            <div className="flex items-center gap-2 mb-2">
+              <MessageCircle size={16} className="text-ak-brand-primary" />
+              <span className="text-[13px] font-semibold text-ak-brand-primary">
+                Beskjed fra trener
+              </span>
+            </div>
+            <p className="text-[13px] text-ak-text-primary m-0 leading-relaxed">
+              {plan.coachNote}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Today's Goals */}
+      <div className="bg-ak-surface-base rounded-xl p-4 mb-5">
+        <div className="flex items-center gap-2 mb-3">
+          <Award size={16} className="text-ak-status-warning" />
+          <span className="text-[13px] font-semibold text-ak-text-primary">
+            Dagens mål
+          </span>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          {plan.goals.map((goal, idx) => (
+            <div
+              key={idx}
+              className="flex items-center gap-2 text-[13px] text-ak-text-primary"
+            >
+              <Target size={12} className="text-ak-status-warning" />
+              {goal}
+            </div>
           ))}
         </div>
+      </div>
 
-        {/* Add Custom Exercise */}
-        <Button
-          variant="secondary"
-          leftIcon={<Plus size={18} />}
-          style={{
-            width: '100%',
-            marginTop: '16px',
-            justifyContent: 'center',
-            border: '2px dashed var(--border-default)',
-            backgroundColor: 'transparent',
-          }}
-        >
-          Legg til egen okt
-        </Button>
+      {/* Sessions */}
+      <SectionTitle className="text-base m-0 mb-4">
+        Økter
+      </SectionTitle>
+
+      <div className="flex flex-col gap-3">
+        {plan.sessions.map((session) => (
+          <SessionCard
+            key={session.id}
+            session={session}
+            onStart={handleStartSession}
+            onComplete={handleCompleteSession}
+          />
+        ))}
+      </div>
+
+      {/* Add Custom Exercise */}
+      <Button
+        variant="secondary"
+        leftIcon={<Plus size={18} />}
+        className="w-full mt-4 justify-center border-2 border-dashed border-ak-border-default !bg-transparent"
+      >
+        Legg til egen okt
+      </Button>
     </div>
   );
 };

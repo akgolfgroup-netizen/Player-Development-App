@@ -1,3 +1,10 @@
+/**
+ * AK Golf Design Examples
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
 import {
   Home, Calendar, BarChart3, User, Clock, ChevronRight,
@@ -5,7 +12,6 @@ import {
   Moon, Zap, Smile, Flag, Plus, Search, Bell, Settings,
   Activity, Award, BookOpen, Dumbbell, Brain
 } from 'lucide-react';
-import { tokens } from '../design-tokens';
 import { PageTitle, SectionTitle, SubSectionTitle } from '../typography';
 
 // Session type colors (Blue Palette 01)
@@ -625,7 +631,7 @@ const ComponentsShowcase = () => {
             style={{
               width: '100%',
               height: '48px',
-              background: '#fef2f2',
+              background: 'rgba(196, 91, 78, 0.1)',
               border: `1px solid ${theme.colors.error}`,
               borderRadius: '10px',
               padding: '0 14px',
@@ -1027,7 +1033,7 @@ const DesignExamples = () => {
       flexWrap: 'wrap',
       gap: '40px',
       padding: '40px',
-      background: '#e5e7eb',
+      background: '#D1D5DB',
       minHeight: '100vh',
     }}>
       <div>
@@ -1036,20 +1042,20 @@ const DesignExamples = () => {
         </SubSectionTitle>
         <HomeScreenLight />
       </div>
-      
+
       <div>
         <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
           KOMPONENTER
         </SubSectionTitle>
         <ComponentsShowcase />
       </div>
-      
+
       <div>
         <SubSectionTitle style={{ marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
           TRENINGSKORT
         </SubSectionTitle>
         <TrainingCard />
-        
+
         <SubSectionTitle style={{ marginTop: '32px', marginBottom: '16px', color: '#374151', fontSize: '14px', fontWeight: '600' }}>
           SPILLERPROFIL
         </SubSectionTitle>

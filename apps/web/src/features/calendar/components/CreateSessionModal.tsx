@@ -1,5 +1,8 @@
 /**
- * CreateSessionModal Component
+ * CreateSessionModal.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * MVP modal for creating a new session:
  * - Title
@@ -7,8 +10,6 @@
  * - Start time
  * - Duration
  * - Category
- *
- * Uses semantic tokens only (no raw hex values).
  */
 
 import React, { useState, useEffect } from 'react';
@@ -100,42 +101,24 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50"
-        style={{ backgroundColor: 'var(--overlay-backdrop)' }}
+        className="fixed inset-0 z-50 bg-black/50"
         onClick={onClose}
       />
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
-          className="w-full max-w-md rounded-xl overflow-hidden"
-          style={{
-            backgroundColor: 'var(--calendar-surface-card)',
-            boxShadow: 'var(--shadow-float)',
-          }}
+          className="w-full max-w-md rounded-xl overflow-hidden bg-ak-surface-card shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div
-            className="flex items-center justify-between p-4 border-b"
-            style={{ borderColor: 'var(--calendar-border)' }}
-          >
-            <SectionTitle
-              className="text-lg font-semibold"
-              style={{ color: 'var(--calendar-text-primary)' }}
-            >
+          <div className="flex items-center justify-between p-4 border-b border-ak-border-default">
+            <SectionTitle className="text-lg font-semibold text-ak-text-primary">
               Ny økt
             </SectionTitle>
             <button
               onClick={onClose}
-              className="p-1 rounded-lg transition-colors"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--calendar-hover)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
+              className="p-1 rounded-lg transition-colors text-ak-text-tertiary hover:bg-ak-surface-subtle"
             >
               <X size={20} />
             </button>
@@ -145,10 +128,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
           <form onSubmit={handleSubmit} className="p-4 space-y-4">
             {/* Title */}
             <div>
-              <label
-                className="block text-sm font-medium mb-1"
-                style={{ color: 'var(--calendar-text-secondary)' }}
-              >
+              <label className="block text-sm font-medium mb-1 text-ak-text-secondary">
                 Tittel *
               </label>
               <input
@@ -156,12 +136,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="F.eks. Putting – 100 putts"
-                className="w-full px-3 py-2 rounded-lg text-sm"
-                style={{
-                  backgroundColor: 'var(--calendar-surface-elevated)',
-                  border: '1px solid var(--calendar-border)',
-                  color: 'var(--calendar-text-primary)',
-                }}
+                className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-brand-primary outline-none"
                 required
                 autoFocus
               />
@@ -169,22 +144,14 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
 
             {/* Date */}
             <div>
-              <label
-                className="block text-sm font-medium mb-1"
-                style={{ color: 'var(--calendar-text-secondary)' }}
-              >
+              <label className="block text-sm font-medium mb-1 text-ak-text-secondary">
                 Dato
               </label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg text-sm"
-                style={{
-                  backgroundColor: 'var(--calendar-surface-elevated)',
-                  border: '1px solid var(--calendar-border)',
-                  color: 'var(--calendar-text-primary)',
-                }}
+                className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-brand-primary outline-none"
                 required
               />
             </div>
@@ -193,43 +160,27 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
             <div className="grid grid-cols-2 gap-4">
               {/* Start time */}
               <div>
-                <label
-                  className="block text-sm font-medium mb-1"
-                  style={{ color: 'var(--calendar-text-secondary)' }}
-                >
+                <label className="block text-sm font-medium mb-1 text-ak-text-secondary">
                   Starttid
                 </label>
                 <input
                   type="time"
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg text-sm"
-                  style={{
-                    backgroundColor: 'var(--calendar-surface-elevated)',
-                    border: '1px solid var(--calendar-border)',
-                    color: 'var(--calendar-text-primary)',
-                  }}
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary focus:border-ak-brand-primary outline-none"
                   required
                 />
               </div>
 
               {/* Duration */}
               <div>
-                <label
-                  className="block text-sm font-medium mb-1"
-                  style={{ color: 'var(--calendar-text-secondary)' }}
-                >
+                <label className="block text-sm font-medium mb-1 text-ak-text-secondary">
                   Varighet
                 </label>
                 <select
                   value={duration}
                   onChange={(e) => setDuration(Number(e.target.value))}
-                  className="w-full px-3 py-2 rounded-lg text-sm"
-                  style={{
-                    backgroundColor: 'var(--calendar-surface-elevated)',
-                    border: '1px solid var(--calendar-border)',
-                    color: 'var(--calendar-text-primary)',
-                  }}
+                  className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary"
                 >
                   {DURATION_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -242,21 +193,13 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
 
             {/* Category */}
             <div>
-              <label
-                className="block text-sm font-medium mb-1"
-                style={{ color: 'var(--calendar-text-secondary)' }}
-              >
+              <label className="block text-sm font-medium mb-1 text-ak-text-secondary">
                 Kategori
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg text-sm"
-                style={{
-                  backgroundColor: 'var(--calendar-surface-elevated)',
-                  border: '1px solid var(--calendar-border)',
-                  color: 'var(--calendar-text-primary)',
-                }}
+                className="w-full px-3 py-2 rounded-lg text-sm bg-ak-surface-subtle border border-ak-border-default text-ak-text-primary"
               >
                 {CATEGORIES.map((cat) => (
                   <option key={cat.value} value={cat.value}>
@@ -271,21 +214,13 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-                style={{
-                  backgroundColor: 'var(--calendar-surface-elevated)',
-                  color: 'var(--calendar-text-secondary)',
-                }}
+                className="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-surface-subtle text-ak-text-secondary hover:bg-ak-surface-subtle/80"
               >
                 Avbryt
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-                style={{
-                  backgroundColor: 'var(--ak-primary)',
-                  color: 'var(--text-inverse)',
-                }}
+                className="flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
               >
                 Opprett økt
               </button>

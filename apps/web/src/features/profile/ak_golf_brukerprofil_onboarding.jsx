@@ -1,3 +1,10 @@
+/**
+ * AKGolfBrukerprofilOnboarding Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useEffect } from 'react';
 import {
   User, Calendar, MapPin, School, Target, Award, Activity,
@@ -5,51 +12,43 @@ import {
   Check, AlertCircle, Info, Heart, Ruler, Scale, Clock,
   Trophy, Flag, Home, FileText, Lock
 } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { playersAPI } from '../../services/api';
 import Button from '../../ui/primitives/Button';
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 
 // ============================================================
-// AK GOLF ACADEMY - SPILLERPROFIL ONBOARDING
-// Design System v3.0 | Blue Palette 01 | Cross-Platform
-// Versjon: 3.0 | Dato: 20. desember 2025
-// Oppdatert: Blue Palette 01 + API integrasjon
-// ============================================================
-
-// ============================================================
-// DESIGN SYSTEM CONSTANTS V2.1 - Blue Palette 01
+// DESIGN SYSTEM CONSTANTS - CSS Variables
 // ============================================================
 const colors = {
-  // Primary colors (using new token names)
-  primary: tokens.colors.primary,          // #10456A - Main brand blue
-  primaryLight: tokens.colors.primaryLight, // #2C5F7F - Lighter blue
-  snow: tokens.colors.snow,                // #EDF0F2 - Background
-  surface: tokens.colors.surface,          // #EBE5DA - Card surfaces
-  white: tokens.colors.white,              // #FFFFFF
+  // Primary colors
+  primary: 'var(--ak-brand-primary)',
+  primaryLight: 'var(--ak-brand-primary-light)',
+  snow: 'var(--ak-surface-subtle)',
+  surface: 'var(--ak-surface-card)',
+  white: 'var(--ak-surface-card)',
 
   // Legacy aliases (kept for backwards compatibility)
-  forest: tokens.colors.primary,           // → primary
-  forestLight: tokens.colors.primaryLight, // → primaryLight
-  forestDark: tokens.colors.primary,       // → primary
-  foam: tokens.colors.snow,                // → snow
-  ivory: tokens.colors.surface,            // → surface
+  forest: 'var(--ak-brand-primary)',
+  forestLight: 'var(--ak-brand-primary-light)',
+  forestDark: 'var(--ak-brand-primary)',
+  foam: 'var(--ak-surface-subtle)',
+  ivory: 'var(--ak-surface-card)',
 
   // Text colors
-  textPrimary: tokens.colors.charcoal,    // #1C1C1E
-  textSecondary: tokens.colors.charcoal,  // #1C1C1E
-  textMuted: tokens.colors.steel,         // #8E8E93
+  textPrimary: 'var(--ak-text-primary)',
+  textSecondary: 'var(--ak-text-primary)',
+  textMuted: 'var(--ak-text-secondary)',
 
   // Accent and semantic colors
-  gold: tokens.colors.gold,               // #C9A227
-  success: tokens.colors.success,         // #4A7C59
-  warning: tokens.colors.warning,         // #D4A84B
-  error: tokens.colors.error,             // #C45B4E
-  info: tokens.colors.primaryLight,       // #2C5F7F
+  gold: 'var(--ak-status-warning)',
+  success: 'var(--ak-status-success)',
+  warning: 'var(--ak-status-warning)',
+  error: 'var(--ak-status-error)',
+  info: 'var(--ak-brand-primary-light)',
 
   // Border colors
-  borderLight: tokens.colors.mist,        // #E5E5EA
-  borderMedium: tokens.colors.mist        // #E5E5EA
+  borderLight: 'var(--ak-border-default)',
+  borderMedium: 'var(--ak-border-default)'
 };
 
 const spacing = {
@@ -654,7 +653,7 @@ const AKGolfBrukerprofilOnboarding = ({ profile: apiProfile = null }) => {
               </div>
             </div>
 
-            <div style={{ marginTop: spacing.lg, paddingTop: spacing.lg, borderTop: `1px solid ${colors.mist}` }}>
+            <div style={{ marginTop: spacing.lg, paddingTop: spacing.lg, borderTop: `1px solid var(--ak-border-default)` }}>
               <SubSectionTitle style={{ fontSize: '16px', fontWeight: '600', color: colors.textPrimary, marginBottom: spacing.md, display: 'flex', alignItems: 'center', gap: spacing.sm }}>
                 <AlertCircle size={20} color={colors.forest} strokeWidth={1.5} />
                 Nødkontakt

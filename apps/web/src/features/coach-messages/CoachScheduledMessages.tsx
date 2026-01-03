@@ -1,4 +1,14 @@
 // @ts-nocheck
+/**
+ * AK Golf Academy - Coach Scheduled Messages
+ * Design System v3.0 - Premium Light
+ *
+ * Timeline view of scheduled messages for coaches.
+ * Shows upcoming messages with time indicators and quick actions.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   Clock,
@@ -151,14 +161,38 @@ export const CoachScheduledMessages: React.FC = () => {
     }
   };
 
-  const getCategoryBadge = (category: string) => {
-    const styles: Record<string, { bg: string; text: string; label: string }> = {
-      training: { bg: 'var(--msg-training-muted)', text: 'var(--msg-training)', label: 'Trening' },
-      tournament: { bg: 'var(--msg-tournament-muted)', text: 'var(--msg-tournament)', label: 'Turnering' },
-      general: { bg: 'var(--msg-general-muted)', text: 'var(--msg-general)', label: 'Generelt' },
-      urgent: { bg: 'var(--msg-urgent-muted)', text: 'var(--msg-urgent)', label: 'Viktig' }
+  const getCategoryBadgeClasses = (category: string) => {
+    switch (category) {
+      case 'training':
+        return { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary', label: 'Trening' };
+      case 'tournament':
+        return { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning', label: 'Turnering' };
+      case 'urgent':
+        return { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error', label: 'Viktig' };
+      default:
+        return { bg: 'bg-ak-text-secondary/15', text: 'text-ak-text-secondary', label: 'Generelt' };
+    }
+  };
+
+  const getTimelineClasses = (daysUntil: number) => {
+    if (daysUntil <= 1) {
+      return {
+        circle: 'bg-ak-status-error/15 border-2 border-ak-status-error',
+        icon: 'text-ak-status-error',
+        badge: 'bg-ak-status-error/15 text-ak-status-error'
+      };
+    } else if (daysUntil <= 7) {
+      return {
+        circle: 'bg-ak-status-warning/15 border-2 border-ak-status-warning',
+        icon: 'text-ak-status-warning',
+        badge: 'bg-ak-status-warning/15 text-ak-status-warning'
+      };
+    }
+    return {
+      circle: 'bg-ak-brand-primary/15 border-2 border-ak-brand-primary',
+      icon: 'text-ak-brand-primary',
+      badge: 'bg-ak-brand-primary/15 text-ak-brand-primary'
     };
-    return styles[category] || styles.general;
   };
 
   const handleDelete = async (e: React.MouseEvent, messageId: string) => {
@@ -197,7 +231,7 @@ export const CoachScheduledMessages: React.FC = () => {
   };
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <div className="bg-ak-surface-subtle min-h-screen">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Planlagte beskjeder"
@@ -213,171 +247,75 @@ export const CoachScheduledMessages: React.FC = () => {
         }
       />
 
-      <div style={{ padding: '0 24px 24px' }}>
+      <div className="px-6 pb-6">
 
       {/* Search */}
-      <div style={{ position: 'relative', marginBottom: '20px' }}>
+      <div className="relative mb-5">
         <Search
           size={18}
-          style={{
-            position: 'absolute',
-            left: '12px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            color: 'var(--text-tertiary)'
-          }}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-tertiary"
         />
         <input
           type="text"
           placeholder="Søk i planlagte beskjeder..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            width: '100%',
-            maxWidth: '400px',
-            padding: '12px 12px 12px 40px',
-            borderRadius: '10px',
-            border: `1px solid ${'var(--border-default)'}`,
-            backgroundColor: 'var(--bg-primary)',
-            fontSize: '14px',
-            color: 'var(--text-primary)',
-            outline: 'none'
-          }}
+          className="w-full max-w-[400px] py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
         />
       </div>
 
       {/* Timeline View */}
-      <div style={{ position: 'relative' }}>
+      <div className="relative">
         {sortedMessages.map((message, index) => {
-          const categoryStyle = getCategoryBadge(message.category);
+          const categoryStyle = getCategoryBadgeClasses(message.category);
           const daysUntil = getDaysUntil(message.scheduledFor);
+          const timelineStyle = getTimelineClasses(daysUntil);
 
           return (
-            <div key={message.id} style={{ display: 'flex', gap: '20px', marginBottom: '16px' }}>
+            <div key={message.id} className="flex gap-5 mb-4">
               {/* Timeline indicator */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                width: '60px',
-                flexShrink: 0
-              }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  backgroundColor: daysUntil <= 1
-                    ? 'var(--error-muted)'
-                    : daysUntil <= 7
-                      ? 'var(--warning-muted)'
-                      : 'var(--accent-muted)',
-                  border: daysUntil <= 1
-                    ? '2px solid var(--error)'
-                    : daysUntil <= 7
-                      ? '2px solid var(--warning)'
-                      : `2px solid ${'var(--accent)'}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Clock
-                    size={18}
-                    color={daysUntil <= 1 ? 'var(--error)' : daysUntil <= 7 ? 'var(--warning)' : 'var(--accent)'}
-                  />
+              <div className="flex flex-col items-center w-[60px] flex-shrink-0">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${timelineStyle.circle}`}>
+                  <Clock size={18} className={timelineStyle.icon} />
                 </div>
                 {index < sortedMessages.length - 1 && (
-                  <div style={{
-                    width: '2px',
-                    flex: 1,
-                    backgroundColor: 'var(--border-default)',
-                    marginTop: '8px',
-                    minHeight: '40px'
-                  }} />
+                  <div className="w-0.5 flex-1 bg-ak-border-default mt-2 min-h-[40px]" />
                 )}
               </div>
 
               {/* Message Card */}
-              <div
-                style={{
-                  flex: 1,
-                  backgroundColor: 'var(--bg-primary)',
-                  borderRadius: '12px',
-                  padding: '16px 20px',
-                  border: `1px solid ${'var(--border-default)'}`,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-              >
+              <div className="flex-1 bg-ak-surface-base rounded-xl p-4 px-5 border border-ak-border-default cursor-pointer transition-colors hover:border-ak-brand-primary/50">
                 {/* Scheduled time badge */}
-                <div style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '4px 10px',
-                  backgroundColor: daysUntil <= 1
-                    ? 'var(--error-muted)'
-                    : daysUntil <= 7
-                      ? 'var(--warning-muted)'
-                      : 'var(--accent-muted)',
-                  borderRadius: '6px',
-                  marginBottom: '12px'
-                }}>
-                  <Calendar
-                    size={12}
-                    color={daysUntil <= 1 ? 'var(--error)' : daysUntil <= 7 ? 'var(--warning)' : 'var(--accent)'}
-                  />
-                  <span style={{
-                    fontSize: '12px',
-                    fontWeight: '600',
-                    color: daysUntil <= 1 ? 'var(--error)' : daysUntil <= 7 ? 'var(--warning)' : 'var(--accent)'
-                  }}>
+                <div className={`inline-flex items-center gap-1.5 py-1 px-2.5 rounded-md mb-3 ${timelineStyle.badge}`}>
+                  <Calendar size={12} />
+                  <span className="text-xs font-semibold">
                     {formatScheduledDate(message.scheduledFor)}
                   </span>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <SubSectionTitle style={{
-                        fontSize: '15px',
-                        fontWeight: '600',
-                        color: 'var(--text-primary)',
-                        margin: 0
-                      }}>
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0">
                         {message.subject}
                       </SubSectionTitle>
-                      <span style={{
-                        fontSize: '10px',
-                        fontWeight: '500',
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                        backgroundColor: categoryStyle.bg,
-                        color: categoryStyle.text
-                      }}>
+                      <span className={`text-[10px] font-medium py-0.5 px-1.5 rounded ${categoryStyle.bg} ${categoryStyle.text}`}>
                         {categoryStyle.label}
                       </span>
                     </div>
-                    <p style={{
-                      fontSize: '13px',
-                      color: 'var(--text-secondary)',
-                      margin: '0 0 8px 0',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      maxWidth: '500px'
-                    }}>
+                    <p className="text-[13px] text-ak-text-secondary m-0 mb-2 overflow-hidden text-ellipsis whitespace-nowrap max-w-[500px]">
                       {message.preview}
                     </p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1 text-ak-text-tertiary">
                         {getRecipientIcon(message.recipients.type)}
-                        <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                        <span className="text-xs">
                           {message.recipients.name}
                           {message.recipients.count && ` (${message.recipients.count})`}
                         </span>
                       </div>
                       {message.hasAttachment && (
-                        <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                        <span className="text-xs text-ak-text-tertiary">
                           📎 Vedlegg
                         </span>
                       )}
@@ -385,57 +323,27 @@ export const CoachScheduledMessages: React.FC = () => {
                   </div>
 
                   {/* Actions */}
-                  <div style={{ display: 'flex', gap: '8px', marginLeft: '16px' }}>
+                  <div className="flex gap-2 ml-4">
                     <button
                       onClick={(e) => handleEdit(e, message.id)}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '8px',
-                        border: `1px solid ${'var(--border-default)'}`,
-                        backgroundColor: 'transparent',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
-                      }}
+                      className="w-9 h-9 rounded-lg border border-ak-border-default bg-transparent flex items-center justify-center cursor-pointer hover:bg-ak-surface-subtle"
                       title="Rediger"
                     >
-                      <Edit2 size={16} color={'var(--text-secondary)'} />
+                      <Edit2 size={16} className="text-ak-text-secondary" />
                     </button>
                     <button
                       onClick={(e) => handleSendNow(e, message.id)}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: 'var(--success-muted)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
-                      }}
+                      className="w-9 h-9 rounded-lg border-none bg-ak-status-success/15 flex items-center justify-center cursor-pointer hover:bg-ak-status-success/25"
                       title="Send nå"
                     >
-                      <Send size={16} color="var(--success)" />
+                      <Send size={16} className="text-ak-status-success" />
                     </button>
                     <button
                       onClick={(e) => handleDelete(e, message.id)}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '8px',
-                        border: 'none',
-                        backgroundColor: 'var(--error-muted)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer'
-                      }}
+                      className="w-9 h-9 rounded-lg border-none bg-ak-status-error/15 flex items-center justify-center cursor-pointer hover:bg-ak-status-error/25"
                       title="Slett"
                     >
-                      <Trash2 size={16} color="var(--error)" />
+                      <Trash2 size={16} className="text-ak-status-error" />
                     </button>
                   </div>
                 </div>
@@ -446,37 +354,15 @@ export const CoachScheduledMessages: React.FC = () => {
       </div>
 
       {sortedMessages.length === 0 && (
-        <div style={{
-          textAlign: 'center',
-          padding: '60px 20px',
-          backgroundColor: 'var(--bg-primary)',
-          borderRadius: '16px',
-          border: `1px solid ${'var(--border-default)'}`
-        }}>
-          <Clock size={48} color={'var(--text-tertiary)'} style={{ marginBottom: '16px' }} />
-          <p style={{
-            fontSize: '16px',
-            color: 'var(--text-secondary)',
-            margin: '0 0 16px 0'
-          }}>
+        <div className="text-center py-[60px] px-5 bg-ak-surface-base rounded-2xl border border-ak-border-default">
+          <Clock size={48} className="text-ak-text-tertiary mb-4" />
+          <p className="text-base text-ak-text-secondary m-0 mb-4">
             {searchQuery ? 'Ingen planlagte beskjeder funnet' : 'Ingen planlagte beskjeder'}
           </p>
           {!searchQuery && (
             <button
               onClick={() => navigate('/coach/messages/compose')}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 20px',
-                borderRadius: '10px',
-                border: 'none',
-                backgroundColor: 'var(--accent)',
-                color: 'white',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
+              className="inline-flex items-center gap-2 py-2.5 px-5 rounded-[10px] border-none bg-ak-brand-primary text-white text-sm font-medium cursor-pointer hover:bg-ak-brand-primary/90"
             >
               <Plus size={16} />
               Planlegg første beskjed

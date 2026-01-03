@@ -186,6 +186,13 @@ export interface TestResult {
 }
 
 /**
+ * Type alias for domain/tests/mappers.ts compatibility.
+ * DashboardTestResult is the same as TestResult, but provides semantic clarity
+ * when distinguishing from canonical TestResult in @iup/shared-types.
+ */
+export type DashboardTestResult = TestResult;
+
+/**
  * Complete dashboard response
  */
 export interface DashboardResponse {

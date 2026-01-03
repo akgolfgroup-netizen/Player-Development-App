@@ -1,6 +1,6 @@
 /**
  * AK Golf Academy - Coach Notes
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Purpose:
  * - Enable coach to create and view observations
@@ -17,6 +17,8 @@
  * - No read tracking
  * - No engagement metrics
  * - Delivered notes are immutable
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React, { useState } from "react";
@@ -106,51 +108,25 @@ export default function CoachNotes({
   return (
     <section
       aria-label="Coach notes"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
+      className="min-h-screen bg-ak-surface-subtle font-[Inter,-apple-system,BlinkMacSystemFont,system-ui,sans-serif]"
     >
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          borderBottom: '1px solid var(--border-default)',
-          padding: '16px 24px',
-        }}
-      >
-        <div style={{ marginBottom: '16px' }}>
+      <div className="bg-ak-surface-base border-b border-ak-border-default py-4 px-6">
+        <div className="mb-4">
           <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
             Tilbake
           </Button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <StickyNote size={24} style={{ color: 'var(--accent)' }} />
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
+            <StickyNote size={24} className="text-ak-brand-primary" />
           </div>
           <div>
-            <PageTitle style={{ margin: 0 }}>
+            <PageTitle className="m-0">
               Notater
             </PageTitle>
-            <p style={{
-              fontSize: '13px',
-              lineHeight: '18px',
-              color: 'var(--text-secondary)',
-              margin: 0,
-              marginTop: '4px',
-            }}>
+            <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0 mt-1">
               {athleteName} • {sortedNotes.length} notater
             </p>
           </div>
@@ -158,9 +134,9 @@ export default function CoachNotes({
       </div>
 
       {/* New Note Input */}
-      <div style={{ padding: '24px' }}>
-        <Card variant="default" padding="lg" style={{ marginBottom: '24px' }}>
-          <SectionTitle style={{ margin: 0, marginBottom: '16px' }}>
+      <div className="p-6">
+        <Card variant="default" padding="lg" className="mb-6">
+          <SectionTitle className="m-0 mb-4">
             Nytt notat
           </SectionTitle>
 
@@ -169,28 +145,11 @@ export default function CoachNotes({
             onChange={(e) => setNewNote(e.target.value)}
             placeholder="Skriv din observasjon eller tilbakemelding..."
             rows={4}
-            style={{
-              width: '100%',
-              padding: '14px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-default)',
-              backgroundColor: 'var(--bg-secondary)',
-              fontSize: '15px',
-              lineHeight: '22px',
-              color: 'var(--text-primary)',
-              resize: 'vertical',
-              outline: 'none',
-              boxSizing: 'border-box',
-            }}
+            className="w-full p-3.5 rounded-lg border border-ak-border-default bg-ak-surface-subtle text-[15px] leading-[22px] text-ak-text-primary resize-y outline-none box-border focus:border-ak-brand-primary"
           />
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
-            <p style={{
-              fontSize: '13px',
-              lineHeight: '18px',
-              color: 'var(--text-secondary)',
-              margin: 0,
-            }}>
+          <div className="flex justify-between items-center mt-4">
+            <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
               Notatet vises i spillerens "Fra din trener"-seksjon
             </p>
 
@@ -208,20 +167,16 @@ export default function CoachNotes({
 
         {/* Note History */}
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
-            <SectionTitle style={{ margin: 0 }}>
+          <div className="p-5 border-b border-ak-border-default">
+            <SectionTitle className="m-0">
               Tidligere notater
             </SectionTitle>
           </div>
 
           {sortedNotes.length === 0 ? (
-            <div style={{ padding: '48px 24px', textAlign: 'center' }}>
-              <StickyNote size={40} style={{ color: 'var(--text-tertiary)', marginBottom: '12px' }} />
-              <p style={{
-                fontSize: '15px',
-                lineHeight: '22px',
-                color: 'var(--text-secondary)',
-              }}>
+            <div className="py-12 px-6 text-center">
+              <StickyNote size={40} className="text-ak-text-tertiary mb-3" />
+              <p className="text-[15px] leading-[22px] text-ak-text-secondary">
                 Ingen notater ennå
               </p>
             </div>
@@ -231,62 +186,32 @@ export default function CoachNotes({
                 <article
                   key={note.id}
                   aria-label="Coach note"
-                  style={{
-                    padding: '20px',
-                    borderBottom: index < sortedNotes.length - 1 ? '1px solid var(--border-default)' : 'none',
-                  }}
+                  className={`p-5 ${index < sortedNotes.length - 1 ? 'border-b border-ak-border-default' : ''}`}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '4px 10px',
-                        borderRadius: 'var(--radius-sm)',
-                        backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-                      }}
-                    >
-                      <StickyNote size={14} style={{ color: 'var(--accent)' }} />
-                      <span style={{
-                        fontSize: '13px',
-                        lineHeight: '18px',
-                        fontWeight: 600,
-                        color: 'var(--accent)',
-                      }}>
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded bg-ak-brand-primary/10">
+                      <StickyNote size={14} className="text-ak-brand-primary" />
+                      <span className="text-[13px] leading-[18px] font-semibold text-ak-brand-primary">
                         Trenernotat
                       </span>
                     </div>
 
                     <time
                       dateTime={note.createdAt}
-                      style={{
-                        fontSize: '13px',
-                        lineHeight: '18px',
-                        color: 'var(--text-secondary)',
-                      }}
+                      className="text-[13px] leading-[18px] text-ak-text-secondary"
                     >
                       {formatDate(note.createdAt)}
                     </time>
                   </div>
 
-                  <p style={{
-                    fontSize: '15px',
-                    lineHeight: '1.6',
-                    color: 'var(--text-primary)',
-                    margin: 0,
-                  }}>
+                  <p className="text-[15px] leading-relaxed text-ak-text-primary m-0">
                     {note.content}
                   </p>
 
                   {note.delivered && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '12px' }}>
-                      <CheckCircle size={14} style={{ color: 'var(--success)' }} />
-                      <span style={{
-                        fontSize: '13px',
-                        lineHeight: '18px',
-                        color: 'var(--success)',
-                      }}>
+                    <div className="flex items-center gap-1.5 mt-3">
+                      <CheckCircle size={14} className="text-ak-status-success" />
+                      <span className="text-[13px] leading-[18px] text-ak-status-success">
                         Levert til spiller
                       </span>
                     </div>

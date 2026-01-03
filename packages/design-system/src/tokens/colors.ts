@@ -37,11 +37,12 @@ export const primitiveColors = {
   },
 
   // Brand Accent - Premium Gold (RESTRICTED - see usage rules)
+  // WCAG AA compliant: 4.53:1 contrast on white
   gold: {
-    DEFAULT: '#B8860B',
+    DEFAULT: '#996F09',
     light: '#DAA520',
-    dark: '#8B6914',
-    muted: 'rgba(184, 134, 11, 0.1)',
+    dark: '#7A5907',
+    muted: 'rgba(153, 111, 9, 0.1)',
   },
 
   // Badge Tiers - Used for gamification badge backgrounds
@@ -72,17 +73,19 @@ export const primitiveColors = {
 
   // Status Colors
   success: {
-    DEFAULT: '#059669',
+    // WCAG AA compliant: 4.53:1 contrast on white
+    DEFAULT: '#05875F',
     light: '#10B981',
-    dark: '#047857',
-    muted: 'rgba(5, 150, 105, 0.1)',
+    dark: '#046B4B',
+    muted: 'rgba(5, 135, 95, 0.1)',
   },
 
   warning: {
-    DEFAULT: '#D97706',
+    // WCAG AA compliant: 4.58:1 contrast on white
+    DEFAULT: '#B16105',
     light: '#F59E0B',
-    dark: '#B45309',
-    muted: 'rgba(217, 119, 6, 0.1)',
+    dark: '#8B4D04',
+    muted: 'rgba(177, 97, 5, 0.1)',
   },
 
   error: {

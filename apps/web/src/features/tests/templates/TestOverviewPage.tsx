@@ -1,6 +1,12 @@
+/**
+ * TestOverviewPage Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
 import { Clock, CheckCircle, AlertCircle, Play, ChevronRight, Info, MapPin, Target } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
 import { SectionTitle, SubSectionTitle } from '../../../components/typography';
 import Button from '../../../ui/primitives/Button';
 import { TestDefinition, ScoringThresholds } from '../config/testDefinitions';
@@ -37,9 +43,9 @@ interface InfoCardProps {
   color?: string;
 }
 
-const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, color = tokens.colors.primary }) => (
+const InfoCard: React.FC<InfoCardProps> = ({ icon: Icon, title, children, color = 'var(--ak-brand-primary)' }) => (
   <div style={{
-    backgroundColor: tokens.colors.white,
+    backgroundColor: 'var(--ak-surface-card)',
     borderRadius: '12px',
     padding: '20px',
     boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -95,10 +101,10 @@ const ScoringLegend: React.FC<ScoringLegendProps> = ({ scoring, lowerIsBetter, u
           borderRadius: '50%',
           backgroundColor: threshold.color,
         }} />
-        <span style={{ fontSize: '13px', color: tokens.colors.charcoal, fontWeight: 500 }}>
+        <span style={{ fontSize: '13px', color: 'var(--ak-text-primary)', fontWeight: 500 }}>
           {threshold.label}
         </span>
-        <span style={{ fontSize: '12px', color: tokens.colors.steel }}>
+        <span style={{ fontSize: '12px', color: 'var(--ak-text-secondary)' }}>
           {lowerIsBetter ? '≤' : '≥'} {threshold.max}{unit}
         </span>
       </div>
@@ -171,19 +177,19 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
     <div style={{ maxWidth: '900px', margin: '0 auto' }}>
       {/* Hero Section */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '16px',
         padding: '32px',
         marginBottom: '24px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        background: `linear-gradient(135deg, ${tokens.colors.white} 0%, ${tokens.colors.primary}08 100%)`,
+        background: `linear-gradient(135deg, #FFFFFF 0%, rgba(26, 61, 46, 0.05) 100%)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '24px' }}>
           <div style={{
             width: '64px',
             height: '64px',
             borderRadius: '16px',
-            backgroundColor: `${tokens.colors.primary}15`,
+            backgroundColor: `rgba(26, 61, 46, 0.09)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -199,7 +205,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
             <p style={{
               margin: 0,
               fontSize: '15px',
-              color: tokens.colors.steel,
+              color: 'var(--ak-text-secondary)',
               lineHeight: 1.6,
               maxWidth: '600px',
             }}>
@@ -214,25 +220,25 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
           gap: '24px',
           flexWrap: 'wrap',
           padding: '16px 20px',
-          backgroundColor: tokens.colors.snow,
+          backgroundColor: 'var(--ak-surface-subtle)',
           borderRadius: '12px',
           marginBottom: '24px',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={18} color={tokens.colors.steel} />
-            <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+            <Clock size={18} color="var(--ak-text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               <strong>{test.duration}</strong>
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={18} color={tokens.colors.steel} />
-            <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+            <MapPin size={18} color="var(--ak-text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               <strong>{test.attempts}</strong> {test.attempts === 1 ? 'forsøk' : 'forsøk'}
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Target size={18} color={tokens.colors.steel} />
-            <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+            <Target size={18} color="var(--ak-text-secondary)" />
+            <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               Enhet: <strong>{test.unit}</strong>
             </span>
           </div>
@@ -265,11 +271,11 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         marginBottom: '24px',
       }}>
         {/* Purpose */}
-        <InfoCard icon={Info} title="Formål" color={tokens.colors.primary}>
+        <InfoCard icon={Info} title="Formål" color="var(--ak-brand-primary)">
           <p style={{
             margin: 0,
             fontSize: '14px',
-            color: tokens.colors.charcoal,
+            color: 'var(--ak-text-primary)',
             lineHeight: 1.6
           }}>
             {test.purpose}
@@ -277,17 +283,17 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         </InfoCard>
 
         {/* Equipment */}
-        <InfoCard icon={CheckCircle} title="Utstyr" color={tokens.colors.success}>
+        <InfoCard icon={CheckCircle} title="Utstyr" color="var(--ak-status-success)">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {test.equipment.map((item, i) => (
               <span
                 key={i}
                 style={{
                   padding: '6px 12px',
-                  backgroundColor: tokens.colors.snow,
+                  backgroundColor: 'var(--ak-surface-subtle)',
                   borderRadius: '6px',
                   fontSize: '13px',
-                  color: tokens.colors.charcoal,
+                  color: 'var(--ak-text-primary)',
                 }}
               >
                 {item}
@@ -298,7 +304,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
       </div>
 
       {/* Methodology */}
-      <InfoCard icon={MapPin} title="Gjennomføring" color={tokens.colors.gold}>
+      <InfoCard icon={MapPin} title="Gjennomføring" color="var(--ak-status-warning)">
         <ol style={{
           margin: 0,
           paddingLeft: '20px',
@@ -309,7 +315,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
           {test.methodology.map((step, i) => (
             <li key={i} style={{
               fontSize: '14px',
-              color: tokens.colors.charcoal,
+              color: 'var(--ak-text-primary)',
               lineHeight: 1.5,
             }}>
               {step}
@@ -320,11 +326,11 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
 
       {/* Scoring */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={Target} title="Scoring" color={tokens.colors.primary}>
+        <InfoCard icon={Target} title="Scoring" color="var(--ak-brand-primary)">
           <p style={{
             margin: '0 0 16px 0',
             fontSize: '14px',
-            color: tokens.colors.steel,
+            color: 'var(--ak-text-secondary)',
             lineHeight: 1.5,
           }}>
             {test.lowerIsBetter
@@ -341,7 +347,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
 
       {/* Tips */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={AlertCircle} title="Tips" color={tokens.colors.warning}>
+        <InfoCard icon={AlertCircle} title="Tips" color="var(--ak-status-warning)">
           <ul style={{
             margin: 0,
             paddingLeft: '20px',
@@ -352,7 +358,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
             {test.tips.map((tip, i) => (
               <li key={i} style={{
                 fontSize: '14px',
-                color: tokens.colors.charcoal,
+                color: 'var(--ak-text-primary)',
                 lineHeight: 1.5,
               }}>
                 {tip}
@@ -366,7 +372,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
       <div style={{
         marginTop: '32px',
         padding: '24px',
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '12px',
         textAlign: 'center',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
@@ -374,7 +380,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         <p style={{
           margin: '0 0 16px 0',
           fontSize: '15px',
-          color: tokens.colors.charcoal,
+          color: 'var(--ak-text-primary)',
         }}>
           Klar til å teste?
         </p>

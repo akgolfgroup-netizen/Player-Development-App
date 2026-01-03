@@ -1,5 +1,13 @@
+/**
+ * AK Golf Academy - Skoleplan
+ * Design System v3.0 - Premium Light
+ *
+ * School schedule management with subjects, timetable, and tasks.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState } from 'react';
-// UiCanon: Using CSS variables instead of tokens
 import { PageHeader } from '../../components/layout/PageHeader';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import Button from '../../ui/primitives/Button';
@@ -30,24 +38,15 @@ const UKEDAG_LABELS = {
   fredag: 'Fre'
 };
 
-// Time slots available for scheduling (unused for now, kept for future features)
-// const TIME_SLOTS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
-
-const PRIORITET_COLORS = {
-  low: 'var(--text-secondary)',
-  medium: 'var(--warning)',
-  high: 'var(--error)'
-};
-
-const PRIORITET_LABELS = {
-  low: 'Lav',
-  medium: 'Medium',
-  high: 'Hoy'
+const PRIORITET_CONFIG = {
+  low: { colorClasses: { dot: 'bg-ak-text-secondary' }, label: 'Lav' },
+  medium: { colorClasses: { dot: 'bg-ak-status-warning' }, label: 'Medium' },
+  high: { colorClasses: { dot: 'bg-ak-status-error' }, label: 'Hoy' }
 };
 
 const DEFAULT_COLORS = [
-  'var(--category-spill)', 'var(--category-slag)', 'var(--achievement)', 'var(--error)', 'var(--course-purple)',
-  'var(--course-green)', 'var(--course-pink)', 'var(--course-blue)', 'var(--course-maroon)', 'var(--course-teal)'
+  '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
+  '#06B6D4', '#EC4899', '#6366F1', '#84CC16', '#F97316'
 ];
 
 // ============================================================================
@@ -79,56 +78,25 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000
-      }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000]"
       onClick={onClose}
     >
       <div
-        style={{
-          backgroundColor: 'white',
-          borderRadius: '16px',
-          maxWidth: '500px',
-          width: '90%',
-          maxHeight: '90vh',
-          overflow: 'auto',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
-        }}
+        className="bg-white rounded-2xl max-w-[500px] w-[90%] max-h-[90vh] overflow-auto shadow-xl"
         onClick={e => e.stopPropagation()}
       >
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '20px 24px',
-          borderBottom: '1px solid var(--border-default)'
-        }}>
-          <SectionTitle style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+        <div className="flex justify-between items-center p-5 px-6 border-b border-ak-border-default">
+          <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0">
             {title}
           </SectionTitle>
           <button
             onClick={onClose}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px',
-              color: 'var(--text-secondary)'
-            }}
+            className="bg-transparent border-none cursor-pointer p-1 text-ak-text-secondary hover:text-ak-text-primary"
           >
             <X size={20} />
           </button>
         </div>
-        <div style={{ padding: '24px' }}>
+        <div className="p-6">
           {children}
         </div>
       </div>
@@ -182,8 +150,8 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={fag ? 'Rediger fag' : 'Nytt fag'}>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Fagnavn *
           </label>
           <input
@@ -191,20 +159,13 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.navn}
             onChange={e => setForm({ ...form, navn: e.target.value })}
             placeholder="f.eks. Matematikk"
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
             required
           />
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Larer
           </label>
           <input
@@ -212,19 +173,12 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.larer}
             onChange={e => setForm({ ...form, larer: e.target.value })}
             placeholder="Larerens navn"
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
           />
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Rom
           </label>
           <input
@@ -232,52 +186,41 @@ const FagModal = ({ isOpen, onClose, fag, onSave, onDelete }) => {
             value={form.rom}
             onChange={e => setForm({ ...form, rom: e.target.value })}
             placeholder="f.eks. A101"
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
           />
         </div>
 
-        <div style={{ marginBottom: '24px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '8px' }}>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-ak-text-primary mb-2">
             Farge
           </label>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div className="flex gap-2 flex-wrap">
             {DEFAULT_COLORS.map(color => (
               <button
                 key={color}
                 type="button"
                 onClick={() => setForm({ ...form, farge: color })}
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '8px',
-                  backgroundColor: color,
-                  border: form.farge === color ? '3px solid ' + 'var(--text-primary)' : '2px solid transparent',
-                  cursor: 'pointer'
-                }}
+                className={`w-8 h-8 rounded-lg cursor-pointer transition-all ${
+                  form.farge === color ? 'border-[3px] border-ak-text-primary' : 'border-2 border-transparent'
+                }`}
+                style={{ backgroundColor: color }}
               />
             ))}
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="flex gap-3">
           {fag && (
             <Button
               type="button"
               variant="secondary"
               onClick={handleDelete}
-              style={{ backgroundColor: 'rgba(var(--error-rgb), 0.15)', color: 'var(--error)' }}
+              className="bg-ak-status-error/15 text-ak-status-error hover:bg-ak-status-error/25"
             >
               Slett
             </Button>
           )}
-          <div style={{ flex: 1 }} />
+          <div className="flex-1" />
           <Button variant="secondary" onClick={onClose}>
             Avbryt
           </Button>
@@ -352,9 +295,9 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
   if (allFag.length === 0) {
     return (
       <Modal isOpen={isOpen} onClose={onClose} title="Legg til time">
-        <div style={{ textAlign: 'center', padding: '20px' }}>
-          <BookOpen size={48} color={'var(--text-secondary)'} style={{ marginBottom: '16px' }} />
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
+        <div className="text-center py-5">
+          <BookOpen size={48} className="text-ak-text-secondary mb-4 mx-auto" />
+          <p className="text-ak-text-secondary mb-4">
             Du ma opprette minst ett fag for du kan legge til timer.
           </p>
           <Button variant="primary" onClick={onClose}>
@@ -368,22 +311,14 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={time ? 'Rediger time' : 'Ny time'}>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Fag *
           </label>
           <select
             value={form.fagId}
             onChange={e => setForm({ ...form, fagId: e.target.value })}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box',
-              backgroundColor: 'white'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
             required
           >
             {allFag.map(f => (
@@ -392,22 +327,14 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
           </select>
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Ukedag *
           </label>
           <select
             value={form.ukedag}
             onChange={e => setForm({ ...form, ukedag: e.target.value })}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box',
-              backgroundColor: 'white'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
             required
           >
             {UKEDAGER.map(dag => (
@@ -418,59 +345,45 @@ const TimeModal = ({ isOpen, onClose, time, fag, allFag, onSave, onDelete }) => 
           </select>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="flex gap-3 mb-6">
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
               Start *
             </label>
             <input
               type="time"
               value={form.startTid}
               onChange={e => setForm({ ...form, startTid: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid var(--border-default)',
-                borderRadius: '8px',
-                fontSize: '15px',
-                boxSizing: 'border-box'
-              }}
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
               required
             />
           </div>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
               Slutt *
             </label>
             <input
               type="time"
               value={form.sluttTid}
               onChange={e => setForm({ ...form, sluttTid: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid var(--border-default)',
-                borderRadius: '8px',
-                fontSize: '15px',
-                boxSizing: 'border-box'
-              }}
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
               required
             />
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="flex gap-3">
           {time && (
             <Button
               type="button"
               variant="secondary"
               onClick={handleDelete}
-              style={{ backgroundColor: 'rgba(var(--error-rgb), 0.15)', color: 'var(--error)' }}
+              className="bg-ak-status-error/15 text-ak-status-error hover:bg-ak-status-error/25"
             >
               Slett
             </Button>
           )}
-          <div style={{ flex: 1 }} />
+          <div className="flex-1" />
           <Button variant="secondary" onClick={onClose}>
             Avbryt
           </Button>
@@ -546,9 +459,9 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
   if (allFag.length === 0) {
     return (
       <Modal isOpen={isOpen} onClose={onClose} title="Legg til oppgave">
-        <div style={{ textAlign: 'center', padding: '20px' }}>
-          <BookOpen size={48} color={'var(--text-secondary)'} style={{ marginBottom: '16px' }} />
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '16px' }}>
+        <div className="text-center py-5">
+          <BookOpen size={48} className="text-ak-text-secondary mb-4 mx-auto" />
+          <p className="text-ak-text-secondary mb-4">
             Du ma opprette minst ett fag for du kan legge til oppgaver.
           </p>
           <Button variant="primary" onClick={onClose}>
@@ -562,22 +475,14 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={oppgave ? 'Rediger oppgave' : 'Ny oppgave'}>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Fag *
           </label>
           <select
             value={form.fagId}
             onChange={e => setForm({ ...form, fagId: e.target.value })}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box',
-              backgroundColor: 'white'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
             required
           >
             {allFag.map(f => (
@@ -586,8 +491,8 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
           </select>
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Tittel *
           </label>
           <input
@@ -595,20 +500,13 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             value={form.tittel}
             onChange={e => setForm({ ...form, tittel: e.target.value })}
             placeholder="Hva skal gjores?"
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
             required
           />
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
             Beskrivelse
           </label>
           <textarea
@@ -616,54 +514,31 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
             onChange={e => setForm({ ...form, beskrivelse: e.target.value })}
             placeholder="Mer detaljer..."
             rows={3}
-            style={{
-              width: '100%',
-              padding: '10px 12px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '8px',
-              fontSize: '15px',
-              boxSizing: 'border-box',
-              resize: 'vertical'
-            }}
+            className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border resize-y focus:outline-none focus:border-ak-brand-primary"
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+        <div className="flex gap-3 mb-6">
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
               Frist *
             </label>
             <input
               type="date"
               value={form.frist}
               onChange={e => setForm({ ...form, frist: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid var(--border-default)',
-                borderRadius: '8px',
-                fontSize: '15px',
-                boxSizing: 'border-box'
-              }}
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border focus:outline-none focus:border-ak-brand-primary"
               required
             />
           </div>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '6px' }}>
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-ak-text-primary mb-1.5">
               Prioritet
             </label>
             <select
               value={form.prioritet}
               onChange={e => setForm({ ...form, prioritet: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '10px 12px',
-                border: '1px solid var(--border-default)',
-                borderRadius: '8px',
-                fontSize: '15px',
-                boxSizing: 'border-box',
-                backgroundColor: 'white'
-              }}
+              className="w-full py-2.5 px-3 border border-ak-border-default rounded-lg text-[15px] box-border bg-white focus:outline-none focus:border-ak-brand-primary"
             >
               <option value="low">Lav</option>
               <option value="medium">Medium</option>
@@ -672,18 +547,18 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="flex gap-3">
           {oppgave && (
             <Button
               type="button"
               variant="secondary"
               onClick={handleDelete}
-              style={{ backgroundColor: 'rgba(var(--error-rgb), 0.15)', color: 'var(--error)' }}
+              className="bg-ak-status-error/15 text-ak-status-error hover:bg-ak-status-error/25"
             >
               Slett
             </Button>
           )}
-          <div style={{ flex: 1 }} />
+          <div className="flex-1" />
           <Button variant="secondary" onClick={onClose}>
             Avbryt
           </Button>
@@ -717,7 +592,6 @@ const OppgaveModal = ({ isOpen, onClose, oppgave, allFag, onSave, onDelete }) =>
 // ============================================================================
 
 const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
-  // Group timer by ukedag and sort by time
   const timerByDag = UKEDAGER.reduce((acc, dag) => {
     acc[dag] = timer
       .filter(t => t.ukedag === dag)
@@ -730,22 +604,11 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
   };
 
   return (
-    <div style={{
-      backgroundColor: 'white',
-      borderRadius: '12px',
-      border: '1px solid var(--border-default)',
-      overflow: 'hidden'
-    }}>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '16px 20px',
-        borderBottom: '1px solid var(--border-default)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Clock size={20} color={'var(--accent)'} />
-          <SubSectionTitle style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+    <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
+      <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default">
+        <div className="flex items-center gap-2.5">
+          <Clock size={20} className="text-ak-brand-primary" />
+          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
             Timeplan
           </SubSectionTitle>
         </div>
@@ -759,31 +622,16 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
         </Button>
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
-        <div style={{ display: 'flex', minWidth: '600px' }}>
+      <div className="overflow-x-auto">
+        <div className="flex min-w-[600px]">
           {UKEDAGER.map(dag => (
-            <div key={dag} style={{ flex: 1, borderRight: dag !== 'fredag' ? '1px solid var(--border-default)' : 'none' }}>
-              <div style={{
-                padding: '12px',
-                textAlign: 'center',
-                backgroundColor: 'var(--bg-secondary)',
-                borderBottom: '1px solid var(--border-default)',
-                fontWeight: 600,
-                fontSize: '13px',
-                color: 'var(--text-primary)'
-              }}>
+            <div key={dag} className={`flex-1 ${dag !== 'fredag' ? 'border-r border-ak-border-default' : ''}`}>
+              <div className="p-3 text-center bg-ak-surface-subtle border-b border-ak-border-default font-semibold text-[13px] text-ak-text-primary">
                 {UKEDAG_LABELS[dag]}
               </div>
-              <div style={{ minHeight: '200px', padding: '8px' }}>
+              <div className="min-h-[200px] p-2">
                 {timerByDag[dag].length === 0 ? (
-                  <div style={{
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--text-secondary)',
-                    fontSize: '12px'
-                  }}>
+                  <div className="h-full flex items-center justify-center text-ak-text-secondary text-xs">
                     Ingen timer
                   </div>
                 ) : (
@@ -793,36 +641,20 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
                       <div
                         key={time.id}
                         onClick={() => onEditTime(time)}
+                        className="p-2.5 mb-1.5 rounded-md cursor-pointer transition-transform hover:scale-[1.02]"
                         style={{
-                          padding: '10px',
-                          marginBottom: '6px',
-                          backgroundColor: `${fagInfo?.farge || 'var(--accent)'}15`,
-                          borderLeft: `3px solid ${fagInfo?.farge || 'var(--accent)'}`,
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                          transition: 'transform 0.1s'
+                          backgroundColor: `${fagInfo?.farge || '#3B82F6'}15`,
+                          borderLeft: `3px solid ${fagInfo?.farge || '#3B82F6'}`
                         }}
                       >
-                        <div style={{
-                          fontSize: '12px',
-                          color: 'var(--text-secondary)',
-                          marginBottom: '4px'
-                        }}>
+                        <div className="text-xs text-ak-text-secondary mb-1">
                           {time.startTid} - {time.sluttTid}
                         </div>
-                        <div style={{
-                          fontSize: '13px',
-                          fontWeight: 600,
-                          color: 'var(--text-primary)'
-                        }}>
+                        <div className="text-[13px] font-semibold text-ak-text-primary">
                           {fagInfo?.navn || 'Ukjent fag'}
                         </div>
                         {fagInfo?.rom && (
-                          <div style={{
-                            fontSize: '11px',
-                            color: 'var(--text-secondary)',
-                            marginTop: '2px'
-                          }}>
+                          <div className="text-[11px] text-ak-text-secondary mt-0.5">
                             Rom: {fagInfo.rom}
                           </div>
                         )}
@@ -844,14 +676,13 @@ const Timeplan = ({ timer, fag, onAddTime, onEditTime }) => {
 // ============================================================================
 
 const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
-  const [filter, setFilter] = useState('all'); // 'all', 'pending', 'completed'
+  const [filter, setFilter] = useState('all');
   const [fagFilter, setFagFilter] = useState('all');
 
   const filteredOppgaver = oppgaver
     .filter(o => filter === 'all' || o.status === filter)
     .filter(o => fagFilter === 'all' || o.fagId === fagFilter)
     .sort((a, b) => {
-      // Pending first, then by date
       if (a.status !== b.status) {
         return a.status === 'pending' ? -1 : 1;
       }
@@ -866,63 +697,30 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
   const overdueCount = oppgaver.filter(o => o.status === 'pending' && isOverdue(o.frist)).length;
 
   return (
-    <div style={{
-      backgroundColor: 'white',
-      borderRadius: '12px',
-      border: '1px solid var(--border-default)',
-      overflow: 'hidden'
-    }}>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '16px 20px',
-        borderBottom: '1px solid var(--border-default)',
-        flexWrap: 'wrap',
-        gap: '12px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <BookOpen size={20} color={'var(--accent)'} />
-          <SubSectionTitle style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+    <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
+      <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default flex-wrap gap-3">
+        <div className="flex items-center gap-2.5">
+          <BookOpen size={20} className="text-ak-brand-primary" />
+          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
             Oppgaver
           </SubSectionTitle>
           {pendingCount > 0 && (
-            <span style={{
-              padding: '2px 8px',
-              backgroundColor: 'var(--accent)',
-              color: 'white',
-              borderRadius: '12px',
-              fontSize: '12px',
-              fontWeight: 500
-            }}>
+            <span className="py-0.5 px-2 bg-ak-brand-primary text-white rounded-xl text-xs font-medium">
               {pendingCount}
             </span>
           )}
           {overdueCount > 0 && (
-            <span style={{
-              padding: '2px 8px',
-              backgroundColor: 'var(--error)',
-              color: 'white',
-              borderRadius: '12px',
-              fontSize: '12px',
-              fontWeight: 500
-            }}>
+            <span className="py-0.5 px-2 bg-ak-status-error text-white rounded-xl text-xs font-medium">
               {overdueCount} forsinket
             </span>
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div className="flex gap-2 items-center">
           <select
             value={fagFilter}
             onChange={e => setFagFilter(e.target.value)}
-            style={{
-              padding: '6px 10px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '6px',
-              fontSize: '13px',
-              backgroundColor: 'white'
-            }}
+            className="py-1.5 px-2.5 border border-ak-border-default rounded-md text-[13px] bg-white"
           >
             <option value="all">Alle fag</option>
             {fag.map(f => (
@@ -933,13 +731,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
           <select
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            style={{
-              padding: '6px 10px',
-              border: '1px solid var(--border-default)',
-              borderRadius: '6px',
-              fontSize: '13px',
-              backgroundColor: 'white'
-            }}
+            className="py-1.5 px-2.5 border border-ak-border-default rounded-md text-[13px] bg-white"
           >
             <option value="all">Alle</option>
             <option value="pending">Ugjort</option>
@@ -957,15 +749,11 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
         </div>
       </div>
 
-      <div style={{ maxHeight: '400px', overflow: 'auto' }}>
+      <div className="max-h-[400px] overflow-auto">
         {filteredOppgaver.length === 0 ? (
-          <div style={{
-            padding: '40px',
-            textAlign: 'center',
-            color: 'var(--text-secondary)'
-          }}>
-            <CheckCircle2 size={40} style={{ marginBottom: '12px', opacity: 0.5 }} />
-            <p style={{ margin: 0 }}>Ingen oppgaver a vise</p>
+          <div className="p-10 text-center text-ak-text-secondary">
+            <CheckCircle2 size={40} className="mb-3 opacity-50 mx-auto" />
+            <p className="m-0">Ingen oppgaver a vise</p>
           </div>
         ) : (
           filteredOppgaver.map(oppgave => {
@@ -976,93 +764,57 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
             return (
               <div
                 key={oppgave.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '12px',
-                  padding: '14px 20px',
-                  borderBottom: '1px solid var(--border-default)',
-                  backgroundColor: oppgave.status === 'completed' ? 'var(--bg-secondary)' : 'white'
-                }}
+                className={`flex items-start gap-3 py-3.5 px-5 border-b border-ak-border-default ${
+                  oppgave.status === 'completed' ? 'bg-ak-surface-subtle' : 'bg-white'
+                }`}
               >
                 <button
                   onClick={() => onToggleStatus(oppgave.id, oppgave.status)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: '2px',
-                    marginTop: '2px'
-                  }}
+                  className="bg-transparent border-none cursor-pointer p-0.5 mt-0.5"
                 >
                   {oppgave.status === 'completed' ? (
-                    <CheckCircle2 size={22} color={'var(--success)'} />
+                    <CheckCircle2 size={22} className="text-ak-status-success" />
                   ) : (
-                    <Circle size={22} color={'var(--text-secondary)'} />
+                    <Circle size={22} className="text-ak-text-secondary" />
                   )}
                 </button>
 
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
                     <span
+                      className="py-0.5 px-2 rounded text-[11px] font-medium"
                       style={{
-                        padding: '2px 8px',
-                        backgroundColor: `${fagInfo?.farge || 'var(--accent)'}20`,
-                        color: fagInfo?.farge || 'var(--accent)',
-                        borderRadius: '4px',
-                        fontSize: '11px',
-                        fontWeight: 500
+                        backgroundColor: `${fagInfo?.farge || '#3B82F6'}20`,
+                        color: fagInfo?.farge || '#3B82F6'
                       }}
                     >
                       {fagInfo?.navn || 'Ukjent'}
                     </span>
                     <span
-                      style={{
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        backgroundColor: PRIORITET_COLORS[oppgave.prioritet]
-                      }}
-                      title={`Prioritet: ${PRIORITET_LABELS[oppgave.prioritet]}`}
+                      className={`w-1.5 h-1.5 rounded-full ${PRIORITET_CONFIG[oppgave.prioritet]?.colorClasses?.dot || 'bg-ak-text-secondary'}`}
+                      title={`Prioritet: ${PRIORITET_CONFIG[oppgave.prioritet]?.label || oppgave.prioritet}`}
                     />
                   </div>
 
-                  <div style={{
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    color: oppgave.status === 'completed' ? 'var(--text-secondary)' : 'var(--text-primary)',
-                    textDecoration: oppgave.status === 'completed' ? 'line-through' : 'none',
-                    marginBottom: '4px'
-                  }}>
+                  <div className={`text-sm font-medium mb-1 ${
+                    oppgave.status === 'completed' ? 'text-ak-text-secondary line-through' : 'text-ak-text-primary'
+                  }`}>
                     {oppgave.tittel}
                   </div>
 
                   {oppgave.beskrivelse && (
-                    <div style={{
-                      fontSize: '13px',
-                      color: 'var(--text-secondary)',
-                      marginBottom: '4px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}>
+                    <div className="text-[13px] text-ak-text-secondary mb-1 overflow-hidden text-ellipsis whitespace-nowrap">
                       {oppgave.beskrivelse}
                     </div>
                   )}
 
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '12px',
-                    color: overdue ? 'var(--error)' : 'var(--text-secondary)'
-                  }}>
+                  <div className={`flex items-center gap-1.5 text-xs ${overdue ? 'text-ak-status-error' : 'text-ak-text-secondary'}`}>
                     {overdue && <AlertCircle size={12} />}
                     <Calendar size={12} />
                     <span>
                       {formatDate(oppgave.frist)}
                       {oppgave.status === 'pending' && (
-                        <span style={{ marginLeft: '4px' }}>
+                        <span className="ml-1">
                           {overdue
                             ? `(${Math.abs(daysUntil)} dager forsinket)`
                             : daysUntil === 0
@@ -1079,13 +831,7 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
 
                 <button
                   onClick={() => onEdit(oppgave)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: '4px',
-                    color: 'var(--text-secondary)'
-                  }}
+                  className="bg-transparent border-none cursor-pointer p-1 text-ak-text-secondary hover:text-ak-text-primary"
                 >
                   <Edit2 size={16} />
                 </button>
@@ -1104,32 +850,14 @@ const OppgaveListe = ({ oppgaver, fag, onToggleStatus, onEdit, onAdd }) => {
 
 const FagListe = ({ fag, onEdit, onAdd }) => {
   return (
-    <div style={{
-      backgroundColor: 'white',
-      borderRadius: '12px',
-      border: '1px solid var(--border-default)',
-      overflow: 'hidden'
-    }}>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '16px 20px',
-        borderBottom: '1px solid var(--border-default)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <GraduationCap size={20} color={'var(--accent)'} />
-          <SubSectionTitle style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+    <div className="bg-white rounded-xl border border-ak-border-default overflow-hidden">
+      <div className="flex justify-between items-center p-4 px-5 border-b border-ak-border-default">
+        <div className="flex items-center gap-2.5">
+          <GraduationCap size={20} className="text-ak-brand-primary" />
+          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
             Fag
           </SubSectionTitle>
-          <span style={{
-            padding: '2px 8px',
-            backgroundColor: 'var(--bg-secondary)',
-            color: 'var(--text-secondary)',
-            borderRadius: '12px',
-            fontSize: '12px',
-            fontWeight: 500
-          }}>
+          <span className="py-0.5 px-2 bg-ak-surface-subtle text-ak-text-secondary rounded-xl text-xs font-medium">
             {fag.length}
           </span>
         </div>
@@ -1144,37 +872,28 @@ const FagListe = ({ fag, onEdit, onAdd }) => {
       </div>
 
       {fag.length === 0 ? (
-        <div style={{
-          padding: '40px',
-          textAlign: 'center',
-          color: 'var(--text-secondary)'
-        }}>
-          <BookOpen size={40} style={{ marginBottom: '12px', opacity: 0.5 }} />
-          <p style={{ margin: 0 }}>Ingen fag enda. Opprett ditt forste fag!</p>
+        <div className="p-10 text-center text-ak-text-secondary">
+          <BookOpen size={40} className="mb-3 opacity-50 mx-auto" />
+          <p className="m-0">Ingen fag enda. Opprett ditt forste fag!</p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', padding: '16px' }}>
+        <div className="flex flex-wrap gap-2.5 p-4">
           {fag.map(f => (
             <div
               key={f.id}
               onClick={() => onEdit(f)}
+              className="flex items-center gap-2.5 py-2.5 px-3.5 rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '10px 14px',
-                backgroundColor: `${f.farge || 'var(--accent)'}15`,
-                borderLeft: `3px solid ${f.farge || 'var(--accent)'}`,
-                borderRadius: '8px',
-                cursor: 'pointer'
+                backgroundColor: `${f.farge || '#3B82F6'}15`,
+                borderLeft: `3px solid ${f.farge || '#3B82F6'}`
               }}
             >
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <div className="text-sm font-semibold text-ak-text-primary">
                   {f.navn}
                 </div>
                 {(f.larer || f.rom) && (
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                  <div className="text-xs text-ak-text-secondary">
                     {f.larer}{f.larer && f.rom && ' | '}{f.rom}
                   </div>
                 )}
@@ -1206,7 +925,6 @@ const Skoleplan = ({
   onToggleOppgaveStatus,
   onDeleteOppgave
 }) => {
-  // Modal states
   const [fagModalOpen, setFagModalOpen] = useState(false);
   const [editingFag, setEditingFag] = useState(null);
   const [timeModalOpen, setTimeModalOpen] = useState(false);
@@ -1214,7 +932,6 @@ const Skoleplan = ({
   const [oppgaveModalOpen, setOppgaveModalOpen] = useState(false);
   const [editingOppgave, setEditingOppgave] = useState(null);
 
-  // Fag handlers
   const handleAddFag = () => {
     setEditingFag(null);
     setFagModalOpen(true);
@@ -1239,7 +956,6 @@ const Skoleplan = ({
     }
   };
 
-  // Time handlers
   const handleAddTime = () => {
     setEditingTime(null);
     setTimeModalOpen(true);
@@ -1264,7 +980,6 @@ const Skoleplan = ({
     }
   };
 
-  // Oppgave handlers
   const handleAddOppgave = () => {
     setEditingOppgave(null);
     setOppgaveModalOpen(true);
@@ -1290,61 +1005,56 @@ const Skoleplan = ({
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Skoleplan"
         subtitle="Administrer timeplan, fag og oppgaver"
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
+        <div className="mb-6">
+          <FagListe fag={fag} onEdit={handleEditFag} onAdd={handleAddFag} />
+        </div>
 
-      {/* Fag section */}
-      <div style={{ marginBottom: '24px' }}>
-        <FagListe fag={fag} onEdit={handleEditFag} onAdd={handleAddFag} />
-      </div>
+        <div className="mb-6">
+          <Timeplan timer={timer} fag={fag} onAddTime={handleAddTime} onEditTime={handleEditTime} />
+        </div>
 
-      {/* Timeplan section */}
-      <div style={{ marginBottom: '24px' }}>
-        <Timeplan timer={timer} fag={fag} onAddTime={handleAddTime} onEditTime={handleEditTime} />
-      </div>
+        <div>
+          <OppgaveListe
+            oppgaver={oppgaver}
+            fag={fag}
+            onToggleStatus={onToggleOppgaveStatus}
+            onEdit={handleEditOppgave}
+            onAdd={handleAddOppgave}
+          />
+        </div>
 
-      {/* Oppgaver section */}
-      <div>
-        <OppgaveListe
-          oppgaver={oppgaver}
-          fag={fag}
-          onToggleStatus={onToggleOppgaveStatus}
-          onEdit={handleEditOppgave}
-          onAdd={handleAddOppgave}
+        <FagModal
+          isOpen={fagModalOpen}
+          onClose={() => setFagModalOpen(false)}
+          fag={editingFag}
+          onSave={handleSaveFag}
+          onDelete={handleDeleteFag}
         />
-      </div>
 
-      {/* Modals */}
-      <FagModal
-        isOpen={fagModalOpen}
-        onClose={() => setFagModalOpen(false)}
-        fag={editingFag}
-        onSave={handleSaveFag}
-        onDelete={handleDeleteFag}
-      />
+        <TimeModal
+          isOpen={timeModalOpen}
+          onClose={() => setTimeModalOpen(false)}
+          time={editingTime}
+          allFag={fag}
+          onSave={handleSaveTime}
+          onDelete={handleDeleteTime}
+        />
 
-      <TimeModal
-        isOpen={timeModalOpen}
-        onClose={() => setTimeModalOpen(false)}
-        time={editingTime}
-        allFag={fag}
-        onSave={handleSaveTime}
-        onDelete={handleDeleteTime}
-      />
-
-      <OppgaveModal
-        isOpen={oppgaveModalOpen}
-        onClose={() => setOppgaveModalOpen(false)}
-        oppgave={editingOppgave}
-        allFag={fag}
-        onSave={handleSaveOppgave}
-        onDelete={handleDeleteOppgave}
-      />
+        <OppgaveModal
+          isOpen={oppgaveModalOpen}
+          onClose={() => setOppgaveModalOpen(false)}
+          oppgave={editingOppgave}
+          allFag={fag}
+          onSave={handleSaveOppgave}
+          onDelete={handleDeleteOppgave}
+        />
       </div>
     </div>
   );

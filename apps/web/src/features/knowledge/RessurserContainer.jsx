@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Ressurser Container
+ * Design System v3.0 - Premium Light
+ *
+ * Knowledge resources with videos, articles, documents and links.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState } from 'react';
 import {
   BookMarked, Play, FileText, Video, Link as LinkIcon, Download,
@@ -7,6 +16,7 @@ import {
 import { PageHeader } from '../../components/layout/PageHeader';
 import Button from '../../ui/primitives/Button';
 import { SectionTitle, SubSectionTitle } from '../../components/typography';
+import StateCard from '../../ui/composites/StateCard';
 
 // ============================================================================
 // MOCK DATA - Will be replaced with API data
@@ -18,7 +28,7 @@ const MOCK_RESOURCES = [
     id: 'v1',
     type: 'video',
     title: 'Perfekt Swing Teknikk',
-    description: 'L\u00e6r grunnleggende swing-teknikk med fokus p\u00e5 rotasjon og balanse.',
+    description: 'Lær grunnleggende swing-teknikk med fokus på rotasjon og balanse.',
     category: 'teknikk',
     duration: '12:45',
     thumbnail: null,
@@ -47,7 +57,7 @@ const MOCK_RESOURCES = [
   {
     id: 'v3',
     type: 'video',
-    title: 'Mental Forberedelse f\u00f8r Turnering',
+    title: 'Mental Forberedelse før Turnering',
     description: 'Slik forbereder du deg mentalt for viktige konkurranser.',
     category: 'mental',
     duration: '22:15',
@@ -63,8 +73,8 @@ const MOCK_RESOURCES = [
   {
     id: 'a1',
     type: 'article',
-    title: 'N\u00e6ring for Golfspillere',
-    description: 'Optimal ern\u00e6ring for bedre prestasjon p\u00e5 banen.',
+    title: 'Næring for Golfspillere',
+    description: 'Optimal ernæring for bedre prestasjon på banen.',
     category: 'fysisk',
     readTime: '8 min',
     author: 'Dr. Anne Nilsen',
@@ -107,7 +117,7 @@ const MOCK_RESOURCES = [
     id: 'd1',
     type: 'document',
     title: 'Treningsdagbok Template',
-    description: 'Mal for \u00e5 f\u00f8re treningsdagbok gjennom sesongen.',
+    description: 'Mal for å føre treningsdagbok gjennom sesongen.',
     category: 'trening',
     fileType: 'PDF',
     fileSize: '245 KB',
@@ -120,8 +130,8 @@ const MOCK_RESOURCES = [
     id: 'd2',
     type: 'document',
     title: 'Kategori B Krav',
-    description: 'Komplett oversikt over krav for \u00e5 n\u00e5 Kategori B.',
-    category: 'm\u00e5l',
+    description: 'Komplett oversikt over krav for å nå Kategori B.',
+    category: 'mål',
     fileType: 'PDF',
     fileSize: '1.2 MB',
     downloads: 1543,
@@ -145,7 +155,7 @@ const MOCK_RESOURCES = [
     id: 'l2',
     type: 'link',
     title: 'TrackMan University',
-    description: 'L\u00e6ringsressurser for TrackMan-analyse.',
+    description: 'Læringsressurser for TrackMan-analyse.',
     category: 'teknikk',
     domain: 'trackmangolf.com',
     isSaved: false,
@@ -161,7 +171,7 @@ const CATEGORIES = [
   { key: 'fysisk', label: 'Fysisk', icon: Star },
   { key: 'trening', label: 'Trening', icon: Clock },
   { key: 'regler', label: 'Regler', icon: FileText },
-  { key: 'm\u00e5l', label: 'M\u00e5l', icon: Star },
+  { key: 'mål', label: 'Mål', icon: Star },
 ];
 
 // ============================================================================
@@ -171,15 +181,15 @@ const CATEGORIES = [
 const getTypeConfig = (type) => {
   switch (type) {
     case 'video':
-      return { icon: Video, color: 'var(--error)', label: 'Video' };
+      return { icon: Video, colorClasses: { bg: 'bg-ak-status-error/10', text: 'text-ak-status-error' }, label: 'Video' };
     case 'article':
-      return { icon: FileText, color: 'var(--accent)', label: 'Artikkel' };
+      return { icon: FileText, colorClasses: { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' }, label: 'Artikkel' };
     case 'document':
-      return { icon: Download, color: 'var(--success)', label: 'Dokument' };
+      return { icon: Download, colorClasses: { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' }, label: 'Dokument' };
     case 'link':
-      return { icon: LinkIcon, color: 'var(--achievement)', label: 'Lenke' };
+      return { icon: LinkIcon, colorClasses: { bg: 'bg-amber-500/10', text: 'text-amber-500' }, label: 'Lenke' };
     default:
-      return { icon: BookMarked, color: 'var(--text-secondary)', label: type };
+      return { icon: BookMarked, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, label: type };
   }
 };
 
@@ -194,88 +204,32 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
   return (
     <div
       onClick={() => onOpen(resource)}
-      style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '16px',
-        overflow: 'hidden',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-      }}
+      className="bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm cursor-pointer transition-all flex flex-col hover:-translate-y-0.5 hover:shadow-lg"
     >
       {/* Thumbnail/Preview */}
-      <div style={{
-        height: '120px',
-        backgroundColor: `${typeConfig.color}10`,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-      }}>
-        <TypeIcon size={40} color={typeConfig.color} />
+      <div className={`h-[120px] ${typeConfig.colorClasses.bg} flex items-center justify-center relative`}>
+        <TypeIcon size={40} className={typeConfig.colorClasses.text} />
 
         {/* Type Badge */}
-        <div style={{
-          position: 'absolute',
-          top: '12px',
-          left: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '4px 10px',
-          borderRadius: '6px',
-          backgroundColor: 'var(--bg-primary)',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        }}>
-          <TypeIcon size={12} color={typeConfig.color} />
-          <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--text-primary)' }}>
+        <div className="absolute top-3 left-3 flex items-center gap-1.5 py-1 px-2.5 rounded-md bg-ak-surface-base shadow-sm">
+          <TypeIcon size={12} className={typeConfig.colorClasses.text} />
+          <span className="text-[11px] font-medium text-ak-text-primary">
             {typeConfig.label}
           </span>
         </div>
 
         {/* New Badge */}
         {resource.isNew && (
-          <div style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            padding: '4px 8px',
-            borderRadius: '6px',
-            backgroundColor: 'var(--success)',
-            color: 'var(--bg-primary)',
-            fontSize: '10px',
-            fontWeight: 600,
-          }}>
+          <div className="absolute top-3 right-3 py-1 px-2 rounded-md bg-ak-status-success text-white text-[10px] font-semibold">
             NY
           </div>
         )}
 
         {/* Duration/Read Time */}
         {(resource.duration || resource.readTime) && (
-          <div style={{
-            position: 'absolute',
-            bottom: '12px',
-            right: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            padding: '4px 8px',
-            borderRadius: '6px',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            color: 'var(--bg-primary)',
-          }}>
+          <div className="absolute bottom-3 right-3 flex items-center gap-1 py-1 px-2 rounded-md bg-black/70 text-white">
             <Clock size={12} />
-            <span style={{ fontSize: '11px', fontWeight: 500 }}>
+            <span className="text-[11px] font-medium">
               {resource.duration || resource.readTime}
             </span>
           </div>
@@ -283,60 +237,38 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
       </div>
 
       {/* Content */}
-      <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <SubSectionTitle style={{
-          fontSize: '15px',
-          fontWeight: 600,
-          color: 'var(--text-primary)',
-          margin: '0 0 8px 0',
-          lineHeight: 1.3,
-        }}>
+      <div className="p-4 flex-1 flex flex-col">
+        <SubSectionTitle className="text-[15px] font-semibold text-ak-text-primary m-0 mb-2 leading-tight">
           {resource.title}
         </SubSectionTitle>
 
-        <p style={{
-          fontSize: '13px',
-          color: 'var(--text-secondary)',
-          margin: '0 0 12px 0',
-          lineHeight: 1.5,
-          flex: 1,
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-        }}>
+        <p className="text-[13px] text-ak-text-secondary m-0 mb-3 leading-normal flex-1 line-clamp-2">
           {resource.description}
         </p>
 
         {/* Meta */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingTop: '12px',
-          borderTop: '1px solid var(--border-default)',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="flex items-center justify-between pt-3 border-t border-ak-border-default">
+          <div className="flex items-center gap-3">
             {resource.rating && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Star size={12} color={'var(--achievement)'} fill={'var(--achievement)'} />
-                <span style={{ fontSize: '12px', color: 'var(--text-primary)', fontWeight: 500 }}>
+              <div className="flex items-center gap-1">
+                <Star size={12} fill="#f59e0b" className="text-amber-500" />
+                <span className="text-xs text-ak-text-primary font-medium">
                   {resource.rating}
                 </span>
               </div>
             )}
             {resource.views && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Eye size={12} color={'var(--text-secondary)'} />
-                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div className="flex items-center gap-1">
+                <Eye size={12} className="text-ak-text-secondary" />
+                <span className="text-xs text-ak-text-secondary">
                   {resource.views.toLocaleString()}
                 </span>
               </div>
             )}
             {resource.downloads && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Download size={12} color={'var(--text-secondary)'} />
-                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div className="flex items-center gap-1">
+                <Download size={12} className="text-ak-text-secondary" />
+                <span className="text-xs text-ak-text-secondary">
                   {resource.downloads.toLocaleString()}
                 </span>
               </div>
@@ -349,23 +281,14 @@ const ResourceCard = ({ resource, onToggleSave, onOpen }) => {
               e.stopPropagation();
               onToggleSave(resource.id);
             }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: resource.isSaved ? 'rgba(var(--accent-rgb), 0.15)' : 'var(--bg-secondary)',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-            }}
+            className={`flex items-center justify-center w-8 h-8 rounded-lg border-none cursor-pointer transition-all ${
+              resource.isSaved ? 'bg-ak-brand-primary/15' : 'bg-ak-surface-subtle'
+            }`}
           >
             {resource.isSaved ? (
-              <BookmarkCheck size={16} color={'var(--accent)'} />
+              <BookmarkCheck size={16} className="text-ak-brand-primary" />
             ) : (
-              <Bookmark size={16} color={'var(--text-secondary)'} />
+              <Bookmark size={16} className="text-ak-text-secondary" />
             )}
           </button>
         </div>
@@ -385,79 +308,28 @@ const FeaturedResource = ({ resource, onOpen }) => {
   return (
     <div
       onClick={() => onOpen(resource)}
-      style={{
-        backgroundColor: 'var(--accent)',
-        borderRadius: '20px',
-        padding: '24px',
-        color: 'var(--bg-primary)',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        display: 'flex',
-        gap: '20px',
-        alignItems: 'center',
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'scale(1.01)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'scale(1)';
-      }}
+      className="bg-ak-brand-primary rounded-[20px] p-6 text-white cursor-pointer transition-all flex gap-5 items-center hover:scale-[1.01]"
     >
       {/* Icon */}
-      <div style={{
-        width: '80px',
-        height: '80px',
-        borderRadius: '16px',
-        backgroundColor: 'rgba(255,255,255,0.15)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-      }}>
-        <TypeIcon size={36} color={'var(--bg-primary)'} />
+      <div className="w-20 h-20 rounded-2xl bg-white/15 flex items-center justify-center flex-shrink-0">
+        <TypeIcon size={36} className="text-white" />
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1 }}>
-        <div style={{
-          display: 'inline-block',
-          padding: '4px 10px',
-          borderRadius: '6px',
-          backgroundColor: 'rgba(255,255,255,0.2)',
-          fontSize: '11px',
-          fontWeight: 600,
-          marginBottom: '8px',
-        }}>
+      <div className="flex-1">
+        <div className="inline-block py-1 px-2.5 rounded-md bg-white/20 text-[11px] font-semibold mb-2">
           ANBEFALT
         </div>
-        <SectionTitle style={{
-          fontSize: '20px',
-          fontWeight: 700,
-          margin: '0 0 8px 0',
-        }}>
+        <SectionTitle className="text-xl font-bold m-0 mb-2 text-white">
           {resource.title}
         </SectionTitle>
-        <p style={{
-          fontSize: '14px',
-          opacity: 0.85,
-          margin: 0,
-          lineHeight: 1.5,
-        }}>
+        <p className="text-sm opacity-85 m-0 leading-normal">
           {resource.description}
         </p>
       </div>
 
       {/* Arrow */}
-      <div style={{
-        width: '44px',
-        height: '44px',
-        borderRadius: '12px',
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-      }}>
+      <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
         <ChevronRight size={24} />
       </div>
     </div>
@@ -470,12 +342,7 @@ const FeaturedResource = ({ resource, onOpen }) => {
 
 const CategoryFilter = ({ activeCategory, onCategoryChange, resources }) => {
   return (
-    <div style={{
-      display: 'flex',
-      gap: '8px',
-      overflowX: 'auto',
-      paddingBottom: '4px',
-    }}>
+    <div className="flex gap-2 overflow-x-auto pb-1">
       {CATEGORIES.map((category) => {
         const Icon = category.icon;
         const count = category.key === 'all'
@@ -486,33 +353,19 @@ const CategoryFilter = ({ activeCategory, onCategoryChange, resources }) => {
           <button
             key={category.key}
             onClick={() => onCategoryChange(category.key)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              borderRadius: '12px',
-              border: 'none',
-              backgroundColor: activeCategory === category.key ? 'var(--accent)' : 'var(--bg-primary)',
-              color: activeCategory === category.key ? 'var(--bg-primary)' : 'var(--text-primary)',
-              fontSize: '13px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              whiteSpace: 'nowrap',
-              boxShadow: activeCategory === category.key ? 'none' : '0 1px 3px rgba(0,0,0,0.08)',
-            }}
+            className={`flex items-center gap-2 py-2.5 px-4 rounded-xl border-none text-[13px] font-medium cursor-pointer transition-all whitespace-nowrap ${
+              activeCategory === category.key
+                ? 'bg-ak-brand-primary text-white shadow-none'
+                : 'bg-ak-surface-base text-ak-text-primary shadow-sm'
+            }`}
           >
             <Icon size={16} />
             {category.label}
-            <span style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              borderRadius: '6px',
-              backgroundColor: activeCategory === category.key
-                ? 'rgba(255,255,255,0.2)'
-                : 'var(--bg-secondary)',
-            }}>
+            <span className={`text-[11px] py-0.5 px-1.5 rounded-md ${
+              activeCategory === category.key
+                ? 'bg-white/20'
+                : 'bg-ak-surface-subtle'
+            }`}>
               {count}
             </span>
           </button>
@@ -528,42 +381,17 @@ const CategoryFilter = ({ activeCategory, onCategoryChange, resources }) => {
 
 const SearchBar = ({ value, onChange }) => {
   return (
-    <div style={{
-      position: 'relative',
-      marginBottom: '20px',
-    }}>
+    <div className="relative mb-5">
       <Search
         size={18}
-        color={'var(--text-secondary)'}
-        style={{
-          position: 'absolute',
-          left: '16px',
-          top: '50%',
-          transform: 'translateY(-50%)',
-        }}
+        className="absolute left-4 top-1/2 -translate-y-1/2 text-ak-text-secondary"
       />
       <input
         type="text"
-        placeholder="S\u00f8k i ressurser..."
+        placeholder="Søk i ressurser..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        style={{
-          width: '100%',
-          padding: '14px 16px 14px 48px',
-          borderRadius: '12px',
-          border: '1px solid var(--border-default)',
-          backgroundColor: 'var(--bg-primary)',
-          fontSize: '14px',
-          color: 'var(--text-primary)',
-          outline: 'none',
-          transition: 'border-color 0.2s ease',
-        }}
-        onFocus={(e) => {
-          e.target.style.borderColor = 'var(--accent)';
-        }}
-        onBlur={(e) => {
-          e.target.style.borderColor = 'var(--border-default)';
-        }}
+        className="w-full py-3.5 pr-4 pl-12 rounded-xl border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary transition-colors"
       />
     </div>
   );
@@ -580,164 +408,84 @@ const ResourceDetailModal = ({ resource, onClose }) => {
   const TypeIcon = typeConfig.icon;
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000,
-      padding: '20px',
-    }} onClick={onClose}>
-      <div style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '20px',
-        maxWidth: '600px',
-        width: '100%',
-        maxHeight: '80vh',
-        overflow: 'auto',
-      }} onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000] p-5"
+      onClick={onClose}
+    >
+      <div
+        className="bg-ak-surface-base rounded-[20px] max-w-[600px] w-full max-h-[80vh] overflow-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div style={{
-          height: '180px',
-          backgroundColor: `${typeConfig.color}15`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-        }}>
-          <TypeIcon size={64} color={typeConfig.color} />
+        <div className={`h-[180px] ${typeConfig.colorClasses.bg} flex items-center justify-center relative`}>
+          <TypeIcon size={64} className={typeConfig.colorClasses.text} />
           <button
             onClick={onClose}
-            style={{
-              position: 'absolute',
-              top: '16px',
-              right: '16px',
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
-              border: 'none',
-              backgroundColor: 'var(--bg-primary)',
-              cursor: 'pointer',
-              fontSize: '20px',
-              color: 'var(--text-secondary)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            }}
+            className="absolute top-4 right-4 w-9 h-9 rounded-[10px] border-none bg-ak-surface-base cursor-pointer text-xl text-ak-text-secondary shadow-md flex items-center justify-center"
           >
-            \u00d7
+            ×
           </button>
         </div>
 
         {/* Content */}
-        <div style={{ padding: '24px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '12px',
-          }}>
-            <span style={{
-              padding: '4px 10px',
-              borderRadius: '6px',
-              backgroundColor: `${typeConfig.color}15`,
-              color: typeConfig.color,
-              fontSize: '12px',
-              fontWeight: 500,
-            }}>
+        <div className="p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <span className={`py-1 px-2.5 rounded-md ${typeConfig.colorClasses.bg} ${typeConfig.colorClasses.text} text-xs font-medium`}>
               {typeConfig.label}
             </span>
             {resource.isNew && (
-              <span style={{
-                padding: '4px 8px',
-                borderRadius: '6px',
-                backgroundColor: 'var(--success)',
-                color: 'var(--bg-primary)',
-                fontSize: '10px',
-                fontWeight: 600,
-              }}>
+              <span className="py-1 px-2 rounded-md bg-ak-status-success text-white text-[10px] font-semibold">
                 NY
               </span>
             )}
           </div>
 
-          <SectionTitle style={{
-            fontSize: '22px',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            margin: '0 0 12px 0',
-          }}>
+          <SectionTitle className="text-[22px] font-bold text-ak-text-primary m-0 mb-3">
             {resource.title}
           </SectionTitle>
 
-          <p style={{
-            fontSize: '15px',
-            color: 'var(--text-secondary)',
-            lineHeight: 1.6,
-            margin: '0 0 20px 0',
-          }}>
+          <p className="text-[15px] text-ak-text-secondary leading-relaxed m-0 mb-5">
             {resource.description}
           </p>
 
           {/* Meta info */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '12px',
-            marginBottom: '24px',
-          }}>
+          <div className="grid grid-cols-2 gap-3 mb-6">
             {resource.author && (
-              <div style={{
-                padding: '12px',
-                backgroundColor: 'var(--bg-secondary)',
-                borderRadius: '10px',
-              }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+              <div className="p-3 bg-ak-surface-subtle rounded-[10px]">
+                <div className="text-[11px] text-ak-text-secondary mb-1">
                   Forfatter
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <div className="text-sm font-medium text-ak-text-primary">
                   {resource.author}
                 </div>
               </div>
             )}
             {(resource.duration || resource.readTime) && (
-              <div style={{
-                padding: '12px',
-                backgroundColor: 'var(--bg-secondary)',
-                borderRadius: '10px',
-              }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+              <div className="p-3 bg-ak-surface-subtle rounded-[10px]">
+                <div className="text-[11px] text-ak-text-secondary mb-1">
                   {resource.type === 'video' ? 'Varighet' : 'Lesetid'}
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <div className="text-sm font-medium text-ak-text-primary">
                   {resource.duration || resource.readTime}
                 </div>
               </div>
             )}
             {resource.fileType && (
-              <div style={{
-                padding: '12px',
-                backgroundColor: 'var(--bg-secondary)',
-                borderRadius: '10px',
-              }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+              <div className="p-3 bg-ak-surface-subtle rounded-[10px]">
+                <div className="text-[11px] text-ak-text-secondary mb-1">
                   Filtype
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <div className="text-sm font-medium text-ak-text-primary">
                   {resource.fileType} ({resource.fileSize})
                 </div>
               </div>
             )}
             {resource.domain && (
-              <div style={{
-                padding: '12px',
-                backgroundColor: 'var(--bg-secondary)',
-                borderRadius: '10px',
-              }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+              <div className="p-3 bg-ak-surface-subtle rounded-[10px]">
+                <div className="text-[11px] text-ak-text-secondary mb-1">
                   Kilde
                 </div>
-                <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <div className="text-sm font-medium text-ak-text-primary">
                   {resource.domain}
                 </div>
               </div>
@@ -747,27 +495,12 @@ const ResourceDetailModal = ({ resource, onClose }) => {
           {/* Action button */}
           <button
             onClick={() => window.open(resource.url, '_blank')}
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px',
-              borderRadius: '12px',
-              border: 'none',
-              backgroundColor: 'var(--accent)',
-              color: 'var(--bg-primary)',
-              fontSize: '15px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'background-color 0.2s ease',
-            }}
+            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border-none bg-ak-brand-primary text-white text-[15px] font-semibold cursor-pointer transition-colors hover:bg-ak-brand-primary/90"
           >
             {resource.type === 'video' && <><Play size={18} /> Se video</>}
             {resource.type === 'article' && <><BookOpen size={18} /> Les artikkel</>}
             {resource.type === 'document' && <><Download size={18} /> Last ned</>}
-            {resource.type === 'link' && <><ExternalLink size={18} /> \u00c5pne lenke</>}
+            {resource.type === 'link' && <><ExternalLink size={18} /> Åpne lenke</>}
           </button>
         </div>
       </div>
@@ -804,69 +537,44 @@ const RessurserContainer = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Ressurser"
         subtitle="Videoer, artikler og læringsmateriale"
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         {/* Stats Row */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-          gap: '12px',
-          marginBottom: '24px',
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 mb-6">
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-brand-primary">
               {resources.length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Ressurser</div>
+            <div className="text-xs text-ak-text-secondary">Ressurser</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--error)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-status-error">
               {resources.filter(r => r.type === 'video').length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Videoer</div>
+            <div className="text-xs text-ak-text-secondary">Videoer</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-status-success">
               {resources.filter(r => r.type === 'article').length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Artikler</div>
+            <div className="text-xs text-ak-text-secondary">Artikler</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-amber-500">
               {savedResources.length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Lagret</div>
+            <div className="text-xs text-ak-text-secondary">Lagret</div>
           </div>
         </div>
 
         {/* Featured Resource */}
         {featuredResource && (
-          <div style={{ marginBottom: '24px' }}>
+          <div className="mb-6">
             <FeaturedResource
               resource={featuredResource}
               onOpen={setSelectedResource}
@@ -878,7 +586,7 @@ const RessurserContainer = () => {
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
 
         {/* Category Filter */}
-        <div style={{ marginBottom: '24px' }}>
+        <div className="mb-6">
           <CategoryFilter
             activeCategory={category}
             onCategoryChange={setCategory}
@@ -888,24 +596,12 @@ const RessurserContainer = () => {
 
         {/* Saved Resources Section */}
         {savedResources.length > 0 && category === 'all' && !searchQuery && (
-          <div style={{ marginBottom: '32px' }}>
-            <SectionTitle style={{
-              fontSize: '18px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: '0 0 16px 0',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <BookmarkCheck size={20} color={'var(--accent)'} />
+          <div className="mb-8">
+            <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4 flex items-center gap-2">
+              <BookmarkCheck size={20} className="text-ak-brand-primary" />
               Lagrede ressurser
             </SectionTitle>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '16px',
-            }}>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
               {savedResources.slice(0, 3).map((resource) => (
                 <ResourceCard
                   key={resource.id}
@@ -920,29 +616,15 @@ const RessurserContainer = () => {
 
         {/* All Resources */}
         <div>
-          <SectionTitle style={{
-            fontSize: '18px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: '0 0 16px 0',
-          }}>
+          <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4">
             {category === 'all' ? 'Alle ressurser' : CATEGORIES.find(c => c.key === category)?.label}
-            <span style={{
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'var(--text-secondary)',
-              marginLeft: '8px',
-            }}>
+            <span className="text-sm font-normal text-ak-text-secondary ml-2">
               ({filteredResources.length})
             </span>
           </SectionTitle>
 
           {filteredResources.length > 0 ? (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '16px',
-            }}>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
               {filteredResources.map((resource) => (
                 <ResourceCard
                   key={resource.id}
@@ -953,17 +635,12 @@ const RessurserContainer = () => {
               ))}
             </div>
           ) : (
-            <div style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '16px',
-              padding: '60px 20px',
-              textAlign: 'center',
-            }}>
-              <Search size={40} color={'var(--text-secondary)'} style={{ marginBottom: '12px' }} />
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: 0 }}>
-                Ingen ressurser funnet
-              </p>
-            </div>
+            <StateCard
+              variant="empty"
+              icon={Search}
+              title="Ingen ressurser funnet"
+              description="Prøv å justere søket eller kategorien."
+            />
           )}
         </div>
       </div>

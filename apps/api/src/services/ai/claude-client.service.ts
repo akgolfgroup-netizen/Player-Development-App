@@ -49,6 +49,21 @@ export interface ChatResponse {
   };
 }
 
+export interface StreamEvent {
+  type: 'text' | 'tool_use_start' | 'tool_use_delta' | 'done' | 'error';
+  content?: string;
+  toolCall?: {
+    id: string;
+    name: string;
+    input?: Record<string, unknown>;
+  };
+  usage?: {
+    inputTokens: number;
+    outputTokens: number;
+  };
+  error?: string;
+}
+
 class ClaudeClientService {
   private client: Anthropic | null = null;
   private isEnabled: boolean;
@@ -140,6 +155,70 @@ class ClaudeClientService {
       { ...options, system }
     );
     return response.content;
+  }
+
+  /**
+   * Stream a chat response
+   */
+  async *chatStream(
+    messages: ChatMessage[],
+    options: ChatOptions = {}
+  ): AsyncGenerator<StreamEvent> {
+    if (!this.client) {
+      yield { type: 'error', error: 'Claude AI is not configured' };
+      return;
+    }
+
+    try {
+      const stream = await this.client.messages.stream({
+        model: config.anthropic.model,
+        max_tokens: options.maxTokens || config.anthropic.maxTokens,
+        system: options.system,
+        messages: messages.map(m => ({
+          role: m.role,
+          content: m.content,
+        })),
+        tools: options.tools as Anthropic.Tool[] | undefined,
+        temperature: options.temperature,
+      });
+
+      let inputTokens = 0;
+      let outputTokens = 0;
+
+      for await (const event of stream) {
+        if (event.type === 'message_start') {
+          inputTokens = event.message.usage?.input_tokens || 0;
+        } else if (event.type === 'content_block_delta') {
+          const delta = event.delta;
+          if ('text' in delta) {
+            yield { type: 'text', content: delta.text };
+          } else if ('partial_json' in delta) {
+            yield { type: 'tool_use_delta', content: delta.partial_json };
+          }
+        } else if (event.type === 'content_block_start') {
+          const block = event.content_block;
+          if (block.type === 'tool_use') {
+            yield {
+              type: 'tool_use_start',
+              toolCall: { id: block.id, name: block.name },
+            };
+          }
+        } else if (event.type === 'message_delta') {
+          outputTokens = event.usage?.output_tokens || 0;
+        }
+      }
+
+      yield {
+        type: 'done',
+        usage: { inputTokens, outputTokens },
+      };
+    } catch (error) {
+      console.error('Claude stream error:', error);
+      yield {
+        type: 'error',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
   }
 
   /**

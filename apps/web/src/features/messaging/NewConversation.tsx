@@ -1,9 +1,12 @@
 /**
  * AK Golf Academy - New Conversation
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
  *
  * Komponent for å starte en ny samtale.
  * Lar spilleren velge mottaker og skrive første melding.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ * (except dynamic avatar background colors which require runtime values)
  */
 
 import React, { useState, useEffect } from 'react';
@@ -17,6 +20,10 @@ import {
 import Button from '../../ui/primitives/Button';
 import { SectionTitle } from '../../components/typography';
 
+// ============================================================================
+// TYPES
+// ============================================================================
+
 interface Contact {
   id: string;
   name: string;
@@ -28,6 +35,27 @@ interface Contact {
 interface NewConversationProps {
   userId?: string;
 }
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+
+const getRoleLabel = (role: string): string => {
+  switch (role) {
+    case 'coach':
+      return 'Trener';
+    case 'player':
+      return 'Spiller';
+    case 'parent':
+      return 'Foresatt';
+    default:
+      return '';
+  }
+};
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 export default function NewConversation({ userId }: NewConversationProps) {
   const navigate = useNavigate();
@@ -56,21 +84,21 @@ export default function NewConversation({ userId }: NewConversationProps) {
             name: 'Anders Kristiansen',
             role: 'coach',
             avatarInitials: 'AK',
-            avatarColor: 'var(--achievement)',
+            avatarColor: 'var(--ak-status-warning)',
           },
           {
             id: '2',
             name: 'Erik Hansen',
             role: 'coach',
             avatarInitials: 'EH',
-            avatarColor: 'var(--accent)',
+            avatarColor: 'var(--ak-brand-primary)',
           },
           {
             id: '3',
             name: 'Lars Olsen',
             role: 'player',
             avatarInitials: 'LO',
-            avatarColor: 'var(--success)',
+            avatarColor: 'var(--ak-status-success)',
           },
         ]);
       } finally {
@@ -114,128 +142,49 @@ export default function NewConversation({ userId }: NewConversationProps) {
     }
   };
 
-  // Get role label
-  const getRoleLabel = (role: string) => {
-    switch (role) {
-      case 'coach':
-        return 'Trener';
-      case 'player':
-        return 'Spiller';
-      case 'parent':
-        return 'Foresatt';
-      default:
-        return '';
-    }
-  };
-
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+    <div className="max-w-[600px] mx-auto">
       {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          marginBottom: '24px',
-        }}
-      >
+      <div className="flex items-center gap-3 mb-6">
         <button
           onClick={() => navigate('/meldinger')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 40,
-            height: 40,
-            backgroundColor: 'var(--bg-primary)',
-            border: `1px solid ${'var(--border-default)'}`,
-            borderRadius: 'var(--radius-md)',
-            cursor: 'pointer',
-          }}
+          className="flex items-center justify-center w-10 h-10 bg-ak-surface-base border border-ak-border-default rounded-lg cursor-pointer hover:bg-ak-surface-subtle transition-colors"
         >
-          <ArrowLeft size={20} color={'var(--text-primary)'} />
+          <ArrowLeft size={20} className="text-ak-text-primary" />
         </button>
-        <SectionTitle
-          style={{
-            fontSize: '22px', lineHeight: '28px', fontWeight: 700,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}
-        >
+        <SectionTitle className="text-[22px] leading-7 font-bold text-ak-text-primary m-0">
           Ny melding
         </SectionTitle>
       </div>
 
       {/* Contact selection or message composer */}
       {!selectedContact ? (
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            border: `1px solid ${'var(--border-default)'}`,
-            overflow: 'hidden',
-          }}
-        >
+        <div className="bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
           {/* Search */}
-          <div
-            style={{
-              padding: '16px',
-              borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
-            }}
-          >
-            <div style={{ position: 'relative' }}>
+          <div className="p-4 border-b border-ak-surface-subtle">
+            <div className="relative">
               <Search
                 size={18}
-                style={{
-                  position: 'absolute',
-                  left: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: 'var(--text-secondary)',
-                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
               />
               <input
                 type="text"
                 placeholder="Søk etter kontakt..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px 10px 40px',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-md)',
-                  fontSize: '14px',
-                  outline: 'none',
-                }}
+                className="w-full py-2.5 pr-3 pl-10 bg-ak-surface-subtle border-none rounded-lg text-sm text-ak-text-primary outline-none focus:ring-2 focus:ring-ak-brand-primary/30"
               />
             </div>
           </div>
 
           {/* Contact list */}
           {loading ? (
-            <div style={{ padding: '32px', textAlign: 'center' }}>
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  border: `3px solid ${'var(--border-default)'}`,
-                  borderTopColor: 'var(--accent)',
-                  borderRadius: '50%',
-                  margin: '0 auto',
-                  animation: 'spin 1s linear infinite',
-                }}
-              />
+            <div className="py-8 text-center">
+              <div className="w-8 h-8 border-[3px] border-ak-border-default border-t-ak-brand-primary rounded-full mx-auto animate-spin" />
             </div>
           ) : filteredContacts.length === 0 ? (
-            <div style={{ padding: '32px', textAlign: 'center' }}>
-              <p
-                style={{
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-secondary)',
-                  margin: 0,
-                }}
-              >
+            <div className="py-8 text-center">
+              <p className="text-[15px] leading-5 text-ak-text-secondary m-0">
                 {searchQuery
                   ? 'Ingen kontakter funnet'
                   : 'Ingen tilgjengelige kontakter'}
@@ -246,53 +195,19 @@ export default function NewConversation({ userId }: NewConversationProps) {
               <button
                 key={contact.id}
                 onClick={() => setSelectedContact(contact)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  width: '100%',
-                  padding: '14px 16px',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                }}
+                className="flex items-center gap-3 w-full py-3.5 px-4 bg-transparent border-none border-b border-ak-surface-subtle cursor-pointer text-left hover:bg-ak-surface-subtle transition-colors"
               >
                 <div
-                  style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: contact.avatarColor,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--bg-primary)',
-                    fontWeight: 700,
-                    fontSize: '14px',
-                    flexShrink: 0,
-                  }}
+                  className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
+                  style={{ backgroundColor: contact.avatarColor }}
                 >
                   {contact.avatarInitials}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <p
-                    style={{
-                      fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                      color: 'var(--text-primary)',
-                      margin: '0 0 2px',
-                    }}
-                  >
+                <div className="flex-1">
+                  <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-0.5">
                     {contact.name}
                   </p>
-                  <p
-                    style={{
-                      fontSize: '13px', lineHeight: '18px',
-                      color: 'var(--text-secondary)',
-                      margin: 0,
-                    }}
-                  >
+                  <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
                     {getRoleLabel(contact.role)}
                   </p>
                 </div>
@@ -301,109 +216,43 @@ export default function NewConversation({ userId }: NewConversationProps) {
           )}
         </div>
       ) : (
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            border: `1px solid ${'var(--border-default)'}`,
-            overflow: 'hidden',
-          }}
-        >
+        <div className="bg-ak-surface-base rounded-xl border border-ak-border-default overflow-hidden">
           {/* Selected contact header */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '16px',
-              borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
-            }}
-          >
+          <div className="flex items-center gap-3 p-4 border-b border-ak-surface-subtle">
             <div
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: selectedContact.avatarColor,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'var(--bg-primary)',
-                fontWeight: 700,
-                fontSize: '14px',
-              }}
+              className="w-11 h-11 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+              style={{ backgroundColor: selectedContact.avatarColor }}
             >
               {selectedContact.avatarInitials}
             </div>
-            <div style={{ flex: 1 }}>
-              <p
-                style={{
-                  fontSize: '17px', lineHeight: '22px', fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  margin: '0 0 2px',
-                }}
-              >
+            <div className="flex-1">
+              <p className="text-[17px] leading-[22px] font-semibold text-ak-text-primary m-0 mb-0.5">
                 {selectedContact.name}
               </p>
-              <p
-                style={{
-                  fontSize: '13px', lineHeight: '18px',
-                  color: 'var(--text-secondary)',
-                  margin: 0,
-                }}
-              >
+              <p className="text-[13px] leading-[18px] text-ak-text-secondary m-0">
                 {getRoleLabel(selectedContact.role)}
               </p>
             </div>
             <button
               onClick={() => setSelectedContact(null)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 32,
-                height: 32,
-                backgroundColor: 'var(--bg-tertiary)',
-                border: 'none',
-                borderRadius: 'var(--radius-sm)',
-                cursor: 'pointer',
-              }}
+              className="flex items-center justify-center w-8 h-8 bg-ak-surface-subtle border-none rounded cursor-pointer hover:bg-ak-border-default transition-colors"
             >
-              <X size={16} color={'var(--text-secondary)'} />
+              <X size={16} className="text-ak-text-secondary" />
             </button>
           </div>
 
           {/* Message composer */}
-          <div style={{ padding: '16px' }}>
+          <div className="p-4">
             <textarea
               placeholder="Skriv din melding..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              style={{
-                width: '100%',
-                minHeight: '120px',
-                padding: '12px',
-                backgroundColor: 'var(--bg-tertiary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                fontSize: '14px',
-                lineHeight: '1.5',
-                resize: 'vertical',
-                outline: 'none',
-                fontFamily: 'inherit',
-              }}
+              className="w-full min-h-[120px] p-3 bg-ak-surface-subtle border-none rounded-lg text-sm leading-relaxed resize-y outline-none font-[inherit] text-ak-text-primary focus:ring-2 focus:ring-ak-brand-primary/30"
             />
           </div>
 
           {/* Send button */}
-          <div
-            style={{
-              padding: '16px',
-              borderTop: `1px solid ${'var(--bg-tertiary)'}`,
-              display: 'flex',
-              justifyContent: 'flex-end',
-            }}
-          >
+          <div className="p-4 border-t border-ak-surface-subtle flex justify-end">
             <Button
               variant="primary"
               onClick={handleSend}

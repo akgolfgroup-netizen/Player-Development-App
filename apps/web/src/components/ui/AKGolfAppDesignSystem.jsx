@@ -596,7 +596,7 @@ const AKGolfAppDesignSystem = () => {
             { icon: <Icons.Home />, label: 'Hjem', active: true },
             { icon: <Icons.Calendar />, label: 'Plan', active: false },
             { icon: <Icons.Target />, label: 'Mål', active: false },
-            { icon: <Icons.TrendingUp />, label: 'Stats', active: false },
+            { icon: <Icons.TrendingUp />, label: 'Statistikk', active: false },
             { icon: <Icons.User />, label: 'Profil', active: false },
           ].map((item, idx) => (
             <div key={idx} style={{

@@ -1,6 +1,8 @@
 /**
  * AK Golf Academy - Coach Booking Settings
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Innstillinger for trenerens tilgjengelighet og bookingpreferanser.
  */
@@ -27,6 +29,30 @@ import {
 import PageHeader from '../../ui/raw-blocks/PageHeader.raw';
 import Button from '../../ui/primitives/Button';
 import { SectionTitle } from '../../components/typography';
+
+// ============================================================================
+// COMPONENTS
+// ============================================================================
+
+interface ToggleSwitchProps {
+  enabled: boolean;
+  onToggle: () => void;
+}
+
+const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ enabled, onToggle }) => (
+  <button
+    onClick={onToggle}
+    className={`w-11 h-6 rounded-xl border-none relative cursor-pointer transition-colors ${
+      enabled ? 'bg-ak-brand-primary' : 'bg-ak-border-default'
+    }`}
+  >
+    <div
+      className={`w-5 h-5 rounded-full bg-ak-surface-base absolute top-0.5 shadow transition-all ${
+        enabled ? 'left-[22px]' : 'left-0.5'
+      }`}
+    />
+  </button>
+);
 
 interface TimeSlot {
   start: string;
@@ -292,37 +318,14 @@ export default function CoachBookingSettings() {
 
   if (loading || !settings) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          backgroundColor: 'var(--bg-secondary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            border: `4px solid ${'var(--border-default)'}`,
-            borderTopColor: 'var(--accent)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-          }}
-        />
+      <div className="min-h-screen bg-ak-surface-subtle flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-ak-border-default border-t-ak-brand-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
+    <div className="min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header */}
       <PageHeader
         title="Tilgjengelighet"
@@ -330,40 +333,24 @@ export default function CoachBookingSettings() {
         onBack={() => navigate('/coach/booking')}
         actions={
           <Button
-            variant={saved ? 'primary' : 'primary'}
+            variant="primary"
             onClick={handleSave}
             disabled={saving}
             loading={saving}
             leftIcon={saved ? <CheckCircle size={18} /> : <Save size={18} />}
-            style={saved ? { backgroundColor: 'var(--success)' } : undefined}
+            className={saved ? 'bg-ak-status-success' : ''}
           >
             {saved ? 'Lagret!' : 'Lagre endringer'}
           </Button>
         }
       />
 
-      <div style={{ padding: '24px', width: '100%' }}>
+      <div className="p-6 w-full">
         {/* Weekly Schedule */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-card)',
-            marginBottom: '24px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              padding: '16px 20px',
-              borderBottom: `1px solid ${'var(--border-default)'}`,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-          >
-            <Clock size={20} color={'var(--accent)'} />
-            <SectionTitle style={{ margin: 0 }}>
+        <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
+          <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
+            <Clock size={20} className="text-ak-brand-primary" />
+            <SectionTitle className="m-0">
               Ukentlig tilgjengelighet
             </SectionTitle>
           </div>
@@ -374,178 +361,78 @@ export default function CoachBookingSettings() {
               const isExpanded = expandedDay === key;
 
               return (
-                <div
-                  key={key}
-                  style={{
-                    borderBottom: `1px solid ${'var(--bg-tertiary)'}`,
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: '14px 20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      backgroundColor: isExpanded ? 'var(--bg-tertiary)' : 'transparent',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <button
-                        onClick={() => toggleDayEnabled(key)}
-                        style={{
-                          width: 44,
-                          height: 24,
-                          borderRadius: '12px',
-                          backgroundColor: daySchedule.enabled
-                            ? 'var(--accent)'
-                            : 'var(--border-default)',
-                          border: 'none',
-                          position: 'relative',
-                          cursor: 'pointer',
-                          transition: 'background-color 0.2s',
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: '50%',
-                            backgroundColor: 'var(--bg-primary)',
-                            position: 'absolute',
-                            top: 2,
-                            left: daySchedule.enabled ? 22 : 2,
-                            transition: 'left 0.2s',
-                            boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                          }}
-                        />
-                      </button>
-                      <span
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 500,
-                          color: daySchedule.enabled ? 'var(--text-primary)' : 'var(--text-secondary)',
-                        }}
-                      >
+                <div key={key} className="border-b border-ak-surface-subtle">
+                  <div className={`py-3.5 px-5 flex items-center justify-between ${isExpanded ? 'bg-ak-surface-subtle' : ''}`}>
+                    <div className="flex items-center gap-3">
+                      <ToggleSwitch
+                        enabled={daySchedule.enabled}
+                        onToggle={() => toggleDayEnabled(key)}
+                      />
+                      <span className={`text-[15px] font-medium ${daySchedule.enabled ? 'text-ak-text-primary' : 'text-ak-text-secondary'}`}>
                         {label}
                       </span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div className="flex items-center gap-2">
                       {daySchedule.enabled && daySchedule.slots.length > 0 && (
-                        <span
-                          style={{
-                            fontSize: '13px',
-                            color: 'var(--text-secondary)',
-                          }}
-                        >
+                        <span className="text-[13px] text-ak-text-secondary">
                           {daySchedule.slots.map((s) => `${s.start}-${s.end}`).join(', ')}
                         </span>
                       )}
                       {!daySchedule.enabled && (
-                        <span
-                          style={{
-                            fontSize: '13px',
-                            color: 'var(--text-secondary)',
-                            fontStyle: 'italic',
-                          }}
-                        >
+                        <span className="text-[13px] text-ak-text-secondary italic">
                           Ikke tilgjengelig
                         </span>
                       )}
                       <button
                         onClick={() => setExpandedDay(isExpanded ? null : key)}
-                        style={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          cursor: 'pointer',
-                        }}
+                        className="w-8 h-8 rounded bg-transparent border-none flex items-center justify-center cursor-pointer"
                       >
                         {isExpanded ? (
-                          <ChevronUp size={18} color={'var(--text-secondary)'} />
+                          <ChevronUp size={18} className="text-ak-text-secondary" />
                         ) : (
-                          <ChevronDown size={18} color={'var(--text-secondary)'} />
+                          <ChevronDown size={18} className="text-ak-text-secondary" />
                         )}
                       </button>
                     </div>
                   </div>
 
                   {isExpanded && daySchedule.enabled && (
-                    <div
-                      style={{
-                        padding: '16px 20px',
-                        backgroundColor: 'var(--bg-tertiary)',
-                      }}
-                    >
+                    <div className="py-4 px-5 bg-ak-surface-subtle">
                       {daySchedule.slots.map((slot, idx) => (
-                        <div
-                          key={idx}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px',
-                            marginBottom: '12px',
-                          }}
-                        >
-                          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Fra</span>
+                        <div key={idx} className="flex items-center gap-3 mb-3">
+                          <span className="text-[13px] text-ak-text-secondary">Fra</span>
                           <input
                             type="time"
                             value={slot.start}
                             onChange={(e) => updateTimeSlot(key, idx, 'start', e.target.value)}
-                            style={{
-                              padding: '8px 12px',
-                              border: `1px solid ${'var(--border-default)'}`,
-                              borderRadius: 'var(--radius-md)',
-                              fontSize: '14px',
-                              color: 'var(--text-primary)',
-                            }}
+                            className="py-2 px-3 border border-ak-border-default rounded-lg text-sm text-ak-text-primary"
                           />
-                          <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>til</span>
+                          <span className="text-[13px] text-ak-text-secondary">til</span>
                           <input
                             type="time"
                             value={slot.end}
                             onChange={(e) => updateTimeSlot(key, idx, 'end', e.target.value)}
-                            style={{
-                              padding: '8px 12px',
-                              border: `1px solid ${'var(--border-default)'}`,
-                              borderRadius: 'var(--radius-md)',
-                              fontSize: '14px',
-                              color: 'var(--text-primary)',
-                            }}
+                            className="py-2 px-3 border border-ak-border-default rounded-lg text-sm text-ak-text-primary"
                           />
                           {daySchedule.slots.length > 1 && (
                             <button
                               onClick={() => removeTimeSlot(key, idx)}
-                              style={{
-                                width: 32,
-                                height: 32,
-                                borderRadius: 'var(--radius-sm)',
-                                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
-                                border: 'none',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                              }}
+                              className="w-8 h-8 rounded bg-ak-status-error/10 border-none flex items-center justify-center cursor-pointer"
                             >
-                              <Trash2 size={16} color={'var(--error)'} />
+                              <Trash2 size={16} className="text-ak-status-error" />
                             </button>
                           )}
                         </div>
                       ))}
 
-                      <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                      <div className="flex gap-2 mt-2">
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => addTimeSlot(key)}
                           leftIcon={<Plus size={16} />}
-                          style={{ border: '1px dashed var(--accent)' }}
+                          className="border border-dashed border-ak-brand-primary"
                         >
                           Legg til tidsluke
                         </Button>
@@ -569,69 +456,37 @@ export default function CoachBookingSettings() {
         </div>
 
         {/* Session Types */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-card)',
-            marginBottom: '24px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              padding: '16px 20px',
-              borderBottom: `1px solid ${'var(--border-default)'}`,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-          >
-            <Calendar size={20} color={'var(--accent)'} />
-            <SectionTitle style={{ margin: 0 }}>
+        <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
+          <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
+            <Calendar size={20} className="text-ak-brand-primary" />
+            <SectionTitle className="m-0">
               Økttyper
             </SectionTitle>
           </div>
 
-          <div style={{ padding: '16px 20px' }}>
-            <p
-              style={{
-                fontSize: '13px', lineHeight: '18px',
-                color: 'var(--text-secondary)',
-                margin: '0 0 16px',
-              }}
-            >
+          <div className="py-4 px-5">
+            <p className="text-[13px] text-ak-text-secondary m-0 mb-4">
               Velg hvilke økttyper spillere kan booke
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="flex flex-col gap-3">
               {settings.sessionTypes.map((session) => (
                 <div
                   key={session.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '12px 16px',
-                    backgroundColor: session.enabled ? `${'var(--accent)'}08` : 'var(--bg-tertiary)',
-                    borderRadius: 'var(--radius-md)',
-                    border: `1px solid ${session.enabled ? 'var(--accent)' : 'var(--border-default)'}`,
-                  }}
+                  className={`flex items-center justify-between p-3 px-4 rounded-lg border ${
+                    session.enabled
+                      ? 'bg-ak-brand-primary/5 border-ak-brand-primary'
+                      : 'bg-ak-surface-subtle border-ak-border-default'
+                  }`}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={() => toggleSessionType(session.id)}
-                      style={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: '6px',
-                        backgroundColor: session.enabled ? 'var(--accent)' : 'var(--bg-primary)',
-                        border: `2px solid ${session.enabled ? 'var(--accent)' : 'var(--border-default)'}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                      }}
+                      className={`w-6 h-6 rounded-md flex items-center justify-center cursor-pointer border-2 ${
+                        session.enabled
+                          ? 'bg-ak-brand-primary border-ak-brand-primary'
+                          : 'bg-ak-surface-base border-ak-border-default'
+                      }`}
                     >
                       {session.enabled && (
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -646,38 +501,17 @@ export default function CoachBookingSettings() {
                       )}
                     </button>
                     <div>
-                      <p
-                        style={{
-                          fontSize: '14px',
-                          fontWeight: 500,
-                          color: session.enabled ? 'var(--text-primary)' : 'var(--text-secondary)',
-                          margin: 0,
-                        }}
-                      >
+                      <p className={`text-sm font-medium m-0 ${session.enabled ? 'text-ak-text-primary' : 'text-ak-text-secondary'}`}>
                         {session.name}
                       </p>
                       {session.description && (
-                        <p
-                          style={{
-                            fontSize: '12px',
-                            color: 'var(--text-secondary)',
-                            margin: '2px 0 0',
-                          }}
-                        >
+                        <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
                           {session.description}
                         </p>
                       )}
                     </div>
                   </div>
-                  <span
-                    style={{
-                      fontSize: '13px',
-                      color: 'var(--text-secondary)',
-                      backgroundColor: 'var(--bg-tertiary)',
-                      padding: '4px 10px',
-                      borderRadius: '9999px',
-                    }}
-                  >
+                  <span className="text-[13px] text-ak-text-secondary bg-ak-surface-subtle py-1 px-2.5 rounded-full">
                     {session.duration} min
                   </span>
                 </div>
@@ -687,27 +521,11 @@ export default function CoachBookingSettings() {
         </div>
 
         {/* Blocked Dates */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-card)',
-            marginBottom: '24px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              padding: '16px 20px',
-              borderBottom: `1px solid ${'var(--border-default)'}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Lock size={20} color={'var(--accent)'} />
-              <SectionTitle style={{ margin: 0 }}>
+        <div className="bg-ak-surface-base rounded-xl shadow-sm mb-6 overflow-hidden">
+          <div className="py-4 px-5 border-b border-ak-border-default flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Lock size={20} className="text-ak-brand-primary" />
+              <SectionTitle className="m-0">
                 Blokkerte datoer
               </SectionTitle>
             </div>
@@ -721,41 +539,21 @@ export default function CoachBookingSettings() {
             </Button>
           </div>
 
-          <div style={{ padding: '16px 20px' }}>
+          <div className="py-4 px-5">
             {showAddBlockedDate && (
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '12px',
-                  marginBottom: '16px',
-                  padding: '12px',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  borderRadius: 'var(--radius-md)',
-                }}
-              >
+              <div className="flex gap-3 mb-4 p-3 bg-ak-surface-subtle rounded-lg">
                 <input
                   type="date"
                   value={newBlockedDate.date}
                   onChange={(e) => setNewBlockedDate({ ...newBlockedDate, date: e.target.value })}
-                  style={{
-                    padding: '8px 12px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                  }}
+                  className="py-2 px-3 border border-ak-border-default rounded-lg text-sm"
                 />
                 <input
                   type="text"
                   placeholder="Årsak (valgfritt)"
                   value={newBlockedDate.reason}
                   onChange={(e) => setNewBlockedDate({ ...newBlockedDate, reason: e.target.value })}
-                  style={{
-                    flex: 1,
-                    padding: '8px 12px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                  }}
+                  className="flex-1 py-2 px-3 border border-ak-border-default rounded-lg text-sm"
                 />
                 <Button
                   variant="primary"
@@ -767,51 +565,27 @@ export default function CoachBookingSettings() {
                 </Button>
                 <button
                   onClick={() => setShowAddBlockedDate(false)}
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 'var(--radius-sm)',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                  }}
+                  className="w-9 h-9 rounded bg-transparent border-none flex items-center justify-center cursor-pointer"
                 >
-                  <X size={18} color={'var(--text-secondary)'} />
+                  <X size={18} className="text-ak-text-secondary" />
                 </button>
               </div>
             )}
 
             {settings.blockedDates.length === 0 ? (
-              <p
-                style={{
-                  fontSize: '15px', lineHeight: '20px',
-                  color: 'var(--text-secondary)',
-                  textAlign: 'center',
-                  padding: '24px',
-                }}
-              >
+              <p className="text-[15px] text-ak-text-secondary text-center py-6">
                 Ingen blokkerte datoer
               </p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="flex flex-col gap-2">
                 {settings.blockedDates.map((blocked) => (
                   <div
                     key={blocked.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '10px 14px',
-                      backgroundColor: 'var(--bg-tertiary)',
-                      borderRadius: 'var(--radius-md)',
-                    }}
+                    className="flex items-center justify-between py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg"
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Calendar size={16} color={'var(--text-secondary)'} />
-                      <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                    <div className="flex items-center gap-3">
+                      <Calendar size={16} className="text-ak-text-secondary" />
+                      <span className="text-sm font-medium text-ak-text-primary">
                         {new Date(blocked.date).toLocaleDateString('nb-NO', {
                           weekday: 'long',
                           day: 'numeric',
@@ -820,32 +594,16 @@ export default function CoachBookingSettings() {
                         })}
                       </span>
                       {blocked.reason && (
-                        <span
-                          style={{
-                            fontSize: '13px',
-                            color: 'var(--text-secondary)',
-                            fontStyle: 'italic',
-                          }}
-                        >
+                        <span className="text-[13px] text-ak-text-secondary italic">
                           — {blocked.reason}
                         </span>
                       )}
                     </div>
                     <button
                       onClick={() => removeBlockedDate(blocked.id)}
-                      style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: 'var(--radius-sm)',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                      }}
+                      className="w-7 h-7 rounded bg-transparent border-none flex items-center justify-center cursor-pointer"
                     >
-                      <X size={16} color={'var(--text-secondary)'} />
+                      <X size={16} className="text-ak-text-secondary" />
                     </button>
                   </div>
                 ))}
@@ -855,44 +613,21 @@ export default function CoachBookingSettings() {
         </div>
 
         {/* Booking Preferences */}
-        <div
-          style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-card)',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              padding: '16px 20px',
-              borderBottom: `1px solid ${'var(--border-default)'}`,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-          >
-            <Settings size={20} color={'var(--accent)'} />
-            <SectionTitle style={{ margin: 0 }}>
+        <div className="bg-ak-surface-base rounded-xl shadow-sm overflow-hidden">
+          <div className="py-4 px-5 border-b border-ak-border-default flex items-center gap-3">
+            <Settings size={20} className="text-ak-brand-primary" />
+            <SectionTitle className="m-0">
               Bookinginnstillinger
             </SectionTitle>
           </div>
 
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             {/* Advance booking days */}
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                  marginBottom: '8px',
-                }}
-              >
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-ak-text-primary mb-2">
                 Hvor langt frem kan spillere booke?
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="flex items-center gap-3">
                 <input
                   type="number"
                   min="1"
@@ -901,33 +636,18 @@ export default function CoachBookingSettings() {
                   onChange={(e) =>
                     setSettings({ ...settings, advanceBookingDays: parseInt(e.target.value) || 14 })
                   }
-                  style={{
-                    width: '80px',
-                    padding: '8px 12px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    textAlign: 'center',
-                  }}
+                  className="w-20 py-2 px-3 border border-ak-border-default rounded-lg text-sm text-center"
                 />
-                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>dager</span>
+                <span className="text-sm text-ak-text-secondary">dager</span>
               </div>
             </div>
 
             {/* Minimum notice */}
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                  marginBottom: '8px',
-                }}
-              >
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-ak-text-primary mb-2">
                 Minimum varslingstid
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="flex items-center gap-3">
                 <input
                   type="number"
                   min="1"
@@ -936,33 +656,18 @@ export default function CoachBookingSettings() {
                   onChange={(e) =>
                     setSettings({ ...settings, minNoticeHours: parseInt(e.target.value) || 24 })
                   }
-                  style={{
-                    width: '80px',
-                    padding: '8px 12px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    textAlign: 'center',
-                  }}
+                  className="w-20 py-2 px-3 border border-ak-border-default rounded-lg text-sm text-center"
                 />
-                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>timer før økt</span>
+                <span className="text-sm text-ak-text-secondary">timer før økt</span>
               </div>
             </div>
 
             {/* Buffer time */}
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                  marginBottom: '8px',
-                }}
-              >
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-ak-text-primary mb-2">
                 Buffer mellom økter
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div className="flex items-center gap-3">
                 <input
                   type="number"
                   min="0"
@@ -972,153 +677,52 @@ export default function CoachBookingSettings() {
                   onChange={(e) =>
                     setSettings({ ...settings, bufferMinutes: parseInt(e.target.value) || 0 })
                   }
-                  style={{
-                    width: '80px',
-                    padding: '8px 12px',
-                    border: `1px solid ${'var(--border-default)'}`,
-                    borderRadius: 'var(--radius-md)',
-                    fontSize: '14px',
-                    textAlign: 'center',
-                  }}
+                  className="w-20 py-2 px-3 border border-ak-border-default rounded-lg text-sm text-center"
                 />
-                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>minutter</span>
+                <span className="text-sm text-ak-text-secondary">minutter</span>
               </div>
             </div>
 
             {/* Toggle options */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '12px 16px',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  borderRadius: 'var(--radius-md)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between p-3 px-4 bg-ak-surface-subtle rounded-lg">
+                <div className="flex items-center gap-3">
                   {settings.autoApprove ? (
-                    <Unlock size={18} color={'var(--accent)'} />
+                    <Unlock size={18} className="text-ak-brand-primary" />
                   ) : (
-                    <Lock size={18} color={'var(--text-secondary)'} />
+                    <Lock size={18} className="text-ak-text-secondary" />
                   )}
                   <div>
-                    <p
-                      style={{
-                        fontSize: '14px',
-                        fontWeight: 500,
-                        color: 'var(--text-primary)',
-                        margin: 0,
-                      }}
-                    >
+                    <p className="text-sm font-medium text-ak-text-primary m-0">
                       Automatisk godkjenning
                     </p>
-                    <p
-                      style={{
-                        fontSize: '12px',
-                        color: 'var(--text-secondary)',
-                        margin: '2px 0 0',
-                      }}
-                    >
+                    <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
                       Godkjenn bookinger automatisk uten manuell gjennomgang
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setSettings({ ...settings, autoApprove: !settings.autoApprove })}
-                  style={{
-                    width: 44,
-                    height: 24,
-                    borderRadius: '12px',
-                    backgroundColor: settings.autoApprove
-                      ? 'var(--accent)'
-                      : 'var(--border-default)',
-                    border: 'none',
-                    position: 'relative',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      backgroundColor: 'var(--bg-primary)',
-                      position: 'absolute',
-                      top: 2,
-                      left: settings.autoApprove ? 22 : 2,
-                      transition: 'left 0.2s',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                    }}
-                  />
-                </button>
+                <ToggleSwitch
+                  enabled={settings.autoApprove}
+                  onToggle={() => setSettings({ ...settings, autoApprove: !settings.autoApprove })}
+                />
               </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '12px 16px',
-                  backgroundColor: 'var(--bg-tertiary)',
-                  borderRadius: 'var(--radius-md)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Bell size={18} color={settings.notifyOnRequest ? 'var(--accent)' : 'var(--text-secondary)'} />
+              <div className="flex items-center justify-between p-3 px-4 bg-ak-surface-subtle rounded-lg">
+                <div className="flex items-center gap-3">
+                  <Bell size={18} className={settings.notifyOnRequest ? 'text-ak-brand-primary' : 'text-ak-text-secondary'} />
                   <div>
-                    <p
-                      style={{
-                        fontSize: '14px',
-                        fontWeight: 500,
-                        color: 'var(--text-primary)',
-                        margin: 0,
-                      }}
-                    >
+                    <p className="text-sm font-medium text-ak-text-primary m-0">
                       Varsler ved nye forespørsler
                     </p>
-                    <p
-                      style={{
-                        fontSize: '12px',
-                        color: 'var(--text-secondary)',
-                        margin: '2px 0 0',
-                      }}
-                    >
+                    <p className="text-xs text-ak-text-secondary mt-0.5 m-0">
                       Få varsel når en spiller sender en bookingforespørsel
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={() =>
-                    setSettings({ ...settings, notifyOnRequest: !settings.notifyOnRequest })
-                  }
-                  style={{
-                    width: 44,
-                    height: 24,
-                    borderRadius: '12px',
-                    backgroundColor: settings.notifyOnRequest
-                      ? 'var(--accent)'
-                      : 'var(--border-default)',
-                    border: 'none',
-                    position: 'relative',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      backgroundColor: 'var(--bg-primary)',
-                      position: 'absolute',
-                      top: 2,
-                      left: settings.notifyOnRequest ? 22 : 2,
-                      transition: 'left 0.2s',
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
-                    }}
-                  />
-                </button>
+                <ToggleSwitch
+                  enabled={settings.notifyOnRequest}
+                  onToggle={() => setSettings({ ...settings, notifyOnRequest: !settings.notifyOnRequest })}
+                />
               </div>
             </div>
           </div>

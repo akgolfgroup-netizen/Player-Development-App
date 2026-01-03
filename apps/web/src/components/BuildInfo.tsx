@@ -1,5 +1,8 @@
 /**
  * BuildInfo - Production build verification component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  *
  * FAILSAFE: Always logs build SHA to console and injects hidden DOM marker.
  * Used to verify which commit is actually running in production vs cache.
@@ -59,22 +62,22 @@ export function BuildInfo({ showBadge = false }: BuildInfoProps) {
     // Additional styled logging for better visibility
     console.log(
       '%c🏌️ AK Golf Academy',
-      'color: #1B4D3E; font-weight: bold; font-size: 12px;'
+      'color: #10456A; font-weight: bold; font-size: 12px;'
     );
     console.log(
       `%cCommit: %c${BUILD_INFO.sha}`,
-      'color: #6B7280;',
-      'color: #059669; font-family: monospace;'
+      'color: #8E8E93;',
+      'color: #4A7C59; font-family: monospace;'
     );
     console.log(
       `%cBranch: %c${BUILD_INFO.branch}`,
-      'color: #6B7280;',
-      'color: #2563EB; font-family: monospace;'
+      'color: #8E8E93;',
+      'color: #2C5F7F; font-family: monospace;'
     );
     console.log(
       `%cBuilt:  %c${BUILD_INFO.date}`,
-      'color: #6B7280;',
-      'color: #D97706; font-family: monospace;'
+      'color: #8E8E93;',
+      'color: #D4A84B; font-family: monospace;'
     );
 
     // Set on window for easy DevTools access
@@ -105,7 +108,7 @@ export function BuildInfo({ showBadge = false }: BuildInfoProps) {
             right: '8px',
             padding: '4px 8px',
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            color: '#10B981',
+            color: 'var(--ak-success-light)',
             fontFamily: 'monospace',
             fontSize: '10px',
             borderRadius: '4px',

@@ -80,7 +80,7 @@ export const logger = pino({
         requestId: req.id || req.headers['x-request-id'] || randomUUID(),
         method: req.method,
         url: req.url,
-        path: req.routerPath,
+        path: req.routeOptions?.url || req.url,
         parameters: redactPII(req.params),
         query: redactPII(req.query),
         headers: {

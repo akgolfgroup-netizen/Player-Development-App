@@ -331,4 +331,300 @@ export async function coachRoutes(app: FastifyInstance): Promise<void> {
       return reply.send({ success: true, message: 'Alert dismissed' });
     }
   );
+
+  // =========================================================================
+  // BATCH OPERATIONS
+  // =========================================================================
+
+  /**
+   * Batch assign training session to multiple players
+   */
+  app.post<{
+    Body: {
+      playerIds: string[];
+      sessionType: string;
+      scheduledDate: string;
+      durationMinutes?: number;
+      notes?: string;
+    };
+  }>(
+    '/me/batch/assign-session',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Assign a training session to multiple players',
+        tags: ['coaches', 'batch'],
+        security: [{ bearerAuth: [] }],
+        body: {
+          type: 'object',
+          required: ['playerIds', 'sessionType', 'scheduledDate'],
+          properties: {
+            playerIds: { type: 'array', items: { type: 'string', format: 'uuid' }, minItems: 1 },
+            sessionType: { type: 'string', minLength: 1 },
+            scheduledDate: { type: 'string', format: 'date' },
+            durationMinutes: { type: 'number', minimum: 1 },
+            notes: { type: 'string' },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              data: {
+                type: 'object',
+                properties: {
+                  success: { type: 'array', items: { type: 'string' } },
+                  failed: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        playerId: { type: 'string' },
+                        error: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          403: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request, reply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+
+      const { playerIds, ...session } = request.body;
+      const result = await coachService.batchAssignSession(
+        request.tenant!.id,
+        coachId,
+        playerIds,
+        session
+      );
+
+      return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Batch send notes to multiple players
+   */
+  app.post<{
+    Body: {
+      playerIds: string[];
+      title: string;
+      content: string;
+      category?: string;
+    };
+  }>(
+    '/me/batch/send-note',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Send a note to multiple players',
+        tags: ['coaches', 'batch'],
+        security: [{ bearerAuth: [] }],
+        body: {
+          type: 'object',
+          required: ['playerIds', 'title', 'content'],
+          properties: {
+            playerIds: { type: 'array', items: { type: 'string', format: 'uuid' }, minItems: 1 },
+            title: { type: 'string', minLength: 1 },
+            content: { type: 'string', minLength: 1 },
+            category: { type: 'string' },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              data: {
+                type: 'object',
+                properties: {
+                  success: { type: 'array', items: { type: 'string' } },
+                  failed: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        playerId: { type: 'string' },
+                        error: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          403: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request, reply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+
+      const { playerIds, ...note } = request.body;
+      const result = await coachService.batchSendNote(
+        request.tenant!.id,
+        coachId,
+        playerIds,
+        note
+      );
+
+      return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Batch update player status
+   */
+  app.post<{
+    Body: {
+      playerIds: string[];
+      status: 'active' | 'inactive' | 'on_break';
+    };
+  }>(
+    '/me/batch/update-status',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Update status for multiple players',
+        tags: ['coaches', 'batch'],
+        security: [{ bearerAuth: [] }],
+        body: {
+          type: 'object',
+          required: ['playerIds', 'status'],
+          properties: {
+            playerIds: { type: 'array', items: { type: 'string', format: 'uuid' }, minItems: 1 },
+            status: { type: 'string', enum: ['active', 'inactive', 'on_break'] },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              data: {
+                type: 'object',
+                properties: {
+                  success: { type: 'array', items: { type: 'string' } },
+                  failed: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        playerId: { type: 'string' },
+                        error: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          403: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request, reply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+
+      const { playerIds, status } = request.body;
+      const result = await coachService.batchUpdateStatus(
+        request.tenant!.id,
+        coachId,
+        playerIds,
+        status
+      );
+
+      return reply.send({ success: true, data: result });
+    }
+  );
+
+  /**
+   * Batch create training plan from template
+   */
+  app.post<{
+    Body: {
+      playerIds: string[];
+      planName: string;
+      startDate: string;
+      durationWeeks: number;
+      focusAreas?: string[];
+    };
+  }>(
+    '/me/batch/create-plan',
+    {
+      preHandler: preHandlers,
+      schema: {
+        description: 'Create training plans for multiple players',
+        tags: ['coaches', 'batch'],
+        security: [{ bearerAuth: [] }],
+        body: {
+          type: 'object',
+          required: ['playerIds', 'planName', 'startDate', 'durationWeeks'],
+          properties: {
+            playerIds: { type: 'array', items: { type: 'string', format: 'uuid' }, minItems: 1 },
+            planName: { type: 'string', minLength: 1 },
+            startDate: { type: 'string', format: 'date' },
+            durationWeeks: { type: 'number', minimum: 1, maximum: 52 },
+            focusAreas: { type: 'array', items: { type: 'string' } },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              success: { type: 'boolean' },
+              data: {
+                type: 'object',
+                properties: {
+                  success: { type: 'array', items: { type: 'string' } },
+                  failed: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        playerId: { type: 'string' },
+                        error: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          403: { $ref: 'Error#' },
+        },
+      },
+    },
+    async (request, reply) => {
+      const coachId = request.user?.coachId;
+      if (!coachId) {
+        return reply.code(403).send({ success: false, error: { message: 'Not a coach' } });
+      }
+
+      const { playerIds, ...planOptions } = request.body;
+      const result = await coachService.batchCreatePlanFromTemplate(
+        request.tenant!.id,
+        coachId,
+        playerIds,
+        planOptions
+      );
+
+      return reply.send({ success: true, data: result });
+    }
+  );
 }

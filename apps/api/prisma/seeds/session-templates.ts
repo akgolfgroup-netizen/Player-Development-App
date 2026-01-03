@@ -12,6 +12,7 @@ const sessionTemplates = [
   // ============================================
   // E PERIOD - FUNDAMENTAL SESSIONS (25 templates)
   // ============================================
+  // primaryDomain: TEE, INN50, INN100, INN150, INN200, ARG, PUTT, PHYS, or null
 
   // E-Period Technical Sessions (10)
   {
@@ -24,6 +25,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 60,
+    primaryDomain: null, // General technique - no specific domain
     exerciseSequence: {
       warmup: ['Mobilitet', 'Dynamisk tøying'],
       main: ['Grep-drill', 'Setup-posisjon', 'Balanse-øvelser', 'Speil-arbeid'],
@@ -43,6 +45,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 75,
+    primaryDomain: null, // General swing mechanics
     exerciseSequence: {
       warmup: ['Rotasjonsøvelser', 'Armsvinger'],
       main: ['Halvsving drill', 'Tempo-trening', 'Svingbane med stikker'],
@@ -62,6 +65,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 75,
+    primaryDomain: null, // General swing mechanics
     exerciseSequence: {
       warmup: ['Impact bag øvelser'],
       main: ['Impact posisjon', 'Håndledds-rotasjon', 'Follow-through'],
@@ -81,6 +85,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 90,
+    primaryDomain: 'INN100', // Iron play - 100-150m approach
     exerciseSequence: {
       warmup: ['Wedge-sving', 'Mobilitet'],
       main: ['7-jern basics', 'Ball-posisjon', 'Divot-kontroll'],
@@ -100,6 +105,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 90,
+    primaryDomain: 'TEE', // Driver/tee shots
     exerciseSequence: {
       warmup: ['Speed sticks lett', 'Rotasjonsøvelser'],
       main: ['Tee-høyde', 'Ballposisjon', 'Sweep-bevegelse'],
@@ -119,6 +125,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 60,
+    primaryDomain: 'PUTT', // Putting
     exerciseSequence: {
       warmup: ['Pendel-øvelser'],
       main: ['Grep og setup', 'Gate drill 1m', 'Distanse-kontroll'],
@@ -138,6 +145,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 60,
+    primaryDomain: 'ARG', // Around the green
     exerciseSequence: {
       warmup: ['Korte swinger'],
       main: ['Bump and run', 'Landingsområde', 'Klubbvalg'],
@@ -157,6 +165,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 75,
+    primaryDomain: 'INN50', // Short approach/pitch (30-50m)
     exerciseSequence: {
       warmup: ['Wedge tempo'],
       main: ['30m pitch', '50m pitch', 'Trajectory kontroll'],
@@ -176,6 +185,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 60,
+    primaryDomain: 'ARG', // Around the green (bunker)
     exerciseSequence: {
       warmup: ['Sandkontakt uten ball'],
       main: ['Splash teknikk', 'Setup i sand', 'Ut av bunker'],
@@ -195,6 +205,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 60,
+    primaryDomain: 'INN150', // Long approach (hybrid 150-200m)
     exerciseSequence: {
       warmup: ['Mobilitet'],
       main: ['Setup for hybrid', 'Sweep vs hit', 'Avstandskontroll'],
@@ -216,6 +227,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Lett kardio'],
       main: ['Hofte-mobilitet', 'Thoracic rotasjon', 'Skulder-mobilitet'],
@@ -235,6 +247,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Aktivering'],
       main: ['Planke varianter', 'Bird dog', 'Dead bug', 'Pallof press'],
@@ -254,6 +267,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 40,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Dynamisk oppvarming'],
       main: ['Ett-bens stå', 'Bosu-øvelser', 'Sving på ett ben'],
@@ -273,6 +287,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 50,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Armsvinger', 'Skulder-aktivering'],
       main: ['Push-ups', 'Rows', 'Shoulder press', 'Rotasjon med band'],
@@ -292,6 +307,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 50,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Hofte-sirkling', 'Luftsquats'],
       main: ['Goblet squat', 'Lunges', 'Hip thrust', 'Calf raises'],
@@ -311,6 +327,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Rotasjons-mobilitet'],
       main: ['Medicine ball rotasjon', 'Cable woodchop', 'Russian twist'],
@@ -330,6 +347,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Lett jogg'],
       main: ['Intervall gange/jogg', '18-hulls simulering'],
@@ -349,6 +367,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 40,
+    primaryDomain: 'PHYS', // Physical training (recovery)
     exerciseSequence: {
       warmup: ['Lett bevegelse'],
       main: ['Foam rolling', 'Statisk tøying', 'Pusteteknikker'],
@@ -359,7 +378,7 @@ const sessionTemplates = [
     successCriteria: 'Forståelse for recovery-protokoll',
   },
 
-  // E-Period Mental Sessions (7)
+  // E-Period Mental Sessions (7) - Mental sessions don't map to golf domains
   {
     name: 'Mental Golf Introduksjon',
     description: 'Grunnleggende mental trening for golf',
@@ -370,6 +389,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: null, // Mental training - no golf domain
     exerciseSequence: {
       warmup: ['Pusteøvelser'],
       main: ['Fokus-trening', 'Visualisering intro', 'Målsetting'],
@@ -389,6 +409,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 60,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Fokus-aktivering'],
       main: ['Rutine-elementer', 'Timing', 'Konsistens-trening'],
@@ -408,6 +429,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 40,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Avspenning'],
       main: ['Slag-visualisering', 'Bane-visualisering', 'Suksess-bilder'],
@@ -427,6 +449,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Pusteøvelser'],
       main: ['Smal fokus øvelser', 'Bred fokus øvelser', 'Fokus-skift'],
@@ -446,6 +469,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Refleksjon over nåværende nivå'],
       main: ['SMART-mål', 'Prosessmål', 'Resultatmål', 'Handlingsplan'],
@@ -465,6 +489,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 40,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Bevisstgjøring'],
       main: ['Identifisere negativt snakk', 'Erstatte med positivt', 'Øve fraser'],
@@ -484,6 +509,7 @@ const sessionTemplates = [
     categories: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Kroppsscan'],
       main: ['Identifisere stressorer', 'Pusteteknikker', 'Progressiv avspenning'],
@@ -503,6 +529,7 @@ const sessionTemplates = [
     categories: ['PH'],
     periods: ['E'],
     duration: 60,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Dynamic stretching', 'Light cardio'],
       main: ['Core stability', 'Hip mobility', 'Rotational exercises'],
@@ -522,6 +549,7 @@ const sessionTemplates = [
     categories: ['ME'],
     periods: ['E'],
     duration: 45,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Breathing exercises'],
       main: ['Focus drills', 'Visualization basics', 'Pre-shot routine development'],
@@ -545,6 +573,7 @@ const sessionTemplates = [
     categories: ['TE', 'GS'],
     periods: ['G'],
     duration: 120,
+    primaryDomain: 'INN100', // General iron work
     exerciseSequence: {
       warmup: ['Wedge tempo swings', 'Alignment check'],
       main: ['Iron contact drills', 'Driver path work', 'Distance control'],
@@ -564,6 +593,7 @@ const sessionTemplates = [
     categories: ['GS'],
     periods: ['G'],
     duration: 90,
+    primaryDomain: 'ARG', // Around the green
     exerciseSequence: {
       warmup: ['Putting stroke', 'Chip feel drills'],
       main: ['Distance control pitching', 'Trajectory variations', 'Bunker technique'],
@@ -583,6 +613,7 @@ const sessionTemplates = [
     categories: ['PH'],
     periods: ['G'],
     duration: 75,
+    primaryDomain: 'PHYS', // Physical training
     exerciseSequence: {
       warmup: ['Golf-specific movements', 'Dynamic stretching'],
       main: ['Rotational power', 'Club speed training', 'Stability work'],
@@ -606,6 +637,7 @@ const sessionTemplates = [
     categories: ['PL', 'CO'],
     periods: ['S'],
     duration: 120,
+    primaryDomain: null, // Tactical - no specific domain
     exerciseSequence: {
       warmup: ['Target awareness drills'],
       main: ['Simulated holes', 'Risk-reward scenarios', 'Strategy mapping'],
@@ -625,6 +657,7 @@ const sessionTemplates = [
     categories: ['ME', 'CO'],
     periods: ['S'],
     duration: 90,
+    primaryDomain: null, // Mental training
     exerciseSequence: {
       warmup: ['Performance breathing', 'Visualization'],
       main: ['Pressure putting', 'Consequences drills', 'Competition simulation'],
@@ -644,6 +677,7 @@ const sessionTemplates = [
     categories: ['TE', 'GS'],
     periods: ['S'],
     duration: 105,
+    primaryDomain: null, // Dynamic - depends on player's breaking points
     exerciseSequence: {
       warmup: ['Movement preparation'],
       main: ['Specific club work', 'Weakness drills', 'Progress measurement'],
@@ -667,6 +701,7 @@ const sessionTemplates = [
     categories: ['CO', 'PL'],
     periods: ['T'],
     duration: 60,
+    primaryDomain: null, // Tournament prep - mixed domains
     exerciseSequence: {
       warmup: ['Range routine', 'Feel checks'],
       main: ['Confidence builders', 'Key shots practice', 'Mental rehearsal'],
@@ -686,6 +721,7 @@ const sessionTemplates = [
     categories: ['CO'],
     periods: ['T'],
     duration: 45,
+    primaryDomain: null, // Warmup - all domains briefly
     exerciseSequence: {
       warmup: ['Physical activation', 'Putting feel'],
       main: ['Swing check', 'Distance calibration', 'Mental centering'],
@@ -705,6 +741,7 @@ const sessionTemplates = [
     categories: ['PH', 'ME'],
     periods: ['T'],
     duration: 60,
+    primaryDomain: 'PHYS', // Recovery is physical
     exerciseSequence: {
       warmup: ['Light movement'],
       main: ['Active recovery', 'Performance review', 'Lessons learned'],
@@ -728,6 +765,7 @@ const sessionTemplates = [
     categories: ['TE', 'GS'],
     periods: ['E', 'G'],
     duration: 90,
+    primaryDomain: null, // Transition - mixed skills
     exerciseSequence: {
       warmup: ['Movement review'],
       main: ['Skill progression', 'Integration drills', 'Transfer practice'],
@@ -747,6 +785,7 @@ const sessionTemplates = [
     categories: ['CO', 'PL'],
     periods: ['S', 'T'],
     duration: 90,
+    primaryDomain: null, // Tactical - mixed preparation
     exerciseSequence: {
       warmup: ['Mental preparation'],
       main: ['Pre-tournament practice', 'Strategy refinement', 'Confidence building'],

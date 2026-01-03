@@ -1,15 +1,21 @@
+/**
+ * App Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { BadgeNotificationProvider } from './contexts/BadgeNotificationContext';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { tokens } from './design-tokens';
 import { initMobileApp } from './utils/mobile';
 
 // PWA & AI components
 import OfflineIndicator from './components/ui/OfflineIndicator';
-import AIChatWidget from './components/widgets/AIChatWidget';
+import { AICoachProvider, AICoachButton, AICoachPanel } from './features/ai-coach';
 import CommandPalette from './features/command-palette';
 import BuildInfo from './components/BuildInfo';
 
@@ -188,6 +194,11 @@ const CoachGroupDetail = lazy(() => import('./features/coach-groups').then(m => 
 const CoachGroupCreate = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupCreate })));
 const CoachGroupPlan = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupPlan })));
 
+// Samling (training camp) (lazy-loaded)
+const SamlingList = lazy(() => import('./features/samling').then(m => ({ default: m.SamlingList })));
+const SamlingDetail = lazy(() => import('./features/samling').then(m => ({ default: m.SamlingDetail })));
+const SamlingCreate = lazy(() => import('./features/samling').then(m => ({ default: m.SamlingCreate })));
+
 // Coach booking (lazy-loaded)
 const CoachBookingCalendar = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingCalendar })));
 const CoachBookingRequests = lazy(() => import('./features/coach-booking').then(m => ({ default: m.CoachBookingRequests })));
@@ -265,16 +276,21 @@ const AdminLayout = ({ children }) => (
   <AdminAppShell>{children}</AdminAppShell>
 );
 
-// AI Chat wrapper - only shows for authenticated players
-const AuthenticatedAIChat = () => {
+// AI Coach wrapper - only shows for authenticated players
+const AuthenticatedAICoach = () => {
   const { user, isAuthenticated } = useAuth();
 
-  // Only show AI chat for authenticated players (not coaches/admins)
+  // Only show AI Coach for authenticated players (not coaches/admins)
   if (!isAuthenticated || !user || user.role !== 'player') {
     return null;
   }
 
-  return <AIChatWidget position="bottom-right" />;
+  return (
+    <>
+      <AICoachButton />
+      <AICoachPanel />
+    </>
+  );
 };
 
 function App() {
@@ -287,13 +303,14 @@ function App() {
     <Router>
       <ThemeProvider>
         <AuthProvider>
+          <AICoachProvider>
           <NotificationProvider>
             <BadgeNotificationProvider>
               <ErrorBoundary>
                 <TooltipProvider>
                 <BuildInfo showBadge={process.env.NODE_ENV === 'development'} />
                 <OfflineIndicator position="top" />
-                <AuthenticatedAIChat />
+                <AuthenticatedAICoach />
                 <Toast />
                 <Toaster />
                 <CommandPalette />
@@ -1315,6 +1332,29 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* Samlinger (Training Camps) */}
+          <Route path="/coach/samlinger" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <SamlingList />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/samlinger/ny" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <SamlingCreate />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/samlinger/:id" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <SamlingDetail />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
           {/* Coach Booking */}
           <Route path="/coach/booking" element={
             <ProtectedRoute requiredRole="coach">
@@ -1575,6 +1615,7 @@ function App() {
               </ErrorBoundary>
             </BadgeNotificationProvider>
           </NotificationProvider>
+          </AICoachProvider>
         </AuthProvider>
       </ThemeProvider>
     </Router>

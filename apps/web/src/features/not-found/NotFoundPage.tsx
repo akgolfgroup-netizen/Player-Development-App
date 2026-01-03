@@ -1,41 +1,43 @@
 /**
  * AK Golf Academy - 404 Not Found Page
- * Design System v3.0 - UI Canon Compliant
  *
- * Purpose:
- * - Display friendly 404 error for non-existent routes
- * - Provide navigation back to known routes
+ * Archetype: Special (Error State)
+ * Purpose: Display friendly 404 error for non-existent routes
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft, Search } from 'lucide-react';
-import Button from '../../ui/primitives/Button';
-import Card from '../../ui/primitives/Card';
-import StateCard from '../../ui/composites/StateCard';
+import { Page } from '../../ui/components/Page';
+import { Text, Button } from '../../ui/primitives';
 
 export const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-primary)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '24px',
-      }}
-    >
-      <Card variant="default" padding="lg" style={{ maxWidth: '480px', width: '100%' }}>
-        <StateCard
-          variant="empty"
-          icon={Search}
-          title="Fant ikke siden"
-          description="Siden du leter etter kan ha blitt flyttet, slettet, eller finnes ikke."
-          action={
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+    <Page state="idle" maxWidth="sm">
+      <Page.Content>
+        <Page.Section card={true}>
+          <div className="flex flex-col items-center text-center py-8">
+            {/* Icon */}
+            <div className="w-16 h-16 mb-6 rounded-full bg-ak-surface-subtle flex items-center justify-center">
+              <Search size={32} className="text-ak-text-secondary" />
+            </div>
+
+            {/* Title */}
+            <Text variant="title1" color="primary" className="mb-2">
+              Fant ikke siden
+            </Text>
+
+            {/* Description */}
+            <Text variant="body" color="secondary" className="mb-8 max-w-sm">
+              Siden du leter etter kan ha blitt flyttet, slettet, eller finnes ikke.
+            </Text>
+
+            {/* Actions */}
+            <div className="flex gap-3">
               <Button
                 variant="ghost"
                 size="sm"
@@ -53,23 +55,17 @@ export const NotFoundPage: React.FC = () => {
                 Til Dashboard
               </Button>
             </div>
-          }
-        />
 
-        <div
-          style={{
-            marginTop: '24px',
-            paddingTop: '16px',
-            borderTop: '1px solid var(--border-default)',
-            textAlign: 'center',
-          }}
-        >
-          <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', margin: 0 }}>
-            Feilkode: 404
-          </p>
-        </div>
-      </Card>
-    </div>
+            {/* Error Code */}
+            <div className="mt-8 pt-4 border-t border-ak-border-default w-full">
+              <Text variant="caption1" color="tertiary">
+                Feilkode: 404
+              </Text>
+            </div>
+          </div>
+        </Page.Section>
+      </Page.Content>
+    </Page>
   );
 };
 

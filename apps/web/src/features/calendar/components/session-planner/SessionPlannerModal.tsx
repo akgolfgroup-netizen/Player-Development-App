@@ -1,10 +1,11 @@
 /**
  * SessionPlannerModal Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Main container for the AK-formula session planner wizard.
  * Manages step navigation and renders appropriate step components.
- *
- * Uses semantic tokens only (no raw hex values).
  */
 
 import React, { useCallback } from 'react';
@@ -105,52 +106,31 @@ export const SessionPlannerModal: React.FC<SessionPlannerModalProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50"
-        style={{ backgroundColor: 'var(--overlay-backdrop)' }}
+        className="fixed inset-0 z-50 bg-black/50"
         onClick={handleClose}
       />
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
-          className="w-full max-w-lg max-h-[90vh] rounded-xl overflow-hidden flex flex-col"
-          style={{
-            backgroundColor: 'var(--calendar-surface-card)',
-            boxShadow: 'var(--shadow-float)',
-          }}
+          className="w-full max-w-lg max-h-[90vh] rounded-xl overflow-hidden flex flex-col bg-ak-surface-card shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div
-            className="flex items-center justify-between p-4 border-b shrink-0"
-            style={{ borderColor: 'var(--calendar-border)' }}
-          >
-            <SectionTitle
-              className="text-lg font-semibold"
-              style={{ color: 'var(--calendar-text-primary)' }}
-            >
+          <div className="flex items-center justify-between p-4 border-b border-ak-border-default shrink-0">
+            <SectionTitle className="text-lg font-semibold text-ak-text-primary">
               Planlegg økt
             </SectionTitle>
             <button
               onClick={handleClose}
-              className="p-1 rounded-lg transition-colors"
-              style={{ color: 'var(--calendar-text-tertiary)' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--calendar-hover)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
+              className="p-1 rounded-lg transition-colors text-ak-text-tertiary hover:bg-ak-surface-subtle"
             >
               <X size={20} />
             </button>
           </div>
 
           {/* Step indicator */}
-          <div
-            className="shrink-0 border-b"
-            style={{ borderColor: 'var(--calendar-border)' }}
-          >
+          <div className="shrink-0 border-b border-ak-border-default">
             <StepIndicatorWithLabels
               steps={planner.steps}
               currentStep={planner.currentStep}
@@ -166,20 +146,13 @@ export const SessionPlannerModal: React.FC<SessionPlannerModalProps> = ({
           </div>
 
           {/* Navigation footer */}
-          <div
-            className="flex items-center justify-between p-4 border-t shrink-0"
-            style={{ borderColor: 'var(--calendar-border)' }}
-          >
+          <div className="flex items-center justify-between p-4 border-t border-ak-border-default shrink-0">
             {/* Back button */}
             <button
               type="button"
               onClick={planner.goBack}
               disabled={!planner.canGoBack}
-              className="flex items-center gap-1 px-3 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40"
-              style={{
-                backgroundColor: 'transparent',
-                color: 'var(--calendar-text-secondary)',
-              }}
+              className="flex items-center gap-1 px-3 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40 bg-transparent text-ak-text-secondary hover:bg-ak-surface-subtle"
             >
               <ChevronLeft size={16} />
               Tilbake
@@ -191,11 +164,7 @@ export const SessionPlannerModal: React.FC<SessionPlannerModalProps> = ({
                 type="button"
                 onClick={handleSubmit}
                 disabled={!planner.parsedFormula?.isValid}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40"
-                style={{
-                  backgroundColor: 'var(--ak-primary)',
-                  color: 'var(--text-inverse)',
-                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40 bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
               >
                 Opprett økt
               </button>
@@ -204,11 +173,7 @@ export const SessionPlannerModal: React.FC<SessionPlannerModalProps> = ({
                 type="button"
                 onClick={planner.goNext}
                 disabled={!planner.canGoNext}
-                className="flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40"
-                style={{
-                  backgroundColor: 'var(--ak-primary)',
-                  color: 'var(--text-inverse)',
-                }}
+                className="flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors disabled:opacity-40 bg-ak-brand-primary text-white hover:bg-ak-brand-primary/90"
               >
                 Neste
                 <ChevronRight size={16} />

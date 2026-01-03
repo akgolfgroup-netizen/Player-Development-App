@@ -15,7 +15,7 @@
   --ak-primary-dark: #133629;
   --ak-snow: #FAFBFC;
   --ak-surface: #F5F7F9;
-  --ak-gold: #B8860B;
+  --ak-gold: #996F09;
   --ak-gold-light: #DAA520;
 
   /* Legacy aliases (backwards compatible) */
@@ -25,9 +25,9 @@
   --ak-ivory: #F5F7F9;
 
   /* Semantic Colors (Per Premium Light Spec) */
-  --ak-success: #059669;
+  --ak-success: #05875F;
   --ak-success-light: #10B981;
-  --ak-warning: #D97706;
+  --ak-warning: #B16105;
   --ak-warning-light: #F59E0B;
   --ak-error: #DC2626;
   --ak-error-light: #EF4444;

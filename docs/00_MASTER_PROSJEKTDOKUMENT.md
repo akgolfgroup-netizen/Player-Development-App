@@ -1,9 +1,10 @@
 # MASTER PROSJEKTDOKUMENT
 ## AK Golf Academy × Team Norway Golf - IUP System
 
-**Versjon**: 2.1
-**Sist oppdatert**: 14. desember 2025
+**Versjon**: 3.0
+**Sist oppdatert**: 2. januar 2026
 **Eier**: Anders Knutsen - AK Golf Academy
+**Neste milestone**: Spania treningssamling 3-10. januar 2026
 
 ---
 
@@ -16,119 +17,113 @@
 5. [Periodisering](#5-periodisering)
 6. [Treningsnivå-system](#6-treningsnivasystem)
 7. [Tester og Kravprofiler](#7-tester-og-kravprofiler)
-8. [Notion Database-struktur](#8-notion-database-struktur)
-9. [Token-strategi](#9-token-strategi)
-10. [Utviklingsplan](#10-utviklingsplan)
+8. [Database og API-struktur](#8-database-og-api-struktur)
+9. [Arkitektur](#9-arkitektur)
+10. [Neste steg](#10-neste-steg)
 
 ---
 
 ## 1. HURTIGSTART
 
-### Komme i gang med IUP-generering
+### Komme i gang med IUP App
 
-**Mål**: Token-effektiv databasebygging for Notion
+**Mål**: Digital plattform for individuell spillerutvikling i golf
 
 **TL;DR**:
-- 68,000 tokens totalt for komplett system
-- 15 arbeidsøkter over 6 uker
-- Start med 2,700 tokens (Spillere + Periodisering)
-- Test underveis med 1 reell spiller
+- Full-stack app (React + Fastify + PostgreSQL)
+- Deployed på Railway (backend + frontend)
+- 550 frontend-komponenter, 231 backend-filer
+- 133 API-endepunkter
 
-### Nåværende status
+### Nåværende status (2. januar 2026)
 
-| Komponent | Status | Tokens igjen |
-|-----------|--------|--------------|
-| Fundament (Kategori, Periodisering, Tester) | ✅ 100% | 0 |
-| Dokumentasjon (MASTER, Gjennomgang) | ✅ 100% | 0 |
-| Notion Databaser (11 stk) | ❌ 0% | 56,700 |
-| Interaktive Komponenter (7 stk) | ⚠️ 30% | 10,000 |
+| Komponent | Status | Detaljer |
+|-----------|--------|----------|
+| Frontend (React) | ✅ 95% | 550 filer, 180,566 linjer |
+| Backend (Fastify) | ✅ 85% | 231 filer, 69,622 linjer |
+| Database (PostgreSQL) | ✅ 75% | 15 migrasjoner, Prisma ORM |
+| Deployment (Railway) | ✅ 92% | Backend + Frontend live |
+| Treningsdata | ⚠️ 55% | Mangler full øvelsesdatabase |
 
-**DU TRENGER**: Notion-databasene (kritisk) → 56,700 tokens
+### Kjøre lokalt
 
-### Strategi: 3 Faser
+```bash
+# Backend
+cd apps/api
+npm install
+npm run dev
 
-**FASE 1: KJERNE** (2 uker)
-5 økter × 4,000 tokens = 20,000 tokens
-1. Spillere + Periodisering (2,700 tokens)
-2. Tester + Benchmarking (2,500 tokens)
-3. Treningsøkter 1-20 (4,000 tokens)
-4. Ukeplaner Templates 1-10 (5,000 tokens)
-5. Turneringer (1,200 tokens)
+# Frontend
+cd apps/web
+npm install
+npm start
+```
 
-**Resultat**: 1 spiller kan navigere 12-ukers plan
+### Produksjon
 
-**FASE 2: INNHOLD** (2 uker)
-6 økter × 5,000 tokens = 30,000 tokens
-- Teknikk-øvelser (100 drills)
-- Shortgame/Putting (100 drills)
-- Fysisk/Mental (100 drills)
-
-**Resultat**: 300 øvelser klar for bruk
-
-**FASE 3: SKALERING** (2 uker)
-4 økter × 4,500 tokens = 18,000 tokens
-- Treningsøkter full pakke (150 totalt)
-- Ukeplaner full pakke (88 templates)
-- Support-databaser
-
-**Resultat**: Komplett system for alle kategorier
+- **Backend**: https://iup-golf-backend-production.up.railway.app
+- **Frontend**: https://ak-golf-iup-frontend-production.up.railway.app
+- **API Docs**: /docs (Swagger)
+- **Health Check**: /health
 
 ---
 
 ## 2. SYSTEMSTATUS
 
-### App-skjermer (18/18 produksjonsklare - 100%) ✅
+### Frontend (550 komponenter)
 
-**Prioritet 1 - Kjernefunksjonalitet** (9 skjermer)
-| Skjerm | Fil | Status |
-|--------|-----|--------|
-| Dashboard | `AKGolfDashboard.jsx` | ✅ Ferdig |
-| Brukerprofil/Onboarding | `ak_golf_brukerprofil_onboarding.jsx` | ✅ Ferdig |
-| Utviklingsplan | `utviklingsplan_b_nivaa.jsx` | ✅ Ferdig |
-| Kalender | `Kalender.jsx` | ✅ Ferdig |
-| Årsplan | `Aarsplan.jsx` | ✅ Ferdig |
-| Testprotokoll | `Testprotokoll.jsx` | ✅ Ferdig |
-| Treningsprotokoll | `Treningsprotokoll.jsx` | ✅ Ferdig |
-| Trenerteam | `Trenerteam.jsx` | ✅ Ferdig |
-| Målsetninger | `Målsetninger.jsx` | ✅ Ferdig |
+**Features implementert** (109 feature-filer):
+- Dashboard med statistikk og oversikt
+- Spillerprofil og onboarding
+- Treningsplan og kalender
+- Testregistrering og analyse
+- Coach-dashboard og spilleradministrasjon
+- Badge-system og gamification
+- Meldingssystem
 
-**Prioritet 2 - Statistikk og analyse** (2 skjermer)
-| Skjerm | Fil | Status |
-|--------|-----|--------|
-| Treningsstatistikk | `Treningsstatistikk.jsx` | ✅ Ferdig |
-| Testresultater | `Testresultater.jsx` | ✅ Ferdig |
+**Teknisk stack**:
+- React 18 med hooks
+- Tailwind CSS + Design System v2.1
+- React Router for navigasjon
+- Axios for API-kall
 
-**Prioritet 3 - Støttefunksjoner** (3 skjermer)
-| Skjerm | Fil | Status |
-|--------|-----|--------|
-| Øvelser | `Øvelser.jsx` | ✅ Ferdig |
-| Notater | `Notater.jsx` | ✅ Ferdig |
-| Arkiv | `Arkiv.jsx` | ✅ Ferdig |
+### Backend (231 filer, 133 endepunkter)
 
-**Utility/Referanse** (4 skjermer)
-| Skjerm | Fil | Status |
-|--------|-----|--------|
-| Intake Form v2 | `ak-intake-form-premium-v2.jsx` | ✅ Ferdig |
-| Player Intake | `ak-player-intake-v1.jsx` | ✅ Ferdig |
-| Kategori Oversikt | `kategori_system_oversikt.jsx` | ✅ Ferdig |
-| Benchmark Dashboard | `ak-benchmark-dashboard.jsx` | ✅ Ferdig |
+| Modul | Endepunkter | Status |
+|-------|-------------|--------|
+| Auth | 8 | ✅ JWT + refresh tokens |
+| Players | 15 | ✅ CRUD + profil |
+| Training | 20 | ✅ Økter + planer |
+| Tests | 12 | ✅ Registrering + analyse |
+| Coaches | 10 | ✅ Spilleradministrasjon |
+| Calendar | 8 | ✅ Bookinger |
+| Gamification | 15 | ✅ Badges + XP |
+| Weather | 4 | ✅ Met.no integrasjon |
+| Golf Courses | 6 | ✅ Norske baner |
 
-**Total**: ~12,000+ linjer React-kode
+**Teknisk stack**:
+- Fastify 4.x (Node.js)
+- Prisma ORM + PostgreSQL
+- Redis for caching
+- WebSocket for real-time
+- Swagger for dokumentasjon
 
-### Backend/Data
+### Database (PostgreSQL)
 
-| Komponent | Status | Versjon |
-|-----------|--------|---------|
-| **Kategori-system (A-K)** | ✅ **v2.0 Komplett** | 2.0 |
-| **Team Norway tester** | ✅ **20 tester** | 2.0 |
-| Spillerprofil JSON-schema | ✅ Ferdig | 1.0 |
-| PEI-formel | ✅ Korrigert | 1.0 |
-| Overgangskriterier | ✅ v2.0 | 2.0 |
-| Konfidensintervaller | ✅ v2.0 | 2.0 |
-| Database setup | ✅ PostgreSQL | 1.0 |
-| Øvelsesdatabase (300+) | ❌ Mangler | - |
-| Ukemaler (88 stk) | ❌ Mangler | - |
-| Notion databaser | ⚠️ Delvis | - |
+| Tabell | Status | Beskrivelse |
+|--------|--------|-------------|
+| User | ✅ | Autentisering og roller |
+| Player | ✅ | Spillerprofiler |
+| Coach | ✅ | Trenerprofiler |
+| Session | ✅ | Treningsøkter |
+| Test | ✅ | Testresultater |
+| Badge | ✅ | Gamification |
+| Exercise | ⚠️ | Trenger mer data |
+
+**Infrastruktur**:
+- Railway PostgreSQL (prod)
+- 15 Prisma-migrasjoner
+- Redis cache tilkoblet
 
 ### Design System v2.1 ✅ KOMPLETT
 

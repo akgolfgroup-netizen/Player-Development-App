@@ -1,5 +1,11 @@
+/**
+ * ModificationRequestDashboard Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { tokens } from '../../design-tokens';
 import apiClient from '../../services/apiClient';
 import Button from '../../ui/primitives/Button';
 import { PageTitle, SubSectionTitle, CardTitle } from '../../components/typography';
@@ -45,16 +51,16 @@ export default function ModificationRequestDashboard() {
   };
 
   const urgencyColor = {
-    low: tokens.colors.steel,
-    medium: tokens.colors.warning,
-    high: tokens.colors.error,
+    low: 'var(--ak-text-secondary)',
+    medium: 'var(--ak-status-warning)',
+    high: 'var(--ak-status-error)',
   };
 
   const statusBadge = {
-    pending: { bg: `${tokens.colors.warning}20`, text: tokens.colors.warning, label: 'Pending' },
-    under_review: { bg: `${tokens.colors.primary}20`, text: tokens.colors.primary, label: 'Under Review' },
-    resolved: { bg: `${tokens.colors.success}20`, text: tokens.colors.success, label: 'Resolved' },
-    rejected: { bg: `${tokens.colors.error}20`, text: tokens.colors.error, label: 'Rejected' },
+    pending: { bg: 'var(--ak-status-warning-light)', text: 'var(--ak-status-warning)', label: 'Pending' },
+    under_review: { bg: 'var(--ak-brand-primary-light)', text: 'var(--ak-brand-primary)', label: 'Under Review' },
+    resolved: { bg: 'var(--ak-status-success-light)', text: 'var(--ak-status-success)', label: 'Resolved' },
+    rejected: { bg: 'var(--ak-status-error-light)', text: 'var(--ak-status-error)', label: 'Rejected' },
   };
 
   if (loading) return <div className="p-8">Loading requests...</div>;

@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 /**
  * AK Golf Academy - Coach Athlete Status
- * Design System v3.0 - Semantic CSS Variables
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Real-time overview of player status including:
  * - Training activity, sleep, energy, stress, injuries
@@ -32,6 +34,55 @@ import Button from '../../ui/primitives/Button';
 import Card from '../../ui/primitives/Card';
 import StateCard from '../../ui/composites/StateCard';
 import { PageTitle, SubSectionTitle } from '../../components/typography';
+
+// ============================================================================
+// CLASS MAPPINGS
+// ============================================================================
+
+const STATUS_CLASSES = {
+  green: {
+    bg: 'bg-ak-status-success/10',
+    text: 'text-ak-status-success',
+    border: 'border-ak-status-success',
+  },
+  yellow: {
+    bg: 'bg-ak-status-warning/10',
+    text: 'text-ak-status-warning',
+    border: 'border-ak-status-warning',
+  },
+  red: {
+    bg: 'bg-ak-status-error/10',
+    text: 'text-ak-status-error',
+    border: 'border-ak-status-error',
+  },
+  good: {
+    bg: 'bg-ak-status-success/10',
+    text: 'text-ak-status-success',
+    border: 'border-ak-status-success',
+  },
+  warning: {
+    bg: 'bg-ak-status-warning/10',
+    text: 'text-ak-status-warning',
+    border: 'border-ak-status-warning',
+  },
+  critical: {
+    bg: 'bg-ak-status-error/10',
+    text: 'text-ak-status-error',
+    border: 'border-ak-status-error',
+  },
+};
+
+const CATEGORY_CLASSES = {
+  A: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' },
+  B: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' },
+  C: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning' },
+};
+
+const PROGRESS_BAR_COLORS = {
+  high: 'bg-ak-status-success',
+  medium: 'bg-ak-status-warning',
+  low: 'bg-ak-status-error',
+};
 
 interface PlayerStatus {
   id: string;
@@ -307,35 +358,31 @@ export const CoachAthleteStatus: React.FC = () => {
   // Show loading state
   if (isLoading) {
     return (
-      <div style={{
-        padding: '24px',
-        backgroundColor: 'var(--bg-secondary)',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <div className="p-6 bg-ak-surface-subtle min-h-screen flex items-center justify-center">
         <StateCard variant="loading" title="Laster spillerstatus..." />
       </div>
     );
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'green': case 'good': return { bg: 'rgba(var(--success-rgb), 0.1)', text: 'var(--success)', border: 'var(--success)' };
-      case 'yellow': case 'warning': return { bg: 'rgba(var(--warning-rgb), 0.1)', text: 'var(--warning)', border: 'var(--warning)' };
-      case 'red': case 'critical': return { bg: 'rgba(var(--error-rgb), 0.1)', text: 'var(--error)', border: 'var(--error)' };
-      default: return { bg: 'var(--bg-tertiary)', text: 'var(--text-secondary)', border: 'var(--border-default)' };
-    }
+  const getStatusClasses = (status: string) => {
+    return STATUS_CLASSES[status as keyof typeof STATUS_CLASSES] || {
+      bg: 'bg-ak-surface-subtle',
+      text: 'text-ak-text-secondary',
+      border: 'border-ak-border-default',
+    };
   };
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'A': return { bg: 'rgba(var(--success-rgb), 0.15)', text: 'var(--success)' };
-      case 'B': return { bg: 'rgba(var(--accent-rgb), 0.15)', text: 'var(--accent)' };
-      case 'C': return { bg: 'rgba(var(--warning-rgb), 0.15)', text: 'var(--warning)' };
-      default: return { bg: 'var(--bg-tertiary)', text: 'var(--text-primary)' };
-    }
+  const getCategoryClasses = (category: string) => {
+    return CATEGORY_CLASSES[category as keyof typeof CATEGORY_CLASSES] || {
+      bg: 'bg-ak-surface-subtle',
+      text: 'text-ak-text-primary',
+    };
+  };
+
+  const getProgressBarColor = (ratio: number) => {
+    if (ratio >= 0.8) return PROGRESS_BAR_COLORS.high;
+    if (ratio >= 0.5) return PROGRESS_BAR_COLORS.medium;
+    return PROGRESS_BAR_COLORS.low;
   };
 
   const formatLastActive = (dateString: string) => {
@@ -362,35 +409,18 @@ export const CoachAthleteStatus: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <div className="p-6 bg-ak-surface-subtle min-h-screen">
       {/* Header */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: 'var(--radius-md)',
-            background: 'var(--accent)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Activity size={24} color="white" />
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-12 h-12 rounded-lg bg-ak-brand-primary flex items-center justify-center">
+            <Activity size={24} className="text-white" />
           </div>
           <div>
-            <PageTitle style={{
-              fontSize: '28px',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              margin: 0
-            }}>
+            <PageTitle className="text-[28px] font-bold text-ak-text-primary m-0">
               Spillerstatus
             </PageTitle>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-secondary)',
-              margin: 0
-            }}>
+            <p className="text-sm text-ak-text-secondary m-0">
               Sanntidsoversikt over spillernes tilstand og varsler
             </p>
           </div>
@@ -398,77 +428,57 @@ export const CoachAthleteStatus: React.FC = () => {
       </div>
 
       {/* Status Summary Cards */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)',
-        gap: '12px',
-        marginBottom: '24px'
-      }}>
+      <div className="grid grid-cols-5 gap-3 mb-6">
         <Card variant="default" padding="none">
-          <div style={{ padding: '16px' }}>
-            <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: '0 0 4px 0' }}>
+          <div className="p-4">
+            <p className="text-xs text-ak-text-secondary m-0 mb-1">
               Totalt
             </p>
-            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+            <p className="text-[28px] font-bold text-ak-text-primary m-0">
               {stats.total}
             </p>
           </div>
         </Card>
         <Card variant="default" padding="none">
-          <div style={{
-            padding: '16px',
-            backgroundColor: 'rgba(var(--success-rgb), 0.05)',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid rgba(var(--success-rgb), 0.2)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-              <CheckCircle size={14} style={{ color: 'var(--success)' }} />
-              <p style={{ fontSize: '12px', color: 'var(--success)', margin: 0 }}>Alt OK</p>
+          <div className="p-4 bg-ak-status-success/5 rounded-xl border border-ak-status-success/20">
+            <div className="flex items-center gap-1.5 mb-1">
+              <CheckCircle size={14} className="text-ak-status-success" />
+              <p className="text-xs text-ak-status-success m-0">Alt OK</p>
             </div>
-            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--success)', margin: 0 }}>
+            <p className="text-[28px] font-bold text-ak-status-success m-0">
               {stats.green}
             </p>
           </div>
         </Card>
         <Card variant="default" padding="none">
-          <div style={{
-            padding: '16px',
-            backgroundColor: 'rgba(var(--warning-rgb), 0.05)',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid rgba(var(--warning-rgb), 0.2)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-              <Clock size={14} style={{ color: 'var(--warning)' }} />
-              <p style={{ fontSize: '12px', color: 'var(--warning)', margin: 0 }}>Folg opp</p>
+          <div className="p-4 bg-ak-status-warning/5 rounded-xl border border-ak-status-warning/20">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Clock size={14} className="text-ak-status-warning" />
+              <p className="text-xs text-ak-status-warning m-0">Følg opp</p>
             </div>
-            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--warning)', margin: 0 }}>
+            <p className="text-[28px] font-bold text-ak-status-warning m-0">
               {stats.yellow}
             </p>
           </div>
         </Card>
         <Card variant="default" padding="none">
-          <div style={{
-            padding: '16px',
-            backgroundColor: 'rgba(var(--error-rgb), 0.05)',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid rgba(var(--error-rgb), 0.2)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-              <AlertTriangle size={14} style={{ color: 'var(--error)' }} />
-              <p style={{ fontSize: '12px', color: 'var(--error)', margin: 0 }}>Kritisk</p>
+          <div className="p-4 bg-ak-status-error/5 rounded-xl border border-ak-status-error/20">
+            <div className="flex items-center gap-1.5 mb-1">
+              <AlertTriangle size={14} className="text-ak-status-error" />
+              <p className="text-xs text-ak-status-error m-0">Kritisk</p>
             </div>
-            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--error)', margin: 0 }}>
+            <p className="text-[28px] font-bold text-ak-status-error m-0">
               {stats.red}
             </p>
           </div>
         </Card>
         <Card variant="default" padding="none">
-          <div style={{ padding: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-              <Bell size={14} style={{ color: 'var(--text-tertiary)' }} />
-              <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>Varsler</p>
+          <div className="p-4">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Bell size={14} className="text-ak-text-secondary" />
+              <p className="text-xs text-ak-text-secondary m-0">Varsler</p>
             </div>
-            <p style={{ fontSize: '28px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+            <p className="text-[28px] font-bold text-ak-text-primary m-0">
               {stats.totalAlerts}
             </p>
           </div>
@@ -476,45 +486,25 @@ export const CoachAthleteStatus: React.FC = () => {
       </div>
 
       {/* Search and Filter */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '20px',
-        flexWrap: 'wrap'
-      }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '200px', maxWidth: '400px' }}>
+      <div className="flex gap-4 mb-5 flex-wrap">
+        <div className="relative flex-1 min-w-[200px] max-w-[400px]">
           <Search
             size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--text-tertiary)'
-            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-secondary"
           />
           <input
             type="text"
-            placeholder="Sok etter spiller..."
+            placeholder="Søk etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '12px 12px 12px 40px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-default)',
-              backgroundColor: 'var(--bg-primary)',
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              outline: 'none'
-            }}
+            className="w-full py-3 pl-10 pr-3 rounded-lg border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none focus:border-ak-brand-primary"
           />
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex gap-2">
           {[
             { key: 'all', label: 'Alle' },
             { key: 'red', label: 'Kritisk' },
-            { key: 'yellow', label: 'Folg opp' },
+            { key: 'yellow', label: 'Følg opp' },
             { key: 'green', label: 'OK' }
           ].map(filter => (
             <Button
@@ -530,83 +520,47 @@ export const CoachAthleteStatus: React.FC = () => {
       </div>
 
       {/* Player List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="flex flex-col gap-3">
         {filteredPlayers.map((player) => {
-          const statusColors = getStatusColor(player.overallStatus);
-          const catColors = getCategoryColor(player.category);
+          const statusClasses = getStatusClasses(player.overallStatus);
+          const catClasses = getCategoryClasses(player.category);
+          const progressRatio = player.weeklyTrainingMinutes / player.weeklyGoal;
 
           return (
             <Card key={player.id} variant="default" padding="none">
-              <div style={{
-                padding: '20px',
-                borderLeft: `4px solid ${statusColors.border}`,
-                borderRadius: 'var(--radius-lg)'
-              }}>
+              <div className={`p-5 border-l-4 ${statusClasses.border} rounded-xl`}>
                 {/* Header Row */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <div style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '50%',
-                      backgroundColor: statusColors.bg,
-                      border: `2px solid ${statusColors.border}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '18px',
-                      fontWeight: '600',
-                      color: statusColors.text
-                    }}>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex gap-3 items-center">
+                    <div className={`w-12 h-12 rounded-full ${statusClasses.bg} border-2 ${statusClasses.border} flex items-center justify-center text-lg font-semibold ${statusClasses.text}`}>
                       {player.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                        <SubSectionTitle style={{
-                          fontSize: '16px',
-                          fontWeight: '600',
-                          color: 'var(--text-primary)',
-                          margin: 0
-                        }}>
+                      <div className="flex items-center gap-2 mb-1">
+                        <SubSectionTitle className="text-[16px] font-semibold text-ak-text-primary m-0">
                           {player.name}
                         </SubSectionTitle>
-                        <span style={{
-                          fontSize: '10px',
-                          fontWeight: '600',
-                          padding: '2px 8px',
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: catColors.bg,
-                          color: catColors.text
-                        }}>
+                        <span className={`text-[10px] font-semibold py-0.5 px-2 rounded ${catClasses.bg} ${catClasses.text}`}>
                           Kat. {player.category}
                         </span>
-                        <span style={{
-                          fontSize: '11px',
-                          color: 'var(--text-tertiary)'
-                        }}>
+                        <span className="text-[11px] text-ak-text-secondary">
                           HCP {player.hcp}
                         </span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs text-ak-text-secondary">
                           Sist aktiv: {formatLastActive(player.lastActive)}
                         </span>
                         {player.upcomingSession && (
-                          <span style={{
-                            fontSize: '12px',
-                            color: 'var(--accent)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                          }}>
+                          <span className="text-xs text-ak-brand-primary flex items-center gap-1">
                             <Calendar size={12} />
-                            Neste okt: {new Date(player.upcomingSession).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
+                            Neste økt: {new Date(player.upcomingSession).toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' })}
                           </span>
                         )}
                       </div>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div className="flex gap-2">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -627,30 +581,15 @@ export const CoachAthleteStatus: React.FC = () => {
                 </div>
 
                 {/* Metrics Row */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(5, 1fr)',
-                  gap: '12px',
-                  marginBottom: player.alerts.length > 0 ? '16px' : '0'
-                }}>
+                <div className={`grid grid-cols-5 gap-3 ${player.alerts.length > 0 ? 'mb-4' : ''}`}>
                   {Object.entries(player.metrics).map(([key, metric]) => {
                     const Icon = getMetricIcon(key);
                     const typedMetric = metric as { value: number | boolean; status: 'good' | 'warning' | 'critical'; label: string };
-                    const metricColors = getStatusColor(typedMetric.status);
+                    const metricClasses = getStatusClasses(typedMetric.status);
                     return (
-                      <div key={key} style={{
-                        padding: '12px',
-                        backgroundColor: metricColors.bg,
-                        borderRadius: 'var(--radius-md)',
-                        textAlign: 'center'
-                      }}>
-                        <Icon size={18} style={{ color: metricColors.text, marginBottom: '6px' }} />
-                        <p style={{
-                          fontSize: '11px',
-                          color: metricColors.text,
-                          fontWeight: '500',
-                          margin: 0
-                        }}>
+                      <div key={key} className={`p-3 ${metricClasses.bg} rounded-lg text-center`}>
+                        <Icon size={18} className={`${metricClasses.text} mb-1.5 mx-auto`} />
+                        <p className={`text-[11px] ${metricClasses.text} font-medium m-0`}>
                           {typedMetric.label}
                         </p>
                       </div>
@@ -659,70 +598,33 @@ export const CoachAthleteStatus: React.FC = () => {
                 </div>
 
                 {/* Weekly Training Progress */}
-                <div style={{
-                  marginTop: '12px',
-                  padding: '12px',
-                  backgroundColor: 'var(--bg-secondary)',
-                  borderRadius: 'var(--radius-md)'
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '8px'
-                  }}>
-                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <div className="mt-3 p-3 bg-ak-surface-subtle rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs text-ak-text-secondary">
                       Ukentlig trening
                     </span>
-                    <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)' }}>
+                    <span className="text-xs font-semibold text-ak-text-primary">
                       {Math.round(player.weeklyTrainingMinutes / 60)}t / {Math.round(player.weeklyGoal / 60)}t
                     </span>
                   </div>
-                  <div style={{
-                    height: '8px',
-                    backgroundColor: 'var(--border-default)',
-                    borderRadius: 'var(--radius-sm)',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      height: '100%',
-                      width: `${Math.min((player.weeklyTrainingMinutes / player.weeklyGoal) * 100, 100)}%`,
-                      backgroundColor: (player.weeklyTrainingMinutes / player.weeklyGoal) >= 0.8
-                        ? 'var(--success)'
-                        : (player.weeklyTrainingMinutes / player.weeklyGoal) >= 0.5
-                          ? 'var(--warning)'
-                          : 'var(--error)',
-                      borderRadius: 'var(--radius-sm)',
-                      transition: 'width 0.3s ease'
-                    }} />
+                  <div className="h-2 bg-ak-border-default rounded overflow-hidden">
+                    <div
+                      className={`h-full ${getProgressBarColor(progressRatio)} rounded transition-all duration-300`}
+                      style={{ width: `${Math.min(progressRatio * 100, 100)}%` }}
+                    />
                   </div>
                 </div>
 
                 {/* Alerts */}
                 {player.alerts.length > 0 && (
-                  <div style={{
-                    marginTop: '12px',
-                    padding: '12px',
-                    backgroundColor: 'rgba(var(--error-rgb), 0.05)',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid rgba(var(--error-rgb), 0.2)'
-                  }}>
+                  <div className="mt-3 p-3 bg-ak-status-error/5 rounded-lg border border-ak-status-error/20">
                     {player.alerts.map((alert, idx) => (
-                      <div key={idx} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        marginBottom: idx < player.alerts.length - 1 ? '8px' : '0'
-                      }}>
+                      <div key={idx} className={`flex items-center gap-2 ${idx < player.alerts.length - 1 ? 'mb-2' : ''}`}>
                         <AlertTriangle
                           size={14}
-                          style={{ color: alert.type === 'critical' ? 'var(--error)' : 'var(--warning)' }}
+                          className={alert.type === 'critical' ? 'text-ak-status-error' : 'text-ak-status-warning'}
                         />
-                        <span style={{
-                          fontSize: '13px',
-                          color: alert.type === 'critical' ? 'var(--error)' : 'var(--warning)',
-                          fontWeight: '500'
-                        }}>
+                        <span className={`text-[13px] font-medium ${alert.type === 'critical' ? 'text-ak-status-error' : 'text-ak-status-warning'}`}>
                           {alert.message}
                         </span>
                       </div>

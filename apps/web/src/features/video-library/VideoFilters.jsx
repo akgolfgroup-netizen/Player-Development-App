@@ -16,9 +16,9 @@ import Button from '../../ui/primitives/Button';
 // Filter options
 export const VIDEO_CATEGORIES = [
   { value: '', label: 'Alle kategorier' },
-  { value: 'swing', label: 'Full Swing' },
+  { value: 'swing', label: 'Full sving' },
   { value: 'putting', label: 'Putting' },
-  { value: 'short_game', label: 'Short Game' },
+  { value: 'short_game', label: 'Nærspill' },
   { value: 'other', label: 'Annet' },
 ];
 

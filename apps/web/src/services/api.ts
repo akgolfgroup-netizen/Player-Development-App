@@ -507,6 +507,39 @@ export const coachesAPI = {
 
   getTeams: (): Promise<AxiosResponse<ApiResponse<Player[]>>> =>
     api.get('/coaches/me/players'),
+
+  // Batch operations
+  batchAssignSession: (data: {
+    playerIds: string[];
+    sessionType: string;
+    scheduledDate: string;
+    durationMinutes?: number;
+    notes?: string;
+  }): Promise<AxiosResponse<ApiResponse<{ success: string[]; failed: Array<{ playerId: string; error: string }> }>>> =>
+    api.post('/coaches/me/batch/assign-session', data),
+
+  batchSendNote: (data: {
+    playerIds: string[];
+    title: string;
+    content: string;
+    category?: string;
+  }): Promise<AxiosResponse<ApiResponse<{ success: string[]; failed: Array<{ playerId: string; error: string }> }>>> =>
+    api.post('/coaches/me/batch/send-note', data),
+
+  batchUpdateStatus: (data: {
+    playerIds: string[];
+    status: 'active' | 'inactive' | 'on_break';
+  }): Promise<AxiosResponse<ApiResponse<{ success: string[]; failed: Array<{ playerId: string; error: string }> }>>> =>
+    api.post('/coaches/me/batch/update-status', data),
+
+  batchCreatePlan: (data: {
+    playerIds: string[];
+    planName: string;
+    startDate: string;
+    durationWeeks: number;
+    focusAreas?: string[];
+  }): Promise<AxiosResponse<ApiResponse<{ success: string[]; failed: Array<{ playerId: string; error: string }> }>>> =>
+    api.post('/coaches/me/batch/create-plan', data),
 };
 
 // =============================================================================

@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Periodeplaner Container
+ * Design System v3.0 - Premium Light
+ *
+ * Season planning with period cards and week overview.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Calendar, Target, ChevronDown,
@@ -11,6 +20,7 @@ import apiClient from '../../services/apiClient';
 import LoadingState from '../../components/ui/LoadingState';
 import ErrorState from '../../components/ui/ErrorState';
 import { useSessionSync } from '../../hooks/useSessionSync';
+import Button from '../../ui/primitives/Button';
 
 // ============================================================================
 // DEFAULT/FALLBACK DATA
@@ -218,35 +228,35 @@ const getPhaseConfig = (phase) => {
     case 'off-season':
       return {
         label: 'Off-season',
-        color: 'var(--accent)',
+        colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary', fill: 'bg-ak-brand-primary' },
         icon: Snowflake,
         description: 'Grunnlagsperiode',
       };
     case 'pre-season':
       return {
         label: 'Forberedelse',
-        color: 'var(--success)',
+        colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success', fill: 'bg-ak-status-success' },
         icon: Flower2,
         description: 'Oppkjoring',
       };
     case 'competition':
       return {
         label: 'Konkurranse',
-        color: 'var(--achievement)',
+        colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600', fill: 'bg-amber-500' },
         icon: Sun,
         description: 'Turneringssesong',
       };
     case 'transition':
       return {
         label: 'Overgang',
-        color: 'var(--warning)',
+        colorClasses: { bg: 'bg-ak-status-warning/15', text: 'text-ak-status-warning', fill: 'bg-ak-status-warning' },
         icon: Leaf,
         description: 'Evaluering og planlegging',
       };
     default:
       return {
         label: phase,
-        color: 'var(--text-secondary)',
+        colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary', fill: 'bg-ak-text-secondary' },
         icon: Calendar,
         description: '',
       };
@@ -256,29 +266,29 @@ const getPhaseConfig = (phase) => {
 const getStatusConfig = (status) => {
   switch (status) {
     case 'active':
-      return { label: 'Aktiv', color: 'var(--success)', icon: Play };
+      return { label: 'Aktiv', colorClasses: { bg: 'bg-ak-status-success/15', text: 'text-ak-status-success' }, icon: Play };
     case 'upcoming':
-      return { label: 'Kommende', color: 'var(--text-secondary)', icon: Clock };
+      return { label: 'Kommende', colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
     case 'completed':
-      return { label: 'Fullfort', color: 'var(--accent)', icon: CheckCircle };
+      return { label: 'Fullfort', colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: CheckCircle };
     default:
-      return { label: status, color: 'var(--text-secondary)', icon: Clock };
+      return { label: status, colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
   }
 };
 
 const getSessionTypeConfig = (type) => {
   switch (type) {
     case 'Styrke':
-      return { color: 'var(--error)', icon: Dumbbell };
+      return { colorClasses: { bg: 'bg-ak-status-error/15', text: 'text-ak-status-error' }, icon: Dumbbell };
     case 'Simulator':
     case 'Teknikk':
-      return { color: 'var(--accent)', icon: Target };
+      return { colorClasses: { bg: 'bg-ak-brand-primary/15', text: 'text-ak-brand-primary' }, icon: Target };
     case 'Mental':
-      return { color: 'var(--achievement)', icon: Brain };
+      return { colorClasses: { bg: 'bg-amber-500/15', text: 'text-amber-600' }, icon: Brain };
     case 'Hvile':
-      return { color: 'var(--text-secondary)', icon: Clock };
+      return { colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Clock };
     default:
-      return { color: 'var(--text-secondary)', icon: Calendar };
+      return { colorClasses: { bg: 'bg-ak-surface-subtle', text: 'text-ak-text-secondary' }, icon: Calendar };
   }
 };
 
@@ -296,134 +306,76 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
   const totalGoals = period.goals.length;
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      overflow: 'hidden',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-      border: period.status === 'active' ? '2px solid var(--success)' : '2px solid transparent',
-    }}>
+    <div className={`bg-ak-surface-base rounded-2xl overflow-hidden shadow-sm ${
+      period.status === 'active' ? 'border-2 border-ak-status-success' : 'border-2 border-transparent'
+    }`}>
       {/* Header */}
       <div
         onClick={onToggle}
-        style={{
-          padding: '20px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
+        className="p-5 cursor-pointer flex items-center justify-between"
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '12px',
-            backgroundColor: `${phaseConfig.color}15`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <PhaseIcon size={24} color={phaseConfig.color} />
+        <div className="flex items-center gap-4">
+          <div className={`w-12 h-12 rounded-xl ${phaseConfig.colorClasses.bg} flex items-center justify-center`}>
+            <PhaseIcon size={24} className={phaseConfig.colorClasses.text} />
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <SubSectionTitle style={{
-                fontSize: '16px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: 0,
-              }}>
+            <div className="flex items-center gap-2">
+              <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
                 {period.name}
               </SubSectionTitle>
-              <span style={{
-                fontSize: '11px',
-                fontWeight: 500,
-                color: statusConfig.color,
-                backgroundColor: `${statusConfig.color}15`,
-                padding: '2px 8px',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}>
+              <span className={`text-[11px] font-medium py-0.5 px-2 rounded ${statusConfig.colorClasses.bg} ${statusConfig.colorClasses.text} flex items-center gap-1`}>
                 <StatusIcon size={10} />
                 {statusConfig.label}
               </span>
             </div>
-            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+            <div className="text-[13px] text-ak-text-secondary mt-1">
               {formatDateRange(period.startDate, period.endDate)} - {phaseConfig.description}
             </div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div className="flex items-center gap-4">
           {period.status === 'active' && (
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--accent)' }}>
+            <div className="text-right">
+              <div className="text-xl font-bold text-ak-brand-primary">
                 {period.progress}%
               </div>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>fullfort</div>
+              <div className="text-[11px] text-ak-text-secondary">fullfort</div>
             </div>
           )}
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'var(--bg-secondary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'transform 0.2s',
-            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-          }}>
-            <ChevronDown size={18} color={'var(--text-secondary)'} />
+          <div className={`w-8 h-8 rounded-lg bg-ak-surface-subtle flex items-center justify-center transition-transform duration-200 ${
+            isExpanded ? 'rotate-180' : 'rotate-0'
+          }`}>
+            <ChevronDown size={18} className="text-ak-text-secondary" />
           </div>
         </div>
       </div>
 
       {/* Progress bar for active period */}
       {period.status === 'active' && (
-        <div style={{ padding: '0 20px 16px' }}>
-          <div style={{
-            height: '6px',
-            backgroundColor: 'var(--bg-secondary)',
-            borderRadius: '3px',
-            overflow: 'hidden',
-          }}>
-            <div style={{
-              height: '100%',
-              width: `${period.progress}%`,
-              backgroundColor: 'var(--success)',
-              borderRadius: '3px',
-              transition: 'width 0.3s ease',
-            }} />
+        <div className="px-5 pb-4">
+          <div className="h-1.5 bg-ak-surface-subtle rounded-sm overflow-hidden">
+            <div
+              className="h-full bg-ak-status-success rounded-sm transition-all duration-300"
+              style={{ width: `${period.progress}%` }}
+            />
           </div>
         </div>
       )}
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div style={{
-          padding: '0 20px 20px',
-          borderTop: '1px solid var(--border-default)',
-        }}>
+        <div className="px-5 pb-5 border-t border-ak-border-default">
           {/* Focus Areas */}
-          <div style={{ marginTop: '16px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+          <div className="mt-4">
+            <div className="text-[13px] font-semibold text-ak-text-primary mb-2">
               Fokusomrader
             </div>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="flex gap-2 flex-wrap">
               {period.focus.map((item, idx) => (
                 <span
                   key={idx}
-                  style={{
-                    fontSize: '12px',
-                    color: phaseConfig.color,
-                    backgroundColor: `${phaseConfig.color}10`,
-                    padding: '6px 12px',
-                    borderRadius: '8px',
-                  }}
+                  className={`text-xs py-1.5 px-3 rounded-lg ${phaseConfig.colorClasses.bg} ${phaseConfig.colorClasses.text}`}
                 >
                   {item}
                 </span>
@@ -432,61 +384,37 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
           </div>
 
           {/* Goals */}
-          <div style={{ marginTop: '20px' }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '12px',
-            }}>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <div className="mt-5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-[13px] font-semibold text-ak-text-primary">
                 Mal for perioden
               </div>
-              <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div className="text-xs text-ak-text-secondary">
                 {completedGoals}/{totalGoals} fullfort
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="flex flex-col gap-2">
               {period.goals.map((goal) => (
                 <div
                   key={goal.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    padding: '10px 12px',
-                    backgroundColor: goal.completed ? 'rgba(var(--success-rgb), 0.08)' : 'var(--bg-secondary)',
-                    borderRadius: '8px',
-                  }}
+                  className={`flex items-center gap-2.5 py-2.5 px-3 rounded-lg ${
+                    goal.completed ? 'bg-ak-status-success/10' : 'bg-ak-surface-subtle'
+                  }`}
                 >
-                  <div style={{
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    backgroundColor: goal.completed ? 'var(--success)' : 'var(--bg-primary)',
-                    border: goal.completed ? 'none' : '2px solid var(--border-default)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                    {goal.completed && <CheckCircle size={14} color={'var(--bg-primary)'} />}
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                    goal.completed
+                      ? 'bg-ak-status-success'
+                      : 'bg-ak-surface-base border-2 border-ak-border-default'
+                  }`}>
+                    {goal.completed && <CheckCircle size={14} className="text-white" />}
                   </div>
-                  <span style={{
-                    fontSize: '13px',
-                    color: goal.completed ? 'var(--text-secondary)' : 'var(--text-primary)',
-                    textDecoration: goal.completed ? 'line-through' : 'none',
-                    flex: 1,
-                  }}>
+                  <span className={`text-[13px] flex-1 ${
+                    goal.completed ? 'text-ak-text-secondary line-through' : 'text-ak-text-primary'
+                  }`}>
                     {goal.text}
                   </span>
                   {goal.current !== undefined && !goal.completed && (
-                    <span style={{
-                      fontSize: '11px',
-                      color: 'var(--accent)',
-                      backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-                      padding: '2px 8px',
-                      borderRadius: '4px',
-                    }}>
+                    <span className="text-[11px] text-ak-brand-primary bg-ak-brand-primary/10 py-0.5 px-2 rounded">
                       {goal.current} av mal
                     </span>
                   )}
@@ -496,63 +424,44 @@ const PeriodCard = ({ period, isExpanded, onToggle }) => {
           </div>
 
           {/* Weekly Hours Distribution */}
-          <div style={{ marginTop: '20px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '12px' }}>
+          <div className="mt-5">
+            <div className="text-[13px] font-semibold text-ak-text-primary mb-3">
               Ukentlig treningstid
             </div>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <div style={{
-                flex: 1,
-                backgroundColor: 'rgba(var(--accent-rgb), 0.10)',
-                padding: '12px',
-                borderRadius: '10px',
-                textAlign: 'center',
-              }}>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--accent)' }}>
+            <div className="flex gap-3">
+              <div className="flex-1 bg-ak-brand-primary/10 p-3 rounded-[10px] text-center">
+                <div className="text-xl font-bold text-ak-brand-primary">
                   {period.weeklyHours.technical}t
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Teknisk</div>
+                <div className="text-[11px] text-ak-text-secondary">Teknisk</div>
               </div>
-              <div style={{
-                flex: 1,
-                backgroundColor: 'rgba(var(--error-rgb), 0.10)',
-                padding: '12px',
-                borderRadius: '10px',
-                textAlign: 'center',
-              }}>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--error)' }}>
+              <div className="flex-1 bg-ak-status-error/10 p-3 rounded-[10px] text-center">
+                <div className="text-xl font-bold text-ak-status-error">
                   {period.weeklyHours.physical}t
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Fysisk</div>
+                <div className="text-[11px] text-ak-text-secondary">Fysisk</div>
               </div>
-              <div style={{
-                flex: 1,
-                backgroundColor: 'rgba(var(--achievement-rgb), 0.10)',
-                padding: '12px',
-                borderRadius: '10px',
-                textAlign: 'center',
-              }}>
-                <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--achievement)' }}>
+              <div className="flex-1 bg-amber-500/10 p-3 rounded-[10px] text-center">
+                <div className="text-xl font-bold text-amber-600">
                   {period.weeklyHours.mental}t
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Mental</div>
+                <div className="text-[11px] text-ak-text-secondary">Mental</div>
               </div>
             </div>
           </div>
 
           {/* Coach Note */}
           {period.notes && (
-            <div style={{
-              marginTop: '16px',
-              padding: '12px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: '10px',
-              borderLeft: `3px solid ${phaseConfig.color}`,
-            }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+            <div className={`mt-4 p-3 bg-ak-surface-subtle rounded-[10px] border-l-[3px] ${
+              phaseConfig.colorClasses.text === 'text-ak-brand-primary' ? 'border-l-ak-brand-primary' :
+              phaseConfig.colorClasses.text === 'text-ak-status-success' ? 'border-l-ak-status-success' :
+              phaseConfig.colorClasses.text === 'text-amber-600' ? 'border-l-amber-500' :
+              'border-l-ak-status-warning'
+            }`}>
+              <div className="text-[11px] text-ak-text-secondary mb-1">
                 Trenernotat - {period.coach}
               </div>
-              <div style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+              <div className="text-[13px] text-ak-text-primary leading-relaxed">
                 {period.notes}
               </div>
             </div>
@@ -572,43 +481,24 @@ const CurrentWeekPlan = ({ weekPlan }) => {
   const totalSessions = weekPlan.sessions.filter(s => s.type !== 'Hvile').length;
 
   return (
-    <div style={{
-      backgroundColor: 'var(--bg-primary)',
-      borderRadius: '16px',
-      padding: '20px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '16px',
-      }}>
+    <div className="bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <SubSectionTitle style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            color: 'var(--text-primary)',
-            margin: 0,
-          }}>
+          <SubSectionTitle className="text-base font-semibold text-ak-text-primary m-0">
             Denne uken (Uke {weekPlan.week})
           </SubSectionTitle>
-          <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+          <div className="text-[13px] text-ak-text-secondary mt-0.5">
             Tema: {weekPlan.theme}
           </div>
         </div>
-        <div style={{
-          backgroundColor: 'rgba(var(--success-rgb), 0.10)',
-          padding: '8px 12px',
-          borderRadius: '8px',
-        }}>
-          <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--success)' }}>
+        <div className="bg-ak-status-success/10 py-2 px-3 rounded-lg">
+          <span className="text-sm font-semibold text-ak-status-success">
             {completedSessions}/{totalSessions} okter
           </span>
         </div>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div className="flex flex-col gap-2">
         {weekPlan.sessions.map((session, idx) => {
           const config = getSessionTypeConfig(session.type);
           const Icon = config.icon;
@@ -616,51 +506,29 @@ const CurrentWeekPlan = ({ weekPlan }) => {
           return (
             <div
               key={idx}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '12px',
-                backgroundColor: session.completed ? 'rgba(var(--success-rgb), 0.05)' : 'var(--bg-secondary)',
-                borderRadius: '10px',
-                opacity: session.type === 'Hvile' ? 0.6 : 1,
-              }}
+              className={`flex items-center gap-3 p-3 rounded-[10px] ${
+                session.completed ? 'bg-ak-status-success/5' : 'bg-ak-surface-subtle'
+              } ${session.type === 'Hvile' ? 'opacity-60' : 'opacity-100'}`}
             >
-              <div style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                backgroundColor: session.completed ? 'rgba(var(--success-rgb), 0.15)' : `${config.color}15`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                session.completed ? 'bg-ak-status-success/15' : config.colorClasses.bg
+              }`}>
                 {session.completed ? (
-                  <CheckCircle size={18} color={'var(--success)'} />
+                  <CheckCircle size={18} className="text-ak-status-success" />
                 ) : (
-                  <Icon size={18} color={config.color} />
+                  <Icon size={18} className={config.colorClasses.text} />
                 )}
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--text-primary)',
-                }}>
+              <div className="flex-1">
+                <div className="text-sm font-medium text-ak-text-primary">
                   {session.day}
                 </div>
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                <div className="text-xs text-ak-text-secondary">
                   {session.type} - {session.focus}
                 </div>
               </div>
               {session.duration > 0 && (
-                <div style={{
-                  fontSize: '12px',
-                  color: 'var(--text-secondary)',
-                  backgroundColor: 'var(--bg-primary)',
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                }}>
+                <div className="text-xs text-ak-text-secondary bg-ak-surface-base py-1 px-2 rounded-md">
                   {session.duration} min
                 </div>
               )}
@@ -864,111 +732,60 @@ const PeriodeplanerContainer = () => {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div className="min-h-screen bg-ak-surface-subtle">
       <PageHeader
         title="Periodeplaner"
         subtitle="Sesongplanlegging og periodisering"
         actions={
-          <button
+          <Button
+            variant={isSyncing ? 'secondary' : 'primary'}
+            size="sm"
             onClick={handleSyncSessions}
             disabled={isSyncing}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              backgroundColor: isSyncing ? 'var(--bg-secondary)' : 'var(--accent)',
-              color: isSyncing ? 'var(--text-secondary)' : 'var(--bg-primary)',
-              border: 'none',
-              borderRadius: '10px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: isSyncing ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s',
-            }}
+            leftIcon={<RefreshCw size={16} className={isSyncing ? 'animate-spin' : ''} />}
           >
-            <RefreshCw
-              size={16}
-              style={{
-                animation: isSyncing ? 'spin 1s linear infinite' : 'none'
-              }}
-            />
             {isSyncing ? 'Synkroniserer...' : 'Synkroniser til økter'}
-          </button>
+          </Button>
         }
       />
 
-      <div style={{ padding: '16px 24px 24px', width: '100%' }}>
+      <div className="p-4 px-6 pb-6 w-full">
         {/* Stats Overview */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '12px',
-          marginBottom: '24px',
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--success)' }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3 mb-6">
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-status-success">
               {activePeriod?.name.split(' ')[0] || '-'}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Aktiv periode</div>
+            <div className="text-xs text-ak-text-secondary">Aktiv periode</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-brand-primary">
               {activePeriod?.progress || 0}%
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Fullfort</div>
+            <div className="text-xs text-ak-text-secondary">Fullfort</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--achievement)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-amber-600">
               {totalWeeklyHours}t
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Timer/uke</div>
+            <div className="text-xs text-ak-text-secondary">Timer/uke</div>
           </div>
-          <div style={{
-            backgroundColor: 'var(--bg-primary)',
-            borderRadius: '12px',
-            padding: '16px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>
+          <div className="bg-ak-surface-base rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-ak-text-primary">
               {periods.length}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Perioder i ar</div>
+            <div className="text-xs text-ak-text-secondary">Perioder i ar</div>
           </div>
         </div>
 
         {/* Two Column Layout */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '24px',
-        }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6">
           {/* Left: Period Cards */}
           <div>
-            <SectionTitle style={{
-              fontSize: '18px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: '0 0 16px 0',
-            }}>
+            <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4">
               Arsplan 2025
             </SectionTitle>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="flex flex-col gap-3">
               {periods.map((period) => (
                 <PeriodCard
                   key={period.id}
@@ -982,33 +799,17 @@ const PeriodeplanerContainer = () => {
 
           {/* Right: Current Week */}
           <div>
-            <SectionTitle style={{
-              fontSize: '18px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              margin: '0 0 16px 0',
-            }}>
+            <SectionTitle className="text-lg font-semibold text-ak-text-primary m-0 mb-4">
               Ukeoversikt
             </SectionTitle>
             <CurrentWeekPlan weekPlan={CURRENT_WEEK_PLAN} />
 
             {/* Period Timeline Visual */}
-            <div style={{
-              marginTop: '24px',
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '16px',
-              padding: '20px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            }}>
-              <SubSectionTitle style={{
-                fontSize: '14px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                margin: '0 0 16px 0',
-              }}>
+            <div className="mt-6 bg-ak-surface-base rounded-2xl p-5 shadow-sm">
+              <SubSectionTitle className="text-sm font-semibold text-ak-text-primary m-0 mb-4">
                 Arshjul
               </SubSectionTitle>
-              <div style={{ display: 'flex', gap: '4px', height: '24px' }}>
+              <div className="flex gap-1 h-6">
                 {periods.map((period) => {
                   const phaseConfig = getPhaseConfig(period.phase);
                   const startMonth = new Date(period.startDate).getMonth();
@@ -1018,22 +819,18 @@ const PeriodeplanerContainer = () => {
                   return (
                     <div
                       key={period.id}
-                      style={{
-                        flex: `0 0 ${width}%`,
-                        backgroundColor: period.status === 'active' ? phaseConfig.color : `${phaseConfig.color}40`,
-                        borderRadius: '4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
+                      className={`rounded flex items-center justify-center ${
+                        period.status === 'active'
+                          ? phaseConfig.colorClasses.fill
+                          : phaseConfig.colorClasses.bg
+                      }`}
+                      style={{ flex: `0 0 ${width}%` }}
                       title={period.name}
                     >
                       {width > 15 && (
-                        <span style={{
-                          fontSize: '10px',
-                          fontWeight: 600,
-                          color: period.status === 'active' ? 'var(--bg-primary)' : phaseConfig.color,
-                        }}>
+                        <span className={`text-[10px] font-semibold ${
+                          period.status === 'active' ? 'text-white' : phaseConfig.colorClasses.text
+                        }`}>
                           {period.name.split(' ')[0]}
                         </span>
                       )}
@@ -1041,13 +838,7 @@ const PeriodeplanerContainer = () => {
                   );
                 })}
               </div>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: '8px',
-                fontSize: '10px',
-                color: 'var(--text-secondary)',
-              }}>
+              <div className="flex justify-between mt-2 text-[10px] text-ak-text-secondary">
                 <span>Jan</span>
                 <span>Apr</span>
                 <span>Jul</span>

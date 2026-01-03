@@ -282,14 +282,19 @@ export function useCalendarEvents(
   const [error, setError] = useState<string | null>(null);
   const [isSeedData, setIsSeedData] = useState(false);
 
+  // Memoize date strings to prevent infinite re-fetching
+  // (Date objects create new references on each render)
+  const startDateStr = useMemo(() => formatDateStr(rangeStart), [rangeStart.getTime()]);
+  const endDateStr = useMemo(() => formatDateStr(rangeEnd), [rangeEnd.getTime()]);
+
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await apiGet<{ events: ApiCalendarEvent[] }>('/calendar/events', {
-        startDate: formatDateStr(rangeStart),
-        endDate: formatDateStr(rangeEnd),
+        startDate: startDateStr,
+        endDate: endDateStr,
       });
 
       const apiEvents = mapApiToCalendarEvents(response.events || []);
@@ -320,7 +325,7 @@ export function useCalendarEvents(
     } finally {
       setIsLoading(false);
     }
-  }, [rangeStart, rangeEnd]);
+  }, [startDateStr, endDateStr, rangeStart, rangeEnd]);
 
   useEffect(() => {
     fetchData();

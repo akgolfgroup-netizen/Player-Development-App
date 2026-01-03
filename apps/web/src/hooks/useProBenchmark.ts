@@ -9,6 +9,8 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import apiClient from '../services/apiClient';
+import { checkFeature } from '../config/featureFlags';
 
 // Types for benchmark data
 export interface ProBenchmarkPlayer {
@@ -150,14 +152,34 @@ export function useEliteBenchmarks() {
     setLoading(true);
     setError(null);
 
-    try {
-      // In production, this would fetch from the API
-      // For now, use demo data
+    // Check if live API is enabled
+    if (!checkFeature('ENABLE_LIVE_BENCHMARK_API')) {
       await new Promise(resolve => setTimeout(resolve, 300));
       setData(getDemoEliteBenchmarks());
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await apiClient.get('/datagolf/tour-averages', {
+        params: { tour: 'PGA' }
+      });
+
+      if (response.data?.success && response.data?.data) {
+        const apiData = response.data.data;
+        setData({
+          top10: apiData.top10 || getDemoEliteBenchmarks().top10,
+          top50: apiData.top50 || getDemoEliteBenchmarks().top50,
+          tourAverage: apiData.tourAverage || getDemoEliteBenchmarks().tourAverage,
+        });
+      } else {
+        // API returned but no valid data - use demo
+        setData(getDemoEliteBenchmarks());
+      }
     } catch (err) {
+      console.warn('[useEliteBenchmarks] API failed, using demo data:', err);
       setError('Kunne ikke laste benchmark-data');
-      setData(getDemoEliteBenchmarks());
+      setData(getDemoEliteBenchmarks()); // Graceful degradation
     } finally {
       setLoading(false);
     }
@@ -182,10 +204,26 @@ export function useTopPlayers(limit: number = 10) {
     setLoading(true);
     setError(null);
 
-    try {
+    // Check if live API is enabled
+    if (!checkFeature('ENABLE_LIVE_BENCHMARK_API')) {
       await new Promise(resolve => setTimeout(resolve, 300));
       setData(getDemoTopPlayers().slice(0, limit));
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await apiClient.get('/datagolf/pro-players', {
+        params: { tour: 'pga', limit }
+      });
+
+      if (response.data?.success && response.data?.data?.length > 0) {
+        setData(response.data.data.slice(0, limit));
+      } else {
+        setData(getDemoTopPlayers().slice(0, limit));
+      }
     } catch (err) {
+      console.warn('[useTopPlayers] API failed, using demo data:', err);
       setError('Kunne ikke laste spillerdata');
       setData(getDemoTopPlayers().slice(0, limit));
     } finally {
@@ -212,10 +250,24 @@ export function useApproachSkills() {
     setLoading(true);
     setError(null);
 
-    try {
+    // Check if live API is enabled
+    if (!checkFeature('ENABLE_LIVE_BENCHMARK_API')) {
       await new Promise(resolve => setTimeout(resolve, 300));
       setData(getDemoApproachSkills());
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await apiClient.get('/datagolf/approach-skill');
+
+      if (response.data?.success && response.data?.data?.length > 0) {
+        setData(response.data.data);
+      } else {
+        setData(getDemoApproachSkills());
+      }
     } catch (err) {
+      console.warn('[useApproachSkills] API failed, using demo data:', err);
       setError('Kunne ikke laste approach-data');
       setData(getDemoApproachSkills());
     } finally {

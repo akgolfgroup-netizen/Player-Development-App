@@ -1,3 +1,12 @@
+/**
+ * AK Golf Academy - Coach Stats Progress
+ * Design System v3.0 - Premium Light
+ *
+ * Shows players who are making positive progress.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useMemo } from 'react';
 import {
   TrendingUp,
@@ -177,32 +186,23 @@ export const CoachStatsProgress: React.FC = () => {
     return date.toLocaleDateString('nb-NO', { day: 'numeric', month: 'short' });
   };
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryClasses = (category: string) => {
     switch (category) {
-      case 'A': return { bg: 'var(--bg-success-subtle)', text: 'var(--success)' };
-      case 'B': return { bg: 'var(--bg-accent-subtle)', text: 'var(--info)' };
-      case 'C': return { bg: 'var(--bg-warning-subtle)', text: 'var(--warning)' };
-      default: return { bg: 'var(--card)', text: 'var(--text-secondary)' };
+      case 'A': return { bg: 'bg-ak-status-success/10', text: 'text-ak-status-success' };
+      case 'B': return { bg: 'bg-ak-brand-primary/10', text: 'text-ak-brand-primary' };
+      case 'C': return { bg: 'bg-ak-status-warning/10', text: 'text-ak-status-warning' };
+      default: return { bg: 'bg-ak-surface-base', text: 'text-ak-text-secondary' };
     }
   };
 
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
+    <div className="p-6 bg-ak-surface-base min-h-screen">
       {/* Header with icon */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '24px' }}>
-        <div style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '12px',
-          background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0
-        }}>
-          <TrendingUp size={24} color="white" />
+      <div className="flex items-start gap-4 mb-6">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ak-brand-primary to-ak-brand-primary/80 flex items-center justify-center flex-shrink-0">
+          <TrendingUp size={24} className="text-white" />
         </div>
-        <div style={{ flex: 1 }}>
+        <div className="flex-1">
           <PageHeader
             title="Spillere i fremgang"
             subtitle={`${filteredAndSortedPlayers.length} spillere viser positiv utvikling`}
@@ -212,96 +212,43 @@ export const CoachStatsProgress: React.FC = () => {
       </div>
 
       {/* Top Performers */}
-      <div style={{
-        backgroundColor: 'var(--bg-primary)',
-        borderRadius: '16px',
-        padding: '20px',
-        marginBottom: '24px',
-        border: `1px solid ${'var(--border-default)'}`
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-          <Award size={20} color={'var(--accent)'} />
-          <SectionTitle style={{ margin: 0 }}>
+      <div className="bg-ak-surface-base rounded-2xl p-5 mb-6 border border-ak-border-default">
+        <div className="flex items-center gap-2 mb-4">
+          <Award size={20} className="text-ak-brand-primary" />
+          <SectionTitle className="m-0">
             Månedens stjerner
           </SectionTitle>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+        <div className="grid grid-cols-3 gap-4">
           {topPerformers.map((player, index) => (
-            <div key={player.id} style={{
-              backgroundColor: index === 0 ? 'var(--streak-gold-muted)' : 'var(--bg-secondary)',
-              borderRadius: '12px',
-              padding: '16px',
-              border: index === 0 ? '2px solid var(--streak-gold-border)' : `1px solid ${'var(--border-default)'}`,
-              position: 'relative'
-            }}>
+            <div key={player.id} className={`rounded-xl p-4 relative ${
+              index === 0
+                ? 'bg-amber-500/10 border-2 border-amber-500/30'
+                : 'bg-ak-surface-subtle border border-ak-border-default'
+            }`}>
               {index === 0 && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-8px',
-                  right: '-8px',
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--streak-gold)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Star size={14} color="white" fill="white" />
+                <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center">
+                  <Star size={14} className="text-white" fill="white" />
                 </div>
               )}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  color: 'var(--accent)'
-                }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-base font-semibold text-ak-brand-primary">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <div>
-                  <p style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: 'var(--text-primary)',
-                    margin: 0
-                  }}>
+                  <p className="text-sm font-semibold text-ak-text-primary m-0">
                     {player.name}
                   </p>
-                  <span style={{
-                    fontSize: '11px',
-                    fontWeight: '500',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    backgroundColor: getCategoryColor(player.category).bg,
-                    color: getCategoryColor(player.category).text
-                  }}>
+                  <span className={`text-[11px] font-medium py-0.5 px-1.5 rounded ${getCategoryClasses(player.category).bg} ${getCategoryClasses(player.category).text}`}>
                     Kategori {player.category}
                   </span>
                 </div>
               </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '8px 12px',
-                backgroundColor: 'var(--success-muted)',
-                borderRadius: '8px'
-              }}>
-                <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div className="flex items-center justify-between py-2 px-3 bg-ak-status-success/15 rounded-lg">
+                <span className="text-xs text-ak-text-secondary">
                   HCP endring
                 </span>
-                <span style={{
-                  fontSize: '18px',
-                  fontWeight: '700',
-                  color: 'var(--success)'
-                }}>
+                <span className="text-lg font-bold text-ak-status-success">
                   {player.hcpChange}
                 </span>
               </div>
@@ -311,41 +258,21 @@ export const CoachStatsProgress: React.FC = () => {
       </div>
 
       {/* Search and Sort */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '20px',
-        flexWrap: 'wrap'
-      }}>
-        <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
+      <div className="flex gap-4 mb-5 flex-wrap">
+        <div className="relative flex-1 min-w-[200px]">
           <Search
             size={18}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'var(--text-tertiary)'
-            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ak-text-tertiary"
           />
           <input
             type="text"
             placeholder="Søk etter spiller..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '12px 12px 12px 40px',
-              borderRadius: '10px',
-              border: `1px solid ${'var(--border-default)'}`,
-              backgroundColor: 'var(--bg-primary)',
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              outline: 'none'
-            }}
+            className="w-full py-3 pr-3 pl-10 rounded-[10px] border border-ak-border-default bg-ak-surface-base text-sm text-ak-text-primary outline-none"
           />
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="flex gap-2">
           {[
             { key: 'hcpChange', label: 'HCP forbedring' },
             { key: 'streak', label: 'Treningsrekke' },
@@ -364,63 +291,28 @@ export const CoachStatsProgress: React.FC = () => {
       </div>
 
       {/* Player List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="flex flex-col gap-3">
         {filteredAndSortedPlayers.map((player) => (
           <div
             key={player.id}
-            style={{
-              backgroundColor: 'var(--bg-primary)',
-              borderRadius: '16px',
-              padding: '20px',
-              border: `1px solid ${'var(--border-default)'}`,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
+            className="bg-ak-surface-base rounded-2xl p-5 border border-ak-border-default cursor-pointer transition-all"
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div className="flex justify-between items-start">
               {/* Left side - Player info */}
-              <div style={{ display: 'flex', gap: '16px', flex: 1 }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(var(--accent-rgb), 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '20px',
-                  fontWeight: '600',
-                  color: 'var(--accent)'
-                }}>
+              <div className="flex gap-4 flex-1">
+                <div className="w-14 h-14 rounded-full bg-ak-brand-primary/15 flex items-center justify-center text-xl font-semibold text-ak-brand-primary">
                   {player.name.split(' ').map(n => n[0]).join('')}
                 </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <SubSectionTitle style={{ margin: 0 }}>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <SubSectionTitle className="m-0">
                       {player.name}
                     </SubSectionTitle>
-                    <span style={{
-                      fontSize: '11px',
-                      fontWeight: '500',
-                      padding: '2px 8px',
-                      borderRadius: '4px',
-                      backgroundColor: getCategoryColor(player.category).bg,
-                      color: getCategoryColor(player.category).text
-                    }}>
+                    <span className={`text-[11px] font-medium py-0.5 px-2 rounded ${getCategoryClasses(player.category).bg} ${getCategoryClasses(player.category).text}`}>
                       Kat. {player.category}
                     </span>
                     {player.streak >= 10 && (
-                      <span style={{
-                        fontSize: '11px',
-                        fontWeight: '500',
-                        padding: '2px 8px',
-                        borderRadius: '4px',
-                        backgroundColor: 'var(--streak-gold-muted)',
-                        color: 'var(--streak-gold-text)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px'
-                      }}>
+                      <span className="text-[11px] font-medium py-0.5 px-2 rounded bg-amber-500/15 text-amber-600 flex items-center gap-1">
                         <Zap size={10} />
                         {player.streak} uker streak
                       </span>
@@ -428,80 +320,52 @@ export const CoachStatsProgress: React.FC = () => {
                   </div>
 
                   {/* Stats row */}
-                  <div style={{
-                    display: 'flex',
-                    gap: '20px',
-                    marginBottom: '12px',
-                    flexWrap: 'wrap'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Target size={14} color={'var(--text-tertiary)'} />
-                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                  <div className="flex gap-5 mb-3 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                      <Target size={14} className="text-ak-text-tertiary" />
+                      <span className="text-[13px] text-ak-text-secondary">
                         HCP: {player.currentHcp} (fra {player.startHcp})
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Calendar size={14} color={'var(--text-tertiary)'} />
-                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                    <div className="flex items-center gap-1.5">
+                      <Calendar size={14} className="text-ak-text-tertiary" />
+                      <span className="text-[13px] text-ak-text-secondary">
                         {player.sessionsThisMonth} økter denne mnd
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '13px', color: 'var(--text-tertiary)' }}>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[13px] text-ak-text-tertiary">
                         Sist: {formatDate(player.lastSession)}
                       </span>
                     </div>
                   </div>
 
                   {/* Improvements */}
-                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                  <div className="flex gap-2 flex-wrap mb-3">
                     {player.improvements.map((imp, idx) => (
-                      <span key={idx} style={{
-                        fontSize: '11px',
-                        padding: '4px 10px',
-                        borderRadius: '6px',
-                        backgroundColor: 'var(--success-muted)',
-                        color: 'var(--success)',
-                        fontWeight: '500'
-                      }}>
+                      <span key={idx} className="text-[11px] py-1 px-2.5 rounded-md bg-ak-status-success/15 text-ak-status-success font-medium">
                         {imp}
                       </span>
                     ))}
                   </div>
 
                   {/* Goals progress */}
-                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                  <div className="flex gap-3 flex-wrap">
                     {player.goals.map((goal, idx) => (
-                      <div key={idx} style={{
-                        flex: '1',
-                        minWidth: '150px',
-                        maxWidth: '250px'
-                      }}>
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          marginBottom: '4px'
-                        }}>
-                          <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      <div key={idx} className="flex-1 min-w-[150px] max-w-[250px]">
+                        <div className="flex justify-between mb-1">
+                          <span className="text-xs text-ak-text-secondary">
                             {goal.current}
                           </span>
-                          <span style={{ fontSize: '12px', fontWeight: '500', color: 'var(--accent-dark)' }}>
+                          <span className="text-xs font-medium text-ak-brand-primary">
                             {goal.progress}%
                           </span>
                         </div>
-                        <div style={{
-                          height: '6px',
-                          backgroundColor: 'var(--border-default)',
-                          borderRadius: '3px',
-                          overflow: 'hidden'
-                        }}>
-                          <div style={{
-                            height: '100%',
-                            width: `${goal.progress}%`,
-                            backgroundColor: 'var(--accent)',
-                            borderRadius: '3px',
-                            transition: 'width 0.3s ease'
-                          }} />
+                        <div className="h-1.5 bg-ak-border-default rounded-sm overflow-hidden">
+                          <div
+                            className="h-full bg-ak-brand-primary rounded-sm transition-all"
+                            style={{ width: `${goal.progress}%` }}
+                          />
                         </div>
                       </div>
                     ))}
@@ -510,26 +374,10 @@ export const CoachStatsProgress: React.FC = () => {
               </div>
 
               {/* Right side - HCP change */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                gap: '8px'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  padding: '8px 16px',
-                  backgroundColor: 'var(--success-muted)',
-                  borderRadius: '10px'
-                }}>
-                  <ArrowUpRight size={18} color="var(--success)" />
-                  <span style={{
-                    fontSize: '20px',
-                    fontWeight: '700',
-                    color: 'var(--success)'
-                  }}>
+              <div className="flex flex-col items-end gap-2">
+                <div className="flex items-center gap-1 py-2 px-4 bg-ak-status-success/15 rounded-[10px]">
+                  <ArrowUpRight size={18} className="text-ak-status-success" />
+                  <span className="text-xl font-bold text-ak-status-success">
                     {player.hcpChange}
                   </span>
                 </div>
@@ -538,7 +386,7 @@ export const CoachStatsProgress: React.FC = () => {
                   size="sm"
                 >
                   Se detaljer
-                  <ChevronRight size={14} style={{ marginLeft: '4px' }} />
+                  <ChevronRight size={14} className="ml-1" />
                 </Button>
               </div>
             </div>

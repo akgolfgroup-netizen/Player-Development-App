@@ -387,40 +387,101 @@ export class SessionSelectionService {
 
   /**
    * V2: Get the primary domain for a session template
+   * Priority: 1) Explicit primaryDomain field, 2) Text pattern matching
    */
   private static getDomainForSession(template: SessionTemplateWithCount): TestDomainCode | null {
-    // Check template name or type for domain hints
+    // Priority 1: Use explicit primaryDomain if set (new schema field)
+    const explicitDomain = (template as { primaryDomain?: string }).primaryDomain;
+    if (explicitDomain && this.isValidDomain(explicitDomain)) {
+      return explicitDomain as TestDomainCode;
+    }
+
+    // Priority 2: Fall back to text pattern matching (Norwegian + English)
     const name = (template.name || '').toUpperCase();
     const type = (template.sessionType || '').toUpperCase();
     const setting = (template.setting as string || '').toUpperCase();
+    const description = (template.description || '').toUpperCase();
+    const combined = `${name} ${type} ${description}`;
 
-    // Map common session names/types to domains
-    if (name.includes('DRIVER') || name.includes('TEE') || type.includes('DRIVING')) {
+    // TEE domain patterns (Driver/Long game)
+    // Norwegian: "driver", "tee", "utslagsplass", "lange slag"
+    if (
+      combined.includes('DRIVER') ||
+      combined.includes('TEE') ||
+      combined.includes('UTSLAGSPLASS') ||
+      combined.includes('LANGE SLAG') ||
+      combined.includes('TREWOOD') ||
+      combined.includes('3-TRE') ||
+      type.includes('DRIVING')
+    ) {
       return 'TEE';
     }
-    if (name.includes('APPROACH') || name.includes('INN')) {
-      // Check for distance hints
-      if (name.includes('200') || name.includes('LANG')) return 'INN200';
-      if (name.includes('150')) return 'INN150';
-      if (name.includes('100')) return 'INN100';
-      if (name.includes('50') || name.includes('KORT')) return 'INN50';
-      return 'INN100'; // Default approach
-    }
-    if (name.includes('CHIP') || name.includes('PITCH') || name.includes('ARG') || name.includes('AROUND')) {
+
+    // ARG domain patterns (Around the Green) - Check before INN since "INNSPILL" could be confused
+    // Norwegian: "chip", "pitch", "bunker", "sand", "rundt green", "kort spill"
+    if (
+      combined.includes('CHIP') ||
+      combined.includes('PITCH') ||
+      combined.includes('BUNKER') ||
+      combined.includes('SAND') ||
+      combined.includes('ARG') ||
+      combined.includes('AROUND') ||
+      combined.includes('RUNDT GREEN') ||
+      combined.includes('KORT SPILL') ||
+      combined.includes('GREENSIDE')
+    ) {
       return 'ARG';
     }
-    if (name.includes('PUTT') || name.includes('GREEN')) {
+
+    // PUTT domain patterns
+    // Norwegian: "putt", "putting", "green", "holing"
+    if (
+      combined.includes('PUTT') ||
+      combined.includes('HOLING') ||
+      (combined.includes('GREEN') && !combined.includes('RUNDT GREEN'))
+    ) {
       return 'PUTT';
     }
-    if (name.includes('FITNESS') || name.includes('STYRKE') || name.includes('PHYSICAL') || type.includes('PHYSICAL')) {
+
+    // PHYS domain patterns (Physical/Fitness)
+    // Norwegian: "fysisk", "styrke", "kondisjon", "trening", "gym", "bevegelighet"
+    if (
+      combined.includes('FITNESS') ||
+      combined.includes('FYSISK') ||
+      combined.includes('STYRKE') ||
+      combined.includes('KONDISJON') ||
+      combined.includes('GYM') ||
+      combined.includes('BEVEGELIGHET') ||
+      combined.includes('MOBILITET') ||
+      type.includes('PHYSICAL')
+    ) {
       return 'PHYS';
     }
 
-    // Check setting (S1=range, S2=course, etc.)
-    if (setting === 'S1') {
-      // Range - likely driving or approach
-      return 'TEE';
+    // INN (Approach) domain patterns with distance detection
+    // Norwegian: "innspill", "approach", "jern", "wedge"
+    if (
+      combined.includes('APPROACH') ||
+      combined.includes('INNSPILL') ||
+      combined.includes('JERN') ||
+      combined.includes('WEDGE') ||
+      combined.includes('IRON')
+    ) {
+      // Check for distance hints
+      if (combined.includes('200') || combined.includes('LANG') || combined.includes('LONG')) return 'INN200';
+      if (combined.includes('150')) return 'INN150';
+      if (combined.includes('100') || combined.includes('MEDIUM')) return 'INN100';
+      if (combined.includes('50') || combined.includes('KORT') || combined.includes('SHORT')) return 'INN50';
+
+      // Infer from club type mentioned
+      if (combined.includes('5-JERN') || combined.includes('5 JERN') || combined.includes('5-IRON')) return 'INN150';
+      if (combined.includes('7-JERN') || combined.includes('7 JERN') || combined.includes('7-IRON')) return 'INN100';
+      if (combined.includes('9-JERN') || combined.includes('9 JERN') || combined.includes('PW') || combined.includes('PITCHING')) return 'INN50';
+
+      return 'INN100'; // Default approach distance
     }
+
+    // Priority 3: Infer from setting (only if no other match)
     if (setting === 'S3') {
       // Short game area
       return 'ARG';
@@ -431,6 +492,14 @@ export class SessionSelectionService {
     }
 
     return null;
+  }
+
+  /**
+   * Validate if a string is a valid TestDomainCode
+   */
+  private static isValidDomain(domain: string): boolean {
+    const validDomains: TestDomainCode[] = ['TEE', 'INN200', 'INN150', 'INN100', 'INN50', 'ARG', 'PUTT', 'PHYS'];
+    return validDomains.includes(domain as TestDomainCode);
   }
 
   /**

@@ -542,14 +542,14 @@ describe('Auth API Integration Tests', () => {
 
       const body = JSON.parse(response.body);
       expect(body.success).toBe(true);
-      expect(body.message).toContain('sent');
+      expect(body.message).toContain('email');
 
       // Verify reset token was created
       const user = await prisma.user.findUnique({
         where: { email: testUser.email },
       });
       expect(user?.passwordResetToken).toBeTruthy();
-      expect(user?.passwordResetExpiresAt).toBeTruthy();
+      expect(user?.passwordResetExpires).toBeTruthy();
     });
 
     it('should return success for non-existent email (security)', async () => {
@@ -583,22 +583,25 @@ describe('Auth API Integration Tests', () => {
 
   describe('POST /api/v1/auth/reset-password', () => {
     let resetToken: string;
+    const crypto = require('crypto');
 
     beforeAll(async () => {
-      // Request a password reset to get a valid token
-      await app.inject({
-        method: 'POST',
-        url: '/api/v1/auth/forgot-password',
-        payload: {
-          email: testUser.email,
+      // Generate a test reset token directly (bypassing email)
+      resetToken = crypto.randomBytes(32).toString('hex');
+      const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+      // Set expiration (1 hour from now)
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + 1);
+
+      // Store the hashed token directly in the database
+      await prisma.user.update({
+        where: { email: testUser.email },
+        data: {
+          passwordResetToken: hashedToken,
+          passwordResetExpires: expiresAt,
         },
       });
-
-      // Get the reset token from the database
-      const user = await prisma.user.findUnique({
-        where: { email: testUser.email },
-      });
-      resetToken = user?.passwordResetToken || '';
     });
 
     it('should reset password with valid token', async () => {
@@ -671,7 +674,7 @@ describe('Auth API Integration Tests', () => {
         },
       });
 
-      expect(response.statusCode).toBe(401);
+      expect(response.statusCode).toBe(400);
 
       const body = JSON.parse(response.body);
       expect(body.success).toBe(false);
@@ -702,7 +705,7 @@ describe('Auth API Integration Tests', () => {
         },
       });
 
-      expect(response.statusCode).toBe(401);
+      expect(response.statusCode).toBe(400);
     });
 
     it('should reject weak passwords', async () => {

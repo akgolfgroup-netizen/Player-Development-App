@@ -10,7 +10,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { settingsMenuItems } from '../../config/player-navigation-v2';
-import { tokens } from '../../design-tokens';
+
+// Design token values (hex for inline styles)
+const tokenColors = {
+  gold: '#C9A227',
+  ink: '#1C1C1E',
+  white: '#FFFFFF',
+  error: '#C45B4E',
+  gray100: '#F3F4F6',
+  gray200: '#E5E7EB',
+  gray300: '#D1D5DB',
+  gray600: '#4B5563',
+};
 
 const { User, LogOut, ChevronDown, Settings } = LucideIcons;
 
@@ -98,16 +109,16 @@ export default function ProfileDropdown({
       width: 32,
       height: 32,
       borderRadius: '8px',
-      backgroundColor: tokens.colors.gold,
+      backgroundColor: tokenColors.gold,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      color: tokens.colors.ink,
+      color: tokenColors.ink,
       fontWeight: 700,
       fontSize: '14px',
     },
     name: {
-      color: isDark ? tokens.colors.white : tokens.colors.ink,
+      color: isDark ? tokenColors.white : tokenColors.ink,
       fontWeight: 500,
       fontSize: '14px',
     },
@@ -121,10 +132,10 @@ export default function ProfileDropdown({
       top: 'calc(100% + 8px)',
       right: 0,
       minWidth: '220px',
-      backgroundColor: tokens.colors.white,
+      backgroundColor: tokenColors.white,
       borderRadius: '12px',
       boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08)',
-      border: `1px solid ${tokens.colors.gray300}`,
+      border: `1px solid ${tokenColors.gray300}`,
       overflow: 'hidden',
       zIndex: 1000,
       opacity: isOpen ? 1 : 0,
@@ -134,17 +145,17 @@ export default function ProfileDropdown({
     },
     header: {
       padding: '16px',
-      borderBottom: `1px solid ${tokens.colors.gray200}`,
+      borderBottom: `1px solid ${tokenColors.gray200}`,
     },
     headerName: {
       fontSize: '15px',
       fontWeight: 600,
-      color: tokens.colors.ink,
+      color: tokenColors.ink,
       marginBottom: '2px',
     },
     headerEmail: {
       fontSize: '13px',
-      color: tokens.colors.gray600,
+      color: tokenColors.gray600,
     },
     menuList: {
       padding: '8px',
@@ -156,7 +167,7 @@ export default function ProfileDropdown({
       padding: '10px 12px',
       borderRadius: '8px',
       textDecoration: 'none',
-      color: tokens.colors.ink,
+      color: tokenColors.ink,
       fontSize: '14px',
       fontWeight: 500,
       transition: 'background-color 0.15s',
@@ -167,11 +178,11 @@ export default function ProfileDropdown({
       textAlign: 'left' as const,
     },
     menuItemIcon: {
-      color: tokens.colors.gray600,
+      color: tokenColors.gray600,
     },
     divider: {
       height: '1px',
-      backgroundColor: tokens.colors.gray200,
+      backgroundColor: tokenColors.gray200,
       margin: '8px 0',
     },
     logoutButton: {
@@ -180,7 +191,7 @@ export default function ProfileDropdown({
       gap: '12px',
       padding: '10px 12px',
       borderRadius: '8px',
-      color: tokens.colors.error,
+      color: tokenColors.error,
       fontSize: '14px',
       fontWeight: 500,
       transition: 'background-color 0.15s',
@@ -231,7 +242,7 @@ export default function ProfileDropdown({
                 role="menuitem"
                 onClick={() => setIsOpen(false)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = tokens.colors.gray100;
+                  e.currentTarget.style.backgroundColor = tokenColors.gray100;
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = 'transparent';

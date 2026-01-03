@@ -1,5 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 // @ts-nocheck
+/**
+ * AK Golf Academy - Coach Message Compose
+ * Design System v3.0 - Premium Light
+ *
+ * Message composition form for coaches.
+ * Supports recipients, categories, attachments, and scheduling.
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
+ */
+
 import React, { useState, useMemo } from 'react';
 import {
   Send,
@@ -114,7 +124,7 @@ export const CoachMessageCompose: React.FC = () => {
   const canSend = subject.trim() && message.trim() && (sendToAll || selectedRecipients.length > 0);
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <div className="bg-ak-surface-subtle min-h-screen">
       {/* Header - using PageHeader from design system */}
       <PageHeader
         title="Ny beskjed"
@@ -122,82 +132,50 @@ export const CoachMessageCompose: React.FC = () => {
         onBack={() => navigate('/coach/messages')}
       />
 
-      <div style={{ padding: '0 24px 24px' }}>
+      <div className="px-6 pb-6">
 
-      <Card variant="default" padding="none" style={{ overflow: 'hidden' }}>
+      <Card variant="default" padding="none" className="overflow-hidden">
         {/* Recipients Section */}
-        <div style={{
-          padding: '16px 20px',
-          borderBottom: '1px solid var(--border-default)',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-            <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-secondary)', width: '60px' }}>
+        <div className="p-4 px-5 border-b border-ak-border-default">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-sm font-medium text-ak-text-secondary w-[60px]">
               Til:
             </span>
-            <div style={{ flex: 1 }}>
+            <div className="flex-1">
               {sendToAll ? (
-                <div style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 12px',
-                  backgroundColor: 'color-mix(in srgb, var(--success) 15%, transparent)',
-                  borderRadius: 'var(--radius-full)',
-                  color: 'var(--success)',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                }}>
+                <div className="inline-flex items-center gap-1.5 py-1.5 px-3 bg-ak-status-success/15 rounded-full text-ak-status-success text-[13px] font-medium">
                   <Users size={14} />
                   Alle spillere
                   <button
                     onClick={() => setSendToAll(false)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: '2px',
-                      display: 'flex',
-                    }}
+                    className="bg-transparent border-none cursor-pointer p-0.5 flex"
                   >
-                    <X size={14} color="var(--success)" />
+                    <X size={14} className="text-ak-status-success" />
                   </button>
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
+                <div className="flex flex-wrap gap-2 items-center">
                   {selectedRecipients.map(recipient => (
-                    <div key={recipient.id} style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '6px 12px',
-                      backgroundColor: recipient.type === 'group'
-                        ? 'color-mix(in srgb, var(--warning) 15%, transparent)'
-                        : 'var(--bg-accent-subtle)',
-                      borderRadius: 'var(--radius-full)',
-                      color: recipient.type === 'group'
-                        ? 'var(--warning)'
-                        : 'var(--accent)',
-                      fontSize: '13px',
-                      fontWeight: 500,
-                    }}>
+                    <div
+                      key={recipient.id}
+                      className={`inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-[13px] font-medium ${
+                        recipient.type === 'group'
+                          ? 'bg-ak-status-warning/15 text-ak-status-warning'
+                          : 'bg-ak-brand-primary/10 text-ak-brand-primary'
+                      }`}
+                    >
                       {recipient.type === 'group' ? <Users size={14} /> : <User size={14} />}
                       {recipient.name}
                       {recipient.memberCount && ` (${recipient.memberCount})`}
                       <button
                         onClick={() => removeRecipient(recipient.id)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          cursor: 'pointer',
-                          padding: '2px',
-                          display: 'flex',
-                        }}
+                        className="bg-transparent border-none cursor-pointer p-0.5 flex"
                       >
                         <X size={14} />
                       </button>
                     </div>
                   ))}
-                  <div style={{ position: 'relative' }}>
+                  <div className="relative">
                     <input
                       type="text"
                       placeholder="Legg til mottaker..."
@@ -207,52 +185,24 @@ export const CoachMessageCompose: React.FC = () => {
                         setShowRecipientPicker(true);
                       }}
                       onFocus={() => setShowRecipientPicker(true)}
-                      style={{
-                        border: 'none',
-                        background: 'none',
-                        fontSize: '14px',
-                        color: 'var(--text-primary)',
-                        outline: 'none',
-                        width: '180px',
-                      }}
+                      className="border-none bg-transparent text-sm text-ak-text-primary outline-none w-[180px]"
                     />
                     {showRecipientPicker && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '100%',
-                        left: 0,
-                        width: '280px',
-                        maxHeight: '300px',
-                        overflowY: 'auto',
-                        backgroundColor: 'var(--bg-surface)',
-                        borderRadius: 'var(--radius-md)',
-                        border: '1px solid var(--border-default)',
-                        boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
-                        zIndex: 100,
-                        marginTop: '4px',
-                      }}>
+                      <div className="absolute top-full left-0 w-[280px] max-h-[300px] overflow-y-auto bg-ak-surface-base rounded-lg border border-ak-border-default shadow-lg z-[100] mt-1">
                         <div
                           onClick={() => {
                             setSendToAll(true);
                             setSelectedRecipients([]);
                             setShowRecipientPicker(false);
                           }}
-                          style={{
-                            padding: '12px 16px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            borderBottom: '1px solid var(--border-default)',
-                            backgroundColor: 'color-mix(in srgb, var(--success) 15%, transparent)',
-                          }}
+                          className="p-3 px-4 cursor-pointer flex items-center gap-2.5 border-b border-ak-border-default bg-ak-status-success/15 hover:bg-ak-status-success/20"
                         >
-                          <Users size={16} color="var(--success)" />
+                          <Users size={16} className="text-ak-status-success" />
                           <div>
-                            <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--success)', margin: 0 }}>
+                            <p className="text-sm font-medium text-ak-status-success m-0">
                               Alle spillere
                             </p>
-                            <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
+                            <p className="text-xs text-ak-text-tertiary m-0">
                               Send til alle dine spillere
                             </p>
                           </div>
@@ -261,35 +211,25 @@ export const CoachMessageCompose: React.FC = () => {
                           <div
                             key={recipient.id}
                             onClick={() => addRecipient(recipient)}
-                            style={{
-                              padding: '12px 16px',
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                            }}
+                            className="p-3 px-4 cursor-pointer flex items-center gap-2.5 hover:bg-ak-surface-subtle"
                           >
-                            <div style={{
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              backgroundColor: recipient.type === 'group'
-                                ? 'color-mix(in srgb, var(--warning) 15%, transparent)'
-                                : 'var(--bg-accent-subtle)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}>
+                            <div
+                              className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                                recipient.type === 'group'
+                                  ? 'bg-ak-status-warning/15'
+                                  : 'bg-ak-brand-primary/10'
+                              }`}
+                            >
                               {recipient.type === 'group'
-                                ? <Users size={14} color="var(--warning)" />
-                                : <User size={14} color="var(--accent)" />
+                                ? <Users size={14} className="text-ak-status-warning" />
+                                : <User size={14} className="text-ak-brand-primary" />
                               }
                             </div>
                             <div>
-                              <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', margin: 0 }}>
+                              <p className="text-sm font-medium text-ak-text-primary m-0">
                                 {recipient.name}
                               </p>
-                              <p style={{ fontSize: '12px', color: 'var(--text-tertiary)', margin: 0 }}>
+                              <p className="text-xs text-ak-text-tertiary m-0">
                                 {recipient.type === 'group'
                                   ? `${recipient.memberCount} medlemmer`
                                   : `Kategori ${recipient.category}`
@@ -307,11 +247,11 @@ export const CoachMessageCompose: React.FC = () => {
           </div>
 
           {/* Category Selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-secondary)', width: '60px' }}>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-ak-text-secondary w-[60px]">
               Type:
             </span>
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div className="flex gap-2">
               {[
                 { key: 'general', label: 'Generelt' },
                 { key: 'training', label: 'Trening' },
@@ -335,78 +275,39 @@ export const CoachMessageCompose: React.FC = () => {
         </div>
 
         {/* Subject */}
-        <div style={{
-          padding: '16px 20px',
-          borderBottom: '1px solid var(--border-default)',
-        }}>
+        <div className="p-4 px-5 border-b border-ak-border-default">
           <input
             type="text"
             placeholder="Emne..."
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            style={{
-              width: '100%',
-              border: 'none',
-              background: 'none',
-              fontSize: '16px',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              outline: 'none',
-            }}
+            className="w-full border-none bg-transparent text-base font-semibold text-ak-text-primary outline-none"
           />
         </div>
 
         {/* Message Body */}
-        <div style={{ padding: '16px 20px' }}>
+        <div className="p-4 px-5">
           <textarea
             placeholder="Skriv din beskjed her..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            style={{
-              width: '100%',
-              minHeight: '200px',
-              border: 'none',
-              background: 'none',
-              fontSize: '14px',
-              lineHeight: '1.6',
-              color: 'var(--text-primary)',
-              outline: 'none',
-              resize: 'vertical',
-            }}
+            className="w-full min-h-[200px] border-none bg-transparent text-sm leading-relaxed text-ak-text-primary outline-none resize-y"
           />
         </div>
 
         {/* Attachments */}
         {attachments.length > 0 && (
-          <div style={{
-            padding: '12px 20px',
-            borderTop: '1px solid var(--border-default)',
-            display: 'flex',
-            gap: '8px',
-            flexWrap: 'wrap',
-          }}>
+          <div className="py-3 px-5 border-t border-ak-border-default flex gap-2 flex-wrap">
             {attachments.map((att, idx) => (
-              <div key={idx} style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                backgroundColor: 'var(--bg-secondary)',
-                borderRadius: 'var(--radius-sm)',
-                fontSize: '13px',
-                color: 'var(--text-secondary)',
-              }}>
+              <div
+                key={idx}
+                className="flex items-center gap-1.5 py-1.5 px-3 bg-ak-surface-subtle rounded text-[13px] text-ak-text-secondary"
+              >
                 <FileText size={14} />
                 {att.name}
                 <button
                   onClick={() => setAttachments(attachments.filter((_, i) => i !== idx))}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: '2px',
-                    display: 'flex',
-                  }}
+                  className="bg-transparent border-none cursor-pointer p-0.5 flex"
                 >
                   <X size={12} />
                 </button>
@@ -416,14 +317,8 @@ export const CoachMessageCompose: React.FC = () => {
         )}
 
         {/* Footer Actions */}
-        <div style={{
-          padding: '16px 20px',
-          borderTop: '1px solid var(--border-default)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-          <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="p-4 px-5 border-t border-ak-border-default flex justify-between items-center">
+          <div className="flex gap-2">
             <Button
               variant="ghost"
               size="sm"
@@ -442,32 +337,20 @@ export const CoachMessageCompose: React.FC = () => {
             </Button>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div className="flex gap-3 items-center">
             {isScheduled && (
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div className="flex gap-2">
                 <input
                   type="date"
                   value={scheduleDate}
                   onChange={(e) => setScheduleDate(e.target.value)}
-                  style={{
-                    padding: '8px 12px',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid var(--border-default)',
-                    fontSize: '13px',
-                    color: 'var(--text-primary)',
-                  }}
+                  className="py-2 px-3 rounded border border-ak-border-default text-[13px] text-ak-text-primary"
                 />
                 <input
                   type="time"
                   value={scheduleTime}
                   onChange={(e) => setScheduleTime(e.target.value)}
-                  style={{
-                    padding: '8px 12px',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid var(--border-default)',
-                    fontSize: '13px',
-                    color: 'var(--text-primary)',
-                  }}
+                  className="py-2 px-3 rounded border border-ak-border-default text-[13px] text-ak-text-primary"
                 />
               </div>
             )}
@@ -487,14 +370,7 @@ export const CoachMessageCompose: React.FC = () => {
       {showRecipientPicker && (
         <div
           onClick={() => setShowRecipientPicker(false)}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 50
-          }}
+          className="fixed inset-0 z-50"
         />
       )}
       </div>

@@ -1,5 +1,8 @@
 /**
- * CalendarMonthView Component
+ * CalendarMonthView.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles
  *
  * Standard month grid with:
  * - Weeks as rows, days as cells
@@ -7,7 +10,7 @@
  * - Today highlight
  * - Click to navigate to day view
  *
- * Uses semantic tokens only (no raw hex values).
+ * Note: Event colors use dynamic inline styles for theming.
  */
 
 import React, { useMemo } from 'react';
@@ -179,25 +182,15 @@ export const CalendarMonthView: React.FC<CalendarMonthViewProps> = ({
   }, [date, eventsByDate, todayKey]);
 
   return (
-    <div
-      className="flex flex-col h-full"
-      style={{ backgroundColor: 'var(--calendar-surface-base)' }}
-    >
+    <div className="flex flex-col h-full bg-ak-surface-base">
       {/* Week day headers */}
-      <div
-        className="grid grid-cols-7 border-b"
-        style={{ borderColor: 'var(--calendar-border)' }}
-      >
+      <div className="grid grid-cols-7 border-b border-ak-border-default">
         {WEEK_DAYS.map((day, idx) => (
           <div
             key={day}
-            className="py-3 text-center text-sm font-medium"
-            style={{
-              color:
-                idx >= 5
-                  ? 'var(--calendar-text-weekend)'
-                  : 'var(--calendar-text-tertiary)',
-            }}
+            className={`py-3 text-center text-sm font-medium ${
+              idx >= 5 ? 'text-ak-text-tertiary' : 'text-ak-text-tertiary'
+            }`}
           >
             {day}
           </div>
@@ -210,56 +203,33 @@ export const CalendarMonthView: React.FC<CalendarMonthViewProps> = ({
           {monthGrid.map((week, weekIdx) => (
             <div
               key={weekIdx}
-              className="grid grid-cols-7 border-b last:border-b-0"
-              style={{ borderColor: 'var(--calendar-grid-line)' }}
+              className="grid grid-cols-7 border-b border-ak-border-subtle last:border-b-0"
             >
               {week.map((dayInfo) => (
                 <div
                   key={dayInfo.dateKey}
-                  className="min-h-[100px] p-2 border-r last:border-r-0 cursor-pointer transition-colors"
-                  style={{
-                    backgroundColor: dayInfo.isToday
-                      ? 'var(--calendar-surface-today)'
+                  className={`min-h-[100px] p-2 border-r border-ak-border-subtle last:border-r-0 cursor-pointer transition-colors ${
+                    dayInfo.isToday
+                      ? 'bg-ak-brand-primary/5'
                       : !dayInfo.isCurrentMonth
-                      ? 'var(--calendar-surface-weekend)'
+                      ? 'bg-ak-surface-subtle hover:bg-ak-surface-subtle/80'
                       : dayInfo.isWeekend
-                      ? 'var(--calendar-surface-weekend)'
-                      : 'transparent',
-                    borderColor: 'var(--calendar-grid-line)',
-                  }}
+                      ? 'bg-ak-surface-subtle hover:bg-ak-surface-subtle/80'
+                      : 'hover:bg-ak-surface-subtle'
+                  }`}
                   onClick={() => onDayClick(dayInfo.date)}
-                  onMouseEnter={(e) => {
-                    if (!dayInfo.isToday) {
-                      e.currentTarget.style.backgroundColor = 'var(--calendar-hover)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = dayInfo.isToday
-                      ? 'var(--calendar-surface-today)'
-                      : !dayInfo.isCurrentMonth
-                      ? 'var(--calendar-surface-weekend)'
-                      : dayInfo.isWeekend
-                      ? 'var(--calendar-surface-weekend)'
-                      : 'transparent';
-                  }}
                 >
                   {/* Day number */}
                   <span
                     className={`text-sm font-medium inline-flex items-center justify-center ${
-                      dayInfo.isToday ? 'w-7 h-7 rounded-full' : ''
-                    }`}
-                    style={{
-                      backgroundColor: dayInfo.isToday
-                        ? 'var(--calendar-today-marker-bg)'
-                        : 'transparent',
-                      color: dayInfo.isToday
-                        ? 'var(--calendar-today-marker-text)'
+                      dayInfo.isToday
+                        ? 'w-7 h-7 rounded-full bg-ak-brand-primary text-white'
                         : !dayInfo.isCurrentMonth
-                        ? 'var(--calendar-text-muted)'
+                        ? 'text-ak-text-tertiary'
                         : dayInfo.isWeekend
-                        ? 'var(--calendar-text-weekend)'
-                        : 'var(--calendar-text-primary)',
-                    }}
+                        ? 'text-ak-text-secondary'
+                        : 'text-ak-text-primary'
+                    }`}
                   >
                     {dayInfo.day}
                   </span>
@@ -289,10 +259,7 @@ export const CalendarMonthView: React.FC<CalendarMonthViewProps> = ({
                           );
                         })}
                         {dayInfo.events.length > 2 && (
-                          <div
-                            className="text-xs px-1"
-                            style={{ color: 'var(--calendar-text-tertiary)' }}
-                          >
+                          <div className="text-xs px-1 text-ak-text-tertiary">
                             +{dayInfo.events.length - 2} mer
                           </div>
                         )}
@@ -311,10 +278,7 @@ export const CalendarMonthView: React.FC<CalendarMonthViewProps> = ({
                           );
                         })}
                         {dayInfo.events.length > 3 && (
-                          <span
-                            className="text-[10px]"
-                            style={{ color: 'var(--calendar-text-muted)' }}
-                          >
+                          <span className="text-[10px] text-ak-text-tertiary">
                             +{dayInfo.events.length - 3}
                           </span>
                         )}

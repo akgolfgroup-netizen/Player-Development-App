@@ -1060,4 +1060,89 @@ export class DataGolfService {
       lastSynced: p.lastSynced,
     }));
   }
+
+  /**
+   * Search pro players by name
+   * Supports partial matching for typeahead search
+   */
+  async searchProPlayers(options: {
+    query: string;
+    tour?: string;
+    limit?: number;
+  }): Promise<RankedProPlayer[]> {
+    const { query, tour, limit = 20 } = options;
+
+    if (!query || query.length < 2) {
+      return [];
+    }
+
+    const whereClause: Prisma.DataGolfPlayerWhereInput = {
+      playerName: {
+        contains: query,
+        mode: 'insensitive',
+      },
+      sgTotal: { not: null },
+    };
+
+    if (tour) {
+      whereClause.tour = tour.toLowerCase();
+    }
+
+    const players = await this.prisma.dataGolfPlayer.findMany({
+      where: whereClause,
+      orderBy: {
+        sgTotal: 'desc',
+      },
+      take: limit,
+    });
+
+    return players.map((p, index) => ({
+      rank: index + 1,
+      dataGolfId: p.dataGolfId,
+      playerName: p.playerName,
+      tour: p.tour,
+      stats: {
+        sgTotal: p.sgTotal ? Number(p.sgTotal) : null,
+        sgTee: p.sgOffTee ? Number(p.sgOffTee) : null,
+        sgApproach: p.sgApproach ? Number(p.sgApproach) : null,
+        sgAround: p.sgAroundGreen ? Number(p.sgAroundGreen) : null,
+        sgPutting: p.sgPutting ? Number(p.sgPutting) : null,
+        drivingDistance: p.drivingDistance ? Number(p.drivingDistance) : null,
+        drivingAccuracy: p.drivingAccuracy ? Number(p.drivingAccuracy) : null,
+      },
+      lastSynced: p.lastSynced,
+    }));
+  }
+
+  /**
+   * Get a specific pro player by DataGolf ID
+   */
+  async getProPlayerById(dataGolfId: string): Promise<RankedProPlayer | null> {
+    const player = await this.prisma.dataGolfPlayer.findFirst({
+      where: {
+        dataGolfId,
+      },
+    });
+
+    if (!player) {
+      return null;
+    }
+
+    return {
+      rank: 0, // Rank not applicable for single player lookup
+      dataGolfId: player.dataGolfId,
+      playerName: player.playerName,
+      tour: player.tour,
+      stats: {
+        sgTotal: player.sgTotal ? Number(player.sgTotal) : null,
+        sgTee: player.sgOffTee ? Number(player.sgOffTee) : null,
+        sgApproach: player.sgApproach ? Number(player.sgApproach) : null,
+        sgAround: player.sgAroundGreen ? Number(player.sgAroundGreen) : null,
+        sgPutting: player.sgPutting ? Number(player.sgPutting) : null,
+        drivingDistance: player.drivingDistance ? Number(player.drivingDistance) : null,
+        drivingAccuracy: player.drivingAccuracy ? Number(player.drivingAccuracy) : null,
+      },
+      lastSynced: player.lastSynced,
+    };
+  }
 }

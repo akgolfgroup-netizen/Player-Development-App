@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Design System Gate
         run: node scripts/design-system-gate/run-gate.js
-        continue-on-error: true  # Non-fatal until contrast issues are fixed
+        # WCAG AA compliance enforced - all contrast checks pass
 
       - name: Upload violation report (on failure)
         if: failure()
@@ -47,6 +47,73 @@ jobs:
           path: |
             scripts/design-system-gate/*.log
           retention-days: 7
+
+  purity-check:
+    name: Purity Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for hardcoded hex colors
+        # TODO: Remove continue-on-error after fixing 273 hex color violations
+        # Track: https://github.com/akgolfgroup-netizen/Player-Development-App/issues/2
+        continue-on-error: true
+        run: |
+          echo "Checking for hardcoded hex colors in JSX/TSX source files..."
+          # Find hex colors excluding comments, test files, design system definitions, and build output
+          VIOLATIONS=$(grep -rn --include="*.jsx" --include="*.tsx" \
+            -E '#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}[^0-9A-Fa-f]' \
+            apps/web/src/features apps/web/src/components 2>/dev/null \
+            | grep -v "// " \
+            | grep -v "\.test\." \
+            | grep -v "\.spec\." \
+            | grep -v "/ios/" \
+            | grep -v "/android/" \
+            | grep -v "/build/" \
+            | grep -v "/dist/" \
+            | head -20 || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::Found hardcoded hex colors. Use design tokens instead:"
+            echo "$VIOLATIONS"
+            exit 1
+          fi
+          echo "✓ No hardcoded hex colors found in source files."
+
+      - name: Check for inline style objects
+        run: |
+          echo "Checking for inline style={{ }} patterns..."
+          VIOLATIONS=$(grep -rn --include="*.jsx" --include="*.tsx" \
+            'style={{' \
+            apps/web/src/features apps/web/src/components 2>/dev/null \
+            | grep -v "\.test\." \
+            | grep -v "\.spec\." \
+            | head -20 || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::warning::Found inline styles. Consider using CSS classes or styled components:"
+            echo "$VIOLATIONS"
+            # Warning only - not blocking for now
+          fi
+          echo "Inline style check complete."
+
+      - name: Check for legacy token usage
+        run: |
+          echo "Checking for legacy --ak-* token patterns..."
+          # Check for old token format that should be migrated
+          VIOLATIONS=$(grep -rn --include="*.jsx" --include="*.tsx" --include="*.css" \
+            'var(--ak-[a-z]*-[0-9])' \
+            apps/web/src 2>/dev/null \
+            | grep -v "\.test\." \
+            | head -20 || true)
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::warning::Found legacy token format. Consider migrating to semantic tokens:"
+            echo "$VIOLATIONS"
+          fi
+          echo "Legacy token check complete."
 
   contrast-check:
     name: WCAG Contrast Validation
@@ -63,6 +130,7 @@ jobs:
 
       - name: Run Contrast Checker
         run: node scripts/design-system-gate/contrast-checker.js --ci --verbose
+        # WCAG AA compliance enforced - all tokens now pass 4.5:1 contrast ratio
 
   lint-design-tokens:
     name: Design Token Lint (ESLint)

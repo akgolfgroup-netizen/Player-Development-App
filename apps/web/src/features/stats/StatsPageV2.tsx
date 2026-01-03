@@ -1,30 +1,3 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
-import AppShellTemplate from '../../ui/templates/AppShellTemplate';
-import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
-import Card from '../../ui/primitives/Card';
-import Button from '../../ui/primitives/Button';
-// BottomNav removed per design requirements
-import StateCard from '../../ui/composites/StateCard';
-import { RefreshCw, Plus } from 'lucide-react';
-import { useStats } from '../../data';
-import type { StatsOverviewItem } from '../../data';
-import { getSimState } from '../../dev/simulateState';
-import { useScreenView } from '../../analytics/useScreenView';
-import { SectionTitle } from '../../components/typography/Headings';
-
-// Pure function - moved outside component to avoid recreation
-const getTrendColor = (trend?: 'positive' | 'negative' | 'neutral') => {
-  switch (trend) {
-    case 'positive':
-      return 'var(--success)';
-    case 'negative':
-      return 'var(--error)';
-    default:
-      return 'var(--text-secondary)';
-  }
-};
-
 /**
  * StatsPageV2
  * Statistics page using UI templates
@@ -35,7 +8,45 @@ const getTrendColor = (trend?: 'positive' | 'negative' | 'neutral') => {
  *   /stats?state=loading
  *   /stats?state=error
  *   /stats?state=empty
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  */
+
+import React, { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import AppShellTemplate from '../../ui/templates/AppShellTemplate';
+import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
+import Card from '../../ui/primitives/Card';
+import Button from '../../ui/primitives/Button';
+import StateCard from '../../ui/composites/StateCard';
+import { RefreshCw, Plus, TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
+import { useStats } from '../../data';
+import type { StatsOverviewItem } from '../../data';
+import { getSimState } from '../../dev/simulateState';
+import { useScreenView } from '../../analytics/useScreenView';
+import { SectionTitle } from '../../components/typography/Headings';
+import { useTrainingAnalytics } from '../../hooks/useTrainingAnalytics';
+import { GolfAreaChart, chartColors } from '../../components/shadcn/chart';
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+
+// Pure function - moved outside component to avoid recreation
+const getTrendColor = (trend?: 'positive' | 'negative' | 'neutral'): string => {
+  switch (trend) {
+    case 'positive':
+      return 'var(--success)';
+    case 'negative':
+      return 'var(--error)';
+    default:
+      return 'var(--text-secondary)';
+  }
+};
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 const StatsPageV2: React.FC = () => {
   useScreenView('Statistikk');
@@ -43,6 +54,17 @@ const StatsPageV2: React.FC = () => {
   const simState = getSimState(location.search);
 
   const hookResult = useStats();
+  const { data: analyticsData } = useTrainingAnalytics();
+
+  // Transform weekly trend data for chart
+  const trendChartData = useMemo(() => {
+    if (!analyticsData?.weeklyTrend) return [];
+    return analyticsData.weeklyTrend.map(week => ({
+      name: `U${week.weekNumber}`,
+      Fullfort: week.completed,
+      Planlagt: week.planned,
+    }));
+  }, [analyticsData?.weeklyTrend]);
 
   // Override data based on simState (DEV only)
   const { data, isLoading, error, refetch } = simState
@@ -61,7 +83,7 @@ const StatsPageV2: React.FC = () => {
         title="Statistikk"
         subtitle="Siste 7 dager"
       >
-        <section style={styles.section}>
+        <section className="mb-6">
           <StateCard
             variant="loading"
             title="Laster..."
@@ -83,7 +105,7 @@ const StatsPageV2: React.FC = () => {
     >
       {/* Error message */}
       {error && (
-        <section style={styles.section}>
+        <section className="mb-6">
           <StateCard
             variant="error"
             title="Noe gikk galt"
@@ -98,23 +120,21 @@ const StatsPageV2: React.FC = () => {
       )}
 
       {/* Stats Grid */}
-      <section style={styles.section}>
+      <section className="mb-6">
         <StatsGridTemplate items={kpis} columns={3} />
       </section>
 
       {/* Overview Card */}
-      <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Oversikt</SectionTitle>
+      <section className="mb-6">
+        <SectionTitle className="mb-3">Oversikt</SectionTitle>
         <Card>
-          <div style={styles.overviewList}>
-            {overview.map((item) => (
-              <div key={item.id} style={styles.overviewItem}>
-                <span style={styles.overviewLabel}>{item.label}</span>
+          <div className="flex flex-col gap-2">
+            {overview.map((item: StatsOverviewItem) => (
+              <div key={item.id} className="flex justify-between items-center py-2 border-b border-ak-border-subtle last:border-b-0">
+                <span className="text-sm text-ak-text-primary">{item.label}</span>
                 <span
-                  style={{
-                    ...styles.overviewValue,
-                    color: getTrendColor(item.trend),
-                  }}
+                  className="text-sm font-semibold"
+                  style={{ color: getTrendColor(item.trend) }}
                 >
                   {item.value}
                 </span>
@@ -125,8 +145,8 @@ const StatsPageV2: React.FC = () => {
       </section>
 
       {/* Recent Sessions Card */}
-      <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Siste økter</SectionTitle>
+      <section className="mb-6">
+        <SectionTitle className="mb-3">Siste økter</SectionTitle>
         {recentSessions.length === 0 ? (
           <StateCard
             variant="empty"
@@ -140,16 +160,16 @@ const StatsPageV2: React.FC = () => {
           />
         ) : (
           <Card>
-            <div style={styles.sessionsList}>
-              {recentSessions.map((session) => (
-                <div key={session.id} style={styles.sessionItem}>
-                  <div style={styles.sessionInfo}>
-                    <span style={styles.sessionTitle}>{session.title}</span>
-                    <span style={styles.sessionMeta}>
+            <div className="flex flex-col gap-3">
+              {recentSessions.map((session: { id: string; title: string; type: string; duration: string; date: string }) => (
+                <div key={session.id} className="flex justify-between items-center">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-sm font-semibold text-ak-text-primary">{session.title}</span>
+                    <span className="text-xs text-ak-text-secondary">
                       {session.type} • {session.duration}
                     </span>
                   </div>
-                  <span style={styles.sessionDate}>{session.date}</span>
+                  <span className="text-xs text-ak-text-tertiary">{session.date}</span>
                 </div>
               ))}
             </div>
@@ -157,100 +177,57 @@ const StatsPageV2: React.FC = () => {
         )}
       </section>
 
-      {/* Trend Chart Placeholder */}
-      <section style={styles.section}>
-        <SectionTitle style={{ marginBottom: 'var(--spacing-3)' }}>Trend</SectionTitle>
+      {/* Trend Chart */}
+      <section className="mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <SectionTitle className="m-0">Treningstrend</SectionTitle>
+          {analyticsData?.overview && (
+            <div className="flex items-center gap-1 px-2 py-1 bg-ak-surface-elevated rounded-lg">
+              {analyticsData.overview.completionRate >= 70 ? (
+                <TrendingUp size={14} className="text-ak-status-success" />
+              ) : (
+                <TrendingDown size={14} className="text-ak-status-warning" />
+              )}
+              <span
+                className={`text-xs font-semibold ${
+                  analyticsData.overview.completionRate >= 70
+                    ? 'text-ak-status-success'
+                    : 'text-ak-status-warning'
+                }`}
+              >
+                {analyticsData.overview.completionRate.toFixed(0)}%
+              </span>
+            </div>
+          )}
+        </div>
         <Card>
-          <div style={styles.chartPlaceholder}>
-            <div style={styles.chartIcon}>📈</div>
-            <p style={styles.chartText}>Graf kommer snart</p>
-            <p style={styles.chartSubtext}>
-              Visualisering av fremgang over tid
-            </p>
-          </div>
+          {trendChartData.length > 1 ? (
+            <div className="p-2">
+              <GolfAreaChart
+                data={trendChartData}
+                dataKeys={['Fullfort', 'Planlagt']}
+                xAxisKey="name"
+                colors={[chartColors.success, chartColors.mist]}
+                height={180}
+                stacked={false}
+              />
+              <p className="text-xs text-ak-text-tertiary text-center mt-2 mb-0">
+                Ukentlig gjennomføring av treningsøkter
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-8 px-4 bg-ak-surface-subtle rounded-lg">
+              <BarChart3 size={40} className="mb-3 opacity-30 text-ak-text-tertiary" />
+              <p className="text-sm font-semibold text-ak-text-primary m-0">Ikke nok data ennå</p>
+              <p className="text-xs text-ak-text-secondary m-0 mt-1">
+                Fullfør flere treningsøkter for å se din trend
+              </p>
+            </div>
+          )}
         </Card>
       </section>
     </AppShellTemplate>
   );
-};
-
-const styles: Record<string, React.CSSProperties> = {
-  section: {
-    marginBottom: 'var(--spacing-6)',
-  },
-  overviewList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-2)',
-  },
-  overviewItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 'var(--spacing-2) 0',
-    borderBottom: '1px solid var(--border-subtle)',
-  },
-  overviewLabel: {
-    fontSize: 'var(--font-size-body)',
-    color: 'var(--text-primary)',
-  },
-  overviewValue: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-  },
-  sessionsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-3)',
-  },
-  sessionItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  sessionInfo: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '2px',
-  },
-  sessionTitle: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-  },
-  sessionMeta: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-secondary)',
-  },
-  sessionDate: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--text-tertiary)',
-  },
-  chartPlaceholder: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 'var(--spacing-8) var(--spacing-4)',
-    backgroundColor: 'var(--background-surface)',
-    borderRadius: 'var(--radius-md)',
-  },
-  chartIcon: {
-    fontSize: '48px',
-    marginBottom: 'var(--spacing-3)',
-  },
-  chartText: {
-    fontSize: 'var(--font-size-body)',
-    fontWeight: 600,
-    color: 'var(--text-primary)',
-    margin: 0,
-  },
-  chartSubtext: {
-    fontSize: 'var(--font-size-footnote)',
-    color: 'var(--text-secondary)',
-    margin: 0,
-    marginTop: 'var(--spacing-1)',
-  },
 };
 
 export default StatsPageV2;

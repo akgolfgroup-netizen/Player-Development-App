@@ -1,6 +1,12 @@
+/**
+ * RoundScoringForm Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Save, RotateCcw, Flag, TrendingUp, Check, Target } from 'lucide-react';
-import { tokens } from '../../../design-tokens';
 import { SectionTitle, SubSectionTitle } from '../../../components/typography';
 import Button from '../../../ui/primitives/Button';
 import { TestDefinition, ColumnDef, getScoreLevel } from '../config/testDefinitions';
@@ -154,9 +160,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, compact 
           width: compact ? '36px' : '40px',
           height: compact ? '36px' : '40px',
           borderRadius: '8px',
-          border: `2px solid ${value ? tokens.colors.success : tokens.colors.silver}`,
-          backgroundColor: value ? tokens.colors.success : tokens.colors.white,
-          color: value ? tokens.colors.white : tokens.colors.steel,
+          border: `2px solid ${value ? 'var(--ak-status-success)' : 'var(--ak-border-default)'}`,
+          backgroundColor: value ? 'var(--ak-status-success)' : 'var(--ak-surface-card)',
+          color: value ? 'var(--ak-surface-card)' : 'var(--ak-text-secondary)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -178,9 +184,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, compact 
         style={{
           padding: '8px',
           fontSize: '13px',
-          border: `1px solid ${tokens.colors.silver}`,
+          border: `1px solid var(--ak-border-default)`,
           borderRadius: '6px',
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--ak-surface-card)',
           width: '100%',
           minWidth: '70px',
         }}
@@ -205,9 +211,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, compact 
         padding: compact ? '6px 8px' : '8px 10px',
         fontSize: compact ? '14px' : '15px',
         fontWeight: 500,
-        border: `1px solid ${value !== undefined && value !== '' ? tokens.colors.primary : tokens.colors.silver}`,
+        border: `1px solid ${value !== undefined && value !== '' ? 'var(--ak-brand-primary)' : 'var(--ak-border-default)'}`,
         borderRadius: '6px',
-        backgroundColor: value !== undefined && value !== '' ? `${tokens.colors.primary}05` : tokens.colors.white,
+        backgroundColor: value !== undefined && value !== '' ? `rgba(26, 61, 46, 0.03)` : 'var(--ak-surface-card)',
         outline: 'none',
         textAlign: 'center',
       }}
@@ -325,17 +331,17 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
             height: '40px',
             borderRadius: '10px',
             border: 'none',
-            backgroundColor: tokens.colors.snow,
+            backgroundColor: 'var(--ak-surface-subtle)',
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={tokens.colors.charcoal} />
+          <ArrowLeft size={20} color="var(--ak-text-primary)" />
         </button>
         <div>
           <SectionTitle style={{ margin: 0, fontSize: '20px' }}>
             {test.name}
           </SectionTitle>
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             {player?.name || 'Registrer runde'}
           </p>
         </div>
@@ -343,7 +349,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
 
       {/* Progress */}
       <div style={{
-        backgroundColor: tokens.colors.snow,
+        backgroundColor: 'var(--ak-surface-subtle)',
         borderRadius: '8px',
         padding: '12px 16px',
         marginBottom: '16px',
@@ -352,15 +358,15 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         justifyContent: 'space-between',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Flag size={16} color={tokens.colors.primary} />
-          <span style={{ fontSize: '14px', color: tokens.colors.charcoal }}>
+          <Flag size={16} color="var(--ak-brand-primary)" />
+          <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
             Fremgang
           </span>
         </div>
         <span style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: completedHoles === numHoles ? tokens.colors.success : tokens.colors.primary,
+          color: completedHoles === numHoles ? 'var(--ak-status-success)' : 'var(--ak-brand-primary)',
         }}>
           {completedHoles} / {numHoles}
         </span>
@@ -368,7 +374,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
 
       {/* Scorecard */}
       <div style={{
-        backgroundColor: tokens.colors.white,
+        backgroundColor: 'var(--ak-surface-card)',
         borderRadius: '12px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
         overflow: 'hidden',
@@ -380,13 +386,13 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
           gridTemplateColumns: `50px ${visibleColumns.map(() => '1fr').join(' ')}`,
           gap: '4px',
           padding: '10px 12px',
-          backgroundColor: tokens.colors.snow,
-          borderBottom: `1px solid ${tokens.colors.silver}`,
+          backgroundColor: 'var(--ak-surface-subtle)',
+          borderBottom: `1px solid var(--ak-border-default)`,
         }}>
           <div style={{
             fontSize: '11px',
             fontWeight: 600,
-            color: tokens.colors.steel,
+            color: 'var(--ak-text-secondary)',
             textTransform: 'uppercase',
           }}>
             #
@@ -395,12 +401,12 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
             <div key={col.key} style={{
               fontSize: '11px',
               fontWeight: 600,
-              color: tokens.colors.steel,
+              color: 'var(--ak-text-secondary)',
               textTransform: 'uppercase',
               textAlign: 'center',
             }}>
               {col.label}
-              {col.required && <span style={{ color: tokens.colors.error }}> *</span>}
+              {col.required && <span style={{ color: 'var(--ak-status-error)' }}> *</span>}
             </div>
           ))}
         </div>
@@ -415,9 +421,9 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
                 gridTemplateColumns: `50px ${visibleColumns.map(() => '1fr').join(' ')}`,
                 gap: '4px',
                 padding: '8px 12px',
-                borderBottom: index < holes.length - 1 ? `1px solid ${tokens.colors.snow}` : 'none',
+                borderBottom: index < holes.length - 1 ? `1px solid var(--ak-surface-subtle)` : 'none',
                 alignItems: 'center',
-                backgroundColor: index % 2 === 0 ? tokens.colors.white : `${tokens.colors.snow}50`,
+                backgroundColor: index % 2 === 0 ? 'var(--ak-surface-card)' : `rgba(245, 247, 249, 0.5)`,
               }}
             >
               <div style={{
@@ -427,8 +433,8 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
                 width: '32px',
                 height: '32px',
                 borderRadius: '8px',
-                backgroundColor: tokens.colors.primary,
-                color: tokens.colors.white,
+                backgroundColor: 'var(--ak-brand-primary)',
+                color: 'var(--ak-surface-card)',
                 fontSize: '14px',
                 fontWeight: 700,
               }}>
@@ -455,8 +461,8 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
             gridTemplateColumns: `50px ${visibleColumns.map(() => '1fr').join(' ')}`,
             gap: '4px',
             padding: '12px',
-            backgroundColor: tokens.colors.charcoal,
-            color: tokens.colors.white,
+            backgroundColor: 'var(--ak-text-primary)',
+            color: 'var(--ak-surface-card)',
           }}>
             <div style={{ fontSize: '12px', fontWeight: 600 }}>TOT</div>
             {visibleColumns.map(col => (
@@ -484,16 +490,16 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
           {stats.vsPar !== undefined && (
             <div style={{
               padding: '12px',
-              backgroundColor: stats.vsPar <= 0 ? `${tokens.colors.success}15` : `${tokens.colors.error}15`,
+              backgroundColor: stats.vsPar <= 0 ? `rgba(34, 197, 94, 0.09)` : `rgba(239, 68, 68, 0.09)`,
               borderRadius: '10px',
               textAlign: 'center',
             }}>
-              <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>vs Par</p>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--ak-text-secondary)' }}>vs Par</p>
               <p style={{
                 margin: '4px 0 0 0',
                 fontSize: '20px',
                 fontWeight: 700,
-                color: stats.vsPar <= 0 ? tokens.colors.success : tokens.colors.error,
+                color: stats.vsPar <= 0 ? 'var(--ak-status-success)' : 'var(--ak-status-error)',
               }}>
                 {stats.vsPar > 0 ? '+' : ''}{stats.vsPar}
               </p>
@@ -502,12 +508,12 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
           {stats.firPercentage !== undefined && (
             <div style={{
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--ak-surface-subtle)',
               borderRadius: '10px',
               textAlign: 'center',
             }}>
-              <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>FIR</p>
-              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: tokens.colors.charcoal }}>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--ak-text-secondary)' }}>FIR</p>
+              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: 'var(--ak-text-primary)' }}>
                 {stats.firPercentage.toFixed(0)}%
               </p>
             </div>
@@ -515,12 +521,12 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
           {stats.girPercentage !== undefined && (
             <div style={{
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--ak-surface-subtle)',
               borderRadius: '10px',
               textAlign: 'center',
             }}>
-              <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>GIR</p>
-              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: tokens.colors.charcoal }}>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--ak-text-secondary)' }}>GIR</p>
+              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: 'var(--ak-text-primary)' }}>
                 {stats.girPercentage.toFixed(0)}%
               </p>
             </div>
@@ -528,12 +534,12 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
           {stats.avgPutts !== undefined && (
             <div style={{
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--ak-surface-subtle)',
               borderRadius: '10px',
               textAlign: 'center',
             }}>
-              <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>Putt/hull</p>
-              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: tokens.colors.charcoal }}>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--ak-text-secondary)' }}>Putt/hull</p>
+              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: 'var(--ak-text-primary)' }}>
                 {stats.avgPutts.toFixed(1)}
               </p>
             </div>
@@ -541,12 +547,12 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
           {stats.upDownPercentage !== undefined && (
             <div style={{
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--ak-surface-subtle)',
               borderRadius: '10px',
               textAlign: 'center',
             }}>
-              <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>Up&Down</p>
-              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: tokens.colors.charcoal }}>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--ak-text-secondary)' }}>Up&Down</p>
+              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: 'var(--ak-text-primary)' }}>
                 {stats.upDownPercentage.toFixed(0)}%
               </p>
             </div>
@@ -554,12 +560,12 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
           {stats.avgFocusRating !== undefined && (
             <div style={{
               padding: '12px',
-              backgroundColor: tokens.colors.snow,
+              backgroundColor: 'var(--ak-surface-subtle)',
               borderRadius: '10px',
               textAlign: 'center',
             }}>
-              <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>Fokus</p>
-              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: tokens.colors.charcoal }}>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--ak-text-secondary)' }}>Fokus</p>
+              <p style={{ margin: '4px 0 0 0', fontSize: '20px', fontWeight: 700, color: 'var(--ak-text-primary)' }}>
                 {stats.avgFocusRating.toFixed(1)}/10
               </p>
             </div>
@@ -569,23 +575,23 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
 
       {/* Result Card */}
       <div style={{
-        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : tokens.colors.snow,
+        backgroundColor: scoreLevel ? `${scoreLevel.color}15` : 'var(--ak-surface-subtle)',
         borderRadius: '12px',
         padding: '20px',
         marginBottom: '24px',
-        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid ${tokens.colors.silver}`,
+        border: scoreLevel ? `2px solid ${scoreLevel.color}40` : `1px solid var(--ak-border-default)`,
         textAlign: 'center',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '8px' }}>
-          <Target size={20} color={scoreLevel?.color || tokens.colors.steel} />
+          <Target size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)'} />
           <span style={{
             fontSize: '28px',
             fontWeight: 700,
-            color: scoreLevel?.color || tokens.colors.charcoal,
+            color: scoreLevel?.color || 'var(--ak-text-primary)',
           }}>
             {result !== null ? (test.calculationType === 'direct' ? result : result.toFixed(1)) : '—'}
           </span>
-          <span style={{ fontSize: '16px', color: tokens.colors.steel }}>
+          <span style={{ fontSize: '16px', color: 'var(--ak-text-secondary)' }}>
             {test.unit}
           </span>
         </div>
@@ -608,7 +614,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         )}
 
         {result === null && (
-          <p style={{ margin: 0, fontSize: '14px', color: tokens.colors.steel }}>
+          <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-secondary)' }}>
             Fyll inn data for å se resultat
           </p>
         )}

@@ -86,7 +86,7 @@ const StrokesGainedContent: React.FC = () => {
     switch (category) {
       case 'approach':
         return {
-          label: 'Approach',
+          label: 'Innspill',
           description: 'Slag fra fairway/rough inn mot green (50-200m)',
           tips: ['Fokuser på presisjon fremfor distanse', 'Tren på ulike avstander', 'Jobb med lie-variasjon']
         };

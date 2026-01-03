@@ -1,6 +1,12 @@
+/**
+ * StartTestModal Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (modal positioning)
+ */
+
 import React, { useState } from 'react';
 import { X, Play, Check, ChevronLeft, ChevronRight } from 'lucide-react';
-import { tokens } from '../../design-tokens';
 import { SectionTitle, SubSectionTitle, CardTitle } from '../../components/typography';
 import Button from '../../ui/primitives/Button';
 
@@ -94,7 +100,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
     >
       <div
         style={{
-          backgroundColor: tokens.colors.white,
+          backgroundColor: 'var(--ak-surface-card)',
           borderRadius: '16px',
           width: '100%',
           maxWidth: '500px',
@@ -107,7 +113,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
         {/* Header */}
         <div style={{
           padding: '16px 20px',
-          borderBottom: `1px solid ${tokens.colors.mist}`,
+          borderBottom: '1px solid var(--ak-border-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -115,10 +121,10 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ fontSize: '24px' }}>{test.icon}</span>
             <div>
-              <SectionTitle style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+              <SectionTitle style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: 'var(--ak-text-primary)' }}>
                 {test.name}
               </SectionTitle>
-              <p style={{ margin: 0, fontSize: '12px', color: tokens.colors.steel }}>
+              <p style={{ margin: 0, fontSize: '12px', color: 'var(--ak-text-secondary)' }}>
                 Test {test.testNumber || test.id}
               </p>
             </div>
@@ -130,7 +136,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
               border: 'none',
               cursor: 'pointer',
               padding: '8px',
-              color: tokens.colors.steel,
+              color: 'var(--ak-text-secondary)',
             }}
           >
             <X size={20} />
@@ -141,16 +147,16 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
         <div style={{ flex: 1, overflow: 'auto', padding: '20px' }}>
           {step === 'instructions' && (
             <div>
-              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px', color: tokens.colors.charcoal }}>
+              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '12px', color: 'var(--ak-text-primary)' }}>
                 Instruksjoner
               </SubSectionTitle>
-              <p style={{ fontSize: '14px', color: tokens.colors.charcoal, marginBottom: '16px', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '14px', color: 'var(--ak-text-primary)', marginBottom: '16px', lineHeight: 1.5 }}>
                 {test.description}
               </p>
 
               {testDetails.equipment && (
                 <div style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel, marginBottom: '8px' }}>
+                  <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ak-text-secondary)', marginBottom: '8px' }}>
                     Utstyr
                   </p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
@@ -159,10 +165,10 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                         key={i}
                         style={{
                           padding: '4px 10px',
-                          backgroundColor: tokens.colors.snow,
+                          backgroundColor: 'var(--ak-surface-subtle)',
                           borderRadius: '12px',
                           fontSize: '12px',
-                          color: tokens.colors.charcoal,
+                          color: 'var(--ak-text-primary)',
                         }}
                       >
                         {item}
@@ -174,25 +180,25 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
               {testDetails.warmup && (
                 <div style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel, marginBottom: '4px' }}>
+                  <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ak-text-secondary)', marginBottom: '4px' }}>
                     Oppvarming
                   </p>
-                  <p style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+                  <p style={{ fontSize: '13px', color: 'var(--ak-text-primary)' }}>
                     {testDetails.warmup}
                   </p>
                 </div>
               )}
 
               <div style={{
-                backgroundColor: tokens.colors.snow,
+                backgroundColor: 'var(--ak-surface-subtle)',
                 padding: '12px 16px',
                 borderRadius: '8px',
                 marginTop: '16px',
               }}>
-                <p style={{ fontSize: '12px', color: tokens.colors.steel, marginBottom: '4px' }}>
+                <p style={{ fontSize: '12px', color: 'var(--ak-text-secondary)', marginBottom: '4px' }}>
                   Krav for kategori {player?.category || 'B'}
                 </p>
-                <p style={{ fontSize: '18px', fontWeight: 700, color: tokens.colors.primary }}>
+                <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--ak-brand-primary)' }}>
                   {test.lowerIsBetter ? '≤ ' : '≥ '}{requirement}{test.unit}
                 </p>
               </div>
@@ -201,7 +207,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
           {step === 'recording' && (
             <div>
-              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: tokens.colors.charcoal }}>
+              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: 'var(--ak-text-primary)' }}>
                 Registrer forsøk ({attempts.length}/{requiredAttempts})
               </SubSectionTitle>
 
@@ -216,7 +222,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                   style={{
                     flex: 1,
                     padding: '12px 16px',
-                    border: `1px solid ${tokens.colors.mist}`,
+                    border: '1px solid var(--ak-border-subtle)',
                     borderRadius: '8px',
                     fontSize: '16px',
                   }}
@@ -235,7 +241,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
               {/* List of attempts */}
               <div style={{ marginBottom: '16px' }}>
                 {attempts.length === 0 ? (
-                  <p style={{ color: tokens.colors.steel, fontSize: '13px', textAlign: 'center', padding: '20px' }}>
+                  <p style={{ color: 'var(--ak-text-secondary)', fontSize: '13px', textAlign: 'center', padding: '20px' }}>
                     Ingen forsøk registrert ennå
                   </p>
                 ) : (
@@ -248,15 +254,15 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           padding: '10px 14px',
-                          backgroundColor: tokens.colors.snow,
+                          backgroundColor: 'var(--ak-surface-subtle)',
                           borderRadius: '8px',
                         }}
                       >
-                        <span style={{ fontSize: '13px', color: tokens.colors.steel }}>
+                        <span style={{ fontSize: '13px', color: 'var(--ak-text-secondary)' }}>
                           Forsøk {i + 1}
                         </span>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <span style={{ fontSize: '16px', fontWeight: 600, color: tokens.colors.charcoal }}>
+                          <span style={{ fontSize: '16px', fontWeight: 600, color: 'var(--ak-text-primary)' }}>
                             {attempt}{test.unit}
                           </span>
                           <button
@@ -265,7 +271,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                               background: 'none',
                               border: 'none',
                               cursor: 'pointer',
-                              color: tokens.colors.error,
+                              color: 'var(--ak-status-error)',
                               fontSize: '14px',
                             }}
                           >
@@ -280,7 +286,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
               {/* Notes */}
               <div>
-                <label style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel, display: 'block', marginBottom: '6px' }}>
+                <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ak-text-secondary)', display: 'block', marginBottom: '6px' }}>
                   Notater (valgfritt)
                 </label>
                 <textarea
@@ -290,7 +296,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                   style={{
                     width: '100%',
                     padding: '10px 14px',
-                    border: `1px solid ${tokens.colors.mist}`,
+                    border: '1px solid var(--ak-border-subtle)',
                     borderRadius: '8px',
                     fontSize: '14px',
                     resize: 'vertical',
@@ -303,26 +309,26 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
           {step === 'review' && (
             <div>
-              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: tokens.colors.charcoal }}>
+              <SubSectionTitle style={{ fontSize: '14px', fontWeight: 600, marginBottom: '16px', color: 'var(--ak-text-primary)' }}>
                 Gjennomgang
               </SubSectionTitle>
 
               {/* Result summary */}
               <div style={{
-                backgroundColor: meetsRequirement ? `${tokens.colors.success}15` : `${tokens.colors.error}15`,
-                border: `1px solid ${meetsRequirement ? tokens.colors.success : tokens.colors.error}`,
+                backgroundColor: meetsRequirement ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                border: meetsRequirement ? '1px solid var(--ak-status-success)' : '1px solid var(--ak-status-error)',
                 borderRadius: '12px',
                 padding: '20px',
                 textAlign: 'center',
                 marginBottom: '20px',
               }}>
-                <p style={{ fontSize: '12px', color: tokens.colors.steel, marginBottom: '4px' }}>
+                <p style={{ fontSize: '12px', color: 'var(--ak-text-secondary)', marginBottom: '4px' }}>
                   Ditt resultat
                 </p>
                 <p style={{
                   fontSize: '32px',
                   fontWeight: 700,
-                  color: meetsRequirement ? tokens.colors.success : tokens.colors.error,
+                  color: meetsRequirement ? 'var(--ak-status-success)' : 'var(--ak-status-error)',
                   marginBottom: '8px',
                 }}>
                   {result?.toFixed(test.unit === '' ? 2 : 0)}{test.unit}
@@ -330,7 +336,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                 <p style={{
                   fontSize: '14px',
                   fontWeight: 500,
-                  color: meetsRequirement ? tokens.colors.success : tokens.colors.error,
+                  color: meetsRequirement ? 'var(--ak-status-success)' : 'var(--ak-status-error)',
                 }}>
                   {meetsRequirement ? 'Oppfylt' : `Under krav (${test.lowerIsBetter ? '≤' : '≥'}${requirement}${test.unit})`}
                 </p>
@@ -338,7 +344,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
               {/* Attempts breakdown */}
               <div style={{ marginBottom: '16px' }}>
-                <p style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel, marginBottom: '8px' }}>
+                <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ak-text-secondary)', marginBottom: '8px' }}>
                   Alle forsøk
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -347,10 +353,10 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
                       key={i}
                       style={{
                         padding: '6px 12px',
-                        backgroundColor: tokens.colors.snow,
+                        backgroundColor: 'var(--ak-surface-subtle)',
                         borderRadius: '6px',
                         fontSize: '13px',
-                        color: tokens.colors.charcoal,
+                        color: 'var(--ak-text-primary)',
                       }}
                     >
                       {attempt}{test.unit}
@@ -361,10 +367,10 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
 
               {notes && (
                 <div>
-                  <p style={{ fontSize: '12px', fontWeight: 600, color: tokens.colors.steel, marginBottom: '4px' }}>
+                  <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--ak-text-secondary)', marginBottom: '4px' }}>
                     Notater
                   </p>
-                  <p style={{ fontSize: '13px', color: tokens.colors.charcoal }}>
+                  <p style={{ fontSize: '13px', color: 'var(--ak-text-primary)' }}>
                     {notes}
                   </p>
                 </div>
@@ -376,7 +382,7 @@ const StartTestModal = ({ test, player, onClose, onSubmit }) => {
         {/* Footer */}
         <div style={{
           padding: '16px 20px',
-          borderTop: `1px solid ${tokens.colors.mist}`,
+          borderTop: '1px solid var(--ak-border-subtle)',
           display: 'flex',
           gap: '12px',
         }}>

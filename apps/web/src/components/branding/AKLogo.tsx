@@ -1,21 +1,26 @@
-import React from 'react';
-import { tokens } from '../../design-tokens';
-
 /**
  * AK Golf Logo Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  * Single source of truth for the AK Golf logo
  */
+
+import React from 'react';
 
 interface AKLogoProps {
   /** Height of the logo in pixels */
   size?: number;
   /** Fill color of the logo */
   color?: string;
+  /** Additional CSS class name */
+  className?: string;
 }
 
 export const AKLogo: React.FC<AKLogoProps> = ({
   size = 44,
-  color = tokens.colors.white
+  color = 'var(--ak-surface-card)',
+  className,
 }) => {
   const aspectRatio = 196.41 / 204.13;
 
@@ -26,6 +31,7 @@ export const AKLogo: React.FC<AKLogoProps> = ({
       width={size * aspectRatio}
       height={size}
       fill={color}
+      className={className}
       style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 }}
       aria-label="AK Golf logo"
       role="img"

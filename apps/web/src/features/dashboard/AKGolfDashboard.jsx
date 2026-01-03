@@ -1,3 +1,10 @@
+/**
+ * AKGolfDashboard Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -347,7 +354,7 @@ const WeeklyPerformanceSummary = ({ stats, loading }) => {
         trend={stats.streakTrend}
         trendLabel="vs. forrige uke"
         context={stats.streak >= 7 ? '🔥 Lengste denne måneden!' : stats.streak >= 3 ? '💪 Godt jobbet!' : null}
-        iconColor="#f97316"
+        iconColor="var(--ak-status-warning)"
       />
       <KPICard
         icon={TrendingUp}

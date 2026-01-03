@@ -1,0 +1,13 @@
+# Railway configuration for IUP Golf API
+# Using Nixpacks with custom config for native modules
+# Build date: 2026-01-03 v8 - Nixpacks with nixpacks.toml
+
+[build]
+builder = "NIXPACKS"
+watchPatterns = ["src/**", "prisma/**", "package.json", "nixpacks.toml"]
+
+[deploy]
+healthcheckPath = "/live"
+healthcheckTimeout = 180
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5

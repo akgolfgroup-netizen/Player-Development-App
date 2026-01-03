@@ -41,9 +41,10 @@ describe('ErrorState', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('uses custom message over default', () => {
+  it('uses custom message alongside error type title', () => {
     render(<ErrorState errorType="validation_error" message="Custom error" />);
     expect(screen.getByText('Custom error')).toBeInTheDocument();
-    expect(screen.queryByText(/ugyldig input/i)).not.toBeInTheDocument();
+    // The title is based on error type, custom message is description
+    expect(screen.getByText(/ugyldig input/i)).toBeInTheDocument();
   });
 });

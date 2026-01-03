@@ -1,6 +1,8 @@
 /**
  * AK Golf Academy - Coach Training Plan (View Only)
- * Design System v3.0 - Blue Palette 01
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Purpose:
  * - Display training plan overview for a specific athlete
@@ -113,47 +115,28 @@ export default function CoachTrainingPlan({
   return (
     <section
       aria-label="Training plan"
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-primary)',
-      }}
+      className="min-h-screen bg-ak-surface-base"
     >
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: 'var(--bg-surface)',
-          borderBottom: '1px solid var(--border-default)',
-          padding: '16px 24px',
-        }}
-      >
+      <div className="bg-ak-surface-subtle border-b border-ak-border-default py-4 px-6">
         {onBack && (
-          <div style={{ marginBottom: '16px' }}>
+          <div className="mb-4">
             <Button variant="ghost" size="sm" onClick={onBack} leftIcon={<ArrowLeft size={18} />}>
               Tilbake
             </Button>
           </div>
         )}
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--bg-accent-subtle)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ClipboardList size={24} color="var(--accent)" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-lg bg-ak-brand-primary/15 flex items-center justify-center">
+              <ClipboardList size={24} className="text-ak-brand-primary" />
             </div>
             <div>
-              <PageTitle style={{ margin: 0 }}>
+              <PageTitle className="m-0">
                 Treningsplan
               </PageTitle>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
+              <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
                 {athleteName}
               </p>
             </div>
@@ -167,32 +150,32 @@ export default function CoachTrainingPlan({
         </div>
       </div>
 
-      <div style={{ padding: '24px' }}>
+      <div className="p-6">
         {/* Next Session Highlight */}
         {nextSession && (
-          <Card variant="accent" padding="lg" style={{ marginBottom: '24px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <Calendar size={18} color="var(--accent)" />
-              <span style={{ fontSize: '13px', color: 'var(--accent)', opacity: 0.9 }}>
+          <Card variant="accent" padding="lg" className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Calendar size={18} className="text-ak-brand-primary" />
+              <span className="text-[13px] text-ak-brand-primary opacity-90">
                 Neste økt
               </span>
             </div>
-            <SectionTitle style={{ margin: '0 0 8px' }}>
+            <SectionTitle className="m-0 mb-2">
               {nextSession.name}
             </SectionTitle>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <span style={{ fontSize: '15px', color: 'var(--text-primary)' }}>
+            <div className="flex items-center gap-4">
+              <span className="text-[15px] text-ak-text-primary">
                 {formatDate(nextSession.date)}
               </span>
               {nextSession.durationMinutes && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-secondary)' }}>
+                <div className="flex items-center gap-1 text-ak-text-secondary">
                   <Clock size={14} />
                   <span>{nextSession.durationMinutes} min</span>
                 </div>
               )}
             </div>
             {nextSession.description && (
-              <p style={{ fontSize: '15px', color: 'var(--text-secondary)', margin: 0, marginTop: '12px' }}>
+              <p className="text-[15px] text-ak-text-secondary m-0 mt-3">
                 {nextSession.description}
               </p>
             )}
@@ -200,12 +183,12 @@ export default function CoachTrainingPlan({
         )}
 
         {/* Upcoming Sessions */}
-        <Card variant="default" padding="none" style={{ marginBottom: '24px', overflow: 'hidden' }}>
-          <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
-            <SectionTitle style={{ margin: 0 }}>
+        <Card variant="default" padding="none" className="mb-6 overflow-hidden">
+          <div className="p-5 border-b border-ak-border-default">
+            <SectionTitle className="m-0">
               Kommende økter
             </SectionTitle>
-            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
+            <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
               {upcomingBlocks.length} planlagte
             </p>
           </div>
@@ -217,47 +200,34 @@ export default function CoachTrainingPlan({
               {upcomingBlocks.map((block, index) => (
                 <div
                   key={block.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '16px 20px',
-                    borderBottom: index < upcomingBlocks.length - 1 ? '1px solid var(--border-default)' : 'none',
-                  }}
+                  className={`flex items-center gap-4 py-4 px-5 ${
+                    index < upcomingBlocks.length - 1 ? 'border-b border-ak-border-default' : ''
+                  }`}
                 >
-                  <div
-                    style={{
-                      width: 56,
-                      padding: '8px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--bg-accent-subtle)',
-                      color: 'var(--accent)',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <div style={{ fontSize: '13px', fontWeight: 600 }}>
+                  <div className="w-14 p-2 rounded-lg bg-ak-brand-primary/15 text-ak-brand-primary text-center">
+                    <div className="text-[13px] font-semibold">
                       {new Date(block.date).toLocaleDateString("nb-NO", { weekday: 'short' }).toUpperCase()}
                     </div>
-                    <div style={{ fontSize: '20px', fontWeight: 700 }}>
+                    <div className="text-xl font-bold">
                       {new Date(block.date).getDate()}
                     </div>
                   </div>
 
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <div className="flex-1">
+                    <div className="text-[15px] font-semibold text-ak-text-primary">
                       {block.name}
                     </div>
                     {block.description && (
-                      <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
+                      <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
                         {block.description}
                       </p>
                     )}
                   </div>
 
                   {block.durationMinutes && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Clock size={14} color="var(--text-tertiary)" />
-                      <span style={{ fontSize: '13px', color: 'var(--text-tertiary)' }}>
+                    <div className="flex items-center gap-1">
+                      <Clock size={14} className="text-ak-text-tertiary" />
+                      <span className="text-[13px] text-ak-text-tertiary">
                         {block.durationMinutes} min
                       </span>
                     </div>
@@ -270,12 +240,12 @@ export default function CoachTrainingPlan({
 
         {/* Completed Sessions */}
         {completedBlocks.length > 0 && (
-          <Card variant="default" padding="none" style={{ overflow: 'hidden' }}>
-            <div style={{ padding: '20px', borderBottom: '1px solid var(--border-default)' }}>
-              <SectionTitle style={{ margin: 0 }}>
+          <Card variant="default" padding="none" className="overflow-hidden">
+            <div className="p-5 border-b border-ak-border-default">
+              <SectionTitle className="m-0">
                 Fullførte økter
               </SectionTitle>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, marginTop: '4px' }}>
+              <p className="text-[13px] text-ak-text-secondary m-0 mt-1">
                 {completedBlocks.length} gjennomført
               </p>
             </div>
@@ -284,24 +254,19 @@ export default function CoachTrainingPlan({
               {completedBlocks.slice(0, 5).map((block, index) => (
                 <div
                   key={block.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '14px 20px',
-                    borderBottom: index < Math.min(completedBlocks.length, 5) - 1 ? '1px solid var(--border-default)' : 'none',
-                    backgroundColor: 'var(--bg-secondary)',
-                  }}
+                  className={`flex items-center gap-4 py-3.5 px-5 bg-ak-surface-subtle ${
+                    index < Math.min(completedBlocks.length, 5) - 1 ? 'border-b border-ak-border-default' : ''
+                  }`}
                 >
-                  <CheckCircle size={20} color="var(--success)" />
+                  <CheckCircle size={20} className="text-ak-status-success" />
 
-                  <div style={{ flex: 1 }}>
-                    <span style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>
+                  <div className="flex-1">
+                    <span className="text-[15px] text-ak-text-secondary">
                       {block.name}
                     </span>
                   </div>
 
-                  <span style={{ fontSize: '13px', color: 'var(--text-tertiary)' }}>
+                  <span className="text-[13px] text-ak-text-tertiary">
                     {formatShortDate(block.date)}
                   </span>
                 </div>

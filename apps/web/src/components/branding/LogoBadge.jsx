@@ -1,11 +1,15 @@
-import React from 'react';
-import { AKLogo } from './AKLogo';
-import { tokens } from '../../design-tokens';
-
 /**
  * LogoBadge Component
- * Reusable container for displaying the AK Golf logo in a badge/circle
+ * Design System v3.0 - Premium Light
  *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ * Reusable container for displaying the AK Golf logo in a badge/circle
+ */
+
+import React from 'react';
+import { AKLogo } from './AKLogo';
+
+/**
  * @param {number} logoSize - Size of the logo in pixels (default: 44px)
  * @param {number} badgeSize - Size of the badge container (default: 56px)
  * @param {string} backgroundColor - Background color of the badge (default: var(--accent))
@@ -18,7 +22,7 @@ export const LogoBadge = ({
   logoSize = 44,
   badgeSize = 56,
   backgroundColor = 'var(--accent)',
-  logoColor = tokens.colors.white,
+  logoColor = 'var(--ak-surface-card)',
   borderRadius = '16px',
   className = '',
   as = 'div'

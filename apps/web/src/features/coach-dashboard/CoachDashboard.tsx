@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-nocheck
 /**
- * AK Golf Academy - Coach Dashboard
- * Design System v3.0 - Semantic CSS Variables
+ * CoachDashboard.tsx
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
  * Overview dashboard for coaches showing:
  * - Athletes list (alphabetically sorted, neutral)
@@ -11,11 +13,11 @@
  * - Quick navigation to coach tools
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Users, Calendar, ClipboardList, MessageSquare, Bell,
-  ChevronRight, Search, User, BarChart3, Trophy
+  ChevronRight, Search, User, BarChart3, Trophy, RefreshCw
 } from 'lucide-react';
 import { CoachPlayerAlerts, CoachWeeklyTournaments, CoachInjuryTracker } from './widgets';
 import { coachesAPI } from '../../services/api';
@@ -27,6 +29,7 @@ import Badge from '../../ui/primitives/Badge.primitive';
 import StateCard from '../../ui/composites/StateCard';
 import Card from '../../ui/primitives/Card';
 import { PageTitle, SectionTitle, SubSectionTitle } from '../../components/typography';
+import { useRealTimePolling, formatLastUpdated } from '../../hooks';
 
 // Mock data for athletes
 const mockAthletes = [
@@ -51,7 +54,7 @@ const quickActions = [
   { id: 'calendar', label: 'Kalender', icon: Calendar, href: '/coach/calendar' },
   { id: 'plans', label: 'Treningsplaner', icon: ClipboardList, href: '/coach/training-plans/create' },
   { id: 'messages', label: 'Meldinger', icon: MessageSquare, href: '/coach/messages' },
-  { id: 'stats', label: 'Stats', icon: BarChart3, href: '/coach/stats' },
+  { id: 'stats', label: 'Statistikk', icon: BarChart3, href: '/coach/stats' },
   { id: 'tournaments', label: 'Turneringer', icon: Trophy, href: '/coach/tournaments' },
 ];
 
@@ -61,14 +64,9 @@ const WidgetHeader: React.FC<{
   icon?: React.ElementType;
   action?: { label: string; onClick: () => void };
 }> = ({ title, icon: Icon, action }) => (
-  <div style={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '16px',
-  }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      {Icon && <Icon size={18} style={{ color: 'var(--accent)' }} />}
+  <div className="flex items-center justify-between mb-4">
+    <div className="flex items-center gap-2">
+      {Icon && <Icon size={18} className="text-ak-brand-primary" />}
       <SubSectionTitle>
         {title}
       </SubSectionTitle>
@@ -83,32 +81,22 @@ const WidgetHeader: React.FC<{
 );
 
 // Avatar component
+const AVATAR_COLORS = ['bg-ak-brand-primary', 'bg-ak-status-success', 'bg-ak-status-warning'];
+
 const Avatar: React.FC<{ name: string; size?: number }> = ({ name, size = 40 }) => {
   const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
 
   // Generate consistent color from name
-  const colors = ['var(--accent)', 'var(--success)', 'var(--warning)'];
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const bgColor = colors[Math.abs(hash) % colors.length];
+  const bgColorClass = AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 
   return (
     <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: '50%',
-        backgroundColor: bgColor,
-        color: 'white',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: size * 0.4,
-        fontWeight: 600,
-        flexShrink: 0,
-      }}
+      className={`rounded-full ${bgColorClass} text-white flex items-center justify-center font-semibold shrink-0`}
+      style={{ width: size, height: size, fontSize: size * 0.4 }}
     >
       {initials}
     </div>
@@ -139,27 +127,14 @@ interface CoachDashboardProps {
 
 // Loading component using StateCard
 const LoadingState: React.FC = () => (
-  <div style={{
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--bg-secondary)'
-  }}>
+  <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle">
     <StateCard variant="loading" title="Laster dashboard..." />
   </div>
 );
 
 // Error component using StateCard and Button
 const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, onRetry }) => (
-  <div style={{
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--bg-secondary)',
-    padding: '24px'
-  }}>
+  <div className="min-h-screen flex items-center justify-center bg-ak-surface-subtle p-6">
     <StateCard
       variant="error"
       title="Kunne ikke laste dashboard"
@@ -169,86 +144,23 @@ const ErrorState: React.FC<{ error: string; onRetry: () => void }> = ({ error, o
   </div>
 );
 
+// Dashboard data interface
+interface DashboardData {
+  athletes: typeof mockAthletes;
+  pendingItems: typeof mockPendingItems;
+  weeklyStats: any;
+  todaySchedule: any[];
+  defaultTeamId: string | null;
+}
+
 // Main Coach Dashboard component
 export default function CoachDashboard({ athletes: propAthletes, pendingItems: propPendingItems }: CoachDashboardProps = {}) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
 
-  // State for API data
-  const [athletes, setAthletes] = useState<typeof mockAthletes>(propAthletes || []);
-  const [pendingItems, setPendingItems] = useState<typeof mockPendingItems>(propPendingItems || []);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [todaySchedule, _setTodaySchedule] = useState<any[]>([]);
-  const [weeklyStats, setWeeklyStats] = useState<any>(null);
-  const [defaultTeamId, setDefaultTeamId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Fetch dashboard data
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const coachId = (user as any)?.coachId || user?.id;
-
-      const [athletesRes, alertsRes, statsRes] = await Promise.all([
-        coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
-        coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
-        coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
-      ]);
-
-      // Transform athletes response
-      const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
-      setAthletes(Array.isArray(athleteData) ? athleteData.map((a: any) => ({
-        id: a.id,
-        firstName: a.firstName,
-        lastName: a.lastName,
-        category: a.category || 'B',
-        lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
-      })) : mockAthletes);
-
-      // Transform alerts to pending items format
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const alertsResponse = alertsRes.data?.data || alertsRes.data || {};
-      const alertsData = (alertsResponse as any)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
-      setPendingItems(Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
-        id: alert.id,
-        type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
-        athlete: alert.athleteName,
-        description: alert.message,
-        time: formatTimeAgo(alert.createdAt),
-      })) : mockPendingItems);
-
-      // Get stats from statistics response
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const statsData = (statsRes.data?.data || statsRes.data) as any;
-      if (statsData?.sessions) {
-        setWeeklyStats({
-          activePlayers: statsData.players?.active || 0,
-          sessionsThisWeek: statsData.sessions?.thisWeek || 0,
-          hoursTrained: statsData.sessions?.totalHours || 0,
-          pendingCount: alertsData.length || 0,
-        });
-      }
-
-      // Set default team for focus heatmap (use first athlete's ID as team proxy)
-      if (athleteData.length > 0) {
-        setDefaultTeamId(athleteData[0].id);
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || err.message || 'En ukjent feil oppstod');
-      // Fallback to mock data on error
-      setAthletes(mockAthletes);
-      setPendingItems(mockPendingItems);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Helper to format time ago
-  const formatTimeAgo = (dateStr: string): string => {
+  const formatTimeAgo = useCallback((dateStr: string): string => {
     const date = new Date(dateStr);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
@@ -258,19 +170,81 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     if (diffDays > 0) return `${diffDays} dag${diffDays > 1 ? 'er' : ''} siden`;
     if (diffHours > 0) return `${diffHours} time${diffHours > 1 ? 'r' : ''} siden`;
     return 'Akkurat nå';
-  };
+  }, []);
 
-  useEffect(() => {
-    // Only fetch if not using props
-    if (!propAthletes && !propPendingItems) {
-      fetchDashboardData();
-    } else {
-      setLoading(false);
-    }
-  }, [propAthletes, propPendingItems]);
+  // Fetch dashboard data function (memoized for polling hook)
+  const fetchDashboardData = useCallback(async (): Promise<DashboardData> => {
+    const coachId = (user as any)?.coachId || user?.id;
 
-  if (loading) return <LoadingState />;
-  if (error && athletes.length === 0) return <ErrorState error={error} onRetry={fetchDashboardData} />;
+    const [athletesRes, alertsRes, statsRes] = await Promise.all([
+      coachesAPI.getAthletes().catch(() => ({ data: { data: mockAthletes } })),
+      coachesAPI.getAlerts().catch(() => ({ data: { data: { alerts: mockPendingItems } } })),
+      coachId ? coachesAPI.getWeeklyStats(coachId).catch(() => ({ data: null })) : Promise.resolve({ data: null }),
+    ]);
+
+    // Transform athletes response
+    const athleteData = athletesRes.data?.data || athletesRes.data || mockAthletes;
+    const transformedAthletes = Array.isArray(athleteData) ? athleteData.map((a: any) => ({
+      id: a.id,
+      firstName: a.firstName,
+      lastName: a.lastName,
+      category: a.category || 'B',
+      lastSession: a.nextSession || a.planUpdated || new Date().toISOString().split('T')[0],
+    })) : mockAthletes;
+
+    // Transform alerts to pending items format
+    const alertsResponse = alertsRes.data?.data || alertsRes.data || {};
+    const alertsData = (alertsResponse as any)?.alerts || (Array.isArray(alertsResponse) ? alertsResponse : []);
+    const transformedPendingItems = Array.isArray(alertsData) ? alertsData.slice(0, 5).map((alert: any) => ({
+      id: alert.id,
+      type: alert.type === 'proof_uploaded' ? 'proof' : alert.type === 'plan_pending' ? 'plan' : 'note',
+      athlete: alert.athleteName,
+      description: alert.message,
+      time: formatTimeAgo(alert.createdAt),
+    })) : mockPendingItems;
+
+    // Get stats from statistics response
+    const statsData = (statsRes.data?.data || statsRes.data) as any;
+    const transformedStats = statsData?.sessions ? {
+      activePlayers: statsData.players?.active || 0,
+      sessionsThisWeek: statsData.sessions?.thisWeek || 0,
+      hoursTrained: statsData.sessions?.totalHours || 0,
+      pendingCount: alertsData.length || 0,
+    } : null;
+
+    return {
+      athletes: transformedAthletes,
+      pendingItems: transformedPendingItems,
+      weeklyStats: transformedStats,
+      todaySchedule: [],
+      defaultTeamId: transformedAthletes.length > 0 ? transformedAthletes[0].id : null,
+    };
+  }, [user, formatTimeAgo]);
+
+  // Use real-time polling for dashboard data
+  const {
+    data: dashboardData,
+    isLoading: loading,
+    isRefreshing,
+    error,
+    lastUpdated,
+    refresh,
+  } = useRealTimePolling<DashboardData>({
+    fetchFn: fetchDashboardData,
+    interval: 30000, // Refresh every 30 seconds
+    enabled: !propAthletes && !propPendingItems,
+    showBackgroundLoading: true,
+  });
+
+  // Use prop data or fetched data
+  const athletes = propAthletes || dashboardData?.athletes || mockAthletes;
+  const pendingItems = propPendingItems || dashboardData?.pendingItems || mockPendingItems;
+  const weeklyStats = dashboardData?.weeklyStats || null;
+  const todaySchedule = dashboardData?.todaySchedule || [];
+  const defaultTeamId = dashboardData?.defaultTeamId || null;
+
+  if (loading && !dashboardData) return <LoadingState />;
+  if (error && athletes.length === 0) return <ErrorState error={error.message} onRetry={refresh} />;
 
   // Sort athletes alphabetically by last name
   const sortedAthletes = [...athletes]
@@ -286,67 +260,79 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
     return 'God kveld';
   };
 
+  // Add refresh animations
+  useEffect(() => {
+    if (!document.getElementById('coach-dashboard-animations')) {
+      const style = document.createElement('style');
+      style.id = 'coach-dashboard-animations';
+      style.textContent = `
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes refreshProgress {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(0%); }
+          100% { transform: translateX(100%); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-secondary)',
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif",
-      }}
-    >
+    <div className="relative min-h-screen bg-ak-surface-subtle font-sans">
       {/* Header */}
-      <div style={{ padding: '24px', paddingBottom: '16px' }}>
-        <PageTitle>
-          {getGreeting()}, Trener
-        </PageTitle>
-        <p style={{
-          fontSize: '15px',
-          color: 'var(--text-secondary)',
-          marginTop: '4px',
-        }}>
-          Her er din oversikt for i dag
-        </p>
+      <div className="p-6 pb-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <PageTitle>
+              {getGreeting()}, Trener
+            </PageTitle>
+            <p className="text-[15px] text-ak-text-secondary mt-1">
+              Her er din oversikt for i dag
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            {/* Last updated indicator */}
+            <span className="text-[13px] text-ak-text-secondary">
+              {formatLastUpdated(lastUpdated)}
+            </span>
+            {/* Refresh button */}
+            <button
+              onClick={refresh}
+              disabled={isRefreshing}
+              className={`flex items-center justify-center w-9 h-9 bg-ak-surface-base border border-ak-border-default rounded-lg transition-all ${
+                isRefreshing ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-ak-surface-subtle'
+              }`}
+              title="Oppdater data"
+            >
+              <RefreshCw
+                size={18}
+                className={`text-ak-text-secondary ${isRefreshing ? 'animate-spin' : ''}`}
+              />
+            </button>
+          </div>
+        </div>
+        {/* Refreshing indicator bar */}
+        {isRefreshing && (
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-ak-brand-primary animate-pulse" />
+        )}
       </div>
 
       {/* Quick Actions */}
-      <div style={{ padding: '0 24px', marginBottom: '24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '12px' }}>
+      <div className="px-6 mb-6">
+        <div className="grid grid-cols-6 gap-3">
           {quickActions.map(action => (
             <button
               key={action.id}
               onClick={() => navigate(action.href)}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '16px 12px',
-                backgroundColor: 'var(--bg-primary)',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.06)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
+              className="flex flex-col items-center gap-2 py-4 px-3 bg-ak-surface-base border-none rounded-lg shadow-sm cursor-pointer transition-all hover:shadow-md"
             >
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <action.icon size={22} style={{ color: 'var(--accent)' }} />
+              <div className="w-11 h-11 rounded-lg bg-ak-brand-primary/10 flex items-center justify-center">
+                <action.icon size={22} className="text-ak-brand-primary" />
               </div>
-              <span style={{
-                fontSize: '13px',
-                fontWeight: 500,
-                color: 'var(--text-primary)',
-              }}>
+              <span className="text-[13px] font-medium text-ak-text-primary">
                 {action.label}
               </span>
             </button>
@@ -355,9 +341,9 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
       </div>
 
       {/* Critical Alerts Section */}
-      <div style={{ padding: '0 24px 20px' }}>
+      <div className="px-6 pb-5">
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             <CoachPlayerAlerts
               maxItems={4}
               onViewAll={() => navigate('/coach/alerts')}
@@ -367,10 +353,10 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
       </div>
 
       {/* Main content grid */}
-      <div style={{ padding: '0 24px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+      <div className="px-6 pb-6 grid grid-cols-2 gap-5">
         {/* Athletes List */}
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             <WidgetHeader
               title="Mine Spillere"
               icon={Users}
@@ -378,72 +364,36 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
             />
 
             {/* Search */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 14px',
-                backgroundColor: 'var(--bg-secondary)',
-                borderRadius: 'var(--radius-md)',
-                marginBottom: '16px',
-              }}
-            >
-              <Search size={18} style={{ color: 'var(--text-secondary)' }} />
+            <div className="flex items-center gap-2 py-2.5 px-3.5 bg-ak-surface-subtle rounded-lg mb-4">
+              <Search size={18} className="text-ak-text-secondary" />
               <input
                 type="text"
                 placeholder="Sok etter spiller..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  background: 'none',
-                  outline: 'none',
-                  fontSize: '15px',
-                  color: 'var(--text-primary)',
-                }}
+                className="flex-1 border-none bg-transparent outline-none text-[15px] text-ak-text-primary"
               />
             </div>
 
             {/* Athletes list */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="flex flex-col gap-2">
               {sortedAthletes.slice(0, 5).map(athlete => (
                 <div
                   key={athlete.id}
                   onClick={() => navigate(`/coach/athlete/${athlete.id}`)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    padding: '12px',
-                    backgroundColor: 'var(--bg-secondary)',
-                    borderRadius: 'var(--radius-md)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                  }}
+                  className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg cursor-pointer transition-all hover:bg-ak-border-default"
                 >
                   <Avatar name={`${athlete.firstName} ${athlete.lastName}`} size={40} />
-                  <div style={{ flex: 1 }}>
-                    <p style={{
-                      fontSize: '15px',
-                      fontWeight: 500,
-                      color: 'var(--text-primary)',
-                      margin: 0,
-                    }}>
+                  <div className="flex-1">
+                    <p className="text-[15px] font-medium text-ak-text-primary m-0">
                       {athlete.lastName}, {athlete.firstName}
                     </p>
-                    <p style={{
-                      fontSize: '13px',
-                      color: 'var(--text-secondary)',
-                      margin: 0,
-                      marginTop: '2px',
-                    }}>
+                    <p className="text-[13px] text-ak-text-secondary m-0 mt-0.5">
                       Sist aktiv: {new Date(athlete.lastSession).toLocaleDateString('nb-NO')}
                     </p>
                   </div>
                   <CategoryBadge category={athlete.category} />
-                  <ChevronRight size={18} style={{ color: 'var(--text-secondary)' }} />
+                  <ChevronRight size={18} className="text-ak-text-secondary" />
                 </div>
               ))}
             </div>
@@ -452,7 +402,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
 
         {/* Pending Items */}
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             <WidgetHeader
               title="Venter pa deg"
               icon={Bell}
@@ -460,67 +410,33 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
             />
 
             {pendingItems.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '32px 16px' }}>
-                <Bell size={32} style={{ color: 'var(--bg-tertiary)', marginBottom: '8px' }} />
-                <p style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>
+              <div className="text-center py-8 px-4">
+                <Bell size={32} className="text-ak-border-default mb-2 mx-auto" />
+                <p className="text-[15px] text-ak-text-secondary">
                   Ingen ventende oppgaver
                 </p>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div className="flex flex-col gap-3">
                 {pendingItems.map(item => (
                   <div
                     key={item.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '12px',
-                      padding: '14px',
-                      backgroundColor: 'rgba(var(--accent-rgb), 0.05)',
-                      borderRadius: 'var(--radius-md)',
-                      borderLeft: '3px solid var(--accent)',
-                      cursor: 'pointer',
-                    }}
+                    className="flex items-start gap-3 p-3.5 bg-ak-brand-primary/5 rounded-lg border-l-[3px] border-ak-brand-primary cursor-pointer"
                   >
-                    <div
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 'var(--radius-sm)',
-                        backgroundColor: 'var(--bg-primary)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {item.type === 'proof' && <User size={18} style={{ color: 'var(--accent)' }} />}
-                      {item.type === 'note' && <MessageSquare size={18} style={{ color: 'var(--accent)' }} />}
-                      {item.type === 'plan' && <ClipboardList size={18} style={{ color: 'var(--accent)' }} />}
+                    <div className="w-9 h-9 rounded-md bg-ak-surface-base flex items-center justify-center shrink-0">
+                      {item.type === 'proof' && <User size={18} className="text-ak-brand-primary" />}
+                      {item.type === 'note' && <MessageSquare size={18} className="text-ak-brand-primary" />}
+                      {item.type === 'plan' && <ClipboardList size={18} className="text-ak-brand-primary" />}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <p style={{
-                        fontSize: '15px',
-                        fontWeight: 500,
-                        color: 'var(--text-primary)',
-                        margin: 0,
-                      }}>
+                    <div className="flex-1">
+                      <p className="text-[15px] font-medium text-ak-text-primary m-0">
                         {item.athlete}
                       </p>
-                      <p style={{
-                        fontSize: '13px',
-                        color: 'var(--text-secondary)',
-                        margin: 0,
-                        marginTop: '2px',
-                      }}>
+                      <p className="text-[13px] text-ak-text-secondary m-0 mt-0.5">
                         {item.description}
                       </p>
                     </div>
-                    <span style={{
-                      fontSize: '12px',
-                      color: 'var(--text-secondary)',
-                      flexShrink: 0,
-                    }}>
+                    <span className="text-xs text-ak-text-secondary shrink-0">
                       {item.time}
                     </span>
                   </div>
@@ -532,7 +448,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
 
         {/* Weekly Tournaments */}
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             <CoachWeeklyTournaments
               onViewAll={() => navigate('/coach/tournaments')}
             />
@@ -541,7 +457,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
 
         {/* Injury Tracker */}
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             <CoachInjuryTracker
               onViewAll={() => navigate('/coach/athletes/status')}
             />
@@ -551,7 +467,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
         {/* Team Focus Heatmap */}
         {user?.id && defaultTeamId && (
           <Card variant="default" padding="none">
-            <div style={{ padding: '20px' }}>
+            <div className="p-5">
               <TeamFocusHeatmap
                 coachId={user.id}
                 teamId={defaultTeamId}
@@ -562,14 +478,14 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
 
         {/* Today's Schedule */}
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             <WidgetHeader
               title="Dagens program"
               icon={Calendar}
               action={{ label: 'Kalender', onClick: () => navigate('/coach/calendar') }}
             />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div className="flex flex-col gap-3">
               {(todaySchedule.length > 0 ? todaySchedule : [
                 { time: '09:00', title: 'Teknikktrening - Gruppe A', athletes: 3 },
                 { time: '11:00', title: 'Individuell time - Anders H.', athletes: 1 },
@@ -578,46 +494,16 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
               ]).map((event, index) => (
                 <div
                   key={index}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    padding: '12px',
-                    backgroundColor: 'var(--bg-secondary)',
-                    borderRadius: 'var(--radius-md)',
-                  }}
+                  className="flex items-center gap-3 p-3 bg-ak-surface-subtle rounded-lg"
                 >
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--accent)',
-                      color: 'white',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '13px',
-                      fontWeight: 600,
-                    }}
-                  >
+                  <div className="w-12 h-12 rounded-lg bg-ak-brand-primary text-white flex items-center justify-center text-[13px] font-semibold">
                     {event.time}
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <p style={{
-                      fontSize: '15px',
-                      fontWeight: 500,
-                      color: 'var(--text-primary)',
-                      margin: 0,
-                    }}>
+                  <div className="flex-1">
+                    <p className="text-[15px] font-medium text-ak-text-primary m-0">
                       {event.title}
                     </p>
-                    <p style={{
-                      fontSize: '12px',
-                      color: 'var(--text-secondary)',
-                      margin: 0,
-                      marginTop: '2px',
-                    }}>
+                    <p className="text-xs text-ak-text-secondary m-0 mt-0.5">
                       {event.athletes} {event.athletes === 1 ? 'spiller' : 'spillere'}
                     </p>
                   </div>
@@ -629,7 +515,7 @@ export default function CoachDashboard({ athletes: propAthletes, pendingItems: p
 
         {/* Quick Stats */}
         <Card variant="default" padding="none">
-          <div style={{ padding: '20px' }}>
+          <div className="p-5">
             <WidgetHeader title="Ukens oversikt" />
 
             <StatsGridTemplate

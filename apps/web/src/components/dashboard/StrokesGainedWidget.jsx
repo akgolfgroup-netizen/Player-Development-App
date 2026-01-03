@@ -25,7 +25,7 @@ const cardShell = {
 };
 
 const SG_CATEGORIES = [
-  { id: 'approach', label: 'Approach', icon: '🎯' },
+  { id: 'approach', label: 'Innspill', icon: '🎯' },
   { id: 'around_green', label: 'Kortspill', icon: '⛳' },
   { id: 'putting', label: 'Putting', icon: '🏌️' },
 ];

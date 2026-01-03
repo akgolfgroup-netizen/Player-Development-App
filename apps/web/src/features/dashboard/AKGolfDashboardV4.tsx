@@ -103,7 +103,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({ playerName, avatarUrl, 
         <div className="relative">
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden ring-4 ring-white shadow-ak-elevated"
-            style={{ background: 'linear-gradient(135deg, #1B4D3E 0%, #133629 100%)' }}
+            style={{ background: 'linear-gradient(135deg, var(--ak-primary) 0%, var(--ak-primary-dark) 100%)' }}
           >
             {avatarUrl ? (
               <img
@@ -181,8 +181,8 @@ const WeekAtGlanceCard: React.FC<WeekAtGlanceCardProps> = ({ stats, loading }) =
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-headline">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
-              <Calendar className="h-5 w-5" style={{ color: '#1B4D3E' }} />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
+              <Calendar className="h-5 w-5" style={{ color: 'var(--ak-primary)' }} />
             </div>
             Denne uken
           </CardTitle>
@@ -302,8 +302,8 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
     <Card className="h-full flex flex-col shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2 text-headline">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(184, 134, 11, 0.1)' }}>
-            <Award className="h-5 w-5" style={{ color: '#B8860B' }} />
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--achievement-muted)' }}>
+            <Award className="h-5 w-5" style={{ color: 'var(--achievement)' }} />
           </div>
           Badges & Score
         </CardTitle>
@@ -311,8 +311,8 @@ const BadgesScoreCard: React.FC<BadgesScoreCardProps> = ({
       <CardContent className="flex flex-col gap-4 flex-1">
         {/* Rank Display */}
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(184, 134, 11, 0.1)' }}>
-            <Trophy className="h-5 w-5" style={{ color: '#B8860B' }} />
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'var(--achievement-muted)' }}>
+            <Trophy className="h-5 w-5" style={{ color: 'var(--achievement)' }} />
           </div>
           <div>
             <span className="text-stat-label text-ak-text-tertiary">RANK</span>
@@ -386,8 +386,8 @@ const Last7DaysVisualization: React.FC<Last7DaysProps> = ({ calendarEvents, stat
     <Card className="shadow-ak-card rounded-ak-lg">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-subhead">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
-            <TrendingUp className="h-4 w-4" style={{ color: '#1B4D3E' }} />
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
+            <TrendingUp className="h-4 w-4" style={{ color: 'var(--ak-primary)' }} />
           </div>
           Siste 7 dager
         </CardTitle>
@@ -447,7 +447,7 @@ interface FocusCardProps {
 const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   if (loading) {
     return (
-      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: '#1B4D3E' }}>
+      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: 'var(--ak-primary)' }}>
         <CardContent className="pt-5">
           <div className="space-y-3 animate-pulse">
             <div className="h-4 bg-ak-surface-subtle rounded-ak-xs w-1/3" />
@@ -460,11 +460,11 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
 
   if (!focus) {
     return (
-      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: '#1B4D3E' }}>
+      <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: 'var(--ak-primary)' }}>
         <CardContent className="pt-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
-              <Crosshair className="h-4 w-4" style={{ color: '#1B4D3E' }} />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
+              <Crosshair className="h-4 w-4" style={{ color: 'var(--ak-primary)' }} />
             </div>
             <span className="text-stat-label text-ak-text-secondary">
               UKENS FOKUS
@@ -485,18 +485,18 @@ const FocusCard: React.FC<FocusCardProps> = ({ focus, loading }) => {
   const progressPercent = Math.round((sessionsCompleted / sessionsTarget) * 100)
 
   return (
-    <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: '#1B4D3E' }}>
+    <Card className="border-l-4 shadow-ak-card rounded-ak-lg" style={{ borderLeftColor: 'var(--ak-primary)' }}>
       <CardContent className="pt-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)' }}>
-              <Crosshair className="h-4 w-4" style={{ color: '#1B4D3E' }} />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-muted)' }}>
+              <Crosshair className="h-4 w-4" style={{ color: 'var(--ak-primary)' }} />
             </div>
             <span className="text-stat-label text-ak-text-secondary">
               UKENS FOKUS
             </span>
           </div>
-          <span className="text-caption-1 font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(27, 77, 62, 0.1)', color: '#1B4D3E' }}>
+          <span className="text-caption-1 font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'var(--accent-muted)', color: 'var(--ak-primary)' }}>
             {focusLabel}
           </span>
         </div>
@@ -538,8 +538,8 @@ interface ContextualCTAProps {
 
 const ContextualCTA: React.FC<ContextualCTAProps> = ({ focus, upcomingSession, onStart }) => {
   const ctaStyle = {
-    backgroundColor: '#1B4D3E',
-    color: '#FFFFFF',
+    backgroundColor: 'var(--ak-primary)',
+    color: 'var(--text-inverse)',
   }
 
   if (upcomingSession) {
@@ -636,8 +636,8 @@ const TasksList: React.FC<TasksListProps> = ({ tasks, onToggle, onViewAll, onSta
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-subhead">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(5, 150, 105, 0.1)' }}>
-              <Target className="h-4 w-4" style={{ color: '#059669' }} />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--success-muted)' }}>
+              <Target className="h-4 w-4" style={{ color: 'var(--success)' }} />
             </div>
             Dagens oppgaver
           </CardTitle>
@@ -719,12 +719,12 @@ const NotificationsList: React.FC<NotificationsListProps> = ({ notifications, on
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-subhead">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(2, 132, 199, 0.1)' }}>
-              <Bell className="h-4 w-4" style={{ color: '#0284C7' }} />
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--info-muted)' }}>
+              <Bell className="h-4 w-4" style={{ color: 'var(--info)' }} />
             </div>
             Varslinger
             {notifications.length > 0 && (
-              <span className="text-caption-1 font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'rgba(2, 132, 199, 0.1)', color: '#0284C7' }}>
+              <span className="text-caption-1 font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--info-muted)', color: 'var(--info)' }}>
                 {notifications.length}
               </span>
             )}
@@ -812,7 +812,7 @@ const AKGolfDashboardV4: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-6 space-y-6 bg-ak-surface-base min-h-screen">
+    <div className="w-full px-6 py-6 space-y-6 bg-ak-surface-base min-h-screen">
       {/* Row 1: Welcome Header */}
       <WelcomeSection
         playerName={player.name}

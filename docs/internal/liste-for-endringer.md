@@ -1,9 +1,0 @@
-## Endringer 
-
-
-
-
-
-
-
-Fysiskeverdier 
