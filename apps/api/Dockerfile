@@ -32,8 +32,19 @@ COPY --from=deps /app/prisma ./prisma
 # Copy source code
 COPY . .
 
+# Verify samling source files exist
+RUN echo "=== Verifying samling source files ===" && \
+    ls -la src/api/v1/samling/ && \
+    cat src/app.ts | grep -n samling && \
+    echo "=== Samling verification complete ==="
+
 # Build the application
 RUN npm run build
+
+# Verify samling dist files exist
+RUN echo "=== Verifying samling dist files ===" && \
+    ls -la dist/api/v1/samling/ && \
+    echo "=== Samling dist verification complete ==="
 
 # Stage 3: Production image
 FROM node:20-alpine AS runner
