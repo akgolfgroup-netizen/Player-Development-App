@@ -21,6 +21,7 @@ export interface User {
 export interface AuthResult {
   success: boolean;
   error?: string;
+  user?: User;
 }
 
 export interface AuthContextValue {
@@ -122,7 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('userData', JSON.stringify(userData));
 
       setUser(userData);
-      return { success: true };
+      return { success: true, user: userData };
     } catch (err) {
       const apiError = err as ApiError;
       const errorMessage = apiError.response?.data?.message || 'Login failed. Backend may not be running.';
