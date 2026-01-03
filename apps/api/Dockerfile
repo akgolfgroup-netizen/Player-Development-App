@@ -1,6 +1,7 @@
 # =============================================================================
 # IUP Golf Academy API - Production Dockerfile
 # Multi-stage build for optimized image size
+# Build: 2026-01-03 v2 - Added SAMLING feature
 # =============================================================================
 
 # Stage 1: Install dependencies
