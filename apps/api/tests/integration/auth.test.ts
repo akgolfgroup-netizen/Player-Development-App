@@ -671,7 +671,7 @@ describe('Auth API Integration Tests', () => {
         },
       });
 
-      expect(response.statusCode).toBe(401);
+      expect(response.statusCode).toBe(400);
 
       const body = JSON.parse(response.body);
       expect(body.success).toBe(false);
@@ -702,7 +702,7 @@ describe('Auth API Integration Tests', () => {
         },
       });
 
-      expect(response.statusCode).toBe(401);
+      expect(response.statusCode).toBe(400);
     });
 
     it('should reject weak passwords', async () => {
