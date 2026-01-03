@@ -43,8 +43,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - language: actions
-          build-mode: none
+        # Removed 'actions' language - causes configuration errors and is unstable
         - language: javascript-typescript
           build-mode: none
         # Swift removed - iOS app is a Capacitor wrapper, actual code is TypeScript
