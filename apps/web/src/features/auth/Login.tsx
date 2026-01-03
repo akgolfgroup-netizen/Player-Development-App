@@ -40,6 +40,18 @@ const Login: React.FC = () => {
     }, 3000);
   };
 
+  // Get redirect path based on user role
+  const getRedirectPath = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return '/admin';
+      case 'coach':
+        return '/coach';
+      default:
+        return '/dashboard';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -47,8 +59,8 @@ const Login: React.FC = () => {
 
     const result = await login(email, password);
 
-    if (result.success) {
-      navigate('/');
+    if (result.success && result.user) {
+      navigate(getRedirectPath(result.user.role));
     } else {
       setError(result.error ?? 'Innlogging feilet');
     }
@@ -57,9 +69,9 @@ const Login: React.FC = () => {
 
   const handleDemoLogin = async (role: 'admin' | 'coach' | 'player') => {
     const credentials = {
-      admin: { email: 'admin@demo.com', password: 'demo123' },
-      coach: { email: 'coach@demo.com', password: 'demo123' },
-      player: { email: 'player@demo.com', password: 'demo123' },
+      admin: { email: 'admin@demo.com', password: 'admin123' },
+      coach: { email: 'coach@demo.com', password: 'coach123' },
+      player: { email: 'player@demo.com', password: 'player123' },
     };
 
     setEmail(credentials[role].email);
@@ -68,8 +80,8 @@ const Login: React.FC = () => {
     setLoading(true);
     const result = await login(credentials[role].email, credentials[role].password);
 
-    if (result.success) {
-      navigate('/');
+    if (result.success && result.user) {
+      navigate(getRedirectPath(result.user.role));
     } else {
       setError(result.error ?? 'Innlogging feilet');
     }
