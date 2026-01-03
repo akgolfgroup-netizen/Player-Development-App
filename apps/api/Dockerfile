@@ -61,9 +61,9 @@ USER api
 # Expose port
 EXPOSE 3000
 
-# Health check
+# Health check - use /live for lightweight liveness probe
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+  CMD curl -f http://localhost:3000/live || exit 1
 
 # Run database migrations and start server
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]

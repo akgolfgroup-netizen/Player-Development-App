@@ -1,12 +1,12 @@
 # Railway configuration for IUP Golf API
-# Using Nixpacks builder (automatic Node.js detection)
-# Build date: 2026-01-03 v6 - Switch to Nixpacks
+# Using Dockerfile for proper native module support (argon2, prisma)
+# Build date: 2026-01-03 v7 - Switch back to Dockerfile
 
 [build]
-builder = "NIXPACKS"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "npx prisma migrate deploy && node dist/server.js"
 healthcheckPath = "/live"
 healthcheckTimeout = 180
 restartPolicyType = "ON_FAILURE"
