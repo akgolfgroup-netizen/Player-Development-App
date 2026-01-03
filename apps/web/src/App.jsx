@@ -21,6 +21,7 @@ import BuildInfo from './components/BuildInfo';
 
 // Shared components (NOT lazy - needed immediately)
 import PlayerAppShell from './components/layout/PlayerAppShell';
+import PlayerAppShellV3 from './components/layout/PlayerAppShellV3';
 import CoachAppShell from './components/layout/CoachAppShell';
 import AdminAppShell from './components/layout/AdminAppShell';
 import ProtectedRoute from './components/guards/ProtectedRoute';
@@ -254,6 +255,13 @@ const NotFoundPage = lazy(() => import('./features/not-found/NotFoundPage').then
 // Landing page (lazy-loaded)
 const SplitScreenLanding = lazy(() => import('./features/landing/SplitScreenLanding'));
 
+// V3 Hub Pages (lazy-loaded)
+const DashboardHub = lazy(() => import('./features/hub-pages/DashboardHub'));
+const TreningHub = lazy(() => import('./features/hub-pages/TreningHub'));
+const UtviklingHub = lazy(() => import('./features/hub-pages/UtviklingHub'));
+const PlanHub = lazy(() => import('./features/hub-pages/PlanHub'));
+const MerHub = lazy(() => import('./features/hub-pages/MerHub'));
+
 // Layout component for authenticated pages using Sidebar (Player)
 const AuthenticatedLayout = ({ children }) => (
   <PlayerAppShell>
@@ -264,6 +272,11 @@ const AuthenticatedLayout = ({ children }) => (
 // Dashboard layout - uses Sidebar
 const DashboardLayout = ({ children }) => (
   <PlayerAppShell>{children}</PlayerAppShell>
+);
+
+// V3 Layout - uses PlayerAppShellV3 with color-coded navigation
+const PlayerLayoutV3 = ({ children }) => (
+  <PlayerAppShellV3>{children}</PlayerAppShellV3>
 );
 
 // Layout component for coach pages using CoachAppShell
@@ -522,19 +535,286 @@ function App() {
           } />
 
           {/* ════════════════════════════════════════════════════════════════
-              REDIRECTS - Gammel → Ny URL-struktur
+              V3 PLAYER ROUTES - Ny 5-område navigasjon med fargekodet design
+              Dashboard, Trening (grønn), Utvikling (blå), Plan (amber), Mer (lilla)
               ════════════════════════════════════════════════════════════════ */}
-          <Route path="/" element={<Navigate to="/hjem" replace />} />
-          <Route path="/dashboard" element={<Navigate to="/hjem" replace />} />
 
-          {/* Desktop protected routes */}
+          {/* Dashboard Hub */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
-              <DashboardLayout>
-                <DashboardV5 />
-              </DashboardLayout>
+              <PlayerLayoutV3>
+                <DashboardHub />
+              </PlayerLayoutV3>
             </ProtectedRoute>
           } />
+
+          {/* Trening Hub (Green) */}
+          <Route path="/trening" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <TreningHub />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/logg" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <LoggTreningContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/dagbok" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <TreningsdagbokContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/okter" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <SessionsListContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/plan" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <UkensTreningsplanContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/ovelser" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <ExerciseLibraryContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/videoer" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <VideoLibraryPage />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/testing" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <TestprotokollContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/trening/testing/registrer" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <RegistrerTestContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+
+          {/* Utvikling Hub (Blue) */}
+          <Route path="/utvikling" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <UtviklingHub />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/utvikling/oversikt" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <UtviklingsOversiktContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/utvikling/statistikk" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <StatistikkHub />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/utvikling/historikk" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <ProgressDashboardContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/utvikling/testresultater" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <TestresultaterContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/utvikling/krav" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <KategoriKravContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/utvikling/badges" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <BadgesContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/utvikling/achievements" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <AchievementsDashboardContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+
+          {/* Plan Hub (Amber) */}
+          <Route path="/plan" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <PlanHub />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/kalender" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <CalendarPage />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/ukeplan" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <UkensTreningsplanContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/booking" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <BookTrenerContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/maal" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <MaalsetningerContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/aarsplan" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <AarsplanContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/turneringer" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <TournamentCalendarPage />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/plan/turneringer/mine" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <MineTurneringerContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+
+          {/* Mer Hub (Purple) */}
+          <Route path="/mer" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <MerHub />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/profil" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <BrukerprofilContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/profil/rediger" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <BrukerprofilContainer forceOnboarding />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/trenerteam" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <TrenerteamContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/meldinger" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <MessageCenter />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/feedback" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <MessageCenter filterType="coach" />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/kunnskap" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <RessurserContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/notater" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <NotaterContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/innstillinger" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <VarselinnstillingerContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/varsler" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <VarselinnstillingerContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+          <Route path="/mer/kalibrering" element={
+            <ProtectedRoute>
+              <PlayerLayoutV3>
+                <KalibreringsContainer />
+              </PlayerLayoutV3>
+            </ProtectedRoute>
+          } />
+
+          {/* ════════════════════════════════════════════════════════════════
+              REDIRECTS - Gammel → Ny URL-struktur
+              ════════════════════════════════════════════════════════════════ */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/hjem" element={<Navigate to="/dashboard" replace />} />
+
+          {/* Desktop protected routes - Legacy (backward compatibility) */}
           <Route path="/profil" element={
             <ProtectedRoute>
               <AuthenticatedLayout title="Min profil" subtitle="Administrer kontoen din">

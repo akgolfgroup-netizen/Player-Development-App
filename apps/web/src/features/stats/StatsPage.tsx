@@ -17,6 +17,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { SectionTitle } from '../../components/typography/Headings';
 import { AICoachGuide, GUIDE_PRESETS } from '../ai-coach';
+import { useAuth } from '../../contexts/AuthContext';
+import PeerComparisonWidget from '../../components/widgets/PeerComparisonWidget';
 
 // Design System color mapping - using CSS variables
 const colors = {
@@ -50,6 +52,30 @@ const API_CONFIG = {
 };
 
 type Tour = "PGA" | "LPGA" | "DP";
+
+// Test options for peer comparison
+const TEST_OPTIONS = [
+  { value: 1, label: 'Driver Klubbhodehastighet' },
+  { value: 2, label: '7-Jern Klubbhodehastighet' },
+  { value: 3, label: 'Driver Carry-avstand' },
+  { value: 4, label: 'PEI - Presisjon' },
+  { value: 5, label: 'Fairway-treff' },
+  { value: 6, label: 'GIR Simulering' },
+  { value: 7, label: 'Bunker Save' },
+  { value: 8, label: 'Putt 1.2m' },
+  { value: 9, label: 'Putt 2.4m' },
+  { value: 10, label: 'Putt 3.6m' },
+  { value: 11, label: 'Putt 6m' },
+  { value: 12, label: 'Scrambling' },
+  { value: 13, label: 'Up and Down' },
+  { value: 14, label: 'Chip & Run' },
+  { value: 15, label: 'Pitch Test' },
+  { value: 16, label: 'Flop Shot' },
+  { value: 17, label: 'Lag Putt 12m' },
+  { value: 18, label: 'Lag Putt 18m' },
+  { value: 19, label: '9-hull Scoring' },
+  { value: 20, label: '18-hull Scoring' },
+];
 
 type SGComponents = {
   offTee: number;
@@ -290,8 +316,12 @@ function btn(active: boolean): React.CSSProperties {
 }
 
 export default function StatsPage() {
+  const { user } = useAuth();
+  const playerId = user?.playerId;
+
   const [tour, setTour] = useState<Tour>("PGA");
   const [activeTab, setActiveTab] = useState<"min" | "sg" | "peer" | "tour" | "trends">("sg");
+  const [selectedTestNumber, setSelectedTestNumber] = useState(1);
 
   const [loading, setLoading] = useState(true);
   const [source, setSource] = useState<"api" | "demo">("demo");
@@ -397,10 +427,73 @@ export default function StatsPage() {
         </div>
       </div>
 
-      {activeTab !== "sg" ? (
-        <Card title="Ikke implementert i denne filen">
+      {activeTab === "peer" ? (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
+          {/* Test Selector */}
+          <Card title="Velg test for sammenligning">
+            <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+              <label style={{ fontWeight: 500, color: colors.steel }}>Test:</label>
+              <select
+                value={selectedTestNumber}
+                onChange={(e) => setSelectedTestNumber(Number(e.target.value))}
+                style={{
+                  padding: "8px 12px",
+                  borderRadius: 10,
+                  border: `1px solid ${colors.border}`,
+                  backgroundColor: colors.bgWhite,
+                  fontSize: 14,
+                  minWidth: 200,
+                }}
+              >
+                {TEST_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.value}. {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Card>
+
+          {/* Peer Comparison Widget */}
+          {playerId ? (
+            <PeerComparisonWidget
+              playerId={playerId}
+              testNumber={selectedTestNumber}
+              showMultiLevel={true}
+              compact={false}
+            />
+          ) : (
+            <Card title="Peer Sammenligning">
+              <div style={{ textAlign: "center", padding: 24, color: colors.steel }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>👥</div>
+                <p style={{ fontSize: 14, marginBottom: 8 }}>
+                  Logg inn for å se din sammenligning med andre spillere.
+                </p>
+                <p style={{ fontSize: 12, opacity: 0.7 }}>
+                  Peer-sammenligning viser hvordan du presterer i forhold til spillere i din kategori.
+                </p>
+              </div>
+            </Card>
+          )}
+
+          {/* Info Card */}
+          <Card title="Om Peer Sammenligning">
+            <div style={{ opacity: 0.85, lineHeight: 1.6 }}>
+              <p style={{ marginBottom: 8 }}>
+                Peer-sammenligning viser din posisjon i forhold til andre spillere basert på testresultater.
+              </p>
+              <ul style={{ margin: 0, paddingLeft: 18 }}>
+                <li><strong>Percentil:</strong> Hvor du ligger i forhold til alle spillere (0-100%)</li>
+                <li><strong>Rangering:</strong> Din plassering blant alle i samme kategori</li>
+                <li><strong>Multi-nivå:</strong> Sammenligning på tvers av kategorier (A-E)</li>
+              </ul>
+            </div>
+          </Card>
+        </div>
+      ) : activeTab !== "sg" ? (
+        <Card title="Kommer snart">
           <div style={{ opacity: 0.85 }}>
-            Fanen <b>{activeTab}</b> er markert som "kommer senere" i Fase-planen.
+            Fanen <b>{activeTab}</b> er under utvikling og kommer i neste oppdatering.
           </div>
         </Card>
       ) : (
