@@ -35,49 +35,48 @@ For hver term, bestem om du vil:
 
 | Engelsk | Forslag | Din beslutning |
 |---------|---------|----------------|
-| Short Game | Nærspill | |
-| Long Game | Langspill | |
-| Approach | Innspill | |
-| Full Swing | Full sving | |
-| Chipping | Chipping / Kortspill | |
-| Pitching | Pitching / Mellomdistanse | |
+| Short Game | Nærspill | Nærspill |
+| Long Game | Innspill | Innspill |
+| Approach | Innspill | Innspill |
+| Full Swing | Grunnteknikk | Grunnteknikk |
+|  |              |                |
+|  |              | |
 
 ### Periodisering
 
 | Engelsk | Forslag | Din beslutning |
 |---------|---------|----------------|
-| Session | Økt | |
-| Training Plan | Treningsplan | |
-| Period | Periode | |
-| Phase | Fase | |
-| Ground Period | Grunnperiode | |
-| Specialization | Spesialisering | |
-| Tournament Period | Turneringsperiode | |
-| Taper | Nedtrapping | |
-| Peak | Toppform | |
+| Session | Økt | Økt |
+| Training Plan | Treningsplan | Treningsplan |
+| Period | Periode | Periode |
+| Ground Period | Grunnperiode | Grunnperiode |
+| Specialization | Spesialisering | Spesialiseringsperiode |
+| Tournament Period | Turneringsperiode | Turneringsperiode |
+| Taper | Nedtrapping | Restitusjon |
+| Peak | Toppform | Formtopp |
 
 ### Gamification
 
 | Engelsk | Forslag | Din beslutning |
 |---------|---------|----------------|
-| Badge | Merke / Badge | |
-| Achievement | Prestasjon | |
-| Level | Nivå | |
-| Tier | Grad / Tier | |
-| Progress | Fremgang | |
-| Streak | Streak / Serie | |
-| Unlock | Låse opp | |
+| Badge | Merke / Badge | Merke |
+| Achievement | Prestasjon | Prestasjon |
+| Level | Nivå | Nivå |
+| Tier | Grad / Tier | Grad |
+| Progress | Fremgang | Fremgang |
+| Streak | Streak / Serie | Streak |
+| Unlock | Låse opp | Låse opp |
 
 ### Test & Evaluering
 
 | Engelsk | Forslag | Din beslutning |
 |---------|---------|----------------|
-| Score | Poeng / Score | |
-| Result | Resultat | |
-| Pass | Bestått | |
-| Fail | Ikke bestått | |
-| Benchmark | Benchmark | |
-| Requirement | Krav | |
+| Score | Poeng / Score | Poeng |
+| Result | Resultat | Resultat |
+| Pass | Bestått | Fullført |
+| Fail | Ikke bestått | Ikke fullført |
+| Benchmark | Benchmark | Referanse |
+| Requirement | Krav | Krav |
 
 ---
 
@@ -128,7 +127,7 @@ For hver term, bestem om du vil:
 **Algoritme:**
 ```
 1. Hent kategori-krav fra database
-2. Sammenlign med spillerens testresultater
+2. Sammenlign med spillerens testresultater fra onboarding 
 3. Identifiser bruddpunkter (svake områder)
 4. Generer periodefordeling basert på:
    - Standard periodisering for kategorien
@@ -143,14 +142,14 @@ For hver term, bestem om du vil:
 - Benchmark-uker (hver 3. uke)
 - Turneringsforberedelse
 
-## 2.3 Periodisering per kategori
+## 2.3 Periodisering per kategori 
 
 | Kategori | Grunn | Spes | Turn | Fokus |
 |----------|-------|------|------|-------|
-| A-B | 16 uker | 14 uker | 18 uker | Prestasjon |
-| C-D | 18 uker | 13 uker | 17 uker | Utvikling |
-| E-F | 20 uker | 12 uker | 16 uker | Grunnlag |
-| G-K | 22 uker | 10 uker | 16 uker | Lek & læring |
+| A-B | 6 uker | 6 uker | 40 uker | Prestasjon |
+| C-D | 8 uker | 8 uker | 36 uker | Utvikling |
+| E-F | 12 uker | 10 uker | 30 uker | Grunnlag |
+| G-K | 16 uker | 12 uker | 24 uker | Lek & læring |
 
 ## 2.4 Spørsmål å vurdere
 
@@ -212,10 +211,11 @@ For hver term, bestem om du vil:
 
 | Kode | Type | Beskrivelse | Typisk varighet |
 |------|------|-------------|-----------------|
-| TEK | Teknikk | Sving-mekanikk, posisjon | 60-90 min |
-| FYS | Fysisk | Styrke, mobilitet, kondisjon | 45-60 min |
-| MEN | Mental | Fokus, visualisering, rutiner | 30-45 min |
-| SPL | Spill | Banespill, simulering | 120-240 min |
+| TEK | Teknikk | Sving-mekanikk, posisjon | 60-120 min |
+| FYS | Fysisk | Styrke, mobilitet, utholdenhet, hurtighet | 45-60 min |
+|  | Golfslag |  | 45-120 min |
+| MEN | Mental | Fokus, visualisering, rutiner, selvregulering | 30-45 min |
+| SPL | Spill | Banespill | 120-240 min |
 | TST | Test | Benchmark-testing | 60-90 min |
 
 ## 3.3 Domener (Treningsområder)
@@ -231,34 +231,33 @@ For hver term, bestem om du vil:
 │  └── Hybrid/Rescue                                             │
 │                                                                 │
 │  INN200 (Innspill 150-200m)                                    │
-│  ├── Lange jern (3-5)                                          │
-│  └── Hybrider                                                  │
+│  ├──                                                  │
 │                                                                 │
 │  INN150 (Innspill 100-150m)                                    │
-│  ├── Middels jern (6-7)                                        │
-│  └── Full sving                                                │
+│  ├──                                                │
 │                                                                 │
 │  INN100 (Innspill 50-100m)                                     │
-│  ├── Korte jern (8-9)                                          │
-│  └── Full/3/4 sving                                            │
+│  ├──                                             │
 │                                                                 │
 │  INN50 (Innspill 0-50m)                                        │
-│  ├── Wedges (PW, GW, SW, LW)                                   │
-│  └── Kontrollerte slag                                         │
+│  ├                                        │
 │                                                                 │
-│  ARG (Around the Green / Nærspill)                             │
+│  ARG (Nærspill)                             │
 │  ├── Chipping                                                  │
 │  ├── Pitching                                                  │
 │  ├── Bunker                                                    │
-│  └── Flop shots                                                │
+│  └── Lob slag                                                │
 │                                                                 │
 │  PUTT (Putting)                                                │
-│  ├── Korte putts (0-2m)                                        │
-│  ├── Middels putts (2-5m)                                      │
-│  ├── Lange putts (5-10m)                                       │
-│  └── Lag putting (10m+)                                        │
+│  ├── 0-3 ft                                        │
+│  ├── 3-5 ft                                      │
+│  ├── 5-10 ft                                     │
+│  └── 10-15 ft 
+			 15-25 ft 
+			 25-40 ft 
+			 40ft + 
 │                                                                 │
-│  PHYS (Fysisk)                                                 │
+│  FYS (Fysisk)                                                 │
 │  ├── Styrke                                                    │
 │  ├── Mobilitet                                                 │
 │  ├── Eksplosivitet                                             │
@@ -267,8 +266,9 @@ For hver term, bestem om du vil:
 │  MENTAL                                                        │
 │  ├── Fokus                                                     │
 │  ├── Visualisering                                             │
-│  ├── Pre-shot rutine                                           │
-│  └── Spenningsregulering                                       │
+│  ├── Rutine                                           │
+│  └── Selvregulering  
+				Adferd
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -311,9 +311,9 @@ Output:
 
 ## 3.5 Spørsmål å vurdere
 
-- [ ] Skal spillere kunne tilpasse økter selv?
-- [ ] Hvordan håndtere "skip" av øvelser?
-- [ ] Skal det være video-demonstrasjoner?
+- [ ] Skal spillere kunne tilpasse økter selv? Ja, spiller skal kunne redigere og tilpasse økter 
+- [ ] Hvordan håndtere "skip" av øvelser? Skip øvelser skal registeres og logges hos coach/admin
+- [ ] Skal det være video-demonstrasjoner? 
 - [ ] Hvordan logge gjennomførte økter?
 
 ---
@@ -336,7 +336,7 @@ interface Exercise {
   difficulty: 'easy' | 'medium' | 'hard';
 
   // Utførelse
-  repsOrTime: string;             // "3x10" eller "15 min"
+  repsOrTime: string;             // "20" eller "15 min"
   equipment: string[];            // ["alignment sticks", "range balls"]
   location: 'range' | 'course' | 'gym' | 'home';
 
@@ -531,17 +531,17 @@ Progress → ________________
 
 | Kat | Snittscore | Alder | Beskrivelse |
 |-----|------------|-------|-------------|
-| A | <68 | 18-22 | World Elite |
-| B | 68-72 | 17-20 | National Elite |
+| A | <68 | 25+ | World Elite |
+| B | 68-72 | 18-20+ | National Elite |
 | C | 72-74 | 16-19 | National U21 |
 | D | 74-76 | 15-18 | Regional Elite |
 | E | 76-78 | 14-17 | Regional U18 |
-| F | 78-80 | 15-17 | Klubbspiller Sr |
-| G | 80-85 | 14-16 | Klubbspiller Jr |
-| H | 85-90 | 13-15 | Rekrutt Sr |
-| I | 90-95 | 12-14 | Rekrutt Jr |
-| J | 95-100 | 11-13 | Nybegynner Sr |
-| K | 100+ | 8-11 | Nybegynner Jr |
+| F | 78-80 | 15-17 | Klubbspiller |
+| G | 80-85 | 14-16 | Klubbspiller |
+| H | 85-90 | 13-15 | Region |
+| I | 90-95 | 12-14 | Region |
+| J | 95-100 | 11-13 | Lokal |
+| K | 100+ | 8-11 | Lokal |
 
 ## C. Domene-koder
 

@@ -18,7 +18,7 @@
 ## 1. KATEGORI-SYSTEM A-K
 
 ### Kategori A - World Elite
-**Snittscore**: +6 til +8 | **Strokes Gained**: +2.0
+**Snittscore**: -6 til -8 | **Strokes Gained**: +2.0
 
 **Tekniske krav**:
 - Driver: 270m+, Swing Speed 120+ mph, Smash Factor 1.48+
@@ -27,6 +27,7 @@
 - Low Point Control: ±10mm
 
 **Fysiske krav**:
+
 - **(M)**: Strength 140kg+, Power 380W+, Mobility 95%, Stability 95%, Aerobic 65+
 - **(K)**: Strength 100kg+, Power 280W+, Mobility 95%, Stability 95%, Aerobic 60+
 

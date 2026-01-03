@@ -74,7 +74,7 @@
 
 **Overordnet:**
 - Hvordan periodiserer dere et golfår?
-- Er E/G/S/T (Etablering/Generell/Spesifikk/Turnering) gjenkjennelig?
+- Er E/G/S/T (Evaluering/Grunnperiode/Spesialiseringsperiode/Turneringsperiode) gjenkjennelig?
 - Hvilke perioder brukte Viktor/Kristoffer?
 - Hvor lang er typisk hver periode?
 
@@ -95,11 +95,15 @@
 
 **Spesifikke spørsmål:**
 ```
-□ Hvor mange timer/uke trener en elite junior?
+□ Hvor mange timer/uke trener en Elite junior?
 □ Hvor mange timer/uke trener en Tour-spiller?
 □ Hvordan fordeles tid mellom:
-  - Lange spill (driver, jern)
-  - Korte spill (pitch, chip, bunker)
+  - Tee Total (driver, jern)
+  - Innspill 200+
+  - Innspill 150-200 m
+  - Innspill 100-150 m 
+  - Innspill 50-100 m 
+  - Nærspill(Pitch,Chip,Lob,Bunker)
   - Putting
   - Fysisk trening
   - Mental trening

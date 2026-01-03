@@ -362,27 +362,33 @@
 
 ### 20 Offisielle Team Norway Tester
 
-#### Golf Shots (Test 1-7)
+#### Golf Slag (Test 1-8)
 1. **Driver avstand** - Carry distance (meter)
-2. **Jern 7 avstand** - Carry distance (meter)
-3. **Jern 7 nøyaktighet** - 6 slag til target, måler spredning
-4. **Wedge PEI** - Precision Efficiency Index
-5. **Lag-kontroll putting** - 9 putts (3-6-9 meter)
-6. **Lesing putting** - 6 putts (3 meter med break)
-7. **Bunker** - 10 slag, % innenfor 3m
+2. **Club speed driver** - Clubspeed (mph)
+3. **Innspill Basic** - 145/165 m slag PEI 
+4. **Golfslag Bane** - PEI 
+5. **Wedge variation ** - Precision Efficiency Index
+6. **8 ball variation** - 24 ulike nærspillslag fra ulike lie 
+
+7. **Putt 1-3 meter**  - SG 
+8. **Putt 9 hull lengde** - Poeng score 
+
+
 
 #### Teknikk (Test 8-11)
-8. **Klubbfart driver** - Clubspeed (mph)
-9. **Smash factor driver** - Ball speed / Club speed
-10. **Launch angle driver** - Grader
-11. **Spin rate driver** - RPM
+
+
 
 #### Fysisk (Test 12-14)
 12. **Benkpress** - 1RM (kg)
 13. **Markløft trapbar** - 1RM (kg)
 14. **Rotasjonskast 4kg medisinball** - Distanse (meter)
+15. **3000 meter løpe test **- Tid i minutter 
+
+
 
 #### Mental (Test 15-18)
+
 15. **Pressure Putting** - 10 putts @ 2m, eliminering (miss = ute)
    - Måler: % suksess under press vs. baseline
    - Krav: A: 90%+, B: 80%+, C: 70%+, D: 60%+, E-K: 50%+
@@ -399,7 +405,10 @@
    - Måler: Mental styrke, resiliens, selvtillit, kontroll
    - Vurderes kvalitativt av trener
 
+
+
 #### Strategisk (Test 19-20)
+
 19. **Klubbvalg og Risikovurdering** - 20 scenarios
    - Måler: % optimale valg vs. ekspertpanel
    - Krav: A: 85%+, B: 75%+, C: 65%+, D-K: 50%+
@@ -410,7 +419,7 @@
 
 ---
 
-### PEI-formel (Precision Efficiency Index)
+### PEI-formel (Percentage Error Index)
 
 ```
 PEI = (Gjennomsnittlig avstand fra hull i meter) / (Ideal approach-distanse for kategorien)
@@ -419,9 +428,12 @@ PEI = (Gjennomsnittlig avstand fra hull i meter) / (Ideal approach-distanse for 
 **Eksempel kategori D**:
 - Ideal approach-distanse: 140m
 - Gjennomsnittlig avvik: 9.5m
-- PEI = 9.5 / 140 = 0.068
+- PEI = 9.5 / 140 * 100 = 0.068
 
 **Tolkning**:
+
+*Basert innendørs på matte 
+
 - <0.05 = Utmerket
 - 0.05-0.07 = Bra
 - 0.07-0.10 = Gjennomsnitt
@@ -434,10 +446,11 @@ PEI = (Gjennomsnittlig avstand fra hull i meter) / (Ideal approach-distanse for 
 ### Treningstype-kategorier
 
 **Teknikk (T)** - #8B6E9D (Purple)
-- Full swing fundamentals
+
+- Grunnteknikk - Alle slag 
 - Teknisk progresjon
 - Videoanalyse
-- L1-L3 dominans
+- L1-L4 dominans
 
 **Golfslag (G)** - #4A8C7C (Teal)
 - 7 offisielle golfslagtester
@@ -481,15 +494,10 @@ PEI = (Gjennomsnittlig avstand fra hull i meter) / (Ideal approach-distanse for 
 
 ### Golf-områder (9 områder)
 
-1. **Driver** - Full kraft, maksimal distanse
-2. **Fairway woods** - 3W, 5W fra fairway/tee
-3. **Hybrids** - Utility klubber, lange approach
-4. **Long irons** - 3-5 jern, lange approach
-5. **Mid irons** - 6-8 jern, mid-range approach
-6. **Short irons** - 9-PW, korte approach
-7. **Wedges** - 50-60°, pitch, chip, scoring
-8. **Putting** - Green reading, lag control, short putts
-9. **Bunker** - Sand saves, greenside bunkers
+1. **Tee Total** - Utslag fra tee
+2. **Innspill** - Alle slag inn til green over 50 meter
+7. **Nærspill ** - 
+8. **Putting** - 
 
 ---
 

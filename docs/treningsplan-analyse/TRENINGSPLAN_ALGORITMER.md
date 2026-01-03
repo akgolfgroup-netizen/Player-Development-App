@@ -28,7 +28,7 @@ Systemet genererer **12-måneders treningsplaner** med:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    AarsplanGenerator.jsx                     │
+│                    ÅrsplanGenerator.jsx                     │
 │                    (4-stegs wizard UI)                       │
 └─────────────────────────┬───────────────────────────────────┘
                           │ POST /training-plan/generate
@@ -69,19 +69,19 @@ Systemet genererer **12-måneders treningsplaner** med:
 
 | Kategori | Kode | Score-range | Timer/uke |
 |----------|------|-------------|-----------|
-| Elite | E1 | <70 | 18-25 |
-| Advanced | A1 | 70-75 | 15-20 |
-| Intermediate | I1 | 75-80 | 12-18 |
-| Developing | D1 | 80-85 | 10-15 |
-| Beginner | B1 | 85+ | 8-12 |
+| Internasjonalt | E1 | <70 | 30+ |
+| Europeisk / Skandinavisk | A1 | 70-75 | 25-30 |
+| Nasjonalt | I1 | 75-80 | 20-25 |
+| Regionalt / Lokalt | D1 | 80-85 | 15-20 |
+| Lokalt | B1 | 85+ | 10-15 |
 
 ### Template-struktur
 
 ```typescript
 interface PeriodizationTemplate {
   scoringRange: { min: number; max: number };
-  basePeriodWeeks: number;        // Antall uker i base-periode
-  specializationWeeks: number;    // Antall uker i spesialisering
+  basePeriodWeeks: number;        // Antall uker i grunnperiode
+  specializationWeeks: number;    // Antall uker i spesialiseringsperiode
   tournamentWeeks: number;        // Antall uker i turneringsperiode
   recoveryWeeks: number;          // Antall uker recovery
   weeklyHours: [min, max];        // Timer per uke
@@ -193,10 +193,10 @@ Timer/uke: 8-12
 
 | Periode | Navn | Fokus | Varighet |
 |---------|------|-------|----------|
-| **E** | Etablering | Tekniske grunnlag, nye mønstre | Tidlig base |
-| **G** | Generell | Balansert utvikling, kapasitet | Sen base + tidlig spec |
-| **S** | Spesialisering | Konkurransespesifikk trening | Sen spec + tidlig turnering |
-| **T** | Turnering | Toppform, mental forberedelse | Turneringsperiode |
+| **E** | Evalueringsperiode | Tekniske grunnlag, nye mønstre | Tidlig base |
+| **G** | Grunnperiode | Balansert utvikling, kapasitet | Sen base + tidlig spec |
+| **S** | Spesialiseringsperiode | Konkurransespesifikk trening | Sen spec + tidlig turnering |
+| **T** | TurneringPeriode | Toppform, mental forberedelse | Turneringsperiode |
 
 ---
 
@@ -521,7 +521,7 @@ generateDailyAssignments(..., topConstraints) {
 const period = i < basePeriodWeeks/2 ? 'E' : 'G';  // Brå overgang
 ```
 
-**Konsekvens:** Ingen gradvis overgang mellom perioder.
+**Konsekvens:** Ingen gradvis overgang mellom perioder. 
 
 ---
 

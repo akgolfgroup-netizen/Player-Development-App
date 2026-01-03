@@ -115,8 +115,8 @@ Ny versjon med forbedret design og flere widgets.
 
 | Funksjon | Beskrivelse |
 |----------|-------------|
-| **Kortsiktige mål** | Ukentlige og månedlige mål |
-| **Langsiktige mål** | Sesong- og årsmål |
+| **Prosessmål ** | Ukentlige og månedlige mål |
+| **Resulttatmål** | Sesong- og årsmål |
 | **SMART-mål** | Spesifikke, målbare, oppnåelige, relevante, tidsbestemte |
 | **Progress-tracking** | Visuell fremgang mot hvert mål |
 | **Målkategorier** | Trening, testing, turnering, fysisk |
@@ -126,16 +126,16 @@ Ny versjon med forbedret design og flere widgets.
 | Rute | Funksjon | Beskrivelse |
 |------|----------|-------------|
 | `/aarsplan` | **Årsplan** | 12-måneders treningsplan |
-| `/aarsplan/perioder` | **Periodisering** | E/G/S/T-faser (Ettertrening, Generell, Spesifikk, Turnering) |
+| `/aarsplan/perioder` | **Periodisering** | E/G/S/T-faser (Evaluering, Grunnperiode, Spesialiseringsperiode, Turneringsperiode) |
 | `/aarsplan/fokus` | **Fokusområder** | Målsetninger for hver periode |
 | `/aarsplan/ny` | **Generer årsplan** | AI-assistert plangenerering |
 
 #### Periodiseringsmodell:
 ```
-E - Ettertrening (off-season): Restitusjon, grunntrening
-G - Generell: Bred ferdighetstrening
-S - Spesifikk: Målrettet mot sesongens hovedmål
-T - Turnering: Konkurransefokus, vedlikehold
+E - Evaluering (off-season): Restitusjon, grunntrening
+G - Grunnperiode Bred ferdighetstrening
+S - Spesialiseringsperiode (Målrettet mot sesongens hovedmål)
+T - Turneringsperiode: Konkurransefokus, vedlikehold
 ```
 
 #### 3.3 Periodeplaner (`/periodeplaner`)
@@ -188,15 +188,16 @@ interface Session {
 | Funksjon | Beskrivelse |
 |----------|-------------|
 | **Søk** | Fulltekstsøk i øvelser |
-| **Kategorier** | Driving, Iron, Short Game, Putting, Fysisk, Mental |
+| **Pyramiden** | Fysisk - Tenikk - Golfslag - Spill - Turnering |
+| **Treningsområde** | Tee Total - Innspill 200+ - Innspill 150-200 m - Innspill 100-150 m - Innspill 50-100 m - Pitch - Lob - Bunker - Chip - Putt 0-3 ft - Putt 3-5 ft - Putt 5-10 ft - Putt 10-15 ft -  Putt 15-25 ft - Putt 25-40ft |
 | **Favoritter** | Lagre favorittøvelser |
 | **Detaljer** | Instruksjoner, video, tips |
 | **Tilpasset** | Egendefinerte øvelser |
 
 #### Øvelseskategorier:
-- **Driving**: Driver, fairway-trær
-- **Iron Play**: Lange, mellom, korte jern
-- **Short Game**: Pitch, chip, bunker
+- **Tee Total:**  Driver, fairway-trær
+- **Innspill**: Lange, mellom, korte jern
+- **Nærspill**: Pitch, chip, bunker
 - **Putting**: Avstand, retning, korte putter
 - **Fysisk**: Styrke, bevegelighet, utholdenhet
 - **Mental**: Konsentrasjon, visualisering, rutiner
@@ -230,13 +231,12 @@ interface Session {
 
 | Kategori | Tester | Måleenhet |
 |----------|--------|-----------|
-| **Driving** | Driver, 3-wood, 5-wood | Carry distance (m), dispersion |
-| **Iron Play** | 3-iron, 5-iron, 7-iron, 9-iron | Carry distance, accuracy |
-| **Approach** | Pitching 10-50m, Chipping | Proximity to hole (m) |
-| **Short Game** | Sand play, Up & Down | % success rate |
+| **Tee Total** | Alle utslag fra tee | Carry distance (m), dispersion |
+| **Innspill ** | Innspill til green med alle køller | Carry distance (m), dispersion, PEI, SG |
+| **Nærspill** | Slag innenfor 50 meter - fringe | % success rate |
 | **Putting** | Distance control, Direction, Short putts | Putts made, distance left |
-| **On-Course** | 9-hull, 18-hull | Score vs par |
-| **Fysisk** | Fleksibilitet, Styrke, Utholdenhet | Standardiserte tester |
+| **Bane** | 9-hull, 18-hull | Score vs par, PEI, SG |
+| **Fysisk**    | Styrke, Utholdenhet, Mobilitet, Hurtighet | Standardiserte tester |
 
 #### 5.2 Testresultater (`/testresultater`)
 

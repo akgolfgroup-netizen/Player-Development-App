@@ -2,7 +2,9 @@
 > Januar 3-10, 2026 | La Manga Club, Spania
 > For validering med Viktor Hovland og Kristoffer Reitan sine trenere
 
----
+
+
+
 
 ## OVERSIKT
 
