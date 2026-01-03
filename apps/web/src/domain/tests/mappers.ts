@@ -33,6 +33,16 @@
 /* eslint-disable no-restricted-syntax */
 // Purity constraints enforced by .eslintrc - see rules for domain/tests/**
 
+import type {
+  UITestResult,
+  UISkillArea,
+  UISkillLevel,
+  TestAttempt,
+  CoachNote,
+} from '../../hooks/useTestResults';
+
+import type { DashboardTestResult } from '../../types/dashboard';
+
 // ============================================================================
 // CANONICAL TYPES - LOCAL MIRROR OF @iup/shared-types
 // ============================================================================
@@ -129,20 +139,6 @@ export interface CanonicalTestResult {
 export interface TestResultWithDefinition extends CanonicalTestResult {
   test: CanonicalTestDefinition;
 }
-
-// ============================================================================
-// UI TYPE IMPORTS
-// ============================================================================
-
-import type {
-  UITestResult,
-  UISkillArea,
-  UISkillLevel,
-  TestAttempt,
-  CoachNote,
-} from '../../hooks/useTestResults';
-
-import type { DashboardTestResult } from '../../types/dashboard';
 
 // ============================================================================
 // CANONICAL → DASHBOARD MAPPERS

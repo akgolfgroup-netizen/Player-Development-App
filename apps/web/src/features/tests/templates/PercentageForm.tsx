@@ -419,11 +419,11 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
           gap: '12px',
           marginBottom: '8px',
         }}>
-          <Percent size={24} color={scoreLevel?.color || var(--ak-text-secondary)} />
+          <Percent size={24} color={scoreLevel?.color || 'var(--ak-text-secondary)'} />
           <span style={{
             fontSize: '40px',
             fontWeight: 700,
-            color: scoreLevel?.color || var(--ak-text-primary),
+            color: scoreLevel?.color || 'var(--ak-text-primary)',
           }}>
             {stats.completed > 0 ? stats.percentage.toFixed(0) : '—'}
           </span>

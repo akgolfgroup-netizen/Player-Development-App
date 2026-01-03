@@ -160,9 +160,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, compact 
           width: compact ? '36px' : '40px',
           height: compact ? '36px' : '40px',
           borderRadius: '8px',
-          border: `2px solid ${value ? var(--ak-status-success) : 'var(--ak-border-default)'}`,
-          backgroundColor: value ? var(--ak-status-success) : 'var(--ak-surface-card)',
-          color: value ? var(--ak-surface-card) : 'var(--ak-text-secondary)',
+          border: `2px solid ${value ? 'var(--ak-status-success)' : 'var(--ak-border-default)'}`,
+          backgroundColor: value ? 'var(--ak-status-success)' : 'var(--ak-surface-card)',
+          color: value ? 'var(--ak-surface-card)' : 'var(--ak-text-secondary)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -211,7 +211,7 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, compact 
         padding: compact ? '6px 8px' : '8px 10px',
         fontSize: compact ? '14px' : '15px',
         fontWeight: 500,
-        border: `1px solid ${value !== undefined && value !== '' ? var(--ak-brand-primary) : 'var(--ak-border-default)'}`,
+        border: `1px solid ${value !== undefined && value !== '' ? 'var(--ak-brand-primary)' : 'var(--ak-border-default)'}`,
         borderRadius: '6px',
         backgroundColor: value !== undefined && value !== '' ? `rgba(26, 61, 46, 0.03)` : 'var(--ak-surface-card)',
         outline: 'none',
@@ -366,7 +366,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         <span style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: completedHoles === numHoles ? var(--ak-status-success) : 'var(--ak-brand-primary)',
+          color: completedHoles === numHoles ? 'var(--ak-status-success)' : 'var(--ak-brand-primary)',
         }}>
           {completedHoles} / {numHoles}
         </span>
@@ -423,7 +423,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
                 padding: '8px 12px',
                 borderBottom: index < holes.length - 1 ? `1px solid var(--ak-surface-subtle)` : 'none',
                 alignItems: 'center',
-                backgroundColor: index % 2 === 0 ? var(--ak-surface-card) : `rgba(245, 247, 249, 0.5)`,
+                backgroundColor: index % 2 === 0 ? 'var(--ak-surface-card)' : `rgba(245, 247, 249, 0.5)`,
               }}
             >
               <div style={{
@@ -499,7 +499,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
                 margin: '4px 0 0 0',
                 fontSize: '20px',
                 fontWeight: 700,
-                color: stats.vsPar <= 0 ? var(--ak-status-success) : 'var(--ak-status-error)',
+                color: stats.vsPar <= 0 ? 'var(--ak-status-success)' : 'var(--ak-status-error)',
               }}>
                 {stats.vsPar > 0 ? '+' : ''}{stats.vsPar}
               </p>
@@ -583,11 +583,11 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         textAlign: 'center',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '8px' }}>
-          <Target size={20} color={scoreLevel?.color || var(--ak-text-secondary)} />
+          <Target size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
           <span style={{
             fontSize: '28px',
             fontWeight: 700,
-            color: scoreLevel?.color || var(--ak-text-primary),
+            color: scoreLevel?.color || 'var(--ak-text-primary)'',
           }}>
             {result !== null ? (test.calculationType === 'direct' ? result : result.toFixed(1)) : '—'}
           </span>

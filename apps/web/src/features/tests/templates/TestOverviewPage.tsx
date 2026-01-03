@@ -182,7 +182,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         padding: '32px',
         marginBottom: '24px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        background: `linear-gradient(135deg, ${tokens.colors.white} 0%, rgba(26, 61, 46, 0.05) 100%)`,
+        background: `linear-gradient(135deg, #FFFFFF 0%, rgba(26, 61, 46, 0.05) 100%)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px', marginBottom: '24px' }}>
           <div style={{

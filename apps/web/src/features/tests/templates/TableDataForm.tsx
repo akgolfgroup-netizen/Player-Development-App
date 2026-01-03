@@ -98,9 +98,9 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, rowIndex
           width: '40px',
           height: '40px',
           borderRadius: '8px',
-          border: `2px solid ${value ? var(--ak-status-success) : 'var(--ak-border-default)'}`,
-          backgroundColor: value ? var(--ak-status-success) : 'var(--ak-surface-card)',
-          color: value ? var(--ak-surface-card) : 'var(--ak-text-secondary)',
+          border: `2px solid ${value ? 'var(--ak-status-success)' : 'var(--ak-border-default)'}`,
+          backgroundColor: value ? 'var(--ak-status-success)' : 'var(--ak-surface-card)',
+          color: value ? 'var(--ak-surface-card)' : 'var(--ak-text-secondary)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -150,7 +150,7 @@ const CellInput: React.FC<CellInputProps> = ({ column, value, onChange, rowIndex
           paddingRight: column.unit ? '35px' : '12px',
           fontSize: '14px',
           fontWeight: 500,
-          border: `1px solid ${value ? var(--ak-brand-primary) : 'var(--ak-border-default)'}`,
+          border: `1px solid ${value ? 'var(--ak-brand-primary)' : 'var(--ak-border-default)'}`,
           borderRadius: '8px',
           backgroundColor: value ? `rgba(26, 61, 46, 0.03)` : 'var(--ak-surface-card)',
           outline: 'none',
@@ -307,7 +307,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
         <span style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: completedRows === test.attempts ? var(--ak-status-success) : 'var(--ak-brand-primary)',
+          color: completedRows === test.attempts ? 'var(--ak-status-success)' : 'var(--ak-brand-primary)',
         }}>
           {completedRows} / {test.attempts} rader
         </span>
@@ -396,9 +396,9 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
             justifyContent: 'center',
           }}>
             {test.calculationType === 'pei' ? (
-              <Target size={20} color={scoreLevel?.color || var(--ak-text-secondary)} />
+              <Target size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
             ) : (
-              <Calculator size={20} color={scoreLevel?.color || var(--ak-text-secondary)} />
+              <Calculator size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
             )}
           </div>
           <div>
@@ -411,7 +411,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
               <span style={{
                 fontSize: '32px',
                 fontWeight: 700,
-                color: scoreLevel?.color || var(--ak-text-primary),
+                color: scoreLevel?.color || 'var(--ak-text-primary)'',
               }}>
                 {result !== null ? result.toFixed(1) : '—'}
               </span>
