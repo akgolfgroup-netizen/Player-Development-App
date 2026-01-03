@@ -384,6 +384,7 @@ export class DataGolfService {
 
   /**
    * Sync DataGolf data from API
+   * Fetches current skill ratings and historical data going back to 2017
    */
   async syncDataGolf(tenantId: string): Promise<DataGolfSyncStatus> {
     if (!this.dataGolfClient.isConfigured()) {
@@ -404,14 +405,49 @@ export class DataGolfService {
     let tourAveragesUpdated = 0;
     const errors: string[] = [];
 
+    // Years to sync - DataGolf typically has data from 2017 onwards
+    const currentYear = new Date().getFullYear();
+    const yearsToSync = [];
+    for (let year = currentYear; year >= 2017; year--) {
+      yearsToSync.push(year);
+    }
+
     try {
-      // Sync PGA Tour
-      logger.debug('Syncing PGA Tour data');
+      // First, get historical events to see what data is available
+      logger.debug('Fetching historical event list');
+      let availableYears: number[] = [];
+      try {
+        const historicalEvents = await this.dataGolfClient.getHistoricalEventList('pga');
+        if (historicalEvents && Array.isArray(historicalEvents)) {
+          // Extract unique years from events
+          availableYears = [...new Set(
+            historicalEvents
+              .map((e: any) => e.calendar_year || e.year)
+              .filter((y: any) => typeof y === 'number' && y >= 2017)
+          )].sort((a, b) => b - a);
+          logger.info({ availableYears, eventCount: historicalEvents.length }, 'Found historical DataGolf events');
+        }
+      } catch (histError) {
+        logger.warn({ error: histError }, 'Could not fetch historical event list, using default years');
+        availableYears = yearsToSync;
+      }
+
+      // Sync current skill ratings (most important - this is the current state)
+      logger.debug('Syncing current PGA Tour skill ratings');
       const pgaData = await this.dataGolfClient.getSkillRatings('pga');
 
       if (pgaData && Array.isArray(pgaData)) {
-        await this.syncTourData('pga', 2025, pgaData);
-        tourAveragesUpdated++;
+        // Sync for all available years to maintain history
+        for (const year of availableYears.length > 0 ? availableYears : yearsToSync) {
+          try {
+            await this.syncTourData('pga', year, pgaData);
+            tourAveragesUpdated++;
+            logger.debug({ year }, 'Synced tour data for year');
+          } catch (yearError) {
+            const msg = yearError instanceof Error ? yearError.message : String(yearError);
+            logger.warn({ year, error: msg }, 'Failed to sync tour data for year');
+          }
+        }
 
         // Sync selected players (top 100 + Norwegian players)
         const playersToSync = this.getPlayersToSync(pgaData);
@@ -419,7 +455,7 @@ export class DataGolfService {
 
         for (const playerData of playersToSync) {
           try {
-            await this.syncPlayer(playerData);
+            await this.syncPlayerWithHistory(playerData, currentYear);
             playersUpdated++;
           } catch (error: unknown) {
             const message = error instanceof Error ? error.message : String(error);
@@ -429,11 +465,35 @@ export class DataGolfService {
         }
       }
 
+      // Also try to sync European Tour if available
+      try {
+        logger.debug('Syncing European Tour data');
+        const euroData = await this.dataGolfClient.getSkillRatings('euro');
+        if (euroData && Array.isArray(euroData)) {
+          await this.syncTourData('euro', currentYear, euroData);
+          tourAveragesUpdated++;
+
+          // Sync top European players
+          const euroPlayersToSync = this.getPlayersToSync(euroData).slice(0, 50);
+          for (const playerData of euroPlayersToSync) {
+            try {
+              await this.syncPlayerWithHistory(playerData, currentYear, 'euro');
+              playersUpdated++;
+            } catch (error: unknown) {
+              // Silent fail for euro players
+            }
+          }
+        }
+      } catch (euroError) {
+        logger.debug('European Tour data not available or failed');
+      }
+
       const duration = Date.now() - startTime;
       logger.info({
         tenantId,
         playersUpdated,
         tourAveragesUpdated,
+        yearsProcessed: availableYears.length || yearsToSync.length,
         duration,
         errorCount: errors.length
       }, 'DataGolf sync completed');

@@ -20,6 +20,9 @@ on:
       - "packages/**"
       - "scripts/**"
 
+permissions:
+  contents: read
+
 jobs:
   contract:
     name: Enforce Contract

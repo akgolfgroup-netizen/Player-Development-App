@@ -463,19 +463,16 @@ export class EmailService {
   }
 
   /**
-   * Convert HTML to plain text (simple version)
+   * Convert HTML to plain text using sanitize-html library
    */
   private htmlToText(html: string): string {
-    return html
-      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-      .replace(/<[^>]+>/g, '')
+    // Use sanitize-html to safely strip all HTML tags
+    const sanitizeHtml = require('sanitize-html');
+    return sanitizeHtml(html, {
+      allowedTags: [],
+      allowedAttributes: {},
+    })
       .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
       .replace(/\s+/g, ' ')
       .trim();
   }

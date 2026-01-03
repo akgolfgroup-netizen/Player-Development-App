@@ -12,6 +12,9 @@ on:
       - 'apps/**'
       - 'packages/design-system/**'
 
+permissions:
+  contents: read
+
 jobs:
   design-system-gate:
     name: Design System Enforcement

@@ -95,13 +95,15 @@ export class EmailService {
   }
 
   /**
-   * Simple HTML to text conversion (strips HTML tags)
+   * Simple HTML to text conversion using sanitize-html library
    */
   private htmlToText(html: string): string {
-    return html
-      .replace(/<style[^>]*>.*?<\/style>/gi, '')
-      .replace(/<script[^>]*>.*?<\/script>/gi, '')
-      .replace(/<[^>]+>/g, '')
+    // Use sanitize-html to safely strip all HTML tags
+    const sanitizeHtml = require('sanitize-html');
+    return sanitizeHtml(html, {
+      allowedTags: [],
+      allowedAttributes: {},
+    })
       .replace(/\s+/g, ' ')
       .trim();
   }
