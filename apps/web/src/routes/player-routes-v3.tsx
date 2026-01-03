@@ -34,9 +34,9 @@ const MerHub = lazy(() => import('../features/hub-pages/MerHub'));
 // ============================================================
 
 // Trening area
-const TreningLogg = lazy(() => import('../features/sessions/SessionCreateForm'));
-const TreningDagbok = lazy(() => import('../features/sessions/SessionsListView'));
-const TreningOkter = lazy(() => import('../features/sessions/SessionsListView'));
+const TreningLogg = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Logg trening" /> }));
+const TreningDagbok = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Treningsdagbok" /> }));
+const TreningOkter = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Mine økter" /> }));
 const TreningPlan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Treningsplan" /> }));
 const TreningOvelser = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Øvelsesbank" /> }));
 const TreningVideoer = lazy(() => import('../features/video-library/VideoLibrary'));
