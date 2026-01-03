@@ -353,7 +353,7 @@ export default function BenchmarkDashboard() {
               data={playerData.scores} 
               dataKey="scoring" 
               name="Scoring Avg" 
-              color="{tokens.colors.forest}"
+              color="#10456A"
             />
             <div className="mt-4 p-3 bg-forest-50 rounded-lg">
               <div className="text-sm text-forest-800">

@@ -58,7 +58,7 @@ const TestDetailPage: React.FC = () => {
           justifyContent: 'center',
           marginBottom: '24px',
         }}>
-          <AlertCircle size={40} color={var(--ak-status-error)} />
+          <AlertCircle size={40} color="var(--ak-status-error)" />
         </div>
         <SectionTitle style={{ margin: '0 0 8px 0' }}>
           Test ikke funnet

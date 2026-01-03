@@ -225,19 +225,19 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
           marginBottom: '24px',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={18} color={var(--ak-text-secondary)} />
+            <Clock size={18} color="var(--ak-text-secondary)" />
             <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               <strong>{test.duration}</strong>
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={18} color={var(--ak-text-secondary)} />
+            <MapPin size={18} color="var(--ak-text-secondary)" />
             <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               <strong>{test.attempts}</strong> {test.attempts === 1 ? 'forsøk' : 'forsøk'}
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Target size={18} color={var(--ak-text-secondary)} />
+            <Target size={18} color="var(--ak-text-secondary)" />
             <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
               Enhet: <strong>{test.unit}</strong>
             </span>
@@ -271,7 +271,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         marginBottom: '24px',
       }}>
         {/* Purpose */}
-        <InfoCard icon={Info} title="Formål" color={var(--ak-brand-primary)}>
+        <InfoCard icon={Info} title="Formål" color="var(--ak-brand-primary)">
           <p style={{
             margin: 0,
             fontSize: '14px',
@@ -283,7 +283,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
         </InfoCard>
 
         {/* Equipment */}
-        <InfoCard icon={CheckCircle} title="Utstyr" color={var(--ak-status-success)}>
+        <InfoCard icon={CheckCircle} title="Utstyr" color="var(--ak-status-success)">
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {test.equipment.map((item, i) => (
               <span
@@ -304,7 +304,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
       </div>
 
       {/* Methodology */}
-      <InfoCard icon={MapPin} title="Gjennomføring" color={var(--ak-status-warning)}>
+      <InfoCard icon={MapPin} title="Gjennomføring" color="var(--ak-status-warning)">
         <ol style={{
           margin: 0,
           paddingLeft: '20px',
@@ -326,7 +326,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
 
       {/* Scoring */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={Target} title="Scoring" color={var(--ak-brand-primary)}>
+        <InfoCard icon={Target} title="Scoring" color="var(--ak-brand-primary)">
           <p style={{
             margin: '0 0 16px 0',
             fontSize: '14px',
@@ -347,7 +347,7 @@ const TestOverviewPage: React.FC<TestOverviewPageProps> = ({
 
       {/* Tips */}
       <div style={{ marginTop: '16px' }}>
-        <InfoCard icon={AlertCircle} title="Tips" color={var(--ak-status-warning)}>
+        <InfoCard icon={AlertCircle} title="Tips" color="var(--ak-status-warning)">
           <ul style={{
             margin: 0,
             paddingLeft: '20px',

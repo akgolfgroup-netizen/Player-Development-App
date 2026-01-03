@@ -283,7 +283,7 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={var(--ak-text-primary)} />
+          <ArrowLeft size={20} color="var(--ak-text-primary)" />
         </button>
         <div>
           <SectionTitle style={{ margin: 0, fontSize: '20px' }}>
@@ -305,7 +305,7 @@ const PercentageForm: React.FC<PercentageFormProps> = ({
         alignItems: 'center',
         gap: '12px',
       }}>
-        <Target size={18} color={var(--ak-brand-primary)} />
+        <Target size={18} color="var(--ak-brand-primary)" />
         <p style={{ margin: 0, fontSize: '14px', color: 'var(--ak-text-primary)' }}>
           Trykk for å sykle: Tomt → <Check size={14} style={{ color: 'var(--ak-status-success)', verticalAlign: 'middle' }} /> Treff → <X size={14} style={{ color: 'var(--ak-status-error)', verticalAlign: 'middle' }} /> Bom → Tomt
         </p>

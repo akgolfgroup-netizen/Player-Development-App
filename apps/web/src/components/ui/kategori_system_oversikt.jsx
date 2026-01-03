@@ -1,6 +1,22 @@
+/**
+ * Kategori System Oversikt
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
-import { tokens } from '../design-tokens';
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
+
+// Design token values (hex for inline styles)
+const tokenColors = {
+  success: '#4A7C59',
+  warning: '#D4A84B',
+  error: '#C45B4E',
+  forest: '#10456A',
+  primaryLight: '#2C5F7F',
+  gold: '#C9A227',
+};
 
 // Session type colors (Blue Palette 01)
 const sessionTypeColors = {
@@ -21,7 +37,7 @@ const KategoriSystemOversikt = () => {
       name: 'LÃ¦ringsfaser', 
       ak: 'L1-L5: Kropp â†’ Automatikk', 
       tn: 'Teknisk utvikling',
-      color: tokens.colors.success
+      color: tokenColors.success
     },
     { 
       id: 'speed', 
@@ -35,7 +51,7 @@ const KategoriSystemOversikt = () => {
       name: 'Setting', 
       ak: 'S1-S10: MiljÃ¸ kompleksitet', 
       tn: '5 prosesser miljÃ¸',
-      color: tokens.colors.warning
+      color: tokenColors.warning
     },
     { 
       id: 'areas', 
@@ -49,14 +65,14 @@ const KategoriSystemOversikt = () => {
       name: 'Treningstyper', 
       ak: 'T, TG, TGS, S, G, Fs, Fu, K', 
       tn: 'TreningsÃ¸kt variasjon',
-      color: tokens.colors.error
+      color: tokenColors.error
     },
     { 
       id: 'testing', 
       name: 'Testing', 
       ak: 'Progresjonstest + Bruddpunkt', 
       tn: 'TN testsystem',
-      color: tokens.colors.forest
+      color: tokenColors.forest
     }
   ];
 
@@ -70,13 +86,13 @@ const KategoriSystemOversikt = () => {
 
   const golfAreas = [
     { name: 'Tee Total', distance: 'Driver/3W', tn: 'Utslag', type: 'T, TG', color: sessionTypeColors.fysisk },
-    { name: 'Innspill 200+m', distance: 'Lange jern', tn: 'Inspill lang', type: 'T, TG', color: tokens.colors.warning },
-    { name: 'Innspill 150-200m', distance: 'Mellom jern', tn: 'Inspill medium', type: 'T, TG', color: tokens.colors.gold },
+    { name: 'Innspill 200+m', distance: 'Lange jern', tn: 'Inspill lang', type: 'T, TG', color: tokenColors.warning },
+    { name: 'Innspill 150-200m', distance: 'Mellom jern', tn: 'Inspill medium', type: 'T, TG', color: tokenColors.gold },
     { name: 'Innspill 100-150m', distance: 'Korte jern', tn: 'Inspill kort', type: 'T, TG', color: sessionTypeColors.funksjonell },
     { name: 'Innspill 50-100m', distance: 'Wedges', tn: 'Wedge', type: 'TG, TGS', color: sessionTypeColors.golfslag },
-    { name: 'Kort Spill', distance: 'Chip/Pitch/Lob', tn: 'Naerspill', type: 'TGS, S', color: tokens.colors.forest },
-    { name: 'Bunker', distance: 'Sand shots', tn: 'Bunker', type: 'TGS, S', color: tokens.colors.primaryLight },
-    { name: 'Putting kort', distance: '0-10 ft', tn: 'Putting kort', type: 'G, K', color: tokens.colors.success },
+    { name: 'Kort Spill', distance: 'Chip/Pitch/Lob', tn: 'Naerspill', type: 'TGS, S', color: tokenColors.forest },
+    { name: 'Bunker', distance: 'Sand shots', tn: 'Bunker', type: 'TGS, S', color: tokenColors.primaryLight },
+    { name: 'Putting kort', distance: '0-10 ft', tn: 'Putting kort', type: 'G, K', color: tokenColors.success },
     { name: 'Putting lang', distance: '10+ ft', tn: 'Putting lang', type: 'Fs, Fu', color: sessionTypeColors.spill }
   ];
 
@@ -109,7 +125,7 @@ const KategoriSystemOversikt = () => {
         }
         
         .progress-bar {
-          background: linear-gradient(90deg, ${tokens.colors.forest}, ${tokens.colors.success});
+          background: linear-gradient(90deg, ${tokenColors.forest}, ${tokenColors.success});
           height: 4px;
           border-radius: 2px;
           transition: width 0.8s ease;
@@ -412,7 +428,7 @@ const KategoriSystemOversikt = () => {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-gray-700">PressnivÃ¥</p>
-                      <p className="text-lg font-bold" style={{color: tokens.colors.forest}}>
+                      <p className="text-lg font-bold" style={{color: tokenColors.forest}}>
                         {setting.pressure}
                       </p>
                     </div>

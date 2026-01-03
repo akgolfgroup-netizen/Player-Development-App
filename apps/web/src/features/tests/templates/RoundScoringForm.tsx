@@ -335,7 +335,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={var(--ak-text-primary)} />
+          <ArrowLeft size={20} color="var(--ak-text-primary)" />
         </button>
         <div>
           <SectionTitle style={{ margin: 0, fontSize: '20px' }}>
@@ -358,7 +358,7 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         justifyContent: 'space-between',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Flag size={16} color={var(--ak-brand-primary)} />
+          <Flag size={16} color="var(--ak-brand-primary)" />
           <span style={{ fontSize: '14px', color: 'var(--ak-text-primary)' }}>
             Fremgang
           </span>

@@ -279,7 +279,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} color={var(--ak-text-primary)} />
+          <ArrowLeft size={20} color="var(--ak-text-primary)" />
         </button>
         <div>
           <SectionTitle style={{ margin: 0, fontSize: '20px' }}>

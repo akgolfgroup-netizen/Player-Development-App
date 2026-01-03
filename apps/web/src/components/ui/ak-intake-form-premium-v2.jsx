@@ -1,27 +1,33 @@
+/**
+ * AK Golf Academy - Premium Intake Form V2
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
 import { ChevronRight, ChevronLeft, Check, User, Trophy, Activity, AlertTriangle, Calendar, Clock, Target, Database, Settings, Upload, Plus, Minus, X } from 'lucide-react';
-import { tokens } from '../design-tokens';
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';
 
 // ============================================
 // AK GOLF ACADEMY - PREMIUM INTAKE FORM V2
-// Design System v2.1 - Forest Theme
+// Design System v3.0 - Premium Light
 // ============================================
 
-// Brand Colors (Design System v2.1)
+// Brand Colors (Design System v3.0)
 const colors = {
-  primary: tokens.colors.forest,           // Forest - CTA
-  primaryHover: tokens.colors.primaryLight, // Darker forest for hover
-  ink: tokens.colors.charcoal,             // Text
-  background: tokens.colors.cloud,         // Main background
-  warmNeutral: tokens.colors.foam,         // Warm accent
-  success: tokens.colors.success,          // Success status
-  white: tokens.colors.white,
-  snow: tokens.colors.ivory,
-  border: tokens.colors.mist,
-  borderLight: tokens.colors.cloud,
-  textMuted: tokens.colors.steel,
-  error: tokens.colors.error,
+  primary: '#10456A',           // Forest - CTA
+  primaryHover: '#2C5F7F',      // Primary Light for hover
+  ink: '#1C1C1E',               // Text (Charcoal)
+  background: '#F5F5F7',        // Main background (Cloud)
+  warmNeutral: '#EDF0F2',       // Warm accent (Foam)
+  success: '#4A7C59',           // Success status
+  white: '#FFFFFF',
+  snow: '#FAF9F7',              // Ivory
+  border: '#C7C7CC',            // Mist
+  borderLight: '#F5F5F7',       // Cloud
+  textMuted: '#8E8E93',         // Steel
+  error: '#C45B4E',
 };
 
 // ============================================

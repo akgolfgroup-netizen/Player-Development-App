@@ -1,6 +1,12 @@
+/**
+ * Player Intake Form V1
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState } from 'react';
 import { ClipboardList, Calendar, Target, TrendingUp, Clock, CheckCircle2, AlertCircle, ChevronRight, ChevronLeft, Save, MessageSquare, BarChart3, Dumbbell, Brain, Flag, Loader2 } from 'lucide-react';
-import { tokens } from '../design-tokens';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../services/apiClient';
 import { PageTitle, SectionTitle, SubSectionTitle, CardTitle } from '../typography';

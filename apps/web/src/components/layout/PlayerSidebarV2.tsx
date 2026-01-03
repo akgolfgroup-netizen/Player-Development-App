@@ -2,6 +2,8 @@
  * ============================================================
  * PlayerSidebarV2 - Forenklet 5-modus sidebar
  * AK Golf Academy Design System v3.0
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  * ============================================================
  *
  * Ny sidebar med kun 5 toppnivåvalg:
@@ -25,7 +27,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { playerNavigationV2, playerQuickActionsV2 } from '../../config/player-navigation-v2';
 import { AKLogo } from '../branding/AKLogo';
-import { tokens } from '../../design-tokens';
+
+// Design token values (hex for inline styles)
+const tokenColors = {
+  primary: '#10456A',
+  white: '#FFFFFF',
+  gold: '#C9A227',
+  ink: '#1C1C1E',
+  error: '#C45B4E',
+};
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
 
@@ -153,7 +163,7 @@ export default function PlayerSidebarV2({
                 gap: '12px',
                 borderRadius: '12px',
                 padding: '12px 16px',
-                color: activeChild ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)',
+                color: activeChild ? tokenColors.white : 'rgba(255, 255, 255, 0.75)',
                 backgroundColor: activeChild ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
                 transition: 'all 0.2s',
                 fontSize: '15px',
@@ -171,8 +181,8 @@ export default function PlayerSidebarV2({
                     minWidth: 20,
                     height: 20,
                     borderRadius: '10px',
-                    backgroundColor: tokens.colors.error,
-                    color: tokens.colors.white,
+                    backgroundColor: tokenColors.error,
+                    color: tokenColors.white,
                     fontSize: '11px',
                     fontWeight: 700,
                     display: 'flex',
@@ -204,7 +214,7 @@ export default function PlayerSidebarV2({
                         borderRadius: '8px',
                         padding: '10px 12px',
                         textDecoration: 'none',
-                        color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.65)',
+                        color: active ? tokenColors.white : 'rgba(255, 255, 255, 0.65)',
                         backgroundColor: active ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
                         transition: 'all 0.2s',
                         fontSize: '14px',
@@ -220,7 +230,7 @@ export default function PlayerSidebarV2({
                             width: 6,
                             height: 6,
                             borderRadius: '50%',
-                            backgroundColor: active ? tokens.colors.gold : 'rgba(255, 255, 255, 0.3)',
+                            backgroundColor: active ? tokenColors.gold : 'rgba(255, 255, 255, 0.3)',
                           }}
                         />
                       )}
@@ -245,7 +255,7 @@ export default function PlayerSidebarV2({
               borderRadius: '12px',
               padding: '12px 16px',
               textDecoration: 'none',
-              color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)',
+              color: active ? tokenColors.white : 'rgba(255, 255, 255, 0.75)',
               backgroundColor: active ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
               transition: 'all 0.2s',
               fontSize: '15px',
@@ -276,8 +286,8 @@ export default function PlayerSidebarV2({
             padding: '10px 12px',
             borderRadius: '10px',
             textDecoration: 'none',
-            backgroundColor: action.variant === 'primary' ? tokens.colors.gold : 'rgba(255, 255, 255, 0.1)',
-            color: action.variant === 'primary' ? tokens.colors.ink : 'rgba(255, 255, 255, 0.9)',
+            backgroundColor: action.variant === 'primary' ? tokenColors.gold : 'rgba(255, 255, 255, 0.1)',
+            color: action.variant === 'primary' ? tokenColors.ink : 'rgba(255, 255, 255, 0.9)',
             fontSize: '13px',
             fontWeight: 600,
             transition: 'all 0.2s',
@@ -307,11 +317,11 @@ export default function PlayerSidebarV2({
               width: 40,
               height: 40,
               borderRadius: '10px',
-              backgroundColor: tokens.colors.gold,
+              backgroundColor: tokenColors.gold,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: tokens.colors.ink,
+              color: tokenColors.ink,
               fontWeight: 700,
               fontSize: '16px',
             }}
@@ -319,7 +329,7 @@ export default function PlayerSidebarV2({
             {(user?.firstName?.[0] || 'S').toUpperCase()}
           </div>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.white }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: tokenColors.white }}>
               {user?.firstName || 'Spiller'} {user?.lastName || ''}
             </div>
             <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)' }}>
@@ -367,7 +377,7 @@ export default function PlayerSidebarV2({
     >
       <AKLogo size={40} />
       <div>
-        <div style={{ color: tokens.colors.white, fontWeight: 600, fontSize: '16px' }}>
+        <div style={{ color: tokenColors.white, fontWeight: 600, fontSize: '16px' }}>
           AK Golf
         </div>
         <div style={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '12px' }}>
@@ -389,7 +399,7 @@ export default function PlayerSidebarV2({
             left: 0,
             right: 0,
             height: '60px',
-            backgroundColor: tokens.colors.primary,
+            backgroundColor: tokenColors.primary,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -403,7 +413,7 @@ export default function PlayerSidebarV2({
             aria-label="Gå til Hjem"
           >
             <AKLogo size={32} />
-            <span style={{ color: tokens.colors.white, fontWeight: 600, fontSize: '16px' }}>
+            <span style={{ color: tokenColors.white, fontWeight: 600, fontSize: '16px' }}>
               AK Golf
             </span>
           </Link>
@@ -413,7 +423,7 @@ export default function PlayerSidebarV2({
             style={{
               background: 'none',
               border: 'none',
-              color: tokens.colors.white,
+              color: tokenColors.white,
               cursor: 'pointer',
               padding: '8px',
             }}
@@ -444,8 +454,8 @@ export default function PlayerSidebarV2({
             left: 0,
             bottom: 0,
             width: '300px',
-            backgroundColor: tokens.colors.primary,
-            color: tokens.colors.white,
+            backgroundColor: tokenColors.primary,
+            color: tokenColors.white,
             display: 'flex',
             flexDirection: 'column',
             transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
@@ -472,8 +482,8 @@ export default function PlayerSidebarV2({
       style={{
         width: '280px',
         height: '100vh',
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
+        backgroundColor: tokenColors.primary,
+        color: tokenColors.white,
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0,

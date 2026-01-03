@@ -1,12 +1,27 @@
+/**
+ * Sidebar Component
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
+ */
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { tokens } from '../../design-tokens';
 import ConfirmDialog from '../ui/ConfirmDialog';
 import { AKLogo } from '../branding/AKLogo';
 import { navigationConfig } from '../../config/navigation';
 import { useNotifications } from '../../hooks/useNotifications';
+
+// Design token values (hex for inline styles)
+const tokenColors = {
+  primary: '#10456A',
+  primaryLight: '#2C5F7F',
+  white: '#FFFFFF',
+  ivory: '#FAF9F7',
+  error: '#C45B4E',
+};
 
 const { LogOut, ChevronDown, ChevronRight, Menu, X } = LucideIcons;
 
@@ -72,7 +87,7 @@ export default function Sidebar() {
           left: 0,
           right: 0,
           height: '60px',
-          backgroundColor: tokens.colors.primary,
+          backgroundColor: tokenColors.primary,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -96,14 +111,14 @@ export default function Sidebar() {
               e.currentTarget.style.opacity = '1';
             }}
           >
-            <AKLogo size={36} color={tokens.colors.white} />
+            <AKLogo size={36} color={tokenColors.white} />
           </Link>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             style={{
               background: 'none',
               border: 'none',
-              color: tokens.colors.white,
+              color: tokenColors.white,
               cursor: 'pointer',
               padding: '8px',
               borderRadius: '8px',
@@ -135,8 +150,8 @@ export default function Sidebar() {
           left: 0,
           bottom: 0,
           width: '280px',
-          backgroundColor: tokens.colors.primary,
-          color: tokens.colors.white,
+          backgroundColor: tokenColors.primary,
+          color: tokenColors.white,
           display: 'flex',
           flexDirection: 'column',
           transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
@@ -190,8 +205,8 @@ export default function Sidebar() {
                 borderRadius: '16px',
                 padding: '12px 16px',
                 textDecoration: 'none',
-                color: hasActiveChild ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)',
-                backgroundColor: hasActiveChild ? tokens.colors.primaryLight : 'transparent',
+                color: hasActiveChild ? tokenColors.white : 'rgba(255, 255, 255, 0.75)',
+                backgroundColor: hasActiveChild ? tokenColors.primaryLight : 'transparent',
                 transition: 'all 0.2s',
                 fontSize: '15px',
                 fontWeight: 500,
@@ -203,7 +218,7 @@ export default function Sidebar() {
               onMouseEnter={(e) => {
                 if (!hasActiveChild) {
                   e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
-                  e.currentTarget.style.color = tokens.colors.white;
+                  e.currentTarget.style.color = tokenColors.white;
                 }
               }}
               onMouseLeave={(e) => {
@@ -213,7 +228,7 @@ export default function Sidebar() {
                 }
               }}
             >
-              <item.Icon size={20} style={{ color: hasActiveChild ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)' }} />
+              <item.Icon size={20} style={{ color: hasActiveChild ? tokenColors.white : 'rgba(255, 255, 255, 0.75)' }} />
               <span style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {item.label}
                 {item.badge === 'unreadMessages' && unreadCount > 0 && (
@@ -224,8 +239,8 @@ export default function Sidebar() {
                     minWidth: '18px',
                     height: '18px',
                     padding: '0 5px',
-                    backgroundColor: tokens.colors.error,
-                    color: tokens.colors.white,
+                    backgroundColor: tokenColors.error,
+                    color: tokenColors.white,
                     fontSize: '11px',
                     fontWeight: 600,
                     borderRadius: '9px',
@@ -258,8 +273,8 @@ export default function Sidebar() {
                         borderRadius: '12px',
                         padding: '8px 12px',
                         textDecoration: 'none',
-                        color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.65)',
-                        backgroundColor: active ? `${tokens.colors.primaryLight}80` : 'transparent',
+                        color: active ? tokenColors.white : 'rgba(255, 255, 255, 0.65)',
+                        backgroundColor: active ? `${tokenColors.primaryLight}80` : 'transparent',
                         transition: 'all 0.2s',
                         fontSize: '14px',
                         fontWeight: 400,
@@ -287,14 +302,14 @@ export default function Sidebar() {
               borderRadius: '16px',
               padding: '12px 16px',
               textDecoration: 'none',
-              color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)',
-              backgroundColor: active ? tokens.colors.primaryLight : 'transparent',
+              color: active ? tokenColors.white : 'rgba(255, 255, 255, 0.75)',
+              backgroundColor: active ? tokenColors.primaryLight : 'transparent',
               transition: 'all 0.2s',
               fontSize: '15px',
               fontWeight: 500,
             }}
           >
-            <item.Icon size={20} style={{ color: active ? tokens.colors.white : 'rgba(255, 255, 255, 0.75)' }} />
+            <item.Icon size={20} style={{ color: active ? tokenColors.white : 'rgba(255, 255, 255, 0.75)' }} />
             <span style={{ flex: 1 }}>{item.label}</span>
           </Link>
         );
@@ -312,7 +327,7 @@ export default function Sidebar() {
           borderRadius: '16px',
           padding: '16px'
         }}>
-          <div style={{ fontSize: '14px', fontWeight: 600, color: tokens.colors.white }}>
+          <div style={{ fontSize: '14px', fontWeight: 600, color: tokenColors.white }}>
             {user?.firstName || 'Jørn'} {user?.lastName || 'Johnsen'}
           </div>
           <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.55)', marginTop: '2px' }}>
@@ -338,7 +353,7 @@ export default function Sidebar() {
             onClick={() => setShowLogoutConfirm(true)}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
-              e.currentTarget.style.color = tokens.colors.white;
+              e.currentTarget.style.color = tokenColors.white;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
@@ -359,8 +374,8 @@ export default function Sidebar() {
       <aside style={{
         width: '280px',
         height: '100vh',
-        backgroundColor: tokens.colors.primary,
-        color: tokens.colors.white,
+        backgroundColor: tokenColors.primary,
+        color: tokenColors.white,
         display: 'flex',
         flexDirection: 'column',
         flexShrink: 0
@@ -387,7 +402,7 @@ export default function Sidebar() {
               e.currentTarget.style.opacity = '1';
             }}
           >
-            <AKLogo size={44} color={tokens.colors.ivory} />
+            <AKLogo size={44} color={tokenColors.ivory} />
           </Link>
         </div>
 

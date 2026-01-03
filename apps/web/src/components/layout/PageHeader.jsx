@@ -1,14 +1,16 @@
-import React from 'react';
-import { tokens } from '../../design-tokens';
-import { PageTitle } from '../typography';
-
 /**
  * PageHeader Component
- * Standardized header for feature pages with title, subtitle, and actions
+ * Design System v3.0 - Premium Light
+ *
+ * MIGRATED TO PAGE ARCHITECTURE - Minimal inline styles (dynamic colors)
  *
  * REGEL: Denne komponenten renderer sidens <h1> via PageTitle.
  * Bruk ikke <h1> andre steder på siden.
  */
+
+import React from 'react';
+import { PageTitle } from '../typography';
+
 export const PageHeader = ({
   title,
   subtitle,
@@ -19,8 +21,8 @@ export const PageHeader = ({
     <header
       className={className}
       style={{
-        backgroundColor: tokens.colors.white,
-        borderBottom: `1px solid ${tokens.colors.mist}`,
+        backgroundColor: 'var(--ak-surface-card)',
+        borderBottom: '1px solid var(--ak-border-default)',
         position: 'sticky',
         top: 0,
         zIndex: 40,
