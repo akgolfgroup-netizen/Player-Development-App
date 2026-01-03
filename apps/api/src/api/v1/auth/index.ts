@@ -185,6 +185,13 @@ export async function authRoutes(app: FastifyInstance): Promise<void> {
       schema: {
         description: 'Logout and revoke refresh token',
         tags: ['auth'],
+        body: {
+          type: 'object',
+          required: ['refreshToken'],
+          properties: {
+            refreshToken: { type: 'string' },
+          },
+        },
         response: {
           200: {
             type: 'object',

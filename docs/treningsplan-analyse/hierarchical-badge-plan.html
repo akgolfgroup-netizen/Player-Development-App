@@ -477,7 +477,7 @@
     }
 
     @media (max-width: 1024px) {
-      .category-grid { grid-template-columns: repeat(6, 1fr); }
+      .category-grid { grid-template-columns: repeat(5, 1fr); }
       .comparison-section { grid-template-columns: 1fr; }
       .scaling-section { grid-template-columns: 1fr; }
       .xp-grid { grid-template-columns: repeat(3, 1fr); }
@@ -695,12 +695,12 @@
         </div>
       </div>
 
-      <div class="player-box k-player">
+      <div class="player-box e-player">
         <div class="player-header">
-          <div class="player-avatar">K</div>
+          <div class="player-avatar">E</div>
           <div>
             <div class="player-name">Oliver Hansen</div>
-            <div class="player-desc">Kategori K - Nybegynner, HCP 36</div>
+            <div class="player-desc">Kategori E - Nybegynner, HCP 36</div>
           </div>
         </div>
 
@@ -711,12 +711,12 @@
             <span class="badge-level level-4">Level 4</span>
           </div>
           <div class="requirement-row">
-            <span>Krav (skalert 30%):</span>
-            <span>30 okter</span>
+            <span>Krav (skalert 40%):</span>
+            <span>40 okter</span>
           </div>
           <div class="requirement-row">
             <span>Fullforte okter:</span>
-            <span class="earned-label">67 / 30 - OPPNADD!</span>
+            <span class="earned-label">67 / 40 - OPPNADD!</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 100%"></div>
@@ -730,12 +730,12 @@
             <span class="badge-level level-4">Level 4</span>
           </div>
           <div class="requirement-row">
-            <span>Krav (skalert 30%):</span>
-            <span>9 dager</span>
+            <span>Krav (skalert 40%):</span>
+            <span>12 dager</span>
           </div>
           <div class="requirement-row">
             <span>Navaerende streak:</span>
-            <span class="earned-label">12 / 9 - OPPNADD!</span>
+            <span class="earned-label">12 / 12 - OPPNADD!</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 100%"></div>
@@ -746,15 +746,15 @@
           <div class="badge-header">
             <span class="badge-icon">⏱️</span>
             <span class="badge-name">Time Champion</span>
-            <span class="badge-level level-5">Level 5!</span>
+            <span class="badge-level level-4">Level 4</span>
           </div>
           <div class="requirement-row">
-            <span>Krav (skalert 30%):</span>
-            <span>75 timer (250 x 0.3)</span>
+            <span>Krav (skalert 40%):</span>
+            <span>40 timer (100 x 0.4)</span>
           </div>
           <div class="requirement-row">
             <span>Total treningstid:</span>
-            <span class="earned-label">78 / 75 - OPPNADD!</span>
+            <span class="earned-label">78 / 40 - OPPNADD!</span>
           </div>
           <div class="progress-bar">
             <div class="progress-fill" style="width: 100%"></div>
@@ -781,7 +781,7 @@
         </div>
         <div class="model-item">
           <h4>Player</h4>
-          <code>category (A-K), handicap, currentPeriod, weeklyTrainingHours</code>
+          <code>category (A-E), handicap, currentPeriod, weeklyTrainingHours</code>
         </div>
       </div>
     </div>
@@ -833,9 +833,11 @@
 <span class="comment">// badge-calculator.ts - Oppdatert med kategori-skalering</span>
 
 <span class="keyword">const</span> CATEGORY_MULTIPLIERS = {
-  <span class="string">'A'</span>: <span class="number">1.00</span>, <span class="string">'B'</span>: <span class="number">0.95</span>, <span class="string">'C'</span>: <span class="number">0.90</span>, <span class="string">'D'</span>: <span class="number">0.85</span>,
-  <span class="string">'E'</span>: <span class="number">0.80</span>, <span class="string">'F'</span>: <span class="number">0.70</span>, <span class="string">'G'</span>: <span class="number">0.60</span>, <span class="string">'H'</span>: <span class="number">0.50</span>,
-  <span class="string">'I'</span>: <span class="number">0.40</span>, <span class="string">'J'</span>: <span class="number">0.35</span>, <span class="string">'K'</span>: <span class="number">0.30</span>
+  <span class="string">'A'</span>: <span class="number">1.00</span>,  <span class="comment">// Elite/Tour - 100%</span>
+  <span class="string">'B'</span>: <span class="number">0.85</span>,  <span class="comment">// Avansert - 85%</span>
+  <span class="string">'C'</span>: <span class="number">0.70</span>,  <span class="comment">// Viderekommende - 70%</span>
+  <span class="string">'D'</span>: <span class="number">0.55</span>,  <span class="comment">// Utviklende - 55%</span>
+  <span class="string">'E'</span>: <span class="number">0.40</span>,  <span class="comment">// Nybegynner - 40%</span>
 };
 
 <span class="keyword">function</span> getScaledRequirement(
@@ -851,51 +853,49 @@
 
 <span class="comment">// Eksempel: Training Warrior Level 4</span>
 getScaledRequirement(<span class="number">100</span>, <span class="string">'A'</span>, <span class="string">'absolute'</span>); <span class="comment">// => 100 okter</span>
-getScaledRequirement(<span class="number">100</span>, <span class="string">'K'</span>, <span class="string">'absolute'</span>); <span class="comment">// => 30 okter</span>
+getScaledRequirement(<span class="number">100</span>, <span class="string">'E'</span>, <span class="string">'absolute'</span>); <span class="comment">// => 40 okter</span>
 
 <span class="comment">// Eksempel: Reliable (completion rate) - skaleres IKKE</span>
-getScaledRequirement(<span class="number">90</span>, <span class="string">'K'</span>, <span class="string">'relative'</span>); <span class="comment">// => 90% (uendret)</span>
+getScaledRequirement(<span class="number">90</span>, <span class="string">'E'</span>, <span class="string">'relative'</span>); <span class="comment">// => 90% (uendret)</span>
     </div>
 
     <!-- XP Section -->
     <div class="xp-section">
-      <h2>XP Skalering (Omvendt - Lavere kategorier far mer)</h2>
+      <h2>XP System (Badge Tiers)</h2>
       <p style="margin-bottom: 1rem; color: #94a3b8;">
-        En K-spiller som oppnar 30 okter har lagt ned samme <em>relative</em> innsats som A-spiller med 100 okter.
-        Derfor far lavere kategorier mer XP for a utjevne.
+        XP tildeles basert pa badge tier. Alle spillere far samme XP for samme badge tier.
+        Dette sikrer rettferdig progresjon uavhengig av kategori.
       </p>
-      <div class="xp-grid">
+      <div class="xp-grid" style="grid-template-columns: repeat(5, 1fr);">
         <div class="xp-item">
-          <div class="xp-category">A</div>
-          <div class="xp-mult">1.0x</div>
-          <div style="font-size: 0.8rem; color: #6b7280;">800 XP</div>
+          <div class="xp-category">Standard</div>
+          <div class="xp-mult">25 XP</div>
+          <div style="font-size: 0.8rem; color: #6b7280;">Basis badge</div>
         </div>
         <div class="xp-item">
-          <div class="xp-category">B-C</div>
-          <div class="xp-mult">1.1x</div>
-          <div style="font-size: 0.8rem; color: #6b7280;">880 XP</div>
+          <div class="xp-category">Bronze</div>
+          <div class="xp-mult">50 XP</div>
+          <div style="font-size: 0.8rem; color: #B08D57;">Level 1</div>
         </div>
         <div class="xp-item">
-          <div class="xp-category">D-E</div>
-          <div class="xp-mult">1.2x</div>
-          <div style="font-size: 0.8rem; color: #6b7280;">960 XP</div>
+          <div class="xp-category">Silver</div>
+          <div class="xp-mult">100 XP</div>
+          <div style="font-size: 0.8rem; color: #8A9BA8;">Level 2</div>
         </div>
         <div class="xp-item">
-          <div class="xp-category">F-G</div>
-          <div class="xp-mult">1.3x</div>
-          <div style="font-size: 0.8rem; color: #6b7280;">1040 XP</div>
+          <div class="xp-category">Gold</div>
+          <div class="xp-mult">200 XP</div>
+          <div style="font-size: 0.8rem; color: #C9A227;">Level 3</div>
         </div>
         <div class="xp-item">
-          <div class="xp-category">H-I</div>
-          <div class="xp-mult">1.4x</div>
-          <div style="font-size: 0.8rem; color: #6b7280;">1120 XP</div>
-        </div>
-        <div class="xp-item">
-          <div class="xp-category">J-K</div>
-          <div class="xp-mult">1.5x</div>
-          <div style="font-size: 0.8rem; color: #6b7280;">1200 XP</div>
+          <div class="xp-category">Platinum</div>
+          <div class="xp-mult">500 XP</div>
+          <div style="font-size: 0.8rem; color: #E5E4E2;">Level 4+</div>
         </div>
       </div>
+      <p style="margin-top: 1rem; color: #94a3b8; font-size: 0.9rem;">
+        <strong>Leveling:</strong> Level N krever (N-1) * N * 50 XP totalt. Level 2 = 100 XP, Level 3 = 300 XP, osv.
+      </p>
     </div>
 
     <!-- Timeline -->

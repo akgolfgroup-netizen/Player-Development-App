@@ -1,48 +1,50 @@
 # Plan: NGF-presentasjon Countdown
 
 **Dato:** 3. januar 2026
+**Sist oppdatert:** 3. januar 2026 kl. 09:20
 **Mål:** NGF-presentasjon 13. januar 2026
 **Tid igjen:** 10 dager
 
 ---
 
-## PRIORITERT OPPGAVELISTE
+## ✅ FASE 1: TEKNISK STABILISERING - FULLFØRT
 
-### FASE 1: Teknisk stabilisering (3-4. jan)
+**Fullført:** 3. januar 2026
 
-#### 1.1 Fiks test-database (30 min)
-**Problem:** Test-databasen mangler nyeste migreringer
-**Løsning:**
-```bash
-DATABASE_URL="postgresql://iup_golf:dev_password@localhost:5432/iup_golf_test" npx prisma migrate deploy
-```
+### Resultater
 
-**Manglende kolonner:**
-- `breaking_points.test_domain_code`
-- `daily_training_assignments.samling_session_id`
+| Metrikk | Før | Etter |
+|---------|-----|-------|
+| Tester pass | 730 | **779** |
+| Tester fail | 49 | **0** |
+| Pass rate | 94% | **100%** |
 
-#### 1.2 Fiks feilende integrasjonstester (2-4 timer)
+### Utførte fikser
 
-| Testfil | Antall feil | Årsak | Prioritet |
-|---------|-------------|-------|-----------|
-| `auth.test.ts` | 4 | Password reset | Høy |
-| `breaking-points.test.ts` | 15+ | DB schema + TypeError | Høy |
-| `dashboard.test.ts` | 2 | Coach dashboard | Medium |
-| `players.test.ts` | 2 | Weekly summary | Medium |
-| `training-plan.test.ts` | ~10 | DB schema | Høy |
-| `notes.test.ts` | ~5 | Ukjent | Medium |
+| Problem | Løsning |
+|---------|---------|
+| Test-DB mangler kolonner | `prisma db push` synkroniserte schema |
+| Dashboard 404 → 500 | La til player-eksistens-sjekk i `dashboard/index.ts:296` |
+| Auth 401 → 400 forventninger | Oppdaterte test-forventninger (400 er korrekt for ugyldig token) |
+| Logout body schema mangler | La til body-schema i Fastify route |
+| Reset token test feil | Fikset test til å generere egen token (ikke bruke hashet versjon) |
+| Field name mismatch | `passwordResetExpiresAt` → `passwordResetExpires` |
+| Message assertion | `"sent"` → `"email"` |
 
-**Strategi:**
-1. Kjør `prisma migrate deploy` på test-DB
-2. Kjør tester på nytt - mange bør passere automatisk
-3. Fiks gjenværende TypeError-issues (null checks)
+### Verifisert
 
-#### 1.3 Verifiser produksjon (1 time)
-- [ ] Test alle demo-brukerkontoer på Railway
-- [ ] Verifiser kritiske flyter: login, dashboard, øvelser
-- [ ] Sjekk at health endpoints svarer
+- [x] Test-database synkronisert
+- [x] Alle 779 tester passerer
+- [x] Produksjon health check OK
+  ```json
+  {"status":"healthy","uptime":2408s}
+  ```
 
 ---
+
+## PRIORITERT OPPGAVELISTE
+
+### ~~FASE 1: Teknisk stabilisering (3-4. jan)~~ ✅ FULLFØRT
 
 ### FASE 2: Juridisk forberedelse (4-8. jan)
 
@@ -111,39 +113,19 @@ DATABASE_URL="postgresql://iup_golf:dev_password@localhost:5432/iup_golf_test" n
 
 ## DAGLIG PLAN
 
-| Dato | Fokus | Leveranser |
-|------|-------|------------|
-| **3. jan** | Teknisk | Fiks test-DB, verifiser produksjon |
-| **4. jan** | Teknisk | Fiks gjenværende tester |
-| **5. jan** | Juridisk | Send DPA til advokat |
-| **6. jan** | Juridisk | Samtykkeformular draft |
-| **7. jan** | Presentasjon | Start slides |
-| **8. jan** | Presentasjon | Ferdigstill slides |
-| **9. jan** | Demo | Demo-script |
-| **10. jan** | Q&A | FAQ og innvendinger |
-| **11. jan** | Gjennomkjøring | Intern test |
-| **12. jan** | Buffer | Finpuss |
-| **13. jan** | **NGF** | Presentasjon! |
-
----
-
-## UMIDDELBARE HANDLINGER (i dag)
-
-### Handling 1: Fiks test-database
-```bash
-cd /Users/anderskristiansen/Developer/IUP_Master_V1/apps/api
-DATABASE_URL="postgresql://iup_golf:dev_password@localhost:5432/iup_golf_test" npx prisma migrate deploy
-```
-
-### Handling 2: Kjør tester på nytt
-```bash
-pnpm --filter iup-golf-backend test
-```
-
-### Handling 3: Verifiser produksjon
-```bash
-curl https://iup-golf-backend-production.up.railway.app/health
-```
+| Dato | Fokus | Leveranser | Status |
+|------|-------|------------|--------|
+| **3. jan** | Teknisk | Fiks test-DB, verifiser produksjon | ✅ |
+| **4. jan** | ~~Teknisk~~ Juridisk | ~~Fiks gjenværende tester~~ Start DPA-gjennomgang | ⏳ |
+| **5. jan** | Juridisk | Send DPA til advokat | ⏳ |
+| **6. jan** | Juridisk | Samtykkeformular draft | ⏳ |
+| **7. jan** | Presentasjon | Start slides | ⏳ |
+| **8. jan** | Presentasjon | Ferdigstill slides | ⏳ |
+| **9. jan** | Demo | Demo-script | ⏳ |
+| **10. jan** | Q&A | FAQ og innvendinger | ⏳ |
+| **11. jan** | Gjennomkjøring | Intern test | ⏳ |
+| **12. jan** | Buffer | Finpuss | ⏳ |
+| **13. jan** | **NGF** | Presentasjon! | ⏳ |
 
 ---
 
@@ -151,6 +133,7 @@ curl https://iup-golf-backend-production.up.railway.app/health
 
 | Risiko | Sannsynlighet | Konsekvens | Mitigering |
 |--------|---------------|------------|------------|
+| ~~Tester feiler~~ | ~~Høy~~ | ~~Høy~~ | ✅ Løst |
 | Advokat ikke tilgjengelig | Medium | Høy | Start kontakt umiddelbart |
 | Produksjon nede under demo | Lav | Kritisk | Lokalt backup |
 | Tekniske problemer i demo | Medium | Høy | Screenshots, video backup |
@@ -160,7 +143,7 @@ curl https://iup-golf-backend-production.up.railway.app/health
 
 ## SUKSESSKRITERIER
 
-- [ ] 100% tester passerer (eller dokumentert unntak)
+- [x] **100% tester passerer** ✅
 - [ ] Juridiske dokumenter godkjent
 - [ ] Presentasjon ferdig og øvd
 - [ ] Demo testet 3+ ganger
@@ -168,4 +151,14 @@ curl https://iup-golf-backend-production.up.railway.app/health
 
 ---
 
-**Neste steg:** Kjør Handling 1-3 umiddelbart for å stabilisere teknisk fundament.
+## NESTE STEG
+
+Fase 1 er fullført før plan. Neste prioritet:
+
+1. **Start juridisk fase** - Kontakt advokat for DPA-gjennomgang
+2. **Forbered presentasjon** - Kan starte tidligere enn planlagt
+3. **Test demo-flow** - Verifiser alle brukerroller i produksjon
+
+---
+
+**Sist oppdatert:** 3. januar 2026 kl. 09:20
