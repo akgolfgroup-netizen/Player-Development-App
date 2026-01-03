@@ -32,11 +32,11 @@ export default function UtviklingHub({
     <HubPage
       area={area}
       title="Min utvikling"
-      subtitle="Følg med på din fremgang og se dine oppnåelser"
+      subtitle="Følg med på din fremgang og se dine prestasjoner"
       quickStats={[
         { label: 'Kategori-fremgang', value: `${stats.kategoriFremgang}%`, icon: 'TrendingUp' },
         { label: 'Siste testscore', value: stats.testScore, icon: 'Target' },
-        { label: 'Badges opptjent', value: stats.badgesOpptjent, icon: 'Award' },
+        { label: 'Merker opptjent', value: stats.badgesOpptjent, icon: 'Award' },
         { label: 'Ukentlig forbedring', value: `+${stats.ukentligForbedring}%`, icon: 'ArrowUpRight' },
       ]}
       featuredAction={{

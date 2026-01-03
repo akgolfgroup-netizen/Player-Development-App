@@ -97,7 +97,7 @@ export const playerNavigationV3: NavArea[] = [
   // ────────────────────────────────────────────────────────────
   {
     id: 'dashboard',
-    label: 'Dashboard',
+    label: 'Oversikt',
     icon: 'Home',
     color: 'default',
     href: '/dashboard',
@@ -193,8 +193,8 @@ export const playerNavigationV3: NavArea[] = [
         id: 'achievements',
         label: 'Prestasjoner',
         items: [
-          { href: '/utvikling/badges', label: 'Badges', icon: 'Award', description: 'Dine badges' },
-          { href: '/utvikling/achievements', label: 'Oppnåelser', icon: 'Trophy', description: 'Alle oppnåelser' },
+          { href: '/utvikling/badges', label: 'Merker', icon: 'Award', description: 'Dine merker' },
+          { href: '/utvikling/achievements', label: 'Prestasjoner', icon: 'Trophy', description: 'Alle prestasjoner' },
         ],
       },
     ],

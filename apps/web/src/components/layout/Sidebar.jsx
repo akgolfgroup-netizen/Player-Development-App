@@ -96,7 +96,7 @@ export default function Sidebar() {
         }}>
           <Link
             to="/"
-            aria-label="Gå til Dashboard"
+            aria-label="Gå til Oversikt"
             style={{
               display: 'inline-block',
               padding: '4px',
@@ -387,7 +387,7 @@ export default function Sidebar() {
         }}>
           <Link
             to="/"
-            aria-label="Gå til Dashboard"
+            aria-label="Gå til Oversikt"
             style={{
               display: 'inline-block',
               cursor: 'pointer',

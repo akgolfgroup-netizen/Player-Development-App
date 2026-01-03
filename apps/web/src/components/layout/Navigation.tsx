@@ -48,7 +48,7 @@ interface NavSectionProps {
 // ============================================================================
 
 const mainNavItems: NavItem[] = [
-  { path: '/', icon: Home, label: 'Dashboard' },
+  { path: '/', icon: Home, label: 'Oversikt' },
   { path: '/profil', icon: User, label: 'Brukerprofil' },
   { path: '/trenerteam', icon: Users, label: 'Trenerteam' },
   { path: '/maalsetninger', icon: Target, label: 'Målsetninger' },

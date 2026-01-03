@@ -78,7 +78,7 @@ export default function SideNavigationMobile() {
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        <Link to="/" className="mobile-header__logo" aria-label="Ga til Dashboard">
+        <Link to="/" className="mobile-header__logo" aria-label="Gå til Oversikt">
           <AKLogo size={28} />
         </Link>
 

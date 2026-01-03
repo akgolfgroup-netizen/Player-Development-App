@@ -78,7 +78,7 @@ const DashboardPage: React.FC = () => {
   // Loading state
   if (isLoading && !data) {
     return (
-      <AppShellTemplate title="Dashboard" subtitle="Velkommen tilbake">
+      <AppShellTemplate title="Oversikt" subtitle="Velkommen tilbake">
         <section className="mb-6">
           <StateCard
             variant="info"
@@ -95,7 +95,7 @@ const DashboardPage: React.FC = () => {
 
   return (
     <AppShellTemplate
-      title="Dashboard"
+      title="Oversikt"
       subtitle="Velkommen tilbake"
       actions={headerActions}
     >

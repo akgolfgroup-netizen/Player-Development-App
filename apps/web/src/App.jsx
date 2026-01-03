@@ -1023,7 +1023,7 @@ function App() {
           } />
           <Route path="/achievements" element={
             <ProtectedRoute>
-              <AuthenticatedLayout title="Prestasjoner" subtitle="Dine oppnåelser">
+              <AuthenticatedLayout title="Prestasjoner" subtitle="Dine prestasjoner">
                 <AchievementsDashboardContainer />
               </AuthenticatedLayout>
             </ProtectedRoute>
@@ -1511,6 +1511,13 @@ function App() {
               </CoachLayout>
             </ProtectedRoute>
           } />
+          <Route path="/coach/athletes/:athleteId/proof" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachProofViewer />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
           <Route path="/coach/training-plans/create" element={
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
@@ -1785,6 +1792,31 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <CoachSessionEvaluations />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/session-evaluations" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachSessionEvaluations />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Coach Athlete Status */}
+          <Route path="/coach/athlete-status" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CoachAthleteStatus />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+
+          {/* Coach Modification Requests */}
+          <Route path="/coach/modification-requests" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <ModificationRequestDashboardContainer />
               </CoachLayout>
             </ProtectedRoute>
           } />

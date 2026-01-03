@@ -143,7 +143,7 @@ export default function DashboardHub({
         />
         <StatCard
           icon={<Award size={20} />}
-          label="Badges opptjent"
+          label="Merker opptjent"
           value={stats.badges}
           color={navigationColors.mer.primary}
         />

@@ -21,7 +21,7 @@ export const navigationConfig = [
   // DASHBOARD
   // ────────────────────────────────────────────────────────────
   {
-    label: 'Dashboard',
+    label: 'Oversikt',
     icon: 'Home',
     href: '/'
   },
@@ -163,7 +163,7 @@ export const navigationConfig = [
       { href: '/maalsetninger', label: 'Mine mål' },
       { href: '/progress', label: 'Fremgang' },
       { href: '/achievements', label: 'Prestasjoner' },
-      { href: '/badges', label: 'Badges' },
+      { href: '/badges', label: 'Merker' },
     ]
   },
 

@@ -1400,8 +1400,8 @@ const AKGolfDashboard = () => {
       <div className="dashboard-full-width" style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '-8px' }}>
         <ExportButton
           targetId="dashboard-export"
-          filename={`dashboard-${player.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
-          title={`Dashboard - ${player.name || 'Spiller'}`}
+          filename={`oversikt-${player.name?.replace(/\s+/g, '-') || 'spiller'}-${new Date().toISOString().split('T')[0]}`}
+          title={`Oversikt - ${player.name || 'Spiller'}`}
           variant="icon"
           size="sm"
         />

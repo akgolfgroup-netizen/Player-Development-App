@@ -13,7 +13,7 @@ const DEMO_BADGES = [
   { id: 'hours_10', name: 'Dedikert Start', description: 'Logg 10 timer trening totalt', category: 'volume', symbol: 'clock', tier: 'standard', xp: 50, requirements: [{ description: '10 timer trening' }] },
   { id: 'hours_50', name: 'Fokusert Innsats', description: 'Logg 50 timer trening totalt', category: 'volume', symbol: 'clock', tier: 'bronze', xp: 100, requirements: [{ description: '50 timer trening' }] },
   { id: 'hours_100', name: 'Century Club', description: 'Logg 100 timer trening totalt', category: 'volume', symbol: 'clock', tier: 'silver', xp: 200, requirements: [{ description: '100 timer trening' }] },
-  { id: 'hours_250', name: 'Seriøs Utøver', description: 'Logg 250 timer trening totalt', category: 'volume', symbol: 'clock', tier: 'silver', xp: 350, requirements: [{ description: '250 timer trening' }] },
+  { id: 'hours_250', name: 'Seriøs Spiller', description: 'Logg 250 timer trening totalt', category: 'volume', symbol: 'clock', tier: 'silver', xp: 350, requirements: [{ description: '250 timer trening' }] },
   { id: 'hours_500', name: 'Halvveis til 1000', description: 'Logg 500 timer trening totalt', category: 'volume', symbol: 'clock', tier: 'gold', xp: 500, requirements: [{ description: '500 timer trening' }] },
   { id: 'sessions_25', name: 'Rutinebygger', description: 'Fullfør 25 treningsøkter', category: 'volume', symbol: 'check', tier: 'standard', xp: 50, requirements: [{ description: '25 økter' }] },
   { id: 'sessions_100', name: 'Økt-Entusiast', description: 'Fullfør 100 treningsøkter', category: 'volume', symbol: 'check', tier: 'bronze', xp: 150, requirements: [{ description: '100 økter' }] },

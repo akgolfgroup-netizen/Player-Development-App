@@ -54,7 +54,7 @@ export default function NavRail({ onItemHover, onItemClick }) {
     <nav className="nav-rail" aria-label="Hovednavigasjon">
       {/* Logo */}
       <div className="nav-rail__logo">
-        <Link to="/" aria-label="Ga til Dashboard" className="nav-rail__logo-link">
+        <Link to="/" aria-label="Gå til Oversikt" className="nav-rail__logo-link">
           <AKLogo size={32} />
         </Link>
       </div>

@@ -297,12 +297,12 @@ const mainNavigation = [
       },
       {
         name: 'Prestasjoner',
-        description: 'Dine oppnåelser',
+        description: 'Dine prestasjoner',
         href: '/achievements',
         icon: Award,
       },
       {
-        name: 'Badges',
+        name: 'Merker',
         description: 'Dine opptjente merker',
         href: '/badges',
         icon: Trophy,

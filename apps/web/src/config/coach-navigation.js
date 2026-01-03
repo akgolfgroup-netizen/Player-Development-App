@@ -21,7 +21,7 @@ export const coachNavigationConfig = [
   // DASHBOARD
   // ────────────────────────────────────────────────────────────
   {
-    label: 'Dashboard',
+    label: 'Oversikt',
     icon: 'LayoutDashboard',
     href: '/coach'
   },
@@ -226,3 +226,18 @@ export const coachSidebarSections = {
   communication: coachNavigationConfig.slice(8, 10), // Beskjeder, Øvelsesbank
   system: coachNavigationConfig.slice(10),      // Varsler, Innstillinger
 };
+
+/**
+ * ============================================================
+ * MOBILE BOTTOM NAV ITEMS
+ * For coach mobile navigation
+ * ============================================================
+ */
+export const coachMobileNavItems = [
+  { label: 'Oversikt', labelNO: 'Oversikt', icon: 'LayoutDashboard', href: '/coach' },
+  { label: 'Spillere', labelNO: 'Spillere', icon: 'Users', href: '/coach/athletes' },
+  { label: 'Planlegging', labelNO: 'Planlegging', icon: 'ClipboardList', href: '/coach/planning' },
+  { label: 'Varsler', labelNO: 'Varsler', icon: 'Bell', href: '/coach/alerts' },
+  { label: 'Kalender', labelNO: 'Kalender', icon: 'CalendarCheck', href: '/coach/booking' },
+  { label: 'Meldinger', labelNO: 'Meldinger', icon: 'MessageCircle', href: '/coach/messages' },
+];
