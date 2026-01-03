@@ -583,11 +583,11 @@ const RoundScoringForm: React.FC<RoundScoringFormProps> = ({
         textAlign: 'center',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '8px' }}>
-          <Target size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
+          <Target size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)'} />
           <span style={{
             fontSize: '28px',
             fontWeight: 700,
-            color: scoreLevel?.color || 'var(--ak-text-primary)'',
+            color: scoreLevel?.color || 'var(--ak-text-primary)',
           }}>
             {result !== null ? (test.calculationType === 'direct' ? result : result.toFixed(1)) : '—'}
           </span>

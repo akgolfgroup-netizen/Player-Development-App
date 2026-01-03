@@ -257,9 +257,9 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
             justifyContent: 'center',
           }}>
             {test.calculationType === 'best' ? (
-              <Trophy size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
+              <Trophy size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)'} />
             ) : (
-              <Calculator size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
+              <Calculator size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)'} />
             )}
           </div>
           <div>
@@ -270,7 +270,7 @@ const SimpleAttemptsForm: React.FC<SimpleAttemptsFormProps> = ({
               <span style={{
                 fontSize: '32px',
                 fontWeight: 700,
-                color: scoreLevel?.color || 'var(--ak-text-primary)'',
+                color: scoreLevel?.color || 'var(--ak-text-primary)',
               }}>
                 {result !== null ? result.toFixed(1) : '—'}
               </span>

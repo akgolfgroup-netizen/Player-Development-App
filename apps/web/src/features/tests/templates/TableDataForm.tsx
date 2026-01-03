@@ -396,9 +396,9 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
             justifyContent: 'center',
           }}>
             {test.calculationType === 'pei' ? (
-              <Target size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
+              <Target size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)'} />
             ) : (
-              <Calculator size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)''} />
+              <Calculator size={20} color={scoreLevel?.color || 'var(--ak-text-secondary)'} />
             )}
           </div>
           <div>
@@ -411,7 +411,7 @@ const TableDataForm: React.FC<TableDataFormProps> = ({
               <span style={{
                 fontSize: '32px',
                 fontWeight: 700,
-                color: scoreLevel?.color || 'var(--ak-text-primary)'',
+                color: scoreLevel?.color || 'var(--ak-text-primary)',
               }}>
                 {result !== null ? result.toFixed(1) : '—'}
               </span>
