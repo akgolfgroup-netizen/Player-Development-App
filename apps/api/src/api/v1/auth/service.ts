@@ -164,8 +164,18 @@ export class AuthService {
       playerId = player?.id;
     }
 
-    // Generate tokens with playerId if available
-    return this.generateAuthResponse({ ...user, playerId });
+    // If user is a coach, look up their coach ID
+    let coachId: string | undefined;
+    if (user.role === 'coach') {
+      const coach = await this.prisma.coach.findFirst({
+        where: { email: user.email, tenantId: user.tenantId },
+        select: { id: true },
+      });
+      coachId = coach?.id;
+    }
+
+    // Generate tokens with playerId/coachId if available
+    return this.generateAuthResponse({ ...user, playerId, coachId });
   }
 
   /**
@@ -216,8 +226,18 @@ export class AuthService {
       playerId = player?.id;
     }
 
-    // Generate new tokens with playerId if available
-    return this.generateAuthResponse({ ...storedToken.user, playerId });
+    // If user is a coach, look up their coach ID
+    let coachId: string | undefined;
+    if (storedToken.user.role === 'coach') {
+      const coach = await this.prisma.coach.findFirst({
+        where: { email: storedToken.user.email, tenantId: storedToken.user.tenantId },
+        select: { id: true },
+      });
+      coachId = coach?.id;
+    }
+
+    // Generate new tokens with playerId/coachId if available
+    return this.generateAuthResponse({ ...storedToken.user, playerId, coachId });
   }
 
   /**
@@ -293,6 +313,7 @@ export class AuthService {
       role: user.role,
       email: user.email,
       playerId: user.playerId, // Include if user is a player
+      coachId: user.coachId,   // Include if user is a coach
     });
 
     // Generate refresh token

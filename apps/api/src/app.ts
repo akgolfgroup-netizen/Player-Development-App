@@ -60,9 +60,9 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
 
   // Version endpoint to verify deployments
   app.get('/version', async () => ({
-    version: '2026-01-03-samling',
+    version: '2026-01-03-samling-v2',
     timestamp: new Date().toISOString(),
-    features: ['samling'],
+    features: ['samling', 'coachId-in-jwt'],
   }));
 
   // Register API routes
