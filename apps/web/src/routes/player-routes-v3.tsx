@@ -37,41 +37,41 @@ const MerHub = lazy(() => import('../features/hub-pages/MerHub'));
 const TreningLogg = lazy(() => import('../features/sessions/SessionCreateForm'));
 const TreningDagbok = lazy(() => import('../features/sessions/SessionsListView'));
 const TreningOkter = lazy(() => import('../features/sessions/SessionsListView'));
-const TreningPlan = lazy(() => import('../features/training/TrainingPlanView').catch(() => ({ default: () => <PlaceholderPage title="Treningsplan" /> })));
-const TreningOvelser = lazy(() => import('../features/exercises/ExercisesPage').catch(() => ({ default: () => <PlaceholderPage title="Øvelsesbank" /> })));
-const TreningVideoer = lazy(() => import('../features/video-library/VideoLibrary').catch(() => ({ default: () => <PlaceholderPage title="Videoer" /> })));
-const TreningTesting = lazy(() => import('../features/tests/TestingOverview').catch(() => ({ default: () => <PlaceholderPage title="Testing" /> })));
-const TreningTestRegistrer = lazy(() => import('../features/tests/TestRegistration').catch(() => ({ default: () => <PlaceholderPage title="Registrer test" /> })));
+const TreningPlan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Treningsplan" /> }));
+const TreningOvelser = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Øvelsesbank" /> }));
+const TreningVideoer = lazy(() => import('../features/video-library/VideoLibrary'));
+const TreningTesting = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Testing" /> }));
+const TreningTestRegistrer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Registrer test" /> }));
 
 // Utvikling area
-const UtviklingOversikt = lazy(() => import('../features/utvikling/UtviklingPage').catch(() => ({ default: () => <PlaceholderPage title="Min utvikling" /> })));
-const UtviklingStatistikk = lazy(() => import('../features/stats/StatsPage').catch(() => ({ default: () => <PlaceholderPage title="Statistikk" /> })));
-const UtviklingHistorikk = lazy(() => import('../features/progress/ProgressPage').catch(() => ({ default: () => <PlaceholderPage title="Historikk" /> })));
-const UtviklingTestresultater = lazy(() => import('../features/tests/TestResultsPage').catch(() => ({ default: () => <PlaceholderPage title="Testresultater" /> })));
-const UtviklingKrav = lazy(() => import('../features/tests/CategoryRequirementsPage').catch(() => ({ default: () => <PlaceholderPage title="Kategori-krav" /> })));
-const UtviklingBadges = lazy(() => import('../features/badges/BadgesPage').catch(() => ({ default: () => <PlaceholderPage title="Badges" /> })));
-const UtviklingAchievements = lazy(() => import('../features/achievements/AchievementsPage').catch(() => ({ default: () => <PlaceholderPage title="Oppnåelser" /> })));
+const UtviklingOversikt = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Min utvikling" /> }));
+const UtviklingStatistikk = lazy(() => import('../features/stats/StatsPage'));
+const UtviklingHistorikk = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Historikk" /> }));
+const UtviklingTestresultater = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Testresultater" /> }));
+const UtviklingKrav = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kategori-krav" /> }));
+const UtviklingBadges = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Badges" /> }));
+const UtviklingAchievements = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Oppnåelser" /> }));
 
 // Plan area
-const PlanKalender = lazy(() => import('../features/calendar/CalendarPage').catch(() => ({ default: () => <PlaceholderPage title="Kalender" /> })));
-const PlanUkeplan = lazy(() => import('../features/trening-plan/TreningPlanUkeplan').catch(() => ({ default: () => <PlaceholderPage title="Ukeplan" /> })));
-const PlanBooking = lazy(() => import('../features/calendar-oversikt/CalendarOversikt').catch(() => ({ default: () => <PlaceholderPage title="Booking" /> })));
-const PlanMaal = lazy(() => import('../features/goals/GoalsPage').catch(() => ({ default: () => <PlaceholderPage title="Målsetninger" /> })));
-const PlanAarsplan = lazy(() => import('../features/annual-plan/AnnualPlanPage').catch(() => ({ default: () => <PlaceholderPage title="Årsplan" /> })));
-const PlanTurneringer = lazy(() => import('../features/tournament-calendar/TournamentCalendar').catch(() => ({ default: () => <PlaceholderPage title="Turneringskalender" /> })));
-const PlanMineTurneringer = lazy(() => import('../features/tournaments/MyTournamentsPage').catch(() => ({ default: () => <PlaceholderPage title="Mine turneringer" /> })));
+const PlanKalender = lazy(() => import('../features/calendar/CalendarPage'));
+const PlanUkeplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Ukeplan" /> }));
+const PlanBooking = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Booking" /> }));
+const PlanMaal = lazy(() => import('../features/goals/GoalsPage'));
+const PlanAarsplan = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Årsplan" /> }));
+const PlanTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Turneringskalender" /> }));
+const PlanMineTurneringer = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Mine turneringer" /> }));
 
 // Mer area
-const MerProfil = lazy(() => import('../features/profile/ProfilePage').catch(() => ({ default: () => <PlaceholderPage title="Min profil" /> })));
-const MerProfilRediger = lazy(() => import('../features/profile/ProfileEditPage').catch(() => ({ default: () => <PlaceholderPage title="Rediger profil" /> })));
-const MerTrenerteam = lazy(() => import('../features/coaches/CoachesPage').catch(() => ({ default: () => <PlaceholderPage title="Trenerteam" /> })));
-const MerMeldinger = lazy(() => import('../features/kommunikasjon/KommunikasjonPage').catch(() => ({ default: () => <PlaceholderPage title="Meldinger" /> })));
-const MerFeedback = lazy(() => import('../features/coach-notes/CoachNotesPage').catch(() => ({ default: () => <PlaceholderPage title="Trenerfeedback" /> })));
-const MerKunnskap = lazy(() => import('../features/knowledge/KnowledgePage').catch(() => ({ default: () => <PlaceholderPage title="Kunnskapsbase" /> })));
-const MerNotater = lazy(() => import('../features/notes/NotesPage').catch(() => ({ default: () => <PlaceholderPage title="Notater" /> })));
-const MerInnstillinger = lazy(() => import('../features/innstillinger/InnstillingerPage').catch(() => ({ default: () => <PlaceholderPage title="Innstillinger" /> })));
-const MerVarsler = lazy(() => import('../features/innstillinger/VarslerPage').catch(() => ({ default: () => <PlaceholderPage title="Varselinnstillinger" /> })));
-const MerKalibrering = lazy(() => import('../features/tests/CalibrationPage').catch(() => ({ default: () => <PlaceholderPage title="Kalibrering" /> })));
+const MerProfil = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Min profil" /> }));
+const MerProfilRediger = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Rediger profil" /> }));
+const MerTrenerteam = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Trenerteam" /> }));
+const MerMeldinger = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Meldinger" /> }));
+const MerFeedback = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Trenerfeedback" /> }));
+const MerKunnskap = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kunnskapsbase" /> }));
+const MerNotater = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Notater" /> }));
+const MerInnstillinger = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Innstillinger" /> }));
+const MerVarsler = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Varselinnstillinger" /> }));
+const MerKalibrering = lazy(() => Promise.resolve({ default: () => <PlaceholderPage title="Kalibrering" /> }));
 
 // ============================================================
 // Placeholder Component
