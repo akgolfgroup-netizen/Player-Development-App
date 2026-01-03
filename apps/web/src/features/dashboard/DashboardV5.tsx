@@ -532,8 +532,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: 'var(--spacing-5)',
     padding: 'var(--spacing-4)',
-    maxWidth: '600px',
-    margin: '0 auto',
+    width: '100%',
   },
 
   // Welcome Header
