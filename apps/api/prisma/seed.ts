@@ -15,6 +15,7 @@ import { seedEventsAndTournaments } from './seeds/events-tournaments';
 import { seedTrainingPlan } from './seeds/training-plan';
 import { seedSkole } from './seeds/skole';
 import { seedTrainingSessions } from './seeds/training-sessions';
+import { seedDataGolfPlayers } from './seeds/datagolf-players';
 
 const prisma = new PrismaClient();
 
@@ -49,6 +50,9 @@ async function main() {
     // 8. Seed training sessions and stats
     await seedTrainingSessions();
 
+    // 9. Seed DataGolf pro players (for comparison feature)
+    await seedDataGolfPlayers();
+
     console.log('\n✅ All seeds completed successfully!');
     console.log('\n📊 Summary of seeded data:');
     console.log('   • Demo users (admin, coach, player)');
@@ -64,6 +68,7 @@ async function main() {
     console.log('   • School schedule (fag, timer, oppgaver)');
     console.log('   • Training sessions (30 days history)');
     console.log('   • Weekly and monthly training stats');
+    console.log('   • DataGolf pro players (30 players)');
   } catch (error) {
     console.error('❌ Seeding failed:', error);
     throw error;
