@@ -59,10 +59,10 @@ This document standardizes naming across the IUP Golf codebase, providing a mapp
 
 | Norwegian | English | Usage Context | Status |
 |-----------|---------|---------------|--------|
-| `Etablering` (E) | `Establishment` | Training period | Documented |
-| `Grunnleggende` (G) | `Foundation` | Training period | Documented |
-| `Spesialisering` (S) | `Specialization` | Training period | Documented |
-| `Topping` (T) | `Peak` / `Tournament` | Training period | Documented |
+| `Evaluering` (E) | `Evaluation` | Training period (Uke 43-46) | Documented |
+| `Grunnperiode` (G) | `Foundation` | Training period (Uke 47-12) | Documented |
+| `Spesialisering` (S) | `Specialization` | Training period (Uke 13-25) | Documented |
+| `Turnering` (T) | `Tournament` | Training period (Uke 26-42) | Documented |
 
 ### Player Categories
 
@@ -70,7 +70,7 @@ This document standardizes naming across the IUP Golf codebase, providing a mapp
 |-----------|---------|---------------|--------|
 | `Spiller` | `Player` | User role | Already English in code |
 | `Trener` | `Coach` | User role | Already English in code |
-| `Kategori` | `Category` | Player tier (A1-D2) | Documented |
+| `Kategori` | `Category` | Player tier (A-K system) | Documented |
 
 ## Guidelines
 

@@ -65,15 +65,19 @@ Systemet genererer **12-måneders treningsplaner** med:
 
 **Fil:** `apps/api/src/domain/training-plan/periodization-templates.ts`
 
-### Spillerkategorier
+### Spillerkategorier (Kategori A-K)
 
-| Kategori | Kode | Score-range | Timer/uke |
-|----------|------|-------------|-----------|
-| Elite | E1 | <70 | 18-25 |
-| Advanced | A1 | 70-75 | 15-20 |
-| Intermediate | I1 | 75-80 | 12-18 |
-| Developing | D1 | 80-85 | 10-15 |
-| Beginner | B1 | 85+ | 8-12 |
+| Kategori | Kode | Score-range | Timer/uke | Beskrivelse |
+|----------|------|-------------|-----------|-------------|
+| A | A | <70 (scratch+) | 18-25 | World Elite |
+| B | B | 70-72 | 18-22 | Tour Professional |
+| C | C | 72-75 | 15-20 | Elite Amateur |
+| D | D | 75-78 | 12-18 | Advanced Competitive |
+| E | E | 78-82 | 12-18 | Competitive Amateur |
+| F | F | 82-86 | 10-15 | Intermediate |
+| G | G | 86-90 | 10-15 | Developing |
+| H | H | 90+ | 8-12 | Beginner Adult |
+| I-K | I-K | Junior | 6-12 | Junior kategorier |
 
 ### Template-struktur
 
@@ -164,15 +168,15 @@ Timer/uke: 10-15
 Timer/uke: 8-12
 ```
 
-### Learning Phases (L1-L5)
+### Læringsfaser (L1-L5)
 
 | Fase | Navn | Beskrivelse |
 |------|------|-------------|
-| L1 | Acquisition | Lære ny ferdighet |
-| L2 | Consolidation | Befeste ferdighet |
-| L3 | Automation | Automatisere bevegelse |
-| L4 | Transfer | Overføre til spillsituasjon |
-| L5 | Competition | Bruke under press |
+| L1 | Eksponering | Introduksjon til ny ferdighet, bevisstgjøring |
+| L2 | Fundamentals | Etablere grunnleggende teknikk, repetisjon |
+| L3 | Variasjon | Introdusere variasjon, forskjellige betingelser |
+| L4 | Timing og Flow | Integrere i sving/spillflyt, rytme og automatisering |
+| L5 | Automatisering | Ferdighet under press, konkurranseoverføring |
 
 ### Settings (S1-S10)
 
@@ -193,10 +197,10 @@ Timer/uke: 8-12
 
 | Periode | Navn | Fokus | Varighet |
 |---------|------|-------|----------|
-| **E** | Etablering | Tekniske grunnlag, nye mønstre | Tidlig base |
-| **G** | Generell | Balansert utvikling, kapasitet | Sen base + tidlig spec |
-| **S** | Spesialisering | Konkurransespesifikk trening | Sen spec + tidlig turnering |
-| **T** | Turnering | Toppform, mental forberedelse | Turneringsperiode |
+| **E** | Evaluering | Refleksjon, testing, målsetting | Uke 43-46 (4 uker) |
+| **G** | Grunnperiode | Bygge fundamentet, teknikk og fysisk | Uke 47-12 (18 uker) |
+| **S** | Spesialisering | Golf-spesifikk utvikling | Uke 13-25 (13 uker) |
+| **T** | Turnering | Prestasjon, konkurransegjennomføring | Uke 26-42 (17 uker) |
 
 ---
 

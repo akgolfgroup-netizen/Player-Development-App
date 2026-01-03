@@ -96,16 +96,16 @@
 │  │    • Fysisk test                                     │     │
 │  │                                                      │     │
 │  │ 3. System beregner:                                  │     │
-│  │    • Spillerkategori (A1-D)                          │     │
+│  │    • Spillerkategori (A-K)                           │     │
 │  │    • Styrker og svakheter                            │     │
-│  │    • Breaking points                                 │     │
+│  │    • Bruddpunkter (breaking points)                  │     │
 │  └─────────────────────────────────────────────────────┘     │
 │                                                               │
 │  DAG 4-5: Plan Generering                                    │
 │  ┌─────────────────────────────────────────────────────┐     │
 │  │ 1. System genererer 12-måneders plan                 │     │
-│  │    • Basert på kategori og mål                       │     │
-│  │    • E/G/S/T periodisering                           │     │
+│  │    • Basert på kategori (A-K) og mål                 │     │
+│  │    • E/G/S/T periodisering (Eval/Grunn/Spes/Turn)    │     │
 │  │    • Turneringer innarbeidet                         │     │
 │  │                                                      │     │
 │  │ 2. Trener gjennomgår og justerer                     │     │
@@ -196,36 +196,36 @@
 │                     SESONG-SYKLUS                             │
 ├──────────────────────────────────────────────────────────────┤
 │                                                               │
-│  VINTER (Nov-Feb) - ETTERTRENING (E)                         │
+│  HØST (Okt-Nov) - EVALUERING (E)                             │
 │  ┌─────────────────────────────────────────────────────┐     │
+│  │ • Refleksjon og sesongavslutning                     │     │
+│  │ • Testing og benchmarking                            │     │
+│  │ • Analyse av forrige sesong                          │     │
+│  │ • Målsetting for neste år                            │     │
+│  └─────────────────────────────────────────────────────┘     │
+│                                                               │
+│  VINTER (Nov-Mar) - GRUNNPERIODE (G)                         │
+│  ┌─────────────────────────────────────────────────────┐     │
+│  │ • Bygge fundamentet                                  │     │
 │  │ • Grunnleggende teknikkarbeid                        │     │
 │  │ • Fysisk trening fokus                               │     │
 │  │ • Video-analyse intensivt                            │     │
-│  │ • Lavt turneringspress                               │     │
 │  └─────────────────────────────────────────────────────┘     │
 │                                                               │
-│  VÅR (Mar-Apr) - GENERELL (G)                                │
+│  VÅR (Mar-Jun) - SPESIALISERING (S)                          │
 │  ┌─────────────────────────────────────────────────────┐     │
-│  │ • Bygge på grunnlaget                                │     │
+│  │ • Golf-spesifikk utvikling                           │     │
 │  │ • Øke intensitet gradvis                             │     │
-│  │ • Teste nye ferdigheter                              │     │
+│  │ • Variasjonstrening                                  │     │
 │  │ • Forberedende turneringer                           │     │
 │  └─────────────────────────────────────────────────────┘     │
 │                                                               │
-│  SOMMER (Mai-Aug) - SPESIFIKK (S)                            │
+│  SOMMER (Jun-Okt) - TURNERING (T)                            │
 │  ┌─────────────────────────────────────────────────────┐     │
-│  │ • Turneringsfokus                                    │     │
-│  │ • Finpusse detaljer                                  │     │
-│  │ • Mental trening                                     │     │
-│  │ • Høy konkurranseintensitet                          │     │
-│  └─────────────────────────────────────────────────────┘     │
-│                                                               │
-│  HØST (Sep-Okt) - TURNERING (T)                              │
-│  ┌─────────────────────────────────────────────────────┐     │
+│  │ • Prestasjon og konkurransegjennomføring             │     │
 │  │ • Viktige sesongtureringer                           │     │
 │  │ • Vedlikehold av ferdigheter                         │     │
-│  │ • Prestasjonsfokus                                   │     │
-│  │ • Sesongavslutning                                   │     │
+│  │ • Mental fokus under press                           │     │
 │  └─────────────────────────────────────────────────────┘     │
 │                                                               │
 └──────────────────────────────────────────────────────────────┘

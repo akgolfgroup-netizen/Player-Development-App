@@ -74,15 +74,15 @@ static async generateAnnualPlan(input: GenerateAnnualPlanInput): Promise<AnnualP
 
 **Lokasjon**: `apps/api/src/domain/training-plan/periodization-templates.ts`
 
-### Spillerkategorier
+### Spillerkategorier (A-K systemet)
 
 | Kategori | Score | Base | Spesialisering | Turnering | Recovery | Timer/uke |
 |----------|-------|------|----------------|-----------|----------|-----------|
-| **Elite (E1)** | <70 | 16 uker | 24 uker | 10 uker | 2 uker | 18-25 |
-| **Advanced (A1)** | 70-75 | 20 uker | 20 uker | 10 uker | 2 uker | 15-20 |
-| **Intermediate (I1)** | 75-80 | 24 uker | 18 uker | 8 uker | 2 uker | 12-18 |
-| **Developing (D1)** | 80-85 | 28 uker | 16 uker | 6 uker | 2 uker | 10-15 |
-| **Beginner (B1)** | 85+ | 32 uker | 14 uker | 4 uker | 2 uker | 8-12 |
+| **A** (World Elite) | <70 | 16 uker | 24 uker | 10 uker | 2 uker | 18-25 |
+| **B-C** (Tour/Elite Amateur) | 70-75 | 20 uker | 20 uker | 10 uker | 2 uker | 15-20 |
+| **D-E** (Advanced/Competitive) | 75-82 | 24 uker | 18 uker | 8 uker | 2 uker | 12-18 |
+| **F-G** (Intermediate/Developing) | 82-90 | 28 uker | 16 uker | 6 uker | 2 uker | 10-15 |
+| **H-K** (Beginner/Junior) | 90+ | 32 uker | 14 uker | 4 uker | 2 uker | 8-12 |
 
 ### Mal-struktur
 
@@ -130,10 +130,10 @@ interface PeriodizationTemplate {
 
 | Periode | Navn | Fokus | Læringsfaser | Settings | Volum |
 |---------|------|-------|--------------|----------|-------|
-| **E** | Etablering (Grunnlag) | Teknisk fundamenter | L1-L3 | S1-S3 | Medium→Høy |
-| **G** | Generell forberedelse | Allsidig utvikling | L1-L4 | S3-S6 | Medium-Høy |
-| **S** | Spesialisering | Konkurransespesifikk | L2-L4/L5 | S5-S8 | Høy |
-| **T** | Turnering | Peak prestasjon | L3-L5 | S7-S10 | Peak→Taper |
+| **E** | Evaluering | Refleksjon, testing, målsetting | L1-L3 | S1-S3 | Medium |
+| **G** | Grunnperiode | Bygge fundamentet, teknikk og fysisk | L1-L4 | S3-S6 | Medium-Høy |
+| **S** | Spesialisering | Golf-spesifikk utvikling | L2-L4/L5 | S5-S8 | Høy |
+| **T** | Turnering | Prestasjon, konkurransegjennomføring | L3-L5 | S7-S10 | Peak→Taper |
 
 ### Volum-intensitet beregning
 

@@ -39,7 +39,7 @@ En **enterprise-grade treningsplattform** spesifikt designet for junior golftren
 | Funksjon | Beskrivelse |
 |----------|-------------|
 | **12-måneders Plan** | Automatisk generert årlig treningsplan |
-| **Periodisering** | E/G/S/T-faser (Ettertrening, Generell, Spesifikk, Turnering) |
+| **Periodisering** | E/G/S/T-faser (Evaluering, Grunnperiode, Spesialisering, Turnering) |
 | **Ukentlige Oppdrag** | Dag-for-dag treningsoppgaver |
 | **Øvelsesbibliotek** | Komplett database med øvelser |
 | **Kalender-sync** | Synkronisering med Google Calendar |
