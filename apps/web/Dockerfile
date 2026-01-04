@@ -21,6 +21,10 @@ ENV CI=false
 ARG RAILWAY_GIT_COMMIT_SHA
 ARG RAILWAY_GIT_BRANCH
 
+# Cache buster - use commit SHA to invalidate Docker cache on new commits
+# This ensures fresh builds when code changes
+ARG CACHEBUST=${RAILWAY_GIT_COMMIT_SHA}
+
 # Map Railway variables to CRA-compatible env vars (REACT_APP_* prefix required)
 ENV REACT_APP_BUILD_SHA=${RAILWAY_GIT_COMMIT_SHA:-local}
 ENV REACT_APP_BUILD_BRANCH=${RAILWAY_GIT_BRANCH:-local}
@@ -69,6 +73,16 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built assets from builder
 COPY --from=builder /app/build /usr/share/nginx/html
+
+# =============================================================================
+# DEBUG: Inject build version into index.html for easy verification
+# Check: view-source on the page and look for "build-sha" meta tag
+# =============================================================================
+ARG RAILWAY_GIT_COMMIT_SHA
+RUN if [ -n "$RAILWAY_GIT_COMMIT_SHA" ] && [ -f /usr/share/nginx/html/index.html ]; then \
+      sed -i "s/<head>/<head><meta name=\"build-sha\" content=\"${RAILWAY_GIT_COMMIT_SHA}\">/" /usr/share/nginx/html/index.html && \
+      echo "Injected build SHA into index.html: $RAILWAY_GIT_COMMIT_SHA"; \
+    fi
 
 # =============================================================================
 # CACHE CONTROL: Ensure browsers always get fresh HTML
