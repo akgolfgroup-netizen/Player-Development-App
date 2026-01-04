@@ -7,6 +7,9 @@
  * defined in src/index.css. This ensures a single source of truth.
  */
 
+// Helper for CSS variables with alpha support (RGB triplet format)
+const withAlpha = (cssVarName) => `rgb(var(${cssVarName}) / <alpha-value>)`;
+
 module.exports = {
   content: [
     "./index.html",
@@ -40,6 +43,61 @@ module.exports = {
       // COLORS (CSS Variable References)
       // ═══════════════════════════════════════════
       colors: {
+        // ═══════════════════════════════════════════
+        // AK SEMANTIC COLOR SYSTEM (Premium Light)
+        // Stone × Midnight Blue × Emerald × Soft Gold
+        // ═══════════════════════════════════════════
+        ak: {
+          surface: {
+            base: withAlpha("--ak-bg-app"),
+            card: withAlpha("--ak-surface-card"),
+            elevated: withAlpha("--ak-surface-elevated"),
+            border: withAlpha("--ak-border"),
+          },
+          text: {
+            primary: withAlpha("--ak-text-primary"),
+            body: withAlpha("--ak-text-body"),
+            muted: withAlpha("--ak-text-muted"),
+            inverse: "#FFFFFF",
+          },
+          action: {
+            primary: withAlpha("--ak-action-primary"),
+            hover: withAlpha("--ak-action-hover"),
+            active: withAlpha("--ak-action-active"),
+          },
+          progress: {
+            DEFAULT: withAlpha("--ak-progress"),
+            soft: withAlpha("--ak-progress-soft"),
+          },
+          prestige: {
+            DEFAULT: withAlpha("--ak-prestige"),
+            strong: withAlpha("--ak-prestige-strong"),
+            muted: "rgba(198, 162, 77, 0.12)",
+          },
+          status: {
+            success: withAlpha("--ak-status-success"),
+            warning: withAlpha("--ak-status-warning"),
+            error: withAlpha("--ak-status-error"),
+            info: withAlpha("--ak-status-info"),
+          },
+          category: {
+            teknikk: withAlpha("--ak-category-teknikk"),
+            fysisk: withAlpha("--ak-category-fysisk"),
+            mental: withAlpha("--ak-category-mental"),
+            spill: withAlpha("--ak-category-spill"),
+            test: withAlpha("--ak-category-test"),
+            "teknikk-muted": withAlpha("--ak-category-teknikk-muted"),
+            "fysisk-muted": withAlpha("--ak-category-fysisk-muted"),
+            "mental-muted": withAlpha("--ak-category-mental-muted"),
+            "spill-muted": withAlpha("--ak-category-spill-muted"),
+            "test-muted": withAlpha("--ak-category-test-muted"),
+          },
+        },
+
+        // ═══════════════════════════════════════════
+        // LEGACY COLORS (kept for backwards compatibility)
+        // ═══════════════════════════════════════════
+
         // ═══════════════════════════════════════════
         // GREEN SCALE - Primary Brand Hierarchy
         // ═══════════════════════════════════════════

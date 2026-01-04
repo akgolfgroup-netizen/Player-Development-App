@@ -1,217 +1,112 @@
-import React from 'react';
-import { triggerHaptic } from '../../hooks/useHaptic';
-
 /**
- * Button Primitive
- * Primary button with variants and sizes
+ * AK Golf Academy - Button Component
+ * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
- * UI Canon v1.2 (Apple/Stripe):
- * - Primary: solid color background for main actions
- * - Secondary: subtle background with border for secondary actions
- * - Ghost: transparent for tertiary actions
- * - Destructive: red background for dangerous actions
- * - Sizes: sm (36px), md (44px)
- * - Consistent radius: --radius-md
- * - Micro-interactions: hover brightness, active press, smooth transitions
+ * Rules:
+ * - Primary action = ak.action (blue)
+ * - Progress (emerald) is NOT allowed for buttons
+ * - Prestige (gold) only for premium/earned contexts
  */
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive' | 'danger' | 'outline';
-type ButtonSize = 'sm' | 'md' | 'lg';
+import React from "react";
+
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "ghost"
+  | "danger"
+  | "destructive" // alias for danger
+  | "success"
+  | "premium"
+  | "outline"; // backwards compat alias for secondary
+
+export type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Visual variant */
   variant?: ButtonVariant;
-  /** Size variant */
   size?: ButtonSize;
-  /** Loading state - shows spinner */
-  isLoading?: boolean;
-  /** Loading state - alias for isLoading */
-  loading?: boolean;
-  /** Icon on the left side */
-  leftIcon?: React.ReactNode;
-  /** Icon on the right side */
-  rightIcon?: React.ReactNode;
-  /** Full width button */
   fullWidth?: boolean;
-  /** Button content */
+  loading?: boolean;
+  icon?: React.ReactNode;
+  iconPosition?: "left" | "right";
+  /** @deprecated Use icon with iconPosition="left" instead */
+  leftIcon?: React.ReactNode;
+  /** @deprecated Use icon with iconPosition="right" instead */
+  rightIcon?: React.ReactNode;
   children: React.ReactNode;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
-  variant = 'primary',
-  size = 'md',
-  isLoading = false,
-  loading,
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: "px-4 py-2 text-[13px] leading-[18px] rounded-lg",
+  md: "px-6 py-3 text-[15px] leading-[20px] rounded-xl",
+  lg: "px-8 py-4 text-[17px] leading-[22px] rounded-xl",
+};
+
+const variantClasses: Record<ButtonVariant, string> = {
+  primary:
+    "bg-ak-action-primary hover:bg-ak-action-hover active:bg-ak-action-active text-white",
+  secondary:
+    "bg-transparent border-2 border-ak-action-active text-ak-action-active hover:bg-ak-action-active/10",
+  outline:
+    "bg-transparent border-2 border-ak-action-active text-ak-action-active hover:bg-ak-action-active/10", // alias for secondary
+  ghost:
+    "bg-transparent text-ak-text-body hover:bg-ak-surface-card active:bg-ak-surface-border",
+  danger:
+    "bg-ak-status-error hover:opacity-90 active:opacity-95 text-white",
+  destructive:
+    "bg-ak-status-error hover:opacity-90 active:opacity-95 text-white", // alias for danger
+  // Keep success for confirmations, NOT as a primary CTA color.
+  success:
+    "bg-ak-status-success hover:opacity-90 active:opacity-95 text-white",
+  premium:
+    "bg-ak-prestige hover:opacity-90 active:opacity-95 text-ak-text-primary",
+};
+
+export const Button: React.FC<ButtonProps> = ({
+  variant = "primary",
+  size = "md",
+  fullWidth = false,
+  loading = false,
+  icon,
+  iconPosition = "left",
   leftIcon,
   rightIcon,
-  fullWidth = false,
   children,
   disabled,
-  className = '',
-  style = {},
-  onClick,
+  className,
   ...props
-}, ref) => {
-  const isLoadingState = isLoading || loading;
-  const isDisabled = disabled || isLoadingState;
+}) => {
+  const isDisabled = Boolean(disabled || loading);
+  // Backwards compat: leftIcon/rightIcon take precedence
+  const resolvedLeftIcon = leftIcon ?? (iconPosition === "left" ? icon : undefined);
+  const resolvedRightIcon = rightIcon ?? (iconPosition === "right" ? icon : undefined);
 
-  // Wrap onClick with haptic feedback
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!isDisabled) {
-      // Choose haptic type based on variant
-      if (variant === 'destructive' || variant === 'danger') {
-        triggerHaptic.warning();
-      } else {
-        triggerHaptic.tap();
-      }
-    }
-    onClick?.(e);
-  };
-
-  const buttonStyle: React.CSSProperties = {
-    ...styles.base,
-    ...variantStyles[variant],
-    ...sizeStyles[size],
-    ...(fullWidth && styles.fullWidth),
-    ...style,
-  };
-
-  // Build class list for micro-interactions
-  const variantClass = variant === 'secondary' ? 'btn-secondary' :
-                       variant === 'ghost' ? 'btn-ghost' :
-                       variant === 'destructive' ? 'btn-destructive' :
-                       variant === 'danger' ? 'btn-destructive' :
-                       variant === 'outline' ? 'btn-secondary' : '';
-  const buttonClasses = [
-    'btn-interactive',
-    variantClass,
-    className,
-  ].filter(Boolean).join(' ');
+  const classes = [
+    "inline-flex items-center justify-center gap-2 font-semibold select-none",
+    "transition-all duration-200",
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-ak-action-active/30 focus-visible:ring-offset-2 focus-visible:ring-offset-ak-surface-base",
+    sizeClasses[size],
+    variantClasses[variant],
+    fullWidth ? "w-full" : "",
+    isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
+    className ?? "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <button
-      ref={ref}
-      style={buttonStyle}
-      disabled={isDisabled}
-      className={buttonClasses}
-      onClick={handleClick}
-      {...props}
-    >
-      {isLoadingState ? (
-        <span style={styles.spinner}>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            style={styles.spinnerSvg}
-          >
-            <circle
-              cx="8"
-              cy="8"
-              r="6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="9.42 31.42"
-            />
-          </svg>
-        </span>
+    <button className={classes} disabled={isDisabled} {...props}>
+      {loading ? (
+        <span className="opacity-80">Laster...</span>
       ) : (
         <>
-          {leftIcon && <span style={styles.icon}>{leftIcon}</span>}
-          <span>{children}</span>
-          {rightIcon && <span style={styles.icon}>{rightIcon}</span>}
+          {resolvedLeftIcon}
+          {children}
+          {resolvedRightIcon}
         </>
       )}
     </button>
   );
-});
-
-Button.displayName = 'Button';
-
-const styles: Record<string, React.CSSProperties> = {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 'var(--spacing-2)',
-    fontFamily: 'inherit',
-    fontWeight: 600,
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-    textDecoration: 'none',
-    whiteSpace: 'nowrap',
-    // Transitions handled by .btn-interactive class
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  icon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexShrink: 0,
-  },
-  spinner: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  spinnerSvg: {
-    animation: 'spin 0.8s linear infinite',
-  },
-};
-
-const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
-  primary: {
-    backgroundColor: 'var(--color-primary)',
-    color: 'var(--color-primary-foreground)',
-    boxShadow: 'var(--shadow-xs)',
-  },
-  secondary: {
-    backgroundColor: 'var(--color-surface)',
-    color: 'var(--color-text)',
-    border: '1px solid var(--color-border)',
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-    color: 'var(--color-text)',
-  },
-  destructive: {
-    backgroundColor: 'var(--color-danger)',
-    color: 'var(--color-primary-foreground)',
-    boxShadow: 'var(--shadow-xs)',
-  },
-  danger: {
-    backgroundColor: 'var(--color-danger)',
-    color: 'var(--color-primary-foreground)',
-    boxShadow: 'var(--shadow-xs)',
-  },
-  outline: {
-    backgroundColor: 'transparent',
-    color: 'var(--color-text)',
-    border: '1px solid var(--color-border)',
-  },
-};
-
-const sizeStyles: Record<ButtonSize, React.CSSProperties> = {
-  sm: {
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    fontSize: 'var(--font-size-footnote)',
-    minHeight: '36px',
-  },
-  md: {
-    padding: 'var(--spacing-2) var(--spacing-4)',
-    fontSize: 'var(--font-size-body)',
-    minHeight: '44px',
-  },
-  lg: {
-    padding: 'var(--spacing-3) var(--spacing-5)',
-    fontSize: 'var(--font-size-body)',
-    minHeight: '52px',
-  },
 };
 
 export default Button;

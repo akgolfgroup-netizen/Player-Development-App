@@ -1,26 +1,28 @@
 /**
  * Primitives - Atomic UI Elements
+ * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * The most basic building blocks of the UI system.
  * These components are used to compose more complex components.
- *
- * UI Canon v1.0 - Standardized primitives
  */
 
-// Core primitives (UI Canon standardized)
-export { default as Card } from './Card';
+// Core primitives (Premium Light v1.0)
 export { default as Button } from './Button';
-export { default as Input } from './Input';
-export { default as Badge } from './Badge.primitive';
+export { default as Card, SessionCard, StatsCard } from './Card';
+export { default as Badge, LevelBadge, CategoryBadge } from './Badge';
+export { default as Input, TextInput, Textarea, Select } from './Input';
+export { default as Avatar, AvatarGroup } from './Avatar';
+export { ProgressBar, CircularProgress, GoalProgress } from './Progress';
 
 // Supporting primitives
 export { default as Text } from './Text.primitive';
-export { default as Avatar } from './Avatar.primitive';
 export { default as Spinner } from './Spinner.primitive';
 export { default as Divider } from './Divider.primitive';
 export { default as Switch } from './Switch.primitive';
 export { default as Checkbox } from './Checkbox.primitive';
-
-// Feedback primitives (UI Canon v1.2)
 export { default as Alert } from './Alert.primitive';
-export { default as ProgressBar, SegmentedProgressBar, CircularProgress } from './ProgressBar.primitive';
+
+// Legacy exports (deprecated - use new components above)
+// export { default as BadgeLegacy } from './Badge.legacy';
+// export { default as AvatarLegacy } from './Avatar.legacy';
+// export { ProgressBar as ProgressBarLegacy } from './ProgressBar.legacy';

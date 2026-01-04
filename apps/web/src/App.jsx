@@ -189,6 +189,9 @@ const VideoProgressView = lazy(() => import('./features/video-progress').then(m 
 // Coach player profile (lazy-loaded)
 const CoachPlayerPage = lazy(() => import('./features/coach-player/CoachPlayerPage').then(m => ({ default: m.CoachPlayerPage })));
 
+// Coach athlete progression (lazy-loaded)
+const CategoryProgressionPage = lazy(() => import('./features/coach-athlete-progression').then(m => ({ default: m.CategoryProgressionPage })));
+
 // Coach groups (lazy-loaded)
 const CoachGroupList = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupList })));
 const CoachGroupDetail = lazy(() => import('./features/coach-groups').then(m => ({ default: m.CoachGroupDetail })));
@@ -215,6 +218,7 @@ const CoachStatsOverview = lazy(() => import('./features/coach-stats').then(m =>
 const CoachStatsProgress = lazy(() => import('./features/coach-stats').then(m => ({ default: m.CoachStatsProgress })));
 const CoachStatsRegression = lazy(() => import('./features/coach-stats').then(m => ({ default: m.CoachStatsRegression })));
 const CoachDataGolf = lazy(() => import('./features/coach-stats').then(m => ({ default: m.CoachDataGolf })));
+const PlayerComparisonTool = lazy(() => import('./features/coach-stats').then(m => ({ default: m.PlayerComparisonTool })));
 
 // Coach messages (lazy-loaded)
 const CoachMessageList = lazy(() => import('./features/coach-messages').then(m => ({ default: m.CoachMessageList })));
@@ -1518,6 +1522,13 @@ function App() {
               </CoachLayout>
             </ProtectedRoute>
           } />
+          <Route path="/coach/athletes/:athleteId/progression" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <CategoryProgressionPage />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
           <Route path="/coach/training-plans/create" element={
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
@@ -1714,6 +1725,13 @@ function App() {
             <ProtectedRoute requiredRole="coach">
               <CoachLayout>
                 <CoachDataGolf />
+              </CoachLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/coach/stats/compare" element={
+            <ProtectedRoute requiredRole="coach">
+              <CoachLayout>
+                <PlayerComparisonTool />
               </CoachLayout>
             </ProtectedRoute>
           } />

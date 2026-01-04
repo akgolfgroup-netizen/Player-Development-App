@@ -1,13 +1,13 @@
 /**
  * AK GOLF ACADEMY — DESIGN SYSTEM v3.0
- * Premium Light (Forest Green)
+ * Premium Light: Stone × Midnight Blue × Emerald × Soft Gold
  *
  * This file is the SINGLE SOURCE OF TRUTH for all design tokens.
  * Do NOT hardcode colors, spacing, or other values in components.
  * Always use CSS variables or Tailwind classes that reference these tokens.
- *
- * Source: AK_GOLF_PREMIUM_LIGHT_SPEC.html
  */
+
+@import "./styles/tokens.css";
 
 @tailwind base;
 @tailwind components;

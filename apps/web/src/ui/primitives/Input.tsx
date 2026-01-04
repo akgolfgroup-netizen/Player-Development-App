@@ -1,203 +1,237 @@
-import React from 'react';
-
 /**
- * Input
- * Text input primitive with label, hint, and error states
+ * AK Golf Academy - Input Components
+ * Premium Light System: Stone × Midnight Blue × Emerald × Soft Gold
  *
- * UI Canon v1.2 (Apple/Stripe):
- * - Heights: sm (36px), md (44px) - matches Button
- * - Focus ring: token-based, subtle
- * - Hover: border highlight
- * - Placeholder: muted text
+ * Rules:
+ * - Inputs are calm/neutral
+ * - Focus = ak.action (blue)
+ * - Errors = ak.status.error only
  */
 
-type InputSize = 'sm' | 'md';
+import React from "react";
 
-interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
-  /** Input label */
+type InputSize = "sm" | "md";
+
+interface TextInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: string;
-  /** Hint text below input */
-  hint?: string;
-  /** Error message (also sets error styling) */
   error?: string;
-  /** Icon on the left side */
-  leadingIcon?: React.ReactNode;
-  /** Icon on the right side */
-  trailingIcon?: React.ReactNode;
-  /** Left addon - alias for leadingIcon */
+  helperText?: string;
+  /** @deprecated Use helperText instead */
+  hint?: string;
+  icon?: React.ReactNode;
+  /** Addon element on the left side */
   leftAddon?: React.ReactNode;
-  /** Right addon - alias for trailingIcon */
-  rightAddon?: React.ReactNode;
-  /** Size variant */
+  fullWidth?: boolean;
+  /** Input size variant */
   size?: InputSize;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(({
+const sizeClasses: Record<InputSize, string> = {
+  sm: "px-3 py-2 text-[13px] leading-[18px]",
+  md: "px-4 py-3 text-[15px] leading-[20px]",
+};
+
+export const TextInput: React.FC<TextInputProps> = ({
   label,
-  hint,
   error,
-  leadingIcon,
-  trailingIcon,
+  helperText,
+  hint,
+  icon,
   leftAddon,
-  rightAddon,
-  size = 'md',
-  className = '',
-  style = {},
-  disabled,
-  id,
+  fullWidth = false,
+  size = "md",
+  className,
   ...props
-}, ref) => {
-  const generatedId = React.useId();
-  const inputId = id || `input-${generatedId}`;
-  const hasError = Boolean(error);
-
-  // Support both naming conventions
-  const leftIcon = leadingIcon || leftAddon;
-  const rightIcon = trailingIcon || rightAddon;
-
-  const inputStyle: React.CSSProperties = {
-    ...styles.input,
-    ...sizeStyles[size],
-    ...(hasError && styles.inputError),
-    ...(disabled && styles.inputDisabled),
-    ...(leftIcon && styles.inputWithLeadingIcon),
-    ...(rightIcon && styles.inputWithTrailingIcon),
-    ...style,
-  };
-
-  // Add interactive class for hover effects
-  const inputClasses = 'input-interactive';
+}) => {
+  const resolvedHelperText = helperText ?? hint;
+  const hasLeftElement = Boolean(icon || leftAddon);
 
   return (
-    <div style={styles.wrapper} className={className}>
-      {label && (
-        <label htmlFor={inputId} style={styles.label}>
+    <div className={["flex flex-col gap-1.5", fullWidth ? "w-full" : ""].join(" ")}>
+      {label ? (
+        <label className="text-[13px] font-medium text-ak-text-primary">
           {label}
         </label>
-      )}
+      ) : null}
 
-      <div style={styles.inputContainer}>
-        {leftIcon && (
-          <span style={styles.leadingIcon}>{leftIcon}</span>
-        )}
+      <div className="relative flex items-center">
+        {(icon || leftAddon) ? (
+          <span className="pointer-events-none absolute left-3 text-ak-text-muted">
+            {icon ?? leftAddon}
+          </span>
+        ) : null}
 
         <input
-          ref={ref}
-          id={inputId}
-          style={inputStyle}
-          className={inputClasses}
-          disabled={disabled}
-          aria-invalid={hasError}
-          aria-describedby={
-            hasError ? `${inputId}-error` :
-            hint ? `${inputId}-hint` : undefined
-          }
+          className={[
+            "w-full rounded-xl bg-ak-surface-elevated text-ak-text-body",
+            sizeClasses[size],
+            "border-2",
+            error ? "border-ak-status-error" : "border-ak-surface-border",
+            "outline-none transition-all duration-200",
+            "focus:border-ak-action-active focus:ring-2 focus:ring-ak-action-active/20",
+            hasLeftElement ? "pl-11" : "",
+            className ?? "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
           {...props}
         />
-
-        {rightIcon && (
-          <span style={styles.trailingIcon}>{rightIcon}</span>
-        )}
       </div>
 
-      {hasError && (
-        <span id={`${inputId}-error`} style={styles.error}>
-          {error}
+      {error || resolvedHelperText ? (
+        <span
+          className={[
+            "text-[12px]",
+            error ? "text-ak-status-error" : "text-ak-text-muted",
+          ].join(" ")}
+        >
+          {error ?? resolvedHelperText}
         </span>
-      )}
-
-      {!hasError && hint && (
-        <span id={`${inputId}-hint`} style={styles.hint}>
-          {hint}
-        </span>
-      )}
+      ) : null}
     </div>
   );
-});
-
-Input.displayName = 'Input';
-
-const styles: Record<string, React.CSSProperties> = {
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 'var(--spacing-1)',
-    width: '100%',
-  },
-  label: {
-    fontSize: 'var(--font-size-footnote)',
-    fontWeight: 600,
-    color: 'var(--color-text)',
-  },
-  inputContainer: {
-    position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  input: {
-    width: '100%',
-    fontFamily: 'inherit',
-    color: 'var(--color-text)',
-    backgroundColor: 'var(--color-surface)',
-    border: '1px solid var(--color-border)',
-    borderRadius: 'var(--radius-md)',
-    outline: 'none',
-    // Transitions handled by .input-interactive class
-  },
 };
 
-const sizeStyles: Record<InputSize, React.CSSProperties> = {
-  sm: {
-    padding: 'var(--spacing-2) var(--spacing-3)',
-    fontSize: 'var(--font-size-footnote)',
-    minHeight: '36px',
-  },
-  md: {
-    padding: 'var(--spacing-3) var(--spacing-4)',
-    fontSize: 'var(--font-size-body)',
-    minHeight: '44px',
-  },
+// Textarea
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string;
+  error?: string;
+  helperText?: string;
+  fullWidth?: boolean;
+}
+
+export const Textarea: React.FC<TextareaProps> = ({
+  label,
+  error,
+  helperText,
+  fullWidth = false,
+  className,
+  ...props
+}) => {
+  return (
+    <div className={["flex flex-col gap-1.5", fullWidth ? "w-full" : ""].join(" ")}>
+      {label ? (
+        <label className="text-[13px] font-medium text-ak-text-primary">
+          {label}
+        </label>
+      ) : null}
+
+      <textarea
+        className={[
+          "w-full min-h-[100px] resize-y rounded-xl bg-ak-surface-elevated px-4 py-3",
+          "text-[15px] leading-[22px] text-ak-text-body",
+          "border-2",
+          error ? "border-ak-status-error" : "border-ak-surface-border",
+          "outline-none transition-all duration-200",
+          "focus:border-ak-action-active focus:ring-2 focus:ring-ak-action-active/20",
+          className ?? "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        {...props}
+      />
+
+      {error || helperText ? (
+        <span
+          className={[
+            "text-[12px]",
+            error ? "text-ak-status-error" : "text-ak-text-muted",
+          ].join(" ")}
+        >
+          {error ?? helperText}
+        </span>
+      ) : null}
+    </div>
+  );
 };
 
-// Additional styles merged with main styles
-Object.assign(styles, {
-  inputError: {
-    borderColor: 'var(--color-danger)',
-  },
-  inputDisabled: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-    backgroundColor: 'var(--color-surface-2)',
-  },
-  inputWithLeadingIcon: {
-    paddingLeft: 'var(--spacing-10)',
-  },
-  inputWithTrailingIcon: {
-    paddingRight: 'var(--spacing-10)',
-  },
-  leadingIcon: {
-    position: 'absolute',
-    left: 'var(--spacing-3)',
-    display: 'flex',
-    alignItems: 'center',
-    color: 'var(--color-text-muted)',
-    pointerEvents: 'none',
-  },
-  trailingIcon: {
-    position: 'absolute',
-    right: 'var(--spacing-3)',
-    display: 'flex',
-    alignItems: 'center',
-    color: 'var(--color-text-muted)',
-  },
-  hint: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--color-text-muted)',
-  },
-  error: {
-    fontSize: 'var(--font-size-caption1)',
-    color: 'var(--color-danger)',
-  },
-});
+// Select
+interface SelectOption {
+  value: string;
+  label: string;
+}
 
-export default Input;
+interface SelectProps
+  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "onChange"> {
+  label?: string;
+  options: SelectOption[];
+  error?: string;
+  helperText?: string;
+  fullWidth?: boolean;
+  onChange?: (value: string) => void;
+}
+
+export const Select: React.FC<SelectProps> = ({
+  label,
+  options,
+  error,
+  helperText,
+  fullWidth = false,
+  onChange,
+  className,
+  ...props
+}) => {
+  return (
+    <div className={["flex flex-col gap-1.5", fullWidth ? "w-full" : ""].join(" ")}>
+      {label ? (
+        <label className="text-[13px] font-medium text-ak-text-primary">
+          {label}
+        </label>
+      ) : null}
+
+      <div className="relative">
+        <select
+          className={[
+            "w-full appearance-none rounded-xl bg-ak-surface-elevated px-4 py-3 pr-10",
+            "text-[15px] leading-[20px] text-ak-text-body",
+            "border-2",
+            error ? "border-ak-status-error" : "border-ak-surface-border",
+            "outline-none transition-all duration-200",
+            "focus:border-ak-action-active focus:ring-2 focus:ring-ak-action-active/20",
+            "cursor-pointer",
+            className ?? "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          onChange={(e) => onChange?.(e.target.value)}
+          {...props}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        {/* Chevron */}
+        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ak-text-muted">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M6 9l6 6 6-6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      </div>
+
+      {error || helperText ? (
+        <span
+          className={[
+            "text-[12px]",
+            error ? "text-ak-status-error" : "text-ak-text-muted",
+          ].join(" ")}
+        >
+          {error ?? helperText}
+        </span>
+      ) : null}
+    </div>
+  );
+};
+
+// Alias for backwards compatibility
+export const Input = TextInput;
+
+export default TextInput;

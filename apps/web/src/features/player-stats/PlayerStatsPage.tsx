@@ -10,15 +10,18 @@ import {
   RefreshCw,
   Info,
   ArrowRight,
-  Trophy
+  Trophy,
+  Download
 } from 'lucide-react';
 import AppShellTemplate from '../../ui/templates/AppShellTemplate';
 import Card from '../../ui/primitives/Card';
 import Button from '../../ui/primitives/Button';
 import StateCard from '../../ui/composites/StateCard';
+import { ExportButton } from '../../components/common/ExportButton';
 
 import { useStrokesGained } from '../../hooks/useStrokesGained';
 import { useScreenView } from '../../analytics/useScreenView';
+import { useAuth } from '../../contexts/AuthContext';
 import { SectionTitle, CardTitle } from '../../components/typography';
 import { getStrokesGainedIcon } from '../../constants/icons';
 
@@ -40,8 +43,11 @@ interface StrokesGainedData {
 const PlayerStatsPage: React.FC = () => {
   useScreenView('Statistikk');
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { data, loading, error, refetch } = useStrokesGained();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const playerId = user?.playerId || user?.id;
 
   const sgData = data as StrokesGainedData | null;
 
@@ -129,6 +135,26 @@ const PlayerStatsPage: React.FC = () => {
         <div style={styles.demoBanner}>
           <Info size={16} color="var(--info)" />
           <span>Viser demodata. Fullfør tester for å se dine egne resultater.</span>
+        </div>
+      )}
+
+      {/* Export Actions */}
+      {playerId && !sgData?.isDemo && (
+        <div style={styles.exportRow}>
+          <ExportButton
+            type="statistics"
+            playerId={playerId}
+            variant="ghost"
+            size="sm"
+            label="Eksporter statistikk"
+          />
+          <ExportButton
+            type="testResults"
+            playerId={playerId}
+            variant="ghost"
+            size="sm"
+            label="Eksporter testresultater"
+          />
         </div>
       )}
 
@@ -329,6 +355,12 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 'var(--spacing-3)',
+  },
+  exportRow: {
+    display: 'flex',
+    gap: 'var(--spacing-2)',
+    marginBottom: 'var(--spacing-4)',
+    justifyContent: 'flex-end',
   },
   demoBanner: {
     display: 'flex',

@@ -1134,6 +1134,513 @@ export const tournamentsAPI = {
 };
 
 // =============================================================================
+// Export API (PDF/Excel)
+// =============================================================================
+
+export const exportAPI = {
+  playerReport: (playerId: string): Promise<AxiosResponse<Blob>> =>
+    api.get(`/export/player/${playerId}/report`, { responseType: 'blob' }),
+
+  testResults: (params: { playerId?: string; startDate?: string; endDate?: string; testId?: string } = {}): Promise<AxiosResponse<Blob>> =>
+    api.get('/export/test-results', { params, responseType: 'blob' }),
+
+  trainingSessions: (params: { playerId?: string; startDate?: string; endDate?: string } = {}): Promise<AxiosResponse<Blob>> =>
+    api.get('/export/training-sessions', { params, responseType: 'blob' }),
+
+  statistics: (): Promise<AxiosResponse<Blob>> =>
+    api.get('/export/statistics', { responseType: 'blob' }),
+
+  trainingPlan: (playerId: string): Promise<AxiosResponse<Blob>> =>
+    api.get(`/export/training-plan/${playerId}`, { responseType: 'blob' }),
+};
+
+// =============================================================================
+// Videos API
+// =============================================================================
+
+export interface Video {
+  id: string;
+  title: string;
+  description?: string;
+  playerId: string;
+  category: 'swing' | 'putting' | 'short_game' | 'other';
+  clubType?: string;
+  viewAngle?: 'face_on' | 'down_the_line' | 'overhead' | 'side';
+  status: 'processing' | 'ready' | 'reviewed' | 'failed' | 'deleted';
+  duration?: number;
+  width?: number;
+  height?: number;
+  thumbnailUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface VideoRequest {
+  id: string;
+  playerId: string;
+  drillType?: string;
+  category?: string;
+  viewAngle?: string;
+  instructions?: string;
+  dueDate?: string;
+  status: 'pending' | 'fulfilled' | 'expired' | 'cancelled';
+  createdAt: string;
+}
+
+export const videosAPI = {
+  list: (params: { playerId?: string; category?: string; status?: string; limit?: number; offset?: number } = {}): Promise<AxiosResponse<ApiResponse<{ videos: Video[]; total: number }>>> =>
+    api.get('/videos', { params }),
+
+  getById: (id: string): Promise<AxiosResponse<ApiResponse<Video>>> =>
+    api.get(`/videos/${id}`),
+
+  getPlaybackUrl: (id: string, expiresIn?: number): Promise<AxiosResponse<ApiResponse<{ url: string; expiresAt: string }>>> =>
+    api.get(`/videos/${id}/playback`, { params: { expiresIn } }),
+
+  getThumbnailUrl: (id: string): Promise<AxiosResponse<ApiResponse<{ url: string | null; expiresAt: string | null }>>> =>
+    api.get(`/videos/${id}/thumbnail`),
+
+  initiateUpload: (data: { clientUploadId: string; title: string; playerId: string; fileName: string; fileSize: number; mimeType: string; category?: string; viewAngle?: string; description?: string }): Promise<AxiosResponse<ApiResponse<{ videoId: string; uploadId: string; key: string; signedUrls: string[] }>>> =>
+    api.post('/videos/upload/init', data),
+
+  completeUpload: (data: { videoId: string; uploadId: string; parts: Array<{ etag: string; partNumber: number }>; duration?: number; width?: number; height?: number }): Promise<AxiosResponse<ApiResponse<{ video: Video }>>> =>
+    api.post('/videos/upload/complete', data),
+
+  update: (id: string, data: Partial<Video>): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.patch(`/videos/${id}`, data),
+
+  delete: (id: string, hardDelete = false): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.delete(`/videos/${id}`, { params: { hardDelete } }),
+
+  share: (id: string, playerIds: string[]): Promise<AxiosResponse<ApiResponse<{ shared: number; alreadyShared: number }>>> =>
+    api.post(`/videos/${id}/share`, { playerIds }),
+
+  getShares: (id: string): Promise<AxiosResponse<ApiResponse<{ shares: Array<{ playerId: string; sharedAt: string }> }>>> =>
+    api.get(`/videos/${id}/shares`),
+
+  removeShare: (id: string, playerId: string): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.delete(`/videos/${id}/shares/${playerId}`),
+
+  createRequest: (data: { playerId: string; drillType?: string; category?: string; viewAngle?: string; instructions?: string; dueDate?: string }): Promise<AxiosResponse<ApiResponse<VideoRequest>>> =>
+    api.post('/videos/requests', data),
+
+  listRequests: (params: { playerId?: string; status?: string; limit?: number; offset?: number } = {}): Promise<AxiosResponse<ApiResponse<{ requests: VideoRequest[]; total: number }>>> =>
+    api.get('/videos/requests', { params }),
+
+  updateRequest: (id: string, data: { status: string; fulfilledVideoId?: string }): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.patch(`/videos/requests/${id}`, data),
+};
+
+// =============================================================================
+// Player Insights API (SG Journey, Skill DNA, Bounty Board)
+// =============================================================================
+
+export interface SGJourney {
+  currentLevel: string;
+  sgTotal: number;
+  progress: number;
+  nextMilestone: string;
+  distanceToNext: number;
+}
+
+export interface SkillDNA {
+  fingerprint: Record<string, number>;
+  proMatch?: { name: string; similarity: number };
+  strengths: string[];
+  weaknesses: string[];
+}
+
+export interface Bounty {
+  id: string;
+  title: string;
+  description: string;
+  targetValue: number;
+  currentValue: number;
+  progress: number;
+  status: 'available' | 'active' | 'completed' | 'expired';
+  reward: string;
+  deadline?: string;
+}
+
+export const playerInsightsAPI = {
+  getAll: (playerId?: string): Promise<AxiosResponse<ApiResponse<{ sgJourney: SGJourney; skillDNA: SkillDNA; bountyBoard: Bounty[] }>>> =>
+    api.get('/player-insights', { params: { playerId } }),
+
+  getSGJourney: (playerId?: string): Promise<AxiosResponse<ApiResponse<SGJourney>>> =>
+    api.get('/player-insights/sg-journey', { params: { playerId } }),
+
+  getSkillDNA: (playerId?: string): Promise<AxiosResponse<ApiResponse<SkillDNA>>> =>
+    api.get('/player-insights/skill-dna', { params: { playerId } }),
+
+  getBountyBoard: (playerId?: string): Promise<AxiosResponse<ApiResponse<Bounty[]>>> =>
+    api.get('/player-insights/bounty-board', { params: { playerId } }),
+
+  activateBounty: (bountyId: string, playerId?: string): Promise<AxiosResponse<ApiResponse<Bounty>>> =>
+    api.post(`/player-insights/bounty/${bountyId}/activate`, {}, { params: { playerId } }),
+
+  updateBountyProgress: (bountyId: string, newValue: number, playerId?: string): Promise<AxiosResponse<ApiResponse<Bounty>>> =>
+    api.put(`/player-insights/bounty/${bountyId}/progress`, { newValue }, { params: { playerId } }),
+};
+
+// =============================================================================
+// Focus Engine API
+// =============================================================================
+
+export interface FocusRecommendation {
+  playerId: string;
+  playerName: string;
+  focusComponent: 'OTT' | 'APP' | 'ARG' | 'PUTT';
+  focusScores: Record<string, number>;
+  recommendedSplit: Record<string, number>;
+  reasonCodes: string[];
+  confidence: 'low' | 'med' | 'high';
+  approachWeakestBucket?: string;
+  computedAt: string;
+}
+
+export interface ComponentWeights {
+  windowStartSeason: number;
+  windowEndSeason: number;
+  wOtt: number;
+  wApp: number;
+  wArg: number;
+  wPutt: number;
+  computedAt: string;
+}
+
+export const focusEngineAPI = {
+  getWeights: (): Promise<AxiosResponse<ApiResponse<ComponentWeights>>> =>
+    api.get('/focus-engine/weights'),
+
+  getMyFocus: (includeApproachDetail = false): Promise<AxiosResponse<ApiResponse<FocusRecommendation>>> =>
+    api.get('/focus-engine/me/focus', { params: { includeApproachDetail } }),
+
+  getUserFocus: (userId: string, includeApproachDetail = false): Promise<AxiosResponse<ApiResponse<FocusRecommendation>>> =>
+    api.get(`/focus-engine/users/${userId}/focus`, { params: { includeApproachDetail } }),
+
+  getTeamFocus: (coachId: string, teamId: string): Promise<AxiosResponse<ApiResponse<{ teamId: string; playerCount: number; heatmap: Record<string, unknown>; topReasonCodes: string[]; atRiskPlayers: Array<Record<string, unknown>> }>>> =>
+    api.get(`/focus-engine/coaches/${coachId}/teams/${teamId}/focus`),
+
+  getStats: (): Promise<AxiosResponse<ApiResponse<{ playerSeasons: number; approachSkills: number; weightsComputed: number; currentWeights: ComponentWeights | null; latestSeason: number | null }>>> =>
+    api.get('/focus-engine/stats'),
+};
+
+// =============================================================================
+// Archive API
+// =============================================================================
+
+export interface ArchivedItem {
+  id: string;
+  entityType: string;
+  entityId: string;
+  entityData: Record<string, unknown>;
+  archivedAt: string;
+  reason?: string;
+}
+
+export const archiveAPI = {
+  list: (entityType?: string): Promise<AxiosResponse<ApiResponse<ArchivedItem[]>>> =>
+    api.get('/archive', { params: { entityType } }),
+
+  getCount: (): Promise<AxiosResponse<ApiResponse<{ total: number; byType: Record<string, number> }>>> =>
+    api.get('/archive/count'),
+
+  getById: (id: string): Promise<AxiosResponse<ApiResponse<ArchivedItem>>> =>
+    api.get(`/archive/${id}`),
+
+  archive: (data: { entityType: string; entityId: string; reason?: string }): Promise<AxiosResponse<ApiResponse<ArchivedItem>>> =>
+    api.post('/archive', data),
+
+  restore: (id: string): Promise<AxiosResponse<ApiResponse<{ restored: boolean; entityType: string; entityId: string }>>> =>
+    api.post(`/archive/${id}/restore`),
+
+  bulkDelete: (archiveIds: string[]): Promise<AxiosResponse<ApiResponse<{ deleted: number }>>> =>
+    api.post('/archive/bulk-delete', { archiveIds }),
+
+  delete: (id: string): Promise<AxiosResponse<ApiResponse<{ deleted: boolean }>>> =>
+    api.delete(`/archive/${id}`),
+};
+
+// =============================================================================
+// Intake API (Player Onboarding)
+// =============================================================================
+
+export interface PlayerIntake {
+  id: string;
+  playerId: string;
+  tenantId: string;
+  completionPercentage: number;
+  isComplete: boolean;
+  background?: Record<string, unknown>;
+  availability?: Record<string, unknown>;
+  goals?: Record<string, unknown>;
+  weaknesses?: Record<string, unknown>;
+  health?: Record<string, unknown>;
+  lifestyle?: Record<string, unknown>;
+  equipment?: Record<string, unknown>;
+  learning?: Record<string, unknown>;
+  submittedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const intakeAPI = {
+  submit: (data: { playerId: string } & Partial<Omit<PlayerIntake, 'id' | 'playerId' | 'tenantId' | 'completionPercentage' | 'isComplete'>>): Promise<AxiosResponse<ApiResponse<{ id: string; completionPercentage: number; isComplete: boolean }>>> =>
+    api.post('/intake', data),
+
+  getForPlayer: (playerId: string): Promise<AxiosResponse<ApiResponse<PlayerIntake>>> =>
+    api.get(`/intake/player/${playerId}`),
+
+  generatePlan: (intakeId: string): Promise<AxiosResponse<ApiResponse<{ annualPlan: Record<string, unknown>; periodizations: unknown[]; dailyAssignments: unknown[]; tournaments: unknown[] }>>> =>
+    api.post(`/intake/${intakeId}/generate-plan`),
+
+  getTenantIntakes: (tenantId: string, params: { isComplete?: string; hasGeneratedPlan?: string } = {}): Promise<AxiosResponse<ApiResponse<PlayerIntake[]>>> =>
+    api.get(`/intake/tenant/${tenantId}`, { params }),
+
+  delete: (intakeId: string): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.delete(`/intake/${intakeId}`),
+};
+
+// =============================================================================
+// Season API (Baseline Management)
+// =============================================================================
+
+export interface SeasonBaseline {
+  id: string;
+  userId: string;
+  season: number;
+  baselineType: 'season_average' | 'last_8_rounds';
+  baselineScore: number;
+  metadata?: Record<string, unknown>;
+  createdAt: string;
+}
+
+export interface BaselineRecommendation {
+  recommended: 'season_average' | 'last_8_rounds';
+  confidence: number;
+  reasoning: string[];
+  metrics: {
+    last8StdDev: number;
+    seasonStdDev: number;
+    trendDirection: 'improving' | 'declining' | 'stable';
+    trendStrength: number;
+    consistencyScore: number;
+  };
+}
+
+export const seasonAPI = {
+  getRecommendation: (season: number): Promise<AxiosResponse<BaselineRecommendation>> =>
+    api.get('/season/recommendation', { params: { season } }),
+
+  setBaseline: (data: { season: number; baselineType: 'season_average' | 'last_8_rounds'; baselineScore: number; metadata?: Record<string, unknown> }): Promise<AxiosResponse<SeasonBaseline>> =>
+    api.post('/season/baseline', data),
+
+  getBaseline: (season: number): Promise<AxiosResponse<SeasonBaseline>> =>
+    api.get('/season/baseline', { params: { season } }),
+};
+
+// =============================================================================
+// Breaking Points API
+// =============================================================================
+
+export interface BreakingPoint {
+  id: string;
+  playerId: string;
+  title: string;
+  description?: string;
+  domain: string;
+  proofMetric?: string;
+  baselineValue?: number;
+  targetValue?: number;
+  currentValue?: number;
+  progressPercent: number;
+  effortPercent: number;
+  status: 'identified' | 'active' | 'improving' | 'resolved' | 'stalled';
+  priority: 'high' | 'medium' | 'low';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const breakingPointsAPI = {
+  list: (params: { playerId?: string; status?: string; priority?: string; limit?: number; offset?: number } = {}): Promise<AxiosResponse<ApiResponse<{ breakingPoints: BreakingPoint[]; total: number }>>> =>
+    api.get('/breaking-points', { params }),
+
+  getById: (id: string): Promise<AxiosResponse<ApiResponse<BreakingPoint>>> =>
+    api.get(`/breaking-points/${id}`),
+
+  create: (data: Partial<BreakingPoint>): Promise<AxiosResponse<ApiResponse<BreakingPoint>>> =>
+    api.post('/breaking-points', data),
+
+  update: (id: string, data: Partial<BreakingPoint>): Promise<AxiosResponse<ApiResponse<BreakingPoint>>> =>
+    api.patch(`/breaking-points/${id}`, data),
+
+  delete: (id: string): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.delete(`/breaking-points/${id}`),
+
+  updateProgress: (id: string, data: { currentValue?: number; notes?: string }): Promise<AxiosResponse<ApiResponse<BreakingPoint>>> =>
+    api.post(`/breaking-points/${id}/progress`, data),
+
+  getEvidence: (id: string): Promise<AxiosResponse<ApiResponse<{ effortPercent: number; progressPercent: number; sessionsCompleted: number; benchmarkResults: unknown[] }>>> =>
+    api.get(`/breaking-points/${id}/evidence`),
+
+  recordEffort: (id: string): Promise<AxiosResponse<ApiResponse<{ effortPercent: number }>>> =>
+    api.post(`/breaking-points/${id}/effort`),
+
+  evaluateBenchmark: (id: string, data: { testResultId: string; value: number }): Promise<AxiosResponse<ApiResponse<{ progressPercent: number; improved: boolean }>>> =>
+    api.post(`/breaking-points/${id}/benchmark`, data),
+
+  configureEvidence: (id: string, data: { domain?: string; proofMetric?: string; baselineValue?: number; targetValue?: number }): Promise<AxiosResponse<ApiResponse<BreakingPoint>>> =>
+    api.patch(`/breaking-points/${id}/evidence`, data),
+
+  applyTransition: (id: string): Promise<AxiosResponse<ApiResponse<{ transitionApplied: boolean; newStatus?: string }>>> =>
+    api.post(`/breaking-points/${id}/transition`),
+};
+
+// =============================================================================
+// Filters API (Saved Filters for Coach)
+// =============================================================================
+
+export interface FilterCriteria {
+  categories?: string[];
+  gender?: string;
+  ageRange?: { min: number; max: number };
+  handicapRange?: { min: number; max: number };
+  testNumbers?: number[];
+  dateRange?: { from: string; to: string };
+  testStatus?: 'passed' | 'failed' | 'all';
+  minCompletionRate?: number;
+}
+
+export interface SavedFilter {
+  id: string;
+  coachId: string;
+  tenantId: string;
+  name: string;
+  description?: string;
+  filters: FilterCriteria;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const filtersAPI = {
+  list: (coachId: string): Promise<AxiosResponse<ApiResponse<SavedFilter[]>>> =>
+    api.get('/filters', { params: { coachId } }),
+
+  getById: (id: string): Promise<AxiosResponse<ApiResponse<SavedFilter>>> =>
+    api.get(`/filters/${id}`),
+
+  create: (data: { coachId: string; name: string; description?: string; filters: FilterCriteria }): Promise<AxiosResponse<ApiResponse<SavedFilter>>> =>
+    api.post('/filters', data),
+
+  update: (id: string, data: { name?: string; description?: string; filters?: FilterCriteria }): Promise<AxiosResponse<ApiResponse<SavedFilter>>> =>
+    api.put(`/filters/${id}`, data),
+
+  delete: (id: string): Promise<AxiosResponse<ApiResponse<{ success: boolean }>>> =>
+    api.delete(`/filters/${id}`),
+
+  apply: (data: { filters: FilterCriteria; limit?: number; offset?: number }): Promise<AxiosResponse<ApiResponse<{ players: Player[]; total: number }>>> =>
+    api.post('/filters/apply', data),
+
+  getSuggestions: (): Promise<AxiosResponse<ApiResponse<{ categories: string[]; genders: string[]; handicapRange: { min: number; max: number } }>>> =>
+    api.get('/filters/suggestions'),
+};
+
+// =============================================================================
+// Admin Types
+// =============================================================================
+
+export interface SystemStatus {
+  environment: 'production' | 'staging' | 'development';
+  version: string;
+  uptimeHours: number;
+  uptime: number;
+  timestamp: string;
+  counts: {
+    users: number;
+    coaches: number;
+    players: number;
+  };
+  responseTime: number;
+}
+
+export interface FeatureFlag {
+  id: string;
+  key: string;
+  name: string;
+  description?: string;
+  enabled: boolean;
+  rolloutPercentage?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SupportCase {
+  id: string;
+  title: string;
+  description?: string;
+  category?: string;
+  priority: string;
+  status: string;
+  reportedById: string;
+  resolution?: string;
+  closedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SubscriptionTier {
+  id: string;
+  name: string;
+  price: number;
+  interval: 'monthly' | 'yearly';
+  features: Record<string, boolean>;
+  active: boolean;
+}
+
+// =============================================================================
+// Admin API
+// =============================================================================
+
+export const adminAPI = {
+  // System Status
+  getSystemStatus: (): Promise<AxiosResponse<{ data: SystemStatus }>> =>
+    api.get('/admin/system/status'),
+
+  // Feature Flags
+  getFeatureFlags: (): Promise<AxiosResponse<{ data: FeatureFlag[] }>> =>
+    api.get('/admin/feature-flags'),
+
+  createFeatureFlag: (data: { key: string; name: string; description?: string; enabled?: boolean }): Promise<AxiosResponse<{ data: FeatureFlag }>> =>
+    api.post('/admin/feature-flags', data),
+
+  updateFeatureFlag: (id: string, data: { name?: string; description?: string; enabled?: boolean; rolloutPercentage?: number }): Promise<AxiosResponse<{ data: FeatureFlag }>> =>
+    api.patch(`/admin/feature-flags/${id}`, data),
+
+  deleteFeatureFlag: (id: string): Promise<AxiosResponse<{ success: boolean }>> =>
+    api.delete(`/admin/feature-flags/${id}`),
+
+  // Support Cases
+  getSupportCases: (status?: string): Promise<AxiosResponse<{ data: SupportCase[] }>> =>
+    api.get('/admin/support-cases', { params: status ? { status } : {} }),
+
+  getSupportCase: (id: string): Promise<AxiosResponse<{ data: SupportCase }>> =>
+    api.get(`/admin/support-cases/${id}`),
+
+  createSupportCase: (data: { title: string; description?: string; category?: string; priority?: string }): Promise<AxiosResponse<{ data: SupportCase }>> =>
+    api.post('/admin/support-cases', data),
+
+  updateSupportCase: (id: string, data: { status?: string; resolution?: string; priority?: string }): Promise<AxiosResponse<{ data: SupportCase }>> =>
+    api.patch(`/admin/support-cases/${id}`, data),
+
+  // Tiers
+  getTiers: (): Promise<AxiosResponse<{ data: { tiers: SubscriptionTier[] } }>> =>
+    api.get('/admin/tiers'),
+
+  updateTier: (id: string, data: { active?: boolean }): Promise<AxiosResponse<{ data: SubscriptionTier }>> =>
+    api.patch(`/admin/tiers/${id}`, data),
+};
+
+// =============================================================================
 // useApi Hook
 // =============================================================================
 
