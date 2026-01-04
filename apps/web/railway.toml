@@ -3,9 +3,10 @@
 
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "apps/web/Dockerfile"
+dockerContext = "apps/web"
 # Watch patterns to ensure Railway detects all relevant changes
-watchPatterns = ["src/**", "public/**", "package.json", "Dockerfile", "nginx.conf"]
+watchPatterns = ["apps/web/src/**", "apps/web/public/**", "apps/web/package.json", "apps/web/Dockerfile", "apps/web/nginx.conf"]
 
 [deploy]
 # nginx:alpine starts automatically via CMD in base image
