@@ -1,7 +1,8 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { getPrismaClient } from '../../../core/db/prisma';
 import { AppError } from '../../../core/errors';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 export interface ArchiveItemInput {
   entityType: string;

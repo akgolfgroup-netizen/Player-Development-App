@@ -5,10 +5,10 @@
  */
 
 import { FastifyPluginAsync } from 'fastify';
-import { PrismaClient } from '@prisma/client';
+import { getPrismaClient } from '../../../core/db/prisma';
 import { hashPassword } from '../../../utils/crypto';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 // Demo user IDs (fixed UUIDs for consistency)
 const DEMO_TENANT_ID = '00000000-0000-0000-0000-000000000001';

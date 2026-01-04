@@ -5,10 +5,10 @@
  * Allows AI to dynamically fetch player data during conversations.
  */
 
-import { PrismaClient } from '@prisma/client';
+import { getPrismaClient } from '../../core/db/prisma';
 import { Tool } from './claude-client.service';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 // =============================================================================
 // TOOL DEFINITIONS

@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { getPrismaClient } from '../core/db/prisma';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 interface RecommendationResult {
   recommended: 'season_average' | 'last_8_rounds';

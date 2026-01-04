@@ -12,10 +12,10 @@
 
 import { claudeClient, ChatMessage } from './claude-client.service';
 import { AI_COACH_TOOLS, executeToolCall } from './ai-tools';
-import { PrismaClient } from '@prisma/client';
+import { getPrismaClient } from '../../core/db/prisma';
 import Anthropic from '@anthropic-ai/sdk';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 // Types
 export interface PlayerContext {

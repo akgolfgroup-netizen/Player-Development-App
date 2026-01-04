@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { getPrismaClient } from '../../../core/db/prisma';
 import { AppError } from '../../../core/errors';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 // ============================================================================
 // TYPES

@@ -25,7 +25,7 @@
  * Recommended schedule: Weekly (cron: 0 3 * * 0)
  */
 
-import { PrismaClient } from '@prisma/client';
+import { getPrismaClient } from '../core/db/prisma';
 import { storageService } from '../services/storage.service';
 import { logger } from '../utils/logger';
 
@@ -70,7 +70,7 @@ interface CleanupStats {
   endTime: Date | null;
 }
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 /**
  * Extract videoId from storage key

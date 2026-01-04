@@ -5,9 +5,10 @@
  * Provides CRUD operations for conversation history.
  */
 
-import { PrismaClient, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import { getPrismaClient } from '../../core/db/prisma';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 // Types
 export interface ConversationMessage {
