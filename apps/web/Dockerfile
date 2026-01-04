@@ -102,9 +102,10 @@ RUN chown -R nginx:nginx /usr/share/nginx/html && \
 # Expose port
 EXPOSE 80
 
-# Health check
+# Health check - Railway handles this via healthcheckPath in railway.toml
+# Using wget since it's available in nginx:alpine
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:80 || exit 1
+  CMD wget -q --spider http://localhost:${PORT:-80}/health || exit 1
 
-# Run Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run Nginx with envsubst to replace ${PORT} in config
+CMD envsubst '${PORT}' < /etc/nginx/conf.d/default.conf > /tmp/nginx.conf && mv /tmp/nginx.conf /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
