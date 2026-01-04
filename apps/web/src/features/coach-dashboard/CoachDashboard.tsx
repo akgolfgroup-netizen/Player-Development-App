@@ -3,6 +3,7 @@
 /**
  * CoachDashboard.tsx
  * Design System v3.0 - Premium Light
+ * Build: 2026-01-04-v2
  *
  * MIGRATED TO PAGE ARCHITECTURE - Zero inline styles
  *
