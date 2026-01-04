@@ -1,10 +1,10 @@
 # Railway configuration for IUP Golf API
-# Using Nixpacks with custom config for native modules
-# Build date: 2026-01-03 v8 - Nixpacks with nixpacks.toml
+# Using Dockerfile for consistent builds
 
 [build]
-builder = "NIXPACKS"
-watchPatterns = ["src/**", "prisma/**", "package.json", "nixpacks.toml"]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+watchPatterns = ["src/**", "prisma/**", "package.json", "Dockerfile"]
 
 [deploy]
 healthcheckPath = "/live"
