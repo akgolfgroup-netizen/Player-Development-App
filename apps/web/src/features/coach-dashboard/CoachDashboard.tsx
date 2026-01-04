@@ -180,7 +180,8 @@ function formatLastUpdated(date: Date | null): string {
 }
 
 // Main Coach Dashboard component
-export default function CoachDashboard({ athletes: propAthletes, pendingItems: propPendingItems }: CoachDashboardProps = {}) {
+export default function CoachDashboard(props: CoachDashboardProps) {
+  const { athletes: propAthletes, pendingItems: propPendingItems } = props || {};
   const navigate = useNavigate();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
