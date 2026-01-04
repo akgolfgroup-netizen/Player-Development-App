@@ -180,12 +180,15 @@ function formatLastUpdated(date: Date | null): string {
   return date.toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
 }
 
-// Main Coach Dashboard component
+// Main Coach Dashboard component - Fix v3 for React #310
 export default function CoachDashboard(props: CoachDashboardProps) {
-  const { athletes: propAthletes, pendingItems: propPendingItems } = props || {};
+  // ALL HOOKS MUST BE AT TOP - NO CONDITIONALS BEFORE HOOKS
   const navigate = useNavigate();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Destructure props after all hooks are called
+  const { athletes: propAthletes, pendingItems: propPendingItems } = props || {};
 
   // Simple state management instead of useRealTimePolling
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
