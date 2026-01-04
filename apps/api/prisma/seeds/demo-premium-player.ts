@@ -11,10 +11,9 @@
  * - Handicap: 6.2 → 3.9 (-2.3 forbedring)
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 import * as argon2 from 'argon2';
 
-const prisma = new PrismaClient();
 
 // ============================================================================
 // HELPER FUNCTIONS

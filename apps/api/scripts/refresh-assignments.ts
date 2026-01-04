@@ -11,10 +11,9 @@
  *   npm run seed:refresh-assignments -- --weeks=4
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { addDays, getWeekNumber } from '../src/utils/date-helpers';
 
-const prisma = new PrismaClient();
 
 interface RefreshOptions {
   weeks?: number;

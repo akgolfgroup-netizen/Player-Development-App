@@ -5,9 +5,8 @@
  * Creates requirements for all 20 tests across 11 categories (A-K) and 2 genders (M/K)
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 // ============================================================================
 // TEST 1: DRIVER AVSTAND (CARRY)

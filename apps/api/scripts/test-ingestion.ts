@@ -3,13 +3,12 @@
  * Run with: npx tsx scripts/test-ingestion.ts [path-to-archive.zip]
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { IngestionService } from '../src/domain/focus-engine/ingestion.service';
 import { WeightsService } from '../src/domain/focus-engine/weights.service';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const prisma = new PrismaClient();
 
 async function main() {
   console.log('=== Focus Engine Ingestion Test ===\n');

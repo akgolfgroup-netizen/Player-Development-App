@@ -3,9 +3,8 @@
  * Manual seed data for testing weather API while waiting for GolfCourseAPI key
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 
-const prisma = new PrismaClient();
 
 // Popular Norwegian golf clubs with coordinates
 const norwegianClubs = [

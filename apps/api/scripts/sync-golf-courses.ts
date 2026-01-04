@@ -11,10 +11,9 @@
  *   npx tsx scripts/sync-golf-courses.ts  # defaults to Norway
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { GolfCourseService } from '../src/api/v1/golf-courses/service';
 
-const prisma = new PrismaClient();
 
 async function main() {
   const country = process.argv[2] || 'Norway';

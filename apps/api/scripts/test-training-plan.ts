@@ -3,12 +3,11 @@
  * Creates test data and generates a 12-month training plan
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { PlanGenerationService } from '../src/domain/training-plan/plan-generation.service';
 import { ClubSpeedCalibrationService } from '../src/domain/calibration/club-speed-calibration.service';
 import { BreakingPointAutoCreationService } from '../src/domain/breaking-points/auto-creation.service';
 
-const prisma = new PrismaClient();
 
 async function main() {
   console.log('🧪 Starting Training Plan Test...\n');

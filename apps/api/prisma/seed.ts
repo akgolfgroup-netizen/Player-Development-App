@@ -3,7 +3,7 @@
  * Seeds all initial data for the database
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma, { disconnectPrisma } from './client';
 import { seedCategoryRequirements } from './seeds/category-requirements';
 import { seedSpeedCategoryMappings } from './seeds/speed-category-mappings';
 import { seedSessionTemplates } from './seeds/session-templates';
@@ -16,8 +16,6 @@ import { seedTrainingPlan } from './seeds/training-plan';
 import { seedSkole } from './seeds/skole';
 import { seedTrainingSessions } from './seeds/training-sessions';
 import { seedDataGolfPlayers } from './seeds/datagolf-players';
-
-const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Starting database seeding...\n');
@@ -81,5 +79,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    await disconnectPrisma(prisma);
   });

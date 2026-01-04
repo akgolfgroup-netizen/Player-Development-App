@@ -19,7 +19,7 @@
  *   1 - Database connection failed after all retries
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 
 // Parse command line arguments
 const args = process.argv.slice(2);

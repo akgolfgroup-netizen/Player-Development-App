@@ -14,7 +14,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
 
-const prisma = new PrismaClient();
 
 interface DgPerformanceRow {
   player_name: string;

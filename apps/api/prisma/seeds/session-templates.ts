@@ -4,9 +4,8 @@
  * Covering all categories (A-K), periods (E, G, S, T), and session types
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 const sessionTemplates = [
   // ============================================

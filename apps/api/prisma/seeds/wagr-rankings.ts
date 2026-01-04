@@ -9,7 +9,6 @@ import { PrismaClient, Prisma } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const prisma = new PrismaClient();
 
 interface WagrCsvRow {
   rank: number;

@@ -3,9 +3,8 @@
  * Historical training sessions for the demo player
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 export async function seedTrainingSessions() {
   console.log('🏋️ Seeding training sessions...');

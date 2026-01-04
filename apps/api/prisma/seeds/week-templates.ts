@@ -3,9 +3,8 @@
  * 88 Week Templates: 11 categories × 4 periods × 2 variants
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 // Helper to get week hours based on category and period
 function getWeekHours(category: string, period: string): number {

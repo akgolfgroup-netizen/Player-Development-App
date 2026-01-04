@@ -1,4 +1,6 @@
 import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import { logger } from '../../utils/logger';
 import { config } from '../../config';
 
@@ -28,9 +30,11 @@ interface ExtensionContext {
  * Create Prisma Client singleton
  */
 let prisma: PrismaClient;
+let pool: Pool | null = null;
 
 /**
  * Get Prisma Client instance
+ * Prisma 7: Uses pg adapter for database connection
  */
 export function getPrismaClient(): PrismaClient {
   if (!prisma) {
@@ -43,7 +47,14 @@ export function getPrismaClient(): PrismaClient {
       { level: 'error', emit: 'event' },
     ];
 
+    // Create pg Pool for Prisma 7 adapter
+    pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+    });
+    const adapter = new PrismaPg(pool);
+
     prisma = new PrismaClient({
+      adapter,
       log: config.server.isDevelopment ? devLogConfig : prodLogConfig,
     });
 
@@ -253,6 +264,11 @@ export async function disconnectDatabase(): Promise<void> {
   const prisma = getPrismaClient();
   try {
     await prisma.$disconnect();
+    // Also close the pg pool
+    if (pool) {
+      await pool.end();
+      pool = null;
+    }
     logger.info('Database disconnected successfully');
   } catch (error) {
     logger.error({ err: error }, 'Failed to disconnect from database');

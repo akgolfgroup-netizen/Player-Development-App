@@ -4,9 +4,8 @@
  * 50 exercises - Batch 1
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 export async function seedExercises() {
   console.log('🏌️ Seeding exercises...');

@@ -15,7 +15,6 @@
 
 import { PrismaClient, Prisma } from '@prisma/client';
 
-const prisma = new PrismaClient();
 
 const GOLFBOX_API_BASE = 'https://scores.golfbox.dk/Handlers';
 const LANGUAGE = 1044; // Norwegian

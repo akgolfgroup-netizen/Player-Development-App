@@ -9,11 +9,10 @@
  * Usage: npx tsx scripts/test-intake-flow.ts
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { IntakeProcessingService } from '../src/domain/intake/intake-processing.service';
 import type { PlayerIntakeForm } from '../src/domain/intake/intake.types';
 
-const prisma = new PrismaClient();
 
 async function main() {
   console.log('🏌️ Testing Intake Form → Training Plan Generation Flow\n');

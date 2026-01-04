@@ -3,9 +3,8 @@
  * Demo data for pro player comparison feature
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 // Top 30 pro golfers with realistic SG data
 const proPlayers = [

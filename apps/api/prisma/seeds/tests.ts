@@ -3,9 +3,8 @@
  * IUP Golf test protocols and sample results
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 export async function seedTests() {
   console.log('📋 Seeding tests...');

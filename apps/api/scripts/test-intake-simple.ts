@@ -2,9 +2,8 @@
  * Simple test for intake processing service
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 
-const prisma = new PrismaClient();
 
 async function main() {
   console.log('🔍 Testing database connection...');

@@ -12,10 +12,9 @@
  *   npm run seed:demo -- --dry-run (preview without changes)
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { seedPremiumPlayer } from '../prisma/seeds/demo-premium-player';
 
-const prisma = new PrismaClient();
 
 interface RefreshOptions {
   clean?: boolean;

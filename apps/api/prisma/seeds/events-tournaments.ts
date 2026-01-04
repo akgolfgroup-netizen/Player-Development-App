@@ -3,9 +3,8 @@
  * Samlinger, treningsøkter, og turneringer
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 export async function seedEventsAndTournaments() {
   console.log('🏆 Seeding events and tournaments...');

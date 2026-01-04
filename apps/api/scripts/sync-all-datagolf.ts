@@ -13,10 +13,9 @@
  * - /historical-raw-data/rounds (historical round data)
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { DataGolfClient } from '../src/integrations/datagolf/client';
 
-const prisma = new PrismaClient();
 const client = new DataGolfClient();
 
 const TOURS = ['pga', 'euro', 'kft']; // PGA, DP World Tour, Korn Ferry

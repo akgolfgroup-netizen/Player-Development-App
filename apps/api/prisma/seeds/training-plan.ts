@@ -3,9 +3,8 @@
  * Annual Training Plan, Periodization, and Daily Assignments
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 export async function seedTrainingPlan() {
   console.log('📅 Seeding training plans...');

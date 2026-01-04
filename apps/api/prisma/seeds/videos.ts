@@ -3,9 +3,8 @@
  * Creates demo videos for testing video progress and library features
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 export async function seedVideos() {
   console.log('🎬 Seeding test videos...');

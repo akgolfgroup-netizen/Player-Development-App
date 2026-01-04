@@ -3,9 +3,8 @@
  * Maps driver speed ranges to club speed levels (CS codes)
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../client';
 
-const prisma = new PrismaClient();
 
 const speedMappings = [
   {

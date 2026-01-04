@@ -3,10 +3,9 @@
  * Run with: DATABASE_URL="<railway-url>" npx tsx scripts/add-player-andreas.ts
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import { hashPassword } from '../src/utils/crypto';
 
-const prisma = new PrismaClient();
 
 const DEMO_TENANT_ID = '00000000-0000-0000-0000-000000000001';
 const DEMO_COACH_ID = '00000000-0000-0000-0000-000000000003';

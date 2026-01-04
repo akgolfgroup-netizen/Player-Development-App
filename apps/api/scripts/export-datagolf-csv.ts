@@ -6,11 +6,10 @@
  * Exports all DataGolf tables to CSV files in ./exports/datagolf/
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 
-const prisma = new PrismaClient();
 
 const EXPORT_DIR = path.join(__dirname, '../exports/datagolf');
 
