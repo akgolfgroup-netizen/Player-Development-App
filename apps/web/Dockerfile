@@ -52,6 +52,10 @@ RUN export REACT_APP_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") && \
     echo "PWA Enabled: $REACT_APP_ENABLE_PWA" && \
     echo "=================="
 
+# Force cache invalidation by using CACHEBUST in a RUN command
+# This ensures Docker rebuilds when the commit SHA changes
+RUN echo "Building commit: ${REACT_APP_BUILD_SHA:-unknown}"
+
 # Build the application
 RUN npm run build
 
