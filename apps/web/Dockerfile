@@ -24,6 +24,7 @@ ARG RAILWAY_GIT_BRANCH
 # Cache buster - use commit SHA to invalidate Docker cache on new commits
 # This ensures fresh builds when code changes
 ARG CACHEBUST=${RAILWAY_GIT_COMMIT_SHA}
+# Force rebuild: 2026-01-04-2311-fix-react-310
 
 # Map Railway variables to CRA-compatible env vars (REACT_APP_* prefix required)
 ENV REACT_APP_BUILD_SHA=${RAILWAY_GIT_COMMIT_SHA:-local}
