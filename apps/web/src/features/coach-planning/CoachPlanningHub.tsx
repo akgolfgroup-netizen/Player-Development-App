@@ -189,10 +189,10 @@ export const CoachPlanningHub: React.FC = () => {
       <div className="grid grid-cols-4 gap-3 mb-6">
         <div className="bg-ak-surface-base rounded-xl p-4 border border-ak-border-default">
           <div className="flex items-center gap-2 mb-2">
-            <User size={16} className="text-ak-primary" />
+            <User size={16} className="text-ak-status-success" />
             <span className="text-xs text-ak-text-secondary">Spillere med plan</span>
           </div>
-          <p className="text-2xl font-bold text-ak-primary m-0">
+          <p className="text-2xl font-bold text-ak-status-success m-0">
             {stats.playersWithPlan}
           </p>
         </div>
