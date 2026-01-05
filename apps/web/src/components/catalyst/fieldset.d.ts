@@ -1,40 +1,52 @@
-import { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
-export interface FieldsetProps extends ComponentPropsWithoutRef<'fieldset'> {
+export interface FieldProps {
   children?: ReactNode;
+  className?: string;
+  disabled?: boolean;
 }
 
-export interface LegendProps extends ComponentPropsWithoutRef<'legend'> {
-  children?: ReactNode;
-}
+export function Field(props: FieldProps): JSX.Element;
 
-export interface FieldGroupProps extends ComponentPropsWithoutRef<'div'> {
-  children?: ReactNode;
-}
-
-export interface FieldProps extends ComponentPropsWithoutRef<'div'> {
-  children?: ReactNode;
-}
-
-export interface LabelProps extends ComponentPropsWithoutRef<'label'> {
+export interface LabelProps {
   children?: ReactNode;
   className?: string;
 }
 
-export interface DescriptionProps extends ComponentPropsWithoutRef<'p'> {
+export function Label(props: LabelProps): JSX.Element;
+
+export interface DescriptionProps {
   children?: ReactNode;
   className?: string;
 }
 
-export interface ErrorMessageProps extends ComponentPropsWithoutRef<'p'> {
+export function Description(props: DescriptionProps): JSX.Element;
+
+export interface ErrorMessageProps {
   children?: ReactNode;
   className?: string;
+}
+
+export function ErrorMessage(props: ErrorMessageProps): JSX.Element;
+
+export interface FieldsetProps {
+  children?: ReactNode;
+  className?: string;
+  disabled?: boolean;
 }
 
 export function Fieldset(props: FieldsetProps): JSX.Element;
+
+export interface LegendProps {
+  children?: ReactNode;
+  className?: string;
+}
+
 export function Legend(props: LegendProps): JSX.Element;
+
+export interface FieldGroupProps {
+  children?: ReactNode;
+  className?: string;
+}
+
 export function FieldGroup(props: FieldGroupProps): JSX.Element;
-export function Field(props: FieldProps): JSX.Element;
-export function Label(props: LabelProps): JSX.Element;
-export function Description(props: DescriptionProps): JSX.Element;
-export function ErrorMessage(props: ErrorMessageProps): JSX.Element;

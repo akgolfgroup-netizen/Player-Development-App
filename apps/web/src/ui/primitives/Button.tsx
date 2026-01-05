@@ -11,7 +11,7 @@
  */
 
 import React from "react";
-// @ts-expect-error - Catalyst components are JS without type definitions
+// @ts-ignore - Catalyst components are JS
 import { Button as CatalystButton } from "../../components/catalyst/button";
 
 export type ButtonVariant =
@@ -86,8 +86,11 @@ export const Button: React.FC<ButtonProps> = ({
     className ?? "",
   ].filter(Boolean).join(" ");
 
+  // Cast to any to handle JS component type mismatch
+  const Btn = CatalystButton as any;
+
   return (
-    <CatalystButton
+    <Btn
       color={catalystProps.color}
       outline={catalystProps.outline}
       plain={catalystProps.plain}
@@ -105,7 +108,7 @@ export const Button: React.FC<ButtonProps> = ({
           {resolvedRightIcon && <span data-slot="icon">{resolvedRightIcon}</span>}
         </>
       )}
-    </CatalystButton>
+    </Btn>
   );
 };
 

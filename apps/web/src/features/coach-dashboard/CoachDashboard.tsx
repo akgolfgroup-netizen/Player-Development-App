@@ -23,6 +23,7 @@ import {
 import { CoachPlayerAlerts, CoachWeeklyTournaments, CoachInjuryTracker } from './widgets';
 import { coachesAPI } from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
+import { ProfileOverviewCard } from '../../components/dashboard';
 import { useToast } from '../../components/shadcn/use-toast';
 import { TeamFocusHeatmap } from '../focus-engine';
 import StatsGridTemplate from '../../ui/templates/StatsGridTemplate';
@@ -327,25 +328,24 @@ export default function CoachDashboard(props: CoachDashboardProps) {
     return 'God kveld';
   };
 
+  // Get user display info
+  const coachName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : 'Trener';
+
   return (
     <div className="relative min-h-screen bg-ak-surface-subtle font-sans">
-      {/* Header */}
+      {/* Refreshing indicator bar */}
+      {isRefreshing && (
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-ak-primary animate-pulse z-50" />
+      )}
+
+      {/* Profile Overview Card */}
       <div className="p-6 pb-4">
-        <div className="flex items-start justify-between">
-          <div>
-            <PageTitle>
-              {getGreeting()}, Trener
-            </PageTitle>
-            <p className="text-[15px] text-ak-text-secondary mt-1">
-              Her er din oversikt for i dag
-            </p>
-          </div>
+        <div className="flex items-end justify-between mb-4">
+          <div /> {/* Spacer */}
           <div className="flex items-center gap-3">
-            {/* Last updated indicator */}
             <span className="text-[13px] text-ak-text-secondary">
               {formatLastUpdated(lastUpdated)}
             </span>
-            {/* Refresh button */}
             <button
               onClick={refresh}
               disabled={isRefreshing}
@@ -361,10 +361,24 @@ export default function CoachDashboard(props: CoachDashboardProps) {
             </button>
           </div>
         </div>
-        {/* Refreshing indicator bar */}
-        {isRefreshing && (
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-ak-primary animate-pulse" />
-        )}
+
+        <ProfileOverviewCard
+          name={coachName || 'Trener'}
+          role="Trener"
+          email={user?.email}
+          stats={weeklyStats ? [
+            { label: 'aktive spillere', value: weeklyStats.activePlayers || athletes.length },
+            { label: 'økter denne uke', value: weeklyStats.sessionsThisWeek || 0 },
+            { label: 'timer trent', value: weeklyStats.hoursTrained || 0 },
+            { label: 'ventende', value: weeklyStats.pendingCount || pendingItems.length },
+          ] : [
+            { label: 'aktive spillere', value: athletes.length },
+            { label: 'økter denne uke', value: 24 },
+            { label: 'timer trent', value: 48 },
+            { label: 'ventende', value: pendingItems.length },
+          ]}
+          profileHref="/coach/settings"
+        />
       </div>
 
       {/* Quick Actions */}

@@ -108,6 +108,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   const { notificationRoutes } = await import('./api/v1/notifications');
   const { focusEngineRoutes } = await import('./api/v1/focus-engine');
   const { playerInsightsRoutes } = await import('./api/v1/player-insights');
+  const { coachStatsRoutes } = await import('./api/v1/coach');
   const adminSeedRoutes = (await import('./api/v1/admin/seed')).default;
   const adminRoutes = (await import('./api/v1/admin')).default;
   const aiRoutes = (await import('./api/v1/ai')).default;
@@ -155,6 +156,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   await app.register(notificationRoutes, { prefix: `/api/${config.server.apiVersion}/notifications` });
   await app.register(focusEngineRoutes, { prefix: `/api/${config.server.apiVersion}/focus-engine` });
   await app.register(playerInsightsRoutes, { prefix: `/api/${config.server.apiVersion}/player-insights` });
+  await app.register(coachStatsRoutes, { prefix: `/api/${config.server.apiVersion}/coach` });
   await app.register(adminSeedRoutes, { prefix: `/api/${config.server.apiVersion}/admin` });
   await app.register(adminRoutes, { prefix: `/api/${config.server.apiVersion}/admin` });
   await app.register(aiRoutes, { prefix: `/api/${config.server.apiVersion}/ai` });
@@ -164,6 +166,7 @@ export async function buildApp(opts: BuildAppOptions = {}): Promise<AnyFastifyIn
   // - Core: Auth, Players, Coaches, Exercises, Tests, Breaking Points
   // - Enhanced: Test Results with Auto-calculation & Peer Comparison
   // - Analytics: Peer Comparison, Coach Analytics, Filters, DataGolf
+  // - Coach: Stats Overview, Progress, Regression, Dashboard, Groups, Athletes, Tournaments, Booking Settings
   // - Onboarding: Club Speed Calibration & Player Intake Forms
   // - Training: 12-Month Training Plan Generation & Management
   // - Booking: Availability Slots & Session Bookings with Conflict Detection

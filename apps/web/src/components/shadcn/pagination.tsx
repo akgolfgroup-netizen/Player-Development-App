@@ -5,6 +5,7 @@
  */
 
 import * as React from "react";
+// @ts-ignore - Catalyst components are JS
 import {
   Pagination as CatalystPagination,
   PaginationPrevious as CatalystPaginationPrevious,
@@ -106,11 +107,14 @@ const PaginationPrevious = ({
   className,
   href,
   children = "Forrige",
-}: PaginationPreviousProps) => (
-  <CatalystPaginationPrevious href={href === undefined ? null : href} className={className}>
-    {children}
-  </CatalystPaginationPrevious>
-);
+}: PaginationPreviousProps) => {
+  const Comp = CatalystPaginationPrevious as any;
+  return (
+    <Comp href={href} className={className}>
+      {children}
+    </Comp>
+  );
+};
 PaginationPrevious.displayName = "PaginationPrevious";
 
 /**
@@ -126,11 +130,14 @@ const PaginationNext = ({
   className,
   href,
   children = "Neste",
-}: PaginationNextProps) => (
-  <CatalystPaginationNext href={href === undefined ? null : href} className={className}>
-    {children}
-  </CatalystPaginationNext>
-);
+}: PaginationNextProps) => {
+  const Comp = CatalystPaginationNext as any;
+  return (
+    <Comp href={href} className={className}>
+      {children}
+    </Comp>
+  );
+};
 PaginationNext.displayName = "PaginationNext";
 
 /**

@@ -1,7 +1,7 @@
 import React from 'react';
-// @ts-expect-error - Catalyst components are JS without type definitions
+// @ts-ignore - Catalyst components are JS
 import { Checkbox as CatalystCheckbox, CheckboxField } from '../../components/catalyst/checkbox';
-// @ts-expect-error - Catalyst components are JS without type definitions
+// @ts-ignore - Catalyst components are JS
 import { Label, Description } from '../../components/catalyst/fieldset';
 
 /**

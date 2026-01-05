@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-ignore - Catalyst components are JS
 import { Switch as CatalystSwitch, SwitchField } from '../../components/catalyst/switch';
+// @ts-ignore - Catalyst components are JS
 import { Label, Description } from '../../components/catalyst/fieldset';
 
 /**

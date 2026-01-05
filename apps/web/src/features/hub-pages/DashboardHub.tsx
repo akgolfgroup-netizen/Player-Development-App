@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import * as LucideIcons from 'lucide-react';
 import { getAreaById } from '../../config/player-navigation-v3';
 import { navigationColors } from '../../config/navigation-tokens';
+import { ProfileOverviewCard } from '../../components/dashboard';
+import { useAuth } from '../../contexts/AuthContext';
 
 const {
   Plus, Target, Calendar, TrendingUp,
@@ -31,7 +33,7 @@ interface DashboardHubProps {
 }
 
 export default function DashboardHub({
-  playerName = 'Spiller',
+  playerName,
   stats = {
     treningsdager: 12,
     kommendeTester: 2,
@@ -40,31 +42,31 @@ export default function DashboardHub({
   },
   recentActivities = [],
 }: DashboardHubProps) {
+  const { user } = useAuth();
   const area = getAreaById('dashboard');
   const colors = navigationColors.dashboard;
 
-  // Get current time for greeting
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'God morgen' : hour < 18 ? 'God ettermiddag' : 'God kveld';
+  // Use auth user name if available
+  const displayName = playerName || user?.firstName || 'Spiller';
+  const fullName = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : displayName;
 
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-      {/* Header */}
-      <header style={{ marginBottom: 32 }}>
-        <h1
-          style={{
-            fontSize: 28,
-            fontWeight: 700,
-            color: '#111827',
-            margin: 0,
-          }}
-        >
-          {greeting}, {playerName}!
-        </h1>
-        <p style={{ fontSize: 15, color: '#6B7280', margin: '8px 0 0' }}>
-          Her er din oversikt for i dag
-        </p>
-      </header>
+      {/* Profile Overview Card */}
+      <div style={{ marginBottom: 24 }}>
+        <ProfileOverviewCard
+          name={fullName}
+          role="Spiller"
+          email={user?.email}
+          stats={[
+            { label: 'treningsdager', value: stats.treningsdager },
+            { label: 'kommende tester', value: stats.kommendeTester },
+            { label: 'ukesmål', value: `${stats.ukesMal}%` },
+            { label: 'merker', value: stats.badges },
+          ]}
+          profileHref="/mer/profil"
+        />
+      </div>
 
       {/* Quick Actions */}
       <div

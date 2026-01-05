@@ -9,6 +9,7 @@
  */
 
 import * as React from "react"
+// @ts-ignore - Catalyst components are JS
 import {
   Table as CatalystTable,
   TableHead as CatalystTableHead,

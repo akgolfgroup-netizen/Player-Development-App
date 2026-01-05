@@ -11,9 +11,9 @@
  */
 
 import React from "react";
-// @ts-expect-error - Catalyst components are JS without type definitions
+// @ts-ignore - Catalyst components are JS
 import { Input as CatalystInput, InputGroup } from "../../components/catalyst/input";
-// @ts-expect-error - Catalyst components are JS without type definitions
+// @ts-ignore - Catalyst components are JS
 import { Field, Label, Description, ErrorMessage } from "../../components/catalyst/fieldset";
 
 type InputSize = "sm" | "md";
@@ -48,17 +48,20 @@ export const TextInput: React.FC<TextInputProps> = ({
   const hasLeftElement = Boolean(icon || leftAddon);
   const isInvalid = Boolean(error);
 
+  // Cast to any to handle JS component type mismatch
+  const Input = CatalystInput as any;
+
   const inputElement = hasLeftElement ? (
     <InputGroup>
       {(icon || leftAddon) && <span data-slot="icon">{icon ?? leftAddon}</span>}
-      <CatalystInput
+      <Input
         data-invalid={isInvalid || undefined}
         className={className}
         {...props}
       />
     </InputGroup>
   ) : (
-    <CatalystInput
+    <Input
       data-invalid={isInvalid || undefined}
       className={className}
       {...props}

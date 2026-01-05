@@ -11,7 +11,7 @@
  */
 
 import React from "react";
-// @ts-expect-error - Catalyst components are JS without type definitions
+// @ts-ignore - Catalyst components are JS
 import { Badge as CatalystBadge } from "../../components/catalyst/badge";
 
 export type BadgeVariant =
